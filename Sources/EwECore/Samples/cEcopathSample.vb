@@ -46,6 +46,7 @@ Namespace Samples
         Private m_qb As Single()
         Private m_ee As Single()
         Private m_ba As Single()
+        Private m_babi As Single()
         Private m_dc As Single(,)
         Private m_landing As Single(,)
         Private m_discard As Single(,)
@@ -81,6 +82,7 @@ Namespace Samples
             ReDim Me.m_qb(Me.m_core.nGroups)
             ReDim Me.m_ee(Me.m_core.nGroups)
             ReDim Me.m_ba(Me.m_core.nGroups)
+            ReDim Me.m_babi(Me.m_core.nGroups)
             ReDim Me.m_dc(Me.m_core.nLivingGroups, Me.m_core.nGroups)
             ReDim Me.m_landing(Me.m_core.nFleets, Me.m_core.nGroups)
             ReDim Me.m_discard(Me.m_core.nFleets, Me.m_core.nGroups)
@@ -137,6 +139,10 @@ Namespace Samples
 
         Public Function BA() As Single()
             Return Me.m_ba
+        End Function
+
+        Public Function BaBi() As Single()
+            Return Me.m_babi
         End Function
 
         Public Function EE() As Single()

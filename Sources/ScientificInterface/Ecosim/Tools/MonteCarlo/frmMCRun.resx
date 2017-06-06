@@ -259,7 +259,7 @@
     <value>m_clbEnabledVariables</value>
   </data>
   <data name="&gt;&gt;m_clbEnabledVariables.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cFlickerFreeCheckedListBox, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cFlickerFreeCheckedListBox, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_clbEnabledVariables.Parent" xml:space="preserve">
     <value>m_tbpSettings</value>
@@ -565,7 +565,7 @@
     <value>m_gridB</value>
   </data>
   <data name="&gt;&gt;m_gridB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridB.Parent" xml:space="preserve">
     <value>m_tbpB</value>
@@ -615,7 +615,7 @@
     <value>m_tsB</value>
   </data>
   <data name="&gt;&gt;m_tsB.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsB.Parent" xml:space="preserve">
     <value>m_tbpB</value>
@@ -663,7 +663,7 @@
     <value>m_gridPB</value>
   </data>
   <data name="&gt;&gt;m_gridPB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridPB.Parent" xml:space="preserve">
     <value>m_tbpPB</value>
@@ -713,7 +713,7 @@
     <value>m_tsPB</value>
   </data>
   <data name="&gt;&gt;m_tsPB.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsPB.Parent" xml:space="preserve">
     <value>m_tbpPB</value>
@@ -761,7 +761,7 @@
     <value>m_gridQB</value>
   </data>
   <data name="&gt;&gt;m_gridQB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridQB.Parent" xml:space="preserve">
     <value>m_tbpQB</value>
@@ -811,7 +811,7 @@
     <value>m_tsQB</value>
   </data>
   <data name="&gt;&gt;m_tsQB.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsQB.Parent" xml:space="preserve">
     <value>m_tbpQB</value>
@@ -859,7 +859,7 @@
     <value>m_gridEE</value>
   </data>
   <data name="&gt;&gt;m_gridEE.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridEE.Parent" xml:space="preserve">
     <value>m_tbpEE</value>
@@ -883,7 +883,7 @@
     <value>m_tsEE</value>
   </data>
   <data name="&gt;&gt;m_tsEE.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsEE.Parent" xml:space="preserve">
     <value>m_tbpEE</value>
@@ -934,7 +934,7 @@
     <value>m_gridBA</value>
   </data>
   <data name="&gt;&gt;m_gridBA.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridBA.Parent" xml:space="preserve">
     <value>m_tbpBA</value>
@@ -958,7 +958,7 @@
     <value>m_tsBA</value>
   </data>
   <data name="&gt;&gt;m_tsBA.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsBA.Parent" xml:space="preserve">
     <value>m_tbpBA</value>
@@ -990,6 +990,81 @@
   <data name="&gt;&gt;m_tbpBA.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <data name="m_gridBaBi.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_gridBaBi.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="m_gridBaBi.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_gridBaBi.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 285</value>
+  </data>
+  <data name="m_gridBaBi.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;m_gridBaBi.Name" xml:space="preserve">
+    <value>m_gridBaBi</value>
+  </data>
+  <data name="&gt;&gt;m_gridBaBi.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+  </data>
+  <data name="&gt;&gt;m_gridBaBi.Parent" xml:space="preserve">
+    <value>m_tbpBABi</value>
+  </data>
+  <data name="&gt;&gt;m_gridBaBi.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="m_tsBaBi.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>945, 17</value>
+  </metadata>
+  <data name="m_tsBaBi.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsBaBi.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 25</value>
+  </data>
+  <data name="m_tsBaBi.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_tsBaBi.Name" xml:space="preserve">
+    <value>m_tsBaBi</value>
+  </data>
+  <data name="&gt;&gt;m_tsBaBi.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsBaBi.Parent" xml:space="preserve">
+    <value>m_tbpBABi</value>
+  </data>
+  <data name="&gt;&gt;m_tsBaBi.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbpBABi.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpBABi.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpBABi.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_tbpBABi.Text" xml:space="preserve">
+    <value>BA rate</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBABi.Name" xml:space="preserve">
+    <value>m_tbpBABi</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBABi.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBABi.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBABi.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
   <data name="m_gridDiets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1009,7 +1084,7 @@
     <value>m_gridDiets</value>
   </data>
   <data name="&gt;&gt;m_gridDiets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDiets.Parent" xml:space="preserve">
     <value>m_tbpDiets</value>
@@ -1062,7 +1137,7 @@
     <value>m_tsDiets</value>
   </data>
   <data name="&gt;&gt;m_tsDiets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsDiets.Parent" xml:space="preserve">
     <value>m_tbpDiets</value>
@@ -1092,7 +1167,7 @@
     <value>m_tcMain</value>
   </data>
   <data name="&gt;&gt;m_tbpDiets.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_gridLandings.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1110,7 +1185,7 @@
     <value>m_gridLandings</value>
   </data>
   <data name="&gt;&gt;m_gridLandings.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridLandings.Parent" xml:space="preserve">
     <value>m_tbpLandings</value>
@@ -1160,7 +1235,7 @@
     <value>m_tsLandings</value>
   </data>
   <data name="&gt;&gt;m_tsLandings.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsLandings.Parent" xml:space="preserve">
     <value>m_tbpLandings</value>
@@ -1190,7 +1265,7 @@
     <value>m_tcMain</value>
   </data>
   <data name="&gt;&gt;m_tbpLandings.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_gridDiscards.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1208,7 +1283,7 @@
     <value>m_gridDiscards</value>
   </data>
   <data name="&gt;&gt;m_gridDiscards.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDiscards.Parent" xml:space="preserve">
     <value>m_tbpDiscards</value>
@@ -1258,7 +1333,7 @@
     <value>m_tsDiscards</value>
   </data>
   <data name="&gt;&gt;m_tsDiscards.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsDiscards.Parent" xml:space="preserve">
     <value>m_tbpDiscards</value>
@@ -1288,7 +1363,7 @@
     <value>m_tcMain</value>
   </data>
   <data name="&gt;&gt;m_tbpDiscards.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_spPlot.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1381,7 +1456,7 @@
     <value>m_tsPlot</value>
   </data>
   <data name="&gt;&gt;m_tsPlot.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsPlot.Parent" xml:space="preserve">
     <value>m_spPlot.Panel1</value>
@@ -1423,7 +1498,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_spPlot.Panel2</value>
@@ -1456,7 +1531,7 @@
     <value>m_lblGroups</value>
   </data>
   <data name="&gt;&gt;m_lblGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lblGroups.Parent" xml:space="preserve">
     <value>m_spPlot.Panel2</value>
@@ -1519,7 +1594,7 @@
     <value>m_tcMain</value>
   </data>
   <data name="&gt;&gt;m_tbpBPlot.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_gridBestFit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1537,7 +1612,7 @@
     <value>m_gridBestFit</value>
   </data>
   <data name="&gt;&gt;m_gridBestFit.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunOutput, EwE6, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunOutput, EwE6, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridBestFit.Parent" xml:space="preserve">
     <value>m_tbpBestTrial</value>
@@ -1567,7 +1642,7 @@
     <value>m_tcMain</value>
   </data>
   <data name="&gt;&gt;m_tbpBestTrial.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_tcMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 82</value>
@@ -1582,7 +1657,7 @@
     <value>m_tcMain</value>
   </data>
   <data name="&gt;&gt;m_tcMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucTabControlEx, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucTabControlEx, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tcMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2113,7 +2188,7 @@
     <value>m_hdrInputOpt</value>
   </data>
   <data name="&gt;&gt;m_hdrInputOpt.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrInputOpt.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2146,7 +2221,7 @@
     <value>m_hdrOutputParam</value>
   </data>
   <data name="&gt;&gt;m_hdrOutputParam.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOutputParam.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2287,6 +2362,6 @@
     <value>frmMCRun</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.14695.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -44,6 +44,8 @@ Public Enum eMCParams As Integer
     Landings = 8
     Discards = 9
     Diets = 10
+    ''' <summary>Biomass accummulation rate</summary>
+    BaBi = 11
 End Enum
 
 ''' <summary>
@@ -301,6 +303,7 @@ Public Class cEcosimMonteCarlo
                 Pmean(eMCParams.QB, igrp) = m_epdata.QB(igrp)
                 Pmean(eMCParams.EE, igrp) = m_epdata.EE(igrp)
                 Pmean(eMCParams.BA, igrp) = m_epdata.BA(igrp)
+                Pmean(eMCParams.BaBi, igrp) = m_epdata.BaBi(igrp)
                 Pmean(eMCParams.Vulnerability, igrp) = m_esdata.VulnerabilityPredator(igrp)
                 Pmean(eMCParams.OtherMort, igrp) = m_epdata.OtherMortinput(igrp)
 
@@ -352,13 +355,10 @@ Public Class cEcosimMonteCarlo
     ''' <remarks>Can the MonteCarlo vary an Ecopath parameter </remarks>
     Private Sub setIsVariable()
 
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'jb 22-Mar-2014 
-        'Added the isVariable() to check if a parameter can be varied
-
         ReDim m_isEnabled(Me.NumParams())
         Me.m_isEnabled(eMCParams.Biomass) = True
         Me.m_isEnabled(eMCParams.BA) = True
+        Me.m_isEnabled(eMCParams.BaBi) = True
         Me.m_isEnabled(eMCParams.PB) = True
         Me.m_isEnabled(eMCParams.QB) = True
         Me.m_isEnabled(eMCParams.EE) = True
@@ -371,18 +371,16 @@ Public Class cEcosimMonteCarlo
         For iGrp As Integer = 1 To m_core.nGroups
 
             Me.m_isVariableItem(iGrp, eMCParams.Biomass) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.Biomass)
-            ' ToDo: include BaBi (BA rate) input here
             Me.m_isVariableItem(iGrp, eMCParams.BA) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.BA) And (Me.m_epdata.BAInput(iGrp) <> 0)
+            Me.m_isVariableItem(iGrp, eMCParams.BaBi) = (Me.m_epdata.BaBi(iGrp) <> 0)
             Me.m_isVariableItem(iGrp, eMCParams.PB) = (Not Me.m_ecopath.missing(iGrp, 2))
             Me.m_isVariableItem(iGrp, eMCParams.QB) = ((Not Me.m_ecopath.missing(iGrp, 3)) And Me.isStanzaGroupVariable(iGrp, eMCParams.QB)) And (Me.m_epdata.QBinput(iGrp) > 0)
             Me.m_isVariableItem(iGrp, eMCParams.EE) = (Not Me.m_ecopath.missing(iGrp, 4)) And (iGrp <= Me.m_epdata.NumLiving)
 
         Next
 
-        ' JS Nov 2015 add Catches - not necessary to remember isVariable, just check PMeanLandings / PMeanDiscards
-        ' MP Apr 2016 add Diets - not necessary to remember isVariable, always perturb diets
-
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        ' Not necessary to remember isVariable for Catches, just check PMeanLandings / PMeanDiscards when enabled
+        ' Not necessary to remember isVariable for Diets, always perturb diets when enabled
 
     End Sub
 
@@ -412,11 +410,10 @@ Public Class cEcosimMonteCarlo
             Case eVarNameFlags.PBInput : Return eMCParams.PB
             Case eVarNameFlags.QBInput : Return eMCParams.QB
             Case eVarNameFlags.TCatchInput
-                ' JS Nov 2015 adding Catches
                 Debug.Assert(False)
         End Select
 
-        System.Console.WriteLine(Me.ToString & ".PedigreeVarToMCIndex() Invalid VarName '" & vn.ToString & "'")
+        Console.WriteLine(Me.ToString & ".PedigreeVarToMCIndex() Invalid VarName '" & vn.ToString & "'")
         Return eMCParams.NotSet
 
     End Function
@@ -451,7 +448,6 @@ Public Class cEcosimMonteCarlo
                             Me.CalculateUpperLowerLimits(False, parm)
 
                         Case eVarNameFlags.TCatchInput
-                            ' JS Nov 2015 adding Catches
                             For iFleet As Integer = 1 To Me.m_core.nFleets
                                 CVparLanding(iFleet, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
                                 CVparDiscard(iFleet, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
@@ -514,19 +510,17 @@ Public Class cEcosimMonteCarlo
                 Pmean(eMCParams.PB, iGrp) = m_epdata.PB(iGrp)
                 Pmean(eMCParams.EE, iGrp) = m_epdata.EE(iGrp)
                 Pmean(eMCParams.BA, iGrp) = m_epdata.BA(iGrp)
+                Pmean(eMCParams.BaBi, iGrp) = m_epdata.BaBi(iGrp)
                 Pmean(eMCParams.QB, iGrp) = m_epdata.QB(iGrp)
-
-                'vc sep 2008: adding vulnerability to MC
-                'Pmean(eMCParams.Vulnerability, iGrp) = m_esdata.VulnerabilityPredator(iGrp)
                 Pmean(eMCParams.OtherMort, iGrp) = m_epdata.OtherMortinput(iGrp)
 
-                ' JS Nov 2015 adding Catches
+                'Pmean(eMCParams.Vulnerability, iGrp) = m_esdata.VulnerabilityPredator(iGrp)
+
                 For iFleet As Integer = 1 To Me.m_core.nFleets
                     PMeanLanding(iFleet, iGrp) = m_epdata.Landing(iFleet, iGrp)
                     PMeanDiscard(iFleet, iGrp) = m_epdata.Discard(iFleet, iGrp)
                 Next
 
-                ' MP Apr 2016 adding Diets
                 For iPrey As Integer = 0 To m_core.nGroups
                     Dietmeans(iGrp, iPrey) = m_epdata.DC(iGrp, iPrey)
                 Next
@@ -639,6 +633,7 @@ Public Class cEcosimMonteCarlo
     Public Property FMratioForSRA As Single = 1
 
     Public Property maxEcopathTries As Integer = MAX_ECOPATH_TRIES
+
     ''' <summary>
     ''' Get/set whether output should be saved to file automatically.
     ''' </summary>
@@ -752,16 +747,14 @@ Public Class cEcosimMonteCarlo
                             BestFit(eMCParams.PB, igrp) = m_epdata.PB(igrp)
                             BestFit(eMCParams.EE, igrp) = m_epdata.EE(igrp)
                             BestFit(eMCParams.BA, igrp) = m_epdata.BA(igrp)
-                            'vc sep 2008: adding vulnerability to MC
+                            BestFit(eMCParams.BaBi, igrp) = m_epdata.BaBi(igrp)
                             '  BestFit(eMCParams.Vulnerability, igrp) = m_esdata.VulnerabilityPredator(igrp)
 
-                            ' JS Nov 2015 adding Catches
                             For iFlt As Integer = 1 To Me.m_epdata.NumFleet
                                 BestFitLanding(iFlt, igrp) = m_epdata.Landing(iFlt, igrp)
                                 BestFitDiscard(iFlt, igrp) = m_epdata.Discard(iFlt, igrp)
                             Next
 
-                            ' MP Apr 2016 adding diets
                             For iPrey As Integer = 1 To m_core.nGroups
                                 BestFitDiets(igrp, iPrey) = m_epdata.DC(igrp, iPrey)
                             Next
@@ -900,23 +893,20 @@ Public Class cEcosimMonteCarlo
             For i As Integer = 1 To Me.m_epdata.NumLiving
                 If m_epdata.Binput(i) > 0 Then m_epdata.Binput(i) = startValues(eMCParams.Biomass, i)
                 If m_epdata.PBinput(i) > 0 Then m_epdata.PBinput(i) = startValues(eMCParams.PB, i)
-                ' JS13feb12 added
                 If m_epdata.QBinput(i) > 0 Then m_epdata.QBinput(i) = startValues(eMCParams.QB, i)
                 If m_epdata.EEinput(i) > 0 Then m_epdata.EEinput(i) = startValues(eMCParams.EE, i)
                 If m_epdata.OtherMortinput(i) > 0 Then m_epdata.OtherMortinput(i) = startValues(eMCParams.OtherMort, i)
 
                 m_epdata.BA(i) = startValues(eMCParams.BA, i)
-                'vc sep 2008: adding vulnerability to MC
+                m_epdata.BaBi(i) = startValues(eMCParams.BaBi, i)
                 ' m_esdata.VulnerabilityPredator(i) = startValues(eMCParams.Vulnerability, i)
             Next
 
-            ' JS Nov 2015 adding Catches
             For iGrp As Integer = 1 To m_epdata.NumGroups
                 For iFlt As Integer = 1 To m_epdata.NumFleet
                     Me.m_epdata.Landing(iFlt, iGrp) = PMeanLanding(iFlt, iGrp)
                     Me.m_epdata.Discard(iFlt, iGrp) = PMeanDiscard(iFlt, iGrp)
                 Next
-                'MP Apr 2016 adding diets
                 For iPrey As Integer = 0 To m_epdata.NumGroups
                     Me.m_epdata.DC(iGrp, iPrey) = m_startValuesDiets(iGrp, iPrey)
                 Next
@@ -1062,11 +1052,19 @@ Public Class cEcosimMonteCarlo
                     End If
 
                     If Me.IsVariable(igrp, eMCParams.BA) Then
-                        m_epdata.BA(igrp) = ChooseFeasibleBA(m_epdata.B(igrp),
+                        m_epdata.BA(igrp) = ChooseFeasibleBA(m_epdata.B(igrp), ' Use of 'B' here is probably not a bug
                                                              Pmean(eMCParams.BA, igrp),
                                                              CVpar(eMCParams.BA, igrp),
                                                              ParLimit(0, eMCParams.BA, igrp),
                          ParLimit(1, eMCParams.BA, igrp))
+                    End If
+
+                    If Me.IsVariable(igrp, eMCParams.BaBi) Then
+                        m_epdata.BaBi(igrp) = ChooseFeasiblePar(eMCParams.BaBi,
+                                                             Pmean(eMCParams.BaBi, igrp),
+                                                             CVpar(eMCParams.BaBi, igrp),
+                                                             ParLimit(0, eMCParams.BaBi, igrp),
+                                                             ParLimit(1, eMCParams.BaBi, igrp))
                     End If
 
                     If Me.IsVariable(igrp, eMCParams.PB) Then
@@ -1206,7 +1204,7 @@ Public Class cEcosimMonteCarlo
             End If
         Next
         If bwarning Then
-            System.Console.WriteLine("WARNING MSE Normalized Diet after sampling.")
+            Console.WriteLine("WARNING MSE Normalized Diet after sampling.")
         End If
     End Sub
 
@@ -1227,9 +1225,9 @@ Public Class cEcosimMonteCarlo
         Dim bReturn As Boolean = True
         Select Case varType
 
-            Case eMCParams.BA
-                'BA is never variable for Stanza groups
-                If varType = eMCParams.BA Then bReturn = False
+            Case eMCParams.BA, eMCParams.BaBi, eMCParams.Landings, eMCParams.Discards, eMCParams.Diets
+                ' Never variable for Stanza groups
+                bReturn = False
 
             Case eMCParams.Biomass
                 'For B and QB only the leading group can be varied
@@ -1238,10 +1236,6 @@ Public Class cEcosimMonteCarlo
             Case eMCParams.QB
                 'For B and QB only the leading group can be varied
                 If Not Me.m_epdata.isGroupLeadingCB(igrp) Then bReturn = False
-
-            Case eMCParams.Landings, eMCParams.Discards, eMCParams.Diets
-                ' Never stanza vars
-                bReturn = False
 
             Case Else
                 Debug.Assert(False)
@@ -1281,7 +1275,6 @@ Public Class cEcosimMonteCarlo
                 m_epdata.PBinput(iPred) = BestFit(eMCParams.PB, iPred)
             End If
 
-            ' JS13feb12 added
             If m_ecopath.missing(iPred, 3) = False Then
                 m_epdata.QBinput(iPred) = BestFit(eMCParams.QB, iPred)
             End If
@@ -1291,14 +1284,13 @@ Public Class cEcosimMonteCarlo
             End If
 
             m_epdata.BA(iPred) = BestFit(eMCParams.BA, iPred)
+            m_epdata.BaBi(iPred) = BestFit(eMCParams.BaBi, iPred)
 
-            ' JS Apr 2016 Adding catches
             For iFleet As Integer = 1 To m_core.nFleets
                 m_epdata.Landing(iFleet, iPred) = Me.BestFitLanding(iFleet, iPred)
                 m_epdata.Discard(iFleet, iPred) = Me.BestFitDiscard(iFleet, iPred)
             Next
 
-            ' MP Apr 2015 Adding diets
             For iPrey As Integer = 1 To m_core.nGroups
                 m_epdata.DC(iPred, iPrey) = BestFitDiets(iPred, iPrey)
             Next
@@ -1340,8 +1332,9 @@ Public Class cEcosimMonteCarlo
                 For iVar As Integer = 1 To Me.NumParams
 
                     Select Case DirectCast(iVar, eMCParams)
-
                         Case eMCParams.BA
+                            CVpar(iVar, iGroup) = 0.05
+                        Case eMCParams.BaBi
                             CVpar(iVar, iGroup) = 0.05
                         Case eMCParams.Diets
                             CVpar(iVar, iGroup) = 1
@@ -1421,6 +1414,17 @@ Public Class cEcosimMonteCarlo
 
                     'BA is +- relative to B not to BA (which is usually zero)
                     ParLimit(1, eMCParams.BA, iGroup) = m_epdata.BA(iGroup) + m_epdata.B(iGroup) * (factor * CVpar(eMCParams.BA, iGroup))
+                End If
+
+                If (param = eMCParams.BaBi Or param = eMCParams.NotSet) Then
+                    ParLimit(0, eMCParams.BaBi, iGroup) = Me.m_epdata.BaBi(iGroup) * (1 - factor * CVpar(eMCParams.BaBi, iGroup))
+                    ParLimit(1, eMCParams.BaBi, iGroup) = Me.m_epdata.BaBi(iGroup) * (1 + factor * CVpar(eMCParams.BaBi, iGroup))
+
+                    If ParLimit(0, eMCParams.BaBi, iGroup) > ParLimit(1, eMCParams.BaBi, iGroup) Then
+                        Dim t As Single = ParLimit(0, eMCParams.BaBi, iGroup)
+                        ParLimit(0, eMCParams.BaBi, iGroup) = ParLimit(1, eMCParams.BaBi, iGroup)
+                        ParLimit(1, eMCParams.BaBi, iGroup) = t
+                    End If
                 End If
 
                 'Vul is from 1 up
@@ -1560,13 +1564,10 @@ Public Class cEcosimMonteCarlo
         Dim sumofgamma As Single
 
         For i As Integer = 1 To nDimensions
-            'alpha(i) = alpha(i) * TempDietMultiplier
             alpha(i) = CSng(alpha(i) * DietMultiplier)
         Next
 
         For i As Integer = 1 To nDimensions
-            'm_gamma.Alpha = alpha(i)
-            'gamma(i) = CSng(m_gamma.NextDouble())
             gamma(i) = CSng(SampleGamma(alpha(i), 1))
         Next
 

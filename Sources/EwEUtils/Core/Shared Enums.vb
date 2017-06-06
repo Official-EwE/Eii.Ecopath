@@ -945,6 +945,8 @@ Namespace Core
         mcDietMult
         mcDiscards
         mcLandings
+        ''' <summary>Monte Carlo biomass accum rate</summary>
+        mcBaBi
 
         ''' <summary>To document</summary>
         mcBbf
@@ -961,6 +963,8 @@ Namespace Core
         mcDietsbf
         mcDiscardsbf
         mcLandingsbf
+        ''' <summary>Monte Carlo biomass accum rate best fit</summary>
+        mcBaBibf
 
         ''' <summary>To document</summary>
         mcBLower
@@ -976,36 +980,46 @@ Namespace Core
         mcVULower
         mcDiscardsLower
         mcLandingsLower
+        ''' <summary>Monte Carlo biomass accum rate upper limit</summary>
+        mcBaBiLower
 
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo B upper limit</summary>
         mcBUpper
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo P over B upper limit</summary>
         mcPBUpper
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo Q over B upper limit</summary>
         mcQBUpper
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo Bimass accummulation upper limit</summary>
         mcBAUpper
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo EE upper limit</summary>
         mcEEUpper
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo vulnerabilities upper limit</summary>
         mcVUUpper
+        ''' <summary>Monte Carlo discards upper limit</summary>
         mcDiscardsUpper
+        ''' <summary>Monte Carlo landings upper limit</summary>
         mcLandingsUpper
+        ''' <summary>Monte Carlo biomass accum rate upper limit</summary>
+        mcBaBiUpper
 
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo biomass cv</summary>
         mcBcv
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo P over B cv</summary>
         mcPBcv
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo Q over B cv</summary>
         mcQBcv
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo biomass accummulation cv</summary>
         mcBAcv
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo EE cv</summary>
         mcEEcv
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo vulnerabilities cv</summary>
         mcVUcv
+        ''' <summary>Monte Carlo discards cv</summary>
         mcDiscardscv
+        ''' <summary>Monte Carlo landings cv</summary>
         mcLandingscv
+        ''' <summary>Monte Carlo biomass accummulation rate cv</summary>
+        mcBaBicv
 
         'end monte carlo variables
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -82,6 +82,7 @@ Namespace Ecosim
         Private m_qeQB As New cQuickEditHandler()
         Private m_qeEE As New cQuickEditHandler()
         Private m_qeBA As New cQuickEditHandler()
+        Private m_qeBaBi As New cQuickEditHandler()
         Private m_qeDC As New cQuickEditHandler()
         Private m_qeLandings As New cQuickEditHandler()
         Private m_qeDiscards As New cQuickEditHandler()
@@ -115,6 +116,7 @@ Namespace Ecosim
             Me.m_tsQB.Visible = True
             Me.m_tsEE.Visible = True
             Me.m_tsBA.Visible = True
+            Me.m_tsBaBi.Visible = True
 
             Me.m_tsbnShowGroups.Image = SharedResources.fish
             Me.m_tsbnShowBestOnly.Image = SharedResources.FilterHS
@@ -130,6 +132,7 @@ Namespace Ecosim
             Next
 
             'set the call back delegates for the monte carlo trials and ecopath iteration
+            ' ToDo: replace time step handlers with events to allow simulatenous use by other tools
             Me.m_mcmanager.MonteCarloStepHandler = AddressOf MonteCarloStepHandler
             Me.m_mcmanager.MonteCarloEcopathStepHandler = AddressOf Me.MonteCarloEcopathStepHandler
             Me.m_mcmanager.MonteCarloCompletedHandler = AddressOf Me.MonteCarloCompletedHandler
@@ -177,31 +180,15 @@ Namespace Ecosim
 
             ' Configure grids
             Me.m_gridB.UIContext = Me.UIContext
-            Me.m_gridB.DataName = "MC_B"
-
             Me.m_gridBA.UIContext = Me.UIContext
-            Me.m_gridBA.DataName = "MC_BA"
-
+            Me.m_gridBaBi.UIContext = Me.UIContext
             Me.m_gridEE.UIContext = Me.UIContext
-            Me.m_gridEE.DataName = "MC_EE"
-
             Me.m_gridPB.UIContext = Me.UIContext
-            Me.m_gridPB.DataName = "MC_PB"
-
             Me.m_gridQB.UIContext = Me.UIContext
-            Me.m_gridQB.DataName = "MC_QB"
-
             Me.m_gridDiets.UIContext = Me.UIContext
-            Me.m_gridDiets.DataName = "MC_DC"
-
             Me.m_gridLandings.UIContext = Me.UIContext
-            Me.m_gridLandings.DataName = "MC_Landings"
-
             Me.m_gridDiscards.UIContext = Me.UIContext
-            Me.m_gridDiscards.DataName = "MC_Discards"
-
             Me.m_gridBestFit.UIContext = Me.UIContext
-            Me.m_gridBestFit.DataName = "MC_BestFit"
 
             Me.m_cmdRunMonteCarlo = New cCommand(Me.CommandHandler, "RunMonteCarlo")
             Me.m_cmdRunMonteCarlo.AddControl(Me.m_btnRunTrials)
@@ -209,14 +196,11 @@ Namespace Ecosim
             Me.m_cmdStopMonteCarlo = New cCommand(Me.CommandHandler, "StopMonteCarlo")
             Me.m_cmdStopMonteCarlo.AddControl(Me.m_btnStop)
 
-            ' Connect to ApplyTS command
             Me.m_cmdLoadTS = Me.CommandHandler.GetCommand("LoadTimeSeries")
-            If Me.m_cmdLoadTS IsNot Nothing Then Me.m_cmdLoadTS.AddControl(Me.m_btnTS)
+            Me.m_cmdLoadTS.AddControl(Me.m_btnTS)
 
             Me.m_propNYears = New cSingleProperty(Me.Core.EcoSimModelParameters, eVarNameFlags.EcoSimNYears)
             AddHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged
-
-            Debug.Assert(Me.m_cmdLoadTS IsNot Nothing, "Command failed to load.")
 
             Me.m_lbGroups.Attach(Me.UIContext)
             Me.m_lbGroups.SelectedIndex = 0
@@ -230,6 +214,7 @@ Namespace Ecosim
             Me.m_qeQB.Attach(Me.m_gridQB, Me.UIContext, Me.m_tsQB, False)
             Me.m_qeEE.Attach(Me.m_gridEE, Me.UIContext, Me.m_tsEE, False)
             Me.m_qeBA.Attach(Me.m_gridBA, Me.UIContext, Me.m_tsBA, False)
+            Me.m_qeBaBi.Attach(Me.m_gridBaBi, Me.UIContext, Me.m_tsBaBi, False)
             Me.m_qeDC.Attach(Me.m_gridDiets, Me.UIContext, Me.m_tsDiets, False)
             Me.m_qeLandings.Attach(Me.m_gridLandings, Me.UIContext, Me.m_tsLandings, False)
             Me.m_qeDiscards.Attach(Me.m_gridDiscards, Me.UIContext, Me.m_tsDiscards, False)
@@ -265,22 +250,32 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
+            Me.CoreComponents = Nothing
+
             Try
                 Me.StopRun()
 
+                ' -- detach from manager --
+                Me.m_mcmanager.MonteCarloStepHandler = Nothing
+                Me.m_mcmanager.MonteCarloEcopathStepHandler = Nothing
+                Me.m_mcmanager.MonteCarloCompletedHandler = Nothing
+                Me.m_mcmanager.EcosimTimeStepHandler = Nothing
+                Me.m_mcmanager.SyncObject = Nothing
+                Me.m_mcmanager.ActiveResultWriter = Nothing
+
+                ' -- cleanup grids  --
                 Me.m_qeB.Detach()
                 Me.m_qePB.Detach()
                 Me.m_qeQB.Detach()
                 Me.m_qeEE.Detach()
                 Me.m_qeBA.Detach()
+                Me.m_qeBaBi.Detach()
                 Me.m_qeLandings.Detach()
                 Me.m_qeDiscards.Detach()
 
-                Me.CommandHandler.Remove(Me.m_cmdRunMonteCarlo)
-                Me.CommandHandler.Remove(Me.m_cmdStopMonteCarlo)
-
                 Me.m_gridB.UIContext = Nothing
                 Me.m_gridBA.UIContext = Nothing
+                Me.m_gridBaBi.UIContext = Nothing
                 Me.m_gridEE.UIContext = Nothing
                 Me.m_gridPB.UIContext = Nothing
                 Me.m_gridQB.UIContext = Nothing
@@ -289,26 +284,38 @@ Namespace Ecosim
                 Me.m_gridDiscards.UIContext = Nothing
                 Me.m_gridBestFit.UIContext = Nothing
 
+                ' -- cleanup commands --
+                Me.CommandHandler.Remove(Me.m_cmdRunMonteCarlo)
+                Me.m_cmdRunMonteCarlo.RemoveControl(Me.m_btnRunTrials)
+                Me.m_cmdRunMonteCarlo = Nothing
+
+                Me.CommandHandler.Remove(Me.m_cmdStopMonteCarlo)
+                Me.m_cmdStopMonteCarlo.RemoveControl(Me.m_btnStop)
+                Me.m_cmdStopMonteCarlo = Nothing
+
+                Me.m_cmdLoadTS.RemoveControl(Me.m_btnTS)
+                Me.m_cmdLoadTS = Nothing
+
+                ' -- controls and format providers --
                 Me.m_lbGroups.Detach()
 
-                RemoveHandler Me.m_fpEETol.OnValueChanged, AddressOf OnEETolChanged
-                RemoveHandler Me.m_fpFMratio.OnValueChanged, AddressOf OnFMratioChanged
-
-                ' Disconnect from property
-                RemoveHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged
-                Me.m_propNYears = Nothing
-
-                Me.m_plothelper.Detach()
-
-                Me.m_fpERun.Release()
                 Me.m_fpNumTrials.Release()
+                Me.m_fpTrial.Release()
+                Me.m_fpERun.Release()
+                Me.m_fpSSorg.Release()
                 Me.m_fpSS.Release()
                 Me.m_fpSSBest.Release()
-                Me.m_fpSSorg.Release()
-                Me.m_fpTrial.Release()
-
+                RemoveHandler Me.m_fpEETol.OnValueChanged, AddressOf OnEETolChanged
                 Me.m_fpEETol.Release()
+                RemoveHandler Me.m_fpFMratio.OnValueChanged, AddressOf OnFMratioChanged
                 Me.m_fpFMratio.Release()
+
+                Me.m_plothelper.Detach()
+                Me.m_plothelper = Nothing
+
+                ' -- local properties
+                RemoveHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged
+                Me.m_propNYears = Nothing
 
             Catch ex As Exception
                 Debug.Assert(False)
@@ -534,21 +541,20 @@ Namespace Ecosim
             Handles m_clbEnabledVariables.Format
 
             Dim fmt As New cVarnameTypeFormatter()
-            Dim var As eVarNameFlags = eVarNameFlags.NotSet
 
             Select Case DirectCast(e.ListItem, eMCParams)
-                Case eMCParams.BA : var = eVarNameFlags.BioAccumOutput
-                Case eMCParams.Biomass : var = eVarNameFlags.Biomass
-                Case eMCParams.Diets : var = eVarNameFlags.DietComp
-                Case eMCParams.Discards : var = eVarNameFlags.Discards
-                Case eMCParams.Landings : var = eVarNameFlags.Landings
-                Case eMCParams.EE : var = eVarNameFlags.EEInput
-                Case eMCParams.PB : var = eVarNameFlags.PBInput
-                Case eMCParams.QB : var = eVarNameFlags.QBInput
+                Case eMCParams.BA : e.Value = fmt.GetDescriptor(eVarNameFlags.BioAccumOutput)
+                Case eMCParams.BaBi : e.Value = fmt.GetDescriptor(eVarNameFlags.BioAccumRate)
+                Case eMCParams.Biomass : e.Value = fmt.GetDescriptor(eVarNameFlags.Biomass)
+                Case eMCParams.Diets : e.Value = fmt.GetDescriptor(eVarNameFlags.DietComp)
+                Case eMCParams.Discards : e.Value = fmt.GetDescriptor(eVarNameFlags.Discards)
+                Case eMCParams.Landings : e.Value = fmt.GetDescriptor(eVarNameFlags.Landings)
+                Case eMCParams.EE : e.Value = fmt.GetDescriptor(eVarNameFlags.EEInput)
+                Case eMCParams.PB : e.Value = fmt.GetDescriptor(eVarNameFlags.PBInput)
+                Case eMCParams.QB : e.Value = fmt.GetDescriptor(eVarNameFlags.QBInput)
                 Case Else
                     Debug.Assert(False, "variable not supported")
             End Select
-            e.Value = fmt.GetDescriptor(var)
 
         End Sub
 
@@ -711,6 +717,7 @@ Namespace Ecosim
 
             ' Clear out the old data
             Me.m_plothelper.Clear()
+            Me.m_plothelper.XScaleMax = Me.Core.EcosimFirstYear + Me.Core.nEcosimYears
 
             Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf StopRun))
             Me.NewIteration()
@@ -840,6 +847,8 @@ Namespace Ecosim
             Select Case par
                 Case eMCParams.BA
                     Me.m_tcMain.IsVisible(Me.m_tbpBA) = bEnabled
+                Case eMCParams.BaBi
+                    Me.m_tcMain.IsVisible(Me.m_tbpBABi) = bEnabled
                 Case (eMCParams.Biomass)
                     Me.m_tcMain.IsVisible(Me.m_tbpB) = bEnabled
                 Case eMCParams.Diets

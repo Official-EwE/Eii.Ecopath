@@ -61,6 +61,12 @@ Public Class cMonteCarloGroup
         val.Stored = False
         m_values.Add(val.varName, val)
 
+        'BaBi
+        meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValue(New Single, eVarNameFlags.mcBaBi, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
         'QB
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.mcQB, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -103,6 +109,12 @@ Public Class cMonteCarloGroup
         val.Stored = False
         m_values.Add(val.varName, val)
 
+        'babiLower
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.mcBaBiLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
         'QBLower
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.mcQBLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -138,6 +150,12 @@ Public Class cMonteCarloGroup
         'baBF
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.mcBAbf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
+        'baBF
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.mcBaBibf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         val.Stored = False
         m_values.Add(val.varName, val)
 
@@ -186,6 +204,13 @@ Public Class cMonteCarloGroup
         val.Stored = False
         m_values.Add(val.varName, val)
 
+
+        'babiUpper
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.mcBaBiUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
         'QBUpper
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.mcQBUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -222,6 +247,12 @@ Public Class cMonteCarloGroup
         'bacv
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.mcBAcv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
+        'babicv
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.mcBaBicv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         val.Stored = False
         m_values.Add(val.varName, val)
 
@@ -326,9 +357,9 @@ Public Class cMonteCarloGroup
                     Case eValueTypes.Sng
                         value.Status = eStatusFlags.OK
 
-                        ' JS 13Feb12: added QB
                         If (value.varName = eVarNameFlags.mcB Or value.varName = eVarNameFlags.mcBbf) Or
                            (value.varName = eVarNameFlags.mcBA Or value.varName = eVarNameFlags.mcBAbf) Or
+                           (value.varName = eVarNameFlags.mcBaBi Or value.varName = eVarNameFlags.mcBaBibf) Or
                            (value.varName = eVarNameFlags.mcEE Or value.varName = eVarNameFlags.mcEEbf) Or
                            (value.varName = eVarNameFlags.mcPB Or value.varName = eVarNameFlags.mcPBbf) Or
                            (value.varName = eVarNameFlags.mcQB Or value.varName = eVarNameFlags.mcQBbf) Or
@@ -384,6 +415,16 @@ Public Class cMonteCarloGroup
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.mcBA, value)
+        End Set
+    End Property
+
+    Public Property BaBi() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.mcBaBi))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.mcBaBi, value)
         End Set
     End Property
 
@@ -457,12 +498,10 @@ Public Class cMonteCarloGroup
         End Set
     End Property
 
-
     Public Property BLower() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.mcBLower))
         End Get
-
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.mcBLower, value)
         End Set
@@ -472,9 +511,18 @@ Public Class cMonteCarloGroup
         Get
             Return CSng(GetVariable(eVarNameFlags.mcBALower))
         End Get
-
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.mcBALower, value)
+        End Set
+    End Property
+
+    Public Property BaBiLower() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.mcBaBiLower))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.mcBaBiLower, value)
         End Set
     End Property
 
@@ -558,6 +606,16 @@ Public Class cMonteCarloGroup
         End Set
     End Property
 
+    Public Property BaBiUpper() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.mcBaBiUpper))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.mcBaBiUpper, value)
+        End Set
+    End Property
+
     Public Property PBUpper() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.mcPBUpper))
@@ -618,7 +676,6 @@ Public Class cMonteCarloGroup
         End Set
     End Property
 
-
     Public Property Bcv() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.mcBcv))
@@ -636,6 +693,15 @@ Public Class cMonteCarloGroup
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.mcBAcv, value)
+        End Set
+    End Property
+
+    Public Property BaBicv() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.mcBaBicv))
+        End Get
+        Set(value As Single)
+            SetVariable(eVarNameFlags.mcBaBicv, value)
         End Set
     End Property
 
@@ -725,6 +791,16 @@ Public Class cMonteCarloGroup
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.mcBAbf, value)
+        End Set
+    End Property
+
+    Public Property BaBibf() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.mcBaBibf))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.mcBaBibf, value)
         End Set
     End Property
 
