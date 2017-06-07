@@ -52,6 +52,7 @@ Namespace Samples
 
         ' -- Batch run ariables --
         Private m_iRunLength As Integer
+        Private m_bRandomize As Boolean = False
         Private m_bStopRun As Boolean
 
 #End Region ' Private vars
@@ -579,15 +580,16 @@ Namespace Samples
 
 #Region " Running perturbations "
 
-        Public Sub Run(ByVal iNumSamples As Integer)
+        Public Sub Run(ByVal iNumSamples As Integer, bRandomize As Boolean)
 
             If (iNumSamples = 0) Then Return
 
             Me.m_iRunLength = Math.Min(Me.nSamples, iNumSamples)
+            Me.m_bRandomize = bRandomize
             Me.m_bStopRun = False
 
 #If 1 Then
-            Dim thread As New Threading.Thread(AddressOf Run)
+            Dim thread As New Threading.Thread(AddressOf RunBatch)
             thread.Start()
 #Else
             Me.RunThreaded()
@@ -882,10 +884,9 @@ Namespace Samples
 
 #Region " Batch running "
 
-        Private Sub Run()
+        Private Sub RunBatch()
 
             Dim strPathOld As String = Me.m_core.OutputPath
-            Dim strDigitMask As String = "D" & CInt(Math.Ceiling(Math.Log10(Me.m_iRunLength)))
             Dim i As Integer = 1
             Dim msg As cProgressMessage = Nothing
             Dim bIsBalanced As Boolean = False
@@ -895,17 +896,20 @@ Namespace Samples
             Dim iEcospace As Integer = Me.m_core.ActiveEcospaceScenarioIndex
             Dim iEcotracer As Integer = Me.m_core.ActiveEcotracerScenarioIndex
 
+            Dim samples As cEcopathSample() = Me.m_data.m_samples.ToArray()
+            If (Me.m_bRandomize) Then samples.Shuffle()
+
             If Me.BackupEcopath() Then
 
                 Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
                 Me.m_core.SetStopRunDelegate(AddressOf Me.StopRun)
 
-                cLog.Write("Ecosampler run started")
+                Me.LogEvent(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_STARTED, eMessageImportance.Information)
 
-                Me.SendProgress(0, My.Resources.CoreMessages.ECOSAMPLER_RUNNING_BASELINE)
                 Try
                     ' Run baseline
-                    cLog.Write("Ecosampler running baseline")
+                    Me.SendProgress(0, My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_BASELINE)
+                    Me.LogEvent(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_BASELINE, eMessageImportance.Information)
 
                     Me.m_core.OutputPath = System.IO.Path.Combine(strPathOld, "Sample_baseline")
                     Me.m_core.RunEcoPath(bIsBalanced)
@@ -913,18 +917,17 @@ Namespace Samples
                         If (iEcosim > 0) Then Me.m_core.RunEcoSim()
                         If (iEcospace > 0) Then Me.m_core.RunEcoSpace()
                     Else
-                        ' ToDo: globalize this
-                        Me.SendProgress(100, "Baseline does not balance. Ecosampler run aborted")
+                        Me.SendProgress(100, My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_ABORT_NOBALANCE)
                         Me.m_bStopRun = True
                     End If
 
                     While (i <= Me.m_iRunLength) And (Not Me.m_bStopRun)
 
                         ' Run sample
-                        Dim s As cEcopathSample = Me.Sample(i)
+                        Dim s As cEcopathSample = samples(i)
 
-                        cLog.Write("Ecosampler running sample " & i & ", " & s.DBID)
-                        Me.SendProgress(CSng(i / Me.m_iRunLength), cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_RUNNING, i))
+                        Me.LogEvent(cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_SAMPLE, s.Index), eMessageImportance.Information)
+                        Me.SendProgress(CSng(i / Me.m_iRunLength), cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_SAMPLE, s.Index))
 
                         Me.Load(s, False)
 
@@ -934,7 +937,7 @@ Namespace Samples
                             If (iEcosim > 0) Then Me.m_core.RunEcoSim()
                             If (iEcospace > 0) Then Me.m_core.RunEcoSpace()
                         Else
-                            cLog.Write("Ecosampler sample " & i & ", " & s.DBID & " did not balance")
+                            Me.LogEvent(cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_SAMPLE_NOBALANCE, s.Index), eMessageImportance.Warning)
                         End If
 
                         i += 1
@@ -946,7 +949,7 @@ Namespace Samples
                     cLog.Write(ex, "Ecosampler run error")
                 End Try
 
-                cLog.Write("Ecosampler run completed")
+                Me.LogEvent(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_COMPLETED, eMessageImportance.Information)
 
                 Me.RestoreEcopath()
                 Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
@@ -973,9 +976,9 @@ Namespace Samples
 
         End Sub
 
-        Private Sub SendMessage(strMessage As String)
+        Private Sub LogEvent(strMessage As String, importance As eMessageImportance)
 
-            Dim msg As New cMessage(strMessage, eMessageType.NotSet, eCoreComponentType.External, eMessageImportance.Information)
+            Dim msg As New cMessage(strMessage, eMessageType.NotSet, eCoreComponentType.External, importance)
             Me.m_core.Messages.SendMessage(msg)
 
         End Sub

@@ -905,20 +905,56 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecosampler runnng sample {0}.
+        '''  Looks up a localized string similar to Baseline does not balance. Ecosampler batch run aborted.
         '''</summary>
-        Public Shared ReadOnly Property ECOSAMPLER_RUNNING() As String
+        Public Shared ReadOnly Property ECOSAMPLER_BATCHRUN_ABORT_NOBALANCE() As String
             Get
-                Return ResourceManager.GetString("ECOSAMPLER_RUNNING", resourceCulture)
+                Return ResourceManager.GetString("ECOSAMPLER_BATCHRUN_ABORT_NOBALANCE", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecosampler running baseline.
+        '''  Looks up a localized string similar to Ecosampler batch running baseline.
         '''</summary>
-        Public Shared ReadOnly Property ECOSAMPLER_RUNNING_BASELINE() As String
+        Public Shared ReadOnly Property ECOSAMPLER_BATCHRUN_BASELINE() As String
             Get
-                Return ResourceManager.GetString("ECOSAMPLER_RUNNING_BASELINE", resourceCulture)
+                Return ResourceManager.GetString("ECOSAMPLER_BATCHRUN_BASELINE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosampler batch run completed.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSAMPLER_BATCHRUN_COMPLETED() As String
+            Get
+                Return ResourceManager.GetString("ECOSAMPLER_BATCHRUN_COMPLETED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosampler running sample {0}.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSAMPLER_BATCHRUN_SAMPLE() As String
+            Get
+                Return ResourceManager.GetString("ECOSAMPLER_BATCHRUN_SAMPLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosampler sample {0} does not balance.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSAMPLER_BATCHRUN_SAMPLE_NOBALANCE() As String
+            Get
+                Return ResourceManager.GetString("ECOSAMPLER_BATCHRUN_SAMPLE_NOBALANCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosampler batch run started.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSAMPLER_BATCHRUN_STARTED() As String
+            Get
+                Return ResourceManager.GetString("ECOSAMPLER_BATCHRUN_STARTED", resourceCulture)
             End Get
         End Property
         

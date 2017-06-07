@@ -1293,12 +1293,9 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>{0} sample(s) imported</value>
     <comment>{0}=sample import count</comment>
   </data>
-  <data name="ECOSAMPLER_RUNNING" xml:space="preserve">
-    <value>Ecosampler runnng sample {0}</value>
+  <data name="ECOSAMPLER_BATCHRUN_SAMPLE" xml:space="preserve">
+    <value>Ecosampler running sample {0}</value>
     <comment>{0}=sample number</comment>
-  </data>
-  <data name="ECOSAMPLER_RUNNING_BASELINE" xml:space="preserve">
-    <value>Ecosampler running baseline</value>
   </data>
   <data name="UPDATE_RUNNING" xml:space="preserve">
     <value>Applying model update {0}</value>
@@ -1371,5 +1368,20 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="ECOPATH_GROUPSPLIT_SUCCESS" xml:space="preserve">
     <value>Groups {0} has been split into {1} and {2}</value>
     <comment>{0}= source group name, {1} and {2}=target group names</comment>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_ABORT_NOBALANCE" xml:space="preserve">
+    <value>Baseline does not balance. Ecosampler batch run aborted</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_BASELINE" xml:space="preserve">
+    <value>Ecosampler batch running baseline</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_COMPLETED" xml:space="preserve">
+    <value>Ecosampler batch run completed</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_SAMPLE_NOBALANCE" xml:space="preserve">
+    <value>Ecosampler sample {0} does not balance</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_STARTED" xml:space="preserve">
+    <value>Ecosampler batch run started</value>
   </data>
 </root>
