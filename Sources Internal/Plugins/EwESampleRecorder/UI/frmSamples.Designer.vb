@@ -61,6 +61,7 @@ Partial Class frmSamples
         Me.m_nudNumSamples = New System.Windows.Forms.NumericUpDown()
         Me.m_lblNumSamples = New System.Windows.Forms.Label()
         Me.m_hdrRun = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_cbBatchRandomize = New System.Windows.Forms.CheckBox()
         Me.m_tlpOptions.SuspendLayout()
         Me.m_tlpMain.SuspendLayout()
         Me.m_tsMain.SuspendLayout()
@@ -167,6 +168,7 @@ Partial Class frmSamples
         '
         'm_plBatchRun
         '
+        Me.m_plBatchRun.Controls.Add(Me.m_cbBatchRandomize)
         Me.m_plBatchRun.Controls.Add(Me.m_btnRun)
         Me.m_plBatchRun.Controls.Add(Me.m_nudNumSamples)
         Me.m_plBatchRun.Controls.Add(Me.m_lblNumSamples)
@@ -197,6 +199,12 @@ Partial Class frmSamples
         resources.ApplyResources(Me.m_hdrRun, "m_hdrRun")
         Me.m_hdrRun.IsCollapsed = False
         Me.m_hdrRun.Name = "m_hdrRun"
+        '
+        'm_cbBatchRandomize
+        '
+        resources.ApplyResources(Me.m_cbBatchRandomize, "m_cbBatchRandomize")
+        Me.m_cbBatchRandomize.Name = "m_cbBatchRandomize"
+        Me.m_cbBatchRandomize.UseVisualStyleBackColor = True
         '
         'frmSamples
         '
@@ -235,5 +243,5 @@ Partial Class frmSamples
     Private WithEvents m_tsmiImportModel As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiImportCefas As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsddImport As System.Windows.Forms.ToolStripDropDownButton
-
+    Private WithEvents m_cbBatchRandomize As Windows.Forms.CheckBox
 End Class

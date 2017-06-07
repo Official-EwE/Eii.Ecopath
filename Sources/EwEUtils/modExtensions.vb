@@ -21,6 +21,7 @@
 #Region " Imports "
 
 Imports System
+Imports System.Collections.Generic
 Imports System.Runtime.CompilerServices
 
 #End Region ' Imports
@@ -100,6 +101,26 @@ Namespace Extensions
             Array.Copy(values, iStart, result, 0, n)
             Return result
         End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Extension method; shuffles the specified list.
+        ''' </summary>
+        ''' <typeparam name="T"></typeparam>
+        ''' <param name="list">The list to shuffle.</param>
+        ''' -----------------------------------------------------------------------
+        <Extension()>
+        Public Sub Shuffle(Of T)(list As IList(Of T))
+            Dim r As Random = New Random()
+            For i As Integer = 0 To list.Count - 1
+                Dim index As Integer = r.Next(i, list.Count)
+                If i <> index Then
+                    Dim temp As T = list(i)
+                    list(i) = list(index)
+                    list(index) = temp
+                End If
+            Next
+        End Sub
 
         <Extension()>
         Public Function Approximates(s1 As Single, s2 As Single, Optional sThreshold As Single = 0.00001) As Boolean

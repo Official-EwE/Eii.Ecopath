@@ -162,6 +162,14 @@
     <value>(this computer)</value>
   </data>
   <data name="HEADER_NUM_INVALID_EE" xml:space="preserve">
-    <value>Num. EE&gt;1</value>
+    <value>No. EE&gt;1</value>
+  </data>
+  <data name="PROMPT_BATCHRUN" xml:space="preserve">
+    <value>You are about to run {0} samples through EwE. Proceed if the desired Ecosim and Ecospace scenarios are loaded, desired plug-ins are activated, and desired outputs are properly configured to save results to disk. Last, the drive for receiving EwE output data should have ample free space.
+
+Do you wish to start the batch run?</value>
+  </data>
+  <data name="PROMPT_IMPORT_MODEL" xml:space="preserve">
+    <value>Select EwE model file to import samples from</value>
   </data>
 </root>

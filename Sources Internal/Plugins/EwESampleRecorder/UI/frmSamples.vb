@@ -74,6 +74,9 @@ Public Class frmSamples
 
         Me.Icon = System.Drawing.Icon.FromHandle(My.Resources.SampleHS.GetHicon)
 
+        ' Not supported (yet)
+        Me.m_tsmiImportCefas.Visible = False
+
         Me.LoadSamples()
 
     End Sub
@@ -233,11 +236,11 @@ Public Class frmSamples
         Try
             If Not Me.Core.SaveChanges() Then Return
             ' ToDo: globalize this
-            Dim fmsg As New cFeedbackMessage(cStringUtils.Localize("Are you sure you want to batch run {0} sample(s)? This task cannot be interrupted", CInt(Me.m_nudNumSamples.Value)),
+            Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_BATCHRUN, CInt(Me.m_nudNumSamples.Value)),
                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO, defaultReply:=eMessageReply.NO)
             Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply = eMessageReply.YES) Then
-                Me.Core.SampleManager.Run(CInt(Me.m_nudNumSamples.Value))
+                Me.Core.SampleManager.Run(CInt(Me.m_nudNumSamples.Value), Me.m_cbBatchRandomize.Checked)
             End If
 
         Catch ex As Exception
@@ -259,7 +262,7 @@ Public Class frmSamples
         ' ToDo: globalize this
         Try
             Dim man As cEcopathSampleManager = Me.Core.SampleManager
-            Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Select model to import samples from", "", SharedResources.FILEFILTER_MODEL_OPEN)
+            Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_IMPORT_MODEL, "", SharedResources.FILEFILTER_MODEL_OPEN)
 
             If (ofd.ShowDialog(Me.UIContext.FormMain) = Windows.Forms.DialogResult.OK) Then
                 man.ImportFromModel(ofd.FileName)

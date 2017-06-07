@@ -79,7 +79,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Num. EE&gt;1.
+        '''  Looks up a localized string similar to No. EE&gt;1.
         '''</summary>
         Friend ReadOnly Property HEADER_NUM_INVALID_EE() As String
             Get
@@ -129,6 +129,26 @@ Namespace My.Resources
         Friend ReadOnly Property MENUITEM_TEXT() As String
             Get
                 Return ResourceManager.GetString("MENUITEM_TEXT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to You are about to run {0} samples through EwE. Proceed if the desired Ecosim and Ecospace scenarios are loaded, desired plug-ins are activated, and desired outputs are properly configured to save results to disk. Last, the drive for receiving EwE output data should have ample free space.
+        '''
+        '''Do you wish to start the batch run?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_BATCHRUN() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_BATCHRUN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Select EwE model file to import samples from.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_IMPORT_MODEL() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_IMPORT_MODEL", resourceCulture)
             End Get
         End Property
         
