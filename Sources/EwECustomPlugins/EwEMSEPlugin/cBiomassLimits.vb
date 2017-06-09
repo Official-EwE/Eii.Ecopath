@@ -1,4 +1,7 @@
-﻿' ===============================================================================
+﻿Option Strict On
+Option Explicit On
+
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -24,9 +27,6 @@
 '
 
 #Region " Imports "
-
-Option Strict On
-Option Explicit On
 
 Imports System.IO
 Imports EwECore
@@ -226,12 +226,12 @@ Public Class cBiomassLimits
             If (reader IsNot Nothing) Then
 
                 buff = reader.ReadLine()        'Skip the row of headers
-                buff = reader.ReadLine()
 
                 breturn = True
 
                 Do Until reader.EndOfStream
 
+                    buff = reader.ReadLine()
                     recs = buff.Split(","c)
 
                     Dim tempBiomassLimit As cBiomassLimit
@@ -251,7 +251,6 @@ Public Class cBiomassLimits
                     ' Only add valid BiomassLimits!
                     Me.Add(tempBiomassLimit)
 
-                    buff = reader.ReadLine()
                 Loop
 
             End If 'reader IsNot Nothing
@@ -318,7 +317,8 @@ Public Class cBiomassLimits
             writer.WriteLine("GroupNumber,LowerLimit,UpperLimit")
 
             For Each iBiomassLimit As cBiomassLimit In Me.lstBiomassLimits
-                writer.WriteLine(cStringUtils.ToCSVField(iBiomassLimit.mGroup.DBID) & "," &
+                'writer.WriteLine(cStringUtils.ToCSVField(iBiomassLimit.mGroup.DBID) & "," &
+                writer.WriteLine(cStringUtils.ToCSVField(iBiomassLimit.mGroup.Index) & "," &
                                  cStringUtils.ToCSVField(iBiomassLimit.mLowerLimit) & "," &
                                  cStringUtils.ToCSVField(iBiomassLimit.mUpperLimit))
             Next

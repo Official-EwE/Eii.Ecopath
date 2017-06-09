@@ -300,52 +300,52 @@
   <data name="&gt;&gt;m_tbxRule.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="m_cmbCostFunctions.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_cmbTarg_Or_Cons.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 148</value>
   </data>
-  <data name="m_cmbCostFunctions.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_cmbTarg_Or_Cons.Size" type="System.Drawing.Size, System.Drawing">
     <value>261, 21</value>
   </data>
-  <data name="m_cmbCostFunctions.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_cmbTarg_Or_Cons.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;m_cmbCostFunctions.Name" xml:space="preserve">
-    <value>m_cmbCostFunctions</value>
+  <data name="&gt;&gt;m_cmbTarg_Or_Cons.Name" xml:space="preserve">
+    <value>m_cmbTarg_Or_Cons</value>
   </data>
-  <data name="&gt;&gt;m_cmbCostFunctions.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbTarg_Or_Cons.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_cmbCostFunctions.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbTarg_Or_Cons.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_cmbCostFunctions.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbTarg_Or_Cons.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="m_lblHRCType.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblTarg_Or_Cons.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblHRCType.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblTarg_Or_Cons.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 129</value>
   </data>
-  <data name="m_lblHRCType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 13</value>
+  <data name="m_lblTarg_Or_Cons.Size" type="System.Drawing.Size, System.Drawing">
+    <value>141, 13</value>
   </data>
-  <data name="m_lblHRCType.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblTarg_Or_Cons.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="m_lblHRCType.Text" xml:space="preserve">
-    <value>HCR type</value>
+  <data name="m_lblTarg_Or_Cons.Text" xml:space="preserve">
+    <value>Target or Conservation HCR</value>
   </data>
-  <data name="&gt;&gt;m_lblHRCType.Name" xml:space="preserve">
-    <value>m_lblHRCType</value>
+  <data name="&gt;&gt;m_lblTarg_Or_Cons.Name" xml:space="preserve">
+    <value>m_lblTarg_Or_Cons</value>
   </data>
-  <data name="&gt;&gt;m_lblHRCType.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblTarg_Or_Cons.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblHRCType.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblTarg_Or_Cons.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_lblHRCType.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblTarg_Or_Cons.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="m_lblBiomassGroupInfo.AutoSize" type="System.Boolean, mscorlib">

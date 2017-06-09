@@ -21,14 +21,16 @@
 ' Cefas MSE plug-in copyright: 
 '    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
-'
 
-Public Class cResultsCollector_Value_Yearly
-    Inherits cResultsCollector_2DArray
+Imports EwECore
+Imports EwEUtils.Utilities
+
+Public Class cResultsCollector_PredationMortality_PreyOnly
+    Inherits cResultsCollector_1DArray
 
     Public Overrides ReadOnly Property DataName As String
         Get
-            Return "Value"
+            Return "PredationMortality"
         End Get
     End Property
 
@@ -38,58 +40,57 @@ Public Class cResultsCollector_Value_Yearly
         End Get
     End Property
 
-    Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
-        Get
-            Return m_MSE.NYearsProject
-        End Get
-    End Property
-
     Public Overrides Sub Populate()
-        Dim TempTotalValue As Double
 
         Dim StrategyIndex = m_MSE.Strategies.IndexOf(m_MSE.currentStrategy) + 1 'Adding 1 to make it a non-zero index
-        For igrp = 1 To m_MSE.Core.nGroups
-            For iFleet = 1 To m_MSE.Core.nFleets
-                For iTime = 1 To NumberOfTimeRecords
 
-                    TempTotalValue = 0
-                    For iMonth = 1 To 12
-                        TempTotalValue += m_MSE.LandingsThroughoutProjection(igrp, iFleet, (iTime - 1) * 12 + iMonth) * m_MSE.Core.FleetInputs(iFleet).OffVesselValue(igrp)
-                    Next
-                    TempTotalValue /= 12
-
-                    Me.SetValue(StrategyIndex, igrp, iFleet, iTime) = TempTotalValue
-                    Me.SetValue(StrategyIndex, igrp, 0, iTime) = Me.GetValue(StrategyIndex, igrp, 0, iTime) + TempTotalValue 'Summing across fleets
-                    Me.SetValue(StrategyIndex, 0, iFleet, iTime) = Me.GetValue(StrategyIndex, 0, iFleet, iTime) + TempTotalValue 'Summing across groups
-                    Me.SetValue(StrategyIndex, 0, 0, iTime) = Me.GetValue(StrategyIndex, 0, 0, iTime) + TempTotalValue ' summ across both fleets and groups
-                Next
+        For iPrey = 1 To m_MSE.Core.nGroups
+            For iTime = 1 To NumberOfTimeRecords
+                Me.SetValue(StrategyIndex, iPrey, iTime) = m_MSE.EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, iPrey, iTime)
             Next
         Next
 
     End Sub
 
-    Public Overrides ReadOnly Property TotalAcrossFleets As Boolean
+    Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
         Get
-            Return True
-        End Get
-    End Property
-
-    Public Overrides ReadOnly Property TotalAcrossGroups As Boolean
-        Get
-            Return True
+            Return m_MSE.NYearsProject * m_MSE.EcosimData.NumStepsPerYear
         End Get
     End Property
 
     Public Overrides ReadOnly Property Yearly As Boolean
         Get
-            Return True
+            Return False
         End Get
     End Property
 
     Public Overrides ReadOnly Property FileNamePrefix As String
         Get
-            Return "ValueYearly_"
+            Return "PredationMortalityPreyOnly_"
         End Get
     End Property
 
+    Public Overrides ReadOnly Property Dim_Name As String
+        Get
+            Return "Prey"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property nElements As Integer
+        Get
+            Return m_MSE.Core.nGroups
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property ElementName(iElement As Integer) As String
+        Get
+            Return m_MSE.Core.EcoPathGroupInputs(iElement).Name
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property GetValue_Formatted4CSV(iStrategy As Integer, iElement As Integer, iTime As Integer) As Object
+        Get
+            Return cStringUtils.FormatNumber(GetValue(iStrategy, iElement, iTime))
+        End Get
+    End Property
 End Class

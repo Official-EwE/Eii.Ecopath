@@ -1,4 +1,7 @@
-﻿' ===============================================================================
+﻿Option Strict On
+Option Explicit On
+
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -21,176 +24,230 @@
 ' Cefas MSE plug-in copyright: 
 '    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
-'
 
 #Region " Imports "
 
-Option Strict On
 Imports System.Text
 Imports EwECore
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
+'
+Namespace HCR_GroupNS
 
-Public Enum HCRType
-    Target = 0
-    Conservation = 1
-End Enum
+    Public Enum eHCR_Targ_Or_Cons
+        Target = 0
+        Conservation = 1
+    End Enum
 
-Public Class cCostFunctionTypeFormatter
-    Implements ITypeFormatter
+    Public Enum eHCR_Type
+        Traditional = 0
+        Multilevel = 1
+    End Enum
 
-    Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
-        Return GetType(HCRType)
-    End Function
+    Public Class cCostFunctionTypeFormatter
+        Implements ITypeFormatter
 
-    Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
+            Return GetType(eHCR_Targ_Or_Cons)
+        End Function
+
+        Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
         Implements ITypeFormatter.GetDescriptor
 
-        Select Case DirectCast(value, HCRType)
-            Case HCRType.Target
-                Return My.Resources.COSTFUNCTION_TARGET
-            Case HCRType.Conservation
-                Return My.Resources.COSTFUNCTION_CONSERVATION
-        End Select
-        Return "?"
-    End Function
+            Select Case DirectCast(value, eHCR_Targ_Or_Cons)
+                Case eHCR_Targ_Or_Cons.Target
+                    Return My.Resources.COSTFUNCTION_TARGET
+                Case eHCR_Targ_Or_Cons.Conservation
+                    Return My.Resources.COSTFUNCTION_CONSERVATION
+            End Select
+            Return "?"
+        End Function
 
-End Class
+    End Class
 
-''' <summary>
-''' Harvest Control Rules and Strategies all need to be public so they can be accessed in the frmTFMpolicy interface.
-''' </summary>
-Public Class HCR_Group
+    Public Class cHCRTypeFormatter
+        Implements ITypeFormatter
+
+        Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
+            Return GetType(eHCR_Type)
+        End Function
+
+        Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Implements ITypeFormatter.GetDescriptor
+
+            Select Case DirectCast(value, eHCR_Type)
+                Case eHCR_Type.Traditional
+                    Return My.Resources.HCRTYPE_TRADITIONAL
+                Case eHCR_Type.Multilevel
+                    Return My.Resources.HCRTYPE_MULTILEVEL
+            End Select
+            Return "?"
+        End Function
+
+    End Class
+
+    ''' <summary>
+    ''' Harvest Control Rules and Strategies all need to be public so they can be accessed in the frmTFMpolicy interface.
+    ''' </summary>
+    Public Class HCR_Group
 
 #Region "Private variables"
-    Private m_core As cCore
-    Private m_MSE As cMSE
+        Private m_core As cCore
+        Private m_MSE As cMSE
 #End Region
 
 #Region "Public variables and Properties"
 
-    ''' <summary>
-    ''' Biomass group.
-    ''' </summary>
-    Public Property GroupB As cEcoPathGroupInput = Nothing
+        ''' <summary>
+        ''' Biomass group.
+        ''' </summary>
+        Public Property GroupB As cEcoPathGroupInput = Nothing
 
-    ''' <summary>
-    ''' Fishing mortality group.
-    ''' </summary>
-    Public Property GroupF As cEcoPathGroupInput = Nothing
+        ''' <summary>
+        ''' Fishing mortality group.
+        ''' </summary>
+        Public Property GroupF As cEcoPathGroupInput = Nothing
 
-    Public Property LowerLimit As Single = cCore.NULL_VALUE
-    Public Property UpperLimit As Single = cCore.NULL_VALUE
-    Public Property MaxF As Single = cCore.NULL_VALUE
+        Public Property HCR_Type As eHCR_Type = eHCR_Type.Traditional
 
-    Public Property TypeOfHCR As HCRType = HCRType.Target
+        Public Property LowerLimit As Single = cCore.NULL_VALUE
+        Public Property BStep As Single = cCore.NULL_VALUE
+        Public Property UpperLimit As Single = cCore.NULL_VALUE
+        Public Property MinF As Single = cCore.NULL_VALUE
+        Public Property MaxF As Single = cCore.NULL_VALUE
 
-    Public Property TimeFrameRule As cTimeFrameRule
+        Public Property Targ_Or_Cons As eHCR_Targ_Or_Cons = eHCR_Targ_Or_Cons.Target
 
-    Public Overrides Function ToString() As String
+        Public Property TimeFrameRule As cTimeFrameRule
 
-        ' JS 01Oct13: StringBuilder is better at handling newlines on different OS-es
-        Dim sb As New StringBuilder()
-        Dim fmt As New cCoreInterfaceFormatter()
-        Dim fmtC As New cCostFunctionTypeFormatter()
+        Public Overrides Function ToString() As String
 
-        sb.AppendLine(String.Format(My.Resources.HCR_GROUP_BIOMASS, fmt.GetDescriptor(Me.GroupB)))
-        sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FISHMORT, fmt.GetDescriptor(Me.GroupF)))
-        sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FUNCTION, fmtC.GetDescriptor(Me.TypeOfHCR)))
+            ' JS 01Oct13: StringBuilder is better at handling newlines on different OS-es
+            Dim sb As New StringBuilder()
+            Dim fmt As New cCoreInterfaceFormatter()
+            Dim fmtC As New cCostFunctionTypeFormatter()
 
-        Return sb.ToString
+            sb.AppendLine(String.Format(My.Resources.HCR_GROUP_BIOMASS, fmt.GetDescriptor(Me.GroupB)))
+            sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FISHMORT, fmt.GetDescriptor(Me.GroupF)))
+            sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FUNCTION, fmtC.GetDescriptor(Me.Targ_Or_Cons)))
 
-    End Function
+            Return sb.ToString
+
+        End Function
 
 #End Region
 
 #Region "Construction"
 
-    Public Sub New(theCore As cCore, MSE As cMSE)
-        Me.m_core = theCore
-        Me.m_MSE = MSE
-        TimeFrameRule = New cTimeFrameRule(MSE.EcosimData, Me, MSE)
-    End Sub
+        Public Sub New()
+
+        End Sub
+
+        Public Sub New(theCore As cCore, MSE As cMSE)
+            Me.m_core = theCore
+            Me.m_MSE = MSE
+            TimeFrameRule = New cTimeFrameRule(MSE.EcosimData, Me, MSE)
+        End Sub
 
 #End Region
 
 #Region "Public Methods"
 
-    ''' <summary>
-    ''' Validate the Harvest Control Rule against the core group indexes
-    ''' </summary>
-    ''' <returns>True if this rule is valid. False otherwise.</returns>
-    ''' <remarks></remarks>
-    Public Function isValid(ByRef ValidationString As String) As Boolean
+        ''' <summary>
+        ''' Validate the Harvest Control Rule against the core group indexes
+        ''' </summary>
+        ''' <returns>True if this rule is valid. False otherwise.</returns>
+        ''' <remarks></remarks>
+        Public Function isValid(ByRef ValidationString As String) As Boolean
 
-        ' ToDo_JS: Globalize this method
-        Dim sb As New StringBuilder()
-        Dim breturn As Boolean = True
-        Debug.Assert(Me.m_core IsNot Nothing, Me.ToString + ".isValid() cCore has not been set. Validation cannot be run.")
+            ' ToDo_JS: Globalize this method
+            Dim sb As New StringBuilder()
+            Dim breturn As Boolean = True
+            Debug.Assert(Me.m_core IsNot Nothing, Me.ToString + ".isValid() cCore has not been set. Validation cannot be run.")
 
-        Try
-            If Not Me.isIndexInBounds(Me.GroupB) Then
+            Try
+                If Not Me.isIndexInBounds(Me.GroupB) Then
+                    breturn = False
+                    sb.AppendLine("Biomass group number is not valid.")
+                End If
+
+                If Not Me.isIndexInBounds(Me.GroupF) Then
+                    breturn = False
+                    sb.AppendLine("Fishing Mortality group number is not valid.")
+                End If
+
+            Catch ex As Exception
                 breturn = False
-                sb.AppendLine("Biomass group number is not valid.")
-            End If
+                Debug.Assert(False, Me.ToString + ".isValid() Exception: " + ex.Message)
+            End Try
 
-            If Not Me.isIndexInBounds(Me.GroupF) Then
-                breturn = False
-                sb.AppendLine("Fishing Mortality group number is not valid.")
-            End If
+            ValidationString = sb.ToString()
 
-        Catch ex As Exception
-            breturn = False
-            Debug.Assert(False, Me.ToString + ".isValid() Exception: " + ex.Message)
-        End Try
+            Return breturn
 
-        ValidationString = sb.ToString()
+        End Function
 
-        Return breturn
+        Public Function CalcF(ByRef Biomass As Single(), ByRef iYearProjecting As Integer, ByVal iTimeStep As Integer) As Single
 
-    End Function
+            Dim HCR_F As Single = CalcFfromHCR(Biomass(Me.GroupB.Index))
+            Debug.Assert(HCR_F >= 0, "The F calculated from the HCR in CalcFfromHCR is negative")
 
-    Public Function CalcF(ByRef Biomass As Single(), ByRef iYearProjecting As Integer, ByVal iTimeStep As Integer) As Single
-
-        Dim HCR_F As Single = CalcFfromHCR(Biomass, iYearProjecting)
-
-        If TimeFrameRule.CheckValidRule(iYearProjecting, HCR_F, iTimeStep) And Me.TypeOfHCR = HCRType.Target Then 'Use a time frame rule
+            If TimeFrameRule.CheckValidRule(iYearProjecting, HCR_F, iTimeStep) And Me.Targ_Or_Cons = eHCR_Targ_Or_Cons.Target Then 'Use a time frame rule
 
 #If DEBUG Then
-            Console.WriteLine("(HCR_Group.CalcFfromHCR) Model = " & m_MSE.CurrentModelID & "   Strategy = " & m_MSE.currentStrategy.Name & "   Group = " & Me.GroupF.Name)
+                Console.WriteLine("(HCR_Group.CalcFfromHCR) Model = " & m_MSE.CurrentModelID & "   Strategy = " & m_MSE.currentStrategy.Name & "   Group = " & Me.GroupF.Name)
 #End If
 
-            Return TimeFrameRule.F(iTimeStep, iYearProjecting, HCR_F)
-        Else
-            Return HCR_F
-        End If
+                Return TimeFrameRule.F(iTimeStep, iYearProjecting, HCR_F)
+            Else
+                Return HCR_F
+            End If
+
+        End Function
+
+        Public Function CalcFfromHCR(ByRef Biomass As Single) As Single
+
+            If Biomass < 0 Then Throw New ArgumentOutOfRangeException("Biomass")
+
+            If HCR_Type = eHCR_Type.Traditional Then
+
+                If Biomass > UpperLimit Then 'otherwise use the standard HCR
+                    Return MaxF
+                ElseIf Biomass < LowerLimit Then
+                    Return 0
+                Else
+                    Return ((Biomass - LowerLimit) / (UpperLimit - LowerLimit)) * MaxF
+                End If
+
+            Else 'If HCR_Type = eHCR_Type.Multilevel Then
+
+                If Biomass > UpperLimit Then 'otherwise use the standard HCR
+                    Return MaxF
+                ElseIf Biomass < BStep Then
+                    Return MinF
+                Else
+                    Return MinF + (Biomass - LowerLimit) * ((MaxF - MinF) / (UpperLimit - LowerLimit))
+                End If
+
+            End If
 
 
-    End Function
 
-    Public Function CalcFfromHCR(ByRef Biomass As Single(), ByRef iYearProjecting As Integer) As Single
-
-        If Biomass(Me.GroupB.Index) > UpperLimit Then 'otherwise use the standard HCR
-            Return MaxF
-        ElseIf Biomass(Me.GroupB.Index) < LowerLimit Then
-            Return 0
-        Else
-            Return ((Biomass(Me.GroupB.Index) - LowerLimit) / (UpperLimit - LowerLimit)) * MaxF
-        End If
-
-    End Function
+        End Function
 
 #End Region
 
 #Region "Private Methods"
 
-    Private Function isIndexInBounds(group As cEcoPathGroupInput) As Boolean
-        If (group Is Nothing) Then Return False
-        Return group.IsFished
-    End Function
+        Private Function isIndexInBounds(group As cEcoPathGroupInput) As Boolean
+            If (group Is Nothing) Then Return False
+            Return group.IsFished
+        End Function
 
 #End Region
 
-End Class
+    End Class
+
+End Namespace

@@ -169,7 +169,7 @@
     <value>&amp;Selected strategy:</value>
   </data>
   <data name="m_tscmStrategies.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 25</value>
+    <value>500, 25</value>
   </data>
   <data name="m_tsbnAddStrategy.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -238,7 +238,7 @@
     <value>m_tsStrategy</value>
   </data>
   <data name="&gt;&gt;m_tsStrategy.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsStrategy.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -379,7 +379,7 @@
     <value>m_tsHCR</value>
   </data>
   <data name="&gt;&gt;m_tsHCR.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsHCR.Parent" xml:space="preserve">
     <value>m_tlpHCR</value>
@@ -389,6 +389,9 @@
   </data>
   <data name="m_hdrHCR.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="m_hdrHCR.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_hdrHCR.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 0</value>
@@ -409,7 +412,7 @@
     <value>m_hdrHCR</value>
   </data>
   <data name="&gt;&gt;m_hdrHCR.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrHCR.Parent" xml:space="preserve">
     <value>m_tlpHCR</value>
@@ -465,6 +468,9 @@
   <data name="m_hdrRegulations.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
+  <data name="m_hdrRegulations.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_hdrRegulations.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 0</value>
   </data>
@@ -484,7 +490,7 @@
     <value>m_hdrRegulations</value>
   </data>
   <data name="&gt;&gt;m_hdrRegulations.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRegulations.Parent" xml:space="preserve">
     <value>m_tlpRegulations</value>
@@ -618,6 +624,9 @@
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
+  <data name="m_btnOK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
     <value>705, 458</value>
   </data>
@@ -739,6 +748,6 @@
     <value>frmTFMpolicy</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.12854.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

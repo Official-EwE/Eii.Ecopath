@@ -74,6 +74,7 @@ Partial Class frmMSE
         Me.m_tbxMaxTime = New System.Windows.Forms.TextBox()
         Me.m_btnDeleteResults = New System.Windows.Forms.Button()
         Me.m_plStep4 = New System.Windows.Forms.Panel()
+        Me.m_chkYearly = New System.Windows.Forms.CheckBox()
         Me.m_btnSelectStrategies = New System.Windows.Forms.Button()
         Me.m_hdrStep4 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblNModels = New System.Windows.Forms.Label()
@@ -108,7 +109,6 @@ Partial Class frmMSE
         Me.m_btnChangePath = New System.Windows.Forms.Button()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbEII = New System.Windows.Forms.PictureBox()
-        Me.m_chkYearly = New System.Windows.Forms.CheckBox()
         Me.m_plStep2.SuspendLayout()
         CType(Me.m_pbModelsCompatible, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_plStep4.SuspendLayout()
@@ -280,6 +280,12 @@ Partial Class frmMSE
         Me.m_plStep4.Controls.Add(Me.m_tbxNYearsProject)
         resources.ApplyResources(Me.m_plStep4, "m_plStep4")
         Me.m_plStep4.Name = "m_plStep4"
+        '
+        'm_chkYearly
+        '
+        resources.ApplyResources(Me.m_chkYearly, "m_chkYearly")
+        Me.m_chkYearly.Name = "m_chkYearly"
+        Me.m_chkYearly.UseVisualStyleBackColor = True
         '
         'm_btnSelectStrategies
         '
@@ -517,12 +523,6 @@ Partial Class frmMSE
         resources.ApplyResources(Me.m_pbEII, "m_pbEII")
         Me.m_pbEII.Name = "m_pbEII"
         Me.m_pbEII.TabStop = False
-        '
-        'm_chkYearly
-        '
-        resources.ApplyResources(Me.m_chkYearly, "m_chkYearly")
-        Me.m_chkYearly.Name = "m_chkYearly"
-        Me.m_chkYearly.UseVisualStyleBackColor = True
         '
         'frmMSE
         '

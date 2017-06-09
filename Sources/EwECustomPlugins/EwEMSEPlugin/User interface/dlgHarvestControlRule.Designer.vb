@@ -55,8 +55,8 @@ Partial Class dlgHarvestControlRule
         Me.m_lblBiomassGroup = New System.Windows.Forms.Label()
         Me.m_lblFMortGroup = New System.Windows.Forms.Label()
         Me.m_tbxRule = New System.Windows.Forms.TextBox()
-        Me.m_cmbCostFunctions = New System.Windows.Forms.ComboBox()
-        Me.m_lblHRCType = New System.Windows.Forms.Label()
+        Me.m_cmbTarg_Or_Cons = New System.Windows.Forms.ComboBox()
+        Me.m_lblTarg_Or_Cons = New System.Windows.Forms.Label()
         Me.m_lblBiomassGroupInfo = New System.Windows.Forms.Label()
         Me.m_lblInfoFMortGroup = New System.Windows.Forms.Label()
         Me.m_lblHCRTypeInfo = New System.Windows.Forms.Label()
@@ -102,17 +102,17 @@ Partial Class dlgHarvestControlRule
         resources.ApplyResources(Me.m_tbxRule, "m_tbxRule")
         Me.m_tbxRule.Name = "m_tbxRule"
         '
-        'm_cmbCostFunctions
+        'm_cmbTarg_Or_Cons
         '
-        Me.m_cmbCostFunctions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_cmbCostFunctions.FormattingEnabled = True
-        resources.ApplyResources(Me.m_cmbCostFunctions, "m_cmbCostFunctions")
-        Me.m_cmbCostFunctions.Name = "m_cmbCostFunctions"
+        Me.m_cmbTarg_Or_Cons.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbTarg_Or_Cons.FormattingEnabled = True
+        resources.ApplyResources(Me.m_cmbTarg_Or_Cons, "m_cmbTarg_Or_Cons")
+        Me.m_cmbTarg_Or_Cons.Name = "m_cmbTarg_Or_Cons"
         '
-        'm_lblHRCType
+        'm_lblTarg_Or_Cons
         '
-        resources.ApplyResources(Me.m_lblHRCType, "m_lblHRCType")
-        Me.m_lblHRCType.Name = "m_lblHRCType"
+        resources.ApplyResources(Me.m_lblTarg_Or_Cons, "m_lblTarg_Or_Cons")
+        Me.m_lblTarg_Or_Cons.Name = "m_lblTarg_Or_Cons"
         '
         'm_lblBiomassGroupInfo
         '
@@ -140,8 +140,8 @@ Partial Class dlgHarvestControlRule
         Me.Controls.Add(Me.m_lblHCRTypeInfo)
         Me.Controls.Add(Me.m_lblInfoFMortGroup)
         Me.Controls.Add(Me.m_lblBiomassGroupInfo)
-        Me.Controls.Add(Me.m_lblHRCType)
-        Me.Controls.Add(Me.m_cmbCostFunctions)
+        Me.Controls.Add(Me.m_lblTarg_Or_Cons)
+        Me.Controls.Add(Me.m_cmbTarg_Or_Cons)
         Me.Controls.Add(Me.m_tbxRule)
         Me.Controls.Add(Me.m_lblFMortGroup)
         Me.Controls.Add(Me.m_lblBiomassGroup)
@@ -160,8 +160,8 @@ Partial Class dlgHarvestControlRule
     Private WithEvents m_lblInfoFMortGroup As System.Windows.Forms.Label
     Private WithEvents m_lblBiomassGroupInfo As System.Windows.Forms.Label
     Private WithEvents m_lblHCRTypeInfo As System.Windows.Forms.Label
-    Private WithEvents m_lblHRCType As System.Windows.Forms.Label
-    Private WithEvents m_cmbCostFunctions As System.Windows.Forms.ComboBox
+    Private WithEvents m_lblTarg_Or_Cons As System.Windows.Forms.Label
+    Private WithEvents m_cmbTarg_Or_Cons As System.Windows.Forms.ComboBox
     Private WithEvents m_cmbBiomassGroups As System.Windows.Forms.ComboBox
     Private WithEvents m_cmbFMortGroups As System.Windows.Forms.ComboBox
     Private WithEvents m_tbxRule As System.Windows.Forms.TextBox

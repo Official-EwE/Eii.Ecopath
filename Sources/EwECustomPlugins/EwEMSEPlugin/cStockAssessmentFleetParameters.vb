@@ -1,4 +1,7 @@
-﻿' ===============================================================================
+﻿Option Strict On
+Option Explicit On
+
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -25,8 +28,6 @@
 
 #Region "Imports"
 
-Option Strict On
-Option Explicit On
 Imports EwECore
 
 Imports EwEUtils.Utilities

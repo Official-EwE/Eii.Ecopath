@@ -175,6 +175,10 @@ Public Class cMSEUtils
         CatchTrajectories
         ''' <summary>The Results\ValueTrajectories subfolder under 'Root'.</summary>
         ValueTrajectories
+        ''' <summary>The Results\PredationMortalityTrajectories subfolder under 'Root'.</summary>
+        PredationMortality
+        ''' <summary>The Results\PredationMortalityPreyOnlyTrajectories subfolder under 'Root'.</summary>
+        PredationMortalityPreyOnly
         ''' <summary>The Strategies subfolder under 'Root'.</summary>
         Strategies
         ''' <summary>The regulations subfolder under 'Root'.</summary>
@@ -240,6 +244,8 @@ Public Class cMSEUtils
             Case eMSEPaths.DiscardsTrajectories : Return "Results\DiscardsTrajectories"
             Case eMSEPaths.CatchTrajectories : Return "Results\CatchTrajectories"
             Case eMSEPaths.ValueTrajectories : Return "Results\ValueTrajectories"
+            Case eMSEPaths.PredationMortality : Return "Results\PredationMortalityTrajectories"
+            Case eMSEPaths.PredationMortalityPreyOnly : Return "Results\PredationMortalityPreyOnlyTrajectories"
             Case eMSEPaths.Strategies : Return "HCRs"
             Case eMSEPaths.Regulations : Return "Regulations"
             Case eMSEPaths.BiomassLimits : Return "BiomassLimits"

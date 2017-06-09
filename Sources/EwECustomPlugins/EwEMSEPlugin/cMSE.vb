@@ -1,4 +1,7 @@
-﻿' ===============================================================================
+﻿Option Strict On
+Option Explicit On
+
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -23,7 +26,6 @@
 ' ===============================================================================
 '
 
-Option Explicit On
 
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
@@ -48,8 +50,6 @@ Option Explicit On
 '
 
 #Region " Imports "
-
-Option Strict On
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Core
@@ -57,6 +57,7 @@ Imports EwEUtils.Utilities
 Imports LumenWorks.Framework.IO.Csv
 Imports ScientificInterfaceShared.Controls
 Imports Troschuetz.Random
+Imports EwEMSEPlugin.HCR_GroupNS
 
 #End Region ' Imports
 
@@ -165,6 +166,8 @@ Public Class cMSE
     Private TargetQuotas(,,) As Single
     Private ConservationQuotas(,,) As Single
 
+    'Private Consumption(,,) As Single
+
     Private Realised_F_Table As DataTable
     Private m_RealisedFs(,) As Single
     Private Realised_Landed_F_Table As DataTable
@@ -187,6 +190,10 @@ Public Class cMSE
     ''' </summary>
     Private LandingsDiscards(,,) As Single
     Private m_LandingsDiscardsThroughoutProjection(,,,) As Single
+
+    Private m_ConsumptionThroughoutProjection(,,) As Single
+
+    ' Private m_PredationThroughoutProjection(,,,) As Single
 
     ' ''' <summary>
     ' ''' Total base catch rates, including discards that survived.
@@ -264,6 +271,12 @@ Public Class cMSE
     Public ReadOnly Property RealisedDiscardFs(iGroup As Integer, iTime As Integer) As Single
         Get
             Return m_RealisedDiscardFs(iGroup - 1, iTime - 1)
+        End Get
+    End Property
+
+    Public ReadOnly Property ConsumptionThroughoutProjection(iPred As Integer, iPrey As Integer, iTime As Integer) As Single
+        Get
+            Return Me.m_ConsumptionThroughoutProjection(iTime, iPred, iPrey)
         End Get
     End Property
 
@@ -1334,13 +1347,14 @@ Public Class cMSE
         Me.SafeDeleteResult(cMSEUtils.eMSEPaths.RealisedLandedF)
         Me.SafeDeleteResult(cMSEUtils.eMSEPaths.RealisedDiscardF)
         Me.SafeDeleteResult(cMSEUtils.eMSEPaths.ValueTrajectories)
+        Me.SafeDeleteResult(cMSEUtils.eMSEPaths.PredationMortality)
         Me.SafeDeleteResult(cMSEUtils.eMSEPaths.Biomass)
         Me.SafeDeleteResult(cMSEUtils.eMSEPaths.Effort)
         Me.SafeDeleteResult(cMSEUtils.eMSEPaths.HighestValueGroup)
 
     End Sub
 
-    Private Sub SafeDeleteResult(ByVal category As cMSEUtils.eMSEPaths, _
+    Private Sub SafeDeleteResult(ByVal category As cMSEUtils.eMSEPaths,
                                  Optional strFile As String = "")
 
         Dim strPath As String = cMSEUtils.MSEFolder(Me.DataPath, category)
@@ -1577,6 +1591,10 @@ Public Class cMSE
         Dim ChokeGroup_Collector = New cResultsCollector_ChokeGroup
         Dim Effort_Collector = New cResultsCollector_Efforts
         Dim Effort_Collector_Yearly = New cResultsCollector_Efforts_Yearly
+        Dim PredationMortality_Collector = New cResultsCollector_PredationMortality
+        Dim PredationMortality_Collector_Yearly = New cResultsCollector_PredationMortality_Yearly
+        Dim PredationMortalityPreyOnly_Collector = New cResultsCollector_PredationMortality_PreyOnly
+        Dim PredationMortalityPreyOnly_Yearly_Collector = New cResultsCollector_PredationMortality_PreyOnly_Yearly
 
         If Not Me.WriteYearlyOnly Then
             Collectors.Add(Biomass_Collector)
@@ -1588,6 +1606,8 @@ Public Class cMSE
             Collectors.Add(Discards_Collector)
             Collectors.Add(Value_Collector)
             Collectors.Add(Effort_Collector)
+            'Collectors.Add(PredationMortality_Collector)
+            'Collectors.Add(PredationMortalityPreyOnly_Collector)
         End If
 
         Collectors.Add(Biomass_Collector_Yearly)
@@ -1605,6 +1625,9 @@ Public Class cMSE
         Collectors.Add(Effort_Collector_Yearly)
         Collectors.Add(HighestValueGroup_Collector)
         Collectors.Add(ChokeGroup_Collector)
+        Collectors.Add(PredationMortality_Collector_Yearly)
+        Collectors.Add(PredationMortalityPreyOnly_Yearly_Collector)
+
 
         For Each iCollector In Collectors
             iCollector.Initialise(Me)
@@ -1647,6 +1670,14 @@ Public Class cMSE
             Dim Effort_Writer = New cResultsWriter_1DArray
             Effort_Writer.Initialise(msgReport, Me, Effort_Collector, cMSEUtils.eMSEPaths.Effort)
             Writers.Add(Effort_Writer)
+
+            'Dim PredationMortality_Writer = New cResultsWriter_2DArray_Group_Group
+            'PredationMortality_Writer.Initialise(msgReport, Me, PredationMortality_Collector, cMSEUtils.eMSEPaths.PredationMortality)
+            'Writers.Add(PredationMortality_Writer)
+
+            'Dim PredationMortalityPreyOnly_Writer = New cResultsWriter_1DArray
+            'PredationMortalityPreyOnly_Writer.Initialise(msgReport, Me, PredationMortalityPreyOnly_Collector, cMSEUtils.eMSEPaths.PredationMortalityPreyOnly)
+            'Writers.Add(PredationMortalityPreyOnly_Writer)
 
         End If
 
@@ -1695,6 +1726,12 @@ Public Class cMSE
         Dim Effort_Writer_Yearly = New cResultsWriter_1DArray
         Effort_Writer_Yearly.Initialise(msgReport, Me, Effort_Collector_Yearly, cMSEUtils.eMSEPaths.Effort)
 
+        Dim PredationMortality_Writer_Yearly = New cResultsWriter_2DArray_Group_Group
+        PredationMortality_Writer_Yearly.Initialise(msgReport, Me, PredationMortality_Collector_Yearly, cMSEUtils.eMSEPaths.PredationMortality)
+
+        Dim PredationMortalityPreyOnly_Writer_Yearly = New cResultsWriter_1DArray
+        PredationMortalityPreyOnly_Writer_Yearly.Initialise(msgReport, Me, PredationMortalityPreyOnly_Yearly_Collector, cMSEUtils.eMSEPaths.PredationMortalityPreyOnly)
+
         Writers.Add(Effort_Writer_Yearly)
         Writers.Add(RealisedTotalFs_Writer_Yearly)
         Writers.Add(RealisedLandedFs_Writer_Yearly)
@@ -1710,6 +1747,8 @@ Public Class cMSE
         Writers.Add(Biomass_Writer_Yearly)
         Writers.Add(HighestValueGroup_Writer)
         Writers.Add(ChokeGroup_Writer)
+        Writers.Add(PredationMortality_Writer_Yearly)
+        Writers.Add(PredationMortalityPreyOnly_Writer_Yearly)
 
     End Sub
 
@@ -1793,6 +1832,7 @@ Public Class cMSE
             nModels = Me.NModels2Run    '0 is the 1st dimension and 1' the second etc
             m_PassedChangeInFAtBeginProjTest = True
             For iModel = 1 To nModels
+
                 m_currentModelID = iModel
                 ModelValid = True
 
@@ -1960,7 +2000,7 @@ Public Class cMSE
 
     End Sub
 
-    Private Sub SaveResults2CSV(ByRef iModel As Integer, ByRef FleetCatchTable As DataTable, ByRef GroupResultsTable As DataTable, _
+    Private Sub SaveResults2CSV(ByRef iModel As Integer, ByRef FleetCatchTable As DataTable, ByRef GroupResultsTable As DataTable,
                      ByRef swFleet As StreamWriter, ByRef swGroup As StreamWriter)
 
 
@@ -1968,15 +2008,15 @@ Public Class cMSE
         'swFleet.WriteLine("Model,Strategy,FleetNumber,FleetName,GroupNumber,GroupName,Value")
         For iRow = 0 To FleetCatchTable.Rows.Count - 1
             Dim RowData As Data.DataRow = FleetCatchTable.Rows(iRow)
-            swFleet.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8}", _
-                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("ModelID")), _
-                                cStringUtils.ToCSVField(RowData.Field(Of String)("StrategyName")), _
-                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("FleetNumber")), _
-                                cStringUtils.ToCSVField(RowData.Field(Of String)("FleetName")), _
-                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("GroupNumber")), _
-                                cStringUtils.ToCSVField(RowData.Field(Of String)("GroupName")), _
-                                cStringUtils.FormatNumber(RowData.Field(Of Single)("CatchAtLastTimeStep")), _
-                                cStringUtils.FormatNumber(RowData.Field(Of Single)("DiscardSurvivals")), _
+            swFleet.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8}",
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("ModelID")),
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("StrategyName")),
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("FleetNumber")),
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("FleetName")),
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("GroupNumber")),
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("GroupName")),
+                                cStringUtils.FormatNumber(RowData.Field(Of Single)("CatchAtLastTimeStep")),
+                                cStringUtils.FormatNumber(RowData.Field(Of Single)("DiscardSurvivals")),
                                 cStringUtils.FormatNumber(RowData.Field(Of Single)("DiscardMortalities")))
         Next
 
@@ -1984,12 +2024,12 @@ Public Class cMSE
         'swGroup.WriteLine("Model,Strategy,ID,Name,ResultName,ResultValue")
         For iRow = 0 To GroupResultsTable.Rows.Count - 1
             Dim RowData As Data.DataRow = GroupResultsTable.Rows(iRow)
-            swGroup.WriteLine("{0},{1},{2},{3},{4},{5}", _
-                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("ModelID")), _
-                                cStringUtils.ToCSVField(RowData.Field(Of String)("StrategyName")), _
-                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("ID")), _
-                                cStringUtils.ToCSVField(RowData.Field(Of String)("Name")), _
-                                cStringUtils.ToCSVField(RowData.Field(Of String)("ResultName")), _
+            swGroup.WriteLine("{0},{1},{2},{3},{4},{5}",
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("ModelID")),
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("StrategyName")),
+                                cStringUtils.FormatNumber(RowData.Field(Of Integer)("ID")),
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("Name")),
+                                cStringUtils.ToCSVField(RowData.Field(Of String)("ResultName")),
                                 cStringUtils.FormatNumber(RowData.Field(Of Double)("ResultValue")))
         Next
 
@@ -2087,7 +2127,7 @@ Public Class cMSE
 
         'Get a list of all fleets that fish the groups that have HCRs
         For iFleet As Integer = 1 To m_core.nFleets
-            For Each HCRGroup In curStrategy
+            For Each HCRGroup As HCR_Group In curStrategy
                 If m_core.FleetInputs(iFleet).Landings(HCRGroup.GroupF.Index) + m_core.FleetInputs(iFleet).Discards(HCRGroup.GroupF.Index) > 0 Then
                     If Not FleetsThatFishHCRGrp.Contains(iFleet) Then
                         FleetsThatFishHCRGrp.Add(iFleet)
@@ -2251,8 +2291,8 @@ Public Class cMSE
 
     End Sub
 
-    Private Function SaveResults2RAM(ByVal iModel As Integer, ByVal currentStrat As Strategy, ByRef NumberIterationsAlreadyInResults As Integer, _
-                                        ByVal NumberIterationsAlreadyInFleets As Integer, ByRef BiomassLimits As cBiomassLimits, _
+    Private Function SaveResults2RAM(ByVal iModel As Integer, ByVal currentStrat As Strategy, ByRef NumberIterationsAlreadyInResults As Integer,
+                                        ByVal NumberIterationsAlreadyInFleets As Integer, ByRef BiomassLimits As cBiomassLimits,
                                         ByRef swBadDynamics As StreamWriter, ByRef ResultsTable As DataTable, ByRef FleetCatchTable As DataTable) As Boolean
         ', ByRef FleetEffortTable As DataTable, _
         'ByRef TrajectoryTable As DataTable) As Boolean
@@ -2282,16 +2322,16 @@ Public Class cMSE
                 End If
             Next
             swBadDynamics.WriteLine()
-            swBadDynamics.Write("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", _
-                        cStringUtils.FormatNumber(iModel), _
-                        cStringUtils.ToCSVField(Me.currentStrategy.Name), _
-                        cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp.mGroup.Index).Name), _
-                        cStringUtils.FormatNumber(MaxBiomass), _
-                        cStringUtils.FormatNumber(iGrp.mUpperLimit), _
-                        cStringUtils.FormatNumber(MaxBiomass / iGrp.mUpperLimit), _
-                        cStringUtils.FormatNumber(MaxBiomass > iGrp.mUpperLimit), _
-                        cStringUtils.FormatNumber(MinBiomass), _
-                        cStringUtils.FormatNumber(iGrp.mLowerLimit), _
+            swBadDynamics.Write("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
+                        cStringUtils.FormatNumber(iModel),
+                        cStringUtils.ToCSVField(Me.currentStrategy.Name),
+                        cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(iGrp.mGroup.Index).Name),
+                        cStringUtils.FormatNumber(MaxBiomass),
+                        cStringUtils.FormatNumber(iGrp.mUpperLimit),
+                        cStringUtils.FormatNumber(MaxBiomass / iGrp.mUpperLimit),
+                        cStringUtils.FormatNumber(MaxBiomass > iGrp.mUpperLimit),
+                        cStringUtils.FormatNumber(MinBiomass),
+                        cStringUtils.FormatNumber(iGrp.mLowerLimit),
                         cStringUtils.FormatNumber(MinBiomass <= iGrp.mLowerLimit))
         Next
 
@@ -2313,7 +2353,6 @@ Public Class cMSE
         'Code to test whether the efforts are reasonable
         'DumpFishingEffort()
 
-        'Only commented out for testing - uncomment when finished TODO_mp
         For Each iGrp In BiomassLimits.lstBiomassLimits
             For iTimeStep As Integer = 1 To OriginalNTimesteps + NYearsProject * m_ecosim.EcosimData.NumStepsPerYear
                 'Check projection is above minimum biomass
@@ -2349,10 +2388,10 @@ Public Class cMSE
             For iFleet As Integer = 1 To m_core.nFleets
                 For iGrp As Integer = 1 To m_core.nLivingGroups
                     Dim landings As Single = Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings)
-                    FleetCatchTable.Rows.Add(iModel + NumberIterationsAlreadyInFleets, Me.currentStrategy.Name, _
-                    iFleet, m_core.FleetInputs(iFleet).Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name, _
-                    Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings), _
-                    Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.DiscardSurvivals), _
+                    FleetCatchTable.Rows.Add(iModel + NumberIterationsAlreadyInFleets, Me.currentStrategy.Name,
+                    iFleet, m_core.FleetInputs(iFleet).Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name,
+                    Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings),
+                    Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.DiscardSurvivals),
                     Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.DiscardMortalities))
 
                     'FleetCatchTable.Rows.Add(iModel + NumberIterationsAlreadyInFleets, m_currentStrategy.Name, _
@@ -2373,21 +2412,21 @@ Public Class cMSE
                 Next
                 'TrajectoryTable.Rows.Add(iModel, m_currentStrategy.Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name, BiomassVals)
 
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp,
                                            m_core.EcoPathGroupOutputs(iGrp).Name, "BiomassMin", BiomassProjected.Min)
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp,
                                            m_core.EcoPathGroupOutputs(iGrp).Name, "BiomassEnd", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGrp, Me._simdata.NTimes)) 'confirmed that _simdata.NTimes is the last timestep
 
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp,
                                            m_core.EcoPathGroupOutputs(iGrp).Name, "Catch", Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGrp, Me._simdata.NTimes)) 'confirmed that _simdata.NTimes is the last timestep
 
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp,
                                           m_core.EcoPathGroupOutputs(iGrp).Name, "Landings", Me.LandingsDiscards(0, iGrp, eCatchTypes.Landings))
 
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp,
                                           m_core.EcoPathGroupOutputs(iGrp).Name, "DiscardMortalities", Me.LandingsDiscards(0, iGrp, eCatchTypes.DiscardMortalities))
 
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iGrp,
                                           m_core.EcoPathGroupOutputs(iGrp).Name, "DiscardSurvivals", Me.LandingsDiscards(0, iGrp, eCatchTypes.DiscardSurvivals))
             Next
 
@@ -2397,7 +2436,7 @@ Public Class cMSE
                 For iGrp As Integer = 1 To m_core.nGroups
                     TempCalcedFleetEndValue += Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings) * EcopathData.Market(iFleet, iGrp)
                 Next
-                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iFleet, _
+                ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iFleet,
                                       m_core.FleetInputs(iFleet).Name, "TotalEndValue", TempCalcedFleetEndValue)
             Next
 
@@ -2558,7 +2597,7 @@ Public Class cMSE
     End Function
 
 
-    Private Sub initTrajectoryHCRFQuotaByFleetGroupFiles(ByVal msgReport As cMessage, ByVal HCRF_Targ As List(Of StreamWriter), ByVal HCRF_Cons As List(Of StreamWriter), _
+    Private Sub initTrajectoryHCRFQuotaByFleetGroupFiles(ByVal msgReport As cMessage, ByVal HCRF_Targ As List(Of StreamWriter), ByVal HCRF_Cons As List(Of StreamWriter),
                                                ByVal HCR_Quota_Targ(,) As StreamWriter, ByVal HCR_Quota_Cons(,) As StreamWriter)
         Dim strFile As String
 
@@ -2676,8 +2715,8 @@ Public Class cMSE
 
     End Sub
 
-    Private Sub initTrajectoryFleetGroupCatchTrajectoryFiles(ByVal msgReport As cMessage, ByVal LandingsFleetGroupTrajectories(,) As StreamWriter, _
-                                               ByVal DiscardsFleetGroupTrajectories(,) As StreamWriter, ByVal CatchFleetGroupTrajectories(,) As StreamWriter, _
+    Private Sub initTrajectoryFleetGroupCatchTrajectoryFiles(ByVal msgReport As cMessage, ByVal LandingsFleetGroupTrajectories(,) As StreamWriter,
+                                               ByVal DiscardsFleetGroupTrajectories(,) As StreamWriter, ByVal CatchFleetGroupTrajectories(,) As StreamWriter,
                                                ByVal ValueFleetGroupTrajectories(,) As StreamWriter)
         Dim strFile As String
 
@@ -2761,7 +2800,7 @@ Public Class cMSE
 
 
 
-    Private Sub initTrajectoryCatchTrajectoryFiles(ByVal msgReport As cMessage, ByVal LandingsTrajectories As List(Of StreamWriter), _
+    Private Sub initTrajectoryCatchTrajectoryFiles(ByVal msgReport As cMessage, ByVal LandingsTrajectories As List(Of StreamWriter),
                                                    ByVal DiscardsTrajectories As List(Of StreamWriter), ByVal CatchTrajectories As List(Of StreamWriter))
 
         For igrp As Integer = 1 To m_core.nGroups
@@ -2819,7 +2858,7 @@ Public Class cMSE
 
     End Sub
 
-    Private Sub initTrajectoryRealisedFFiles(ByVal msgReport As cMessage, ByVal RealisedF As List(Of StreamWriter), _
+    Private Sub initTrajectoryRealisedFFiles(ByVal msgReport As cMessage, ByVal RealisedF As List(Of StreamWriter),
                                              ByVal RealisedLandedF As List(Of StreamWriter), ByVal RealisedDiscardF As List(Of StreamWriter))
         Dim strFile As String
         Dim writer As StreamWriter
@@ -3038,7 +3077,7 @@ Public Class cMSE
 
                         'Write code here that generates a whole set of diet parameters to be used in combination with new ecopath parameters
                         'to be tested for the mass-balance criteria
-                        Me.SampleDietMatrix(Me.m_diets.Interacts, Me.m_diets.InteractsImports, Me.m_diets.MeanProportions, _
+                        Me.SampleDietMatrix(Me.m_diets.Interacts, Me.m_diets.InteractsImports, Me.m_diets.MeanProportions,
                                             Me.m_diets.MeanProportionsImports, Me.m_diets.DietPropMultipliers)
 
                         'jb 23-Sept-2014 SampleDietMatrix(...) will truncate values less than a hardwired min (1.0E-6 inside SampleDietMatrix )
@@ -3047,7 +3086,7 @@ Public Class cMSE
                         'Me.dumpDietMatrix()
 
                         'Console.WriteLine("Iteration = " & i)
-                        If MonteCarlo.selectNewEcopathParameters(1) Then
+                        If MonteCarlo.SelectNewEcopathParameters(1) Then
 
                             For iGrp = 1 To m_core.nGroups
                                 If m_core.EcoPathGroupInputs(iGrp).IsLiving Then
@@ -3172,7 +3211,7 @@ Public Class cMSE
         For iGrp = 1 To m_core.nGroups
             If FTargCons(iGrp - 1, HCRType.Conservation) = 0 Then
                 For iFleet = 1 To m_core.nFleets
-                    If m_core.FleetInputs(iFleet).Landings(iGrp) + m_core.FleetInputs(iFleet).Discards(iGrp) > 0 And _
+                    If m_core.FleetInputs(iFleet).Landings(iGrp) + m_core.FleetInputs(iFleet).Discards(iGrp) > 0 And
                         Not ZeroEffortFleets.Contains(iFleet) Then
                         ZeroEffortFleets.Add(iFleet)
                     End If
@@ -3198,22 +3237,22 @@ Public Class cMSE
             TargConsQuota(i - 1, 1) = cEffortLimits.NoHCR_F
         Next
 
-        For Each iHCRGroup In Me.currentStrategy
+        For Each iHCRGroup As HCR_Group In Me.currentStrategy
             ' Determines the F for each group
-            If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F And iHCRGroup.TypeOfHCR = HCRType.Target Then
-                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = iHCRGroup.CalcF(BiomassAtTimestep, iYearProjecting, iTimeStep) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
-            ElseIf iHCRGroup.TypeOfHCR = HCRType.Conservation Then
-                If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = cEffortLimits.NoHCR_F Then
+            If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.Targ_Or_Cons) = cEffortLimits.NoHCR_F And iHCRGroup.Targ_Or_Cons = HCRType.Target Then
+                TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.Targ_Or_Cons) = iHCRGroup.CalcF(BiomassAtTimestep, iYearProjecting, iTimeStep) * BiomassAtTimestep(iHCRGroup.GroupF.Index)
+            ElseIf iHCRGroup.Targ_Or_Cons = HCRType.Conservation Then
+                If TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.Targ_Or_Cons) = cEffortLimits.NoHCR_F Then
                     FfromHCR = iHCRGroup.CalcF(BiomassAtTimestep, iYearProjecting, iTimeStep)
-                    TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
+                    TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.Targ_Or_Cons) = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
                 Else
                     FfromHCR = iHCRGroup.CalcF(BiomassAtTimestep, iYearProjecting, iTimeStep)
                     TempTargConsQuota = FfromHCR * BiomassAtTimestep(iHCRGroup.GroupF.Index)
-                    If TempTargConsQuota < TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) Then
-                        TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) = TempTargConsQuota
+                    If TempTargConsQuota < TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.Targ_Or_Cons) Then
+                        TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.Targ_Or_Cons) = TempTargConsQuota
                     End If
                 End If
-            ElseIf TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.TypeOfHCR) <> cEffortLimits.NoHCR_F And iHCRGroup.TypeOfHCR = HCRType.Target Then
+            ElseIf TargConsQuota(iHCRGroup.GroupF.Index - 1, iHCRGroup.Targ_Or_Cons) <> cEffortLimits.NoHCR_F And iHCRGroup.Targ_Or_Cons = HCRType.Target Then
                 Me.InformUser(String.Format(My.Resources.ERROR_HARVESTRUILE_DUPLICATE_F, iHCRGroup.GroupF.Name), eMessageImportance.Warning)
             End If
         Next
@@ -3368,7 +3407,7 @@ Public Class cMSE
 
     Private Sub CalCatchDiscards(ByVal BiomassAtTimestep() As Single, ByVal iTime As Integer)
 
-        Debug.Assert(iTime > (Me.OriginalNTimesteps + (Me.NYearsProject - 1) * EcosimData.NumStepsPerYear) And iTime <= Me.OriginalNTimesteps + Me.NYearsProject * EcosimData.NumStepsPerYear, _
+        Debug.Assert(iTime > (Me.OriginalNTimesteps + (Me.NYearsProject - 1) * EcosimData.NumStepsPerYear) And iTime <= Me.OriginalNTimesteps + Me.NYearsProject * EcosimData.NumStepsPerYear,
                      "Time step for Catch and Discards averaging out of bounds")
 
         sumCatchDiscards(BiomassAtTimestep, iTime)
@@ -3693,13 +3732,6 @@ Public Class cMSE
 
             If (iTime - 1) Mod 12 = 0 Then 'if it is the first timestep of the year
 
-                'if it is the first timestep of the firstyear of the projection then calculate where necessary the fimeframerule f's for the next TimeFrameRule.NYears
-                'If iTime = OriginalNTimesteps + 1 Then
-                '    For Each HCR As HCR_Group In currentStrategy
-                '        If currentStrategy.Name = "CFP_TargetF_Weakest stock" And HCR.GroupF.DBID = 21 Then Stop
-                '        HCR.TimeFrameRule.calcFsfromTimeFrameRules(iTime)
-                '    Next
-                'End If
                 For iFleet = 1 To m_ecosim.EcosimData.nGear
                     m_FleetImpError(iFleet) = StockAssessment.getImplementationError(iFleet)
                 Next
@@ -4009,7 +4041,7 @@ Public Class cMSE
 
     End Sub
 
-    Private Sub SetEffortWithinPermissableRange_HighestValue_Selective(ByVal iFleet As Integer, ByVal iMax As Integer, ByVal QMult() As Single, _
+    Private Sub SetEffortWithinPermissableRange_HighestValue_Selective(ByVal iFleet As Integer, ByVal iMax As Integer, ByVal QMult() As Single,
                                                       ByVal BiomassAtTimestep() As Single, ByVal iTime As Integer)
 
         Dim Effort As Single 'the calculated effort that is within the permissable range
@@ -4029,7 +4061,7 @@ Public Class cMSE
     End Sub
 
     Private Function CalcEffortFromTargAndConsQuotas_WeakestStock(ByVal iFleet As Integer, ByVal iGrp As Integer, ByVal Elim As Single, QMult() As Single, BiomassAtTimestep() As Single) As Single
-        'ToDo jb Check that this is using FishMGear() correctly
+
         Dim Elim_Target As Single
         Dim Elim_Conservation As Single
 
@@ -4272,6 +4304,40 @@ Public Class cMSE
 
     End Sub
 
+
+    'Public Sub RecordPredation(ByRef BiomassAtTimestep() As Single, ByVal iTime As Integer)
+
+    '    Dim iTimeIntoProjection As Integer = iTime - OriginalNTimesteps
+
+    '    For iPred As Integer = 1 To Me.m_core.nGroups
+    '        'Density dependant catchability
+    '        'DenDepCatch = m_ecosim.EcosimData.QmQo(igrp) / (1 + (m_ecosim.EcosimData.QmQo(igrp) - 1) * BiomassAtTimestep(igrp) / m_ecosim.EcosimData.StartBiomass(igrp))
+
+    '        For iPrey As Integer = 1 To Me.m_core.nFleets
+    '            'If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
+    '            'CatchFleetGrp = CSng(_simdata.FishRateGear(iflt, iTime) * DenDepCatch * m_ecosim.EcosimData.FishMGear(iflt, igrp) * BiomassAtTimestep(igrp))
+    '            'CatchFleetGrp = Me.Calc_Total_Catch_If_Quota_Didnt_Affect_It(BiomassAtTimestep(igrp), iflt, igrp, iTime)
+
+    '            'Debug.Assert((m_ecosim.EcosimData.Propdiscardtime(iflt, igrp) > 0 And _simdata.FishRateGear(iflt, iTime) > 0) = False)
+
+    '            Me.m_ConsumptionThroughoutProjection(iTimeIntoProjection, iPred, iPrey) = m_ecosim.EcosimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Consumption, iPrey, iPred, iTime)
+    '            'Me.m_LandingsDiscardsThroughoutProjection(iTimeIntoProjection, iPred, iPrey, eCatchTypes.DiscardMortalities) = CatchFleetGrp * m_ecosim.EcosimData.Propdiscardtime(iflt, igrp)
+    '            'Me.m_LandingsDiscardsThroughoutProjection(iTimeIntoProjection, iPred, iPrey, eCatchTypes.DiscardSurvivals) = CatchFleetGrp * (1 - m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
+
+    '            'Sum across Pred into the zero index
+    '            Me.m_ConsumptionThroughoutProjection(iTimeIntoProjection, 0, iPrey) += m_ecosim.EcosimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Consumption, iPrey, iPred, iTime)
+    '            'Me.m_LandingsDiscardsThroughoutProjection(iTimeIntoProjection, 0, iPrey, eCatchTypes.DiscardMortalities) += CatchFleetGrp * m_ecosim.EcosimData.Propdiscardtime(iflt, igrp)
+    '            'Me.m_LandingsDiscardsThroughoutProjection(iTimeIntoProjection, 0, iPrey, eCatchTypes.DiscardSurvivals) += CatchFleetGrp * (1 - m_ecosim.EcosimData.PropLandedTime(iflt, igrp)) * (1 - m_ecopath.EcopathData.PropDiscardMort(iflt, igrp))
+
+    '            Me.m_ConsumptionThroughoutProjection(iTimeIntoProjection, iPred, 0) += m_ecosim.EcosimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Consumption, iPrey, iPred, iTime)
+    '            ' Dim tmpCatch As Single = Me.LandingsDiscards(iflt, igrp, eCatchTypes.Landings) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardsMort) + Me.LandingsDiscards(iflt, igrp, eCatchTypes.DiscardSurvived)
+    '            ' Debug.Assert(Math.Abs(CatchFleetGrp - tmpCatch) < 0.00001)
+
+    '            'End If 'If (Me.EcopathData.Landing(iflt, igrp) + Me.EcopathData.Discard(iflt, igrp)) > 0 Then
+    '        Next iPrey
+    '    Next iPred
+    'End Sub
+
     Public Sub RecordCatches(ByRef BiomassAtTimestep() As Single, ByVal iTime As Integer)
         Dim DenDepCatch As Single
         Dim CatchFleetGrp As Single
@@ -4350,13 +4416,13 @@ Public Class cMSE
     ''' <param name="importance"></param>
     ''' <param name="strHyperlink"></param>
     ''' -----------------------------------------------------------------------
-    Friend Sub InformUser(strMessage As String, importance As eMessageImportance, _
-                          Optional strHyperlink As String = "", _
+    Friend Sub InformUser(strMessage As String, importance As eMessageImportance,
+                          Optional strHyperlink As String = "",
                           Optional astrSubMessages As String() = Nothing)
 
         If (Me.Core Is Nothing) Then Return
 
-        Dim msg As New cMessage(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_INDEXED, My.Resources.CAPTION, strMessage), _
+        Dim msg As New cMessage(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_INDEXED, My.Resources.CAPTION, strMessage),
                                 eMessageType.Any, eCoreComponentType.External, importance)
         msg.Hyperlink = strHyperlink
         If (astrSubMessages IsNot Nothing) Then
@@ -4378,14 +4444,14 @@ Public Class cMSE
     ''' <param name="replyDefault"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Friend Function AskUser(strMessage As String, _
-                            style As eMessageReplyStyle, _
-                            Optional importance As eMessageImportance = eMessageImportance.Question, _
+    Friend Function AskUser(strMessage As String,
+                            style As eMessageReplyStyle,
+                            Optional importance As eMessageImportance = eMessageImportance.Question,
                             Optional replyDefault As eMessageReply = eMessageReply.OK) As eMessageReply
 
         If (Me.Core Is Nothing) Then Return replyDefault
 
-        Dim fmsg As New cFeedbackMessage(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_INDEXED, My.Resources.CAPTION, strMessage), _
+        Dim fmsg As New cFeedbackMessage(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_INDEXED, My.Resources.CAPTION, strMessage),
                                          eCoreComponentType.External, eMessageType.Any, importance, style)
         fmsg.Reply = replyDefault
         Me.Core.Messages.SendMessage(fmsg)
