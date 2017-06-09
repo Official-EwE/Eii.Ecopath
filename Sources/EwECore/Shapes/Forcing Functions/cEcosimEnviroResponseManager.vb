@@ -84,7 +84,16 @@ Public Class cEcosimEnviroResponseManager
         Try
             For Each env As cEcosimEnviroInputData In Me.m_simData.lstEnviroInputData
                 For iGroup As Integer = 1 To Me.m_simData.nGroups
+                    'If this is a new application
+                    'check that the response function cover some of the input(forcing) data
+                    Dim bnew As Boolean = (Me.m_simData.EnvRespFuncIndex(env.Index, iGroup) <> env.ResponseIndexForGroup(iGroup)) And (env.ResponseIndexForGroup(iGroup) <> cCore.NULL_VALUE)
+                    If bnew Then
+                        Me.CheckResponseOverlap(env, iGroup)
+                    End If
+
+                    'Update the core data
                     Me.m_simData.EnvRespFuncIndex(env.Index, iGroup) = env.ResponseIndexForGroup(iGroup)
+
                 Next iGroup
             Next env
             Me.m_core.onChanged(Me)
@@ -146,5 +155,27 @@ Public Class cEcosimEnviroResponseManager
             Return Nothing
         End Get
     End Property
+
+
+    Private Sub CheckResponseOverlap(EnviroFuntion As cEcosimEnviroInputData, iGrp As Integer)
+        Dim msg As New Text.StringBuilder
+
+        'is there overlap of the response function and data at t=1
+        If EnviroFuntion.ResponseFunction(iGrp, 1) = 0 Then
+            'Nope 
+            msg.AppendLine(My.Resources.CoreMessages.ECOSIM_RESPONSE_NO_OVERLAP)
+        End If
+
+        If Me.m_simData.QBoutside(iGrp) <> 0 Then
+            Dim break As String = String.Empty
+            If msg.Length > 0 Then break = EwEUtils.Utilities.cStringUtils.vbCrLf
+            msg.Append(break & My.Resources.CoreMessages.ECOSIM_RESPONSE_DIET)
+        End If
+
+        If Not String.IsNullOrEmpty(msg.ToString) Then
+            Me.m_core.Messages.SendMessage(New cMessage(msg.ToString, eMessageType.DataModified, eCoreComponentType.EcosimResponseInteractionManager, eMessageImportance.Warning))
+        End If
+
+    End Sub
 
 End Class

@@ -1384,4 +1384,10 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="ECOSAMPLER_BATCHRUN_STARTED" xml:space="preserve">
     <value>Ecosampler batch run started</value>
   </data>
+  <data name="ECOSIM_RESPONSE_DIET" xml:space="preserve">
+    <value>This group contains imported diet that will not be affected by the applied functional response.</value>
+  </data>
+  <data name="ECOSIM_RESPONSE_NO_OVERLAP" xml:space="preserve">
+    <value>Warning: please check your functional response and forcing data. The applied functional response does not overlap with forcing data at time step 1.</value>
+  </data>
 </root>

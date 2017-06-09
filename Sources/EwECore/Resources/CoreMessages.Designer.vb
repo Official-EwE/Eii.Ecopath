@@ -1004,6 +1004,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to This group contains imported diet that will not be affected by the applied functional response..
+        '''</summary>
+        Public Shared ReadOnly Property ECOSIM_RESPONSE_DIET() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_RESPONSE_DIET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Warning: please check your functional response and forcing data. The applied functional response does not overlap with forcing data at time step 1..
+        '''</summary>
+        Public Shared ReadOnly Property ECOSIM_RESPONSE_NO_OVERLAP() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_RESPONSE_NO_OVERLAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Failed to save Ecosim results &apos;{1}&apos; to &apos;{0}&apos;.
         '''</summary>
         Public Shared ReadOnly Property ECOSIM_RESULTS_SAVE_FAILED() As String

@@ -232,7 +232,7 @@ Public Class cEcosimEnviroInputData
                 Me.m_GrpToShape(GrpIndex) = ResponseShapeIndex
 
                 'If the manager is nothing the response index was set during initialization
-                'The manager is not initialized until an Ecospace scenarion is loaded
+                'The manager is not initialized until an Ecospace scenario is loaded
                 If (Not Me.m_manager Is Nothing And bUpdateMaps) Then
                     Me.m_manager.onChanged()
                 End If

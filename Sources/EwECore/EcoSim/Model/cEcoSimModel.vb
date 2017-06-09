@@ -2653,7 +2653,7 @@ Namespace Ecosim
                             m_Data.FishTime(i) = m_RefData.PoolForceZ(i, 0) - m_Data.Eatenof(i) / Biomass(i) - (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i))
                             If m_Data.FishTime(i) < 0 Then m_Data.FishTime(i) = 0
                         End If
-                        ' Debug.Assert(i <> 42)
+
                         m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
 
                         'on the use of variable GE CJW wrote to VC on 041210: just need to modify derivt to calculate GE for each time step
