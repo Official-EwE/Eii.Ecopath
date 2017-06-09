@@ -38,6 +38,8 @@ Imports System.IO
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports EwEMSEPlugin.HCR_GroupNS
+Imports EwEMSEPlugin.HCR_GroupNS.HCR_Group
 
 #End Region ' Imports
 
@@ -53,9 +55,10 @@ Public Class frmTFMpolicy
 
     Private Enum eDragType As Integer
         None = 0
-        BLower
-        BUpperFMax
-        FMax
+        Point1
+        Point2
+        Point3
+        'FMax
     End Enum
 
     ''' <summary><see cref="cZedGraphHelper">Helper</see> to manipulate the graph.</summary>
@@ -414,10 +417,18 @@ Public Class frmTFMpolicy
                 Dim bsum As Double = Me.m_HCR.LowerLimit + Me.m_HCR.UpperLimit
                 If bsum > 0 Then
                     ' Add points
-                    lpts.Add(0, 0)
-                    lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.LowerLimit), 0)
-                    lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit), Me.m_HCR.MaxF) ' Point order?
-                    lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit) * 4, Me.m_HCR.MaxF) ' Max X value?
+                    If (m_HCR.HCR_Type = eHCR_Type.Multilevel) Then
+                        lpts.Add(0, Me.m_HCR.MinF)
+                        lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.BStep), Me.m_HCR.MinF)
+                        lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.BStep), Me.m_HCR.MinF + (Me.m_HCR.BStep - Me.m_HCR.LowerLimit) / (Me.m_HCR.UpperLimit - Me.m_HCR.LowerLimit) * (Me.m_HCR.MaxF - Me.m_HCR.MinF)) ' Point order?
+                        lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit), Me.m_HCR.MaxF)
+                        lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit) * 4, Me.m_HCR.MaxF) ' Max X value?
+                    ElseIf (m_HCR.HCR_Type = eHCR_Type.Traditional) Then
+                        lpts.Add(0, 0)
+                        lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.LowerLimit), 0)
+                        lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit), Me.m_HCR.MaxF) ' Point order?
+                        lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit) * 4, Me.m_HCR.MaxF) ' Max X value?
+                    End If
                 Else
                     'Zero biomass values user has only entered F
                     'draw a square line at zero up to F
@@ -554,18 +565,40 @@ Public Class frmTFMpolicy
         If (Me.m_dragtype <> eDragType.None) Then
             ' Translate value
             pane.ReverseTransform(pt, dX, dy)
+            If m_HCR.HCR_Type = eHCR_Type.Multilevel Then
 
-            Select Case Me.m_dragtype
-                Case eDragType.BLower
-                    Me.m_HCR.LowerLimit = CSng(Math.Max(0, Math.Min(Units.Convert(eConvertTypes.ToEcopathBio, dX), Me.m_HCR.UpperLimit)))
-                Case eDragType.BUpperFMax
-                    Me.m_HCR.UpperLimit = CSng(Math.Max(Me.m_HCR.LowerLimit, Units.Convert(eConvertTypes.ToEcopathBio, dX)))
-                    Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
-                Case eDragType.FMax
-                    Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
-            End Select
+                Select Case Me.m_dragtype
+                    Case eDragType.Point1
+                        Me.m_HCR.BStep = Math.Max(CSng(Units.Convert(eConvertTypes.ToEcopathBio, dX)), 0)
+                        Me.m_HCR.MinF = Math.Max(Math.Min(Math.Max(CSng(dy), 0), m_HCR.MaxF), 0)
+                    Case eDragType.Point2
+                        If Units.Convert(eConvertTypes.ToEcopathBio, dX) <= m_HCR.UpperLimit And CSng(dy) <= m_HCR.MaxF Then
+                            Me.m_HCR.BStep = Math.Min(Math.Max(CSng(Units.Convert(eConvertTypes.ToEcopathBio, dX)), 0), m_HCR.UpperLimit)
+                            Me.m_HCR.LowerLimit = Math.Min(Math.Max(CSng(Units.Convert(eConvertTypes.ToEcopathBio, dX)) - ((m_HCR.UpperLimit - CSng(Units.Convert(eConvertTypes.ToEcopathBio, dX))) / (m_HCR.MaxF - CSng(dy))) * (CSng(dy) - m_HCR.MinF), 0), m_HCR.UpperLimit)
+                        Else
+                            Me.m_HCR.BStep = m_HCR.UpperLimit - CSng(0.00001)
+                        End If
+                    Case eDragType.Point3
+                        Me.m_HCR.UpperLimit = CSng(Math.Max(Me.m_HCR.BStep, Units.Convert(eConvertTypes.ToEcopathBio, dX)))
+                        Me.m_HCR.MaxF = Math.Max(m_HCR.MinF, CSng(dy))
+
+                End Select
+
+            ElseIf m_HCR.HCR_Type = eHCR_Type.Traditional Then
+                Select Case Me.m_dragtype
+                    Case eDragType.Point1
+                        Me.m_HCR.LowerLimit = CSng(Math.Max(0, Math.Min(Units.Convert(eConvertTypes.ToEcopathBio, dX), Me.m_HCR.UpperLimit)))
+                    Case eDragType.Point2
+                        Me.m_HCR.UpperLimit = CSng(Math.Max(Me.m_HCR.LowerLimit, Units.Convert(eConvertTypes.ToEcopathBio, dX)))
+                        Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
+                        'Case eDragType.FMax
+                        '    Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
+                End Select
+            End If
+
             Me.UpdatePlot()
             Me.m_grid.UpdateContent()
+
         End If
         Return True
 

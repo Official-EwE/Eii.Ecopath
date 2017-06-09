@@ -21,14 +21,15 @@
 ' Cefas MSE plug-in copyright: 
 '    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
-'
 
-Public Class cResultsCollector_Value_Yearly
-    Inherits cResultsCollector_2DArray
+Imports EwECore
+'
+Public Class cResultsCollector_PredationMortality
+    Inherits cResultsCollector_2DArray_Group_Group
 
     Public Overrides ReadOnly Property DataName As String
         Get
-            Return "Value"
+            Return "PredationMortality"
         End Get
     End Property
 
@@ -38,57 +39,53 @@ Public Class cResultsCollector_Value_Yearly
         End Get
     End Property
 
-    Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
-        Get
-            Return m_MSE.NYearsProject
-        End Get
-    End Property
-
     Public Overrides Sub Populate()
-        Dim TempTotalValue As Double
 
         Dim StrategyIndex = m_MSE.Strategies.IndexOf(m_MSE.currentStrategy) + 1 'Adding 1 to make it a non-zero index
-        For igrp = 1 To m_MSE.Core.nGroups
-            For iFleet = 1 To m_MSE.Core.nFleets
+        Dim Temp_PredationMortality As Single
+
+        For iPred = 1 To m_MSE.Core.nGroups
+            For iPrey = 1 To m_MSE.Core.nGroups
                 For iTime = 1 To NumberOfTimeRecords
-
-                    TempTotalValue = 0
-                    For iMonth = 1 To 12
-                        TempTotalValue += m_MSE.LandingsThroughoutProjection(igrp, iFleet, (iTime - 1) * 12 + iMonth) * m_MSE.Core.FleetInputs(iFleet).OffVesselValue(igrp)
-                    Next
-                    TempTotalValue /= 12
-
-                    Me.SetValue(StrategyIndex, igrp, iFleet, iTime) = TempTotalValue
-                    Me.SetValue(StrategyIndex, igrp, 0, iTime) = Me.GetValue(StrategyIndex, igrp, 0, iTime) + TempTotalValue 'Summing across fleets
-                    Me.SetValue(StrategyIndex, 0, iFleet, iTime) = Me.GetValue(StrategyIndex, 0, iFleet, iTime) + TempTotalValue 'Summing across groups
-                    Me.SetValue(StrategyIndex, 0, 0, iTime) = Me.GetValue(StrategyIndex, 0, 0, iTime) + TempTotalValue ' summ across both fleets and groups
+                    Temp_PredationMortality = m_MSE.EcosimData.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Consumption, iPrey, iPred, iTime) /
+                                                m_MSE.EcosimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iPrey, iTime)
+                    Me.SetValue(StrategyIndex, iPred, iPrey, iTime) = Temp_PredationMortality
+                    Me.SetValue(StrategyIndex, iPred, 0, iTime) = Me.GetValue(StrategyIndex, iPred, 0, iTime) + Temp_PredationMortality 'Summing across prey
+                    Me.SetValue(StrategyIndex, 0, iPrey, iTime) = Me.GetValue(StrategyIndex, 0, iPrey, iTime) + Temp_PredationMortality 'Summing across predators
+                    Me.SetValue(StrategyIndex, 0, 0, iTime) = Me.GetValue(StrategyIndex, 0, 0, iTime) + Temp_PredationMortality ' summ across both predators and prey
                 Next
             Next
         Next
 
     End Sub
 
-    Public Overrides ReadOnly Property TotalAcrossFleets As Boolean
+    Public Overrides ReadOnly Property TotalAcrossPred As Boolean
         Get
             Return True
         End Get
     End Property
 
-    Public Overrides ReadOnly Property TotalAcrossGroups As Boolean
+    Public Overrides ReadOnly Property TotalAcrossPrey As Boolean
         Get
             Return True
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property NumberOfTimeRecords As Integer
+        Get
+            Return m_MSE.NYearsProject * m_MSE.EcosimData.NumStepsPerYear
         End Get
     End Property
 
     Public Overrides ReadOnly Property Yearly As Boolean
         Get
-            Return True
+            Return False
         End Get
     End Property
 
     Public Overrides ReadOnly Property FileNamePrefix As String
         Get
-            Return "ValueYearly_"
+            Return "PredationMortality_"
         End Get
     End Property
 

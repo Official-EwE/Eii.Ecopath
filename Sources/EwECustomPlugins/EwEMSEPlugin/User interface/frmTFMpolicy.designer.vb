@@ -106,13 +106,13 @@ Partial Class frmTFMpolicy
         resources.ApplyResources(Me.m_graph, "m_graph")
         Me.m_graph.EditModifierKeys = System.Windows.Forms.Keys.None
         Me.m_graph.Name = "m_graph"
-        Me.m_graph.ScrollGrace = 0.0R
-        Me.m_graph.ScrollMaxX = 0.0R
-        Me.m_graph.ScrollMaxY = 0.0R
-        Me.m_graph.ScrollMaxY2 = 0.0R
-        Me.m_graph.ScrollMinX = 0.0R
-        Me.m_graph.ScrollMinY = 0.0R
-        Me.m_graph.ScrollMinY2 = 0.0R
+        Me.m_graph.ScrollGrace = 0R
+        Me.m_graph.ScrollMaxX = 0R
+        Me.m_graph.ScrollMaxY = 0R
+        Me.m_graph.ScrollMaxY2 = 0R
+        Me.m_graph.ScrollMinX = 0R
+        Me.m_graph.ScrollMinY = 0R
+        Me.m_graph.ScrollMinY2 = 0R
         Me.m_graph.ZoomButtons = System.Windows.Forms.MouseButtons.None
         '
         'm_tsStrategy
@@ -187,6 +187,7 @@ Partial Class frmTFMpolicy
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.HarvestControlRule = Nothing
         Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.IsOutputGrid = False
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SelectedStrategy = Nothing
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -268,6 +269,7 @@ Partial Class frmTFMpolicy
         Me.m_gridRegulations.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridRegulations.GridToolTipActive = True
         Me.m_gridRegulations.IsLayoutSuspended = False
+        Me.m_gridRegulations.IsOutputGrid = False
         Me.m_gridRegulations.Name = "m_gridRegulations"
         Me.m_gridRegulations.SelectedStrategy = Nothing
         Me.m_gridRegulations.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
@@ -308,6 +310,7 @@ Partial Class frmTFMpolicy
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.TabText = ""
+        Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.m_scMain.Panel1.ResumeLayout(False)
         Me.m_scMain.Panel1.PerformLayout()
         Me.m_scMain.Panel2.ResumeLayout(False)

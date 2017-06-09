@@ -32,6 +32,9 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2
+Imports SourceGrid2.Cells
+Imports EwEMSEPlugin.HCR_GroupNS
 
 #End Region ' Imports
 

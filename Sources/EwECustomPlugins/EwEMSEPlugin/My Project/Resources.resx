@@ -219,8 +219,8 @@
   <data name="HEADER_BOUND_UPPER" xml:space="preserve">
     <value>Upper boundary</value>
   </data>
-  <data name="HEADER_HCR_TYPE" xml:space="preserve">
-    <value>HCR Type</value>
+  <data name="HEADER_HCR_TARG_OR_CONS" xml:space="preserve">
+    <value>Target or Conservation?</value>
   </data>
   <data name="HEADER_DISTRIBUTIONTYPE" xml:space="preserve">
     <value>Distribution type</value>
@@ -406,5 +406,23 @@
   </data>
   <data name="HEADER_RUN_YES_NO" xml:space="preserve">
     <value>Run (Yes/No)</value>
+  </data>
+  <data name="HEADER_STEP_BIOMASS" xml:space="preserve">
+    <value>Step Biomass (kt)</value>
+  </data>
+  <data name="HCRTYPE_MULTILEVEL" xml:space="preserve">
+    <value>Multi-level</value>
+  </data>
+  <data name="HCRTYPE_TRADITIONAL" xml:space="preserve">
+    <value>Traditional</value>
+  </data>
+  <data name="HEADER_F_MORT_MAX" xml:space="preserve">
+    <value>Fmax (Fishing mortality)</value>
+  </data>
+  <data name="HEADER_F_MORT_MIN" xml:space="preserve">
+    <value>Fmin (Fishing mortality)</value>
+  </data>
+  <data name="HEADER_HCR_TYPE" xml:space="preserve">
+    <value>HCR Type</value>
   </data>
 </root>

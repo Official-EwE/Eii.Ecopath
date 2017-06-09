@@ -30,18 +30,20 @@ Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
+Imports EwEMSEPlugin.HCR_GroupNS
+Imports EwEMSEPlugin.HCR_GroupNS.HCR_Group
 
 Public Class dlgHarvestControlRule
 
     Private Class cHCRTypeItem
-        Private m_rule As HCRType
-        Public Sub New(rule As HCRType)
+        Private m_rule As eHCR_Targ_Or_Cons
+        Public Sub New(rule As eHCR_Targ_Or_Cons)
             Me.m_rule = rule
         End Sub
         Public Overrides Function ToString() As String
             Return New cCostFunctionTypeFormatter().GetDescriptor(Me.m_rule)
         End Function
-        Public ReadOnly Property [Function] As HCRType
+        Public ReadOnly Property [Function] As eHCR_Targ_Or_Cons
             Get
                 Return Me.m_rule
             End Get
@@ -110,9 +112,9 @@ Public Class dlgHarvestControlRule
             End If
         Next
 
-        Me.m_cmbCostFunctions.Items.Add(New cHCRTypeItem(HCRType.Target))
-        Me.m_cmbCostFunctions.Items.Add(New cHCRTypeItem(HCRType.Conservation))
-        Me.m_cmbCostFunctions.SelectedIndex = If(Me.m_HCR.TypeOfHCR = HCRType.Target, 0, 1)
+        Me.m_cmbTarg_Or_Cons.Items.Add(New cHCRTypeItem(eHCR_Targ_Or_Cons.Target))
+        Me.m_cmbTarg_Or_Cons.Items.Add(New cHCRTypeItem(eHCR_Targ_Or_Cons.Conservation))
+        Me.m_cmbTarg_Or_Cons.SelectedIndex = cSystemUtils.IIF(Me.m_HCR.Targ_Or_Cons = eHCR_Targ_Or_Cons.Target, 0, 1)
 
         Me.m_bInitialized = True
 
@@ -140,7 +142,7 @@ Public Class dlgHarvestControlRule
 
         Dim validationstring As String = ""
 
-        If Me.m_strategy.Contains(Me.HarvestControlRule) And Me.HarvestControlRule.TypeOfHCR = HCRType.Target Then
+        If Me.m_strategy.Contains(Me.HarvestControlRule) And Me.HarvestControlRule.Targ_Or_Cons = eHCR_Targ_Or_Cons.Target Then
             'Failed vaidation rule already exists in strategy
             Me.m_bIsValid = False
             Me.m_Plugin.InformUser(My.Resources.ERROR_HARVESTRULE_DUPLICATE, EwEUtils.Core.eMessageImportance.Critical)
@@ -186,7 +188,7 @@ Public Class dlgHarvestControlRule
     End Sub
 
     Private Sub OnCostFunctionSelected(sender As System.Object, e As System.EventArgs) _
-        Handles m_cmbCostFunctions.SelectedIndexChanged
+        Handles m_cmbTarg_Or_Cons.SelectedIndexChanged
 
         If Not Me.m_bInitialized Then Return
 
@@ -216,6 +218,7 @@ Public Class dlgHarvestControlRule
             sVal = 0
         End If
         Me.m_HCR.LowerLimit = CSng(sVal * 0.1)
+        Me.m_HCR.BStep = Me.m_HCR.LowerLimit
         Me.m_HCR.UpperLimit = CSng(sVal * 0.4)
 
         ' Fishing Mort
@@ -227,7 +230,7 @@ Public Class dlgHarvestControlRule
             Me.m_HCR.MaxF = 0
         End If
 
-        Me.m_HCR.TypeOfHCR = CType(m_cmbCostFunctions.SelectedItem, cHCRTypeItem).Function
+        Me.m_HCR.Targ_Or_Cons = CType(m_cmbTarg_Or_Cons.SelectedItem, cHCRTypeItem).Function
 
         Me.m_HCR.TimeFrameRule.NYears = 0
 

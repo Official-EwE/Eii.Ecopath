@@ -315,6 +315,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Multi-level.
+        '''</summary>
+        Friend ReadOnly Property HCRTYPE_MULTILEVEL() As String
+            Get
+                Return ResourceManager.GetString("HCRTYPE_MULTILEVEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Traditional.
+        '''</summary>
+        Friend ReadOnly Property HCRTYPE_TRADITIONAL() As String
+            Get
+                Return ResourceManager.GetString("HCRTYPE_TRADITIONAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Alpha.
         '''</summary>
         Friend ReadOnly Property HEADER_ALPHA() As String
@@ -369,6 +387,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Fmax (Fishing mortality).
+        '''</summary>
+        Friend ReadOnly Property HEADER_F_MORT_MAX() As String
+            Get
+                Return ResourceManager.GetString("HEADER_F_MORT_MAX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fmin (Fishing mortality).
+        '''</summary>
+        Friend ReadOnly Property HEADER_F_MORT_MIN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_F_MORT_MIN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Feeding time adjust. rate.
         '''</summary>
         Friend ReadOnly Property HEADER_FEEDTIMEADJUSTRATE() As String
@@ -419,6 +455,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_GROUP_NAME() As String
             Get
                 Return ResourceManager.GetString("HEADER_GROUP_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Target or Conservation?.
+        '''</summary>
+        Friend ReadOnly Property HEADER_HCR_TARG_OR_CONS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_HCR_TARG_OR_CONS", resourceCulture)
             End Get
         End Property
         
@@ -536,6 +581,15 @@ Namespace My.Resources
         Friend ReadOnly Property HEADER_RUN_YES_NO() As String
             Get
                 Return ResourceManager.GetString("HEADER_RUN_YES_NO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Step Biomass (kt).
+        '''</summary>
+        Friend ReadOnly Property HEADER_STEP_BIOMASS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_STEP_BIOMASS", resourceCulture)
             End Get
         End Property
         

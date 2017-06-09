@@ -23,12 +23,14 @@
 ' ===============================================================================
 '
 
+Option Strict On
 Option Explicit On
 
 
 Imports EwECore
 Imports System.IO
 Imports EwEUtils.Utilities
+Imports EwEMSEPlugin.HCR_GroupNS
 
 Public Class cTimeFrameRule
     'This object handles the application of a time frame rule.
@@ -74,7 +76,7 @@ Public Class cTimeFrameRule
 
         'Dim Distance_From_HCR_F As Single = MeanPrevYearF - HCR_F
 
-        Return init_F - (iYearProjecting / (NYears + 1)) * (init_F - HCR_F)
+        Return CSng(init_F - (iYearProjecting / (NYears + 1)) * (init_F - HCR_F))
 
         'Return HCR_F + ((NYears + 1 - iYearProjecting) / (NYears + 1)) * Distance_From_HCR_F
 
@@ -94,11 +96,11 @@ Public Class cTimeFrameRule
 
     End Function
 
-    Private Function calcAveragePrevYearF(iCurrentTimestep As Integer)
+    Private Function calcAveragePrevYearF(iCurrentTimestep As Integer) As Single
 
-        Dim MeanF As Double
-        Dim BiomassAtT As Double
-        Dim Q As Double
+        Dim MeanF As Single
+        Dim BiomassAtT As Single
+        Dim Q As Single
         Dim GroupIndex As Integer = m_HCR.GroupF.Index
 
         Debug.Assert(iCurrentTimestep > 12, "TimeFrameRules must have a hind cast period > 12 months. See cTimeFrameRule.calcAverageFLastYearHindCast()")
