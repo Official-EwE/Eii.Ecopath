@@ -107,10 +107,10 @@
     <Reference Include="LumenWorks.Framework.IO, Version=3.8.0.0, Culture=neutral, PublicKeyToken=5ad3ea2f85776344, processorArchitecture=MSIL" />
     <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
+      <HintPath>..\..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
     <Reference Include="SourceLibrary">
-      <HintPath>..\..\..\..\Sources\ScientificInterfaceShared\Includes\SourceLibrary.dll</HintPath>
+      <HintPath>..\..\ScientificInterfaceShared\Includes\SourceLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -127,11 +127,11 @@
       <HintPath>Includes\Troschuetz.Random.dll</HintPath>
     </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
-      <HintPath>..\..\..\..\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <HintPath>..\..\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
     <Reference Include="ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Sources\ScientificInterfaceShared\Includes\ZedGraph.dll</HintPath>
+      <HintPath>..\..\ScientificInterfaceShared\Includes\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
