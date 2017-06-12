@@ -36,6 +36,14 @@ Namespace Core
     ''' <remarks>This class appends XML messages to the end of a log file. XML writters do not like to append data so it has to jump through a bunch of hoops to do this.</remarks>
     Public Class cXMLLogWriter
         Inherits XmlWriter
+        Implements ILogWriter
+
+        ''' <summary>
+        ''' Max size of the log file in bytes. One megabyte
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Shared MAX_LOG_SIZE As Integer = CInt(1024 ^ 2)
+
         'Inheriting from an XmlWriter
         'most of the methods are declared as MustOverride so the inheritance is kind of bogus 
         'you don’t get a lot of functionality
@@ -55,8 +63,8 @@ Namespace Core
         'when inheriting from an XmlWriter it does not supply much through the base class so we have to encapsulte the underlying writer to get functionality
         Private m_XMLwriter As XmlWriter
         Private m_filestream As FileStream
-        Private m_strLogFileName As String
-        Private m_strModelName As String
+        Private m_strLogFileName As String = ""
+        Private m_strModelName As String = ""
 
         Private m_stringstrm As StringWriter
         Private m_textwriter As TextWriter
@@ -67,10 +75,7 @@ Namespace Core
 
 #Region " Construction "
 
-        Public Sub New(ByVal strFileName As String, ByVal strModelName As String)
-
-            Me.m_strLogFileName = cFileUtils.ToValidFileName(strFileName, True)
-            Me.m_strModelName = strModelName
+        Public Sub New()
 
         End Sub
 
@@ -78,10 +83,16 @@ Namespace Core
 
 #Region "Overridden Methods"
 
+        Public Function Location() As String Implements ILogWriter.Location
+            Return m_strLogFileName
+        End Function
+
         ''' <summary>
         ''' Open the XML stream
         ''' </summary>
-        Public Function Open() As Boolean
+        Public Function Open() As Boolean Implements ILogWriter.Open
+
+            DeleteLargeLogFiles()
 
             Try
                 Dim settings As New XmlWriterSettings()
@@ -113,7 +124,7 @@ Namespace Core
                 FindDocumentEnd()
 
             Catch ex As Exception
-                System.Console.WriteLine("CLog.Open() Exception: " + ex.Message)
+                Console.WriteLine("CLog.Open() Exception: " + ex.Message)
                 Return False
             End Try
 
@@ -143,7 +154,7 @@ Namespace Core
                     m_XMLwriter = XmlWriter.Create(m_filestream, settings)
                     m_XMLwriter.WriteStartDocument()
                     m_XMLwriter.WriteStartElement("doc")
-                    m_XMLwriter.WriteElementString("Platform", cSystemUtils.Platform().ToString())
+                    m_XMLwriter.WriteElementString("Platform", cSystemUtils.OSVersion())
                     m_XMLwriter.WriteElementString("Is64BitOS", If(cSystemUtils.Is64BitOS(), "True", "False"))
                     m_XMLwriter.WriteElementString("Is64BitEwE", If(cSystemUtils.Is64BitProcess(), "True", "False"))
                     m_XMLwriter.WriteElementString("Model_Name", m_strModelName)
@@ -159,10 +170,9 @@ Namespace Core
                 End If
 
             Catch ex As Exception
-                System.Console.WriteLine("CLog.CreateNew() Exception: " + ex.Message)
+                Console.WriteLine("CLog.CreateNew() Exception: " + ex.Message)
                 Throw New ApplicationException(Me.ToString & ".CreateNew() Error: " & ex.Message)
             End Try
-
 
         End Sub
 
@@ -204,7 +214,7 @@ Namespace Core
                         Exit Do
                     End If
                     tagbuff = tagbuff + Convert.ToChar(curByte(0))
-                    '    System.Console.Write(Chr(curByte(0)) & ", " & m_filestream.Position & ", ")
+                    '   Console.Write(Chr(curByte(0)) & ", " & m_filestream.Position & ", ")
                 Loop
 
                 'make sure the tag we found is the </doc> tag 
@@ -218,7 +228,7 @@ Namespace Core
                 End If
 
             Catch ex As Exception
-                System.Console.WriteLine("CLog.FindDocumentEnd() Exception: " + ex.Message)
+                Console.WriteLine("CLog.FindDocumentEnd() Exception: " + ex.Message)
                 Throw New ApplicationException(Me.ToString & ".FindDocumentEnd() Error: " & ex.Message)
             End Try
 
@@ -262,7 +272,6 @@ Namespace Core
 
         End Function
 
-
         Public Overrides Sub WriteEndDocument()
 
             m_XMLwriter.WriteRaw(Environment.NewLine)
@@ -270,7 +279,20 @@ Namespace Core
 
         End Sub
 
-        Public Overrides Sub Close()
+        Public Function InitLog(strModelPath As String) As Boolean Implements ILogWriter.InitLog
+
+            If Not String.IsNullOrWhiteSpace(strModelPath) Then
+                Me.m_strModelName = cFileUtils.ToValidFileName(Path.GetFileNameWithoutExtension(strModelPath), False)
+                Me.m_strLogFileName = Path.Combine(Path.GetDirectoryName(strModelPath), m_strModelName & "_log.xml")
+            Else
+                Me.m_strModelName = ""
+                Me.m_strLogFileName = Path.Combine(cSystemUtils.ApplicationSettingsPath(), "EwELog.xml")
+            End If
+            Return True
+
+        End Function
+
+        Public Overrides Sub Close() Implements ILogWriter.Close
             Try
                 Me.Flush()
 
@@ -283,16 +305,134 @@ Namespace Core
                 m_filestream.Close()
 
             Catch ex As Exception
-                System.Console.WriteLine("CLog.Close() Exception: " + ex.Message)
+                Console.WriteLine("cXMLLogWriter.Close() Exception: " + ex.Message)
             End Try
 
         End Sub
 
+        Public Sub StartSession() Implements ILogWriter.StartSession
+            Try
+                If Me.Open() Then
+                    Me.WriteStartElement("Session_Started")
+                    Me.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
+                    Me.WriteElementString("Model", Me.m_strModelName)
+                    Me.WriteElementString("LogFile", Me.m_strLogFileName)
+                    Me.WriteEndElement() 'Session_Started
+                    Me.WriteEndDocument()
+
+                    Me.Close()
+                End If
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+        Public Sub Write(theException As Exception, strMsg As String) Implements ILogWriter.Write
+            Try
+                If Me.Open() Then
+
+                    'now the message
+                    Me.WriteStartElement("Exception_Messages")
+                    Me.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
+                    If Not String.IsNullOrEmpty(strMsg) Then
+                        Me.WriteElementString("Detail", strMsg)
+                    End If
+                    Dim thisEx As Exception = theException
+                    Do While thisEx IsNot Nothing
+                        Me.WriteStartElement("Exception")
+                        Me.WriteElementString("Type", thisEx.GetType().ToString)
+                        Me.WriteElementString("Source", thisEx.Source)
+                        Me.WriteElementString("Message", thisEx.Message)
+                        Me.WriteElementString("StackTrace", thisEx.StackTrace)
+                        Me.WriteEndElement() 'Exception
+
+                        thisEx = thisEx.InnerException
+                    Loop
+
+                    Me.WriteEndElement() 'Msg
+                    Me.WriteEndDocument()
+
+                    Me.Close()
+
+                End If
+
+            Catch ex As Exception
+                Console.WriteLine("cXMLLogWriter.Write() Exception: " + ex.Message)
+                Me.Close()
+            End Try
+
+        End Sub
+
+        Public Sub Write(message As IMessage, strMsg As String) Implements ILogWriter.Write
+            Try
+                If Me.Open() Then
+
+                    Me.WriteStartElement(message.Importance.ToString & "_Message") '????
+                    Me.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
+                    If Not String.IsNullOrEmpty(strMsg) Then
+                        Me.WriteElementString("Detail", strMsg)
+                    End If
+                    Me.WriteElementString("Message", message.Message)
+                    Me.WriteElementString("Message_Type", message.Type.ToString)
+                    Me.WriteElementString("Message_Source", message.Source.ToString)
+                    Me.WriteElementString("Message_DataType", message.DataType.ToString)
+                    Me.WriteEndElement() 'Msg
+                    Me.WriteEndDocument()
+
+                    Me.Close()
+                End If
+
+            Catch ex As Exception
+                Console.WriteLine("cXMLLogWriter.Write() Exception: " + ex.Message)
+                Me.Close()
+            End Try
+
+        End Sub
+
+        Public Sub Write(msg As String) Implements ILogWriter.Write
+
+            Try
+                If Me.Open() Then
+                    Me.WriteStartElement("Log_Message")
+                    Me.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
+                    Me.WriteElementString("Message", msg)
+                    Me.WriteEndElement() 'Log_Message
+                    Me.WriteEndDocument()
+                    Me.Close()
+                End If
+            Catch ex As Exception
+                Console.WriteLine("cXMLLogWriter.Write() Exception: " & ex.Message)
+                Me.Close()
+            End Try
+
+        End Sub
+
+        ''' <summary>
+        ''' Delete log files greater than MAX_LOG_SIZE (1mb).
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub DeleteLargeLogFiles()
+            Try
+
+                Dim fn As String = Me.m_strLogFileName
+                If File.Exists(cFileUtils.ToValidFileName(Me.m_strLogFileName, True)) Then
+                    Dim fi As FileInfo = New FileInfo(fn)
+                    If fi.Length > MAX_LOG_SIZE Then
+                        Console.WriteLine("cLog.DeleteLargeLogFiles() Deleting log file " & Me.m_strLogFileName)
+                        File.Delete(fn)
+                    End If 'fi.Length > MAX_LOG_SIZE
+                End If 'File.Exists(cFileUtils.ToValidFileName(fn, True))
+
+            Catch ex As Exception
+                Console.WriteLine("cLog.DeleteLargeLogFiles() Exception while deleting old log file: " & ex.Message)
+            End Try
+
+        End Sub
 
 #End Region
 
-#Region "Methods with default behavior"
-
+#Region " Methods with default behavior "
 
         Public Overloads Sub WriteElementString(ByVal ElementName As String, ByVal value As String)
             m_XMLwriter.WriteElementString(ElementName, value)
@@ -322,12 +462,9 @@ Namespace Core
             m_XMLwriter.WriteEndAttribute()
         End Sub
 
-
         Public Overrides Sub WriteEndElement()
             m_XMLwriter.WriteEndElement()
         End Sub
-
-
 
         Public Overloads Overrides Sub WriteRaw(ByVal data As String)
             m_XMLwriter.WriteRaw(data)
@@ -340,8 +477,6 @@ Namespace Core
         Public Overloads Sub WriteStartAttribute(ByVal AtributeName As String, ByVal value As String)
             m_XMLwriter.WriteStartAttribute(AtributeName, value)
         End Sub
-
-
 
         Public Overloads Overrides Sub WriteStartDocument()
             m_XMLwriter.WriteStartDocument()
@@ -376,6 +511,7 @@ Namespace Core
         Public Overrides Sub WriteWhitespace(ByVal ws As String)
             Debug.Assert(False, "Not implemented for this class")
         End Sub
+
         Public Overrides Sub WriteEntityRef(ByVal name As String)
             Debug.Assert(False, "Not implemented for this class")
         End Sub
@@ -408,7 +544,7 @@ Namespace Core
             Debug.Assert(False, "Not implemented for this class")
         End Sub
 
-#End Region
+#End Region ' Methods with default behavior
 
     End Class
 

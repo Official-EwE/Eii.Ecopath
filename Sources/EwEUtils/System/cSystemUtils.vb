@@ -277,6 +277,17 @@ Namespace SystemUtilities
             Return Environment.OSVersion.Platform
         End Function
 
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns a OS version and service pack description of the running computer.
+        ''' </summary>
+        ''' <returns>The OS version and service pack description of the running computer.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function OSVersion() As String
+            Return Environment.OSVersion.VersionString
+        End Function
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Returns whether this application is running in a remote desktop session.

@@ -147,6 +147,7 @@
     <Compile Include="Core\INetworkAnalysisData.vb" />
     <Compile Include="Core\ITaxonSearchData.vb" />
     <Compile Include="Core\IRunType.vb" />
+    <Compile Include="Logging\ILogWriter.vb" />
     <Compile Include="modExtensions.vb" />
     <Compile Include="Utilities\ITypeFormatter.vb" />
     <Compile Include="Core\Shared Enums.vb" />

@@ -40,16 +40,10 @@ Namespace Core
 
 #Region " Private Data "
 
-        Private Shared m_xmlWriter As cXMLLogWriter = Nothing
-        Private Shared m_logFilename As String = ""
-        Private Shared m_modelname As String = "No Model Loaded"
         Private Shared m_lock As New ReaderWriterLock()
-
-        ''' <summary>
-        ''' Max size of the log file in bytes. One megabyte
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Shared MAX_LOG_SIZE As Integer = 1024^2
+        Private Shared m_logwriter As cXMLLogWriter = Nothing
+        Private Shared m_typeLogWriter As Type = GetType(cXMLLogWriter)
+        Private Shared m_strModelPath As String = ""
 
 #End Region
 
@@ -72,7 +66,7 @@ Namespace Core
         ''' -----------------------------------------------------------------------
         Public Shared ReadOnly Property LogFile As String
             Get
-                Return cLog.m_logFilename
+                Return GetWriter().Location
             End Get
         End Property
 
@@ -81,19 +75,21 @@ Namespace Core
         ''' Start a new log file with the model name as part of the log file name
         ''' </summary>
         ''' <param name="strModelPath">File path to the model to create a log file for.</param>
+        ''' <param name="typeLogWriter">Optional type, inherited from <see cref="ILogWriter"/>,
+        ''' of the type of log writer to use. If nothing is specified the <see cref="cXMLLogWriter">default 
+        ''' XML log file writer</see> will be used.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub InitLog(ByVal strModelPath As String)
+        Public Shared Sub InitLog(ByVal strModelPath As String, Optional typeLogWriter As Type = Nothing)
 
-            If Not String.IsNullOrWhiteSpace(strModelPath) Then
-                cLog.m_modelname = cFileUtils.ToValidFileName(Path.GetFileNameWithoutExtension(strModelPath), False)
-                cLog.m_logFilename = Path.Combine(Path.GetDirectoryName(strModelPath), m_modelname & "_log.xml")
-            Else
-                cLog.m_modelname = ""
-                cLog.m_logFilename = ""
+            cLog.m_logwriter = Nothing
+            cLog.m_strModelPath = strModelPath
+
+            If (typeLogWriter IsNot Nothing) Then
+                If (typeLogWriter.IsAssignableFrom(GetType(ILogWriter))) Then
+                    cLog.m_typeLogWriter = typeLogWriter
+                End If
             End If
 
-            WriteSessionStarted()
-            cLog.m_xmlWriter = Nothing
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -104,8 +100,8 @@ Namespace Core
         ''' <param name="level"><see cref="eVerboseLevel">Verbose level</see>.</param>
         ''' <param name="strMsg">Optional text to add.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Write(ByVal theException As Exception, _
-                                ByVal level As eVerboseLevel, _
+        Public Shared Sub Write(ByVal theException As Exception,
+                                ByVal level As eVerboseLevel,
                                 Optional ByVal strMsg As String = "")
             If (level > cLog.VerboseLevel) Then Return
             cLog.Write(theException, strMsg)
@@ -117,56 +113,20 @@ Namespace Core
         ''' <see cref="eVerboseLevel.Standard">standard verbose level</see>.
         ''' </summary>
         ''' <param name="theException">Exception to write to the log.</param>
-        ''' <param name="strMsg">Optional text to add.</param>
+        ''' <param name="strDetail">Optional text to add.</param>
         ''' <remarks>
         ''' This will log the exception text and all nested exceptions.
         '''</remarks>
         ''' -----------------------------------------------------------------------
         Public Shared Sub Write(ByVal theException As Exception,
-                                Optional ByVal strMsg As String = "")
+                                Optional ByVal strDetail As String = "")
 
             If Not AcquireWriterLock() Then Return
-
-            Dim xmlStrm As cXMLLogWriter = Nothing
             Try
-                xmlStrm = getWriter()
-
-                'append to the end of the stream
-                If xmlStrm.Open() Then
-
-                    'now the message
-                    xmlStrm.WriteStartElement("Exception_Messages")
-                    xmlStrm.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
-                    If Not String.IsNullOrEmpty(strMsg) Then
-                        xmlStrm.WriteElementString("Detail", strMsg)
-                    End If
-                    Dim thisEx As Exception = theException
-                    Do While thisEx IsNot Nothing
-                        xmlStrm.WriteStartElement("Exception")
-                        xmlStrm.WriteElementString("Type", thisEx.GetType().ToString)
-                        xmlStrm.WriteElementString("Source", thisEx.Source)
-                        xmlStrm.WriteElementString("Message", thisEx.Message)
-                        xmlStrm.WriteElementString("StackTrace", thisEx.StackTrace)
-                        xmlStrm.WriteEndElement() 'Exception
-
-                        thisEx = thisEx.InnerException
-                    Loop
-
-                    xmlStrm.WriteEndElement() 'Msg
-                    xmlStrm.WriteEndDocument()
-
-                    xmlStrm.Close()
-
-                End If
-
+                GetWriter().Write(theException, strDetail)
             Catch ex As Exception
 
-                System.Console.WriteLine("CLog.Write() Exception: " + ex.Message)
-                If Not xmlStrm Is Nothing Then
-                    xmlStrm.Close()
-                End If
             End Try
-
             ReleaseWriterLock()
 
         End Sub
@@ -177,13 +137,13 @@ Namespace Core
         ''' </summary>
         ''' <param name="message">The <see cref="IMessage"/> to write.</param>
         ''' <param name="level"><see cref="eVerboseLevel">Verbose level</see>.</param>
-        ''' <param name="strMsg">Optional text to add.</param>
+        ''' <param name="strDetail">Optional text to add.</param>
         ''' -----------------------------------------------------------------------
         Public Shared Sub Write(ByVal message As IMessage,
                                 ByVal level As eVerboseLevel,
-                                Optional ByVal strMsg As String = "")
+                                Optional ByVal strDetail As String = "")
             If (level > cLog.VerboseLevel) Then Return
-            cLog.Write(message, strMsg)
+            cLog.Write(message, strDetail)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -191,43 +151,16 @@ Namespace Core
         ''' Write a <see cref="IMessage"/> to the log at <see cref="eVerboseLevel.Standard"/> level.
         ''' </summary>
         ''' <param name="message">The <see cref="IMessage"/> to write.</param>
-        ''' <param name="strMsg">Optional text to add.</param>
+        ''' <param name="strDetail">Optional text to add.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Write(ByVal message As IMessage, Optional ByVal strMsg As String = "")
+        Public Shared Sub Write(ByVal message As IMessage, Optional ByVal strDetail As String = "")
 
             If Not AcquireWriterLock() Then Return
-
-            Dim xmlStrm As cXMLLogWriter = Nothing
             Try
-                xmlStrm = getWriter()
-
-                'append to the end of the stream
-                If xmlStrm.Open() Then
-
-                    xmlStrm.WriteStartElement(message.Importance.ToString & "_Message") '????
-                    xmlStrm.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
-                    If Not String.IsNullOrEmpty(strMsg) Then
-                        xmlStrm.WriteElementString("Detail", strMsg)
-                    End If
-                    xmlStrm.WriteElementString("Message", message.Message)
-                    xmlStrm.WriteElementString("Message_Type", message.Type.ToString)
-                    xmlStrm.WriteElementString("Message_Source", message.Source.ToString)
-                    xmlStrm.WriteElementString("Message_DataType", message.DataType.ToString)
-                    xmlStrm.WriteEndElement() 'Msg
-                    xmlStrm.WriteEndDocument()
-
-                    xmlStrm.Close()
-                End If
-
+                GetWriter().Write(message, strDetail)
             Catch ex As Exception
 
-                System.Console.WriteLine("CLog.Write() Exception: " + ex.Message)
-                If Not xmlStrm Is Nothing Then
-                    xmlStrm.Close()
-                End If
-
             End Try
-
             ReleaseWriterLock()
 
         End Sub
@@ -239,8 +172,7 @@ Namespace Core
         ''' <param name="msg">Message string to write.</param>
         ''' <param name="level"><see cref="eVerboseLevel">Verbose level</see>.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Write(ByVal msg As String,
-                                ByVal level As eVerboseLevel)
+        Public Shared Sub Write(ByVal msg As String, ByVal level As eVerboseLevel)
             If (level > cLog.VerboseLevel) Then Return
             cLog.Write(msg)
         End Sub
@@ -254,31 +186,11 @@ Namespace Core
         Public Shared Sub Write(ByVal msg As String)
 
             If Not AcquireWriterLock() Then Return
-
-            Dim xmlStrm As cXMLLogWriter = Nothing
             Try
-                xmlStrm = getWriter()
-
-                'append to the end of the stream
-                If xmlStrm.Open() Then
-
-                    xmlStrm.WriteStartElement("Log_Message") '????
-                    xmlStrm.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
-                    xmlStrm.WriteElementString("Message", msg)
-                    xmlStrm.WriteEndElement() 'Log_Message
-                    xmlStrm.WriteEndDocument()
-
-                    xmlStrm.Close()
-                End If
-
+                GetWriter.Write(msg)
             Catch ex As Exception
 
-                System.Console.WriteLine("CLog.Write() Exception: " + ex.Message)
-                If Not xmlStrm Is Nothing Then
-                    xmlStrm.Close()
-                End If
             End Try
-
             ReleaseWriterLock()
 
         End Sub
@@ -289,59 +201,28 @@ Namespace Core
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Singleton interface for creating a cXMLLogWriter object
+        ''' Singleton interface for creating a <see cref="ILogWriter"/> instance
         ''' </summary>
-        ''' <returns>A cXMLLogWriter object that can be opened and written to.</returns>
-        ''' <remarks>If a log file has been specified via <see cref="InitLog"/> the
-        ''' cXMLLogWriter will connect to this file. If not the default file 
-        ''' "EwELog.xml" will be used.</remarks>
+        ''' <returns>A ILogWriter instance that can be opened and written to.</returns>
+        ''' <remarks>The log writer will write information for the model specified
+        ''' in <see cref="InitLog(String, Type)"/>.</remarks>
         ''' -----------------------------------------------------------------------
-        Private Shared Function getWriter() As cXMLLogWriter
+        Private Shared Function GetWriter() As ILogWriter
 
-            If cLog.m_xmlWriter Is Nothing Then
-                If String.IsNullOrWhiteSpace(cLog.m_logFilename) Then
-                    cLog.m_logFilename = Path.Combine(cSystemUtils.ApplicationSettingsPath(), "EwELog.xml")
-                End If
-
-                'Before we create the new XMLLogWriter for this file
-                'Check the size of the file and delete if it's to big > MAX_LOG_SIZE
-                cLog.DeleteLargeLogFiles()
-
-                cLog.m_xmlWriter = New cXMLLogWriter(cLog.m_logFilename, cLog.m_modelname)
-
+            If (cLog.m_logwriter Is Nothing) Then
+                Try
+                    cLog.m_logwriter = Activator.CreateInstance(cLog.m_typeLogWriter)
+                Catch ex As Exception
+                    ' Fallback
+                    Debug.Assert(False, ex.Message)
+                    cLog.m_logwriter = New cXMLLogWriter()
+                End Try
+                cLog.m_logwriter.InitLog(cLog.m_strModelPath)
+                cLog.m_logwriter.StartSession()
             End If
-            Return cLog.m_xmlWriter
+            Return cLog.m_logwriter
 
         End Function
-
-        Private Shared Sub WriteSessionStarted()
-
-            If Not AcquireWriterLock() Then Return
-
-            Dim xmlStrm As cXMLLogWriter = Nothing
-            Try
-                xmlStrm = cLog.getWriter()
-                If xmlStrm.Open() Then
-                    xmlStrm.WriteStartElement("Session_Started")
-                    xmlStrm.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
-                    xmlStrm.WriteElementString("Model", cLog.m_modelname)
-                    xmlStrm.WriteElementString("LogFile", cLog.m_logFilename)
-                    xmlStrm.WriteEndElement() 'Session_Started
-                    xmlStrm.WriteEndDocument()
-
-                    xmlStrm.Close()
-                End If
-
-            Catch ex As Exception
-                System.Console.WriteLine("CLog.Write() Exception: " + ex.Message)
-                If Not xmlStrm Is Nothing Then
-                    xmlStrm.Close()
-                End If
-            End Try
-
-            ReleaseWriterLock()
-
-        End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -361,7 +242,7 @@ Namespace Core
                 cLog.m_lock.AcquireWriterLock(10000)
                 Return True
             Catch ex As Exception
-                System.Console.WriteLine("Error trying to lock the Log file for writting! " & ex.Message)
+                Console.WriteLine("Error trying to lock the Log file for writting! " & ex.Message)
                 Return False
             End Try
         End Function
@@ -377,30 +258,8 @@ Namespace Core
             Try
                 cLog.m_lock.ReleaseWriterLock()
             Catch ex As Exception
-                System.Console.WriteLine("Error trying to unlock the Log file after writting! " & ex.Message)
+                Console.WriteLine("Error trying to unlock the Log file after writting! " & ex.Message)
             End Try
-        End Sub
-
-        ''' <summary>
-        ''' Delete log files greater than MAX_LOG_SIZE (1mb).
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Shared Sub DeleteLargeLogFiles()
-            Try
-
-                Dim fn As String = cLog.m_logFilename
-                If File.Exists(cFileUtils.ToValidFileName(fn, True)) Then
-                    Dim fi As FileInfo = New FileInfo(fn)
-                    If fi.Length > MAX_LOG_SIZE Then
-                        System.Console.WriteLine("cLog.DeleteLargeLogFiles() Deleting log file " + cLog.m_logFilename)
-                        File.Delete(fn)
-                    End If 'fi.Length > MAX_LOG_SIZE
-                End If 'File.Exists(cFileUtils.ToValidFileName(fn, True))
-
-            Catch ex As Exception
-                System.Console.WriteLine("cLog.DeleteLargeLogFiles() Exception while deleting old log file: " & ex.Message)
-            End Try
-
         End Sub
 
 #End Region ' Internals
