@@ -2142,5 +2142,8 @@
   <ItemGroup>
     <None Include="Resources\Ecopath4_hohoho.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>

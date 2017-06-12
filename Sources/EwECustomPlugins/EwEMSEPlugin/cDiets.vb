@@ -127,11 +127,11 @@ Public Class cDiets
             Me.m_meanProportions_imports(iPred - 1) = mean
             'Me.m_meanProportions(iPred - 1, 0) = mean
             'Me.m_interacts(iPred - 1, 0) = cSystemUtils.IIF(mean > 0, 1, 0)
-            Me.m_interacts_imports(iPred - 1) = cSystemUtils.IIF(mean > 0, 1, 0)
+            Me.m_interacts_imports(iPred - 1) = If(mean > 0, 1, 0)
             For iPrey As Integer = 1 To m_core.nGroups
                 mean = m_core.EcoPathGroupInputs(iPred).DietComp(iPrey)
                 Me.m_meanProportions(iPred - 1, iPrey - 1) = mean
-                Me.m_interacts(iPred - 1, iPrey - 1) = cSystemUtils.IIF(mean > 0, 1, 0)
+                Me.m_interacts(iPred - 1, iPrey - 1) = If(mean > 0, 1, 0)
             Next
             Me.m_dietPropMultipliers(iPred - 1) = 1.0
         Next
