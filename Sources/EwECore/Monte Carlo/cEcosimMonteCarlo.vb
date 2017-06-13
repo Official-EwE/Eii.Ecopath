@@ -1360,7 +1360,7 @@ Public Class cEcosimMonteCarlo
             ReDim CVpar(Me.NumParams, m_core.nGroups)
             ReDim CVparLanding(m_core.nFleets, m_core.nGroups)
             ReDim CVparDiscard(m_core.nFleets, m_core.nGroups)
-            ReDim CVParDC(Me.NumDietSamplingMethods, m_core.nGroups)
+            ReDim CVParDC(Me.NumDietSamplingMethods - 1, m_core.nGroups)
 
             ReDim ParLimit(1, NumParams(), m_core.nGroups)
             ReDim ParLimitLanding(1, m_core.nFleets, m_core.nGroups)

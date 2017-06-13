@@ -1842,6 +1842,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Diet multiplier.
+        '''</summary>
+        Public ReadOnly Property HEADER_DIET_MULTIPLIER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_DIET_MULTIPLIER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Enable external data.
         '''</summary>
         Public ReadOnly Property HEADER_DRIVER_ENABLED() As String

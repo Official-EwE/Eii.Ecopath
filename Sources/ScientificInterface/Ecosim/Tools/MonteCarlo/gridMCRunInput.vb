@@ -192,8 +192,7 @@ Namespace Ecosim
                 Case eMCRunDisplayInputValueTypes.Diets
                     Select Case Me.m_mcmanager.DietSamplingMethod
                         Case eMCDietSamplingMethod.Dirichlets
-                            ' ToDo: globalize this
-                            Return New String() {"", SharedResources.HEADER_GROUPNAME, "Diet multiplier"}
+                            Return New String() {"", SharedResources.HEADER_GROUPNAME, My.Resources.HEADER_DIET_MULTIPLIER}
                         Case eMCDietSamplingMethod.NormalDistribution
                             Return New String() {"", SharedResources.HEADER_GROUPNAME, SharedResources.HEADER_CV}
                         Case Else

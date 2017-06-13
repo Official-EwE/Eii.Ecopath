@@ -13111,4 +13111,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Models(s) exported successfully to {0}</value>
     <comment>{0}=file destination</comment>
   </data>
+  <data name="HEADER_DIET_MULTIPLIER" xml:space="preserve">
+    <value>Diet multiplier</value>
+  </data>
 </root>
