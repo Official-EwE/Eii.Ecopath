@@ -63,14 +63,9 @@ Public Class cMonteCarloManager
     ''' <summary>Available monte carlo result writers.</summary>
     Private m_ResultsWriters As New List(Of IMonteCarloResultsWriter)
 
-    'for ICoreInterface
-    Private m_dbid As Integer
-    Private m_index As Integer
-    Private m_name As String
-
 #End Region
 
-#Region "Construction and initialization "
+#Region " Construction and initialization "
 
     Friend Sub New()
         ' NOP
@@ -113,7 +108,6 @@ Public Class cMonteCarloManager
 
 
     End Sub
-
 
     Public Sub Clear()
         Try
@@ -187,9 +181,9 @@ Public Class cMonteCarloManager
         End Set
     End Property
 
-#End Region
+#End Region ' Construction and initialization
 
-#Region "Running"
+#Region " Running "
 
     Public Overrides Sub SetWait()
         Me.m_core.m_SearchData.SearchMode = eSearchModes.MonteCarlo
@@ -244,7 +238,7 @@ Public Class cMonteCarloManager
         m_mc.initForRun()
     End Sub
 
-#End Region
+#End Region ' Running
 
 #Region "Delegates called by the Monte Carlo class"
 
@@ -760,6 +754,18 @@ Public Class cMonteCarloManager
         End Set
     End Property
 
+    Public Property ValidateRespiration As Boolean
+        Get
+            If (Me.m_mc Is Nothing) Then Return False
+            Return Me.m_mc.ValidateRespiration
+        End Get
+        Set(ByVal value As Boolean)
+            If (Me.m_mc IsNot Nothing) Then
+                Me.m_mc.ValidateRespiration = value
+            End If
+        End Set
+    End Property
+
     ''' <summary>
     ''' Initialize the random sequence generator to a new seed.
     ''' </summary>
@@ -778,15 +784,14 @@ Public Class cMonteCarloManager
     Public Property ShowBiomassTrajectories() As Boolean
         Get
             If (Me.m_mc Is Nothing) Then Return False
-            Return Me.m_mc.bShowPlot
+            Return Me.m_mc.BroadcastEcosimResults
         End Get
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             If (Me.m_mc IsNot Nothing) Then
-                Me.m_mc.bShowPlot = value
+                Me.m_mc.BroadcastEcosimResults = value
             End If
         End Set
     End Property
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Select a new set of Ecopath parameters using  CV, Mean, Max and Min set in <see cref="cMonteCarloGroup">cMonteCarloGroup</see>
@@ -1200,35 +1205,15 @@ Public Class cMonteCarloManager
     End Property
 
     Public Property DBID() As Integer Implements ICoreInterface.DBID
-        Get
-            Return m_dbid
-        End Get
-        Set(ByVal value As Integer)
-            m_dbid = value
-        End Set
-    End Property
-
-    Public Function GetID() As String Implements ICoreInterface.GetID
-        Return m_name & "_" & m_dbid.ToString
-    End Function
 
     Public Property Index() As Integer Implements ICoreInterface.Index
-        Get
-            Return m_index
-        End Get
-        Set(ByVal value As Integer)
-            m_index = value
-        End Set
-    End Property
 
     Public Property Name() As String Implements ICoreInterface.Name
-        Get
-            Return m_name
-        End Get
-        Set(ByVal value As String)
-            m_name = value
-        End Set
-    End Property
+
+    Public Function GetID() As String Implements ICoreInterface.GetID
+        Return Me.Name & "_" & Me.DBID.ToString
+    End Function
+
 #End Region
 
 End Class
