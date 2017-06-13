@@ -112,21 +112,22 @@ Public Class cEcosimMonteCarlo
     ''' <summary>
     ''' Best fitting Sum of Squares computed by Ecosim
     ''' </summary>
-    Public SSBestFit As Single
+    Public Property SSBestFit As Single
 
     ''' <summary>
     ''' Sum of Squares computed by Ecosim of the current iteration.
     ''' </summary>
-    Public SSCurrent As Single
+    Public Property SSCurrent As Single
 
     ''' <summary>
     ''' Sum of Squares prior to the Monte Carlo run.
     ''' </summary>
-    Public SSorg As Single
+    Public Property SSorg As Single
 
-    Public EcopathEETol As Single
+    Public Property EcopathEETol As Single
 
-    Public bShowPlot As Boolean
+    Public Property BroadcastEcosimResults As Boolean
+    Public Property ValidateRespiration As Boolean
 
     Private m_core As cCore
     Private m_ecopath As cEcoPathModel
@@ -568,7 +569,7 @@ Public Class cEcosimMonteCarlo
             m_ecopath.ParameterEstimationType = eEstimateParameterFor.Sensitivity
 
             'set the ecosim time step delegate for plotting
-            If bShowPlot Then
+            If BroadcastEcosimResults Then
                 m_ecosim.TimeStepDelegate = EcosimTimeStep
             Else
                 m_ecosim.TimeStepDelegate = Nothing
@@ -1147,6 +1148,11 @@ Public Class cEcosimMonteCarlo
                 m_ecopath.DetritusCalculations()
 
                 bEcopathNeedsBalancing = False
+
+                If ValidateRespiration Then
+                    bEcopathNeedsBalancing = bEcopathNeedsBalancing And (Me.m_epdata.Compute_M2_Resp_and_Stats(True) = False)
+                End If
+
                 For igrp = 1 To m_core.nGroups
                     If m_epdata.EE(igrp) > 1.0 + Me.EcopathEETol Or m_epdata.EE(igrp) < 0 And m_epdata.EE(igrp) <> cCore.NULL_VALUE Then
                         'this loop did not balance Ecopath

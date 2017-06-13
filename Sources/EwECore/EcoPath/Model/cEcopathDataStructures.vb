@@ -774,7 +774,7 @@ Public Class cEcopathDataStructures
     End Sub
 
     '''<summary>
-    '''     Computes
+    '''Computes the following:
     '''M2(): Predator mortality for group i.
     '''Resp(i): Respiration for group i.
     '''RTZ: sum resp.  
@@ -782,16 +782,18 @@ Public Class cEcopathDataStructures
     '''SumBio: sum of biomass.
     '''min_B_QB: minimum B*QB.
     ''' </summary>
+    ''' <param name="bQuiet">Flag to suppress any system warning messages that this method may produce.</param>
+    ''' <returns>True if there were all respiration is valied</returns>
     ''' <remarks>
     ''' Was Public Sub ParamEstimate2() in original code
     ''' </remarks>
-    Private Sub Compute_M2_Resp_and_Stats()
+    Friend Function Compute_M2_Resp_and_Stats(Optional bQuiet As Boolean = False) As Boolean
         Dim Prod As Single
         Dim Consump As Single, UnAssimConsump As Single
         Dim M2Sum As Single
         Dim strMsg As String
         Dim i As Integer, j As Integer
-        Dim b_resp_below_zero As Boolean = False
+        Dim bRespOK As Boolean = True
 
         RTZ = 0
         Consum = 0
@@ -851,7 +853,7 @@ Public Class cEcopathDataStructures
 
             'Sum of respiration across all the groups
             RTZ += Resp(i)
-            If Resp(i) < 0 Then b_resp_below_zero = True 'pt = 2
+            If Resp(i) < 0 Then bRespOK = False 'pt = 2
 
         Next i
 
@@ -864,12 +866,18 @@ Public Class cEcopathDataStructures
             End If
         Next i
 
-        If b_resp_below_zero Then
-            strMsg = My.Resources.CoreMessages.ECOPATH_NEGATIVE_RESPIR_WARNING
-            Me.m_messages.AddMessage(New cMessage(strMsg, eMessageType.ErrorEncountered,
-                                                    eCoreComponentType.EcoPath, eMessageImportance.Warning))
+        If (bRespOK = False) Then
+            If (bQuiet = False) Then
+                strMsg = My.Resources.CoreMessages.ECOPATH_NEGATIVE_RESPIR_WARNING
+                Me.m_messages.AddMessage(New cMessage(strMsg, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning))
+            Else
+                Console.WriteLine(My.Resources.CoreMessages.ECOPATH_NEGATIVE_RESPIR_WARNING)
+            End If
         End If
-    End Sub
+
+        Return bRespOK
+
+    End Function
 
     ''' <summary>
     ''' Compute

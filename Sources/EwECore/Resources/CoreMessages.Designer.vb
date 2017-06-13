@@ -678,9 +678,9 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_MODEL_UPDATE_SUCCESS", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
-        '''  Looks up a localized string similar to WARNING : Respiration cannot be negative. Summary statistics for the system are suppressed. Please check parameters and rerun program..
+        '''  Looks up a localized string similar to Respiration cannot be negative. Summary statistics for the system are suppressed. Please check parameters and rerun program..
         '''</summary>
         Public Shared ReadOnly Property ECOPATH_NEGATIVE_RESPIR_WARNING() As String
             Get

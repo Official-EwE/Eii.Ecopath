@@ -51,6 +51,8 @@ Public Class EwEEcosamplerPlugin
 
     Private m_strBaseHash As String = ""
 
+    Private m_bValidateRespirationOrg As Boolean = False
+
 #End Region ' Internal vars
 
 #Region " Generic plugin "
@@ -191,12 +193,20 @@ Public Class EwEEcosamplerPlugin
 
     Public Sub MontCarloInitialized(MonteCarloAsObject As Object) _
         Implements EwEPlugin.IMonteCarloPlugin.MontCarloInitialized
+
         Me.m_montecarlo = DirectCast(MonteCarloAsObject, cEcosimMonteCarlo)
+
     End Sub
 
     Public Sub MonteCarloRunInitialized() _
         Implements EwEPlugin.IMonteCarloPlugin.MonteCarloRunInitialized
-        ' NOP
+
+        If (Not Me.IsRecording) Then Return
+
+        ' Force MCMC to validate respiration. Remember the old flag though
+        Me.m_bValidateRespirationOrg = Me.m_montecarlo.ValidateRespiration
+        Me.m_montecarlo.ValidateRespiration = True
+
     End Sub
 
     Public Sub MonteCarloBalancedEcopathModel(TrialNumber As Integer, nIterations As Integer) _
@@ -228,6 +238,10 @@ Public Class EwEEcosamplerPlugin
         Implements EwEPlugin.IMonteCarloPlugin.MonteCarloRunCompleted
 
         If (Not Me.IsRecording) Then Return
+
+        ' Restore MCMC respiration validation to original state
+        Me.m_montecarlo.ValidateRespiration = Me.m_bValidateRespirationOrg
+        Me.m_bValidateRespirationOrg = False
 
         Try
             Dim msg As New cMessage(cStringUtils.Localize(My.Resources.RECORD_REPORT, Me.m_iNumSamples),
