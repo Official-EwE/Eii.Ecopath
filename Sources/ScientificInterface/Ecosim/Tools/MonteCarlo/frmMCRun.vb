@@ -165,7 +165,6 @@ Namespace Ecosim
             Me.m_fpFMratio.Value = Me.m_mcmanager.FMRatioForSRA
             AddHandler Me.m_fpFMratio.OnValueChanged, AddressOf OnFMratioChanged
 
-            Me.m_mcmanager.ShowBiomassTrajectories = m_cbShowBioTraj.Checked
             ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
             Me.m_mcmanager.RetainFits = m_cbRetainEstimates.Checked
 
@@ -367,17 +366,6 @@ Namespace Ecosim
             If Not Me.m_mcmanager Is Nothing Then
                 Try
                     Me.m_mcmanager.ApplyBestFits()
-                Catch ex As Exception
-
-                End Try
-            End If
-        End Sub
-
-        Private Sub OnShowBioTrajToggled(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_cbShowBioTraj.CheckedChanged
-            If Not Me.m_mcmanager Is Nothing Then
-                Try
-                    Me.m_mcmanager.ShowBiomassTrajectories = m_cbShowBioTraj.Checked
                 Catch ex As Exception
 
                 End Try
@@ -700,12 +688,6 @@ Namespace Ecosim
 
             End While
 
-
-            If Me.m_mcmanager.ShowBiomassTrajectories Then
-                ' Select biomass plot page.
-                Me.m_tcMain.SelectedTab = Me.m_tbpBPlot
-            End If
-
             Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
             Me.m_fpTrial.Value = 0
             Me.m_fpERun.Value = 0
@@ -808,7 +790,7 @@ Namespace Ecosim
         Private Sub UpdateGraphHighlights()
 
             'Only Highlight if the graphs are drawing
-            If Me.m_mcmanager.ShowBiomassTrajectories Then
+            If Me.m_tsbnUpdatePlot.Checked Then
 
                 ' Start setting highlights
                 Me.m_plothelper.ClearHighlights()
@@ -881,7 +863,7 @@ Namespace Ecosim
             Me.m_plothelper.CreateRun(cStringUtils.Localize(SharedResources.GENERIC_VALUE_ITERATION, Me.m_nTrials))
             Me.m_lpplIteration.Clear()
 
-            If (Me.m_mcmanager.ShowBiomassTrajectories = True) Then
+            If (Me.m_tsbnUpdatePlot.Checked) Then
 
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
                     Me.m_lpplIteration.Add(New PointPairList())
@@ -930,7 +912,6 @@ Namespace Ecosim
             Me.m_spPlot.Panel2Collapsed = Not Me.m_tsbnShowGroups.Checked
             Me.m_btnApply.Enabled = Not bIsBusy And (Me.m_mcmanager.SSBestFit < Me.m_mcmanager.SSorg)
             Me.m_cbRetainEstimates.Enabled = Not bIsBusy
-            Me.m_cbShowBioTraj.Enabled = Not bIsBusy
             Me.m_nudNumTrials.Enabled = Not bIsBusy
             Me.m_btnTS.Enabled = Not bIsBusy
             Me.m_cbSave.Enabled = Not bIsBusy

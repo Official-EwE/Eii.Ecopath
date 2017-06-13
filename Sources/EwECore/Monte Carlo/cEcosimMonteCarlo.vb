@@ -126,7 +126,6 @@ Public Class cEcosimMonteCarlo
 
     Public Property EcopathEETol As Single
 
-    Public Property BroadcastEcosimResults As Boolean
     Public Property ValidateRespiration As Boolean
 
     Private m_core As cCore
@@ -568,12 +567,7 @@ Public Class cEcosimMonteCarlo
             'make sure the ecopath type of run is correct for the monte carlo runs
             m_ecopath.ParameterEstimationType = eEstimateParameterFor.Sensitivity
 
-            'set the ecosim time step delegate for plotting
-            If BroadcastEcosimResults Then
-                m_ecosim.TimeStepDelegate = EcosimTimeStep
-            Else
-                m_ecosim.TimeStepDelegate = Nothing
-            End If
+            m_ecosim.TimeStepDelegate = EcosimTimeStep
 
             If Me.m_pluginmanager IsNot Nothing Then
                 Try
@@ -1040,32 +1034,32 @@ Public Class cEcosimMonteCarlo
             bEcopathNeedsBalancing = True
             Do While bEcopathNeedsBalancing
                 iter = iter + 1
-                m_epdata.CopyInputToModelArrays() 'MakeUnknownUnknown())
+                Me.m_epdata.CopyInputToModelArrays() 'MakeUnknownUnknown())
 
                 For igrp = 1 To m_core.nLivingGroups
 
                     If Me.IsVariable(igrp, eMCParams.Biomass) Then
                         m_epdata.B(igrp) = ChooseFeasiblePar(eMCParams.Biomass,
-                                                             Pmean(eMCParams.Biomass, igrp),
-                                                             CVpar(eMCParams.Biomass, igrp),
-                                                             ParLimit(0, eMCParams.Biomass, igrp),
-                                                             ParLimit(1, eMCParams.Biomass, igrp))
+                                                             Me.Pmean(eMCParams.Biomass, igrp),
+                                                             Me.CVpar(eMCParams.Biomass, igrp),
+                                                             Me.ParLimit(0, eMCParams.Biomass, igrp),
+                                                             Me.ParLimit(1, eMCParams.Biomass, igrp))
                     End If
 
                     If Me.IsVariable(igrp, eMCParams.BA) Then
-                        m_epdata.BA(igrp) = ChooseFeasibleBA(m_epdata.B(igrp), ' Use of 'B' here is probably not a bug
-                                                             Pmean(eMCParams.BA, igrp),
-                                                             CVpar(eMCParams.BA, igrp),
-                                                             ParLimit(0, eMCParams.BA, igrp),
+                        m_epdata.BA(igrp) = ChooseFeasibleBA(Me.m_epdata.B(igrp), ' Use of 'B' here is probably not a bug
+                                                             Me.Pmean(eMCParams.BA, igrp),
+                                                             Me.CVpar(eMCParams.BA, igrp),
+                                                             Me.ParLimit(0, eMCParams.BA, igrp),
                          ParLimit(1, eMCParams.BA, igrp))
                     End If
 
                     If Me.IsVariable(igrp, eMCParams.BaBi) Then
                         m_epdata.BaBi(igrp) = ChooseFeasiblePar(eMCParams.BaBi,
-                                                             Pmean(eMCParams.BaBi, igrp),
-                                                             CVpar(eMCParams.BaBi, igrp),
-                                                             ParLimit(0, eMCParams.BaBi, igrp),
-                                                             ParLimit(1, eMCParams.BaBi, igrp))
+                                                             Me.Pmean(eMCParams.BaBi, igrp),
+                                                             Me.CVpar(eMCParams.BaBi, igrp),
+                                                             Me.ParLimit(0, eMCParams.BaBi, igrp),
+                                                             Me.ParLimit(1, eMCParams.BaBi, igrp))
                     End If
 
                     If Me.IsVariable(igrp, eMCParams.PB) Then
@@ -1078,18 +1072,18 @@ Public Class cEcosimMonteCarlo
 
                     If Me.IsVariable(igrp, eMCParams.QB) Then
                         m_epdata.QB(igrp) = ChooseFeasiblePar(eMCParams.QB,
-                                                              Pmean(eMCParams.QB, igrp),
-                                                              CVpar(eMCParams.QB, igrp),
-                                                              ParLimit(0, eMCParams.QB, igrp),
-                                                              ParLimit(1, eMCParams.QB, igrp))
+                                                              Me.Pmean(eMCParams.QB, igrp),
+                                                              Me.CVpar(eMCParams.QB, igrp),
+                                                              Me.ParLimit(0, eMCParams.QB, igrp),
+                                                              Me.ParLimit(1, eMCParams.QB, igrp))
                     End If
 
                     If Me.IsVariable(igrp, eMCParams.EE) Then
                         m_epdata.EE(igrp) = ChooseFeasiblePar(eMCParams.EE,
-                                                              Pmean(eMCParams.EE, igrp),
-                                                              CVpar(eMCParams.EE, igrp),
-                                                              ParLimit(0, eMCParams.EE, igrp),
-                                                              ParLimit(1, eMCParams.EE, igrp))
+                                                              Me.Pmean(eMCParams.EE, igrp),
+                                                              Me.CVpar(eMCParams.EE, igrp),
+                                                              Me.ParLimit(0, eMCParams.EE, igrp),
+                                                              Me.ParLimit(1, eMCParams.EE, igrp))
                     End If
 
                     ' JS Nov 2015 adding Catches
@@ -1097,10 +1091,10 @@ Public Class cEcosimMonteCarlo
                         For iflt As Integer = 1 To m_epdata.NumFleet
                             If (Me.PMeanLanding(iflt, igrp) > 0) Then
                                 Me.m_epdata.Landing(iflt, igrp) = ChooseFeasiblePar(eMCParams.Landings,
-                                                                                    PMeanLanding(iflt, igrp),
-                                                                                    CVparLanding(iflt, igrp),
-                                                                                    ParLimitLanding(0, iflt, igrp),
-                                                                                    ParLimitLanding(1, iflt, igrp))
+                                                                                    Me.PMeanLanding(iflt, igrp),
+                                                                                    Me.CVparLanding(iflt, igrp),
+                                                                                    Me.ParLimitLanding(0, iflt, igrp),
+                                                                                    Me.ParLimitLanding(1, iflt, igrp))
                             End If
                         Next
 
@@ -1110,10 +1104,10 @@ Public Class cEcosimMonteCarlo
                         For iflt As Integer = 1 To m_epdata.NumFleet
                             If (Me.PMeanDiscard(iflt, igrp) > 0) Then
                                 Me.m_epdata.Discard(iflt, igrp) = ChooseFeasiblePar(eMCParams.Discards,
-                                                                                    PMeanDiscard(iflt, igrp),
-                                                                                    CVparDiscard(iflt, igrp),
-                                                                                    ParLimitDiscard(0, iflt, igrp),
-                                                                                    ParLimitDiscard(1, iflt, igrp))
+                                                                                    Me.PMeanDiscard(iflt, igrp),
+                                                                                    Me.CVparDiscard(iflt, igrp),
+                                                                                    Me.ParLimitDiscard(0, iflt, igrp),
+                                                                                    Me.ParLimitDiscard(1, iflt, igrp))
                             End If
                         Next
                     End If
@@ -1125,41 +1119,42 @@ Public Class cEcosimMonteCarlo
 
                 Next igrp
 
-                m_ecosim.InitStanza()
+                Me.m_ecosim.InitStanza()
 
                 'For debugging
                 'dumpEcopathPars()
 
                 'Estimate basic params
-                If Not m_ecopath.Run() Then
+                If Me.m_ecopath.Run() Then
 
-                    ' ''Failed to estimate parameters
-                    Dim status As eStatusFlags = m_ecopath.EstimationStatus
-                    Dim msg As cMessage
-                    If status = eStatusFlags.MissingParameter Then
-                        msg = New cMessage(My.Resources.CoreMessages.MONTECARLO_ECOPATH_TOOMANYMISSING, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoSim, eMessageImportance.Critical)
-                    Else
-                        msg = New cMessage(My.Resources.CoreMessages.MONTECARLO_ECOPATH_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                    Me.m_ecopath.DetritusCalculations()
+
+                    bEcopathNeedsBalancing = False
+
+                    If Me.ValidateRespiration Then
+                        bEcopathNeedsBalancing = bEcopathNeedsBalancing And (Me.m_epdata.Compute_M2_Resp_and_Stats(True) = False)
                     End If
-                    ' m_manager.AddMessage(msg)
-                    'Return False
+
+                    For igrp = 1 To m_core.nGroups
+                        If Me.m_epdata.EE(igrp) > 1.0 + Me.EcopathEETol Or Me.m_epdata.EE(igrp) < 0 And Me.m_epdata.EE(igrp) <> cCore.NULL_VALUE Then
+                            'this loop did not balance Ecopath
+                            bEcopathNeedsBalancing = True
+                            Exit For
+                        End If
+                    Next
+
+                Else
+                    '' Failed to estimate parameters
+                    'Dim status As eStatusFlags = m_ecopath.EstimationStatus
+                    'Dim msg As cMessage
+                    'If status = eStatusFlags.MissingParameter Then
+                    '    msg = New cMessage(My.Resources.CoreMessages.MONTECARLO_ECOPATH_TOOMANYMISSING, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                    'Else
+                    '    msg = New cMessage(My.Resources.CoreMessages.MONTECARLO_ECOPATH_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                    'End If
+                    '' m_manager.AddMessage(msg)
+                    ''Return False
                 End If
-
-                m_ecopath.DetritusCalculations()
-
-                bEcopathNeedsBalancing = False
-
-                If ValidateRespiration Then
-                    bEcopathNeedsBalancing = bEcopathNeedsBalancing And (Me.m_epdata.Compute_M2_Resp_and_Stats(True) = False)
-                End If
-
-                For igrp = 1 To m_core.nGroups
-                    If m_epdata.EE(igrp) > 1.0 + Me.EcopathEETol Or m_epdata.EE(igrp) < 0 And m_epdata.EE(igrp) <> cCore.NULL_VALUE Then
-                        'this loop did not balance Ecopath
-                        bEcopathNeedsBalancing = True
-                        Exit For
-                    End If
-                Next
 
                 'tell the interface
                 'EcopathIterationsProgress(iter)

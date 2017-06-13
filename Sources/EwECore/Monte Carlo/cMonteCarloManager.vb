@@ -778,22 +778,6 @@ Public Class cMonteCarloManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Yippee.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property ShowBiomassTrajectories() As Boolean
-        Get
-            If (Me.m_mc Is Nothing) Then Return False
-            Return Me.m_mc.BroadcastEcosimResults
-        End Get
-        Set(value As Boolean)
-            If (Me.m_mc IsNot Nothing) Then
-                Me.m_mc.BroadcastEcosimResults = value
-            End If
-        End Set
-    End Property
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Select a new set of Ecopath parameters using  CV, Mean, Max and Min set in <see cref="cMonteCarloGroup">cMonteCarloGroup</see>
     ''' </summary>
     ''' <param name="MaxEcopathIteration">Maximum number of tries to find a balanced Ecopath Model.</param>
