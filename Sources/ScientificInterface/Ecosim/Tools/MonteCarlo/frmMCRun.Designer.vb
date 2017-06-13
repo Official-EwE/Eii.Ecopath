@@ -58,7 +58,6 @@ Namespace Ecosim
             Me.m_cbRetainCurPattern = New System.Windows.Forms.CheckBox()
             Me.m_lblFMratio = New System.Windows.Forms.Label()
             Me.m_lblEEtol = New System.Windows.Forms.Label()
-            Me.m_cbShowBioTraj = New System.Windows.Forms.CheckBox()
             Me.m_tbxFMratio = New System.Windows.Forms.TextBox()
             Me.m_tbxEETol = New System.Windows.Forms.TextBox()
             Me.m_tbpB = New System.Windows.Forms.TabPage()
@@ -122,6 +121,7 @@ Namespace Ecosim
             Me.m_hdrOutputParam = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel()
             Me.m_cmbSaveFormat = New System.Windows.Forms.ComboBox()
+            Me.m_tsbnUpdatePlot = New System.Windows.Forms.ToolStripButton()
             Me.m_tcMain.SuspendLayout()
             Me.m_tbpSettings.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
@@ -198,7 +198,6 @@ Namespace Ecosim
             Me.m_tbpSettings.Controls.Add(Me.m_cbRetainCurPattern)
             Me.m_tbpSettings.Controls.Add(Me.m_lblFMratio)
             Me.m_tbpSettings.Controls.Add(Me.m_lblEEtol)
-            Me.m_tbpSettings.Controls.Add(Me.m_cbShowBioTraj)
             Me.m_tbpSettings.Controls.Add(Me.m_tbxFMratio)
             Me.m_tbpSettings.Controls.Add(Me.m_tbxEETol)
             Me.m_tbpSettings.Name = "m_tbpSettings"
@@ -250,14 +249,6 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_lblEEtol, "m_lblEEtol")
             Me.m_lblEEtol.Name = "m_lblEEtol"
-            '
-            'm_cbShowBioTraj
-            '
-            resources.ApplyResources(Me.m_cbShowBioTraj, "m_cbShowBioTraj")
-            Me.m_cbShowBioTraj.Checked = True
-            Me.m_cbShowBioTraj.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_cbShowBioTraj.Name = "m_cbShowBioTraj"
-            Me.m_cbShowBioTraj.UseVisualStyleBackColor = True
             '
             'm_tbxFMratio
             '
@@ -777,7 +768,7 @@ Namespace Ecosim
             'm_tsPlot
             '
             Me.m_tsPlot.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsPlot.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnShowBestOnly, Me.m_tsbnShowGroups})
+            Me.m_tsPlot.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnUpdatePlot, Me.m_tsbnShowBestOnly, Me.m_tsbnShowGroups})
             resources.ApplyResources(Me.m_tsPlot, "m_tsPlot")
             Me.m_tsPlot.Name = "m_tsPlot"
             Me.m_tsPlot.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -971,6 +962,15 @@ Namespace Ecosim
             Me.m_cmbSaveFormat.Name = "m_cmbSaveFormat"
             Me.m_cmbSaveFormat.Sorted = True
             '
+            'm_tsbnUpdatePlot
+            '
+            Me.m_tsbnUpdatePlot.Checked = True
+            Me.m_tsbnUpdatePlot.CheckOnClick = True
+            Me.m_tsbnUpdatePlot.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_tsbnUpdatePlot.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnUpdatePlot, "m_tsbnUpdatePlot")
+            Me.m_tsbnUpdatePlot.Name = "m_tsbnUpdatePlot"
+            '
             'frmMCRun
             '
             resources.ApplyResources(Me, "$this")
@@ -1076,7 +1076,6 @@ Namespace Ecosim
         Private WithEvents m_cbSave As System.Windows.Forms.CheckBox
         Private WithEvents m_cbRetainEstimates As System.Windows.Forms.CheckBox
         Private WithEvents m_cbRetainCurPattern As System.Windows.Forms.CheckBox
-        Private WithEvents m_cbShowBioTraj As System.Windows.Forms.CheckBox
         Private WithEvents m_gridB As ScientificInterface.Ecosim.gridMCRunInput
         Private WithEvents m_tsB As cEwEToolstrip
         Private WithEvents m_tsbnLoadPedB As System.Windows.Forms.ToolStripButton
@@ -1117,6 +1116,7 @@ Namespace Ecosim
         Private WithEvents m_tbpBABi As TabPage
         Private WithEvents m_gridBaBi As gridMCRunInput
         Private WithEvents m_tsBaBi As cEwEToolstrip
+        Private WithEvents m_tsbnUpdatePlot As ToolStripButton
     End Class
 
 End Namespace
