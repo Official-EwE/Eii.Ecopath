@@ -131,6 +131,11 @@ Namespace Ecosim
                 Me.m_clbEnabledVariables.Items.Add(par)
             Next
 
+            For Each method As eMCDietSamplingMethod In [Enum].GetValues(GetType(eMCDietSamplingMethod))
+                Me.m_tscmbMethodDC.Items.Add(method)
+            Next
+            Me.m_tscmbMethodDC.SelectedItem = Me.m_mcmanager.DietSamplingMethod
+
             'set the call back delegates for the monte carlo trials and ecopath iteration
             ' ToDo: replace time step handlers with events to allow simulatenous use by other tools
             Me.m_mcmanager.MonteCarloStepHandler = AddressOf MonteCarloStepHandler
@@ -371,6 +376,20 @@ Namespace Ecosim
                 End Try
             End If
         End Sub
+
+        Private Sub OnSelectSamplingMethod(sender As Object, e As EventArgs) _
+            Handles m_tscmbMethodDC.SelectedIndexChanged
+            If Not Me.m_mcmanager Is Nothing Then
+                Try
+                    Me.m_mcmanager.DietSamplingMethod = DirectCast(Me.m_tscmbMethodDC.SelectedItem, eMCDietSamplingMethod)
+                    Me.UpdateControls()
+                    Me.m_gridDiets.RefreshContent()
+                Catch ex As Exception
+
+                End Try
+            End If
+        End Sub
+
 
         'Private Sub cbRetainCurPattern_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         '    Handles m_cbRetainCurPattern.CheckedChanged, m_cbSRA.CheckedChanged
@@ -903,6 +922,7 @@ Namespace Ecosim
             MyBase.UpdateControls()
 
             If (Me.UIContext Is Nothing) Then Return
+            If (Me.m_mcmanager Is Nothing) Then Return
             If (Me.m_bInUpdate) Then Return
 
             Me.m_bInUpdate = True
@@ -919,7 +939,7 @@ Namespace Ecosim
             Me.m_cbSRA.Enabled = Not bIsBusy
 
             Me.m_fpFMratio.Style = If(Me.m_mcmanager.IncludeFpenalty, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable)
-
+            Me.m_tsbnLoadPedDC.Visible = (Me.m_mcmanager.DietSamplingMethod = eMCDietSamplingMethod.NormalDistribution)
             Me.m_bInUpdate = False
 
         End Sub

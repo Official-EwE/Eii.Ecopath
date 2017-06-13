@@ -733,7 +733,6 @@ Public Class cMonteCarloManager
         Catch ex As Exception
             cLog.Write(ex)
         End Try
-
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -754,6 +753,11 @@ Public Class cMonteCarloManager
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether Monte Carlo should validate and reject negative respiration values.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property ValidateRespiration As Boolean
         Get
             If (Me.m_mc Is Nothing) Then Return False
@@ -762,6 +766,24 @@ Public Class cMonteCarloManager
         Set(ByVal value As Boolean)
             If (Me.m_mc IsNot Nothing) Then
                 Me.m_mc.ValidateRespiration = value
+            End If
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set which <see cref="eMCDietSamplingMethod">diet sampling method</see>
+    ''' Monte Carlo should use.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property DietSamplingMethod As eMCDietSamplingMethod
+        Get
+            If (Me.m_mc Is Nothing) Then Return eMCDietSamplingMethod.Dirichlets
+            Return Me.m_mc.DietSamplingMethod
+        End Get
+        Set(ByVal value As eMCDietSamplingMethod)
+            If (Me.m_mc IsNot Nothing) Then
+                Me.m_mc.DietSamplingMethod = value
             End If
         End Set
     End Property
@@ -902,7 +924,8 @@ Public Class cMonteCarloManager
                     grp.Discardscv(iFleet) = m_mc.CVparDiscard(iFleet, iGroup)
                 Next
 
-                grp.DietMultiplier = m_mc.CVpar(eMCParams.Diets, iGroup)
+                grp.DietMultiplier = m_mc.CVParDC(eMCDietSamplingMethod.Dirichlets, iGroup)
+                grp.Dietcv = m_mc.CVParDC(eMCDietSamplingMethod.NormalDistribution, iGroup)
 
                 grp.BLower = m_mc.ParLimit(0, eMCParams.Biomass, iGroup)
                 grp.PBLower = m_mc.ParLimit(0, eMCParams.PB, iGroup)
@@ -945,6 +968,7 @@ Public Class cMonteCarloManager
                 Next
 
                 For iPrey As Integer = 1 To m_core.nGroups
+                    grp.Dietcv = m_mc.CVpar(eMCParams.Diets, iGroup)
                     grp.Dietsbf = m_mc.BestFitDiets(iGroup, iPrey)
                 Next
 
@@ -995,9 +1019,10 @@ Public Class cMonteCarloManager
                 grp.SetStatusFlags(eVarNameFlags.mcEEbf, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput, True))
 
                 ' Diet
-                grp.SetStatusFlags(eVarNameFlags.mcDietComp, Me.ToMCStatus(grpPath, eVarNameFlags.DietComp))
                 grp.SetStatusFlags(eVarNameFlags.mcDietMult, Me.ToMCStatus(grpPath, eVarNameFlags.DietComp))
-                grp.SetStatusFlags(eVarNameFlags.mcDietsbf, Me.ToMCStatus(grpPath, eVarNameFlags.DietComp, True))
+                grp.SetStatusFlags(eVarNameFlags.mcDC, Me.ToMCStatus(grpPath, eVarNameFlags.DietComp))
+                grp.SetStatusFlags(eVarNameFlags.mcDCcv, Me.ToMCStatus(grpPath, eVarNameFlags.DietComp))
+                grp.SetStatusFlags(eVarNameFlags.mcDCbf, Me.ToMCStatus(grpPath, eVarNameFlags.DietComp, True))
 
                 ' Catches
                 For iFleet As Integer = 1 To Me.m_core.nFleets
@@ -1120,7 +1145,7 @@ Public Class cMonteCarloManager
                 Next
 
                 For iPrey As Integer = 0 To m_core.nGroups
-                    m_mc.Dietmeans(MCGroup.Index, iPrey) = MCGroup.Diets(iPrey)
+                    m_mc.PMeanDC(MCGroup.Index, iPrey) = MCGroup.Diets(iPrey)
                 Next
 
                 m_mc.CVpar(eMCParams.Biomass, MCGroup.Index) = MCGroup.Bcv

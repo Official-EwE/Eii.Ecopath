@@ -97,6 +97,7 @@ Namespace Ecosim
             Me.m_spPlot = New System.Windows.Forms.SplitContainer()
             Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_tsPlot = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnUpdatePlot = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnShowBestOnly = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnShowGroups = New System.Windows.Forms.ToolStripButton()
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
@@ -121,7 +122,9 @@ Namespace Ecosim
             Me.m_hdrOutputParam = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel()
             Me.m_cmbSaveFormat = New System.Windows.Forms.ComboBox()
-            Me.m_tsbnUpdatePlot = New System.Windows.Forms.ToolStripButton()
+            Me.m_tscmbMethodDC = New System.Windows.Forms.ToolStripComboBox()
+            Me.m_tslblMethodDC = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tssepDC = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tcMain.SuspendLayout()
             Me.m_tbpSettings.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
@@ -610,7 +613,7 @@ Namespace Ecosim
             'm_tsDiets
             '
             Me.m_tsDiets.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsDiets.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnLoadPedDC})
+            Me.m_tsDiets.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblMethodDC, Me.m_tscmbMethodDC, Me.m_tssepDC, Me.m_tsbnLoadPedDC})
             resources.ApplyResources(Me.m_tsDiets, "m_tsDiets")
             Me.m_tsDiets.Name = "m_tsDiets"
             Me.m_tsDiets.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -772,6 +775,15 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tsPlot, "m_tsPlot")
             Me.m_tsPlot.Name = "m_tsPlot"
             Me.m_tsPlot.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tsbnUpdatePlot
+            '
+            Me.m_tsbnUpdatePlot.Checked = True
+            Me.m_tsbnUpdatePlot.CheckOnClick = True
+            Me.m_tsbnUpdatePlot.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_tsbnUpdatePlot.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnUpdatePlot, "m_tsbnUpdatePlot")
+            Me.m_tsbnUpdatePlot.Name = "m_tsbnUpdatePlot"
             '
             'm_tsbnShowBestOnly
             '
@@ -962,14 +974,21 @@ Namespace Ecosim
             Me.m_cmbSaveFormat.Name = "m_cmbSaveFormat"
             Me.m_cmbSaveFormat.Sorted = True
             '
-            'm_tsbnUpdatePlot
+            'm_tscmbMethodDC
             '
-            Me.m_tsbnUpdatePlot.Checked = True
-            Me.m_tsbnUpdatePlot.CheckOnClick = True
-            Me.m_tsbnUpdatePlot.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_tsbnUpdatePlot.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnUpdatePlot, "m_tsbnUpdatePlot")
-            Me.m_tsbnUpdatePlot.Name = "m_tsbnUpdatePlot"
+            Me.m_tscmbMethodDC.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbMethodDC.Name = "m_tscmbMethodDC"
+            resources.ApplyResources(Me.m_tscmbMethodDC, "m_tscmbMethodDC")
+            '
+            'm_tslblMethodDC
+            '
+            Me.m_tslblMethodDC.Name = "m_tslblMethodDC"
+            resources.ApplyResources(Me.m_tslblMethodDC, "m_tslblMethodDC")
+            '
+            'm_tssepDC
+            '
+            Me.m_tssepDC.Name = "m_tssepDC"
+            resources.ApplyResources(Me.m_tssepDC, "m_tssepDC")
             '
             'frmMCRun
             '
@@ -1117,6 +1136,9 @@ Namespace Ecosim
         Private WithEvents m_gridBaBi As gridMCRunInput
         Private WithEvents m_tsBaBi As cEwEToolstrip
         Private WithEvents m_tsbnUpdatePlot As ToolStripButton
+        Private WithEvents m_tslblMethodDC As ToolStripLabel
+        Private WithEvents m_tscmbMethodDC As ToolStripComboBox
+        Private WithEvents m_tssepDC As ToolStripSeparator
     End Class
 
 End Namespace

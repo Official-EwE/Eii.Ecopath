@@ -105,7 +105,14 @@ Namespace Ecosim
                 Case eMCRunDisplayInputValueTypes.Landings, eMCRunDisplayInputValueTypes.Discards
                     Me.FillLandingsDiscardsValues()
                 Case eMCRunDisplayInputValueTypes.Diets
-                    Me.FillValues(New eVarNameFlags() {eVarNameFlags.mcDietMult})
+                    Select Case Me.m_mcmanager.DietSamplingMethod
+                        Case eMCDietSamplingMethod.Dirichlets
+                            Me.FillValues(New eVarNameFlags() {eVarNameFlags.mcDietMult})
+                        Case eMCDietSamplingMethod.NormalDistribution
+                            Me.FillValues(New eVarNameFlags() {eVarNameFlags.mcDCcv})
+                        Case Else
+                            Debug.Assert(False)
+                    End Select
             End Select
 
         End Sub
@@ -183,13 +190,24 @@ Namespace Ecosim
 
             Select Case Me.m_value
                 Case eMCRunDisplayInputValueTypes.Diets
-                    Return New String() {"", SharedResources.HEADER_GROUPNAME, "Diet multiplier"}
+                    Select Case Me.m_mcmanager.DietSamplingMethod
+                        Case eMCDietSamplingMethod.Dirichlets
+                            ' ToDo: globalize this
+                            Return New String() {"", SharedResources.HEADER_GROUPNAME, "Diet multiplier"}
+                        Case eMCDietSamplingMethod.NormalDistribution
+                            Return New String() {"", SharedResources.HEADER_GROUPNAME, SharedResources.HEADER_CV}
+                        Case Else
+                            Debug.Assert(False)
+                    End Select
                 Case eMCRunDisplayInputValueTypes.Landings, eMCRunDisplayInputValueTypes.Discards
                     Return New String() {"", SharedResources.HEADER_GROUPNAME, SharedResources.HEADER_FLEETNAME, SharedResources.HEADER_CV, SharedResources.HEADER_LOWERLIMIT, SharedResources.HEADER_MEAN, SharedResources.HEADER_UPPERLIMIT}
                 Case Else
                     Return New String() {"", SharedResources.HEADER_GROUPNAME, SharedResources.HEADER_CV, SharedResources.HEADER_LOWERLIMIT, SharedResources.HEADER_MEAN, SharedResources.HEADER_UPPERLIMIT}
             End Select
+
             Debug.Assert(False)
+            Return Nothing
+
         End Function
 
     End Class

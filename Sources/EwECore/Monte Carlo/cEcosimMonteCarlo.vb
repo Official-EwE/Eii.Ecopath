@@ -30,8 +30,6 @@ Imports EwEUtils.Core
 
 #End Region ' Imports 
 
-' ToDo: include perturbation of Biomass Accumulation Rates (BaBi) - Ticket #1533
-
 Public Enum eMCParams As Integer
     NotSet = 0
     Biomass = 1
@@ -46,6 +44,11 @@ Public Enum eMCParams As Integer
     Diets = 10
     ''' <summary>Biomass accummulation rate</summary>
     BaBi = 11
+End Enum
+
+Public Enum eMCDietSamplingMethod As Integer
+    Dirichlets = 0
+    NormalDistribution = 1
 End Enum
 
 ''' <summary>
@@ -126,7 +129,12 @@ Public Class cEcosimMonteCarlo
 
     Public Property EcopathEETol As Single
 
-    Public Property ValidateRespiration As Boolean
+    ''' <summary>
+    ''' Flag stating if Monte Carlo should validate and reject negative respiration values.
+    ''' </summary>
+    Public Property ValidateRespiration As Boolean = False
+
+    Public Property DietSamplingMethod As eMCDietSamplingMethod = eMCDietSamplingMethod.Dirichlets
 
     Private m_core As cCore
     Private m_ecopath As cEcoPathModel
@@ -150,7 +158,7 @@ Public Class cEcosimMonteCarlo
     ''' <summary>Ecopath discards (Fleet x Group)</summary>
     Public PMeanDiscard(,) As Single
     ''' <summary>Ecopath Diets (Group x Group)</summary>
-    Public Dietmeans(,) As Single
+    Public PMeanDC(,) As Single
 
     ''' <summary>
     ''' CV value (parameter x group)
@@ -164,19 +172,25 @@ Public Class cEcosimMonteCarlo
     ''' CV value value for discards (fleet x group)
     ''' </summary>
     Public CVparDiscard(,) As Single
+    ''' CV value value for diets (#methods x group)
+    Public CVParDC(,) As Single
 
     ''' <summary>
-    ''' CV value (2 x parameter x group)
+    ''' Parameter limits for non-arrayed variables (2 x parameter x group)
     ''' </summary>
     Public ParLimit(,,) As Single
     ''' <summary>
-    ''' CV value (2 x fleet x group)
+    ''' Parameter limits for landings (2 x fleet x group)
     ''' </summary>
     Public ParLimitLanding(,,) As Single
     ''' <summary>
-    ''' CV value (2 x fleet x group)
+    ''' Parameter limits for discards (2 x fleet x group)
     ''' </summary>
     Public ParLimitDiscard(,,) As Single
+    ''' <summary>
+    ''' Parameter limits for diets (2 x fleet x group)
+    ''' </summary>
+    Public ParLimitDC(,,) As Single
 
     ''' <summary>Best fitting parameter to the last run Monte Carlo trials (eMCParam, iGrp)</summary>
     Public BestFit(,) As Single
@@ -288,7 +302,7 @@ Public Class cEcosimMonteCarlo
             ReDim Pmean(Me.NumParams(), m_core.nGroups)
             ReDim PMeanLanding(m_core.nFleets, m_core.nGroups)
             ReDim PMeanDiscard(m_core.nFleets, m_core.nGroups)
-            ReDim Dietmeans(m_core.nGroups, m_core.nGroups)
+            ReDim PMeanDC(m_core.nGroups, m_core.nGroups)
             ReDim startValues(Me.NumParams(), m_epdata.NumGroups)
             ReDim m_startValuesDiets(m_epdata.NumGroups, m_epdata.NumGroups)
             ReDim BestFit(Me.NumParams(), m_core.nGroups)
@@ -307,15 +321,13 @@ Public Class cEcosimMonteCarlo
                 Pmean(eMCParams.Vulnerability, igrp) = m_esdata.VulnerabilityPredator(igrp)
                 Pmean(eMCParams.OtherMort, igrp) = m_epdata.OtherMortinput(igrp)
 
-                ' JS Nov 2015 adding Catches
                 For iFleet As Integer = 1 To Me.m_core.nFleets
                     PMeanLanding(iFleet, igrp) = m_epdata.Landing(iFleet, igrp)
                     PMeanDiscard(iFleet, igrp) = m_epdata.Discard(iFleet, igrp)
                 Next
 
-                ' MP Apr 2016 adding Diets
                 For iPrey As Integer = 0 To m_core.nGroups
-                    Dietmeans(igrp, iPrey) = m_epdata.DC(igrp, iPrey)
+                    PMeanDC(igrp, iPrey) = m_epdata.DC(igrp, iPrey)
                 Next
             Next
             CalculateUpperLowerLimits(False)
@@ -409,6 +421,7 @@ Public Class cEcosimMonteCarlo
             Case eVarNameFlags.BiomassAreaInput : Return eMCParams.Biomass
             Case eVarNameFlags.PBInput : Return eMCParams.PB
             Case eVarNameFlags.QBInput : Return eMCParams.QB
+            Case eVarNameFlags.DietComp : Return eMCParams.Diets
             Case eVarNameFlags.TCatchInput
                 Debug.Assert(False)
         End Select
@@ -441,8 +454,9 @@ Public Class cEcosimMonteCarlo
                     Select Case varname
 
                         Case eVarNameFlags.BiomassAreaInput,
-                            eVarNameFlags.PBInput,
-                            eVarNameFlags.QBInput
+                             eVarNameFlags.PBInput,
+                             eVarNameFlags.QBInput,
+                             eVarNameFlags.DietComp
                             parm = Me.PedigreeVarToMCIndex(varname)
                             CVpar(parm, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
                             Me.CalculateUpperLowerLimits(False, parm)
@@ -521,18 +535,18 @@ Public Class cEcosimMonteCarlo
                     PMeanDiscard(iFleet, iGrp) = m_epdata.Discard(iFleet, iGrp)
                 Next
 
-                For iPrey As Integer = 0 To m_core.nGroups
-                    Dietmeans(iGrp, iPrey) = m_epdata.DC(iGrp, iPrey)
+                For iPrey As Integer = 0 To m_core.nGroups ' JS: why 0?
+                    PMeanDC(iGrp, iPrey) = m_epdata.DC(iGrp, iPrey)
                 Next
             Next
 
             'make a copy for the best fitting data 
             Array.Copy(Pmean, BestFit, Pmean.Length)
-            Array.Copy(Dietmeans, BestFitDiets, Dietmeans.Length)
+            Array.Copy(PMeanDC, BestFitDiets, PMeanDC.Length)
             'make a copy of the original values so the user can restore the values
             Array.Copy(Pmean, startValues, Pmean.Length)
             ' MP Apr 2016 adding diets
-            Array.Copy(Dietmeans, m_startValuesDiets, Dietmeans.Length)
+            Array.Copy(PMeanDC, m_startValuesDiets, PMeanDC.Length)
             'vulnerabilities 
             'Array.Copy(m_core.m_EcoSimData.VulMult, Me.orgVul, m_core.m_EcoSimData.VulMult.Length)
 
@@ -1086,7 +1100,6 @@ Public Class cEcosimMonteCarlo
                                                               Me.ParLimit(1, eMCParams.EE, igrp))
                     End If
 
-                    ' JS Nov 2015 adding Catches
                     If Me.IsEnabled(eMCParams.Landings) Then
                         For iflt As Integer = 1 To m_epdata.NumFleet
                             If (Me.PMeanLanding(iflt, igrp) > 0) Then
@@ -1112,12 +1125,30 @@ Public Class cEcosimMonteCarlo
                         Next
                     End If
 
-                    ' MP Apr 2016 adding diets
                     If Me.IsEnabled(eMCParams.Diets) Then
-                        ChooseFeasibleDiet(Dietmeans, CVpar(eMCParams.Diets, igrp), igrp, m_epdata.DC)
+                        Select Case Me.DietSamplingMethod
+                            Case eMCDietSamplingMethod.Dirichlets
+                                ChooseFeasibleDiet(PMeanDC, CVParDC(eMCDietSamplingMethod.Dirichlets, igrp), igrp, m_epdata.DC)
+                            Case eMCDietSamplingMethod.NormalDistribution
+                                For iPred As Integer = 1 To m_epdata.NumLiving
+                                    If (Me.PMeanDC(iPred, igrp) > 0) Then
+                                        Me.m_epdata.DC(iPred, igrp) = ChooseFeasiblePar(eMCParams.Diets,
+                                                                                    Me.PMeanDC(iPred, igrp),
+                                                                                    Me.CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred),
+                                                                                    Me.ParLimitDC(0, iPred, igrp),
+                                                                                    Me.ParLimitDC(1, iPred, igrp))
+                                    End If
+                                Next
+                            Case Else
+                                Debug.Assert(False)
+                        End Select
                     End If
 
                 Next igrp
+
+                If Me.IsEnabled(eMCParams.Diets) And (Me.DietSamplingMethod <> eMCDietSamplingMethod.Dirichlets) Then
+                    Me.NormalizeDiet(Me.m_epdata.DC)
+                End If
 
                 Me.m_ecosim.InitStanza()
 
@@ -1205,7 +1236,7 @@ Public Class cEcosimMonteCarlo
             End If
         Next
         If bwarning Then
-            Console.WriteLine("WARNING MSE Normalized Diet after sampling.")
+            Console.WriteLine("WARNING Normalized Diet after sampling.")
         End If
     End Sub
 
@@ -1319,15 +1350,22 @@ Public Class cEcosimMonteCarlo
         Return [Enum].GetValues(GetType(eMCParams)).Length
     End Function
 
+    Private Function NumDietSamplingMethods() As Integer
+        Return [Enum].GetValues(GetType(eMCDietSamplingMethod)).Length
+    End Function
+
     Private Sub redimVariables()
         Try
 
             ReDim CVpar(Me.NumParams, m_core.nGroups)
             ReDim CVparLanding(m_core.nFleets, m_core.nGroups)
             ReDim CVparDiscard(m_core.nFleets, m_core.nGroups)
+            ReDim CVParDC(Me.NumDietSamplingMethods, m_core.nGroups)
+
             ReDim ParLimit(1, NumParams(), m_core.nGroups)
             ReDim ParLimitLanding(1, m_core.nFleets, m_core.nGroups)
             ReDim ParLimitDiscard(1, m_core.nFleets, m_core.nGroups)
+            ReDim ParLimitDC(1, m_core.nGroups, m_core.nGroups)
 
             For iGroup As Integer = 1 To m_core.nGroups
                 For iVar As Integer = 1 To Me.NumParams
@@ -1338,7 +1376,8 @@ Public Class cEcosimMonteCarlo
                         Case eMCParams.BaBi
                             CVpar(iVar, iGroup) = 0.05
                         Case eMCParams.Diets
-                            CVpar(iVar, iGroup) = 1
+                            CVParDC(eMCDietSamplingMethod.Dirichlets, iGroup) = 1
+                            CVParDC(eMCDietSamplingMethod.NormalDistribution, iGroup) = 0.05
                         Case Else
                             CVpar(iVar, iGroup) = 0.1
                     End Select
@@ -1432,6 +1471,13 @@ Public Class cEcosimMonteCarlo
                 ' ParLimit(0, eMCParams.Vulnerability, i) = m_esdata.VulnerabilityPredator(i) * (1 - factor * CVpar(eMCParams.Vulnerability, i)) : If ParLimit(0, eMCParams.Vulnerability, i) < 1.01 Then ParLimit(0, eMCParams.Vulnerability, i) = 1.01
                 ' ParLimit(1, eMCParams.Vulnerability, i) = 1000 ' m_esdata.VulnerabilityPredator(i) * (1 + factor * CVpar(eMCParams.Vulnerability, i)) 'no upper limit for vulmult : If ParLimit(1, eMCParams.Vulnerability, i) > 1 Then ParLimit(1, eMCParams.Vulnerability, i) = 1
 
+                If (param = eMCParams.Diets Or param = eMCParams.NotSet) Then
+                    For iPred As Integer = 1 To Me.m_core.nLivingGroups
+                        ParLimitDC(0, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DCInput(iPred, iGroup) * (1 - factor * CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
+                        ParLimitDC(1, iPred, iGroup) = Math.Max(1.0E-10!, Me.m_epdata.DCInput(iPred, iGroup) * (1 + factor * CVParDC(eMCDietSamplingMethod.NormalDistribution, iPred)))
+                    Next iPred
+                End If
+
             Next iGroup
 
             For iGroup As Integer = 1 To Me.m_core.nGroups
@@ -1503,6 +1549,8 @@ Public Class cEcosimMonteCarlo
     End Function
 
     Private Sub ChooseFeasibleDiet(ByVal Diets(,) As Single, ByVal cv As Single, ByVal iPred As Integer, ByRef EcopathDiet(,) As Single)
+
+        Debug.Assert(Me.DietSamplingMethod = eMCDietSamplingMethod.Dirichlets)
 
         Dim MeanPropMod() As Single
         Dim SumInteractions As Integer = 0

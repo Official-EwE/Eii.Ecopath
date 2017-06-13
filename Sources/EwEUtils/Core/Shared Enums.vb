@@ -928,45 +928,52 @@ Namespace Core
         ''' <summary>Sum of squares fit of Ecosim predicted values to reference data by group</summary>
         EcosimSSGroup
 
-        ''' <summary>Monte Carlo variables</summary>
-        ''' <remarks>variables used by ecosim monte carlo</remarks>
-        mcB
-        ''' <summary>To document</summary>
-        mcPB
-        ''' <summary>To document</summary>
-        mcQB
-        ''' <summary>To document</summary>
-        mcBA
-        ''' <summary>To document</summary>
-        mcEE
-        ''' <summary>To document</summary>
-        mcVU
-        mcDietComp
+        ''' <summary>Monte Carlo diet multiplier</summary>
         mcDietMult
+
+        ''' <summary>Monte Carlo sampled <see cref="Biomass">B</see></summary>
+        mcB
+        ''' <summary>Monte Carlo sampled <see cref="PBInput">PB</see></summary>
+        mcPB
+        ''' <summary>Monte Carlo sampled <see cref="QBInput">QB</see></summary>
+        mcQB
+        ''' <summary>Monte Carlo sampled <see cref="BioAccumInput">BA</see></summary>
+        mcBA
+        ''' <summary>Monte Carlo sampled <see cref="EEInput">EE</see></summary>
+        mcEE
+        ''' <summary>Monte Carlo sampled <see cref="VulMult">Vulnerability</see></summary>
+        mcVU
+        ''' <summary>Monte Carlo sampled <see cref="DietComp">DC</see></summary>
+        mcDC
+        ''' <summary>Monte Carlo sampled <see cref="Discards">Discards</see></summary>
         mcDiscards
+        ''' <summary>Monte Carlo sampled <see cref="Landings">Landings</see></summary>
         mcLandings
-        ''' <summary>Monte Carlo biomass accum rate</summary>
+        ''' <summary>Monte Carlo sampled <see cref="BioAccumRate">BA rate</see></summary>
         mcBaBi
 
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo best fitting <see cref="Biomass">B</see></summary>
         mcBbf
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo best fitting <see cref="PBInput">PB</see></summary>
         mcPBbf
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo best fitting <see cref="QBInput">QB</see></summary>
         mcQBbf
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo best fitting <see cref="BioAccumInput">BA</see></summary>
         mcBAbf
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo best fitting <see cref="EEInput">EE</see></summary>
         mcEEbf
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo best fitting <see cref="VulMult">Vulnerability</see></summary>
         mcVUbf
-        mcDietsbf
+        ''' <summary>Monte Carlo best fitting <see cref="DietComp">DC</see></summary>
+        mcDCbf
+        ''' <summary>Monte Carlo best fitting <see cref="Discards">Discards</see></summary>
         mcDiscardsbf
+        ''' <summary>Monte Carlo best fitting <see cref="Landings">Landings</see></summary>
         mcLandingsbf
-        ''' <summary>Monte Carlo biomass accum rate best fit</summary>
+        ''' <summary>Monte Carlo best fitting <see cref="BioAccumRate">BA rate</see></summary>
         mcBaBibf
 
-        ''' <summary>To document</summary>
+        ''' <summary>Monte Carlo <see cref="Biomass">B</see> lower sample limit</summary>
         mcBLower
         ''' <summary>To document</summary>
         mcPBLower
@@ -1020,6 +1027,7 @@ Namespace Core
         mcLandingscv
         ''' <summary>Monte Carlo biomass accummulation rate cv</summary>
         mcBaBicv
+        mcDCcv
 
         'end monte carlo variables
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
