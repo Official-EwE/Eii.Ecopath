@@ -968,7 +968,6 @@ Public Class cMonteCarloManager
                 Next
 
                 For iPrey As Integer = 1 To m_core.nGroups
-                    grp.Dietcv = m_mc.CVpar(eMCParams.Diets, iGroup)
                     grp.Dietsbf = m_mc.BestFitDiets(iGroup, iPrey)
                 Next
 
