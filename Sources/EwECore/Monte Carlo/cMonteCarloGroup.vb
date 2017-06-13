@@ -85,9 +85,9 @@ Public Class cMonteCarloGroup
         val.Stored = False
         m_values.Add(val.varName, val)
 
-        'diets
+        'DC
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcDietComp, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcDC, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         val.Stored = False
         m_values.Add(val.varName, val)
 
@@ -177,9 +177,9 @@ Public Class cMonteCarloGroup
         val.Stored = False
         m_values.Add(val.varName, val)
 
-        'DietsBF
+        'DCBf
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcDietsbf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcDCbf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         val.Stored = False
         m_values.Add(val.varName, val)
 
@@ -203,7 +203,6 @@ Public Class cMonteCarloGroup
         val = New cValue(New Single, eVarNameFlags.mcBAUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         val.Stored = False
         m_values.Add(val.varName, val)
-
 
         'babiUpper
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
@@ -265,6 +264,12 @@ Public Class cMonteCarloGroup
         'EEcv
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         val = New cValue(New Single, eVarNameFlags.mcEEcv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val.Stored = False
+        m_values.Add(val.varName, val)
+
+        'DCcv
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.mcDCcv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         val.Stored = False
         m_values.Add(val.varName, val)
 
@@ -363,7 +368,7 @@ Public Class cMonteCarloGroup
                            (value.varName = eVarNameFlags.mcEE Or value.varName = eVarNameFlags.mcEEbf) Or
                            (value.varName = eVarNameFlags.mcPB Or value.varName = eVarNameFlags.mcPBbf) Or
                            (value.varName = eVarNameFlags.mcQB Or value.varName = eVarNameFlags.mcQBbf) Or
-                           (value.varName = eVarNameFlags.mcDietComp Or value.varName = eVarNameFlags.mcDietsbf) Then
+                           (value.varName = eVarNameFlags.mcDC Or value.varName = eVarNameFlags.mcDCbf) Then
 
                             value.Status = eStatusFlags.NotEditable
 
@@ -491,10 +496,10 @@ Public Class cMonteCarloGroup
 
     Public Property Diets(ByVal iIndex As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcDietComp, iIndex))
+            Return CSng(GetVariable(eVarNameFlags.mcDC, iIndex))
         End Get
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcDietComp, value, iIndex)
+            SetVariable(eVarNameFlags.mcDC, value, iIndex)
         End Set
     End Property
 
@@ -735,6 +740,16 @@ Public Class cMonteCarloGroup
         End Set
     End Property
 
+    Public Property Dietcv() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.mcDCcv))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.mcDCcv, value)
+        End Set
+    End Property
+
     Public Property VUcv() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.mcVUcv))
@@ -866,11 +881,11 @@ Public Class cMonteCarloGroup
 
     Public Property Dietsbf() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.mcDietsbf))
+            Return CSng(GetVariable(eVarNameFlags.mcDCbf))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.mcDietsbf, value)
+            SetVariable(eVarNameFlags.mcDCbf, value)
         End Set
     End Property
 
