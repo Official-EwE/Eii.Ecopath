@@ -18,11 +18,20 @@
 ' ===============================================================================
 '
 
+#Const DUMP_TO_FILE = 0
+
+#Region " Imports "
+
 Option Strict On
-Imports System.IO
+
 Imports EwECore.Style
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+#If DUMP_TO_FILE Then
+Imports System.IO
+#End If
+
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -30,6 +39,8 @@ Imports EwEUtils.Core
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cVariableMetaData
+
+#Region "Private vars"
 
     Private Shared s_inst As cVariableMetaData = Nothing
 
@@ -39,7 +50,9 @@ Public Class cVariableMetaData
     ' -- Variables for numeric values --
     Private m_vartype As eValueTypes
 
-#Region " Singleton "
+#End Region 'Private vars    
+
+#Region "Singleton"
 
     Private Shared Function GetInstance() As cVariableMetaData
         If (s_inst Is Nothing) Then
@@ -674,7 +687,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.MSYNumTrialYears) = New cVariableMetaData(1, 1000, ge, le)
         Me.Metadata(eVarNameFlags.MSYEquilibriumStepSize) = New cVariableMetaData(0, 1, ge, le)
 
-#If 0 Then
+#If DUMP_TO_FILE Then
         Try
             Dim sw As New StreamWriter("metadata_log.txt")
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
@@ -696,9 +709,9 @@ Public Class cVariableMetaData
 
     End Sub
 
-#End Region ' Singleton
+#End Region 'Singleton
 
-#Region " Constructors "
+#Region "Constructors"
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -754,9 +767,9 @@ Public Class cVariableMetaData
         Me.Units = units
     End Sub
 
-#End Region ' Constructors
+#End Region 'Constructors
 
-#Region " Central registry "
+#Region "Central registry"
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -811,9 +824,9 @@ Public Class cVariableMetaData
         End Set
     End Property
 
-#End Region ' Central registry
+#End Region 'Central registry
 
-#Region " Operators "
+#Region "Operators"
 
     Friend Sub Attach(ByVal value As cValue)
 
@@ -846,9 +859,9 @@ Public Class cVariableMetaData
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property MaxOperator() As cOperatorBase
 
-#End Region ' Operators
+#End Region 'Operators
 
-#Region " Properties "
+#Region "Properties"
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -897,9 +910,9 @@ Public Class cVariableMetaData
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Units As String
 
-#End Region ' Properties
+#End Region 'Properties
 
-#Region " Overrides "
+#Region "Overrides"
 
     Public Overrides Function Equals(obj As Object) As Boolean
 
@@ -920,7 +933,7 @@ Public Class cVariableMetaData
 
     End Function
 
-#End Region ' Overrides
+#End Region 'Overrides
 
 End Class
 
