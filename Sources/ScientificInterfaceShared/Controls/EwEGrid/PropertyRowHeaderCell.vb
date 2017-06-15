@@ -22,13 +22,10 @@
 
 Option Strict On
 Imports EwECore
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
-Imports SourceGrid2
 Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -78,61 +75,13 @@ Namespace Controls.EwEGrid
         ''' inserted in the cell display text via a format mask.
         ''' </summary>
         ''' <param name="prop">cProperty to deliver the cell value.</param>
-        ''' <param name="strUnitMask">The format mask to apply. This mask must
+        ''' <param name="strUnit">The format mask to apply. This mask must
         ''' contain a '{0}' field where the property value is to be inserted.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty, _
-                       ByVal strUnitMask As String)
+        Public Sub New(ByVal prop As cProperty,
+                       ByVal strUnit As String)
             Me.New(prop)
-            Me.SetUnitHeader(strUnitMask, New eUnitType() {})
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor to create a row header cell that derives its 
-        ''' <see cref="DisplayText">display text</see> from a 
-        ''' <see cref="cProperty">cProperty</see> and a 
-        ''' <see cref="eUnitType">system unit</see>. 
-        ''' Both the property value and the unit mask text are inserted in the 
-        ''' cell display text via a format mask.
-        ''' </summary>
-        ''' <param name="prop">cProperty to deliver the cell value.</param>
-        ''' <param name="strUnitMask">The format mask to apply. This mask must
-        ''' contain a '{0}' field to place the property value, and a '{1}' field
-        ''' to place the unit value.</param>
-        ''' <param name="unitType">Definition of the unit to place in the cell
-        ''' display text.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty, _
-                       ByVal strUnitMask As String, _
-                       ByVal unitType As eUnitType)
-            Me.New(prop)
-            Me.SetUnitHeader(strUnitMask, New eUnitType() {unitType})
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor to create a row header cell that derives its 
-        ''' <see cref="DisplayText">display text</see> from a 
-        ''' <see cref="cProperty">cProperty</see> and a series of
-        ''' <see cref="eUnitType">system units</see>. 
-        ''' Both the property value and the unit mask texts are inserted in the 
-        ''' cell display text via a format mask.
-        ''' </summary>
-        ''' <param name="prop">cProperty to deliver the cell value.</param>
-        ''' <param name="strUnitMask">The format mask to apply. This mask must
-        ''' contain a '{0}' field to place the property value, and placeholder
-        ''' fields for the units. The unit fields must be numbered '{1}', '{2}'
-        ''' etc. Units will be placed in the placeholder fields in the order that
-        ''' they are defined in <paramref name="aUnitTypes">aUnitTypes</paramref>.</param>
-        ''' <param name="aUnitTypes">Definitions of units to place in the cell
-        ''' display text.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty, _
-                       ByVal strUnitMask As String, _
-                       ByVal aUnitTypes() As eUnitType)
-            Me.New(prop)
-            Me.SetUnitHeader(strUnitMask, aUnitTypes)
+            Me.SetUnits(strUnit)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -149,102 +98,12 @@ Namespace Controls.EwEGrid
         ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when this variable
         ''' does not require an index.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager, _
-                       ByVal Source As cCoreInputOutputBase, _
-                       ByVal VarName As eVarNameFlags, _
-                       Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
-            Me.New(pm.GetProperty(Source, VarName, SourceSec))
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor to create a row header cell that synchronizes 
-        ''' its <see cref="DisplayText">display text</see> live with core data.
-        ''' The core value is inserted in the cell display text via a format mask.
-        ''' </summary>
-        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
-        ''' object to deliver the core data.</param>
-        ''' <param name="VarName">The <see cref="eVarNameFlags">variable</see> 
-        ''' of the <paramref name="Source">Source</paramref> to display in the cell.</param>
-        ''' <param name="SourceSec">An optional secundary index in the 
-        ''' <paramref name="VarName">variable</paramref>, or 
-        ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when this variable
-        ''' does not require an index.</param>
-        ''' <param name="strUnitMask">The format mask to apply. This mask must
-        ''' contain a '{0}' field where the property value is to be inserted.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager, _
-                       ByVal Source As cCoreInputOutputBase, _
-                       ByVal VarName As eVarNameFlags, _
-                       ByVal SourceSec As cCoreInputOutputBase, _
-                       ByVal strUnitMask As String)
-            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask)
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor to create a row header cell that synchronizes 
-        ''' its <see cref="DisplayText">display text</see> live with core data
-        ''' and a <see cref="eUnitType">system unit</see>.
-        ''' Both the core value and the unit text are inserted in the cell 
-        ''' display text via a format mask.
-        ''' </summary>
-        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
-        ''' object to deliver the core data.</param>
-        ''' <param name="VarName">The <see cref="eVarNameFlags">variable</see> 
-        ''' of the <paramref name="Source">Source</paramref> to display in the cell.</param>
-        ''' <param name="SourceSec">An optional secundary index in the 
-        ''' <paramref name="VarName">variable</paramref>, or 
-        ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when this variable
-        ''' does not require an index.</param>
-        ''' <param name="strUnitMask">The format mask to apply. This mask must
-        ''' contain a '{0}' field to place the property value, and placeholder
-        ''' fields for the units. The unit fields must be numbered '{1}', '{2}'
-        ''' etc. Units will be placed in the placeholder fields in the order that
-        ''' they are defined in <paramref name="unitType"/>.</param>
-        ''' <param name="unitType">Definition of the unit to place in the cell
-        ''' display text.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager, _
-                       ByVal Source As cCoreInputOutputBase, _
-                       ByVal VarName As eVarNameFlags, _
-                       ByVal SourceSec As cCoreInputOutputBase, _
-                       ByVal strUnitMask As String, _
-                       ByVal unitType As eUnitType)
-            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, New eUnitType() {unitType})
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor to create a row header cell that synchronizes 
-        ''' its <see cref="DisplayText">display text</see> live with core data
-        ''' and a series of<see cref="eUnitType">system units</see>.
-        ''' Both the core value and the unit texts are inserted in the cell 
-        ''' display text via a format mask.
-        ''' </summary>
-        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
-        ''' object to deliver the core data.</param>
-        ''' <param name="VarName">The <see cref="eVarNameFlags">variable</see> 
-        ''' of the <paramref name="Source">Source</paramref> to display in the cell.</param>
-        ''' <param name="SourceSec">An optional secundary index in the 
-        ''' <paramref name="VarName">variable</paramref>, or 
-        ''' <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when this variable
-        ''' does not require an index.</param>
-        ''' <param name="strUnitMask">The format mask to apply. This mask must
-        ''' contain a '{0}' field to place the property value, and placeholder
-        ''' fields for the units. The unit fields must be numbered '{1}', '{2}'
-        ''' etc. Units will be placed in the placeholder fields in the order that
-        ''' they are defined in <paramref name="aUnitTypes">aUnitTypes</paramref>.</param>
-        ''' <param name="aUnitTypes">Definitions of units to place in the cell
-        ''' display text.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager, _
-                       ByVal Source As cCoreInputOutputBase, _
-                       ByVal VarName As eVarNameFlags, _
-                       ByVal SourceSec As cCoreInputOutputBase, _
-                       ByVal strUnitMask As String, _
-                       ByVal aUnitTypes() As eUnitType)
-            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
+        Public Sub New(ByVal pm As cPropertyManager,
+                       ByVal Source As cCoreInputOutputBase,
+                       ByVal VarName As eVarNameFlags,
+                       Optional ByVal SourceSec As cCoreInputOutputBase = Nothing,
+                       Optional ByVal strUnit As String = "")
+            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnit)
         End Sub
 
         ''' -------------------------------------------------------------------

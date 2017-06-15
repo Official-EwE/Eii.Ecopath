@@ -53,7 +53,6 @@ Public Class cPedigreeManager
         MyBase.New(core)
 
         Dim val As cValue = Nothing
-        Dim meta As cVariableMetaData = Nothing
 
         Me.m_dataType = eDataTypes.PedigreeManager
         Me.m_coreComponent = eCoreComponentType.EcoPath
@@ -66,8 +65,7 @@ Public Class cPedigreeManager
 
         'Array variables
         'Pedigree
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.Pedigree))
+        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
         Me.m_values.Add(val.varName, val)
 
         Me.AllowValidation = True

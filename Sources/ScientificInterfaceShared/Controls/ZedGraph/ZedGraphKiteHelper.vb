@@ -63,7 +63,7 @@ Namespace Controls
                                               Optional ByVal legendPos As ZedGraph.LegendPos = ZedGraph.LegendPos.TopCenter, _
                                               Optional ByVal iPane As Integer = 1) As ZedGraph.GraphPane
 
-            Dim gp As GraphPane = MyBase.ConfigurePane(strTitle, strXAxisLabel, Nothing, strYAxisLabel, Nothing, bShowLegend, legendPos, iPane)
+            Dim gp As GraphPane = MyBase.ConfigurePane(strTitle, strXAxisLabel, strYAxisLabel, bShowLegend, legendPos, iPane)
 
             ' Use secundary axis pair to render the kite center
             With gp

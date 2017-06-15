@@ -24,13 +24,13 @@ Imports EwEUtils.Core
 
 #Region "Enumerators"
 
-Public Enum eInitOption
+Public Enum eInitOption As Integer
     EcopathBaseF
     CurrentF
     RandomF
 End Enum
 
-Public Enum eOptimizeOptionTypes
+Public Enum eOptimizeOptionTypes As Integer
     BatchRun
     MaxPortUtil
     PrevCostEarning
@@ -38,14 +38,13 @@ Public Enum eOptimizeOptionTypes
     IncludeComp
 End Enum
 
-Public Enum eSearchOptionTypes
+Public Enum eSearchOptionTypes As Integer
     Fletch
     DFPmin
     BaseProfitability
 End Enum
 
-
-Public Enum eOptimizeApproachTypes
+Public Enum eOptimizeApproachTypes As Integer
     SystemObjective
     FleetValues
 End Enum
@@ -53,7 +52,6 @@ End Enum
 #End Region
 
 #Region "Fishing Policy parameters"
-
 
 Public Class cFishingPolicyParameters
     Inherits cCoreInputOutputBase
@@ -73,50 +71,41 @@ Public Class cFishingPolicyParameters
         m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         Dim val As cValue
-        Dim meta As cVariableMetaData
 
         'FPSMaxNumEval
-        meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.FPSMaxNumEval, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSMaxNumEval))
+        val = New cValue(New Single, eVarNameFlags.FPSMaxNumEval, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
-
         'FPSMaxEffChange
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.FPSMaxEffChange, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSMaxEffChange))
+        val = New cValue(New Single, eVarNameFlags.FPSMaxEffChange, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'xxxxxxxxxxxxxxxxxxxxxx
         'Enumerators are stored as Integer!!
         'FPSInitOption 
-        meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eInitOption)).Length - 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.FPSInitOption, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSInitOption))
+        val = New cValue(New Integer, eVarNameFlags.FPSInitOption, eStatusFlags.Null, eValueTypes.Int)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'FPSSearchOption
-        meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eSearchOptionTypes)).Length - 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.FPSSearchOption, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSSearchOption))
+        val = New cValue(New Integer, eVarNameFlags.FPSSearchOption, eStatusFlags.Null, eValueTypes.Int)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'FPSOptimizeApproach
-        meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eOptimizeApproachTypes)).Length - 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.FPSOptimizeApproach, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSOptimizeApproach))
+        val = New cValue(New Integer, eVarNameFlags.FPSOptimizeApproach, eStatusFlags.Null, eValueTypes.Int)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'FPSOptimizeApproach
-        meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eOptimizeOptionTypes)).Length - 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.FPSOptimizeOptions, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSOptimizeOptions))
+        val = New cValue(New Integer, eVarNameFlags.FPSOptimizeOptions, eStatusFlags.Null, eValueTypes.Int)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'Number of runs 500 Max ???
-        meta = New cVariableMetaData(1, 500, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.FPSNRuns, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSNRuns))
+        val = New cValue(New Integer, eVarNameFlags.FPSNRuns, eStatusFlags.Null, eValueTypes.Int)
         val.Stored = False
         m_values.Add(val.varName, val)
 
@@ -124,42 +113,37 @@ Public Class cFishingPolicyParameters
 
         'Boolean parameters
         'FPSMaxPortUtil
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.FPSMaxPortUtil, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSMaxPortUtil))
+        val = New cValue(New Boolean, eVarNameFlags.FPSMaxPortUtil, eStatusFlags.Null, eValueTypes.Bool)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         ''FPSPrevCostEarning
         'meta = New cVariableMetaData()
-        'val = New cValue(New Boolean, eVarNameFlags.SearchPrevCostEarning, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.SearchPrevCostEarning))
+        'val = New cValue(New Boolean, eVarNameFlags.SearchPrevCostEarning, eStatusFlags.Null, eValueTypes.Bool)
         'val.Stored = False
         'm_values.Add(val.varName, val)
 
         'FPSIncludeComp
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.FPSIncludeComp, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSIncludeComp))
+        val = New cValue(New Boolean, eVarNameFlags.FPSIncludeComp, eStatusFlags.Null, eValueTypes.Bool)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'FPSBatchRun
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.FPSBatchRun, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSBatchRun))
+        val = New cValue(New Boolean, eVarNameFlags.FPSBatchRun, eStatusFlags.Null, eValueTypes.Bool)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'FPSUseEcospace
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.FPSUseEcospace, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSUseEcospace))
+        val = New cValue(New Boolean, eVarNameFlags.FPSUseEcospace, eStatusFlags.Null, eValueTypes.Bool)
         val.Stored = False
         m_values.Add(val.varName, val)
 
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.FPSUseEconomicPlugin, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSUseEconomicPlugin))
+        val = New cValue(New Boolean, eVarNameFlags.FPSUseEconomicPlugin, eStatusFlags.Null, eValueTypes.Bool)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'meta = New cVariableMetaData()
-        'val = New cValue(New Boolean, eVarNameFlags.isEconomicAvailable, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.isEconomicAvailable))
+        'val = New cValue(New Boolean, eVarNameFlags.isEconomicAvailable, eStatusFlags.Null, eValueTypes.Bool)
         'val.Stored = False
         'm_values.Add(val.varName, val)
 
@@ -220,7 +204,7 @@ Public Class cFishingPolicyParameters
         End Set
     End Property
 
- 
+
     Public Property OptimizeApproach() As eOptimizeApproachTypes
         Get
             Return CType(GetVariable(eVarNameFlags.FPSOptimizeApproach), eOptimizeApproachTypes)
@@ -252,7 +236,7 @@ Public Class cFishingPolicyParameters
         End Set
     End Property
 
-  
+
     Public Property IncludeComp() As Boolean
         Get
             Return CBool(GetVariable(eVarNameFlags.FPSIncludeComp))

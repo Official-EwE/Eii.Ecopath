@@ -58,9 +58,9 @@ Public Class cRetailerUnit
     End Property
 
     <Browsable(False)> _
-    Public Overrides ReadOnly Property UnitType() As cUnitFactory.eUnitType
+    Public Overrides ReadOnly Property UnitType() As cUnitFactory.cUnitFormatter
         Get
-            Return cUnitFactory.eUnitType.Retailer
+            Return cUnitFactory.cUnitFormatter.Retailer
         End Get
     End Property
 

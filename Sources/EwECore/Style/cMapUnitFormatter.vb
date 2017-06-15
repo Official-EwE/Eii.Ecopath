@@ -33,42 +33,38 @@ Namespace Style
     ''' Class for providing a textual description of <see cref="eUnitAreaType"/> objects.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class cAreaUnitFormatter
+    Public Class cMapUnitFormatter
         Implements ITypeFormatter
-
-        Private m_strCustom As String = ""
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create a new type <see cref="eUnitCurrencyType"/>formatter.
+        ''' Create a new type <see cref="cMapUnitFormatter"/>formatter.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(strCustom As String)
-            Me.m_strCustom = strCustom
+        Public Sub New()
         End Sub
 
         Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
-            Return GetType(eUnitAreaType)
+            Return GetType(eUnitMapRefType)
         End Function
 
-        Public Function GetDescriptor(ByVal value As Object, _
+        Public Function GetDescriptor(ByVal value As Object,
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                   Implements ITypeFormatter.GetDescriptor
 
-            Dim unit As eUnitAreaType = DirectCast(value, eUnitAreaType)
+            Dim unit As eUnitMapRefType = DirectCast(value, eUnitMapRefType)
 
             Select Case unit
-                Case eUnitAreaType.Km2
-                    Return My.Resources.CoreDefaults.UNIT_AREA_KM2
-                Case eUnitAreaType.Mi2
-                    Return My.Resources.CoreDefaults.UNIT_AREA_MI2
-                Case eUnitAreaType.Custom
-                    Return Me.m_strCustom
+                Case eUnitMapRefType.m
+                    Return My.Resources.CoreDefaults.UNIT_METER
+                Case eUnitMapRefType.km
+                    Return My.Resources.CoreDefaults.UNIT_KILOMETER
+                Case eUnitMapRefType.dd
+                    Return My.Resources.CoreDefaults.UNIT_DECIMALDEGREE
             End Select
 
             Return String.Empty
         End Function
 
     End Class
-
 End Namespace

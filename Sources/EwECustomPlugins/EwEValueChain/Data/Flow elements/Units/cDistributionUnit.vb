@@ -86,9 +86,9 @@ Public Class cDistributionUnit
 #End Region ' General
 
     <Browsable(False)> _
-    Public Overrides ReadOnly Property UnitType() As cUnitFactory.eUnitType
+    Public Overrides ReadOnly Property UnitType() As cUnitFactory.cUnitFormatter
         Get
-            Return cUnitFactory.eUnitType.Distribution
+            Return cUnitFactory.cUnitFormatter.Distribution
         End Get
     End Property
 

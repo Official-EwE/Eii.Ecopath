@@ -22,13 +22,11 @@
 
 Option Strict On
 Imports EwECore
+Imports EwECore.Style
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
-Imports SourceGrid2
-Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -64,33 +62,12 @@ Namespace Controls.EwEGrid
         ''' Constructor, instructing the cell to use a unit mask.
         ''' </summary>
         ''' <param name="prop"><see cref="cProperty">Property</see> to attach to the cell.</param>
-        ''' <param name="strUnitMask">Mask that specifies how to substitute a
-        ''' <see cref="eUnitType">unit of measurement</see> into
-        ''' the cell value.</param>
-        ''' <param name="unitType">The <see cref="eUnitType">unit of measurement</see>
-        ''' to substitute into the header cell text.</param>
+        ''' <param name="strUnit">The unit to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty, _
-                       ByVal strUnitMask As String, _
-                       ByVal unitType As eUnitType)
+        Public Sub New(ByVal prop As cProperty,
+                       ByVal strUnit As String)
             Me.New(prop)
-            Me.SetUnitHeader(strUnitMask, New eUnitType() {unitType})
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor, instructing the cell to use a unit mask.
-        ''' </summary>
-        ''' <param name="prop"><see cref="cProperty">Property</see> to attach to the cell.</param>
-        ''' <param name="strUnitMask">Mask that specifies how to substitute a series
-        ''' of <see cref="eUnitType">unit of measurements</see> into
-        ''' the cell value.</param>
-        ''' <param name="aUnitTypes">The <see cref="eUnitType">unit of measurements</see>
-        ''' to substitute into the header cell text.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal prop As cProperty, ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
-            Me.New(prop)
-            Me.SetUnitHeader(strUnitMask, aUnitTypes)
+            Me.SetUnits(strUnit)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -102,9 +79,9 @@ Namespace Controls.EwEGrid
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">An optional secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager, _
-                       ByVal Source As cCoreInputOutputBase, _
-                       ByVal VarName As eVarNameFlags, _
+        Public Sub New(ByVal pm As cPropertyManager,
+                       ByVal Source As cCoreInputOutputBase,
+                       ByVal VarName As eVarNameFlags,
                        Optional ByVal SourceSec As cCoreInputOutputBase = Nothing)
             Me.New(pm.GetProperty(Source, VarName, SourceSec))
         End Sub
@@ -117,42 +94,14 @@ Namespace Controls.EwEGrid
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
         ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
         ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
-        ''' <param name="strUnitMask">Mask that specifies how to substitute a
-        ''' <see cref="eUnitType">unit of measurement</see> into
-        ''' the cell value.</param>
-        ''' <param name="unitType">The <see cref="eUnitType">unit of measurement</see>
-        ''' to substitute into the header cell text.</param>
+        ''' <param name="strUnit">The unit to substitute into the header cell text.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager, _
-                       ByVal Source As cCoreInputOutputBase, _
-                       ByVal VarName As eVarNameFlags, _
-                       ByVal SourceSec As cCoreInputOutputBase, _
-                       ByVal strUnitMask As String, _
-                       ByVal unitType As eUnitType)
-            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, New eUnitType() {unitType})
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor
-        ''' </summary>
-        ''' <param name="pm"><see cref="cPropertyManager">Property manager</see> to obtain values from.</param>
-        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> data source</param>
-        ''' <param name="VarName">The <see cref="eVarNameFlags">VarName flag</see> that defines which aspect of the Source to acces</param>
-        ''' <param name="SourceSec">Secundary index in the VarName, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> when irrelevant</param>
-        ''' <param name="strUnitMask">Mask that specifies how to substitute a series
-        ''' of <see cref="eUnitType">unit of measurements</see> into
-        ''' the cell value.</param>
-        ''' <param name="aUnitTypes">The <see cref="eUnitType">unit of measurements</see>
-        ''' to substitute into the header cell text.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager, _
-                       ByVal Source As cCoreInputOutputBase, _
-                       ByVal VarName As eVarNameFlags, _
-                       ByVal SourceSec As cCoreInputOutputBase, _
-                       ByVal strUnitMask As String, _
-                       ByVal aUnitTypes() As eUnitType)
-            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnitMask, aUnitTypes)
+        Public Sub New(ByVal pm As cPropertyManager,
+                       ByVal Source As cCoreInputOutputBase,
+                       ByVal VarName As eVarNameFlags,
+                       ByVal SourceSec As cCoreInputOutputBase,
+                       ByVal strUnit As String)
+            Me.New(pm.GetProperty(Source, VarName, SourceSec), strUnit)
         End Sub
 
 #End Region ' Construction 
@@ -177,8 +126,7 @@ Namespace Controls.EwEGrid
 
 #Region " Unit header text "
 
-        Protected m_aUnitTypes() As eUnitType
-        Protected m_strUnitMask As String = ""
+        Protected m_strUnit As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -186,49 +134,55 @@ Namespace Controls.EwEGrid
         ''' its content. These unit strings will be synchronized with 
         ''' <see cref="cStyleGuide.UnitsChanged">cStyleGuide unit changes</see>.
         ''' </summary>
-        ''' <param name="strUnitMask">Mask to format units with. This mask must
-        ''' contain a {#} placeholder for the main value and every dynamic unit: 
-        ''' {0} for the value, {1} for the first unit and {2} for the second unit
-        ''' if applicable. Only two units are currently supported.</param>
-        ''' <param name="aUnitTypes">An array of unit types to format into the
-        ''' header cell.</param>
+        ''' <param name="strUnit">The <see cref="cUnits">unit string</see> to set.
+        ''' To clear units, simply pass in an empty string.</param>
         ''' -------------------------------------------------------------------
-        Protected Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
-            Me.m_strUnitMask = strUnitMask
-            Me.m_aUnitTypes = aUnitTypes
+        Protected Sub SetUnits(ByVal strUnit As String)
+            Me.m_strUnit = strUnit
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Configure the cell to no longer incorporate unit strings into its 
-        ''' text.
+        ''' Get/set the value for a header cell.
         ''' </summary>
+        ''' <bugfix number="892">
+        ''' Moved this functionality from DisplayText to make sure header values
+        ''' are correctly picked up by Copy and Cut operations.
+        ''' </bugfix>
+        ''' <remarks>If a header cell value contains a '|' character, the value 
+        ''' is split by this character. The first part (left side of '|') is used
+        ''' as value part, and the last part (right side of '|') is used as tooltip
+        ''' text.</remarks>
         ''' -------------------------------------------------------------------
-        Public Sub ClearUnitHeader()
-            Me.m_strUnitMask = ""
-            Me.m_aUnitTypes = Nothing
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the display text for the header cell.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Overrides ReadOnly Property DisplayText() As String
+        Public Overrides Property Value() As Object
             Get
-                Dim strDisplayText As String = MyBase.DisplayText
+                Dim strVal As String = CStr(MyBase.Value)
+                Dim strUnit As String = ""
 
-                If (Me.m_aUnitTypes IsNot Nothing) And (Not String.IsNullOrEmpty(Me.m_strUnitMask)) Then
-                    If Me.StyleGuide IsNot Nothing Then
-                        Try
-                            strDisplayText = Me.StyleGuide.FormatUnitString(Me.m_strUnitMask, Me.Value.ToString, Me.m_aUnitTypes)
-                        Catch ex As Exception
-                            Debug.Assert(False, "Failed to apply format mask, please check")
-                        End Try
+                If (Me.UIContext IsNot Nothing) And (Not String.IsNullOrWhiteSpace(Me.m_strUnit)) Then
+                    strUnit = New cUnits(Me.UIContext.Core).ToString(Me.m_strUnit)
+                End If
+
+                If (String.IsNullOrWhiteSpace(strUnit)) Then Return strVal
+                If (String.IsNullOrWhiteSpace(strVal)) Then Return strUnit
+                If (strVal.Contains("{0}")) Then Return cStringUtils.Localize(strVal, strUnit)
+                Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, strVal, strUnit)
+            End Get
+            Set(ByVal value As Object)
+                If (TypeOf value Is String) Then
+                    Dim strValue As String = CStr(value)
+                    If strValue.IndexOf("|"c) > -1 Then
+                        Dim bits As String() = strValue.Split("|"c)
+                        If (String.Compare(bits(0), bits(1), True) <> 0) Then
+                            Me.ToolTipText = bits(1)
+                        Else
+                            Me.ToolTipText = ""
+                        End If
+                        value = bits(0)
                     End If
                 End If
-                Return strDisplayText
-            End Get
+                MyBase.Value = value
+            End Set
         End Property
 
 #End Region ' Unit header text

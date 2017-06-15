@@ -318,15 +318,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Cost ({0}).
-        '''</summary>
-        Friend ReadOnly Property HEADER_COST_UNIT() As String
-            Get
-                Return ResourceManager.GetString("HEADER_COST_UNIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Dependents.
         '''</summary>
         Friend ReadOnly Property HEADER_DEPENDENTS() As String
@@ -354,29 +345,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Revenue and cost ({0}).
-        '''</summary>
-        Friend ReadOnly Property HEADER_REV_COST_UNIT() As String
-            Get
-                Return ResourceManager.GetString("HEADER_REV_COST_UNIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Revenue.
         '''</summary>
         Friend ReadOnly Property HEADER_REVENUE() As String
             Get
                 Return ResourceManager.GetString("HEADER_REVENUE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Revenue ({0}).
-        '''</summary>
-        Friend ReadOnly Property HEADER_REVENUE_UNIT() As String
-            Get
-                Return ResourceManager.GetString("HEADER_REVENUE_UNIT", resourceCulture)
             End Get
         End Property
         

@@ -29,23 +29,23 @@ Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Properties
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2.Cells.Real
+Imports EwECore.Style
 
 #End Region
 
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridFisheryOutputValue
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Protected Overrides Sub InitStyle()
 
             Dim source As cCoreInputOutputBase = Nothing
-            Dim aunits As eUnitType() = New eUnitType() {eUnitType.Monetary, eUnitType.Time}
 
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
@@ -65,9 +65,9 @@ Namespace Ecopath.Output
             Next
 
             ' Catch value column
-            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCHVALUE_UNIT_PY, aunits)
-            Me(0, Core.nFleets + 3) = New EwEColumnHeaderCell(SharedResources.HEADER_NONMARKETVALUE_UNIT_PY, aunits)
-            Me(0, Core.nFleets + 4) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALVALUE_UNIT_PY, aunits)
+            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCHVALUE, cUnits.MonetaryOverTime)
+            Me(0, Core.nFleets + 3) = New EwEColumnHeaderCell(SharedResources.HEADER_NONMARKETVALUE, cUnits.MonetaryOverTime)
+            Me(0, Core.nFleets + 4) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALVALUE, cUnits.MonetaryOverTime)
 
             Me.FixedColumns = 2
             Me.FixedColumnWidths = True
@@ -82,11 +82,11 @@ Namespace Ecopath.Output
             Me.RowsCount = 1
 
             ' Done?
-            If core.nFleets = 0 Then Return
+            If Core.nFleets = 0 Then Return
 
             ' Create rows for all groups and sum values in each row
-            For rowIndex As Integer = 1 To core.nGroups
-                source = core.EcoPathGroupInputs(rowIndex)
+            For rowIndex As Integer = 1 To Core.nGroups
+                source = Core.EcoPathGroupInputs(rowIndex)
                 iRow = Me.AddRow()
                 FillRows(iRow, source)
             Next rowIndex
@@ -132,10 +132,10 @@ Namespace Ecopath.Output
 
             alSumRow.Clear()
             ' For each fleet (each column) 
-            For fleetIndex As Integer = 1 To core.nFleets
+            For fleetIndex As Integer = 1 To Core.nFleets
                 alProdLandingsMarketPrice.Clear()
                 ' Get the fleet object 
-                sourceSec = core.FleetInputs(fleetIndex)
+                sourceSec = Core.FleetInputs(fleetIndex)
                 ' Get the index landing property
                 propLandings = Me.PropertyManager.GetProperty(sourceSec, eVarNameFlags.Landings, source)
                 alProdLandingsMarketPrice.Add(propLandings)
@@ -202,7 +202,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALVALUE, eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALVALUE, cUnits.Monetary)
 
             alSumAll.Clear()
             For fleetIndex As Integer = 1 To Core.nFleets
@@ -264,7 +264,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALCOST, eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALCOST, cUnits.Monetary)
 
             alSumCost.Clear()
             For fleetIndex As Integer = 1 To Core.nFleets
@@ -317,7 +317,7 @@ Namespace Ecopath.Output
 
             iRow = Me.AddRow()
             Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALPROFIT, eUnitType.Monetary)
+            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALPROFIT, cUnits.Monetary)
 
             alSumProfit.Clear()
             For fleetIndex As Integer = 1 To Core.nFleets

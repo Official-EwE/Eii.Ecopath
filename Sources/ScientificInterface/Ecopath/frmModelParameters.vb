@@ -121,6 +121,12 @@ Public Class frmModelParameters
         ' Listen to shapes data added or removed messages
         Me.CoreComponents = Nothing
 
+        Me.m_lblAreaUnit.UIContext = Me.UIContext
+        Me.m_lblNorthUnit.UIContext = Me.UIContext
+        Me.m_lblSouthUnit.UIContext = Me.UIContext
+        Me.m_lblWestUnit.UIContext = Me.UIContext
+        Me.m_lblEastUnit.UIContext = Me.UIContext
+
         Me.PatchCurrencyUnitRadioButtonText(Me.rbWetWeight, eUnitCurrencyType.WetWeight)
         Me.PatchCurrencyUnitRadioButtonText(Me.rbCalorie, eUnitCurrencyType.Calorie)
         Me.PatchCurrencyUnitRadioButtonText(Me.rbCarbon, eUnitCurrencyType.Carbon)

@@ -48,12 +48,12 @@ Namespace Ecopath.Output
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_A_IN_LW)
             Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_B_IN_LW)
-            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_LENGTH_INFINITY_UNIT) ', StyleGuide.eUnitType.None)
-            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_WEIGHT_INFINITY_UNIT) ', StyleGuide.eUnitType.Monetary)
-            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_K_VBGF_UNIT) ', StyleGuide.eUnitType.None)
-            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_TZERO_VBGF_UNIT) ', StyleGuide.eUnitType.Time)
-            Me(0, 8) = New EwEColumnHeaderCell(SharedResources.HEADER_AGE_FIRST_CAPTURE_UNIT) ', StyleGuide.eUnitType.Currency)
-            Me(0, 9) = New EwEColumnHeaderCell(SharedResources.HEADER_MAXAGE_UNIT) ', StyleGuide.eUnitType.Currency)
+            Me(0, 4) = New EwEColumnHeaderCell(eVarNameFlags.LooInput)
+            Me(0, 5) = New EwEColumnHeaderCell(eVarNameFlags.WinfOutput)
+            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_K_VBGF)
+            Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_TZERO_VBGF)
+            Me(0, 8) = New EwEColumnHeaderCell(eVarNameFlags.TCatchOutput)
+            Me(0, 9) = New EwEColumnHeaderCell(eVarNameFlags.TmaxOutput)
 
             Me.FixedColumns = 2
 

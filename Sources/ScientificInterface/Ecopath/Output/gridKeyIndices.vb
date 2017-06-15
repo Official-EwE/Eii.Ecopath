@@ -24,6 +24,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -31,12 +32,12 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridKeyIndices
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Private Enum eColumnTypes As Integer
@@ -52,15 +53,17 @@ Namespace Ecopath.Output
 
             MyBase.InitStyle()
 
-            Dim aUnitType As eUnitType() = {eUnitType.Currency, eUnitType.Time}
-
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(SharedResources.HEADER_NETMIGRATION_UNIT, aUnitType)
-            Me(0, eColumnTypes.FlowToDet) = New EwEColumnHeaderCell(SharedResources.HEADER_FLOWTODETR_UNIT, aUnitType)
-            Me(0, eColumnTypes.NetEff) = New EwEColumnHeaderCell(SharedResources.HEADER_NETEFFICIENCY)
-            Me(0, eColumnTypes.OI) = New EwEColumnHeaderCell(SharedResources.HEADER_OMNIVORYINDEX)
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(eVarNameFlags.Name)
+            Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(eVarNameFlags.NetMigration)
+            'Me(0, eColumnTypes.NetMig) = New EwEColumnHeaderCell(SharedResources.HEADER_NETMIGRATION_UNIT, cUnitFormatter.CurrencyOverTime)
+            Me(0, eColumnTypes.FlowToDet) = New EwEColumnHeaderCell(eVarNameFlags.FlowToDet)
+            'Me(0, eColumnTypes.FlowToDet) = New EwEColumnHeaderCell(SharedResources.HEADER_FLOWTODETR_UNIT, cUnitFormatter.CurrencyOverTime)
+            Me(0, eColumnTypes.NetEff) = New EwEColumnHeaderCell(eVarNameFlags.NetEfficiency)
+            'Me(0, eColumnTypes.NetEff) = New EwEColumnHeaderCell(SharedResources.HEADER_NETEFFICIENCY)
+            'Me(0, eColumnTypes.OI) = New EwEColumnHeaderCell(SharedResources.HEADER_OMNIVORYINDEX)
+            Me(0, eColumnTypes.OI) = New EwEColumnHeaderCell(eVarNameFlags.OmnivoryIndex)
 
             Me.FixedColumns = 2
 
@@ -126,7 +129,7 @@ Namespace Ecopath.Output
                 Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             End If
 
-             Me(iRow, eColumnTypes.NetMig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetMigration)
+            Me(iRow, eColumnTypes.NetMig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetMigration)
             Me(iRow, eColumnTypes.FlowToDet) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FlowToDet)
             Me(iRow, eColumnTypes.NetEff) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.NetEfficiency)
             Me(iRow, eColumnTypes.OI) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OmnivoryIndex)

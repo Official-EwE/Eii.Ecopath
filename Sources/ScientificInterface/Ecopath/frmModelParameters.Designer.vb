@@ -58,7 +58,7 @@ Partial Class frmModelParameters
         Me.m_lblFirstYear = New System.Windows.Forms.Label()
         Me.m_lblArea = New System.Windows.Forms.Label()
         Me.m_tbArea = New System.Windows.Forms.TextBox()
-        Me.m_lblAreaUnit = New System.Windows.Forms.Label()
+        Me.m_lblAreaUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
         Me.m_tlpUnits = New System.Windows.Forms.TableLayoutPanel()
         Me.m_gbCurrencyUnit = New System.Windows.Forms.GroupBox()
         Me.tbCurrencyNutrientOther = New System.Windows.Forms.TextBox()
@@ -123,6 +123,10 @@ Partial Class frmModelParameters
         Me.m_lblPublicationDOI = New System.Windows.Forms.Label()
         Me.m_lblPublicationURL = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_lblNorthUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
+        Me.m_lblEastUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
+        Me.m_lblWestUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
+        Me.m_lblSouthUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -218,6 +222,7 @@ Partial Class frmModelParameters
         '
         resources.ApplyResources(Me.m_lblAreaUnit, "m_lblAreaUnit")
         Me.m_lblAreaUnit.Name = "m_lblAreaUnit"
+        Me.m_lblAreaUnit.UIContext = Nothing
         '
         'm_tlpUnits
         '
@@ -475,12 +480,16 @@ Partial Class frmModelParameters
         Me.m_plDescr.Controls.Add(Me.m_lblFirstYear)
         Me.m_plDescr.Controls.Add(Me.m_nudNorth)
         Me.m_plDescr.Controls.Add(Me.m_lblSouth)
+        Me.m_plDescr.Controls.Add(Me.m_lblSouthUnit)
+        Me.m_plDescr.Controls.Add(Me.m_lblEastUnit)
+        Me.m_plDescr.Controls.Add(Me.m_lblNorthUnit)
         Me.m_plDescr.Controls.Add(Me.m_lblAreaUnit)
         Me.m_plDescr.Controls.Add(Me.m_lblEast)
         Me.m_plDescr.Controls.Add(Me.m_lblModelBounds)
         Me.m_plDescr.Controls.Add(Me.m_lblArea)
         Me.m_plDescr.Controls.Add(Me.m_lblWest)
         Me.m_plDescr.Controls.Add(Me.m_lblNorth)
+        Me.m_plDescr.Controls.Add(Me.m_lblWestUnit)
         resources.ApplyResources(Me.m_plDescr, "m_plDescr")
         Me.m_plDescr.Name = "m_plDescr"
         '
@@ -663,6 +672,30 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
         '
+        'm_lblNorthUnit
+        '
+        resources.ApplyResources(Me.m_lblNorthUnit, "m_lblNorthUnit")
+        Me.m_lblNorthUnit.Name = "m_lblNorthUnit"
+        Me.m_lblNorthUnit.UIContext = Nothing
+        '
+        'm_lblEastUnit
+        '
+        resources.ApplyResources(Me.m_lblEastUnit, "m_lblEastUnit")
+        Me.m_lblEastUnit.Name = "m_lblEastUnit"
+        Me.m_lblEastUnit.UIContext = Nothing
+        '
+        'm_lblWestUnit
+        '
+        resources.ApplyResources(Me.m_lblWestUnit, "m_lblWestUnit")
+        Me.m_lblWestUnit.Name = "m_lblWestUnit"
+        Me.m_lblWestUnit.UIContext = Nothing
+        '
+        'm_lblSouthUnit
+        '
+        resources.ApplyResources(Me.m_lblSouthUnit, "m_lblSouthUnit")
+        Me.m_lblSouthUnit.Name = "m_lblSouthUnit"
+        Me.m_lblSouthUnit.UIContext = Nothing
+        '
         'frmModelParameters
         '
         resources.ApplyResources(Me, "$this")
@@ -710,7 +743,7 @@ Partial Class frmModelParameters
     Private WithEvents m_lblFirstYear As System.Windows.Forms.Label
     Private WithEvents m_lblArea As System.Windows.Forms.Label
     Private WithEvents m_tbArea As System.Windows.Forms.TextBox
-    Private WithEvents m_lblAreaUnit As System.Windows.Forms.Label
+    Private WithEvents m_lblAreaUnit As cEwEUnitLabel
     Private WithEvents m_tlpUnits As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_gbCurrencyUnit As System.Windows.Forms.GroupBox
     Private WithEvents m_lblEnergyRelated As System.Windows.Forms.Label
@@ -776,4 +809,8 @@ Partial Class frmModelParameters
     Private WithEvents m_lblModelBounds As System.Windows.Forms.Label
     Private WithEvents m_lblBiodivIndex As Label
     Private WithEvents m_cbmBiodivIndex As ComboBox
+    Private WithEvents m_lblSouthUnit As cEwEUnitLabel
+    Private WithEvents m_lblEastUnit As cEwEUnitLabel
+    Private WithEvents m_lblNorthUnit As cEwEUnitLabel
+    Private WithEvents m_lblWestUnit As cEwEUnitLabel
 End Class

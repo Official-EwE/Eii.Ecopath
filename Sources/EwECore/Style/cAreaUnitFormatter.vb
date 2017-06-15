@@ -33,34 +33,37 @@ Namespace Style
     ''' Class for providing a textual description of <see cref="eUnitAreaType"/> objects.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class cMapUnitFormatter
+    Public Class cAreaUnitFormatter
         Implements ITypeFormatter
+
+        Private m_strCustom As String = ""
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Create a new type <see cref="eUnitCurrencyType"/>formatter.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New()
+        Public Sub New(strCustom As String)
+            Me.m_strCustom = strCustom
         End Sub
 
         Public Function GetDescribedType() As System.Type Implements ITypeFormatter.GetDescribedType
-            Return GetType(eUnitMapType)
+            Return GetType(eUnitAreaType)
         End Function
 
-        Public Function GetDescriptor(ByVal value As Object, _
+        Public Function GetDescriptor(ByVal value As Object,
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                   Implements ITypeFormatter.GetDescriptor
 
-            Dim unit As eUnitMapType = DirectCast(value, eUnitMapType)
+            Dim unit As eUnitAreaType = DirectCast(value, eUnitAreaType)
 
             Select Case unit
-                Case eUnitMapType.m
-                    Return My.Resources.CoreDefaults.UNIT_METER
-                Case eUnitMapType.km
-                    Return My.Resources.CoreDefaults.UNIT_KILOMETER
-                Case eUnitMapType.dd
-                    Return My.Resources.CoreDefaults.UNIT_DECIMALDEGREE
+                Case eUnitAreaType.Km2
+                    Return My.Resources.CoreDefaults.UNIT_AREA_KM2
+                Case eUnitAreaType.Mi2
+                    Return My.Resources.CoreDefaults.UNIT_AREA_MI2
+                Case eUnitAreaType.Custom
+                    Return Me.m_strCustom
             End Select
 
             Return String.Empty

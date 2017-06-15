@@ -40,7 +40,6 @@ Namespace MSE
             MyBase.New(theCore)
 
             Dim val As cValue
-            Dim meta As cVariableMetaData
 
             Me.m_dataType = eDataTypes.MSEBatchFixedFInput
             Me.m_coreComponent = eCoreComponentType.MSE
@@ -53,22 +52,17 @@ Namespace MSE
             'see comment setVariable(...)
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.MSEBatchTACLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchTACLower))
+            val = New cValue(New Single, eVarNameFlags.MSEBatchTACLower, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.MSEBatchTACUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchTACUpper))
+            val = New cValue(New Single, eVarNameFlags.MSEBatchTACUpper, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.MSETAC, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETAC))
+            val = New cValue(New Single, eVarNameFlags.MSETAC, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
-
 
             'Used
-            meta = New cVariableMetaData()
-            val = New cValue(New Boolean, eVarNameFlags.MSEBatchTACManaged, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchTACManaged))
+            val = New cValue(New Boolean, eVarNameFlags.MSEBatchTACManaged, eStatusFlags.Null, eValueTypes.Bool)
             m_values.Add(val.varName, val)
 
             Me.AllowValidation = True

@@ -174,15 +174,15 @@ Public Class dlgEditBasemap
     Private Sub UpdateControls()
 
         Dim fmt As New EwECore.Style.cMapUnitFormatter()
-
+        ' ToDo: AssumeSquareCells should be centralized at EwE model level?
         Dim strUnit As String = If(Me.m_cbAssumeSquareCells.Checked,
-                                                 fmt.GetDescriptor(eUnitMapType.m),
-                                                 fmt.GetDescriptor(eUnitMapType.dd))
+                                                 fmt.GetDescriptor(eUnitMapRefType.m),
+                                                 fmt.GetDescriptor(eUnitMapRefType.dd))
 
         Me.m_lblUnitLon.Text = strUnit
         Me.m_lblUnitLat.Text = strUnit
         Me.m_lblUnitCellSize.Text = strUnit
-        Me.m_lblUnitCellLen.Text = fmt.GetDescriptor(eUnitMapType.km)
+        Me.m_lblUnitCellLen.Text = fmt.GetDescriptor(eUnitMapRefType.km)
 
         Me.m_btnOk.Enabled = True
 

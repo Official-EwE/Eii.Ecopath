@@ -50,176 +50,144 @@ Public Class cEwEModel
             'see comment setVariable(...)
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-            ' Description
+            ' Description - use private metadata to allow more than the standard 254 characters
             meta = New cVariableMetaData(60000)
-            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
-            ' Author
-            meta = New cVariableMetaData(250)
-            val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Contact
-            meta = New cVariableMetaData(250)
-            val = New cValue(New String(desc), eVarNameFlags.Contact, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.Contact, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Area
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.Area, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Single, eVarNameFlags.Area, eStatusFlags.OK, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             ' NumDigits
-            meta = New cVariableMetaData(0, 10, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Integer, eVarNameFlags.NumDigits, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
+            val = New cValue(New Integer, eVarNameFlags.NumDigits, eStatusFlags.OK, eValueTypes.Int, Nothing, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' FirstYear
-            meta = New cVariableMetaData(0, 10000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 1950)
-            val = New cValue(New Integer, eVarNameFlags.EcopathFirstYear, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Integer, eVarNameFlags.EcopathFirstYear, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' NumYears
-            meta = New cVariableMetaData(1, 10000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 1)
-            val = New cValue(New Integer, eVarNameFlags.EcopathNumYears, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Integer, eVarNameFlags.EcopathNumYears, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' North
-            meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            val = New cValue(New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' South
-            meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            val = New cValue(New Single, eVarNameFlags.South, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Single, eVarNameFlags.South, eStatusFlags.OK, eValueTypes.Sng)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' East
-            meta = New cVariableMetaData(-180, 180, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            val = New cValue(New Single, eVarNameFlags.East, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Single, eVarNameFlags.East, eStatusFlags.OK, eValueTypes.Sng)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' West
-            meta = New cVariableMetaData(-180, 180, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-            val = New cValue(New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' GroupDigits
-            meta = New cVariableMetaData()
-            val = New cValue(New Boolean, eVarNameFlags.GroupDigits, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.GroupDigits))
+            val = New cValue(New Boolean, eVarNameFlags.GroupDigits, eStatusFlags.OK, eValueTypes.Bool, Nothing, m_core.m_validators.getValidator(eVarNameFlags.GroupDigits))
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Time unit (enum)
-            meta = New cVariableMetaData(0, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.UnitTime, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.UnitTime))
+            val = New cValue(New Integer, eVarNameFlags.UnitTime, eStatusFlags.OK, eValueTypes.Int, Nothing, m_core.m_validators.getValidator(eVarNameFlags.UnitTime))
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Time unit (text)
-            meta = New cVariableMetaData(20)
-            val = New cValue(New String(desc), eVarNameFlags.UnitTimeCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str,
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.UnitTimeCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Currency unit (enum)
-            meta = New cVariableMetaData(0, 9, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.UnitCurrency, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Integer, eVarNameFlags.UnitCurrency, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Currency unit (text)
-            meta = New cVariableMetaData(20)
-            val = New cValue(New String(desc), eVarNameFlags.UnitCurrencyCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str,
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.UnitCurrencyCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Monetary unit (enum)
-            meta = New cVariableMetaData(4)
-            val = New cValue(New String(desc), eVarNameFlags.UnitMonetary, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str,
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.UnitMonetary, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Area unit (enum)
-            meta = New cVariableMetaData(0, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.UnitArea, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Integer, eVarNameFlags.UnitArea, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Area unit (text)
-            meta = New cVariableMetaData(20)
-            val = New cValue(New String(desc), eVarNameFlags.UnitAreaCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str,
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.UnitAreaCustomText, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+            ' Map georeferencing unit (enum)
+            val = New cValue(New Integer, eVarNameFlags.UnitMapRef, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Country
-            meta = New cVariableMetaData(63)
-            val = New cValue(New String(desc), eVarNameFlags.Country, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.Country, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
-            ' Ecosystem type
-            meta = New cVariableMetaData(254)
-            val = New cValue(New String(desc), eVarNameFlags.EcosystemType, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.EcosystemType, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Ecobase code
-            meta = New cVariableMetaData(49)
-            val = New cValue(New String(desc), eVarNameFlags.CodeEcobase, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.CodeEcobase, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' DOI
-            meta = New cVariableMetaData(2000)
-            val = New cValue(New String(desc), eVarNameFlags.PublicationDOI, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            val.AffectsRunState = False
+            val = New cValue(New String(desc), eVarNameFlags.PublicationDOI, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             m_values.Add(val.varName, val)
 
             ' URI
-            meta = New cVariableMetaData(2000)
-            val = New cValue(New String(desc), eVarNameFlags.PublicationURI, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.PublicationURI, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Reference
-            meta = New cVariableMetaData(2000)
-            val = New cValue(New String(desc), eVarNameFlags.PublicationReference, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.PublicationReference, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Last saved julian date
-            meta = New cVariableMetaData(0, Double.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Double, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LastSaved))
+            val = New cValue(New Double, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.LastSaved))
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' IsEcopaceCoupled
-            meta = New cVariableMetaData()
-            val = New cValue(New Boolean, eVarNameFlags.IsEcospaceModelCoupled, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.IsEcospaceModelCoupled))
+            val = New cValue(New Boolean, eVarNameFlags.IsEcospaceModelCoupled, eStatusFlags.OK, eValueTypes.Bool)
             m_values.Add(val.varName, val)
 
             ' BiodiversityIndicatorType (enum)
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.DiversityIndex, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Integer, eVarNameFlags.BiodiversityIndicator, eStatusFlags.OK, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             'set status flags to their default values

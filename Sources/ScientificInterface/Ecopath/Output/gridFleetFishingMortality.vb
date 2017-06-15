@@ -24,15 +24,15 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Properties
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridFleetFishingMortality
         Inherits EwEGrid
 
@@ -58,9 +58,9 @@ Namespace Ecopath.Output
 
             For iFleet As Integer = 1 To Core.nFleets
                 fleet = Core.FleetInputs(iFleet)
-                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, _
-                                                                 fleet, eVarNameFlags.Name, Nothing, _
-                                                                 SharedResources.HEADER_X_PER_UNIT, eUnitType.Time)
+                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager,
+                                                                 fleet, eVarNameFlags.Name, Nothing,
+                                                                 cUnits.OverTime)
             Next iFleet
 
             For iGroup = 1 To Core.nLivingGroups

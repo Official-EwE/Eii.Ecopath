@@ -430,7 +430,7 @@ Public Class cResults
     Public Sub Reset(ByVal runType As cModel.eRunTypes)
 
         Dim core As cCore = Me.m_data.Core
-        Dim nNumUnits As Integer = Me.m_data.GetUnits(cUnitFactory.eUnitType.All).Length
+        Dim nNumUnits As Integer = Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.All).Length
         Dim nItems As Integer = Math.Max(Me.m_data.Core.nFleets, Me.m_data.Core.nGroups)
 
         Me.m_dtResultTimeStep.Clear()
@@ -614,7 +614,7 @@ Public Class cResults
         Dim sTotal As Single = 0.0!
 
         If lUnits Is Nothing Then
-            For Each unit As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
+            For Each unit As cUnit In Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.All)
                 sTotal += Me.SnapshotValue(unit, vartype, objKey)
             Next
         Else
@@ -646,7 +646,7 @@ Public Class cResults
         Dim sTotal As Single = 0.0!
 
         If lUnits Is Nothing Then
-            lUnits = Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
+            lUnits = Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.All)
         End If
 
         For Each unit As cUnit In lUnits
@@ -675,7 +675,7 @@ Public Class cResults
         Dim sTotal As Single = 0.0!
 
         If lUnits Is Nothing Then
-            lUnits = Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
+            lUnits = Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.All)
         End If
 
         For iTimestep = 0 To Me.m_iMaxTimeStep

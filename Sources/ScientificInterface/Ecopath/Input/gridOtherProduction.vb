@@ -25,6 +25,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
@@ -36,12 +37,12 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Other Production user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridOtherProduction
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Private Enum eColumnTypes As Integer
@@ -58,16 +59,15 @@ Namespace Ecopath.Input
 
             MyBase.InitStyle()
 
-            Dim aUnitType As eUnitType() = {eUnitType.Currency, eUnitType.Time}
 
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.Immig) = New EwEColumnHeaderCell(SharedResources.HEADER_IMMIGRATION_UNIT, aUnitType)
-            Me(0, eColumnTypes.Emig) = New EwEColumnHeaderCell(SharedResources.HEADER_EMIGRATION_UNIT, aUnitType)
-            Me(0, eColumnTypes.EmigRate) = New EwEColumnHeaderCell(SharedResources.HEADER_EMIGRATIONRATE_UNIT, eUnitType.Time)
-            Me(0, eColumnTypes.BioAccum) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_UNIT, aUnitType)
-            Me(0, eColumnTypes.BioAccumRate) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_RATE_ABBR_UNIT, eUnitType.Time)
+            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(eVarNameFlags.Name)
+            Me(0, eColumnTypes.Immig) = New EwEColumnHeaderCell(eVarNameFlags.Immig)
+            Me(0, eColumnTypes.Emig) = New EwEColumnHeaderCell(eVarNameFlags.Emig)
+            Me(0, eColumnTypes.EmigRate) = New EwEColumnHeaderCell(eVarNameFlags.EmigRate)
+            Me(0, eColumnTypes.BioAccum) = New EwEColumnHeaderCell(eVarNameFlags.BioAccumInput)
+            Me(0, eColumnTypes.BioAccumRate) = New EwEColumnHeaderCell(eVarNameFlags.BioAccumRate, eDescriptorTypes.Abbreviation)
 
             Me.FixedColumns = 2
 

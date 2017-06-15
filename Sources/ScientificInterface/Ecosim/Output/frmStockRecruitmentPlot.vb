@@ -181,9 +181,9 @@ Namespace Ecosim
 
             Me.LoadGroups()
             Me.m_zgh.Attach(Me.UIContext, Me.m_plot)
-            Me.m_zgh.ConfigurePane(My.Resources.SR_PLOT_TITLE, _
-                                   cStringUtils.Localize(My.Resources.SR_PLOT_X_AXIS, String.Empty), _
-                                   cStringUtils.Localize(SharedResources.HEADER_RECRUITMENT_UNIT, String.Empty), _
+            Me.m_zgh.ConfigurePane(My.Resources.SR_PLOT_TITLE,
+                                   cStringUtils.Localize(My.Resources.SR_PLOT_X_AXIS, String.Empty),
+                                   SharedResources.HEADER_RECRUITMENT,
                                    False)
 
             Dim m_SyncObj As System.Threading.SynchronizationContext = System.Threading.SynchronizationContext.Current
@@ -520,7 +520,7 @@ Namespace Ecosim
             Next
 
             Me.m_plot.GraphPane.XAxis.Title.Text = cStringUtils.Localize(My.Resources.SR_PLOT_X_AXIS, strTitleX)
-            Me.m_plot.GraphPane.YAxis.Title.Text = cStringUtils.Localize(SharedResources.HEADER_RECRUITMENT_UNIT, strTitleY)
+            Me.m_plot.GraphPane.YAxis.Title.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, SharedResources.HEADER_RECRUITMENT, strTitleY)
 
             Me.m_plot.AxisChange()
             Me.m_plot.Refresh()

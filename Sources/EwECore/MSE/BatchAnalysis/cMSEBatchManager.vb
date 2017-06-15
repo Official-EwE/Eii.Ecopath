@@ -236,7 +236,7 @@ Namespace MSEBatchManager
             Me.Parameters.nTFMIteration = Me.m_BatchData.nTFM
             Me.Parameters.nFixedFIteration = Me.m_BatchData.nFixedF
             Me.Parameters.nTACIteration = Me.m_BatchData.nTAC
-            Me.Parameters.IterCalcType = DirectCast(Me.m_BatchData.IterCalcType, Integer)
+            Me.Parameters.IterCalcType = Me.m_BatchData.IterCalcType
 
             Me.Parameters.bSaveBiomass = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.Biomass)
             Me.Parameters.bSaveCatch = Me.m_BatchData.isOuputSaved(eMSEBatchOuputTypes.CatchByGroup)

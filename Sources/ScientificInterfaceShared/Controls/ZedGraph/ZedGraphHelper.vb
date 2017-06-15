@@ -25,6 +25,7 @@ Option Strict On
 Imports System.IO
 Imports System.Text
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
@@ -45,7 +46,7 @@ Namespace Controls
     ''' export.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class cZedGraphHelper
 
 #Region " Helper classes "
@@ -334,7 +335,7 @@ Namespace Controls
         ''' <summary>Number of panels wanted in the zed graph</summary>
         Private m_nPanels As Integer = 1
         ''' <summary>Registered axis that need to display units.</summary>
-        Private m_dtAxisLabels As New Dictionary(Of Axis, cAxisLabelFormatter)
+        Private m_dtAxisLabels As New Dictionary(Of Axis, String)
         ''' <summary>Grace value for manual scaled Y-axis.</summary>
         Private m_sYScaleGrace As Single = 0.1!
 
@@ -649,46 +650,14 @@ Namespace Controls
         ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ConfigurePane(ByVal strTitle As String,
-            ByVal strXAxisLabel As String, ByVal dXAxisMin As Double, ByVal dXAxisMax As Double,
-            ByVal strYAxisLabel As String, ByVal dYAxisMin As Double, ByVal dYAxisMax As Double,
-            ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter,
-            Optional ByVal iPane As Integer = 1) As GraphPane
-
-            Return Me.ConfigurePane(strTitle,
-                                    strXAxisLabel, Nothing, dXAxisMin, dXAxisMax,
-                                    strYAxisLabel, Nothing, dYAxisMin, dYAxisMax,
-                                    bShowLegend, legendPos, iPane)
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Configure a single <see cref="GraphPane">pane</see> in the graph.
-        ''' </summary>
-        ''' <param name="strTitle">Title for the pane.</param>
-        ''' <param name="strXAxisLabel">Label for the X-axis.</param>
-        ''' <param name="aUnitsXAxis">Units to display in the x-axis label.</param>
-        ''' <param name="dXAxisMin">X-axis min scale.</param>
-        ''' <param name="dXAxisMax">X-axis max scale.</param>
-        ''' <param name="strYAxisLabel">Label for the Y-axis.</param>
-        ''' <param name="aUnitsYAxis">Units to display in the Y-axis label.</param>
-        ''' <param name="dYAxisMin">Y-axis min scale.</param>
-        ''' <param name="dYAxisMax">Y-axis max scale.</param>
-        ''' <param name="bShowLegend">Flag stating whether the legend should be shown.</param>
-        ''' <param name="legendPos">Legend <see cref="LegendPos">position</see>.</param>
-        ''' <param name="iPane">The pane to configure. If not specified, the main pane
-        ''' is configured.</param>
-        ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
-        ''' -------------------------------------------------------------------
-        Public Overridable Function ConfigurePane(ByVal strTitle As String,
-            ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As eUnitType, ByVal dXAxisMin As Double, ByVal dXAxisMax As Double,
-            ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As eUnitType, ByVal dYAxisMin As Double, ByVal dYAxisMax As Double,
-            ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter,
-            Optional ByVal iPane As Integer = 1) As GraphPane
+                                                  ByVal strXAxisLabel As String, ByVal dXAxisMin As Double, ByVal dXAxisMax As Double,
+                                                  ByVal strYAxisLabel As String, ByVal dYAxisMin As Double, ByVal dYAxisMax As Double,
+                                                  ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter,
+                                                  Optional ByVal iPane As Integer = 1) As GraphPane
 
             Dim gp As GraphPane = Me.ConfigurePane(strTitle,
-                                                   strXAxisLabel, aUnitsXAxis,
-                                                   strYAxisLabel, aUnitsYAxis,
+                                                   strXAxisLabel,
+                                                   strYAxisLabel,
                                                    bShowLegend, legendPos, iPane)
             With gp
 
@@ -723,34 +692,10 @@ Namespace Controls
         ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function ConfigurePane(ByVal strTitle As String,
-             ByVal strXAxisLabel As String, ByVal strYAxisLabel As String,
-             ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter,
-             Optional ByVal iPane As Integer = 1) As GraphPane
-
-            Return Me.ConfigurePane(strTitle, strXAxisLabel, Nothing, strYAxisLabel, Nothing, bShowLegend, legendPos, iPane)
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Configure a single <see cref="GraphPane">pane</see> in the graph.
-        ''' </summary>
-        ''' <param name="strTitle">Title for the pane.</param>
-        ''' <param name="strXAxisLabel">Label for the X-axis.</param>
-        ''' <param name="aUnitsXAxis">Units to display in the x-axis label.</param>
-        ''' <param name="strYAxisLabel">Label for the Y-axis.</param>
-        ''' <param name="aUnitsYAxis">Units to display in the Y-axis label.</param>
-        ''' <param name="bShowLegend">Flag stating whether the legend should be shown.</param>
-        ''' <param name="legendPos">Legend <see cref="LegendPos">position</see>.</param>
-        ''' <param name="iPane">The pane to configure. If not specified, the main pane
-        ''' is configured.</param>
-        ''' <returns>The configured <see cref="GraphPane">GraphPane</see>.</returns>
-        ''' -------------------------------------------------------------------
-        Public Overridable Function ConfigurePane(ByVal strTitle As String,
-             ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As eUnitType,
-             ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As eUnitType,
-             ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter,
-             Optional ByVal iPane As Integer = 1) As GraphPane
+                                                  ByVal strXAxisLabel As String,
+                                                  ByVal strYAxisLabel As String,
+                                                  ByVal bShowLegend As Boolean, Optional ByVal legendPos As LegendPos = LegendPos.TopCenter,
+                                                  Optional ByVal iPane As Integer = 1) As GraphPane
 
             Me.m_bShowLegend = bShowLegend
 
@@ -762,7 +707,7 @@ Namespace Controls
                 .Title.IsVisible = Not String.IsNullOrEmpty(strTitle)
 
                 ' Configure axis
-                Me.AxisLabel(.XAxis, strXAxisLabel, aUnitsXAxis)
+                Me.AxisLabel(.XAxis, strXAxisLabel)
                 .XAxis.Title.IsVisible = Not String.IsNullOrEmpty(strXAxisLabel)
                 .XAxis.MinorTic.IsAllTics = False
                 .XAxis.MinorTic.IsOpposite = False
@@ -770,7 +715,7 @@ Namespace Controls
                 .XAxis.Scale.MinGrace = 0.0#
                 .XAxis.Scale.MaxGrace = 0.0#
 
-                Me.AxisLabel(.YAxis, strYAxisLabel, aUnitsYAxis)
+                Me.AxisLabel(.YAxis, strYAxisLabel)
                 .YAxis.Title.IsVisible = Not String.IsNullOrEmpty(strYAxisLabel)
                 .YAxis.MinorTic.IsAllTics = False
                 .YAxis.MinorTic.IsOpposite = False
@@ -840,11 +785,11 @@ Namespace Controls
                                 End If
 
 #If DEBUG Then
-                                '                                ' Validate line content
-                                '                                For ipt As Integer = 0 To li.Points.Count - 1
-                                '                                    Dim pt As PointPair = li.Points(ipt)
-                                '                                    Debug.Assert(cNumberUtils.IsFinite(CSng(pt.X)) And cNumberUtils.IsFinite(CSng(pt.Y)), "Point contains infinite values")
-                                '                                Next
+                                '' Validate line content
+                                'For ipt As Integer = 0 To li.Points.Count - 1
+                                '   Dim pt As PointPair = li.Points(ipt)
+                                '   Debug.Assert(cNumberUtils.IsFinite(CSng(pt.X)) And cNumberUtils.IsFinite(CSng(pt.Y)), "Point contains infinite values")
+                                'Next
 #End If
                                 Select Case Me.CurveType(li)
 
@@ -1420,63 +1365,37 @@ Namespace Controls
 
 #Region " Axis label management "
 
-        Private Class cAxisLabelFormatter
-
-            Private m_uic As cUIContext = Nothing
-            Private m_axis As Axis = Nothing
-            Protected m_aUnitTypes() As eUnitType
-            Protected m_strUnitMask As String = ""
-
-            Public Sub New(ByVal uic As cUIContext,
-                           ByVal axis As Axis,
-                           ByVal strUnitMask As String,
-                           ByVal aUnitTypes() As eUnitType)
-
-                Me.m_uic = uic
-                Me.m_axis = axis
-                Me.m_strUnitMask = strUnitMask
-                Me.m_aUnitTypes = aUnitTypes
-
-            End Sub
-
-            Public Sub Update()
-                Me.m_axis.Title.Text = Me.LabelText()
-            End Sub
-
-            Private ReadOnly Property LabelText() As String
-                Get
-                    Return Me.m_uic.StyleGuide.FormatUnitString(Me.m_strUnitMask, Me.m_aUnitTypes)
-                End Get
-            End Property
-
-        End Class
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update the axix labels, substituting units where possible.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private Sub RefreshAxisLabels()
-            For Each Axis As Axis In Me.m_dtAxisLabels.Keys
-                Me.m_dtAxisLabels(Axis).Update()
+            Dim unit As New cUnits(Me.UIContext.Core)
+            For Each axis As Axis In Me.m_dtAxisLabels.Keys
+                axis.Title.Text = unit.ToString(Me.m_dtAxisLabels(axis))
             Next
             Me.m_zgc.Refresh()
         End Sub
 
-        Public Sub AxisLabel(ByVal axis As Axis,
-                             ByVal strLabel As String,
-                             Optional ByVal aUnitTypes() As eUnitType = Nothing)
-            If String.IsNullOrEmpty(strLabel) Then
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Set or clear an axis label.
+        ''' </summary>
+        ''' <param name="axis"></param>
+        ''' <param name="strLabel"></param>
+        ''' -------------------------------------------------------------------
+        Public Sub AxisLabel(ByVal axis As Axis, ByVal strLabel As String)
+
+            If String.IsNullOrWhiteSpace(strLabel) Then
                 Try
                     Me.m_dtAxisLabels.Remove(axis)
                 Catch ex As Exception
                 End Try
-            End If
-
-            If (aUnitTypes IsNot Nothing) Then
-                Try
-                    Dim alf As New cAxisLabelFormatter(Me.m_uic, axis, strLabel, aUnitTypes)
-                    Me.m_dtAxisLabels(axis) = alf
-                    alf.Update()
-                Catch ex As Exception
-                End Try
             Else
-                axis.Title.Text = strLabel
+                Me.m_dtAxisLabels(axis) = strLabel
+                Dim unit As New cUnits(Me.UIContext.Core)
+                axis.Title.Text = unit.ToString(strLabel)
             End If
 
             axis.Scale.IsUseTenPower = True

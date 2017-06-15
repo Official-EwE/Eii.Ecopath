@@ -56,7 +56,7 @@ Namespace Ecopath.Output
             Me.Redim(1, Core.nWeightClasses + 3)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAMEWEIGHT_UNIT)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAMEWEIGHT)
 
             ' Dynamic column header - weight class
             For wtClassIndex As Integer = 1 To Core.nWeightClasses

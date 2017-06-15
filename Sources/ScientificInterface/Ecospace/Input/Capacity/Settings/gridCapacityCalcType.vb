@@ -64,7 +64,7 @@ Namespace Ecospace
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim group As cEcospaceGroup = Nothing
+            Dim group As cEcospaceGroupInput = Nothing
             Dim map As IEnviroInputData = Nothing
             Dim fmt As New cCoreInterfaceFormatter()
 
@@ -159,10 +159,10 @@ Namespace Ecospace
 #Region " Internals "
 
         Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
-            Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroup))
+            Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroupInput))
         End Sub
 
-        Private Sub UpdateRow(grp As cEcospaceGroup)
+        Private Sub UpdateRow(grp As cEcospaceGroupInput)
 
             Dim iGroup As Integer = grp.Index
 

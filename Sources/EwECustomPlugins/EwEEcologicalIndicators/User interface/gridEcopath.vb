@@ -133,7 +133,7 @@ Public Class gridEcopath
                     cellValue = New EwECell(ind.GetValue(Me.m_indicators), GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
                     cellValue.SuppressZero(cCore.NULL_VALUE) = True
                     Me(iRow, eColumnTypes.Value) = cellValue
-                    Me(iRow, eColumnTypes.Units) = New EwEUnitCell(ind.UnitMask, ind.Units)
+                    Me(iRow, eColumnTypes.Units) = New EwEUnitCell(ind.Units)
 
                     hgcGrp.AddChildRow(iRow)
 

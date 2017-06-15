@@ -68,7 +68,7 @@ Public Class cLandingsLinkManager
         Next link
 
         ' Add for missing links to producers
-        For Each prod As cProducerUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer)
+        For Each prod As cProducerUnit In Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.Producer)
 
             ' Get fleet
             fleet = prod.Fleet

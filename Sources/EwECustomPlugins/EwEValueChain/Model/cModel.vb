@@ -318,7 +318,7 @@ Public Class cModel
         data.InitTimeStep()
 
         ' For each producer
-        For Each unit As cUnit In data.GetUnits(cUnitFactory.eUnitType.Producer)
+        For Each unit As cUnit In data.GetUnits(cUnitFactory.cUnitFormatter.Producer)
 
             ' Get actual producer
             prodUnit = DirectCast(unit, cProducerUnit)
@@ -373,7 +373,7 @@ Public Class cModel
             data.InitTimeStep()
 
             ' For each producer
-            For Each unit As cUnit In data.GetUnits(cUnitFactory.eUnitType.Producer)
+            For Each unit As cUnit In data.GetUnits(cUnitFactory.cUnitFormatter.Producer)
 
                 ' Get actual producer
                 prodUnit = DirectCast(unit, cProducerUnit)
@@ -439,7 +439,7 @@ Public Class cModel
             data.InitTimeStep()
 
             ' Set this groups' landing for each producer
-            For Each unit As cUnit In data.GetUnits(cUnitFactory.eUnitType.Producer)
+            For Each unit As cUnit In data.GetUnits(cUnitFactory.cUnitFormatter.Producer)
 
                 ' Get actual producer and its connected fleet
                 prodUnit = DirectCast(unit, cProducerUnit)

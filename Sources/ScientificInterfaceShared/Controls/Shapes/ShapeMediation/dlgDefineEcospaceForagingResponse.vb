@@ -144,7 +144,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
     Protected Function GetGroupList() As Integer()
         Dim lstGroups As New List(Of Integer)
         For iGrp As Integer = 1 To Me.m_uic.Core.nGroups
-            Dim grp As cEcospaceGroup = Me.m_uic.Core.EcospaceGroups(iGrp)
+            Dim grp As cEcospaceGroupInput = Me.m_uic.Core.EcospaceGroups(iGrp)
             If (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses) Or (grp.CapacityCalculationType = eEcospaceCapacityCalType.Both) Then
                 lstGroups.Add(iGrp)
             End If
@@ -566,7 +566,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
                     If Me.m_shape.Index = map.ResponseIndexForGroup(igrp) Then
                         'Yes this shape is set for this group
                         'add a group node
-                        Dim grp As cEcospaceGroup = Me.m_uic.Core.EcospaceGroups(igrp)
+                        Dim grp As cEcospaceGroupInput = Me.m_uic.Core.EcospaceGroups(igrp)
                         If (grp.CapacityCalculationType <> eEcospaceCapacityCalType.Habitat) Then
 
                             Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.GetDescriptor(grp))

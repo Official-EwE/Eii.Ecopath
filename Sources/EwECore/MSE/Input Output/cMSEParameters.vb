@@ -100,7 +100,6 @@ Namespace MSE
             val.Stored = False
             m_values.Add(val.varName, val)
 
-
             'Effort Mode
             meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eMSEEffortSource)).Length, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.MSEEffortSource, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEEffortSource))
@@ -108,7 +107,7 @@ Namespace MSE
             m_values.Add(val.varName, val)
 
             'jb 30-May-2011 StopRun is not a property it is a Method (stop the run) so it has been moved to the MSEManager.StopRun()
-            'meta = New cVariableMetaData()
+            'meta = New cVariableMetadata( )
             'val = New cValue(New Boolean, eVarNameFlags.MSEStop, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEStop))
             'val.Stored = False
             'm_values.Add(val.varName, val)
@@ -149,12 +148,10 @@ Namespace MSE
             m_values.Add(val.varName, val)
 
             'UseLP
-            meta = New cVariableMetaData()
+            meta = New cVariableMetaData(False)
             val = New cValue(New Boolean, eVarNameFlags.MSELPSolution, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSELPSolution))
             val.Stored = False
             m_values.Add(val.varName, val)
-
-
 
             ResetStatusFlags()
             AllowValidation = True

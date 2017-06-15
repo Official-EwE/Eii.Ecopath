@@ -832,7 +832,7 @@ Namespace Database
             End If
 
             Try
-                Me.AddRemark(reader("remarksCyclePath"), eDataTypes.EwEModel, CInt(drow("ModelID")), eVarNameFlags.CyclePath)
+                ' Me.AddRemark(reader("remarksCyclePath"), eDataTypes.EwEModel, CInt(drow("ModelID")), eVarNameFlags.CyclePath)
             Catch ex As InvalidOperationException
                 ' NOP
             Catch ex As Exception

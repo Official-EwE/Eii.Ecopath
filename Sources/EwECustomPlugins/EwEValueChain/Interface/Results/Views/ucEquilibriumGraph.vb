@@ -21,15 +21,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports System.Drawing
-Imports System.Collections.Generic
-Imports ZedGraph
-Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Properties
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Core
+Imports ZedGraph
 
 #End Region ' Imports
 
@@ -100,12 +93,10 @@ Public Class ucEquilibriumGraph
 
     End Sub
 
-    Public Sub SetData(ByVal strGraphTitle As String, _
-                       ByVal strXAxisLabel As String, ByVal aUnitsXAxis() As eUnitType, _
-                       ByVal strYAxisLabel As String, ByVal aUnitsYAxis() As eUnitType, _
-                       ByVal aVars() As cResults.eVariableType) Implements IGraphView.SetData
+    Public Sub SetData(ByVal strGraphTitle As String, ByVal strXAxisLabel As String,
+                       ByVal strYAxisLabel As String, ByVal aVars() As cResults.eVariableType) Implements IGraphView.SetData
 
-        Me.m_zgh.ConfigurePane(strGraphTitle, strXAxisLabel, aUnitsXAxis, strYAxisLabel, aUnitsYAxis, True)
+        Me.m_zgh.ConfigurePane(strGraphTitle, strXAxisLabel, strYAxisLabel, True)
         Me.m_aVars = aVars
 
     End Sub

@@ -24,6 +24,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -31,30 +32,27 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridRespiration
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
 
-            Dim aUnitType As eUnitType() = {eUnitType.Currency, eUnitType.Time}
-
             Me.Redim(1, 7)
 
-            ' Define column Headers
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_RESPIRATION_UNIT, aUnitType)
-            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_ASSIMILATION_UNIT, aUnitType)
-            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_RESPIRATIONASSIMILATION)
-            Me(0, 5) = New EwEColumnHeaderCell(SharedResources.HEADER_PRODRESP)
-            Me(0, 6) = New EwEColumnHeaderCell(SharedResources.HEADER_RESPBIOM_UNIT, eUnitType.Time)
+            Me(0, 2) = New EwEColumnHeaderCell(eVarNameFlags.Respiration)
+            Me(0, 3) = New EwEColumnHeaderCell(eVarNameFlags.Assimilation)
+            Me(0, 4) = New EwEColumnHeaderCell(eVarNameFlags.RespAssim)
+            Me(0, 5) = New EwEColumnHeaderCell(eVarNameFlags.ProdResp)
+            Me(0, 6) = New EwEColumnHeaderCell(eVarNameFlags.RespBiom)
 
             Me.FixedColumns = 2
 

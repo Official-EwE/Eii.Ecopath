@@ -1,3 +1,4 @@
+Option Strict On
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -18,7 +19,7 @@
 ' ===============================================================================
 '
 
-Option Strict On
+Imports EwECore.Style
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
@@ -70,7 +71,7 @@ Public Class cEcoPathGroupOutput
     ''' </param>
     ''' <param name="Index">Optional variable index.</param>
     ''' <param name="nullTest">Flag stating how to test for NULL values.</param>
-    Private Sub SetNullFlag(ByVal varName As eVarNameFlags, ByVal sValueToTest As Single, _
+    Private Sub SetNullFlag(ByVal varName As eVarNameFlags, ByVal sValueToTest As Single,
             Optional ByVal Index As Integer = -9999, Optional ByVal nullTest As eNullTestTypes = eNullTestTypes.GreaterThanZero)
 
         Dim bIsNull As Boolean = False
@@ -112,7 +113,7 @@ Public Class cEcoPathGroupOutput
             'Set the Status Flags to ValueComputed for input/output pairs 
             'if the modeled value is different than the input value.
             'The original data structure is needed to perform this.
-            If (Not cNumberUtils.Approximates(Me.m_core.m_EcoPathData.EE(Me.Index), Me.m_core.m_EcoPathData.EEinput(Me.Index), 0.0001)) And _
+            If (Not cNumberUtils.Approximates(Me.m_core.m_EcoPathData.EE(Me.Index), Me.m_core.m_EcoPathData.EEinput(Me.Index), 0.0001)) And
                (Me.m_core.m_EcoPathData.EE(Me.Index) <> (1 - Me.m_core.m_EcoPathData.OtherMortinput(Me.Index))) Then
                 Me.SetStatusFlags(eVarNameFlags.EEOutput, eStatusFlags.ValueComputed)
             Else
@@ -290,38 +291,47 @@ Public Class cEcoPathGroupOutput
 
         val = New cValue(New Single, eVarNameFlags.EEOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
+
         val = New cValue(New Single, eVarNameFlags.PBOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
+
         val = New cValue(New Single, eVarNameFlags.QBOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
+
         val = New cValue(New Single, eVarNameFlags.GEOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         val = New cValue(New Single, eVarNameFlags.HabitatArea, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
+
         val = New cValue(New Single, eVarNameFlags.BioAccumOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
-        val = New cValue(New Single, eVarNameFlags.Biomass, eStatusFlags.NotEditable, eValueTypes.Sng)
+
+        val = New cValue(New Single, eVarNameFlags.Biomass, eStatusFlags.NotEditable, eValueTypes.Sng, Nothing)
         m_values.Add(val.varName, val)
+
         val = New cValue(New Single, eVarNameFlags.BiomassAreaOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-        'jb June-13-06 Added to ouputs
         val = New cValue(New Single, eVarNameFlags.BioAccumRatePerYear, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         val = New cValue(New Single, eVarNameFlags.DetImp, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
+
         val = New cValue(New Single, eVarNameFlags.GS, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
-        val = New cValue(New Single, eVarNameFlags.TTLX, eStatusFlags.NotEditable, eValueTypes.Sng)
+
+        val = New cValue(New Single, eVarNameFlags.TTLX, eStatusFlags.NotEditable, eValueTypes.Sng, Nothing)
         m_values.Add(val.varName, val)
+
         val = New cValue(New Single, eVarNameFlags.ImportedConsumption, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-        'mortality
+        ' -- mortalities --
         val = New cValue(New Single, eVarNameFlags.MortCoPB, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
+
         val = New cValue(New Single, eVarNameFlags.MortCoFishRate, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.MortCoPredMort, eStatusFlags.NotEditable, eValueTypes.Sng)
@@ -353,8 +363,7 @@ Public Class cEcoPathGroupOutput
         val = New cValue(New Single, eVarNameFlags.RespBiom, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-        'arrayed values
-        'val will contain an array of nGroup elements 
+        ' -- arrayed values --
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Consumption, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.PredMort, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
@@ -368,26 +377,27 @@ Public Class cEcoPathGroupOutput
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Alpha, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
 
-        'Joeh
-        val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.NotEditable, eValueTypes.Sng)
+        ' -- TODO: VALIDATE UNITS --
+
+        val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.NotEditable, eValueTypes.Sng, Nothing)
         m_values.Add(val.varName, val)
-        val = New cValue(New Single, eVarNameFlags.BiomassAvgSzWt, eStatusFlags.NotEditable, eValueTypes.Sng)
+        val = New cValue(New Single, eVarNameFlags.BiomassAvgSzWt, eStatusFlags.NotEditable, eValueTypes.Sng, Nothing)
         m_values.Add(val.varName, val)
-        val = New cValue(New Single, eVarNameFlags.BiomassSzWt, eStatusFlags.NotEditable, eValueTypes.Sng)
+        val = New cValue(New Single, eVarNameFlags.BiomassSzWt, eStatusFlags.NotEditable, eValueTypes.Sng, Nothing)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.TCatchOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
-        val = New cValue(New Single, eVarNameFlags.AinLWOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
+        val = New cValue(New Single, eVarNameFlags.AinLWOutput, eStatusFlags.NotEditable, eValueTypes.Sng, Nothing)
         m_values.Add(val.varName, val)
-        val = New cValue(New Single, eVarNameFlags.BinLWOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
+        val = New cValue(New Single, eVarNameFlags.BinLWOutput, eStatusFlags.NotEditable, eValueTypes.Sng, Nothing)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.LooOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         val = New cValue(New Single, eVarNameFlags.WinfOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
-        val = New cValue(New Single, eVarNameFlags.t0Output, eStatusFlags.NotEditable, eValueTypes.Sng)
+        val = New cValue(New Single, eVarNameFlags.t0Output, eStatusFlags.NotEditable, eValueTypes.Sng, Nothing)
         m_values.Add(val.varName, val)
-        val = New cValue(New Single, eVarNameFlags.TmaxOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
+        val = New cValue(New Single, eVarNameFlags.TmaxOutput, eStatusFlags.NotEditable, eValueTypes.Sng, Nothing)
         m_values.Add(val.varName, val)
 
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcopathWeight, eStatusFlags.NotEditable, eCoreCounterTypes.nEcopathAgeSteps, AddressOf m_core.GetCoreCounter)
@@ -401,14 +411,11 @@ Public Class cEcoPathGroupOutput
 
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.PSD, eStatusFlags.NotEditable, eCoreCounterTypes.nWeightClasses, AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
-        'End Joeh
 
         val = New cValue(New Single, eVarNameFlags.FishMortTotMort, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
-        'NatMortPerTotMort
         val = New cValue(New Single, eVarNameFlags.NatMortPerTotMort, eStatusFlags.NotEditable, eValueTypes.Sng)
         m_values.Add(val.varName, val)
-
 
     End Sub
 

@@ -114,7 +114,7 @@ Namespace Ecospace
 
             For i As Integer = 1 To Me.Core.nFleets
 
-                Dim source As cEcospaceFleet = Me.Core.EcospaceFleets(i)
+                Dim source As cEcospaceFleetInput = Me.Core.EcospaceFleets(i)
 
                 If (bEnable) Then
                     Me(i, eColumnTypes.All) = New Cells.Real.CheckBox(False)
@@ -147,7 +147,7 @@ Namespace Ecospace
 
             If (Me.m_bInUpdate) Then Return True
 
-            Dim fleet As cEcospaceFleet = Me.Core.EcospaceFleets(p.Row)
+            Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleets(p.Row)
 
             Select Case p.Column
 
@@ -190,7 +190,7 @@ Namespace Ecospace
             If (Me.m_bInUpdate) Then Return
             Me.m_bInUpdate = True
 
-            Dim fleet As cEcospaceFleet = Me.Core.EcospaceFleets(iRow)
+            Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleets(iRow)
             Dim bAllRestricted As Boolean = True
 
             For iMPA As Integer = 1 To Me.Core.nMPAs

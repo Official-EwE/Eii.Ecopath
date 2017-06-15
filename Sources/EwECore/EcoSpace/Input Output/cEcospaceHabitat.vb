@@ -35,15 +35,13 @@ Public Class cEcospaceHabitat
         m_coreComponent = eCoreComponentType.EcoSpace
 
         Dim val As cValue
-        Dim meta As cVariableMetaData
 
         Try
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' HabAreaProportion
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.HabAreaProportion, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Single, eVarNameFlags.HabAreaProportion, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             ResetStatusFlags()

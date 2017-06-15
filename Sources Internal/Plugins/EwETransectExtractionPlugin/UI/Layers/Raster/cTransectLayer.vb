@@ -41,8 +41,8 @@ Public Class cTransectLayer
     ''' <param name="core"></param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal core As cCore, ds As cTransectDatastructures)
-        ' Provide a bogus varname as the manager does not care
-        MyBase.New(core, ds, "Transect cells", eVarNameFlags.Applied)
+        ' Provide a bogus varname (but not NotSet!) as the manager does not care
+        MyBase.New(core, ds, "Transect cells", eVarNameFlags.Author)
     End Sub
 
     Public Overrides Property Cell(iRow As Integer, iCol As Integer, Optional iIndexSec As Integer = -9999) As Object

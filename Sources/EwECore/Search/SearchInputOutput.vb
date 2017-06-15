@@ -28,7 +28,6 @@ Imports EwEUtils.Core
 
 Namespace SearchObjectives
 
-
     'ValWeights uses the same array indexes to store different values
     'what these indexes hold depends on the eOptimizeOptions.MaxPortUtil
     Public Enum eValueWeightTypes
@@ -43,7 +42,6 @@ Namespace SearchObjectives
 
 #Region "Fleets "
 
-
     Public Class cSearchObjectiveFleetInput
         Inherits cCoreGroupBase
 
@@ -53,7 +51,6 @@ Namespace SearchObjectives
             Me.AllowValidation = False
 
             Dim val As cValue
-            Dim meta As cVariableMetaData
 
             Me.m_dataType = eDataTypes.SearchObjectiveFleetInput
             Me.m_coreComponent = eCoreComponentType.SearchObjective
@@ -64,14 +61,12 @@ Namespace SearchObjectives
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
 
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FPSFleetJobCatchValue, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSFleetJobCatchValue))
+            val = New cValue(New Single, eVarNameFlags.FPSFleetJobCatchValue, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
             'FPSFleetTargetProfit
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FPSFleetTargetProfit, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSFleetTargetProfit))
+            val = New cValue(New Single, eVarNameFlags.FPSFleetTargetProfit, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
@@ -80,7 +75,6 @@ Namespace SearchObjectives
             Me.AllowValidation = True
 
         End Sub
-
 
         Public Property JobCatchValue() As Single
             Get
@@ -112,14 +106,12 @@ Namespace SearchObjectives
     Public Class cSearchObjectiveWeights
         Inherits cCoreInputOutputBase
 
-
         Public Sub New(ByRef theCore As cCore)
             MyBase.New(theCore)
 
             Me.AllowValidation = False
 
             Dim val As cValue
-            Dim meta As cVariableMetaData
 
             Me.m_dataType = eDataTypes.SearchObjectiveWeights
             Me.m_coreComponent = eCoreComponentType.SearchObjective
@@ -128,45 +120,38 @@ Namespace SearchObjectives
             'see comment setVariable(...)
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-            'FPSEcoSystemWeight()
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FPSEconomicWeight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSEconomicWeight))
+            'FPSEcoSystemWeight
+            val = New cValue(New Single, eVarNameFlags.FPSEconomicWeight, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
-            'FPSSocialWeight()
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FPSSocialWeight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSSocialWeight))
+            'FPSSocialWeight
+            val = New cValue(New Single, eVarNameFlags.FPSSocialWeight, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
-            'FPSBiomassDiversityWeight()
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FPSBiomassDiversityWeight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSBiomassDiversityWeight))
+            'FPSBiomassDiversityWeight
+            val = New cValue(New Single, eVarNameFlags.FPSBiomassDiversityWeight, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
-            'FPSMandatedRebuildingWeight()
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FPSMandatedRebuildingWeight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSMandatedRebuildingWeight))
+            'FPSMandatedRebuildingWeight
+            val = New cValue(New Single, eVarNameFlags.FPSMandatedRebuildingWeight, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
             'FPSEcoSystemWeight
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FPSEcoSystemWeight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSEcoSystemWeight))
+            val = New cValue(New Single, eVarNameFlags.FPSEcoSystemWeight, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
-            'FPSPredictionVariance()
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FPSPredictionVariance, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSPredictionVariance))
+            'FPSPredictionVariance
+            val = New cValue(New Single, eVarNameFlags.FPSPredictionVariance, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
             'FPSExistenceValue
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FPSExistenceValue, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSExistenceValue))
+            val = New cValue(New Single, eVarNameFlags.FPSExistenceValue, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
@@ -269,23 +254,19 @@ Namespace SearchObjectives
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             Dim val As cValue
-            Dim meta As cVariableMetaData
 
             'FPSGroupMandRelBiom
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FPSGroupMandRelBiom, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSGroupMandRelBiom))
+            val = New cValue(New Single, eVarNameFlags.FPSGroupMandRelBiom, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
             'StrucRelWeight
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FPSGroupStrucRelWeight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSGroupStrucRelWeight))
+            val = New cValue(New Single, eVarNameFlags.FPSGroupStrucRelWeight, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
             'Fishing Limit
-            meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FPSFishingLimit, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FPSFishingLimit))
+            val = New cValue(New Single, eVarNameFlags.FPSFishingLimit, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
@@ -349,35 +330,29 @@ Namespace SearchObjectives
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             Dim val As cValue
-            Dim meta As cVariableMetaData
 
             'SearchDiscountRate
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.SearchDiscountRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SearchDiscountRate))
+            val = New cValue(New Single, eVarNameFlags.SearchDiscountRate, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
             'SearchGenDiscRate
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.SearchGenDiscRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SearchGenDiscRate))
+            val = New cValue(New Single, eVarNameFlags.SearchGenDiscRate, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
             'SearchBaseYear
-            meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Integer, eVarNameFlags.SearchBaseYear, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.SearchBaseYear))
+            val = New cValue(New Integer, eVarNameFlags.SearchBaseYear, eStatusFlags.Null, eValueTypes.Int)
             val.Stored = False
             m_values.Add(val.varName, val)
 
             'SearchPrevCostEarning
-            meta = New cVariableMetaData()
-            val = New cValue(New Boolean, eVarNameFlags.SearchPrevCostEarning, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.SearchPrevCostEarning))
+            val = New cValue(New Boolean, eVarNameFlags.SearchPrevCostEarning, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             m_values.Add(val.varName, val)
 
             'SearchFishingMortalityPenalty
-            meta = New cVariableMetaData()
-            val = New cValue(New Boolean, eVarNameFlags.SearchFishingMortalityPenalty, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.SearchFishingMortalityPenalty))
+            val = New cValue(New Boolean, eVarNameFlags.SearchFishingMortalityPenalty, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             m_values.Add(val.varName, val)
 

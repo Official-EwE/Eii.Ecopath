@@ -59,7 +59,6 @@ Namespace MSY
             MyBase.New(theCore)
 
             Dim val As cValue = Nothing
-            Dim meta As cVariableMetaData = Nothing
 
             Me.m_dataType = eDataTypes.MSYParameters
             Me.m_coreComponent = eCoreComponentType.MSY
@@ -74,38 +73,31 @@ Namespace MSY
             Me.m_msyData = MSYData
 
             ' FSelection
-            meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.MSYFSelection, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSYFSelection))
+            val = New cValue(New Integer, eVarNameFlags.MSYFSelection, eStatusFlags.Null, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             ' FSelectionMode
-            meta = New cVariableMetaData(0, [Enum].GetValues(GetType(eMSYFSelectionModeType)).Length, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Integer, eVarNameFlags.MSYFSelectionMode, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSYFSelectionMode))
+            val = New cValue(New Integer, eVarNameFlags.MSYFSelectionMode, eStatusFlags.Null, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             ' Assessment (frozen pools or not)
-            meta = New cVariableMetaData()
-            val = New cValue(New Boolean, eVarNameFlags.MSYAssessment, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSYAssessment))
+            val = New cValue(New Boolean, eVarNameFlags.MSYAssessment, eStatusFlags.Null, eValueTypes.Bool)
             m_values.Add(val.varName, val)
 
             ' RunLengthMode
-            meta = New cVariableMetaData(0, [Enum].GetValues(GetType(eMSYRunLengthModeTypes)).Length, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Integer, eVarNameFlags.MSYRunLengthMode, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSYRunLengthMode))
+            val = New cValue(New Integer, eVarNameFlags.MSYRunLengthMode, eStatusFlags.Null, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             ' MaxFishingRate
-            meta = New cVariableMetaData(1, 1000000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.MSYMaxFishingRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSYMaxFishingRate))
+            val = New cValue(New Single, eVarNameFlags.MSYMaxFishingRate, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             ' NumTrialYears
-            meta = New cVariableMetaData(1, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.MSYNumTrialYears, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSYNumTrialYears))
+            val = New cValue(New Integer, eVarNameFlags.MSYNumTrialYears, eStatusFlags.Null, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             ' EquilibriumStepSize
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.MSYEquilibriumStepSize, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSYEquilibriumStepSize))
+            val = New cValue(New Single, eVarNameFlags.MSYEquilibriumStepSize, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
         End Sub

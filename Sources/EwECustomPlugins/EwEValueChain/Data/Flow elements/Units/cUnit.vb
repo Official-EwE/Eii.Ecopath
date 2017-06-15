@@ -352,7 +352,7 @@ Public MustInherit Class cUnit
     End Property
 
     <Browsable(False)> _
-    Public MustOverride ReadOnly Property UnitType() As cUnitFactory.eUnitType
+    Public MustOverride ReadOnly Property UnitType() As cUnitFactory.cUnitFormatter
 
     <Browsable(False)> _
     Public Overridable ReadOnly Property HasError() As Boolean

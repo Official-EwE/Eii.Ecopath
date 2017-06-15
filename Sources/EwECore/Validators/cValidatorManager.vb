@@ -20,7 +20,6 @@
 
 Option Strict On
 
-Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
 ''' <summary>
@@ -29,7 +28,12 @@ Imports EwEUtils.Core
 ''' <remarks>To add a validator create a new instance in the constructor</remarks>
 Public Class cValidatorManager
 
+    Private Shared s_inst As cValidatorManager = Nothing
     Private m_validators As Dictionary(Of eVarNameFlags, cValidatorDefault)
+
+    Private Shared Function GetInstance() As cValidatorManager
+        Return s_inst
+    End Function
 
     ''' <summary>
     ''' Create an instance of the ValidatorManger. 
@@ -42,6 +46,8 @@ Public Class cValidatorManager
     Sub New(ByRef theCore As cCore)
 
         Dim validator As cValidatorDefault
+
+        s_inst = Me
 
         m_validators = New Dictionary(Of eVarNameFlags, cValidatorDefault)
 
@@ -105,14 +111,38 @@ Public Class cValidatorManager
         'Pedigree
         validator = New cValidatorCore(theCore)
         m_validators.Add(eVarNameFlags.Pedigree, validator)
+        m_validators.Add(eVarNameFlags.VariableName, New cValidatorEnum(GetType(eVarNameFlags)))
 
         validator = New cValidatorCounter(theCore, eCoreCounterTypes.nEcospaceTimeSteps)
         m_validators.Add(eVarNameFlags.EcospaceFirstOutputTimeStep, validator)
+
+        ' Ecosapce layers - special cases
+        Me.m_validators.Add(eVarNameFlags.LayerMPA, New cValidatorCounter(theCore, eCoreCounterTypes.nMPAs))
+        Me.m_validators.Add(eVarNameFlags.LayerRegion, New cValidatorCounter(theCore, eCoreCounterTypes.nRegions))
 
         Me.m_validators.Add(eVarNameFlags.EcologyType, New cValidatorEnum(GetType(eEcologyTypes)))
         Me.m_validators.Add(eVarNameFlags.IUCNConservationStatus, New cValidatorEnum(GetType(eIUCNConservationStatusTypes)))
         Me.m_validators.Add(eVarNameFlags.OrganismType, New cValidatorEnum(GetType(eOrganismTypes)))
         Me.m_validators.Add(eVarNameFlags.OccurrenceStatus, New cValidatorEnum(GetType(eOccurrenceStatusTypes)))
+        Me.m_validators.Add(eVarNameFlags.EcospaceCapCalType, New cValidatorEnum(GetType(eEcospaceCapacityCalType)))
+
+        ' Fishing policy search
+        Me.m_validators.Add(eVarNameFlags.FPSInitOption, New cValidatorEnum(GetType(eInitOption)))
+        Me.m_validators.Add(eVarNameFlags.FPSSearchOption, New cValidatorEnum(GetType(eSearchOptionTypes)))
+        Me.m_validators.Add(eVarNameFlags.FPSOptimizeApproach, New cValidatorEnum(GetType(eOptimizeApproachTypes)))
+        Me.m_validators.Add(eVarNameFlags.FPSOptimizeOptions, New cValidatorEnum(GetType(eOptimizeOptionTypes)))
+
+        ' MPA optimizations
+        Me.m_validators.Add(eVarNameFlags.MPAOptSearchType, New cValidatorEnum(GetType(eMPAOptimizationModels)))
+        Me.m_validators.Add(eVarNameFlags.iMPAOptToUse, New cValidatorCounter(theCore, eCoreCounterTypes.nMPAs))
+
+        ' MSE
+        Me.m_validators.Add(eVarNameFlags.MSEBatchIterCalcType, New cValidatorEnum(GetType(eMSEBatchIterCalcTypes)))
+        Me.m_validators.Add(eVarNameFlags.QuotaType, New cValidatorEnum(GetType(eQuotaTypes)))
+
+        ' MSY
+        Me.m_validators.Add(eVarNameFlags.MSYFSelectionMode, New cValidatorEnum(GetType(eMSYFSelectionModeType)))
+        Me.m_validators.Add(eVarNameFlags.MSYRunLengthMode, New cValidatorEnum(GetType(eMSYRunLengthModeTypes)))
 
     End Sub
 
@@ -141,6 +171,17 @@ Public Class cValidatorManager
             Return Nothing
         End Try
 
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get any pre-registered validator, or a default validator if no pre-registered
+    ''' validator was found.
+    ''' </summary>
+    ''' <param name="varname"></param>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function [Get](ByVal varname As eVarNameFlags) As cValidatorDefault
+        Return GetInstance().getValidator(varname)
     End Function
 
 End Class

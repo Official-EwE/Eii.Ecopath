@@ -24,9 +24,10 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwECore.Style
+Imports EwEUtils.Utilities
 Imports ZedGraph
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region 'Imports
 
@@ -67,7 +68,6 @@ Namespace Ecopath.Output
             Debug.Assert(Me.UIContext IsNot Nothing)
 
             Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
-            Dim unitTime As eUnitType() = New eUnitType() {eUnitType.Time}
 
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
@@ -77,20 +77,17 @@ Namespace Ecopath.Output
 
             Me.m_graph.MasterPane.PaneList.Clear()
 
-            Me.CreatePane(ePaneTypes.Weight, SharedResources.HEADER_WEIGHT, _
-                          SharedResources.HEADER_AGE_UNIT, unitTime, SharedResources.HEADER_G, Nothing)
-            Me.CreatePane(ePaneTypes.Number, SharedResources.HEADER_SURVIVAL, _
-                          SharedResources.HEADER_AGE_UNIT, unitTime, "", Nothing)
-            Me.CreatePane(ePaneTypes.Biomass, SharedResources.HEADER_BIOMASS, _
-                          SharedResources.HEADER_AGE_UNIT, unitTime, _
-                          SharedResources.HEADER_G, Nothing)
+            ' ToDo: obtain units from shared variable metadata
+            Dim strAge As String = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, SharedResources.HEADER_AGE, cUnits.Time)
+
+            Me.CreatePane(ePaneTypes.Weight, SharedResources.HEADER_WEIGHT, strAge, "[g]")
+            Me.CreatePane(ePaneTypes.Number, SharedResources.HEADER_SURVIVAL, strAge, "")
+            Me.CreatePane(ePaneTypes.Biomass, SharedResources.HEADER_BIOMASS, strAge, "[g]")
             Me.CreatePane(ePaneTypes.PSD, SharedResources.HEADER_CONTRIBUTION_TO_PSD, _
                           SharedResources.HEADER_BODYWEIGHT_LOGg, SharedResources.HEADER_BIOMASS_LOGg)
 
             If parms.MortalityType = ePSDMortalityTypes.Lorenzen Then
-                Me.CreatePane(ePaneTypes.LorenzenMortality, SharedResources.HEADER_MORTALITY, _
-                              SharedResources.HEADER_AGE_UNIT, unitTime, _
-                              SharedResources.HEADER_PER_UNIT, unitTime)
+                Me.CreatePane(ePaneTypes.LorenzenMortality, SharedResources.HEADER_MORTALITY, strAge, cUnits.OverTime)
             End If
 
             Me.m_lbGroups.SelectedIndex = 0
@@ -114,42 +111,30 @@ Namespace Ecopath.Output
 
 #Region "Helper methods"
 
-        Private Sub CreatePane(ByVal PaneNo As ePaneTypes, _
-                               ByVal strPaneTitle As String, _
-                               ByVal strXaxisTitle As String, _
-                               ByVal strYaxisTitle As String)
-
-            Me.CreatePane(PaneNo, strPaneTitle, strXaxisTitle, Nothing, strYaxisTitle, Nothing)
-
-        End Sub
-
-        Private Sub CreatePane(ByVal PaneNo As ePaneTypes, _
-                       ByVal strPaneTitle As String, _
-                       ByVal strXaxisTitle As String, ByVal aUnitsXAxis() As eUnitType, _
-                       ByVal strYaxisTitle As String, ByVal aUnitsYAxis() As eUnitType)
+        Private Sub CreatePane(ByVal iPane As ePaneTypes, ByVal strPaneTitle As String, ByVal strXaxisTitle As String, ByVal strYaxisTitle As String)
 
             'Define a new graph pane
             Dim pane As New GraphPane
 
-            Debug.Assert(Me.m_graph.MasterPane.PaneList.Count = PaneNo)
+            Debug.Assert(Me.m_graph.MasterPane.PaneList.Count = iPane)
 
             'Add the graphPane to the masterPane
             Me.m_graph.MasterPane.Add(pane)
 
-            Me.InitGraphPane(strPaneTitle, strXaxisTitle, aUnitsXAxis, strYaxisTitle, aUnitsYAxis, PaneNo, CInt(PaneNo) + 1)
+            Me.InitGraphPane(strPaneTitle, strXaxisTitle, strYaxisTitle, iPane, CInt(iPane) + 1)
 
         End Sub
 
-        Private Sub InitGraphPane(ByVal strPaneTitle As String, _
-                                  ByVal strXAxisTitle As String, ByVal aUnitsXAxis() As eUnitType, _
-                                  ByVal strYAxisTitle As String, ByVal aUnitsYAxis() As eUnitType, _
-                                  ByVal paneType As ePaneTypes, _
+        Private Sub InitGraphPane(ByVal strPaneTitle As String,
+                                  ByVal strXaxisTitle As String,
+                                  ByVal strYaxisTitle As String,
+                                  ByVal paneType As ePaneTypes,
                                   ByVal iPane As Integer)
 
             Dim parms As cPSDParameters = Me.Core.ParticleSizeDistributionParameters
-            Dim gp As GraphPane = Me.m_zgh.ConfigurePane(strPaneTitle, _
-                                                         strYAxisTitle, aUnitsYAxis, _
-                                                         strXAxisTitle, aUnitsXAxis, _
+            Dim gp As GraphPane = Me.m_zgh.ConfigurePane(strPaneTitle,
+                                                         strYaxisTitle,
+                                                         strXaxisTitle,
                                                          False, LegendPos.TopCenter, iPane)
 
             Select Case paneType

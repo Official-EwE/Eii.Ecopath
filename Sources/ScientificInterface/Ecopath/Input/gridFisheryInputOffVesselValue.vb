@@ -24,6 +24,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -36,12 +37,12 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Off-vessel price user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridFisheryOffVesselValue
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
             Me.FixedColumnWidths = True
         End Sub
 
@@ -53,19 +54,20 @@ Namespace Ecopath.Input
             If (Me.UIContext Is Nothing) Then Return
 
             Dim source As cCoreInputOutputBase = Nothing
+            Dim md As cVariableMetaData = Nothing
 
-            Me.Redim(1, core.nFleets + 1 + 1)
+            Me.Redim(1, Core.nFleets + 1 + 1)
 
             Me(0, 0) = New EwEColumnHeaderCell("")
-            Me(0, 1) = New EwEColumnHeaderCell(sharedResources.HEADER_GROUPNAME)
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet names
-            For fleetIndex As Integer = 1 To core.nFleets
-                source = core.FleetInputs(fleetIndex)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, _
-                                                                     source, eVarNameFlags.Name, Nothing, _
-                                                                     SharedResources.HEADER_X_UNIT_PER_UNIT, _
-                                                                     New eUnitType() {eUnitType.Monetary, eUnitType.Biomass})
+            For fleetIndex As Integer = 1 To Core.nFleets
+
+                source = Core.FleetInputs(fleetIndex)
+                md = source.GetVariableMetadata(eVarNameFlags.OffVesselPrice)
+                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
+
             Next
 
             Me.FixedColumns = 2
@@ -77,15 +79,15 @@ Namespace Ecopath.Input
             Dim source As cCoreInputOutputBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim intStanzaGroupIndex(core.nGroups) As Integer 'Hold the stanza group index
+            Dim intStanzaGroupIndex(Core.nGroups) As Integer 'Hold the stanza group index
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
             Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
 
-            For i As Integer = 1 To core.nGroups : intStanzaGroupIndex(i) = -1 : Next
+            For i As Integer = 1 To Core.nGroups : intStanzaGroupIndex(i) = -1 : Next
 
             'Tag stanza group
-            For stanzaGroupIndex As Integer = 0 To core.nStanzas - 1
-                sg = core.StanzaGroups(stanzaGroupIndex)
+            For stanzaGroupIndex As Integer = 0 To Core.nStanzas - 1
+                sg = Core.StanzaGroups(stanzaGroupIndex)
 
                 For iStanza As Integer = 1 To sg.nLifeStages
                     source = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
@@ -97,14 +99,14 @@ Namespace Ecopath.Input
             Me.RowsCount = 1
 
             'Create rows for all groups
-            For rowIndex As Integer = 1 To core.nGroups
-                source = core.EcoPathGroupInputs(rowIndex)
+            For rowIndex As Integer = 1 To Core.nGroups
+                source = Core.EcoPathGroupInputs(rowIndex)
 
                 If intStanzaGroupIndex(source.Index) = -1 Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow
                     FillInRows(iRow, source)
                 Else 'Group is stanza
-                    sg = core.StanzaGroups(intStanzaGroupIndex(source.Index))
+                    sg = Core.StanzaGroups(intStanzaGroupIndex(source.Index))
                     If (Not dtStanzaCells.ContainsKey(sg)) Then
                         hgcStanza = New EwEHierarchyGridCell()
                         dtStanzaCells.Add(sg, hgcStanza)

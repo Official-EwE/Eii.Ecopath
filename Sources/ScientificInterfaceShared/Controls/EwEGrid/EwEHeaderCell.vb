@@ -29,6 +29,8 @@ Imports SourceGrid2.Cells.Real
 Imports SourceGrid2.VisualModels
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports EwECore.Style
 
 #End Region ' Imports
 
@@ -51,16 +53,12 @@ Namespace Controls.EwEGrid
             MyBase.New(objValue, GetType(String))
             ' Disable edit
             Me.DataModel.EnableEdit = False
+            Me.SetUnits("")
         End Sub
 
-        Public Sub New(ByVal strUnitMask As String, ByVal unitType As eUnitType)
-            Me.New("")
-            Me.SetUnitHeader(strUnitMask, New eUnitType() {unitType})
-        End Sub
-
-        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
-            Me.New("")
-            Me.SetUnitHeader(strUnitMask, aUnitTypes)
+        Public Sub New(ByVal strValue As String, ByVal strUnit As String)
+            Me.New(strValue)
+            Me.SetUnits(strUnit)
         End Sub
 
 #End Region ' Construction 
@@ -85,8 +83,7 @@ Namespace Controls.EwEGrid
 
 #Region " Unit header text "
 
-        Protected m_aUnitTypes() As eUnitType
-        Protected m_strUnitMask As String = ""
+        Protected m_strUnit As String = ""
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -94,20 +91,10 @@ Namespace Controls.EwEGrid
         ''' its content. These unit strings will be synchronized with 
         ''' <see cref="cStyleGuide.UnitsChanged">cStyleGuide unit changes</see>.
         ''' </summary>
-        ''' <param name="strUnitMask">Mask to format units with. This mask must
-        ''' contain a {#} placeholder for every dynamic unit; {0} for the first
-        ''' unit, {1} for the second unit, etc. Only two units are currently 
-        ''' supported.</param>
-        ''' <param name="aUnitTypes">An array of unit types to format into the
-        ''' header cell.</param>
+        ''' <param name="strUnit">The unit to format into the header cell.</param>
         ''' -------------------------------------------------------------------
-        Public Sub SetUnitHeader(ByVal strUnitMask As String, _
-                                 ByVal aUnitTypes() As eUnitType)
-            ' Sanity checks
-            Debug.Assert(aUnitTypes.Length = 1 Or aUnitTypes.Length = 2)
-            ' Store
-            Me.m_strUnitMask = strUnitMask
-            Me.m_aUnitTypes = aUnitTypes
+        Public Sub SetUnits(ByVal strUnit As String)
+            Me.m_strUnit = strUnit
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -117,8 +104,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub ClearUnitHeader()
-            Me.m_strUnitMask = ""
-            Me.m_aUnitTypes = Nothing
+            Me.m_strUnit = ""
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -136,21 +122,29 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Overrides Property Value() As Object
             Get
-                If (Me.m_aUnitTypes Is Nothing) Then
-                    Return MyBase.Value
+                Dim strVal As String = CStr(MyBase.Value)
+                Dim strUnit As String = ""
+
+                If (Me.UIContext IsNot Nothing) Then
+                    strUnit = New cUnits(Me.UIContext.Core).ToString(Me.m_strUnit)
                 End If
 
-                If (Me.StyleGuide Is Nothing) Then Return Me.m_strUnitMask
-
-                Return Me.StyleGuide.FormatUnitString(Me.m_strUnitMask, Me.m_aUnitTypes)
+                If (String.IsNullOrWhiteSpace(strUnit)) Then Return strVal
+                If (String.IsNullOrWhiteSpace(strVal)) Then Return strUnit
+                If (strVal.Contains("{0}")) Then Return cStringUtils.Localize(strVal, strUnit)
+                Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, strVal, strUnit)
             End Get
             Set(ByVal value As Object)
-                If TypeOf value Is String Then
+                If (TypeOf value Is String) Then
                     Dim strValue As String = CStr(value)
                     If strValue.IndexOf("|"c) > -1 Then
-                        Dim astrBits As String() = strValue.Split("|"c)
-                        Me.ToolTipText = astrBits(1)
-                        value = astrBits(0)
+                        Dim bits As String() = strValue.Split("|"c)
+                        If (String.Compare(bits(0), bits(1), True) <> 0) Then
+                            Me.ToolTipText = bits(1)
+                        Else
+                            Me.ToolTipText = ""
+                        End If
+                        value = bits(0)
                     End If
                 End If
                 MyBase.Value = value

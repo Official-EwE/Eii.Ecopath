@@ -1,4 +1,5 @@
 Option Strict On
+Imports EwECore
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -45,44 +46,32 @@ Namespace Controls.EwEGrid
 
         Public Sub New(Optional ByVal strValue As String = "")
             MyBase.New(strValue)
-            Me.m_vizDefault = Me.VisualModel
             Me.VisualModel = New cEwEGridColumnHeaderVisualizer()
+            Me.m_vizDefault = Me.VisualModel
         End Sub
 
-        Public Sub New(ByVal strUnitMask As String, ByVal unitType As eUnitType)
-            Me.New("")
-            Me.SetUnitHeader(strUnitMask, New eUnitType() {unitType})
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        Public Sub New(ByVal strValue As String, ByVal strUnits As String)
+            Me.New(strValue)
+            Me.SetUnits(strUnits)
         End Sub
 
-        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
-            Me.New("")
-            Me.SetUnitHeader(strUnitMask, aUnitTypes)
-        End Sub
-
+        ''' <summary>
+        ''' Create a header cell with automated name and units.
+        ''' </summary>
+        ''' <param name="varname"></param>
         Public Sub New(ByVal varname As eVarNameFlags)
             Me.New(varname, eDescriptorTypes.Name)
         End Sub
 
         Public Sub New(ByVal varname As eVarNameFlags, detail As eDescriptorTypes)
-            Me.New(New cVarnameTypeFormatter().GetDescriptor(varname, detail))
-        End Sub
-
-        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal unitType As eUnitType)
-            Me.New(varname, eDescriptorTypes.Name, strUnitMask, unitType)
-        End Sub
-
-        Public Sub New(ByVal varname As eVarNameFlags, detail As eDescriptorTypes, ByVal strUnitMask As String, ByVal unitType As eUnitType)
-            Me.New(String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
-                                 New cVarnameTypeFormatter().GetDescriptor(varname, detail), _
-                                 strUnitMask), _
-                   New eUnitType() {unitType})
-        End Sub
-
-        Public Sub New(ByVal varname As eVarNameFlags, ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
-            Me.New(String.Format(My.Resources.GENERIC_LABEL_DOUBLE, _
-                                 New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Name), _
-                                 strUnitMask), _
-                   aUnitTypes)
+            Me.New(New cVarnameTypeFormatter().GetDescriptor(varname, detail) & "|" & New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Description))
+            Dim md As cVariableMetaData = cVariableMetadata.Get(varname)
+            If (md IsNot Nothing) Then
+                Me.SetUnits(md.Units)
+            End If
         End Sub
 
         Public Overrides Sub Dispose()

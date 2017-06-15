@@ -216,7 +216,7 @@ Namespace Ecosim
         End Function
 
         Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
-            Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroup))
+            Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroupInput))
         End Sub
 
         Private Sub UpdateRow(grp As cCoreGroupBase)

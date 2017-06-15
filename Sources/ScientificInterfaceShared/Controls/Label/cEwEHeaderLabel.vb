@@ -51,6 +51,7 @@ Namespace Controls
         Private m_iCollapsedParentHeight As Integer = 0
 
 #End Region ' Private vars
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Constructor

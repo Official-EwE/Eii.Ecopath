@@ -31,25 +31,20 @@ Public Class cEcospaceMPA
         MyBase.New(theCore)
 
         Dim val As cValue = Nothing
-        Dim meta As cVariableMetaData = Nothing
 
         Try
 
-            m_dataType = eDataTypes.EcospaceMPA
-            m_coreComponent = eCoreComponentType.EcoSpace
+            Me.m_dataType = eDataTypes.EcospaceMPA
+            Me.m_coreComponent = eCoreComponentType.EcoSpace
             Me.DBID = iDBID
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-            ResetStatusFlags()
-
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Array variables
+            Me.ResetStatusFlags()
 
             ' MPAMonth
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.MPAMonth, eStatusFlags.OK, eCoreCounterTypes.nMonths, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
+            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.MPAMonth, eStatusFlags.OK, eCoreCounterTypes.nMonths, AddressOf m_core.GetCoreCounter)
+            Me.m_values.Add(val.varName, val)
 
         Catch ex As Exception
             Debug.Assert(False, "Error creating new cEcospaceMPA.")

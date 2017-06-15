@@ -68,7 +68,6 @@ Public Class cF2TSManager
         Me.m_lstMessages = New List(Of cMessage)
 
         Dim val As cValue = Nothing
-        Dim meta As cVariableMetaData = Nothing
 
         Me.AllowValidation = False
         Me.m_coreComponent = eCoreComponentType.EcoSimFitToTimeSeries
@@ -86,67 +85,54 @@ Public Class cF2TSManager
 
         'boolean
         ' F2TSVulnerabilitySearch
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.F2TSVulnerabilitySearch, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSVulnerabilitySearch))
+        val = New cValue(New Boolean, eVarNameFlags.F2TSVulnerabilitySearch, eStatusFlags.Null, eValueTypes.Bool)
         m_values.Add(val.varName, val)
 
         'boolean
         ' AnomalySearch
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.F2TSAnomalySearch, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSAnomalySearch))
+        val = New cValue(New Boolean, eVarNameFlags.F2TSAnomalySearch, eStatusFlags.Null, eValueTypes.Bool)
         m_values.Add(val.varName, val)
 
         ' UseDefaultVs
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.F2TSUseDefaultV, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSUseDefaultV))
+        val = New cValue(New Boolean, eVarNameFlags.F2TSUseDefaultV, eStatusFlags.Null, eValueTypes.Bool)
         m_values.Add(val.varName, val)
 
         ' F2TSCatchAnomaly
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.F2TSCatchAnomaly, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSCatchAnomaly))
+        val = New cValue(New Boolean, eVarNameFlags.F2TSCatchAnomaly, eStatusFlags.Null, eValueTypes.Bool)
         m_values.Add(val.varName, val)
 
         'singles
         ' F2TSFirstYear
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.F2TSFirstYear, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSFirstYear))
+        val = New cValue(New Integer, eVarNameFlags.F2TSFirstYear, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
         ' F2TSLastYear
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.F2TSLastYear, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSLastYear))
+        val = New cValue(New Integer, eVarNameFlags.F2TSLastYear, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
         ' F2TSVulnerabilityVariance
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.F2TSVulnerabilityVariance, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSVulnerabilityVariance))
+        val = New cValue(New Single, eVarNameFlags.F2TSVulnerabilityVariance, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         ' F2TSPPVariance
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.F2TSPPVariance, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSPPVariance))
+        val = New cValue(New Single, eVarNameFlags.F2TSPPVariance, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         'integers
         ' F2TSCatchAnomalySearchShape
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.F2TSCatchAnomalySearchShapeNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSCatchAnomalySearchShapeNumber))
+        val = New cValue(New Integer, eVarNameFlags.F2TSCatchAnomalySearchShapeNumber, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
         ' F2TSNumSplinePoints
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.F2TSNumSplinePoints, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSNumSplinePoints))
+        val = New cValue(New Integer, eVarNameFlags.F2TSNumSplinePoints, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
         'Singlearray
-        meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.F2TSAppliedWeights, eStatusFlags.Null, eCoreCounterTypes.nTimeSeriesApplied, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.F2TSAppliedWeights, eStatusFlags.Null, eCoreCounterTypes.nTimeSeriesApplied, AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
 
-
         ' AIC N Data points
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.F2TSNAICData, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.F2TSNAICData))
+        val = New cValue(New Integer, eVarNameFlags.F2TSNAICData, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
         Me.ResetStatusFlags()

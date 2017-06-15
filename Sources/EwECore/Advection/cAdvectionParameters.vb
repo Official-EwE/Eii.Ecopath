@@ -50,43 +50,34 @@ Namespace Ecospace.Advection
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             Dim val As cValue
-            Dim meta As cVariableMetaData
 
             ' XVel
-            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.XVelocity, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.XVelocity))
+            val = New cValue(New Single, eVarNameFlags.XVelocity, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
             ' YVel
-            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.YVelocity, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.YVelocity))
+            val = New cValue(New Single, eVarNameFlags.YVelocity, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
             ' Coriolis
-            meta = New cVariableMetaData(-1, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.Coriolis, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.Coriolis))
+            val = New cValue(New Single, eVarNameFlags.Coriolis, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
             ' SorWv
-            meta = New cVariableMetaData(-1, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.SorWv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SorWv))
+            val = New cValue(New Single, eVarNameFlags.SorWv, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingThreshold, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.YVelocity))
+            val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingThreshold, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
 
-            meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingPPMultiplier, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.YVelocity))
+            val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingPPMultiplier, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             Me.m_values.Add(val.varName, val)
-
-
 
             Me.ResetStatusFlags()
 

@@ -26,7 +26,7 @@ Option Strict On
 
 Public Class cUnitFactory
 
-    Public Enum eUnitType As Integer
+    Public Enum cUnitFormatter As Integer
         All = 0
         Producer
         Processing
@@ -41,32 +41,32 @@ Public Class cUnitFactory
         Return CType(System.Activator.CreateInstance(tClass), cUnit)
     End Function
 
-    Public Shared Function CreateUnit(ByVal unitType As eUnitType) As cUnit
+    Public Shared Function CreateUnit(ByVal unitType As cUnitFormatter) As cUnit
         Return CreateUnit(MapType(unitType))
     End Function
 
-    Public Shared Function MapType(ByVal unitType As eUnitType) As Type
+    Public Shared Function MapType(ByVal unitType As cUnitFormatter) As Type
         Dim t As Type = Nothing
         Select Case unitType
-            Case eUnitType.Producer : t = GetType(cProducerUnit)
-            Case eUnitType.Processing : t = GetType(cProcessingUnit)
-            Case eUnitType.Distribution : t = GetType(cDistributionUnit)
-            Case eUnitType.Wholesaler : t = GetType(cWholesalerUnit)
-            Case eUnitType.Retailer : t = GetType(cRetailerUnit)
-            Case eUnitType.Consumer : t = GetType(cConsumerUnit)
+            Case cUnitFormatter.Producer : t = GetType(cProducerUnit)
+            Case cUnitFormatter.Processing : t = GetType(cProcessingUnit)
+            Case cUnitFormatter.Distribution : t = GetType(cDistributionUnit)
+            Case cUnitFormatter.Wholesaler : t = GetType(cWholesalerUnit)
+            Case cUnitFormatter.Retailer : t = GetType(cRetailerUnit)
+            Case cUnitFormatter.Consumer : t = GetType(cConsumerUnit)
         End Select
         Return t
     End Function
 
-    Public Shared Function CreateUnitDefault(ByVal unitType As eUnitType) As cUnit
+    Public Shared Function CreateUnitDefault(ByVal unitType As cUnitFormatter) As cUnit
         Dim t As Type = Nothing
         Select Case unitType
-            Case eUnitType.Producer : t = GetType(cProducerUnitDefault)
-            Case eUnitType.Processing : t = GetType(cProcessingUnitDefault)
-            Case eUnitType.Distribution : t = GetType(cDistributionUnitDefault)
-            Case eUnitType.Wholesaler : t = GetType(cWholesalerUnitDefault)
-            Case eUnitType.Retailer : t = GetType(cRetailerUnitDefault)
-            Case eUnitType.Consumer : t = GetType(cConsumerUnitDefault)
+            Case cUnitFormatter.Producer : t = GetType(cProducerUnitDefault)
+            Case cUnitFormatter.Processing : t = GetType(cProcessingUnitDefault)
+            Case cUnitFormatter.Distribution : t = GetType(cDistributionUnitDefault)
+            Case cUnitFormatter.Wholesaler : t = GetType(cWholesalerUnitDefault)
+            Case cUnitFormatter.Retailer : t = GetType(cRetailerUnitDefault)
+            Case cUnitFormatter.Consumer : t = GetType(cConsumerUnitDefault)
         End Select
         Return CType(System.Activator.CreateInstance(t), cUnit)
     End Function

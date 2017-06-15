@@ -1923,6 +1923,78 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to + Biomass accum. rate.
+        '''</summary>
+        Public ReadOnly Property HEADER_MORTALITIES_BIOMACCURATE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MORTALITIES_BIOMACCURATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to = Fishing mort. rate.
+        '''</summary>
+        Public ReadOnly Property HEADER_MORTALITIES_FISHINGMORTRATE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MORTALITIES_FISHINGMORTRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing mort. / total mort..
+        '''</summary>
+        Public ReadOnly Property HEADER_MORTALITIES_FISHMORT_OVER_TOTMORT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MORTALITIES_FISHMORT_OVER_TOTMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to + Net migration rate.
+        '''</summary>
+        Public ReadOnly Property HEADER_MORTALITIES_NETMIGRATE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MORTALITIES_NETMIGRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to + Other mort. rate.
+        '''</summary>
+        Public ReadOnly Property HEADER_MORTALITIES_OTHERMORTRATE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MORTALITIES_OTHERMORTRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Prod/biom or Z.
+        '''</summary>
+        Public ReadOnly Property HEADER_MORTALITIES_PBZ() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MORTALITIES_PBZ", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to + Predation mort. rate.
+        '''</summary>
+        Public ReadOnly Property HEADER_MORTALITIES_PREDMORTRATE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MORTALITIES_PREDMORTRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Proportion natural mort..
+        '''</summary>
+        Public ReadOnly Property HEADER_MORTALITIES_PROP_NAT_MORT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_MORTALITIES_PROP_NAT_MORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to MPA. &apos;{0}&apos;.
         '''</summary>
         Public ReadOnly Property HEADER_MPA_X() As String

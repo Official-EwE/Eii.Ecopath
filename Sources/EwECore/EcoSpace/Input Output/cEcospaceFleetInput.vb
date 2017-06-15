@@ -22,16 +22,15 @@ Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
-Public Class cEcospaceFleet
+Public Class cEcospaceFleetInput
     Inherits cCoreInputOutputBase
 
 #Region " Constructor "
 
-    Sub New(ByRef theCore As cCore, ByVal iDBID As Integer)
+    Sub New(ByVal theCore As cCore, ByVal iDBID As Integer)
         MyBase.New(theCore)
 
         Dim val As cValue = Nothing
-        Dim meta As cVariableMetaData = Nothing
 
         Try
 
@@ -42,26 +41,22 @@ Public Class cEcospaceFleet
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' EffectivePower
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.EffectivePower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Single, eVarNameFlags.EffectivePower, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             ' SEmult
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.SEmult, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Single, eVarNameFlags.SEmult, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Array variables
 
             ' HabitatFishery
-            meta = New cVariableMetaData(False)
-            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.HabitatFishery, eStatusFlags.Null, eCoreCounterTypes.nHabitats, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.HabitatFishery, eStatusFlags.Null, eCoreCounterTypes.nHabitats, AddressOf m_core.GetCoreCounter)
             m_values.Add(val.varName, val)
 
             ' MPAFishery
-            meta = New cVariableMetaData(False)
-            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.MPAFishery, eStatusFlags.Null, eCoreCounterTypes.nMPAs, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.MPAFishery, eStatusFlags.Null, eCoreCounterTypes.nMPAs, AddressOf m_core.GetCoreCounter)
             m_values.Add(val.varName, val)
 
             ResetStatusFlags()
@@ -151,8 +146,18 @@ Public Class cEcospaceFleet
         End Set
     End Property
 
- 
+
 
 #End Region ' Status by dot (.) operator 
+
+End Class
+
+<Obsolete("Please use cEcospaceFleetInput instead")>
+Public Class cEcospaceFleet
+    Inherits cEcospaceFleetInput
+
+    Sub New(ByVal theCore As cCore, ByVal iDBID As Integer)
+        MyBase.New(theCore, iDBID)
+    End Sub
 
 End Class

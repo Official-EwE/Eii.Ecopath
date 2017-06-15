@@ -24,6 +24,7 @@ Option Strict On
 Imports System.Reflection
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwECore.Style
 
 #End Region ' Imports
 
@@ -43,9 +44,7 @@ Public Class cIndicatorInfo
     ''' <summary>The description of the unit of the indicator (for display on axis)</summary>
     Private m_strValueDescription As String = ""
     ''' <summary>The units of the indicator</summary>
-    Private m_aunits() As eUnitType = Nothing
-    ''' <summary>Mask to use for formatting units.</summary>
-    Private m_strUnitMask As String = ""
+    Private m_strUnit As String = ""
     ''' <summary>The function name of the indicator in the <see cref="cIndicators">indicator</see></summary>
     Private m_strFunctionName As String = ""
 
@@ -61,21 +60,18 @@ Public Class cIndicatorInfo
     ''' <param name="strFunctionName">The name of function for the indicator as exposed by the computed <see cref="cIndicators">indicator</see>.</param>
     ''' <param name="strDescription">Description to assign to the indicator.</param>
     ''' <param name="strValueDescription">Description of the value of indicator (biomass, catch, etc).</param>
-    ''' <param name="strUnitMask">Mask how to fit the units into this monster.</param>
-    ''' <param name="aunits">EwE <see cref="eUnitType">units</see> to show for the indicator.</param>
+    ''' <param name="strUnits">EwE <see cref="cUnits">units</see> to show for the indicator.</param>
     ''' -------------------------------------------------------------------
-    Public Sub New(ByVal strFunctionName As String, _
-                   ByVal strName As String, _
-                   ByVal strDescription As String, _
-                   ByVal strValueDescription As String, _
-                   ByVal aunits() As eUnitType, _
-                   ByVal strUnitMask As String)
+    Public Sub New(ByVal strFunctionName As String,
+                   ByVal strName As String,
+                   ByVal strDescription As String,
+                   ByVal strValueDescription As String,
+                   ByVal strUnits As String)
 
         Me.m_strName = strName
         Me.m_strFunctionName = strFunctionName
         Me.m_strValueDescription = strValueDescription
-        Me.m_aunits = aunits
-        Me.m_strUnitMask = strUnitMask
+        Me.m_strUnit = strUnits
         Me.m_strDescription = strDescription
 
     End Sub
@@ -117,20 +113,9 @@ Public Class cIndicatorInfo
     ''' Get the units of the indicator.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public ReadOnly Property Units As eUnitType()
+    Public ReadOnly Property Units As String
         Get
-            Return Me.m_aunits
-        End Get
-    End Property
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the mask to use for formatting the <see cref="Units"/>.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Public ReadOnly Property UnitMask As String
-        Get
-            Return Me.m_strUnitMask
+            Return Me.m_strUnit
         End Get
     End Property
 

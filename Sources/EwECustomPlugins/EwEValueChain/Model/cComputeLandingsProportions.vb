@@ -51,11 +51,11 @@ Public Class cComputeLandingPortions
             'nFleets = EwECore.nFleets
             'nYears = EwECore.nTimeSeriesYears
             Dim NoProducers As Integer
-            '=??? edEcostData.GetUnits(cUnitFactory.eUnitType.Producer)
+            '=??? edEcostData.GetUnits(cUnitFactory.cUnitFormatter.Producer)
             'not sure if this number can be read so instead summing up below
 
             ' For each Metier unit
-            For Each unit As cUnit In data.GetUnits(cUnitFactory.eUnitType.Producer)
+            For Each unit As cUnit In data.GetUnits(cUnitFactory.cUnitFormatter.Producer)
                 'sum up the number of producers:  
                 NoProducers += 1  'or get the unit number for the current unit?
 
