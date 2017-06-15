@@ -113,46 +113,37 @@ Public Class cEcoSimGroupInput
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             Dim val As cValue
-            Dim meta As cVariableMetaData
 
             'MaxRelPB
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.MaxRelPB, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MaxRelPB))
+            val = New cValue(New Single, eVarNameFlags.MaxRelPB, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'MaxRelFeedingTime
-            meta = New cVariableMetaData(0, 100, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.MaxRelFeedingTime, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MaxRelFeedingTime))
+            val = New cValue(New Single, eVarNameFlags.MaxRelFeedingTime, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'FeedingTimeAdjRate
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.FeedingTimeAdjRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.FeedingTimeAdjRate))
+            val = New cValue(New Single, eVarNameFlags.FeedingTimeAdjRate, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'OtherMortFeedingTime
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.OtherMortFeedingTime, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.OtherMortFeedingTime))
+            val = New cValue(New Single, eVarNameFlags.OtherMortFeedingTime, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'PredEffectFeedingTime
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.PredEffectFeedingTime, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.PredEffectFeedingTime))
+            val = New cValue(New Single, eVarNameFlags.PredEffectFeedingTime, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'DenDepCatchability
-            meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.DenDepCatchability, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.DenDepCatchability))
+            val = New cValue(New Single, eVarNameFlags.DenDepCatchability, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'QBMaxQBio
-            meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.QBMaxQBio, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.QBMaxQBio))
+            val = New cValue(New Single, eVarNameFlags.QBMaxQBio, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'Switching Power
-            meta = New cVariableMetaData(0, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.SwitchingPower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.SwitchingPower))
+            val = New cValue(New Single, eVarNameFlags.SwitchingPower, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'Srrayed values
@@ -162,8 +153,7 @@ Public Class cEcoSimGroupInput
             'm_values.Add(val.varName, val)
 
             'VulMult
-            meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.VulMult, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.VulMult))
+            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.VulMult, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
             m_values.Add(val.varName, val)
 
             Me.AllowValidation = True

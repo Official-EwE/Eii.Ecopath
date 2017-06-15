@@ -66,8 +66,6 @@ Public Class cEcospaceGroupOutput
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.EcospaceGroupValueEnd, eStatusFlags.OK, eCoreCounterTypes.nFleets, AddressOf TheCore.GetCoreCounter)
         m_values.Add(val.varName, val)
 
-
-
     End Sub
 
 

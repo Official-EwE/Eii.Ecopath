@@ -40,7 +40,6 @@ Public Class cTimeSeriesDataset
         MyBase.New(core)
 
         Dim val As cValue
-        Dim meta As cVariableMetaData
         Dim desc() As Char
 
         Try
@@ -56,21 +55,15 @@ Public Class cTimeSeriesDataset
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' Description
-            meta = New cVariableMetaData(250)
-            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
             m_values.Add(val.varName, val)
 
             ' Author
-            meta = New cVariableMetaData(60)
-            val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             m_values.Add(val.varName, val)
 
             ' Contact
-            meta = New cVariableMetaData(250)
-            val = New cValue(New String(desc), eVarNameFlags.Contact, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.Contact, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             m_values.Add(val.varName, val)
 
             'set status flags to default values

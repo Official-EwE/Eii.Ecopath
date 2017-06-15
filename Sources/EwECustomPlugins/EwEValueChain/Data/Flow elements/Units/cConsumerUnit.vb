@@ -59,9 +59,9 @@ Public Class cConsumerUnit
 #End Region ' General
 
     <Browsable(False)> _
-    Public Overrides ReadOnly Property UnitType() As cUnitFactory.eUnitType
+    Public Overrides ReadOnly Property UnitType() As cUnitFactory.cUnitFormatter
         Get
-            Return cUnitFactory.eUnitType.Consumer
+            Return cUnitFactory.cUnitFormatter.Consumer
         End Get
     End Property
 

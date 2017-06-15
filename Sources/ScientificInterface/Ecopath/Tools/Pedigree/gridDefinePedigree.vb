@@ -572,7 +572,7 @@ Imports SourceGrid2.Cells
             End Select
         Next
 
-        Me.ActiveConfig.Levels.AddRange(Me.DefaultLevels())
+        Me.ActiveConfig.Levels.AddRange(DefaultLevels())
         Me.UpdateGrid()
 
     End Sub

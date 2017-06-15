@@ -27,6 +27,7 @@ Imports EwEPlugin.Data
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports EwECore.Style
 
 #End Region ' Imports 
 
@@ -37,9 +38,9 @@ Namespace Ecopath.Input
     ''' Grid displaying Ecopath Basic Input information.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridTaxonInput
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
 #Region " Private vars "
 
@@ -89,19 +90,19 @@ Namespace Ecopath.Input
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
-            Me(0, eColumnTypes.Ecology) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOLOGY)
-            Me(0, eColumnTypes.Organism) = New EwEColumnHeaderCell(SharedResources.HEADER_ORGANISM)
-            Me(0, eColumnTypes.PropBiomass) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION_B)
-            Me(0, eColumnTypes.PropCatch) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION_CATCH)
-            Me(0, eColumnTypes.Conservation) = New EwEColumnHeaderCell(SharedResources.HEADER_IUCN_CONSERVATION_STATUS)
-            Me(0, eColumnTypes.Exploitation) = New EwEColumnHeaderCell(SharedResources.HEADER_EXPLOITATION_STATUS)
-            Me(0, eColumnTypes.Occurrence) = New EwEColumnHeaderCell(SharedResources.HEADER_OCCURRENCE_STATUS)
-            Me(0, eColumnTypes.MeanLen) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN_LENGTH)
-            Me(0, eColumnTypes.MaxLen) = New EwEColumnHeaderCell(SharedResources.HEADER_MAX_LENGTH)
-            Me(0, eColumnTypes.MeanWeight) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN_WEIGHT)
-            Me(0, eColumnTypes.MeanLifeSpan) = New EwEColumnHeaderCell(SharedResources.HEADER_MEAN_LIFESPAN_UNIT, eUnitType.Time)
-            Me(0, eColumnTypes.VulIndex) = New EwEColumnHeaderCell(SharedResources.HEADER_VULNERABILITY_INDEX)
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(eVarNameFlags.Species)
+            Me(0, eColumnTypes.Ecology) = New EwEColumnHeaderCell(eVarNameFlags.EcologyType)
+            Me(0, eColumnTypes.Organism) = New EwEColumnHeaderCell(eVarNameFlags.OrganismType)
+            Me(0, eColumnTypes.PropBiomass) = New EwEColumnHeaderCell(eVarNameFlags.TaxonPropBiomass)
+            Me(0, eColumnTypes.PropCatch) = New EwEColumnHeaderCell(eVarNameFlags.TaxonPropCatch)
+            Me(0, eColumnTypes.Conservation) = New EwEColumnHeaderCell(eVarNameFlags.IUCNConservationStatus)
+            Me(0, eColumnTypes.Exploitation) = New EwEColumnHeaderCell(eVarNameFlags.ExploitationStatus)
+            Me(0, eColumnTypes.Occurrence) = New EwEColumnHeaderCell(eVarNameFlags.OccurrenceStatus)
+            Me(0, eColumnTypes.MeanLen) = New EwEColumnHeaderCell(eVarNameFlags.TaxonMeanLength)
+            Me(0, eColumnTypes.MaxLen) = New EwEColumnHeaderCell(eVarNameFlags.TaxonMaxLength)
+            Me(0, eColumnTypes.MeanWeight) = New EwEColumnHeaderCell(eVarNameFlags.TaxonMeanWeight)
+            Me(0, eColumnTypes.MeanLifeSpan) = New EwEColumnHeaderCell(eVarNameFlags.TaxonMeanLifespan)
+            Me(0, eColumnTypes.VulIndex) = New EwEColumnHeaderCell(eVarNameFlags.TaxonVulnerabilityIndex)
 
             Me.FixedColumns = 2
 
@@ -243,7 +244,7 @@ Namespace Ecopath.Input
             Me(iRow, eColumnTypes.Exploitation) = New SourceGrid2.Cells.Real.Cell(taxon.ExploitationStatus, Me.m_editorExploitation)
             Me(iRow, eColumnTypes.Exploitation).Behaviors.Add(Me.EwEEditHandler)
 
-            cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonProp)
+            cell = New PropertyCell(Me.PropertyManager, taxon, eVarNameFlags.TaxonPropBiomass)
             cell.SuppressZero = True
             Me(iRow, eColumnTypes.PropBiomass) = cell
 

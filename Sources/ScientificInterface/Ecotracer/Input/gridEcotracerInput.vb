@@ -22,6 +22,7 @@
 
 Option Strict On
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -29,7 +30,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecotracer
 
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridEcotracerInput
         Inherits EwEGrid
 
@@ -45,7 +46,7 @@ Namespace Ecotracer
         End Enum
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
             Me.FixedColumnWidths = False
         End Sub
 
@@ -69,10 +70,10 @@ Namespace Ecotracer
             Me(0, eColumnTypes.GroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.ConcEnv) = New EwEColumnHeaderCell(SharedResources.HEADER_CONCENTRATION_INITIAL)
             Me(0, eColumnTypes.ConcImmBiomass) = New EwEColumnHeaderCell(SharedResources.HEADER_CONCENTRATION_IN_IMM_B)
-            Me(0, eColumnTypes.DirectAbsorptionRate) = New EwEColumnHeaderCell(SharedResources.HEADER_DIRECT_ABSORPTION_RATE_UNIT, eUnitType.Time)
-            Me(0, eColumnTypes.PhysicalDecayRate) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYSICAL_DECAY_RATE_UNIT, eUnitType.Time)
+            Me(0, eColumnTypes.DirectAbsorptionRate) = New EwEColumnHeaderCell(SharedResources.HEADER_DIRECT_ABSORPTION_RATE)
+            Me(0, eColumnTypes.PhysicalDecayRate) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYSICAL_DECAY_RATE)
             Me(0, eColumnTypes.AssimProp) = New EwEColumnHeaderCell(SharedResources.HEADER_EXCRETION_RATE)
-            Me(0, eColumnTypes.MetablismRate) = New EwEColumnHeaderCell(SharedResources.HEADER_METABOLISMRATE_UNIT, eUnitType.Time)
+            Me(0, eColumnTypes.MetablismRate) = New EwEColumnHeaderCell(SharedResources.HEADER_METABOLISMRATE)
 
             Me.FixedColumns = 2
 

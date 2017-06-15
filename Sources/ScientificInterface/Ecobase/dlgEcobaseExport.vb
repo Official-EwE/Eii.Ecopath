@@ -129,15 +129,15 @@ Public Class dlgEcobaseExport
         Me.m_fpSouth = New cEwEFormatProvider(Me.UIContext, Me.m_nudSouth, GetType(Single), model.GetVariableMetadata(eVarNameFlags.South))
         Me.m_fpSouth.Value = model.South
 
-        Dim mdDepth As New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        Me.m_fpDmin = New cEwEFormatProvider(Me.UIContext, Me.m_tbxDepthMin, GetType(Single), mdDepth)
+        Dim mdDepth As cVariableMetaData = cVariableMetaData.Get(eVarNameFlags.LayerDepth)
+        Me.m_fpDmin = New cEwEFormatProvider(Me.UIContext, Me.m_tbxDepthMin, GetType(Single), cVariableMetaData.Get(eVarNameFlags.LayerDepth))
         Me.m_fpDmin.Value = 0
         Me.m_fpDmean = New cEwEFormatProvider(Me.UIContext, Me.m_tbxDepthMean, GetType(Single), mdDepth)
         Me.m_fpDmean.Value = 0
         Me.m_fpDmax = New cEwEFormatProvider(Me.UIContext, Me.m_tbxDepthMax, GetType(Single), mdDepth)
         Me.m_fpDmax.Value = 0
 
-        Dim mdTemp As New cVariableMetaData(-8, 100, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        Dim mdTemp As New cVariableMetaData(-8, 104, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         Me.m_fpTmin = New cEwEFormatProvider(Me.UIContext, Me.m_tbxTempMin, GetType(Single), mdTemp)
         Me.m_fpTmin.Value = 0
         Me.m_fpTmean = New cEwEFormatProvider(Me.UIContext, Me.m_tbxTempMean, GetType(Single), mdTemp)
@@ -147,7 +147,7 @@ Public Class dlgEcobaseExport
 
         Me.m_rbSubmNew.Enabled = (String.IsNullOrWhiteSpace(model.EcobaseCode))
 
-        ' -- Obejctives page --
+        ' -- Objectives page --
         Me.m_tbxObjectives.Text = ""
 
         Me.m_bInUpdate = False

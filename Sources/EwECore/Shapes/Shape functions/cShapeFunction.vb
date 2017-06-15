@@ -51,7 +51,7 @@ Public MustInherit Class cShapeFunction
         ReDim Me.m_parameters(Me.nParameters)
         ReDim Me.m_points(1200)
 
-        Me.Defaults()
+        Defaults()
 
     End Sub
 

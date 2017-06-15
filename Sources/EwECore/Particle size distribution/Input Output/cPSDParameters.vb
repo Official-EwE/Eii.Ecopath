@@ -40,7 +40,6 @@ Public Class cPSDParameters
         Try
 
             Dim val As cValue
-            Dim meta As cVariableMetaData
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
@@ -48,48 +47,41 @@ Public Class cPSDParameters
             Me.AllowValidation = False
 
             'PSDEnabled
-            meta = New cVariableMetaData()
-            val = New cValue(New Boolean, eVarNameFlags.PSDEnabled, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDEnabled))
+            val = New cValue(New Boolean, eVarNameFlags.PSDEnabled, eStatusFlags.OK, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'PSDComputed
-            meta = New cVariableMetaData()
-            val = New cValue(New Boolean, eVarNameFlags.PSDComputed, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDEnabled))
+            val = New cValue(New Boolean, eVarNameFlags.PSDComputed, eStatusFlags.OK, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'PSDNumWeightClasses
-            meta = New cVariableMetaData(2, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 2)
-            val = New cValue(New Integer, eVarNameFlags.PSDNumWeightClasses, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDNumWeightClasses))
+            val = New cValue(New Integer, eVarNameFlags.PSDNumWeightClasses, eStatusFlags.Null, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             'PSDMortalityType
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
-            val = New cValue(New Integer, eVarNameFlags.PSDMortalityType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDMortalityType))
+            val = New cValue(New Integer, eVarNameFlags.PSDMortalityType, eStatusFlags.Null, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             'PSDFirstWeightClass
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
-            val = New cValue(New Single, eVarNameFlags.PSDFirstWeightClass, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.PSDFirstWeightClass))
+            val = New cValue(New Single, eVarNameFlags.PSDFirstWeightClass, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'ClimateType
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
-            val = New cValue(New Integer, eVarNameFlags.ClimateType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.ClimateType))
+            ' To unify with Ecobase enumerated types?
+            val = New cValue(New Integer, eVarNameFlags.ClimateType, eStatusFlags.Null, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             'Number of points used in moving average
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), 0)
-            val = New cValue(New Integer, eVarNameFlags.NumPtsMovAvg, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumPtsMovAvg))
+            val = New cValue(New Integer, eVarNameFlags.NumPtsMovAvg, eStatusFlags.Null, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             ' == ARRAY VARS ==
             'PSDIncluded
-            meta = New cVariableMetaData()
-            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.PSDIncluded, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.PSDIncluded, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
             val.Stored = False
             m_values.Add(val.varName, val)
 

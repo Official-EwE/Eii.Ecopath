@@ -23,10 +23,10 @@
 Option Strict On
 
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
-Imports ScientificInterface.Other
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports 
 
@@ -37,9 +37,9 @@ Namespace Ecopath.Input
     ''' Grid displaying Ecopath Basic Input information.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridBasicInput
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         Private Enum eColumnTypes As Integer
             Index = 0
@@ -57,7 +57,7 @@ Namespace Ecopath.Input
         End Enum
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -69,15 +69,15 @@ Namespace Ecopath.Input
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(eVarNameFlags.HabitatArea)
-            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaInput, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Currency)
-            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Time)
-            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(eVarNameFlags.PBInput, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
-            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(eVarNameFlags.QBInput, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
+            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaInput)
+            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z)
+            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(eVarNameFlags.PBInput)
+            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(eVarNameFlags.QBInput)
             Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(eVarNameFlags.EEInput)
             Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell(eVarNameFlags.OtherMortInput)
             Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(eVarNameFlags.GEInput)
             Me(0, eColumnTypes.GS) = New EwEColumnHeaderCell(eVarNameFlags.GS)
-            Me(0, eColumnTypes.DetImp) = New EwEColumnHeaderCell(eVarNameFlags.DetImp, SharedResources.GENERIC_LABEL_UNITPERUNIT, New eUnitType() {eUnitType.Currency, eUnitType.Time})
+            Me(0, eColumnTypes.DetImp) = New EwEColumnHeaderCell(eVarNameFlags.DetImp)
 
             Me.FixedColumns = 2
 

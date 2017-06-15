@@ -62,7 +62,6 @@ Public Class cEcotracerModelParameters
         MyBase.New(theCore)
 
         Dim val As cValue
-        Dim meta As cVariableMetaData
 
         Try
 
@@ -74,38 +73,27 @@ Public Class cEcotracerModelParameters
             m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' CZero
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CZero, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CZero))
+            val = New cValue(New Single, eVarNameFlags.CZero, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             ' CInflow
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CInflow, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CInflow))
+            val = New cValue(New Single, eVarNameFlags.CInflow, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             ' COutflow
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.COutflow, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.COutflow))
+            val = New cValue(New Single, eVarNameFlags.COutflow, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             ' CDecay
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CPhysicalDecayRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CPhysicalDecayRate))
+            val = New cValue(New Single, eVarNameFlags.CPhysicalDecayRate, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
-            ''integers
             'ConForceNumber
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.ConForceNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.ConForceNumber))
             m_values.Add(val.varName, val)
 
-
-            ''integers
-            'Max nunmber of time steps
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.ConMaxTimeSteps, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.ConForceNumber))
+            'Max number of time steps
+            val = New cValue(New Integer, eVarNameFlags.ConMaxTimeSteps, eStatusFlags.Null, eValueTypes.Int)
             m_values.Add(val.varName, val)
-
 
             'set status flags to default values
             ResetStatusFlags()

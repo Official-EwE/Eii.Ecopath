@@ -22,6 +22,7 @@
 
 Option Strict On
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
@@ -45,25 +46,24 @@ Namespace Style
         Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.GetDescriptor
 
-            ' ToDo: globalize this
             Dim val As eTaxonClassificationType = DirectCast(value, eTaxonClassificationType)
+            Dim fmt As New cVarnameTypeFormatter()
 
             Select Case val
                 Case eTaxonClassificationType.Phylum
-                    Return My.Resources.HEADER_PHYLUM
+                    Return fmt.GetDescriptor(eVarNameFlags.Phylum, eDescriptorTypes.Name)
                 Case eTaxonClassificationType.Order
-                    Return My.Resources.HEADER_ORDER
+                    Return fmt.GetDescriptor(eVarNameFlags.Order, eDescriptorTypes.Name)
                 Case eTaxonClassificationType.Class
-                    Return My.Resources.HEADER_CLASS
+                    Return fmt.GetDescriptor(eVarNameFlags.Class, eDescriptorTypes.Name)
                 Case eTaxonClassificationType.Family
-                    Return My.Resources.HEADER_FAMILY
+                    Return fmt.GetDescriptor(eVarNameFlags.Family, eDescriptorTypes.Name)
                 Case eTaxonClassificationType.Genus
-                    Return My.Resources.HEADER_GENUS
+                    Return fmt.GetDescriptor(eVarNameFlags.Genus, eDescriptorTypes.Name)
                 Case eTaxonClassificationType.Species
-                    Return My.Resources.HEADER_SPECIES
+                    Return fmt.GetDescriptor(eVarNameFlags.Species, eDescriptorTypes.Name)
                 Case eTaxonClassificationType.Latin
-                    Return "Latin name"
-                    'Case eTaxonClassificationType.Kingdom
+                    Return fmt.GetDescriptor(eVarNameFlags.Name, eDescriptorTypes.Name)
                 Case Else
                     Debug.Assert(False)
             End Select

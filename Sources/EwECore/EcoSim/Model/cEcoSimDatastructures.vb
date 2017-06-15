@@ -1223,8 +1223,8 @@ Public Class cEcosimDatastructures
 
         'reset some default values before the data is populated by an interface or a datasource
         'this worked differently in EwE5
-        Me.DefaultFishMortalityRates()
-        Me.DefaultFishingRates()
+        DefaultFishMortalityRates()
+        DefaultFishingRates()
 
     End Sub
 

@@ -24,6 +24,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -36,12 +37,12 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Non-Market price user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridFisheryInputNonMarketPrice
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -51,8 +52,8 @@ Namespace Ecopath.Input
 
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUE_UNIT_PER_UNIT, _
-                                               New eUnitType() {eUnitType.Monetary, eUnitType.Biomass})
+            ' The header text changed. Is that ok?
+            Me(0, 2) = New EwEColumnHeaderCell(eVarNameFlags.NonMarketValue)
 
             Me.FixedColumns = 2
 

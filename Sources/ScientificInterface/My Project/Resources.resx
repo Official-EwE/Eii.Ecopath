@@ -13087,6 +13087,31 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Advection model run either encountered an error or was interrupted. Advection vectors will not be updated.</value>
     <comment>Advection model run failed</comment>
   </data>
+
+  <data name="HEADER_MORTALITIES_BIOMACCURATE" xml:space="preserve">
+    <value>+ Biomass accum. rate</value>
+  </data>
+  <data name="HEADER_MORTALITIES_FISHINGMORTRATE" xml:space="preserve">
+    <value>= Fishing mort. rate</value>
+  </data>
+  <data name="HEADER_MORTALITIES_FISHMORT_OVER_TOTMORT" xml:space="preserve">
+    <value>Fishing mort. / total mort.</value>
+  </data>
+  <data name="HEADER_MORTALITIES_NETMIGRATE" xml:space="preserve">
+    <value>+ Net migration rate</value>
+  </data>
+  <data name="HEADER_MORTALITIES_OTHERMORTRATE" xml:space="preserve">
+    <value>+ Other mort. rate</value>
+  </data>
+  <data name="HEADER_MORTALITIES_PBZ" xml:space="preserve">
+    <value>Prod/biom or Z</value>
+  </data>
+  <data name="HEADER_MORTALITIES_PREDMORTRATE" xml:space="preserve">
+    <value>+ Predation mort. rate</value>
+  </data>
+  <data name="HEADER_MORTALITIES_PROP_NAT_MORT" xml:space="preserve">
+    <value>Proportion natural mort.</value>
+  </data>
   <data name="PROMPT_STANZA_MISSING_LIFESTAGES_DETAIL" xml:space="preserve">
     <value>Stanza group '{0}' is declared but has no life stages</value>
     <comment>{0}=stanza group name</comment>

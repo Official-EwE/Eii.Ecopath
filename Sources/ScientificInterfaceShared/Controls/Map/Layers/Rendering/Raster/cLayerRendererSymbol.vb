@@ -76,6 +76,11 @@ Namespace Controls.Map.Layers
                                    ByVal colorFill As Color)
             If Me.IsStyleValid() Then
                 rc.Inflate(CInt(-rc.Width * 0.75), CInt(-rc.Height * 0.75))
+
+                ' JS 05Sep16: center symbol
+                Dim sz As Integer = Math.Min(rc.Width, rc.Height)
+                rc = New Rectangle(rc.X + CInt((rc.Width - sz) / 2), rc.Y + CInt((rc.Height - sz) / 2), sz, sz)
+
                 Using p As New Pen(Color.White, 3)
                     g.DrawEllipse(p, rc)
                 End Using

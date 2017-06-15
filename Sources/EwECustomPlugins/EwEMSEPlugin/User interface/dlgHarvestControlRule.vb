@@ -25,13 +25,10 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.SystemUtilities
-Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Utilities
 Imports EwEMSEPlugin.HCR_GroupNS
-Imports EwEMSEPlugin.HCR_GroupNS.HCR_Group
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
 
 Public Class dlgHarvestControlRule
 
@@ -114,7 +111,7 @@ Public Class dlgHarvestControlRule
 
         Me.m_cmbTarg_Or_Cons.Items.Add(New cHCRTypeItem(eHCR_Targ_Or_Cons.Target))
         Me.m_cmbTarg_Or_Cons.Items.Add(New cHCRTypeItem(eHCR_Targ_Or_Cons.Conservation))
-        Me.m_cmbTarg_Or_Cons.SelectedIndex = cSystemUtils.IIF(Me.m_HCR.Targ_Or_Cons = eHCR_Targ_Or_Cons.Target, 0, 1)
+        Me.m_cmbTarg_Or_Cons.SelectedIndex = If(Me.m_HCR.Targ_Or_Cons = eHCR_Targ_Or_Cons.Target, 0, 1)
 
         Me.m_bInitialized = True
 

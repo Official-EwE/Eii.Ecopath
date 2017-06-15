@@ -31,6 +31,8 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
+Imports EwECore.Style
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -696,51 +698,50 @@ Public Class ucResults
         ' ToDo: globalize this
         Dim strXAxisLabel As String = If(Me.m_viewMode = eViewModeType.GraphEquilibrium, "Effort", "Year")
         Dim strYAxisLabel As String = ""
-        Dim aUnitsYAxis() As eUnitType = New eUnitType() {eUnitType.Monetary}
         Dim avars() As cResults.eVariableType = Nothing
 
         Select Case graphmode
 
             Case cResults.eGraphDataType.CostRevenue
                 strGraphTitle = My.Resources.HEADER_REV_COST
-                strYAxisLabel = My.Resources.HEADER_REV_COST_UNIT
-                avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTotal, _
-                                                      cResults.eVariableType.Cost, _
+                strYAxisLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, My.Resources.HEADER_REV_COST, cUnits.Monetary)
+                avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTotal,
+                                                      cResults.eVariableType.Cost,
                                                       cResults.eVariableType.Profit}
 
             Case cResults.eGraphDataType.Cost
                 strGraphTitle = My.Resources.HEADER_COST
-                strYAxisLabel = My.Resources.HEADER_COST_UNIT
-                avars = New cResults.eVariableType() {cResults.eVariableType.CostAgriculture, _
-                                                      cResults.eVariableType.CostInput, _
-                                                      cResults.eVariableType.CostManagementRoyaltyCertification, _
-                                                      cResults.eVariableType.CostManagementRoyaltyCertificationObservers, _
+                strYAxisLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, My.Resources.HEADER_COST, cUnits.Monetary)
+                avars = New cResults.eVariableType() {cResults.eVariableType.CostAgriculture,
+                                                      cResults.eVariableType.CostInput,
+                                                      cResults.eVariableType.CostManagementRoyaltyCertification,
+                                                      cResults.eVariableType.CostManagementRoyaltyCertificationObservers,
                                                       cResults.eVariableType.CostRawmaterial}
 
             Case cResults.eGraphDataType.Revenue
                 strGraphTitle = My.Resources.HEADER_REVENUE
-                strYAxisLabel = My.Resources.HEADER_REVENUE_UNIT
-                avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTickets, _
-                                                      cResults.eVariableType.RevenueSubsidies, _
-                                                      cResults.eVariableType.RevenueProductsMain, _
-                                                      cResults.eVariableType.RevenueProductsOther, _
+                strYAxisLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, My.Resources.HEADER_REVENUE, cUnits.Monetary)
+                avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTickets,
+                                                      cResults.eVariableType.RevenueSubsidies,
+                                                      cResults.eVariableType.RevenueProductsMain,
+                                                      cResults.eVariableType.RevenueProductsOther,
                                                       cResults.eVariableType.RevenueAgriculture}
 
             Case cResults.eGraphDataType.Jobs
                 strGraphTitle = My.Resources.HEADER_JOBS
                 strYAxisLabel = My.Resources.HEADER_JOBS
-                avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfJobsTotal, _
-                                                      cResults.eVariableType.NumberOfJobsMaleTotal, _
+                avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfJobsTotal,
+                                                      cResults.eVariableType.NumberOfJobsMaleTotal,
                                                       cResults.eVariableType.NumberOfJobsFemaleTotal}
             Case cResults.eGraphDataType.Dependents
                 strGraphTitle = My.Resources.HEADER_DEPENDENTS
                 strYAxisLabel = My.Resources.HEADER_DEPENDENTS
-                avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfDependentsTotal, _
-                                                      cResults.eVariableType.NumberOfWorkerDependents, _
-                                                      cResults.eVariableType.NumberOfWorkerFemales, _
-                                                      cResults.eVariableType.NumberOfWorkerMales, _
-                                                      cResults.eVariableType.NumberOfOwnerMales, _
-                                                      cResults.eVariableType.NumberOfOwnerFemales, _
+                avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfDependentsTotal,
+                                                      cResults.eVariableType.NumberOfWorkerDependents,
+                                                      cResults.eVariableType.NumberOfWorkerFemales,
+                                                      cResults.eVariableType.NumberOfWorkerMales,
+                                                      cResults.eVariableType.NumberOfOwnerMales,
+                                                      cResults.eVariableType.NumberOfOwnerFemales,
                                                       cResults.eVariableType.NumberOfOwnerDependents}
 
             Case Else
@@ -748,7 +749,7 @@ Public Class ucResults
 
         End Select
 
-        gv.SetData(strGraphTitle, strXAxisLabel, Nothing, strYAxisLabel, aUnitsYAxis, avars)
+        gv.SetData(strGraphTitle, strXAxisLabel, strYAxisLabel, avars)
 
     End Sub
 

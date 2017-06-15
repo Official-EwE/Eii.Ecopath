@@ -448,23 +448,22 @@ Public Class gridDefineTaxonomy
 
         ' Group index cell
         Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell()
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
-        Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION_B)
-        Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(SharedResources.HEADER_PHYLUM)
-        Me(0, eColumnTypes.Class) = New EwEColumnHeaderCell(SharedResources.HEADER_CLASS)
-        Me(0, eColumnTypes.Order) = New EwEColumnHeaderCell(SharedResources.HEADER_ORDER)
-        Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell(SharedResources.HEADER_FAMILY)
-        Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(SharedResources.HEADER_GENUS)
-        Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
+        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(eVarNameFlags.Name)
+        Me(0, eColumnTypes.Proportion) = New EwEColumnHeaderCell(eVarNameFlags.TaxonPropBiomass)
+        Me(0, eColumnTypes.Phylum) = New EwEColumnHeaderCell(eVarNameFlags.Phylum)
+        Me(0, eColumnTypes.Class) = New EwEColumnHeaderCell(eVarNameFlags.Class)
+        Me(0, eColumnTypes.Order) = New EwEColumnHeaderCell(eVarNameFlags.Order)
+        Me(0, eColumnTypes.Family) = New EwEColumnHeaderCell(eVarNameFlags.Family)
+        Me(0, eColumnTypes.Genus) = New EwEColumnHeaderCell(eVarNameFlags.Genus)
+        Me(0, eColumnTypes.Species) = New EwEColumnHeaderCell(eVarNameFlags.Species)
         Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
         If (Me.m_bShowCodes) Then
-            'Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
-            Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FISHBASE)
-            Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SEALIFEBASE)
-            Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_SAUP)
-            Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_FAO)
-            Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE_LSID)
+            Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(eVarNameFlags.CodeFB)
+            Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(eVarNameFlags.CodeSLB)
+            Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(eVarNameFlags.CodeSAUP)
+            Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(eVarNameFlags.CodeFAO)
+            Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(eVarNameFlags.CodeLSID)
         End If
 
         Me.FixedColumns = 1

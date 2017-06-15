@@ -103,7 +103,7 @@ Public MustInherit Class cEcospaceLayer
         Me.m_ValidationStatus.CoreDataObject = Me
 
         If (TypeOf manager Is cCoreInputOutputBase) Then
-            Me.m_metadata = CType(Me.m_manager, cCoreInputOutputBase).GetVariableMetadata(Me.m_vnData)
+            Me.m_metadata = DirectCast(manager, cCoreInputOutputBase).GetVariableMetadata(Me.m_vnData)
         End If
 
         Me.AllowValidation = True
@@ -129,6 +129,7 @@ Public MustInherit Class cEcospaceLayer
 
         Me.m_data = data
         Me.m_vnData = vn
+        Me.m_metadata = meta
 
     End Sub
 
@@ -184,7 +185,7 @@ Public MustInherit Class cEcospaceLayer
             Return False
         End Try
 
-        Return md.MinOperator.Compare(sValue, md.Min) And _
+        Return md.MinOperator.Compare(sValue, md.Min) And
                md.MaxOperator.Compare(sValue, md.Max)
 
     End Function
@@ -359,9 +360,9 @@ Public MustInherit Class cEcospaceLayer
     ''' Overridden to make sure there is always a name returned for a layer.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function GetVariable(VarName As eVarNameFlags, _
-                                          Optional iIndex As Integer = -9999, _
-                                          Optional iIndex2 As Integer = -9999, _
+    Public Overrides Function GetVariable(VarName As eVarNameFlags,
+                                          Optional iIndex As Integer = -9999,
+                                          Optional iIndex2 As Integer = -9999,
                                           Optional iIndex3 As Integer = -9999) As Object
 
         If (VarName = eVarNameFlags.Name) Then
@@ -376,7 +377,7 @@ Public MustInherit Class cEcospaceLayer
 
     End Function
 
-    Public Overrides Function SetVariable(VarName As eVarNameFlags, _
+    Public Overrides Function SetVariable(VarName As eVarNameFlags,
                                           newValue As Object, Optional iSecondaryIndex As Integer = -9999) As Boolean
         If (VarName = eVarNameFlags.Name) Then
             If (Me.Index > 0) Then

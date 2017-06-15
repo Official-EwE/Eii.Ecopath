@@ -27,14 +27,15 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2.Cells.Real
+Imports EwECore.Style
 
 #End Region
 
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridFisheryOutputQuantity
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         Public Sub New()
             MyBase.New()
@@ -43,7 +44,6 @@ Namespace Ecopath.Output
         Protected Overrides Sub InitStyle()
 
             Dim source As cCoreInputOutputBase = Nothing
-            Dim aunits As eUnitType() = New eUnitType() {eUnitType.Currency, eUnitType.Time}
 
             MyBase.InitStyle()
 
@@ -59,13 +59,13 @@ Namespace Ecopath.Output
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Core.nFleets
                 source = Core.FleetInputs(fleetIndex)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, _
-                                                                     source, eVarNameFlags.Name, Nothing, _
-                                                                     SharedResources.HEADER_X_UNIT_PER_UNIT, aunits)
+                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager,
+                                                                     source, eVarNameFlags.Name, Nothing,
+                                                                     cUnits.CurrencyOverTime)
             Next
 
             ' Total catch column
-            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALCATCH_UNIT_PY, aunits)
+            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALCATCH, cUnits.CurrencyOverTime)
 
             Me.FixedColumns = 2
         End Sub
@@ -116,10 +116,10 @@ Namespace Ecopath.Output
             Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 
             ' For each fleet (each column) 
-            For fleetIndex As Integer = 1 To core.nFleets
+            For fleetIndex As Integer = 1 To Core.nFleets
                 alSumLandingsDiscards.Clear()
                 ' Get the fleet object 
-                sourceSec = core.FleetInputs(fleetIndex)
+                sourceSec = Core.FleetInputs(fleetIndex)
                 ' Get the index landing property
                 propLandings = PropertyManager.GetProperty(sourceSec, eVarNameFlags.Landings, source)
                 alSumLandingsDiscards.Add(propLandings)
@@ -173,12 +173,12 @@ Namespace Ecopath.Output
             Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALCATCH)
 
             alSumAll.Clear()
-            For fleetIndex As Integer = 1 To core.nFleets
-                source = core.FleetInputs(fleetIndex)
+            For fleetIndex As Integer = 1 To Core.nFleets
+                source = Core.FleetInputs(fleetIndex)
                 alSumCol.Clear()
 
-                For rowIndex As Integer = 1 To core.nGroups
-                    sourceSec = core.EcoPathGroupInputs(rowIndex)
+                For rowIndex As Integer = 1 To Core.nGroups
+                    sourceSec = Core.EcoPathGroupInputs(rowIndex)
                     alSumLandingsDiscards.Clear()
                     ' Get the index landing property
                     propLandings = Me.PropertyManager.GetProperty(source, eVarNameFlags.Landings, sourceSec)

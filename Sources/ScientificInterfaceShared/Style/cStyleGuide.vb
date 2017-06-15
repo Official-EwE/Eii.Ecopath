@@ -22,20 +22,20 @@
 
 Option Strict On
 
+Imports System.Collections.Specialized
 Imports System.Drawing.Drawing2D
+Imports System.Drawing.Imaging
 Imports System.Globalization
-Imports System.Threading
 Imports System.IO
+Imports System.Text
+Imports System.Threading
 Imports EwECore
 Imports EwECore.Auxiliary
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Drawing
-Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
-Imports System.Text
-Imports System.Collections.Specialized
-Imports System.Drawing.Imaging
-Imports EwECore.Style
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -609,54 +609,14 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get a formatted unit string for a given unit type.
-        ''' </summary>
-        ''' <param name="unitType"></param>
-        ''' <returns></returns>
-        ''' -------------------------------------------------------------------
-        Public Function GetUnitString(ByVal unitType As eUnitType) As String
-            Dim fmt As New cUnitFormatter(Me.m_core)
-            Return fmt.UnitString(unitType)
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Format a string from one or more units.
         ''' </summary>
-        ''' <param name="strUnitMask">The mask to format values with.</param>
-        ''' <param name="aUnitTypes">An array of units to format into the mask.</param>
+        ''' <param name="strUnits">Units to format into the mask.</param>
         ''' <returns></returns>
-        ''' <remarks>
-        ''' <para>The unit mask will be formatted as follows:</para>
-        ''' <list type="table">
-        ''' <listheader><term>Mask item</term><term>Will format to</term></listheader>
-        ''' <item><term>{0}</term><term><paramref name="strUnitMask"/> item 0</term></item>
-        ''' <item><term>{1}</term><term><paramref name="strUnitMask"/> item 1 (if applicable)</term></item>
-        ''' </list>
-        ''' <para>The maximum number of <paramref name="aUnitTypes"/> is 2.</para>
-        ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function FormatUnitString(ByVal strUnitMask As String, _
-                                         ByVal aUnitTypes As eUnitType()) As String
-
-            If (strUnitMask IsNot Nothing) And (Not String.IsNullOrEmpty(strUnitMask)) Then
-
-                Try
-                    Select Case aUnitTypes.Length
-                        Case 0
-                            Debug.Assert(False)
-                        Case 1
-                            Return cStringUtils.Localize(strUnitMask, Me.GetUnitString(aUnitTypes(0)))
-                        Case 2
-                            Return cStringUtils.Localize(strUnitMask, Me.GetUnitString(aUnitTypes(0)), Me.GetUnitString(aUnitTypes(1)))
-                        Case Else
-                            Debug.Assert(False)
-                    End Select
-                Catch ex As Exception
-                    Debug.Assert(False, "Unable to format unit string '" & strUnitMask & "'")
-                End Try
-            End If
-            Return strUnitMask
+        Public Function FormatUnitString(ByVal strUnits As String) As String
+            Dim units As New cUnits(Me.m_core)
+            Return units.ToString(strUnits)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -665,37 +625,15 @@ Namespace Style
         ''' </summary>
         ''' <param name="strUnitMask">The mask to format values with.</param>
         ''' <param name="strValue">The value to format into the mask.</param>
-        ''' <param name="aUnitTypes">An array of units to format into the mask.</param>
+        ''' <param name="strUnits">Units to format into the mask.</param>
         ''' <returns></returns>
-        ''' <remarks>
-        ''' <para>The unit mask will be formatted as follows:</para>
-        ''' <list type="table">
-        ''' <listheader><term>Mask item</term><term>Will format to</term></listheader>
-        ''' <item><term>{0}</term><term><paramref name="strValue"/></term></item>
-        ''' <item><term>{1}</term><term><paramref name="strUnitMask"/> item 0</term></item>
-        ''' <item><term>{2}</term><term><paramref name="strUnitMask"/> item 1 (if applicable)</term></item>
-        ''' </list>
-        ''' <para>The maximum number of <paramref name="aUnitTypes"/> is 2.</para>
-        ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function FormatUnitString(ByVal strUnitMask As String, _
-                                         ByVal strValue As String, _
-                                         ByVal aUnitTypes As eUnitType()) As String
+        Public Function FormatUnitString(ByVal strUnitMask As String,
+                                         ByVal strValue As String,
+                                         ByVal strUnits As String) As String
 
             If (strUnitMask IsNot Nothing) And (Not String.IsNullOrEmpty(strUnitMask)) Then
-                Select Case aUnitTypes.Length
-                    Case 0
-                        Return cStringUtils.Localize(strUnitMask, strValue)
-                    Case 1
-                        Return cStringUtils.Localize(strUnitMask, strValue, _
-                                                       Me.GetUnitString(aUnitTypes(0)))
-                    Case 2
-                        Return cStringUtils.Localize(strUnitMask, strValue, _
-                                                       Me.GetUnitString(aUnitTypes(0)), _
-                                                       Me.GetUnitString(aUnitTypes(1)))
-                    Case Else
-                        Debug.Assert(False)
-                End Select
+                Return cStringUtils.Localize(strUnitMask, strValue, FormatUnitString(strUnits))
             End If
             Return cStringUtils.Localize(strUnitMask, strValue)
         End Function
@@ -1451,7 +1389,7 @@ Namespace Style
                 If (Me.m_dtApplicationColors.ContainsKey(colorType)) Then
                     Return Me.m_dtApplicationColors(colorType)
                 End If
-                Return Me.DefaultColor(colorType)
+                Return DefaultColor(colorType)
             End Get
             Set(ByVal value As Color)
                 ' Optimization
@@ -1614,7 +1552,7 @@ Namespace Style
                         Return strName
                     End If
                 End If
-                Return Me.DefaultFontFamilyName(ft)
+                Return DefaultFontFamilyName(ft)
             End Get
             Set(ByVal value As String)
                 Me.m_dtFontFamilyName(ft) = value
@@ -1634,7 +1572,7 @@ Namespace Style
                 If Me.m_dtFontStye.ContainsKey(ft) Then
                     Return Me.m_dtFontStye(ft)
                 End If
-                Return Me.DefaultFontStyle(ft)
+                Return DefaultFontStyle(ft)
             End Get
             Set(ByVal value As FontStyle)
                 If (value < 0) Then
@@ -1661,7 +1599,7 @@ Namespace Style
                         Return sSize
                     End If
                 End If
-                Return Me.DefaultFontSize(ft)
+                Return DefaultFontSize(ft)
             End Get
             Set(ByVal value As Single)
                 If (value < 0) Then

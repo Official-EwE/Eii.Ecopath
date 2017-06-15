@@ -32,6 +32,7 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
+Imports EwECore.Style
 
 #End Region
 
@@ -812,33 +813,31 @@ Namespace Ecosim
 
                 Case ePlot.AvgWeightOrProdCons
                     If group.isMultiStanza() Then
-                        Return StyleGuide.GetUnitString(eUnitType.Currency)
+                        Return cUnits.Currency
                     Else
                         Return ""
                     End If
 
                 Case ePlot.Biomass
-                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_UNIT, StyleGuide.GetUnitString(eUnitType.Currency))
+                    Return cUnits.Currency
 
                 Case ePlot.FeedingTime
                     Return ""
 
-                Case ePlot.ConsumptionBiomass, _
-                     ePlot.FleetFishingMortality, _
-                     ePlot.Mortality, _
+                Case ePlot.ConsumptionBiomass,
+                     ePlot.FleetFishingMortality,
+                     ePlot.Mortality,
                      ePlot.PredationMortality
-                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_PERUNIT, StyleGuide.GetUnitString(eUnitType.Time))
+                    Return cUnits.OverTime
 
                 Case ePlot.Prey
                     Return SharedResources.HEADER_PREY_PERCENTAGE
 
                 Case ePlot.Value
-                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_UNITPERUNIT, _
-                                       StyleGuide.GetUnitString(eUnitType.Monetary), StyleGuide.GetUnitString(eUnitType.Biomass))
+                    Return cUnits.MonetaryOverBiomass
 
                 Case ePlot.[Catch]
-                    Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_UNITPERUNIT, _
-                                         StyleGuide.GetUnitString(eUnitType.Currency), StyleGuide.GetUnitString(eUnitType.Time))
+                    Return cUnits.CurrencyOverTime
             End Select
 
             Return ""

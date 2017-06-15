@@ -1,7 +1,4 @@
-﻿Option Strict On
-Option Explicit On
-
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -28,11 +25,13 @@ Option Explicit On
 
 #Region " Imports "
 
-Imports LumenWorks.Framework.IO.Csv
-Imports EwECore
+Option Strict On
+Option Explicit On
+
 Imports System.IO
+Imports EwECore
 Imports EwEUtils.Utilities
-Imports EwEUtils.Core
+Imports LumenWorks.Framework.IO.Csv
 
 #End Region ' Imports
 
@@ -490,7 +489,7 @@ Public Class cEcosimDistributionParamsData
         Me.DistributionType = DistributionType
         Me.LowerBound = LowerBound
         Me.UpperBound = UpperBound
-        Me.MidPoint = EwEUtils.SystemUtilities.cSystemUtils.IIF(MidPoint < 0, cCore.NULL_VALUE, MidPoint)
+        Me.MidPoint = If(MidPoint < 0, cCore.NULL_VALUE, MidPoint)
     End Sub
 
     Public Property GroupNo As Integer

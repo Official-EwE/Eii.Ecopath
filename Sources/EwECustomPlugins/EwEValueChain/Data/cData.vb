@@ -436,7 +436,7 @@ Public Class cData
 
 #Region " Defaults "
 
-    Public Function GetUnitDefault(ByVal unitType As cUnitFactory.eUnitType) As cUnit
+    Public Function GetUnitDefault(ByVal unitType As cUnitFactory.cUnitFormatter) As cUnit
         Dim unit As cUnit = Nothing
         ' Try to find
         For Each unit In Me.m_lUnitDefaults
@@ -518,7 +518,7 @@ Public Class cData
         Return Me.m_lUnits(iIndex)
     End Function
 
-    Public Function GetUnits(ByVal unitType As cUnitFactory.eUnitType) As cUnit()
+    Public Function GetUnits(ByVal unitType As cUnitFactory.cUnitFormatter) As cUnit()
         Dim lUnits As New List(Of cUnit)
         Dim unit As cUnit = Nothing
         Dim tUnit As Type = cUnitFactory.MapType(unitType)
@@ -557,7 +557,7 @@ Public Class cData
     ''' <param name="strName"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function CreateUnit(ByVal unitType As cUnitFactory.eUnitType, ByVal strName As String) As cUnit
+    Public Function CreateUnit(ByVal unitType As cUnitFactory.cUnitFormatter, ByVal strName As String) As cUnit
         Dim unit As cUnit = cUnitFactory.CreateUnit(unitType)
         If unit IsNot Nothing Then
             ' Populate unit with defaults
@@ -1137,13 +1137,13 @@ Public Class cData
         Dim pu As cProducerUnit = Nothing
         Dim bUseUnit As Boolean = False
 
-        If (item Is Nothing) Then Return Me.GetUnits(cUnitFactory.eUnitType.All)
+        If (item Is Nothing) Then Return Me.GetUnits(cUnitFactory.cUnitFormatter.All)
 
         ' * Determine for all producers whether the fleet and group filter matches
         ' * For all matching producers add all related units in the flow
 
         ' Iterate over producers
-        For Each unit As cUnit In Me.GetUnits(cUnitFactory.eUnitType.Producer)
+        For Each unit As cUnit In Me.GetUnits(cUnitFactory.cUnitFormatter.Producer)
             ' Get producer unit
             pu = DirectCast(unit, cProducerUnit)
 

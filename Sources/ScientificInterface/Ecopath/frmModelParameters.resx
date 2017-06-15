@@ -132,7 +132,7 @@
     <value>m_udNumDigits</value>
   </data>
   <data name="&gt;&gt;m_udNumDigits.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_udNumDigits.Parent" xml:space="preserve">
     <value>m_gbNumFormatting</value>
@@ -196,7 +196,7 @@
     <value>m_lblOptions</value>
   </data>
   <data name="&gt;&gt;m_lblOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lblOptions.Parent" xml:space="preserve">
     <value>Panel2</value>
@@ -289,7 +289,7 @@
     <value>m_lblModel</value>
   </data>
   <data name="&gt;&gt;m_lblModel.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lblModel.Parent" xml:space="preserve">
     <value>m_plDescr</value>
@@ -460,7 +460,7 @@
     <value>m_plDescr</value>
   </data>
   <data name="&gt;&gt;m_lblArea.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>25</value>
   </data>
   <data name="m_tbArea.Location" type="System.Drawing.Point, System.Drawing">
     <value>109, 193</value>
@@ -492,29 +492,29 @@
   <data name="m_lblAreaUnit.Location" type="System.Drawing.Point, System.Drawing">
     <value>248, 196</value>
   </data>
-  <data name="m_lblAreaUnit.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>Yes</value>
-  </data>
   <data name="m_lblAreaUnit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 13</value>
+    <value>69, 13</value>
   </data>
   <data name="m_lblAreaUnit.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
   <data name="m_lblAreaUnit.Text" xml:space="preserve">
-    <value>km²</value>
+    <value>[km]²</value>
+  </data>
+  <data name="m_lblAreaUnit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="&gt;&gt;m_lblAreaUnit.Name" xml:space="preserve">
     <value>m_lblAreaUnit</value>
   </data>
   <data name="&gt;&gt;m_lblAreaUnit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEUnitLabel, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lblAreaUnit.Parent" xml:space="preserve">
     <value>m_plDescr</value>
   </data>
   <data name="&gt;&gt;m_lblAreaUnit.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>22</value>
   </data>
   <data name="m_tlpUnits.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1105,7 +1105,7 @@
     <value>m_cmbMonetaryUnit</value>
   </data>
   <data name="&gt;&gt;m_cmbMonetaryUnit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cMonetaryUnitComboBox, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cMonetaryUnitComboBox, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_cmbMonetaryUnit.Parent" xml:space="preserve">
     <value>m_gbMonetaryUnits</value>
@@ -1282,7 +1282,7 @@
     <value>m_hdrExecution</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Parent" xml:space="preserve">
     <value>m_plExecution</value>
@@ -1306,7 +1306,7 @@
     <value>m_nudNorth</value>
   </data>
   <data name="&gt;&gt;m_nudNorth.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudNorth.Parent" xml:space="preserve">
     <value>m_plDescr</value>
@@ -1330,7 +1330,7 @@
     <value>m_nudSouth</value>
   </data>
   <data name="&gt;&gt;m_nudSouth.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudSouth.Parent" xml:space="preserve">
     <value>m_plDescr</value>
@@ -1342,7 +1342,7 @@
     <value>Top</value>
   </data>
   <data name="m_nudWest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>203, 245</value>
+    <value>188, 245</value>
   </data>
   <data name="m_nudWest.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
@@ -1354,7 +1354,7 @@
     <value>m_nudWest</value>
   </data>
   <data name="&gt;&gt;m_nudWest.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudWest.Parent" xml:space="preserve">
     <value>m_plDescr</value>
@@ -1366,7 +1366,7 @@
     <value>Top</value>
   </data>
   <data name="m_nudEast.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 247</value>
+    <value>411, 247</value>
   </data>
   <data name="m_nudEast.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 20</value>
@@ -1378,7 +1378,7 @@
     <value>m_nudEast</value>
   </data>
   <data name="&gt;&gt;m_nudEast.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudEast.Parent" xml:space="preserve">
     <value>m_plDescr</value>
@@ -1417,7 +1417,7 @@
     <value>m_plDescr</value>
   </data>
   <data name="&gt;&gt;m_lblNorth.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>27</value>
   </data>
   <data name="m_lblWest.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -1429,7 +1429,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblWest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>162, 247</value>
+    <value>147, 247</value>
   </data>
   <data name="m_lblWest.Size" type="System.Drawing.Size, System.Drawing">
     <value>35, 13</value>
@@ -1450,7 +1450,7 @@
     <value>m_plDescr</value>
   </data>
   <data name="&gt;&gt;m_lblWest.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>26</value>
   </data>
   <data name="m_lblEast.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -1462,7 +1462,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblEast.Location" type="System.Drawing.Point, System.Drawing">
-    <value>359, 249</value>
+    <value>374, 249</value>
   </data>
   <data name="m_lblEast.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 13</value>
@@ -1483,7 +1483,7 @@
     <value>m_plDescr</value>
   </data>
   <data name="&gt;&gt;m_lblEast.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>23</value>
   </data>
   <data name="m_lblSouth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -1659,6 +1659,105 @@
   <data name="&gt;&gt;m_lblNoYears.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
+  <data name="m_lblSouthUnit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_lblSouthUnit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblSouthUnit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>398, 280</value>
+  </data>
+  <data name="m_lblSouthUnit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 13</value>
+  </data>
+  <data name="m_lblSouthUnit.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="m_lblSouthUnit.Text" xml:space="preserve">
+    <value>[location]</value>
+  </data>
+  <data name="m_lblSouthUnit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblSouthUnit.Name" xml:space="preserve">
+    <value>m_lblSouthUnit</value>
+  </data>
+  <data name="&gt;&gt;m_lblSouthUnit.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEUnitLabel, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_lblSouthUnit.Parent" xml:space="preserve">
+    <value>m_plDescr</value>
+  </data>
+  <data name="&gt;&gt;m_lblSouthUnit.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="m_lblEastUnit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_lblEastUnit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblEastUnit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>509, 247</value>
+  </data>
+  <data name="m_lblEastUnit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 13</value>
+  </data>
+  <data name="m_lblEastUnit.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="m_lblEastUnit.Text" xml:space="preserve">
+    <value>[location]</value>
+  </data>
+  <data name="m_lblEastUnit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblEastUnit.Name" xml:space="preserve">
+    <value>m_lblEastUnit</value>
+  </data>
+  <data name="&gt;&gt;m_lblEastUnit.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEUnitLabel, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_lblEastUnit.Parent" xml:space="preserve">
+    <value>m_plDescr</value>
+  </data>
+  <data name="&gt;&gt;m_lblEastUnit.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="m_lblNorthUnit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_lblNorthUnit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblNorthUnit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>398, 221</value>
+  </data>
+  <data name="m_lblNorthUnit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 13</value>
+  </data>
+  <data name="m_lblNorthUnit.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="m_lblNorthUnit.Text" xml:space="preserve">
+    <value>[location]</value>
+  </data>
+  <data name="m_lblNorthUnit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblNorthUnit.Name" xml:space="preserve">
+    <value>m_lblNorthUnit</value>
+  </data>
+  <data name="&gt;&gt;m_lblNorthUnit.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEUnitLabel, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_lblNorthUnit.Parent" xml:space="preserve">
+    <value>m_plDescr</value>
+  </data>
+  <data name="&gt;&gt;m_lblNorthUnit.ZOrder" xml:space="preserve">
+    <value>21</value>
+  </data>
   <data name="m_lblModelBounds.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1687,7 +1786,40 @@
     <value>m_plDescr</value>
   </data>
   <data name="&gt;&gt;m_lblModelBounds.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>24</value>
+  </data>
+  <data name="m_lblWestUnit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="m_lblWestUnit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblWestUnit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>286, 249</value>
+  </data>
+  <data name="m_lblWestUnit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 13</value>
+  </data>
+  <data name="m_lblWestUnit.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="m_lblWestUnit.Text" xml:space="preserve">
+    <value>[location]</value>
+  </data>
+  <data name="m_lblWestUnit.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblWestUnit.Name" xml:space="preserve">
+    <value>m_lblWestUnit</value>
+  </data>
+  <data name="&gt;&gt;m_lblWestUnit.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEUnitLabel, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_lblWestUnit.Parent" xml:space="preserve">
+    <value>m_plDescr</value>
+  </data>
+  <data name="&gt;&gt;m_lblWestUnit.ZOrder" xml:space="preserve">
+    <value>28</value>
   </data>
   <data name="m_plDescr.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1972,7 +2104,7 @@
     <value>m_hdrClassification</value>
   </data>
   <data name="&gt;&gt;m_hdrClassification.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrClassification.Parent" xml:space="preserve">
     <value>m_plMetadata</value>
@@ -2062,7 +2194,7 @@
     <value>m_hdrPublication</value>
   </data>
   <data name="&gt;&gt;m_hdrPublication.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrPublication.Parent" xml:space="preserve">
     <value>m_plPublication</value>
@@ -2335,6 +2467,6 @@
     <value>frmModelParameters</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

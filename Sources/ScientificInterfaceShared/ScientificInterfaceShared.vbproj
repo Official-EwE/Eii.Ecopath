@@ -149,6 +149,9 @@
     <Compile Include="Controls\EwEGrid\EwEStatusCell.vb" />
     <Compile Include="Controls\EwEGrid\IEwECell.vb" />
     <Compile Include="Controls\EwEGrid\IPropertyCell.vb" />
+    <Compile Include="Controls\Label\cEwEUnitLabel.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\Label\cFileDropLabel.vb">
       <SubType>Component</SubType>
     </Compile>

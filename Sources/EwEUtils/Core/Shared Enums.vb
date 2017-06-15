@@ -265,13 +265,9 @@ Namespace Core
         ''' <summary>To document</summary>
         VulMult
         ''' <summary>To document</summary>
-        ForcingFunctNumber
-        ''' <summary>To document</summary>
         MedFunctNumber
         ''' <summary>To document</summary>
         StepSize
-        ''' <summary>To document</summary>
-        Relaxation
         ''' <summary>To document</summary>
         Discount
         ''' <summary>To document</summary>
@@ -314,8 +310,6 @@ Namespace Core
         ''' <remarks>Added for MSEBatch command file.</remarks>
         MSEFmin
         ''' <summary>To document</summary>
-        MSEFmaxPM
-        ''' <summary>To document</summary>
         MSELowerLPEffort
         ''' <summary>To document</summary>
         MSEUpperLPEffort
@@ -343,8 +337,6 @@ Namespace Core
         EcosimSumNTimeSteps
         ''' <summary>Database ID</summary>
         DBID
-        ''' <summary>To document</summary>
-        CyclePath
         ''' <summary>Percentage of primary production</summary>
         PP
         ''' <summary>Generic description</summary>
@@ -367,6 +359,8 @@ Namespace Core
         UnitCurrencyCustomText
         ''' <summary>Unit enumerated value for monetary values</summary>
         UnitMonetary
+        ''' <summary>Unit value for georeferencing</summary>
+        UnitMapRef
         ''' <summary>Author of an EwE component</summary>
         Author
         ''' <summary>Contact info of an EwE component</summary>
@@ -425,13 +419,9 @@ Namespace Core
         Bat
         ''' <summary>Start age of a group in a stanza configuration (in months)</summary>
         StartAge
-        ''' <summary>End age of a group in a stanza configuration (in months)</summary>
-        EndAge
         ''' <summary>A multiplier to change the number of packets for the IBM model</summary>
         ''' <remarks>..but what about Dell? Acer? Toshiba? This is simply not fair!</remarks>
         PacketsMultiplier
-        ''' <summary>Full path of the current datasource/database</summary>
-        ModelFileName
         ''' <summary>Number of rows in the Ecospace basemap</summary>
         InRow
         ''' <summary>Number of columns in the Ecospace basemap</summary>
@@ -444,8 +434,6 @@ Namespace Core
         Latitude
         ''' <summary>Longitude of spatial data</summary>
         Longitude
-        ''' <summary>Basemap stepsize in number of steps per degree</summary>
-        BasemapStepSize
         ''' <summary>Relative catchability per fleet/gear type (multiplier)</summary>
         EffectivePower
         ''' <summary>Base dispersal</summary>
@@ -478,8 +466,6 @@ Namespace Core
         LayerHabitatCapacity
         ''' <summary>Ecospace cell MPA assignments</summary>
         LayerMPA
-        ''' <summary>To document</summary>
-        LayerMPAPM
         ''' <summary>Ecospace cell relative primary production</summary>
         LayerRelPP
         ''' <summary>Ecospace cell relative level of contaminants</summary>
@@ -490,8 +476,6 @@ Namespace Core
         LayerMigration
         ''' <summary>Ecospace cell advection assignments</summary>
         LayerAdvection
-        '''' <summary>Ecospace MLD (mixed layer depths) layer</summary>
-        'LayerMLD
         ''' <summary>Ecospace wind layer</summary>
         LayerWind
         ''' <summary>Ecospace upwelling layer</summary>
@@ -652,7 +636,7 @@ Namespace Core
         ''' <summary>Save Ecospace out annually only</summary>
         EcospaceUseAnnualOutput
         ''' <summary>To document</summary>
-        bUseEffortDistThreshold
+        UseEffortDistThreshold
         ''' <summary>To document</summary>
         EffortDistThreshold
         ''' <summary>To document</summary>
@@ -746,96 +730,6 @@ Namespace Core
         IsPred
         ''' <summary>To document</summary>
         IsPrey
-        ''' <summary>Network analysis variables</summary>
-        nTrophicLevels
-        ''' <summary>To document</summary>
-        NetworkAbsFlow
-        ''' <summary>To document</summary>
-        NetworkRelFlow
-        ''' <summary>To document</summary>
-        MixedTrophicImpact
-        ''' <summary>Network Flow and Biomss</summary>
-        PPImportFlow
-        ''' <summary>To document</summary>
-        PPConsFlow
-        ''' <summary>To document</summary>
-        PPExportFlow
-        ''' <summary>To document</summary>
-        PPToDetFlow
-        ''' <summary>To document</summary>
-        PPRespFlow
-        ''' <summary>To document</summary>
-        PPThroughFlow
-        ''' <summary>To document</summary>
-        DetImportFlow
-        ''' <summary>To document</summary>
-        DetConsFlow
-        ''' <summary>To document</summary>
-        DetExportFlow
-        ''' <summary>To document</summary>
-        DetToDetFlow
-        ''' <summary>To document</summary>
-        DetRespFlow
-        ''' <summary>To document</summary>
-        DetThroughFlow
-        ''' <summary>Network Acendency</summary>
-        AscendGroup
-        ''' <summary>To document</summary>
-        AscendOverheadGroup
-        ''' <summary>To document</summary>
-        AscendCapacityGroup
-        ''' <summary>To document</summary>
-        AscendInfoGroup
-        ''' <summary>To document</summary>
-        AscendThroughputGroup
-        ''' <summary>To document</summary>
-        AscendImportTot
-        ''' <summary>To document</summary>
-        AscendImportPer
-        ''' <summary>To document</summary>
-        OverheadImportTot
-        ''' <summary>To document</summary>
-        OverheadImportPer
-        ''' <summary>To document</summary>
-        CapacityImportTot
-        ''' <summary>To document</summary>
-        CapacityImportPer
-        ''' <summary>To document</summary>
-        AscendFlowTot
-        ''' <summary>To document</summary>
-        AscendFlowPer
-        ''' <summary>To document</summary>
-        OverheadFlowTot
-        ''' <summary>To document</summary>
-        OverheadFlowPer
-        ''' <summary>To document</summary>
-        CapacityFlowTot
-        ''' <summary>To document</summary>
-        CapacityFlowPer
-        ''' <summary>To document</summary>
-        AscendExportTot
-        ''' <summary>To document</summary>
-        AscendExportPer
-        ''' <summary>To document</summary>
-        OverheadExportTot
-        ''' <summary>To document</summary>
-        OverheadExportPer
-        ''' <summary>To document</summary>
-        CapacityExportTot
-        ''' <summary>To document</summary>
-        CapacityExportPer
-        ''' <summary>To document</summary>
-        AscendRespTot
-        ''' <summary>To document</summary>
-        AscendRespPer
-        ''' <summary>To document</summary>
-        OverheadRespTot
-        ''' <summary>To document</summary>
-        OverheadRespPer
-        ''' <summary>To document</summary>
-        CapacityRespTot
-        ''' <summary>To document</summary>
-        CapacityRespPer
 
         'Ecosim Group summary output
         ''' <summary>To document</summary>
@@ -881,53 +775,18 @@ Namespace Core
         ''' <summary>To document</summary>
         EcosimFleetCatchTime
 
-        ' Time series
-
-        ''' <summary>Type of a time series</summary>
-        TimeSeriesType
-        ''' <summary>Name of data set that a time series was imported from</summary>
-        DataSet
-        ''' <summary>Weight of time for a time series</summary>
-        WtType
-        ''' <summary>Index of a group or fleet that a time series applies to</summary>
-        DatPool
-        ''' <summary>To document</summary>
-        GroupIndex = DatPool
-        ''' <summary>To document</summary>
-        FleetIndex = DatPool
-        ''' <summary>The first year in a time series</summary>
-        DatYear
-        ''' <summary>The number of years of a time series</summary>
-        nDatYears
-        ''' <summary>Value for a given year in a time series</summary>
-        DatVal
-        ''' <summary>Flag stating whether a time series is applied</summary>
-        Applied
-        ''' <summary>Average zstat sumof(Log(observed/predicted))/nobs</summary>
-        ''' <remarks>There, you've GOT to love that description.</remarks>
-        DataQ
-        ''' <summary>Sum of squares fit of this data set to the predicted value</summary>
-        DataSS
-        ''' <summary>Future extension: time series can be associated with any variable</summary>
-        CustomVariable
-
-        ''' <summary>Sum of squares fit of Ecospace predicted values to all reference data across all groups</summary>
+       ''' <summary>Sum of squares fit of Ecospace predicted values to all reference data across all groups</summary>
         EcospaceSS
-
         ''' <summary>Sum of squares fit of Ecospace predicted values by group</summary>
         EcospaceSSGroup
-
         ''' <summary>
         ''' Has SS been calculated. Is there Ecospace Timeseries data loaded.
         ''' </summary>
         EcospaceSSCalculated
-
         ''' <summary>Sum of squares fit of Ecosim predicted values to all reference data across all the groups and data</summary>
         EcosimSS
-
         ''' <summary>Sum of squares fit of Ecosim predicted values to reference data by group</summary>
         EcosimSSGroup
-
         ''' <summary>Monte Carlo diet multiplier</summary>
         mcDietMult
 
@@ -1213,7 +1072,7 @@ Namespace Core
         ''' <summary>To document</summary>
         iMPAOptToUse
         ''' <summary>To document</summary>
-        MPAbUseCellWeight
+        MPAUseCellWeight
 
         ''' <summary>To document</summary>
         MPAOptStartYear
@@ -1576,19 +1435,15 @@ Namespace Core
         MSEBatchOutputCatch
         ''' <summary>To document</summary>
         MSEBatchOutputFishingMortRate
-
         ''' <summary>To document</summary>
         MSEBatchOuputDir
         ''' <summary>To document</summary>
         MSEBatchGroupRunType
-
         ''' <summary>
         ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value 
         ''' Boolean is this group managed using the TFM
         '''</summary>
-        ''' <remarks></remarks>
         MSEBatchTFMManaged
-
         ''' <summary>
         ''' Type of calculation to use when setting MSE Batch iterations values % or +- Value 
         '''</summary>
@@ -1772,6 +1627,16 @@ Namespace Core
         ''' <summary>Visualization settings for a 3D game environment</summary>
         Game3DVizSettings
 
+        ' PMs for NA vars 
+        ''' <summary>To document</summary>
+        GameTLCatchPM
+        ''' <summary>To document</summary>
+        GameTLPM
+        ''' <summary>To document</summary>
+        GameFIBPM
+        ''' <summary>To document</summary>
+        GameKemptonsQPM
+
         ''' <summary>To document</summary>
         PSDEnabled
         ''' <summary>To document</summary>
@@ -1791,9 +1656,9 @@ Namespace Core
         BinLWInput
         ''' <summary>To document</summary>
         BinLWOutput
-        ''' <summary>To document</summary>
+        ''' <summary>Length at infinity</summary>
         LooInput
-        ''' <summary>To document</summary>
+        ''' <summary>Length at infinity</summary>
         LooOutput
         ''' <summary>To document</summary>
         WinfInput
@@ -1803,13 +1668,13 @@ Namespace Core
         t0Input
         ''' <summary>To document</summary>
         t0Output
-        ''' <summary>To document</summary>
+        ''' <summary>Age at first capture</summary>
         TCatchInput
-        ''' <summary>To document</summary>
+        ''' <summary>Age at first capture</summary>
         TCatchOutput
-        ''' <summary>To document</summary>
+        ''' <summary>Max. age</summary>
         TmaxInput
-        ''' <summary>To document</summary>
+        ''' <summary>Max. age</summary>
         TmaxOutput
         ''' <summary>To document</summary>
         PSDIncluded
@@ -1842,15 +1707,6 @@ Namespace Core
         ''' <summary>To document</summary>
         TotalCatch
 
-        'PM's for NA vars 
-        ''' <summary>To document</summary>
-        TLCatchPM
-        ''' <summary>To document</summary>
-        TLPM
-        ''' <summary>To document</summary>
-        FIBPM
-        ''' <summary>To document</summary>
-        KemptonsQPM
         ''' <summary>Start year of the Ecopath model</summary>
         EcopathFirstYear
         ''' <summary>Number of years that the Ecopath model represents</summary>
@@ -1870,7 +1726,7 @@ Namespace Core
         ''' <summary>Stanza assigned to a given taxon</summary>
         TaxonStanza
         ''' <summary>Taxon biomass proportion</summary>
-        TaxonProp
+        TaxonPropBiomass
         ''' <summary>Taxon catch proportion</summary>
         TaxonPropCatch
         ''' <summary>Taxon phylum</summary>
@@ -2760,38 +2616,6 @@ Namespace Core
 
 #Region " System units "
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Types of dynamic units supported by EwE.
-    ''' </summary>
-    ''' <remarks>
-    ''' 28 Aug 2016: Units system needs to change to embed operations within unit list: unitMonitary, unitOver, unitTIme
-    ''' This will make complicated unit format masks obsolete, and can make unit formatting general
-    ''' </remarks>
-    ''' -------------------------------------------------------------------
-    Public Enum eUnitType As Byte
-        ''' <summary>Not a dynamic unit.</summary>
-        None = 0
-        ''' <summary>Currency unit.</summary>
-        Currency
-        ''' <summary>Time unit.</summary>
-        Time
-        ''' <summary>Monetary unit.</summary>
-        Monetary
-        ''' <summary>Nominal unit.</summary>
-        Nominal
-        ''' <summary>Area unit.</summary>
-        Area
-        ''' <summary>Biomass unit.</summary>
-        Biomass
-        ''' <summary>Propotion unit.</summary>
-        Proportion
-        ''' <summary>Fixed unit type: meter</summary>
-        Fixed_m
-        ''' <summary>Fixed unit type: centimeter per second</summary>
-        Fixed_cm_per_sec
-    End Enum
-
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Enumerated types providing currency types.
@@ -2853,7 +2677,7 @@ Namespace Core
     ''' Enumerated types providing map unit types.
     '''</summary>
     ''' ---------------------------------------------------------------------------
-    Public Enum eUnitMapType As Integer
+    Public Enum eUnitMapRefType As Integer
         ''' <summary>Custom area measure</summary>
         Custom = 0
         ''' <summary>Meters</summary>
@@ -2863,6 +2687,7 @@ Namespace Core
         ''' <summary>Decimal degrees</summary>
         dd
     End Enum
+
 #End Region ' System units
 
 #Region " Quota types "

@@ -330,7 +330,9 @@ Public Class cEwEStatusBar
         Me.m_strLastStatusText = strText
 
         ' Obtain alternate text from selection monitor
-        If String.IsNullOrEmpty(strText) Then strText = New cSelectionMonitorFormatter().GetDescriptor(Me.m_selmon, eDescriptorTypes.Name)
+        If String.IsNullOrEmpty(strText) Then
+            strText = New cSelectionMonitorFormatter(Me.m_uic.Core).GetDescriptor(Me.m_selmon, eDescriptorTypes.Name)
+        End If
 
         ' Optimization
         If (String.Compare(strText, Me.m_tsStatus.Text, True) = 0) And (sProgress = m_sLastProgress) Then

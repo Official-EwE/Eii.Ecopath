@@ -69,7 +69,7 @@ Public Class cFlowDiagramData
 
         Dim lUnits As New List(Of cUnit)
         lUnits.Add(Nothing)
-        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.All))
+        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.All))
         Me.m_nGroups = lUnits.Count - 1
         Me.m_nLivingGroups = lUnits.Count - 1
 
@@ -110,12 +110,12 @@ Public Class cFlowDiagramData
         Implements IFlowDiagramData.ItemColor
         Get
             Select Case Me.GetUnit(iGroup).UnitType
-                Case cUnitFactory.eUnitType.Consumer
-                Case cUnitFactory.eUnitType.Distribution
-                Case cUnitFactory.eUnitType.Processing
-                Case cUnitFactory.eUnitType.Producer
-                Case cUnitFactory.eUnitType.Retailer
-                Case cUnitFactory.eUnitType.Wholesaler
+                Case cUnitFactory.cUnitFormatter.Consumer
+                Case cUnitFactory.cUnitFormatter.Distribution
+                Case cUnitFactory.cUnitFormatter.Processing
+                Case cUnitFactory.cUnitFormatter.Producer
+                Case cUnitFactory.cUnitFormatter.Retailer
+                Case cUnitFactory.cUnitFormatter.Wholesaler
             End Select
         End Get
     End Property
@@ -335,7 +335,7 @@ Public Class cFlowDiagramData
                 '    Next
             End If
 
-            If (unitPred.UnitType = cUnitFactory.eUnitType.Producer) Then
+            If (unitPred.UnitType = cUnitFactory.cUnitFormatter.Producer) Then
                 PP(iPred) = 1.0!
             Else
                 PP(iPred) = 0.0!

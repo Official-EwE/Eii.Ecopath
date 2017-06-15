@@ -60,10 +60,8 @@ Public Class cEcospaceFleetOutput
         val = New cValue(0, eVarNameFlags.EcospaceFleetCostEnd, eStatusFlags.OK, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-
         val = New cValue(0, eVarNameFlags.EcospaceFleetEffortES, eStatusFlags.OK, eValueTypes.Sng)
         m_values.Add(val.varName, val)
-
 
     End Sub
 

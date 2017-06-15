@@ -85,7 +85,7 @@ Namespace Ecospace
 
         Protected Overrides Sub FillData()
 
-            Dim source As cEcospaceGroup = Nothing
+            Dim source As cEcospaceGroupInput = Nothing
             Dim cell As EwECellBase = Nothing
 
             For iGroup As Integer = 1 To Me.Core.nGroups

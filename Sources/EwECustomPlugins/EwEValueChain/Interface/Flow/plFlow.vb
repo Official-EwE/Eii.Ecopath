@@ -314,7 +314,7 @@ Public Class plFlow
     '    Dim ptUnitMargin As New Point(CInt(Me.m_iCellWidth * Me.m_sGridMarginRatio * 0.5), CInt(Me.m_iCellHeight * Me.m_sGridMarginRatio * 0.5))
     '    Dim uc As plUnitControl = Nothing
     '    Dim iUnitColumn As Integer = 0
-    '    Dim aiUnitCount([Enum].GetValues(GetType(cUnitFactory.eUnitType)).Length) As Integer
+    '    Dim aiUnitCount([Enum].GetValues(GetType(cUnitFactory.cUnitFormatter)).Length) As Integer
 
     '    ' Align each unit in its column, where row position is based on unit index
     '    '    ToDo: include branches, merges into algorithm
@@ -467,7 +467,7 @@ Public Class plFlow
             lUnits.AddRange(Me.m_data.GetUnits(Me.ItemFilter))
         Else
             ' #No: grab all units
-            lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.All))
+            lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.All))
         End If
 
         Me.ClearFlow()
@@ -773,7 +773,7 @@ Public Class plFlow
 
         ' For all Ecopath fleets:
 
-        Dim lUnits As cUnit() = Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer)
+        Dim lUnits As cUnit() = Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.Producer)
         Dim core As cCore = Me.m_data.Core
         Dim fleet As cFleetInput = Nothing
         Dim pu As cProducerUnit = Nothing
@@ -793,7 +793,7 @@ Public Class plFlow
             ' Not found?
             If Not bProducerExists Then
                 ' #Yes: create it
-                pu = DirectCast(Me.CreateUnit(cUnitFactory.eUnitType.Producer), cProducerUnit)
+                pu = DirectCast(Me.CreateUnit(cUnitFactory.cUnitFormatter.Producer), cProducerUnit)
                 pu.AllowEvents = False
                 pu.Fleet = fleet
                 pu.AllowEvents = True
@@ -807,7 +807,7 @@ Public Class plFlow
     ''' </summary>
     ''' <param name="unitType"></param>
     ''' -----------------------------------------------------------------------
-    Public Function CreateUnit(ByVal unitType As cUnitFactory.eUnitType) As cUnit
+    Public Function CreateUnit(ByVal unitType As cUnitFactory.cUnitFormatter) As cUnit
 
         Dim unit As cUnit = Nothing
         Dim lstrNames As New List(Of String)
@@ -821,17 +821,17 @@ Public Class plFlow
 
         ' Determine mask name
         Select Case unitType
-            Case cUnitFactory.eUnitType.Wholesaler
+            Case cUnitFactory.cUnitFormatter.Wholesaler
                 strMask = My.Resources.CORE_DEFAULT_WHOLESALER
-            Case cUnitFactory.eUnitType.Retailer
+            Case cUnitFactory.cUnitFormatter.Retailer
                 strMask = My.Resources.CORE_DEFAULT_RETAILER
-            Case cUnitFactory.eUnitType.Processing
+            Case cUnitFactory.cUnitFormatter.Processing
                 strMask = My.Resources.CORE_DEFAULT_PROCESSING
-            Case cUnitFactory.eUnitType.Producer
+            Case cUnitFactory.cUnitFormatter.Producer
                 strMask = ""
-            Case cUnitFactory.eUnitType.Distribution
+            Case cUnitFactory.cUnitFormatter.Distribution
                 strMask = My.Resources.CORE_DEFAULT_DISTRIBUTION
-            Case cUnitFactory.eUnitType.Consumer
+            Case cUnitFactory.cUnitFormatter.Consumer
                 strMask = My.Resources.CORE_DEFAULT_CONSUMER
         End Select
 
@@ -973,7 +973,7 @@ Public Class plFlow
 
     End Function
 
-    Public Function ConvertUnit(ByVal unit As cUnit, ByVal convertTo As cUnitFactory.eUnitType) As Boolean
+    Public Function ConvertUnit(ByVal unit As cUnit, ByVal convertTo As cUnitFactory.cUnitFormatter) As Boolean
 
         Dim fmt As New cUnitTypeFormatter()
         Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_CONVERT_UNIT, unit.Name, fmt.GetDescriptor(unit.UnitType), fmt.GetDescriptor(convertTo)), _

@@ -79,7 +79,6 @@ Namespace ValueWrapper
         Protected m_varName As eVarNameFlags
         Protected m_message As String 'message associated with data validation
 
-        Protected m_iIndex As Integer = 0
         Protected m_bStored As Boolean = False
         Protected m_bAffectsRunState As Boolean = True
 
@@ -136,7 +135,7 @@ Namespace ValueWrapper
         End Sub
 
         ''' <summary>
-        ''' Constructs a new value instance without validation.
+        ''' Constructs a new value instance.
         ''' </summary>
         ''' <param name="Value">The object to hold the value.</param>
         ''' <param name="VarName">The variable name representing the value.</param>
@@ -148,8 +147,8 @@ Namespace ValueWrapper
                 ByVal VarName As eVarNameFlags,
                 ByVal Status As eStatusFlags,
                 ByVal VarType As eValueTypes,
-                ByRef MetaData As cVariableMetaData,
-                ByRef Validator As cValidatorDefault)
+                ByVal MetaData As cVariableMetaData,
+                ByVal Validator As cValidatorDefault)
 
             Me.m_value = Value
             Me.m_varType = VarType
@@ -160,30 +159,27 @@ Namespace ValueWrapper
             ' Set the validator and its properties
             Me.m_bValidate = (Validator IsNot Nothing)
             Me.m_validator = Validator
+            If (Me.m_validator Is Nothing) Then
+                Me.m_validator = cValidatorManager.Get(VarName)
+            End If
 
             Me.m_bStored = True
             Me.m_bAffectsRunState = True
 
-            ' Find shared metadata
+            ' Is metadata missing?
             If (Me.m_metadata Is Nothing) Then
-                Me.m_metadata = cVariableMetadataFactory.GetInstance().Metadata(VarName)
+                ' #Yes: get from standard repository?
+                Me.m_metadata = cVariableMetaData.Get(Me.varName)
+                ' Is metadata still missing?
+                If (Me.m_metadata Is Nothing) Then
+                    ' #Yes: erm... last resort: create a local default
+                    Me.m_metadata = cVariableMetaData.Default(Me.m_varType, "")
+                End If
             End If
 
-            ' Complement metadata
-            If (Me.m_metadata Is Nothing) Then
-                Select Case Me.m_varType
-                    Case eValueTypes.Bool, eValueTypes.BoolArray
-                        Me.m_metadata = New cVariableMetaData()
-                    Case eValueTypes.Int, eValueTypes.IntArray
-                        Me.m_metadata = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-                    Case eValueTypes.Sng, eValueTypes.SingleArray
-                        Me.m_metadata = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-                    Case eValueTypes.Str
-                        Me.m_metadata = New cVariableMetaData(32)
-                End Select
-            End If
-
-            Me.Metadata.Attach(Me)
+            ' Sanity check
+            Debug.Assert(Me.m_metadata IsNot Nothing)
+            Me.m_metadata.Attach(Me)
 
         End Sub
 
@@ -191,13 +187,6 @@ Namespace ValueWrapper
         ''' Get/set the Index of a Value
         ''' </summary>
         Public Property Index() As Integer
-            Get
-                Return m_iIndex
-            End Get
-            Friend Set(ByVal value As Integer)
-                m_iIndex = value
-            End Set
-        End Property
 
         ''' <summary>
         ''' Set the size of the array to the new Value based on the CoreCounterDelegate passed in via the consturctor
@@ -255,19 +244,19 @@ Namespace ValueWrapper
 
         Public Property varName() As eVarNameFlags
             Get
-                Return m_varName
+                Return Me.m_varName
             End Get
-            Friend Set(ByVal value As eVarNameFlags)
-                m_varName = value
+            Friend Set(value As eVarNameFlags)
+                Me.m_varName = value
             End Set
         End Property
 
         Public Property varType() As eValueTypes
             Get
-                Return m_varType
+                Return Me.m_varType
             End Get
-            Friend Set(ByVal value As eValueTypes)
-                m_varType = value
+            Friend Set(value As eValueTypes)
+                Me.m_varType = value
             End Set
         End Property
 
@@ -550,20 +539,17 @@ Namespace ValueWrapper
 
 
         Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes,
-                ByRef CounterDelegate As CoreCounterDelegate, ByRef MetaData As cVariableMetaData, ByRef Validator As cValidatorDefault)
-            MyBase.New(Nothing, VarName, Status, theValueType)
+                ByVal CounterDelegate As CoreCounterDelegate, ByVal MetaData As cVariableMetaData, ByVal Validator As cValidatorDefault)
+            MyBase.New(Nothing, VarName, Status, theValueType, MetaData, Validator)
 
             varType = theValueType
             m_varName = VarName
 
-            ' Complement metadata
-            m_metadata = MetaData
-            If (Me.m_metadata Is Nothing) Then
-                Me.m_metadata = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            End If
-            Me.Metadata.Attach(Me)
+            ' Sanity check
+            Debug.Assert(Me.m_metadata IsNot Nothing)
 
-            m_validator = Validator
+            ' JS 01may17: Do not overwrite base class smartness
+            'm_validator = Validator
 
             m_CounterDelegate = CounterDelegate
             m_Countertype = CounterType
@@ -586,7 +572,7 @@ Namespace ValueWrapper
         ''' <param name="CounterDelegate">Delegate supplied by the core use to retrieve the size of the data</param>
         ''' <remarks></remarks>
         Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags,
-                ByVal CounterType As eCoreCounterTypes, ByRef CounterDelegate As CoreCounterDelegate)
+                ByVal CounterType As eCoreCounterTypes, ByVal CounterDelegate As CoreCounterDelegate)
             Me.New(theValueType, VarName, Status, CounterType, CounterDelegate, Nothing, Nothing)
         End Sub
 
@@ -784,7 +770,6 @@ Namespace ValueWrapper
             MyBase.Dispose()
             Me.m_values = Nothing
             Me.m_CounterDelegate = Nothing
-
         End Sub
 
     End Class

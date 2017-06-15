@@ -5968,9 +5968,9 @@ Public Class cCore
 
         ' == Prop of biomass
         If bIsStanza Then
-            t.SetStatusFlags(eVarNameFlags.TaxonProp, eStatusFlags.NotEditable)
+            t.SetStatusFlags(eVarNameFlags.TaxonPropBiomass, eStatusFlags.NotEditable)
         Else
-            t.ClearStatusFlags(eVarNameFlags.TaxonProp, eStatusFlags.NotEditable)
+            t.ClearStatusFlags(eVarNameFlags.TaxonPropBiomass, eStatusFlags.NotEditable)
         End If
 
         ' == Prop of catch (not editable when not fished or a stanza taxon)
@@ -6008,7 +6008,7 @@ Public Class cCore
 
     End Function
 
-    Friend Function Set_BadHab_Flags(ByVal grp As cEcospaceGroup) As Boolean
+    Friend Function Set_BadHab_Flags(ByVal grp As cEcospaceGroupInput) As Boolean
 
         'Dim b As Boolean = grp.AllowValidation()
         'Dim s As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
@@ -6030,7 +6030,7 @@ Public Class cCore
 
     End Function
 
-    Friend Function Set_HabPref_Flags(ByVal grp As cEcospaceGroup) As Boolean
+    Friend Function Set_HabPref_Flags(ByVal grp As cEcospaceGroupInput) As Boolean
 
         Dim b As Boolean = grp.AllowValidation()
         Dim s As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
@@ -6050,7 +6050,7 @@ Public Class cCore
 
     End Function
 
-    Friend Function Set_Migratory_Flags(ByVal grp As cEcospaceGroup) As Boolean
+    Friend Function Set_Migratory_Flags(ByVal grp As cEcospaceGroupInput) As Boolean
 
         Dim b As Boolean = grp.AllowValidation()
         Dim s As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
@@ -9477,27 +9477,27 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get a <see cref="cEcospaceGroup">Ecospace group</see> for a given index.
+    ''' Get a <see cref="cEcospaceGroupInput">Ecospace group</see> for a given index.
     ''' </summary>
     ''' <param name="iGroup">The index to obtain the Ecospace group for.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceGroups(ByVal iGroup As Integer) As cEcospaceGroup
+    Public ReadOnly Property EcospaceGroups(ByVal iGroup As Integer) As cEcospaceGroupInput
         Get
             ' JS 06Jul07: list will handle group index / item index offsets
-            Return DirectCast(Me.m_EcoSpaceGroups.Item(iGroup), cEcospaceGroup)
+            Return DirectCast(Me.m_EcoSpaceGroups.Item(iGroup), cEcospaceGroupInput)
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get a <see cref="cEcospaceFleet">Ecospace fleet</see> for a given index.
+    ''' Get a <see cref="cEcospaceFleetInput">Ecospace fleet</see> for a given index.
     ''' </summary>
     ''' <param name="iFleet">The index to obtain the Ecospace fleet for.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceFleets(ByVal iFleet As Integer) As cEcospaceFleet
+    Public ReadOnly Property EcospaceFleets(ByVal iFleet As Integer) As cEcospaceFleetInput
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
-            Return DirectCast(Me.m_EcoSpaceFleets.Item(iFleet), cEcospaceFleet)
+            Return DirectCast(Me.m_EcoSpaceFleets.Item(iFleet), cEcospaceFleetInput)
         End Get
     End Property
 
@@ -10518,13 +10518,13 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Initialize <see cref="cEcospaceGroup">Ecospace group</see> objects to
+    ''' Initialize <see cref="cEcospaceGroupInput">Ecospace group</see> objects to
     ''' expose to the interface layer.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Function InitEcospaceGroups() As Boolean
 
-        Dim grp As cEcospaceGroup = Nothing
+        Dim grp As cEcospaceGroupInput = Nothing
 
         Try
 
@@ -10534,7 +10534,7 @@ Public Class cCore
             'to change group related parameters from the interface see getEcoSimGroupInfo(iGroup)
             For i As Integer = 1 To nGroups
                 ' Create group
-                grp = New cEcospaceGroup(Me, Me.m_EcoSpaceData.GroupDBID(i))
+                grp = New cEcospaceGroupInput(Me, Me.m_EcoSpaceData.GroupDBID(i))
                 ' Add to list
                 m_EcoSpaceGroups.Add(grp)
             Next i
@@ -10563,7 +10563,7 @@ Public Class cCore
 
         Try
 
-            For Each grp As cEcospaceGroup In Me.m_EcoSpaceGroups
+            For Each grp As cEcospaceGroupInput In Me.m_EcoSpaceGroups
 
                 'convert the Database ID into an iGroup
                 iGroup = Array.IndexOf(m_EcoSpaceData.GroupDBID, grp.DBID)
@@ -10611,7 +10611,7 @@ Public Class cCore
 
     Private Function UpdateEcospaceGroup(ByVal iDBID As Integer) As Boolean
 
-        Dim grp As cEcospaceGroup = Nothing
+        Dim grp As cEcospaceGroupInput = Nothing
         Dim iGroup As Integer
         Dim i As Integer
 
@@ -11177,7 +11177,7 @@ Public Class cCore
     Private Function InitEcospaceFleets() As Boolean
 
         Try
-            Dim objFleet As cEcospaceFleet
+            Dim objFleet As cEcospaceFleetInput
 
             m_EcoSpaceFleets.Clear()
 
@@ -11185,7 +11185,7 @@ Public Class cCore
             'to change habitat related parameters from the interface
             For i As Integer = 1 To nFleets
                 ' Create fleet
-                objFleet = New cEcospaceFleet(Me, Me.m_EcoSpaceData.FleetDBID(i))
+                objFleet = New cEcospaceFleetInput(Me, Me.m_EcoSpaceData.FleetDBID(i))
                 ' Add to list
                 m_EcoSpaceFleets.Add(objFleet)
             Next i
@@ -11205,7 +11205,7 @@ Public Class cCore
 
         Try
 
-            For Each fleet As cEcospaceFleet In Me.m_EcoSpaceFleets
+            For Each fleet As cEcospaceFleetInput In Me.m_EcoSpaceFleets
 
                 'convert the Database ID into an iGroup
                 iFleet = Array.IndexOf(m_EcoSpaceData.FleetDBID, fleet.DBID)
@@ -11246,7 +11246,7 @@ Public Class cCore
     End Function
 
     Private Function UpdateEcospaceFleet(ByVal iDBID As Integer) As Boolean
-        Dim fleet As cEcospaceFleet = Nothing
+        Dim fleet As cEcospaceFleetInput = Nothing
         Dim iFleet As Integer
 
         Try
@@ -13512,7 +13512,7 @@ Public Class cCore
 
             Case eDataTypes.EcospaceGroup
 
-                Dim grp As cEcospaceGroup = DirectCast(obj, cEcospaceGroup)
+                Dim grp As cEcospaceGroupInput = DirectCast(obj, cEcospaceGroupInput)
 
                 Select Case value.varName
 
@@ -13545,7 +13545,7 @@ Public Class cCore
 
             Case eDataTypes.EcospaceFleet
 
-                Dim esf As cEcospaceFleet = DirectCast(obj, cEcospaceFleet)
+                Dim esf As cEcospaceFleetInput = DirectCast(obj, cEcospaceFleetInput)
 
                 Select Case value.varName
 
@@ -13923,7 +13923,7 @@ Public Class cCore
 
             Case eDataTypes.EcospaceGroup
 
-                Dim grp As cEcospaceGroup = DirectCast(obj, cEcospaceGroup)
+                Dim grp As cEcospaceGroupInput = DirectCast(obj, cEcospaceGroupInput)
 
                 Select Case value.varName
                     Case eVarNameFlags.PreferredHabitat

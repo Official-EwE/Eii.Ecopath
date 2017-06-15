@@ -124,9 +124,9 @@ Public Class cProcessingUnit
     End Property
 
     <Browsable(False)> _
-    Public Overrides ReadOnly Property UnitType() As cUnitFactory.eUnitType
+    Public Overrides ReadOnly Property UnitType() As cUnitFactory.cUnitFormatter
         Get
-            Return cUnitFactory.eUnitType.Processing
+            Return cUnitFactory.cUnitFormatter.Processing
         End Get
     End Property
 

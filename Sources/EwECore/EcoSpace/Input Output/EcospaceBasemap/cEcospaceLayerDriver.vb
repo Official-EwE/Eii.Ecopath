@@ -55,8 +55,8 @@ Public Class cEcospaceLayerDriver
 
             ' Description
             meta = New cVariableMetaData(60000)
-            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str,
+                                meta)
             m_values.Add(val.varName, val)
 
             'set status flags to default values

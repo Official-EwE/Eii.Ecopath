@@ -24,9 +24,9 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwECore.Style
 Imports EwEUtils.Core
-Imports SourceGrid2.Cells.Real
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -37,18 +37,19 @@ Namespace Ecopath.Input
     ''' Grid accepting Ecopath Discards user input.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridFisheryInputDiscards
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
             Me.FixedColumnWidths = True
         End Sub
 
         Protected Overrides Sub InitStyle()
 
             Dim source As cCoreInputOutputBase = Nothing
+            Dim md As cVariableMetaData = Nothing
 
             MyBase.InitStyle()
 
@@ -63,11 +64,11 @@ Namespace Ecopath.Input
 
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Me.Core.nFleets
+
                 source = Core.FleetInputs(fleetIndex)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, _
-                                                                     source, eVarNameFlags.Name, Nothing, _
-                                                                     SharedResources.HEADER_X_UNIT, _
-                                                                     New eUnitType() {eUnitType.Currency})
+                md = source.GetVariableMetadata(eVarNameFlags.Discards)
+                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
+
             Next
 
             ' Total column

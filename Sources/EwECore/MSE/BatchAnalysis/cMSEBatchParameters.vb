@@ -34,7 +34,6 @@ Public Class cMSEBatchParameters
         MyBase.New(theCore)
 
         Dim val As cValue
-        Dim meta As cVariableMetaData
 
         m_dataType = eDataTypes.MSEBatchParameters
         m_coreComponent = eCoreComponentType.MSE
@@ -45,64 +44,43 @@ Public Class cMSEBatchParameters
         'see comment setVariable(...)
         m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.MSETFMNIteration, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSETFMNIteration))
+        val = New cValue(New Integer, eVarNameFlags.MSETFMNIteration, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.MSEBatchFNIteration, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchFNIteration))
+        val = New cValue(New Integer, eVarNameFlags.MSEBatchFNIteration, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.MSEBatchTACNIteration, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchTACNIteration))
+        val = New cValue(New Integer, eVarNameFlags.MSEBatchTACNIteration, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
-        Dim nTypes As Integer = [Enum].GetValues(GetType(eMSEBatchIterCalcTypes)).Length
-        meta = New cVariableMetaData(0, nTypes, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValue(New Integer, eVarNameFlags.MSEBatchIterCalcType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchIterCalcType))
+        val = New cValue(New Integer, eVarNameFlags.MSEBatchIterCalcType, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
-        'Output Biomass
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.MSEBatchOutputBiomass, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchOutputBiomass))
+        val = New cValue(New Boolean, eVarNameFlags.MSEBatchOutputBiomass, eStatusFlags.Null, eValueTypes.Bool)
         val.Stored = False
         m_values.Add(val.varName, val)
 
-        'Output cb
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.MSEBatchOutputConBio, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchOutputConBio))
+        val = New cValue(New Boolean, eVarNameFlags.MSEBatchOutputConBio, eStatusFlags.Null, eValueTypes.Bool)
         val.Stored = False
         m_values.Add(val.varName, val)
 
-
-        'Output Feeding Time
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.MSEBatchOutputFeedingTime, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchOutputFeedingTime))
+        val = New cValue(New Boolean, eVarNameFlags.MSEBatchOutputFeedingTime, eStatusFlags.Null, eValueTypes.Bool)
         val.Stored = False
         m_values.Add(val.varName, val)
 
-
-        'Output Pred rate
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.MSEBatchOutputPredRate, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchOutputPredRate))
+        val = New cValue(New Boolean, eVarNameFlags.MSEBatchOutputPredRate, eStatusFlags.Null, eValueTypes.Bool)
         val.Stored = False
         m_values.Add(val.varName, val)
 
-
-        'Output Catch
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.MSEBatchOutputCatch, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchOutputCatch))
+        val = New cValue(New Boolean, eVarNameFlags.MSEBatchOutputCatch, eStatusFlags.Null, eValueTypes.Bool)
         val.Stored = False
         m_values.Add(val.varName, val)
 
-        'Output Catch
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.MSEBatchOutputFishingMortRate, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchOutputFishingMortRate))
+        val = New cValue(New Boolean, eVarNameFlags.MSEBatchOutputFishingMortRate, eStatusFlags.Null, eValueTypes.Bool)
         val.Stored = False
         m_values.Add(val.varName, val)
 
-        meta = New cVariableMetaData()
-        val = New cValue("", eVarNameFlags.MSEBatchOuputDir, eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEBatchOuputDir))
+        val = New cValue("", eVarNameFlags.MSEBatchOuputDir, eStatusFlags.Null, eValueTypes.Str)
         val.Stored = False
         m_values.Add(val.varName, val)
 
@@ -158,7 +136,7 @@ Public Class cMSEBatchParameters
         End Get
 
         Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.MSEBatchIterCalcType, value)
+            SetVariable(eVarNameFlags.MSEBatchOutputBiomass, value)
         End Set
     End Property
 

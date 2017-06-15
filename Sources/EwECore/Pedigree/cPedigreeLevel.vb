@@ -47,7 +47,6 @@ Public Class cPedigreeLevel
         MyBase.New(core)
 
         Dim val As cValue
-        Dim meta As cVariableMetaData
         Dim desc() As Char
 
         Me.m_manager = manager
@@ -60,29 +59,23 @@ Public Class cPedigreeLevel
         Me.DBID = iDBID
 
         'VarName
-        meta = New cVariableMetaData(0, [Enum].GetValues(GetType(eVarNameFlags)).Length, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.VariableName, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Integer, eVarNameFlags.VariableName, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
         'IndexValue
-        meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.IndexValue, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.IndexValue, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         'ConfidenceInterval
-        meta = New cVariableMetaData(0, 100, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.ConfidenceInterval, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.ConfidenceInterval, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         ' Description
-        meta = New cVariableMetaData(60000)
-        val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
-                            meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
         'PoolColor
-        meta = New cVariableMetaData(-4294967295, 4294967295, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
         'Estimated flag

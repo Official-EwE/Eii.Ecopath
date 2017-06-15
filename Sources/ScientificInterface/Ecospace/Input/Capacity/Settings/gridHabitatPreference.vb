@@ -98,7 +98,7 @@ Namespace Ecospace
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim groupEcospace As cEcospaceGroup = Nothing
+            Dim groupEcospace As cEcospaceGroupInput = Nothing
             Dim groupEcopath As cEcoPathGroupInput = Nothing
             Dim hab As cEcospaceHabitat = Nothing
             Dim cell As EwECellBase = Nothing

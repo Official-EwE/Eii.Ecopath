@@ -31,7 +31,7 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerDepth
     Inherits cEcospaceLayerSingle
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer, ByVal meta As cVariableMetaData)
+    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerDepth, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerDepth
     End Sub

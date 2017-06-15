@@ -25,16 +25,17 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
 Namespace Ecopath.Output
 
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridBasicEstimates
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         Enum eColumnTypes As Integer
             Index = 0
@@ -53,29 +54,28 @@ Namespace Ecopath.Output
         End Enum
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Protected Overrides Sub InitStyle()
 
             MyBase.InitStyle()
 
-            Dim aUnitType As eUnitType() = {eUnitType.Currency, eUnitType.Time}
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
             Me(0, eColumnTypes.TL) = New EwEColumnHeaderCell(eVarNameFlags.TTLX)
             Me(0, eColumnTypes.Area) = New EwEColumnHeaderCell(eVarNameFlags.HabitatArea)
-            Me(0, eColumnTypes.BArea) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaOutput, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Currency)
-            Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(eVarNameFlags.Biomass, SharedResources.GENERIC_LABEL_UNIT, eUnitType.Currency)
-            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
-            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(eVarNameFlags.PBOutput, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
-            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(eVarNameFlags.QBOutput, SharedResources.GENERIC_LABEL_PERUNIT, eUnitType.Time)
+            Me(0, eColumnTypes.BArea) = New EwEColumnHeaderCell(eVarNameFlags.BiomassAreaOutput)
+            Me(0, eColumnTypes.B) = New EwEColumnHeaderCell(eVarNameFlags.Biomass)
+            Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z)
+            Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(eVarNameFlags.PBOutput)
+            Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(eVarNameFlags.QBOutput)
             Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(eVarNameFlags.EEOutput)
             Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(eVarNameFlags.GEOutput)
-            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_UNIT, aUnitType)
-            Me(0, eColumnTypes.BArate) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMACCUM_RATE_ABBR_UNIT, eUnitType.Time)
+            Me(0, eColumnTypes.BA) = New EwEColumnHeaderCell(eVarNameFlags.BioAccumOutput)
+            Me(0, eColumnTypes.BArate) = New EwEColumnHeaderCell(eVarNameFlags.BioAccumRate, eDescriptorTypes.Abbreviation)
 
             Me.FixedColumns = 2
 

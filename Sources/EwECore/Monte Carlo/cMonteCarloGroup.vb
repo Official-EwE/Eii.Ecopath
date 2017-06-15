@@ -41,145 +41,121 @@ Public Class cMonteCarloGroup
         m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         Dim val As cValue
-        Dim meta As cVariableMetaData
 
         'biomass
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcB, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcB, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'PB
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcPB, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcPB, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'ba
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBA, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBA, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'BaBi
-        meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValue(New Single, eVarNameFlags.mcBaBi, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBaBi, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'QB
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcQB, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcQB, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'EE
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcEE, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcEE, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'VU
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcVU, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcVU, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'DC
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcDC, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcDC, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'biomassLower
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBLower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'PBLower
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcPBLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcPBLower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'baLower
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBALower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBALower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'babiLower
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBaBiLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBaBiLower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'QBLower
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcQBLower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcQBLower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'EELower
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcEELower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcEELower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'VULower
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcVULower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcVULower, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Best fit
         'biomassBF
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBbf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'PBBF
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcPBbf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcPBbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'baBF
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBAbf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBAbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'baBF
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBaBibf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBaBibf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'QBBF
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcQBbf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcQBbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'EEBF
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcEEbf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcEEbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'VUBF
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcVUbf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcVUbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'DCBf
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcDCbf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcDCbf, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
@@ -187,44 +163,37 @@ Public Class cMonteCarloGroup
         'Upper
 
         'biomassUpper
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'PBUpper
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcPBUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcPBUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'baUpper
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBAUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBAUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'babiUpper
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBaBiUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBaBiUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'QBUpper
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcQBUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcQBUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'EEUpper
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcEEUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcEEUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'VUUpper
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcVUUpper, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcVUUpper, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
@@ -232,117 +201,98 @@ Public Class cMonteCarloGroup
         'cv
 
         'biomasscv
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBcv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'PBcv
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcPBcv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcPBcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'bacv
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBAcv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBAcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'babicv
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcBaBicv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcBaBicv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'QBcv
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcQBcv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcQBcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'EEcv
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcEEcv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcEEcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'DCcv
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcDCcv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcDCcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'VUcv
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcVUcv, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcVUcv, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'DietMult
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.mcDietMult, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.mcDietMult, eStatusFlags.Null, eValueTypes.Sng)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'arrayed values
         'landings
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandings, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandings, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'discards
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscards, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscards, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'LandingsLower
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandingsLower, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandingsLower, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'DiscardsLower
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscardsLower, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscardsLower, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'LandingsBF
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandingsbf, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandingsbf, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'DiscardsBF
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscardsbf, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscardsbf, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'LandingsUpper
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandingsUpper, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandingsUpper, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'DiscardsUpper
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscardsUpper, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscardsUpper, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'Landingscv
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandingscv, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcLandingscv, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
         val.Stored = False
         m_values.Add(val.varName, val)
 
         'Discardscv
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscardscv, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.mcDiscardscv, eStatusFlags.Null, eCoreCounterTypes.nFleets, AddressOf m_core.GetCoreCounter)
         val.Stored = False
         m_values.Add(val.varName, val)
 

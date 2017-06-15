@@ -30,6 +30,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Imports EwEUtils.Utilities
 Imports ZedGraph
+Imports EwECore.Style
 
 #End Region
 
@@ -524,8 +525,7 @@ Friend Class cMSEPlotter
                         Case eMSEPlotData.Effort
                             Return SharedResources.HEADER_EFFORT
                         Case eMSEPlotData.FleetValue
-                            Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCHVALUE_UNIT, _
-                                                                        New eUnitType() {eUnitType.Monetary})
+                            Return cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, SharedResources.HEADER_CATCHVALUE, m_uic.StyleGuide.FormatUnitString(cUnits.Monetary))
                         Case eMSEPlotData.GroupCatch
                             Return SharedResources.HEADER_CATCH_WEIGHT
                         Case eMSEPlotData.FishingMortalityComparison
@@ -556,8 +556,8 @@ Friend Class cMSEPlotter
                             ' ToDo: add unit
                             Return SharedResources.HEADER_EFFORT
                         Case eMSEPlotData.FleetValue
-                            Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCHVALUE_UNIT, _
-                                                                        New eUnitType() {eUnitType.Monetary})
+                            'Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCHVALUE_UNIT, _
+                            '                                            New cUnitFormatter() {cUnitFormatter.Monetary})
                         Case eMSEPlotData.GroupCatch
                             ' ToDo: add unit
                             Return SharedResources.HEADER_CATCH_WEIGHT

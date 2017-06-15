@@ -1,4 +1,5 @@
 ﻿Option Strict On
+Imports EwECore
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -50,6 +51,12 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Public Class cSelectionMonitorFormatter
     Implements ITypeFormatter
 
+    Private m_core As cCore = Nothing
+
+    Public Sub New(core As cCore)
+        Me.m_core = core
+    End Sub
+
     Public Function GetDescribedType() As Type Implements ITypeFormatter.GetDescribedType
         Return GetType(cSelectionMonitor)
     End Function
@@ -65,6 +72,7 @@ Public Class cSelectionMonitorFormatter
 
         Dim props() As cProperty = mon.Selection
         Dim vd As New cVarnameTypeFormatter()
+        Dim units As New cUnits(Me.m_core)
 
         If (props IsNot Nothing) Then
             Select Case props.Length
@@ -79,6 +87,7 @@ Public Class cSelectionMonitorFormatter
                         ' Get variable descriptor
                         Dim var As eVarNameFlags = props(0).VarName
                         Dim fmt As New cCoreInterfaceFormatter()
+
                         ' Format message
                         If Not Object.ReferenceEquals(props(0).SourceSec, Nothing) Then
                             strSelection = String.Format(My.Resources.SELECTION_INDEXEDVAR,
@@ -90,6 +99,7 @@ Public Class cSelectionMonitorFormatter
                                                          fmt.GetDescriptor(props(0).Source),
                                                          vd.GetDescriptor(var, eDescriptorTypes.Description))
                         End If
+
                     Else
                         strSelection = My.Resources.SELECTION_DERIVED
                     End If

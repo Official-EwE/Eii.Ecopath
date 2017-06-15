@@ -51,7 +51,7 @@ Public Class ucUnitGrid
     End Class
 
     Private m_data As cData = Nothing
-    Private m_unitType As cUnitFactory.eUnitType = cUnitFactory.eUnitType.Producer
+    Private m_unitType As cUnitFactory.cUnitFormatter = cUnitFactory.cUnitFormatter.Producer
     Private m_lUnits As List(Of cUnit) = Nothing
 
     Private m_dtProps As New Dictionary(Of String, List(Of PropertyInfo))
@@ -66,7 +66,7 @@ Public Class ucUnitGrid
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal uic As cUIContext, _
                    ByVal data As cData, _
-                   ByVal unitType As cUnitFactory.eUnitType)
+                   ByVal unitType As cUnitFactory.cUnitFormatter)
 
         Me.m_data = data
         Me.m_unitType = unitType

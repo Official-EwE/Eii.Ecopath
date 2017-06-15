@@ -21,12 +21,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports ScientificInterfaceShared.Controls
-Imports ZedGraph
 Imports System.Text
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwECore
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Definitions
+Imports ZedGraph
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -93,8 +94,8 @@ Public Class cEcosimGraphWrapper
         Dim info As cIndicatorInfo = Nothing
         Dim gp As GraphPane = Nothing
         Dim strLabelPane As String = ""
-        Dim fmt As New EwECore.Style.cUnitFormatter(Me.UIContext.Core)
-        Dim strLabelTime As String = fmt.UnitString(EwEUtils.Core.eUnitType.Time)
+        Dim fmt As New EwECore.Style.cUnits(Me.UIContext.Core)
+        Dim strLabelTime As String = fmt.ToString("[time]")
         Dim strLabelValue As String = ""
         Dim settings As cIndicatorSettings = Me.m_settings
         Dim ind As cEcosimIndicators = Nothing
@@ -129,13 +130,13 @@ Public Class cEcosimGraphWrapper
                 info = lInfo(iPane - 1)
                 gp = Me.GetPane(iPane)
                 gp.Tag = info
-                If String.IsNullOrWhiteSpace(info.UnitMask) Then
+                If String.IsNullOrWhiteSpace(info.Units) Then
                     strLabelValue = info.ValueDescription
                 Else
-                    strLabelValue = String.Format(SharedResources.GENERIC_LABEL_DETAILED, info.ValueDescription, info.UnitMask)
+                    strLabelValue = String.Format(SharedResources.GENERIC_LABEL_DETAILED, info.ValueDescription, info.Units)
                 End If
                 ' Make indicator panel pretty
-                Me.ConfigurePane(info.Name, strLabelTime, Nothing, strLabelValue, info.Units, False, iPane:=iPane)
+                Me.ConfigurePane(info.Name, strLabelTime, strLabelValue, False, iPane:=iPane)
             Next
         End If
 

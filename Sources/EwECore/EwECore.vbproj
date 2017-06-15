@@ -259,9 +259,9 @@
     <Compile Include="FitToTimeSeries\Model\cF2TSDataStructures.vb" />
     <Compile Include="FitToTimeSeries\Model\cF2TSModel.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayer.vb" />
-    <Compile Include="EcoSpace\Input Output\cEcospaceFleet.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceFleetInput.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceFleetOutput.vb" />
-    <Compile Include="EcoSpace\Input Output\cEcospaceGroup.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceGroupInput.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceGroupOutput.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceHabitat.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceModelParameters.vb" />
@@ -397,7 +397,7 @@
     <Compile Include="Style\cAreaUnitFormatter.vb" />
     <Compile Include="Style\cMapUnitFormatter.vb" />
     <Compile Include="Style\cTimeUnitFormatter.vb" />
-    <Compile Include="Style\cUnitFormatter.vb" />
+    <Compile Include="Style\cUnits.vb" />
     <Compile Include="Style\cVarnameTypeFormatter.vb" />
     <Compile Include="Taxon\cTaxonAnalysis.vb" />
     <Compile Include="Taxon\cTaxonSearchData.vb" />

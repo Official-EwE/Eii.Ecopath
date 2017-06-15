@@ -207,12 +207,12 @@ Public Class cDatabase
                 bSucces = bSucces And Me.WriteObject(data.Parameters)
 
                 ' Store default units
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Producer))
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Processing))
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Distribution))
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Wholesaler))
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Retailer))
-                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.eUnitType.Consumer))
+                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.cUnitFormatter.Producer))
+                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.cUnitFormatter.Processing))
+                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.cUnitFormatter.Distribution))
+                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.cUnitFormatter.Wholesaler))
+                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.cUnitFormatter.Retailer))
+                bSucces = bSucces And Me.WriteObject(data.GetUnitDefault(cUnitFactory.cUnitFormatter.Consumer))
 
                 ' Store units
                 For i As Integer = 0 To data.UnitCount - 1

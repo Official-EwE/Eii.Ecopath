@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -67,7 +67,7 @@ Namespace Controls.Map.Layers
     ''' </list>
     ''' </para>
     ''' </remarks>
-    Public Class cDisplayLayerRaster
+    Public Class cDisplayRasterLayer
         Inherits cDisplayLayer
 
 #Region " Private helper classes "
@@ -77,8 +77,8 @@ Namespace Controls.Map.Layers
         ''' Default editor class for layers without an editor.
         ''' </summary>
         ''' ===================================================================
-        Private Class cLayerEditorRasterDefault
-            Inherits cLayerEditorRaster
+        Private Class cDefaultEditor
+            Inherits cLayerEditor
 
             Public Sub New()
                 MyBase.New(Nothing)
@@ -107,6 +107,7 @@ Namespace Controls.Map.Layers
         Private m_valueType As Type = GetType(Single)
         Private m_sValueSet As Single = cCore.NULL_VALUE
         Private m_sValueClear As Single = cCore.NULL_VALUE
+        Private m_editor As cLayerEditor = Nothing
 
         Private m_bModified As Boolean = False
 
@@ -127,7 +128,7 @@ Namespace Controls.Map.Layers
 
         ' --- shared defaults ---
 
-        Private Shared s_editorLocked As New cLayerEditorRasterDefault()
+        Private Shared s_editorLocked As New cDefaultEditor()
 
 #End Region ' Private vars
 
@@ -170,7 +171,7 @@ Namespace Controls.Map.Layers
             '' Sanity checks
             'Debug.Assert(Not Object.ReferenceEquals(data, Nothing))
 
-            If (editor Is Nothing) Then editor = cDisplayLayerRaster.s_editorLocked
+            If (editor Is Nothing) Then editor = cDisplayRasterLayer.s_editorLocked
 
             Me.m_source = source
             Me.m_varName = varName
@@ -193,7 +194,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="layer">The layer to copy.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, ByVal layer As cDisplayLayerRaster)
+        Public Sub New(ByVal uic As cUIContext, ByVal layer As cDisplayRasterLayer)
 
             Me.New(uic, layer.Data, layer.Renderer.Clone(), layer.Editor.Clone(), layer.Source, layer.VarName, layer.ValueSet, layer.ValueClear)
 
@@ -443,6 +444,21 @@ Namespace Controls.Map.Layers
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Get the layer <see cref="cLayerEditor">editor</see>.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property Editor() As cLayerEditor
+            Get
+                ' Initialize editor upon request
+                If (Me.m_editor.UIContext Is Nothing) Then
+                    Me.m_editor.Initialize(Me.m_uic, Me)
+                End If
+                Return Me.m_editor
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Get whether the underlying data is 
         ''' <see cref="cEcospaceLayer.IsExternalData">driven externally</see>.
         ''' </summary>
@@ -597,7 +613,8 @@ Namespace Controls.Map.Layers
                 Else
                     Try
                         Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-                        strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, Me.Name, sg.FormatUnitString(Me.m_strUnits))
+                        strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, Me.Name,
+                                                                           sg.FormatUnitString(m_strUnits))
                     Catch ex As Exception
                         Debug.Assert(False, "Failed to apply format mask, please check")
                         strDisplayText = Me.Name

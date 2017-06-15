@@ -51,7 +51,6 @@ Public Class cStanzaGroup
         MyBase.New(core)
 
         Dim val As cValue = Nothing
-        Dim meta As cVariableMetaData = Nothing
 
         Me.DBID = DBID
         Me.Index = iStanza
@@ -78,53 +77,44 @@ Public Class cStanzaGroup
         ' vbgfK = vbK(GrpNo)
 
         ''vbgfK
-        'meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+        'meta = New cVariableMetadata(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
         'val = New cValue(New Single, eVarNameFlags.StanzaVBGF, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.StanzaVBGF))
         'm_values.Add(val.varName, val)
 
         'LeadingBiomass
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValue(New Integer, eVarNameFlags.LeadingBiomass, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Integer, eVarNameFlags.LeadingBiomass, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
         'LeadingQB
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValue(New Integer, eVarNameFlags.LeadingCB, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Integer, eVarNameFlags.LeadingCB, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
         ' RecruitmentPower
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValue(New Single, eVarNameFlags.RecPowerSplit, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.RecPowerSplit, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         ' Relative biomass accumulation rate (BaB)
-        meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValue(New Single, eVarNameFlags.BABsplit, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.BABsplit, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         ' Weight maturity over Weight infancy (WmatWinf)
-        meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValue(New Single, eVarNameFlags.WmatWinf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.WmatWinf, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         ' Forcing function for hatchery stocking
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValue(New Integer, eVarNameFlags.HatchCode, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Integer, eVarNameFlags.HatchCode, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
         ' Fixed fecundity
-        meta = New cVariableMetaData(False)
-        val = New cValue(New Boolean, eVarNameFlags.FixedFecundity, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Boolean, eVarNameFlags.FixedFecundity, eStatusFlags.Null, eValueTypes.Bool)
         m_values.Add(val.varName, val)
 
         ' Recruit where spawned (Ecospace)
-        meta = New cVariableMetaData(False)
-        val = New cValue(New Boolean, eVarNameFlags.EggAtSpawn, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Boolean, eVarNameFlags.EggAtSpawn, eStatusFlags.Null, eValueTypes.Bool)
         m_values.Add(val.varName, val)
 
         ' IsFished
-        meta = New cVariableMetaData()
-        val = New cValue(New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.IsFished))
+        val = New cValue(New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool)
         val.AffectsRunState = False
         val.Stored = False
         m_values.Add(val.varName, val)
@@ -132,13 +122,11 @@ Public Class cStanzaGroup
         ' === Array variables for groups within a stanza config ===
 
         ' Bat
-        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Bat, eStatusFlags.Null, eCoreCounterTypes.nMaxStanza, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Bat, eStatusFlags.Null, eCoreCounterTypes.nMaxStanza, AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
 
         ' Ages
-        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.StartAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanza, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.StartAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanza, AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
 
         'number at age

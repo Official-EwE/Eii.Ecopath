@@ -36,7 +36,6 @@ Public Class cEcotracerGroupInput
         MyBase.New(theCore)
 
         Dim val As cValue
-        Dim meta As cVariableMetaData
 
         Try
 
@@ -49,33 +48,27 @@ Public Class cEcotracerGroupInput
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' CZero
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CZero, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CZero))
+            val = New cValue(New Single, eVarNameFlags.CZero, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
             ' CImmig
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CImmig, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CImmig))
+            val = New cValue(New Single, eVarNameFlags.CImmig, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
             ' CEnvironment
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CEnvironment, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CEnvironment))
+            val = New cValue(New Single, eVarNameFlags.CEnvironment, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
             ' CDecay
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CPhysicalDecayRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CPhysicalDecayRate))
+            val = New cValue(New Single, eVarNameFlags.CPhysicalDecayRate, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
             ' CAssimilationProp
-            meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CAssimilationProp, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CAssimilationProp))
+            val = New cValue(New Single, eVarNameFlags.CAssimilationProp, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
-            ' CAssimilationProp
-            meta = New cVariableMetaData(0 + Single.Epsilon, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.CMetablismRate, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.CMetablismRate))
+            ' CMetablismRate
+            val = New cValue(New Single, eVarNameFlags.CMetablismRate, eStatusFlags.Null, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
 
             'set status flags to default values

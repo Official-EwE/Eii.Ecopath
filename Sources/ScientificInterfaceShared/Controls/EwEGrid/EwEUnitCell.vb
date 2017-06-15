@@ -38,7 +38,7 @@ Namespace Controls.EwEGrid
     Public Class EwEUnitCell
         : Inherits EwECell
 
-        Protected m_aUnitTypes() As eUnitType
+        Protected m_strUnit As String = ""
         Protected m_strUnitMask As String = ""
 
 #Region " Construction "
@@ -48,8 +48,8 @@ Namespace Controls.EwEGrid
         ''' Constructor
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal unitType As eUnitType)
-            Me.New("{0}", New eUnitType() {unitType})
+        Public Sub New(ByVal strUnit As String)
+            Me.New("{0}", strUnit)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -57,11 +57,11 @@ Namespace Controls.EwEGrid
         ''' Constructor
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strUnitMask As String, ByVal aUnitTypes() As eUnitType)
+        Public Sub New(ByVal strUnitMask As String, strUnit As String)
             MyBase.New(Nothing, GetType(String))
 
             Me.m_strUnitMask = strUnitMask
-            Me.m_aUnitTypes = aUnitTypes
+            Me.m_strUnit = strUnit
         End Sub
 
 #End Region ' Construction 
@@ -71,30 +71,17 @@ Namespace Controls.EwEGrid
         Public Overrides ReadOnly Property DisplayText() As String
             Get
                 Dim strDisplayText As String = ""
-
-                If Me.m_aUnitTypes IsNot Nothing Then
-
-                    Select Case m_aUnitTypes.Length
-                        Case 0
-                            ' NOP
-                        Case 1
-                            strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)))
-                        Case 2
-                            strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, GetUnitString(m_aUnitTypes(0)), GetUnitString(m_aUnitTypes(1)))
-                        Case Else
-                            Debug.Assert(False)
-                    End Select
-
+                If (Not String.IsNullOrWhiteSpace(Me.m_strUnit)) Then
+                    strDisplayText = cStringUtils.Localize(Me.m_strUnitMask, GetUnitString(Me.m_strUnit))
                 End If
-
                 Return strDisplayText
             End Get
         End Property
 
-        Private Function GetUnitString(ByVal unitType As eUnitType) As String
+        Private Function GetUnitString(ByVal strUnit As String) As String
 
             If (Me.StyleGuide Is Nothing) Then Return "u1"
-            Return Me.StyleGuide.GetUnitString(unitType)
+            Return Me.StyleGuide.FormatUnitString(strUnit)
 
         End Function
 

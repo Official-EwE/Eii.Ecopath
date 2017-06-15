@@ -107,19 +107,19 @@ Namespace Ecopath.Input
             Dim opSumAll As cMultiOperation = Nothing
             Dim op1MinusSumAll As cBinaryOperation = Nothing
             Dim alPropSumAll As New ArrayList()
-            Dim cell As PropertyCell = Nothing
+            Dim cell As EwECellBase = Nothing
 
             Dim visDiagonal As New SourceGrid2.VisualModels.Common
             visDiagonal.BackColor = Color.LightGray
             visDiagonal.TextAlignment = ContentAlignment.MiddleCenter
 
             ' Populate grid data cells
-            Dim columnIndex As Integer = 2
-            Dim rowCnt As Integer = Me.RowsCount
+            Dim iCol As Integer = 2
+            Dim nRows As Integer = Me.RowsCount
             ' For each column
-            For groupIndex As Integer = 1 To Core.nLivingGroups
+            For iGroup As Integer = 1 To Core.nLivingGroups
                 ' Get the group
-                source = Core.EcoPathGroupInputs(groupIndex)
+                source = Core.EcoPathGroupInputs(iGroup)
 
                 If source.PP < 1 Then
 
@@ -127,9 +127,9 @@ Namespace Ecopath.Input
                     alPropSumAll.Clear()
 
                     ' For each row
-                    For rowIndex As Integer = 1 To Core.nGroups
+                    For iRow As Integer = 1 To Core.nGroups
                         ' Get index group
-                        sourceSec = Core.EcoPathGroupInputs(rowIndex)
+                        sourceSec = Core.EcoPathGroupInputs(iRow)
 
                         ' Get the indexed dietcomp property
                         prop = pm.GetProperty(source, eVarNameFlags.DietComp, sourceSec)
@@ -137,24 +137,24 @@ Namespace Ecopath.Input
                         cell = New PropertyCell(prop)
 
                         ' Fixes issue #845
-                        If rowIndex = source.Index Then
+                        If iRow = source.Index Then
                             cell.VisualModel = visDiagonal
                         End If
 
                         ' DC value cells suppress zeroes to increase legibility of the grid
                         cell.SuppressZero = True
                         ' Activate the cell
-                        Me(rowIndex, columnIndex) = cell
+                        Me(iRow, iCol) = cell
                         ' Add this property to the list of props to sum
                         alPropSumAll.Add(prop)
 
-                    Next rowIndex
+                    Next iRow
 
                     ' Define DietImport cell
                     ' # Get the property
                     prop = pm.GetProperty(source, eVarNameFlags.ImpDiet)
                     ' # Add to cell
-                    Me(rowCnt - 3, columnIndex) = New PropertyCell(prop)
+                    Me(nRows - 3, iCol) = New PropertyCell(prop)
                     ' Add this property to the list of props to sum
                     alPropSumAll.Add(prop)
 
@@ -163,20 +163,20 @@ Namespace Ecopath.Input
                     ' Create Sum property for the SUM row (all the way at the bottom)
                     propSum = Me.Formula(opSumAll)
                     ' Define sum cell
-                    Me(rowCnt - 2, columnIndex) = New PropertyCell(propSum)
+                    Me(nRows - 2, iCol) = New PropertyCell(propSum)
 
                     ' Create 1-Sum property for the SUM row (all the way at the bottom)
                     op1MinusSumAll = New cBinaryOperation(cBinaryOperation.eOperatorType.Subtract, 1, propSum)
                     prop1MinusSum = Me.Formula(op1MinusSumAll)
                     ' Define sum cell
-                    Me(rowCnt - 1, columnIndex) = New PropertyCell(prop1MinusSum)
+                    Me(nRows - 1, iCol) = New PropertyCell(prop1MinusSum)
 
                     ' Next column
-                    columnIndex = columnIndex + 1
+                    iCol += 1
 
                 End If
 
-            Next groupIndex
+            Next iGroup
 
         End Sub
 

@@ -45,25 +45,19 @@ Public MustInherit Class cEwEScenario
 
             ' Description
             meta = New cVariableMetaData(60000)
-            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
             m_values.Add(val.varName, val)
 
             ' Author
-            meta = New cVariableMetaData(250)
-            val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             m_values.Add(val.varName, val)
 
             ' Contact
-            meta = New cVariableMetaData(250)
-            val = New cValue(New String(desc), eVarNameFlags.Contact, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.Contact, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
             m_values.Add(val.varName, val)
 
             ' Last saved julian date
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(New Single, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LastSaved))
+            val = New cValue(New Single, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'set status flags to their default values

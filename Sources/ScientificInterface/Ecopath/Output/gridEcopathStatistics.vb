@@ -24,11 +24,9 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Style
-Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
 
 #End Region
 
@@ -39,9 +37,9 @@ Namespace Ecopath.Output
     ''' Grid clas, showing Ecopath statistics values.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridEcopathStatistics
-        : Inherits EwEGrid
+        Inherits EwEGrid
 
         Private Enum eColumnTypes As Byte
             Header = 0
@@ -50,7 +48,7 @@ Namespace Ecopath.Output
         End Enum
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -70,36 +68,30 @@ Namespace Ecopath.Output
 
             Dim source As cEcoPathStats = Core.EcopathStats
 
-            Dim aunitCurrOverTime As eUnitType() = New eUnitType() {eUnitType.Currency, eUnitType.Time}
-            Dim strMaskCurrOverTime As String = SharedResources.HEADER_A_PER_B
-
-            Dim aunitCurrTime As eUnitType() = New eUnitType() {eUnitType.Time}
-            Dim strMaskCurrTime As String = "/{0}" ' Ah well
-
-            Me.AddRow(SharedResources.HEADER_SUM_CONSUMPTION, source, eVarNameFlags.EcopathStatsTotalConsumption, aunitCurrOverTime, strMaskCurrOverTime)
-            Me.AddRow(SharedResources.HEADER_SUM_EXPORTS, source, eVarNameFlags.EcopathStatsTotalExports, aunitCurrOverTime, strMaskCurrOverTime)
-            Me.AddRow(SharedResources.HEADER_SUM_FLOW_RESP, source, eVarNameFlags.EcopathStatsTotalRespFlow, aunitCurrOverTime, strMaskCurrOverTime)
-            Me.AddRow(SharedResources.HEADER_SUM_FLOW_DET, source, eVarNameFlags.EcopathStatsTotalFlowDetritus, aunitCurrOverTime, strMaskCurrOverTime)
-            Me.AddRow(SharedResources.HEADER_SUM_THROUGHPUT, source, eVarNameFlags.EcopathStatsTotalThroughput, aunitCurrOverTime, strMaskCurrOverTime)
-            Me.AddRow(SharedResources.HEADER_SUM_PROD, source, eVarNameFlags.EcopathStatsTotalProduction, aunitCurrOverTime, strMaskCurrOverTime)
+            Me.AddRow(SharedResources.HEADER_SUM_CONSUMPTION, source, eVarNameFlags.EcopathStatsTotalConsumption)
+            Me.AddRow(SharedResources.HEADER_SUM_EXPORTS, source, eVarNameFlags.EcopathStatsTotalExports)
+            Me.AddRow(SharedResources.HEADER_SUM_FLOW_RESP, source, eVarNameFlags.EcopathStatsTotalRespFlow)
+            Me.AddRow(SharedResources.HEADER_SUM_FLOW_DET, source, eVarNameFlags.EcopathStatsTotalFlowDetritus)
+            Me.AddRow(SharedResources.HEADER_SUM_THROUGHPUT, source, eVarNameFlags.EcopathStatsTotalThroughput)
+            Me.AddRow(SharedResources.HEADER_SUM_PROD, source, eVarNameFlags.EcopathStatsTotalProduction)
             Me.AddRow(SharedResources.HEADER_MEAN_CATCH_TL, source, eVarNameFlags.EcopathStatsMeanTrophicLevelCatch)
             Me.AddRow(SharedResources.HEADER_GROSS_EFFICIENCY, source, eVarNameFlags.EcopathStatsGrossEfficiency)
-            Me.AddRow(SharedResources.HEADER_SUM_NET_PP, source, eVarNameFlags.EcopathStatsTotalNetPP, aunitCurrOverTime, strMaskCurrOverTime)
+            Me.AddRow(SharedResources.HEADER_SUM_NET_PP, source, eVarNameFlags.EcopathStatsTotalNetPP)
             Me.AddRow(SharedResources.HEADER_SUM_PP_RESP, source, eVarNameFlags.EcopathStatsTotalPResp)
-            Me.AddRow(SharedResources.HEADER_NET_PROD, source, eVarNameFlags.EcopathStatsNetSystemProduction, aunitCurrOverTime, strMaskCurrOverTime)
+            Me.AddRow(SharedResources.HEADER_NET_PROD, source, eVarNameFlags.EcopathStatsNetSystemProduction)
             Me.AddRow(SharedResources.HEADER_SUM_PPB, source, eVarNameFlags.EcopathStatsTotalPB)
-            Me.AddRow(SharedResources.HEADER_SUM_BT, source, eVarNameFlags.EcopathStatsTotalBT, aunitCurrTime, strMaskCurrTime)
-            Me.AddRow(SharedResources.HEADER_SUM_BnonDET, source, eVarNameFlags.EcopathStatsTotalBNonDet, eUnitType.Currency)
-            Me.AddRow(SharedResources.HEADER_SUM_CATCH, source, eVarNameFlags.EcopathStatsTotalCatch, aunitCurrOverTime, strMaskCurrOverTime)
+            Me.AddRow(SharedResources.HEADER_SUM_BT, source, eVarNameFlags.EcopathStatsTotalBT)
+            Me.AddRow(SharedResources.HEADER_SUM_BnonDET, source, eVarNameFlags.EcopathStatsTotalBNonDet)
+            Me.AddRow(SharedResources.HEADER_SUM_CATCH, source, eVarNameFlags.EcopathStatsTotalCatch)
             Me.AddRow(SharedResources.HEADER_INDEX_CONNECTANCE, source, eVarNameFlags.EcopathStatsConnectanceIndex)
             Me.AddRow(SharedResources.HEADER_INDEX_ONMIVORY, source, eVarNameFlags.EcopathStatsOmnivIndex)
-            Me.AddRow(SharedResources.HEADER_SUM_VALUE_MARKET, source, eVarNameFlags.EcopathStatsTotalMarketValue, eUnitType.Monetary)
-            Me.AddRow(SharedResources.HEADER_SUM_VALUE_SHADOW, source, eVarNameFlags.EcopathStatsTotalShadowValue, eUnitType.Monetary)
-            Me.AddRow(SharedResources.HEADER_SUM_VALUE, source, eVarNameFlags.EcopathStatsTotalValue, eUnitType.Monetary)
-            Me.AddRow(SharedResources.HEADER_SUM_COST_FIXED, source, eVarNameFlags.EcopathStatsTotalFixedCost, eUnitType.Monetary)
-            Me.AddRow(SharedResources.HEADER_SUM_COST_VARIABLE, source, eVarNameFlags.EcopathStatsTotalVarCost, eUnitType.Monetary)
-            Me.AddRow(SharedResources.HEADER_SUM_COST, source, eVarNameFlags.EcopathStatsTotalCost, eUnitType.Monetary)
-            Me.AddRow(SharedResources.HEADER_SUM_PROFIT, source, eVarNameFlags.EcopathStatsProfit, eUnitType.Monetary)
+            Me.AddRow(SharedResources.HEADER_SUM_VALUE_MARKET, source, eVarNameFlags.EcopathStatsTotalMarketValue)
+            Me.AddRow(SharedResources.HEADER_SUM_VALUE_SHADOW, source, eVarNameFlags.EcopathStatsTotalShadowValue)
+            Me.AddRow(SharedResources.HEADER_SUM_VALUE, source, eVarNameFlags.EcopathStatsTotalValue)
+            Me.AddRow(SharedResources.HEADER_SUM_COST_FIXED, source, eVarNameFlags.EcopathStatsTotalFixedCost)
+            Me.AddRow(SharedResources.HEADER_SUM_COST_VARIABLE, source, eVarNameFlags.EcopathStatsTotalVarCost)
+            Me.AddRow(SharedResources.HEADER_SUM_COST, source, eVarNameFlags.EcopathStatsTotalCost)
+            Me.AddRow(SharedResources.HEADER_SUM_PROFIT, source, eVarNameFlags.EcopathStatsProfit)
             Me.AddRow(SharedResources.HEADER_ECOPATH_PEDIGREE, source, eVarNameFlags.EcopathStatsPedigree)
             Me.AddRow(SharedResources.HEADER_MEASUREOFFIT, source, eVarNameFlags.EcopathStatsMeasureOfFit)
 
@@ -117,23 +109,13 @@ Namespace Ecopath.Output
         End Sub
 
         Private Overloads Sub AddRow(ByVal strHeader As String, ByVal source As cEcoPathStats, ByVal vnf As eVarNameFlags)
-            Me.AddRow(strHeader, source, vnf, Nothing, "")
-        End Sub
-
-        Private Overloads Sub AddRow(ByVal strHeader As String, _
-                        ByVal source As cEcoPathStats, ByVal vnf As eVarNameFlags, _
-                        ByVal unitType As eUnitType)
-            Me.AddRow(strHeader, source, vnf, New eUnitType() {unitType}, "{0}")
-        End Sub
-
-        Private Overloads Sub AddRow(ByVal strHeader As String, _
-                        ByVal source As cEcoPathStats, ByVal vnf As eVarNameFlags, _
-                        ByVal aUnitTypes() As eUnitType, ByVal strUnitMask As String)
 
             Dim iRow As Integer = Me.AddRow()
+            Dim md As cVariableMetaData = source.GetVariableMetadata(vnf)
+
             Me(iRow, eColumnTypes.Header) = New EwERowHeaderCell(strHeader)
             Me(iRow, eColumnTypes.Value) = New PropertyCell(Me.PropertyManager, source, vnf)
-            Me(iRow, eColumnTypes.Units) = New EwEUnitCell(strUnitMask, aUnitTypes)
+            Me(iRow, eColumnTypes.Units) = New EwEUnitCell(md.Units)
 
         End Sub
 

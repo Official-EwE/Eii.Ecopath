@@ -24,6 +24,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -48,6 +49,7 @@ Namespace Ecopath.Input
         Protected Overrides Sub InitStyle()
 
             Dim source As cCoreInputOutputBase = Nothing
+            Dim md As cVariableMetaData = Nothing
 
             MyBase.InitStyle()
 
@@ -62,11 +64,11 @@ Namespace Ecopath.Input
 
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Core.nFleets
-                source = Me.Core.FleetInputs(fleetIndex)
-                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, _
-                                                                     source, eVarNameFlags.Name, Nothing, _
-                                                                     SharedResources.HEADER_X_UNIT_PER_UNIT, _
-                                                                     New eUnitType() {eUnitType.Currency, eUnitType.Time})
+
+                source = Core.FleetInputs(fleetIndex)
+                md = source.GetVariableMetadata(eVarNameFlags.Landings)
+                Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
+
             Next
 
             ' Total column

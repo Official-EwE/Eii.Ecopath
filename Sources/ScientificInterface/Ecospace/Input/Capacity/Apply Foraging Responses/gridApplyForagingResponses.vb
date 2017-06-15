@@ -98,7 +98,7 @@ Namespace Ecospace
                 Dim strLabel As String
 
                 For igrp As Integer = 1 To Core.nGroups
-                    Dim grp As cEcospaceGroup = Me.Core.EcospaceGroups(igrp)
+                    Dim grp As cEcospaceGroupInput = Me.Core.EcospaceGroups(igrp)
                     For imap As Integer = 1 To Manager.nEnviroData
                         Dim map As IEnviroInputData = Manager.EnviroData(imap)
                         strLabel = ""
@@ -207,10 +207,10 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
-            Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroup))
+            Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroupInput))
         End Sub
 
-        Private Sub UpdateRow(grp As cEcospaceGroup)
+        Private Sub UpdateRow(grp As cEcospaceGroupInput)
 
             Dim iGroup As Integer = grp.Index
             Dim style As cStyleGuide.eStyleFlags

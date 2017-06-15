@@ -127,12 +127,12 @@ Public Class cMCHistogramGraphWrapper
                 info = lInfo(iPane - 1)
                 gp = Me.GetPane(iPane)
                 gp.Tag = info
-                If String.IsNullOrWhiteSpace(info.UnitMask) Then
+                If String.IsNullOrWhiteSpace(info.Units) Then
                     strLabelValue = info.ValueDescription
                 Else
-                    strLabelValue = String.Format(SharedResources.GENERIC_LABEL_DETAILED, info.ValueDescription, info.UnitMask)
+                    strLabelValue = String.Format(SharedResources.GENERIC_LABEL_DETAILED, info.ValueDescription, info.Units)
                 End If
-                Me.ConfigurePane(info.Name, strLabelValue, info.Units, My.Resources.HEADER_OCCURRENCE, Nothing, False, iPane:=iPane)
+                Me.ConfigurePane(info.Name, strLabelValue, My.Resources.HEADER_OCCURRENCE, False, iPane:=iPane)
             Next
         End If
 

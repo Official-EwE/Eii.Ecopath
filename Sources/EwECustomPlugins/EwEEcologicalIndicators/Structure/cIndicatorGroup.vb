@@ -87,23 +87,6 @@ Public Class cIndicatorInfoGroup
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Add an indicator that is unitless or has a fixed unit.
-    ''' </summary>
-    ''' <param name="strName">The name to assign to the indicator.</param>
-    ''' <param name="strPropertyName">The property name of the indicator as exposed by the computed <see cref="cIndicators">indicator</see>.</param>
-    ''' <param name="strDescription">Description to assign to the indicator.</param>
-    ''' <returns>The new indicator info object.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function Add(ByVal strPropertyName As String, _
-                        ByVal strName As String, _
-                        ByVal strDescription As String, _
-                        ByVal strValueDescription As String, _
-                        Optional strFixedUnit As String = "") As cIndicatorInfo
-        Return Me.Add(strPropertyName, strName, strDescription, strValueDescription, New eUnitType() {eUnitType.None}, strFixedUnit)
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
     ''' Add an indicator that has a sinlge-dimensioned, dynamic unit.
     ''' </summary>
     ''' <param name="strName">The name to assign to the indicator.</param>
@@ -113,34 +96,12 @@ Public Class cIndicatorInfoGroup
     ''' <param name="strDescription">Description to assign to the indicator.</param>
     ''' <returns>The new indicator info object.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Add(ByVal strPropertyName As String, _
-                        ByVal strName As String, _
-                        ByVal strDescription As String, _
-                        ByVal strValueDescription As String, _
-                        ByVal unit As eUnitType, _
-                        Optional ByVal strUnitMask As String = "{0}") As cIndicatorInfo
-        Return Me.Add(strPropertyName, strName, strDescription, strValueDescription, New eUnitType() {unit}, strUnitMask)
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Add an indicator that has multiple dimensioned, dynamic units.
-    ''' </summary>
-    ''' <param name="strName">The name to assign to the indicator.</param>
-    ''' <param name="strPropertyName">The property name of the indicator as exposed by the computed <see cref="cIndicators">indicator</see>.</param>
-    ''' <param name="strDescription">Description to assign to the indicator.</param>
-    ''' <param name="strValueDescription"> Description of the value of the indicator.</param>
-    ''' <param name="aunits">Units to display.</param>
-    ''' <param name="strUnitMask">Mask to use for formatting the <paramref name="aunits">units</paramref>.</param>
-    ''' <returns>The new indicator info object.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function Add(ByVal strPropertyName As String, _
-                        ByVal strName As String, _
-                        ByVal strDescription As String, _
-                        ByVal strValueDescription As String, _
-                        ByVal aunits() As eUnitType, _
-                        Optional ByVal strUnitMask As String = "{0}/{1}") As cIndicatorInfo
-        Dim ind As New cIndicatorInfo(strPropertyName, strName, strDescription, strValueDescription, aunits, strUnitMask)
+    Public Function Add(ByVal strPropertyName As String,
+                        ByVal strName As String,
+                        ByVal strDescription As String,
+                        ByVal strValueDescription As String,
+                        Optional ByVal strUnits As String = "") As cIndicatorInfo
+        Dim ind As New cIndicatorInfo(strPropertyName, strName, strDescription, strValueDescription, strUnits)
         Me.m_lIndicators.Add(ind)
         Return ind
     End Function

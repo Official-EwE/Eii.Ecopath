@@ -23,9 +23,9 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.MSE
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2.Cells
 
 #End Region ' Imports
 
@@ -36,12 +36,12 @@ Namespace Ecosim
     ''' 
     ''' </summary>
     ''' ===========================================================================
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridQuotaShare
         Inherits EwEGrid
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
         End Sub
 
         Protected Overrides Sub InitStyle()
@@ -60,9 +60,9 @@ Namespace Ecosim
 
             For iFleet As Integer = 1 To Core.nFleets
                 src = Core.FleetInputs(iFleet)
-                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, _
-                                                                 src, eVarNameFlags.Name, Nothing, _
-                                                                 SharedResources.GENERIC_LABEL_DETAILED, eUnitType.Currency)
+                Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager,
+                                                                 src, eVarNameFlags.Name, Nothing,
+                                                                 cUnits.Currency)
             Next
             Me(0, 1 + Core.nFleets + 1) = New EwEColumnHeaderCell(SharedResources.HEADER_SUM)
 

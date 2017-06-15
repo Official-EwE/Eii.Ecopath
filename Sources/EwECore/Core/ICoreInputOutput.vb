@@ -261,30 +261,22 @@ Public MustInherit Class cCoreInputOutputBase
     Sub New(ByRef TheCore As cCore)
 
         Dim val As cValue
-        Dim meta As cVariableMetaData
         Dim name() As Char
-        Dim validator As cValidatorDefault
 
         m_core = TheCore
 
         Me.m_ValidationStatus = New cVariableStatus()
         Me.m_ValidationStatus.CoreDataObject = Me
 
-        'all variable use the default validator
-        validator = m_core.m_validators.getValidator(eVarNameFlags.NotSet)
-
-        meta = New cVariableMetaData(250)
-        val = New cValue(New String(name), eVarNameFlags.Name, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(name), eVarNameFlags.Name, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
         val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
-        meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValue(New Integer, eVarNameFlags.Index, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int, meta, validator)
+        val = New cValue(New Integer, eVarNameFlags.Index, eStatusFlags.NotEditable, eValueTypes.Int)
         val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
-        meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-        val = New cValue(New Integer, eVarNameFlags.DBID, eStatusFlags.Null, eValueTypes.Int, meta, validator)
+        val = New cValue(New Integer, eVarNameFlags.DBID, eStatusFlags.Null, eValueTypes.Int)
         val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
@@ -648,12 +640,13 @@ Public MustInherit Class cCoreInputOutputBase
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Return <see cref="cVariableMetaData">metadata</see> associated with a 
-    ''' variable. Note that not every variable massy have metadata associated with 
-    ''' it.
+    ''' variable. If the local instance does not have metadata associated 
+    ''' the central <see cref="cVariableMetaData.Get(eVarNameFlags)">metadata 
+    ''' repository</see> is consulted.
     ''' </summary>
     ''' <param name="varName">The variable to return metadata for.</param>
     ''' <returns>A <see cref="cVariableMetaData">metadata</see> instance, or
-    ''' Null if a variable does not have associated metadata.</returns>
+    ''' Null if something went wrong.</returns>
     ''' -----------------------------------------------------------------------
     <EditorBrowsable(EditorBrowsableState.Advanced)>
     Public Function GetVariableMetadata(ByVal varName As eVarNameFlags) As cVariableMetaData
@@ -661,7 +654,7 @@ Public MustInherit Class cCoreInputOutputBase
         If Me.m_values.ContainsKey(varName) Then
             Return m_values.Item(varName).Metadata
         End If
-        Return Nothing
+        Return cVariableMetaData.Get(varName)
 
     End Function
 
@@ -825,15 +818,7 @@ Public Class cCoreGroupBase
     Sub New(ByRef core As cCore)
         MyBase.New(core)
 
-        Dim val As cValue
-        Dim meta As cVariableMetaData
-        Dim validator As cValidatorDefault
-
-        'all variable use the default validator
-        validator = m_core.m_validators.getValidator(eVarNameFlags.NotSet)
-
-        meta = New cVariableMetaData(0, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-        val = New cValue(New Single, eVarNameFlags.PP, eStatusFlags.Null, eValueTypes.Sng, meta, validator)
+        Dim val As New cValue(New Single, eVarNameFlags.PP, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
     End Sub

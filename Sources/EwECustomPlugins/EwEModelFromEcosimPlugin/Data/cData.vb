@@ -144,7 +144,7 @@ Friend Class cData
         Get
             If Not Me.CreateModel(iYear) Then Return ""
             Dim record As cEcopathModelEntry = Me.m_dtEntries(iYear)
-            If record.IsDefaultName Then Return Me.DefaultModelName(iYear)
+            If record.IsDefaultName Then Return DefaultModelName(iYear)
             Return record.ModelName
         End Get
         Set(ByVal value As String)

@@ -648,9 +648,9 @@ Public Class cProducerUnit
     End Property
 
     <Browsable(False)> _
-    Public Overrides ReadOnly Property UnitType() As cUnitFactory.eUnitType
+    Public Overrides ReadOnly Property UnitType() As cUnitFactory.cUnitFormatter
         Get
-            Return cUnitFactory.eUnitType.Producer
+            Return cUnitFactory.cUnitFormatter.Producer
         End Get
     End Property
 

@@ -21,20 +21,15 @@
 #Region "Imports"
 
 Option Strict On
-Imports EwEPlugin
-Imports EwEResultsExtractor
-Imports EwECore
-Imports EwEUtils.Core
 Imports System.IO
 Imports System.Text
 Imports System.Windows.Forms
-Imports System.Collections
-Imports Microsoft.Office.Interop
-Imports EwECore.MSE
-Imports ScientificInterfaceShared.Controls
+Imports EwECore
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -954,7 +949,7 @@ Public Class frmResults
                     Next
                 Else
                     For TimeStep As Integer = 1 To nDataRows
-                        AConsPerPrey(PreyIndex, TimeStep) = _
+                        AConsPerPrey(PreyIndex, TimeStep) =
                             Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, TimeStep) _
                             * Core.EcoSimGroupOutputs(PredatorIndexEcosim).Biomass(TimeStep) _
                             * Core.EcoSimGroupOutputs(PredatorIndexEcosim).ConsumpBiomass(TimeStep)
@@ -1001,8 +996,8 @@ Public Class frmResults
                     CumulFishingMortality = 0
                     For Month As Integer = 1 To cCore.N_MONTHS
                         'Retrieve Fishing mortality for parent
-                        CumulFishingMortality += _
-                                        Core.EcoSimGroupOutputs(EwEIndex).FishMort((Year - 1) * cCore.N_MONTHS + Month) - _
+                        CumulFishingMortality +=
+                                        Core.EcoSimGroupOutputs(EwEIndex).FishMort((Year - 1) * cCore.N_MONTHS + Month) -
                                         Core.EcoSimGroupOutputs(EwEIndex).PredMort((Year - 1) * cCore.N_MONTHS + Month)
                     Next
                     AFishingMortality(ParentIndex, Year) = CumulFishingMortality / cCore.N_MONTHS
@@ -1011,8 +1006,8 @@ Public Class frmResults
                 For TimeStep As Integer = 1 To nDataRows
 
                     'Retrieve Fishing mortality for parent
-                    AFishingMortality(ParentIndex, TimeStep) = _
-                                    Core.EcoSimGroupOutputs(EwEIndex).FishMort(TimeStep) - _
+                    AFishingMortality(ParentIndex, TimeStep) =
+                                    Core.EcoSimGroupOutputs(EwEIndex).FishMort(TimeStep) -
                                     Core.EcoSimGroupOutputs(EwEIndex).PredMort(TimeStep)
                 Next
             End If
@@ -1055,7 +1050,7 @@ Public Class frmResults
                     CumulPredationMortality = 0
                     For Month As Integer = 1 To cCore.N_MONTHS
                         'Retrieve Predation mortality for parent
-                        CumulPredationMortality += _
+                        CumulPredationMortality +=
                                             Core.EcoSimGroupOutputs(EwEIndex).PredMort((Year - 1) * cCore.N_MONTHS + Month)
 
                     Next
@@ -1069,7 +1064,7 @@ Public Class frmResults
                     'Get Index of Parent in EwE
                     EwEIndex = GetIndexGroup(ParentOnlySelection.SelectedNames(PredatorIndex))
                     'retrieve mortality for current predator at current timestep
-                    APredationMortality(PredatorIndex, TimeStep) = _
+                    APredationMortality(PredatorIndex, TimeStep) =
                     Core.EcoSimGroupOutputs(EwEIndex).PredMort(TimeStep)
 
                 Next
@@ -1132,7 +1127,7 @@ Public Class frmResults
                     For nYear As Integer = 1 To Core.nEcosimYears
                         CumPredMort = 0
                         For nMonth As Integer = 1 To cCore.N_MONTHS
-                            Consumption = _
+                            Consumption =
                                 Core.EcoSimGroupOutputs(EwEIndexPredator).PreyPercentage(EwEIndexPrey, (nYear - 1) * cCore.N_MONTHS + nMonth) _
                                 * Core.EcoSimGroupOutputs(EwEIndexPredator).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth) _
                                 * Core.EcoSimGroupOutputs(EwEIndexPredator).ConsumpBiomass((nYear - 1) * cCore.N_MONTHS + nMonth)
@@ -1142,7 +1137,7 @@ Public Class frmResults
                     Next
                 Else
                     For TimeStep As Integer = 1 To nDataRows
-                        Consumption = _
+                        Consumption =
                             Core.EcoSimGroupOutputs(EwEIndexPredator).PreyPercentage(EwEIndexPrey, TimeStep) _
                             * Core.EcoSimGroupOutputs(EwEIndexPredator).Biomass(TimeStep) _
                             * Core.EcoSimGroupOutputs(EwEIndexPredator).ConsumpBiomass(TimeStep)
@@ -1288,7 +1283,7 @@ Public Class frmResults
                 If EwEIndexFleet > Core.nGroups Then Exit Sub
 
                 'Calculate initial partialF
-                InitialPartialF = (Core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) + _
+                InitialPartialF = (Core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) +
                                     Core.FleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)) _
                                     / Core.EcoPathGroupOutputs(EwEIndexPrey).Biomass
 
@@ -1298,7 +1293,7 @@ Public Class frmResults
                     For nYear As Integer = 1 To Core.nEcosimYears
                         CumulEffort = 0
                         For nMonth As Integer = 1 To cCore.N_MONTHS
-                            PartialF = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth) / _
+                            PartialF = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth) /
                                         Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth)
                             CumulEffort += PartialF
                         Next
@@ -1306,7 +1301,7 @@ Public Class frmResults
                     Next
                 Else
                     For TimeStep As Integer = 1 To nDataRows
-                        PartialF = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep) / _
+                        PartialF = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, TimeStep) /
                                     Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass(TimeStep)
                         AEffort(FleetIndex, TimeStep + 1) = PartialF / InitialPartialF
                     Next
@@ -1746,7 +1741,7 @@ Public Class frmResults
         ABasicEstimates(2, 0) = My.Resources.TROPHIC_LEVEL
         ABasicEstimates(3, 0) = My.Resources.HABITAT_AREA_UNITS
         ' I changed the resource string to hold the placeholders for receiving the units ({0}/{1}), where {0} reveives 'biomass', and {1} receives 'time'
-        ABasicEstimates(4, 0) = sg.FormatUnitString(My.Resources.BIOMASS_AREA_UNITS, New eUnitType() {eUnitType.Biomass, eUnitType.Area}) '  My.Resources.BIOMASS_AREA_UNITS
+        ABasicEstimates(4, 0) = cStringUtils.Localize(My.Resources.BIOMASS_AREA_UNITS, sg.FormatUnitString("[biomass]/[area]")) '  My.Resources.BIOMASS_AREA_UNITS
         ABasicEstimates(5, 0) = My.Resources.BIOMASS_AREA_UNITS
         ABasicEstimates(6, 0) = My.Resources.PRODUCTION_BIOMASS_UNITS
         ABasicEstimates(7, 0) = My.Resources.CONSUMPTION_BIOMASS_UNITS
