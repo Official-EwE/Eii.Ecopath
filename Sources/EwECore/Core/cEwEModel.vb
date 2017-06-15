@@ -186,8 +186,8 @@ Public Class cEwEModel
             val = New cValue(New Boolean, eVarNameFlags.IsEcospaceModelCoupled, eStatusFlags.OK, eValueTypes.Bool)
             m_values.Add(val.varName, val)
 
-            ' BiodiversityIndicatorType (enum)
-            val = New cValue(New Integer, eVarNameFlags.BiodiversityIndicator, eStatusFlags.OK, eValueTypes.Int)
+            ' DiversityIndex (enum)
+            val = New cValue(New Integer, eVarNameFlags.DiversityIndex, eStatusFlags.OK, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             'set status flags to their default values
