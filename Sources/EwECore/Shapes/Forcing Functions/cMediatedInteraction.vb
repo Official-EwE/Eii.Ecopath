@@ -50,6 +50,12 @@ Public MustInherit Class cMediatedInteraction
     Protected m_SFPairs As New List(Of cShapeFunctionTypePair)
     Protected m_dbid As Integer
 
+    ''' <summary>
+    '''List of Application types this that this interation applies to
+    '''Passed into the Constructor
+    ''' </summary>
+    Protected m_lstAppTypes As List(Of eForcingFunctionApplication)
+
 #End Region
 
 #Region "Construction and Initialization"

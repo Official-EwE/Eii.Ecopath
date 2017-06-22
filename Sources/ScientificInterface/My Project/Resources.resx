@@ -13087,7 +13087,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Advection model run either encountered an error or was interrupted. Advection vectors will not be updated.</value>
     <comment>Advection model run failed</comment>
   </data>
-
   <data name="HEADER_MORTALITIES_BIOMACCURATE" xml:space="preserve">
     <value>+ Biomass accum. rate</value>
   </data>
@@ -13138,5 +13137,17 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="HEADER_DIET_MULTIPLIER" xml:space="preserve">
     <value>Diet multiplier</value>
+  </data>
+  <data name="FF_APPLICATION_MORTOTHER" xml:space="preserve">
+    <value>Apply mortality forcing to {0}</value>
+    <comment>{0}=Grroup name</comment>
+  </data>
+  <data name="FF_APPLICATION_SOURCE" xml:space="preserve">
+    <value>Source group {0}</value>
+    <comment>{0}=Grroup name</comment>
+  </data>
+  <data name="FF_APPLICATION_TRAGET" xml:space="preserve">
+    <value>Target group {0}</value>
+    <comment>{0}=Grroup name</comment>
   </data>
 </root>

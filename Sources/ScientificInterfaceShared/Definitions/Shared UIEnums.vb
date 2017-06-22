@@ -185,6 +185,7 @@ Namespace Definitions
         Consumer
         Producer
         Detritus
+        MortOther
     End Enum
 
     Public Enum eFDNodeTypes As Integer

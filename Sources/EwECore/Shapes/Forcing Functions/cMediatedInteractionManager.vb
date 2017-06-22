@@ -31,6 +31,8 @@ Public Class cMediatedInteractionManager
     Private m_core As cCore
     Private m_interactionsPredPrey As New Dictionary(Of String, cPredPreyInteraction)
     Private m_interactionsLandings As New Dictionary(Of String, cLandingsInteraction)
+    'm_interactionGroup is used for Mortality Forcing data which is stored by group 
+    Private m_interactionGroup As New Dictionary(Of String, cPredPreyInteraction)
     Private m_EPData As cEcopathDataStructures
     Private m_ESData As cEcosimDatastructures
 
@@ -57,30 +59,47 @@ Public Class cMediatedInteractionManager
 
     Public Function Init() As Boolean
 
-        m_interactionsPredPrey.Clear()
-        m_interactionsLandings.Clear()
+        Me.m_interactionsPredPrey.Clear()
+        Me.m_interactionsLandings.Clear()
+        Me.m_interactionGroup.Clear()
+
+        Dim lstPredPreyApTypes As New List(Of eForcingFunctionApplication)({eForcingFunctionApplication.Import,
+                                                                           eForcingFunctionApplication.ProductionRate, eForcingFunctionApplication.SearchRate,
+                                                                           eForcingFunctionApplication.VulAndArea, eForcingFunctionApplication.Vulnerability, eForcingFunctionApplication.ArenaArea})
 
         For ipred As Integer = 1 To m_EPData.NumGroups
             For iprey As Integer = 1 To m_EPData.NumGroups
 
                 If Me.isPredPrey(ipred, iprey) Then
-                    Dim interaction As New cPredPreyInteraction(ipred, iprey, Me)
+                    Dim interaction As New cPredPreyInteraction(ipred, iprey, Me, lstPredPreyApTypes)
                     Me.m_interactionsPredPrey.Add(getHashKey(ipred, iprey), interaction)
                 End If
 
             Next iprey
         Next ipred
 
+
+        Dim lstLandingApTypes As New List(Of eForcingFunctionApplication)({eForcingFunctionApplication.OffVesselPrice})
         For iFleet As Integer = 1 To m_EPData.NumFleet
             For iGroup As Integer = 1 To Me.m_EPData.NumGroups
 
                 If Me.isLandings(iFleet, iGroup) Then
-                    Dim interaction As New cLandingsInteraction(iFleet, iGroup, Me)
+                    Dim interaction As New cLandingsInteraction(iFleet, iGroup, Me, lstLandingApTypes)
                     Me.m_interactionsLandings.Add(getHashKey(iFleet, iGroup), interaction)
                 End If
 
             Next
         Next
+
+        Dim lstMortApTypes As New List(Of eForcingFunctionApplication)({eForcingFunctionApplication.MortOther})
+        For ipred As Integer = 1 To m_EPData.NumLiving
+
+            'Stored Group x Group
+            Dim interaction As New cPredPreyInteraction(ipred, ipred, Me, lstMortApTypes)
+            Me.m_interactionGroup.Add(getHashKey(ipred, ipred), interaction)
+
+        Next ipred
+
 
     End Function
 
@@ -91,6 +110,11 @@ Public Class cMediatedInteractionManager
         For Each interaction As cMediatedInteraction In Me.m_interactionsLandings.Values
             interaction.Load()
         Next
+
+        For Each interaction As cMediatedInteraction In Me.m_interactionGroup.Values
+            interaction.Load()
+        Next
+
     End Function
 
     Public Sub Clear()
@@ -102,9 +126,13 @@ Public Class cMediatedInteractionManager
             For Each interaction As cMediatedInteraction In Me.m_interactionsLandings.Values
                 interaction.Clear()
             Next
+            For Each interaction As cMediatedInteraction In Me.m_interactionGroup.Values
+                interaction.Clear()
+            Next
 
-            m_interactionsPredPrey.Clear()
-            m_interactionsLandings.Clear()
+            Me.m_interactionsPredPrey.Clear()
+            Me.m_interactionsLandings.Clear()
+            Me.m_interactionGroup.Clear()
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -161,6 +189,26 @@ Public Class cMediatedInteractionManager
         End Get
     End Property
 
+
+
+
+    Public ReadOnly Property GroupInteraction(ByVal PredIndex As Integer) As cPredPreyInteraction
+        Get
+            Try
+                Dim key As String = getHashKey(PredIndex, PredIndex)
+                If Me.m_interactionGroup.ContainsKey(key) Then
+                    Return Me.m_interactionGroup.Item(key)
+                Else
+                    Return Nothing
+                End If
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & ".Item() GroupInteraction() Failed to find cPredPreyInteraction().")
+                Return Nothing
+            End Try
+        End Get
+    End Property
+
+
     Public ReadOnly Property isLandings(ByVal iFleet As Integer, ByVal iGroup As Integer) As Boolean
         Get
             Try
@@ -186,6 +234,8 @@ Public Class cMediatedInteractionManager
             End Try
         End Get
     End Property
+
+
 
     ''' <summary>
     ''' Get the maximum number of shapes that can be assigned to an interaction.

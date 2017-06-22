@@ -32,6 +32,11 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
+    'ToDo Sort out Mort Other label 
+    'ToDo Why Clicking on column doesn't trigger OnClick from OtherMortGrid
+    'ToDo source and target lables for OtherMortGrid
+
+
     ''' <summary>
     ''' Interface to manage assign forcing functions to pred/prey interactions.
     ''' </summary>
@@ -46,6 +51,8 @@ Namespace Ecosim
             Predator
             ''' <summary>Dialog opened for all diets.</summary>
             All
+            ''' <summary>Dialog opened for Mort Other</summary>
+            Mort
         End Enum
 
 #Region " Private vars "
@@ -74,19 +81,23 @@ Namespace Ecosim
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal iPrey As Integer, ByVal iPred As Integer, _
-                       ByVal shapeType As eShapeCategoryTypes, _
-                       ByVal bConsumers As eGroupFilter)
+        Public Sub New(ByVal uic As cUIContext,
+                       ByVal iPrey As Integer, ByVal iPred As Integer,
+                       ByVal shapeType As eShapeCategoryTypes,
+                       ByVal GroupFilter As eGroupFilter)
             Try
 
-                Me.Init(uic, eEditMode.PredPrey, shapeType, bConsumers)
+                Me.Init(uic, eEditMode.PredPrey, shapeType, GroupFilter)
 
                 ' the index for selected prey and predator index
                 Me.m_iSelPrey = iPrey
                 Me.m_iSelPred = iPred
 
-                Me.m_lInteractions.Add(Me.m_InteractionManager.PredPreyInteraction(Me.m_iSelPred, Me.m_iSelPrey))
+                If GroupFilter <> eGroupFilter.MortOther Then
+                    Me.m_lInteractions.Add(Me.m_InteractionManager.PredPreyInteraction(Me.m_iSelPred, Me.m_iSelPrey))
+                Else
+                    Me.m_lInteractions.Add(Me.m_InteractionManager.GroupInteraction(Me.m_iSelPred))
+                End If
 
             Catch ex As Exception
                 ' NOP
@@ -101,13 +112,26 @@ Namespace Ecosim
         ''' <param name="iGroup">Group this dialog was opened for.</param>
         ''' <param name="editMode">Flag stating how this group should be interpreted.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal iGroup As Integer, _
-                       ByVal editMode As eEditMode, _
-                       ByVal shapeType As eShapeCategoryTypes, _
+        Public Sub New(ByVal uic As cUIContext,
+                       ByVal iGroup As Integer,
+                       ByVal editMode As eEditMode,
+                       ByVal shapeType As eShapeCategoryTypes,
                        ByVal bConsumers As eGroupFilter)
 
             Me.Init(uic, editMode, shapeType, bConsumers)
+
+            If bConsumers = eGroupFilter.MortOther Then
+                Me.PopListGroup(iGroup, editMode, shapeType)
+            Else
+                Me.PopListPredPrey(iGroup, editMode, shapeType)
+            End If
+
+        End Sub
+
+
+        Private Sub PopListPredPrey(ByVal iGroup As Integer,
+                       ByVal editMode As eEditMode,
+                       ByVal shapeType As eShapeCategoryTypes)
 
             Select Case editMode
 
@@ -130,19 +154,49 @@ Namespace Ecosim
                     Next
 
                 Case Else
+
+                    Debug.Assert(False, cStringUtils.Localize("Invalid editmode {0} provided, expected Pred or Prey", editMode.ToString))
+
+            End Select
+
+
+        End Sub
+
+        Private Sub PopListGroup(ByVal iGroup As Integer,
+                       ByVal editMode As eEditMode,
+                       ByVal shapeType As eShapeCategoryTypes)
+
+            Select Case editMode
+
+                Case eEditMode.Prey
+                    Me.m_iSelPrey = iGroup
+
+                    Me.m_lInteractions.Add(m_InteractionManager.GroupInteraction(iGroup))
+
+                Case eEditMode.Predator
+                    Me.m_iSelPred = iGroup
+
+                    For igrp As Integer = 1 To Me.m_uic.Core.nLivingGroups
+
+                        Me.m_lInteractions.Add(m_InteractionManager.GroupInteraction(igrp))
+
+                    Next
+
+                Case Else
                     Debug.Assert(False, cStringUtils.Localize("Invalid editmode {0} provided, expected Pred or Prey", editMode.ToString))
 
             End Select
 
         End Sub
 
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Create the dialog for all diets
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal shapeType As eShapeCategoryTypes, _
+        Public Sub New(ByVal uic As cUIContext,
+                       ByVal shapeType As eShapeCategoryTypes,
                        ByVal bConsumers As eGroupFilter)
 
             Me.Init(uic, eEditMode.All, shapeType, bConsumers)
@@ -179,17 +233,20 @@ Namespace Ecosim
             ' Load Prey and predator pair name
             Select Case m_editMode
                 Case eEditMode.PredPrey
-                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
-                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
+                    Me.m_lblTarget.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_TRAGET, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
+                    Me.m_lblSource.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_SOURCE, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
                 Case eEditMode.Prey
-                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
-                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, SharedResources.GENERIC_VALUE_ALL)
+                    Me.m_lblTarget.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_TRAGET, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
+                    Me.m_lblSource.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_SOURCE, SharedResources.GENERIC_VALUE_ALL)
                 Case eEditMode.Predator
-                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, SharedResources.GENERIC_VALUE_ALL)
-                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
+                    Me.m_lblTarget.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_TRAGET, SharedResources.GENERIC_VALUE_ALL)
+                    Me.m_lblSource.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_SOURCE, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
                 Case eEditMode.All
-                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, SharedResources.GENERIC_VALUE_ALL)
-                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, SharedResources.GENERIC_VALUE_ALL)
+                    Me.m_lblSource.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_SOURCE, SharedResources.GENERIC_VALUE_ALL)
+                    Me.m_lblTarget.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_TRAGET, SharedResources.GENERIC_VALUE_ALL)
+                Case eEditMode.Mort
+                    Me.m_lblTarget.Text = ""
+                    Me.m_lblSource.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_MORTOTHER, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
             End Select
 
             Me.UpdateControls()
@@ -352,12 +409,12 @@ Namespace Ecosim
         ''' <param name="uic"></param>
         ''' <param name="editMode"></param>
         ''' <param name="shapeType"></param>
-        ''' <param name="bConsumers"></param>
+        ''' <param name="GroupFilter"></param>
         ''' -------------------------------------------------------------------
-        Private Sub Init(ByVal uic As cUIContext, _
-                         ByVal editMode As eEditMode, _
-                         ByVal shapeType As eShapeCategoryTypes, _
-                         ByVal bConsumers As eGroupFilter)
+        Private Sub Init(ByVal uic As cUIContext,
+                         ByVal editMode As eEditMode,
+                         ByVal shapeType As eShapeCategoryTypes,
+                         ByVal GroupFilter As eGroupFilter)
 
             Me.InitializeComponent()
             Me.m_uic = uic
@@ -365,9 +422,14 @@ Namespace Ecosim
             ' Get the Prey - Pred interaction manager
             Me.m_InteractionManager = Me.m_uic.Core.MediatedInteractionManager
 
-            Me.m_editMode = editMode
+            If GroupFilter = eGroupFilter.MortOther Then
+                Me.m_editMode = eEditMode.Mort
+            Else
+                Me.m_editMode = editMode
+            End If
+            ' Me.m_editMode = editMode
             Me.m_shapeMode = shapeType
-            Me.m_groupfilter = bConsumers
+            Me.m_groupfilter = GroupFilter
 
             ' Set title
             Select Case Me.m_shapeMode
@@ -471,7 +533,7 @@ Namespace Ecosim
                 Next
 
                 ' Not found, and still room for more?
-                If (Not bFound) And _
+                If (Not bFound) And
                    (iNumApplied < Me.m_iMaxShapes) Then
                     ' #Yes: add
                     itemSrc = New ListViewItem(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, shapeSelected.Index, shapeSelected.Name))
@@ -597,7 +659,7 @@ Namespace Ecosim
 
         Private Sub LoadAppliedShapes()
 
-            If (m_editMode = eEditMode.PredPrey) Then
+            If (m_editMode = eEditMode.PredPrey) Or (Me.m_groupfilter = eGroupFilter.MortOther) Then
 
                 Dim ppi As cMediatedInteraction = Me.m_lInteractions(0)
                 Dim item As ListViewItem = Nothing
@@ -649,6 +711,11 @@ Namespace Ecosim
                 Me.ConfigureApplicationRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
             ElseIf Me.m_groupfilter = eGroupFilter.Detritus Then
                 Me.ConfigureApplicationRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.Import)
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
+            ElseIf Me.m_groupfilter = eGroupFilter.MortOther Then
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.MortOther)
                 Me.ConfigureApplicationRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
                 Me.ConfigureApplicationRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
                 Me.ConfigureApplicationRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)

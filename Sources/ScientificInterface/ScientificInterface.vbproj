@@ -194,6 +194,18 @@
     <Compile Include="Ecopath\Tools\Taxonomy and traits\gridDefineTaxonomy.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\ApplyGrid\gridApplyOtherMortShape.Designer.vb">
+      <DependentUpon>gridApplyOtherMortShape.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\ApplyGrid\gridApplyOtherMortShape.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFOtherMort.Designer.vb">
+      <DependentUpon>frmApplyFFOtherMort.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFOtherMort.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\EggProduction\frmApplyEP.Designer.vb">
       <DependentUpon>frmApplyEP.vb</DependentUpon>
     </Compile>
@@ -955,6 +967,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Tools\Taxonomy and traits\dlgDefineTaxonomy.resx">
       <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFOtherMort.resx">
+      <DependentUpon>frmApplyFFOtherMort.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\EggProduction\frmApplyEP.resx">
       <DependentUpon>frmApplyEP.vb</DependentUpon>
