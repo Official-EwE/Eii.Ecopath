@@ -46,13 +46,16 @@ Public Class cPredPreyInteraction
     ''' <param name="PredIndex"><see cref="cCoreGroupBase.Index">Predator index</see>.</param>
     ''' <param name="PreyIndex"><see cref="cCoreGroupBase.Index">Prey index</see>.</param>
     ''' <param name="manager"><see cref="cMediatedInteractionManager">Mediated interaction manager</see>.</param>
-    Sub New(ByVal PredIndex As Integer, ByVal PreyIndex As Integer, ByVal manager As cMediatedInteractionManager)
+    Sub New(ByVal PredIndex As Integer, ByVal PreyIndex As Integer,
+            ByVal manager As cMediatedInteractionManager, ApplicationTypes As List(Of eForcingFunctionApplication))
 
         Me.m_dbid = cCore.NULL_VALUE '???
 
         Me.m_pred = PredIndex
         Me.m_prey = PreyIndex
         Me.m_manager = manager
+
+        Me.m_lstAppTypes = ApplicationTypes
 
         ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         ''jb 4-Apr-2017 Allow more than one forcing or mediation function on a primary producer
@@ -86,15 +89,19 @@ Public Class cPredPreyInteraction
 
             If esdata.BioMedData.FunctionNumber(m_prey, m_pred, i) = 0 Then Exit For
 
-            'get the cShapeFunctionTypePair object for this index
-            SFPair = m_SFPairs.Item(i - 1) 'Ecosim indexes are one based, m_SFPairs is zero based
-            SFPair.FunctionType = esdata.BioMedData.ApplicationType(m_prey, m_pred, i)
+            If Me.m_lstAppTypes.Contains(esdata.BioMedData.ApplicationType(m_prey, m_pred, i)) Then
 
-            ' Retrieve shape
-            If esdata.BioMedData.IsMedFunction(m_prey, m_pred, i) Then
-                SFPair.Shape = Me.getShapeFromEcosimIndex(Me.m_manager.getCore.MediationShapeManager, esdata.BioMedData.FunctionNumber(Me.m_prey, Me.m_pred, i))
-            Else
-                SFPair.Shape = Me.getShapeFromEcosimIndex(Me.m_manager.getCore.ForcingShapeManager, esdata.BioMedData.FunctionNumber(Me.m_prey, Me.m_pred, i))
+                'get the cShapeFunctionTypePair object for this index
+                SFPair = m_SFPairs.Item(i - 1) 'Ecosim indexes are one based, m_SFPairs is zero based
+                SFPair.FunctionType = esdata.BioMedData.ApplicationType(m_prey, m_pred, i)
+
+                ' Retrieve shape
+                If esdata.BioMedData.IsMedFunction(m_prey, m_pred, i) Then
+                    SFPair.Shape = Me.getShapeFromEcosimIndex(Me.m_manager.getCore.MediationShapeManager, esdata.BioMedData.FunctionNumber(Me.m_prey, Me.m_pred, i))
+                Else
+                    SFPair.Shape = Me.getShapeFromEcosimIndex(Me.m_manager.getCore.ForcingShapeManager, esdata.BioMedData.FunctionNumber(Me.m_prey, Me.m_pred, i))
+                End If
+
             End If
 
         Next i

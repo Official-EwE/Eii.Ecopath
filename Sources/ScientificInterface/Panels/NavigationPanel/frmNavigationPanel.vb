@@ -249,6 +249,8 @@ Public Class frmNavigationPanel
             .Add("ndMSEResults", eCoreExecutionState.EcosimLoaded, GetType(frmMSEResults), "") ' ToDo: connect to help
             .Add("ndMSEPlots", eCoreExecutionState.EcosimLoaded, GetType(frmMSEPlots), "") ' ToDo: connect to help
 
+            .Add("ndApplyFFOtherMort", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFOtherMort), "")
+
             'MSE Batch
             'Not ready for release yet
             '.Add("ndRunBatch", eCoreExecutionState.EcosimLoaded, GetType(frmMSERunBatch), "") ' ToDo: connect to help

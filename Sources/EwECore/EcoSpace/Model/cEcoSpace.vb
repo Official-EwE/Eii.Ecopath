@@ -3258,6 +3258,7 @@ Public Class cEcoSpace
         'Detritus by group is ignored by this version of deritRed(). Each thread has its own version that it uses.
         'So we can declare it localy and never us it to update the detritus map
         Dim GrpDet() As Single
+        Dim Mo As Single
         ReDim GrpDet(m_Data.NGroups)
 
         Dim aeff() As Single, Veff() As Single
@@ -3308,7 +3309,7 @@ Public Class cEcoSpace
             'jb EatEff() and VulPred() ignored here because this is only used for initialization and both values are 1
             aeff(ii) = m_SimData.Alink(ii) * m_SimData.Ftime(j) * m_SimData.RelaSwitch(ii)
             Veff(ia) = m_SimData.VulArena(ia) * m_SimData.Ftime(i)
-            m_Ecosim.ApplyAVmodifiers(its, aeff(ii), Veff(ia), i, m_SimData.Jarena(ia), False)  '?not sure this will work right with multiple preds in arenas
+            m_Ecosim.ApplyAVmodifiers(its, aeff(ii), Veff(ia), Mo, i, m_SimData.Jarena(ia), False)  '?not sure this will work right with multiple preds in arenas
             Vdenom(ia) = Vdenom(ia) + aeff(ii) * m_SimData.pred(j) / m_SimData.Hden(j)
         Next
 
@@ -3405,7 +3406,7 @@ Public Class cEcoSpace
 
             If i <= m_Data.nLiving Then      'Living group
                 Pmult = 1.0#
-                m_Ecosim.ApplyAVmodifiers(its, Pmult, Veff(1), i, i, False)
+                m_Ecosim.ApplyAVmodifiers(its, Pmult, Veff(1), Mo, i, i, False)
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Changed 3-Mar-2017

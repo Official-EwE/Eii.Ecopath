@@ -3015,6 +3015,7 @@ Namespace Core
         OffVesselPrice = 5
         ProductionRate = 6
         Import = 7
+        MortOther = 8
     End Enum
 
 #End Region ' Forcing function application targets

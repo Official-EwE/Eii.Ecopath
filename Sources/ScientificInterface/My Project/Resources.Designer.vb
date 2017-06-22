@@ -1392,6 +1392,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Apply mortality forcing to {0}.
+        '''</summary>
+        Public ReadOnly Property FF_APPLICATION_MORTOTHER() As String
+            Get
+                Return ResourceManager.GetString("FF_APPLICATION_MORTOTHER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Source group {0}.
+        '''</summary>
+        Public ReadOnly Property FF_APPLICATION_SOURCE() As String
+            Get
+                Return ResourceManager.GetString("FF_APPLICATION_SOURCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Target group {0}.
+        '''</summary>
+        Public ReadOnly Property FF_APPLICATION_TRAGET() As String
+            Get
+                Return ResourceManager.GetString("FF_APPLICATION_TRAGET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Images with transparency|*.png;*.gif;*.emf;*.wmf.
         '''</summary>
         Public ReadOnly Property FILEFILTER_IMAGE_TRANSPARENT() As String

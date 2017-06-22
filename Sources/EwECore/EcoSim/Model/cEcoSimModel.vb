@@ -2457,6 +2457,7 @@ Namespace Ecosim
             Dim Hdent() As Single
             'Primary Production forcing function multiplier
             Dim Pmult As Single
+            Dim MoMult As Single
             'Imported Detritus forcing function multiplier
             Dim DtImpMult As Single
             'Imported Detritus after forcing function has been applied
@@ -2511,7 +2512,7 @@ Namespace Ecosim
                     i = m_Data.ilink(ii) : j = m_Data.jlink(ii) : ia = m_Data.ArenaLink(ii)
                     aeff(ii) = m_Data.Alink(ii) * m_Data.Ftime(j) * m_Data.RelaSwitch(ii)
                     Veff(ia) = m_Data.VulArena(ia) * m_Data.Ftime(i)
-                    ApplyAVmodifiers(iTimeStepIndex, aeff(ii), Veff(ia), i, m_Data.Jarena(ia), True)  '?not sure this will work right with multiple preds in arenas
+                    ApplyAVmodifiers(iTimeStepIndex, aeff(ii), Veff(ia), MoMult, i, m_Data.Jarena(ia), True)  '?not sure this will work right with multiple preds in arenas
                     Vdenom(ia) = Vdenom(ia) + aeff(ii) * m_Data.pred(j) / m_Data.Hden(j)
                 Next
 
@@ -2630,7 +2631,9 @@ Namespace Ecosim
                         'ToDetritus = ToDetritus + m_data.mo(i) * biomass(i)
                         'pbm is 0 for consumers
                         Pmult = 1.0
-                        ApplyAVmodifiers(iTimeStepIndex, Pmult, Veff(1), i, i, True)
+                        MoMult = 1.0
+                        ApplyAVmodifiers(iTimeStepIndex, Pmult, Veff(1), MoMult, i, i, True)
+                        ' Debug.Assert(MoMult = 1)
                         'pbm(i) = 0 for all non PP groups
                         'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
 
@@ -2650,11 +2653,11 @@ Namespace Ecosim
 
                         'VC051011: To accomodate constant Z policies I've included a recalculation of F = Z - Pred - Other Mortality - Emigration:
                         If m_RefData.PoolForceZ(i, 0) > 0 Then 'constant Z for this group, saved in array 0 for convenience
-                            m_Data.FishTime(i) = m_RefData.PoolForceZ(i, 0) - m_Data.Eatenof(i) / Biomass(i) - (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i))
+                            m_Data.FishTime(i) = m_RefData.PoolForceZ(i, 0) - m_Data.Eatenof(i) / Biomass(i) - (m_Data.mo(i) * MoMult * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i))
                             If m_Data.FishTime(i) < 0 Then m_Data.FishTime(i) = 0
                         End If
 
-                        m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+                        m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * MoMult * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
 
                         'on the use of variable GE CJW wrote to VC on 041210: just need to modify derivt to calculate GE for each time step
                         'from GE=0.6Z/(Z+3K*), where Z=loss/B, in the last loop over groups.  That calculation will automatically be overwritten
@@ -2672,7 +2675,7 @@ Namespace Ecosim
                         'Flow to detritus from imports and immigration
                         'jb 3-Oct-2013 added immig
                         DtImpMult = 1
-                        ApplyAVmodifiers(iTimeStepIndex, DtImpMult, 0, i, i, True)
+                        ApplyAVmodifiers(iTimeStepIndex, DtImpMult, 0, MoMult, i, i, True)
                         DetInFlow = m_EPData.DtImp(i) * DtImpMult + m_EPData.Immig(i)
 
                         m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.Emig(i) + m_Data.DetritusOut(i)) * Biomass(i)
@@ -4335,7 +4338,7 @@ Namespace Ecosim
         ''' <param name="i">i Index</param>
         ''' <param name="j">j Index</param>
         ''' <param name="UseTime">True if the modifier is over time (Ecosim), False if not (Ecospace) </param>
-        Public Sub ApplyAVmodifiers(ByVal iTime As Integer, ByRef A As Single, ByRef v As Single, ByVal i As Integer, ByVal j As Integer, ByVal UseTime As Boolean)
+        Public Sub ___ApplyAVmodifiers___(ByVal iTime As Integer, ByRef A As Single, ByRef v As Single, ByVal i As Integer, ByVal j As Integer, ByVal UseTime As Boolean)
             Dim K As Integer, Mult As Single
 
             Me.ApplyEnvironmentalResponse(A, j, iTime)
@@ -4371,6 +4374,91 @@ Namespace Ecosim
                 End Select
 
             Next
+
+        End Sub
+
+        '***********************
+        'THIS FUNCTION IS COPIED IN cSpaceSolver.vb
+        'Changes here will NOT copy over to there
+        '***********************
+        ''' <summary>
+        ''' Apply the multi function forcing or mediation functions to 'a'(searchrate) and 'v'(vulnerability)
+        ''' </summary>
+        ''' <param name="A">SearchRate to modify</param>
+        ''' <param name="v">Vulnerability to modify</param>
+        ''' <param name="i">i Index</param>
+        ''' <param name="j">j Index</param>
+        ''' <param name="UseTime">True if the modifier is over time (Ecosim), False if not (Ecospace) </param>
+        Public Sub ApplyAVmodifiers(ByVal iTime As Integer, ByRef A As Single, ByRef v As Single, ByRef Mo As Single, ByVal i As Integer, ByVal j As Integer, ByVal UseTime As Boolean)
+            Dim K As Integer, Mult As Single
+
+            Me.ApplyEnvironmentalResponse(A, j, iTime)
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'HACK WARNING
+            'For debugging set all the forcing functions to MortOther!!!
+            'TempDebugMortOther(i, j)
+            'HACK
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            For K = 1 To cMediationDataStructures.MAXFUNCTIONS
+
+                If m_Data.BioMedData.FunctionNumber(i, j, K) <= 0 Then Exit Sub
+
+                If m_Data.BioMedData.IsMedFunction(i, j, K) Then
+                    Mult = m_Data.BioMedData.MedVal(m_Data.BioMedData.FunctionNumber(i, j, K))
+                Else
+                    If UseTime = True Then
+                        Mult = m_Data.tval(m_Data.BioMedData.FunctionNumber(i, j, K))
+                    Else
+                        Mult = 1
+                    End If
+                End If
+
+                Select Case m_Data.BioMedData.ApplicationType(i, j, K)
+                    Case eForcingFunctionApplication.SearchRate,
+                         eForcingFunctionApplication.ProductionRate
+                        A = A * Mult
+                    Case eForcingFunctionApplication.Vulnerability
+                        v = v * Mult
+                    Case eForcingFunctionApplication.ArenaArea
+                        A = CSng(A / (Mult + 0.0000000001))
+                    Case eForcingFunctionApplication.VulAndArea
+                        A = CSng(A / (Mult + 0.0000000001))
+                        v = v * Mult
+                    Case eForcingFunctionApplication.Import
+                        A = A * Mult
+                    Case eForcingFunctionApplication.MortOther
+                        Mo = Mo * Mult
+                End Select
+
+            Next
+
+        End Sub
+
+        Private Sub TempDebugMortOther(ByVal i As Integer, ByVal j As Integer)
+            'WARNING SET ALL FORCING FUNCTIONS TO MORTOTHER for testing!!!!
+            Dim bfound As Boolean
+            Dim iIndex As Integer
+
+            For K As Integer = 1 To cMediationDataStructures.MAXFUNCTIONS
+                bfound = False
+                For ii As Integer = 1 To Me.nGroups
+
+                    If m_Data.BioMedData.FunctionNumber(i, ii, K) > 0 Then
+                        bfound = True
+                        iIndex = ii
+                        Exit For
+                    End If
+                Next
+
+                If bfound Then
+                    System.Console.WriteLine("HACK WARNING: Setting forcing function to MortOther")
+                    m_Data.BioMedData.FunctionNumber(i, j, K) = m_Data.BioMedData.FunctionNumber(i, iIndex, K)
+                    m_Data.BioMedData.ApplicationType(i, j, K) = eForcingFunctionApplication.MortOther
+                End If
+
+            Next K
 
         End Sub
 

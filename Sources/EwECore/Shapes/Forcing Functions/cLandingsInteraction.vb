@@ -43,7 +43,7 @@ Public Class cLandingsInteraction
     ''' <param name="iFleet"><see cref="cCoreGroupBase.Index">Fleet index</see>.</param>
     ''' <param name="iGroup"><see cref="cCoreGroupBase.Index">Group index</see>.</param>
     ''' <param name="manager"><see cref="cMediatedInteractionManager">Mediated interaction manager</see>.</param>
-    Sub New(ByVal iFleet As Integer, ByVal iGroup As Integer, ByVal manager As cMediatedInteractionManager)
+    Sub New(ByVal iFleet As Integer, ByVal iGroup As Integer, ByVal manager As cMediatedInteractionManager, ApplicationTypes As List(Of eForcingFunctionApplication))
 
         Me.m_dbid = cCore.NULL_VALUE '???
 
