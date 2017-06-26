@@ -108,6 +108,10 @@ Public Class gridDefineFleets
             Me.Name = strName
             Me.PoolColor = 0
             Me.m_status = eItemStatusTypes.Added
+
+            Me.FleetDBID = cCore.NULL_VALUE
+            Me.FleetIndex = cCore.NULL_VALUE
+
         End Sub
 
         ''' -------------------------------------------------------------------
