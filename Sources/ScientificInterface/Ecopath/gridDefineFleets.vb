@@ -180,7 +180,7 @@ Public Class gridDefineFleets
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function IsNew() As Boolean
-            Return Me.FleetDBID = cCore.NULL_VALUE
+            Return Me.FleetDBID <= 0
         End Function
 
         ''' -------------------------------------------------------------------
