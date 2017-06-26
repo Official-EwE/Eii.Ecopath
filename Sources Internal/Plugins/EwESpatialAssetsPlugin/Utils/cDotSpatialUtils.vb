@@ -517,11 +517,11 @@ Public Class cDotSpatialUtils
         strName = proj.Name
         bIsLatLon = proj.IsLatLon() Or proj.IsGeocentric()
         If (bIsLatLon) Then
-            strUnit = fmt.GetDescriptor(EwEUtils.Core.eUnitMapType.dd)
+            strUnit = fmt.GetDescriptor(EwEUtils.Core.eUnitMapRefType.dd)
         Else
             Select Case proj.Unit.Name.ToLower()
-                Case "meter", "meters" : strUnit = fmt.GetDescriptor(EwEUtils.Core.eUnitMapType.m)
-                Case "kilometer", "kilometers" : strUnit = fmt.GetDescriptor(EwEUtils.Core.eUnitMapType.km)
+                Case "meter", "meters" : strUnit = fmt.GetDescriptor(EwEUtils.Core.eUnitMapRefType.dd)
+                Case "kilometer", "kilometers" : strUnit = fmt.GetDescriptor(EwEUtils.Core.eUnitMapRefType.km)
                 Case Else : strUnit = "?"
             End Select
         End If
