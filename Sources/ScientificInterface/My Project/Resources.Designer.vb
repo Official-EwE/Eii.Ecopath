@@ -624,6 +624,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Apply other mortality forcing.
+        '''</summary>
+        Public ReadOnly Property ECOSIM_CAPTION_APPLYOTHERMORT() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_CAPTION_APPLYOTHERMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Apply price elasticity.
         '''</summary>
         Public ReadOnly Property ECOSIM_CAPTION_APPLYPRICEELASTICITY() As String
@@ -1919,6 +1928,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_FISHING_EFFORT_MULTIPLIER() As String
             Get
                 Return ResourceManager.GetString("HEADER_FISHING_EFFORT_MULTIPLIER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Forcing number.
+        '''</summary>
+        Public ReadOnly Property HEADER_FORCINGNUMBER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FORCINGNUMBER", resourceCulture)
             End Get
         End Property
         
