@@ -80,7 +80,6 @@ Namespace Ecosim
             'm_grid
             '
             Me.m_grid.AllowBlockSelect = True
-            Me.m_grid.ApplyShapeMode = ScientificInterfaceShared.Definitions.eShapeCategoryTypes.Forcing
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -98,7 +97,6 @@ Namespace Ecosim
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
             Me.m_grid.IsOutputGrid = True
-            Me.m_grid.IsPredatorGrid = ScientificInterfaceShared.Definitions.eGroupFilter.MortOther
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
