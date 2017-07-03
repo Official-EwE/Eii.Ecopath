@@ -122,17 +122,17 @@ Public Class EwEEcospaceSaveSummaryPlugin
         Dim strPath As String = Me.DataPath()
         Dim msg As cMessage = Nothing
 
-        If Me.SaveFile(Path.Combine(strPath, "ts_absolute_biomass.csv"), eSpaceResultsGroups.Biomass) And _
-           Me.SaveFile(Path.Combine(strPath, "ts_relative_biomass.csv"), eSpaceResultsGroups.RelativeBiomass) And _
-           Me.SaveFile(Path.Combine(strPath, "ts_catch.csv"), eSpaceResultsGroups.CatchBio) And _
-           Me.SaveFile(Path.Combine(strPath, "ts_consumption.csv"), eSpaceResultsGroups.ConsumpRate) And _
+        If Me.SaveFile(Path.Combine(strPath, "ts_absolute_biomass.csv"), eSpaceResultsGroups.Biomass) And
+           Me.SaveFile(Path.Combine(strPath, "ts_relative_biomass.csv"), eSpaceResultsGroups.RelativeBiomass) And
+           Me.SaveFile(Path.Combine(strPath, "ts_catch.csv"), eSpaceResultsGroups.CatchBio) And
+           Me.SaveFile(Path.Combine(strPath, "ts_consumption.csv"), eSpaceResultsGroups.ConsumpRate) And
            Me.SaveFile(Path.Combine(strPath, "ts_fishing_mortality.csv"), eSpaceResultsGroups.FishingMort) Then
 
-            msg = New cMessage(cStringUtils.Localize("Ecospace map averates have been saved to {0}", strPath), _
+            msg = New cMessage(cStringUtils.Localize("Ecospace map averates have been saved to {0}", strPath),
                                eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
             msg.Hyperlink = strPath
         Else
-            msg = New cMessage(cStringUtils.Localize("Ecospace map averates failed to save to {0}", strPath), _
+            msg = New cMessage(cStringUtils.Localize("Ecospace map averates failed to save to {0}", strPath),
                                eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
         End If
 
@@ -190,7 +190,7 @@ Public Class EwEEcospaceSaveSummaryPlugin
     End Function
 
     Public ReadOnly Property DataName As String _
-        Implements EwEUtils.Core.IEcospaceResultsWriter.DataName, IEcospaceResultWriterPlugin.DisplayName
+        Implements  IEcospaceResultWriterPlugin.DisplayName
         Get
             ' ToDo: globalize this method
             Return "Ecospace map averages (csv file)"
@@ -202,8 +202,5 @@ Public Class EwEEcospaceSaveSummaryPlugin
     End Function
 
     Public Property Enabled As Boolean Implements EwEUtils.Core.IEcospaceResultsWriter.Enabled
-
-
-    Public Property FirstOutputTimeStep As Integer Implements EwEUtils.Core.IEcospaceResultsWriter.FirstOutputTimeStep
 
 End Class

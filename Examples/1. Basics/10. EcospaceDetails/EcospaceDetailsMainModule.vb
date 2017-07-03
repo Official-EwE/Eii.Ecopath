@@ -126,7 +126,7 @@ Module EcospaceDetailsMainModule
             ' Note that Ecospace groups are not called 'EcospaceGroupInputs': when we started
             ' coding EwE6 there was no Ecospace group output data, so we (naively) thought it
             ' not necessary to create explicit 'input' groups. An inconsistent oversight...
-            Dim group As cEcospaceGroup = core.EcospaceGroups(iGroup)
+            Dim group As cEcospaceGroupInput = core.EcospaceGroups(iGroup)
             writer.WriteLine("   " & iGroup & ": " & group.Name)
 
             ' Display basic habitat usage info
@@ -206,7 +206,7 @@ Module EcospaceDetailsMainModule
                 ' Note that Ecospace does not have cEcospaceGroupInput classes. This is a historical
                 ' 'mistake', ecospace did not have group-based outputs for many years, and therefore
                 ' initially the input / output distinction was not implemented.
-                Dim group As cEcospaceGroup = core.EcospaceGroups(iGroup)
+                Dim group As cEcospaceGroupInput = core.EcospaceGroups(iGroup)
 
                 If group.PreferredHabitat(iHabitat) > 0 Then
                     writer.WriteLine("      " & iGroup & ": " & group.Name & " uses " & CInt(group.PreferredHabitat(iHabitat) * 100) & "%")
