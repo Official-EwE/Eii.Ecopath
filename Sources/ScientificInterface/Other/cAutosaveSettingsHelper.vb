@@ -116,7 +116,9 @@ Friend Class cAutosaveSettingsHelper
                 Select Case t
                     Case eAutosaveTypes.EcospaceResults
                         att = doc.CreateAttribute("Format")
-                        att.InnerText = sFormats(t)
+                        If (sFormats.ContainsKey(t)) Then
+                            att.InnerText = sFormats(t)
+                        End If
                         nodeChild.Attributes.Append(att)
                     Case Else
                         ' NOP
