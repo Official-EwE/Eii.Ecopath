@@ -250,8 +250,6 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Public Sub Refresh()
 
-            If (Me.m_bInUpdate) Then Return
-
             Dim newValue As Object = Nothing
             Dim strNewRemark As String = ""
             Dim coreStatus As eStatusFlags = 0
@@ -286,7 +284,7 @@ Namespace Properties
                 coreStatus = m_Source.GetStatus(Me.m_VarName, iIndex)
 
                 ' Hard-copy only the core status bits. All other flags are GUI flags and are preserved
-                guiStyle = DirectCast(CInt(coreStatus And cStyleGuide.eStyleFlags.CoreStatusFlagsMask) Or _
+                guiStyle = DirectCast(CInt(coreStatus And cStyleGuide.eStyleFlags.CoreStatusFlagsMask) Or
                                   CInt(Me.Style And (Not cStyleGuide.eStyleFlags.CoreStatusFlagsMask)), cStyleGuide.eStyleFlags)
                 ' Did Style change?
                 If Not Me.IsStyle(guiStyle) Then
@@ -311,7 +309,7 @@ Namespace Properties
             Me.m_bStored = ((coreStatus And eStatusFlags.Stored) > 0)
 
             ' Anything changed?
-            If (changeFlags <> 0) Then
+            If (changeFlags <> 0 And Not Me.m_bInUpdate) Then
                 ' #Yes: fire away
                 Me.FireChangeNotification(changeFlags)
             End If
@@ -378,7 +376,7 @@ Namespace Properties
         ''' to be sent.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Overridable Function SetValue(ByVal newValue As Object, _
+        Public Overridable Function SetValue(ByVal newValue As Object,
                     Optional ByVal notify As TriState = TriState.UseDefault) As Boolean
 
             Dim vs As cVariableStatus = Nothing
