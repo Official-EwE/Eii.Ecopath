@@ -8,8 +8,8 @@
 #define MyAppPublisher "UBC Institute for Oceans and Fisheries & Ecopath International Initiative"
 
 #define Ecosampler 0
-#define SpatTemp 0
-#define MergeGroups 0
+#define SpatTemp 1
+#define MergeGroups 1
 
 [Setup]
 ; SignTool=Signtool
