@@ -833,7 +833,6 @@ Public Class cEcosimMonteCarlo
     End Sub
 
     Private Sub BalancedEcopathModel(ByVal iTrial As Integer, ByVal iter As Integer)
-        Dim WaitLock As ManualResetEvent = New ManualResetEvent(True)
         If Me.m_pluginmanager IsNot Nothing Then
             Try
                 Me.m_pluginmanager.MonteCarloBalancedEcopathModel(iTrial, iter)
@@ -841,7 +840,6 @@ Public Class cEcosimMonteCarlo
                 cLog.Write(ex, "cEcosimMonteCarlo::Run BalancedEcopathModel(" & iTrial & ", " & iter & ")")
             End Try
         End If
-        WaitLock.WaitOne()
     End Sub
 
     Public Sub setDefaults()
