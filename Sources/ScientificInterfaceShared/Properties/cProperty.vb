@@ -284,8 +284,8 @@ Namespace Properties
                 coreStatus = m_Source.GetStatus(Me.m_VarName, iIndex)
 
                 ' Hard-copy only the core status bits. All other flags are GUI flags and are preserved
-                guiStyle = DirectCast(CInt(coreStatus And cStyleGuide.eStyleFlags.CoreStatusFlagsMask) Or
-                                  CInt(Me.Style And (Not cStyleGuide.eStyleFlags.CoreStatusFlagsMask)), cStyleGuide.eStyleFlags)
+                guiStyle = DirectCast((coreStatus And cStyleGuide.eStyleFlags.CoreStatusFlagsMask) Or
+                                      (Me.Style And (Not cStyleGuide.eStyleFlags.CoreStatusFlagsMask)), cStyleGuide.eStyleFlags)
                 ' Did Style change?
                 If Not Me.IsStyle(guiStyle) Then
                     ' # Yes: flag as changed
@@ -309,6 +309,7 @@ Namespace Properties
             Me.m_bStored = ((coreStatus And eStatusFlags.Stored) > 0)
 
             ' Anything changed?
+            ' JS 03Jul17: do not send out change notification when the property is actively being edited
             If (changeFlags <> 0 And Not Me.m_bInUpdate) Then
                 ' #Yes: fire away
                 Me.FireChangeNotification(changeFlags)
