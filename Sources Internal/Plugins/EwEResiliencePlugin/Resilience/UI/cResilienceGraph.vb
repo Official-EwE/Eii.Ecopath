@@ -25,12 +25,9 @@ Option Strict On
 
 Imports System.Drawing
 Imports EwECore
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
-Imports EwEUtils.SystemUtilities
 
 #End Region
 
@@ -120,7 +117,7 @@ Public Class cResilienceGraph
 
         ppl = New PointPairList()
         For iYear As Integer = 1 To Me.m_data.NumYears
-            ppl.Add(cSystemUtils.IIF(iYear = 1, 1 / cCore.N_MONTHS, iYear - 1), Me.m_data.ResilienceAtY(iYear))
+            ppl.Add(If(iYear = 1, 1 / cCore.N_MONTHS, iYear - 1), Me.m_data.ResilienceAtY(iYear))
             ppl.Add(iYear, Me.m_data.ResilienceAtY(iYear))
         Next
         li = New ZedGraph.LineItem(My.Resources.GRAPH_RES_LINE_ANNUAL, ppl, Color.Blue, SymbolType.None)

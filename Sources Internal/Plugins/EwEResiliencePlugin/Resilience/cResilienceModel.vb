@@ -22,7 +22,6 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -68,12 +67,12 @@ Public Class cResilienceModel
                 EatenByYear(i) += simds.Eatenby(i)
                 EatenOfYear(i) += simds.Eatenof(i)
 
-                Me.m_data.GroupDemandAtT(i, iTime) = cSystemUtils.IIF(simds.Eatenby(i) = 0, 0, CSng(Math.Log10(simds.Eatenby(i))))
-                Me.m_data.GroupSupplyAtT(i, iTime) = cSystemUtils.IIF(simds.Eatenof(i) = 0, 0, CSng(Math.Log10(simds.Eatenof(i))))
+                Me.m_data.GroupDemandAtT(i, iTime) = If(simds.Eatenby(i) = 0, 0, CSng(Math.Log10(simds.Eatenby(i))))
+                Me.m_data.GroupSupplyAtT(i, iTime) = If(simds.Eatenof(i) = 0, 0, CSng(Math.Log10(simds.Eatenof(i))))
 
                 If ((iTime Mod cCore.N_MONTHS) = 0) Then
-                    Me.m_data.GroupDemandAtY(i, iYear) = cSystemUtils.IIF(EatenByYear(i) = 0, 0, CSng(Math.Log10(EatenByYear(i) / cCore.N_MONTHS)))
-                    Me.m_data.GroupSupplyAtY(i, iYear) = cSystemUtils.IIF(EatenOfYear(i) = 0, 0, CSng(Math.Log10(EatenOfYear(i) / cCore.N_MONTHS)))
+                    Me.m_data.GroupDemandAtY(i, iYear) = If(EatenByYear(i) = 0, 0, CSng(Math.Log10(EatenByYear(i) / cCore.N_MONTHS)))
+                    Me.m_data.GroupSupplyAtY(i, iYear) = If(EatenOfYear(i) = 0, 0, CSng(Math.Log10(EatenOfYear(i) / cCore.N_MONTHS)))
                     EatenOfYear(i) = 0
                     EatenByYear(i) = 0
                 End If

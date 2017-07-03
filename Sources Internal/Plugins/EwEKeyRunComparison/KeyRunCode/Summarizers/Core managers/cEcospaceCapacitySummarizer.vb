@@ -51,7 +51,7 @@ Public Class cEcospaceCapacitySummarizer
 
         Try
             For igrp As Integer = 1 To m_core.nGroups
-                Dim grp As cEcospaceGroup = Me.m_core.EcospaceGroups(igrp)
+                Dim grp As cEcospaceGroupInput = Me.m_core.EcospaceGroups(igrp)
                 For imap As Integer = 1 To capacity.nEnviroData
                     Dim map As IEnviroInputData = capacity.EnviroData(imap)
                     Dim ishp As Integer = map.ResponseIndexForGroup(igrp)

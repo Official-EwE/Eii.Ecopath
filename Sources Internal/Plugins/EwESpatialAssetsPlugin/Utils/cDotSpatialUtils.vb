@@ -22,21 +22,18 @@
 
 Option Strict On
 Imports System.Collections.Generic
+Imports System.Drawing
 Imports System.IO
-Imports System.Text
 Imports System.Reflection
+Imports System.Text
 Imports DotSpatial.Controls
 Imports DotSpatial.Data
 Imports DotSpatial.Projections
+Imports DotSpatial.Topology
+Imports EwECore
+Imports EwESpatialAssetsPlugin.SpatialData
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports DotSpatial.Topology
-Imports System.Drawing
-Imports EwEUtils.SpatialData
-Imports EwESpatialAssetsPlugin.SpatialData
-Imports EwEUtils.Core
-Imports EwECore
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -85,7 +82,7 @@ Public Class cDotSpatialUtils
 
 #If DEBUG Then
         ' Dump which file extensions are supported by the spatial framework
-        Console.WriteLine("DotSpatial file support (expecting GDAL in '{0}', {1}):", strGDALPath, cSystemUtils.IIF(bGDALFound, "found", "missing"))
+        Console.WriteLine("DotSpatial file support (expecting GDAL in '{0}', {1}):", strGDALPath, If(bGDALFound, "found", "missing"))
         For Each prov As IDataProvider In DataManager.DefaultDataManager.DataProviders
             Console.WriteLine(" - " & prov.Name & "::" & prov.GetType.ToString & "; " & prov.DialogReadFilter)
         Next
@@ -193,7 +190,7 @@ Public Class cDotSpatialUtils
 
         For Each prov In man.DataProviders
 
-            Dim astrFilter() As String = CStr(cSystemUtils.IIF(bRead, prov.DialogReadFilter, prov.DialogWriteFilter)).Split("|"c)
+            Dim astrFilter() As String = If(bRead, prov.DialogReadFilter, prov.DialogWriteFilter).Split("|"c)
 
             If (astrFilter.Length = 2) Then
                 If (TypeOf prov Is IRasterProvider) And bRaster Then lFilters(0) &= (";" & astrFilter(1))

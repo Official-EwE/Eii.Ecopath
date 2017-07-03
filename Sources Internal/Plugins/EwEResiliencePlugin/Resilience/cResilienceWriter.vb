@@ -100,7 +100,7 @@ Public Class cResilienceWriter
         End If
 
         ' Header
-        sw.Write(cSystemUtils.IIF(bAnnual, "Year", "TimeStep"))
+        sw.Write(If(bAnnual, "Year", "TimeStep"))
         For i As Integer = 1 To Me.m_core.nGroups
             grp = Me.m_core.EcoPathGroupInputs(i)
             If grp.IsConsumer Then
@@ -111,7 +111,7 @@ Public Class cResilienceWriter
         sw.WriteLine()
 
         ' Body
-        n = cSystemUtils.IIF(bAnnual, Me.m_data.NumYears, Me.m_data.NumTimeSteps)
+        n = If(bAnnual, Me.m_data.NumYears, Me.m_data.NumTimeSteps)
         For t As Integer = 1 To n
             sw.Write(cStringUtils.ToCSVField(t0 + t))
             For i As Integer = 1 To Me.m_core.nGroups
@@ -135,7 +135,7 @@ Public Class cResilienceWriter
         Return True
     End Function
 
-    Private Function DemandSupplyFileName(ByVal strPath As String, _
+    Private Function DemandSupplyFileName(ByVal strPath As String,
                                           ByVal bSaveAnnual As Boolean) As String
 
         Dim strFileName As String = ""
@@ -167,11 +167,11 @@ Public Class cResilienceWriter
         If (Me.m_core.SaveWithFileHeader) Then sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
 
         ' Header
-        sw.Write(cSystemUtils.IIF(bAnnual, "Year", "TimeStep"))
+        sw.Write(If(bAnnual, "Year", "TimeStep"))
         sw.WriteLine(",Resilience")
 
         ' Body
-        n = cSystemUtils.IIF(bAnnual, Me.m_data.NumYears, Me.m_data.NumTimeSteps)
+        n = If(bAnnual, Me.m_data.NumYears, Me.m_data.NumTimeSteps)
         For t As Integer = 1 To n
             sw.Write(cStringUtils.ToCSVField(t0 + t))
             If bAnnual Then

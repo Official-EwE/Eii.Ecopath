@@ -251,15 +251,11 @@ Public Class cEcospaceMonteCarloPluginPoint
         End Try
     End Sub
 
-    Public Sub MonteCarloBalancedEcopathModel(ByVal WaitLock As ManualResetEvent, TrialNumber As Integer, nIterations As Integer) Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
+    Public Sub MonteCarloBalancedEcopathModel(TrialNumber As Integer, nIterations As Integer) Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
 
-        'WaitLock.Reset()
-
-        If Me.m_runManager.Run(WaitLock, TrialNumber) Then
+        If Me.m_runManager.Run(TrialNumber) Then
 
         End If
-
-        ' WaitLock.Set()
 
     End Sub
 
@@ -515,7 +511,6 @@ Public Class cEcospaceMonteCarloPluginPoint
 
 #End Region
 
-
     Public Sub MonteCarloRunCompleted() Implements EwEPlugin.IMonteCarloPlugin.MonteCarloRunCompleted
 
     End Sub
@@ -523,5 +518,6 @@ Public Class cEcospaceMonteCarloPluginPoint
     Public Sub MonteCarloRunInitialized() Implements EwEPlugin.IMonteCarloPlugin.MonteCarloRunInitialized
 
     End Sub
+
 End Class
 

@@ -123,18 +123,20 @@ Public Class cRunManager
 
     End Sub
 
-    Public Function Run(ByVal WaitLock As ManualResetEvent, ByVal TrialNumber As Integer) As Boolean
+    Public Function Run(ByVal TrialNumber As Integer) As Boolean
 
         If Not Me.m_isConfig Then
             Return False
         End If
 
         m_TrialNumber = TrialNumber
-        m_waitLock = WaitLock
+        m_waitLock = New ManualResetEvent(True)
 
         m_waitLock.Reset()
         Dim runthread As New Thread(AddressOf RunOnThread)
         runthread.Start()
+
+        m_waitLock.WaitOne()
 
         Return True
 
