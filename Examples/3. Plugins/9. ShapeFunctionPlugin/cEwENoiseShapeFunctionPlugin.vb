@@ -121,10 +121,9 @@ Public Class cEwENoseShapeFunctionPlugin
 
         If (ff.ShapeFunctionType <> Me.ShapeFunctionType) Then Return
 
-        Me.ParamValue(1) = ff.YZero
-        Me.ParamValue(2) = ff.YEnd
-        Me.ParamValue(3) = ff.YBase
-        Me.ParamValue(4) = ff.Steep
+        For i As Integer = 1 To Me.nParameters
+            Me.ParamValue(i) = ff.ShapeFunctionParameter(i)
+        Next
 
     End Sub
 
@@ -221,10 +220,9 @@ Public Class cEwENoseShapeFunctionPlugin
         shp.ShapeFunctionType = Me.ShapeFunctionType
 
         ' Store configuration parameters
-        shp.YZero = Me.ParamValue(1)
-        shp.YEnd = Me.ParamValue(2)
-        shp.YBase = Me.ParamValue(3)
-        shp.Steep = Me.ParamValue(4)
+        For i As Integer = 1 To Me.nParameters
+            shp.ShapeFunctionParameter(i) = Me.ParamValue(i)
+        Next
         Return True
 
     End Function
