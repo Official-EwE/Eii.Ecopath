@@ -59,5 +59,14 @@ Namespace My.Resources
                 resourceCulture = value
             End Set
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Import Diets.
+        '''</summary>
+        Friend ReadOnly Property CONTROL_TEXT() As String
+            Get
+                Return ResourceManager.GetString("CONTROL_TEXT", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

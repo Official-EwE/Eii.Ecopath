@@ -82,20 +82,18 @@ Public Class cImportDietsPlugin
     Private m_EcoPathData As cEcopathDataStructures
     Private m_EcoSimData As cEcosimDatastructures
     Private m_EcoSpaceData As cEcospaceDataStructures
-
     Private m_uic As cUIContext = Nothing
+
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxx
+    'We don't need a UI at this time
+    'A Menu Item will work just fine
     ' Private m_form As frmEwEPlugin = Nothing
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 #End Region
 
 #Region "Public Methods"
 
-    Public Sub DoSomething(ByVal Value As Single)
-
-        MsgBox("Hi from DoSomething(). Your value = " + Value.ToString, MsgBoxStyle.Information)
-        System.Console.WriteLine(Value.ToString)
-
-    End Sub
 
     Public Sub OpenModel(ByVal filename As String)
         Me.m_core.LoadModel(filename)
@@ -155,7 +153,7 @@ Public Class cImportDietsPlugin
             Dim ModelDataBase As EwECore.DataSources.cDBDataSource
             ModelDataBase = DirectCast(dataSource, EwECore.DataSources.cDBDataSource)
 
-            System.Console.WriteLine(Me.ToString + ".LoadModel() " + ModelDataBase.FileName)
+            'System.Console.WriteLine(Me.ToString + ".LoadModel() " + ModelDataBase.FileName)
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString + ".LoadModel() Exception " + ex.Message)
@@ -171,7 +169,7 @@ Public Class cImportDietsPlugin
     ''' <param name="dataSource"></param>
     ''' <returns>True if the plug-in point executed successfully.</returns>
     Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
-        System.Console.WriteLine(Me.ToString + ".SaveModel()")
+        ' System.Console.WriteLine(Me.ToString + ".SaveModel()")
 
         Return True
     End Function
@@ -291,7 +289,7 @@ Public Class cImportDietsPlugin
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "Import Diets"
+            Return My.Resources.CONTROL_TEXT
         End Get
     End Property
 
@@ -302,8 +300,7 @@ Public Class cImportDietsPlugin
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
-            ' Use an image from the pool of shared resources
-            ' Return ScientificInterfaceShared.My.Resources.fish
+            Return Nothing
         End Get
     End Property
 

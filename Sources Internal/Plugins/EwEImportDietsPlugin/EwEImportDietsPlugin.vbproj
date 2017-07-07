@@ -103,9 +103,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ImportDiets\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj">
       <Project>{cdece065-503a-4562-a955-06777b2f909e}</Project>
       <Name>EwECore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Sources\EwECustomPlugins\EwEMSEPlugin\EwEMSEPlugin.vbproj">
+      <Project>{19b57860-d7c5-479a-8979-e4dfe9a46b50}</Project>
+      <Name>EwEMSEPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0b91f6e0-6127-4cf3-bf57-684092481454}</Project>
@@ -119,9 +126,6 @@
       <Project>{70af596e-7d27-4d39-bde7-89d4525bd60f}</Project>
       <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ImportDiets\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

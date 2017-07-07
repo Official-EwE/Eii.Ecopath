@@ -22,6 +22,11 @@ EwEImportDietsPlugin
   resource lookups using this strongly typed resource class.
 </summary>
 </member>
+<member name="P:EwEImportDietsPlugin.My.Resources.Resources.CONTROL_TEXT">
+<summary>
+  Looks up a localized string similar to Import Diets.
+</summary>
+</member>
 <member name="T:EwEImportDietsPlugin.cImportDietsPlugin">
  <summary>
  Base code that can be used as a template to create a new plug-in.
