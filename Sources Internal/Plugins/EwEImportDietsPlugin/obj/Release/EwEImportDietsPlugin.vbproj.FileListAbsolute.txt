@@ -1,0 +1,12 @@
+C:\Users\joe\Documents\Projects\EwE\EwE6\Sources Internal\Plugins\EwEImportDietsPlugin\bin\Release\Includes\LPSolve\win64\lpsolve55.dll
+C:\Users\joe\Documents\Projects\EwE\EwE6\Sources Internal\Plugins\EwEImportDietsPlugin\bin\Release\Includes\LPSolve\win32\lpsolve55.dll
+C:\Users\joe\Documents\Projects\EwE\EwE6\Sources Internal\Plugins\EwEImportDietsPlugin\bin\Release\Resources\gpl-2.0.txt
+C:\Users\joe\Documents\Projects\EwE\EwE6\Sources Internal\Plugins\EwEImportDietsPlugin\bin\Release\EwEImportDietsPlugin.dll
+C:\Users\joe\Documents\Projects\EwE\EwE6\Sources Internal\Plugins\EwEImportDietsPlugin\bin\Release\EwEImportDietsPlugin.pdb
+C:\Users\joe\Documents\Projects\EwE\EwE6\Sources Internal\Plugins\EwEImportDietsPlugin\bin\Release\EwEImportDietsPlugin.xml
+C:\Users\joe\Documents\Projects\EwE\EwE6\Sources Internal\Plugins\EwEImportDietsPlugin\obj\Release\EwEImportDietsPlugin.vbprojResolveAssemblyReference.cache
+C:\Users\joe\Documents\Projects\EwE\EwE6\Sources Internal\Plugins\EwEImportDietsPlugin\obj\Release\EwEImportDietsPlugin.Resources.resources
+C:\Users\joe\Documents\Projects\EwE\EwE6\Sources Internal\Plugins\EwEImportDietsPlugin\obj\Release\EwEImportDietsPlugin.vbproj.GenerateResource.Cache
+C:\Users\joe\Documents\Projects\EwE\EwE6\Sources Internal\Plugins\EwEImportDietsPlugin\obj\Release\EwEImportDietsPlugin.dll
+C:\Users\joe\Documents\Projects\EwE\EwE6\Sources Internal\Plugins\EwEImportDietsPlugin\obj\Release\EwEImportDietsPlugin.xml
+C:\Users\joe\Documents\Projects\EwE\EwE6\Sources Internal\Plugins\EwEImportDietsPlugin\obj\Release\EwEImportDietsPlugin.pdb
