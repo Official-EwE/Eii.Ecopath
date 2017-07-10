@@ -325,8 +325,16 @@ Public Class cImportDietsPlugin
     ''' -----------------------------------------------------------------------
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
-        'Dim bHasInterface As Boolean = False
+        Dim ModelName As String
 
+        Dim ImportDiets As New cDietImporter(Me.Core, Me.EcoPathData)
+
+        ImportDiets.Run(ModelName)
+
+
+        'Dim bHasInterface As Boolean = False
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'NOT NEEDED AT THIS TIME
         '' Initialized ok?
         'If m_uic IsNot Nothing Then
 
@@ -360,6 +368,8 @@ Public Class cImportDietsPlugin
         'Else
         '    Debug.Assert(False, "Plugin was not initialized properly.")
         'End If
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
     End Sub
 
 
@@ -384,7 +394,7 @@ Public Class cImportDietsPlugin
     Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
             ' This plug-in is available at any time during EwE execution
-            Return EwEUtils.Core.eCoreExecutionState.EcopathLoaded
+            Return EwEUtils.Core.eCoreExecutionState.EcopathInitialized
         End Get
     End Property
 
