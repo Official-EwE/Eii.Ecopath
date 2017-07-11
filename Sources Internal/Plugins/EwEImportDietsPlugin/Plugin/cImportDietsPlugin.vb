@@ -35,27 +35,17 @@ Imports ScientificInterfaceShared.Controls
 #End Region
 
 ''' <summary>
-''' Base code that can be used as a template to create a new plug-in.
-''' </summary>
-''' <remarks>
-''' <para>This plugin responds to:</para>
-''' <list type="bullet">
-''' <item><description>loading a model,</description>></item>
-''' <item><description>saving a model,</description>></item>
-''' <item><description>closing a model,</description>></item>
-''' <item><description>initialization of the Core,</description>></item>
-''' <item><description>initialization of Ecopath,</description>></item>
-''' <item><description>initialization of Ecosim,</description>></item>
-''' <item><description>initialization of Ecospace.</description>></item>
-''' </list>
-''' <para>In order to run and test this plugin it must be integrated within the EwE6 scientific interface. 
-''' To achieve this, add this project to the EwE6 solution, and reference this project from within the 
-''' ScientificInterface. This ensures that your plug-in will be built with EwE6, and will be loaded by the 
-''' EwE6 plug-in manager when you run EwE6.</para>
-''' </remarks>
 ''' 
-
-
+''' </summary>
+''' <seealso cref="EwEPlugin.IPlugin" />
+''' <seealso cref="EwEPlugin.ICorePlugin" />
+''' <seealso cref="EwEPlugin.IEcopathPlugin" />
+''' <seealso cref="EwEPlugin.IEcopathRunInitializedPlugin" />
+''' <seealso cref="EwEPlugin.IEcosimInitializedPlugin" />
+''' <seealso cref="EwEPlugin.IEcospaceInitializedPlugin" />
+''' <seealso cref="EwEPlugin.IUIContextPlugin" />
+''' <seealso cref="EwEPlugin.IMenuItemPlugin" />
+''' <seealso cref="EwEPlugin.INavigationTreeItemPlugin" />
 Public Class cImportDietsPlugin
     Implements EwEPlugin.IPlugin
     Implements EwEPlugin.ICorePlugin
@@ -66,10 +56,6 @@ Public Class cImportDietsPlugin
     Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
-
-    ' ToDo Add your own EwEPlugin interface implementations here
-    ' With the cursor at the end of the new Implements line press the enter key
-    ' and one or more empty place holder methods will be added to the bottom of the code
 
 #Region " Local variables"
 
@@ -93,7 +79,6 @@ Public Class cImportDietsPlugin
 #End Region
 
 #Region "Public Methods"
-
 
     Public Sub OpenModel(ByVal filename As String)
         Me.m_core.LoadModel(filename)
@@ -150,8 +135,7 @@ Public Class cImportDietsPlugin
         Try
 
             'Cast the datasource 
-            Dim ModelDataBase As EwECore.DataSources.cDBDataSource
-            ModelDataBase = DirectCast(dataSource, EwECore.DataSources.cDBDataSource)
+            Dim ModelDataBase As DataSources.IEwEDataSource = DirectCast(dataSource, DataSources.IEwEDataSource)
 
             'System.Console.WriteLine(Me.ToString + ".LoadModel() " + ModelDataBase.FileName)
 
@@ -170,7 +154,6 @@ Public Class cImportDietsPlugin
     ''' <returns>True if the plug-in point executed successfully.</returns>
     Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
         ' System.Console.WriteLine(Me.ToString + ".SaveModel()")
-
         Return True
     End Function
 
@@ -440,6 +423,5 @@ Public Class cImportDietsPlugin
     End Property
 
 #End Region
-
 
 End Class

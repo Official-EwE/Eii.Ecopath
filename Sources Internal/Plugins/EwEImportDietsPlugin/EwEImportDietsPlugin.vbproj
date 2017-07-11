@@ -114,6 +114,7 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="Resources\Chesson 1983.pdf" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
