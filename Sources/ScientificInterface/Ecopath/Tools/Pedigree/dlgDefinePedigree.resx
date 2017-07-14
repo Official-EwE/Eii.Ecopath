@@ -187,7 +187,7 @@
     <value>1</value>
   </data>
   <data name="TableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>499, 332</value>
+    <value>499, 358</value>
   </data>
   <data name="TableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -208,7 +208,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="OK_Button" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Cancel_Button" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.33333,Percent,33.33333,Percent,33.33333" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -247,7 +247,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnKeep.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_btnDelete.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -283,7 +283,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnDelete.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="m_btnSort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -295,7 +295,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnSort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>600, 177</value>
+    <value>600, 211</value>
   </data>
   <data name="m_btnSort.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
@@ -319,7 +319,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnSort.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="m_btnInsert.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -355,7 +355,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnInsert.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="m_lblVariable.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -418,7 +418,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrOrder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>600, 156</value>
+    <value>600, 190</value>
   </data>
   <data name="m_hdrOrder.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 18</value>
@@ -436,7 +436,7 @@
     <value>m_hdrOrder</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14776.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOrder.Parent" xml:space="preserve">
     <value>$this</value>
@@ -469,7 +469,7 @@
     <value>m_hdrEdit</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14776.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
     <value>$this</value>
@@ -496,7 +496,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>582, 205</value>
+    <value>582, 223</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -505,7 +505,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDefinePedigree, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDefinePedigree, EwE6, Version=6.5.14776.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_scYupi.Panel1</value>
@@ -535,7 +535,7 @@
     <value>True</value>
   </data>
   <data name="m_tbDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>568, 45</value>
+    <value>568, 53</value>
   </data>
   <data name="m_tbDescription.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -562,7 +562,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpRemarks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>574, 51</value>
+    <value>574, 59</value>
   </data>
   <data name="m_tpRemarks.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -595,7 +595,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tcPlop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>582, 78</value>
+    <value>582, 86</value>
   </data>
   <data name="m_tcPlop.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -655,10 +655,10 @@
     <value>1</value>
   </data>
   <data name="m_scYupi.Size" type="System.Drawing.Size, System.Drawing">
-    <value>582, 287</value>
+    <value>582, 313</value>
   </data>
   <data name="m_scYupi.SplitterDistance" type="System.Int32, mscorlib">
-    <value>205</value>
+    <value>223</value>
   </data>
   <data name="m_scYupi.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -709,7 +709,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCreateDefaultLevels.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_hdrColors.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -718,7 +718,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrColors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>600, 213</value>
+    <value>600, 247</value>
   </data>
   <data name="m_hdrColors.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 18</value>
@@ -736,7 +736,7 @@
     <value>m_hdrColors</value>
   </data>
   <data name="&gt;&gt;m_hdrColors.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14776.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrColors.Parent" xml:space="preserve">
     <value>$this</value>
@@ -754,7 +754,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnColorCustom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>600, 292</value>
+    <value>600, 326</value>
   </data>
   <data name="m_btnColorCustom.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
@@ -790,7 +790,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnColorDefaultCurrent.Location" type="System.Drawing.Point, System.Drawing">
-    <value>600, 263</value>
+    <value>600, 297</value>
   </data>
   <data name="m_btnColorDefaultCurrent.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
@@ -823,7 +823,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnColorDefaultAll.Location" type="System.Drawing.Point, System.Drawing">
-    <value>600, 234</value>
+    <value>600, 268</value>
   </data>
   <data name="m_btnColorDefaultAll.Size" type="System.Drawing.Size, System.Drawing">
     <value>92, 23</value>
@@ -849,6 +849,42 @@
   <data name="&gt;&gt;m_btnColorDefaultAll.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="m_btnImport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnImport.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_btnImport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnImport.Location" type="System.Drawing.Point, System.Drawing">
+    <value>600, 149</value>
+  </data>
+  <data name="m_btnImport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 23</value>
+  </data>
+  <data name="m_btnImport.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_btnImport.Text" xml:space="preserve">
+    <value>Import...</value>
+  </data>
+  <data name="m_btnImport.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageBeforeText</value>
+  </data>
+  <data name="&gt;&gt;m_btnImport.Name" xml:space="preserve">
+    <value>m_btnImport</value>
+  </data>
+  <data name="&gt;&gt;m_btnImport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnImport.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnImport.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -859,10 +895,10 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>704, 373</value>
+    <value>704, 399</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>500, 400</value>
+    <value>500, 438</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>

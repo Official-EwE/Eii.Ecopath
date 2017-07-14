@@ -81,10 +81,10 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.PoolColor) = New cVariableMetaData(-4294967295, 4294967295, ge, le)
         Me.Metadata(eVarNameFlags.LastSaved) = New cVariableMetaData(0, Double.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.LastUpdated) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
-        Me.Metadata(eVarNameFlags.North) = New cVariableMetaData(-90, 90, ge, le, 0, cUnits.Mapping)
-        Me.Metadata(eVarNameFlags.South) = New cVariableMetaData(-90, 90, gt, lt, 0, cUnits.Mapping)
-        Me.Metadata(eVarNameFlags.East) = New cVariableMetaData(-180, 180, gt, lt, 0, cUnits.Mapping)
-        Me.Metadata(eVarNameFlags.West) = New cVariableMetaData(-180, 180, gt, lt, 0, cUnits.Mapping)
+        Me.Metadata(eVarNameFlags.North) = New cVariableMetaData(Single.MinValue, Single.MaxValue, ge, le, 0, cUnits.Mapping)
+        Me.Metadata(eVarNameFlags.South) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, cUnits.Mapping)
+        Me.Metadata(eVarNameFlags.East) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, cUnits.Mapping)
+        Me.Metadata(eVarNameFlags.West) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, cUnits.Mapping)
 
         ' -- Model --
         Me.Metadata(eVarNameFlags.Area) = New cVariableMetaData(0, Single.MaxValue, ge, lt, , cUnits.Area)
@@ -686,6 +686,8 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.MSYMaxFishingRate) = New cVariableMetaData(1, 1000000, ge, le)
         Me.Metadata(eVarNameFlags.MSYNumTrialYears) = New cVariableMetaData(1, 1000, ge, le)
         Me.Metadata(eVarNameFlags.MSYEquilibriumStepSize) = New cVariableMetaData(0, 1, ge, le)
+
+        ' -- Taxon --
 
 #If DUMP_TO_FILE Then
         Try
