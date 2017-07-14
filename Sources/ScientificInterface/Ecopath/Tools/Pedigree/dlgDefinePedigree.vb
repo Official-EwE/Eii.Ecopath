@@ -1,5 +1,7 @@
 Option Explicit On
 Option Strict On
+Imports EwECore
+Imports EwECore.DataSources
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -173,6 +175,11 @@ Namespace Ecopath
             Me.m_grid.SelectCustomColor()
         End Sub
 
+        Private Sub OnImport(ByVal sender As Object, ByVal e As EventArgs) _
+            Handles m_btnImport.Click
+            Me.Import()
+        End Sub
+
 #End Region ' Event handlers 
 
 #Region " Updating "
@@ -192,6 +199,32 @@ Namespace Ecopath
 
             Me.m_tbDescription.Enabled = bIsDataRow
             Me.m_tbDescription.Text = Me.m_grid.SelectedLevelDescription
+
+        End Sub
+
+        Private Sub Import()
+
+            ' ToDo: globalize this
+            Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Select model to import pedigree from", "", ScientificInterfaceShared.My.Resources.FILEFILTER_MODEL_OPEN)
+            If (ofd.ShowDialog() = DialogResult.Cancel) Then Return
+            Dim strModel As String = ofd.FileName
+
+            Dim core As New cCore()
+            Dim ds As IEwEDataSource = cDataSourceFactory.Create(strModel)
+            Dim bSuccess As Boolean = False
+
+            If (ds Is Nothing) Then Return
+            If (ds.Open(strModel, core, eDataSourceTypes.NotSet, True) <> eDatasourceAccessType.Opened) Then Return
+
+            If (core.LoadModel(ds)) Then
+                ' Perform import
+                Me.m_grid.ImportFrom(core)
+                core.CloseModel()
+            End If
+
+            If (ds.IsOpen) Then ds.Close()
+            ds.Dispose()
+            core.Dispose()
 
         End Sub
 

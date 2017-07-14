@@ -740,13 +740,13 @@ Namespace DataSources
                 ecopathDS.ModelPublicationURI = CStr(Me.m_db.ReadSafe(reader, "PublicationURI", ""))
                 ecopathDS.ModelPublicationRef = CStr(Me.m_db.ReadSafe(reader, "PublicationRef", ""))
 
-                Dim sLat1 As Single = CSng(Me.m_db.ReadSafe(reader, "MaxLat", cCore.NULL_VALUE))
-                Dim sLat2 As Single = CSng(Me.m_db.ReadSafe(reader, "MinLat", cCore.NULL_VALUE))
+                Dim sLat1 As Single = CSng(Me.m_db.ReadSafe(reader, "MaxLat", 0))
+                Dim sLat2 As Single = CSng(Me.m_db.ReadSafe(reader, "MinLat", 0))
                 ecopathDS.ModelNorth = Math.Max(sLat1, sLat2)
                 ecopathDS.ModelSouth = Math.Min(sLat1, sLat2)
 
-                ecopathDS.ModelWest = CSng(Me.m_db.ReadSafe(reader, "MinLon", cCore.NULL_VALUE))
-                ecopathDS.ModelEast = CSng(Me.m_db.ReadSafe(reader, "MaxLon", cCore.NULL_VALUE))
+                ecopathDS.ModelWest = CSng(Me.m_db.ReadSafe(reader, "MinLon", 0))
+                ecopathDS.ModelEast = CSng(Me.m_db.ReadSafe(reader, "MaxLon", 0))
 
                 ecopathDS.ModelLastSaved = CDbl(Me.m_db.ReadSafe(reader, "LastSaved", 0))
 

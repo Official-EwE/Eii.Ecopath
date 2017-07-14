@@ -577,6 +577,27 @@ Imports SourceGrid2.Cells
 
     End Sub
 
+    ''' <summary>
+    ''' Import pedigree definitions from another core.
+    ''' </summary>
+    ''' <param name="core">The core to copy pedigree levels from.</param>
+    Public Sub ImportFrom(core As cCore)
+
+        For Each var As eVarNameFlags In Me.m_dictConfigs.Keys
+            Dim manFrom As cPedigreeManager = core.GetPedigreeManager(var)
+            Dim manTo As cPedigreeManagerInfo = Me.m_dictConfigs(var)
+
+            manTo.Levels.Clear()
+            For i As Integer = 1 To manFrom.NumLevels
+                Dim lvlFrom As cPedigreeLevel = manFrom.Level(i)
+                Dim lvlTo As New cPedigreeLevelInfo(lvlFrom.Name, lvlFrom.IndexValue, lvlFrom.ConfidenceInterval)
+                manTo.Levels.Add(lvlTo)
+            Next
+        Next
+        Me.RefreshContent()
+
+    End Sub
+
 #Region " Grid interaction "
 
     ''' -----------------------------------------------------------------------
