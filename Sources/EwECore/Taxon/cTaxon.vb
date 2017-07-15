@@ -91,19 +91,15 @@ Public Class cTaxon
         val = New cValue(New String(cbuf), eVarNameFlags.SourceKey, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
-        ' North
         val = New cValue(New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-        ' South
         val = New cValue(New Single, eVarNameFlags.South, eStatusFlags.OK, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-        ' East
         val = New cValue(New Single, eVarNameFlags.East, eStatusFlags.OK, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
-        ' West
         val = New cValue(New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 

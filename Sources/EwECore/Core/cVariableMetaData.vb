@@ -687,8 +687,6 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.MSYNumTrialYears) = New cVariableMetaData(1, 1000, ge, le)
         Me.Metadata(eVarNameFlags.MSYEquilibriumStepSize) = New cVariableMetaData(0, 1, ge, le)
 
-        ' -- Taxon --
-
 #If DUMP_TO_FILE Then
         Try
             Dim sw As New StreamWriter("metadata_log.txt")

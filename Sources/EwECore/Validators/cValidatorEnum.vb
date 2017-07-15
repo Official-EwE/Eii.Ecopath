@@ -19,8 +19,6 @@
 '
 
 Option Strict On
-
-Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
 Public Class cValidatorEnum
