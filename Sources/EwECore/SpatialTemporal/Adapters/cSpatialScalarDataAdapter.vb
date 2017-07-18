@@ -144,6 +144,7 @@ Namespace SpatialData
             Dim dCellSize As Double = bm.CellSize
             Dim layer As cEcospaceLayer = bm.Layer(Me.VarName, iLayerIndex - 1)
             Dim depth As cEcospaceLayerDepth = bm.LayerDepth
+            Dim excl As cEcospaceLayerExclusion = bm.LayerExclusion
             Dim strLayerName As String = layer.Name
             Dim ldtData As New List(Of DateTime)
             Dim iTSMin As Integer = Integer.MaxValue
@@ -182,7 +183,8 @@ Namespace SpatialData
                         If rs IsNot Nothing Then
                             For iRow As Integer = 1 To iInRow
                                 For iCol As Integer = 1 To iInCol
-                                    If depth.IsWaterCell(iRow, iCol) Then
+                                    'If depth.IsWaterCell(iRow, iCol) Then
+                                    If depth.IsWaterCell(iRow, iCol) And (Not excl.IsExcludedCell(iRow, iCol)) Then
                                         Dim dval As Double = rs.Cell(iRow, iCol)
                                         If (dval <> cCore.NULL_VALUE And dval <> rs.NoData) Then
                                             iNumWaterCells += 1
