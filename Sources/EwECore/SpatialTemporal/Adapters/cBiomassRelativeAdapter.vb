@@ -106,9 +106,9 @@ Namespace SpatialData
                     value = sValueAtT
                 End If
 
-                Me.saveForcedCell(layer.Index, iRow, iCol, sValueAtT)
+                Me.saveForcedCell(layer.Index, iRow, iCol, value)
 
-                Return MyBase.SetCell(layer, conn, iRow, iCol, sValueAtT)
+                Return MyBase.SetCell(layer, conn, iRow, iCol, value)
 
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString + ".SetCell() Exception: " + ex.Message)
