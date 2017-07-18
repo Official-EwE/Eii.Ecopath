@@ -39,16 +39,68 @@ Public Class cDatabaseReader
     End Sub
 
     Public Function ImportDietPreferences(ModelFileName As String, ByRef DietPrefenences As cDietPreferences) As Boolean
-        'read diets from external database
+        'Reads diets from external database
 
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        'Temp for debugging
-        'Really just pass out the existing diets for now
-        DietPrefenences = New cDietPreferences(Me.m_EcopathData)
+        Dim core As cCore = Me.getCoreFromFilename(ModelFileName)
+
+        If Me.ValidateEcopathData(core.EcopathDataStructures) Then
+            DietPrefenences = New cDietPreferences(core.EcopathDataStructures)
+            Return True
+        End If
+
+        'Clean up our mess
+        If core IsNot Nothing Then
+            core.Dispose()
+            core = Nothing
+        End If
+
+        Return False
+
+    End Function
+
+    Private Function getCoreFromFilename(strModel As String) As cCore
+
+        Dim core As New cCore()
+        Dim ds As EwECore.DataSources.IEwEDataSource = EwECore.DataSources.cDataSourceFactory.Create(strModel)
+        Dim bSuccess As Boolean = False
+
+        If (ds Is Nothing) Then Return Nothing
+        If (ds.Open(strModel, core, eDataSourceTypes.NotSet, True) <> eDatasourceAccessType.Opened) Then Return Nothing
+
+        If (core.LoadModel(ds)) Then
+
+            ' JS 25Apr16: User is responsible for importing from a compatible model
+
+            '' Test compatibility
+            'If (core.SampleManager.ModelHash <> Me.ModelHash) Then
+            '    Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SAMPLES_IMPORT_ERROR_INCOMPATIBLE, strModel),
+            '                                                eMessageType.DataValidation, eCoreComponentType.External, eMessageImportance.Warning))
+            '    Return False
+            'End If
+
+            '' Test if there are models
+            'If (core.SampleManager.nSamples = 0) Then
+            '    Me.m_Core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SAMPLES_IMPORT_ERROR_NOSAMPLES, strModel),
+            '                                                eMessageType.DataValidation, eCoreComponentType.External, eMessageImportance.Warning))
+            '    Return False
+            'End If
+
+            Return core
+
+        End If
+
+        If (ds.IsOpen) Then ds.Close()
+        ds.Dispose()
+        'core.Dispose()
+
+        Return Nothing
+
+    End Function
+
+
+    Private Function ValidateEcopathData(EcopathData As cEcopathDataStructures) As Boolean
+        'Giver ehhh...
         Return True
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-
     End Function
 
 

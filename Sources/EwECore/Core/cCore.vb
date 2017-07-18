@@ -3336,6 +3336,17 @@ Public Class cCore
 
 #End Region ' Variables
 
+#Region "Public Ecopath Varaibles"
+
+    Public ReadOnly Property EcopathDataStructures As cEcopathDataStructures
+        Get
+            Return Me.m_EcoPathData
+        End Get
+    End Property
+
+
+#End Region
+
 #Region " Model "
 
     Private Sub SendEcopathLoadMessage(ByVal ds As IEwEDataSource, Optional ByVal strError As String = "")

@@ -35,8 +35,8 @@ Imports EwEUtils.Utilities
 
 
 Public Class cDietImporter
-    Dim m_EcopathData As cEcopathDataStructures
-    Dim m_Core As cCore
+    Private m_EcopathData As cEcopathDataStructures
+    Private m_Core As cCore
 
     Public Sub New(EwECore As cCore, EcopathData As cEcopathDataStructures)
         Me.m_Core = EwECore
@@ -49,11 +49,11 @@ Public Class cDietImporter
     Public Sub Run(ExternalModelFileName As String)
         Dim DietPrefs As cDietPreferences
         Dim DBReader As New cDatabaseReader(Me.m_Core, Me.m_EcopathData)
-        Dim DietUpdater As New cDietCalculator(Me.m_Core, Me.m_EcopathData)
+        Dim DietCalculator As New cDietCalculator(Me.m_Core, Me.m_EcopathData)
 
         If DBReader.ImportDietPreferences(ExternalModelFileName, DietPrefs) Then
 
-            If DietUpdater.UpdateDietsFromPreferences(DietPrefs) Then
+            If DietCalculator.DietsFromPreferences(DietPrefs) Then
                 'Yep it worked...
             End If
 

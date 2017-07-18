@@ -308,11 +308,19 @@ Public Class cImportDietsPlugin
     ''' -----------------------------------------------------------------------
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
-        Dim ModelName As String
+        Dim ModelFileName As String
 
         Dim ImportDiets As New cDietImporter(Me.Core, Me.EcoPathData)
 
-        ImportDiets.Run(ModelName)
+        Dim ofd As New OpenFileDialog()
+
+        ofd.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"
+        ofd.FilterIndex = 2
+        '  openFileDialog1.RestoreDirectory = True
+
+        If ofd.ShowDialog = DialogResult.OK Then
+            ImportDiets.Run(ofd.FileName)
+        End If
 
 
         'Dim bHasInterface As Boolean = False
