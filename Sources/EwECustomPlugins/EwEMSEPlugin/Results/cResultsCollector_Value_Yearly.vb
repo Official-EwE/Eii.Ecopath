@@ -54,7 +54,7 @@ Public Class cResultsCollector_Value_Yearly
 
                     TempTotalValue = 0
                     For iMonth = 1 To 12
-                        TempTotalValue += m_MSE.LandingsThroughoutProjection(igrp, iFleet, (iTime - 1) * 12 + iMonth) * m_MSE.Core.FleetInputs(iFleet).OffVesselValue(igrp)
+                        TempTotalValue += m_MSE.LandingsThroughoutProjection(igrp, iFleet, (iTime - 1) * 12 + iMonth) * m_MSE.Core.EcopathFleetInputs(iFleet).OffVesselValue(igrp)
                     Next
                     TempTotalValue /= 12
 

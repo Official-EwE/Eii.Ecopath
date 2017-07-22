@@ -1276,15 +1276,15 @@ Public Class frmResults
 
                 'Find a functional group that is caught by fleet
                 EwEIndexPrey = 1
-                While Core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) = 0 Or EwEIndexFleet > Core.nGroups
+                While Core.EcopathFleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) = 0 Or EwEIndexFleet > Core.nGroups
                     EwEIndexPrey += 1
                 End While
 
                 If EwEIndexFleet > Core.nGroups Then Exit Sub
 
                 'Calculate initial partialF
-                InitialPartialF = (Core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) +
-                                    Core.FleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)) _
+                InitialPartialF = (Core.EcopathFleetInputs(EwEIndexFleet).Landings(EwEIndexPrey) + _
+                                    Core.EcopathFleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)) _
                                     / Core.EcoPathGroupOutputs(EwEIndexPrey).Biomass
 
                 'Calculate efforts
@@ -1486,12 +1486,12 @@ Public Class frmResults
                 Discards = 0
                 If EwEIndexFleet = 0 Then
                     For i = 1 To Core.nFleets
-                        Landings += Core.FleetInputs(i).Landings(EwEIndexPrey)
-                        Discards += Core.FleetInputs(i).Discards(EwEIndexPrey)
+                        Landings += Core.EcopathFleetInputs(i).Landings(EwEIndexPrey)
+                        Discards += Core.EcopathFleetInputs(i).Discards(EwEIndexPrey)
                     Next
                 Else
-                    Landings = Core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey)
-                    Discards = Core.FleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)
+                    Landings = Core.EcopathFleetInputs(EwEIndexFleet).Landings(EwEIndexPrey)
+                    Discards = Core.EcopathFleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)
                 End If
                 PropLandings = Landings / (Landings + Discards)
 
@@ -1570,12 +1570,12 @@ Public Class frmResults
                 Discards = 0
                 If EwEIndexFleet = 0 Then
                     For i = 1 To Core.nFleets
-                        Landings += Core.FleetInputs(i).Landings(EwEIndexPrey)
-                        Discards += Core.FleetInputs(i).Discards(EwEIndexPrey)
+                        Landings += Core.EcopathFleetInputs(i).Landings(EwEIndexPrey)
+                        Discards += Core.EcopathFleetInputs(i).Discards(EwEIndexPrey)
                     Next
                 Else
-                    Landings = Core.FleetInputs(EwEIndexFleet).Landings(EwEIndexPrey)
-                    Discards = Core.FleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)
+                    Landings = Core.EcopathFleetInputs(EwEIndexFleet).Landings(EwEIndexPrey)
+                    Discards = Core.EcopathFleetInputs(EwEIndexFleet).Discards(EwEIndexPrey)
                 End If
                 PropLandings = Landings / (Landings + Discards)
                 PropDiscards = Discards / (Landings + Discards)
@@ -1888,7 +1888,7 @@ Public Class frmResults
         'Fill column titles row
         AInitFishingMort(1, 0) = My.Resources.GROUP & "\" & My.Resources.FLEET
         For x = 1 To Core.nFleets
-            AInitFishingMort(1 + x, 0) = Core.FleetInputs(x).Name
+            AInitFishingMort(1 + x, 0) = Core.EcopathFleetInputs(x).Name
         Next
 
         'Fill main data
@@ -1896,8 +1896,8 @@ Public Class frmResults
             AInitFishingMort(0, y) = Core.EcoPathGroupOutputs(y).Index
             AInitFishingMort(1, y) = Core.EcoPathGroupOutputs(y).Name
             For x = 1 To Core.nFleets
-                slandings = Core.FleetInputs(x).Landings(y)
-                sDiscards = Core.FleetInputs(x).Discards(y)
+                slandings = Core.EcopathFleetInputs(x).Landings(y)
+                sDiscards = Core.EcopathFleetInputs(x).Discards(y)
                 sBiomass = Core.EcoPathGroupOutputs(y).Biomass
                 If sBiomass > 0 Then
                     AInitFishingMort(1 + x, y) = (slandings + sDiscards) / sBiomass
@@ -2108,7 +2108,7 @@ Public Class frmResults
         'Write column headings
         AInitFishQuant(1, 0) = My.Resources.GROUP_NAME
         For x = 1 To Core.nFleets
-            AInitFishQuant(1 + x, 0) = Core.FleetInputs(x).Name
+            AInitFishQuant(1 + x, 0) = Core.EcopathFleetInputs(x).Name
         Next
         AInitFishQuant(2 + Core.nFleets, 0) = My.Resources.TOTAL_CATCH
 
@@ -2116,9 +2116,9 @@ Public Class frmResults
         For xGroup = 1 To Core.nGroups
             TotalCatchGroup = 0
             For Col = 1 To Core.nFleets
-                RowVals(Col - 1) = Core.FleetInputs(Col).Landings(xGroup) + Core.FleetInputs(Col).Discards(xGroup)
-                TotalCatchGroup += Core.FleetInputs(Col).Landings(xGroup) + Core.FleetInputs(Col).Discards(xGroup)
-                TotalCatchFleet(Col - 1) += Core.FleetInputs(Col).Landings(xGroup) + Core.FleetInputs(Col).Discards(xGroup)
+                RowVals(Col - 1) = Core.EcopathFleetInputs(Col).Landings(xGroup) + Core.EcopathFleetInputs(Col).Discards(xGroup)
+                TotalCatchGroup += Core.EcopathFleetInputs(Col).Landings(xGroup) + Core.EcopathFleetInputs(Col).Discards(xGroup)
+                TotalCatchFleet(Col - 1) += Core.EcopathFleetInputs(Col).Landings(xGroup) + Core.EcopathFleetInputs(Col).Discards(xGroup)
             Next
             If TotalCatchGroup > 0 Then
                 AInitFishQuant(0, RowPoint) = Core.EcoPathGroupOutputs(xGroup).Index
@@ -2156,8 +2156,8 @@ Public Class frmResults
                 QuantitiesTTLX = 0
 
                 'Calculate Quantity for each group
-                propLandings = Core.FleetInputs(fleetIndex).Landings(GrpIndex)
-                propDiscards = Core.FleetInputs(fleetIndex).Discards(GrpIndex)
+                propLandings = Core.EcopathFleetInputs(fleetIndex).Landings(GrpIndex)
+                propDiscards = Core.EcopathFleetInputs(fleetIndex).Discards(GrpIndex)
                 Quantities = (propLandings + propDiscards)
 
                 'Get trophic level of group and multiply by quanity
@@ -2205,7 +2205,7 @@ Public Class frmResults
         'Write column headings for fleets
         AInitFishVals(1, y) = My.Resources.GROUP_NAME
         For x = 1 To Core.nFleets
-            AInitFishVals(1 + x, y) = Core.FleetInputs(x).Name
+            AInitFishVals(1 + x, y) = Core.EcopathFleetInputs(x).Name
         Next
 
         AInitFishVals(2 + Core.nFleets, y) = My.Resources.CATCH_VALUE
@@ -2226,7 +2226,7 @@ Public Class frmResults
             TotalValueSum = 0
 
             For Col = 1 To Core.nFleets
-                ValueFleetGroup = Core.FleetInputs(Col).Landings(Row) * Core.FleetInputs(Col).OffVesselValue(Row)
+                ValueFleetGroup = Core.EcopathFleetInputs(Col).Landings(Row) * Core.EcopathFleetInputs(Col).OffVesselValue(Row)
                 AInitFishVals(1 + Col, y) = ValueFleetGroup
                 MarketValueSum += ValueFleetGroup
                 TotalValueFleet(Col) += ValueFleetGroup
@@ -2262,9 +2262,9 @@ Public Class frmResults
         AInitFishVals(1, y) = My.Resources.TOTAL_COST & "(" & Core.EwEModel.UnitMonetary.ToString & ")"
         MarketValueSum = 0
         For Col = 1 To Core.nFleets
-            SumFixedCPUESailCost = Core.FleetInputs(Col).FixedCost + _
-                                    Core.FleetInputs(Col).CPUECost + _
-                                    Core.FleetInputs(Col).SailCost
+            SumFixedCPUESailCost = Core.EcopathFleetInputs(Col).FixedCost + _
+                                    Core.EcopathFleetInputs(Col).CPUECost + _
+                                    Core.EcopathFleetInputs(Col).SailCost
             TotalCostFleet(Col) = SumFixedCPUESailCost * TotalValueFleet(Col) * CSng(0.01)
             MarketValueSum += TotalCostFleet(Col)
             AInitFishVals(1 + Col, y) = TotalCostFleet(Col)

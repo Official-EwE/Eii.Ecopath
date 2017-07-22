@@ -325,8 +325,16 @@ Public Enum eTimeSeriesType As Integer
     CatchesForcing = -6
     CatchesRel = 61
     AverageWeight = 7
-    EcotracerConcRel = 8
-    EcotracerConcAbs = 9
+    ' EcotracerConcRel = 8
+    ' EcotracerConcAbs = 9
+    ''' <summary>Absolute discard proportion (fleet x group, driver)</summary>
+    DiscardProportion = 10
+    ''' <summary>Absolute discard mortality rate (fleet x group, driver)</summary>
+    DiscardMortality = 11
+    ''' <summary>Absolute landings (fleet x group, reference)</summary>
+    Landings = 12
+    ''' <summary>Absolute discards (fleet x group, reference)</summary>
+    Discards = 13
     FishingMortalityRef = 104
     NotSet = cCore.NULL_VALUE
 End Enum
@@ -348,6 +356,8 @@ Public Enum eTimeSeriesCategoryType
     Fleet
     ''' <summary>Forcing function time series category.</summary>
     Forcing
+    ''' <summary>Fleet-related time series category, indexed by group.</summary>
+    FleetGroup
 End Enum
 
 ''' -----------------------------------------------------------------------

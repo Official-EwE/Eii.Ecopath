@@ -463,7 +463,7 @@ Namespace MSE
             Dim tcatch As Single
 
             For iflt As Integer = 1 To Me.m_core.nFleets
-                Dim fleet As cFleetInput = Me.m_core.FleetInputs(iflt)
+                Dim fleet As cEcopathFleetInput = Me.m_core.EcopathFleetInputs(iflt)
                 tcatch += fleet.Landings(Me.Index) + fleet.Discards(Me.Index)
             Next
 

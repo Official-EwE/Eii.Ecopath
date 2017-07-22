@@ -21,8 +21,8 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.ComponentModel
 Imports EwEUtils.SystemUtilities
-Imports System.Runtime.InteropServices
 
 #End Region ' Imports
 
@@ -35,6 +35,13 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     Public Class cThemedTreeView
         Inherits TreeView
+
+        Private m_bShowImages As Boolean = True
+        Private m_il As ImageList = Nothing
+
+        Public Sub New()
+            Me.ShowImages = True
+        End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -75,6 +82,39 @@ Namespace Controls
                 Return
             End If
             MyBase.WndProc(msg)
+        End Sub
+
+        <Category("Appearance")>
+        <Browsable(True)>
+        Public Property ShowImages As Boolean
+            Get
+                Return Me.m_bShowImages
+            End Get
+            Set(value As Boolean)
+                Me.m_bShowImages = value
+                UpdateImageVisibility()
+            End Set
+        End Property
+
+        Public Overloads Property ImageList As ImageList
+            Get
+                Return Me.m_il
+            End Get
+            Set(value As ImageList)
+                Me.m_il = value
+                UpdateImageVisibility()
+            End Set
+        End Property
+
+        Private Sub UpdateImageVisibility()
+
+            If (Me.m_bShowImages) And (Me.m_il IsNot Nothing) Then
+                MyBase.ImageList = Me.m_il
+            Else
+                MyBase.ImageList = Nothing
+            End If
+            Me.Invalidate()
+
         End Sub
 
     End Class

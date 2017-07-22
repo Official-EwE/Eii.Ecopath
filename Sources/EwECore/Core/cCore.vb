@@ -1,3 +1,4 @@
+Option Strict On
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -20,7 +21,6 @@
 
 #Region " Imports "
 
-Option Strict On
 Imports System.IO
 Imports System.Text
 Imports System.Xml
@@ -55,12 +55,12 @@ Imports EwEUtils.Utilities
 ''' <para>This class provides a wrapper for the underlying EcoPath, EcoSim and
 ''' EcoSpace models.</para>
 ''' <para>The underlying model data structures have been converted into classes
-''' that an interface can program against. For instance, cFleetInput is the
+''' that an interface can program against. For instance, cEcopathFleetInput is the
 ''' representation of a fishing fleet.</para>
-''' <para>The <see cref="cCore.FleetInputs"/>(iFleet) property provides a way for 
+''' <para>The <see cref="EcopathfleetInputs"/>(iFleet) property provides a way for 
 ''' a user interface to interact with the underlying data structures that represent 
 ''' a fishing fleet without having to understand the modeling array structures.</para>
-''' <para>Most conversions from interface objects (cFleetInput or cEcoSimResults) into
+''' <para>Most conversions from interface objects (cEcopathFleetInput or cEcoSimResults) into
 ''' model data structures are handled by the core.</para>
 ''' <para>Data structures for each model that need to be made public for setting
 ''' of parameters or storing to file are held in a wrapper class for each model
@@ -649,7 +649,7 @@ Public Class cCore
         Me.m_SpatialData = New cSpatialDataStructures(Me.m_EcoPathData, Me.m_EcoSpaceData)
         Me.m_Stanza = New cStanzaDatastructures(Me.Messages)
         Me.m_tracerData = New cContaminantTracerDataStructures
-        Me.m_TSData = New cTimeSeriesDataStructures
+        Me.m_TSData = New cTimeSeriesDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
         Me.m_MPAOptData = New cMPAOptDataStructures
         Me.m_MSEData = New cMSEDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
         Me.m_TaxonData = New cTaxonDataStructures(Me.m_EcoPathData, Me.m_Stanza)
@@ -790,9 +790,9 @@ Public Class cCore
     Public Enum eBatchChangeLevelFlags As Integer
         Ecopath = 0
         Ecosim = 1
-        Ecospace = 2
-        Ecotracer = 3
-        TimeSeries = 4
+        TimeSeries = 2
+        Ecospace = 3
+        Ecotracer = 4
         NotSet = 42 ' Just the highest number, and a random value at that :p
     End Enum
 
@@ -1538,6 +1538,7 @@ Public Class cCore
             Me.m_TSData.ClearTimeSeries()
             ' Set number of groups
             Me.m_TSData.nGroups = Me.nGroups
+            Me.m_TSData.nFleets = Me.nFleets
 
         Catch ex As Exception
             Debug.Assert(False)
@@ -1604,7 +1605,7 @@ Public Class cCore
                 ts.Index = ts.Index
                 ts.DBID = Me.m_TSData.iTimeSeriesDBID(ts.Index)
                 ts.TimeSeriesType = Me.m_TSData.TimeSeriesType(ts.Index)
-                ts.DatPool = Me.m_TSData.iPool(ts.Index)
+                ts.GroupIndex = Me.m_TSData.iPool(ts.Index)
                 ts.WtType = Me.m_TSData.sWeight(ts.Index)
                 ts.CV = Me.m_TSData.sCV(ts.Index)
 
@@ -1634,7 +1635,8 @@ Public Class cCore
                 ts.Index = ts.Index
                 ts.DBID = Me.m_TSData.iTimeSeriesDBID(ts.Index)
                 ts.TimeSeriesType = Me.m_TSData.TimeSeriesType(ts.Index)
-                ts.DatPool = Me.m_TSData.iPool(ts.Index)
+                ts.FleetIndex = Me.m_TSData.iPool(ts.Index)
+                ts.GroupIndex = Me.m_TSData.iPoolSec(ts.Index)
                 ts.WtType = Me.m_TSData.sWeight(ts.Index)
                 ts.CV = Me.m_TSData.sCV(ts.Index)
 
@@ -1696,7 +1698,7 @@ Public Class cCore
                 Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Group, "Cannot change TS to a different category")
                 Me.m_TSData.TimeSeriesType(ts.Index) = ts.TimeSeriesType
                 Me.m_TSData.strName(ts.Index) = ts.Name
-                Me.m_TSData.iPool(ts.Index) = ts.DatPool
+                Me.m_TSData.iPool(ts.Index) = ts.GroupIndex
                 Me.m_TSData.sWeight(ts.Index) = ts.WtType
                 Me.m_TSData.sCV(ts.Index) = ts.CV
 
@@ -1733,11 +1735,13 @@ Public Class cCore
         Try
             For Each ts As cFleetTimeSeries In Me.m_timeSeriesFleet
 
-                ' Validate whether TS will remain in its category (fleet)
-                Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Fleet, "Cannot change TS to a different category")
+                ' Validate whether TS will remain in its category
+                Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Fleet Or
+                             cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup, "Cannot change TS to a different category")
                 Me.m_TSData.TimeSeriesType(ts.Index) = ts.TimeSeriesType
                 Me.m_TSData.strName(ts.Index) = ts.Name
-                Me.m_TSData.iPool(ts.Index) = ts.DatPool
+                Me.m_TSData.iPool(ts.Index) = ts.FleetIndex
+                Me.m_TSData.iPoolSec(ts.Index) = ts.GroupIndex
                 Me.m_TSData.sWeight(ts.Index) = ts.WtType
                 Me.m_TSData.sCV(ts.Index) = ts.CV
 
@@ -1775,24 +1779,23 @@ Public Class cCore
         Dim strStatus As String = ""
 
         If TypeOf ts Is cGroupTimeSeries Then
-            If (ts.DatPool <= 0 Or ts.DatPool > nGroups) Then
+            Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
+            If (gts.GroupIndex <= 0 Or gts.GroupIndex > nGroups) Then
                 status = eStatusFlags.ErrorEncountered
-                strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, ts.DatPool)
-            Else
-                If (ts.TimeSeriesType = eTimeSeriesType.FishingMortality) Or (ts.TimeSeriesType = eTimeSeriesType.FishingMortalityRef) Then
-                    ' JS 12May11: Allow F for groups that are not fished
-                    'If Not Me.EcoPathGroupInputs(ts.DatPool).IsFished Then
-                    '    status = eStatusFlags.ErrorEncountered
-                    '    strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_GROUP_NOTFISHED, Me.m_EcoPathData.GroupName(ts.DatPool))
-                    'End If
-                End If
+                strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, gts.GroupIndex)
             End If
         End If
 
         If TypeOf ts Is cFleetTimeSeries Then
-            If (ts.DatPool <= 0 Or ts.DatPool > nFleets) Then
+            Dim fts As cFleetTimeSeries = DirectCast(ts, cFleetTimeSeries)
+            If (fts.FleetIndex <= 0 Or fts.FleetIndex > nFleets) Then
                 status = eStatusFlags.ErrorEncountered
-                strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, ts.DatPool)
+                strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, fts.FleetIndex)
+            End If
+            If (fts.TimeSeriesType = eTimeSeriesType.DiscardMortality Or fts.TimeSeriesType = eTimeSeriesType.DiscardProportion) And
+               (fts.GroupIndex <= 0 Or fts.GroupIndex > nGroups) Then
+                status = eStatusFlags.ErrorEncountered
+                strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, fts.GroupIndex)
             End If
         End If
 
@@ -2051,7 +2054,7 @@ Public Class cCore
 
         'Set Default Ecospace Biomass Forcing values
         'all groups that have Ecosim biomass forcing will be forced in Ecospace
-        Me.UpdateEcospaceBioForcedByEcosim()
+        Me.UpdateEcospaceForcingByEcosim()
 
         'reset all efforts that were unloaded/disabled
         Me.m_EcoSimData.setEffortToDefault(lstEffortToReset)
@@ -2109,14 +2112,16 @@ Public Class cCore
     ''' </summary>
     ''' <param name="strName">Name of the new Time Series to add.</param>
     ''' <param name="iPool">Index of item to assign this TS to.</param>
+    ''' <param name="iPoolSec">Index of secundary item to assign this TS to.</param>
     ''' <param name="timeSeriesType"><see cref="eTimeSeriesType">Type</see> of the time series.</param>
     ''' <param name="asValues">Initial values to set in the TS.</param>
     ''' <param name="iDBID">Database ID assigned to the new TS.</param>
     ''' -----------------------------------------------------------------------
     Public Function AddTimeSeries(ByVal strName As String,
-            ByVal iPool As Integer, ByVal timeSeriesType As eTimeSeriesType,
-            ByVal sWeight As Single, ByVal asValues() As Single,
-            ByRef iDBID As Integer) As Boolean
+                                  ByVal iPool As Integer, ByVal iPoolSec As Integer,
+                                  ByVal timeSeriesType As eTimeSeriesType,
+                                  ByVal sWeight As Single, ByVal asValues() As Single,
+                                  ByRef iDBID As Integer) As Boolean
 
         Dim bSucces As Boolean = False
 
@@ -2128,7 +2133,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
         Try
             ' Try to add TS to the data source
-            If DirectCast(DataSource, IEcosimDatasource).AppendTimeSeries(strName, iPool, timeSeriesType, sWeight, asValues, iDBID) Then
+            If DirectCast(DataSource, IEcosimDatasource).AppendTimeSeries(strName, iPool, iPoolSec, timeSeriesType, sWeight, asValues, iDBID) Then
                 Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
                 bSucces = True
             End If
@@ -3325,6 +3330,7 @@ Public Class cCore
     Friend m_EcoPathInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoPathGroupInput, 1)
     Friend m_EcoPathOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoPathGroupOutput, 1)
     Friend m_EcopathFleetsInput As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.FleetInput, 1)
+    Friend m_EcopathFleetsOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.FleetInput, 1)
     Friend m_EcopathTaxon As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.Taxon, 1)
 
     Private m_postEcoPathMessage As CoreMessageDelegate
@@ -3719,6 +3725,7 @@ Public Class cCore
             Me.ClearIOList(Me.m_EcoPathInputs)
             Me.ClearIOList(Me.m_EcoPathOutputs)
             Me.ClearIOList(Me.m_EcopathFleetsInput)
+            Me.ClearIOList(m_EcopathFleetsOutputs)
             Me.ClearIOList(Me.m_stanzaGroups)
             Me.ClearIOList(Me.m_EcopathTaxon)
             Me.ClearIOList(Me.m_EcotracerGroupInputs)
@@ -4211,6 +4218,13 @@ Public Class cCore
                 output.FishMortPerTotMort = output.MortCoFishRate / (m_EcoPathData.PB(iGroup) - m_EcoPathData.BA(iGroup) - output.MortCoNetMig)
                 output.NatMortPerTotMort = CSng(1.0 - output.FishMortPerTotMort) 'M/Z
 
+                'For iflt As Integer = 1 To nFleets
+                '    output.CatchByFleet(iflt) = Me.m_EcoPathData.Landing(iflt, iGroup) + Me.m_EcoPathData.Discard(iflt, iGroup)
+                '    output.LandingsByFleet(iflt) = Me.m_EcoPathData.Landing(iflt, iGroup)
+                '    output.DiscardMortByFleet(iflt) = Me.m_EcoPathData.Discard(iflt, iGroup) * Me.m_EcoPathData.PropDiscardMort(iflt, iGroup)
+                '    output.DiscardSurvivalByFleet(iflt) = Me.m_EcoPathData.Discard(iflt, iGroup) * (1 - Me.m_EcoPathData.PropDiscardMort(iflt, iGroup))
+                'Next
+
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'consumption
                 'see frmPasicParams.DisplayFoodIntake
@@ -4613,16 +4627,17 @@ Public Class cCore
 
             'clear out the old data
             m_EcopathFleetsInput.Clear()
-            'm_FleetsOutput.Clear()
+            m_EcopathFleetsOutputs.Clear()
 
             'loop over the number of fleets 
             'adding a new fleet to the Fleets collection for each iFleet
             For iFleet = 1 To m_EcoPathData.NumFleet
-                m_EcopathFleetsInput.Add(New cFleetInput(Me, m_EcoPathData.FleetDBID(iFleet)))
-                'm_FleetsOutput.Add(New cFleetOutput(Me, m_EcoPathData.FleetDBID(iFleet)))
+                m_EcopathFleetsInput.Add(New cEcopathFleetInput(Me, m_EcoPathData.FleetDBID(iFleet), iFleet))
+                m_EcopathFleetsOutputs.Add(New cEcopathFleetOutput(Me, m_EcoPathData.FleetDBID(iFleet), iFleet))
             Next iFleet
 
             LoadEcopathFleetInputs()
+            LoadEcopathFleetOutputs()
             Me.Update_IsFished(False)
 
             Return True
@@ -4636,7 +4651,7 @@ Public Class cCore
     Private Function UpdateFleetInput(ByVal iDBID As Integer) As Boolean
 
         Dim iFleet As Integer = Array.IndexOf(m_EcoPathData.FleetDBID, iDBID)
-        Dim fleet As cFleetInput = Me.FleetInputs(iFleet)
+        Dim fleet As cEcopathFleetInput = Me.EcopathFleetInputs(iFleet)
 
         Try
 
@@ -4674,7 +4689,7 @@ Public Class cCore
 
         Try
 
-            For Each fleet As cFleetInput In m_EcopathFleetsInput
+            For Each fleet As cEcopathFleetInput In m_EcopathFleetsInput
 
                 fleet.AllowValidation = False
 
@@ -4720,15 +4735,86 @@ Public Class cCore
 
     End Function
 
-    Public ReadOnly Property FleetInputs(ByVal iFleet As Integer) As cFleetInput
 
+    Friend Function LoadEcopathFleetOutputs() As Boolean
+        Dim iFleet As Integer
+
+        Try
+
+            For Each fleet As cEcopathFleetOutput In m_EcopathFleetsOutputs
+
+                fleet.AllowValidation = False
+
+                iFleet = Array.IndexOf(m_EcoPathData.FleetDBID, fleet.DBID)
+
+                'Debug.Assert(iFleet > 0 And iFleet <= m_EcoPathData.NumFleet, "Failed to find Fleet index for database ID " & fleet.DBID.ToString)
+
+                fleet.Resize()
+
+                fleet.Index = iFleet
+
+                fleet.DBID = m_EcoPathData.FleetDBID(iFleet)
+                fleet.Name = m_EcoPathData.FleetName(iFleet)
+
+                For igrp As Integer = 1 To Me.nGroups
+                    'Debug.Assert(Me.m_EcoPathData.Landing(iFleet, igrp) = 0)
+                    fleet.CatchTotalByGroup(igrp) = Me.m_EcoPathData.Landing(iFleet, igrp) + Me.m_EcoPathData.Discard(iFleet, igrp)
+                    fleet.CatchMortByGroup(igrp) = Me.m_EcoPathData.Landing(iFleet, igrp) + (Me.m_EcoPathData.Discard(iFleet, igrp) * Me.m_EcoPathData.PropDiscardMort(iFleet, igrp))
+                    fleet.LandingsByGroup(igrp) = Me.m_EcoPathData.Landing(iFleet, igrp)
+                    fleet.DiscardMortByGroup(igrp) = Me.m_EcoPathData.Discard(iFleet, igrp) * Me.m_EcoPathData.PropDiscardMort(iFleet, igrp)
+                    fleet.DiscardSurvivalByGroup(igrp) = Me.m_EcoPathData.Discard(iFleet, igrp) * (1 - Me.m_EcoPathData.PropDiscardMort(iFleet, igrp))
+                    fleet.DiscardByGroup(igrp) = Me.m_EcoPathData.Discard(iFleet, igrp)
+                Next
+
+                fleet.ResetStatusFlags()
+                fleet.AllowValidation = True
+            Next
+
+            Return True
+
+        Catch ex As Exception
+
+            cLog.Write(Me.ToString() & ".LoadFleets() Error: " & ex.Message)
+            Debug.Assert(False, Me.ToString & ".LoadFleets() Error: " & ex.Message)
+            Return False
+
+        End Try
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Obtain an Ecopath fleet input. Provided for backward compatibility; 
+    ''' <see cref="EcopathFleetInputs"/> should be used instead.
+    ''' </summary>
+    ''' <param name="iFleet">The one-based index of the fleet to obtain,
+    ''' or 0 to obtain the "all fleet".</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    <Obsolete("Use EcopathFleetInputs instead")>
+    Public ReadOnly Property FleetInputs(ByVal iFleet As Integer) As cEcopathFleetInput
+        Get
+            Return Me.EcopathFleetInputs(iFleet)
+        End Get
+    End Property
+
+    Public ReadOnly Property EcopathFleetInputs(ByVal iFleet As Integer) As cEcopathFleetInput
         Get
             Try
                 ' List handles item index offset
-                Return DirectCast(m_EcopathFleetsInput(iFleet), cFleetInput)
+                Return DirectCast(m_EcopathFleetsInput(iFleet), cEcopathFleetInput)
             Catch ex As Exception
                 Return Nothing
             End Try
+        End Get
+
+    End Property
+
+    Public ReadOnly Property EcoPathFleetOutputs(ByVal iFleet As Integer) As cEcopathFleetOutput
+
+        Get
+            ' The list takes care of group index / item index differences
+            Return DirectCast(m_EcopathFleetsOutputs(iFleet), cEcopathFleetOutput)
         End Get
 
     End Property
@@ -5096,6 +5182,9 @@ Public Class cCore
                 ' Repopulate data
                 're-populate the output list with the new outputs from Ecopath
                 LoadEcopathOutputs()
+
+                LoadEcopathFleetOutputs()
+
                 're-populate the Ecopath statistics
                 LoadEcopathStats()
 
@@ -5251,7 +5340,7 @@ Public Class cCore
 
                     Case eDataTypes.FleetInput
 
-                        Dim inputFleet As cFleetInput = DirectCast(Me.m_EcopathFleetsInput(var.Index), cFleetInput)
+                        Dim inputFleet As cEcopathFleetInput = DirectCast(Me.m_EcopathFleetsInput(var.Index), cEcopathFleetInput)
                         Dim tmpstatus As eStatusFlags = inputFleet.GetStatus(var.VarName)
                         tmpstatus = tmpstatus Or var.Status
 
@@ -5723,7 +5812,7 @@ Public Class cCore
         Return True
     End Function
 
-    Friend Function Set_OffVesselValue_Flags(ByVal obj As cFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_OffVesselValue_Flags(ByVal obj As cEcopathFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
 
         obj.AllowValidation = False
 
@@ -5754,7 +5843,7 @@ Public Class cCore
 
         fleetMSE.AllowValidation = False
 
-        Dim fleet As cFleetInput = Me.FleetInputs(fleetMSE.Index)
+        Dim fleet As cEcopathFleetInput = Me.EcopathFleetInputs(fleetMSE.Index)
         For iGroup As Integer = 1 To Me.nGroups
             If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) = 0.0! Then
                 fleetMSE.SetStatusFlags(eVarNameFlags.QuotaShare, eStatusFlags.Null Or eStatusFlags.NotEditable, iGroup)
@@ -5772,7 +5861,7 @@ Public Class cCore
         Return True
     End Function
 
-    Friend Function Set_DiscardMort_Flags(ByVal fleet As cFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_DiscardMort_Flags(ByVal fleet As cEcopathFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
 
         fleet.AllowValidation = False
 
@@ -6159,7 +6248,7 @@ Public Class cCore
                  eDataTypes.MSEFleetInput
 
                 ' Cascase fleet name to all relevant core IO objects
-                objCascade = Me.FleetInputs(obj.Index)
+                objCascade = Me.EcopathFleetInputs(obj.Index)
                 bAllowValidationOrg = objCascade.AllowValidation
                 objCascade.AllowValidation = False
                 objCascade.Name = strName
@@ -6301,7 +6390,7 @@ Public Class cCore
     Private Sub Update_IsFished(ByVal bSendMessage As Boolean)
 
         Dim group As cEcoPathGroupInput = Nothing
-        Dim fleet As cFleetInput = Nothing
+        Dim fleet As cEcopathFleetInput = Nothing
         Dim stanza As cStanzaGroup = Nothing
         Dim bIsFished As Boolean = False
         Dim msg As cMessage = Nothing
@@ -6312,7 +6401,7 @@ Public Class cCore
 
             bIsFished = False
             For iFleet As Integer = 1 To Me.nFleets
-                fleet = Me.FleetInputs(iFleet)
+                fleet = Me.EcopathFleetInputs(iFleet)
                 If fleet.Landings(iGroup) > 0 Or fleet.Discards(iGroup) > 0 Then
                     bIsFished = True
                     Exit For
@@ -6414,7 +6503,7 @@ Public Class cCore
     Friend m_EcoSimGroups As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupInput, 1)
     Friend m_EcoSimGroupOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupOutput, 1)
     Friend m_EcoSimScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimScenario, 1)
-    Friend m_EcosimFleetInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFleetInput, 1)
+    Friend m_EcosimEcopathFleetInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFleetInput, 1)
     Friend m_EcosimFleetOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Private m_MediatedInteractionManager As cMediatedInteractionManager
 
@@ -6992,12 +7081,12 @@ Public Class cCore
 
         Me.ClearIOList(Me.m_EcoSimGroups)
         Me.ClearIOList(Me.m_EcoSimGroupOutputs)
-        Me.ClearIOList(Me.m_EcosimFleetInputs)
+        Me.ClearIOList(Me.m_EcosimEcopathFleetInputs)
         Me.ClearIOList(Me.m_EcosimFleetOutputs)
 
         Me.m_EcoSimGroups.Clear()
         Me.m_EcoSimGroupOutputs.Clear()
-        Me.m_EcosimFleetInputs.Clear()
+        Me.m_EcosimEcopathFleetInputs.Clear()
         Me.m_EcosimFleetOutputs.Clear()
 
         'Need to change m_timeSeriesFleet from (Of cTimeSeries) to (Of cCoreInputOutputBase)
@@ -7320,17 +7409,17 @@ Public Class cCore
     Private Sub InitEcosimFleetInput()
         Try
 
-            Me.m_EcosimFleetInputs.Clear()
+            Me.m_EcosimEcopathFleetInputs.Clear()
 
             For iflt As Integer = 1 To nFleets
-                Me.m_EcosimFleetInputs.Add(New cEcosimFleetInput(Me, iflt))
+                Me.m_EcosimEcopathFleetInputs.Add(New cEcosimFleetInput(Me, iflt))
             Next
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".InitEcosimFleetInput() Error: " & ex.Message)
         End Try
 
-        LoadEcosimFleetInputs()
+        LoadEcosimEcopathFleetInputs()
 
     End Sub
 
@@ -7752,13 +7841,13 @@ Public Class cCore
 
     End Function
 
-    Private Function LoadEcosimFleetInputs() As Boolean
+    Private Function LoadEcosimEcopathFleetInputs() As Boolean
 
         Dim iFleet As Integer
 
         Try
 
-            For Each fleet As cEcosimFleetInput In m_EcosimFleetInputs
+            For Each fleet As cEcosimFleetInput In m_EcosimEcopathFleetInputs
 
                 fleet.AllowValidation = False
 
@@ -7829,7 +7918,7 @@ Public Class cCore
 
             'Reload the forcing data PoolForceBB(), PoolForceZ(), PoolForceCatch() and FishRateGear(), FishRateNo
             'forcing data needs to be the max of Reference data years and Ecosim Years
-            Me.m_TSData.LoadForcingData(m_EcoSimData)
+            Me.m_TSData.LoadForcingData()
 
             Me.m_SearchData.redimTime(m_EcoSimData.NumYears)
 
@@ -9378,23 +9467,27 @@ Public Class cCore
         ' NOP
     End Sub
 
-    Private Sub UpdateEcospaceBioForcedByEcosim()
+    Private Sub UpdateEcospaceForcingByEcosim()
         Try
 
-            Me.m_TSData.setDefaultEcospaceBioForcing(Me.m_EcoSpaceData.IsEcosimBioForcingGroup)
+            Me.m_TSData.SetBiomassForcing(Me.m_EcoSpaceData.IsEcosimBioForcingGroup)
+            Me.m_TSData.SetDiscardForcing(Me.m_EcoSpaceData.IsEcosimDiscardForcingGroup)
 
-            'If Ecospace has not loaded then we can't update its IO objects
-            If Me.m_StateMonitor.HasEcospaceLoaded Then
+            If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return
 
-                If Not Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded Then
-                    Me.m_EcoSpaceData.UseEcosimForcing = False
-                    Me.m_EcospaceModelParams.UseEcosimBiomassForcing = Me.m_EcoSpaceData.UseEcosimForcing
-                End If
-
-                Me.m_EcospaceModelParams.IsEcosimBiomassForcingLoaded = Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded
-                Me.m_publisher.SendMessage(New cMessage("Ecospace biomass forcing from Ecosim", eMessageType.DataModified,
-                                                        eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
+            If Not Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded Then
+                Me.m_EcoSpaceData.UseEcosimBiomassForcing = False
+                Me.m_EcospaceModelParams.UseEcosimBiomassForcing = Me.m_EcoSpaceData.UseEcosimBiomassForcing
             End If
+            Me.m_EcospaceModelParams.IsEcosimBiomassForcingLoaded = Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded
+
+            If Not Me.m_EcoSpaceData.isEcosimDiscardForcingLoaded Then
+                Me.m_EcoSpaceData.UseEcosimDiscardForcing = False
+                Me.m_EcospaceModelParams.UseEcosimDiscardForcing = Me.m_EcoSpaceData.UseEcosimDiscardForcing
+            End If
+            Me.m_EcospaceModelParams.IsEcosimDiscardForcingLoaded = Me.m_EcoSpaceData.isEcosimDiscardForcingLoaded
+
+            Me.m_publisher.SendMessage(New cMessage("Ecospace forcing from Ecosim", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -9546,7 +9639,7 @@ Public Class cCore
     Public ReadOnly Property EcosimFleetInputs(ByVal iFleet As Integer) As cEcosimFleetInput
         Get
             ' JS 05Nov09: list will handle fleet index / item index offsets
-            Return DirectCast(Me.m_EcosimFleetInputs(iFleet), cEcosimFleetInput)
+            Return DirectCast(Me.m_EcosimEcopathFleetInputs(iFleet), cEcosimFleetInput)
         End Get
     End Property
 
@@ -9838,14 +9931,10 @@ Public Class cCore
                 Return False
             End If
 
-            Me.m_TSData.setDefaultEcospaceBioForcing(Me.m_EcoSpaceData.IsEcosimBioForcingGroup)
+            Me.m_TSData.SetBiomassForcing(Me.m_EcoSpaceData.IsEcosimBioForcingGroup)
+            Me.m_TSData.SetDiscardForcing(Me.m_EcoSpaceData.IsEcosimDiscardForcingGroup)
 
-
-            ' JS 12dec10: This seems wrong; Ecosim and Ecospace can run with different numbers of years.
-            '             The commented-out line below caused any changed number of years to be lost.
-            'set the time steps is Ecospace to be the same as ecosim
-            'If m_EcoSpaceData.TotalTime <> m_EcoSimData.NumYears Then m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
-            'JB sorry Space can not run longer than Sim
+            ' JB 12dec10: Space can not run longer than Sim
             If m_EcoSpaceData.TotalTime > m_EcoSimData.NumYears Then m_EcoSpaceData.TotalTime = m_EcoSimData.NumYears
 
             m_Ecospace.SearchData = m_SearchData
@@ -10264,9 +10353,11 @@ Public Class cCore
 
             m_EcospaceModelParams.FirstOutputTimeStep = Me.m_EcoSpaceData.FirstOutputTimeStep
 
-            m_EcospaceModelParams.UseEcosimBiomassForcing = Me.m_EcoSpaceData.UseEcosimForcing
+            m_EcospaceModelParams.UseEcosimBiomassForcing = Me.m_EcoSpaceData.UseEcosimBiomassForcing
+            m_EcospaceModelParams.UseEcosimDiscardForcing = Me.m_EcoSpaceData.UseEcosimDiscardForcing
 
             m_EcospaceModelParams.IsEcosimBiomassForcingLoaded = Me.m_EcoSpaceData.isEcosimBiomassForcingLoaded
+            m_EcospaceModelParams.IsEcosimDiscardForcingLoaded = Me.m_EcoSpaceData.isEcosimDiscardForcingLoaded
 
             Me.LoadEcospaceResultsWriters()
 
@@ -10330,7 +10421,8 @@ Public Class cCore
 
         Me.m_EcoSpaceData.FirstOutputTimeStep = m_EcospaceModelParams.FirstOutputTimeStep
 
-        Me.m_EcoSpaceData.UseEcosimForcing = m_EcospaceModelParams.UseEcosimBiomassForcing
+        Me.m_EcoSpaceData.UseEcosimBiomassForcing = m_EcospaceModelParams.UseEcosimBiomassForcing
+        Me.m_EcoSpaceData.UseEcosimDiscardForcing = m_EcospaceModelParams.UseEcosimDiscardForcing
 
         Return True
 
@@ -13447,7 +13539,7 @@ Public Class cCore
                 End Select
 
             Case eDataTypes.FleetInput
-                'Dim flt As cFleetInput = DirectCast(obj, cFleetInput)
+                'Dim flt As cEcopathFleetInput = DirectCast(obj, cEcopathFleetInput)
                 ''has the MSE Quota share changed
                 'Dim bShareChanged As Boolean = False
 
@@ -13470,7 +13562,7 @@ Public Class cCore
                 '    If Me.m_StateMonitor.HasEcosimLoaded Then
                 '        'Ecosim is loaded so update the MSE Quota share
                 '        Me.SetDefaultQuotaShare()
-                '        Me.Set_Quota_Flags(Me.MSEManager.FleetInputs(flt.Index), True)
+                '        Me.Set_Quota_Flags(Me.MSEManager.EcopathFleetInputs(flt.Index), True)
                 '        Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified,
                 '                                    eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
                 '        Me.m_publisher.AddMessage(qsMsg)
@@ -13827,7 +13919,7 @@ Public Class cCore
 
             Case eDataTypes.FleetInput
 
-                Dim flt As cFleetInput = DirectCast(obj, cFleetInput)
+                Dim flt As cEcopathFleetInput = DirectCast(obj, cEcopathFleetInput)
 
                 Select Case value.varName
 
@@ -13842,7 +13934,7 @@ Public Class cCore
                         If Me.m_StateMonitor.HasEcosimLoaded Then
                             'Ecosim is loaded so update the MSE Quota share
                             Me.SetDefaultQuotaShare()
-                            Me.Set_Quota_Flags(Me.MSEManager.FleetInputs(flt.Index), True)
+                            Me.Set_Quota_Flags(Me.MSEManager.EcopathFleetInputs(flt.Index), True)
                             Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified,
                                                         eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
                             Me.m_publisher.AddMessage(qsMsg)
@@ -13925,8 +14017,8 @@ Public Class cCore
                     Case eVarNameFlags.EcospaceFirstOutputTimeStep
                         Me.LoadEcospaceResultsWriters()
 
-                    Case eVarNameFlags.EcospaceUseEcosimBiomassForcing
-                        Me.m_publisher.AddMessage(New cMessage("Ecospace use Ecosim biomass forcing.", eMessageType.DataModified,
+                    Case eVarNameFlags.EcospaceUseEcosimBiomassForcing, eVarNameFlags.EcospaceUseEcosimDiscardForcing
+                        Me.m_publisher.AddMessage(New cMessage("Ecospace use Ecosim forcing.", eMessageType.DataModified,
                                                                   eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceModelParameter))
 
                 End Select 'Select Case value.varName

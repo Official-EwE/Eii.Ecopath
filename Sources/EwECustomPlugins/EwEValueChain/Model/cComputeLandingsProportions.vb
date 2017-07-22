@@ -123,14 +123,14 @@ Public Class cComputeLandingPortions
                 If iSpTimeSeriesCatch(iSp) Then
                     Dim sumCatch As Single = 0
                     For iFt As Integer = 1 To EwECore.nFleets
-                        If EwECore.FleetInputs(iFt).Landings(iSp) > 0 Then
-                            sumCatch += EwECore.FleetInputs(iFt).Landings(iSp)
+                        If EwECore.EcopathFleetInputs(iFt).Landings(iSp) > 0 Then
+                            sumCatch += EwECore.EcopathFleetInputs(iFt).Landings(iSp)
                         End If
                     Next
                     If sumCatch > 0 Then
                         For iFt As Integer = 1 To EwECore.nFleets
-                            If EwECore.FleetInputs(iFt).Landings(iSp) > 0 Then
-                                ProportionOfLanding(iSp, iFt) = EwECore.FleetInputs(iFt).Landings(iSp) / sumCatch
+                            If EwECore.EcopathFleetInputs(iFt).Landings(iSp) > 0 Then
+                                ProportionOfLanding(iSp, iFt) = EwECore.EcopathFleetInputs(iFt).Landings(iSp) / sumCatch
                             End If
                         Next
                     End If
@@ -176,7 +176,7 @@ Public Class cComputeLandingPortions
                                 'sum value = landing x marketprice (which is really landingprice
                                 m_sumValue(m_ProducerReference(iSp, iFt)) += _
                                     iTSCatch(iSp, iYr) * ProportionOfLanding(iSp, iFt) _
-                                    * EwECore.FleetInputs(iFt).OffVesselValue(iSp)
+                                    * EwECore.EcopathFleetInputs(iFt).OffVesselValue(iSp)
                             Else        'if not then use the Ecosim landing
                                 m_sumCatch(m_ProducerReference(iSp, iFt)) += _
                                     EwECore.EcoSimGroupOutputs(iSp).Biomass(iTimeStep) * EwECore.EcoSimGroupOutputs(iSp).FishMort(iTimeStep) _
@@ -184,7 +184,7 @@ Public Class cComputeLandingPortions
                                 'sum value = landing x marketprice (which is really landingprice
                                 m_sumValue(m_ProducerReference(iSp, iFt)) += _
                                     EwECore.EcoSimGroupOutputs(iSp).Biomass(iTimeStep) * EwECore.EcoSimGroupOutputs(iSp).FishMort(iTimeStep) _
-                                    * EwECore.FleetInputs(iFt).OffVesselValue(iSp) * sArea
+                                    * EwECore.EcopathFleetInputs(iFt).OffVesselValue(iSp) * sArea
                             End If
                         End If
                     Next 'fleet

@@ -36,9 +36,9 @@ Imports EwEUtils.Core
 ''' Grid class for the Edit Fleets interface.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-<CLSCompliant(False)>
-Public Class gridDefineFleets
-    Inherits EwEGrid
+<CLSCompliant(False)> _
+   Public Class gridDefineFleets
+    : Inherits EwEGrid
 
 #Region " Private vars "
 
@@ -68,7 +68,7 @@ Public Class gridDefineFleets
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Administrative unit representing a <see cref="cFleetInput">Fleet</see>
+    ''' Administrative unit representing a <see cref="cEcopathFleetInput">Fleet</see>
     ''' in the EwE model.
     ''' </summary>
     ''' <remarks>
@@ -77,22 +77,24 @@ Public Class gridDefineFleets
     ''' -----------------------------------------------------------------------
     Private Class cFleetInfo
 
+        Private m_iFleetIndex As Integer = -1
+        Private m_iFleetDBID As Integer = cCore.NULL_VALUE
 
         ''' <summary>The status of a Fleet in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor, initializes a new instance of this class.
+        ''' Constructor, initializes a new instanze of this class.
         ''' </summary>
-        ''' <param name="Fleet">The <see cref="cFleetInput">cFleetInput</see> to
+        ''' <param name="Fleet">The <see cref="cEcopathFleetInput">cEcopathFleetInput</see> to
         ''' initialize this instance from. If set, this instance represents a
         ''' Fleet currently active in the EwE model.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal fleet As cFleetInput)
+        Public Sub New(ByVal fleet As cEcopathFleetInput)
             Debug.Assert(fleet IsNot Nothing)
-            Me.FleetDBID = fleet.DBID
-            Me.FleetIndex = fleet.Index
+            Me.m_iFleetDBID = fleet.DBID
+            Me.m_iFleetIndex = fleet.Index
             Me.Name = fleet.Name
             Me.PoolColor = fleet.PoolColor
             Me.m_status = eItemStatusTypes.Original
@@ -108,10 +110,6 @@ Public Class gridDefineFleets
             Me.Name = strName
             Me.PoolColor = 0
             Me.m_status = eItemStatusTypes.Added
-
-            Me.FleetDBID = cCore.NULL_VALUE
-            Me.FleetIndex = cCore.NULL_VALUE
-
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -119,7 +117,7 @@ Public Class gridDefineFleets
         ''' Get/set the name of this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Name() As String = ""
+        Public Property Name() As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -127,7 +125,7 @@ Public Class gridDefineFleets
         ''' this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property PoolColor() As Integer = 0
+        Public Property PoolColor() As Integer
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -136,6 +134,10 @@ Public Class gridDefineFleets
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property FleetIndex() As Integer
+            Get
+                Return Me.m_iFleetIndex
+            End Get
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -144,6 +146,10 @@ Public Class gridDefineFleets
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property FleetDBID() As Integer
+            Get
+                Return Me.m_iFleetDBID
+            End Get
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -172,8 +178,8 @@ Public Class gridDefineFleets
         ''' True if the underlying fleet has been changed.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function IsChanged(ByVal fleet As cFleetInput) As Boolean
-            If (Me.FleetDBID <> fleet.DBID) Then Return False
+        Public Function IsChanged(ByVal fleet As cEcopathFleetInput) As Boolean
+            If (Me.m_iFleetDBID <> fleet.DBID) Then Return False
             Return (fleet.Name <> Me.Name) Or
                    (fleet.PoolColor <> Me.PoolColor)
         End Function
@@ -184,7 +190,7 @@ Public Class gridDefineFleets
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function IsNew() As Boolean
-            Return Me.FleetDBID <= 0
+            Return Me.m_iFleetDBID = cCore.NULL_VALUE
         End Function
 
         ''' -------------------------------------------------------------------
@@ -273,7 +279,7 @@ Public Class gridDefineFleets
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub FillData()
 
-        Dim Fleet As cFleetInput = Nothing
+        Dim Fleet As cEcopathFleetInput = Nothing
         Dim fi As cFleetInfo = Nothing
 
         ' Populate local administration from a snapshot of the live data
@@ -281,7 +287,7 @@ Public Class gridDefineFleets
 
         ' Make snapshot of Fleet configuration
         For iFleet As Integer = 1 To Me.Core.nFleets
-            Fleet = Core.FleetInputs(iFleet)
+            Fleet = Core.EcopathFleetInputs(iFleet)
             fi = New cFleetInfo(Fleet)
             Me.m_lfiFleets.Add(fi)
         Next
@@ -455,7 +461,7 @@ Public Class gridDefineFleets
 
 #Region " Row manipulation "
 
-    Public Sub SelectFleet(ByVal fleet As cFleetInput)
+    Public Sub SelectFleet(ByVal fleet As cEcopathFleetInput)
 
         Dim fi As cFleetInfo = Nothing
 
@@ -573,7 +579,7 @@ Public Class gridDefineFleets
             lstrFleetNames.Add(Me.m_lfiFleets(i).Name)
         Next i
 
-        fi = New cFleetInfo(cStringUtils.Localize(SharedResources.DEFAULT_NEWFLEET_NUM, _
+        fi = New cFleetInfo(cStringUtils.Localize(SharedResources.DEFAULT_NEWFLEET_NUM,
                                                   cStringUtils.GetNextNumber(lstrFleetNames.ToArray, SharedResources.DEFAULT_NEWFLEET_NUM)))
         Me.m_lfiFleets.Insert(iFleet, fi)
 
@@ -768,8 +774,8 @@ Public Class gridDefineFleets
                 bHasBlank = True
             ElseIf Not Me.IsNameUnique(fi.Name, fi) Then
                 If Not lstrHandled.Contains(fi.Name) Then
-                    fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
-                                                         cStringUtils.Localize(My.Resources.PROMPT_DUPLICATE_NAME, fi.Name), _
+                    fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation,
+                                                         cStringUtils.Localize(My.Resources.PROMPT_DUPLICATE_NAME, fi.Name),
                                                          eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, cCore.NULL_VALUE))
                     lstrHandled.Add(fi.Name)
                 End If
@@ -816,7 +822,7 @@ Public Class gridDefineFleets
         Dim bConfigurationChanged As Boolean = False
         Dim bFleetsChanged As Boolean = False
         Dim fi As cFleetInfo = Nothing
-        Dim fleet As cFleetInput = Nothing
+        Dim fleet As cEcopathFleetInput = Nothing
         Dim iFleet As Integer = 0
         Dim bColorsChanged As Boolean = False
         Dim bSuccess As Boolean = True
@@ -832,7 +838,7 @@ Public Class gridDefineFleets
                 bConfigurationChanged = True
             Else
                 If ((iFleet + 1) <> fi.FleetIndex) Then bConfigurationChanged = True
-                bFleetsChanged = bFleetsChanged Or fi.IsChanged(Me.Core.FleetInputs(fi.FleetIndex))
+                bFleetsChanged = bFleetsChanged Or fi.IsChanged(Me.Core.EcopathFleetInputs(fi.FleetIndex))
             End If
         Next iFleet
 
@@ -859,7 +865,7 @@ Public Class gridDefineFleets
                         fi.Confirmed = True
                         bConfigurationChanged = True
                     Case Else
-                        ' Unexpected answer: assert
+                        ' Unexpected anwer: assert
                         Debug.Assert(False)
                 End Select
 
@@ -919,9 +925,9 @@ Public Class gridDefineFleets
         If (bFleetsChanged) Then
 
             ' Get (possibly changed) core fleets
-            Dim dtFleets As New Dictionary(Of Integer, cFleetInput)
+            Dim dtFleets As New Dictionary(Of Integer, cEcopathFleetInput)
             For iFleet = 1 To Core.nFleets
-                fleet = Me.Core.FleetInputs(iFleet)
+                fleet = Me.Core.EcopathFleetInputs(iFleet)
                 dtFleets(fleet.DBID) = fleet
             Next
 

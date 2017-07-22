@@ -141,9 +141,9 @@ Public Class cEffortLimits
 
         writer.WriteLine("FleetNumber,FleetName,MaxChangeEffort")
         For iFleet = 1 To Me.m_core.nFleets
-            writer.WriteLine("{0},{1},{2}", _
-                              cStringUtils.FormatNumber(iFleet), _
-                              cStringUtils.ToCSVField(Me.m_core.FleetInputs(iFleet).Name), _
+            writer.WriteLine("{0},{1},{2}",
+                              cStringUtils.FormatNumber(iFleet),
+                              cStringUtils.ToCSVField(Me.m_core.EcopathFleetInputs(iFleet).Name),
                               cStringUtils.FormatNumber(Me.Value(iFleet)))
         Next
 

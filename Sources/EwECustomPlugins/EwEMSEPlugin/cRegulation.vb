@@ -142,7 +142,7 @@ Public Class cRegulations
 
             strm.WriteLine("FleetName,FleetIndex,Regulation")
             For i As Integer = 1 To Me.m_Core.nFleets
-                Dim flt As cFleetInput = Me.m_Core.FleetInputs(i)
+                Dim flt As cEcopathFleetInput = Me.m_Core.EcopathFleetInputs(i)
                 strm.WriteLine(cStringUtils.ToCSVField(flt.Name) & "," &
                                           cStringUtils.ToCSVField(flt.Index) & "," &
                                           cStringUtils.ToCSVField(Me.m_methods(i)))

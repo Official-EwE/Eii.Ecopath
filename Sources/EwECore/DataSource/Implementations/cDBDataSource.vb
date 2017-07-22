@@ -2230,6 +2230,10 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
+
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesFleet WHERE (GroupID={0})", iEcopathGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesGroup WHERE (GroupID={0})", iEcopathGroupID))
+
                 ' Remove all Ecosim groups related to this Ecopath group
                 Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT GroupID FROM EcosimScenarioGroup WHERE EcopathGroupID={0}", iEcopathGroupID))
                 If (reader IsNot Nothing) Then
@@ -2239,8 +2243,6 @@ Namespace DataSources
                 End If
                 Me.m_db.ReleaseReader(reader)
 
-                ' Oh, now wait until we need to do this for Ecospace...
-                ' JS 20Jun11: ...and yep, it happened
                 reader = Me.m_db.GetReader(String.Format("SELECT GroupID FROM EcospaceScenarioGroup WHERE EcopathGroupID={0}", iEcopathGroupID))
                 If (reader IsNot Nothing) Then
                     While reader.Read()
@@ -4191,6 +4193,7 @@ Namespace DataSources
 
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE FleetID={0}", iEcopathFleetID))
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesFleet WHERE (FleetID={0})", iEcopathFleetID))
 
             ' ToDo: cascadingly delete all time series for this fleet
 
@@ -6435,11 +6438,15 @@ Namespace DataSources
               Implements IEcosimDatasource.ImportTimeSeries
 
             Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
+
                 Case eTimeSeriesCategoryType.Group,
-                     eTimeSeriesCategoryType.Fleet
+                     eTimeSeriesCategoryType.Fleet,
+                     eTimeSeriesCategoryType.FleetGroup
                     Return Me.AddAsTimeSeries(ts, iDataset)
+
                 Case eTimeSeriesCategoryType.Forcing
                     Return Me.AddAsForcingFunction(ts)
+
                 Case eTimeSeriesCategoryType.NotSet
                     Debug.Assert(False)
                     Return False
@@ -6602,7 +6609,7 @@ Namespace DataSources
             Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
                 Case eTimeSeriesCategoryType.Group
                     bSucces = bSucces And Me.AddGroupTimeSeries(ts, iTimeSeriesID)
-                Case eTimeSeriesCategoryType.Fleet
+                Case eTimeSeriesCategoryType.Fleet, eTimeSeriesCategoryType.FleetGroup
                     bSucces = bSucces And Me.AddFleetTimeSeries(ts, iTimeSeriesID)
             End Select
 
@@ -6673,6 +6680,11 @@ Namespace DataSources
                 drow = writerFleet.NewRow()
                 drow("TimeSeriesID") = iTimeSeriesID
                 drow("FleetID") = ecopathDS.FleetDBID(ts.DatPool)
+                If (ts.DatPoolSec >= 1) And (ts.DatPool < ecopathDS.GroupDBID.Length) Then
+                    drow("GroupID") = ecopathDS.GroupDBID(ts.DatPoolSec)
+                Else
+                    drow("GroupID") = 0
+                End If
                 writerFleet.AddRow(drow)
             Catch ex As Exception
                 ' Woops
@@ -6710,7 +6722,6 @@ Namespace DataSources
             Dim astrTimeValues() As String
             Dim iTimeSeriesID As Integer = 0
             Dim iSeries As Integer = 1
-            Dim iIndex As Integer = 0
             Dim iPoint As Integer = 0
             Dim bSucces As Boolean = True
 
@@ -6756,6 +6767,7 @@ Namespace DataSources
                     Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
 
                         Case eTimeSeriesCategoryType.Group
+                            Dim iIndex As Integer = 0
                             readerSub = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimTimeSeriesGroup WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
                             Try
                                 readerSub.Read()
@@ -6765,17 +6777,25 @@ Namespace DataSources
                             End Try
                             Me.m_db.ReleaseReader(readerSub)
                             readerSub = Nothing
+                            tsDS.iPool(iSeries) = iIndex
 
-                        Case eTimeSeriesCategoryType.Fleet
+                        Case eTimeSeriesCategoryType.Fleet,
+                             eTimeSeriesCategoryType.FleetGroup
+                            Dim iIndex As Integer = 0
+                            Dim iIndexSec As Integer = 0
                             readerSub = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimTimeSeriesFleet WHERE (TimeSeriesID={0})", reader("TimeSeriesID")))
                             Try
                                 readerSub.Read()
                                 iIndex = Array.IndexOf(ecopathDS.FleetDBID, CInt(readerSub("FleetID")))
+                                iIndexSec = Array.IndexOf(ecopathDS.GroupDBID, CInt(m_db.ReadSafe(readerSub, "GroupID", 0)))
                             Catch ex As Exception
                                 iIndex = -1
+                                iIndexSec = -1
                             End Try
                             Me.m_db.ReleaseReader(readerSub)
                             readerSub = Nothing
+                            tsDS.iPool(iSeries) = iIndex
+                            tsDS.iPoolSec(iSeries) = iIndexSec
 
                         Case eTimeSeriesCategoryType.Forcing
                             Debug.Assert(False, String.Format("Time series {0} should have been imported as a forcing function", reader("TimeSeriesID")))
@@ -6787,7 +6807,6 @@ Namespace DataSources
 
                     End Select
 
-                    tsDS.iPool(iSeries) = iIndex
 
                     astrTimeValues = CStr(reader("TimeValues")).Split(CChar(" "))
 
@@ -6866,7 +6885,8 @@ Namespace DataSources
 
                     Select Case cTimeSeriesFactory.TimeSeriesCategory(tsDS.TimeSeriesType(iTS))
 
-                        Case eTimeSeriesCategoryType.Fleet
+                        Case eTimeSeriesCategoryType.Fleet,
+                             eTimeSeriesCategoryType.FleetGroup
 
                             drow = dtFleets.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
                             bHasRow = (Object.ReferenceEquals(drow, Nothing) = False)
@@ -6879,6 +6899,13 @@ Namespace DataSources
                                 iPoolID = 0
                             End If
                             drow("FleetID") = iPoolID
+
+                            If (tsDS.iPoolSec(iTS) > 0) Then
+                                iPoolID = ecopathDS.GroupDBID(tsDS.iPoolSec(iTS))
+                            Else
+                                iPoolID = 0
+                            End If
+                            drow("GroupID") = iPoolID
 
                             If bHasRow Then drow.EndEdit() Else writerFleets.AddRow(drow)
 
@@ -6936,11 +6963,12 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Public Function AppendTimeSeries(ByVal strName As String,
                                          ByVal iPool As Integer,
+                                         ByVal iPoolSec As Integer,
                                          ByVal timeSeriesType As eTimeSeriesType,
                                          ByVal sWeight As Single,
                                          ByVal asValues() As Single,
                                          ByRef iShapeID As Integer) As Boolean _
-                Implements DataSources.IEcosimDatasource.AppendTimeSeries
+            Implements IEcosimDatasource.AppendTimeSeries
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
@@ -6982,11 +7010,14 @@ Namespace DataSources
 
                 Select Case cTimeSeriesFactory.TimeSeriesCategory(timeSeriesType)
 
-                    Case eTimeSeriesCategoryType.Fleet
+                    Case eTimeSeriesCategoryType.Fleet,
+                         eTimeSeriesCategoryType.FleetGroup
+
                         writerSub = Me.m_db.GetWriter("EcosimTimeSeriesFleet")
                         drowSub = writerSub.NewRow()
                         drowSub("TimeSeriesID") = iShapeID
                         drowSub("FleetID") = ecopathDS.FleetDBID(iPool)
+                        drowSub("GroupID") = If(iPoolSec > 0, ecopathDS.GroupDBID(iPoolSec), 0)
                         writerSub.AddRow(drowSub)
                         Me.m_db.ReleaseWriter(writerSub)
 

@@ -162,7 +162,7 @@ Public Class gridQuotaShares
             Me(iRow, eColumnTypes.GroupName) = New PropertyRowHeaderCell(pm, core.EcoPathGroupInputs(data.mGroupNo), eVarNameFlags.Name)
             ' To Mark: property cells automatically keep track of changing variable values
             Me(iRow, eColumnTypes.FleetNumber) = New EwERowHeaderCell(CStr(data.mFleetNo))
-            Me(iRow, eColumnTypes.FleetName) = New PropertyRowHeaderCell(pm, core.FleetInputs(data.mFleetNo), eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.FleetName) = New PropertyRowHeaderCell(pm, core.EcopathFleetInputs(data.mFleetNo), eVarNameFlags.Name)
             ' To Mark: property cells automatically keep track of changing variable values
             Me(iRow, eColumnTypes.QuotaShare) = DataCell(data.mShare)
             Me.Rows(iRow).Tag = data

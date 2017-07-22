@@ -191,6 +191,17 @@ Namespace Core
         NonMarketValue
         ''' <summary>To document</summary>
         DiscardFate
+
+        EcopathCatchTotalByFleetGroup
+
+        EcopathCatchMortByFleetGroup
+
+        EcopathLandingsByFleetGroup
+
+        EcopathDiscardsByFleetGroup
+        EcopathDiscardsMortByFleetGroup
+        EcopathDiscardsSurvivalByFleetGroup
+
         ''' <summary>Sum of all consumption</summary>
         EcopathStatsTotalConsumption
         ''' <summary>Sum of all exports</summary>
@@ -652,10 +663,18 @@ Namespace Core
 
         ''' <summary>Can Ecospace use Ecosim biomass forcing time series</summary>
         EcospaceUseEcosimBiomassForcing
-
         ''' <summary>Maintenance flag, used by Ecospace, to tell if there is Ecosim biomass forcing time series loaded. 
         ''' This does not tell Ecospace to use the time series just that it is available to be used.</summary>
-        EcospaceIsEcosimBioForcingLoaded
+        EcospaceIsEcosimBiomassForcingLoaded
+
+        ''' <summary>Can Ecospace use Ecosim discards forcing time series</summary>
+        EcospaceUseEcosimDiscardForcing
+        ''' <summary>Maintenance flag, used by Ecospace, to tell if there is Ecosim biomass forcing time series loaded. 
+        ''' This does not tell Ecospace to use the time series just that it is available to be used.</summary>
+        EcospaceIsEcosimDiscardForcingLoaded
+
+        ''' <summary>Ecospace Discards Map</summary>
+        EcospaceMapDiscards
 
         ''''''''''''''''''''''''''''
         ' Ecosim ouput data over time
@@ -678,6 +697,12 @@ Namespace Core
         EcosimValueGroupFleet
         ''' <summary>Fishing mortality by group fleet</summary>
         EcosimFishingMortGroupGear
+
+        EcosimLandingsGroupGear
+        EcosimDiscardsGroupGear
+        EcosimDiscardsMortGroupGear
+        EcosimDiscardsSurvivedGroupGear
+
         ''' <summary>To document</summary>
         EcosimTotalMort
         ''' <summary>To document</summary>
@@ -1892,7 +1917,10 @@ Namespace Core
         ''' Data belongs to the Ecopath fleet inputs,
         ''' which are provided for a parameter estimation run.
         '''</summary>
-        FleetInput = 4
+        EcopathFleetInput = 4
+
+        <Obsolete("Use EcopathFleetInput instead")>
+        FleetInput = EcopathFleetInput
 
         ''' <summary>
         ''' Data belongs to an Ecosim scenario.
@@ -2401,6 +2429,8 @@ Namespace Core
 
         EcosimEnviroResponseFunctionManager = 115
         EcopathSample = 116
+
+        EcoPathFleetOutput = 117
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

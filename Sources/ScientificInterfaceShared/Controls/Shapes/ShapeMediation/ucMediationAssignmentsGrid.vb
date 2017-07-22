@@ -203,7 +203,7 @@ Namespace Controls
                     Else
                         If TypeOf objPrim Is cEcoPathGroupInput Then
                             lGroups.Add(New cMediatingGroup(objPrim.Index, sWeight))
-                        ElseIf TypeOf objPrim Is cFleetInput Then
+                        ElseIf TypeOf objPrim Is cEcopathFleetInput Then
                             lFleets.Add(New cMediatingFleet(objPrim.Index, sWeight))
                         End If
                     End If

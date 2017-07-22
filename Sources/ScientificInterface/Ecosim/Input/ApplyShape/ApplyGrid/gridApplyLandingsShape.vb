@@ -94,7 +94,7 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim fleet As cFleetInput = Nothing
+            Dim fleet As cEcopathFleetInput = Nothing
             Dim group As cCoreGroupBase = Nothing
 
             ' Define grid dimensions
@@ -104,7 +104,7 @@ Namespace Ecosim
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iFleet As Integer = 1 To Me.Core.nFleets
-                fleet = Me.Core.FleetInputs(iFleet)
+                fleet = Me.Core.EcopathFleetInputs(iFleet)
                 Me(0, 1 + iFleet) = New EwEColumnHeaderCell(fleet.Name)
                 Me(0, 1 + iFleet).Behaviors.Add(Me.m_bmRowCol)
             Next

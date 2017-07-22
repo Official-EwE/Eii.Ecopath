@@ -95,7 +95,7 @@ Namespace Ecopath.Input
             ' For each fleet
             For iRow As Integer = 1 To core.nFleets
                 'Get the fleet info
-                source = core.FleetInputs(iRow)
+                source = core.EcopathFleetInputs(iRow)
                 ' Clear the arrayList for the sum of new row
                 alSumAll.Clear()
                 ' Fleet name As row header

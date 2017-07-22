@@ -34,7 +34,7 @@ Imports EwECore.Style
 Namespace Ecopath.Output
 
     <CLSCompliant(False)>
-    Public Class gridFisheryOutputQuantity
+    Public Class gridFisheryOutputCatch
         Inherits EwEGrid
 
         Public Sub New()
@@ -58,14 +58,14 @@ Namespace Ecopath.Output
 
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Core.nFleets
-                source = Core.FleetInputs(fleetIndex)
+                source = Core.EcopathFleetInputs(fleetIndex)
                 Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager,
                                                                      source, eVarNameFlags.Name, Nothing,
                                                                      cUnits.CurrencyOverTime)
             Next
 
             ' Total catch column
-            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALCATCH, cUnits.CurrencyOverTime)
+            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALCATCH)
 
             Me.FixedColumns = 2
         End Sub
@@ -81,137 +81,73 @@ Namespace Ecopath.Output
             ' Done?
             If Core.nFleets = 0 Then Return
 
-            ''Create rows for all groups and sum quantities in each row
-            For rowIndex As Integer = 1 To Core.nGroups
-                source = Core.EcoPathGroupInputs(rowIndex)
+            ' Create rows for all groups and sum quantities in each row
+            For iGroup As Integer = 1 To Core.nGroups
                 iRow = Me.AddRow()
-                FillRows(iRow, source)
-            Next rowIndex
+                FillRows(iRow, iGroup)
+            Next iGroup
 
-            'Create "Total catch" row (sum values in each column)
+            ' Create "Total catch" row (sum values in each column)
             FillTotalCatchRow()
 
-            'Create "Trophic level" row
+            ' Create "Trophic level" row
             FillTrophicLevelRow()
 
         End Sub
 
-        Private Sub FillRows(ByVal iRow As Integer, ByVal source As cCoreInputOutputBase)
+        Private Sub FillRows(ByVal iRow As Integer, ByVal iGroup As Integer)
 
-            Dim sourceSec As cCoreInputOutputBase = Nothing
-            Dim propLandings As cProperty = Nothing
-            Dim propDiscards As cProperty = Nothing
-            Dim alSumLandingsDiscards As ArrayList = New ArrayList()
-            Dim opSumLandingsDiscards As cMultiOperation = Nothing
-            Dim propSumLandingsDiscards As cFormulaProperty = Nothing
-            Dim propCell As PropertyCell = Nothing
+            Dim cell As EwECell = Nothing
+            Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+            Dim sGroupTotal As Single = 0
 
-            Dim alSumRow As ArrayList = New ArrayList()
-            Dim opSumRow As cMultiOperation = Nothing
-            Dim propSumRow As cFormulaProperty = Nothing
-
-            Dim blnAllZeroCells As Boolean = True
-
-            Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-            Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+            Me(iRow, 0) = New EwERowHeaderCell(CStr(iGroup))
+            Me(iRow, 1) = New EwERowHeaderCell(group.Name)
 
             ' For each fleet (each column) 
-            For fleetIndex As Integer = 1 To Core.nFleets
-                alSumLandingsDiscards.Clear()
-                ' Get the fleet object 
-                sourceSec = Core.FleetInputs(fleetIndex)
-                ' Get the index landing property
-                propLandings = PropertyManager.GetProperty(sourceSec, eVarNameFlags.Landings, source)
-                alSumLandingsDiscards.Add(propLandings)
-                ' Get the index discard property
-                propDiscards = PropertyManager.GetProperty(sourceSec, eVarNameFlags.Discards, source)
-                alSumLandingsDiscards.Add(propDiscards)
-                ' Set the property to the cell
-                opSumLandingsDiscards = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumLandingsDiscards.ToArray())
-                propSumLandingsDiscards = Me.Formula(opSumLandingsDiscards)
-                propCell = New PropertyCell(propSumLandingsDiscards)
-                ' Configure the cell
-                propCell.SuppressZero = True
-                ' Set the cell
-                Me(iRow, fleetIndex + 1) = propCell
-                If CSng(propCell.Value) > 0.0 Then blnAllZeroCells = False
+            For iFleet As Integer = 1 To Core.nFleets
 
-                'Sum quantities in a row
-                alSumRow.Add(propSumLandingsDiscards)
+                Dim fleet As cEcopathFleetOutput = Me.Core.EcoPathFleetOutputs(iFleet)
+                Dim sLanding As Single = fleet.LandingsByGroup(iGroup)
+                Dim sDeadDiscards As Single = fleet.DiscardMortByGroup(iGroup)
+
+                cell = New EwECell(sLanding + sDeadDiscards, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed)
+                cell.SuppressZero = True
+                Me(iRow, iFleet + 1) = cell
+
+                sGroupTotal += sLanding + sDeadDiscards
             Next
 
-            'Display the sum of quantities in a row
-            opSumRow = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumRow.ToArray())
-            propSumRow = Me.Formula(opSumRow)
-            propCell = New PropertyCell(propSumRow)
-            Me(iRow, Me.ColumnsCount - 1) = propCell
+            Me(iRow, Me.ColumnsCount - 1) = New EwECell(sGroupTotal, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
 
-            If blnAllZeroCells = True Then Me.RowsCount = Me.Rows.Count - 1
         End Sub
 
         Private Sub FillTotalCatchRow()
 
-            Dim iRow As Integer
-            Dim source As cCoreInputOutputBase = Nothing
-            Dim sourceSec As cCoreInputOutputBase = Nothing
-            Dim propLandings As cProperty = Nothing
-            Dim propDiscards As cProperty = Nothing
-            Dim alSumLandingsDiscards As ArrayList = New ArrayList()
-            Dim opSumLandingsDiscards As cMultiOperation = Nothing
-            Dim propSumLandingsDiscards As cFormulaProperty = Nothing
+            Dim iRow As Integer = Me.AddRow()
+            Dim sTot As Single = 0
 
-            Dim alSumCol As New ArrayList()
-            Dim opSumCol As cMultiOperation = Nothing
-            Dim propSumCol As cFormulaProperty = Nothing
+            Me(Me.RowsCount - 1, 0) = New EwERowHeaderCell()
+            Me(Me.RowsCount - 1, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALCATCH)
 
-            Dim alSumAll As New ArrayList()
-            Dim opSumAll As cMultiOperation = Nothing
-            Dim propSumAll As cFormulaProperty = Nothing
+            For iFleet As Integer = 1 To Core.nFleets
 
-            iRow = Me.AddRow()
-            Me(iRow, 0) = New EwERowHeaderCell("")
-            Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_TOTALCATCH)
+                Dim sFleetTot As Single = 0
+                Dim fleet As cEcopathFleetOutput = Core.EcoPathFleetOutputs(iFleet)
 
-            alSumAll.Clear()
-            For fleetIndex As Integer = 1 To Core.nFleets
-                source = Core.FleetInputs(fleetIndex)
-                alSumCol.Clear()
-
-                For rowIndex As Integer = 1 To Core.nGroups
-                    sourceSec = Core.EcoPathGroupInputs(rowIndex)
-                    alSumLandingsDiscards.Clear()
-                    ' Get the index landing property
-                    propLandings = Me.PropertyManager.GetProperty(source, eVarNameFlags.Landings, sourceSec)
-                    alSumLandingsDiscards.Add(propLandings)
-                    ' Get the index discard property
-                    propDiscards = Me.PropertyManager.GetProperty(source, eVarNameFlags.Discards, sourceSec)
-                    alSumLandingsDiscards.Add(propDiscards)
-                    ' Set the property 
-                    opSumLandingsDiscards = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumLandingsDiscards.ToArray())
-                    propSumLandingsDiscards = Me.Formula(opSumLandingsDiscards)
-
-                    'Sum values in a column
-                    alSumCol.Add(propSumLandingsDiscards)
-
-                    'Sum all values
-                    alSumAll.Add(propSumLandingsDiscards)
+                For iGroup As Integer = 1 To Core.nGroups
+                    sFleetTot += fleet.LandingsByGroup(iGroup) + fleet.DiscardMortByGroup(iGroup)
                 Next
-
-                'Display the sum of values in a column
-                opSumCol = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumCol.ToArray())
-                propSumCol = Me.Formula(opSumCol)
-                Me(Me.RowsCount - 1, fleetIndex + 1) = New PropertyCell(propSumCol)
+                Me(Me.RowsCount - 1, iFleet + 1) = New EwECell(sFleetTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
+                sTot += sFleetTot
             Next
-
-            'Display the sum of all values
-            opSumAll = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumAll.ToArray())
-            propSumAll = Me.Formula(opSumAll)
-            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New PropertyCell(propSumAll)
+            Me(Me.RowsCount - 1, Me.ColumnsCount - 1) = New EwECell(sTot, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Sum)
 
         End Sub
 
         Private Sub FillTrophicLevelRow()
 
+            ' Let's rewrite this when in a good mood to get rid of the property math. It's not needed for an output grid that does not refresh
             Dim iRow As Integer
             Dim sourceGrpIntput As cCoreInputOutputBase = Nothing
             Dim sourceGrpIntputSec As cCoreInputOutputBase = Nothing
@@ -254,7 +190,7 @@ Namespace Ecopath.Output
             alSumQuantityAll.Clear()
             alSumQuantityTTLXAll.Clear()
             For fleetIndex As Integer = 1 To Core.nFleets
-                sourceGrpIntput = Core.FleetInputs(fleetIndex)
+                sourceGrpIntput = Core.EcopathFleetInputs(fleetIndex)
                 alSumQuantityCol.Clear()
                 alSumQuantityTTLXCol.Clear()
 

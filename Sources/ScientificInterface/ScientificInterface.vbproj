@@ -184,7 +184,22 @@
     <Compile Include="Ecopath\frmModelParameters.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecopath\Output\gridFisheryOutputDiscard.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\gridFisheryOutputDiscardSurvival.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\gridFisheryOutputDiscardMort.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecopath\Output\gridFisheryOutputLandings.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecopath\Tools\FlowDiagram\cEcopathFlowDiagramData.vb" />
+    <Compile Include="Ecopath\Tools\FlowDiagram\frmEcopathFlowDiagram.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecopath\Tools\Taxonomy and traits\dlgDefineTaxonomy.Designer.vb">
       <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
     </Compile>
@@ -234,6 +249,12 @@
       <DependentUpon>dlgScaleVs.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecosim\Input\Vulnerabilities\dlgScaleVs.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\frmEcosimOutputFleetPlots.Designer.vb">
+      <DependentUpon>frmEcosimOutputFleetPlots.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\frmEcosimOutputFleetPlots.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Ecosim FlowDiagram\cEcosimFlowDiagramData.vb" />
@@ -287,6 +308,9 @@
     </Compile>
     <Compile Include="Ecospace\Input\frmMPAs.vb">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Input\gridEcospaceFishery.vb">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\gridEcospaceFleetDynamics.vb">
       <SubType>Component</SubType>
@@ -348,9 +372,6 @@
     </Compile>
     <Compile Include="Ecopath\gridDefineFleets.vb">
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Ecopath\Tools\FlowDiagram\frmEcopathFlowDiagram.vb">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecopath\dlgDefineGroups.Designer.vb">
       <DependentUpon>dlgDefineGroups.vb</DependentUpon>
@@ -654,10 +675,10 @@
     <Compile Include="Ecosim\Input\MediationFunction\frmMediationFunction.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\frmEcosimOutputPlots.Designer.vb">
-      <DependentUpon>frmEcosimOutputPlots.vb</DependentUpon>
+    <Compile Include="Ecosim\Output\frmEcosimOutputGroupPlots.Designer.vb">
+      <DependentUpon>frmEcosimOutputGroupPlots.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\frmEcosimOutputPlots.vb">
+    <Compile Include="Ecosim\Output\frmEcosimOutputGroupPlots.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\frmEcosimResults.Designer.vb">
@@ -880,7 +901,7 @@
     <Compile Include="Ecopath\Output\gridElectivity.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\gridFisheryOutputQuantity.vb">
+    <Compile Include="Ecopath\Output\gridFisheryOutputCatch.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\gridFisheryOutputValue.vb">
@@ -971,6 +992,9 @@
     <EmbeddedResource Include="Ecopath\frmModelParameters.resx">
       <DependentUpon>frmModelParameters.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecopath\Tools\FlowDiagram\frmEcopathFlowDiagram.resx">
+      <DependentUpon>frmEcopathFlowDiagram.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\Tools\Taxonomy and traits\dlgDefineTaxonomy.resx">
       <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
     </EmbeddedResource>
@@ -989,6 +1013,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\Vulnerabilities\dlgScaleVs.resx">
       <DependentUpon>dlgScaleVs.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\frmEcosimOutputFleetPlots.resx">
+      <DependentUpon>frmEcosimOutputFleetPlots.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Tools\Ecosim FlowDiagram\frmEcosimFlowDiagram.resx">
       <DependentUpon>frmEcosimFlowDiagram.vb</DependentUpon>
@@ -1077,10 +1105,6 @@
     <None Include="_Designs_\EwE6 application layout.cd" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Ecopath\Tools\FlowDiagram\frmEcopathFlowDiagram.resx">
-      <DependentUpon>frmEcopathFlowDiagram.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Ecopath\dlgDefineGroups.resx">
       <DependentUpon>dlgDefineGroups.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1101,9 +1125,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmMediationFunction.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\frmEcosimOutputPlots.resx">
+    <EmbeddedResource Include="Ecosim\Output\frmEcosimOutputGroupPlots.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>frmEcosimOutputPlots.vb</DependentUpon>
+      <DependentUpon>frmEcosimOutputGroupPlots.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Output\frmEcosimResults.resx">
       <SubType>Designer</SubType>

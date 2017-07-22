@@ -989,7 +989,9 @@ Public Class cEIIDataSource
     ''' <param name="iDBID">Database ID assigned to the new TS.</param>
     ''' <returns>Always false.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AppendTimeSeries(ByVal strName As String, ByVal iPool As Integer, ByVal timeSeriesType As eTimeSeriesType, ByVal sWeight As Single, ByVal asValues() As Single, ByRef iDBID As Integer) As Boolean _
+    Public Function AppendTimeSeries(ByVal strName As String, ByVal iPool As Integer, ByVal iPoolSec As Integer,
+                                     ByVal timeSeriesType As eTimeSeriesType, ByVal sWeight As Single,
+                                     ByVal asValues() As Single, ByRef iDBID As Integer) As Boolean _
             Implements DataSources.IEcosimDatasource.AppendTimeSeries
         Return False
     End Function

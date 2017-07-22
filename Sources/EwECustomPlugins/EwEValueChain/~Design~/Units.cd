@@ -101,7 +101,7 @@
       <FileName>Data\Flow elements\Units\cRetailerUnitDefault.vb</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="EwECore.cFleetInput" Collapsed="true">
+  <Class Name="EwECore.cEcopathFleetInput" Collapsed="true">
     <Position X="1.25" Y="3.25" Width="1.5" />
     <TypeIdentifier />
   </Class>

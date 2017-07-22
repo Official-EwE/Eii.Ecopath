@@ -60,7 +60,7 @@ Namespace Ecopath.Output
 
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Core.nFleets
-                source = Core.FleetInputs(fleetIndex)
+                source = Core.EcopathFleetInputs(fleetIndex)
                 Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
 
@@ -132,10 +132,10 @@ Namespace Ecopath.Output
 
             alSumRow.Clear()
             ' For each fleet (each column) 
-            For fleetIndex As Integer = 1 To Core.nFleets
+            For iFleet As Integer = 1 To Core.nFleets
                 alProdLandingsMarketPrice.Clear()
                 ' Get the fleet object 
-                sourceSec = Core.FleetInputs(fleetIndex)
+                sourceSec = Core.EcopathFleetInputs(iFleet)
                 ' Get the index landing property
                 propLandings = Me.PropertyManager.GetProperty(sourceSec, eVarNameFlags.Landings, source)
                 alProdLandingsMarketPrice.Add(propLandings)
@@ -148,8 +148,9 @@ Namespace Ecopath.Output
                 propCell = New PropertyCell(propProdLandingsMarketPrice)
                 ' Configure the cell
                 propCell.SuppressZero = True
+                propCell.Style = cStyleGuide.eStyleFlags.Sum Or cStyleGuide.eStyleFlags.NotEditable
                 ' Set the cell
-                Me(iRow, fleetIndex + 1) = propCell
+                Me(iRow, iFleet + 1) = propCell
 
                 'Sum values in a row
                 alSumRow.Add(propProdLandingsMarketPrice)
@@ -206,7 +207,7 @@ Namespace Ecopath.Output
 
             alSumAll.Clear()
             For fleetIndex As Integer = 1 To Core.nFleets
-                source = Core.FleetInputs(fleetIndex)
+                source = Core.EcopathFleetInputs(fleetIndex)
                 alSumCol.Clear()
 
                 For rowIndex As Integer = 1 To Core.nGroups
@@ -272,7 +273,7 @@ Namespace Ecopath.Output
                 ' Clear the arrayList for the new row
                 alSumFixedCPUESailCost.Clear()
 
-                source = Core.FleetInputs(fleetIndex)
+                source = Core.EcopathFleetInputs(fleetIndex)
 
                 'Fixed cost 
                 propFixedCost = Me.PropertyManager.GetProperty(source, eVarNameFlags.FixedCost)

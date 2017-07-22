@@ -65,9 +65,9 @@ Public Class gridFleetLPEffortBounds
 
                 Me.Rows.Insert(i)
                 Me(i, 0) = New EwERowHeaderCell(CStr(i))
-                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.Name)
-                Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSELowerLPEffort)
-                Me(i, 3) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSEUpperLPEffort)
+                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.Name)
+                Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSELowerLPEffort)
+                Me(i, 3) = New PropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSEUpperLPEffort)
 
             Next
 

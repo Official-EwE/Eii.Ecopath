@@ -1040,6 +1040,11 @@ Public Class cEcoSpace
                 Next
 
                 If m_Data.PredictEffort Then
+
+                    'Sets proportion of discards landed and discarded 
+                    'With the Ecosim Discards Forcing time series
+                    Me.setForcedDiscards(its, m_Data.YearNow)
+
                     If its >= 3 And Not bEffortAdjusted Then Me.AdjustTotalEffort()
                     stpwchEffort.Start()
                     If Me.m_Data.bUseEffortDistThreshold Then
@@ -1057,6 +1062,11 @@ Public Class cEcoSpace
 
                 ReDim Btime(m_Data.NGroups) 'this clears out btime
                 ReDim ConTotal(m_Data.NGroups)
+
+                Me.m_Data.debugTestDiscardsMaps()
+                Array.Clear(Me.m_Data.CatchMap, 0, Me.m_Data.CatchMap.Length)
+                Array.Clear(Me.m_Data.Landings, 0, Me.m_Data.Landings.Length)
+                Array.Clear(Me.m_Data.DiscardsMap, 0, Me.m_Data.DiscardsMap.Length)
 
                 If Me.m_tracerData.EcoSpaceConSimOn Then
                     'drive contaminant concentration with external data
@@ -1096,6 +1106,7 @@ Public Class cEcoSpace
                         Next j
                     Next i
                 Next 'For ip = 1 To m_Data.nvartot
+
 
                 'For ip = 1 To m_Data.nvartot
                 '    '********following will bypass unneeded solvegrid calls when NewMultiStanza=true
@@ -1155,8 +1166,11 @@ Public Class cEcoSpace
                 'sum biomass after Multistanza updates
                 Array.Clear(Btime, 0, Btime.Length)
 
+                'Set any biomass forced by the Spatial Temporal Biomass forcing layer
+                'back to the forced values
                 Me.RestoreForcedBiomass()
 
+                'Force Biomass with Ecosim forcing time series
                 Me.ForceBiomassWithEcosimTimeSeries(its)
 
                 For ip = 0 To m_Data.NGroups
@@ -1437,9 +1451,9 @@ Public Class cEcoSpace
         Try
             Dim nYears As Integer = CInt(m_Data.TotalTime)
             'clear out catch and landings data at the start of each timestep
-            Array.Clear(Me.m_Data.CatchMap, 0, Me.m_Data.CatchMap.Length)
-            Array.Clear(Me.m_Data.Landings, 0, Me.m_Data.Landings.Length)
-            Array.Clear(Me.m_Data.DiscardsMap, 0, Me.m_Data.DiscardsMap.Length)
+            'Array.Clear(Me.m_Data.CatchMap, 0, Me.m_Data.CatchMap.Length)
+            'Array.Clear(Me.m_Data.Landings, 0, Me.m_Data.Landings.Length)
+            'Array.Clear(Me.m_Data.DiscardsMap, 0, Me.m_Data.DiscardsMap.Length)
 
             If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceBeginTimeStep(m_Data, itt)
 
@@ -1564,7 +1578,7 @@ Public Class cEcoSpace
 
         Try
 
-            If Not Me.m_Data.UseEcosimForcing Then
+            If Not Me.m_Data.UseEcosimBiomassForcing Then
                 'User has turned OFF the Ecosim Biomass forcing
                 Exit Sub
             End If
@@ -1594,7 +1608,7 @@ Public Class cEcoSpace
 
                                 'VC 10-June-2016 The calculation below actually should scale based on area of cell, so cell width
                                 'we should revisit and fix the bug that Joe talkes about above
-                                'JB the biomass values are in kg/km I think that means the size of the cell is irrelevant
+                                'JB the biomass values are in kg/k I think that means the size of the cell is irrelevant
                                 '****************** SEE ABOVE  ************************
                                 If Me.m_Data.Depth(i, j) > 0 Then
                                     SumB += m_Data.Bcell(i, j, ip)
@@ -4536,6 +4550,7 @@ exitline:
                         Next j
                     Next i
 
+                    Dim sumEff As Single = 0, nEf As Integer = 0
                     For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
                             'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
@@ -4545,6 +4560,7 @@ exitline:
                                 '3-Feb-2014 Villy changed this to use Me.m_Data.EffZones(i, j) which is the index of the zone not the effort in the zone???
                                 'm_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * Me.m_Data.EffZones(i, j) * Attract(i, j) / TotAttractZone(Me.m_Data.EffZones(i, j))
                                 m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.m_Data.EffZones(i, j)) * Attract(i, j) / TotAttractZone(Me.m_Data.EffZones(i, j))
+
                                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                                 'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
                                 'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
@@ -4554,9 +4570,23 @@ exitline:
                                 '        Next isp
                                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+                                ''For debugging
+                                'sumEff += m_Data.EffortSpace(iFlt, i, j)
+                                'nEf += 1
                             End If
                         Next j
                     Next i
+
+                    ''xxxxxxxxxxxxxxxxxxxxxxxxxx
+                    ''For debugging
+                    'If iFlt = 3 Then
+                    '    sumEff /= nEf
+                    '    System.Console.WriteLine("Effort Distribution Fleet = " + iFlt.ToString _
+                    '                                + ", sim effort = " + m_SimData.FishRateGear(iFlt, arguments.iCumMonth).ToString _
+                    '                                + ", avg effort = " + sumEff.ToString _
+                    '                                + ", error = " + (sumEff / m_SimData.FishRateGear(iFlt, arguments.iCumMonth)).ToString)
+                    'End If
+                    ''xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 Next iFlt
 
@@ -5121,7 +5151,11 @@ exitline:
                     If Me.m_Data.IsFished(iflt, irow, jcol) Then
                         For igrp As Integer = 1 To m_Data.NGroups
                             'Fishing Mort Rate in a cell by group
-                            m_Data.Ftot(igrp, irow, jcol) += m_Data.EffortSpace(iflt, irow, jcol) * m_SimData.relQ(iflt, igrp) / Me.m_Data.PAreaFished(iflt)(irow, jcol)
+                            Dim f As Single = m_SimData.relQ(iflt, igrp) * (m_SimData.PropLandedTime(iflt, igrp) + m_SimData.Propdiscardtime(iflt, igrp))
+                            m_Data.Ftot(igrp, irow, jcol) += m_Data.EffortSpace(iflt, irow, jcol) * f / Me.m_Data.PAreaFished(iflt)(irow, jcol)
+                            '  m_Data.Ftot(igrp, irow, jcol) += m_Data.EffortSpace(iflt, irow, jcol) * m_SimData.relQ(iflt, igrp) / Me.m_Data.PAreaFished(iflt)(irow, jcol)
+
+                            ' Debug.Assert(m_Data.Ftot(igrp, irow, jcol) = 0)
                         Next igrp
                     End If ' m_Data.Depth(i, j) > 0
 
@@ -5227,6 +5261,71 @@ exitline:
         Me.bEffortAdjusted = True
 
     End Sub
+
+
+    Private Sub setForcedDiscards(ByVal iModelTimeStep As Integer, iYear As Integer)
+        Dim bForced As Boolean = False
+        Dim bFChanged As Boolean = False
+        Dim totCatch As Single
+
+        If Not Me.m_Data.UseEcosimDiscardForcing Then
+            Return
+        End If
+
+        Dim iForcedTime As Integer = Me.m_refdata.toForcingTimeStep(iModelTimeStep, iYear)
+
+        For igrp As Integer = 1 To Me.m_Data.NGroups
+            For iflt As Integer = 1 To Me.m_Data.nFleets
+
+                If Me.m_refdata.PoolForceDiscardMort(iflt, igrp, iForcedTime) >= 0.0 Then
+                    'Discard Mortality has changed
+                    'Save the discard mortality rate for this timestep
+                    Me.m_SimData.PropDiscardMortTime(iflt, igrp) = Me.m_refdata.PoolForceDiscardMort(iflt, igrp, iForcedTime)
+                    'Propdiscardtime() does NOT include discards that survived
+                    Me.m_SimData.Propdiscardtime(iflt, igrp) = (1 - Me.m_SimData.PropLandedTime(iflt, igrp)) * Me.m_SimData.PropDiscardMortTime(iflt, igrp)
+
+                    bFChanged = True
+                    bForced = True
+                End If
+
+                If Me.m_refdata.PoolForceDiscardProp(iflt, igrp, iForcedTime) >= 0.0 Then
+                    'Propdiscardtime does not include discards that survived
+                    Me.m_SimData.Propdiscardtime(iflt, igrp) = Me.m_refdata.PoolForceDiscardProp(iflt, igrp, iForcedTime) * Me.m_SimData.PropDiscardMortTime(iflt, igrp)
+                    Me.m_SimData.PropLandedTime(iflt, igrp) = 1 - Me.m_refdata.PoolForceDiscardProp(iflt, igrp, iForcedTime)
+
+                    bForced = True
+                    bFChanged = True
+                End If
+
+                If bFChanged Then
+                    Debug.Assert((Me.m_SimData.PropLandedTime(iflt, igrp) + Me.m_SimData.Propdiscardtime(iflt, igrp)) <= 1.0, "Opps cEcosimModel.setForcedDiscards() may have calculated an incorrect PropLandedTime() or Propdiscardtime()")
+                    'FishMGear() only contains catch that incure mortality
+                    'Changing the discard mortality rate changes F
+                    'Changing the proportion of landings and discards changes F if discard mort rate is not 1
+                    'Calulate the new F from base values 
+                    totCatch = (m_EPdata.Landing(iflt, igrp) + m_EPdata.Discard(iflt, igrp)) * (Me.m_SimData.PropLandedTime(iflt, igrp) + Me.m_SimData.Propdiscardtime(iflt, igrp))
+                    m_SimData.FishMGear(iflt, igrp) = totCatch / m_EPdata.B(igrp)
+
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'for debugging
+                    'FishMGear should equal relQ * [proportion of catch mort] 
+                    'debugTestRelQFishMGear will test this assumption
+                    'FishMGear() = relQ() * (PropLandedTime() + Propdiscardtime())
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    bFChanged = False
+                End If 'bFChanged
+
+            Next iflt
+        Next igrp
+
+        'If bForced Then
+        '    Me.SetFtimeFromGear(m_Data.StartBiomass, iModelTimeStep, QYear, False)
+        '    Debugging check that FishMGear And relQ are still in sync
+        '    Me.debugTestRelQFishMGear()
+        'End If
+
+    End Sub
+
 
     ''' <summary>
     ''' solvetime() is not called at this time. It has been left in for reference

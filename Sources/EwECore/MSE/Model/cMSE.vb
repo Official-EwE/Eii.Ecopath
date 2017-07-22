@@ -843,7 +843,7 @@ Namespace MSE
 
             'reloads time series forcing data into core arrays and resets FisForced(groups)
             'F into FishRateNo()
-            Me.m_core.m_TSData.DoDatValCalculations(Me.m_esData)
+            Me.m_core.m_TSData.DoDatValCalculations()
 
             'resets F in FishRateNo() based on forced Catches or Effort 
             Me.m_Ecosim.SetBaseFFromGear()

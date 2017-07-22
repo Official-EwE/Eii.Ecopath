@@ -62,9 +62,8 @@ Namespace Ecopath.Input
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             ' Dynamic column header - fleet names
-            For fleetIndex As Integer = 1 To Core.nFleets
-
-                source = Core.FleetInputs(fleetIndex)
+            For fleetIndex As Integer = 1 To core.nFleets
+                source = core.EcopathFleetInputs(fleetIndex)
                 md = source.GetVariableMetadata(eVarNameFlags.OffVesselPrice)
                 Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
 
@@ -141,7 +140,7 @@ Namespace Ecopath.Input
             ' For each fleet
             For fleetIndex As Integer = 1 To Core.nFleets
                 ' Get the fleet info
-                sourceSec = Core.FleetInputs(fleetIndex)
+                sourceSec = Core.EcopathFleetInputs(fleetIndex)
                 ' The market price is indexed by (fleetIndex, groupIndex)
                 ' Add the dynamic property to the destined cell
                 Me(iRow, fleetIndex + 1) = New PropertyCell(Me.PropertyManager, sourceSec, eVarNameFlags.OffVesselPrice, source)

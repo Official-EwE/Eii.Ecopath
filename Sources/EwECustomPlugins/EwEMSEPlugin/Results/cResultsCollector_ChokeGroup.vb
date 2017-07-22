@@ -48,7 +48,7 @@ Public Class cResultsCollector_ChokeGroup
 
     Public Overrides ReadOnly Property ElementName(iElement As Integer) As String
         Get
-            Return m_MSE.Core.FleetInputs(iElement).Name
+            Return m_MSE.Core.EcopathFleetInputs(iElement).Name
         End Get
     End Property
 

@@ -434,11 +434,11 @@ Public Class cSurvivability
             writer.WriteLine("Iteration,FleetNumber,FleetName,GroupNumber,GroupName,Survivability")
 
             For Each entry As cSampledSurvivability In m_ListOfSampledSurvivabilities
-                writer.WriteLine(cStringUtils.ToCSVField(entry.Iteration) & "," & _
-                                 cStringUtils.ToCSVField(entry.FleetNo) & "," & _
-                                 cStringUtils.ToCSVField(mcore.FleetInputs(entry.FleetNo).Name) & "," & _
-                                 cStringUtils.ToCSVField(entry.GroupNo) & "," & _
-                                 cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," & _
+                writer.WriteLine(cStringUtils.ToCSVField(entry.Iteration) & "," &
+                                 cStringUtils.ToCSVField(entry.FleetNo) & "," &
+                                 cStringUtils.ToCSVField(mcore.EcopathFleetInputs(entry.FleetNo).Name) & "," &
+                                 cStringUtils.ToCSVField(entry.GroupNo) & "," &
+                                 cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," &
                                  cStringUtils.ToCSVField(entry.Survivability))
             Next
 
@@ -622,23 +622,23 @@ Public Class cSurvivability
             If mListofSuriveDistParams.Count = 0 Then
                 For iFleet = 1 To mcore.nFleets
                     For iGroup = 1 To mcore.nGroups
-                        If mcore.FleetInputs(iFleet).Landings(iGroup) + mcore.FleetInputs(iFleet).Discards(iGroup) > 0 Then
-                            writer.WriteLine(cStringUtils.ToCSVField(iFleet) & "," & _
-                                     cStringUtils.ToCSVField(mcore.FleetInputs(iFleet).Name) & "," & _
-                                     cStringUtils.ToCSVField(iGroup) & "," & _
-                                     cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(iGroup).Name) & "," & _
-                                     cStringUtils.ToCSVField(DefaultAlpha) & "," & _
+                        If mcore.EcopathFleetInputs(iFleet).Landings(iGroup) + mcore.EcopathFleetInputs(iFleet).Discards(iGroup) > 0 Then
+                            writer.WriteLine(cStringUtils.ToCSVField(iFleet) & "," &
+                                     cStringUtils.ToCSVField(mcore.EcopathFleetInputs(iFleet).Name) & "," &
+                                     cStringUtils.ToCSVField(iGroup) & "," &
+                                     cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(iGroup).Name) & "," &
+                                     cStringUtils.ToCSVField(DefaultAlpha) & "," &
                                      cStringUtils.ToCSVField(DefaultBeta))
                         End If
                     Next
                 Next
             Else
                 For Each entry As cSurvivabilityDistributonParam In mListofSuriveDistParams
-                    writer.WriteLine(cStringUtils.ToCSVField(entry.FleetNo) & "," & _
-                                     cStringUtils.ToCSVField(mcore.FleetInputs(entry.FleetNo).Name) & "," & _
-                                     cStringUtils.ToCSVField(entry.GroupNo) & "," & _
-                                     cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," & _
-                                     cStringUtils.ToCSVField(entry.Alpha) & "," & _
+                    writer.WriteLine(cStringUtils.ToCSVField(entry.FleetNo) & "," &
+                                     cStringUtils.ToCSVField(mcore.EcopathFleetInputs(entry.FleetNo).Name) & "," &
+                                     cStringUtils.ToCSVField(entry.GroupNo) & "," &
+                                     cStringUtils.ToCSVField(mcore.EcoPathGroupInputs(entry.GroupNo).Name) & "," &
+                                     cStringUtils.ToCSVField(entry.Alpha) & "," &
                                      cStringUtils.ToCSVField(entry.Beta))
                 Next
             End If

@@ -142,7 +142,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrDisplayOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 18</value>
+    <value>135, 18</value>
   </data>
   <data name="m_hdrDisplayOptions.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -219,6 +219,66 @@
   <data name="&gt;&gt;m_chkShowZ.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="m_chkShowLandings.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkShowLandings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_chkShowLandings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 113</value>
+  </data>
+  <data name="m_chkShowLandings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="m_chkShowLandings.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_chkShowLandings.Text" xml:space="preserve">
+    <value>Show &amp;landings</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowLandings.Name" xml:space="preserve">
+    <value>m_chkShowLandings</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowLandings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowLandings.Parent" xml:space="preserve">
+    <value>m_plContent</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowLandings.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_chkShowDiscards.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkShowDiscards.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_chkShowDiscards.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 90</value>
+  </data>
+  <data name="m_chkShowDiscards.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 17</value>
+  </data>
+  <data name="m_chkShowDiscards.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_chkShowDiscards.Text" xml:space="preserve">
+    <value>Show &amp;discards</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowDiscards.Name" xml:space="preserve">
+    <value>m_chkShowDiscards</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowDiscards.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowDiscards.Parent" xml:space="preserve">
+    <value>m_plContent</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowDiscards.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="m_chkShowCatch.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -244,7 +304,7 @@
     <value>m_plContent</value>
   </data>
   <data name="&gt;&gt;m_chkShowCatch.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_plContent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -256,7 +316,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 88</value>
+    <value>135, 134</value>
   </data>
   <data name="m_plContent.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -280,7 +340,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrGeneral.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 18</value>
+    <value>135, 18</value>
   </data>
   <data name="m_hdrGeneral.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -532,7 +592,7 @@
     <value>68, 125</value>
   </data>
   <data name="m_nudMarginTB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 20</value>
+    <value>64, 20</value>
   </data>
   <data name="m_nudMarginTB.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -583,7 +643,7 @@
     <value>68, 99</value>
   </data>
   <data name="m_nudMarginLR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 20</value>
+    <value>64, 20</value>
   </data>
   <data name="m_nudMarginLR.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -634,7 +694,7 @@
     <value>68, 73</value>
   </data>
   <data name="m_nudDotSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 20</value>
+    <value>64, 20</value>
   </data>
   <data name="m_nudDotSize.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -658,7 +718,7 @@
     <value>68, 21</value>
   </data>
   <data name="m_nudRowNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 20</value>
+    <value>64, 20</value>
   </data>
   <data name="m_nudRowNum.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -682,7 +742,7 @@
     <value>68, 47</value>
   </data>
   <data name="m_nudLineWidth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 20</value>
+    <value>64, 20</value>
   </data>
   <data name="m_nudLineWidth.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -703,13 +763,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plFormatting.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 88</value>
+    <value>0, 134</value>
   </data>
   <data name="m_plFormatting.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plFormatting.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 264</value>
+    <value>135, 264</value>
   </data>
   <data name="m_plFormatting.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -739,7 +799,7 @@
     <value>3</value>
   </data>
   <data name="m_tlpControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 482</value>
+    <value>135, 482</value>
   </data>
   <data name="m_tlpControl.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -787,7 +847,7 @@
     <value>0, 25</value>
   </data>
   <data name="m_pbPlots.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1019, 457</value>
+    <value>1042, 457</value>
   </data>
   <data name="m_pbPlots.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1018,7 +1078,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1019, 25</value>
+    <value>1042, 25</value>
   </data>
   <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1054,7 +1114,7 @@
     <value>1185, 484</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>160</value>
+    <value>137</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>

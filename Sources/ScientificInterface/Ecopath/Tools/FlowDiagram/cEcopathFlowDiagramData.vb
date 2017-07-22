@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -120,7 +120,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 iIndex -= c.nGroups
                 Dim b As Single = 0
                 For i As Integer = 1 To c.nGroups
-                    b += c.FleetInputs(iIndex).Landings(i) + c.FleetInputs(iIndex).Discards(i)
+                    b += c.EcopathFleetInputs(iIndex).Landings(i) + c.EcopathFleetInputs(iIndex).Discards(i)
                 Next
                 Return b
             End Get
@@ -145,7 +145,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 Dim c As cCore = Me.UIContext.Core
                 If (iIndex <= c.nGroups) Then Return c.EcoPathGroupInputs(iIndex).Name
                 iIndex -= c.nGroups
-                Return c.FleetInputs(iIndex).Name
+                Return c.EcopathFleetInputs(iIndex).Name
             End Get
         End Property
 
@@ -190,7 +190,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 End If
                 iPred -= c.nGroups
                 If (iPrey <= c.nGroups) Then
-                    Dim fleet As cFleetInput = c.FleetInputs(iPred)
+                    Dim fleet As cEcopathFleetInput = c.EcopathFleetInputs(iPred)
                     Return fleet.Landings(iPrey) + fleet.Discards(iPrey)
                 End If
                 Return 0

@@ -2291,6 +2291,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Having time series {0} applied could give erroneous results in the Management Strategy Evalutions. Are you sure you want to continue running?.
+        '''</summary>
+        Public Shared ReadOnly Property MSE_DISCARD_TIMESERIES_WARNING() As String
+            Get
+                Return ResourceManager.GetString("MSE_DISCARD_TIMESERIES_WARNING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Failed to set the value. Fix F and Fixed escapement cannot both contain a value..
         '''</summary>
         Public Shared ReadOnly Property MSE_FIXF_FIXESC_FAILEDVALIDATION() As String

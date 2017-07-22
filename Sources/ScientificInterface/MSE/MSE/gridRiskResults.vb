@@ -138,7 +138,7 @@ Public Class gridRiskResults
                 lstData1 = mse.FleetStats
                 lstData2 = mse.EffortStats
                 For i As Integer = 1 To Me.UIContext.Core.nFleets
-                    lSources.Add(Me.UIContext.Core.FleetInputs(i))
+                    lSources.Add(Me.UIContext.Core.EcopathFleetInputs(i))
                 Next
             End If
 
@@ -197,7 +197,7 @@ Public Class gridRiskResults
                 If Me.m_type = eGridType.Group And columnIndex > 8 Then
                     Dim noCatch As Boolean = True
                     For iflt As Integer = 1 To Me.Core.nFleets
-                        If Me.Core.FleetInputs(iflt).Landings(iIndex) + Me.Core.FleetInputs(iflt).Discards(iIndex) > 0 Then
+                        If Me.Core.EcopathFleetInputs(iflt).Landings(iIndex) + Me.Core.EcopathFleetInputs(iflt).Discards(iIndex) > 0 Then
                             noCatch = False
                             Exit For
                         End If

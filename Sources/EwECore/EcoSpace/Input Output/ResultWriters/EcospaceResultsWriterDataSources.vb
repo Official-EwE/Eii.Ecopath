@@ -195,7 +195,7 @@ Public Class cCatchResultsDataSource
     ''' </summary>
     Private Class cCatch
 
-        Public Sub New(f As cFleetInput, g As cCoreGroupBase)
+        Public Sub New(f As cEcopathFleetInput, g As cCoreGroupBase)
             Me.FleetName = f.Name
             Me.FleetIndex = f.Index
             Me.GroupName = g.Name
@@ -231,11 +231,11 @@ Public Class cCatchResultsDataSource
     Public Overrides Sub Init(Optional ByVal OptionalIndex As Integer = 0)
 
         m_lstCatch = New List(Of cCatch)
-        Dim fleet As cFleetInput = Nothing
+        Dim fleet As cEcopathFleetInput = Nothing
         Dim group As cCoreGroupBase = Nothing
 
         For iFleet As Integer = 1 To Me.m_core.nFleets
-            fleet = Me.m_core.FleetInputs(iFleet)
+            fleet = Me.m_core.EcopathFleetInputs(iFleet)
             For iGroup As Integer = 1 To Me.m_core.nGroups
                 group = Me.m_core.EcoPathGroupInputs(iGroup)
                 If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) > 0 Then
@@ -441,7 +441,7 @@ Public Class cRegionCatchResultsDataSource
     ''' </summary>
     Private Class cRegion
 
-        Public Sub New(f As cFleetInput, g As cCoreGroupBase, RegionIndex As Integer)
+        Public Sub New(f As cEcopathFleetInput, g As cCoreGroupBase, RegionIndex As Integer)
             Me.FleetName = f.Name
             Me.FleetIndex = f.Index
             Me.GroupName = g.Name
@@ -482,11 +482,11 @@ Public Class cRegionCatchResultsDataSource
         m_iRegionIndex = OptionalIndex
         m_lstRegions = New List(Of cRegion)
 
-        Dim fleet As cFleetInput = Nothing
+        Dim fleet As cEcopathFleetInput = Nothing
         Dim group As cCoreGroupBase = Nothing
 
         For iFleet As Integer = 1 To Me.m_core.nFleets
-            fleet = Me.m_core.FleetInputs(iFleet)
+            fleet = Me.m_core.EcopathFleetInputs(iFleet)
             For iGroup As Integer = 1 To Me.m_core.nGroups
                 group = Me.m_core.EcoPathGroupInputs(iGroup)
                 If (fleet.Landings(iGroup) + fleet.Discards(iGroup)) > 0 Then

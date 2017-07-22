@@ -249,6 +249,18 @@ Public Class cEcospaceTimestep
         End Get
     End Property
 
+
+    ''' <summary>
+    ''' Discard mortality dimensioned by Row, Col and Group
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns>Matrix of discard mortality at this timestep</returns>
+    Public ReadOnly Property DiscardMortalityMap() As Single(,,)
+        Get
+            Return Me.m_spaceData.DiscardsMap
+        End Get
+    End Property
+
     ''' <summary>
     ''' KemptonsQ map dimensioned by Row, Col
     ''' </summary>
@@ -622,7 +634,8 @@ Public Class cEcospaceTimestep
         Select Case varName
             Case eVarNameFlags.EcospaceMapBiomass,
                  eVarNameFlags.EcospaceMapCatch,
-                 eVarNameFlags.LayerHabitatCapacity
+                 eVarNameFlags.LayerHabitatCapacity,
+                 eVarNameFlags.EcospaceMapDiscards
                 lLayers.Add(Nothing) ' Add 0-item emptyness
                 For igroup As Integer = 1 To Me.m_core.nGroups
                     lLayers.Add(New cTimestepLayerGroup(Me.m_core, Me, varName, igroup))
@@ -662,6 +675,9 @@ Public Class cEcospaceTimestep
                 Return Me.FishingEffortMap
             Case eVarNameFlags.EcospaceMapSumEffort
                 Return Me.m_sumEffortMap
+
+            Case eVarNameFlags.EcospaceMapDiscards
+                Return Me.DiscardMortalityMap
             Case eVarNameFlags.Concentration
                 Return Me.ContaminantMap
             Case eVarNameFlags.EcospaceMapShannonDiversity

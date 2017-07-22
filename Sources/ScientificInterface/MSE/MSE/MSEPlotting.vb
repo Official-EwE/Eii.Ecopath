@@ -370,10 +370,10 @@ Friend Class cMSEPlotter
                     Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
                     refPoint = New cMSERefPoint(grp.CatchRefLower, grp.CatchRefUpper)
                 Case eMSEPlotData.FleetValue
-                    Dim flt As cMSEFleetInput = Me.m_manager.FleetInputs(ItemIndex)
+                    Dim flt As cMSEFleetInput = Me.m_manager.EcopathFleetInputs(ItemIndex)
                     refPoint = New cMSERefPoint(flt.CatchRefLower, flt.CatchRefUpper)
                 Case eMSEPlotData.Effort
-                    Dim flt As cMSEFleetInput = Me.m_manager.FleetInputs(ItemIndex)
+                    Dim flt As cMSEFleetInput = Me.m_manager.EcopathFleetInputs(ItemIndex)
                     refPoint = New cMSERefPoint(flt.EffortRefLower, flt.EffortRefUpper)
 
             End Select
@@ -481,9 +481,9 @@ Friend Class cMSEPlotter
 
             Case eMSEPlotData.Effort, eMSEPlotData.FleetValue
                 'By Fleet
-                Dim flt As cFleetInput
+                Dim flt As cEcopathFleetInput
                 For iflt As Integer = 1 To Me.m_uic.Core.nFleets
-                    flt = Me.m_uic.Core.FleetInputs(iflt)
+                    flt = Me.m_uic.Core.EcopathFleetInputs(iflt)
                     If Me.m_uic.StyleGuide.FleetVisible(flt.Index) Then
                         ipane += 1
                         Me.m_zgh.ConfigurePane(flt.Name, Me.XLabel, xStart, _

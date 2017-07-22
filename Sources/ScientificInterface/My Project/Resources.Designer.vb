@@ -2103,15 +2103,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} [0, 1].
-        '''</summary>
-        Public ReadOnly Property HEADERMASK_UNIT_ZEROTOONE() As String
-            Get
-                Return ResourceManager.GetString("HEADERMASK_UNIT_ZEROTOONE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to EwE5 database import.
         '''</summary>
         Public ReadOnly Property IMPORT_ERROR_CAPTION() As String
@@ -2198,6 +2189,1086 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_LOAD() As String
             Get
                 Return ResourceManager.GetString("LABEL_LOAD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply egg production.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_APPLYEGGPROD() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_APPLYEGGPROD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply forcing (consumer).
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_APPLYFFCONS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_APPLYFFCONS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply forcing (detritus).
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_APPLYFFDET() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_APPLYFFDET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply forcing (producer).
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_APPLYFFPROD() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_APPLYFFPROD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply functional responses.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_APPLYFUNCTIONALRESPONSE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_APPLYFUNCTIONALRESPONSE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply mediation (consumer).
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_APPLYMEDCONS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_APPLYMEDCONS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply mediation (detritus).
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_APPLYMEDDET() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_APPLYMEDDET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply mediation (producer).
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_APPLYMEDPROD() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_APPLYMEDPROD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply forcing (other mortality).
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_APPLYOTHERMORT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_APPLYOTHERMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Basic estimates.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_BASICESTIMATES() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_BASICESTIMATES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Basic input.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_BASICINPUT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_BASICINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Catch.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_CATCH() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_CATCH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Consumption.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_CONSUMPTION() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_CONSUMPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Detritus fate.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_DETRITUSFATE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_DETRITUSFATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Diet composition.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_DIETCOMP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_DIETCOMP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discard mortality.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_DISCARDMORT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_DISCARDMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discard survival.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_DISCARSURV() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_DISCARSURV", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim parameters.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_ECOSIMPARMS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_ECOSIMPARMS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Egg production.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_EGGPROD() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_EGGPROD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Electivity.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_ELECTIVITY() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_ELECTIVITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishery.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FISHERY() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FISHERY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fleets.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FISHERY_DEF() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FISHERY_DEF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discard fate.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FISHERY_DISCARDFATE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FISHERY_DISCARDFATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discard mortality rate.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FISHERY_DISCARDMORTRATE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FISHERY_DISCARDMORTRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discards.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FISHERY_DISCARDS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FISHERY_DISCARDS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Landings.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FISHERY_LANDINGS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FISHERY_LANDINGS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing effort.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FISHINGEFFORT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FISHINGEFFORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing mortality.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FISHINGMORT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FISHINGMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing mortality rates.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FISHMORTRATE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FISHMORTRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fleet size dynamics.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FLEETSIZEDYNAMICS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FLEETSIZEDYNAMICS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Flow diagram.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FLOWDIAGRAM() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FLOWDIAGRAM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Forcing function.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FORCINGFUNCTION() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FORCINGFUNCTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Functional responses.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_FUNCTIONALRESPONSE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_FUNCTIONALRESPONSE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to PSD contribution plot.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_GROWTHCONTR() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_GROWTHCONTR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to PSD contribution result.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_GROWTHCONTRRESULT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_GROWTHCONTRRESULT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Growth estimates.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_GROWTHESTIMATES() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_GROWTHESTIMATES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Input.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_INPUT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_INPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Key indices.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_KEYINDICES() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_KEYINDICES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Landings.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_LANDINGS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_LANDINGS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mediation.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MEDIATION() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MEDIATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Model parameters.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MODELPARMS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MODELPARMS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mortalities.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MORTALITIES() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MORTALITIES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Mortality rates.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MORTALITRATES() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MORTALITRATES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Management procedures (MSE).
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fleet CVs.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_ASSESSMENTFLEET() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_ASSESSMENTFLEET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Group CVs.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_ASSESSMENTGROUP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_ASSESSMENTGROUP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Assessments.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_ASSESSMENTS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_ASSESSMENTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Effort tracking.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_EFFORTTRACKING() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_EFFORTTRACKING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fixed F, escapement, TAC.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_FIXEDESCAPE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_FIXEDESCAPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fleet weights.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_FLEETWEIGHTS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_FLEETWEIGHTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSE fleet.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_MSEFLEET() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_MSEFLEET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSE group.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_MSEGROUP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_MSEGROUP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSE Options.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_OPTIONS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_OPTIONS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSE plots.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_PLOTS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_PLOTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Quota share.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_QUOTASHARE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_QUOTASHARE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Recruitment.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_RECRUITMENT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_RECRUITMENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Reference levels.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_REFLEVELS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_REFLEVELS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSY.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_REFMSY() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_REFMSY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Regulatory.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_REGULATORY() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_REGULATORY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSE results.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_RESULTS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_RESULTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run MSE.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_RUN() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_RUN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Target fishing mortality.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_MSE_TFM() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_MSE_TFM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Niche overlap.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_NICHEOVERLAP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_NICHEOVERLAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Niche overlap plot.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_NICHEOVERLAPPLOT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_NICHEOVERLAPPLOT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Non-market price.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_NONMARKTEPRICE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_NONMARKTEPRICE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Off-vessel price.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_OFFVESSELPRICE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_OFFVESSELPRICE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Other production.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_OTHERPRODUCTION() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_OTHERPRODUCTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Output.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_OUTPUT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_OUTPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Pedigree.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_PEDIGREE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_PEDIGREE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Predator overlap.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_PREDATOROVERLAP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_PREDATOROVERLAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Predation mortality rates.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_PREDMORTRATE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_PREDMORTRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Prey overlap.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_PREYOVERLAP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_PREYOVERLAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Price elasticity.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_PRICEELAST() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_PRICEELAST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Particle size distribution.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_PSD() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_PSD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Growth input.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_PSD_GROWTHINPUT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_PSD_GROWTHINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to PSD plot by group.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_PSDPLOTGROUP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_PSDPLOTGROUP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Size weight plot.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_PSDPLOTWEIGHT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_PSDPLOTWEIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Respiration.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_RESPIRATION() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_RESPIRATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run PSD.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_RUNPSD() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_RUNPSD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Search rates.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SEARCHRATES() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SEARCHRATES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim all fits.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIM_ALLFITS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIM_ALLFITS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing policy search.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIM_FISHINGPOLICY() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIM_FISHINGPOLICY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fit to time series.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIM_FIT2TS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIM_FIT2TS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim fleet plots.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIM_FLEETPLOTS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIM_FLEETPLOTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim Flow diagram.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIM_FLOWDIAGRAM() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIM_FLOWDIAGRAM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim group plots.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIM_GROUPPLOTS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIM_GROUPPLOTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Monte Carlo simulation.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIM_MONTECARLO() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIM_MONTECARLO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSY search.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIM_MSY() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIM_MSY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim results.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIM_RESULTS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIM_RESULTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run Ecosim.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIM_RUN() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIM_RUN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Stock reduction plot.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIM_SRPLOT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIM_SRPLOT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Suitability plot.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIM_SUSTPLOT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIM_SUSTPLOT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Group info.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SIMGROUPINFO() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SIMGROUPINFO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Advection.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_ADVECTION() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_ADVECTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Disperal.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_DISPERSAL() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_DISPERSAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to External data.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_EXTERNALDATA() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_EXTERNALDATA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace fishery.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_FISHERY() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_FISHERY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fleet dynamics.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_FLEETDYNAMICS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_FLEETDYNAMICS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Habitat based foraging.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_HABCAP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_HABCAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Apply foraging responses.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_HABCAPAPPLY() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_HABCAPAPPLY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Group capacity model.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_HABCAPMODEL() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_HABCAPMODEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Habitat fishery.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_HABFISHERY() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_HABFISHERY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Habitat foraging usage.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_HABITATPREFS1() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_HABITATPREFS1", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Maps.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_MAPS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_MAPS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Marine Protected Areas.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_MPA() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_MPA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MPA enforcement.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_MPAENFORCEMENT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_MPAENFORCEMENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Spatial optimizations.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_MPAOPT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_MPAOPT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace parameters.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_PARAMS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_PARAMS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace results.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_RESULTS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_RESULTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Run Ecospace.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_SPACE_RUN() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_SPACE_RUN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Statistics.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_STATISTICS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_STATISTICS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Time series.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_TIMESERIES() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_TIMESERIES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Tools.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_TOOLS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_TOOLS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecotracer.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_TRACER() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_TRACER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecotracer input.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_TRACER_INPUT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_TRACER_INPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecotracer output.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_TRACER_OUTPUT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_TRACER_OUTPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecotracer parameters.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_TRACER_PARAMS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_TRACER_PARAMS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Traits.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_TRAITS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_TRAITS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Value.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_VALUE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_VALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Vulnerabilities.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_VULNERABILITES() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_VULNERABILITES", resourceCulture)
             End Get
         End Property
         
@@ -4343,7 +5414,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to  ({0} connection/s).
+        '''  Looks up a localized string similar to  {0} connection/s.
         '''</summary>
         Public ReadOnly Property STATUSSTRIP_ECOSPACE_CONNECTIONS() As String
             Get
@@ -4352,11 +5423,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to  (Ecosim biomass forcing).
+        '''  Looks up a localized string similar to  Ecosim biomass.
         '''</summary>
-        Public ReadOnly Property STATUSSTRIP_ECOSPACE_ECOSIMBIOFORCING() As String
+        Public ReadOnly Property STATUSSTRIP_ECOSPACE_ECOSIMBIOMASSFORCING() As String
             Get
-                Return ResourceManager.GetString("STATUSSTRIP_ECOSPACE_ECOSIMBIOFORCING", resourceCulture)
+                Return ResourceManager.GetString("STATUSSTRIP_ECOSPACE_ECOSIMBIOMASSFORCING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to  Ecosim discard.
+        '''</summary>
+        Public ReadOnly Property STATUSSTRIP_ECOSPACE_ECOSIMDISCARDFORCING() As String
+            Get
+                Return ResourceManager.GetString("STATUSSTRIP_ECOSPACE_ECOSIMDISCARDFORCING", resourceCulture)
             End Get
         End Property
         

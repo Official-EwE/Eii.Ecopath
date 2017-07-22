@@ -122,7 +122,7 @@
     <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
-    <value>Relative biomass  (reference)</value>
+    <value>Relative biomass (reference)</value>
     <comment>Time series type</comment>
   </data>
   <data name="TS_TYPE_TOTALMORT" xml:space="preserve">
@@ -1323,33 +1323,6 @@
   </data>
   <data name="HEADER_MSE_UPPERRISK" xml:space="preserve">
     <value>Max. biomass/org. biomass</value>
-  </data>
-  <data name="nav0_application_get" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\nav0_application_get.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="nav1_application_put" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\nav1_application_put.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="nav2_run" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\nav2_run.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="nav3_tools" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\nav3_tools.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="nav4_output_extend" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\nav4_output_extend.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="nav5_input_extend" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\nav5_input_extend.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="nav6_ecospace" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\nav6_ecopath.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="nav7_ecosim" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\nav7_ecosim.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="nav8_ecopath" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\nav8_ecospace.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AddTableHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AddTableHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -2967,8 +2940,65 @@
     <value>{0} of {1}</value>
     <comment>{0}: selected items, {1]: total item count</comment>
   </data>
-  <data name="AddHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\AddHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="HEADER_DISCARD_MORTALITY_BREAKDOWN" xml:space="preserve">
+    <value>Discard mortality (group x fleet)</value>
+  </data>
+  <data name="HEADER_DISCARD_SURVIVAL_BREAKDOWN" xml:space="preserve">
+    <value>Discard survival (group x fleet)</value>
+  </data>
+  <data name="HEADER_DISCARD_MORT" xml:space="preserve">
+    <value>Discard mortality</value>
+  </data>
+  <data name="HEADER_DISCARD_SURV" xml:space="preserve">
+    <value>Discard survival</value>
+  </data>
+  <data name="HEADER_LANDINGS" xml:space="preserve">
+    <value>Landings</value>
+  </data>
+  <data name="TS_TYPE_DISCARDMORT" xml:space="preserve">
+    <value>Discard mortality</value>
+  </data>
+  <data name="TS_TYPE_DISCARDPROP" xml:space="preserve">
+    <value>Discard proportion</value>
+  </data>
+  <data name="TS_TYPE_DISCARDS" xml:space="preserve">
+    <value>Discards (reference)</value>
+  </data>
+  <data name="TS_TYPE_LANDINGS" xml:space="preserve">
+    <value>Landings (reference)</value>
+  </data>
+  <data name="HEADER_DISCARDS" xml:space="preserve">
+    <value>Discards</value>
+  </data>
+  <data name="HEADER_DISCARDS_BREAKDOWN" xml:space="preserve">
+    <value>Discards (group x fleet)</value>
+  </data>
+  <data name="nav_ecopath" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nav_ecopath.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nav_ecosim" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nav_ecosim.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nav_ecospace" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nav_ecospace.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nav_output" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nav_input.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nav_input_folder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nav_input_folder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nav_input" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nav_output.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nav_output_folder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nav_output_folder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nav_tool" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nav_tool.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nav_ecotracer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nav_ecotracer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AlignObjectsBottomHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AlignObjectsBottomHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -2996,6 +3026,21 @@
   </data>
   <data name="AlignTableCellMiddleRightHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AlignTableCellMiddleRightHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HEADER_COMPONENT" xml:space="preserve">
+    <value>Component</value>
+  </data>
+  <data name="HEADER_FLOW" xml:space="preserve">
+    <value>Flow</value>
+  </data>
+  <data name="HEADER_TROPHIC_LEVEL" xml:space="preserve">
+    <value>Trophic level</value>
+  </data>
+  <data name="AddHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AddHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HEADER_TOTALDISCARDS" xml:space="preserve">
+    <value>Total discards</value>
   </data>
   <data name="HEADER_NODE_SCALE" xml:space="preserve">
     <value>Node scale mode</value>

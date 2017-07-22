@@ -90,18 +90,13 @@ Namespace Controls
         Protected Class cFleetItem
             Inherits cCoreInputOutputControlItem
 
-            ''' <summary>A value to sort by.</summary>
-            Private m_sValue As Single = 0.0
-            ''' <summary>Optional color for an item.</summary>
-            Private m_color As Color = Color.Transparent
-
             ''' ---------------------------------------------------------------
             ''' <summary>
             ''' Creates a new item for usage in the list box.
             ''' </summary>
             ''' <param name="fleet">Fleet to link to.</param>
             ''' ---------------------------------------------------------------
-            Public Sub New(ByVal fleet As cFleetInput)
+            Public Sub New(ByVal fleet As cEcopathFleetInput)
                 MyBase.New(fleet)
             End Sub
 
@@ -114,7 +109,7 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public Sub New(ByVal strLabel As String, ByVal color As Color)
                 MyBase.New(strLabel)
-                Me.m_color = color
+                Me.Color = color
             End Sub
 
             ''' ---------------------------------------------------------------
@@ -122,9 +117,9 @@ Namespace Controls
             ''' Get the fleet linked to the item.
             ''' </summary>
             ''' ---------------------------------------------------------------
-            Public Shadows ReadOnly Property Source() As cFleetInput
+            Public Shadows ReadOnly Property Source() As cEcopathFleetInput
                 Get
-                    Return DirectCast(MyBase.Source, cFleetInput)
+                    Return DirectCast(MyBase.Source, cEcopathFleetInput)
                 End Get
             End Property
 
@@ -134,13 +129,6 @@ Namespace Controls
             ''' </summary>
             ''' ---------------------------------------------------------------
             Public Property SortValue() As Single
-                Get
-                    Return Me.m_sValue
-                End Get
-                Set(ByVal sSortValue As Single)
-                    Me.m_sValue = sSortValue
-                End Set
-            End Property
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -148,13 +136,6 @@ Namespace Controls
             ''' </summary>
             ''' ---------------------------------------------------------------
             Public Property Color() As Color
-                Get
-                    Return Me.m_color
-                End Get
-                Set(ByVal value As Color)
-                    Me.m_color = value
-                End Set
-            End Property
 
         End Class
 
@@ -171,9 +152,9 @@ Namespace Controls
                 Implements System.Collections.Generic.IComparer(Of cFleetItem).Compare
 
                 Dim gi1 As cFleetItem = Nothing
-                Dim fleet1 As cFleetInput = Nothing
+                Dim fleet1 As cEcopathFleetInput = Nothing
                 Dim gi2 As cFleetItem = Nothing
-                Dim fleet2 As cFleetInput = Nothing
+                Dim fleet2 As cEcopathFleetInput = Nothing
 
                 ' Get sortable items
                 If TypeOf (i1) Is cFleetItem Then gi1 = DirectCast(i1, cFleetItem) : fleet1 = gi1.Source
@@ -341,11 +322,11 @@ Namespace Controls
         ''' Get/set how to sort the data in this list box.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        <Browsable(True), _
-         Description("The EwE6 sort method to use"), _
-         Category("EwE6"), _
-         DefaultValue(eSortType.FleetIndexAsc)> _
-       Public Property SortType() As eSortType
+        <Browsable(True),
+         Description("The EwE6 sort method to use"),
+         Category("EwE6"),
+         DefaultValue(eSortType.FleetIndexAsc)>
+        Public Property SortType() As eSortType
             Get
                 Return Me.m_sortType
             End Get
@@ -362,11 +343,11 @@ Namespace Controls
         ''' Get/set the value that sort values have to exceed.
         ''' </summary>
         ''' ---------------------------------------------------------------
-        <Browsable(True), _
-        Description("The EwE6 sort threshold value to use"), _
-        Category("EwE6"), _
-        DefaultValue(cCore.NULL_VALUE)> _
-      Public Property SortThreshold() As Single
+        <Browsable(True),
+        Description("The EwE6 sort threshold value to use"),
+        Category("EwE6"),
+        DefaultValue(cCore.NULL_VALUE)>
+        Public Property SortThreshold() As Single
             Get
                 Return Me.m_sSortThreshold
             End Get
@@ -384,7 +365,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="fleet">The fleet to get/set the sort value for.</param>
         ''' -------------------------------------------------------------------
-        Public Property SortValue(ByVal fleet As cFleetInput) As Single
+        Public Property SortValue(ByVal fleet As cEcopathFleetInput) As Single
             Get
                 Dim gi As cFleetItem = Me.FleetItem(fleet)
                 If (gi Is Nothing) Then Return cCore.NULL_VALUE
@@ -427,10 +408,10 @@ Namespace Controls
         ''' States whether the listbox should include an 'all fleets' item.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("State whether an 'all Fleets' item should be included in the list box"), _
-         Category("EwE6"), _
-         DefaultValue(True)> _
+        <Browsable(True),
+         Description("State whether an 'all Fleets' item should be included in the list box"),
+         Category("EwE6"),
+         DefaultValue(True)>
         Public Property ShowAllFleetsItem() As Boolean
             Get
                 Return Me.m_bShowAllFleetsItem
@@ -448,10 +429,10 @@ Namespace Controls
         ''' States whether non-living fleets should be shown in the list box.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("Determine how fleets are tracked and added"), _
-         Category("EwE6"), _
-         DefaultValue(eFleetTrackingType.AllFleets)> _
+        <Browsable(True),
+         Description("Determine how fleets are tracked and added"),
+         Category("EwE6"),
+         DefaultValue(eFleetTrackingType.AllFleets)>
         Public Property FleetListTracking() As eFleetTrackingType
             Get
                 Return Me.m_fleettrackingtype
@@ -492,7 +473,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="fleet">The fleet to test.</param>
         ''' -------------------------------------------------------------------
-        Public Property IsFleetSelected(ByVal fleet As cFleetInput) As Boolean
+        Public Property IsFleetSelected(ByVal fleet As cEcopathFleetInput) As Boolean
             Get
                 Return Me.IsFleetSelected(fleet.Index)
             End Get
@@ -507,7 +488,7 @@ Namespace Controls
         ''' Get/set the selected fleet index (single selection listboxes only).
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property SelectedFleetIndex() As Integer
             Get
                 Dim gi As cFleetItem = Me.FleetItem(Me.SelectedIndex)
@@ -530,14 +511,14 @@ Namespace Controls
         ''' Get/set the selected fleet (single selection listboxes only).
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
-        Public Property SelectedFleet() As cFleetInput
+        <Browsable(False)>
+        Public Property SelectedFleet() As cEcopathFleetInput
             Get
                 Dim gi As cFleetItem = DirectCast(Me.SelectedItem, cFleetItem)
                 If gi Is Nothing Then Return Nothing
                 Return gi.Source
             End Get
-            Set(ByVal fleet As cFleetInput)
+            Set(ByVal fleet As cEcopathFleetInput)
                 If (Not Me.IsInitialized()) Then Return
                 If (fleet Is Nothing) Then
                     Me.SelectedIndex = -1
@@ -557,7 +538,7 @@ Namespace Controls
             Get
                 Dim gi As cFleetItem = Nothing
                 Dim item As Object = Nothing
-                Dim fleet As cFleetInput = Nothing
+                Dim fleet As cEcopathFleetInput = Nothing
 
                 For i As Integer = 0 To Me.Items.Count - 1
                     item = Me.Items(i)
@@ -581,7 +562,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="fleet">The fleet to translate into an item index.</param>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property FleetIndex(ByVal fleet As cFleetInput) As Integer
+        Public ReadOnly Property FleetIndex(ByVal fleet As cEcopathFleetInput) As Integer
             Get
                 Return Me.FleetIndex(fleet.Index)
             End Get
@@ -596,7 +577,7 @@ Namespace Controls
         ''' Returns Nothing if no fleet was found at the given index.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property GetFleetAt(ByVal iIndex As Integer) As cFleetInput
+        Public ReadOnly Property GetFleetAt(ByVal iIndex As Integer) As cEcopathFleetInput
             Get
                 If (iIndex < 0 Or iIndex >= Me.Items.Count) Then Return Nothing
                 Return DirectCast(Me.Items(iIndex), cFleetItem).Source
@@ -674,20 +655,20 @@ Namespace Controls
                 Case eFleetTrackingType.Manual
                     If aiFleets IsNot Nothing Then
                         For i As Integer = 0 To aiFleets.Length - 1
-                            Me.Items.Add(New cFleetItem(Me.m_uic.Core.FleetInputs(aiFleets(i))))
+                            Me.Items.Add(New cFleetItem(Me.m_uic.Core.EcopathFleetInputs(aiFleets(i))))
                         Next
                     End If
 
                 Case eFleetTrackingType.AllFleets
                     iFleetStart = 1 : iFleetEnd = Me.m_uic.Core.nFleets
                     For i As Integer = iFleetStart To iFleetEnd
-                        Me.Items.Add(New cFleetItem(Me.m_uic.Core.FleetInputs(i)))
+                        Me.Items.Add(New cFleetItem(Me.m_uic.Core.EcopathFleetInputs(i)))
                     Next
 
                 Case eFleetTrackingType.Fleets
                     iFleetStart = 1 : iFleetEnd = Me.m_uic.Core.nFleets
                     For i As Integer = iFleetStart To iFleetEnd
-                        Me.Items.Add(New cFleetItem(Me.m_uic.Core.FleetInputs(i)))
+                        Me.Items.Add(New cFleetItem(Me.m_uic.Core.EcopathFleetInputs(i)))
                     Next
 
                 Case Else
@@ -715,7 +696,7 @@ Namespace Controls
             Return Nothing
         End Function
 
-        Protected Function FleetItem(ByVal fleet As cFleetInput) As cFleetItem
+        Protected Function FleetItem(ByVal fleet As cEcopathFleetInput) As cFleetItem
             If fleet Is Nothing Then Return Nothing
             Return Me.FleetItem(Me.FleetIndex(fleet.Index))
         End Function

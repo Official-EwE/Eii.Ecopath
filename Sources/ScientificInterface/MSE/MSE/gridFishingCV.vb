@@ -63,9 +63,9 @@ Public Class gridFishingCV
                 Me.Rows.Insert(i)
 
                 Me(i, 0) = New EwERowHeaderCell(CStr(i))
-                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.Name)
-                Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSEQIncrease)
-                ' Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.FleetInputs(i), eVarNameFlags.MSEFleetCV)
+                Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.Name)
+                Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSEQIncrease)
+                ' Me(i, 2) = New PropertyCell(Me.PropertyManager, mse.EcopathFleetInputs(i), eVarNameFlags.MSEFleetCV)
 
             Next
 

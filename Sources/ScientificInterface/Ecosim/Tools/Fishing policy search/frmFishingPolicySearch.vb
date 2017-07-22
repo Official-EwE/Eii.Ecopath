@@ -859,7 +859,7 @@ Namespace Ecosim
         Public ReadOnly Property RowLabel(ByVal iRow As Integer) As String Implements IPolicyColorBlockDataSource.RowLabel
             Get
                 Try
-                    Return Me.m_uic.Core.FleetInputs(iRow).Name
+                    Return Me.m_uic.Core.EcopathFleetInputs(iRow).Name
                 Catch ex As Exception
                     Debug.Assert(False, Me.ToString & ".RowLabel() Exception: " & ex.Message)
                 End Try

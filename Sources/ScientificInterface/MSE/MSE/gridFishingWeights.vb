@@ -53,7 +53,7 @@ Public Class gridFishingWeights
         Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
         For iFleet As Integer = 1 To Me.Core.nFleets
-            src = Me.Core.FleetInputs(iFleet)
+            src = Me.Core.EcopathFleetInputs(iFleet)
             Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager,
                                                              src, eVarNameFlags.Name, Nothing, cUnits.Currency)
         Next
@@ -88,7 +88,7 @@ Public Class gridFishingWeights
 
                 ' Fleet cells
                 For iFleet As Integer = 1 To Me.Core.nFleets
-                    fleet = mse.FleetInputs(iFleet)
+                    fleet = mse.EcopathFleetInputs(iFleet)
                     Me(iGroup, 1 + iFleet) = New PropertyCell(Me.PropertyManager, fleet, eVarNameFlags.MSEFleetWeight, group)
                 Next
             Next

@@ -490,6 +490,21 @@ Public Class cEcosimDatastructures
     ''' <summary>Landings by Group, Fleet</summary>
     Public ResultsLandings(,) As Single
 
+    Public ResultsDiscardsMort(,) As Single
+    Public ResultsDiscardsSurvived(,) As Single
+
+    ''' <summary>Total discards by Group, fleets, time.</summary>
+    Public ResultsTimeDiscardsGroupGear(,,) As Single
+    ''' <summary>Discards that suffered mortality by Group, fleets, time.</summary>
+    Public ResultsTimeDiscardsMortGroupGear(,,) As Single
+    ''' <summary>Discards that survived by Group, fleets, time.</summary>
+    Public ResultsTimeDiscardsSurvivedGroupGear(,,) As Single
+
+    ''' <summary>
+    ''' Landing by Group, Fleet, Time.
+    ''' </summary>
+    Public ResultsTimeLandingsGroupGear(,,) As Single
+
     ''' <summary>
     ''' Fishing mortality by time
     ''' </summary>
@@ -588,8 +603,13 @@ Public Class cEcosimDatastructures
     ''' <summary>Proportion of regulated landings (by gear group) for the current time step</summary>
     Public PropLandedTime(,) As Single
 
-    ''' <summary>Proportion of regulated discards (by gear group) for the current time step</summary>
+    ''' <summary>
+    ''' Proportion of the total catch that suffered mortality for the current time step (by gear group). Does not include discards that survived.
+    ''' Initialized in cEcosim.InitPropLanded() Propdiscardtime(iflt, igrp) = PropDiscard(iflt, igrp) * PropDiscardMort(iflt, igrp)
+    ''' </summary>
     Public Propdiscardtime(,) As Single
+
+    Public PropDiscardMortTime(,) As Single
 
 
     ''' <summary>
@@ -710,6 +730,8 @@ Public Class cEcosimDatastructures
         ReDim PropLandedTime(nGear, nGroups)
         ReDim Propdiscardtime(nGear, nGroups)
 
+        ReDim PropDiscardMortTime(nGear, nGroups)
+
         ReDim EffortConversionFactor(nGear)
 
         ' JS 3May16: make sure there is no overhang from past scenarios
@@ -825,7 +847,7 @@ Public Class cEcosimDatastructures
 
         Me.PropLandedTime = Nothing ' (nGear, nGroups)
         Me.Propdiscardtime = Nothing ' (nGear, nGroups)
-
+        Me.PropDiscardMortTime = Nothing
         Me.Consumption = Nothing ' (nGroups, nGroups)
         Me.Consumpt = Nothing ' (nGroups, nGroups)
         Me.Eatenby = Nothing ' (nGroups)
@@ -1262,10 +1284,14 @@ Public Class cEcosimDatastructures
         Erase ResultsSumCatchByGroupGear
         Erase ResultsSumFMortByGroupGear
         Erase ResultsSumValueByGroupGear
+        Erase ResultsTimeLandingsGroupGear
         Erase ResultsEffort
         Erase Elect
 
         Erase ResultsSumRelValueByGroup
+        Erase ResultsTimeDiscardsGroupGear
+        Erase ResultsTimeDiscardsMortGroupGear
+        Erase ResultsTimeDiscardsSurvivedGroupGear
 
         GC.Collect()
 
@@ -1273,9 +1299,16 @@ Public Class cEcosimDatastructures
         ReDim PredPreyResultsOverTime(2, nGroups, nGroups, nt)
         ReDim ResultsAvgByPreyPred(1, nGroups, nGroups)
 
+
         'fisheries data
         ReDim ResultsSumCatchByGroupGear(nGroups, nGear, nt) ' groups,fleets,time
         ReDim ResultsSumFMortByGroupGear(nGroups, nGear, nt)
+
+        ReDim ResultsTimeLandingsGroupGear(nGroups, nGear, nt)
+        ReDim ResultsTimeDiscardsGroupGear(nGroups, nGear, nt)
+        ReDim ResultsTimeDiscardsMortGroupGear(nGroups, nGear, nt)
+        ReDim ResultsTimeDiscardsSurvivedGroupGear(nGroups, nGear, nt)
+
         ReDim ResultsSumCatchByGear(nGear, nt)
         ReDim ResultsSumValueByGroupGear(nGroups, nGear, nt)
         ReDim ResultsSumValueByGear(nGear, nt)
@@ -1288,6 +1321,8 @@ Public Class cEcosimDatastructures
         ReDim ResultsLandings(Me.nGroups, Me.nGear)
         ReDim ResultsSumRelValueByGroup(nGroups, nt)
 
+        ReDim ResultsDiscardsMort(Me.nGroups, Me.nGear)
+        ReDim ResultsDiscardsSurvived(Me.nGroups, Me.nGear)
 
     End Sub
 

@@ -95,7 +95,7 @@ Namespace Ecospace
             Me(0, eColumnTypes.All) = New EwEColumnHeaderCell(My.Resources.HEADER_ALL_REGULATIONS_APPLY)
 
             For i As Integer = 1 To Me.Core.nFleets
-                source = Me.Core.FleetInputs(i)
+                source = Me.Core.EcopathFleetInputs(i)
                 Me(i, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                 Me(i, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next

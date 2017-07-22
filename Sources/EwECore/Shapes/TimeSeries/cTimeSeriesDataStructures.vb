@@ -28,7 +28,11 @@ Public Class cTimeSeriesDataStructures
 
     Public Const ANNUAL_DATA_MONTH As Integer = 6
 
-    Public nGroups As Integer = 0
+    Private m_SimData As cEcosimDatastructures
+    Private m_PathData As cEcopathDataStructures
+
+    Public nGroups As Integer
+    Public nFleets As Integer
 
     ' ------------------------------------------------
     ' Dataset structures
@@ -77,6 +81,9 @@ Public Class cTimeSeriesDataStructures
     ''' <summary>Index of the core object that each time series links to. The type
     ''' of the core object is implied by <see cref="TimeSeriesType">TimeSeriesType</see>.</summary>
     Public iPool() As Integer
+    ''' <summary>Index of the core object of a secundary time series target, if applicable. The type
+    ''' of the core object is implied by <see cref="TimeSeriesType">TimeSeriesType</see>.</summary>
+    Public iPoolSec() As Integer
     ''' <summary>Weight type for each time series.</summary>
     Public sWeight() As Single
     ''' <summary>CV for each time series.</summary>
@@ -113,6 +120,9 @@ Public Class cTimeSeriesDataStructures
     ''' <summary>Index of the core object that each applied time series links to. The type
     ''' of the core object is implied by <see cref="DatType">DatType</see>.</summary>
     Public DatPool() As Integer
+    ''' <summary>Index of the second core object that each applied time series links to. The type
+    ''' of the core object is implied by <see cref="DatType">DatType</see>.</summary>
+    Public DatPoolSec() As Integer
     ''' <summary>Weight type for each applied time series.</summary>
     Public WtType() As Single
     ' ''' <summary>Annual values for each applied time series, indexed as (iYear, iSeries).</summary>
@@ -136,6 +146,16 @@ Public Class cTimeSeriesDataStructures
     Public PoolForceCatch(,) As Single
 
     ''' <summary>
+    ''' Proportion of total catch that is discarded. By Fleet,Group,Time
+    ''' </summary>
+    Public PoolForceDiscardProp(,,) As Single
+
+    ''' <summary>
+    ''' Proportion of discards that incur mortality. By Fleet,Group,Time
+    ''' </summary>
+    Public PoolForceDiscardMort(,,) As Single
+
+    ''' <summary>
     ''' Index to the current year/datatype
     ''' </summary>
     ''' <remarks>This is increment for each data type each time the stats are collected. Once a year.</remarks>
@@ -146,6 +166,11 @@ Public Class cTimeSeriesDataStructures
 
     ''' <summary>log(observed/predicted) by observation</summary>
     Public Erpred() As Single
+
+    Public Sub New(ByVal EcopathData As cEcopathDataStructures, ByVal EcosimData As cEcosimDatastructures)
+        Me.m_PathData = EcopathData
+        Me.m_SimData = EcosimData
+    End Sub
 
     ''' <summary>
     ''' Clear all time series data and free memory
@@ -221,6 +246,11 @@ Public Class cTimeSeriesDataStructures
         Array.Clear(Me.PoolForceCatch, 0, Me.PoolForceCatch.Length)
         Array.Clear(Me.PoolForceZ, 0, Me.PoolForceZ.Length)
 
+        Array.Clear(Me.PoolForceDiscardMort, 0, Me.PoolForceDiscardMort.Length)
+        Array.Clear(Me.PoolForceDiscardProp, 0, Me.PoolForceDiscardProp.Length)
+
+        Me.InitForcedDiscards()
+
     End Sub
 
     <Obsolete("Please use nTimeSeries instead")>
@@ -265,6 +295,9 @@ Public Class cTimeSeriesDataStructures
         Erase Me.PoolForceCatch
         Erase Me.PoolForceZ
 
+        Erase Me.PoolForceDiscardProp
+        Erase Me.PoolForceDiscardMort
+
     End Sub
 
     Friend Sub RedimTimeSeries()
@@ -277,6 +310,7 @@ Public Class cTimeSeriesDataStructures
         ReDim strName(nTimeSeries)
         ReDim bEnable(nTimeSeries)
         ReDim iPool(nTimeSeries)
+        ReDim iPoolSec(nTimeSeries)
         ReDim sWeight(nTimeSeries)
         ReDim sCV(nTimeSeries)
         ReDim TimeSeriesType(nTimeSeries)
@@ -301,6 +335,7 @@ Public Class cTimeSeriesDataStructures
 
         ' Redim applied time series arrays
         ReDim DatPool(NdatType)
+        ReDim DatPoolSec(NdatType)
         ReDim DatType(NdatType)
         ReDim WtType(NdatType)
         ReDim DatSS(NdatType)
@@ -374,52 +409,77 @@ Public Class cTimeSeriesDataStructures
     End Function
 
     ''' <summary>
-    ''' Set <see cref="cEcospaceDataStructures.IsEcosimBioForcingGroup">cEcospaceDataStructures.IsEcosimBioForcingEnabled()</see> 
-    ''' = True for all groups that have Ecosim Biomass Forcing time series loaded. This forces the Ecospace biomass with the Ecosim forcing time series.
+    ''' Set whether a given group is biomass forced through time series.
     ''' </summary>
-    ''' <param name="isEcospaceGroupForced"></param>
-    Public Sub setDefaultEcospaceBioForcing(isEcospaceGroupForced() As Boolean)
+    ''' <param name="IsBiomassForced"></param>
+    Public Sub SetBiomassForcing(IsBiomassForced() As Boolean)
 
         Try
+            ' Abort if not initialized properly
+            If (IsBiomassForced.Length <> Me.nGroups + 1) Then Return
 
-            If isEcospaceGroupForced.Length <> Me.nGroups + 1 Then
-                'if Ecospace has not been loaded then 
-                'isGroupForced() will not dimensioned to 1
-                Return
-            End If
+            ' Set all group forcing to false
+            Array.Clear(IsBiomassForced, 0, IsBiomassForced.Length)
 
-            Array.Clear(isEcospaceGroupForced, 0, isEcospaceGroupForced.Length)
-
-            If PoolForceBB Is Nothing Then
-                'No biomass forcing loaded
-                'the Array.Clear() above will set isEcospaceGroupForced() to False
-                Return
-            End If
+            ' Abort if no time series loaded
+            If (PoolForceBB Is Nothing) Then Return
 
             For igrp As Integer = 1 To Me.nGroups
-                For iDatPt As Integer = 1 To Me.nDatPoints
-                    If Me.PoolForceBB(igrp, iDatPt) > 0 Then
-                        'If biomass forcing has been set for any timestep
-                        'then this group is considered as forced
-                        isEcospaceGroupForced(igrp) = True
-                        Exit For
-                    End If
-                Next iDatPt
+                Dim iDatPt As Integer = 1
+                While Not IsBiomassForced(igrp) And iDatPt <= Me.nDatPoints
+                    IsBiomassForced(igrp) = (Me.PoolForceBB(igrp, iDatPt) > 0)
+                    iDatPt += 1
+                End While
             Next igrp
 
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString + ".setDefaultEcospaceBioForcing() something went really wrong!")
+            Debug.Assert(False, Me.ToString + ".SetBiomassForcing() something went really wrong!")
+            cLog.Write(ex, "cTimeSeriesDataStructures.SetBiomassForcing()")
         End Try
 
     End Sub
 
+    ''' <summary>
+    ''' Set whether a given group is discard forced through time series.
+    ''' </summary>
+    ''' <param name="IsDiscardForced"></param>
+    Public Sub SetDiscardForcing(IsDiscardForced() As Boolean)
+
+        Try
+            ' Abort if not initialized properly
+            If (IsDiscardForced.Length <> Me.nGroups + 1) Then Return
+
+            ' Set all group forcing to false
+            Array.Clear(IsDiscardForced, 0, IsDiscardForced.Length)
+
+            ' Abort if no time series loaded
+            If (PoolForceDiscardMort Is Nothing) Then Return
+
+            For igrp As Integer = 1 To Me.nGroups
+                Dim iflt As Integer = 1
+                While Not IsDiscardForced(igrp) And iflt <= nFleets
+                    Dim iDatPt As Integer = 1
+                    While Not IsDiscardForced(igrp) And iDatPt <= Me.nDatPoints
+                        IsDiscardForced(igrp) = (Me.PoolForceDiscardMort(iflt, igrp, iDatPt) > 0) Or (Me.PoolForceDiscardProp(iflt, igrp, iDatPt) > 0)
+                        iDatPt += 1
+                    End While
+                    iflt += 1
+                End While
+            Next igrp
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString + ".SetBiomassForcing() something went really wrong!")
+            cLog.Write(ex, "cTimeSeriesDataStructures.SetBiomassForcing()")
+        End Try
+
+    End Sub
 
     ''' <summary>
     ''' Redim time series forcing data PoolForceBB(nGroups, nYears),PoolForceZ(nGroups, nYears) and PoolForceCatch(nGroups, nYears)
     ''' </summary>
-    ''' <param name="nEcosimYears">Ecosim run length in years</param>
+    ''' <param name="RunLengthYears">Ecosim run length in years</param>
     ''' <remarks></remarks>
-    Public Sub redimForcingData(ByVal nEcosimYears As Integer)
+    Public Sub redimForcingData(RunLengthYears As Integer)
 
         Try
             'What is the max number of datapoints that will be needed for this Ecosim run length
@@ -428,22 +488,61 @@ Public Class cTimeSeriesDataStructures
             'leaving the extra data points with zeros/no data
             Dim npoints As Integer
             If Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
-                npoints = Math.Max(Me.nDatPoints, nEcosimYears * cCore.N_MONTHS)
+                npoints = Math.Max(Me.nDatPoints, RunLengthYears * cCore.N_MONTHS)
             Else
-                npoints = Math.Max(Me.nDatPoints, nEcosimYears)
+                npoints = Math.Max(Me.nDatPoints, RunLengthYears)
             End If
 
             If PoolForceBB Is Nothing Then
+                'This is a first time initialization of the forcing data
+                'Create the arrays
+                'Populate the discard arrays with -9999, not a valid data point
                 ReDim PoolForceBB(nGroups, npoints)
                 ReDim PoolForceZ(nGroups, npoints)
                 ReDim PoolForceCatch(nGroups, npoints)
 
-            ElseIf npoints > Me.nDatPoints Then
+                ReDim PoolForceDiscardMort(nFleets, nGroups, npoints)
+                ReDim PoolForceDiscardProp(nFleets, nGroups, npoints)
+
+                Me.InitForcedDiscards()
+                Return
+            End If
+
+            If npoints > Me.nDatPoints Then
                 'number of years the model is running for is greater then the forcing data
                 'preserve the existing forcing data 
                 ReDim Preserve PoolForceBB(nGroups, npoints)
                 ReDim Preserve PoolForceZ(nGroups, npoints)
                 ReDim Preserve PoolForceCatch(nGroups, npoints)
+
+                ReDim Preserve PoolForceDiscardMort(nFleets, nGroups, npoints)
+                ReDim Preserve PoolForceDiscardProp(nFleets, nGroups, npoints)
+
+            End If
+
+            If RunLengthYears > Me.m_SimData.NumYears Then
+                'Special case 
+                'The code has extended the Ecosim run length(in years) 
+                'The Fishing Policy Search does this
+                'Set the discard forcing data in the extended period to -9999, not valid data
+                Dim n As Integer
+
+                If Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
+                    n = Math.Max(Me.nDatPoints, Me.m_SimData.NumYears * cCore.N_MONTHS)
+                Else
+                    n = Math.Max(Me.nDatPoints, Me.m_SimData.NumYears)
+                End If
+
+                For iflt As Integer = 0 To nFleets
+                    For igrp As Integer = 0 To nGroups
+
+                        For ipt As Integer = n + 1 To npoints
+                            PoolForceDiscardMort(iflt, igrp, ipt) = cCore.NULL_VALUE
+                            PoolForceDiscardProp(iflt, igrp, ipt) = cCore.NULL_VALUE
+                        Next
+
+                    Next
+                Next
             End If
 
         Catch ex As Exception
@@ -542,6 +641,7 @@ Public Class cTimeSeriesDataStructures
         Debug.Assert(Me.bEnable(iTS))
 
         DatPool(iTSEnable) = iPool(iTS)
+        DatPoolSec(iTSEnable) = iPoolSec(iTS)
         DatType(iTSEnable) = TimeSeriesType(iTS)
         WtType(iTSEnable) = sWeight(iTS)
         For iYear As Integer = 0 To nDatPoints
@@ -590,16 +690,18 @@ Public Class cTimeSeriesDataStructures
     End Sub
 
 
-    Public Sub LoadForcingData(ByVal EcosimData As cEcosimDatastructures)
+    Public Sub LoadForcingData()
         'Forcing data is loaded from the database into the same data structures as the other time series data DatVal(ipoint,itype)
         'This allocates arrays for each forcing type PoolForceBB(group,point),PoolForceZ(group,point) and PoolForceCatch(group,point)
         'and loads the data from DatVal(ipoint,itype) into the arrays used by the core
         Try
             'redimForcingData() will expand the forcing data to cover the number of ecosim years
             'while preserving the currently loaded data
-            Me.redimForcingData(EcosimData.NumYears)
+            Me.redimForcingData(Me.m_SimData.NumYears)
+
+            Me.InitForcedDiscards()
             'Load the data from DatVal(ipoint,itype) into the core arrays PoolForceBB(group,point)...
-            Me.DoDatValCalculations(EcosimData)
+            Me.DoDatValCalculations()
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -611,9 +713,8 @@ Public Class cTimeSeriesDataStructures
     ''' <summary>
     ''' Load data from datval() into forcing arrays used by the models. Calculate the 
     ''' </summary>
-    ''' <param name="EcosimData"></param>
     ''' <remarks>This needs to be called after the time series data is loaded to update other data arrays.</remarks>
-    Public Sub DoDatValCalculations(ByRef EcosimData As cEcosimDatastructures)
+    Public Sub DoDatValCalculations()
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'CAUTION
@@ -621,7 +722,7 @@ Public Class cTimeSeriesDataStructures
         'this works now because SetFFromGear() gets called when ecosim is initialized after the scenario is loaded
         'if this is moved to the interface SetFFromGear() will no longer be called
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
+        Dim bDisFailedValidation As Boolean = False
         Dim iDatPt As Integer
         Dim iDType As Integer
         Dim K As Integer
@@ -633,7 +734,7 @@ Public Class cTimeSeriesDataStructures
         Iobs = 0
 
         'clear out the FishForced flag
-        EcosimData.clearFishForced()
+        Me.m_SimData.clearFishForced()
 
         Me.ClearForcing()
 
@@ -679,16 +780,16 @@ Public Class cTimeSeriesDataStructures
                             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         Case eTimeSeriesType.FishingEffort 'effort data by gear type
 
-                            If DatPool(iDType) > 0 And DatPool(iDType) <= EcosimData.nGear Then
+                            If DatPool(iDType) > 0 And DatPool(iDType) <= Me.nFleets Then
                                 If Me.DataSetInterval = eTSDataSetInterval.Annual Then
                                     For K = 1 To 12
                                         Tim = 12 * (DatYear(iDatPt) - DatYear(1)) + K    ': If Tim > 1200 Then Tim = 1200
                                         ig = DatPool(iDType)
-                                        EcosimData.FishRateGear(ig, Tim) = DatVal(iDatPt, iDType)
+                                        Me.m_SimData.FishRateGear(ig, Tim) = DatVal(iDatPt, iDType)
                                     Next
                                 ElseIf Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
 
-                                    EcosimData.FishRateGear(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
+                                    Me.m_SimData.FishRateGear(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
 
                                 End If
                             End If
@@ -696,22 +797,22 @@ Public Class cTimeSeriesDataStructures
                         Case eTimeSeriesType.FishingMortality 'F by pool
 
                             If DatPool(iDType) > 0 And DatPool(iDType) <= nGroups Then
-                                EcosimData.FisForced(DatPool(iDType)) = True
+                                Me.m_SimData.FisForced(DatPool(iDType)) = True
 
                                 If Me.DataSetInterval = eTSDataSetInterval.Annual Then
                                     For K = 1 To 12
                                         Tim = 12 * (DatYear(iDatPt) - DatYear(1)) + K
-                                        EcosimData.FishRateNo(DatPool(iDType), Tim) = DatVal(iDatPt, iDType)
-                                        If EcosimData.FishRateMax(DatPool(iDType)) < EcosimData.FishRateNo(DatPool(iDType), Tim) Then
-                                            EcosimData.FishRateMax(DatPool(iDType)) = CSng(EcosimData.FishRateNo(DatPool(iDType), Tim) * 1.01)
+                                        Me.m_SimData.FishRateNo(DatPool(iDType), Tim) = DatVal(iDatPt, iDType)
+                                        If Me.m_SimData.FishRateMax(DatPool(iDType)) < Me.m_SimData.FishRateNo(DatPool(iDType), Tim) Then
+                                            Me.m_SimData.FishRateMax(DatPool(iDType)) = CSng(Me.m_SimData.FishRateNo(DatPool(iDType), Tim) * 1.01)
                                         End If
                                     Next
 
                                 ElseIf Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
 
-                                    EcosimData.FishRateNo(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
-                                    If EcosimData.FishRateMax(DatPool(iDType)) < EcosimData.FishRateNo(DatPool(iDType), iDatPt) Then
-                                        EcosimData.FishRateMax(DatPool(iDType)) = CSng(EcosimData.FishRateNo(DatPool(iDType), iDatPt) * 1.01)
+                                    Me.m_SimData.FishRateNo(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
+                                    If Me.m_SimData.FishRateMax(DatPool(iDType)) < Me.m_SimData.FishRateNo(DatPool(iDType), iDatPt) Then
+                                        Me.m_SimData.FishRateMax(DatPool(iDType)) = CSng(Me.m_SimData.FishRateNo(DatPool(iDType), iDatPt) * 1.01)
                                     End If
 
                                 End If
@@ -720,13 +821,13 @@ Public Class cTimeSeriesDataStructures
 
                         Case eTimeSeriesType.TotalMortality, eTimeSeriesType.ConstantTotalMortality 'Z by pool
 
-                                If Math.Abs(DatVal(iDatPt, iDType)) > 0 Then Iobs = Iobs + 1 'now also with forced Z
-                                If DatType(iDType) = eTimeSeriesType.ConstantTotalMortality Then
-                                    PoolForceZ(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
+                            If Math.Abs(DatVal(iDatPt, iDType)) > 0 Then Iobs = Iobs + 1 'now also with forced Z
+                            If DatType(iDType) = eTimeSeriesType.ConstantTotalMortality Then
+                                PoolForceZ(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
 
-                                Else
-                                    PoolForceZ(DatPool(iDType), iDatPt) = 0
-                                End If
+                            Else
+                                PoolForceZ(DatPool(iDType), iDatPt) = 0
+                            End If
 
                         Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing, eTimeSeriesType.CatchesRel  'Catches, -6 is forced
                             If Math.Abs(DatVal(iDatPt, iDType)) > 0 Then Iobs = Iobs + 1 '....Added by SM for Catch Fitting.
@@ -738,10 +839,32 @@ Public Class cTimeSeriesDataStructures
 
                             'Martell playing here!
                         Case eTimeSeriesType.AverageWeight 'Mean Body Weight data for split pool groups
-                                'jb EwE6 does not have split pools! I'm not sure if this also applies to multi stanza groups??
-                                If DatVal(iDatPt, iDType) > 0 Then Iobs = Iobs + 1
+                            'jb EwE6 does not have split pools! I'm not sure if this also applies to multi stanza groups??
+                            If DatVal(iDatPt, iDType) > 0 Then Iobs = Iobs + 1
 
-                        Case Else
+
+                        Case eTimeSeriesType.DiscardMortality
+
+                            Dim value As Single = DatVal(iDatPt, iDType)
+                            If value > 1.0 Then
+                                value = 1.0
+                                bDisFailedValidation = True
+                            End If
+                            PoolForceDiscardMort(DatPool(iDType), DatPoolSec(iDType), iDatPt) = value
+
+                        Case eTimeSeriesType.DiscardProportion
+
+                            Dim value As Single = DatVal(iDatPt, iDType)
+                            If value > 1.0 Then
+                                value = 1.0
+                                bDisFailedValidation = True
+                            End If
+                            PoolForceDiscardProp(DatPool(iDType), DatPoolSec(iDType), iDatPt) = value
+
+                        Case eTimeSeriesType.Discards
+                            Iobs = Iobs + 1
+
+
                     End Select
                     '      End If 'If IsDatShown(j) = True Then
                 Next
@@ -762,6 +885,10 @@ Public Class cTimeSeriesDataStructures
 
             If Iobs = 0 Then Iobs = HoldIobs
             ReDim Wt(Iobs)
+
+            If bDisFailedValidation Then
+                cLog.Write("Time series Discard Mortality Rate or Discard Proportion contained values > 1.0. These values cap a 1.0")
+            End If
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'CAUTION
@@ -803,6 +930,31 @@ Public Class cTimeSeriesDataStructures
         Return False
 
     End Function
+
+
+    Private Sub InitForcedDiscards()
+
+        Dim nSimPoints As Integer
+        If Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
+            nSimPoints = Math.Max(Me.nDatPoints, Me.m_SimData.NumYears * cCore.N_MONTHS)
+        Else
+            nSimPoints = Math.Max(Me.nDatPoints, Me.m_SimData.NumYears)
+        End If
+
+        'jb 27-Oct-2016 I'm not sure about this 
+        'set all points past the reference data to the default Ecopath values!
+        For iflt As Integer = 0 To nFleets
+            For igrp As Integer = 0 To nGroups
+
+                For ipt As Integer = 0 To nSimPoints
+                    PoolForceDiscardMort(iflt, igrp, ipt) = cCore.NULL_VALUE
+                    PoolForceDiscardProp(iflt, igrp, ipt) = cCore.NULL_VALUE
+                Next
+
+            Next
+        Next
+
+    End Sub
 
 
 

@@ -172,7 +172,7 @@ Namespace MSY
                                           ByVal results As cMSYFResult(),
                                           ByVal optimum As cMSYOptimum) As Boolean
 
-            Dim flt As cFleetInput = Me.m_core.FleetInputs(iFleet)
+            Dim flt As cEcopathFleetInput = Me.m_core.EcopathFleetInputs(iFleet)
             Dim sw As StreamWriter = Nothing
             Dim r As cMSYFResult = Nothing
             Dim strFile As String = ""
@@ -232,7 +232,7 @@ Namespace MSY
                                                ByVal results As cMSYFResult(),
                                                ByVal optimum As cMSYOptimum) As Boolean
 
-            Dim flt As cFleetInput = Me.m_core.FleetInputs(iFleet)
+            Dim flt As cEcopathFleetInput = Me.m_core.EcopathFleetInputs(iFleet)
             Dim sw As StreamWriter = Nothing
             Dim r As cMSYFResult = Nothing
             Dim bSuccess As Boolean = True
@@ -281,7 +281,7 @@ Namespace MSY
         End Sub
 
         Protected Sub WriteFleetHeader(ByVal sw As StreamWriter, ByVal ass As eMSYAssessmentTypes,
-                                       ByVal target As cFleetInput, ByVal optimum As cMSYOptimum)
+                                       ByVal target As cEcopathFleetInput, ByVal optimum As cMSYOptimum)
 
             Me.WriteHeader(sw, ass)
 

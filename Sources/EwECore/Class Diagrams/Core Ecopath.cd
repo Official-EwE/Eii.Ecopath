@@ -81,7 +81,7 @@
       <Field Name="m_EcoPath" />
       <Property Name="EcoPathGroupInputs(System.Int32)" />
       <Property Name="EcoPathGroupOutputs(System.Int32)" />
-      <Property Name="FleetInputs(System.Int32)" />
+      <Property Name="EcopathFleetInputs(System.Int32)" />
     </ShowAsAssociation>
   </Class>
   <Class Name="EwECore.cEcoPathGroupOutput">
@@ -176,7 +176,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="EwECore.cFleetInput">
+  <Class Name="EwECore.cEcopathFleetInput">
     <Position X="3.5" Y="4" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
@@ -191,7 +191,7 @@
     </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAEAAEAABIAAAACEACEBIAEAIAABAAEQAAAECgCASgA=</HashCode>
-      <FileName>EcoPath\cFleetInput.vb</FileName>
+      <FileName>EcoPath\cEcopathFleetInput.vb</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="EwECore.ICoreInterface" Collapsed="true">

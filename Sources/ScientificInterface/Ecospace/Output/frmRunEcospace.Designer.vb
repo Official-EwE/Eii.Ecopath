@@ -75,6 +75,7 @@ Namespace Ecospace
             Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton()
             Me.m_hdrDist = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_rbDisplayDiscards = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayEnvDriver = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton()
             Me.m_plDisplayOptions = New System.Windows.Forms.Panel()
@@ -285,6 +286,7 @@ Namespace Ecospace
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayFishingEffort)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayContaminantC)
             Me.m_plMapData.Controls.Add(Me.m_hdrDist)
+            Me.m_plMapData.Controls.Add(Me.m_rbDisplayDiscards)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayEnvDriver)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayCoverB)
             resources.ApplyResources(Me.m_plMapData, "m_plMapData")
@@ -339,6 +341,12 @@ Namespace Ecospace
             Me.m_hdrDist.CollapsedParentHeight = 0
             Me.m_hdrDist.IsCollapsed = False
             Me.m_hdrDist.Name = "m_hdrDist"
+            '
+            'm_rbDisplayDiscards
+            '
+            resources.ApplyResources(Me.m_rbDisplayDiscards, "m_rbDisplayDiscards")
+            Me.m_rbDisplayDiscards.Name = "m_rbDisplayDiscards"
+            Me.m_rbDisplayDiscards.UseVisualStyleBackColor = True
             '
             'm_rbDisplayEnvDriver
             '
@@ -621,7 +629,7 @@ Namespace Ecospace
         Private WithEvents m_cbAutoSavePNG As System.Windows.Forms.CheckBox
         Private WithEvents m_lblAutosaveTimeSteps As System.Windows.Forms.Label
         Private WithEvents m_rbDisplayEnvDriver As RadioButton
-
+        Private WithEvents m_rbDisplayDiscards As RadioButton
     End Class
 
 End Namespace

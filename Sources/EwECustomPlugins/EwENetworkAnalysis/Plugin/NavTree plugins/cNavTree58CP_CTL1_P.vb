@@ -30,7 +30,7 @@ Public Class cNavTree58CP_CTL1_P
 
     Public Overrides ReadOnly Property ControlImage() As System.Drawing.Image
         Get
-            Return SharedResources.nav1_application_put
+            Return SharedResources.nav_input
         End Get
     End Property
 

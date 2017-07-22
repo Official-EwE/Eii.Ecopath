@@ -252,16 +252,19 @@
     <comment>{0} date and time, converted to string in current Locale</comment>
   </data>
   <data name="ECOSPACE_WRITER_ASC_BIOMASS" xml:space="preserve">
-    <value>Biomass ASCII map</value>
+    <value>Biomass ASCII maps</value>
   </data>
   <data name="ECOSPACE_WRITER_ASC_CATCH" xml:space="preserve">
-    <value>Catch ASCII map</value>
+    <value>Catch ASCII maps</value>
   </data>
   <data name="ECOSPACE_WRITER_ASC_CONTAMINANTS" xml:space="preserve">
     <value>Contaminant Concentrations ASCII map</value>
   </data>
+  <data name="ECOSPACE_WRITER_ASC_DISCARDS" xml:space="preserve">
+    <value>Total discards ASCII maps</value>
+  </data>
   <data name="ECOSPACE_WRITER_ASC_EFFORT" xml:space="preserve">
-    <value>Effort ASCII map</value>
+    <value>Effort ASCII maps</value>
   </data>
   <data name="ECOSPACE_WRITER_CSVMAP" xml:space="preserve">
     <value>CSV maps</value>

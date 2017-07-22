@@ -121,7 +121,7 @@ Public Class cTimeSeriesCSVWriter
                 sw.Write("Title")
                 For iTS As Integer = 1 To Me.m_core.nTimeSeries
                     ts = Me.m_core.EcosimTimeSeries(iTS)
-                    sw.Write(strDelimiter & " ")
+                    sw.Write(strDelimiter)
                     sw.Write(ts.Name.Replace(strDelimiter, "_"))
                 Next
                 sw.WriteLine()
@@ -130,22 +130,22 @@ Public Class cTimeSeriesCSVWriter
                 sw.Write("Weight")
                 For iTS As Integer = 1 To Me.m_core.nTimeSeries
                     ts = Me.m_core.EcosimTimeSeries(iTS)
-                    sw.Write(strDelimiter & " ")
+                    sw.Write(strDelimiter)
                     sw.Write(cStringUtils.FormatSingle(ts.WtType, strDecimalSeparator, ""))
                 Next
                 sw.WriteLine()
 
-                ' Pool code
+                ' Pool code 1
                 sw.Write("Pool code")
                 For iTS As Integer = 1 To Me.m_core.nTimeSeries
                     ts = Me.m_core.EcosimTimeSeries(iTS)
 
-                    sw.Write(strDelimiter & " ")
+                    sw.Write(strDelimiter)
                     If TypeOf ts Is cGroupTimeSeries Then
-                        sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cGroupTimeSeries).GroupIndex, _
+                        sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cGroupTimeSeries).GroupIndex,
                                                            strDecimalSeparator, ""))
                     ElseIf TypeOf ts Is cFleetTimeSeries Then
-                        sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cFleetTimeSeries).FleetIndex, _
+                        sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cFleetTimeSeries).FleetIndex,
                                                            strDecimalSeparator, ""))
                     Else
                         ' Should never happen, unless a new type of time series is defined.
@@ -155,13 +155,31 @@ Public Class cTimeSeriesCSVWriter
                 Next
                 sw.WriteLine()
 
+                ' Pool code 2
+                sw.Write("Pool code 2")
+                For iTS As Integer = 1 To Me.m_core.nTimeSeries
+                    ts = Me.m_core.EcosimTimeSeries(iTS)
+
+                    sw.Write(strDelimiter)
+                    If TypeOf ts Is cGroupTimeSeries Then
+                        sw.Write(0)
+                    ElseIf TypeOf ts Is cFleetTimeSeries Then
+                        sw.Write(cStringUtils.FormatInteger(DirectCast(ts, cFleetTimeSeries).GroupIndex,
+                                                           strDecimalSeparator, ""))
+                    Else
+                        ' Should never happen, unless a new type of time series is defined.
+                        Debug.Assert(False)
+                    End If
+
+                Next
+                sw.WriteLine()
                 ' Type
                 sw.Write("Type")
                 For iTS As Integer = 1 To Me.m_core.nTimeSeries
                     ts = Me.m_core.EcosimTimeSeries(iTS)
-                    sw.Write(strDelimiter & " ")
+                    sw.Write(strDelimiter)
                     ' Write time series type as int, not as string
-                    sw.Write(cStringUtils.FormatInteger(ts.TimeSeriesType, strDecimalSeparator, ""))
+                    sw.Write(ts.TimeSeriesType.ToString())
                 Next
                 sw.WriteLine()
 
@@ -170,7 +188,7 @@ Public Class cTimeSeriesCSVWriter
                     sw.Write(ds.FirstYear + iYear - 1)
                     For iTS As Integer = 1 To Me.m_core.nTimeSeries
                         ts = Me.m_core.EcosimTimeSeries(iTS)
-                        sw.Write(strDelimiter & " ")
+                        sw.Write(strDelimiter)
                         sw.Write(cStringUtils.FormatSingle(ts.ShapeData(iYear), strDecimalSeparator, ""))
                     Next
                     sw.WriteLine()

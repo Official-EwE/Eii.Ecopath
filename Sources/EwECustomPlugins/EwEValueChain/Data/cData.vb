@@ -724,10 +724,10 @@ Public Class cData
         Return Nothing
     End Function
 
-    Private Function FindEcopathFleetByID(ByVal iDBID As Integer) As cFleetInput
-        Dim fleet As cFleetInput = Nothing
+    Private Function FindEcopathFleetByID(ByVal iDBID As Integer) As cEcopathFleetInput
+        Dim fleet As cEcopathFleetInput = Nothing
         For i As Integer = 1 To Me.m_core.nFleets
-            fleet = Me.m_core.FleetInputs(i)
+            fleet = Me.m_core.EcopathFleetInputs(i)
             If CInt(fleet.GetVariable(eVarNameFlags.DBID)) = iDBID Then Return fleet
         Next
         Return Nothing
@@ -1148,7 +1148,7 @@ Public Class cData
             pu = DirectCast(unit, cProducerUnit)
 
             ' Filtering by fleet?
-            If (TypeOf item Is cFleetInput) Then
+            If (TypeOf item Is cEcopathFleetInput) Then
                 ' #Yes: include producer if it uses this fleet
                 bUseUnit = Object.ReferenceEquals(pu.Fleet, item)
             Else

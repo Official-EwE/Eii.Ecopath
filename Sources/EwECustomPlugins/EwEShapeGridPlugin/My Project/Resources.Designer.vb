@@ -203,5 +203,23 @@ Namespace My.Resources
                 Return ResourceManager.GetString("GRID_TIMESERIES", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Interval.
+        '''</summary>
+        Friend ReadOnly Property HEADER_INTERVAL() As String
+            Get
+                Return ResourceManager.GetString("HEADER_INTERVAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to 2nd target.
+        '''</summary>
+        Friend ReadOnly Property HEADER_TARGET_SECOND() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TARGET_SECOND", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

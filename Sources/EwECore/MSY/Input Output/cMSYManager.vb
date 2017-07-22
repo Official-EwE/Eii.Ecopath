@@ -621,7 +621,7 @@ Namespace MSY
 
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                'Create an F time series from the Ecopath F for the seleted group
+                'Create an F time series from the Ecopath F for the selected group
                 'All other timeseries will be disabled
                 Me.m_Core.LoadTimeSeries(dsID, True)
                 dsTS = Me.m_Core.TimeSeriesDataset(dsID)
@@ -633,7 +633,7 @@ Namespace MSY
                 Next
 
                 tsName = "MSY_F_Test_" & Me.m_Core.m_EcoPathData.GroupName(Me.m_msyData.iSelGroupFleet)
-                If Me.m_Core.AddTimeSeries(tsName, Me.m_msyData.iSelGroupFleet, eTimeSeriesType.FishingMortality, 1.0, Fs, tsID) Then
+                If Me.m_Core.AddTimeSeries(tsName, Me.m_msyData.iSelGroupFleet, 0, eTimeSeriesType.FishingMortality, 1.0, Fs, tsID) Then
 
                     Me.m_Core.LoadTimeSeries(Me.m_Core.ActiveTimeSeriesDatasetIndex, True)
                     dsTS = Me.m_Core.TimeSeriesDataset(dsID)

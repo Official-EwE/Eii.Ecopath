@@ -517,10 +517,7 @@ Namespace Controls
                 For i As Integer = 1 To ts.ShapeData.Length - 1
                     asValues(i - 1) = ts.DatVal(i)
                 Next
-
-                bSucces = bSucces And (Me.Core.AddTimeSeries(strNewTSName, _
-                        ts.DataType, ts.TimeSeriesType, _
-                        ts.WtType, asValues, intDBID))
+                bSucces = bSucces And (Me.Core.AddTimeSeries(strNewTSName, ts.DatPool, ts.DatPoolSec, ts.TimeSeriesType, ts.WtType, asValues, intDBID))
             Next
 
             If bSucces Then

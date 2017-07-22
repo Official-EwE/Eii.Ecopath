@@ -84,7 +84,7 @@ Public Class cModel
         Dim sStep As Single = Math.Max(0.01!, data.Parameters.EquilibriumEffortIncrement)
         Dim iNumSteps As Integer = CInt(((sMax - sMin) / sStep) * data.Parameters.EquilibriumFleetsToVary.Count)
         Dim iStep As Integer = 0
-        Dim fleet As cFleetInput = Nothing
+        Dim fleet As cEcopathFleetInput = Nothing
 
         Me.PreserveFishingEffort(data)
 
@@ -95,7 +95,7 @@ Public Class cModel
 
             For Each iFleet As Integer In data.Parameters.EquilibriumFleetsToVary
 
-                fleet = data.Core.FleetInputs(iFleet)
+                fleet = data.Core.EcopathFleetInputs(iFleet)
 
                 For sEffort As Single = sMin To sMax Step data.Parameters.EquilibriumEffortIncrement
 
@@ -423,7 +423,7 @@ Public Class cModel
                                          ByVal ecosimDS As cEcosimDatastructures) As Boolean
 
         Dim grpRun As cEcoPathGroupInput = Nothing
-        Dim flt As cFleetInput = Nothing
+        Dim flt As cEcopathFleetInput = Nothing
         Dim prodUnit As cProducerUnit = Nothing
 
         ' First run chain for full model
@@ -488,7 +488,7 @@ Public Class cModel
         ' Has Ecosim results?
         If (ecosimresults Is Nothing) Then
             ' #No: run for Ecopath
-            Dim fleet As cFleetInput = core.FleetInputs(iFleet)
+            Dim fleet As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
             sLandings = fleet.Landings(iGroup) * sArea
         Else
             ' Yes: run for Ecosim
@@ -515,7 +515,7 @@ Public Class cModel
 
             'VC changed the calc below, it just summed up the marketprices, but it should sum
             'up the values and later divide by landings to get average price
-            Dim fleet As cFleetInput = core.FleetInputs(iFleet)
+            Dim fleet As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
             Return fleet.OffVesselValue(iGroup) * fleet.Landings(iGroup) * sArea
         Else
             ' #Yes: run for Ecosim
@@ -543,7 +543,7 @@ Public Class cModel
 
                 Case cParameters.eAggregationModeType.ByFleet
                     For iFleet As Integer = 1 To data.Core.nFleets
-                        Dim flt As cFleetInput = data.Core.FleetInputs(iFleet)
+                        Dim flt As cEcopathFleetInput = data.Core.EcopathFleetInputs(iFleet)
                         w.WriteResults(agg, iFleet, flt.Name, bNotifyUser)
                     Next
 

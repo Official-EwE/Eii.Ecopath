@@ -1230,7 +1230,7 @@ Namespace Ecosim
                 Case eSelectionModeType.Fleets
                     Me.m_tscbTarget.Items.Add(New cCoreInputOutputControlItem(SharedResources.GENERIC_VALUE_ALL))
                     For i As Integer = 1 To Me.Core.nFleets
-                        Dim fleet As cFleetInput = Me.Core.FleetInputs(i)
+                        Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
                         Me.m_tscbTarget.Items.Add(New cCoreInputOutputControlItem(fleet))
                     Next
 

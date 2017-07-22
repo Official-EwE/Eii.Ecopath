@@ -89,6 +89,73 @@ Namespace Controls
 
         End Sub
 
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="strlabel"></param>
+        ''' <param name="strInternalName"></param>
+        ''' <param name="execstate"></param>
+        ''' <param name="tClass"></param>
+        ''' <param name="parent"></param>
+        ''' <param name="strHelpURL"></param>
+        ''' <param name="bIsDefault"></param>
+        ''' <returns></returns>
+        Public Function Add(strlabel As String, strInternalName As String, execstate As eCoreExecutionState, tClass As Type, imgkey As Integer,
+                            Optional parent As TreeNode = Nothing, Optional strHelpURL As String = "",
+                            Optional bIsDefault As Boolean = False) As TreeNode
+
+            Dim node As New TreeNode(strlabel, imgkey, imgkey)
+            node.Name = strInternalName
+
+            Dim ni As New cNodeInfo(strInternalName, execstate, tClass, strHelpURL)
+            Me.m_lNodeInfo.Add(ni)
+            If bIsDefault Then
+                Me.m_niDefault = ni
+            End If
+
+            If (parent Is Nothing) Then
+                Me.m_tv.Nodes.Add(node)
+            Else
+                parent.Nodes.Add(node)
+            End If
+
+            Return node
+
+        End Function
+
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="var"></param>
+        ''' <param name="strInternalName"></param>
+        ''' <param name="execstate"></param>
+        ''' <param name="tClass"></param>
+        ''' <param name="parent"></param>
+        ''' <param name="strHelpURL"></param>
+        ''' <param name="bIsDefault"></param>
+        ''' <returns></returns>
+        Public Function Add(var As eVarNameFlags, strInternalName As String, execstate As eCoreExecutionState, tClass As Type, imgkey As Integer,
+                            Optional parent As TreeNode = Nothing, Optional strHelpURL As String = "",
+                            Optional bIsDefault As Boolean = False) As TreeNode
+
+            Dim fmt As New EwECore.Style.cVarnameTypeFormatter()
+            Dim node As New TreeNode(fmt.GetDescriptor(var), imgkey, imgkey)
+            node.Name = strInternalName
+
+            Dim ni As New cNodeInfo(strInternalName, execstate, tClass, strHelpURL)
+            Me.m_lNodeInfo.Add(ni)
+            If bIsDefault Then Me.m_niDefault = ni
+
+            If (parent Is Nothing) Then
+                Me.m_tv.Nodes.Add(node)
+            Else
+                parent.Nodes.Add(node)
+            End If
+
+            Return node
+
+        End Function
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Add node info to this controller.
@@ -100,17 +167,14 @@ Namespace Controls
         ''' the application navigation tree.</param>
         ''' <param name="strHelpURL">Help URL for this node.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub Add(ByVal strTreeNodeName As String, _
-                       ByVal execstate As eCoreExecutionState, _
-                       ByVal tClass As Type, _
-                       Optional ByVal strHelpURL As String = "", _
-                       Optional ByVal bIsDefault As Boolean = False)
+        Private Sub Add(ByVal strTreeNodeName As String,
+                       ByVal execstate As eCoreExecutionState,
+                       ByVal tClass As Type,
+                       Optional ByVal strHelpURL As String = "")
 
             Dim ni As New cNodeInfo(strTreeNodeName, execstate, tClass, strHelpURL)
             Me.m_lNodeInfo.Add(ni)
-            If bIsDefault Then
-                Me.m_niDefault = ni
-            End If
+
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -258,11 +322,11 @@ Namespace Controls
     Public Class cNodeInfo
 
         ''' <summary><see cref="TreeNode.Name">Name</see> of the node.</summary>
-        Private m_treeNodeName As String = ""
+        Private m_strName As String = ""
         ''' <summary>Flag indicating the EwE execution state this node belongs to.</summary>
         Private m_executionState As eCoreExecutionState = eCoreExecutionState.Idle
         ''' <summary>Type of the Form class that must be created for this node.</summary>
-        Private m_classType As Type
+        Private m_type As Type
         ''' <summary>Help URL for this node.</summary>
         Private m_strHelpURL As String
 
@@ -270,21 +334,21 @@ Namespace Controls
         ''' <summary>
         ''' Constructor, initializes a new instance of this class.
         ''' </summary>
-        ''' <param name="p_treeNodeName"><see cref="TreeNode.Name">Name</see> of the
+        ''' <param name="strName"><see cref="TreeNode.Name">Name</see> of the
         ''' corresponding <see cref="TreeNode">TreeNode</see>.</param>
-        ''' <param name="p_iExecutionState">The <see cref="eCoreExecutionState">Core execution state</see>
+        ''' <param name="executionState">The <see cref="eCoreExecutionState">Core execution state</see>
         ''' that this node belongs to.</param>
-        ''' <param name="p_classType">The Type of the Form that needs to be instantiated
+        ''' <param name="tClass">The Type of the Form that needs to be instantiated
         ''' when the corresponding <see cref="TreeNode">TreeNode</see> is selected.</param>
         ''' ---------------------------------------------------------------------------
-        Public Sub New(ByVal p_treeNodeName As String, _
-                        ByVal p_iExecutionState As eCoreExecutionState, _
-                        ByVal p_classType As Type, _
-                        ByVal p_strHelpURL As String)
-            Me.m_treeNodeName = p_treeNodeName
-            Me.m_executionState = p_iExecutionState
-            Me.m_classType = p_classType
-            Me.m_strHelpURL = p_strHelpURL
+        Public Sub New(ByVal strName As String,
+                        ByVal executionState As eCoreExecutionState,
+                        ByVal tClass As Type,
+                        ByVal strHelpURL As String)
+            Me.m_strName = strName
+            Me.m_executionState = executionState
+            Me.m_type = tClass
+            Me.m_strHelpURL = strHelpURL
         End Sub
 
         ''' ---------------------------------------------------------------------------
@@ -295,7 +359,7 @@ Namespace Controls
         ''' ---------------------------------------------------------------------------
         Public ReadOnly Property NodeName() As String
             Get
-                Return Me.m_treeNodeName
+                Return Me.m_strName
             End Get
         End Property
 
@@ -319,10 +383,10 @@ Namespace Controls
         ''' ---------------------------------------------------------------------------
         Public Property Type() As Type
             Get
-                Return Me.m_classType
+                Return Me.m_type
             End Get
             Set(ByVal classType As Type)
-                Me.m_classType = classType
+                Me.m_type = classType
             End Set
         End Property
 

@@ -53,7 +53,7 @@ Public Class cNTCPluginTabLink
 
     Public Overrides ReadOnly Property ControlImage() As System.Drawing.Image
         Get
-            Return SharedResources.nav0_application_get
+            Return SharedResources.nav_output
         End Get
     End Property
 

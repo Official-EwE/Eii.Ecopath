@@ -51,7 +51,7 @@ Public Class cLandingsLinkManager
 
         Dim aLinks As cLink() = Nothing
         Dim link As cLinkLandings = Nothing
-        Dim fleet As cFleetInput = Nothing
+        Dim fleet As cEcopathFleetInput = Nothing
         Dim group As cEcoPathGroupInput = Nothing
         Dim dtTarget As New Dictionary(Of cUnit, List(Of Integer))
         Dim landings As List(Of Integer) = Nothing

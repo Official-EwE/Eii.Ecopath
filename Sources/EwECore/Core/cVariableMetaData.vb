@@ -402,8 +402,10 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.EcospaceAreaOutputDir) = New cVariableMetaData(1024)
         Me.Metadata(eVarNameFlags.EcospaceMapOutputDir) = New cVariableMetaData(1024)
         Me.Metadata(eVarNameFlags.EcospaceFirstOutputTimeStep) = New cVariableMetaData(1, Integer.MaxValue, gt, lt, 1)
+        Me.Metadata(eVarNameFlags.EcospaceIsEcosimBiomassForcingLoaded) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.EcospaceUseEcosimBiomassForcing) = New cVariableMetaData()
-        Me.Metadata(eVarNameFlags.EcospaceIsEcosimBioForcingLoaded) = New cVariableMetaData()
+        Me.Metadata(eVarNameFlags.EcospaceIsEcosimDiscardForcingLoaded) = New cVariableMetaData()
+        Me.Metadata(eVarNameFlags.EcospaceUseEcosimDiscardForcing) = New cVariableMetaData()
 
         ' map
         Me.Metadata(eVarNameFlags.InRow) = New cVariableMetaData(1, 10000, ge, le)

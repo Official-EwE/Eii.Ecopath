@@ -137,6 +137,12 @@ Public Class cEcosimGroupOutput
         'Fishing Mortality by group/fleet
         m_coreData.Add(eVarNameFlags.EcosimFishingMortGroupGear, New c3DResultsWrapper(m_simData.ResultsSumFMortByGroupGear, Me.Index))
 
+        'Discards added 24-Oct-2016 as part of the Discardless project
+        m_coreData.Add(eVarNameFlags.EcosimLandingsGroupGear, New c3DResultsWrapper(m_simData.ResultsTimeLandingsGroupGear, Me.Index))
+        m_coreData.Add(eVarNameFlags.EcosimDiscardsGroupGear, New c3DResultsWrapper(m_simData.ResultsTimeDiscardsGroupGear, Me.Index))
+        m_coreData.Add(eVarNameFlags.EcosimDiscardsMortGroupGear, New c3DResultsWrapper(m_simData.ResultsTimeDiscardsMortGroupGear, Me.Index))
+        m_coreData.Add(eVarNameFlags.EcosimDiscardsSurvivedGroupGear, New c3DResultsWrapper(m_simData.ResultsTimeDiscardsSurvivedGroupGear, Me.Index))
+
     End Sub
 
 #End Region
@@ -290,7 +296,7 @@ Public Class cEcosimGroupOutput
     End Property
 
     ''' <summary>
-    ''' Catch by fleet for this group at a given time step.
+    ''' Total Catch by fleet for this group at a given time step. Includes discards the died.
     ''' </summary>
     ''' <param name="iFleetIndex">Fleet index</param>
     ''' <param name="iTime">Time index</param>
@@ -431,6 +437,32 @@ Public Class cEcosimGroupOutput
             Return CSng(GetVariable(eVarNameFlags.EcosimValueGroupFleet, iFleetIndex, iTime))
         End Get
     End Property
+
+    Public ReadOnly Property DiscardMortByFleet(ByVal iFleetIndex As Integer, ByVal iTime As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimDiscardsMortGroupGear, iFleetIndex, iTime))
+        End Get
+    End Property
+
+    Public ReadOnly Property DiscardByFleet(ByVal iFleetIndex As Integer, ByVal iTime As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimDiscardsGroupGear, iFleetIndex, iTime))
+        End Get
+    End Property
+
+    Public ReadOnly Property DiscardSurvivedByFleet(ByVal iFleetIndex As Integer, ByVal iTime As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimDiscardsSurvivedGroupGear, iFleetIndex, iTime))
+        End Get
+    End Property
+
+
+    Public ReadOnly Property LandingsByFleet(ByVal iFleetIndex As Integer, ByVal iTime As Integer) As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcosimLandingsGroupGear, iFleetIndex, iTime))
+        End Get
+    End Property
+
 
 #End Region
 

@@ -74,6 +74,7 @@ Namespace Ecospace
             Effort
             FishingMortGraph
             CatchGraph
+            Discards
             PredMortRateGraph
             ConsumpRateGraph
             Driver
@@ -106,6 +107,7 @@ Namespace Ecospace
         Private m_FishingMortScaler() As Single
         Private m_CBScaler() As Single
         Private m_BaseC() As Single
+        Private m_baseDiscards() As Single
 
         Private m_layerDepth As cEcospaceLayer = Nothing
 
@@ -123,10 +125,10 @@ Namespace Ecospace
         'jb added
         Private m_spaceStats As cEcospaceStats = Nothing
 
-        ' -- plot settings --
-        Private m_plottype As ePlotTypes = ePlotTypes.RelB
+        ' -- map plot settings --
+        Private m_mapPlotType As ePlotTypes = ePlotTypes.RelB
         ''' <summary>Tracker to detect plot type changes. Initial value indicates fleet stuff, not groups</summary>
-        Private m_plottypelast As ePlotTypes = ePlotTypes.Effort
+        Private m_mapPlotTypeLast As ePlotTypes = ePlotTypes.Effort
         Private m_bOverlay As Boolean = False
         Private m_bShowMPA As Boolean = True
         Private m_bShowIBM As Boolean = True
@@ -139,8 +141,8 @@ Namespace Ecospace
         Private m_showitemMode As eShowItemType = eShowItemType.ShowAll
         Private m_iItemToShow As Integer = 1
 
+        ' -- graph plot settings --
         Private m_graphPlotType As ePlotTypes = ePlotTypes.RelB
-
         Private m_zgh As cEcospaceZedGraphHelper = Nothing
 
         ''' <summary>Exposing m_sMaxEffort to the interface would allow the user to set the Effort legend sensitivity.</summary>
@@ -242,7 +244,7 @@ Namespace Ecospace
             Dim sg As cStyleGuide = Me.StyleGuide
             Dim nItems As Integer = -1
 
-            Select Case Me.m_plottype
+            Select Case Me.m_mapPlotType
                 Case ePlotTypes.Effort : Return
                 Case ePlotTypes.Driver
                     nItems = Me.Core.nEnvironmentalDriverLayers
@@ -260,7 +262,7 @@ Namespace Ecospace
             Me.InitOutputBitmaps()
 
             For i As Integer = 1 To nThreads
-                Select Case Me.m_plottype
+                Select Case Me.m_mapPlotType
                     Case ePlotTypes.Driver
                         drawer = New cMapDrawerLayer(Me.Core, Me.StyleGuide)
                     Case Else
@@ -348,13 +350,15 @@ Namespace Ecospace
             ReDim Me.m_BaseCatch(nGrps)
             ReDim Me.m_FishingMortScaler(nGrps)
             ReDim Me.m_BaseBiomass(nGrps)
+            ReDim Me.m_baseDiscards(nGrps)
 
             For igrp As Integer = 1 To nGrps
                 Me.m_FishingMortScaler(igrp) = 1
                 Me.m_BaseC(igrp) = 1
                 Me.m_BaseBiomass(igrp) = Me.Core.StartBiomass(igrp)
                 For iflt As Integer = 1 To Me.Core.nFleets
-                    Me.m_BaseCatch(igrp) += Me.Core.FleetInputs(iflt).Landings(igrp) + Me.Core.FleetInputs(iflt).Discards(igrp)
+                    Me.m_BaseCatch(igrp) += Me.Core.EcopathFleetInputs(iflt).Landings(igrp) + Me.Core.EcopathFleetInputs(iflt).Discards(igrp)
+                    Me.m_baseDiscards(igrp) += Me.Core.EcopathFleetInputs(iflt).Discards(igrp)
                 Next
             Next
 
@@ -494,7 +498,7 @@ Namespace Ecospace
 
         Private Sub PlotMap(ByVal g As Graphics)
             Try
-                Select Case m_plottype
+                Select Case m_mapPlotType
                     Case ePlotTypes.Effort
                         PlotFleetMap(g)
                     Case ePlotTypes.Driver
@@ -579,7 +583,7 @@ Namespace Ecospace
 
                         drawer.StanzaDS = Nothing
 
-                        Select Case Me.m_plottype
+                        Select Case Me.m_mapPlotType
 
                             Case ePlotTypes.RelB
                                 drawer.Map = Me.m_dataTimeStep.BiomassMap
@@ -609,6 +613,11 @@ Namespace Ecospace
                                 drawer.Map = Me.m_ConcOverB
                                 maptype = cMapDrawerBase.eMapType.ContamRate
                                 RelScaler = Me.m_BaseC
+
+                            Case ePlotTypes.Discards
+                                drawer.Map = Me.m_dataTimeStep.DiscardMortalityMap
+                                maptype = cMapDrawerBase.eMapType.Discards
+                                RelScaler = Me.m_baseDiscards
 
                             Case ePlotTypes.Effort
                                 ' This type of map cannot be drawn threaded because cMapDrawers are hard-wired
@@ -762,11 +771,11 @@ Namespace Ecospace
                 Me.StyleGuide.FleetVisible(iflt) = False
             Next
 
-            'Now enable just the ones for the seleted group
+            'Now enable just the ones for the selected group
             For igrp As Integer = 1 To Me.Core.nGroups
                 If Me.StyleGuide.GroupVisible(igrp) Then
                     For iflt As Integer = 1 To Me.Core.nFleets
-                        Dim flt As cFleetInput = Me.Core.FleetInputs(iflt)
+                        Dim flt As cEcopathFleetInput = Me.Core.EcopathFleetInputs(iflt)
                         If (flt.Landings(igrp) + flt.Discards(igrp) > 0) Then
                             Me.StyleGuide.FleetVisible(iflt) = True
                         End If
@@ -783,7 +792,7 @@ Namespace Ecospace
             Dim lOrigins As New List(Of PointF)
             Dim lMaps As New List(Of Rectangle)
 
-            Debug.Assert(Me.m_plottype = ePlotTypes.Effort, "Only allowed for effort maps due to limitations in cMapDrawer. Ugh!")
+            Debug.Assert(Me.m_mapPlotType = ePlotTypes.Effort, "Only allowed for effort maps due to limitations in cMapDrawer. Ugh!")
 
             If m_iTimeStepCur > 0 Then
 
@@ -820,7 +829,7 @@ Namespace Ecospace
 
             Dim sg As cStyleGuide = Me.StyleGuide
             Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(cColourBins)
-            Dim cScaler As Single = cColourBins / Me.m_sMaxEffort
+            Dim cScaler As Single = cColourBins / 2 'Me.m_sMaxEffort
             Dim brCell As Brush = Nothing
             Dim sTSpy As Single = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
             Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
@@ -968,26 +977,28 @@ Namespace Ecospace
                     m_rbDisplayFishingEffort.CheckedChanged,
                     m_rbDisplayCoverB.CheckedChanged,
                     m_rbDisplayContaminantC.CheckedChanged,
-                    m_rbDisplayF.CheckedChanged, m_rbDisplayFOverB.CheckedChanged, m_rbDisplayEnvDriver.CheckedChanged
+                    m_rbDisplayF.CheckedChanged, m_rbDisplayFOverB.CheckedChanged, m_rbDisplayEnvDriver.CheckedChanged, m_rbDisplayDiscards.CheckedChanged
 
             ' To catch premature events
             If (Me.UIContext Is Nothing) Then Return
 
             If Me.m_rbDisplayRelBiomass.Checked Then
-                Me.m_plottype = ePlotTypes.RelB
+                Me.m_mapPlotType = ePlotTypes.RelB
             ElseIf Me.m_rbDisplayFishingEffort.Checked Then
-                Me.m_plottype = ePlotTypes.Effort
+                Me.m_mapPlotType = ePlotTypes.Effort
                 Me.SetFleetsForSelGroups()
             ElseIf Me.m_rbDisplayCoverB.Checked Then
-                Me.m_plottype = ePlotTypes.CoverB
+                Me.m_mapPlotType = ePlotTypes.CoverB
             ElseIf Me.m_rbDisplayContaminantC.Checked Then
-                Me.m_plottype = ePlotTypes.Contaminant
+                Me.m_mapPlotType = ePlotTypes.Contaminant
             ElseIf Me.m_rbDisplayF.Checked Then
-                Me.m_plottype = ePlotTypes.F
+                Me.m_mapPlotType = ePlotTypes.F
             ElseIf Me.m_rbDisplayFOverB.Checked Then
-                Me.m_plottype = ePlotTypes.FOverB
+                Me.m_mapPlotType = ePlotTypes.FOverB
             ElseIf Me.m_rbDisplayEnvDriver.Checked Then
-                Me.m_plottype = ePlotTypes.Driver
+                Me.m_mapPlotType = ePlotTypes.Driver
+            ElseIf m_rbDisplayDiscards.Checked Then
+                Me.m_mapPlotType = ePlotTypes.Discards
             End If
 
             Me.InitDrawingThreads()
@@ -1324,7 +1335,7 @@ Namespace Ecospace
 
                 If (bSave) Then
                     Dim strPath As String = Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.EcospaceResults), "png")
-                    Dim strFile As String = Path.Combine(strPath, Me.m_plottype.ToString & String.Format("-{0:00000}", TimeStepData.iTimeStep))
+                    Dim strFile As String = Path.Combine(strPath, Me.m_mapPlotType.ToString & String.Format("-{0:00000}", TimeStepData.iTimeStep))
                     Me.SaveMapGeoRefImages(strFile, ImageFormat.Png)
                 End If
             End If
@@ -1582,7 +1593,7 @@ Namespace Ecospace
             Me.m_cmbLabelPos.Enabled = Me.m_bShowLabels
             Me.m_cbInvertColor.Enabled = Me.m_bShowLabels
 
-            Me.m_hoverMenu.IsEnabled(eHoverCommands.SaveImageGeoRef) = (Me.m_plottype <> ePlotTypes.Effort) And (Me.Core.StateMonitor.HasEcospaceRan)
+            Me.m_hoverMenu.IsEnabled(eHoverCommands.SaveImageGeoRef) = (Me.m_mapPlotType <> ePlotTypes.Effort) And (Me.Core.StateMonitor.HasEcospaceRan)
 
             Me.m_tbxAutosaveTimeSteps.Enabled = (Me.m_cbAutoSavePNG.Checked = True)
 
@@ -1604,15 +1615,15 @@ Namespace Ecospace
         Private Sub CheckRefreshSingleItemDropdown()
 
             ' No need to refresh if nothing changes
-            If (Me.m_plottypelast = Me.m_plottype) Then Return
+            If (Me.m_mapPlotTypeLast = Me.m_mapPlotType) Then Return
 
-            Me.m_plottypelast = Me.m_plottype
+            Me.m_mapPlotTypeLast = Me.m_mapPlotType
             Me.m_bInUpdate = True
 
             Dim desc As New cCoreInterfaceFormatter()
             Me.m_cmbDisplayItem.Items.Clear()
 
-            Select Case Me.m_plottype
+            Select Case Me.m_mapPlotType
                 Case ePlotTypes.Effort
                     For i As Integer = 1 To Me.Core.nFleets
                         Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceFleets(i), eDescriptorTypes.Name))
@@ -1749,7 +1760,7 @@ Namespace Ecospace
                 Me.PlotMap(g)
                 bmp.Save(strFileName, imgFormat)
 
-                Me.SaveMapLegendImage(strFileName, imgFormat, fmt.GetDescriptor(Me.m_plottype), SharedResources.SCALE_LOG)
+                Me.SaveMapLegendImage(strFileName, imgFormat, fmt.GetDescriptor(Me.m_mapPlotType), SharedResources.SCALE_LOG)
 
                 msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.HEADER_MAP_IMAGES, strFileName),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
@@ -1832,7 +1843,7 @@ Namespace Ecospace
             drawer.InRow = Me.m_iInRow
 
             Dim fmt As New cRunEcospacePlotTypeFormatter()
-            Select Case Me.m_plottype
+            Select Case Me.m_mapPlotType
 
                 Case ePlotTypes.RelB
                     drawer.Map = Me.m_dataTimeStep.BiomassMap
@@ -1927,8 +1938,8 @@ Namespace Ecospace
                         End Using
 
                         ' Add legend file
-                        Me.SaveMapLegendImage(strFileSub, imgFormat, _
-                                              String.Format(SharedResources.GENERIC_LABEL_DOUBLE, fmt.GetDescriptor(Me.m_plottype), grp.Name), SharedResources.SCALE_LOG)
+                        Me.SaveMapLegendImage(strFileSub, imgFormat,
+                                              String.Format(SharedResources.GENERIC_LABEL_DOUBLE, fmt.GetDescriptor(Me.m_mapPlotType), grp.Name), SharedResources.SCALE_LOG)
 
                     End If
                 Next

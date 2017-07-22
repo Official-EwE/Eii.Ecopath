@@ -59,7 +59,7 @@ Namespace Ecosim
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iFleet As Integer = 1 To Core.nFleets
-                src = Core.FleetInputs(iFleet)
+                src = Core.EcopathFleetInputs(iFleet)
                 Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager,
                                                                  src, eVarNameFlags.Name, Nothing,
                                                                  cUnits.Currency)
@@ -96,7 +96,7 @@ Namespace Ecosim
 
                 ' Fleet cells
                 For iFleet As Integer = 1 To Me.Core.nFleets
-                    fleet = Core.MSEManager.FleetInputs(iFleet)
+                    fleet = Core.MSEManager.EcopathFleetInputs(iFleet)
                     prop = Me.PropertyManager.GetProperty(fleet, eVarNameFlags.QuotaShare, group)
                     Me(iGroup, 1 + iFleet) = New PropertyCell(prop)
 

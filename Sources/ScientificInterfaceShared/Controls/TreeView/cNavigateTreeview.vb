@@ -31,7 +31,7 @@ Namespace Controls
     ''' <see cref="cNavigateTreeview.Navigate"/> event is thrown 
     ''' </summary>
     Public Class cNavigateTreeview
-        Inherits TreeView
+        Inherits cThemedTreeView
 
         Private m_bShowTime As Boolean = False
 

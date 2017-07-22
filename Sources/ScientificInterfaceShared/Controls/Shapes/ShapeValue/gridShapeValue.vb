@@ -81,8 +81,13 @@ Public Class gridShapeValue
                          ByVal iNumValues As Integer, _
                          ByVal displayMode As frmShapeValue.eDisplayMode)
 
+        If (TypeOf shape Is cTimeSeries) Then
+            Me.m_bSuppressZeroes = Not DirectCast(shape, cTimeSeries).SupportsNull()
+        Else
+            Me.m_bSuppressZeroes = False
+        End If
+
         Me.m_iNumValues = iNumValues
-        Me.m_bSuppressZeroes = (TypeOf shape Is cTimeSeries)
         Me.m_shape = shape
         Me.m_displayMode = displayMode
         Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape, Me.UIContext)

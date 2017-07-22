@@ -79,7 +79,7 @@ Public MustInherit Class cTimeSeries
         End Get
 
         Set(ByVal tstype As eTimeSeriesType)
-            ' It is not allowed to switch between group- and fleet based TS once a type has been assigned
+            ' It is not allowed to switch between TS types once a type has been assigned
             Dim tscatCurr As eTimeSeriesCategoryType = cTimeSeriesFactory.TimeSeriesCategory(Me.m_timeSeriesType)
             Select Case tscatCurr
                 Case eTimeSeriesCategoryType.NotSet
@@ -116,6 +116,15 @@ Public MustInherit Class cTimeSeries
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property DatPool() As Integer
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the index of the secundary target that a time series applies to. The
+    ''' type of the target is implied by the <see cref="TimeSeriesType">type</see>
+    ''' of the time series.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property DatPoolSec() As Integer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -201,7 +210,9 @@ Public MustInherit Class cTimeSeries
                (Me.m_timeSeriesType = eTimeSeriesType.TotalMortality) Or
                (Me.m_timeSeriesType = eTimeSeriesType.FishingMortalityRef) Or
                (Me.m_timeSeriesType = eTimeSeriesType.Catches) Or
-               (Me.m_timeSeriesType = eTimeSeriesType.CatchesRel)
+               (Me.m_timeSeriesType = eTimeSeriesType.CatchesRel) Or
+               (Me.m_timeSeriesType = eTimeSeriesType.Landings) Or
+               (Me.m_timeSeriesType = eTimeSeriesType.Discards)
     End Function
 
     Public Function IsDriver() As Boolean
@@ -210,12 +221,20 @@ Public MustInherit Class cTimeSeries
 
     Public Function IsRelative() As Boolean
         Return (Me.m_timeSeriesType = eTimeSeriesType.BiomassRel) Or
-               (Me.m_timeSeriesType = eTimeSeriesType.CatchesRel) Or
-               (Me.TimeSeriesType = eTimeSeriesType.EcotracerConcRel)
+               (Me.m_timeSeriesType = eTimeSeriesType.CatchesRel) ' Or
+        '(Me.TimeSeriesType = eTimeSeriesType.EcotracerConcRel)
     End Function
 
     Public Function IsAbsolute() As Boolean
         Return Not Me.IsRelative()
+    End Function
+
+    <Obsolete("Remove when time series properly use cCore.NULL_VALUE")>
+    Public Function SupportsNull() As Boolean
+        Return Me.m_timeSeriesType = eTimeSeriesType.DiscardMortality Or
+               Me.m_timeSeriesType = eTimeSeriesType.DiscardProportion Or
+               Me.m_timeSeriesType = eTimeSeriesType.Landings Or
+               Me.m_timeSeriesType = eTimeSeriesType.Discards
     End Function
 
     ''' -----------------------------------------------------------------------

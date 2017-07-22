@@ -59,7 +59,7 @@ Namespace Style
         ''' <summary>States whether numbers are formatted in groups.</summary>
         Private m_bGroupDigits As Boolean = False
 
-        ' -- units --
+        ' -- 
         ''' <summary>Default currency unit.</summary>
         Private m_unitCurrency As eUnitCurrencyType = eUnitCurrencyType.Nitrogen
         ''' <summary>Currency unit custom text.</summary>
@@ -619,25 +619,6 @@ Namespace Style
             Return units.ToString(strUnits)
         End Function
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Format a value string using a value and one or more units.
-        ''' </summary>
-        ''' <param name="strUnitMask">The mask to format values with.</param>
-        ''' <param name="strValue">The value to format into the mask.</param>
-        ''' <param name="strUnits">Units to format into the mask.</param>
-        ''' <returns></returns>
-        ''' -------------------------------------------------------------------
-        Public Function FormatUnitString(ByVal strUnitMask As String,
-                                         ByVal strValue As String,
-                                         ByVal strUnits As String) As String
-
-            If (strUnitMask IsNot Nothing) And (Not String.IsNullOrEmpty(strUnitMask)) Then
-                Return cStringUtils.Localize(strUnitMask, strValue, FormatUnitString(strUnits))
-            End If
-            Return cStringUtils.Localize(strUnitMask, strValue)
-        End Function
-
 #Region " Currency units "
 
         ''' -------------------------------------------------------------------
@@ -1050,7 +1031,7 @@ Namespace Style
             Get
                 Dim clr As Color = Color.Transparent
                 If (0 <= iFleet) And (iFleet <= core.nFleets) Then
-                    Dim flt As cFleetInput = core.FleetInputs(iFleet)
+                    Dim flt As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
                     clr = cColorUtils.IntToColor(flt.PoolColor)
                 End If
                 If clr.A = 0 Then
@@ -1060,7 +1041,7 @@ Namespace Style
             End Get
             Set(ByVal value As Color)
                 If (0 <= iFleet) And (iFleet <= core.nFleets) Then
-                    Dim flt As cFleetInput = core.FleetInputs(iFleet)
+                    Dim flt As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
                     ' Optimization
                     If flt.PoolColor = cColorUtils.ColorToInt(value) Then Return
                     ' Apply

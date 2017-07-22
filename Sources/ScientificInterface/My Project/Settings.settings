@@ -123,7 +123,7 @@
       <Value Profile="(Default)">{MyDocuments}\EwE backup\{ModelFile}_{Date}-{Time}.{ModelExt}</Value>
     </Setting>
     <Setting Name="OutputPathMask" Type="System.String" Scope="User">
-      <Value Profile="(Default)">{MyDocuments}\EwE output\</Value>
+      <Value Profile="(Default)">{MyDocuments}\EwE output\{ModelFile}</Value>
     </Setting>
     <Setting Name="ShowHostInfo" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

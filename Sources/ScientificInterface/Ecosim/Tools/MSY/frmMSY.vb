@@ -384,7 +384,7 @@ Namespace Ecosim
                 Next
             ElseIf Me.m_rbFleet.Checked Then
                 For i As Integer = 1 To Me.Core.nFleets
-                    Dim fleet As cFleetInput = Me.Core.FleetInputs(i)
+                    Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
                     Me.m_cmbTarget.Items.Add(New cCoreInputOutputControlItem(fleet))
                 Next
             End If
@@ -399,7 +399,7 @@ Namespace Ecosim
         ''' Run MSY for the selected group/fleet.
         ''' </summary>
         ''' <param name="item">The selected <see cref="cEcoPathGroupInput">group</see> 
-        ''' or <see cref="cFleetInput">fleet</see>.</param>
+        ''' or <see cref="cEcopathFleetInput">fleet</see>.</param>
         ''' -------------------------------------------------------------------
         Private Sub Run(item As cCoreInputOutputBase)
 
@@ -513,7 +513,7 @@ Namespace Ecosim
                     If Me.m_parms.SelGroupFleetIndex = 0 Then
                         strTarget = SharedResources.GENERIC_VALUE_ALLFLEETS
                     Else
-                        strTarget = Me.Core.FleetInputs(Me.m_results.Selection).Name
+                        strTarget = Me.Core.EcopathFleetInputs(Me.m_results.Selection).Name
                     End If
 
             End Select
@@ -638,9 +638,9 @@ Namespace Ecosim
 
                 strDataName = SharedResources.HEADER_RELATIVE_CATCH
 
-                Dim flt As cFleetInput = Nothing
+                Dim flt As cEcopathFleetInput = Nothing
                 If Me.m_results.SelMode = eMSYFSelectionModeType.Fleets Then
-                    flt = Me.Core.FleetInputs(Me.m_results.Selection)
+                    flt = Me.Core.EcopathFleetInputs(Me.m_results.Selection)
                 End If
 
                 For i As Integer = 1 To Me.Core.nGroups

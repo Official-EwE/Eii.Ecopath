@@ -62,8 +62,6 @@ Namespace Ecospace.Advection
             Me.m_zoomctrl.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
             Me.m_zoomctrl.Size = New System.Drawing.Size(360, 383)
             Me.m_zoomctrl.TabIndex = 0
-            Me.m_zoomctrl.UIContext = Nothing
-            Me.m_zoomctrl.ZoomPercentage = 100.0!
             '
             'm_hdrTitle
             '

@@ -615,7 +615,7 @@ Public Class ucResults
             Case cParameters.eAggregationModeType.ByFleet
                 Me.m_tscmbItems.Items.Add(New cCoreComboItem(SharedResources.GENERIC_VALUE_ALLFLEETS))
                 For i As Integer = 1 To Me.m_data.Core.nFleets
-                    Me.m_tscmbItems.Items.Add(New cCoreComboItem(Me.m_data.Core.FleetInputs(i)))
+                    Me.m_tscmbItems.Items.Add(New cCoreComboItem(Me.m_data.Core.EcopathFleetInputs(i)))
                 Next
                 Me.m_tscmbItems.SelectedIndex = 0
 

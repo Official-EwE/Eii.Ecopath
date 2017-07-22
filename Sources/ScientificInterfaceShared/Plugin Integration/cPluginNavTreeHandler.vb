@@ -190,15 +190,16 @@ Namespace Integration
                         tn.ToolTipText = ipNavTree.ControlTooltipText
                         ' Attach plugin info to node tag
                         tn.Tag = ipNavTree
+
                         ' Attach an image, if any
-                        If ipNavTree.ControlImage IsNot Nothing Then
+                        If (Me.m_tv.ImageList IsNot Nothing) Then
                             tn.ImageIndex = Me.m_tv.ImageList.Images.Count
                             tn.SelectedImageIndex = Me.m_tv.ImageList.Images.Count
-                            Me.m_tv.ImageList.Images.Add(ipNavTree.ControlImage)
-                        Else
-                            tn.ImageIndex = Me.m_tv.ImageList.Images.Count
-                            tn.SelectedImageIndex = Me.m_tv.ImageList.Images.Count
-                            Me.m_tv.ImageList.Images.Add(My.Resources.plugin)
+                            If (ipNavTree.ControlImage IsNot Nothing) Then
+                                Me.m_tv.ImageList.Images.Add(ipNavTree.ControlImage)
+                            Else
+                                Me.m_tv.ImageList.Images.Add(My.Resources.plugin)
+                            End If
                         End If
                         ' Regular font
                         tn.NodeFont = New System.Drawing.Font(m_tv.Font, Drawing.FontStyle.Regular)

@@ -188,7 +188,7 @@ End Interface ' ICoreGroup
 ''' used to store the internal data in the New constructor and define a dot (.) operator
 ''' for any variables that requires to be accessed via Properties.</para>
 ''' <para>For examples on how to implement this class, refer to <see cref="cEcoPathGroupInput">cEcoPathGroupInput</see>,
-''' <see cref="cFleetInput">cFleetInput</see>, etc.</para>
+''' <see cref="cEcopathFleetInput">cEcopathFleetInput</see>, etc.</para>
 '''</remarks>
 ''' ---------------------------------------------------------------------------
 Public MustInherit Class cCoreInputOutputBase

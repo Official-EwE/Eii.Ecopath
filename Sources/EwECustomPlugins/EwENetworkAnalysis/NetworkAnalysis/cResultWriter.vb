@@ -454,7 +454,7 @@ Public Class cResultWriter
         Next
         For iFleet As Integer = 1 To core.nFleets
             sb.Append(",")
-            sb.Append(cStringUtils.ToCSVField(core.FleetInputs(iFleet).Name))
+            sb.Append(cStringUtils.ToCSVField(core.EcopathFleetInputs(iFleet).Name))
         Next
         sb.AppendLine("")
 
@@ -462,7 +462,7 @@ Public Class cResultWriter
             If i <= core.nGroups Then
                 sb.Append(cStringUtils.ToCSVField(core.EcoPathGroupInputs(i).Name))
             Else
-                sb.Append(cStringUtils.ToCSVField(core.FleetInputs(i - core.nGroups).Name))
+                sb.Append(cStringUtils.ToCSVField(core.EcopathFleetInputs(i - core.nGroups).Name))
             End If
             For j As Integer = 1 To core.nGroups + core.nFleets
                 sb.Append(",")

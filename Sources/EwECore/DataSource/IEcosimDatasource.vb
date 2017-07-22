@@ -218,14 +218,16 @@ Namespace DataSources
         ''' <param name="timeSeriesType"><see cref="eTimeSeriesType">Type</see> of the time series.</param>
         ''' <param name="asValues">Initial values to set in the TS.</param>
         ''' <param name="iDBID">Database ID assigned to the new TS.</param>
-        ''' <param name="iPool"></param>
+        ''' <param name="iPool">Target index</param>
+        ''' <param name="iPoolSec">Secundary target index, if applicable.</param>
         ''' <param name="sWeight"></param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendTimeSeries(ByVal strName As String, _
-            ByVal iPool As Integer, ByVal timeSeriesType As eTimeSeriesType, _
-            ByVal sWeight As Single, ByVal asValues() As Single, _
-            ByRef iDBID As Integer) As Boolean
+        Function AppendTimeSeries(ByVal strName As String,
+                                  ByVal iPool As Integer, ByVal iPoolSec As Integer,
+                                  ByVal timeSeriesType As eTimeSeriesType,
+                                  ByVal sWeight As Single, ByVal asValues() As Single,
+                                  ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

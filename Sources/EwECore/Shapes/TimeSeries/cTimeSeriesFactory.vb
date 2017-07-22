@@ -38,11 +38,13 @@ Public Class cTimeSeriesFactory
     ''' <summary>
     ''' Determine the <see cref="eTimeSeriesCategoryType">Time series category</see>
     ''' based on a <see cref="eTimeSeriesType">Time series type</see>. For instance,
-    ''' time series types <see cref="eTimeSeriesType.Catches">eTimeSeriesType.Catches</see>
-    ''' and <see cref="eTimeSeriesType.CatchesForcing">eTimeSeriesType.CatchesForcing</see>
-    ''' are <see cref="eTimeSeriesCategoryType.Fleet">Fleet</see>-related time series.
+    ''' time series types <see cref="eTimeSeriesType.Catches"/>
+    ''' and <see cref="eTimeSeriesType.FishingEffort"/>
+    ''' are <see cref="eTimeSeriesCategoryType.Fleet"/>-related time series. With the
+    ''' Discardless changes time series category <see cref="eTimeSeriesCategoryType.FleetGroup"/>
+    ''' was introduced.
     ''' </summary>
-    ''' <param name="timeSeriesType"></param>
+    ''' <param name="timeSeriesType">The type to get the category for.</param>
     ''' <remarks>
     ''' This method was added to centralize interpretation of the awkward enumerator 
     ''' <see cref="eTimeSeriesType">eTimeSeriesType</see>.
@@ -64,6 +66,12 @@ Public Class cTimeSeriesFactory
             Case eTimeSeriesType.FishingEffort
                 Return eTimeSeriesCategoryType.Fleet
 
+            Case eTimeSeriesType.DiscardMortality,
+                 eTimeSeriesType.DiscardProportion,
+                 eTimeSeriesType.Landings,
+                 eTimeSeriesType.Discards
+                Return eTimeSeriesCategoryType.FleetGroup
+
             Case Else
                 Return eTimeSeriesCategoryType.Group
 
@@ -82,7 +90,7 @@ Public Class cTimeSeriesFactory
     ''' the time series.</param>
     ''' <returns>A Time Series instance, or nothing if an error occurred.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function CreateTimeSeries(ByVal timeSeriesType As eTimeSeriesType, _
+    Public Shared Function CreateTimeSeries(ByVal timeSeriesType As eTimeSeriesType,
             ByVal core As cCore, ByVal iDBID As Integer) As cTimeSeries
 
         Dim ts As cTimeSeries = Nothing
@@ -92,7 +100,8 @@ Public Class cTimeSeriesFactory
             Case eTimeSeriesCategoryType.Forcing
                 ts = Nothing ' No can do
 
-            Case eTimeSeriesCategoryType.Fleet
+            Case eTimeSeriesCategoryType.Fleet,
+                 eTimeSeriesCategoryType.FleetGroup
                 ts = New cFleetTimeSeries(core, iDBID)
 
             Case eTimeSeriesCategoryType.Group
@@ -104,6 +113,35 @@ Public Class cTimeSeriesFactory
         End Select
 
         Return ts
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns all <see cref="eTimeSeriesType"/> of the same <see cref="eTimeSeriesCategoryType">category</see>
+    ''' as the provided <paramref name="type"/>.
+    ''' </summary>
+    ''' <param name="type">The <see cref="eTimeSeriesType">type</see> to find others for.</param>
+    ''' <returns>Well...</returns>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function CompatibleTypes(ByVal type As eTimeSeriesType) As eTimeSeriesType()
+        Return CompatibleTypes(TimeSeriesCategory(type))
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns all <see cref="eTimeSeriesType"/> within a give <see cref="eTimeSeriesCategoryType">category</see>.
+    ''' </summary>
+    ''' <param name="cat">The <see cref="eTimeSeriesCategoryType">category</see> to find others for.</param>
+    ''' <returns>Well...</returns>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function CompatibleTypes(ByVal cat As eTimeSeriesCategoryType) As eTimeSeriesType()
+        Dim lTypes As New List(Of eTimeSeriesType)
+        For Each t As eTimeSeriesType In [Enum].GetValues(GetType(eTimeSeriesType))
+            If (TimeSeriesCategory(t) = cat) Or (cat = eTimeSeriesCategoryType.NotSet) Then
+                lTypes.Add(t)
+            End If
+        Next
+        Return lTypes.ToArray()
     End Function
 
 End Class

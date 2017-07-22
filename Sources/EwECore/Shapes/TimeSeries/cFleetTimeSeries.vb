@@ -57,4 +57,20 @@ Public Class cFleetTimeSeries
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the group index that a time series applies to. Group targets apply 
+    ''' to fleet x group time series such as <see cref="eTimeSeriesType.DiscardMortality"/>
+    ''' and <see cref="eTimeSeriesType.DiscardProportion"/>. 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property GroupIndex As Integer
+        Get
+            Return Me.DatPoolSec
+        End Get
+        Set(value As Integer)
+            Me.DatPoolSec = value
+        End Set
+    End Property
+
 End Class

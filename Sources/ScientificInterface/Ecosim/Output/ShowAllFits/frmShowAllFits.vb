@@ -292,9 +292,6 @@ Namespace Ecosim
             Dim ts As cTimeSeries = Nothing
             Dim asSimData(Me.Core.nEcosimTimeSteps) As Single
             Dim plot As cShowAllFitsPlotData = Nothing
-            Dim gts As cGroupTimeSeries = Nothing
-            Dim iGroup As Integer = 0
-            Dim grpOutput As cEcosimGroupOutput = Nothing
 
             For iTS As Integer = 1 To Me.Core.nTimeSeries
 
@@ -302,42 +299,73 @@ Namespace Ecosim
 
                 If m_lShownPlotsType.Contains(ts.TimeSeriesType) Then
 
-                    If TypeOf ts Is cGroupTimeSeries Then
+                    Select Case cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType)
+                        Case eTimeSeriesCategoryType.Group
+                            Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
+                            Dim iGroup As Integer = gts.GroupIndex
 
-                        gts = DirectCast(ts, cGroupTimeSeries)
-                        iGroup = gts.GroupIndex
+                            If (iGroup > 0) Then
 
-                        If (iGroup > 0) Then
+                                Dim grpOutput As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
 
-                            grpOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+                                For iTime As Integer = 1 To Me.Core.nEcosimTimeSteps
 
-                            For iTime As Integer = 1 To Me.Core.nEcosimTimeSteps
+                                    asSimData(iTime) = 0.0!
 
-                                asSimData(iTime) = 0.0!
+                                    Select Case gts.TimeSeriesType
 
-                                Select Case gts.TimeSeriesType
+                                        Case eTimeSeriesType.Catches,
+                                             eTimeSeriesType.CatchesRel,
+                                             eTimeSeriesType.CatchesForcing
+                                            asSimData(iTime) = grpOutput.Catch(iTime)
 
-                                    Case eTimeSeriesType.Catches, _
-                                         eTimeSeriesType.CatchesRel, _
-                                         eTimeSeriesType.CatchesForcing
-                                        asSimData(iTime) = grpOutput.Catch(iTime)
+                                        Case eTimeSeriesType.TotalMortality
+                                            asSimData(iTime) = grpOutput.TotalMort(iTime)
 
-                                    Case eTimeSeriesType.TotalMortality
-                                        asSimData(iTime) = grpOutput.TotalMort(iTime)
+                                        Case eTimeSeriesType.AverageWeight
+                                            If grpOutput.isMultiStanza Then
+                                                asSimData(iTime) = grpOutput.AvgWeight(iTime)
+                                            End If
 
-                                    Case eTimeSeriesType.AverageWeight
-                                        If grpOutput.isMultiStanza Then
-                                            asSimData(iTime) = grpOutput.AvgWeight(iTime)
-                                        End If
+                                        Case Else
+                                            asSimData(iTime) = grpOutput.Biomass(iTime)
 
-                                    Case Else
-                                        asSimData(iTime) = grpOutput.Biomass(iTime)
+                                    End Select
+                                Next
+                            End If
 
-                                End Select
-                            Next
-                        End If
+                        Case eTimeSeriesCategoryType.Fleet
+                            ' NOP
 
-                    End If
+                        Case eTimeSeriesCategoryType.FleetGroup
+                            Dim fts As cFleetTimeSeries = DirectCast(ts, cFleetTimeSeries)
+                            Dim iGroup As Integer = fts.GroupIndex
+                            Dim iFleet As Integer = fts.FleetIndex
+
+                            If (iFleet > 0 And iGroup > 0) Then
+
+                                Dim grpOutput As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
+
+                                For iTime As Integer = 1 To Me.Core.nEcosimTimeSteps
+
+                                    asSimData(iTime) = 0.0!
+
+                                    Select Case fts.TimeSeriesType
+
+                                        Case eTimeSeriesType.Landings
+                                            asSimData(iTime) = grpOutput.LandingsByFleet(iFleet, iTime)
+
+                                        Case eTimeSeriesType.Discards
+                                            asSimData(iTime) = grpOutput.DiscardByFleet(iFleet, iTime)
+
+                                        Case Else
+                                            Debug.Assert(False)
+
+                                    End Select
+                                Next
+                            End If
+
+                    End Select
                 End If
 
                 plot = New cShowAllFitsPlotData(ts, asSimData)
@@ -398,6 +426,14 @@ Namespace Ecosim
                 m_lShownPlotsType.Add(eTimeSeriesType.Catches)
                 m_lShownPlotsType.Add(eTimeSeriesType.CatchesForcing)
                 m_lShownPlotsType.Add(eTimeSeriesType.CatchesRel)
+            End If
+
+            If Me.m_chkShowDiscards.Checked Then
+                m_lShownPlotsType.Add(eTimeSeriesType.Discards)
+            End If
+
+            If Me.m_chkShowLandings.Checked Then
+                m_lShownPlotsType.Add(eTimeSeriesType.Landings)
             End If
 
             Me.m_lShownPlotsType.Add(eTimeSeriesType.AverageWeight)
@@ -503,6 +539,14 @@ Namespace Ecosim
 
 #Region " Saving "
 
+        Private Enum eAllFitFile As Integer
+            Biomass
+            Mortality
+            [Catch]
+            Landings
+            Discards
+        End Enum
+
         Private Sub SaveToCSV(ByVal strPath As String)
 
             Dim strFileName As String = ""
@@ -525,15 +569,20 @@ Namespace Ecosim
 
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_PLEASE_WAIT)
 
-            For i As Integer = 1 To 3
+            For Each f As eAllFitFile In [Enum].GetValues(GetType(eAllFitFile))
+
                 strFileName = Me.Core.EwEModel.Name
-                Select Case i
-                    Case 1
+                Select Case f
+                    Case eAllFitFile.Biomass
                         strFileName &= "_allfit_biomass.csv"
-                    Case 2 'Mortality Data
+                    Case eAllFitFile.Mortality
                         strFileName &= "_allfit_mortality.csv"
-                    Case 3 'Catch Data
+                    Case eAllFitFile.Catch
                         strFileName &= "_allfit_catches.csv"
+                    Case eAllFitFile.Landings
+                        strFileName &= "_allfit_landings.csv"
+                    Case eAllFitFile.Discards
+                        strFileName &= "_allfit_discards.csv"
                 End Select
                 strTargetPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False))
 
@@ -542,7 +591,7 @@ Namespace Ecosim
                         sw = New StreamWriter(strTargetPath, False)
                     Catch ex As Exception
                         ' Notify user
-                        msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message),
                                 eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Critical)
                         bSucces = False
                     End Try
@@ -562,27 +611,42 @@ Namespace Ecosim
                             plot = Me.m_lPlots(j - 1)
                             ts = plot.TimeSeries
 
-                            Select Case i
-                                Case 1
+                            Select Case f
+                                Case eAllFitFile.Biomass
                                     If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
-                                        sw.Write(cStringUtils.ToCSVField("Predicted Biomass " & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("biomass (predicted) " & ts.Name))
                                         sw.Write(",")
-                                        sw.Write(cStringUtils.ToCSVField("Observed Biomass " & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("biomass (observed) " & ts.Name))
                                         sw.Write(",")
                                     End If
-                                Case 2
+                                Case eAllFitFile.Mortality
                                     If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
-                                        sw.Write(cStringUtils.ToCSVField("Predicted Z" & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("z (predicted)" & ts.Name))
                                         sw.Write(",")
-                                        sw.Write(cStringUtils.ToCSVField("Observed Z " & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("z (observed)" & ts.Name))
                                         sw.Write(",")
                                     End If
-                                Case 3
+                                Case eAllFitFile.Catch
                                     If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing _
                                         Or ts.TimeSeriesType = eTimeSeriesType.CatchesRel Then
-                                        sw.Write(cStringUtils.ToCSVField("Predicted Catch " & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("catch (predicted)" & ts.Name))
                                         sw.Write(",")
-                                        sw.Write(cStringUtils.ToCSVField("Observed Catch " & ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField("catch (observed) " & ts.Name))
+                                        sw.Write(",")
+                                    End If
+                                Case eAllFitFile.Landings
+                                    If ts.TimeSeriesType = eTimeSeriesType.Landings Then
+                                        sw.Write(cStringUtils.ToCSVField("landings (predicted)" & ts.Name))
+                                        sw.Write(",")
+                                        sw.Write(cStringUtils.ToCSVField("landings (observed)" & ts.Name))
+                                        sw.Write(",")
+                                    End If
+                                Case eAllFitFile.Discards
+                                    If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing _
+                                        Or ts.TimeSeriesType = eTimeSeriesType.CatchesRel Then
+                                        sw.Write(cStringUtils.ToCSVField("discards (predicted) " & ts.Name))
+                                        sw.Write(",")
+                                        sw.Write(cStringUtils.ToCSVField("discards (observed)" & ts.Name))
                                         sw.Write(",")
                                     End If
                             End Select
@@ -603,8 +667,8 @@ Namespace Ecosim
 
                                 Dim t As Integer = If(bAnnual, ((k - 1) \ nSteps) + 1, k)
 
-                                Select Case i
-                                    Case 1
+                                Select Case f
+                                    Case eAllFitFile.Biomass
                                         If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
                                             sw.Write(plot.SimData(k))
                                             sw.Write(",")
@@ -615,7 +679,7 @@ Namespace Ecosim
                                             End If
                                             sw.Write(",")
                                         End If
-                                    Case 2
+                                    Case eAllFitFile.Mortality
                                         If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
                                             sw.Write(plot.SimData(k))
                                             sw.Write(",")
@@ -626,9 +690,31 @@ Namespace Ecosim
                                             End If
                                             sw.Write(",")
                                         End If
-                                    Case 3
+                                    Case eAllFitFile.Catch
                                         If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing _
                                             Or ts.TimeSeriesType = eTimeSeriesType.CatchesRel Then
+                                            sw.Write(plot.SimData(k))
+                                            sw.Write(",")
+                                            If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
+                                            Else
+                                                sw.Write("")
+                                            End If
+                                            sw.Write(",")
+                                        End If
+                                    Case eAllFitFile.Landings
+                                        If ts.TimeSeriesType = eTimeSeriesType.Landings Then
+                                            sw.Write(plot.SimData(k))
+                                            sw.Write(",")
+                                            If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(t) * plot.TSDataScale))
+                                            Else
+                                                sw.Write("")
+                                            End If
+                                            sw.Write(",")
+                                        End If
+                                    Case eAllFitFile.Discards
+                                        If ts.TimeSeriesType = eTimeSeriesType.Discards Then
                                             sw.Write(plot.SimData(k))
                                             sw.Write(",")
                                             If ((ts.ShapeData(t) > 0) And (bWriteTS = True)) Then
@@ -646,7 +732,7 @@ Namespace Ecosim
                         msg.Hyperlink = strPath
 
                     Catch ex As Exception
-                        msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message),
                                            eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Critical)
                         bSucces = False
                     Finally
@@ -754,7 +840,9 @@ Namespace Ecosim
         Private Sub OnShowDataChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_chkShowB.CheckedChanged,
                     m_chkShowZ.CheckedChanged,
-                    m_chkShowCatch.CheckedChanged
+                    m_chkShowCatch.CheckedChanged,
+                    m_chkShowLandings.CheckedChanged,
+                    m_chkShowDiscards.CheckedChanged
 
             If (Me.UIContext Is Nothing) Then Return
             Me.SetPlotTypes()

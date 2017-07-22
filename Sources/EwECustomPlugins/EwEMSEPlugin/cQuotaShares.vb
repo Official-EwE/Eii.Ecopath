@@ -389,7 +389,7 @@ Public Class cQuotaShares
                 writer.WriteLine(cStringUtils.ToCSVField(entry.mGroupNo) & "," &
                                  cStringUtils.ToCSVField(m_core.EcoPathGroupInputs(entry.mGroupNo).Name) & "," &
                                  cStringUtils.ToCSVField(entry.mFleetNo) & "," &
-                                 cStringUtils.ToCSVField(m_core.FleetInputs(entry.mFleetNo).Name) & "," &
+                                 cStringUtils.ToCSVField(m_core.EcopathFleetInputs(entry.mFleetNo).Name) & "," &
                                  cStringUtils.ToCSVField(entry.mShare))
             Next
 
@@ -481,7 +481,7 @@ Public Class cQuotaShares
                     Next
 
                     For iFleet As Integer = 1 To m_core.nFleets
-                        If m_core.FleetInputs(iFleet).Landings(iGrp) > 0 Then
+                        If m_core.EcopathFleetInputs(iFleet).Landings(iGrp) > 0 Then
                             Share = m_MSE.EcosimData.relQ(iFleet, iGrp) * RelQModifier(iFleet, iGrp) * m_MSE.EcosimData.FishRateGear(iFleet, TimeStep) * m_MSE.EcopathData.PropLanded(iFleet, iGrp) / TotalLandingsF
                             Me.AddQuotaShare(iGrp, iFleet, Share)
                         End If

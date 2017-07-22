@@ -64,8 +64,8 @@ Namespace Ecopath.Input
 
             ' Dynamic column header - fleet name
             For fleetIndex As Integer = 1 To Core.nFleets
+                source = Me.Core.EcopathFleetInputs(fleetIndex)
 
-                source = Core.FleetInputs(fleetIndex)
                 md = source.GetVariableMetadata(eVarNameFlags.Landings)
                 Me(0, fleetIndex + 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name, Nothing, md.Units)
 
@@ -86,7 +86,7 @@ Namespace Ecopath.Input
             Dim group As cCoreGroupBase = Nothing
             Dim groupSec As cCoreGroupBase = Nothing
             Dim sg As cStanzaGroup = Nothing
-            Dim fleet As cFleetInput = Nothing
+            Dim fleet As cEcopathFleetInput = Nothing
             Dim iRow As Integer = -1
             Dim iStanzaPrev As Integer = -1
 
@@ -154,7 +154,7 @@ Namespace Ecopath.Input
             Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
             Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
             For iFleet As Integer = 1 To Core.nFleets
-                fleet = Core.FleetInputs(iFleet)
+                fleet = Core.EcopathFleetInputs(iFleet)
                 alSumCol.Clear()
 
                 For iGroup As Integer = 1 To Core.nGroups
@@ -194,7 +194,7 @@ Namespace Ecopath.Input
             ' For each fleet (each column) 
             For fleetIndex As Integer = 1 To Core.nFleets
                 ' Get the fleet object 
-                sourceSec = Core.FleetInputs(fleetIndex)
+                sourceSec = Core.EcopathFleetInputs(fleetIndex)
                 ' Get the index landing property
                 prop = pm.GetProperty(sourceSec, eVarNameFlags.Landings, source)
                 ' Set the property to the cell

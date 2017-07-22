@@ -1,3 +1,4 @@
+Option Strict On
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -20,7 +21,7 @@
 
 #Region " Imports "
 
-Option Strict On
+Imports System.ComponentModel
 Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region ' Imports
@@ -74,6 +75,9 @@ Namespace Controls.Map
         Private m_positionMode As ePositionModeTypes = ePositionModeTypes.Center
 
         Private m_sZoom As Single = 1.0
+        Private m_sMaxZoom As Single = 8
+        Private m_sMinZoom As Single = 0.25
+        Private m_ptfZoom As New PointF(0.5!, 0.5!)
 
 #End Region ' Private vars
 
@@ -90,6 +94,7 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="IUIElement.UIContext"/>
         ''' -------------------------------------------------------------------
+        <Browsable(False)>
         Public Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -121,6 +126,7 @@ Namespace Controls.Map
         ''' for displaying the map.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <Browsable(False)>
         Public Property PositionMode() As ePositionModeTypes
 
             Get
@@ -136,18 +142,32 @@ Namespace Controls.Map
 
         End Property
 
+        ''' <summary>
+        ''' Get/set the center location, relative to the map size, to zoom to.
+        ''' </summary>
+        <Browsable(False)>
+        Public Property ZoomLocation As PointF
+            Get
+                Return Me.m_ptfZoom
+            End Get
+            Set(value As PointF)
+                Me.m_ptfZoom = New PointF(Math.Max(0, Math.Min(1, value.X)), Math.Max(0, Math.Min(1, value.Y)))
+            End Set
+        End Property
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the zoom percentage for displaying the map.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property ZoomPercentage() As Single
+        <Browsable(False)>
+        Public Property ZoomScale() As Single
             Get
-                Return Me.m_sZoom * 100.0!
+                Return Me.m_sZoom
             End Get
             Set(ByVal value As Single)
                 Me.m_bInUpdate = True
-                Me.m_sZoom = value * 0.01!
+                Me.m_sZoom = Math.Max(0.25!, Math.Min(8.0!, value))
                 Me.SetZoomLevel()
                 Me.m_bInUpdate = False
             End Set
@@ -255,23 +275,21 @@ Namespace Controls.Map
 
             Me.UpdateControls()
 
-            ' Get map size at 100% in current view mode
-            Dim szfSizeMap As SizeF = Me.GetFittedMapSize()
-            ' Calc map size corrected for zoom rate
-            Dim szMap As Size = New Size(CInt(szfSizeMap.Width * Me.m_sZoom), CInt(szfSizeMap.Height * Me.m_sZoom))
+            Dim szSizeMap As Size = Me.GetFittedMapSize()
+            Dim szMap As Size = New Size(CInt(szSizeMap.Width * Me.m_sZoom), CInt(szSizeMap.Height * Me.m_sZoom))
             ' Get zoom area size
             Dim szZoom As Size = Me.GetZoomSize()
 
             ' Update scroll info
-            Me.m_sbHorz.Maximum = Math.Max(0, szMap.Width)
-            Me.m_sbHorz.LargeChange = szZoom.Width
-            Me.m_sbHorz.SmallChange = CInt(Me.m_sbHorz.Maximum / 4)
-            Me.m_sbHorz.Value = 0
+            Me.m_sbHorz.Maximum = Math.Max(0, szMap.Width - szZoom.Width)
+            Me.m_sbHorz.LargeChange = CInt(Me.m_sbHorz.Maximum / 4)
+            Me.m_sbHorz.SmallChange = CInt(Me.m_sbHorz.Maximum / 10)
+            Me.m_sbHorz.Value = Math.Min(Me.m_sbHorz.Maximum, Math.Max(0, CInt(Me.ZoomLocation().X * szMap.Width) - szZoom.Width))
 
-            Me.m_sbVert.Maximum = Math.Max(0, szMap.Height)
-            Me.m_sbVert.LargeChange = szZoom.Height
+            Me.m_sbVert.Maximum = Math.Max(0, szMap.Height - szZoom.Height)
+            Me.m_sbVert.LargeChange = CInt(Me.m_sbVert.Maximum / 4)
             Me.m_sbVert.SmallChange = CInt(Me.m_sbVert.Maximum / 10)
-            Me.m_sbVert.Value = 0
+            Me.m_sbVert.Value = Math.Min(Me.m_sbVert.Maximum, Math.Max(0, CInt(Me.ZoomLocation().Y * szMap.Height) - szZoom.Height))
 
             ' Resize map
             Me.m_map.Size = szMap
@@ -288,8 +306,8 @@ Namespace Controls.Map
             Me.m_bInUpdate = True
             Try
                 Me.m_map.Dock = src.m_map.Dock
-                Me.m_sbHorz.Value = Math.Min(Math.Max(src.m_sbHorz.Value, 0), Me.m_sbHorz.Maximum)
-                Me.m_sbVert.Value = Math.Min(Math.Max(src.m_sbVert.Value, 0), Me.m_sbVert.Maximum)
+                'Me.m_sbHorz.Value = Math.Min(Math.Max(src.m_sbHorz.Value, 0), Me.m_sbHorz.Maximum)
+                'Me.m_sbVert.Value = Math.Min(Math.Max(src.m_sbVert.Value, 0), Me.m_sbVert.Maximum)
                 Me.m_sZoom = src.m_sZoom
             Catch ex As Exception
                 EwEUtils.Core.cLog.Write(ex, "ucMapZoom(" & Me.Name & ").UpdatePosition")
@@ -349,15 +367,14 @@ Namespace Controls.Map
             ' less that 100%, scrolling is not required. As such, in both cases, 
             ' scrollbars are hidden and the map occupies the entire area.
 
-            If (Me.PositionMode = ePositionModeTypes.Stretch) Or (Me.ZoomPercentage <= 100.0!) Then
+            If (Me.PositionMode = ePositionModeTypes.Stretch) Or (Me.ZoomScale <= 1.0!) Then
                 Me.m_sbHorz.Visible = False
                 Me.m_sbVert.Visible = False
                 Me.m_plZoom.Size = Me.ClientRectangle.Size
             Else
                 Me.m_sbHorz.Visible = True
                 Me.m_sbVert.Visible = True
-                Me.m_plZoom.Size = New Size(Me.m_sbVert.Location.X, _
-                                            Me.m_sbHorz.Location.Y)
+                Me.m_plZoom.Size = New Size(Me.m_sbVert.Location.X, Me.m_sbHorz.Location.Y)
             End If
 
             If (Me.m_uic IsNot Nothing) Then
@@ -374,7 +391,7 @@ Namespace Controls.Map
         ''' <returns>The size of the map fitted to the current zoom area with the 
         ''' current view mode.</returns>
         ''' -----------------------------------------------------------------------
-        Private Function GetFittedMapSize() As SizeF
+        Private Function GetFittedMapSize() As Size
 
             ' Find aspect ratio depending on fit
             Dim szZoom As Size = Me.GetZoomSize()
@@ -383,7 +400,7 @@ Namespace Controls.Map
 
                 Case ePositionModeTypes.Center
                     Dim sRatio As Single = Math.Min(CSng(szZoom.Width / Me.m_map.NumCols), CSng(szZoom.Height / Me.m_map.NumRows))
-                    Return New SizeF(sRatio * Me.m_map.NumCols, sRatio * Me.m_map.NumRows)
+                    Return New Size(CInt(sRatio * Me.m_map.NumCols), CInt(sRatio * Me.m_map.NumRows))
 
                 Case ePositionModeTypes.Stretch
                     Return szZoom
