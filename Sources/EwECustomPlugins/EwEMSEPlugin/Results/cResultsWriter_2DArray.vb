@@ -124,7 +124,7 @@ Public Class cResultsWriter_2DArray
                 If iFleet = 0 Then
                     FleetName = "AllFleets"
                 Else
-                    FleetName = m_Core.FleetInputs(iFleet).Name
+                    FleetName = m_Core.EcopathFleetInputs(iFleet).Name
                 End If
 
                 For iStrategy = 1 To m_ResultsArray.nStrategies

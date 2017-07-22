@@ -145,7 +145,7 @@ Namespace Ecosim
                     Dim vars() As eVarNameFlags = If(Me.m_value = eMCRunDisplayInputValueTypes.Landings,
                                                                    New eVarNameFlags() {eVarNameFlags.mcLandingscv, eVarNameFlags.mcLandingsLower, eVarNameFlags.mcLandings, eVarNameFlags.mcLandingsUpper},
                                                                    New eVarNameFlags() {eVarNameFlags.mcDiscardscv, eVarNameFlags.mcDiscardsLower, eVarNameFlags.mcDiscards, eVarNameFlags.mcDiscardsUpper})
-                    Dim flt As cFleetInput = Me.Core.FleetInputs(iflt)
+                    Dim flt As cEcopathFleetInput = Me.Core.EcopathFleetInputs(iflt)
                     Dim val As Single = CSng(flt.GetVariable(var, igrp))
 
                     If (val > 0) Then
@@ -167,7 +167,7 @@ Namespace Ecosim
                 Case eMCRunDisplayInputValueTypes.Landings
                     Dim n As Integer = 0
                     For j As Integer = 1 To Me.Core.nFleets
-                        Dim flt As cFleetInput = Me.Core.FleetInputs(j)
+                        Dim flt As cEcopathFleetInput = Me.Core.EcopathFleetInputs(j)
                         For i As Integer = 1 To Me.Core.nGroups
                             If (flt.Landings(i) > 0) Then n += 1
                         Next i
@@ -176,7 +176,7 @@ Namespace Ecosim
                 Case eMCRunDisplayInputValueTypes.Discards
                     Dim n As Integer = 0
                     For j As Integer = 1 To Me.Core.nFleets
-                        Dim flt As cFleetInput = Me.Core.FleetInputs(j)
+                        Dim flt As cEcopathFleetInput = Me.Core.EcopathFleetInputs(j)
                         For i As Integer = 1 To Me.Core.nGroups
                             If (flt.Discards(i) > 0) Then n += 1
                         Next i

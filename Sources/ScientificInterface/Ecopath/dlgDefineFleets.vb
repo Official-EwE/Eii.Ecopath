@@ -48,8 +48,8 @@ Namespace Ecopath
         ''' <param name="uic">The <see cref="cUIContext">UI context</see> to connect to.</param>
         ''' <param name="fleet">A fleet to select, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       Optional ByVal fleet As cFleetInput = Nothing)
+        Public Sub New(ByVal uic As cUIContext,
+                       Optional ByVal fleet As cEcopathFleetInput = Nothing)
 
             Me.InitializeComponent()
 

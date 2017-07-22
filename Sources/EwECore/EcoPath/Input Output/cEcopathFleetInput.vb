@@ -26,62 +26,75 @@ Imports EwEUtils.Core
 ''' Class to encapsulate a variables for a single Fishing Fleet Input
 ''' </summary>
 ''' <remarks></remarks>
-Public Class cFleetInput
+Public Class cEcopathFleetInput
     Inherits cCoreInputOutputBase
 
-#Region "Construction and Intialization"
+#Region " Construction and Intialization "
 
-    Friend Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
-        MyBase.New(theCore)
+    Public Sub New(TheCore As cCore, DBID As Integer, iIndex As Integer)
+        MyBase.New(TheCore)
 
+        'stop the data validation for now
+        'ToDo_jb add data validation for Fleets
         AllowValidation = False
         m_coreComponent = eCoreComponentType.EcoPath
         m_dataType = eDataTypes.FleetInput
 
         m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
+        Me.Index = iIndex
         Me.DBID = DBID
 
         Dim val As cValue
+        Dim meta As cVariableMetaData
 
         'For fisheries data validation see EwE5 frmInputData.vaInput_Change(...)
 
         'FixedCost
-        val = New cValue(New Single, eVarNameFlags.FixedCost, eStatusFlags.Null, eValueTypes.Sng)
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.FixedCost, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
         'CPUECost
-        val = New cValue(New Single, eVarNameFlags.CPUECost, eStatusFlags.Null, eValueTypes.Sng)
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.CPUECost, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
         'SailCost
-        val = New cValue(New Single, eVarNameFlags.SailCost, eStatusFlags.Null, eValueTypes.Sng)
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Single, eVarNameFlags.SailCost, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
         'PoolColor
-        val = New cValue(New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int)
+        meta = New cVariableMetaData(-4294967295, 4294967295, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValue(New Integer, eVarNameFlags.PoolColor, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
-        ' -- arrayed values --
+        'arrayed values
         'Landings
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Landings, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Landings, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
         'Discards
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Discards, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.Discards, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
         'Off-vessel price (formerly known as MarketPrice)
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.OffVesselPrice, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.OffVesselPrice, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
         'DiscardFate
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DiscardFate, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DiscardFate, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
         m_values.Add(val.varName, val)
 
         'DiscardMortality
-        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DiscardMortality, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, Nothing, m_core.m_validators.getValidator(eVarNameFlags.DiscardMortality))
+        meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+        val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DiscardMortality, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.DiscardMortality))
         m_values.Add(val.varName, val)
 
     End Sub
@@ -166,7 +179,7 @@ Public Class cFleetInput
 
     End Property
 
-    <Obsolete("Use OffVesselValue instead")> _
+    <Obsolete("Use OffVesselValue instead")>
     Public Property OffVesselPrice() As Single()
 
         Get
@@ -289,7 +302,7 @@ Public Class cFleetInput
         End Set
     End Property
 
-    <Obsolete("Use OffVesselValueStatus instead")> _
+    <Obsolete("Use OffVesselValueStatus instead")>
     Public Property OffVesselPriceStatus() As eStatusFlags
         Get
             Return Me.OffVesselValueStatus
@@ -329,3 +342,17 @@ Public Class cFleetInput
 #End Region
 
 End Class
+
+#Region "Deprecated"
+
+<Obsolete("Use cEcopathFleetInput instead")>
+Public Class cFleetInput
+    Inherits cEcopathFleetInput
+
+    Public Sub New(TheCore As cCore, DBID As Integer, iIndex As Integer)
+        MyBase.New(TheCore, DBID, iIndex)
+    End Sub
+
+End Class
+
+#End Region ' Deprecated

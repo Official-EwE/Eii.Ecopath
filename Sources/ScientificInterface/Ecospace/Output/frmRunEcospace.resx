@@ -472,7 +472,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plMapSaveImages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 511</value>
+    <value>3, 533</value>
   </data>
   <data name="m_plMapSaveImages.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 66</value>
@@ -667,7 +667,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plMapLabels.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 385</value>
+    <value>3, 407</value>
   </data>
   <data name="m_plMapLabels.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 120</value>
@@ -862,13 +862,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbDisplayContaminantC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 116</value>
+    <value>4, 139</value>
   </data>
   <data name="m_rbDisplayContaminantC.Size" type="System.Drawing.Size, System.Drawing">
     <value>152, 17</value>
   </data>
   <data name="m_rbDisplayContaminantC.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_rbDisplayContaminantC.Text" xml:space="preserve">
     <value>Contaminant c&amp;oncentration</value>
@@ -918,6 +918,36 @@
   <data name="&gt;&gt;m_hdrDist.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
+  <data name="m_rbDisplayDiscards.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbDisplayDiscards.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbDisplayDiscards.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 116</value>
+  </data>
+  <data name="m_rbDisplayDiscards.Size" type="System.Drawing.Size, System.Drawing">
+    <value>91, 17</value>
+  </data>
+  <data name="m_rbDisplayDiscards.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_rbDisplayDiscards.Text" xml:space="preserve">
+    <value>&amp;Total discards</value>
+  </data>
+  <data name="&gt;&gt;m_rbDisplayDiscards.Name" xml:space="preserve">
+    <value>m_rbDisplayDiscards</value>
+  </data>
+  <data name="&gt;&gt;m_rbDisplayDiscards.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbDisplayDiscards.Parent" xml:space="preserve">
+    <value>m_plMapData</value>
+  </data>
+  <data name="&gt;&gt;m_rbDisplayDiscards.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
   <data name="m_rbDisplayEnvDriver.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -925,16 +955,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbDisplayEnvDriver.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 162</value>
+    <value>3, 185</value>
   </data>
   <data name="m_rbDisplayEnvDriver.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 17</value>
+    <value>126, 17</value>
   </data>
   <data name="m_rbDisplayEnvDriver.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_rbDisplayEnvDriver.Text" xml:space="preserve">
-    <value>&amp;Environmental driver</value>
+    <value>&amp;Environmental drivers</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayEnvDriver.Name" xml:space="preserve">
     <value>m_rbDisplayEnvDriver</value>
@@ -946,7 +976,7 @@
     <value>m_plMapData</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayEnvDriver.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_rbDisplayCoverB.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -955,13 +985,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbDisplayCoverB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 139</value>
+    <value>4, 162</value>
   </data>
   <data name="m_rbDisplayCoverB.Size" type="System.Drawing.Size, System.Drawing">
     <value>154, 17</value>
   </data>
   <data name="m_rbDisplayCoverB.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_rbDisplayCoverB.Text" xml:space="preserve">
     <value>&amp;Contaminant conc/biomass</value>
@@ -976,7 +1006,7 @@
     <value>m_plMapData</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayCoverB.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_plMapData.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -985,7 +1015,7 @@
     <value>3, 195</value>
   </data>
   <data name="m_plMapData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 184</value>
+    <value>204, 206</value>
   </data>
   <data name="m_plMapData.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1486,7 +1516,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plGraphData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 583</value>
+    <value>3, 605</value>
   </data>
   <data name="m_plGraphData.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 130</value>

@@ -241,7 +241,7 @@ Public Class cMSEGroupColorBlockDataSource
         Dim core As EwECore.cCore = Me.m_uic.Core
         Dim nGrps As Integer = core.nGroups
         Dim nFlts As Integer = core.nFleets
-        Dim epFlt As EwECore.cFleetInput
+        Dim epFlt As EwECore.cEcopathFleetInput
 
         ReDim m_isExploited(nGrps)
 
@@ -249,7 +249,7 @@ Public Class cMSEGroupColorBlockDataSource
             m_isExploited(igrp) = False
             For iflt As Integer = 1 To nFlts
 
-                epFlt = core.FleetInputs(iflt)
+                epFlt = core.EcopathFleetInputs(iflt)
                 If epFlt.Landings(igrp) > 0 Or epFlt.Discards(igrp) > 0 Then
                     m_isExploited(igrp) = True
                     Exit For

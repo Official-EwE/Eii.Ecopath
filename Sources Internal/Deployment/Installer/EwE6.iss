@@ -2,14 +2,14 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 #include <idp.iss>
 
-#define MyAppName "Ecopath with Ecosim"
-#define MyAppVersion "6.6_dev"
-#define MyAppExeName "ewe6.exe"
+#define MyAppName "Ecopath with Ecosim 6.6 DiscardLess preview"
+#define MyAppVersion "6.6_discardless_dev"
+#define MyAppExeName "ewe6_discardless.exe"
 #define MyAppPublisher "UBC Institute for Oceans and Fisheries & Ecopath International Initiative"
 
 #define Ecosampler 0
-#define SpatTemp 1
-#define MergeGroups 1
+#define SpatTemp 0
+#define MergeGroups 0
 
 [Setup]
 ; SignTool=Signtool
@@ -26,9 +26,9 @@ AllowNoIcons=True
 AppPublisher={#MyAppPublisher}
 AppPublisherURL=http://ecopathinternational.org
 AppSupportURL=mailto:support@ecopath.org
-MinVersion=0,5.01sp3
+MinVersion=0,6.0sp2
 DefaultDirName={pf}\{#MyAppName} {#MyAppVersion}
-DefaultGroupName=Ecopath with Ecosim
+DefaultGroupName={#MyAppName}
 AlwaysShowGroupOnReadyPage=True
 AlwaysShowDirOnReadyPage=True
 SolidCompression=True

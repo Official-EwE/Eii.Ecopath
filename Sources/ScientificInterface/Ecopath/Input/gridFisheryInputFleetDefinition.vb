@@ -82,7 +82,7 @@ Namespace Ecopath.Input
                 ' Clear the arrayList for the new row
                 alSumAll.Clear()
 
-                source = Core.FleetInputs(iRow)
+                source = Core.EcopathFleetInputs(iRow)
                 Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
                 ' Fleet name column
                 Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)

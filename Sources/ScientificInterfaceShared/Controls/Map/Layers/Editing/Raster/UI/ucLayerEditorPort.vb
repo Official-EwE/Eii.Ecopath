@@ -41,13 +41,13 @@ Namespace Controls.Map.Layers
 
             ' Initialize group combo 
             Dim core As cCore = Me.UIContext.Core
-            Dim fleet As cFleetInput = Nothing
+            Dim fleet As cEcopathFleetInput = Nothing
 
             Me.m_cmbFleet.Items.Clear()
 
             Me.m_cmbFleet.Items.Add(My.Resources.GENERIC_VALUE_ALLFLEETS)
             For i As Integer = 1 To core.nFleets
-                fleet = core.FleetInputs(i)
+                fleet = core.EcopathFleetInputs(i)
                 Me.m_cmbFleet.Items.Add(fleet)
             Next i
 

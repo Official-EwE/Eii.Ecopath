@@ -144,7 +144,7 @@ Public Class gridRegulations
 
         ' Check all fleets that apply to the HCR of the selected strategy
         For i As Integer = 1 To Me.Core.nFleets
-            Dim fleet As cFleetInput = Me.Core.FleetInputs(i)
+            Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
             Dim bFished As Boolean = False
 
             For Each hcr As HCR_Group In Me.m_strategy
@@ -162,7 +162,7 @@ Public Class gridRegulations
         For i As Integer = 1 To core.nFleets
             iRow = Me.AddRow()
 
-            Dim fleet As cFleetInput = Me.Core.FleetInputs(i)
+            Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
             Me(iRow, eColumnTypes.FleetIndex) = New EwERowHeaderCell(CStr(fleet.Index))
             Me(iRow, eColumnTypes.FleetName) = New EwERowHeaderCell(CStr(fleet.Name))
 

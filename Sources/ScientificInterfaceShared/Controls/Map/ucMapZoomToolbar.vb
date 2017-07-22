@@ -46,12 +46,9 @@ Namespace Controls.Map
 
         ''' <summary>Current <see cref="ucMapZoom.ePositionModeTypes">mode</see> to position the map.</summary>
         Private m_positionMode As ucMapZoom.ePositionModeTypes = ucMapZoom.ePositionModeTypes.Center
-        ''' <summary>Predefined zoom levels.</summary>
-        Private m_aiZoomLevels As Integer() = {50, 66, 75, 100, 125, 150, 200, 250, 300, 400, 500}
-        ''' <summary>Index of current <see cref="m_aiZoomLevels">zoom level</see>.</summary>
-        Private m_iZoomLevelIndex As Integer = 3
         ''' <summary>Flag to prevent looped updates.</summary>
         Private m_bInUpdate As Boolean = False
+
         ''' <summary>List of attached zoom maps that need to be synchronized.</summary>
         Private m_lZoomContainers As New List(Of ucMapZoom)
         ''' <summary>List of attached layers.</summary>
@@ -203,13 +200,6 @@ Namespace Controls.Map
 
             If (Me.UIContext Is Nothing) Then Return
 
-            ' Populate zoom combo
-            Me.m_tscbZoomPercent.Items.Clear()
-            For iZoomPercent As Integer = 0 To Me.m_aiZoomLevels.Length - 1
-                Me.m_tscbZoomPercent.Items.Add(cStringUtils.Localize(SharedResources.GENERIC_VALUE_PERCENTAGE, Me.m_aiZoomLevels(iZoomPercent)))
-            Next
-            Me.m_tscbZoomPercent.SelectedIndex = Me.m_iZoomLevelIndex
-
             ' Kick off
             Me.PositionMode = Me.PositionMode
 
@@ -239,22 +229,25 @@ Namespace Controls.Map
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnZoomPercentChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tscbZoomPercent.SelectedIndexChanged
-            Me.m_iZoomLevelIndex = Me.m_tscbZoomPercent.SelectedIndex
-
-            For Each ctrlZoom As ucMapZoom In Me.m_lZoomContainers
-                ctrlZoom.ZoomPercentage = Me.m_aiZoomLevels(Me.m_iZoomLevelIndex)
-            Next
-            Me.UpdateControls()
-        End Sub
-
         Private Sub OnMapMousewheel(ByVal sender As Object, ByVal e As MouseEventArgs)
             If (Math.Abs(e.Delta) > 20) Then
+                Dim ctrl As Control = Nothing
+                Dim x As Single = cCore.NULL_VALUE
+                Dim y As Single = cCore.NULL_VALUE
+
+                ' Find zoom panel under cursor
+                For Each map As ucMapZoom In Me.m_lZoomContainers
+                    If map.ClientRectangle.Contains(e.Location) Then
+                        Dim rc As Rectangle = map.ClientRectangle
+                        x = CSng(e.Location.X / rc.Width)
+                        y = CSng(e.Location.Y / rc.Height)
+                    End If
+                Next
+
                 If (e.Delta > 0) Then
-                    Me.Zoom(ucMapZoom.eZoomTypes.ZoomIn)
+                    Me.Zoom(ucMapZoom.eZoomTypes.ZoomIn, x, y)
                 Else
-                    Me.Zoom(ucMapZoom.eZoomTypes.ZoomOut)
+                    Me.Zoom(ucMapZoom.eZoomTypes.ZoomOut, x, y)
                 End If
             End If
             Me.UpdateControls()
@@ -364,24 +357,28 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="zoomType">The <see cref="ucMapZoom.eZoomTypes">Zoom level</see> to use.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub Zoom(ByVal zoomType As ucMapZoom.eZoomTypes)
-
-            Select Case zoomType
-                Case ucMapZoom.eZoomTypes.ZoomIn
-                    ' Increase zoom rate to next increment
-                    Me.m_iZoomLevelIndex = Math.Min(Me.m_aiZoomLevels.Length - 1, Me.m_iZoomLevelIndex + 1)
-                Case ucMapZoom.eZoomTypes.ZoomOut
-                    ' Decrease zoom rate to prev increment
-                    Me.m_iZoomLevelIndex = Math.Max(0, Me.m_iZoomLevelIndex - 1)
-                Case ucMapZoom.eZoomTypes.ZoomReset
-                    ' Zoom to 100%
-                    Me.m_iZoomLevelIndex = 3
-            End Select
+        Private Sub Zoom(ByVal zoomType As ucMapZoom.eZoomTypes,
+                         Optional sZoomCenterX As Single = cCore.NULL_VALUE,
+                         Optional sZoomCenterY As Single = cCore.NULL_VALUE)
 
             ' Apply
-            If Me.m_tscbZoomPercent.Items.Count > Me.m_iZoomLevelIndex Then
-                Me.m_tscbZoomPercent.SelectedIndex = Me.m_iZoomLevelIndex
-            End If
+            For Each ctrlZoom As ucMapZoom In Me.m_lZoomContainers
+                If (sZoomCenterX >= 0 And sZoomCenterY >= 0) Then
+                    ctrlZoom.ZoomLocation = New PointF(sZoomCenterX, sZoomCenterY)
+                End If
+
+                Select Case zoomType
+                    Case ucMapZoom.eZoomTypes.ZoomIn
+                        ' Increase zoom rate to next increment
+                        ctrlZoom.ZoomScale *= 1.5!
+                    Case ucMapZoom.eZoomTypes.ZoomOut
+                        ' Decrease zoom rate to prev increment
+                        ctrlZoom.ZoomScale /= 1.5!
+                    Case ucMapZoom.eZoomTypes.ZoomReset
+                        ' Zoom to 100%
+                        ctrlZoom.ZoomScale = 1.0!
+                End Select
+            Next
 
         End Sub
 
@@ -397,8 +394,6 @@ Namespace Controls.Map
 
             Me.m_tsbZoomReset.Enabled = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
             Me.m_tsmiZoomReset.Enabled = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
-
-            Me.m_tscbZoomPercent.Enabled = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
 
             Me.m_tsmiViewCenter1.Checked = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
             Me.m_tsmiViewCenter2.Checked = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)

@@ -49,6 +49,7 @@ Namespace Controls.Map
             FishingMortRate
             RelContam
             ContamRate
+            Discards
         End Enum
 
 #Region " Private vars "

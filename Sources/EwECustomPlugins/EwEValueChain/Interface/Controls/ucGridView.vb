@@ -42,7 +42,7 @@ Friend Class ucGridView
 
         Dim core As cCore = Me.m_grid.UIContext.Core
         Dim group As cEcoPathGroupInput = Nothing
-        Dim fleet As cFleetInput = Nothing
+        Dim fleet As cEcopathFleetInput = Nothing
 
         Me.m_qe = New cQuickEditHandler()
         Me.m_qe.Attach(Me.m_grid, Me.m_grid.UIContext, Me.m_ts)
@@ -60,7 +60,7 @@ Friend Class ucGridView
 
             Me.m_tscmbFleet.Items.Add(New cCoreInputOutputControlItem(SharedResources.GENERIC_VALUE_ALL))
             For ifleet As Integer = 1 To core.nFleets
-                fleet = core.FleetInputs(ifleet)
+                fleet = core.EcopathFleetInputs(ifleet)
                 Me.m_tscmbFleet.Items.Add(New cCoreInputOutputControlItem(fleet))
             Next
             Me.m_tscmbFleet.SelectedIndex = 0

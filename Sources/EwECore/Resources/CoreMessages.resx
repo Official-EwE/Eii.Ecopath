@@ -1361,6 +1361,10 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Failed to read ASCII file with unknown header field {0}</value>
     <comment>{0}=field name</comment>
   </data>
+  <data name="MSE_DISCARD_TIMESERIES_WARNING" xml:space="preserve">
+    <value>Having time series {0} applied could give erroneous results in the Management Strategy Evalutions. Are you sure you want to continue running?</value>
+    <comment>{0} = Name of the timeseries</comment>
+  </data>
   <data name="ECOPATH_GROUPMERGE_SUCCESS" xml:space="preserve">
     <value>Groups {0} and {1} have been merged into {2}</value>
     <comment>{0}, {1}=source group names, {2}=target group name</comment>

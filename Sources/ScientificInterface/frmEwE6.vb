@@ -3574,7 +3574,7 @@ Public Class frmEwE6
     ''' </summary>
     Private Sub OnEditFleets(ByVal cmd As cCommand) Handles m_cmdEditFleets.OnInvoke
         Try
-            Dim dlg As New EditFleets(Me.UIContext, DirectCast(cmd.Tag, cFleetInput))
+            Dim dlg As New EditFleets(Me.UIContext, DirectCast(cmd.Tag, cEcopathFleetInput))
             Me.Help.HelpTopic(dlg) = "Edit fleets.htm"
             dlg.ShowDialog(Me)
         Catch ex As Exception

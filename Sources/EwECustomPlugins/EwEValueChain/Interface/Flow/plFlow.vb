@@ -775,14 +775,14 @@ Public Class plFlow
 
         Dim lUnits As cUnit() = Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.Producer)
         Dim core As cCore = Me.m_data.Core
-        Dim fleet As cFleetInput = Nothing
+        Dim fleet As cEcopathFleetInput = Nothing
         Dim pu As cProducerUnit = Nothing
         Dim bProducerExists As Boolean = False
 
         For iFleet As Integer = 1 To core.nFleets
             ' Find unit
             bProducerExists = False
-            fleet = core.FleetInputs(iFleet)
+            fleet = core.EcopathFleetInputs(iFleet)
             For Each unit As cUnit In lUnits
                 pu = DirectCast(unit, cProducerUnit)
                 If (Object.ReferenceEquals(fleet, pu.Fleet)) Then

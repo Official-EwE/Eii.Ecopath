@@ -72,7 +72,7 @@ Public Class cEcospaceLayerPort
         If (Me.Index = 0) Then
             Return My.Resources.CoreDefaults.CORE_DEFAULT_PORT_ALL
         End If
-        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_PORT, Me.Index, Me.m_core.FleetInputs(Me.Index).Name)
+        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_PORT, Me.Index, Me.m_core.EcopathFleetInputs(Me.Index).Name)
     End Function
 
 #End Region ' Overrides

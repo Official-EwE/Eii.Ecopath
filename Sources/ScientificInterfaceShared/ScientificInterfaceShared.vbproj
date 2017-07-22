@@ -994,7 +994,7 @@
       <Name>EwEPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEUtils\EwEUtils.vbproj">
-      <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
+      <Project>{5c331318-c23e-4eeb-ad1e-2edef85e0205}</Project>
       <Name>EwEUtils</Name>
     </ProjectReference>
   </ItemGroup>
@@ -1084,6 +1084,15 @@
     <None Include="Resources\PersonHS.png" />
     <None Include="Resources\PlayHS.png" />
     <None Include="Resources\PlayStepHS.png" />
+    <None Include="Resources\nav_ecopath.png" />
+    <None Include="Resources\nav_ecosim.png" />
+    <None Include="Resources\nav_ecospace.png" />
+    <None Include="Resources\nav_input.png" />
+    <None Include="Resources\nav_input_folder.png" />
+    <None Include="Resources\nav_output_folder.png" />
+    <None Include="Resources\nav_tool.png" />
+    <None Include="Resources\nav_ecotracer.png" />
+    <Content Include="Resources\nav_output.png" />
     <Content Include="Resources\ResetHS.png" />
     <None Include="Resources\site_logo.png" />
     <Content Include="Resources\SnapshotHS.png" />
@@ -1182,15 +1191,6 @@
     <None Include="Resources\PointerHS.png" />
     <None Include="Resources\AlignToGridHS.png" />
     <None Include="Resources\AddTableHS.png" />
-    <None Include="Resources\nav8_ecospace.png" />
-    <None Include="Resources\nav7_ecosim.png" />
-    <None Include="Resources\nav6_ecopath.png" />
-    <None Include="Resources\nav5_input_extend.png" />
-    <None Include="Resources\nav4_output_extend.png" />
-    <None Include="Resources\nav3_tools.png" />
-    <None Include="Resources\nav2_run.png" />
-    <None Include="Resources\nav1_application_put.png" />
-    <None Include="Resources\nav0_application_get.png" />
     <None Include="Resources\MoveDown.png" />
     <None Include="Resources\MoveUp.png" />
     <None Include="Resources\Modified.png" />

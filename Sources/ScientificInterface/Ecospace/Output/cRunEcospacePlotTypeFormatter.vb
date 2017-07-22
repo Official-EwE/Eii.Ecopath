@@ -42,9 +42,9 @@ Namespace Ecospace
             ' ToDo: globalize this properly
             Select Case DirectCast(value, frmRunEcospace.ePlotTypes)
                 Case frmRunEcospace.ePlotTypes.RelB
-                    Return "Rel. B"
+                    Return SharedResources.HEADER_RELATIVEBIOMASS
                 Case frmRunEcospace.ePlotTypes.F
-                    Return "Rel. Fishing mort"
+                    Return SharedResources.HEADER_FISHMORT_OVER_TOTMORT
                 Case frmRunEcospace.ePlotTypes.FOverB
                     Return "F over B"
                 Case frmRunEcospace.ePlotTypes.Effort

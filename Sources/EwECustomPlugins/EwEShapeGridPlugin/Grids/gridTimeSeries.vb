@@ -45,7 +45,8 @@ Public Class gridTimeSeries
         Thumbnail
         Name
         Weight
-        PoolCode
+        PoolPrimary
+        PoolSecundary
         Type
         Interval
         FirstTime
@@ -80,15 +81,19 @@ Public Class gridTimeSeries
 
         Dim lGroups As New List(Of cCoreInputOutputBase)
         Dim lFleets As New List(Of cCoreInputOutputBase)
+
         For igroup As Integer = 1 To Me.Core.nGroups
             lGroups.Add(Me.Core.EcoPathGroupInputs(igroup))
         Next
 
         For ifleet As Integer = 1 To Me.Core.nFleets
-            lFleets.Add(Me.Core.FleetInputs(ifleet))
+            lFleets.Add(Me.Core.EcopathFleetInputs(ifleet))
         Next
-        Dim collDatTypes As ICollection = Nothing
-        Dim selDatType As cCoreInputOutputBase = Nothing
+
+        Dim collPoolPrim As ICollection = Nothing
+        Dim selDatTypePrim As cCoreInputOutputBase = Nothing
+        Dim collPoolSec As ICollection = Nothing
+        Dim selDatTypeSec As cCoreInputOutputBase = Nothing
         Dim aTypes As eTimeSeriesType() = Nothing
         Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
 
@@ -98,10 +103,11 @@ Public Class gridTimeSeries
         Me(eRowType.Header, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_INDEX)
         Me(eRowType.Thumbnail, 0) = New EwERowHeaderCell(SharedResources.HEADER_IMAGE)
         Me(eRowType.Name, 0) = New EwERowHeaderCell(SharedResources.HEADER_NAME)
-        Me(eRowType.PoolCode, 0) = New EwERowHeaderCell(SharedResources.HEADER_TARGET)
+        Me(eRowType.PoolPrimary, 0) = New EwERowHeaderCell(SharedResources.HEADER_TARGET)
+        Me(eRowType.PoolSecundary, 0) = New EwERowHeaderCell(My.Resources.HEADER_TARGET_SECOND)
         Me(eRowType.Type, 0) = New EwERowHeaderCell(SharedResources.HEADER_TYPE)
         Me(eRowType.Weight, 0) = New EwERowHeaderCell(SharedResources.HEADER_WEIGHT)
-        Me(eRowType.Interval, 0) = New EwERowHeaderCell("Interval")
+        Me(eRowType.Interval, 0) = New EwERowHeaderCell(My.Resources.HEADER_INTERVAL)
         Me(eRowType.Type, 0) = New EwERowHeaderCell(SharedResources.HEADER_TYPE)
 
         For i As Integer = 0 To nPoints - 1
@@ -123,25 +129,44 @@ Public Class gridTimeSeries
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.Name, i + 1) = cell
 
-            selDatType = Nothing
-            If TypeOf ts Is cGroupTimeSeries Then
-                collDatTypes = lGroups
-                If (ts.DatPool >= 1) Then
-                    selDatType = Me.Core.EcoPathGroupInputs(ts.DatPool)
+            selDatTypePrim = Nothing
+            If (TypeOf ts Is cGroupTimeSeries) Then
+                Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
+                collPoolPrim = lGroups
+                If (gts.GroupIndex >= 1) Then
+                    selDatTypePrim = Me.Core.EcoPathGroupInputs(gts.GroupIndex)
                 End If
                 aTypes = Me.GroupTSTypes
             Else
-                collDatTypes = lFleets
-                If (ts.DatPool >= 1) Then
-                    selDatType = Me.Core.FleetInputs(ts.DatPool)
+                Dim fts As cFleetTimeSeries = DirectCast(ts, cFleetTimeSeries)
+                collPoolPrim = lFleets
+                If (fts.FleetIndex >= 1) Then
+                    selDatTypePrim = Me.Core.EcopathFleetInputs(fts.FleetIndex)
                 End If
                 aTypes = Me.FleetTSTypes
+
+                If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup) Then
+                    collPoolSec = lGroups
+                    If (fts.GroupIndex >= 1) Then
+                        selDatTypeSec = Me.Core.EcoPathGroupInputs(fts.GroupIndex)
+                    End If
+                    aTypes = Me.FleetGroupTSTypes()
+                End If
             End If
 
-            edt = New EwEComboBoxCellEditor(New cCoreInterfaceFormatter(), collDatTypes)
-            cell = New SourceGrid2.Cells.Real.Cell(selDatType, edt)
+            edt = New EwEComboBoxCellEditor(New cCoreInterfaceFormatter(), collPoolPrim)
+            cell = New SourceGrid2.Cells.Real.Cell(selDatTypePrim, edt)
             cell.Behaviors.Add(Me.EwEEditHandler)
-            Me(eRowType.PoolCode, i + 1) = cell
+            Me(eRowType.PoolPrimary, i + 1) = cell
+
+            If (collPoolSec IsNot Nothing) Then
+                edt = New EwEComboBoxCellEditor(New cCoreInterfaceFormatter(), collPoolSec)
+                cell = New SourceGrid2.Cells.Real.Cell(selDatTypeSec, edt)
+                cell.Behaviors.Add(Me.EwEEditHandler)
+                Me(eRowType.PoolSecundary, i + 1) = cell
+            Else
+                Me(eRowType.PoolSecundary, i + 1) = New EwECell("", cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+            End If
 
             edt = New EwEComboBoxCellEditor(New cTimeSeriesTypeFormatter(), aTypes)
             cell = New SourceGrid2.Cells.Real.Cell(ts.TimeSeriesType, edt)
@@ -157,7 +182,7 @@ Public Class gridTimeSeries
 
             For j As Integer = 0 To nPoints - 1
                 cell = New EwECell(ts.ShapeData(j + 1), GetType(Single))
-                DirectCast(cell, EwECell).SuppressZero = True
+                DirectCast(cell, EwECell).SuppressZero = Not ts.SupportsNull()
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(eRowType.FirstTime + j, i + 1) = cell
             Next
@@ -208,7 +233,7 @@ Public Class gridTimeSeries
         Select Case DirectCast(p.Row, eRowType)
             Case eRowType.Name
                 ts.Name = CStr(cell.GetValue(p))
-            Case eRowType.PoolCode
+            Case eRowType.PoolPrimary
                 ts.DatPool = DirectCast(cell.GetValue(p), cCoreInputOutputBase).Index
             Case eRowType.Type
                 ts.TimeSeriesType = DirectCast(cell.GetValue(p), eTimeSeriesType)
@@ -293,30 +318,22 @@ Public Class gridTimeSeries
         Dim lstrNames As New List(Of String)
         For i As Integer = 0 To aIndexes.Length - 1
             Dim iFleet As Integer = aIndexes(i)
-            Dim fleet As cCoreInputOutputBase = Me.Core.FleetInputs(iFleet)
+            Dim fleet As cCoreInputOutputBase = Me.Core.EcopathFleetInputs(iFleet)
             lstrNames.Add(fmt.GetDescriptor(fleet))
         Next
         Return lstrNames.ToArray
     End Function
 
     Protected Function GroupTSTypes() As eTimeSeriesType()
-        Dim lTypes As New List(Of eTimeSeriesType)
-        For Each tst As eTimeSeriesType In [Enum].GetValues(GetType(eTimeSeriesType))
-            If cTimeSeriesFactory.TimeSeriesCategory(tst) = eTimeSeriesCategoryType.Group Then
-                lTypes.Add(tst)
-            End If
-        Next tst
-        Return lTypes.ToArray
+        Return cTimeSeriesFactory.CompatibleTypes(eTimeSeriesCategoryType.Group)
     End Function
 
     Protected Function FleetTSTypes() As eTimeSeriesType()
-        Dim lTypes As New List(Of eTimeSeriesType)
-        For Each tst As eTimeSeriesType In [Enum].GetValues(GetType(eTimeSeriesType))
-            If cTimeSeriesFactory.TimeSeriesCategory(tst) = eTimeSeriesCategoryType.Fleet Then
-                lTypes.Add(tst)
-            End If
-        Next tst
-        Return lTypes.ToArray
+        Return cTimeSeriesFactory.CompatibleTypes(eTimeSeriesCategoryType.Fleet)
+    End Function
+
+    Protected Function FleetGroupTSTypes() As eTimeSeriesType()
+        Return cTimeSeriesFactory.CompatibleTypes(eTimeSeriesCategoryType.FleetGroup)
     End Function
 
     Protected Function TSTypeNames(ByVal aTypes As eTimeSeriesType()) As String()

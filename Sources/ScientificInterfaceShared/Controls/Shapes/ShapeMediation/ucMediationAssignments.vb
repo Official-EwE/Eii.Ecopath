@@ -422,7 +422,7 @@ Namespace Controls
                     Dim medLandings As cLandingsMediatingGroup = DirectCast(medGrp, cLandingsMediatingGroup)
                     ' Is a landings interaction?
                     If (medLandings.iFleetIndex > 0) Then
-                        Dim sourceSec As cCoreInputOutputBase = Me.m_uic.Core.FleetInputs(medLandings.iFleetIndex)
+                        Dim sourceSec As cCoreInputOutputBase = Me.m_uic.Core.EcopathFleetInputs(medLandings.iFleetIndex)
                         strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, _
                                                  fmt.GetDescriptor(source), _
                                                  fmt.GetDescriptor(sourceSec))
@@ -445,7 +445,7 @@ Namespace Controls
                 list.Add(i + 1 + Data.Groups.Length, medFlt.Weight)
 
                 ' Get the fleet
-                source = Me.m_uic.Core.FleetInputs(medFlt.iFleetIndex)
+                source = Me.m_uic.Core.EcopathFleetInputs(medFlt.iFleetIndex)
                 clr = sg.FleetColor(Me.m_uic.Core, medFlt.iFleetIndex)
                 strLabel = fmt.GetDescriptor(source)
 
@@ -495,7 +495,7 @@ Namespace Controls
                     iGroup = medLandings.iGroupIndex
 
                     If (medLandings.iFleetIndex > 0) Then
-                        Dim FleetSource As cCoreInputOutputBase = Me.m_uic.Core.FleetInputs(medLandings.iFleetIndex)
+                        Dim FleetSource As cCoreInputOutputBase = Me.m_uic.Core.EcopathFleetInputs(medLandings.iFleetIndex)
                         strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, _
                                                  fmt.GetDescriptor(valSource), _
                                                  fmt.GetDescriptor(FleetSource))

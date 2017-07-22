@@ -4088,6 +4088,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Component.
+        '''</summary>
+        Public ReadOnly Property HEADER_COMPONENT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_COMPONENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to EwE components.
         '''</summary>
         Public ReadOnly Property HEADER_COMPONENTS_EWE() As String
@@ -4300,6 +4309,60 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_DIRECT_ABSORPTION_RATE() As String
             Get
                 Return ResourceManager.GetString("HEADER_DIRECT_ABSORPTION_RATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discard mortality.
+        '''</summary>
+        Public ReadOnly Property HEADER_DISCARD_MORT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_DISCARD_MORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discard mortality (group x fleet).
+        '''</summary>
+        Public ReadOnly Property HEADER_DISCARD_MORTALITY_BREAKDOWN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_DISCARD_MORTALITY_BREAKDOWN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discard survival.
+        '''</summary>
+        Public ReadOnly Property HEADER_DISCARD_SURV() As String
+            Get
+                Return ResourceManager.GetString("HEADER_DISCARD_SURV", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discard survival (group x fleet).
+        '''</summary>
+        Public ReadOnly Property HEADER_DISCARD_SURVIVAL_BREAKDOWN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_DISCARD_SURVIVAL_BREAKDOWN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discards.
+        '''</summary>
+        Public ReadOnly Property HEADER_DISCARDS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_DISCARDS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discards (group x fleet).
+        '''</summary>
+        Public ReadOnly Property HEADER_DISCARDS_BREAKDOWN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_DISCARDS_BREAKDOWN", resourceCulture)
             End Get
         End Property
         
@@ -4772,6 +4835,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Flow.
+        '''</summary>
+        Public ReadOnly Property HEADER_FLOW() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FLOW", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Flow to detr. ({0}/{1}).
+        '''</summary>
+        Public ReadOnly Property HEADER_FLOWTODETR_UNIT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FLOWTODETR_UNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to FMax.
         '''</summary>
         Public ReadOnly Property HEADER_FMAX() As String
@@ -5074,6 +5155,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_KEMPTONSQ() As String
             Get
                 Return ResourceManager.GetString("HEADER_KEMPTONSQ", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Landings.
+        '''</summary>
+        Public ReadOnly Property HEADER_LANDINGS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LANDINGS", resourceCulture)
             End Get
         End Property
         
@@ -6680,6 +6770,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Total discards.
+        '''</summary>
+        Public ReadOnly Property HEADER_TOTALDISCARDS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TOTALDISCARDS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Total length.
         '''</summary>
         Public ReadOnly Property HEADER_TOTALLENGTH() As String
@@ -6730,6 +6829,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_TRIAL() As String
             Get
                 Return ResourceManager.GetString("HEADER_TRIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Trophic level.
+        '''</summary>
+        Public ReadOnly Property HEADER_TROPHIC_LEVEL() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TROPHIC_LEVEL", resourceCulture)
             End Get
         End Property
         
@@ -7207,9 +7315,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Public ReadOnly Property nav0_application_get() As System.Drawing.Bitmap
+        Public ReadOnly Property nav_ecopath() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("nav0_application_get", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("nav_ecopath", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -7217,9 +7325,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Public ReadOnly Property nav1_application_put() As System.Drawing.Bitmap
+        Public ReadOnly Property nav_ecosim() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("nav1_application_put", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("nav_ecosim", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -7227,9 +7335,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Public ReadOnly Property nav2_run() As System.Drawing.Bitmap
+        Public ReadOnly Property nav_ecospace() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("nav2_run", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("nav_ecospace", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -7237,9 +7345,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Public ReadOnly Property nav3_tools() As System.Drawing.Bitmap
+        Public ReadOnly Property nav_ecotracer() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("nav3_tools", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("nav_ecotracer", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -7247,9 +7355,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Public ReadOnly Property nav4_output_extend() As System.Drawing.Bitmap
+        Public ReadOnly Property nav_input() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("nav4_output_extend", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("nav_input", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -7257,9 +7365,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Public ReadOnly Property nav5_input_extend() As System.Drawing.Bitmap
+        Public ReadOnly Property nav_input_folder() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("nav5_input_extend", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("nav_input_folder", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -7267,9 +7375,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Public ReadOnly Property nav6_ecospace() As System.Drawing.Bitmap
+        Public ReadOnly Property nav_output() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("nav6_ecospace", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("nav_output", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -7277,9 +7385,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Public ReadOnly Property nav7_ecosim() As System.Drawing.Bitmap
+        Public ReadOnly Property nav_output_folder() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("nav7_ecosim", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("nav_output_folder", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -7287,9 +7395,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Public ReadOnly Property nav8_ecopath() As System.Drawing.Bitmap
+        Public ReadOnly Property nav_tool() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("nav8_ecopath", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("nav_tool", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -8430,7 +8538,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Relative biomass  (reference).
+        '''  Looks up a localized string similar to Relative biomass (reference).
         '''</summary>
         Public ReadOnly Property TS_TYPE_BIOMASSREL() As String
             Get
@@ -8475,6 +8583,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Discard mortality.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_DISCARDMORT() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_DISCARDMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discard proportion.
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_DISCARDPROP() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_DISCARDPROP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Discards (reference).
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_DISCARDS() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_DISCARDS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fishing effort.
         '''</summary>
         Public ReadOnly Property TS_TYPE_FISHINGEFFORT() As String
@@ -8498,6 +8633,15 @@ Namespace My.Resources
         Public ReadOnly Property TS_TYPE_FISHMORTREL() As String
             Get
                 Return ResourceManager.GetString("TS_TYPE_FISHMORTREL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Landings (reference).
+        '''</summary>
+        Public ReadOnly Property TS_TYPE_LANDINGS() As String
+            Get
+                Return ResourceManager.GetString("TS_TYPE_LANDINGS", resourceCulture)
             End Get
         End Property
         

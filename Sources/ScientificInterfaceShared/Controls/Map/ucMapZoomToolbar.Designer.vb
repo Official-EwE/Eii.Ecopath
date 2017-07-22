@@ -42,7 +42,6 @@ Namespace Controls.Map
             Me.m_ts2 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbZoomIn = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbZoomOut = New System.Windows.Forms.ToolStripButton()
-            Me.m_tscbZoomPercent = New System.Windows.Forms.ToolStripComboBox()
             Me.m_tsbZoomReset = New System.Windows.Forms.ToolStripButton()
             Me.m_cmsZoom = New System.Windows.Forms.ContextMenuStrip(Me.components)
             Me.m_tsmiViewCenter2 = New System.Windows.Forms.ToolStripMenuItem()
@@ -58,11 +57,11 @@ Namespace Controls.Map
             'm_tsZoom
             '
             Me.m_tsZoom.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSaveImage, Me.m_ts1, Me.m_tsddbPosition, Me.m_ts2, Me.m_tsbZoomIn, Me.m_tsbZoomOut, Me.m_tscbZoomPercent, Me.m_tsbZoomReset})
+            Me.m_tsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSaveImage, Me.m_ts1, Me.m_tsddbPosition, Me.m_ts2, Me.m_tsbZoomIn, Me.m_tsbZoomOut, Me.m_tsbZoomReset})
             Me.m_tsZoom.Location = New System.Drawing.Point(0, 0)
             Me.m_tsZoom.Name = "m_tsZoom"
             Me.m_tsZoom.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            Me.m_tsZoom.Size = New System.Drawing.Size(100, 27)
+            Me.m_tsZoom.Size = New System.Drawing.Size(100, 25)
             Me.m_tsZoom.TabIndex = 1
             Me.m_tsZoom.Text = "m_tzZoom"
             '
@@ -123,12 +122,6 @@ Namespace Controls.Map
             Me.m_tsbZoomOut.Name = "m_tsbZoomOut"
             Me.m_tsbZoomOut.Size = New System.Drawing.Size(23, 20)
             Me.m_tsbZoomOut.ToolTipText = "Zoom out"
-            '
-            'm_tscbZoomPercent
-            '
-            Me.m_tscbZoomPercent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_tscbZoomPercent.Name = "m_tscbZoomPercent"
-            Me.m_tscbZoomPercent.Size = New System.Drawing.Size(100, 23)
             '
             'm_tsbZoomReset
             '
@@ -194,7 +187,7 @@ Namespace Controls.Map
             Me.Controls.Add(Me.m_tsZoom)
             Me.MinimumSize = New System.Drawing.Size(100, 25)
             Me.Name = "ucMapZoomToolbar"
-            Me.Size = New System.Drawing.Size(100, 27)
+            Me.Size = New System.Drawing.Size(100, 25)
             Me.m_tsZoom.ResumeLayout(False)
             Me.m_tsZoom.PerformLayout()
             Me.m_cmsZoom.ResumeLayout(False)
@@ -214,7 +207,6 @@ Namespace Controls.Map
         Private WithEvents m_tsmiViewStretch1 As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsbZoomIn As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbZoomOut As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tscbZoomPercent As System.Windows.Forms.ToolStripComboBox
         Private WithEvents m_tsbZoomReset As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiZoomIn As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiZoomOut As System.Windows.Forms.ToolStripMenuItem

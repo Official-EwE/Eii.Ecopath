@@ -33,8 +33,8 @@ Imports ScientificInterface.Ecopath.Output
 Imports ScientificInterface.Ecopath.Tools
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
-Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Integration
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -54,10 +54,22 @@ Imports ScientificInterfaceShared.Integration
 Public Class frmNavigationPanel
 
     Private m_uic As cUIContext = Nothing
-    Private m_nodeController As cTreeViewNodeController = Nothing
+    Private m_nodecontroller As cTreeViewNodeController = Nothing
     Private m_pluginManager As cPluginManager = Nothing
     Private m_ntPluginHandler As cPluginNavTreeHandler = Nothing
     Private m_tnSelected As TreeNode = Nothing
+
+    Private Enum eNodeImages As Integer
+        Input
+        InputFolder
+        Output
+        OutputFolder
+        Tool
+        Ecopath
+        Ecosim
+        Ecospace
+        Ecotracer
+    End Enum
 
 #Region " Construction / destruction "
 
@@ -69,7 +81,7 @@ Public Class frmNavigationPanel
     ''' <param name="pluginManager">The plug-in manager to obtain tree 
     ''' extensions for.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext, _
+    Public Sub New(ByVal uic As cUIContext,
                    ByVal pluginManager As EwEPlugin.cPluginManager)
 
         ' Sanity check
@@ -106,168 +118,261 @@ Public Class frmNavigationPanel
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        Dim nodeModel As TreeNode = Nothing
+        Dim nodeTools As TreeNode = Nothing
+        Dim nodeInput As TreeNode = Nothing
+        Dim nodeOutput As TreeNode = Nothing
+        Dim nodeFolder As TreeNode = Nothing
+
         Me.Icon = Icon.FromHandle(ScientificInterfaceShared.My.Resources.NavHS.GetHicon)
 
         ' Put all the list here
-        Me.m_nodeController = New cTreeViewNodeController()
-        Me.m_nodeController.Attach(Me.m_uic, Me.m_tvNavigation)
+        Me.m_nodecontroller = New cTreeViewNodeController()
+        Me.m_nodecontroller.Attach(Me.m_uic, Me.m_tvNavigation)
 
-#If Not Debug Then
-        Me.RemoveNode("ndMSEBatch")
-        Console.writeline("Removed MSE Batch node in release mode")
-         Me.RemoveNode("ndRefMSY")
-        Console.writeline("Removed MSE MSY node in release mode")
+        ' Build images list
+        Me.m_ilTreeIcons.Images.Clear()
+        For key As Integer = 0 To [Enum].GetValues(GetType(eNodeImages)).Length - 1
+            Dim img As Image = Nothing
+            Select Case key
+                Case eNodeImages.Ecopath : img = SharedResources.nav_ecopath
+                Case eNodeImages.Ecosim : img = SharedResources.nav_ecosim
+                Case eNodeImages.Ecospace : img = SharedResources.nav_ecospace
+                Case eNodeImages.Ecotracer : img = SharedResources.nav_ecotracer
+                Case eNodeImages.Input : img = SharedResources.nav_input
+                Case eNodeImages.InputFolder : img = SharedResources.nav_input_folder
+                Case eNodeImages.Output : img = SharedResources.nav_output
+                Case eNodeImages.OutputFolder : img = SharedResources.nav_output_folder
+                Case eNodeImages.Tool : img = SharedResources.nav_tool
+                Case Else : Debug.Assert(False)
+            End Select
+            Me.m_ilTreeIcons.Images.Add(img)
+        Next
+
+        ' JS 8Nov16: From now on build the node list manually. Too often we lose nodes when merging SVN branches; 
+        '            SVN cannot merge the binary blob that the TreeView uses to store its node configuration.
+        '            It is less easy to locate node names for hosting plug-ins in a coded tree, but at least we limit damage when merging
+        Me.m_tvNavigation.Nodes.Clear()
+
+        ' -- Ecopath --
+        ' input
+        nodeModel = Me.m_nodecontroller.Add(SharedResources.HEADER_ECOPATH, "ndParameterization", eCoreExecutionState.EcopathLoaded, Nothing, eNodeImages.Ecopath)
+        nodeInput = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_INPUT, "ndEcopathInput", eCoreExecutionState.EcopathLoaded, Nothing, eNodeImages.InputFolder, nodeModel)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MODELPARMS, "ndModelParameters", eCoreExecutionState.EcopathLoaded, GetType(frmModelParameters), eNodeImages.Input, nodeInput, "Model description.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_BASICINPUT, "ndBasicInput", eCoreExecutionState.EcopathLoaded, GetType(frmBasicInput), eNodeImages.Input, nodeInput, "Basic input.htm.htm", True)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_DIETCOMP, "ndDietComposition", eCoreExecutionState.EcopathLoaded, GetType(frmDietComp), eNodeImages.Input, nodeInput, "Diet composition.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_DETRITUSFATE, "ndDetritusFate", eCoreExecutionState.EcopathLoaded, GetType(gridDetritusFate), eNodeImages.Input, nodeInput, "Detritus fate.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_OTHERPRODUCTION, "ndOtherProduction", eCoreExecutionState.EcopathLoaded, GetType(gridOtherProduction), eNodeImages.Input, nodeInput, "Other production.htm")
+
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FISHERY, "ndFishery", eCoreExecutionState.EcopathLoaded, Nothing, eNodeImages.InputFolder, nodeInput)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FISHERY_DEF, "ndDefFleets", eCoreExecutionState.EcopathLoaded, GetType(frmFisheryBasicInput), eNodeImages.Input, nodeFolder, "Definition of fleets.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FISHERY_LANDINGS, "ndLandings", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputLandings), eNodeImages.Input, nodeFolder, "Landings.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FISHERY_DISCARDS, "ndDiscards", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputDiscards), eNodeImages.Input, nodeFolder, "Discards.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FISHERY_DISCARDMORTRATE, "ndDiscardMortRate", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputDiscardMort), eNodeImages.Input, nodeFolder)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FISHERY_DISCARDFATE, "ndDiscardFate", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputDiscardFate), eNodeImages.Input, nodeFolder, "Discard fate.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_OFFVESSELPRICE, "ndOffVesselPrice", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryOffVesselValue), eNodeImages.Input, nodeFolder, "Market price.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_NONMARKTEPRICE, "ndNonMarketPrice", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputNonMarketPrice), eNodeImages.Input, nodeFolder, "Non market price.htm")
+
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TOOLS, "ndEcopathInputTools", eCoreExecutionState.EcopathLoaded, Nothing, eNodeImages.Tool, nodeInput)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PSD_GROWTHINPUT, "ndGrowthParameters", eCoreExecutionState.EcopathLoaded, GetType(gridGrowthParameters), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PEDIGREE, "ndPedigree", eCoreExecutionState.EcopathLoaded, GetType(frmPedigree), eNodeImages.Input, nodeFolder, "pedigree.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TRAITS, "ndEcopathInputTraits", eCoreExecutionState.EcopathLoaded, GetType(frmTaxonInput), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+
+        ' output
+        nodeOutput = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_OUTPUT, "ndEcopathOutput", eCoreExecutionState.EcopathCompleted, Nothing, eNodeImages.OutputFolder, nodeModel)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_BASICESTIMATES, "ndBasicEstimates", eCoreExecutionState.EcopathCompleted, GetType(gridBasicEstimates), eNodeImages.Output, nodeOutput, "Basic estimates.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_KEYINDICES, "ndKeyIndices", eCoreExecutionState.EcopathCompleted, GetType(gridKeyIndices), eNodeImages.Output, nodeOutput, "Key indices.htm")
+
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MORTALITRATES, "ndMortalityRates", eCoreExecutionState.EcopathCompleted, Nothing, eNodeImages.OutputFolder, nodeOutput)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MORTALITIES, "ndMortCoef", eCoreExecutionState.EcopathCompleted, GetType(gridMortalityCoefficients), eNodeImages.Output, nodeFolder, "Mortalities.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PREDMORTRATE, "ndPredMort", eCoreExecutionState.EcopathCompleted, GetType(gridMortalityPredation), eNodeImages.Output, nodeFolder, "Predation mortality.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FISHMORTRATE, "ndFleetFishingMortality", eCoreExecutionState.EcopathCompleted, GetType(gridFleetFishingMortality), eNodeImages.Output, nodeFolder) ' ToDo: connect to help
+
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_CONSUMPTION, "ndConsumption", eCoreExecutionState.EcopathCompleted, GetType(gridConsumption), eNodeImages.Output, nodeOutput, "Consumption.htm")
+
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_NICHEOVERLAP, "ndNicheOverlap", eCoreExecutionState.EcopathCompleted, Nothing, eNodeImages.OutputFolder, nodeOutput)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PREYOVERLAP, "ndPreyOverlap", eCoreExecutionState.EcopathCompleted, GetType(gridNicheOverlapPrey), eNodeImages.Output, nodeFolder, "Niche overlap.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PREDATOROVERLAP, "ndPredatorOverlap", eCoreExecutionState.EcopathCompleted, GetType(gridNicheOverlapPredator), eNodeImages.Output, nodeFolder, "Niche overlap.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_NICHEOVERLAPPLOT, "ndNichePredPreyPlot", eCoreExecutionState.EcopathCompleted, GetType(frmNichePredPreyPlot), eNodeImages.Output, nodeFolder)
+
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_RESPIRATION, "ndRespiration", eCoreExecutionState.EcopathCompleted, GetType(gridRespiration), eNodeImages.Output, nodeOutput, "Respiration.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ELECTIVITY, "ndElectivity", eCoreExecutionState.EcopathCompleted, GetType(gridElectivity), eNodeImages.Output, nodeOutput, "Electivity.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SEARCHRATES, "ndSearchRates", eCoreExecutionState.EcopathCompleted, GetType(gridSearchRates), eNodeImages.Output, nodeOutput, "Search rates.htm")
+
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FISHERY, "ndFisheryOutput", eCoreExecutionState.EcopathCompleted, Nothing, eNodeImages.OutputFolder, nodeOutput)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_CATCH, "ndEcopathCatch", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputCatch), eNodeImages.Output, nodeFolder, "Fishery (Ecopath parameterization).htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_VALUE, "ndEcopathValue", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputValue), eNodeImages.Output, nodeFolder, "Fishery (Ecopath parameterization).htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_DISCARDMORT, "ndEcopathDiscardMortality", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputDiscardMort), eNodeImages.Output, nodeFolder)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_DISCARSURV, "ndEcopathDiscardSurvival", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputDiscardSurvival), eNodeImages.Output, nodeFolder)
+        ' m_cn.Add(My.Resources.LABEL_NAV_LANDINGS, "ndEcopathLandings", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputLandings), eNodeImages.Output, nodeFolder)
+
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PSD, "ndParticleSizeDistribution", eCoreExecutionState.EcopathCompleted, Nothing, eNodeImages.OutputFolder, nodeOutput)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_RUNPSD, "ndRunPSD", eCoreExecutionState.EcopathLoaded, GetType(RunPSD), eNodeImages.Output, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_GROWTHESTIMATES, "ndGrowthEstimates", eCoreExecutionState.PSDCompleted, GetType(gridPSDGrowthEstimates), eNodeImages.Output, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_GROWTHCONTR, "ndPSDContributionPlot", eCoreExecutionState.PSDCompleted, GetType(PSDContributionPlot), eNodeImages.Output, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_GROWTHCONTRRESULT, "ndPSDContributionResult", eCoreExecutionState.PSDCompleted, GetType(gridPSDContributionResult), eNodeImages.Output, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PSDPLOTGROUP, "ndPSDPlotByGroup", eCoreExecutionState.PSDCompleted, GetType(PSDPlotByGroup), eNodeImages.Output, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PSDPLOTWEIGHT, "ndSizeWeightPlot", eCoreExecutionState.PSDCompleted, GetType(SizeWeightPlot), eNodeImages.Output, nodeFolder) ' ToDo: connect to help
+
+        ' tools
+        nodeTools = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TOOLS, "ndEcopathOutputTools", eCoreExecutionState.EcopathCompleted, Nothing, eNodeImages.Tool, nodeOutput)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FLOWDIAGRAM, "ndFlowDiagram", eCoreExecutionState.EcopathCompleted, GetType(FlowDiagram.frmEcopathFlowDiagram), eNodeImages.Output, nodeTools, "Flow diagram.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_STATISTICS, "ndEcopathStats", eCoreExecutionState.EcopathCompleted, GetType(gridEcopathStatistics), eNodeImages.Output, nodeTools) ' ToDo: connect to help
+
+        ' -- Ecosim --
+        ' input
+        nodeModel = Me.m_nodecontroller.Add(SharedResources.HEADER_ECOSIM, "ndTimeDynamic", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.Ecosim)
+        nodeInput = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_INPUT, "ndEcosimInput", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.InputFolder, nodeModel)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIMPARMS, "ndEcosimParameters", eCoreExecutionState.EcosimLoaded, GetType(frmEcosimParameters), eNodeImages.Input, nodeInput, "Ecosim parameters.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIMGROUPINFO, "ndGroupInfo", eCoreExecutionState.EcosimLoaded, GetType(gridEcosimGroupInput), eNodeImages.Input, nodeInput, "Group info.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_VULNERABILITES, "ndVulnerabilities", eCoreExecutionState.EcosimLoaded, GetType(frmVulnerabilities), eNodeImages.Input, nodeInput, "Vulnerabilities flow control.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TIMESERIES, "ndTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(frmTimeSeries), eNodeImages.Input, nodeInput, "Time series.htm")
+
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MEDIATION, "ndMediation", eCoreExecutionState.EcosimLoaded, GetType(frmForcingFunction), eNodeImages.Input, nodeInput, "Forcing function.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYMEDCONS, "ndApplyMediation", eCoreExecutionState.EcosimLoaded, GetType(frmMediationFunction), eNodeImages.Input, nodeFolder, "Mediation.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYMEDPROD, "ndApplyMediationPP", eCoreExecutionState.EcosimLoaded, GetType(frmApplyMedPP), eNodeImages.Input, nodeFolder, "Apply mediation.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYMEDDET, "ndApplyMediationDetritus", eCoreExecutionState.EcosimLoaded, GetType(frmApplyMedDetritus), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+
+#If DEBUG Then
+        'MSE Batch
+        '.Add("ndMSEBatchTFM", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchTFM), "") ' ToDo: connect to help
+        '.Add("ndMSEBatchFixedF", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchFixedF), "") ' ToDo: connect to help
+        ''jb Form not done yet
+        ' '' .Add("ndMSEBatchTAC", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchTAC), "") ' ToDo: connect to help
+        '.Add("ndMSEBatchParameters", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchParameters), "") ' ToDo: connect to help
+        '.Add("ndRunBatch", eCoreExecutionState.EcosimLoaded, GetType(frmMSERunBatch), "") ' ToDo: connect to help
 #End If
 
-        With Me.m_nodeController
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FORCINGFUNCTION, "ndForcingFunction", eCoreExecutionState.EcosimLoaded, GetType(frmForcingFunction), eNodeImages.Input, nodeInput, "Forcing function.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYFFCONS, "ndApplyFFConsumer", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFConsumer), eNodeImages.Input, nodeFolder, "Apply forcing function consumer.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYFFPROD, "ndApplyFFPP", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFPrimaryProducer), eNodeImages.Input, nodeFolder, "Apply forcing function primary.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYFFDET, "ndApplyFFDetritus", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFDetritus), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYOTHERMORT, "ndApplyFFOtherMort", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFOtherMort), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
-            'Basic Parameters
-            .Add("ndModelParameters", eCoreExecutionState.EcopathLoaded, GetType(frmModelParameters), "Model description.htm")
-            .Add("ndBasicInput", eCoreExecutionState.EcopathLoaded, GetType(frmBasicInput), "Basic input.htm", True)
-            .Add("ndDietComposition", eCoreExecutionState.EcopathLoaded, GetType(frmDietComp), "Diet composition.htm")
-            .Add("ndDetritusFate", eCoreExecutionState.EcopathLoaded, GetType(gridDetritusFate), "Detritus fate.htm")
-            .Add("ndOtherProduction", eCoreExecutionState.EcopathLoaded, GetType(gridOtherProduction), "Other production.htm")
-            .Add("ndDefFleets", eCoreExecutionState.EcopathLoaded, GetType(frmFisheryBasicInput), "Definition of fleets.htm")
-            .Add("ndLandings", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputLandings), "Landings.htm")
-            .Add("ndDiscards", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputDiscards), "Discards.htm")
-            .Add("ndDiscardFate", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputDiscardFate), "Discard fate.htm")
-            .Add("ndDiscardMortRate", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputDiscardMort), "") ' ToDo: connect to help
-            .Add("ndOffVesselPrice", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryOffVesselValue), "Market price.htm")
-            .Add("ndNonMarketPrice", eCoreExecutionState.EcopathLoaded, GetType(gridFisheryInputNonMarketPrice), "Non market price.htm")
-            .Add("ndPedigree", eCoreExecutionState.EcopathLoaded, GetType(frmPedigree), "pedigree.htm")
-            .Add("ndEcopathInputTraits", eCoreExecutionState.EcopathLoaded, GetType(frmTaxonInput), "") ' ToDo: connect to help
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FUNCTIONALRESPONSE, "ndFunctionalResponse", eCoreExecutionState.EcosimLoaded, GetType(frmEcosimFunctionalResponse), eNodeImages.Input, nodeInput) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYFUNCTIONALRESPONSE, "ndFunctionalResponseApply", eCoreExecutionState.EcosimLoaded, GetType(gridApplyEcosimEnvironmentalResponses), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
-            ' Ecopath Output
-            .Add("ndBasicEstimates", eCoreExecutionState.EcopathCompleted, GetType(gridBasicEstimates), "Basic estimates.htm")
-            .Add("ndKeyIndices", eCoreExecutionState.EcopathCompleted, GetType(gridKeyIndices), "Key indices.htm")
-            .Add("ndMortCoef", eCoreExecutionState.EcopathCompleted, GetType(gridMortalityCoefficients), "Mortalities.htm")
-            .Add("ndPredMort", eCoreExecutionState.EcopathCompleted, GetType(gridMortalityPredation), "Predation mortality.htm")
-            .Add("ndFleetFishingMortality", eCoreExecutionState.EcopathCompleted, GetType(gridFleetFishingMortality), "")
-            .Add("ndConsumption", eCoreExecutionState.EcopathCompleted, GetType(gridConsumption), "Consumption.htm")
-            .Add("ndRespiration", eCoreExecutionState.EcopathCompleted, GetType(gridRespiration), "Respiration.htm")
-            .Add("ndPreyOverlap", eCoreExecutionState.EcopathCompleted, GetType(gridNicheOverlapPrey), "Niche overlap.htm")
-            .Add("ndPredatorOverlap", eCoreExecutionState.EcopathCompleted, GetType(gridNicheOverlapPredator), "Niche overlap.htm")
-            .Add("ndElectivity", eCoreExecutionState.EcopathCompleted, GetType(gridElectivity), "Electivity.htm")
-            .Add("ndSearchRates", eCoreExecutionState.EcopathCompleted, GetType(gridSearchRates), "Search rates.htm")
-            .Add("ndQuantity", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputQuantity), "Fishery (Ecopath parameterization).htm")
-            .Add("ndValue", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputValue), "Fishery (Ecopath parameterization).htm")
-            .Add("ndFlowDiagram", eCoreExecutionState.EcopathCompleted, GetType(FlowDiagram.frmEcopathFlowDiagram), "Flow diagram.htm")
-            .Add("ndEcopathStats", eCoreExecutionState.EcopathCompleted, GetType(gridEcopathStatistics), "")
-            .Add("ndNichePredPreyPlot", eCoreExecutionState.EcopathCompleted, GetType(frmNichePredPreyPlot), "")
-            ' Network Analysis PlugIn: "Network%20analysis%20indices%20in.htm"
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_EGGPROD, "ndEP", eCoreExecutionState.EcosimLoaded, GetType(frmEggProduction), eNodeImages.Input, nodeInput, "Egg production.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYEGGPROD, "ndApplyEP", eCoreExecutionState.EcosimLoaded, GetType(ApplyEP), eNodeImages.Input, nodeFolder, "Apply egg production.htm")
 
-            ' PSD Input
-            .Add("ndGrowthParameters", eCoreExecutionState.EcopathLoaded, GetType(gridGrowthParameters), "") ' ToDo: connect to help
-            .Add("ndRunPSD", eCoreExecutionState.EcopathLoaded, GetType(RunPSD), "") ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FISHINGEFFORT, "ndFishingEffort", eCoreExecutionState.EcosimLoaded, GetType(frmFishingEffort), eNodeImages.Input, nodeInput) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FISHINGMORT, "ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality), eNodeImages.Input, nodeInput) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FLEETSIZEDYNAMICS, "ndFleetSizeDynamics", eCoreExecutionState.EcosimLoaded, GetType(gridEcosimFleetSizeDynamics), eNodeImages.Input, nodeInput, "Fleet size dynamics.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PRICEELAST, "ndPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmPriceElasticity), eNodeImages.Input, nodeInput) ' ToDo: connect to help
 
-            ' PSD Output
-            .Add("ndGrowthEstimates", eCoreExecutionState.PSDCompleted, GetType(gridPSDGrowthEstimates), "") ' ToDo: connect to help
-            .Add("ndPSDContributionPlot", eCoreExecutionState.PSDCompleted, GetType(PSDContributionPlot), "") ' ToDo: connect to help
-            .Add("ndPSDContributionResult", eCoreExecutionState.PSDCompleted, GetType(gridPSDContributionResult), "") ' ToDo: connect to help
-            .Add("ndPSDPlotByGroup", eCoreExecutionState.PSDCompleted, GetType(PSDPlotByGroup), "") ' ToDo: connect to help
-            .Add("ndSizeWeightPlot", eCoreExecutionState.PSDCompleted, GetType(SizeWeightPlot), "") ' ToDo: connect to help
+        ' output
+        nodeOutput = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_OUTPUT, "ndEcosimOutput", eCoreExecutionState.EcosimCompleted, Nothing, eNodeImages.OutputFolder, nodeModel)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_RUN, "ndRunEcosim", eCoreExecutionState.EcosimLoaded, GetType(frmRunEcosim), eNodeImages.Output, nodeOutput, "Run Ecosim.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_GROUPPLOTS, "ndEcosimPlots", eCoreExecutionState.EcosimCompleted, GetType(frmEcosimOutputGroupPlots), eNodeImages.Output, nodeOutput, "Ecosim plot.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_FLEETPLOTS, "ndEcosimFleetPlots", eCoreExecutionState.EcosimCompleted, GetType(frmEcosimOutputFleetPlots), eNodeImages.Output, nodeOutput, "Ecosim fleet plot.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_RESULTS, "ndEcosimResults", eCoreExecutionState.EcosimCompleted, GetType(frmEcosimResults), eNodeImages.Output, nodeOutput, "Ecosim results.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_ALLFITS, "ndEcosimAllFits", eCoreExecutionState.EcosimCompleted, GetType(frmShowAllFits), eNodeImages.Output, nodeOutput, "Ecosim results.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_SRPLOT, "ndSRPlot", eCoreExecutionState.EcosimLoaded, GetType(frmStockRecruitmentPlot), eNodeImages.Output, nodeOutput, "Stock recruitment S R plot.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_SUSTPLOT, "ndSuitabilityPlot", eCoreExecutionState.EcosimCompleted, GetType(SuitabilityPlot), eNodeImages.Output, nodeOutput) ' ToDo: connect to help
 
-            ' Ecosim Input
-            .Add("ndEcosimParameters", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmEcosimParameters), "Ecosim parameters.htm")
-            .Add("ndGroupInfo", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridEcosimGroupInput), "Group info.htm")
-            .Add("ndVulnerabilities", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmVulnerabilities), "Vulnerabilities flow control.htm")
-            .Add("ndTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmTimeSeries), "Time series.htm")
-            .Add("ndMediation", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMediationFunction), "Mediation.htm")
-            .Add("ndApplyMediation", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmApplyMedConsumer), "Apply mediation.htm")
-            .Add("ndApplyMediationPP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmApplyMedPP), "Apply mediation.htm")
-            .Add("ndApplyMediationDetritus", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmApplyMedDetritus)) ' ToDo: connect to help
-            .Add("ndForcingFunction", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmForcingFunction), "Forcing function.htm")
-            .Add("ndApplyFFConsumer", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmApplyFFConsumer), "Apply forcing function consumer.htm")
-            .Add("ndApplyFFPP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmApplyFFPrimaryProducer), "Apply forcing function primary.htm")
-            .Add("ndApplyFFDetritus", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmApplyFFDetritus)) ' ToDo: connect to help
-            .Add("ndEP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmEggProduction), "Egg production.htm")
-            .Add("ndApplyEP", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.ApplyEP), "Apply egg production.htm")
-            .Add("ndFishingEffort", eCoreExecutionState.EcosimLoaded, GetType(frmFishingEffort)) ' ToDo: connect to help
-            .Add("ndFleetQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridQuotaShare)) ' ToDo: connect to help
-            '.Add("ndSpeciesQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmTargetFishingMortalityPolicy)) ' ToDo: connect to help
-            .Add("ndFleetSizeDynamics", eCoreExecutionState.EcosimLoaded, GetType(gridEcosimFleetSizeDynamics), "Fleet size dynamics.htm")
-            .Add("ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality)) ' ToDo: connect to help
-            .Add("ndPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmPriceElasticity)) ' ToDo: connect to help
+        nodeTools = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TOOLS, "ndEcosimOutputTools", eCoreExecutionState.EcosimCompleted, Nothing, eNodeImages.Tool, nodeOutput)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_FLOWDIAGRAM, "ndEcosimFlowDiagram", eCoreExecutionState.EcosimCompleted, GetType(frmEcosimFlowDiagram), eNodeImages.Output, nodeTools)
 
-            .Add("ndFunctionalResponse", eCoreExecutionState.EcosimLoaded, GetType(frmEcosimFunctionalResponse)) ' ToDo: connect to help
-            .Add("ndFunctionalResponseApply", eCoreExecutionState.EcosimLoaded, GetType(gridApplyEcosimEnvironmentalResponses)) ' ToDo: connect to help
+        ' tools
+        nodeTools = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TOOLS, "ndEcosimTools", eCoreExecutionState.EcosimCompleted, Nothing, eNodeImages.Tool, nodeModel)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_MONTECARLO, "ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(frmMCRun), eNodeImages.Output, nodeTools, "Monte Carlo runs.htm") ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_FISHINGPOLICY, "ndFishingPolicySearch", eCoreExecutionState.EcosimLoaded, GetType(frmFishingPolicySearch), eNodeImages.Output, nodeTools, "Fishing policy search.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_FIT2TS, "ndFitToTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(frmFitToTimeSeries), eNodeImages.Output, nodeTools, "Fit to time series.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_SUSTPLOT, "ndMSY", eCoreExecutionState.EcosimLoaded, GetType(frmMSY), eNodeImages.Output, nodeTools) ' ToDo: connect to help
 
-            ' Ecosim Output
-            .Add("ndRunEcosim", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmRunEcosim), "Run Ecosim.htm")
-            .Add("ndEcosimPlots", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimOutputPlots), "Ecosim plot.htm")
-            .Add("ndEcosimResults", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimResults), "Ecosim results.htm")
-            .Add("ndEcosimAllFits", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmShowAllFits), "Ecosim results.htm")
-            .Add("ndSRPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmStockRecruitmentPlot), "Stock recruitment S R plot.htm")
-            .Add("ndSuitabilityPlot", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.SuitabilityPlot)) ' ToDo: connect to help
-            .Add("ndFDSliderPlugin", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimFlowDiagram))
+        ' -- Ecospace --
+        nodeModel = Me.m_nodecontroller.Add(SharedResources.HEADER_ECOSPACE, "ndSpatialDynamic", eCoreExecutionState.EcospaceLoaded, Nothing, eNodeImages.Ecospace)
+        ' input
+        nodeInput = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_INPUT, "ndEcospaceInput", eCoreExecutionState.EcospaceLoaded, Nothing, eNodeImages.Input, nodeModel)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_PARAMS, "ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceParameters), eNodeImages.Input, nodeInput, "Ecospace parameters.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_MAPS, "ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Basemap.frmEcospaceMap), eNodeImages.Input, nodeInput, "Basemap.htm")
 
-            ' Ecosim Tools
-            .Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMCRun), "Monte Carlo runs.htm") ' ToDo: connect to help
-            .Add("ndFishingPolicySearch", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFishingPolicySearch), "Fishing policy search.htm")
-            .Add("ndFitToTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFitToTimeSeries), "Fit to time series.htm")
-            .Add("ndMSY", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMSY), "") ' ToDo: connect to help
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_HABCAP, "ndHabCap", eCoreExecutionState.EcospaceLoaded, GetType(frmForagingResponse), eNodeImages.Input, nodeInput) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_HABCAPAPPLY, "ndHabCapApply", eCoreExecutionState.EcospaceLoaded, GetType(frmApplyForagingResponses), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_HABCAPMODEL, "ndHabCapModel", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityCalcType), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_HABITATPREFS1, "ndHabitatPrefs", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridHabitatPreference), eNodeImages.Input, nodeFolder, "Assign habitats.htm")
 
-            ' Ecospace
-            .Add("ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceDispersal), "Dispersal.htm")
-            .Add("ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceParameters), "Ecospace parameters.htm")
-            .Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Basemap.frmEcospaceMap), "Basemap.htm")
-            '.Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceFishery), "Ecospace Fishery.htm")
-            .Add("ndEcospaceMPAEnforcement", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceMPAEnforcement), "Ecospace Fishery.htm")
-            .Add("ndEcospaceHabitatFishery", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceHabitatFishery), "Ecospace Fishery.htm")
-            .Add("ndEcospaceFisheriesDynamics", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceHabitatDyncamis), "Ecospace Fishery.htm")
-            .Add("ndEcospaceMPA", eCoreExecutionState.EcospaceLoaded, GetType(frmMPAs))
-            .Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(dlgEcospaceScenario)) ' ToDo: connect to help
-            .Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(frmRunEcospace), "Run Ecospace.htm")
-            .Add("ndAdvection", eCoreExecutionState.EcospaceLoaded, GetType(Advection.frmAdvection), "")
-            .Add("ndMPAOptimizations", eCoreExecutionState.EcospaceLoaded, GetType(frmMPAOptimizations), "EcoSeed.htm")
-            .Add("ndEcospaceExtData", eCoreExecutionState.EcospaceLoaded, GetType(frmSpatialTimeSeries), "")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_DISPERSAL, "ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceDispersal), eNodeImages.Input, nodeInput, "Dispersal.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_ADVECTION, "ndAdvection", eCoreExecutionState.EcospaceLoaded, GetType(Advection.frmAdvection), eNodeImages.Input, nodeInput)
 
-            ' Ecospace output
-            .Add("ndEcospaceResults", eCoreExecutionState.EcospaceCompleted, GetType(Ecospace.frmEcospaceResults), "") ' ToDo: connect to help
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_FISHERY, "ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceFishery), eNodeImages.Input, nodeInput, "Ecospace Fishery.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_MPA, "ndEcospaceMPA", eCoreExecutionState.EcospaceLoaded, GetType(frmMPAs), eNodeImages.Input, nodeFolder)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_MPAENFORCEMENT, "ndEcospaceMPAEnforcement", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceMPAEnforcement), eNodeImages.Input, nodeFolder, "Ecospace Fishery.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_HABFISHERY, "ndEcospaceHabitatFishery", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceHabitatFishery), eNodeImages.Input, nodeFolder, "Ecospace Fishery.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_FLEETDYNAMICS, "ndEcospaceFisheriesDynamics", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceHabitatDyncamis), eNodeImages.Input, nodeFolder, "Ecospace Fishery.htm")
 
-            .Add("ndEcoTracer_Pram", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerParameters), "") ' ToDo: connect to help
-            .Add("ndEcoTracer_Input", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerInput), "") ' ToDo: connect to help
-            .Add("ndEcoTracer_Output", eCoreExecutionState.EcotracerLoaded, GetType(frmEcotracerOutput), "") ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_EXTERNALDATA, "ndEcospaceExtData", eCoreExecutionState.EcospaceLoaded, GetType(frmSpatialTimeSeries), eNodeImages.Input, nodeInput, "")
 
-            'MSE
-            .Add("ndOptions", eCoreExecutionState.EcosimLoaded, GetType(frmMSEOptions), "") ' ToDo: connect to help
-            ' .Add("ndControlType", eCoreExecutionState.EcosimLoaded, GetType(gridRegulatoryOptions), "") ' ToDo: connect to help
-            .Add("ndRefFixedEscape", eCoreExecutionState.EcosimLoaded, GetType(gridFixedEscapement), "") ' ToDo: connect to help
-            .Add("ndQuotaShare", eCoreExecutionState.EcosimLoaded, GetType(frmQuotaShare), "") ' ToDo: connect to help
-            .Add("ndRegFishingMort", eCoreExecutionState.EcosimLoaded, GetType(frmTargetFishingMortalityPolicy), "") ' ToDo: connect to help
-            .Add("ndAssessGroup", eCoreExecutionState.EcosimLoaded, GetType(frmMSEAssessGroups), "") ' ToDo: connect to help
-            .Add("ndAssessFleet", eCoreExecutionState.EcosimLoaded, GetType(frmMSEAssessFleets), "") ' ToDo: connect to help
-            .Add("ndMSERecruitment", eCoreExecutionState.EcosimLoaded, GetType(frmMSERecruitment), "") ' ToDo: connect to help
-            'jb march-8-2010 removed Group objectives and Objective weights as they are not being used by the MSE
-            '.Add("ndEfTrackObjectives", eCoreExecutionState.EcosimLoaded, GetType(gridMSEOjectiveWeights), "") ' ToDo: connect to help
-            '.Add("ndEfTrackEcoObjectives", eCoreExecutionState.EcosimLoaded, GetType(gridMSEGroupObjectives), "") ' ToDo: connect to help
-            .Add("ndRefMSY", eCoreExecutionState.EcosimLoaded, GetType(frmMSY), "") ' ToDo: connect to help
-            .Add("ndRefBiomass", eCoreExecutionState.EcosimLoaded, GetType(frmGroupRefLevels), "") ' ToDo: connect to help
-            .Add("ndRefCatch", eCoreExecutionState.EcosimLoaded, GetType(gridFleetRefLevels), "") ' ToDo: connect to help
-            .Add("ndEfTrackFleetWeights", eCoreExecutionState.EcosimLoaded, GetType(gridFishingWeights), "") ' ToDo: connect to help
-            .Add("ndMSERun", eCoreExecutionState.EcosimLoaded, GetType(frmMSE), "") ' ToDo: connect to help
-            .Add("ndMSEResults", eCoreExecutionState.EcosimLoaded, GetType(frmMSEResults), "") ' ToDo: connect to help
-            .Add("ndMSEPlots", eCoreExecutionState.EcosimLoaded, GetType(frmMSEPlots), "") ' ToDo: connect to help
+        '.Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(dlgEcospaceScenario)) ' ToDo: connect to help
 
-            .Add("ndApplyFFOtherMort", eCoreExecutionState.EcosimLoaded, GetType(frmApplyFFOtherMort), "")
+        ' output
+        nodeOutput = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_OUTPUT, "ndEcospaceOutput", eCoreExecutionState.EcospaceLoaded, Nothing, eNodeImages.OutputFolder, nodeModel)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_RUN, "ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(frmRunEcospace), eNodeImages.Output, nodeOutput, "Run Ecospace.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_RESULTS, "ndEcospaceResults", eCoreExecutionState.EcospaceCompleted, GetType(frmEcospaceResults), eNodeImages.Output, nodeOutput) ' ToDo: connect to help
 
-            'MSE Batch
-            'Not ready for release yet
-            '.Add("ndRunBatch", eCoreExecutionState.EcosimLoaded, GetType(frmMSERunBatch), "") ' ToDo: connect to help
-            '.Add("ndMSEBatchTFM", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchTFM), "") ' ToDo: connect to help
-            '.Add("ndMSEBatchFixedF", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchFixedF), "") ' ToDo: connect to help
-            ''jb Form not done yet
-            ' '' .Add("ndMSEBatchTAC", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchTAC), "") ' ToDo: connect to help
-            '.Add("ndMSEBatchParameters", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchParameters), "") ' ToDo: connect to help
+        ' tools
+        nodeTools = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TOOLS, "ndEcospaceTools", eCoreExecutionState.EcospaceCompleted, Nothing, eNodeImages.Tool, nodeModel)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_MPAOPT, "ndMPAOptimizations", eCoreExecutionState.EcospaceLoaded, GetType(frmMPAOptimizations), eNodeImages.Output, nodeTools)
 
-            'Ecospace habitat capacity
-            .Add("ndHabCap", eCoreExecutionState.EcospaceLoaded, GetType(frmForagingResponse), "") ' ToDo: connect to help
-            .Add("ndHabCapModel", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityCalcType), "") ' ToDo: connect to help
-            '.Add("ndHabCapDrivers", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityDrivers), "") ' ToDo: connect to help
-            .Add("ndHabCapApply", eCoreExecutionState.EcospaceLoaded, GetType(frmApplyForagingResponses), "") ' ToDo: connect to help
-            .Add("ndHabitatPrefs", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridHabitatPreference), "Assign habitats.htm")
+        ' global tools
+        nodeTools = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TOOLS, "ndTools", eCoreExecutionState.EcopathLoaded, Nothing, eNodeImages.Tool, Nothing)
 
-        End With
+        ' -- Ecotracer -- (placed on the tree root now, yippee)
+        nodeModel = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TRACER, "ndEcotracer", eCoreExecutionState.EcotracerLoaded, Nothing, eNodeImages.Ecotracer, nodeTools)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TRACER_PARAMS, "ndEcoTracer_Pram", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerParameters), eNodeImages.Input, nodeModel) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TRACER_INPUT, "ndEcoTracer_Input", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerInput), eNodeImages.Input, nodeModel) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TRACER_OUTPUT, "ndEcoTracer_Output", eCoreExecutionState.EcotracerLoaded, GetType(frmEcotracerOutput), eNodeImages.Output, nodeModel) ' ToDo: connect to help
+
+        ' -- MSE --
+        nodeModel = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE, "ndMSE", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.Tool, nodeTools)
+        ' input
+        nodeInput = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_INPUT, "ndMSEInput", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.InputFolder, nodeModel)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_OPTIONS, "ndOptions", eCoreExecutionState.EcosimLoaded, GetType(frmMSEOptions), eNodeImages.Input, nodeInput) ' ToDo: connect to help
+
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_REGULATORY, "ndRegInput", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.InputFolder, nodeInput)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_OPTIONS, "ndRegFishingMort", eCoreExecutionState.EcosimLoaded, GetType(frmTargetFishingMortalityPolicy), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_FIXEDESCAPE, "ndRefFixedEscape", eCoreExecutionState.EcosimLoaded, GetType(gridFixedEscapement), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_QUOTASHARE, "ndQuotaShare", eCoreExecutionState.EcosimLoaded, GetType(frmQuotaShare), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_ASSESSMENTS, "ndAssessments", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.InputFolder, nodeInput)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_ASSESSMENTGROUP, "ndAssessGroup", eCoreExecutionState.EcosimLoaded, GetType(frmMSEAssessGroups), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_ASSESSMENTFLEET, "ndAssessFleet", eCoreExecutionState.EcosimLoaded, GetType(frmMSEAssessFleets), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_RECRUITMENT, "ndMSERecruitment", eCoreExecutionState.EcosimLoaded, GetType(frmMSERecruitment), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_REFLEVELS, "ndRefLevels", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.InputFolder, nodeInput)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_REFMSY, "ndRefMSY", eCoreExecutionState.EcosimLoaded, GetType(frmMSY), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_MSEGROUP, "ndRefBiomass", eCoreExecutionState.EcosimLoaded, GetType(frmGroupRefLevels), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_MSEFLEET, "ndRefCatch", eCoreExecutionState.EcosimLoaded, GetType(gridFleetRefLevels), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_EFFORTTRACKING, "ndEffortTrackInput", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.InputFolder, nodeInput)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_FLEETWEIGHTS, "ndEfTrackFleetWeights", eCoreExecutionState.EcosimLoaded, GetType(gridFishingWeights), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+
+        ' output
+        nodeOutput = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_OUTPUT, "ndMSEOutput", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.OutputFolder, nodeModel)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_RUN, "ndMSERun", eCoreExecutionState.EcosimLoaded, GetType(frmMSE), eNodeImages.Output, nodeOutput) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_PLOTS, "ndMSEPlots", eCoreExecutionState.EcosimLoaded, GetType(frmMSEPlots), eNodeImages.Output, nodeOutput) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_RESULTS, "ndMSEResults", eCoreExecutionState.EcosimLoaded, GetType(frmMSEResults), eNodeImages.Output, nodeOutput) ' ToDo: connect to help
+
+        ' -- Dead bits, to be assessed --
+
+        ' .Add("ndControlType", eCoreExecutionState.EcosimLoaded, GetType(gridRegulatoryOptions), "") ' ToDo: connect to help
+        '    .Add("ndRegFishingMort", eCoreExecutionState.EcosimLoaded, GetType(frmTargetFishingMortalityPolicy), "") ' ToDo: connect to help
+        '    'jb march-8-2010 removed Group objectives and Objective weights as they are not being used by the MSE
+        '    '.Add("ndEfTrackObjectives", eCoreExecutionState.EcosimLoaded, GetType(gridMSEOjectiveWeights), "") ' ToDo: connect to help
+        '    '.Add("ndEfTrackEcoObjectives", eCoreExecutionState.EcosimLoaded, GetType(gridMSEGroupObjectives), "") ' ToDo: connect to help
+
+        '    'MSE Batch
+        '    'Not ready for release yet
+        '    '.Add("ndRunBatch", eCoreExecutionState.EcosimLoaded, GetType(frmMSERunBatch), "") ' ToDo: connect to help
+        '    '.Add("ndMSEBatchTFM", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchTFM), "") ' ToDo: connect to help
+        '    '.Add("ndMSEBatchFixedF", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchFixedF), "") ' ToDo: connect to help
+        '    ''jb Form not done yet
+        '    ' '' .Add("ndMSEBatchTAC", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchTAC), "") ' ToDo: connect to help
+        '    '.Add("ndMSEBatchParameters", eCoreExecutionState.EcosimLoaded, GetType(frmMSEBatchParameters), "") ' ToDo: connect to help
+
+        '    .Add("ndFleetQuotas", eCoreExecutionState.EcosimLoaded, GetType(gridQuotaShare)) ' ToDo: connect to help
+        '    '.Add("ndSpeciesQuotas", eCoreExecutionState.EcosimLoaded, GetType(frmTargetFishingMortalityPolicy)) ' ToDo: connect to help
+        '    .Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(dlgEcospaceScenario)) ' ToDo: connect to help
 
         ' JS 19Mar2010: now why was this necessary?
         If (Me.m_tvNavigation.SelectedNode IsNot Nothing) Then
@@ -293,8 +398,8 @@ Public Class frmNavigationPanel
 
         Me.Icon.Dispose()
 
-        Me.m_nodeController.Detach()
-        Me.m_nodeController = Nothing
+        Me.m_nodecontroller.Detach()
+        Me.m_nodecontroller = Nothing
 
         Me.m_ntPluginHandler.Dispose()
         Me.m_ntPluginHandler = Nothing
@@ -333,7 +438,7 @@ Public Class frmNavigationPanel
             If Me.m_tvNavigation.Nodes.Count = 0 Then Return
 
             If (String.IsNullOrEmpty(value) And bUseDefault) Then
-                value = Me.m_nodeController.DefaultNodeName
+                value = Me.m_nodecontroller.DefaultNodeName
             End If
 
             ' Try to find node to select

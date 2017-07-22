@@ -2024,7 +2024,8 @@ Public Class cEIIXMLDataSource
                             End Try
                         Next
 
-                    Case eTimeSeriesCategoryType.Fleet
+                    Case eTimeSeriesCategoryType.Fleet,
+                         eTimeSeriesCategoryType.FleetGroup
                         For Each drowSub As DataRow In dtFlt.Select("TimeSeriesID=" & iTSID)
                             Try
                                 iIndex = Array.IndexOf(ecopathDS.GroupDBID, CInt(drowSub("FleetID")))
@@ -3335,7 +3336,9 @@ Public Class cEIIXMLDataSource
     ''' <param name="iDBID">Database ID assigned to the new TS.</param>
     ''' <returns>Always false.</returns>
     ''' -------------------------------------------------------------------
-    Public Function AppendTimeSeries(ByVal strName As String, ByVal iPool As Integer, ByVal timeSeriesType As eTimeSeriesType, ByVal sWeight As Single, ByVal asValues() As Single, ByRef iDBID As Integer) As Boolean _
+    Public Function AppendTimeSeries(ByVal strName As String, ByVal iPool As Integer, ByVal iPoolSec As Integer,
+                                     ByVal timeSeriesType As eTimeSeriesType, ByVal sWeight As Single,
+                                     ByVal asValues() As Single, ByRef iDBID As Integer) As Boolean _
             Implements DataSources.IEcosimDatasource.AppendTimeSeries
         Return False
     End Function

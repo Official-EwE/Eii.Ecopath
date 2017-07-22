@@ -80,6 +80,8 @@ Namespace Ecospace
         ' Ecospace time series
         Private WithEvents m_bpUseBiomassForcing As cBooleanProperty = Nothing
         Private m_fpUseBiomassForcing As cEwEFormatProvider = Nothing
+        Private WithEvents m_bpUseDiscardForcing As cBooleanProperty = Nothing
+        Private m_fpUseDiscardForcing As cEwEFormatProvider = Nothing
 
         ' Properties to monitor for setting radio button check states
         Private WithEvents m_bpUseIBM As cBooleanProperty = Nothing
@@ -121,7 +123,10 @@ Namespace Ecospace
             Me.m_bpConTracing = DirectCast(propMan.GetProperty(parms, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
 
             Me.m_bpUseBiomassForcing = DirectCast(propMan.GetProperty(parms, eVarNameFlags.EcospaceUseEcosimBiomassForcing), cBooleanProperty)
-            Me.m_fpUseBiomassForcing = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseEcosimForcing, Me.m_bpUseBiomassForcing)
+            Me.m_fpUseBiomassForcing = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseEcosimBiomassForcing, Me.m_bpUseBiomassForcing)
+
+            Me.m_bpUseDiscardForcing = DirectCast(propMan.GetProperty(parms, eVarNameFlags.EcospaceUseEcosimDiscardForcing), cBooleanProperty)
+            Me.m_fpUseDiscardForcing = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseEcosimDiscardForcing, Me.m_bpUseDiscardForcing)
 
             Me.m_clbAutosave.Items.Clear()
             For n As Integer = 1 To parms.nResultWriters
@@ -200,6 +205,7 @@ Namespace Ecospace
                 Me.m_fpUseExact.Release()
                 Me.m_fpMovePackets.Release()
                 Me.m_fpUseBiomassForcing.Release()
+                Me.m_fpUseDiscardForcing.Release()
                 Me.m_fpAnnualOutput.Release()
 
                 Me.m_fpFirstOutputTimestep.Release()
@@ -271,16 +277,14 @@ Namespace Ecospace
             Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
             Me.m_rbEcopathEffort.Checked = Not CBool(Me.m_bpEffort.GetValue())
 
-            'Time series
+            ' Time series
             Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
             Me.m_tbxXYTimeSeriesFile.Text = If(String.IsNullOrWhiteSpace(manager.BiomassInputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.BiomassInputFileName)
             Me.m_tbxlOutputResidualsFile.Text = If(String.IsNullOrWhiteSpace(manager.OutputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.OutputFileName)
 
-            'If Ecosim Biomass forcing is loaded then enable the control
-            'IsEcosimBiomassForcingLoaded() just tell use that there is Ecosim Biomass Forcing loaded
-            'NOT if it is being used by Ecospace 
-            'That is controled by UseEcosimBiomassForcing
+            ' Ecosim forcing
             Me.m_fpUseBiomassForcing.Enabled = Core.EcospaceModelParameters.IsEcosimBiomassForcingLoaded
+            Me.m_fpUseDiscardForcing.Enabled = Core.EcospaceModelParameters.IsEcosimDiscardForcingLoaded
 
             Me.m_bInUpdate = False
 
@@ -298,7 +302,8 @@ Namespace Ecospace
         ''' <param name="changeFlags">The extent of the change.</param>
         ''' -------------------------------------------------------------------
         Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags) _
-            Handles m_bpUseIBM.PropertyChanged, m_bpUseNewStanza.PropertyChanged, m_bpConTracing.PropertyChanged, m_bpUseBiomassForcing.PropertyChanged
+            Handles m_bpUseIBM.PropertyChanged, m_bpUseNewStanza.PropertyChanged, m_bpConTracing.PropertyChanged, _
+                    m_bpUseBiomassForcing.PropertyChanged, m_bpUseDiscardForcing.PropertyChanged
             Me.UpdateControls()
         End Sub
 

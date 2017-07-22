@@ -221,7 +221,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                 For iGroup As Integer = 1 To Core.nGroups
                     Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
                     For iFleet As Integer = 1 To Core.nFleets
-                        Dim fleet As cFleetInput = Me.Core.FleetInputs(iFleet)
+                        Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(iFleet)
                         If (fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0) Then
                             sw.Write("{0},{1}", iGroup, iFleet)
                             Select Case par
@@ -258,7 +258,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                 For iGroup As Integer = 1 To Core.nGroups
                     Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
                     For iFleet As Integer = 1 To Core.nFleets
-                        Dim fleet As cFleetInput = Me.Core.FleetInputs(iFleet)
+                        Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(iFleet)
                         If (fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0) Then
                             sw.Write("{0},{1}", group.Index, fleet.Index, cStringUtils.ToCSVField(fleet.Name))
                             Dim val As Single = 0.0

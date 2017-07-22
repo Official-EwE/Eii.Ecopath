@@ -197,6 +197,7 @@
     <Compile Include="EcoBase\cEcoBaseWDSL.vb" />
     <Compile Include="EcoBase\cEcobaseData.vb" />
     <Compile Include="EcoBase\cEcobaseDataAccessAgreement.vb" />
+    <Compile Include="EcoPath\Input Output\cEcopathFleetOutput.vb" />
     <Compile Include="EcoPath\Model\cEcopathResultWriter.vb" />
     <Compile Include="EcoPath\Utility\Merge and split groups\cEcopathMergeGroups.vb" />
     <Compile Include="EcoPath\Utility\Merge and split groups\cEcopathMergeGroupsDatastructures.vb" />
@@ -216,6 +217,7 @@
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapBiomassWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapCatchWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapContaminants.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapDiscardsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapEffortWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceAvgModelAreaResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerBoolean.vb" />
@@ -323,7 +325,7 @@
     <Compile Include="EcoPath\Model\cEcopathDataStructures.vb" />
     <Compile Include="EcoPath\Input Output\cEcoPathGroupOutput.vb" />
     <Compile Include="EcoPath\Model\cEcoPathModel.vb" />
-    <Compile Include="EcoPath\Input Output\cFleetInput.vb" />
+    <Compile Include="EcoPath\Input Output\cEcopathFleetInput.vb" />
     <Compile Include="EcoSim\Model\cEcoSimDatastructures.vb" />
     <Compile Include="EcoSim\Input Output\cEcoSimGroupInput.vb" />
     <Compile Include="EcoSim\Model\cEcoSimModel.vb" />

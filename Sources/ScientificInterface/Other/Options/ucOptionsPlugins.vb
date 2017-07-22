@@ -224,7 +224,7 @@ Namespace Other
             Me.m_nudTimeOut.Value = CDec(Math.Max(1, Math.Round(My.Settings.UpdatePluginsTimeout / 1000)))
 
             ' Prepare image list
-            Me.m_ilPlugins.Images.Add(SharedResources.nav8_ecopath)
+            Me.m_ilPlugins.Images.Add(SharedResources.nav_ecopath)
             Me.m_ilPlugins.Images.Add(SharedResources.plugin)
             Me.m_ilPlugins.Images.Add(SharedResources.pluginpoint)
             Me.m_ilPlugins.Images.Add(SharedResources.Cancel)

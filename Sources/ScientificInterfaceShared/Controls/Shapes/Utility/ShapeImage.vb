@@ -76,11 +76,11 @@ Namespace Controls
         ''' <param name="sXMax">X max scale to translate the point to. This code assumes that the x min scale always equals 0.</param>
         ''' <param name="sYMax">Y max scale to translate the point to. This code assumes that the y min scale always equals 0.</param>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToModelPoint(ByVal ptImage As PointF, _
-                                    ByVal rcClip As Rectangle, _
+        Public Shared Function ToModelPoint(ByVal ptImage As PointF,
+                                    ByVal rcClip As Rectangle,
                                     ByVal sXMax As Single, ByVal sYMax As Single) As PointF
 
-            Dim ptModel As New PointF(CInt(Math.Ceiling((ptImage.X - rcClip.Left) * sXMax / rcClip.Width)), _
+            Dim ptModel As New PointF(CInt(Math.Ceiling((ptImage.X - rcClip.Left) * sXMax / rcClip.Width)),
                                 (rcClip.Height + rcClip.Top - ptImage.Y) * sYMax / rcClip.Height)
 
             ' Clip values
@@ -108,17 +108,17 @@ Namespace Controls
         ''' <param name="sXMark">X mark line position, expressed in the same units as the X-axis values of the shape. Provide cCore.NULL_VALUE to use the default.</param>
         ''' <param name="sYMark">Y mark line position, expressed in the same units as the Y-axis values of the shape. Provide cCore.NULL_VALUE to use the default.</param>
         ''' -------------------------------------------------------------------
-        Public Shared Sub DrawShape(ByVal uic As cUIContext, _
-                                ByVal shape As cShapeData, _
-                                ByVal rcImage As Rectangle, _
-                                ByVal g As Graphics, _
-                                ByVal clr As Color, _
-                                ByVal drawMode As eSketchDrawModeTypes, _
-                                Optional ByVal iXMax As Integer = cCore.NULL_VALUE, _
-                                Optional ByVal sYMax As Single = cCore.NULL_VALUE, _
-                                Optional ByVal sXMark As Single = cCore.NULL_VALUE, _
-                                Optional ByVal sYMark As Single = cCore.NULL_VALUE, _
-                                Optional ByVal strXMarkLabel As String = "", _
+        Public Shared Sub DrawShape(ByVal uic As cUIContext,
+                                ByVal shape As cShapeData,
+                                ByVal rcImage As Rectangle,
+                                ByVal g As Graphics,
+                                ByVal clr As Color,
+                                ByVal drawMode As eSketchDrawModeTypes,
+                                Optional ByVal iXMax As Integer = cCore.NULL_VALUE,
+                                Optional ByVal sYMax As Single = cCore.NULL_VALUE,
+                                Optional ByVal sXMark As Single = cCore.NULL_VALUE,
+                                Optional ByVal sYMark As Single = cCore.NULL_VALUE,
+                                Optional ByVal strXMarkLabel As String = "",
                                 Optional ByVal strYMarkLabel As String = "")
 
             If (shape Is Nothing) Then Return
@@ -128,26 +128,33 @@ Namespace Controls
             If (sYMark = cCore.NULL_VALUE) Then sYMark = If(TypeOf (shape) Is cMediationFunction, 0.5!, 1.0!)
             If (iXMax <= 0) Then iXMax = shape.nPoints
 
-            cShapeImage.DrawShapeDirect(uic, _
-                    shape.ShapeData, iXMax, shape.IsSeasonal, _
-                    rcImage, g, clr, _
-                    drawMode, _
-                    sYMax, _
-                    sXMark, sYMark, strXMarkLabel, strYMarkLabel)
+            Dim bDrawZero As Boolean = False
+
+            If (TypeOf shape Is cTimeSeries) Then
+                bDrawZero = DirectCast(shape, cTimeSeries).SupportsNull
+            End If
+
+            cShapeImage.DrawShapeDirect(uic,
+                    shape.ShapeData, iXMax, shape.IsSeasonal,
+                    rcImage, g, clr,
+                    drawMode,
+                    sYMax,
+                    sXMark, sYMark, strXMarkLabel, strYMarkLabel, bDrawZero)
 
         End Sub
 
-        Public Shared Sub DrawShapeDirect(ByVal uic As cUIContext, _
-                                ByVal asData As Single(), ByVal nPoints As Integer, ByVal bIsSeasonal As Boolean, _
-                                ByVal rcImage As Rectangle, _
-                                ByVal g As Graphics, _
-                                ByVal clr As Color, _
-                                ByVal drawMode As eSketchDrawModeTypes, _
-                                ByVal sYMax As Single, _
-                                ByVal sXMark As Single, _
-                                ByVal sYMark As Single, _
-                                Optional ByVal strXMarkLabel As String = "", _
-                                Optional ByVal strYMarkLabel As String = "")
+        Public Shared Sub DrawShapeDirect(ByVal uic As cUIContext,
+                                          ByVal asData As Single(), ByVal nPoints As Integer, ByVal bIsSeasonal As Boolean,
+                                          ByVal rcImage As Rectangle,
+                                          ByVal g As Graphics,
+                                          ByVal clr As Color,
+                                          ByVal drawMode As eSketchDrawModeTypes,
+                                          ByVal sYMax As Single,
+                                          ByVal sXMark As Single,
+                                          ByVal sYMark As Single,
+                                          Optional ByVal strXMarkLabel As String = "",
+                                          Optional ByVal strYMarkLabel As String = "",
+                                          Optional bDrawZero As Boolean = False)
 
             Dim sg As cStyleGuide = uic.StyleGuide
             Dim brShape As New SolidBrush(clr)
@@ -208,7 +215,7 @@ Namespace Controls
 
                     If bIsSeasonal Then
                         For i As Integer = 1 To 12
-                            If asData(i) > 0.0! Then
+                            If If(bDrawZero, asData(i) > 0.0!, asData(i) <> cCore.NULL_VALUE) Then
                                 pt1 = cShapeImage.ToImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
                                 g.FillEllipse(brShape,
                                         CSng(pt1.X - cDOT_SIZE / 2), CSng(pt1.Y - cDOT_SIZE / 2),
@@ -217,7 +224,7 @@ Namespace Controls
                         Next
                     Else
                         For i As Integer = 1 To nPoints
-                            If asData(i) > 0.0! Then
+                            If If(bDrawZero, asData(i) >= 0, asData(i) > 0.0!) Then
                                 pt2 = pt1
                                 pt1 = cShapeImage.ToImagePoint(New PointF(i - 1.0!, asData(i)), rcImage, nPoints, sYMax)
                                 iNumPoints += 1
@@ -247,7 +254,7 @@ Namespace Controls
                     End If
 
                     For i As Integer = 1 To nPoints
-                        If asData(i) > 0.0! Then
+                        If If(bDrawZero, asData(i) >= 0, asData(i) > 0.0!) Then
                             pt = cShapeImage.ToImagePoint(New PointF(i - 0.5!, asData(i)), rcImage, nPoints, sYMax)
 
                             Select Case drawMode

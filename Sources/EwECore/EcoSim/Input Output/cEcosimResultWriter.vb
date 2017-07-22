@@ -62,6 +62,10 @@ Namespace Ecosim
             CatchFleetGroup
             MortFleetGroup
             ValueFleetGroup
+            DiscardFleetGroup
+            DiscardMortalityFleetGroup
+            DiscardSurvivalFleetGroup
+            Landings
         End Enum
 
 #End Region ' Private vars
@@ -356,7 +360,10 @@ Namespace Ecosim
 
                 Case eResultTypes.CatchFleetGroup,
                      eResultTypes.MortFleetGroup,
-                     eResultTypes.ValueFleetGroup
+                     eResultTypes.ValueFleetGroup,
+                     eResultTypes.DiscardMortalityFleetGroup,
+                     eResultTypes.DiscardSurvivalFleetGroup,
+                     eResultTypes.Landings
 
                     Dim data(,,) As Single = Nothing
 
@@ -367,7 +374,16 @@ Namespace Ecosim
                             data = Me.m_core.m_EcoSimData.ResultsSumFMortByGroupGear
                         Case eResultTypes.ValueFleetGroup
                             data = Me.m_core.m_EcoSimData.ResultsSumValueByGroupGear
+                        Case eResultTypes.DiscardFleetGroup
+                            data = Me.m_core.m_EcoSimData.ResultsTimeDiscardsGroupGear
+                        Case eResultTypes.DiscardMortalityFleetGroup
+                            data = Me.m_core.m_EcoSimData.ResultsTimeDiscardsMortGroupGear
+                        Case eResultTypes.DiscardSurvivalFleetGroup
+                            data = Me.m_core.m_EcoSimData.ResultsTimeDiscardsSurvivedGroupGear
+                        Case eResultTypes.Landings
+                            data = Me.m_core.m_EcoSimData.ResultsTimeLandingsGroupGear
                     End Select
+
                     strDataDetails = "Data," & resulttype.ToString
                     bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype),
                                                  bSaveAnnual, data,

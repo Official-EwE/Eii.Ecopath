@@ -63,11 +63,11 @@ Public Class cProducerUnitDefault
     End Property
 
     <Browsable(False)> _
-    Public Overrides Property Fleet() As EwECore.cFleetInput
+    Public Overrides Property Fleet() As EwECore.cEcopathFleetInput
         Get
             Return Nothing
         End Get
-        Friend Set(ByVal value As EwECore.cFleetInput)
+        Friend Set(ByVal value As EwECore.cEcopathFleetInput)
         End Set
     End Property
 

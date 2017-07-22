@@ -58,7 +58,7 @@ Namespace Ecopath.Input
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
             For iFleet As Integer = 1 To Me.Core.nFleets
-                src = Core.FleetInputs(iFleet)
+                src = Core.EcopathFleetInputs(iFleet)
                 Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager, src, eVarNameFlags.Name)
             Next
 
@@ -72,7 +72,7 @@ Namespace Ecopath.Input
             Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
             Dim group As cCoreGroupBase = Nothing
             Dim sg As cStanzaGroup = Nothing
-            Dim fleet As cFleetInput = Nothing
+            Dim fleet As cEcopathFleetInput = Nothing
             Dim iRow As Integer = 0
             Dim iStanzaPrev As Integer = -1
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
@@ -107,7 +107,7 @@ Namespace Ecopath.Input
 
                 ' Fleet cells
                 For iFleet As Integer = 1 To Me.Core.nFleets
-                    fleet = Core.FleetInputs(iFleet)
+                    fleet = Core.EcopathFleetInputs(iFleet)
                     Me(iRow, 1 + iFleet) = New PropertyCell(Me.PropertyManager, fleet, eVarNameFlags.DiscardMortality, group)
                 Next
             Next

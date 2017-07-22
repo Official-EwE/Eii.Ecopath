@@ -181,15 +181,26 @@ Public Class cEcospaceModelParameters
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
+            val = New cValue(1, eVarNameFlags.EcospaceIsEcosimBiomassForcingLoaded, eStatusFlags.Null, eValueTypes.Bool)
+            val.Stored = False
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
             val = New cValue(1, eVarNameFlags.EcospaceUseEcosimBiomassForcing, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
-            val = New cValue(1, eVarNameFlags.EcospaceIsEcosimBioForcingLoaded, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(1, eVarNameFlags.EcospaceIsEcosimDiscardForcingLoaded, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
+
+            val = New cValue(1, eVarNameFlags.EcospaceUseEcosimDiscardForcing, eStatusFlags.Null, eValueTypes.Bool)
+            val.Stored = False
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
 
             'set status flags to default values
             ResetStatusFlags()
@@ -231,15 +242,12 @@ Public Class cEcospaceModelParameters
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property NumberOfTimeStepsPerYear() As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.NumTimeStepsPerYear))
         End Get
-
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.NumTimeStepsPerYear, value)
         End Set
-
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -248,15 +256,12 @@ Public Class cEcospaceModelParameters
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property nRegions() As Integer
-
         Get
             Return CInt(GetVariable(eVarNameFlags.EcospaceRegionNumber))
         End Get
-
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.EcospaceRegionNumber, value)
         End Set
-
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -266,15 +271,12 @@ Public Class cEcospaceModelParameters
     ''' <remarks>True = Habitat adjusted, False = Ecopath base</remarks>
     ''' -----------------------------------------------------------------------
     Public Property AdjustSpace() As Boolean
-
         Get
             Return CBool(GetVariable(eVarNameFlags.AdjustSpace))
         End Get
-
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.AdjustSpace, value)
         End Set
-
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -283,15 +285,12 @@ Public Class cEcospaceModelParameters
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property PredictEffort() As Boolean
-
         Get
             Return CBool(GetVariable(eVarNameFlags.PredictEffort))
         End Get
-
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.PredictEffort, value)
         End Set
-
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -301,15 +300,12 @@ Public Class cEcospaceModelParameters
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property StartSummaryTime() As Integer
-
         Get
             Return CInt(GetVariable(eVarNameFlags.EcospaceSummaryTimeStart))
         End Get
-
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.EcospaceSummaryTimeStart, value)
         End Set
-
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -318,15 +314,12 @@ Public Class cEcospaceModelParameters
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property EndSummaryTime() As Integer
-
         Get
             Return CInt(GetVariable(eVarNameFlags.EcospaceSummaryTimeEnd))
         End Get
-
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.EcospaceSummaryTimeEnd, value)
         End Set
-
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -335,29 +328,22 @@ Public Class cEcospaceModelParameters
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property NumberSummaryTimeSteps() As Integer
-
         Get
             Return CInt(GetVariable(eVarNameFlags.EcospaceNumberSummaryTimeSteps))
         End Get
-
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.EcospaceNumberSummaryTimeSteps, value)
         End Set
-
     End Property
 
     Public Property nGridSolverThreads() As Integer
-
         Get
             Return CInt(GetVariable(eVarNameFlags.nGridSolverThreads))
         End Get
-
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.nGridSolverThreads, value)
         End Set
-
     End Property
-
 
     ''' <summary>
     ''' Number of Effort distrubtion threads
@@ -366,30 +352,22 @@ Public Class cEcospaceModelParameters
     ''' <returns></returns>
     ''' <remarks>Not used by the Scientific Interface provided here so it can be set via code.</remarks>
     Public Property nEffortDistThreads() As Integer
-
         Get
             Return CInt(GetVariable(eVarNameFlags.nEffortDistThreads))
         End Get
-
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.nEffortDistThreads, value)
         End Set
-
     End Property
 
-
     Public Property nSpaceThreads() As Integer
-
         Get
             Return CInt(GetVariable(eVarNameFlags.nSpaceThreads))
         End Get
-
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.nSpaceThreads, value)
         End Set
-
     End Property
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -397,17 +375,13 @@ Public Class cEcospaceModelParameters
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property UseIBM() As Boolean
-
         Get
             Return CBool(GetVariable(eVarNameFlags.UseIBM))
         End Get
-
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.UseIBM, value)
         End Set
-
     End Property
-
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -416,40 +390,30 @@ Public Class cEcospaceModelParameters
     ''' <remarks>True = Habitat adjusted, False = Ecopath base</remarks>
     ''' -----------------------------------------------------------------------
     Public Property UseNewMultiStanza() As Boolean
-
         Get
             Return CBool(GetVariable(eVarNameFlags.UseNewMultiStanza))
         End Get
-
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.UseNewMultiStanza, value)
         End Set
-
     End Property
 
-
     Public Property IFDPower() As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.IFDPower))
         End Get
-
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.IFDPower, value)
         End Set
-
     End Property
 
     Public Property TotalTime() As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.TotalTime))
         End Get
-
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.TotalTime, value)
         End Set
-
     End Property
 
     Public Property PacketsMultiplier() As Single
@@ -463,63 +427,48 @@ Public Class cEcospaceModelParameters
     End Property
 
     Public Property Tolerance() As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.Tolerance))
         End Get
-
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.Tolerance, value)
         End Set
-
     End Property
 
     Public Property SOR() As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.SOR))
         End Get
-
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.SOR, value)
         End Set
-
     End Property
 
     Public Property MaxNumberOfIterations() As Integer
-
         Get
             Return CInt(GetVariable(eVarNameFlags.MaxIterations))
         End Get
-
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.MaxIterations, value)
         End Set
-
     End Property
 
     Public Property ContaminantTracing() As Boolean
-
         Get
             Return CType(GetVariable(eVarNameFlags.ConSimOnEcoSpace), Boolean)
         End Get
-
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.ConSimOnEcoSpace, value)
         End Set
-
     End Property
 
     Public Property ContaminantTracingStatus() As eStatusFlags
-
         Get
             Return GetStatus(eVarNameFlags.ConSimOnEcoSpace)
         End Get
-
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.ConSimOnEcoSpace, value)
         End Set
-
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -528,27 +477,21 @@ Public Class cEcospaceModelParameters
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property UseExact() As Boolean
-
         Get
             Return CBool(GetVariable(eVarNameFlags.UseExact))
         End Get
-
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.UseExact, value)
         End Set
-
     End Property
 
     Public Property IBMMovePacketOnStanza() As Boolean
-
         Get
             Return CBool(GetVariable(eVarNameFlags.EcospaceIBMMovePacketOnStanza))
         End Get
-
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.EcospaceIBMMovePacketOnStanza, value)
         End Set
-
     End Property
 
     ' ''' -----------------------------------------------------------------------
@@ -574,15 +517,12 @@ Public Class cEcospaceModelParameters
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property UseAnnualOuput() As Boolean
-
         Get
             Return CBool(GetVariable(eVarNameFlags.EcospaceUseAnnualOutput))
         End Get
-
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.EcospaceUseAnnualOutput, value)
         End Set
-
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -594,77 +534,77 @@ Public Class cEcospaceModelParameters
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property UseCoreOutputDirectory() As Boolean
-
         Get
             Return CBool(GetVariable(eVarNameFlags.EcospaceUseCoreOutputDir))
         End Get
-
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.EcospaceUseCoreOutputDir, value)
         End Set
-
     End Property
 
     Public Property UseEffortDistThreshold() As Boolean
-
         Get
             Return CBool(GetVariable(eVarNameFlags.UseEffortDistThreshold))
         End Get
-
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.UseEffortDistThreshold, value)
         End Set
-
     End Property
 
     Public Property EffortDistThreshold() As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.EffortDistThreshold))
         End Get
-
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EffortDistThreshold, value)
         End Set
-
     End Property
 
     Public Property UseLocalMemory() As Boolean
-
         Get
             Return CBool(GetVariable(eVarNameFlags.EcospaceUseLocalMemory))
         End Get
-
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.EcospaceUseLocalMemory, value)
         End Set
-
     End Property
 
-
     Public Property UseEcosimBiomassForcing() As Boolean
-
         Get
             Return CBool(GetVariable(eVarNameFlags.EcospaceUseEcosimBiomassForcing))
         End Get
-
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.EcospaceUseEcosimBiomassForcing, value)
         End Set
-
     End Property
 
     Public Property IsEcosimBiomassForcingLoaded() As Boolean
-
         Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceIsEcosimBioForcingLoaded))
+            Return CBool(GetVariable(eVarNameFlags.EcospaceIsEcosimBiomassForcingLoaded))
         End Get
-
         Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceIsEcosimBioForcingLoaded, value)
+            SetVariable(eVarNameFlags.EcospaceIsEcosimBiomassForcingLoaded, value)
         End Set
-
     End Property
+
+    Public Property UseEcosimDiscardForcing() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.EcospaceUseEcosimDiscardForcing))
+        End Get
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcospaceUseEcosimDiscardForcing, value)
+        End Set
+    End Property
+
+    Public Property IsEcosimDiscardForcingLoaded() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.EcospaceIsEcosimDiscardForcingLoaded))
+        End Get
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcospaceIsEcosimDiscardForcingLoaded, value)
+        End Set
+    End Property
+
     ''' <summary>
     ''' User defined output directory for Ecospace Area Average results
     ''' </summary>
@@ -675,17 +615,13 @@ Public Class cEcospaceModelParameters
     ''' This allows an external application, console app or plugin, to specify custom output directories for Ecospace.
     ''' </remarks>
     Public Property EcospaceAreaOutputDir() As String
-
         Get
             Return CStr(GetVariable(eVarNameFlags.EcospaceAreaOutputDir))
         End Get
-
         Set(ByVal value As String)
             SetVariable(eVarNameFlags.EcospaceAreaOutputDir, value)
         End Set
-
     End Property
-
 
     ''' <summary>
     ''' User defined output directory for Ecospace Map results
@@ -697,28 +633,21 @@ Public Class cEcospaceModelParameters
     ''' This allows an external application, console app or plugin, to specify custom output directories for Ecospace.
     ''' </remarks>
     Public Property EcospaceMapOutputDir() As String
-
         Get
             Return CStr(GetVariable(eVarNameFlags.EcospaceMapOutputDir))
         End Get
-
         Set(ByVal value As String)
             SetVariable(eVarNameFlags.EcospaceMapOutputDir, value)
         End Set
-
     End Property
 
-
     Public Property FirstOutputTimeStep() As Integer
-
         Get
             Return CInt(GetVariable(eVarNameFlags.EcospaceFirstOutputTimeStep))
         End Get
-
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.EcospaceFirstOutputTimeStep, value)
         End Set
-
     End Property
 
 #End Region ' Variables by dot (.) operator

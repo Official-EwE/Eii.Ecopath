@@ -35,17 +35,9 @@ Partial Class frmNavigationPanel
         '
         'm_ilTreeIcons
         '
-        Me.m_ilTreeIcons.ImageStream = CType(resources.GetObject("m_ilTreeIcons.ImageStream"), System.Windows.Forms.ImageListStreamer)
+        Me.m_ilTreeIcons.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+        resources.ApplyResources(Me.m_ilTreeIcons, "m_ilTreeIcons")
         Me.m_ilTreeIcons.TransparentColor = System.Drawing.Color.Transparent
-        Me.m_ilTreeIcons.Images.SetKeyName(0, "application_get.png")
-        Me.m_ilTreeIcons.Images.SetKeyName(1, "application_put.png")
-        Me.m_ilTreeIcons.Images.SetKeyName(2, "run.bmp")
-        Me.m_ilTreeIcons.Images.SetKeyName(3, "tools.bmp")
-        Me.m_ilTreeIcons.Images.SetKeyName(4, "output_extend.png")
-        Me.m_ilTreeIcons.Images.SetKeyName(5, "input_extend.png")
-        Me.m_ilTreeIcons.Images.SetKeyName(6, "Ecospace_32x32.png")
-        Me.m_ilTreeIcons.Images.SetKeyName(7, "Ecosim_32x32.png")
-        Me.m_ilTreeIcons.Images.SetKeyName(8, "Ecopath_32x32.png")
         '
         'm_tvNavigation
         '
@@ -55,7 +47,7 @@ Partial Class frmNavigationPanel
         Me.m_tvNavigation.HotTracking = True
         Me.m_tvNavigation.ImageList = Me.m_ilTreeIcons
         Me.m_tvNavigation.Name = "m_tvNavigation"
-        Me.m_tvNavigation.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvNavigation.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes3"), System.Windows.Forms.TreeNode)})
+        Me.m_tvNavigation.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvNavigation.Nodes"), System.Windows.Forms.TreeNode)})
         Me.m_tvNavigation.ShowLines = False
         '
         'frmNavigationPanel

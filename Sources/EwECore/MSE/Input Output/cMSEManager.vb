@@ -69,7 +69,7 @@ Namespace MSE
         Private m_bConnected As Boolean
 
         Private m_lstGroupInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEGroupInput, 1)
-        Private m_lstFleetInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEFleetInput, 1)
+        Private m_lstEcopathFleetInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEFleetInput, 1)
         Private m_lstGroupOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEGroupOutputs, 1)
         Private m_lstFleetOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEFleetOutputs, 1)
 
@@ -125,9 +125,9 @@ Namespace MSE
 
         End Sub
 
-        Public ReadOnly Property FleetInputs(ByVal iFleet As Integer) As cMSEFleetInput
+        Public ReadOnly Property EcopathFleetInputs(ByVal iFleet As Integer) As cMSEFleetInput
             Get
-                Return DirectCast(Me.m_lstFleetInputs(iFleet), cMSEFleetInput)
+                Return DirectCast(Me.m_lstEcopathFleetInputs(iFleet), cMSEFleetInput)
             End Get
         End Property
 
@@ -161,15 +161,15 @@ Namespace MSE
             End Get
         End Property
 
-        Friend ReadOnly Property FleetInputs() As cCoreInputOutputList(Of cCoreInputOutputBase)
+        Friend ReadOnly Property EcopathFleetInputs() As cCoreInputOutputList(Of cCoreInputOutputBase)
             Get
-                Return Me.m_lstFleetInputs
+                Return Me.m_lstEcopathFleetInputs
             End Get
         End Property
 
         Public ReadOnly Property NumFleets() As Integer
             Get
-                Return Me.m_lstFleetInputs.Count
+                Return Me.m_lstEcopathFleetInputs.Count
             End Get
         End Property
 
@@ -411,6 +411,21 @@ Namespace MSE
         Public Function ValidateRun() As Boolean
             Dim bOK As Boolean = True
 
+            For iTimeSeries As Integer = 1 To m_core.nTimeSeries
+                If m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardProportion Or m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardMortality Then
+                    If m_core.EcosimTimeSeries(iTimeSeries).Enabled Then
+                        Dim sTypeTimeSeries2Check As String = m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType.ToString
+                        Dim fbMess As New cFeedbackMessage(String.Format(My.Resources.CoreMessages.MSE_DISCARD_TIMESERIES_WARNING, sTypeTimeSeries2Check),
+                                                   eCoreComponentType.MSE, eMessageType.DataValidation,
+                                                   eMessageImportance.Warning, eMessageReplyStyle.YES_NO)
+                        Me.m_core.Messages.SendMessage(fbMess)
+                        If fbMess.Reply = eMessageReply.NO Then
+                            Return False
+                        End If
+                    End If
+                End If
+            Next
+
             If Me.ModelParameters.UseLPSolution Then
                 'When running the LP solution
                 'there is no need validate the Fleet Controls
@@ -426,7 +441,7 @@ Namespace MSE
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 Dim bNoQuotaSet As Boolean = True
                 For iFlt As Integer = 1 To Me.m_core.nFleets
-                    If Me.FleetInputs(iFlt).QuotaType <> eQuotaTypes.NoControls Then
+                    If Me.EcopathFleetInputs(iFlt).QuotaType <> eQuotaTypes.NoControls Then
                         bNoQuotaSet = False
                         Exit For
                     End If
@@ -463,8 +478,8 @@ Namespace MSE
 
             '        'check the Quota options for this group
             '        For iFlt As Integer = 1 To Me.m_core.nFleets
-            '            If Me.m_core.FleetInputs(iFlt).Landings(igrp) > 0 Then
-            '                If Me.FleetInputs(iFlt).QuotaType <> eQuotaTypes.NotUsed Then
+            '            If Me.m_core.EcopathFleetInputs(iFlt).Landings(igrp) > 0 Then
+            '                If Me.EcopathFleetInputs(iFlt).QuotaType <> eQuotaTypes.NotUsed Then
             '                    'this group has both Fixed Escapement and Quota option set
             '                    'Only Fixed Escapement will be used
 
@@ -593,12 +608,12 @@ Namespace MSE
                 Me.m_lstGroupInputs.Add(New cMSEGroupInput(m_core, m_core.m_EcoPathData.GroupDBID(igrp)))
             Next
 
-            Me.m_lstFleetInputs.Clear()
+            Me.m_lstEcopathFleetInputs.Clear()
             Me.m_lstFleetOutputs.Clear()
             Me.m_lstEffortStats.Clear()
             Me.m_lstFleetStats.Clear()
             For iflt As Integer = 1 To m_core.nFleets
-                Me.m_lstFleetInputs.Add(New cMSEFleetInput(m_core, m_core.m_EcoPathData.FleetDBID(iflt)))
+                Me.m_lstEcopathFleetInputs.Add(New cMSEFleetInput(m_core, m_core.m_EcoPathData.FleetDBID(iflt)))
                 Me.m_lstFleetOutputs.Add(New cMSEFleetOutput(Me.m_core, Me.m_MSEdata, Me.m_core.m_EcoPathData.FleetDBID(iflt), iflt))
                 Me.m_lstEffortStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.EffortStats, eDataTypes.MSEEffortStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.FleetDBID(iflt), iflt))
                 Me.m_lstFleetStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchFleetStats, eDataTypes.MSECatchByFleetStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.FleetDBID(iflt), iflt))
@@ -743,7 +758,7 @@ Namespace MSE
 
 
                 'fleets
-                For Each mseFlt As cMSEFleetInput In Me.m_lstFleetInputs
+                For Each mseFlt As cMSEFleetInput In Me.m_lstEcopathFleetInputs
                     mseFlt.AllowValidation = False
                     mseFlt.Resize()
                     'convert the Database ID into a fleet index
@@ -849,7 +864,7 @@ Namespace MSE
                 Me.m_lstBioEstStats.Clear()
                 Me.m_lstBiomassStats.Clear()
                 Me.m_lstEffortStats.Clear()
-                Me.m_lstFleetInputs.Clear()
+                Me.m_lstEcopathFleetInputs.Clear()
                 Me.m_lstFleetOutputs.Clear()
                 Me.m_lstFleetStats.Clear()
                 Me.m_lstGroupCatchStats.Clear()
@@ -931,7 +946,7 @@ Namespace MSE
 
                     Case eDataTypes.MSEFleetInput
 
-                        For Each mseFlt As cMSEFleetInput In Me.m_lstFleetInputs
+                        For Each mseFlt As cMSEFleetInput In Me.m_lstEcopathFleetInputs
 
                             Dim iFleet As Integer = mseFlt.Index
 

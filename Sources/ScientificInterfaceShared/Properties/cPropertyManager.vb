@@ -330,7 +330,7 @@ Namespace Properties
                         Case eCoreCounterTypes.nGroups, eCoreCounterTypes.nDetritus, eCoreCounterTypes.nLivingGroups
                             sourceSec = Me.m_core.EcoPathGroupInputs(vs.iArrayIndex)
                         Case eCoreCounterTypes.nFleets
-                            sourceSec = Me.m_core.FleetInputs(vs.iArrayIndex)
+                            sourceSec = Me.m_core.EcopathFleetInputs(vs.iArrayIndex)
                         Case eCoreCounterTypes.nHabitats
                             sourceSec = Me.m_core.EcospaceHabitats(vs.iArrayIndex)
                             'Case eCoreCounterTypes.nRegions

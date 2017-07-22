@@ -165,4 +165,10 @@
   <data name="GRID_TIMESERIES" xml:space="preserve">
     <value>Time series grid</value>
   </data>
+  <data name="HEADER_INTERVAL" xml:space="preserve">
+    <value>Interval</value>
+  </data>
+  <data name="HEADER_TARGET_SECOND" xml:space="preserve">
+    <value>2nd target</value>
+  </data>
 </root>

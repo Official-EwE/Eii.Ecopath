@@ -142,7 +142,6 @@ Partial Class ucDefaults
         Me.m_lbProducer.Selected = False
         Me.m_lbProducer.Size = New System.Drawing.Size(100, 34)
         Me.m_lbProducer.TabIndex = 0
-        Me.m_lbProducer.UIContext = Nothing
         '
         'm_lbProcessing
         '
@@ -155,7 +154,6 @@ Partial Class ucDefaults
         Me.m_lbProcessing.Selected = False
         Me.m_lbProcessing.Size = New System.Drawing.Size(100, 34)
         Me.m_lbProcessing.TabIndex = 0
-        Me.m_lbProcessing.UIContext = Nothing
         '
         'm_lbWholeseller
         '
@@ -168,7 +166,6 @@ Partial Class ucDefaults
         Me.m_lbWholeseller.Selected = False
         Me.m_lbWholeseller.Size = New System.Drawing.Size(100, 34)
         Me.m_lbWholeseller.TabIndex = 0
-        Me.m_lbWholeseller.UIContext = Nothing
         '
         'm_lbRetailer
         '
@@ -181,7 +178,6 @@ Partial Class ucDefaults
         Me.m_lbRetailer.Selected = False
         Me.m_lbRetailer.Size = New System.Drawing.Size(100, 34)
         Me.m_lbRetailer.TabIndex = 0
-        Me.m_lbRetailer.UIContext = Nothing
         '
         'm_lbConsumer
         '
@@ -194,7 +190,6 @@ Partial Class ucDefaults
         Me.m_lbConsumer.Selected = False
         Me.m_lbConsumer.Size = New System.Drawing.Size(100, 34)
         Me.m_lbConsumer.TabIndex = 0
-        Me.m_lbConsumer.UIContext = Nothing
         '
         'm_lnkProd2Proc
         '
@@ -205,7 +200,6 @@ Partial Class ucDefaults
         Me.m_lnkProd2Proc.Selected = False
         Me.m_lnkProd2Proc.Size = New System.Drawing.Size(94, 28)
         Me.m_lnkProd2Proc.TabIndex = 1
-        Me.m_lnkProd2Proc.UIContext = Nothing
         '
         'm_lnkProc2Dist
         '
@@ -216,7 +210,6 @@ Partial Class ucDefaults
         Me.m_lnkProc2Dist.Selected = False
         Me.m_lnkProc2Dist.Size = New System.Drawing.Size(94, 28)
         Me.m_lnkProc2Dist.TabIndex = 1
-        Me.m_lnkProc2Dist.UIContext = Nothing
         '
         'm_lnkWhole2Ret
         '
@@ -227,7 +220,6 @@ Partial Class ucDefaults
         Me.m_lnkWhole2Ret.Selected = False
         Me.m_lnkWhole2Ret.Size = New System.Drawing.Size(94, 28)
         Me.m_lnkWhole2Ret.TabIndex = 1
-        Me.m_lnkWhole2Ret.UIContext = Nothing
         '
         'm_lnkRet2Cons
         '
@@ -238,7 +230,6 @@ Partial Class ucDefaults
         Me.m_lnkRet2Cons.Selected = False
         Me.m_lnkRet2Cons.Size = New System.Drawing.Size(94, 28)
         Me.m_lnkRet2Cons.TabIndex = 1
-        Me.m_lnkRet2Cons.UIContext = Nothing
         '
         'm_lbDistribution
         '
@@ -251,7 +242,6 @@ Partial Class ucDefaults
         Me.m_lbDistribution.Selected = False
         Me.m_lbDistribution.Size = New System.Drawing.Size(100, 34)
         Me.m_lbDistribution.TabIndex = 0
-        Me.m_lbDistribution.UIContext = Nothing
         '
         'm_lnkDist2Whole
         '
@@ -262,7 +252,6 @@ Partial Class ucDefaults
         Me.m_lnkDist2Whole.Selected = False
         Me.m_lnkDist2Whole.Size = New System.Drawing.Size(94, 28)
         Me.m_lnkDist2Whole.TabIndex = 1
-        Me.m_lnkDist2Whole.UIContext = Nothing
         '
         'm_cbDefault
         '

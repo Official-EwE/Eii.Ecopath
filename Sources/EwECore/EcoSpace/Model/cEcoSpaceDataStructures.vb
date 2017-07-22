@@ -72,6 +72,7 @@ Public Class cEcospaceDataStructures
     Public AdjustSpace As Boolean
     Public SpaceTime As Boolean
     Public IsFishRateSet As Boolean
+
     ''' <summary>
     ''' Get/set whether Ecospace will use square cells, e.g. will bypass cell width corrections.
     ''' </summary>
@@ -236,7 +237,8 @@ Public Class cEcospaceDataStructures
     ''' <summary>Catch by Row, Col, Group.</summary>
     Public CatchMap(,,) As Single
 
-    ''' <summary>Discards by Row, Col, Group.</summary>
+    ' DISCARDLESS: explicitly state what this map contains. All discards? Dead discards?
+    ''' <summary>Discards (all? mortality?) by Row, Col, Group.</summary>
     ''' <remarks>This is not exposed by the interface at this time. It was included for the Biodiversity plugin and can only be accessed via code.</remarks>
     Public DiscardsMap(,,) As Single
 
@@ -769,8 +771,10 @@ Public Class cEcospaceDataStructures
     ''' Is the Ecosim biomass time series forcing enabled for this group
     ''' </summary>
     Public IsEcosimBioForcingGroup() As Boolean
+    Public UseEcosimBiomassForcing As Boolean = False
 
-    Public UseEcosimForcing As Boolean
+    Public IsEcosimDiscardForcingGroup() As Boolean
+    Public UseEcosimDiscardForcing As Boolean = False
 
 
 #End Region
@@ -869,8 +873,6 @@ Public Class cEcospaceDataStructures
 
     End Property
 
-
-
     ''' <summary>
     ''' Number of Ecospace time steps per year at the current <see cref="TimeStep">time step</see>
     ''' </summary>
@@ -884,11 +886,8 @@ Public Class cEcospaceDataStructures
     End Property
 
     ''' <summary>
-    ''' Return True if any group is Advected
+    ''' Returns whether any group is Advected
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property isAdvectionActive As Boolean
         Get
             For igrp As Integer = 1 To Me.m_ngroups
@@ -898,12 +897,12 @@ Public Class cEcospaceDataStructures
         End Get
     End Property
 
-
+    ''' <summary>
+    ''' Returns whether any group is forced through biomass timeseries in Ecosim.
+    ''' </summary>
     Public ReadOnly Property isEcosimBiomassForcingLoaded As Boolean
         Get
             For igrp As Integer = 1 To Me.NGroups
-                'if IsEcosimBioForcingGroup() is true for any group
-                'then Ecosim biomass forcing is loaded! really...
                 If Me.IsEcosimBioForcingGroup(igrp) Then
                     Return True
                 End If
@@ -912,6 +911,19 @@ Public Class cEcospaceDataStructures
         End Get
     End Property
 
+    ''' <summary>
+    ''' Returns whether any group is forced through discards timeseries in Ecosim.
+    ''' </summary>
+    Public ReadOnly Property isEcosimDiscardForcingLoaded As Boolean
+        Get
+            For igrp As Integer = 1 To Me.NGroups
+                If Me.IsEcosimDiscardForcingGroup(igrp) Then
+                    Return True
+                End If
+            Next
+            Return False
+        End Get
+    End Property
 
 #End Region
 
@@ -928,7 +940,7 @@ Public Class cEcospaceDataStructures
         Me.InRow = 0
         Me.nvartot = 0
         Me.NoHabitats = 0
-        Me.UseEcosimForcing = False
+        Me.UseEcosimBiomassForcing = False
 
         Try
 
@@ -2019,12 +2031,12 @@ Public Class cEcospaceDataStructures
 
     Public Sub RedimGroups()
         Try
-            'called for NGroups Public property
             ReDim GroupDBID(m_ngroups)
             ReDim EcopathGroupDBID(m_ngroups)
             ReDim CapCalType(m_ngroups)
 
             ReDim IsEcosimBioForcingGroup(m_ngroups)
+            ReDim IsEcosimDiscardForcingGroup(m_ngroups)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".redimGroupDBID() Error: " & ex.Message)

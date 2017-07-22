@@ -23,6 +23,7 @@
 Option Strict On
 Imports System.ComponentModel
 Imports System.Text
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
@@ -335,6 +336,8 @@ Namespace Controls
                             clrFill = Me.m_data.ItemColor(iGroup)
                         Case eFDColorUsageTypes.Value
                             clrFill = Me.m_colorramp.GetColor(sValue, sValueMax)
+                        Case eFDColorUsageTypes.TrophicLevel
+                            clrFill = Me.m_colorramp.GetColor(Me.m_data.TrophicLevel(iGroup) - 1, Me.m_iNumTrophicLevels - 1)
                         Case Else
                             clrFill = Me.m_clrNode
                     End Select
@@ -416,13 +419,12 @@ Namespace Controls
         Friend Sub DrawLegend(ByVal g As Graphics, ByVal ptTopLeft As Point) _
             Implements IFlowDiagramRenderer.DrawLegend
 
-            ' ToDo: globalize this
-
             Dim tsShowLegend As TriState = Me.ShowLegend
             If (tsShowLegend = TriState.UseDefault) Then
                 Select Case Me.m_colorusagetype
                     Case eFDColorUsageTypes.Value,
-                         eFDColorUsageTypes.Flow
+                         eFDColorUsageTypes.Flow,
+                         eFDColorUsageTypes.TrophicLevel
                         tsShowLegend = TriState.True
                 End Select
             End If

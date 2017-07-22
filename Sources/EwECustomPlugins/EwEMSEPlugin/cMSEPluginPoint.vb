@@ -401,17 +401,17 @@ Public Class cMSEPluginPoint
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Resolve a name and index to a <see cref="cFleetInput"/> instance.
+    ''' Resolve a name and index to a <see cref="cEcopathFleetInput"/> instance.
     ''' </summary>
     ''' <param name="strName">The name to resolve.</param>
     ''' <param name="iIndex">The index to resolve.</param>
-    ''' <returns>A <see cref="cFleetInput"/> instance, or Nothing if
+    ''' <returns>A <see cref="cEcopathFleetInput"/> instance, or Nothing if
     ''' the index or name did not match any of the present fleets.</returns>
     ''' <remarks>Note that name comparison is not case sensitive.</remarks>
     ''' -----------------------------------------------------------------------
-    Private Function ResolveFleet(strName As String, iIndex As Integer) As cFleetInput
+    Private Function ResolveFleet(strName As String, iIndex As Integer) As cEcopathFleetInput
         If (iIndex < 1) Or (iIndex > Me.Core.nFleets) Then Return Nothing
-        Dim flt As cFleetInput = Me.Core.FleetInputs(iIndex)
+        Dim flt As cEcopathFleetInput = Me.Core.EcopathFleetInputs(iIndex)
         If String.Compare(flt.Name, strName, True) <> 0 Then
             Return Nothing
         End If

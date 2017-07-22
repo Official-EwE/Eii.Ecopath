@@ -544,7 +544,7 @@ Partial Friend NotInheritable Class Settings
     
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("{MyDocuments}\EwE output\")>  _
+     Global.System.Configuration.DefaultSettingValueAttribute("{MyDocuments}\EwE output\{ModelFile}")>  _
     Public Property OutputPathMask() As String
         Get
             Return CType(Me("OutputPathMask"),String)

@@ -63,6 +63,13 @@ Namespace Style
                 Case cEcosimResultWriter.eResultTypes.CatchFleetGroup : Return My.Resources.HEADER_CATCH_BREAKDOWN
                 Case cEcosimResultWriter.eResultTypes.MortFleetGroup : Return My.Resources.HEADER_FMORT_BREAKDOWN
                 Case cEcosimResultWriter.eResultTypes.ValueFleetGroup : Return My.Resources.HEADER_VALUE_BREAKDOWN
+                Case cEcosimResultWriter.eResultTypes.DiscardMortalityFleetGroup : Return My.Resources.HEADER_DISCARD_MORTALITY_BREAKDOWN
+                Case cEcosimResultWriter.eResultTypes.DiscardSurvivalFleetGroup : Return My.Resources.HEADER_DISCARD_SURVIVAL_BREAKDOWN
+                Case cEcosimResultWriter.eResultTypes.Landings : Return "Landings (group x fleet)"
+                Case cEcosimResultWriter.eResultTypes.DiscardFleetGroup : Return "Discards (group x fleet)"
+                Case Else
+                    Debug.Assert(False, "Result type not supported")
+                    Return DirectCast(value, cEcosimResultWriter.eResultTypes).ToString
             End Select
 
             Return ""

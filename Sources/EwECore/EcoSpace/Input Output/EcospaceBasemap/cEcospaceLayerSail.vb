@@ -72,7 +72,7 @@ Public Class cEcospaceLayerSail
         If (Me.Index = 0) Then
             Return My.Resources.CoreDefaults.CORE_DEFAULT_SAIL_ALL
         End If
-        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_SAILCOST, Me.Index, Me.m_core.FleetInputs(Me.Index).Name)
+        Return String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_SAILCOST, Me.Index, Me.m_core.EcopathFleetInputs(Me.Index).Name)
     End Function
 
 #End Region ' Overrides

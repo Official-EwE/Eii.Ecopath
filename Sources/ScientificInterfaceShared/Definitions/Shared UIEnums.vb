@@ -197,6 +197,7 @@ Namespace Definitions
         EwE
         Value
         Flow
+        TrophicLevel
     End Enum
 
     Public Enum eFDShowHiddenType As Integer

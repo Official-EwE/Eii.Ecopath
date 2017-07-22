@@ -107,7 +107,7 @@ Public Class gridMaxDecreaseEffort
         For i As Integer = 1 To Me.m_data.nFleets
             iRow = Me.AddRow()
 
-            Dim fleet As cFleetInput = Me.Core.FleetInputs(i)
+            Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
             Me(iRow, eColumnTypes.FleetIndex) = New EwERowHeaderCell(CStr(fleet.Index))
             Me(iRow, eColumnTypes.FleetName) = New EwERowHeaderCell(CStr(fleet.Name))
             Me(iRow, eColumnTypes.MaxChangeEffort) = Me.DataCell(Me.m_data.Value(i))

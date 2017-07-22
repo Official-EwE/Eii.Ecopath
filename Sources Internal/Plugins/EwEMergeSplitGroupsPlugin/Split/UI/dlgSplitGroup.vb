@@ -373,10 +373,6 @@ Public Class dlgSplitGroup
         End Set
     End Property
 
-    Private Function Taxa1(bSelectedOnly As Boolean) As cTaxon()
-
-    End Function
-
     Private Function Taxa(lb As ListBox, bSelectedOnly As Boolean) As cTaxon()
 
         Dim lTaxa As New List(Of cTaxon)

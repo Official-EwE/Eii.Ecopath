@@ -54,11 +54,11 @@ Public Class cProducerUnit
     Public Class cFleetConverter
         Inherits TypeConverter
 
-        Private Function FleetList() As List(Of cFleetInput)
-            Dim lFleets As New List(Of cFleetInput)
+        Private Function FleetList() As List(Of cEcopathFleetInput)
+            Dim lFleets As New List(Of cEcopathFleetInput)
             Dim core As cCore = cData.GetInstance().Core
             For iFleet As Integer = 1 To core.nFleets
-                lFleets.Add(core.FleetInputs(iFleet))
+                lFleets.Add(core.EcopathFleetInputs(iFleet))
             Next
             Return lFleets
         End Function
@@ -78,9 +78,9 @@ Public Class cProducerUnit
         ''' StandardValuesCollection filled with your standard values
         ''' </summary>
         Public Overrides Function GetStandardValues(ByVal context As ITypeDescriptorContext) As TypeConverter.StandardValuesCollection
-            Dim lFleets As List(Of cFleetInput) = Me.FleetList
+            Dim lFleets As List(Of cEcopathFleetInput) = Me.FleetList
             Dim lFleetNames As New List(Of String)
-            Dim fleet As cFleetInput = Nothing
+            Dim fleet As cEcopathFleetInput = Nothing
 
             lFleetNames.Add("<None>")
             For iFleet As Integer = 0 To lFleets.Count - 1
@@ -107,10 +107,10 @@ Public Class cProducerUnit
 
             If TypeOf value Is String Then
                 If Not String.IsNullOrEmpty(CStr(value)) Then
-                    Dim lFleets As List(Of cFleetInput) = Me.FleetList
+                    Dim lFleets As List(Of cEcopathFleetInput) = Me.FleetList
                     Dim iDBID As Integer = 0
 
-                    For Each fleet As cFleetInput In lFleets
+                    For Each fleet As cEcopathFleetInput In lFleets
                         If (fleet.Name = CStr(value)) Then
                             iDBID = CInt(fleet.GetVariable(eVarNameFlags.DBID))
                             Exit For
@@ -132,10 +132,10 @@ Public Class cProducerUnit
                 ByVal destinationType As System.Type) As Object
 
             If TypeOf value Is Integer Then
-                Dim lFleets As List(Of cFleetInput) = Me.FleetList
+                Dim lFleets As List(Of cEcopathFleetInput) = Me.FleetList
                 Dim strName As String = "<None>"
 
-                For Each fleet As cFleetInput In lFleets
+                For Each fleet As cEcopathFleetInput In lFleets
                     If (CInt(fleet.GetVariable(eVarNameFlags.DBID)) = CInt(value)) Then
                         strName = fleet.Name
                         Exit For
@@ -159,7 +159,7 @@ Public Class cProducerUnit
     ''' <summary>Ecopath fleet that this metier fishes with.</summary>
     Private m_iEcopathFleetID As Integer = 0
 
-    Private m_fleet As cFleetInput = Nothing
+    Private m_fleet As cEcopathFleetInput = Nothing
 
     Private m_sObserverCost As Single = 0.0!
     Private m_sObserverRate As Single = 1.0!
@@ -664,11 +664,11 @@ Public Class cProducerUnit
 #Region " Ecopath integration "
 
     <Browsable(False)> _
-    Public Overridable Property Fleet() As cFleetInput
+    Public Overridable Property Fleet() As cEcopathFleetInput
         Get
             Return Me.m_fleet
         End Get
-        Friend Set(ByVal value As cFleetInput)
+        Friend Set(ByVal value As cEcopathFleetInput)
             Me.m_fleet = value
             If (Fleet IsNot Nothing) Then
                 Me.EcopathFleetID = CInt(Fleet.GetVariable(eVarNameFlags.DBID))

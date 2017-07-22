@@ -277,8 +277,6 @@ Namespace Ecospace.Basemap.Layers
             resources.ApplyResources(Me.m_zoommap, "m_zoommap")
             Me.m_zoommap.Name = "m_zoommap"
             Me.m_zoommap.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
-            Me.m_zoommap.UIContext = Nothing
-            Me.m_zoommap.ZoomPercentage = 100.0!
             '
             'm_tlpBits
             '

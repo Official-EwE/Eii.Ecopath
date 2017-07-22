@@ -150,7 +150,7 @@ Public Class ucParameters
         ' Init check boxes
         Try
             For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
-                Me.m_clbFleets.Items.Add(Me.m_uic.Core.FleetInputs(iFleet))
+                Me.m_clbFleets.Items.Add(Me.m_uic.Core.EcopathFleetInputs(iFleet))
             Next iFleet
         Catch ex As Exception
             ' Aargh

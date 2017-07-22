@@ -122,7 +122,8 @@ Namespace Ecospace
             Me.m_lblXY = New System.Windows.Forms.Label()
             Me.m_btnTimeSeriesOutputFile = New System.Windows.Forms.Button()
             Me.m_btnLoadXYTimeSeries = New System.Windows.Forms.Button()
-            Me.m_cbUseEcosimForcing = New System.Windows.Forms.CheckBox()
+            Me.m_cbUseEcosimDiscardForcing = New System.Windows.Forms.CheckBox()
+            Me.m_cbUseEcosimBiomassForcing = New System.Windows.Forms.CheckBox()
             Me.m_hdrTimeSeries = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
@@ -640,7 +641,8 @@ Namespace Ecospace
             Me.m_plTimeSeries.Controls.Add(Me.m_lblXY)
             Me.m_plTimeSeries.Controls.Add(Me.m_btnTimeSeriesOutputFile)
             Me.m_plTimeSeries.Controls.Add(Me.m_btnLoadXYTimeSeries)
-            Me.m_plTimeSeries.Controls.Add(Me.m_cbUseEcosimForcing)
+            Me.m_plTimeSeries.Controls.Add(Me.m_cbUseEcosimDiscardForcing)
+            Me.m_plTimeSeries.Controls.Add(Me.m_cbUseEcosimBiomassForcing)
             Me.m_plTimeSeries.Controls.Add(Me.m_hdrTimeSeries)
             resources.ApplyResources(Me.m_plTimeSeries, "m_plTimeSeries")
             Me.m_plTimeSeries.Name = "m_plTimeSeries"
@@ -679,11 +681,17 @@ Namespace Ecospace
             Me.m_btnLoadXYTimeSeries.Name = "m_btnLoadXYTimeSeries"
             Me.m_btnLoadXYTimeSeries.UseVisualStyleBackColor = True
             '
-            'm_cbUseEcosimForcing
+            'm_cbUseEcosimDiscardForcing
             '
-            resources.ApplyResources(Me.m_cbUseEcosimForcing, "m_cbUseEcosimForcing")
-            Me.m_cbUseEcosimForcing.Name = "m_cbUseEcosimForcing"
-            Me.m_cbUseEcosimForcing.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbUseEcosimDiscardForcing, "m_cbUseEcosimDiscardForcing")
+            Me.m_cbUseEcosimDiscardForcing.Name = "m_cbUseEcosimDiscardForcing"
+            Me.m_cbUseEcosimDiscardForcing.UseVisualStyleBackColor = True
+            '
+            'm_cbUseEcosimBiomassForcing
+            '
+            resources.ApplyResources(Me.m_cbUseEcosimBiomassForcing, "m_cbUseEcosimBiomassForcing")
+            Me.m_cbUseEcosimBiomassForcing.Name = "m_cbUseEcosimBiomassForcing"
+            Me.m_cbUseEcosimBiomassForcing.UseVisualStyleBackColor = True
             '
             'm_hdrTimeSeries
             '
@@ -804,13 +812,14 @@ Namespace Ecospace
         Friend WithEvents m_cbAnnualOutput As System.Windows.Forms.CheckBox
         Friend WithEvents m_plTimeSeries As Panel
         Friend WithEvents m_hdrTimeSeries As cEwEHeaderLabel
-        Private WithEvents m_cbUseEcosimForcing As CheckBox
+        Private WithEvents m_cbUseEcosimBiomassForcing As CheckBox
         Private WithEvents m_btnLoadXYTimeSeries As Button
         Private WithEvents m_btnTimeSeriesOutputFile As Button
         Private WithEvents m_lblOutputResidualsFile As Label
         Private WithEvents m_tbxlOutputResidualsFile As TextBox
         Private WithEvents m_tbxXYTimeSeriesFile As TextBox
         Private WithEvents m_lblXY As Label
+        Private WithEvents m_cbUseEcosimDiscardForcing As CheckBox
     End Class
 
 End Namespace

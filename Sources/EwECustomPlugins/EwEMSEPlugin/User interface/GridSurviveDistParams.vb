@@ -141,7 +141,7 @@ Public Class gridSurviveDistParameters
             Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(data.Index))
             Me(iRow, eColumnTypes.FleetNumber) = New EwERowHeaderCell(CStr(data.FleetNo))
             ' To Mark: property cells automatically keep track of changing variable values
-            Me(iRow, eColumnTypes.FleetName) = New PropertyRowHeaderCell(pm, core.FleetInputs(data.FleetNo), eVarNameFlags.Name)
+            Me(iRow, eColumnTypes.FleetName) = New PropertyRowHeaderCell(pm, core.EcopathFleetInputs(data.FleetNo), eVarNameFlags.Name)
             Me(iRow, eColumnTypes.GroupNumber) = New EwERowHeaderCell(CStr(data.GroupNo))
             ' To Mark: property cells automatically keep track of changing variable values
             Me(iRow, eColumnTypes.GroupName) = New PropertyRowHeaderCell(pm, core.EcoPathGroupInputs(data.GroupNo), eVarNameFlags.Name)

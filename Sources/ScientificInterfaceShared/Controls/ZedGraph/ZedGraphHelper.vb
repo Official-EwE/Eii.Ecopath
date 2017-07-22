@@ -105,7 +105,7 @@ Namespace Controls
                     If (TypeOf src Is cEcoPathGroupInput) Then
                         Me.m_iGroup = src.Index
                         Me.m_lineType = eSketchDrawModeTypes.Line
-                    ElseIf (TypeOf src Is cFleetInput) Then
+                    ElseIf (TypeOf src Is cEcopathFleetInput) Then
                         Me.m_iFleet = src.Index
                         Me.m_lineType = eSketchDrawModeTypes.Line
                     End If
@@ -462,7 +462,7 @@ Namespace Controls
             AddHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
             AddHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
-            'AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
+            AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
 
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
@@ -494,7 +494,7 @@ Namespace Controls
             RemoveHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             RemoveHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
             RemoveHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
-            'RemoveHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
+            RemoveHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
             RemoveHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
@@ -1143,6 +1143,7 @@ Namespace Controls
                         Dim gp As GraphPane = Me.GetPane(i)
                         Me.UpdateLegends(gp)
                     Next
+                    Me.m_zgc.AxisChange()
                 End If
             End Set
         End Property
@@ -1160,7 +1161,7 @@ Namespace Controls
                 If (value <> Me.m_bShowAxisLabels) Then
                     Me.m_bShowAxisLabels = value
                     Me.UpdateAxisLabels()
-                    Me.m_zgc.Invalidate()
+                    Me.m_zgc.AxisChange()
                 End If
             End Set
         End Property
@@ -1178,7 +1179,7 @@ Namespace Controls
                                                    Optional ByVal strLabel As String = "",
                                                    Optional ByVal tag As Object = Nothing) As LineItem
             ' SAnity check
-            Debug.Assert(TypeOf (src) Is cCoreGroupBase Or TypeOf (src) Is cFleetInput Or
+            Debug.Assert(TypeOf (src) Is cCoreGroupBase Or TypeOf (src) Is cEcopathFleetInput Or
                          TypeOf (src) Is cGroupTimeSeries Or TypeOf (src) Is cFleetTimeSeries)
             Return Me.CreateLineItem(New cCurveInfo(src, Me.m_uic, strLabel, tag), ppl)
         End Function
@@ -2613,54 +2614,47 @@ Namespace Controls
 
 #Region " Context Menu "
 
-        ' ''' -----------------------------------------------------------------------
-        ' ''' <summary>
-        ' ''' Handler to extend the context menu for the wrapped ZedGraph.
-        ' ''' </summary>
-        ' ''' <param name="control"></param>
-        ' ''' <param name="menuStrip"></param>
-        ' ''' <param name="mousePt"></param>
-        ' ''' <param name="objState"></param>
-        ' ''' -----------------------------------------------------------------------
-        'Protected Sub OnBuildContextMenu(ByVal control As ZedGraphControl, _
-        '                                 ByVal menuStrip As ContextMenuStrip, _
-        '                                 ByVal mousePt As Point, _
-        '                                 ByVal objState As ZedGraphControl.ContextMenuObjectState)
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Handler to extend the context menu for the wrapped ZedGraph.
+        ''' </summary>
+        ''' <param name="control"></param>
+        ''' <param name="menuStrip"></param>
+        ''' <param name="mousePt"></param>
+        ''' <param name="objState"></param>
+        ''' -----------------------------------------------------------------------
+        Protected Sub OnBuildContextMenu(ByVal control As ZedGraphControl,
+                                         ByVal menuStrip As ContextMenuStrip,
+                                         ByVal mousePt As Point,
+                                         ByVal objState As ZedGraphControl.ContextMenuObjectState)
 
-        '    Dim item As ToolStripMenuItem = Nothing
+            Dim item As ToolStripMenuItem = Nothing
 
-        '    ' Remove 'Set_to_default' item
-        '    ' (After http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu)
-        '    For Each tsmi As ToolStripMenuItem In menuStrip.Items
-        '        If String.Compare(CStr(tsmi.Tag), "set_default", True) = 0 Then
-        '            menuStrip.Items.Remove(tsmi)
-        '            Exit For
-        '        End If
-        '    Next
+            '' Remove 'Set_to_default' item
+            '' (After http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu)
+            'For Each tsmi As ToolStripMenuItem In menuStrip.Items
+            '    If String.Compare(CStr(tsmi.Tag), "set_default", True) = 0 Then
+            '        menuStrip.Items.Remove(tsmi)
+            '        Exit For
+            '    End If
+            'Next
 
-        '    item = New ToolStripMenuItem(My.Resources.MENU_EXTRACT_TO_CSV, My.Resources.ExportXMLHS, AddressOf OnExtractToCSV)
-        '    item.ShortcutKeys = Keys.Control Or Keys.X
-        '    item.ShowShortcutKeys = True
-        '    menuStrip.Items.Add(item)
+            item = New ToolStripMenuItem(My.Resources.GENERIC_SHOW_LEGEND, My.Resources.LegendHS, AddressOf OnShowHideLegend)
+            item.ShortcutKeys = Keys.Control Or Keys.L
+            item.ShowShortcutKeys = True
+            item.Checked = Me.IsLegendVisible
+            menuStrip.Items.Add(item)
 
-        '    item = New ToolStripMenuItem(My.Resources.MENU_EXTRACT_DATA_TO_CLIPBOARD, My.Resources.CopyHS, AddressOf OnExtractToClipboard)
-        '    item.ShortcutKeys = Keys.Control Or Keys.C
-        '    item.ShowShortcutKeys = True
-        '    menuStrip.Items.Add(item)
+            item = New ToolStripMenuItem(My.Resources.GENERIC_SHOW_LABELS, Nothing, AddressOf OnShowHideAxisLabels)
+            item.ShowShortcutKeys = True
+            item.Checked = Me.IsAxisLabelsVisible
+            menuStrip.Items.Add(item)
 
-        '    item = New ToolStripMenuItem(My.Resources.MENU_SHOW_LEGEND, My.Resources.LegendHS, AddressOf OnShowHideLegend)
-        '    item.ShortcutKeys = Keys.Control Or Keys.L
-        '    item.ShowShortcutKeys = True
-        '    item.Checked = Me.IsLegendVisible
-        '    menuStrip.Items.Add(item)
+            item = New ToolStripMenuItem(My.Resources.GENERIC_SAVE_TO_CSV, My.Resources.ExportXMLHS, AddressOf OnExtractToCSV)
+            item.ShowShortcutKeys = True
+            menuStrip.Items.Add(item)
 
-        '    item = New ToolStripMenuItem(My.Resources.MENU_SHOW_AXISLABELS, Nothing, AddressOf OnShowHideAxisLabels)
-        '    item.ShortcutKeys = Keys.Control Or Keys.A
-        '    item.ShowShortcutKeys = True
-        '    item.Checked = Me.IsAxisLabelsVisible
-        '    menuStrip.Items.Add(item)
-
-        'End Sub
+        End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -2802,12 +2796,10 @@ Namespace Controls
 
                     Case eHoverCommands.ShowLegend
                         Me.IsLegendVisible = Not Me.IsLegendVisible
-                        Me.m_zgc.AxisChange()
                         Exit For
 
                     Case eHoverCommands.ShowLabels
                         Me.IsAxisLabelsVisible = Not IsAxisLabelsVisible
-                        Me.m_zgc.AxisChange()
                         Exit For
 
                 End Select

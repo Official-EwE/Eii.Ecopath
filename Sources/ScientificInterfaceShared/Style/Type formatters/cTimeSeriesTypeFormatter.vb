@@ -52,13 +52,18 @@ Namespace Style
                 Case eTimeSeriesType.Catches : strType = My.Resources.TS_TYPE_CATCHESABS
                 Case eTimeSeriesType.CatchesRel : strType = My.Resources.TS_TYPE_CATCHESREL
                 Case eTimeSeriesType.ConstantTotalMortality : strType = My.Resources.TS_TYPE_CONSTTOTALMORT
-                Case eTimeSeriesType.EcotracerConcAbs : strType = My.Resources.TS_TYPE_TRACER_CONCABS
-                Case eTimeSeriesType.EcotracerConcRel : strType = My.Resources.TS_TYPE_TRACER_CONCREL
+                'Case eTimeSeriesType.EcotracerConcAbs : strType = My.Resources.TS_TYPE_TRACER_CONCABS
+                'Case eTimeSeriesType.EcotracerConcRel : strType = My.Resources.TS_TYPE_TRACER_CONCREL
                 Case eTimeSeriesType.FishingEffort : strType = My.Resources.TS_TYPE_FISHINGEFFORT
                 Case eTimeSeriesType.FishingMortality : strType = My.Resources.TS_TYPE_FISHMORTABS
                 Case eTimeSeriesType.TimeForcing : strType = My.Resources.TS_TYPE_TIMEFORCING
                 Case eTimeSeriesType.TotalMortality : strType = My.Resources.TS_TYPE_TOTALMORT
                 Case eTimeSeriesType.FishingMortalityRef : strType = My.Resources.TS_TYPE_FISHMORTREL
+                Case eTimeSeriesType.DiscardMortality : strType = My.Resources.TS_TYPE_DISCARDMORT
+                Case eTimeSeriesType.DiscardProportion : strType = My.Resources.TS_TYPE_DISCARDPROP
+                Case eTimeSeriesType.Landings : strType = My.Resources.TS_TYPE_LANDINGS
+                Case eTimeSeriesType.Discards : strType = My.Resources.TS_TYPE_DISCARDS
+
             End Select
 
             Select Case descriptor

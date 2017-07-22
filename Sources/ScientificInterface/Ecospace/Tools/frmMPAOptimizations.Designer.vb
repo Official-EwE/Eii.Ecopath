@@ -703,15 +703,12 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_ucZoomBar, "m_ucZoomBar")
             Me.m_ucZoomBar.Name = "m_ucZoomBar"
             Me.m_ucZoomBar.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
-            Me.m_ucZoomBar.UIContext = Nothing
             '
             'm_ucZoom
             '
             resources.ApplyResources(Me.m_ucZoom, "m_ucZoom")
             Me.m_ucZoom.Name = "m_ucZoom"
             Me.m_ucZoom.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
-            Me.m_ucZoom.UIContext = Nothing
-            Me.m_ucZoom.ZoomPercentage = 100.0!
             '
             'm_tlbLayers
             '

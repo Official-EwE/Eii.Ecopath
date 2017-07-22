@@ -89,8 +89,6 @@ Namespace Ecospace.Basemap
             Me.m_zoomContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_zoomContainer.Name = "m_zoomContainer"
             Me.m_zoomContainer.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
-            Me.m_zoomContainer.UIContext = Nothing
-            Me.m_zoomContainer.ZoomPercentage = 100.0!
             '
             'm_tlpControls
             '

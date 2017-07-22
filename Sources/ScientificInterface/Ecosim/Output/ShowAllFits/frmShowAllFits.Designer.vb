@@ -50,6 +50,8 @@ Namespace Ecosim
             Me.m_hdrDisplayOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_chkShowB = New System.Windows.Forms.CheckBox()
             Me.m_chkShowZ = New System.Windows.Forms.CheckBox()
+            Me.m_chkShowLandings = New System.Windows.Forms.CheckBox()
+            Me.m_chkShowDiscards = New System.Windows.Forms.CheckBox()
             Me.m_chkShowCatch = New System.Windows.Forms.CheckBox()
             Me.m_plFormatting = New System.Windows.Forms.Panel()
             Me.m_hdrGeneral = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -127,6 +129,8 @@ Namespace Ecosim
             Me.m_plContent.Controls.Add(Me.m_hdrDisplayOptions)
             Me.m_plContent.Controls.Add(Me.m_chkShowB)
             Me.m_plContent.Controls.Add(Me.m_chkShowZ)
+            Me.m_plContent.Controls.Add(Me.m_chkShowLandings)
+            Me.m_plContent.Controls.Add(Me.m_chkShowDiscards)
             Me.m_plContent.Controls.Add(Me.m_chkShowCatch)
             resources.ApplyResources(Me.m_plContent, "m_plContent")
             Me.m_plContent.Name = "m_plContent"
@@ -154,6 +158,22 @@ Namespace Ecosim
             Me.m_chkShowZ.CheckState = System.Windows.Forms.CheckState.Checked
             Me.m_chkShowZ.Name = "m_chkShowZ"
             Me.m_chkShowZ.UseVisualStyleBackColor = True
+            '
+            'm_chkShowLandings
+            '
+            resources.ApplyResources(Me.m_chkShowLandings, "m_chkShowLandings")
+            Me.m_chkShowLandings.Checked = True
+            Me.m_chkShowLandings.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_chkShowLandings.Name = "m_chkShowLandings"
+            Me.m_chkShowLandings.UseVisualStyleBackColor = True
+            '
+            'm_chkShowDiscards
+            '
+            resources.ApplyResources(Me.m_chkShowDiscards, "m_chkShowDiscards")
+            Me.m_chkShowDiscards.Checked = True
+            Me.m_chkShowDiscards.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_chkShowDiscards.Name = "m_chkShowDiscards"
+            Me.m_chkShowDiscards.UseVisualStyleBackColor = True
             '
             'm_chkShowCatch
             '
@@ -441,6 +461,8 @@ Namespace Ecosim
         Private WithEvents m_cbShowGroupNo As System.Windows.Forms.CheckBox
         Private WithEvents m_tlpControl As TableLayoutPanel
         Private WithEvents m_plContent As Panel
+        Private WithEvents m_chkShowLandings As CheckBox
+        Private WithEvents m_chkShowDiscards As CheckBox
         Private WithEvents m_plFormatting As Panel
     End Class
 

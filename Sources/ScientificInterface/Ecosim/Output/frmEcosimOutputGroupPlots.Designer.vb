@@ -18,16 +18,13 @@
 ' ===============================================================================
 '
 
-Imports ScientificInterfaceShared.Forms
-Imports ScientificInterfaceShared.Controls
-
 Namespace Ecosim
 
-    Partial Class frmEcosimOutputPlots
+    Partial Class frmEcosimOutputGroupPlots
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -44,7 +41,7 @@ Namespace Ecosim
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimOutputPlots))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimOutputGroupPlots))
             Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
             Me.m_btnSaveData = New System.Windows.Forms.Button()
@@ -260,12 +257,12 @@ Namespace Ecosim
             Me.m_cbSaveVisibleOnly.Name = "m_cbSaveVisibleOnly"
             Me.m_cbSaveVisibleOnly.UseVisualStyleBackColor = True
             '
-            'frmEcosimOutputPlots
+            'frmEcosimOutputGroupPlots
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_scMain)
-            Me.Name = "frmEcosimOutputPlots"
+            Me.Name = "frmEcosimOutputGroupPlots"
             Me.ShowIcon = False
             Me.TabText = ""
             Me.m_scMain.Panel1.ResumeLayout(False)

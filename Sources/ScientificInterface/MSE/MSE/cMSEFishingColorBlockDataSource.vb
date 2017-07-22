@@ -79,7 +79,7 @@ Public Class cMSEFishingColorBlockDataSource
             Dim blks() As Single = Me.m_BlockSelector.BlockValues
 
             For i As Integer = 1 To Me.m_uic.Core.nFleets
-                Dim flt As cMSEFleetInput = manager.FleetInputs(i)
+                Dim flt As cMSEFleetInput = manager.EcopathFleetInputs(i)
                 For it As Integer = 1 To Me.m_uic.Core.nEcosimYears
                     Dim cv As Single = flt.FleetCV(it)
 
@@ -119,7 +119,7 @@ Public Class cMSEFishingColorBlockDataSource
         Dim sYear As Integer = Me.m_uic.Core.MSEManager.ModelParameters.MSEStartYear
 
         For iflt As Integer = 1 To Me.nRows
-            mseData = Me.m_uic.Core.MSEManager.FleetInputs(iflt)
+            mseData = Me.m_uic.Core.MSEManager.EcopathFleetInputs(iflt)
             For iTime As Integer = 1 To Me.TotalBlocks
                 If iTime >= sYear Then
                     m_BlockCells(iflt, iTime) = Me.m_BlockSelector.ValuetoBlock(mseData.FleetCV(iTime))
@@ -149,7 +149,7 @@ Public Class cMSEFishingColorBlockDataSource
         ' Fill single block
 
         Me.m_BlockCells(iRow, iCol) = Me.m_BlockSelector.SelectedBlock
-        Me.m_uic.Core.MSEManager.FleetInputs(iRow).FleetCV(iCol) = Me.m_BlockSelector.BlocktoValue(Me.m_BlockSelector.SelectedBlock)
+        Me.m_uic.Core.MSEManager.EcopathFleetInputs(iRow).FleetCV(iCol) = Me.m_BlockSelector.BlocktoValue(Me.m_BlockSelector.SelectedBlock)
 
     End Sub
 
@@ -170,7 +170,7 @@ Public Class cMSEFishingColorBlockDataSource
             Try
                 Return String.Format(SharedResources.GENERIC_LABEL_INDEXED, _
                                      iRow, _
-                                     Me.m_uic.Core.MSEManager.FleetInputs(iRow).Name)
+                                     Me.m_uic.Core.MSEManager.EcopathFleetInputs(iRow).Name)
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".RowLabel() Exception: " & ex.Message)
             End Try
@@ -188,7 +188,7 @@ Public Class cMSEFishingColorBlockDataSource
 
             Dim mse As cMSEManager = Me.m_uic.Core.MSEManager
             For iflt As Integer = 1 To Me.nRows
-                mse.FleetInputs(iflt).BatchEdit = Me.m_batchEdit
+                mse.EcopathFleetInputs(iflt).BatchEdit = Me.m_batchEdit
             Next iflt
 
         End Set
@@ -200,11 +200,11 @@ Public Class cMSEFishingColorBlockDataSource
 
             Dim mse As cMSEManager = Me.m_uic.Core.MSEManager
             For iflt As Integer = 1 To Me.nRows
-                mse.FleetInputs(iflt).BatchEdit = True
+                mse.EcopathFleetInputs(iflt).BatchEdit = True
                 For iyr As Integer = 1 To Me.TotalBlocks
-                    mse.FleetInputs(iflt).FleetCV(iyr) = Me.m_BlockSelector.BlocktoValue(m_BlockCells(iflt, iyr))
+                    mse.EcopathFleetInputs(iflt).FleetCV(iyr) = Me.m_BlockSelector.BlocktoValue(m_BlockCells(iflt, iyr))
                 Next
-                mse.FleetInputs(iflt).BatchEdit = False
+                mse.EcopathFleetInputs(iflt).BatchEdit = False
             Next iflt
 
         Catch ex As Exception

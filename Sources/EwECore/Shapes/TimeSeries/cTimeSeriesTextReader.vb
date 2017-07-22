@@ -25,6 +25,7 @@ Option Strict On
 Imports System.IO
 Imports System.Text
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -394,6 +395,12 @@ Public MustInherit Class cTimeSeriesTextReader
             astrCols = Me.SplitLine(strLine)
             Me.m_tsPreview.AddRow(strLine, astrCols)
 
+            If astrCols(0).ToLower.Contains("sec") Then
+                strLine = Me.ReadLine(reader, iLineNumber)
+                astrCols = Me.SplitLine(strLine)
+                Me.m_tsPreview.AddRow(strLine, astrCols)
+            End If
+
             ' Dat type
             If Not cStringUtils.BeginsWithOneOf(astrCols(0), New String() {"type", "code", "dat"}) Then
                 Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPELINEMISSING, astrCols(0)), iLineNumber)
@@ -414,7 +421,7 @@ Public MustInherit Class cTimeSeriesTextReader
 
                 astrCols = Me.SplitLine(strLine)
 
-                ' JS 2908125: Addressed issue #1391 (skip empty value lines)
+                ' JS 290815: Addressed issue #1391 (skip empty value lines)
                 Dim bIsLineEmpty As Boolean = True
                 For Each col As String In astrCols
                     bIsLineEmpty = bIsLineEmpty And String.IsNullOrWhiteSpace(col)
@@ -492,6 +499,7 @@ Public MustInherit Class cTimeSeriesTextReader
         Dim asCV(iNumSeries) As Single
         Dim astrNames(iNumSeries) As String
         Dim aiDatPool(iNumSeries) As Integer
+        Dim aiDatPoolSec(iNumSeries) As Integer
         Dim aiType(iNumSeries) As eTimeSeriesType
 
         Me.m_ts.Clear()
@@ -537,9 +545,25 @@ Public MustInherit Class cTimeSeriesTextReader
         End Try
         astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
 
+        ' Read secundary pool code from columns
+        If (astrCols.Length > 0) Then
+            If (astrCols(0).ToLower().Contains("sec")) Or (astrCols(0).ToLower().Contains("2")) Then
+                Try
+                    For i As Integer = 1 To iNumSeries
+                        aiDatPoolSec(i - 1) = cStringUtils.ConvertToInteger(astrCols(i))
+                        'If (aiDatPool(i - 1) < 1) Then
+                        '    Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLFORMAT, iLineNumber)
+                        'End If
+                    Next i
+                Catch ex As Exception
+                    Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLFORMAT, iLineNumber)
+                End Try
+                astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
+            End If
+        End If
+
         ' Read type from columns
         Try
-
             For i As Integer = 1 To iNumSeries
 
                 ' Extract time series type
@@ -561,7 +585,8 @@ Public MustInherit Class cTimeSeriesTextReader
                             Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, aiDatPool(i - 1)), iLineNumber - 1)
                         End If
 
-                    Case eTimeSeriesCategoryType.Fleet
+                    Case eTimeSeriesCategoryType.Fleet,
+                         eTimeSeriesCategoryType.FleetGroup
                         'Fleet index cannot exceed core nFleets
                         If aiDatPool(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nFleets) Then
                             Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, aiDatPool(i - 1)), iLineNumber - 1)
@@ -589,6 +614,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 .WtType = asWeight(i)
                 .CV = asCV(i)
                 .DatPool = aiDatPool(i)
+                .DatPoolSec = aiDatPoolSec(i)
                 .ResizeData(Me.m_iNumPoints)
             End With
 
@@ -596,34 +622,32 @@ Public MustInherit Class cTimeSeriesTextReader
             Me.m_ts.Add(ts)
         Next
 
-        ' Years
+        ' Values
         For iRow As Integer = 1 To Me.m_iNumPoints
 
             For iColumn As Integer = 1 To iNumSeries
 
+                Dim bAllowCoreNull As Boolean = Me.m_ts(iColumn - 1).SupportsNull()
+
                 ' Reset value
-                sValue = 0
+                sValue = cSystemUtils.IIF(bAllowCoreNull, cCore.NULL_VALUE, 0)
+
                 ' Reset preview
                 Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = ""
 
                 ' Has a column value?
                 If (iColumn < astrCols.Length) Then
-                    ' #Yes: get the value
+                    ' #Yes: get the value  
                     Try
-                        ' Try to parse the value
-                        sValue = cStringUtils.ConvertToSingle(astrCols(iColumn), 0, Me.m_strDecimalSeparator)
-                        ' Add parsed value to preview
-                        If (sValue <> 0) Then
-                            ' Write preview value
-                            Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = CStr(sValue)
-                            ' JS 10Feb2010: Select types of TS are allowed to be negative. 
-                            '               Just do not attempt to be smart here.
-                            '' Is value negative?
-                            'If (sValue < 0.0!) Then
-                            '    ' #Yes: throw an error
-                            '    ' ToDo_JS: report column!
-                            '    Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_VALUENEGATIVE, iLineNumber)
-                            'End If
+                        ' Big change 16Nov16: read empty cells as NULL values for supporting time series. 
+                        If (Not String.IsNullOrWhiteSpace(astrCols(iColumn))) Then
+                            ' Try to parse the value
+                            sValue = cStringUtils.ConvertToSingle(astrCols(iColumn), 0, Me.m_strDecimalSeparator)
+                            ' Add parsed value to preview
+                            If (sValue <> 0) Or bAllowCoreNull Then
+                                ' Write preview value
+                                Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = CStr(sValue)
+                            End If
                         End If
                     Catch ex As Exception
                         ' JS04feb08: error parsing value

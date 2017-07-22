@@ -44,10 +44,10 @@ Public Class cResultsCollector_Value
         For igrp = 1 To m_MSE.Core.nGroups
             For iFleet = 1 To m_MSE.Core.nFleets
                 For iTime = 1 To NumberOfTimeRecords
-                    Me.SetValue(StrategyIndex, igrp, iFleet, iTime) = m_MSE.LandingsThroughoutProjection(igrp, iFleet, iTime) * m_MSE.Core.FleetInputs(iFleet).OffVesselValue(igrp)
-                    Me.SetValue(StrategyIndex, igrp, 0, iTime) = Me.GetValue(StrategyIndex, igrp, 0, iTime) + m_MSE.LandingsThroughoutProjection(igrp, iFleet, iTime) * m_MSE.Core.FleetInputs(iFleet).OffVesselValue(igrp) 'Summing across fleets
-                    Me.SetValue(StrategyIndex, 0, iFleet, iTime) = Me.GetValue(StrategyIndex, 0, iFleet, iTime) + m_MSE.LandingsThroughoutProjection(igrp, iFleet, iTime) * m_MSE.Core.FleetInputs(iFleet).OffVesselValue(igrp) 'Summing across groups
-                    Me.SetValue(StrategyIndex, 0, 0, iTime) = Me.GetValue(StrategyIndex, 0, 0, iTime) + m_MSE.LandingsThroughoutProjection(igrp, iFleet, iTime) * m_MSE.Core.FleetInputs(iFleet).OffVesselValue(igrp) ' summ across both fleets and groups
+                    Me.SetValue(StrategyIndex, igrp, iFleet, iTime) = m_MSE.LandingsThroughoutProjection(igrp, iFleet, iTime) * m_MSE.Core.EcopathFleetInputs(iFleet).OffVesselValue(igrp)
+                    Me.SetValue(StrategyIndex, igrp, 0, iTime) = Me.GetValue(StrategyIndex, igrp, 0, iTime) + m_MSE.LandingsThroughoutProjection(igrp, iFleet, iTime) * m_MSE.Core.EcopathFleetInputs(iFleet).OffVesselValue(igrp) 'Summing across fleets
+                    Me.SetValue(StrategyIndex, 0, iFleet, iTime) = Me.GetValue(StrategyIndex, 0, iFleet, iTime) + m_MSE.LandingsThroughoutProjection(igrp, iFleet, iTime) * m_MSE.Core.EcopathFleetInputs(iFleet).OffVesselValue(igrp) 'Summing across groups
+                    Me.SetValue(StrategyIndex, 0, 0, iTime) = Me.GetValue(StrategyIndex, 0, 0, iTime) + m_MSE.LandingsThroughoutProjection(igrp, iFleet, iTime) * m_MSE.Core.EcopathFleetInputs(iFleet).OffVesselValue(igrp) ' summ across both fleets and groups
                 Next
             Next
         Next

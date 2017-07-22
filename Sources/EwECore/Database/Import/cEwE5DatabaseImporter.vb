@@ -2950,10 +2950,10 @@ Namespace Database
                         eType = eTimeSeriesType.CatchesRel
                     Case 7
                         eType = eTimeSeriesType.AverageWeight
-                    Case 8
-                        eType = eTimeSeriesType.EcotracerConcRel
-                    Case 9
-                        eType = eTimeSeriesType.EcotracerConcAbs
+                        'Case 8
+                        '    eType = eTimeSeriesType.EcotracerConcRel
+                        'Case 9
+                        '    eType = eTimeSeriesType.EcotracerConcAbs
                 End Select
 
                 ' JS 07may07: time series assignments have changed in EwE6. A time series is always connected to either a fleet
@@ -3075,6 +3075,9 @@ Namespace Database
                             drow("VariableName") = ""
                             writerGroup.AddRow(drow)
                         End If
+
+                    Case eTimeSeriesCategoryType.FleetGroup
+                        Debug.Assert(False, "This can't be; this type of series was introduced 10 years after EwE5 died")
 
                     Case eTimeSeriesCategoryType.NotSet
                         'Trying to import unkown time series type - ignore this TS

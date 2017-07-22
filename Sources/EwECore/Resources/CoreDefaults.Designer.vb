@@ -416,7 +416,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biomass ASCII map.
+        '''  Looks up a localized string similar to Biomass ASCII maps.
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_WRITER_ASC_BIOMASS() As String
             Get
@@ -425,7 +425,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catch ASCII map.
+        '''  Looks up a localized string similar to Catch ASCII maps.
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_WRITER_ASC_CATCH() As String
             Get
@@ -443,7 +443,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Effort ASCII map.
+        '''  Looks up a localized string similar to Total discards ASCII maps.
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_WRITER_ASC_DISCARDS() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_WRITER_ASC_DISCARDS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Effort ASCII maps.
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_WRITER_ASC_EFFORT() As String
             Get

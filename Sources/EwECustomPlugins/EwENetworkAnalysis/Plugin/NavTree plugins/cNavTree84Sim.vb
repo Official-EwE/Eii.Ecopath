@@ -30,7 +30,7 @@ Public Class cNavTree84Sim
 
     Public Overrides ReadOnly Property ControlImage() As System.Drawing.Image
         Get
-            Return SharedResources.nav4_output_extend
+            Return SharedResources.nav_output_folder
         End Get
     End Property
 

@@ -76,7 +76,7 @@ Namespace Ecosim
             If (Me.m_uic Is Nothing) Then Return
 
             Dim group As cEcoPathGroupInput = Nothing
-            Dim fleet As cFleetInput = Nothing
+            Dim fleet As cEcopathFleetInput = Nothing
             Dim bShowGroup As Boolean = True
 
             Me.m_bInSync = True
@@ -85,15 +85,15 @@ Namespace Ecosim
             For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
                 group = Me.m_uic.Core.EcoPathGroupInputs(iGroup)
                 If (Me.IncludeGroup(group)) Then
-                    Me.m_clbGroups.Items.Add(New cCoreInputOutputControlItem(group), _
+                    Me.m_clbGroups.Items.Add(New cCoreInputOutputControlItem(group),
                                              Me.m_uic.StyleGuide.GroupVisible(iGroup))
                 End If
             Next
 
             Me.m_clbFleets.Items.Clear()
             For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
-                fleet = Me.m_uic.Core.FleetInputs(iFleet)
-                Me.m_clbFleets.Items.Add(New cCoreInputOutputControlItem(fleet), _
+                fleet = Me.m_uic.Core.EcopathFleetInputs(iFleet)
+                Me.m_clbFleets.Items.Add(New cCoreInputOutputControlItem(fleet),
                                          Me.m_uic.StyleGuide.FleetVisible(iFleet))
             Next
 
@@ -265,7 +265,7 @@ Namespace Ecosim
             Dim asIsFished(core.nGroups) As Boolean
 
             For iFleet As Integer = 1 To core.nFleets
-                Dim fleet As cFleetInput = core.FleetInputs(iFleet)
+                Dim fleet As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
                 For iGroup As Integer = 1 To core.nGroups
                     asIsFished(iGroup) = asIsFished(iGroup) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
                 Next
@@ -292,7 +292,7 @@ Namespace Ecosim
             Dim asIsFished(core.nGroups) As Boolean
 
             For iFleet As Integer = 1 To core.nFleets
-                Dim fleet As cFleetInput = core.FleetInputs(iFleet)
+                Dim fleet As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
                 For iGroup As Integer = 1 To core.nGroups
                     asIsFished(iGroup) = asIsFished(iGroup) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
                 Next
@@ -432,7 +432,7 @@ Namespace Ecosim
                 Dim core As cCore = Me.m_uic.Core
                 Dim abLanded(core.nFleets) As Boolean
                 For iFleet As Integer = 1 To core.nFleets
-                    Dim fleet As cFleetInput = core.FleetInputs(iFleet)
+                    Dim fleet As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
                     For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
                         If Me.m_clbGroups.GetItemChecked(i) Then
                             Dim grp As cCoreGroupBase = Me.GroupAt(i)
@@ -470,7 +470,7 @@ Namespace Ecosim
                 Dim core As cCore = Me.m_uic.Core
                 Dim abLanded(core.nGroups) As Boolean
                 For iFleet As Integer = 1 To core.nFleets
-                    Dim fleet As cFleetInput = core.FleetInputs(iFleet)
+                    Dim fleet As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
                     If Me.m_clbFleets.GetItemChecked(iFleet - 1) Then
                         For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
                             Dim grp As cCoreGroupBase = Me.GroupAt(i)

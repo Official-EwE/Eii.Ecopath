@@ -39,9 +39,8 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Public Class cEwEStatusBar
 
     ''' <summary>The ui context to use.</summary>
-    Private m_uic As cUIContext = Nothing
     Private m_frmEwE6 As frmEwE6 = Nothing
-    ''' <summary>The core state monitor offering events to observe.</summary>
+    Private m_uic As cUIContext = Nothing
     Private m_csm As cCoreStateMonitor = Nothing
     Private m_selmon As cSelectionMonitor = Nothing
     Private m_mhSpatConfig As cMessageHandler = Nothing
@@ -78,8 +77,8 @@ Public Class cEwEStatusBar
         ' Sanity checks
         Debug.Assert(Me.m_uic Is Nothing)
 
-        Me.m_uic = uic
         Me.m_frmEwE6 = frm
+        Me.m_uic = uic
         Me.m_csm = Me.m_uic.Core.StateMonitor
         Me.m_selmon.Attach(uic)
 
@@ -92,6 +91,7 @@ Public Class cEwEStatusBar
 #If DEBUG Then
         Me.m_mhSpatConfig.Name = "cEwEStatusBar:Ecospace"
 #End If
+
     End Sub
 
     Public Sub Detach()
@@ -236,14 +236,22 @@ Public Class cEwEStatusBar
                 strName = spaceScenario.Name
 
                 Dim n As Integer = core.SpatialDataConnectionManager.NumConnectedAdapters
+                Dim parms As cEcospaceModelParameters = core.EcospaceModelParameters
+                Dim strTimeSeries As String = ""
 
+                ' -- prepare time series appendix --
                 If (n > 0) Then
-                    strName = strName & cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSPACE_CONNECTIONS, n)
+                    strTimeSeries = Me.AppendTimSeries(strTimeSeries, cStringUtils.Localize(My.Resources.STATUSSTRIP_ECOSPACE_CONNECTIONS, n))
                 End If
                 If core.EcospaceModelParameters.UseEcosimBiomassForcing Then
-                    strName = strName & My.Resources.STATUSSTRIP_ECOSPACE_ECOSIMBIOFORCING
+                    strTimeSeries = Me.AppendTimSeries(strTimeSeries, My.Resources.STATUSSTRIP_ECOSPACE_ECOSIMBIOMASSFORCING)
                 End If
-
+                If core.EcospaceModelParameters.UseEcosimDiscardForcing Then
+                    strTimeSeries = Me.AppendTimSeries(strTimeSeries, My.Resources.STATUSSTRIP_ECOSPACE_ECOSIMDISCARDFORCING)
+                End If
+                If Not String.IsNullOrWhiteSpace(strTimeSeries) Then
+                    strName = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strName, strTimeSeries)
+                End If
                 Me.UpdateToolstripItem(Me.m_tsEcospaceScenario, strName, strTooltip)
             Else
                 Me.UpdateToolstripItem(Me.m_tsEcospaceScenario)
@@ -281,6 +289,16 @@ Public Class cEwEStatusBar
         Return str
     End Function
 
+    Private Function AppendTimSeries(strLabel As String, strSeries As String) As String
+        If (String.IsNullOrWhiteSpace(strSeries)) Then Return strLabel
+        If (String.IsNullOrWhiteSpace(strLabel)) Then Return strSeries
+        If cSystemUtils.IsRightToLeft() Then
+            Return cStringUtils.Localize("{1} ,{0}", strLabel, strSeries)
+        Else
+            Return cStringUtils.Localize("{0}, {1}", strLabel, strSeries)
+        End If
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Update the content of a single tool strip item.
@@ -304,6 +322,7 @@ Public Class cEwEStatusBar
             .ToolTipText = strTooltipText
             ' Hide item if item has no text
             .Visible = (Not String.IsNullOrWhiteSpace(strText))
+            .Invalidate()
         End With
     End Sub
 

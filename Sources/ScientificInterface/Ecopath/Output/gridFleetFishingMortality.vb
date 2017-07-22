@@ -48,7 +48,7 @@ Namespace Ecopath.Output
             If (Me.UIContext Is Nothing) Then Return
 
             Dim group As cCoreGroupBase = Nothing
-            Dim fleet As cFleetInput = Nothing
+            Dim fleet As cEcopathFleetInput = Nothing
             Dim iGroup As Integer = 0
 
             Me.Redim(Core.nLivingGroups + 1, 2 + Core.nFleets)
@@ -57,7 +57,7 @@ Namespace Ecopath.Output
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEET_GROUP)
 
             For iFleet As Integer = 1 To Core.nFleets
-                fleet = Core.FleetInputs(iFleet)
+                fleet = Core.EcopathFleetInputs(iFleet)
                 Me(0, 1 + iFleet) = New PropertyColumnHeaderCell(Me.PropertyManager,
                                                                  fleet, eVarNameFlags.Name, Nothing,
                                                                  cUnits.OverTime)
@@ -76,7 +76,7 @@ Namespace Ecopath.Output
         Protected Overrides Sub FillData()
 
             Dim group As cEcoPathGroupOutput = Nothing
-            Dim fleet As cFleetInput = Nothing
+            Dim fleet As cEcopathFleetInput = Nothing
             Dim cell As EwECell = Nothing
             Dim sLandings As Single = 0.0!
             Dim sDiscards As Single = 0.0!
@@ -85,7 +85,7 @@ Namespace Ecopath.Output
 
             For iFleet As Integer = 1 To Core.nFleets
                 ' Get fleet
-                fleet = Core.FleetInputs(iFleet)
+                fleet = Core.EcopathFleetInputs(iFleet)
                 For iGroup As Integer = 1 To Core.nLivingGroups
                     group = Core.EcoPathGroupOutputs(iGroup)
                     ' Get values 

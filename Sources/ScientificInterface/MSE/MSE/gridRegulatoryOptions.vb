@@ -94,7 +94,7 @@ Namespace Ecosim
             For iFleet As Integer = 1 To Core.nFleets
 
                 'Get the flt info
-                fleetMSE = Core.MSEManager.FleetInputs(iFleet)
+                fleetMSE = Core.MSEManager.EcopathFleetInputs(iFleet)
 
                 Me.AddRow()
 

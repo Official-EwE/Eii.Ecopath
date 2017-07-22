@@ -73,8 +73,8 @@ Namespace Ecosim
             Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_PROFIT)
 
             For i As Integer = 1 To Core.nFleets
-                Me(i, 0) = New PropertyRowHeaderCell(Me.PropertyManager, Core.FleetInputs(i), eVarNameFlags.Name)
-                Me(0, i + 2) = New PropertyColumnHeaderCell(Me.PropertyManager, Core.FleetInputs(i), eVarNameFlags.Name)
+                Me(i, 0) = New PropertyRowHeaderCell(Me.PropertyManager, Core.EcopathFleetInputs(i), eVarNameFlags.Name)
+                Me(0, i + 2) = New PropertyColumnHeaderCell(Me.PropertyManager, Core.EcopathFleetInputs(i), eVarNameFlags.Name)
             Next
 
         End Sub

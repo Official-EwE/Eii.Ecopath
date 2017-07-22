@@ -1,5 +1,4 @@
-﻿Option Strict On
-Option Explicit On
+﻿
 
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
@@ -26,30 +25,10 @@ Option Explicit On
 ' ===============================================================================
 '
 
-
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright: 1991- UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada.
-' Cefas MSE plug-in copyright: 2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
-
 #Region " Imports "
+
+Option Strict On
+Option Explicit On
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Core
@@ -1988,9 +1967,9 @@ Public Class cMSE
         For iGrp = 1 To m_core.nGroups
             If currentStrategy.StrategyContainsHCRforiGrp(iGrp) Then
                 For iFleet = 1 To m_core.nFleets
-                    If m_core.FleetInputs(iFleet).Landings(iGrp) > 0 Then
+                    If m_core.EcopathFleetInputs(iFleet).Landings(iGrp) > 0 Then
                         If Not m_quotashares.QuotaShareExistsForGroupFleet(iGrp, iFleet) Then
-                            MessageBox.Show("A quotashare, that is not specified for fleet " & m_core.FleetInputs(iFleet).Name & " group " & m_core.EcoPathGroupInputs(iGrp).Name & " is required. Please specify and then rerun", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                            MessageBox.Show("A quotashare, that is not specified for fleet " & m_core.EcopathFleetInputs(iFleet).Name & " group " & m_core.EcoPathGroupInputs(iGrp).Name & " is required. Please specify and then rerun", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                             Throw New ApplicationException(Me.ToString & ".Check_All_Necessary_QuotaShares_Exist(). ")
                         End If
                     End If
@@ -2128,7 +2107,7 @@ Public Class cMSE
         'Get a list of all fleets that fish the groups that have HCRs
         For iFleet As Integer = 1 To m_core.nFleets
             For Each HCRGroup As HCR_Group In curStrategy
-                If m_core.FleetInputs(iFleet).Landings(HCRGroup.GroupF.Index) + m_core.FleetInputs(iFleet).Discards(HCRGroup.GroupF.Index) > 0 Then
+                If m_core.EcopathFleetInputs(iFleet).Landings(HCRGroup.GroupF.Index) + m_core.EcopathFleetInputs(iFleet).Discards(HCRGroup.GroupF.Index) > 0 Then
                     If Not FleetsThatFishHCRGrp.Contains(iFleet) Then
                         FleetsThatFishHCRGrp.Add(iFleet)
                     End If
@@ -2389,7 +2368,7 @@ Public Class cMSE
                 For iGrp As Integer = 1 To m_core.nLivingGroups
                     Dim landings As Single = Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings)
                     FleetCatchTable.Rows.Add(iModel + NumberIterationsAlreadyInFleets, Me.currentStrategy.Name,
-                    iFleet, m_core.FleetInputs(iFleet).Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name,
+                    iFleet, m_core.EcopathFleetInputs(iFleet).Name, iGrp, m_core.EcoPathGroupInputs(iGrp).Name,
                     Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings),
                     Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.DiscardSurvivals),
                     Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.DiscardMortalities))
@@ -2437,7 +2416,7 @@ Public Class cMSE
                     TempCalcedFleetEndValue += Me.LandingsDiscards(iFleet, iGrp, eCatchTypes.Landings) * EcopathData.Market(iFleet, iGrp)
                 Next
                 ResultsTable.Rows.Add(NumberIterationsAlreadyInResults + iModel, Me.currentStrategy.Name, iFleet,
-                                      m_core.FleetInputs(iFleet).Name, "TotalEndValue", TempCalcedFleetEndValue)
+                                      m_core.EcopathFleetInputs(iFleet).Name, "TotalEndValue", TempCalcedFleetEndValue)
             Next
 
             'Save the HCR F's to a datatable
@@ -2639,7 +2618,7 @@ Public Class cMSE
 
             For iFleet = 1 To m_core.nFleets
 
-                strFile = cFileUtils.ToValidFileName(m_core.FleetInputs(iFleet).Name & "_FleetNo" & iFleet & "_" & m_core.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", False)
+                strFile = cFileUtils.ToValidFileName(m_core.EcopathFleetInputs(iFleet).Name & "_FleetNo" & iFleet & "_" & m_core.EcoPathGroupInputs(igrp).Name & "_GroupNo" & igrp & ".csv", False)
                 writer = cMSEUtils.GetWriter(cMSEUtils.MSEFile(DataPath, cMSEUtils.eMSEPaths.HCRQuota_Targ, strFile))
                 msgReport.AddVariable(New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.STATUS_SAVED_DETAIL, strFile), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
 
@@ -3211,7 +3190,7 @@ Public Class cMSE
         For iGrp = 1 To m_core.nGroups
             If FTargCons(iGrp - 1, HCRType.Conservation) = 0 Then
                 For iFleet = 1 To m_core.nFleets
-                    If m_core.FleetInputs(iFleet).Landings(iGrp) + m_core.FleetInputs(iFleet).Discards(iGrp) > 0 And
+                    If m_core.EcopathFleetInputs(iFleet).Landings(iGrp) + m_core.EcopathFleetInputs(iFleet).Discards(iGrp) > 0 And
                         Not ZeroEffortFleets.Contains(iFleet) Then
                         ZeroEffortFleets.Add(iFleet)
                     End If
@@ -4293,7 +4272,7 @@ Public Class cMSE
 
             'reloads time series forcing data into core arrays and resets FisForced(groups)
             'F into FishRateNo()
-            Me.m_ecosim.TimeSeriesData.DoDatValCalculations(Me.EcosimData)
+            Me.m_ecosim.TimeSeriesData.DoDatValCalculations()
 
             'resets F in FishRateNo() based on forced Catches or Effort 
             Me.m_ecosim.SetBaseFFromGear()
@@ -4391,17 +4370,17 @@ Public Class cMSE
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Resolve a name and index to a <see cref="cFleetInput"/> instance.
+    ''' Resolve a name and index to a <see cref="cEcopathFleetInput"/> instance.
     ''' </summary>
     ''' <param name="strName">The name to resolve.</param>
     ''' <param name="iIndex">The index to resolve.</param>
-    ''' <returns>A <see cref="cFleetInput"/> instance, or Nothing if
+    ''' <returns>A <see cref="cEcopathFleetInput"/> instance, or Nothing if
     ''' the index or name did not match any of the present fleets.</returns>
     ''' <remarks>Note that name comparison is not case sensitive.</remarks>
     ''' -----------------------------------------------------------------------
-    Private Function ResolveFleet(strName As String, iIndex As Integer) As cFleetInput
+    Private Function ResolveFleet(strName As String, iIndex As Integer) As cEcopathFleetInput
         If (iIndex < 1) Or (iIndex > Me.Core.nFleets) Then Return Nothing
-        Dim flt As cFleetInput = Me.Core.FleetInputs(iIndex)
+        Dim flt As cEcopathFleetInput = Me.Core.EcopathFleetInputs(iIndex)
         If String.Compare(flt.Name, strName, True) <> 0 Then
             Return Nothing
         End If

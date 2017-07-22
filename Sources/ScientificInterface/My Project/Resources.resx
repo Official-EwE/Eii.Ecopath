@@ -244,7 +244,7 @@ Download and install a recent version of Ecopath 5 to update your database. Once
     <value>Please select a model to convert to EwE6.</value>
   </data>
   <data name="STATUSSTRIP_ECOSPACE_CONNECTIONS" xml:space="preserve">
-    <value> ({0} connection/s)</value>
+    <value> {0} connection/s</value>
     <comment>{0}=connection count</comment>
   </data>
   <data name="IMPORT_ERROR_CAPTION" xml:space="preserve">
@@ -319,10 +319,6 @@ Description: {1}</value>
   </data>
   <data name="ECOSPACE_EDITMPA_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete {0} MPA(s)? This action cannot be undone.</value>
-  </data>
-  <data name="HEADERMASK_UNIT_ZEROTOONE" xml:space="preserve">
-    <value>{0} [0, 1]</value>
-    <comment>{0}=value mask</comment>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="Ecospace" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -13080,8 +13076,8 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="ECOBASE_ERROR_BALANCE" xml:space="preserve">
     <value>This model cannot be exported to EcoBase because it does not mass-balance</value>
   </data>
-  <data name="STATUSSTRIP_ECOSPACE_ECOSIMBIOFORCING" xml:space="preserve">
-    <value> (Ecosim biomass forcing)</value>
+  <data name="STATUSSTRIP_ECOSPACE_ECOSIMBIOMASSFORCING" xml:space="preserve">
+    <value> Ecosim biomass</value>
   </data>
   <data name="ADVECTION_FAILED" xml:space="preserve">
     <value>Advection model run either encountered an error or was interrupted. Advection vectors will not be updated.</value>
@@ -13125,6 +13121,366 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="VALUE_REGION_UNDEFINED" xml:space="preserve">
     <value>(Undefined region)</value>
   </data>
+  <data name="LABEL_NAV_INPUT" xml:space="preserve">
+    <value>Input</value>
+  </data>
+  <data name="LABEL_NAV_OUTPUT" xml:space="preserve">
+    <value>Output</value>
+  </data>
+  <data name="LABEL_NAV_MODELPARMS" xml:space="preserve">
+    <value>Model parameters</value>
+  </data>
+  <data name="LABEL_NAV_APPLYEGGPROD" xml:space="preserve">
+    <value>Apply egg production</value>
+  </data>
+  <data name="LABEL_NAV_APPLYFFCONS" xml:space="preserve">
+    <value>Apply forcing (consumer)</value>
+  </data>
+  <data name="LABEL_NAV_APPLYFFDET" xml:space="preserve">
+    <value>Apply forcing (detritus)</value>
+  </data>
+  <data name="LABEL_NAV_APPLYFFPROD" xml:space="preserve">
+    <value>Apply forcing (producer)</value>
+  </data>
+  <data name="LABEL_NAV_APPLYFUNCTIONALRESPONSE" xml:space="preserve">
+    <value>Apply functional responses</value>
+  </data>
+  <data name="LABEL_NAV_APPLYMEDCONS" xml:space="preserve">
+    <value>Apply mediation (consumer)</value>
+  </data>
+  <data name="LABEL_NAV_APPLYMEDDET" xml:space="preserve">
+    <value>Apply mediation (detritus)</value>
+  </data>
+  <data name="LABEL_NAV_APPLYMEDPROD" xml:space="preserve">
+    <value>Apply mediation (producer)</value>
+  </data>
+  <data name="LABEL_NAV_BASICESTIMATES" xml:space="preserve">
+    <value>Basic estimates</value>
+  </data>
+  <data name="LABEL_NAV_BASICINPUT" xml:space="preserve">
+    <value>Basic input</value>
+  </data>
+  <data name="LABEL_NAV_CATCH" xml:space="preserve">
+    <value>Catch</value>
+  </data>
+  <data name="LABEL_NAV_CONSUMPTION" xml:space="preserve">
+    <value>Consumption</value>
+  </data>
+  <data name="LABEL_NAV_DETRITUSFATE" xml:space="preserve">
+    <value>Detritus fate</value>
+  </data>
+  <data name="LABEL_NAV_DIETCOMP" xml:space="preserve">
+    <value>Diet composition</value>
+  </data>
+  <data name="LABEL_NAV_DISCARDMORT" xml:space="preserve">
+    <value>Discard mortality</value>
+  </data>
+  <data name="LABEL_NAV_DISCARSURV" xml:space="preserve">
+    <value>Discard survival</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIMPARMS" xml:space="preserve">
+    <value>Ecosim parameters</value>
+  </data>
+  <data name="LABEL_NAV_EGGPROD" xml:space="preserve">
+    <value>Egg production</value>
+  </data>
+  <data name="LABEL_NAV_ELECTIVITY" xml:space="preserve">
+    <value>Electivity</value>
+  </data>
+  <data name="LABEL_NAV_FISHERY" xml:space="preserve">
+    <value>Fishery</value>
+  </data>
+  <data name="LABEL_NAV_FISHERY_DEF" xml:space="preserve">
+    <value>Fleets</value>
+  </data>
+  <data name="LABEL_NAV_FISHERY_DISCARDFATE" xml:space="preserve">
+    <value>Discard fate</value>
+  </data>
+  <data name="LABEL_NAV_FISHERY_DISCARDMORTRATE" xml:space="preserve">
+    <value>Discard mortality rate</value>
+  </data>
+  <data name="LABEL_NAV_FISHERY_DISCARDS" xml:space="preserve">
+    <value>Discards</value>
+  </data>
+  <data name="LABEL_NAV_FISHERY_LANDINGS" xml:space="preserve">
+    <value>Landings</value>
+  </data>
+  <data name="LABEL_NAV_FISHINGEFFORT" xml:space="preserve">
+    <value>Fishing effort</value>
+  </data>
+  <data name="LABEL_NAV_FISHINGMORT" xml:space="preserve">
+    <value>Fishing mortality</value>
+  </data>
+  <data name="LABEL_NAV_FISHMORTRATE" xml:space="preserve">
+    <value>Fishing mortality rates</value>
+  </data>
+  <data name="LABEL_NAV_FLEETSIZEDYNAMICS" xml:space="preserve">
+    <value>Fleet size dynamics</value>
+  </data>
+  <data name="LABEL_NAV_FLOWDIAGRAM" xml:space="preserve">
+    <value>Flow diagram</value>
+  </data>
+  <data name="LABEL_NAV_FORCINGFUNCTION" xml:space="preserve">
+    <value>Forcing function</value>
+  </data>
+  <data name="LABEL_NAV_FUNCTIONALRESPONSE" xml:space="preserve">
+    <value>Functional responses</value>
+  </data>
+  <data name="LABEL_NAV_GROWTHCONTR" xml:space="preserve">
+    <value>PSD contribution plot</value>
+  </data>
+  <data name="LABEL_NAV_GROWTHCONTRRESULT" xml:space="preserve">
+    <value>PSD contribution result</value>
+  </data>
+  <data name="LABEL_NAV_GROWTHESTIMATES" xml:space="preserve">
+    <value>Growth estimates</value>
+  </data>
+  <data name="LABEL_NAV_KEYINDICES" xml:space="preserve">
+    <value>Key indices</value>
+  </data>
+  <data name="LABEL_NAV_LANDINGS" xml:space="preserve">
+    <value>Landings</value>
+  </data>
+  <data name="LABEL_NAV_MEDIATION" xml:space="preserve">
+    <value>Mediation</value>
+  </data>
+  <data name="LABEL_NAV_MORTALITIES" xml:space="preserve">
+    <value>Mortalities</value>
+  </data>
+  <data name="LABEL_NAV_MORTALITRATES" xml:space="preserve">
+    <value>Mortality rates</value>
+  </data>
+  <data name="LABEL_NAV_MSE" xml:space="preserve">
+    <value>Management procedures (MSE)</value>
+  </data>
+  <data name="LABEL_NAV_MSE_ASSESSMENTFLEET" xml:space="preserve">
+    <value>Fleet CVs</value>
+  </data>
+  <data name="LABEL_NAV_MSE_ASSESSMENTGROUP" xml:space="preserve">
+    <value>Group CVs</value>
+  </data>
+  <data name="LABEL_NAV_MSE_ASSESSMENTS" xml:space="preserve">
+    <value>Assessments</value>
+  </data>
+  <data name="LABEL_NAV_MSE_EFFORTTRACKING" xml:space="preserve">
+    <value>Effort tracking</value>
+  </data>
+  <data name="LABEL_NAV_MSE_FIXEDESCAPE" xml:space="preserve">
+    <value>Fixed F, escapement, TAC</value>
+  </data>
+  <data name="LABEL_NAV_MSE_FLEETWEIGHTS" xml:space="preserve">
+    <value>Fleet weights</value>
+  </data>
+  <data name="LABEL_NAV_MSE_MSEFLEET" xml:space="preserve">
+    <value>MSE fleet</value>
+  </data>
+  <data name="LABEL_NAV_MSE_MSEGROUP" xml:space="preserve">
+    <value>MSE group</value>
+  </data>
+  <data name="LABEL_NAV_MSE_OPTIONS" xml:space="preserve">
+    <value>MSE Options</value>
+  </data>
+  <data name="LABEL_NAV_MSE_PLOTS" xml:space="preserve">
+    <value>MSE plots</value>
+  </data>
+  <data name="LABEL_NAV_MSE_QUOTASHARE" xml:space="preserve">
+    <value>Quota share</value>
+  </data>
+  <data name="LABEL_NAV_MSE_RECRUITMENT" xml:space="preserve">
+    <value>Recruitment</value>
+  </data>
+  <data name="LABEL_NAV_MSE_REFLEVELS" xml:space="preserve">
+    <value>Reference levels</value>
+  </data>
+  <data name="LABEL_NAV_MSE_REFMSY" xml:space="preserve">
+    <value>MSY</value>
+  </data>
+  <data name="LABEL_NAV_MSE_REGULATORY" xml:space="preserve">
+    <value>Regulatory</value>
+  </data>
+  <data name="LABEL_NAV_MSE_RESULTS" xml:space="preserve">
+    <value>MSE results</value>
+  </data>
+  <data name="LABEL_NAV_MSE_RUN" xml:space="preserve">
+    <value>Run MSE</value>
+  </data>
+  <data name="LABEL_NAV_MSE_TFM" xml:space="preserve">
+    <value>Target fishing mortality</value>
+  </data>
+  <data name="LABEL_NAV_NICHEOVERLAP" xml:space="preserve">
+    <value>Niche overlap</value>
+  </data>
+  <data name="LABEL_NAV_NICHEOVERLAPPLOT" xml:space="preserve">
+    <value>Niche overlap plot</value>
+  </data>
+  <data name="LABEL_NAV_NONMARKTEPRICE" xml:space="preserve">
+    <value>Non-market price</value>
+  </data>
+  <data name="LABEL_NAV_OFFVESSELPRICE" xml:space="preserve">
+    <value>Off-vessel price</value>
+  </data>
+  <data name="LABEL_NAV_OTHERPRODUCTION" xml:space="preserve">
+    <value>Other production</value>
+  </data>
+  <data name="LABEL_NAV_PEDIGREE" xml:space="preserve">
+    <value>Pedigree</value>
+  </data>
+  <data name="LABEL_NAV_PREDATOROVERLAP" xml:space="preserve">
+    <value>Predator overlap</value>
+  </data>
+  <data name="LABEL_NAV_PREDMORTRATE" xml:space="preserve">
+    <value>Predation mortality rates</value>
+  </data>
+  <data name="LABEL_NAV_PREYOVERLAP" xml:space="preserve">
+    <value>Prey overlap</value>
+  </data>
+  <data name="LABEL_NAV_PRICEELAST" xml:space="preserve">
+    <value>Price elasticity</value>
+  </data>
+  <data name="LABEL_NAV_PSD" xml:space="preserve">
+    <value>Particle size distribution</value>
+  </data>
+  <data name="LABEL_NAV_PSDPLOTGROUP" xml:space="preserve">
+    <value>PSD plot by group</value>
+  </data>
+  <data name="LABEL_NAV_PSDPLOTWEIGHT" xml:space="preserve">
+    <value>Size weight plot</value>
+  </data>
+  <data name="LABEL_NAV_PSD_GROWTHINPUT" xml:space="preserve">
+    <value>Growth input</value>
+  </data>
+  <data name="LABEL_NAV_RESPIRATION" xml:space="preserve">
+    <value>Respiration</value>
+  </data>
+  <data name="LABEL_NAV_RUNPSD" xml:space="preserve">
+    <value>Run PSD</value>
+  </data>
+  <data name="LABEL_NAV_SEARCHRATES" xml:space="preserve">
+    <value>Search rates</value>
+  </data>
+  <data name="LABEL_NAV_SIMGROUPINFO" xml:space="preserve">
+    <value>Group info</value>
+  </data>
+  <data name="LABEL_NAV_SIM_ALLFITS" xml:space="preserve">
+    <value>Ecosim all fits</value>
+  </data>
+  <data name="LABEL_NAV_SIM_FISHINGPOLICY" xml:space="preserve">
+    <value>Fishing policy search</value>
+  </data>
+  <data name="LABEL_NAV_SIM_FIT2TS" xml:space="preserve">
+    <value>Fit to time series</value>
+  </data>
+  <data name="LABEL_NAV_SIM_FLEETPLOTS" xml:space="preserve">
+    <value>Ecosim fleet plots</value>
+  </data>
+  <data name="LABEL_NAV_SIM_FLOWDIAGRAM" xml:space="preserve">
+    <value>Ecosim Flow diagram</value>
+  </data>
+  <data name="LABEL_NAV_SIM_GROUPPLOTS" xml:space="preserve">
+    <value>Ecosim group plots</value>
+  </data>
+  <data name="LABEL_NAV_SIM_MONTECARLO" xml:space="preserve">
+    <value>Monte Carlo simulation</value>
+  </data>
+  <data name="LABEL_NAV_SIM_MSY" xml:space="preserve">
+    <value>MSY search</value>
+  </data>
+  <data name="LABEL_NAV_SIM_RESULTS" xml:space="preserve">
+    <value>Ecosim results</value>
+  </data>
+  <data name="LABEL_NAV_SIM_RUN" xml:space="preserve">
+    <value>Run Ecosim</value>
+  </data>
+  <data name="LABEL_NAV_SIM_SRPLOT" xml:space="preserve">
+    <value>Stock reduction plot</value>
+  </data>
+  <data name="LABEL_NAV_SIM_SUSTPLOT" xml:space="preserve">
+    <value>Suitability plot</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_ADVECTION" xml:space="preserve">
+    <value>Advection</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_DISPERSAL" xml:space="preserve">
+    <value>Disperal</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_EXTERNALDATA" xml:space="preserve">
+    <value>External data</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_FISHERY" xml:space="preserve">
+    <value>Ecospace fishery</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_FLEETDYNAMICS" xml:space="preserve">
+    <value>Fleet dynamics</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_HABCAP" xml:space="preserve">
+    <value>Habitat based foraging</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_HABCAPAPPLY" xml:space="preserve">
+    <value>Apply foraging responses</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_HABCAPMODEL" xml:space="preserve">
+    <value>Group capacity model</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_HABFISHERY" xml:space="preserve">
+    <value>Habitat fishery</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_HABITATPREFS1" xml:space="preserve">
+    <value>Habitat foraging usage</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_MAPS" xml:space="preserve">
+    <value>Maps</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_MPA" xml:space="preserve">
+    <value>Marine Protected Areas</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_MPAENFORCEMENT" xml:space="preserve">
+    <value>MPA enforcement</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_MPAOPT" xml:space="preserve">
+    <value>Spatial optimizations</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_PARAMS" xml:space="preserve">
+    <value>Ecospace parameters</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_RESULTS" xml:space="preserve">
+    <value>Ecospace results</value>
+  </data>
+  <data name="LABEL_NAV_SPACE_RUN" xml:space="preserve">
+    <value>Run Ecospace</value>
+  </data>
+  <data name="LABEL_NAV_STATISTICS" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="LABEL_NAV_TIMESERIES" xml:space="preserve">
+    <value>Time series</value>
+  </data>
+  <data name="LABEL_NAV_TOOLS" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="LABEL_NAV_TRACER" xml:space="preserve">
+    <value>Ecotracer</value>
+  </data>
+  <data name="LABEL_NAV_TRACER_INPUT" xml:space="preserve">
+    <value>Ecotracer input</value>
+  </data>
+  <data name="LABEL_NAV_TRACER_OUTPUT" xml:space="preserve">
+    <value>Ecotracer output</value>
+  </data>
+  <data name="LABEL_NAV_TRACER_PARAMS" xml:space="preserve">
+    <value>Ecotracer parameters</value>
+  </data>
+  <data name="LABEL_NAV_TRAITS" xml:space="preserve">
+    <value>Traits</value>
+  </data>
+  <data name="LABEL_NAV_VALUE" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="LABEL_NAV_VULNERABILITES" xml:space="preserve">
+    <value>Vulnerabilities</value>
+  </data>
+  <data name="STATUSSTRIP_ECOSPACE_ECOSIMDISCARDFORCING" xml:space="preserve">
+    <value> Ecosim discard</value>
+  </data>
   <data name="HEADER_ALL_REGULATIONS_APPLY" xml:space="preserve">
     <value>All MPAs enforced</value>
   </data>
@@ -13155,5 +13511,8 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="HEADER_FORCINGNUMBER" xml:space="preserve">
     <value>Forcing number</value>
+  </data>
+  <data name="LABEL_NAV_APPLYOTHERMORT" xml:space="preserve">
+    <value>Apply forcing (other mortality)</value>
   </data>
 </root>

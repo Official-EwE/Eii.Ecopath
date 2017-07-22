@@ -62,6 +62,8 @@ Partial Class frmShapeValue
         Me.m_cmbViewAs = New System.Windows.Forms.ComboBox()
         Me.m_lblXBase = New System.Windows.Forms.Label()
         Me.m_txtXBase = New System.Windows.Forms.TextBox()
+        Me.m_lblPoolCodeSec = New System.Windows.Forms.Label()
+        Me.m_cmbPoolCodeSec = New System.Windows.Forms.ComboBox()
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_tlpAll.SuspendLayout()
@@ -92,12 +94,14 @@ Partial Class frmShapeValue
         'm_cmbType
         '
         resources.ApplyResources(Me.m_cmbType, "m_cmbType")
+        Me.m_cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbType.FormattingEnabled = True
         Me.m_cmbType.Name = "m_cmbType"
         '
         'm_cmbPoolCode
         '
         resources.ApplyResources(Me.m_cmbPoolCode, "m_cmbPoolCode")
+        Me.m_cmbPoolCode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbPoolCode.FormattingEnabled = True
         Me.m_cmbPoolCode.Name = "m_cmbPoolCode"
         '
@@ -131,20 +135,22 @@ Partial Class frmShapeValue
         resources.ApplyResources(Me.m_tlpAll, "m_tlpAll")
         Me.m_tlpAll.Controls.Add(Me.m_txtName, 1, 0)
         Me.m_tlpAll.Controls.Add(Me.m_cmbType, 1, 1)
-        Me.m_tlpAll.Controls.Add(Me.m_lblValues, 0, 6)
+        Me.m_tlpAll.Controls.Add(Me.m_lblValues, 0, 7)
         Me.m_tlpAll.Controls.Add(Me.m_lblType, 0, 1)
         Me.m_tlpAll.Controls.Add(Me.m_lblPoolCode, 0, 2)
         Me.m_tlpAll.Controls.Add(Me.m_cmbPoolCode, 1, 2)
-        Me.m_tlpAll.Controls.Add(Me.m_txtWeight, 1, 3)
+        Me.m_tlpAll.Controls.Add(Me.m_txtWeight, 1, 4)
         Me.m_tlpAll.Controls.Add(Me.m_lblName, 0, 0)
-        Me.m_tlpAll.Controls.Add(Me.m_lblWeight, 0, 3)
-        Me.m_tlpAll.Controls.Add(Me.m_lblNoOfPoints, 0, 7)
-        Me.m_tlpAll.Controls.Add(Me.m_tlpNoOfYears, 1, 7)
-        Me.m_tlpAll.Controls.Add(Me.pnlValueGrid, 1, 6)
-        Me.m_tlpAll.Controls.Add(Me.m_lblViewAs, 0, 5)
-        Me.m_tlpAll.Controls.Add(Me.m_cmbViewAs, 1, 5)
-        Me.m_tlpAll.Controls.Add(Me.m_lblXBase, 0, 4)
-        Me.m_tlpAll.Controls.Add(Me.m_txtXBase, 1, 4)
+        Me.m_tlpAll.Controls.Add(Me.m_lblWeight, 0, 4)
+        Me.m_tlpAll.Controls.Add(Me.m_lblNoOfPoints, 0, 8)
+        Me.m_tlpAll.Controls.Add(Me.m_tlpNoOfYears, 1, 8)
+        Me.m_tlpAll.Controls.Add(Me.pnlValueGrid, 1, 7)
+        Me.m_tlpAll.Controls.Add(Me.m_lblViewAs, 0, 6)
+        Me.m_tlpAll.Controls.Add(Me.m_cmbViewAs, 1, 6)
+        Me.m_tlpAll.Controls.Add(Me.m_lblXBase, 0, 5)
+        Me.m_tlpAll.Controls.Add(Me.m_txtXBase, 1, 5)
+        Me.m_tlpAll.Controls.Add(Me.m_lblPoolCodeSec, 0, 3)
+        Me.m_tlpAll.Controls.Add(Me.m_cmbPoolCodeSec, 1, 3)
         Me.m_tlpAll.Name = "m_tlpAll"
         '
         'm_tlpNoOfYears
@@ -223,6 +229,18 @@ Partial Class frmShapeValue
         resources.ApplyResources(Me.m_txtXBase, "m_txtXBase")
         Me.m_txtXBase.Name = "m_txtXBase"
         '
+        'm_lblPoolCodeSec
+        '
+        resources.ApplyResources(Me.m_lblPoolCodeSec, "m_lblPoolCodeSec")
+        Me.m_lblPoolCodeSec.Name = "m_lblPoolCodeSec"
+        '
+        'm_cmbPoolCodeSec
+        '
+        resources.ApplyResources(Me.m_cmbPoolCodeSec, "m_cmbPoolCodeSec")
+        Me.m_cmbPoolCodeSec.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbPoolCodeSec.FormattingEnabled = True
+        Me.m_cmbPoolCodeSec.Name = "m_cmbPoolCodeSec"
+        '
         'm_btnOK
         '
         resources.ApplyResources(Me.m_btnOK, "m_btnOK")
@@ -281,6 +299,7 @@ Partial Class frmShapeValue
     Private WithEvents m_txtXBase As System.Windows.Forms.TextBox
     Private WithEvents m_btnSetNoOfYears As System.Windows.Forms.Button
     Private WithEvents m_grid As ScientificInterfaceShared.gridShapeValue
-
+    Private WithEvents m_lblPoolCodeSec As Label
+    Private WithEvents m_cmbPoolCodeSec As ComboBox
 End Class
 
