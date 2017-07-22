@@ -1,0 +1,364 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MsWordImport PreserveSourceStyles="False" KeepSourceLinks="True" ConvertInlineFormatting="True" AddContinuedLinks="False" AddContinuedFromLinks="False" ContinuedLinkFormat="(continued in {title})" ContinuedFromLinkFormat="(continued from {title})" UseMaxCharLimit="False" UseMinCharLimit="True" MaxCharLimit="10000" MinCharLimit="250" FilenameLength="24" LastCollectTime="06/11/2007 2:20:23 PM" ProjectName="EwE6_userdoc" ProjectFolder="C:\Ecopath\Ecopath6\Documentation\Flare" AutoSync="False" LastImport="06/11/2007 2:30:54 PM">
+    <ParagraphStyles>
+        <Map From="Heading 1" To="h1" />
+        <Map From="Heading 2" To="h2" />
+        <Map From="Heading 3" To="h3.Heading 3" />
+        <Map From="Heading 4" To="h4.Heading 4" />
+        <Map From="Heading 5" To="h5.Heading 5" />
+        <Map From="Heading 6" To="h6.Heading 6" />
+        <Map From="SubHeading1" To="h3" />
+        <Map From="Body Text Indent 3" To="p" />
+        <Map From="Normal First par" To="p" />
+        <Map From="Normal 12pt After" To="p" />
+    </ParagraphStyles>
+    <CharacterStyles>
+        <Map From="Hyperlink" To="a" />
+        <Map From="Page Number" To="span" />
+        <Map From="Caption Char" To="span" />
+    </CharacterStyles>
+    <Files>
+        <Url Source="../../../../EWE_UsersGuide.doc" AbsoluteSource="file:///C:/Ecopath/Ecopath6/Documentation/EWE_UsersGuide.doc" />
+    </Files>
+    <GeneratedFiles>
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide.htm" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide1.htm" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/On modelling.htm" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000001.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000002.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000003.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000004.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000005.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000006.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000007.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000008.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000009.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/0800000A.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/0800000B.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/0800000C.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/0800000D.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide2.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/The energy balance of a box.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/0800000E.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/0800000F.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000010.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000011.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000012.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000013.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000014.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000015.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/On the need for input parameters.htm" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Defining the system.htm" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Dealing with open system problems.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/08000016.png" TimeStamp="06/11/2007 2:27:54 PM" />
+        <Url Source="../../Content/Resources/Images/08000017.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/08000018.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Production.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/08000019.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/0800001A.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/0800001B.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/0300001C.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Consumption.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Other mortality.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/0800001D.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/0800001E.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/0800001F.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/08000020.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/08000021.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Representation of multi stanza.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide3.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/08000022.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Ecosim basic.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/06000023.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/06000024.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/08000025.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Vulnerabilities in Ecosim.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Dealing with dynamic instability.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/08000026.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/08000027.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/08000028.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/08000029.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Predicting consumption.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/0800002A.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/0600002B.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Foraging time and predation.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Time series fitting in Ecosim.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/0300002C.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/0300002D.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/0300002E.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/0300002F.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/03000030.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Hints for fitting models to.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/02000031.jpg" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/03000032.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Effect of P B Z and vulnerability.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Predator satiation and handling.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/03000033.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/03000034.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/03000035.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/03000036.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/03000037.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/Resources/Images/03000038.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Modeling switching behavior.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Compensatory mechanisms.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Using Ecosim to study compensation.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Compensatory growth overall.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Compensatory natural mortality.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Linking mediation and time.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/08000039.png" TimeStamp="06/11/2007 2:27:55 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Primary production.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Nutrient cycling and nutrient.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Density dependent changes.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/0800003A.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/0800003B.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/0800003C.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/0300003D.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/0800003E.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/0800003F.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Modelling effort dynamics.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Using Ecosim for Stock Reduction.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Hatchery populations in Ecosim.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Parameter sensitivity.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide4.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/03000040.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/06000041.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Representing seasonal migration.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Images/08000042.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/08000043.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/08000044.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/02000045.jpg" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Advection in Ecospace.htm" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide5.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Prediction of mixing rates.htm" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/08000046.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/08000047.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/08000048.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Predicting spatial fishing.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/08000049.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/0800004A.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/0800004B.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Numerical solutions.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide6.htm" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Software support copyright.htm" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Installing and running Ecopath.htm" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Previous versions.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Getting help.htm" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/0300004C.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/0300004D.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/0300004E.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/0300004F.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/03000050.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/03000051.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/03000052.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/Resources/Images/03000053.png" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/General features of the Graphic.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/File menu.htm" TimeStamp="06/11/2007 2:27:56 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/View menu.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Ecosim menu.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Windows menu.htm" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Help menu.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Edit groups.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/03000054.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Edit multi stanza groups.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Edit fleets.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Ecopath input data.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Basic input.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Diet composition.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Detritus fate.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Other production.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Fishery.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Landings.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Discards.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Discard fate.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Market price.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Non market price.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide7.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/08000055.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/08000056.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Balancing a model.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Basic estimates.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/08000057.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/08000058.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/08000059.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/0800005A.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Key indices.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Mortalities.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/0800005B.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/0800005C.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/0800005D.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/0800005E.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/0800005F.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/08000060.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/08000061.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/08000062.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/08000063.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/08000064.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/08000065.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/03000066.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Mortality coefficients.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/03000067.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Predation mortality.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Consumption1.htm" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/08000068.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/08000069.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/0800006A.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/0800006B.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/0800006C.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/0800006D.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/0800006E.png" TimeStamp="06/11/2007 2:27:57 PM" />
+        <Url Source="../../Content/Resources/Images/0800006F.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000070.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000071.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Respiration.htm" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000072.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000073.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000074.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000075.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000076.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Niche overlap.htm" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000077.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Electivity.htm" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000078.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000079.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/0800007A.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Search rates.htm" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Fishery1.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/0300007B.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/0300007C.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Tools.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Trophic level decomposition.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/0300007D.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Summary of flow data.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/0300007E.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Flows and biomasses.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/0800007F.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000080.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000081.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/03000082.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Primary production required.htm" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/02000083.jpg" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Mixed trophic impact.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/08000084.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000085.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000086.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000087.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000088.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000089.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/0800008A.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/0800008B.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/0800008C.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/0800008D.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/0800008E.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/0800008F.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/08000090.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Ascendancy.htm" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Flow from detritus.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/03000091.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Cycles and pathways.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Network analysis indices in.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Using Ecosim Part 1 Ecosim.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/03000092.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/03000093.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/03000094.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/Resources/Images/03000095.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Getting started in Ecosim.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Ecosim parameters.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Group info.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/03000096.png" TimeStamp="06/11/2007 2:27:58 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Vulnerabilities flow control.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/03000097.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/03000098.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/03000099.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/0300009A.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Time series.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/0300009B.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Import time series.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/0300009C.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/0300009D.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/0300009E.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/0300009F.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/030000A0.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Mediation.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/030000A1.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/030000A2.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Apply mediation.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/030000A3.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/030000A4.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/030000A5.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Forcing function.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Apply forcing function consumer.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Apply forcing function primary.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/030000A6.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/030000A7.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Egg production.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/030000A8.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Apply egg production.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/080000A9.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Fleet size dynamics.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide8.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/An Ecosim exercise.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/030000AA.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/030000AB.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Biomass.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/030000AC.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/Resources/Images/030000AD.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Plots.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/030000AE.png" TimeStamp="06/11/2007 2:27:59 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Stock recruitment S R plot.htm" TimeStamp="06/11/2007 2:28:02 PM" />
+        <Url Source="../../Content/Resources/Images/030000AF.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/Resources/Images/030000B0.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/runs.htm" TimeStamp="06/11/2007 2:28:03 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Fishing policy search.htm" TimeStamp="06/11/2007 2:28:03 PM" />
+        <Url Source="../../Content/Resources/Images/030000B1.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Implementing policy optimization.htm" TimeStamp="06/11/2007 2:28:03 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Maximize portfolio utility.htm" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/Resources/Images/030000B2.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Fit to time series.htm" TimeStamp="06/11/2007 2:28:03 PM" />
+        <Url Source="../../Content/Resources/Images/030000B3.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Equilibrium analysis.htm" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/Resources/Images/030000B4.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/Resources/Images/030000B5.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/Resources/Images/030000B6.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/Resources/Images/030000B7.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide9.htm" TimeStamp="06/11/2007 2:28:03 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Ecospace parameters.htm" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/Resources/Images/030000B8.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/Resources/Images/030000B9.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/Resources/Images/030000BA.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Define Ecospace habitats.htm" TimeStamp="06/11/2007 2:28:03 PM" />
+        <Url Source="../../Content/Resources/Images/030000BB.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Figure 10 5.htm" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/Resources/Images/030000BC.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Assign habitats.htm" TimeStamp="06/11/2007 2:28:03 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Dispersal.htm" TimeStamp="06/11/2007 2:28:03 PM" />
+        <Url Source="../../Content/Resources/Images/030000BD.png" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/Ecospace fishery.htm" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide10.htm" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide11.htm" TimeStamp="06/11/2007 2:28:03 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide12.htm" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide13.htm" TimeStamp="06/11/2007 2:28:00 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/REFERENCES.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/EWE_UsersGuide/EWE_UsersGuide14.htm" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../TOCs/EWE_UsersGuide.fltoc" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/MasterPages/EWE_UsersGuide.flmsp" TimeStamp="06/11/2007 2:28:01 PM" />
+        <Url Source="../../Content/Resources/Stylesheets/EWE_UsersGuide.css" TimeStamp="06/11/2007 2:28:01 PM" />
+    </GeneratedFiles>
+    <NewTopicStyles>
+        <StyleName Name="Heading 1" />
+        <StyleName Name="Heading 2" />
+    </NewTopicStyles>
+    <UsedParagraphStyles>
+        <StyleName Name="Body Text Indent 3" />
+        <StyleName Name="Heading 1" />
+        <StyleName Name="Heading 2" />
+        <StyleName Name="Normal 12pt After" />
+        <StyleName Name="Normal First par" />
+        <StyleName Name="SubHeading1" />
+    </UsedParagraphStyles>
+    <UsedCharacterStyles>
+        <StyleName Name="Caption Char" />
+        <StyleName Name="Hyperlink" />
+        <StyleName Name="Normal 12pt After Char" />
+        <StyleName Name="Page Number" />
+    </UsedCharacterStyles>
+</MsWordImport>

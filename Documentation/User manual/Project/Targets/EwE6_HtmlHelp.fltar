@@ -1,0 +1,3 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CatapultTarget Version="1" Comment="Microsoft HTML Help Target" Type="WebHelp" Destinations="" GlossaryTermConversion="marked" MasterToc="/Project/TOCs/EWE_UsersGuide.fltoc" MasterPage="/Content/Resources/MasterPages/EwEHeader2.flmsp" ConditionTagExpression="exclude[Default.PrintOnly] ">
+</CatapultTarget>
