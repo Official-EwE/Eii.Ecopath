@@ -51,16 +51,35 @@ Public Class cDietImporter
         Dim DBReader As New cDatabaseReader(Me.m_Core, Me.m_EcopathData)
         Dim DietCalculator As New cDietCalculator(Me.m_Core, Me.m_EcopathData)
 
-        If DBReader.ImportDietPreferences(ExternalModelFileName, DietPrefs) Then
+        If Me.CheckEcopathState() Then
+            If DBReader.ImportDietPreferences(ExternalModelFileName, DietPrefs) Then
 
-            If DietCalculator.DietsFromPreferences(DietPrefs) Then
-                'Yep it worked...
-            End If
+                If DietCalculator.DietsFromPreferences(DietPrefs) Then
+                    'Yep it worked...
+                End If
 
-        End If
-
+            End If ' If DBReader.ImportDietPreferences(ExternalModelFileName, DietPrefs) Then
+        End If ' If Me.CheckEcopathState() Then
 
     End Sub
+
+    Private Function CheckEcopathState() As Boolean
+
+        If Me.m_Core.StateMonitor.HasEcopathRan Then
+            Return True
+        End If
+
+        'Ok Ecopath hasn't run
+        'Ask the user to run it
+        '
+        'xxxxxxxxxxxxxxxxxxx
+        'Me.m_Core.Messages(...)
+        'xxxxxxxxxxxxxxxxxxxxx
+        Return False
+
+
+
+    End Function
 
 
 

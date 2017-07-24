@@ -39,6 +39,7 @@
 '
 
 
+Imports EwEUtils.Core
 ''' <summary>
 ''' Calculate new diet matrix from preferences
 ''' </summary>
@@ -66,28 +67,23 @@ Public Class cDietCalculator
 
         'sum biomass
         For igrp = 1 To Me.nGroups
-            SumBio = SumBio + Me.m_EcopathData.B(igrp)
+            If Me.m_EcopathData.Binput(igrp) > 0 Then
+                SumBio = SumBio + Me.m_EcopathData.B(igrp)
+            End If
         Next
 
+        'Alpha() is calcualted on External Biomass and Diets
         For igrp = 1 To Me.nGroups
-            CalcChessonAlpha(igrp, Alpha, Me.m_EcopathData.B, Me.m_EcopathData.DC)
-        Next
+            CalcChessonAlpha(igrp, Alpha, ExternalDietPrefs.Biomass, ExternalDietPrefs.DietPref)
 
+            ' CalcChessonAlpha(igrp, Alpha, Me.m_EcopathData.B, Me.m_EcopathData.DC)
+        Next
 
         Me.IterateForDiet(Alpha, ExternalDietPrefs)
+        ' Me.UpdateUI()
 
         Return True
 
-
-        '    ReDim Alpha(NumGroups, NumGroups)
-        '    ReDim SumR(1 To NumGroups)
-        '    SumBio = 0
-        '    For i = 1 To NumGroups
-        '        SumBio = SumBio + B(i)
-        '    Next i
-        '    For i = 1 To NumGroups               'CALCULATION OF PREFERENCE INDEX
-        '        CalcChessonAlpha i, Alpha(), B_Old(), DC_Old()
-        'Next
     End Function
 
 
@@ -104,116 +100,54 @@ Public Class cDietCalculator
     End Property
 
 
-    'Public Sub Chesson()
-    '    Dim LivingBio As Single
-    '    Dim MaxBio As Single
-    '    Dim Alpha(,) As Single = New Single(nGroups, nGroups) {}
-    '    Dim SumR() As Single = New Single(nGroups) {}
-
-
-    '    MaxBio = 0
-    '    LivingBio = 0
-    '    SumBio = 0
-
-    '    For i As Integer = 1 To Me.nLiving
-    '        If Me.m_EcopathData.B(i) > MaxBio Then MaxBio = Me.m_EcopathData.B(i)
-    '        LivingBio = LivingBio + Me.m_EcopathData.B(i)
-    '    Next i
-    '    SumBio = LivingBio
-
-    '    'Will assume that if there is no me.m_Ecopathdata.b for a detritus box
-    '    'then the me.m_Ecopathdata.b will correspond to the max living me.m_Ecopathdata.b
-    '    'divided by the number of detritus boxes. Thus if all detritus
-    '    'me.m_Ecopathdata.bes are lacking the total detritus me.m_Ecopathdata.b = max living biom.
-    '    For i As Integer = Me.nLiving + 1 To Me.nGroups
-    '        If Me.m_EcopathData.B(i) < 0 Then
-    '            Me.m_EcopathData.B(i) = MaxBio / (nGroups - nLiving)
-    '        End If
-    '        SumBio = SumBio + Me.m_EcopathData.B(i)
-    '    Next i%
-
-
-    '    For i = 1 To Me.nGroups               'CALCULATION OF PREFERENCE INDEX
-    '        SumR(i) = 0
-    '        For j = 1 To Me.nGroups                    'FOLLOWING CHESSON (1983)
-    '            Alpha(i, j) = 0
-    '            If B(j) > 0 Then
-    '                Alpha(i, j) = Me.m_EcopathData.DC(i, j) / (Me.m_EcopathData.B(j) / SumBio)
-    '            End If
-    '            SumR(i) = SumR(i) + Alpha(i, j)
-    '        Next j
-    '    Next i
-
-    '    For i = 1 To Me.nGroups
-    '        For j = 1 To Me.nGroups
-    '            If SumR(i) > 0 Then
-    '                Alpha(i, j) = Alpha(i, j) / SumR(i)
-    '            End If
-    '        Next j               'THIS ALPHA IS THE SAME AS CHESSONS ALPHA
-    '    Next i
-
-    '    For i = 1 To Me.nGroups
-    '        If Me.m_EcopathData.QB(i) > 0 Then
-    '            For j = 1 To Me.nGroups
-    '                Alpha(i, j) = (Me.nGroups * Alpha(i, j) - 1) / ((Me.nGroups - 2) * Alpha(i, j) + 1)
-    '            Next j
-    '        End If                     'THIS ALPHA EQUALS CHESSONS EPSILON
-    '    Next i
-
-    'End Sub
-
-
     Private Sub CalcChessonAlpha(i As Integer, ByRef Alpha(,) As Single, B() As Single, DCij(,) As Single)
         'will calculate Chesson's Alpha from the equation si = ri/pi / sum(rn/pn)
         'where ri is the DC and Pn the proportion the biomass of a group constitutes of the total biomass
-        'Dim LivingBio As Single
-        ' Dim MaxBio As Single
         Dim j As Integer
-        ' Dim sumR() As Single = New Single(Me.nGroups) {}
-        ' On Local Error GoTo exitSub
 
         Debug.Assert(SumBio <> 0, "Opps SumBio not set!")
         If SumBio = 0 Then SumBio = 1
-        sumR(i) = 0
+        SumR(i) = 0
         For j = 1 To Me.nGroups              'FOLLOWING CHESSON (1983)
-            Alpha(i, j) = DCij(i, j) / (B(j) / SumBio)
-            sumR(i) = sumR(i) + Alpha(i, j)
+            If B(j) > 0.0 Then
+                Alpha(i, j) = DCij(i, j) / (B(j) / SumBio)
+                SumR(i) = SumR(i) + Alpha(i, j)
+            End If
         Next j
+
         For j = 1 To Me.nGroups
-            If sumR(i) > 0 Then
-                Alpha(i, j) = Alpha(i, j) / sumR(i)
+            If SumR(i) > 0 Then
+                Alpha(i, j) = Alpha(i, j) / SumR(i)
             End If
         Next j               'THIS ALPHA IS THE SAME AS CHESSONS ALPHA
 
         Return
-        'exitSub:
-        '        MsgBox "Error in CalcChessonAlpha"
-    End Sub
 
+    End Sub
 
 
     Private Sub IterateForDiet(Alpha(,) As Single, ExternalDiets As cDietPreferences)
         Dim Cnt As Integer
-        Dim DClast() As Single
-        Dim Diet(,) As Single
+        Dim DClast() As Double
         Dim DietSum As Single
         Dim Diff As Single
         Dim i As Integer
         Dim IsPrey() As Boolean
-        Dim j As Integer
         Dim iPred As Integer
         Dim nPred As Integer
         Dim Ratio As Single
-        Dim Si(,) As Single  'is the selection index (alpha) for prey i
-        '        'On Local Error GoTo exitSub
-        ReDim Diet(Me.nLiving, Me.nGroups)
-        ReDim Si(Me.nLiving, Me.nGroups)
+        Dim bBalanceModel As Boolean = False
+
+        Dim Si(,) As Single = New Single(Me.nLiving, Me.nGroups) {}  'is the selection index (alpha) for prey i
+        Dim Diet(,) As Single = New Single(Me.nLiving, Me.nGroups) {}
+
         For iPred = 1 To Me.nLiving
             ReDim DClast(Me.nGroups)
             ReDim IsPrey(Me.nGroups)
             nPred = 0
             DietSum = 0
             Cnt = 0
+
             For i = 1 To Me.nGroups  'In the dietsum don't consider import: assume import maintained
                 Diet(iPred, i) = ExternalDiets.DietPref(iPred, i) 'DC_Old(pred, i)
                 DClast(i) = Diet(iPred, i)
@@ -223,6 +157,7 @@ Public Class cDietCalculator
                     IsPrey(i) = True
                 End If
             Next
+
             'Remember any import
             Diet(iPred, 0) = ExternalDiets.DietPref(iPred, 0) 'DC_Old(pred, 0)
             If nPred = 1 Then
@@ -230,9 +165,11 @@ Public Class cDietCalculator
                     If IsPrey(i) Then Diet(iPred, i) = 1 - Diet(iPred, 0)
                 Next
             Else        'iterate to find diets
+
                 Diff = 1
-                'CalcChessonAlpha pred, Si, Bi, Diet
-                CalcChessonAlpha(iPred, Si, ExternalDiets.Biomass, Diet)
+                'Alpha() is external biomass and external diets
+                'Si() is local(current model) biomass and eternal diets
+                CalcChessonAlpha(iPred, Si, Me.m_EcopathData.B, Diet)
 
                 Do While Diff > 10 ^ -6 And Cnt < 30000
                     Diff = 0
@@ -246,10 +183,12 @@ Public Class cDietCalculator
                             If Alpha(iPred, i) <> Si(iPred, i) Then
                                 Ratio = Alpha(iPred, i) / Si(iPred, i)
                                 If Ratio <> 1 Then
+                                    bBalanceModel = True
                                     Diet(iPred, i) = Diet(iPred, i) * Ratio
                                     Me.RescaleDietsToDietSum(iPred, Diet, DietSum)
                                     'CalcChessonAlpha(pred, Si, Bi, Diet)
-                                    CalcChessonAlpha(iPred, Si, ExternalDiets.Biomass, Diet)
+                                    'Calculate Si() on internal B() and External DC()
+                                    CalcChessonAlpha(iPred, Si, Me.m_EcopathData.B, Diet)
                                 End If
                                 DClast(i) = Diet(iPred, i) 'store the last dc value
                             End If
@@ -258,23 +197,30 @@ Public Class cDietCalculator
                 Loop
             End If
         Next
+
         'So now we know all there is to know about the diets:
         For iPred = 1 To Me.nLiving
             If Me.m_EcopathData.PP(iPred) < 1 Then 'a consumer
                 For i = 0 To Me.nGroups  'start at 0 to include import
-                    Me.m_EcopathData.DCInput(iPred, i) = Diet(iPred, i)
-                Next
-            End If
-        Next
-        Exit Sub
-        'exitSub:
-        '        MsgBox "Error in IterateForDiet"
+                    Me.m_Core.EcoPathGroupInputs(iPred).DietComp(i) = Diet(iPred, i)
+                    'Me.m_EcopathData.DCInput(iPred, i) = Diet(iPred, i)
+                Next 'i = 0 To Me.nGroups
+            End If '
+        Next iPred
+
+        If bBalanceModel Then
+            'Message that the model needs to balanced
+        End If
+
+        Return
+
     End Sub
 
 
-    Public Sub RescaleDietsToDietSum(pred As Integer, Diet(,) As Single, OldDietSum As Single)
+    Public Sub RescaleDietsToDietSum(pred As Integer, ByRef Diet(,) As Single, OldDietSum As Double)
         Dim i As Integer
-        Dim Sum As Single
+        Dim Sum As Double
+        Dim newSum As Double
         Sum = 0
         For i = 1 To Me.nGroups
             Sum = Sum + Diet(pred, i)
@@ -282,106 +228,283 @@ Public Class cDietCalculator
         'It sums to Sum now, and should be made to sum to OldDietSum
         If Sum > 0 Then
             For i = 1 To Me.nGroups
-                Diet(pred, i) = Diet(pred, i) * OldDietSum / Sum
+                Diet(pred, i) = CSng(Diet(pred, i) * OldDietSum / Sum)
+                If Diet(pred, i) < 0.0 Then
+                    Diet(pred, i) = 0
+                End If
+                newSum += Diet(pred, i)
             Next
         End If
+
+        If newSum <> 1 Then
+            System.Console.WriteLine(pred.ToString + "," + newSum.ToString)
+        End If
+        Debug.Assert(newSum <> 0, "Diet didn't sum to one...")
+
     End Sub
 
-    '    Public Sub GetDietsBiomassCalculatePreference_old(mName As String)
-    '        Dim col As Integer
-    '        Dim i As Integer
-    '        Dim row As Integer
-    '        Dim s As String
-    '        Dim SQL As String
-    '        Dim GrpName As String
-    '        Dim pred As Integer
-    '        Dim RetVal As Variant
-    '        Dim CCY As New clsConnect
-    '        On Local Error GoTo exitSub
-    '        'Species information
-    '        ReDim B_Old(NumGroups)
-    '        ReDim DC_Old(NumGroups, NumGroups)
-    '        CCY.OpenConnection TempMDB
 
-    '    SQL = "SELECT * from [Group Info] where modelName='" & mName & "'"
-    '    Set y_Recordset = CCY.UpdatableRecords(SQL)
-    '    RetVal = MsgBox("Estimate diet from preference, and overwrite existing diets", vbQuestion + vbYesNo, "Estimating diet composition")
-    '        If RetVal <> vbYes Then Exit Sub
+    'Private Sub UpdateUI()
 
-    '        If y_Recordset.RecordCount > 0 Then y_Recordset.MoveFirst
-    '        Do While Not y_Recordset.EOF
-    '            GrpName = y_Recordset.Fields("groupName").value
-    '            For i = 1 To NumGroups
-    '                If GrpName = Specie(i) Then Exit For
-    '            Next
-    '            If i <= NumGroups Then  'The group name was found
-    '                B_Old(i) = y_Recordset!Biomass
-    '            End If
-    '            y_Recordset.MoveNext
-    '        Loop
+    '    Dim msgMaintenance As New EwECore.cMessage("Ecopath diets have changed", eMessageType.DataValidation, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
+    '    Me.m_Core.Messages.SendMessage(msgMaintenance)
 
-    '        For i = 1 To NumGroups
-    '            If B_Old(i) < 0 Then
-    '                RetVal = InputBox("Enter biomass for #" + CStr(i) + ", " + Specie(i) + " in model you're importing from", "Missing biomass", 0)
-    '                If RetVal = "" Then
-    '                    MsgBox "Incomplete information, aborting", vbOKOnly
-    '                GoTo exitSub
-    '                ElseIf RetVal > 0 Then
-    '                    B_Old(i) = RetVal
-    '                End If
-    '            End If
-    '        Next
-    '        For i = 1 To NumGroups
-    '            If Bi(i) < 0 Then
-    '                MsgBox "All biomasses (current model) must be entered to use this routine", vbCritical + vbOKOnly
-    '            GoTo exitSub
-    '            End If
-    '        Next i
+    'End Sub
 
+#Region "Orginal Code from EwE5"
 
-    '        SQL = "SELECT * from [Group x Group] where modelName='" & mName & "'"
-    '    Set y_Recordset = CCY.UpdatableRecords(SQL)
-    '    If y_Recordset.RecordCount > 0 Then y_Recordset.MoveFirst
-    '        Do While Not y_Recordset.EOF
-    '            GrpName = y_Recordset!groupname 'the predator
-    '            For i = 1 To NumGroups
-    '                If GrpName = Specie(i) Then Exit For
-    '            Next
-    '            If i <= NumGroups Then  'The group name was found
-    '                pred = i
-    '            End If
-    '            GrpName = y_Recordset!groupColName  'the prey
-    '            For i = 1 To NumGroups
-    '                If GrpName = Specie(i) Then Exit For
-    '            Next
-    '            If i <= NumGroups Then  'The group name was found
-    '                'now knows pred and prey
-    '                DC_Old(pred, i) = y_Recordset!Diet
-    '                pred = i
-    '            End If
-    '            y_Recordset.MoveNext
-    '        Loop
+    'Hide all this crap from the compiler
+#If 0 Then
+    
+        Public Sub GetDietsBiomassCalculatePreference_old(mName As String)
+            Dim col As Integer
+            Dim i As Integer
+            Dim row As Integer
+            Dim s As String
+            Dim SQL As String
+            Dim GrpName As String
+            Dim pred As Integer
+            Dim RetVal As Variant
+            Dim CCY As New clsConnect
+            On Local Error GoTo exitSub
+            'Species information
+            ReDim B_Old(NumGroups)
+            ReDim DC_Old(NumGroups, NumGroups)
+            CCY.OpenConnection TempMDB
+
+        SQL = "SELECT * from [Group Info] where modelName='" & mName & "'"
+        Set y_Recordset = CCY.UpdatableRecords(SQL)
+        RetVal = MsgBox("Estimate diet from preference, and overwrite existing diets", vbQuestion + vbYesNo, "Estimating diet composition")
+            If RetVal <> vbYes Then Exit Sub
+
+            If y_Recordset.RecordCount > 0 Then y_Recordset.MoveFirst
+            Do While Not y_Recordset.EOF
+                GrpName = y_Recordset.Fields("groupName").value
+                For i = 1 To NumGroups
+                    If GrpName = Specie(i) Then Exit For
+                Next
+                If i <= NumGroups Then  'The group name was found
+                    B_Old(i) = y_Recordset!Biomass
+                End If
+                y_Recordset.MoveNext
+            Loop
+
+            For i = 1 To NumGroups
+                If B_Old(i) < 0 Then
+                    RetVal = InputBox("Enter biomass for #" + CStr(i) + ", " + Specie(i) + " in model you're importing from", "Missing biomass", 0)
+                    If RetVal = "" Then
+                        MsgBox "Incomplete information, aborting", vbOKOnly
+                    GoTo exitSub
+                    ElseIf RetVal > 0 Then
+                        B_Old(i) = RetVal
+                    End If
+                End If
+            Next
+            For i = 1 To NumGroups
+                If Bi(i) < 0 Then
+                    MsgBox "All biomasses (current model) must be entered to use this routine", vbCritical + vbOKOnly
+                GoTo exitSub
+                End If
+            Next i
 
 
-    '        ReDim Alpha(NumGroups, NumGroups)
-    '        ReDim SumR(1 To NumGroups)
-    '        SumBio = 0
-    '        For i = 1 To NumGroups
-    '            SumBio = SumBio + B(i)
-    '        Next i
-    '        For i = 1 To NumGroups               'CALCULATION OF PREFERENCE INDEX
-    '            CalcChessonAlpha i, Alpha(), B_Old(), DC_Old()
-    '    Next
-    '        'We now have Alpha(i,j) known, and can estimate the DC's from sets of linear equations (one per predator)
-    '        'InvertForDiet Alpha()
-    '        IterateForDiet Alpha()
-    '    frmInputData.DisplayDietComposition
+            SQL = "SELECT * from [Group x Group] where modelName='" & mName & "'"
+        Set y_Recordset = CCY.UpdatableRecords(SQL)
+        If y_Recordset.RecordCount > 0 Then y_Recordset.MoveFirst
+            Do While Not y_Recordset.EOF
+                GrpName = y_Recordset!groupname 'the predator
+                For i = 1 To NumGroups
+                    If GrpName = Specie(i) Then Exit For
+                Next
+                If i <= NumGroups Then  'The group name was found
+                    pred = i
+                End If
+                GrpName = y_Recordset!groupColName  'the prey
+                For i = 1 To NumGroups
+                    If GrpName = Specie(i) Then Exit For
+                Next
+                If i <= NumGroups Then  'The group name was found
+                    'now knows pred and prey
+                    DC_Old(pred, i) = y_Recordset!Diet
+                    pred = i
+                End If
+                y_Recordset.MoveNext
+            Loop
 
-    'exitSub:
-    '        CCY.CloseConnection
-    '    End Sub
+
+            ReDim Alpha(NumGroups, NumGroups)
+            ReDim SumR(1 To NumGroups)
+            SumBio = 0
+            For i = 1 To NumGroups
+                SumBio = SumBio + B(i)
+            Next i
+            For i = 1 To NumGroups               'CALCULATION OF PREFERENCE INDEX
+                CalcChessonAlpha i, Alpha(), B_Old(), DC_Old()
+        Next
+            'We now have Alpha(i,j) known, and can estimate the DC's from sets of linear equations (one per predator)
+            'InvertForDiet Alpha()
+            IterateForDiet Alpha()
+        frmInputData.DisplayDietComposition
+
+    exitSub:
+            CCY.CloseConnection
+        End Sub
 
 
+    
+    Public Sub Chesson()
+        Dim LivingBio As Single
+        Dim MaxBio As Single
+        Dim Alpha(,) As Single = New Single(nGroups, nGroups) {}
+        Dim SumR() As Single = New Single(nGroups) {}
+
+
+        MaxBio = 0
+        LivingBio = 0
+        SumBio = 0
+
+        For i As Integer = 1 To Me.nLiving
+            If Me.m_EcopathData.B(i) > MaxBio Then MaxBio = Me.m_EcopathData.B(i)
+            LivingBio = LivingBio + Me.m_EcopathData.B(i)
+        Next i
+        SumBio = LivingBio
+
+        'Will assume that if there is no me.m_Ecopathdata.b for a detritus box
+        'then the me.m_Ecopathdata.b will correspond to the max living me.m_Ecopathdata.b
+        'divided by the number of detritus boxes. Thus if all detritus
+        'me.m_Ecopathdata.bes are lacking the total detritus me.m_Ecopathdata.b = max living biom.
+        For i As Integer = Me.nLiving + 1 To Me.nGroups
+            If Me.m_EcopathData.B(i) < 0 Then
+                Me.m_EcopathData.B(i) = MaxBio / (nGroups - nLiving)
+            End If
+            SumBio = SumBio + Me.m_EcopathData.B(i)
+        Next i%
+
+
+        For i = 1 To Me.nGroups               'CALCULATION OF PREFERENCE INDEX
+            SumR(i) = 0
+            For j = 1 To Me.nGroups                    'FOLLOWING CHESSON (1983)
+                Alpha(i, j) = 0
+                If B(j) > 0 Then
+                    Alpha(i, j) = Me.m_EcopathData.DC(i, j) / (Me.m_EcopathData.B(j) / SumBio)
+                End If
+                SumR(i) = SumR(i) + Alpha(i, j)
+            Next j
+        Next i
+
+        For i = 1 To Me.nGroups
+            For j = 1 To Me.nGroups
+                If SumR(i) > 0 Then
+                    Alpha(i, j) = Alpha(i, j) / SumR(i)
+                End If
+            Next j               'THIS ALPHA IS THE SAME AS CHESSONS ALPHA
+        Next i
+
+        For i = 1 To Me.nGroups
+            If Me.m_EcopathData.QB(i) > 0 Then
+                For j = 1 To Me.nGroups
+                    Alpha(i, j) = (Me.nGroups * Alpha(i, j) - 1) / ((Me.nGroups - 2) * Alpha(i, j) + 1)
+                Next j
+            End If                     'THIS ALPHA EQUALS CHESSONS EPSILON
+        Next i
+
+    End Sub
+
+Public Sub IterateForDiet(Alpha() As Single)
+    Dim Cnt As Integer
+    Dim DClast() As Single
+    Dim Diet() As Single
+    Dim DietSum As Single
+    Dim Diff As Single
+    Dim i As Integer
+    Dim IsPrey() As Boolean
+    Dim j As Integer
+    Dim pred As Integer
+    Dim prey As Integer
+    Dim Ratio As Single
+    Dim Si() As Single  'is the selection index (alpha) for prey i
+        On Local Error GoTo exitSub
+        ReDim Diet(NumLiving, NumGroups)
+        ReDim Si(NumLiving, NumGroups)
+        For pred = 1 To NumLiving
+            ReDim DClast(NumGroups)
+            ReDim IsPrey(NumGroups)
+            prey = 0
+            DietSum = 0
+            Cnt = 0
+            For i = 1 To NumGroups  'In the dietsum don't consider import: assume import maintained
+                Diet(pred, i) = DC_Old(pred, i)
+                DClast(i) = Diet(pred, i)
+                If Diet(pred, i) > 0 Then
+                    DietSum = DietSum + Diet(pred, i)
+                    prey = prey + 1
+                    IsPrey(i) = True
+                End If
+            Next
+            'Remember any import
+            Diet(pred, 0) = DC_Old(pred, 0)
+            If prey = 1 Then
+                For i = 1 To NumGroups
+                    If IsPrey(i) Then Diet(pred, i) = 1 - Diet(pred, 0)
+                Next
+            Else        'iterate to find diets
+                Diff = 1
+                CalcChessonAlpha pred, Si(), Bi(), Diet()
+                Do While Diff > 10 ^ -6 And Cnt < 30000
+                    Diff = 0
+                    Cnt = Cnt + 1
+                    'Now we have the selection in Si and these should correspond to the Alpha's already calculated (module level variable)
+                    For i = 1 To NumGroups
+                        Diff = Diff + Abs(Alpha(pred, i) - Si(pred, i))
+                    Next
+                    If Diff > 0 Then
+                        For i = 1 To NumGroups
+                            If Alpha(pred, i) <> Si(pred, i) Then
+                                Ratio = Alpha(pred, i) / Si(pred, i)
+                                If Ratio <> 1 Then
+                                    Diet(pred, i) = Diet(pred, i) * Ratio
+                                    RescaleDietsToDietSum pred, Diet(), DietSum
+                                    CalcChessonAlpha pred, Si(), Bi(), Diet()
+                                End If
+                                DClast(i) = Diet(pred, i) 'store the last dc value
+                            End If
+                        Next
+                    End If
+                Loop
+            End If
+        Next
+        'So now we know all there is to know about the diets:
+        For pred = 1 To NumLiving
+            If PP(pred) < 1 Then 'a consumer
+                For i = 0 To NumGroups  'start at 0 to include import
+                    DCi(pred, i) = Diet(pred, i)
+                Next
+            End If
+        Next
+    Exit Sub
+    exitSub:
+        MsgBox "Error in IterateForDiet"
+End Sub
+
+Public Sub RescaleDietsToDietSum(pred As Integer, Diet() As Single, OldDietSum As Single)
+Dim i As Integer
+Dim Sum As Single
+    Sum = 0
+    For i = 1 To NumGroups
+        Sum = Sum + Diet(pred, i)
+    Next
+    'It sums to Sum now, and should be made to sum to OldDietSum
+    If Sum > 0 Then
+        For i = 1 To NumGroups
+            Diet(pred, i) = Diet(pred, i) * OldDietSum / Sum
+        Next
+    End If
+End Sub
+    
+#End If
+
+
+#End Region
 
 
 End Class

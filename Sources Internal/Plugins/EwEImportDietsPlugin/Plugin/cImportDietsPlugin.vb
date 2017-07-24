@@ -307,20 +307,19 @@ Public Class cImportDietsPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
-
-        Dim ModelFileName As String
-
-        Dim ImportDiets As New cDietImporter(Me.Core, Me.EcoPathData)
-
         Dim ofd As New OpenFileDialog()
 
-        ofd.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*"
-        ofd.FilterIndex = 2
-        '  openFileDialog1.RestoreDirectory = True
+        ofd.Filter = ScientificInterfaceShared.My.Resources.FILEFILTER_MODEL_SAVE
+        ofd.FilterIndex = 1
 
         If ofd.ShowDialog = DialogResult.OK Then
-            ImportDiets.Run(ofd.FileName)
-        End If
+            If Me.setEcopathState Then
+
+                Dim ImportDiets As New cDietImporter(Me.Core, Me.EcoPathData)
+                ImportDiets.Run(ofd.FileName)
+
+            End If 'Me.setEcopathState
+        End If 'ofd.ShowDialog = DialogResult.OK 
 
 
         'Dim bHasInterface As Boolean = False
@@ -431,5 +430,13 @@ Public Class cImportDietsPlugin
     End Property
 
 #End Region
+
+
+    Private Function setEcopathState() As Boolean
+        If Not Me.m_core.StateMonitor.HasEcopathRan Then
+            Return Me.m_core.RunEcoPath()
+        End If
+        Return True
+    End Function
 
 End Class

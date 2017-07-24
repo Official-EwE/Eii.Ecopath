@@ -30,6 +30,8 @@ Imports EwEUtils.Utilities
 
 Public Class cDatabaseReader
 
+    'ToDo Validation of groups with currently loaded DB
+
     Private m_EcopathData As cEcopathDataStructures
     Private m_Core As cCore
 
@@ -69,6 +71,13 @@ Public Class cDatabaseReader
 
         If (core.LoadModel(ds)) Then
 
+            Dim bBalanced As Boolean
+            If core.RunEcoPath(bBalanced) Then
+                If bBalanced Then
+                    Return core
+                End If
+            End If
+
             ' JS 25Apr16: User is responsible for importing from a compatible model
 
             '' Test compatibility
@@ -85,7 +94,7 @@ Public Class cDatabaseReader
             '    Return False
             'End If
 
-            Return core
+
 
         End If
 
