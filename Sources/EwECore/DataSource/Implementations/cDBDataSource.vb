@@ -8587,8 +8587,8 @@ Namespace DataSources
                 ' referential integrity links between maps and their connections. The loading logic
                 ' implemented in this class will deal with missing map links.
 
-                ' Delete capacity drivers. INCONSISTENCY: Group ID is ECOPATH, not ECOSPACE
-                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE GroupID={0}", iEcopathGroupID))
+                ' Delete capacity drivers
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE GroupID={0}", iEcospaceGroupID))
                 ' Delete migration maps
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupMigration WHERE GroupID={0}", iEcospaceGroupID))
                 ' Finally delete group
