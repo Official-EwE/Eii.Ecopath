@@ -42,74 +42,114 @@ Public Class cDatabaseReader
 
     Public Function ImportDietPreferences(ModelFileName As String, ByRef DietPrefenences As cDietPreferences) As Boolean
         'Reads diets from external database
+        Dim bReturn As Boolean
 
-        Dim core As cCore = Me.getCoreFromFilename(ModelFileName)
+        Try
 
-        If Me.ValidateEcopathData(core.EcopathDataStructures) Then
-            DietPrefenences = New cDietPreferences(core.EcopathDataStructures)
-            Return True
-        End If
+            Dim core As cCore = Me.getCoreFromFilename(ModelFileName)
 
-        'Clean up our mess
-        If core IsNot Nothing Then
-            core.Dispose()
-            core = Nothing
-        End If
+            If Me.Validate(core) Then
+                DietPrefenences = New cDietPreferences(core.EcopathDataStructures)
+                bReturn = True
+            Else
+
+                bReturn = False
+            End If
+
+            'Clean up our mess
+            If core IsNot Nothing Then
+                core.Dispose()
+                core = Nothing
+            End If
+
+            Return bReturn
+
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
 
         Return False
 
     End Function
 
     Private Function getCoreFromFilename(strModel As String) As cCore
-
         Dim core As New cCore()
         Dim ds As EwECore.DataSources.IEwEDataSource = EwECore.DataSources.cDataSourceFactory.Create(strModel)
-        Dim bSuccess As Boolean = False
+        Dim bReturnCore As Boolean = False
+        Dim bBalanced As Boolean = False
 
         If (ds Is Nothing) Then Return Nothing
         If (ds.Open(strModel, core, eDataSourceTypes.NotSet, True) <> eDatasourceAccessType.Opened) Then Return Nothing
 
         If (core.LoadModel(ds)) Then
 
-            Dim bBalanced As Boolean
             If core.RunEcoPath(bBalanced) Then
                 If bBalanced Then
-                    Return core
+                    bReturnCore = True
+                Else
+                    'Message that the model needs to balancing
+                    Dim fbMsg As New EwECore.cFeedbackMessage("Model in imported database failed to balance. Do you want to continue importing the diets?",
+                                                                                eCoreComponentType.Plugin, eMessageType.DataImport, eMessageImportance.Critical, eMessageReplyStyle.YES_NO)
+                    Me.m_Core.Messages.SendMessage(fbMsg)
+                    If fbMsg.Reply = eMessageReply.YES Then
+                        bReturnCore = True
+                    End If
                 End If
             End If
-
-            ' JS 25Apr16: User is responsible for importing from a compatible model
-
-            '' Test compatibility
-            'If (core.SampleManager.ModelHash <> Me.ModelHash) Then
-            '    Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SAMPLES_IMPORT_ERROR_INCOMPATIBLE, strModel),
-            '                                                eMessageType.DataValidation, eCoreComponentType.External, eMessageImportance.Warning))
-            '    Return False
-            'End If
-
-            '' Test if there are models
-            'If (core.SampleManager.nSamples = 0) Then
-            '    Me.m_Core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SAMPLES_IMPORT_ERROR_NOSAMPLES, strModel),
-            '                                                eMessageType.DataValidation, eCoreComponentType.External, eMessageImportance.Warning))
-            '    Return False
-            'End If
-
-
 
         End If
 
         If (ds.IsOpen) Then ds.Close()
         ds.Dispose()
-        'core.Dispose()
+
+        If bReturnCore Then
+            Return core
+        End If
 
         Return Nothing
 
     End Function
 
 
-    Private Function ValidateEcopathData(EcopathData As cEcopathDataStructures) As Boolean
-        'Giver ehhh...
-        Return True
+    Private Function Validate(Core As EwECore.cCore) As Boolean
+        Dim bPassed As Boolean = False
+        Try
+
+            If Core IsNot Nothing Then
+                'first step
+                Dim epData As EwECore.cEcopathDataStructures = Core.EcopathDataStructures
+
+                If Core.nGroups = Me.m_Core.nGroups Then
+                    bPassed = True
+                    'Next step
+                    'same number of groups
+                    For igrp As Integer = 1 To Me.m_Core.nGroups
+                        If Not Me.m_Core.EcopathDataStructures.GroupName(igrp).Contains(epData.GroupName(igrp)) Then
+                            'Nope failed the group name test
+                            bPassed = False
+                        End If 'Not Me.m_Core.EcopathDataStructures.GroupName(igrp).Contains(epData.GroupName(igrp))
+
+                    Next igrp
+                End If 'Core.nGroups = Me.m_Core.nGroups
+            End If 'Core IsNot Nothing
+
+        Catch ex As Exception
+            'some kind of a message????
+            Me.m_Core.Messages.SendMessage(New EwECore.cMessage("Exception while Importing Diets: " + ex.Message,
+                                                                eMessageType.DataImport, eCoreComponentType.Plugin, eMessageImportance.Critical))
+            cLog.Write(ex)
+
+            Return False
+        End Try
+
+        If Not bPassed Then
+            'Message that the model failed validation
+            Me.m_Core.Messages.SendMessage(New EwECore.cMessage("Imported model does not have the same structure as the currently loaded model. Diets cannot be imported.",
+                                                                eMessageType.DataImport, eCoreComponentType.Plugin, eMessageImportance.Critical))
+        End If
+
+        Return bPassed
+
     End Function
 
 

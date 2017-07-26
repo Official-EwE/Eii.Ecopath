@@ -51,33 +51,42 @@ Public Class cDietImporter
         Dim DBReader As New cDatabaseReader(Me.m_Core, Me.m_EcopathData)
         Dim DietCalculator As New cDietCalculator(Me.m_Core, Me.m_EcopathData)
 
-        If Me.CheckEcopathState() Then
-            If DBReader.ImportDietPreferences(ExternalModelFileName, DietPrefs) Then
+        Try
 
-                If DietCalculator.DietsFromPreferences(DietPrefs) Then
-                    'Yep it worked...
+            If Me.CheckEcopathState() Then
+                If DBReader.ImportDietPreferences(ExternalModelFileName, DietPrefs) Then
+
+                    If DietCalculator.DietsFromPreferences(DietPrefs) Then
+                        'Yep it worked...
+                        'DietCalculator.DietsFromPreferences() posted a message if the diets where loaded
+                    End If
+
                 End If
+            End If ' If Me.CheckEcopathState() Then
 
-            End If ' If DBReader.ImportDietPreferences(ExternalModelFileName, DietPrefs) Then
-        End If ' If Me.CheckEcopathState() Then
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            'Message that the model needs to balancing
+            Me.m_Core.Messages.SendMessage(New EwECore.cMessage("Exception while importing diets: " + ex.Message,
+                                                                eMessageType.DataImport, eCoreComponentType.Plugin, eMessageImportance.Critical))
+        End Try
 
     End Sub
 
     Private Function CheckEcopathState() As Boolean
 
+        'Ok If Ecopath hasn't run this can not be run
+        'In the current implementation this was handled by the UI
         If Me.m_Core.StateMonitor.HasEcopathRan Then
             Return True
         End If
 
-        'Ok Ecopath hasn't run
-        'Ask the user to run it
-        '
-        'xxxxxxxxxxxxxxxxxxx
-        'Me.m_Core.Messages(...)
-        'xxxxxxxxxxxxxxxxxxxxx
+        'shouldn't happen
+        Me.m_Core.Messages.SendMessage(New EwECore.cMessage("You must run Ecopath to balance the current model before Importing Diets",
+                                                                eMessageType.DataImport, eCoreComponentType.Plugin, eMessageImportance.Critical))
+
         Return False
-
-
 
     End Function
 

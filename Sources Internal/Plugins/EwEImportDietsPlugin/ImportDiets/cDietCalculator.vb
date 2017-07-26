@@ -65,22 +65,23 @@ Public Class cDietCalculator
 
         Me.SumR = New Single(nGroups) {}
 
-        'sum biomass
+        'sum biomass calculated on internal biomasses
+        'This is the total biomass abundance in the ecosystem
+        'Used to scale to the available biomass
         For igrp = 1 To Me.nGroups
             If Me.m_EcopathData.Binput(igrp) > 0 Then
                 SumBio = SumBio + Me.m_EcopathData.B(igrp)
             End If
         Next
 
-        'Alpha() is calcualted on External Biomass and Diets
+        'Alpha() is calcualted on Imported Biomass and Diets
+        'Scaled to SumBio (calcualted above) calculated on the internal biomass
+        'This is used to scale the imported diets to internal biomass
         For igrp = 1 To Me.nGroups
             CalcChessonAlpha(igrp, Alpha, ExternalDietPrefs.Biomass, ExternalDietPrefs.DietPref)
-
-            ' CalcChessonAlpha(igrp, Alpha, Me.m_EcopathData.B, Me.m_EcopathData.DC)
         Next
 
         Me.IterateForDiet(Alpha, ExternalDietPrefs)
-        ' Me.UpdateUI()
 
         Return True
 
@@ -136,10 +137,13 @@ Public Class cDietCalculator
         Dim iPred As Integer
         Dim nPred As Integer
         Dim Ratio As Single
-        Dim bBalanceModel As Boolean = False
+        Dim bNeedsBalancing As Boolean = False
 
         Dim Si(,) As Single = New Single(Me.nLiving, Me.nGroups) {}  'is the selection index (alpha) for prey i
         Dim Diet(,) As Single = New Single(Me.nLiving, Me.nGroups) {}
+
+        'For Debugging
+        System.Console.WriteLine("Pred, Prey, Di(0), Di(1)")
 
         For iPred = 1 To Me.nLiving
             ReDim DClast(Me.nGroups)
@@ -167,8 +171,9 @@ Public Class cDietCalculator
             Else        'iterate to find diets
 
                 Diff = 1
-                'Alpha() is external biomass and external diets
-                'Si() is local(current model) biomass and eternal diets
+
+                'Si() is internal(current model) biomass and eternal diets
+                'si = ri/pi / sum(rn/pn) pi and pn calcualted on internal biomass
                 CalcChessonAlpha(iPred, Si, Me.m_EcopathData.B, Diet)
 
                 Do While Diff > 10 ^ -6 And Cnt < 30000
@@ -183,12 +188,18 @@ Public Class cDietCalculator
                             If Alpha(iPred, i) <> Si(iPred, i) Then
                                 Ratio = Alpha(iPred, i) / Si(iPred, i)
                                 If Ratio <> 1 Then
-                                    bBalanceModel = True
+
+                                    'For Debugging
+                                    System.Console.Write(iPred.ToString + ", " + i.ToString + ", " + Diet(iPred, i).ToString)
+
                                     Diet(iPred, i) = Diet(iPred, i) * Ratio
                                     Me.RescaleDietsToDietSum(iPred, Diet, DietSum)
-                                    'CalcChessonAlpha(pred, Si, Bi, Diet)
-                                    'Calculate Si() on internal B() and External DC()
                                     CalcChessonAlpha(iPred, Si, Me.m_EcopathData.B, Diet)
+
+                                    'For Debugging
+                                    System.Console.Write(", " + Diet(iPred, i).ToString)
+                                    System.Console.WriteLine()
+
                                 End If
                                 DClast(i) = Diet(iPred, i) 'store the last dc value
                             End If
@@ -198,18 +209,38 @@ Public Class cDietCalculator
             End If
         Next
 
+
+        Me.m_Core.SetBatchLock(EwECore.cCore.eBatchLockType.Update)
+
         'So now we know all there is to know about the diets:
         For iPred = 1 To Me.nLiving
             If Me.m_EcopathData.PP(iPred) < 1 Then 'a consumer
-                For i = 0 To Me.nGroups  'start at 0 to include import
-                    Me.m_Core.EcoPathGroupInputs(iPred).DietComp(i) = Diet(iPred, i)
-                    'Me.m_EcopathData.DCInput(iPred, i) = Diet(iPred, i)
-                Next 'i = 0 To Me.nGroups
-            End If '
+                For i = 0 To Me.nGroups
+                    If (i <> 0) Then
+                        If Me.m_Core.EcoPathGroupInputs(iPred).DietComp(i) <> Diet(iPred, i) Then bNeedsBalancing = True
+                        Me.m_Core.EcoPathGroupInputs(iPred).DietComp(i) = Diet(iPred, i)
+
+                    Else '(i <> 0)
+                        'Imported diet
+                        If Diet(iPred, i) <> 0 Then
+                            Me.m_Core.EcoPathGroupInputs(iPred).ImpDiet = Diet(iPred, i)
+                        End If 'Diet(iPred, i) <> 0
+
+                    End If '(i <> 0)
+
+                Next i 'i = 0 To Me.nGroups
+            End If 'Me.m_EcopathData.PP(iPred) < 1
         Next iPred
 
-        If bBalanceModel Then
-            'Message that the model needs to balanced
+        Me.m_Core.ReleaseBatchLock(EwECore.cCore.eBatchChangeLevelFlags.Ecopath)
+
+        If bNeedsBalancing Then
+            '"Diets have been imported but not saved. You will need to make sure your model is balanced and save the new values." _
+            '                                                    + EwEUtils.Utilities.cStringUtils.vbCrLf + "To revert the imported diets close the model without saving.",
+            'Message that the model needs to balancing
+            Me.m_Core.Messages.SendMessage(New EwECore.cMessage("Diets have been imported but not saved." + EwEUtils.Utilities.cStringUtils.vbCrLf + "To used the imported diets you will need to make sure your model is balanced then save the new values." _
+                                                                + EwEUtils.Utilities.cStringUtils.vbCrLf + "To revert the imported diets close the model without saving.",
+                                                                eMessageType.DataImport, eCoreComponentType.Plugin, eMessageImportance.Critical))
         End If
 
         Return
@@ -236,20 +267,13 @@ Public Class cDietCalculator
             Next
         End If
 
-        If newSum <> 1 Then
-            System.Console.WriteLine(pred.ToString + "," + newSum.ToString)
-        End If
-        Debug.Assert(newSum <> 0, "Diet didn't sum to one...")
+        'If newSum <> 1 Then
+        '    System.Console.WriteLine(pred.ToString + "," + newSum.ToString)
+        'End If
+        'Debug.Assert(newSum <> 0, "Diet didn't sum to one...")
 
     End Sub
 
-
-    'Private Sub UpdateUI()
-
-    '    Dim msgMaintenance As New EwECore.cMessage("Ecopath diets have changed", eMessageType.DataValidation, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
-    '    Me.m_Core.Messages.SendMessage(msgMaintenance)
-
-    'End Sub
 
 #Region "Orginal Code from EwE5"
 
