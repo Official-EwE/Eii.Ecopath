@@ -142,8 +142,10 @@ Public Class cDietCalculator
         Dim Si(,) As Single = New Single(Me.nLiving, Me.nGroups) {}  'is the selection index (alpha) for prey i
         Dim Diet(,) As Single = New Single(Me.nLiving, Me.nGroups) {}
 
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'For Debugging
-        System.Console.WriteLine("Pred, Prey, Di(0), Di(1)")
+        'System.Console.WriteLine("Pred, Prey, Di(0), Di(1)")
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         For iPred = 1 To Me.nLiving
             ReDim DClast(Me.nGroups)
@@ -189,16 +191,20 @@ Public Class cDietCalculator
                                 Ratio = Alpha(iPred, i) / Si(iPred, i)
                                 If Ratio <> 1 Then
 
-                                    'For Debugging
-                                    System.Console.Write(iPred.ToString + ", " + i.ToString + ", " + Diet(iPred, i).ToString)
+                                    ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                                    ''For Debugging
+                                    'System.Console.Write(iPred.ToString + ", " + i.ToString + ", " + Diet(iPred, i).ToString)
+                                    ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                                     Diet(iPred, i) = Diet(iPred, i) * Ratio
                                     Me.RescaleDietsToDietSum(iPred, Diet, DietSum)
                                     CalcChessonAlpha(iPred, Si, Me.m_EcopathData.B, Diet)
 
-                                    'For Debugging
-                                    System.Console.Write(", " + Diet(iPred, i).ToString)
-                                    System.Console.WriteLine()
+                                    ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                                    ''For Debugging
+                                    'System.Console.Write(", " + Diet(iPred, i).ToString)
+                                    'System.Console.WriteLine()
+                                    ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                                 End If
                                 DClast(i) = Diet(iPred, i) 'store the last dc value
@@ -217,6 +223,7 @@ Public Class cDietCalculator
             If Me.m_EcopathData.PP(iPred) < 1 Then 'a consumer
                 For i = 0 To Me.nGroups
                     If (i <> 0) Then
+                        'Normal group diet just update the diets
                         If Me.m_Core.EcoPathGroupInputs(iPred).DietComp(i) <> Diet(iPred, i) Then bNeedsBalancing = True
                         Me.m_Core.EcoPathGroupInputs(iPred).DietComp(i) = Diet(iPred, i)
 
