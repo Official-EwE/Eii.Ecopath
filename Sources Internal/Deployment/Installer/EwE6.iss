@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 #include <idp.iss>
 
-#define MyAppName "Ecopath with Ecosim 6.6 DiscardLess preview"
-#define MyAppVersion "6.6_discardless_dev"
-#define MyAppExeName "ewe6_discardless.exe"
+#define MyAppName "Ecopath with Ecosim 6.6 preview"
+#define MyAppVersion "6.6_preview"
+#define MyAppExeName "ewe6.exe"
 #define MyAppPublisher "UBC Institute for Oceans and Fisheries & Ecopath International Initiative"
 
 #define Ecosampler 0
