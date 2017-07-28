@@ -537,7 +537,7 @@ Public Class dlgSelectResponse
     End Function
 
     Private Function CanCommit(t As eEcospaceCapacityCalType) As Boolean
-        Return (t = eEcospaceCapacityCalType.EnvResponses) Or (t = eEcospaceCapacityCalType.Both)
+        Return ((t And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses)
     End Function
 
     ''' -------------------------------------------------------------------

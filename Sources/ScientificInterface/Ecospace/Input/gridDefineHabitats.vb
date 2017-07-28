@@ -169,7 +169,7 @@ Namespace Ecospace
             ''' </returns>
             ''' -------------------------------------------------------------------
             Public Function IsNew() As Boolean
-                Return (Me.HabitatDBID = cCore.NULL_VALUE)
+                Return (Me.HabitatDBID <= 0)
             End Function
 
             ''' -------------------------------------------------------------------

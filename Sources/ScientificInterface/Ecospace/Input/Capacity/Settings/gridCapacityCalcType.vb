@@ -25,9 +25,9 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports SourceGrid2.Cells
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -39,28 +39,41 @@ Namespace Ecospace
     ''' from traditional habitats, or from environmental drivers / capacity input.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridCapacityCalcType
         Inherits EwEGrid
 
         Private Enum eColumnTypes As Integer
             Index
             Name
-            'None
             Habitat
-            EnvDrivers
-            Both
+            EnvResponses
         End Enum
 
         Private m_lProps As New List(Of cProperty)
         Private m_bInUpdate As Boolean = False
 
+        Public Sub SetAllCalcTypes(type As eEcospaceCapacityCalType, bSet As Boolean)
+
+            For iGroup As Integer = 1 To Core.nGroups
+                Dim group As cEcospaceGroupInput = Core.EcospaceGroups(iGroup)
+                Select Case type
+                    Case eEcospaceCapacityCalType.Input : group.CapacityCalculationType = eEcospaceCapacityCalType.Input
+                    Case Else
+                        If bSet Then
+                            group.CapacityCalculationType = group.CapacityCalculationType Or type
+                        Else
+                            group.CapacityCalculationType = group.CapacityCalculationType And Not type
+                        End If
+                End Select
+            Next
+
+        End Sub
+
 #Region " Overrides "
 
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
-
-            ' ToDo: globalize this
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -73,10 +86,10 @@ Namespace Ecospace
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            'Me(0, eColumnTypes.None) = New EwEColumnHeaderCell("None")
             Me(0, eColumnTypes.Habitat) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_HABITAT)
-            Me(0, eColumnTypes.EnvDrivers) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_ENVRESPONSES)
-            Me(0, eColumnTypes.Both) = New EwEColumnHeaderCell("Both")
+            Me(0, eColumnTypes.EnvResponses) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_ENVRESPONSES)
+
+            Me.m_bInUpdate = True
 
             For iGroup As Integer = 1 To Core.nGroups
 
@@ -87,25 +100,19 @@ Namespace Ecospace
                 ' # Group name row header cells
                 Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
-                Me(iGroup, eColumnTypes.Habitat) = New EwECheckboxCell(False)
+                Me(iGroup, eColumnTypes.Habitat) = New EwECheckboxCell((group.CapacityCalculationType And eEcospaceCapacityCalType.Habitat) = eEcospaceCapacityCalType.Habitat)
                 Me(iGroup, eColumnTypes.Habitat).Behaviors.Add(EwEEditHandler)
 
-                'Me(iGroup, eColumnTypes.None) = New EwECheckboxCell(False)
-                'Me(iGroup, eColumnTypes.None).Behaviors.Add(EwEEditHandler)
-
-                Me(iGroup, eColumnTypes.EnvDrivers) = New EwECheckboxCell(False)
-                Me(iGroup, eColumnTypes.EnvDrivers).Behaviors.Add(EwEEditHandler)
-
-                Me(iGroup, eColumnTypes.Both) = New EwECheckboxCell(False)
-                Me(iGroup, eColumnTypes.Both).Behaviors.Add(EwEEditHandler)
+                Me(iGroup, eColumnTypes.EnvResponses) = New EwECheckboxCell((group.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses)
+                Me(iGroup, eColumnTypes.EnvResponses).Behaviors.Add(EwEEditHandler)
 
                 Dim prop As cProperty = Me.PropertyManager.GetProperty(group, eVarNameFlags.EcospaceCapCalType)
-                Me.m_lProps.Add(prop)
                 AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
-
-                Me.UpdateRow(group)
+                Me.m_lProps.Add(prop)
 
             Next
+
+            Me.m_bInUpdate = False
 
         End Sub
 
@@ -125,33 +132,36 @@ Namespace Ecospace
             Me.FixedColumnWidths = False
         End Sub
 
-        Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+        Private m_bDirty As Boolean = False
+
+        Protected Overrides Function OnCellValueChanged(p As Position, cell As ICellVirtual) As Boolean
 
             If (Not Me.m_bInUpdate) Then
-                Me.m_bInUpdate = True
-                Try
-                    Select Case DirectCast(p.Column, eColumnTypes)
-                        'Case eColumnTypes.None
-                        '    If (CBool(cell.GetValue(p))) Then Me.m_lProps(p.Row - 1).SetValue(eEcospaceCapacityCalType.None)
+                Dim group As cEcospaceGroupInput = Core.EcospaceGroups(p.Row)
+                Dim val As eEcospaceCapacityCalType = group.CapacityCalculationType
+                Dim bSet As Boolean = CBool(cell.GetValue(p))
 
-                        Case eColumnTypes.Habitat
-                            If (CBool(cell.GetValue(p))) Then Me.m_lProps(p.Row - 1).SetValue(eEcospaceCapacityCalType.Habitat)
+                Select Case DirectCast(p.Column, eColumnTypes)
 
-                        Case eColumnTypes.EnvDrivers
-                            If (CBool(cell.GetValue(p))) Then Me.m_lProps(p.Row - 1).SetValue(eEcospaceCapacityCalType.EnvResponses)
+                    Case eColumnTypes.Habitat
+                        If bSet Then
+                            val = val Or eEcospaceCapacityCalType.Habitat
+                        Else
+                            val = val And Not eEcospaceCapacityCalType.Habitat
+                        End If
 
-                        Case eColumnTypes.Both
-                            If (CBool(cell.GetValue(p))) Then Me.m_lProps(p.Row - 1).SetValue(eEcospaceCapacityCalType.Both)
-
-                    End Select
-
-                Catch ex As Exception
-                    Debug.Assert(False)
-                End Try
-                Me.m_bInUpdate = False
+                    Case eColumnTypes.EnvResponses
+                        If bSet Then
+                            val = val Or eEcospaceCapacityCalType.EnvResponses
+                        Else
+                            val = val And Not eEcospaceCapacityCalType.EnvResponses
+                        End If
+                End Select
+                group.CapacityCalculationType = val
             End If
 
             Return MyBase.OnCellValueChanged(p, cell)
+
         End Function
 
 #End Region ' Overrides
@@ -164,19 +174,20 @@ Namespace Ecospace
 
         Private Sub UpdateRow(grp As cEcospaceGroupInput)
 
+            If (Me.m_bInUpdate) Then Return
+            Me.m_bInUpdate = True
+
             Dim iGroup As Integer = grp.Index
+            Dim prop As cProperty = Me.m_lProps(iGroup - 1)
+            Dim val As eEcospaceCapacityCalType = DirectCast(prop.GetValue(), eEcospaceCapacityCalType)
 
-            'Me(iGroup, eColumnTypes.None).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.None)
-            'Me.InvalidateCell(Me(iGroup, eColumnTypes.None))
-
-            Me(iGroup, eColumnTypes.Habitat).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.Habitat)
+            Me(iGroup, eColumnTypes.Habitat).Value = ((val And eEcospaceCapacityCalType.Habitat) = eEcospaceCapacityCalType.Habitat)
             Me.InvalidateCell(Me(iGroup, eColumnTypes.Habitat))
 
-            Me(iGroup, eColumnTypes.EnvDrivers).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses)
-            Me.InvalidateCell(Me(iGroup, eColumnTypes.EnvDrivers))
+            Me(iGroup, eColumnTypes.EnvResponses).Value = ((val And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses)
+            Me.InvalidateCell(Me(iGroup, eColumnTypes.EnvResponses))
 
-            Me(iGroup, eColumnTypes.Both).Value = (grp.CapacityCalculationType = eEcospaceCapacityCalType.Both)
-            Me.InvalidateCell(Me(iGroup, eColumnTypes.Both))
+            Me.m_bInUpdate = False
 
         End Sub
 

@@ -124,7 +124,8 @@ Public Class cValidatorManager
         Me.m_validators.Add(eVarNameFlags.IUCNConservationStatus, New cValidatorEnum(GetType(eIUCNConservationStatusTypes)))
         Me.m_validators.Add(eVarNameFlags.OrganismType, New cValidatorEnum(GetType(eOrganismTypes)))
         Me.m_validators.Add(eVarNameFlags.OccurrenceStatus, New cValidatorEnum(GetType(eOccurrenceStatusTypes)))
-        Me.m_validators.Add(eVarNameFlags.EcospaceCapCalType, New cValidatorEnum(GetType(eEcospaceCapacityCalType)))
+        ' Bitwise flag enums not supported yet
+        'Me.m_validators.Add(eVarNameFlags.EcospaceCapCalType, New cValidatorEnum(GetType(eEcospaceCapacityCalType)))
 
         ' Fishing policy search
         Me.m_validators.Add(eVarNameFlags.FPSInitOption, New cValidatorEnum(GetType(eInitOption)))

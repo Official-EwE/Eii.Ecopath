@@ -7754,7 +7754,7 @@ exitline:
 
         For K = 1 To Me.m_Data.NGroups
             If (Me.m_Data.isGroupHabCapChanged(K) = True) And
-               ((Me.m_Data.CapCalType(K) = eEcospaceCapacityCalType.Habitat) Or (Me.m_Data.CapCalType(K) = eEcospaceCapacityCalType.Both)) Then
+               ((Me.m_Data.CapCalType(K) And eEcospaceCapacityCalType.Habitat) = eEcospaceCapacityCalType.Habitat) Then
                 For i = 1 To Me.m_Data.InRow
                     For j = 1 To Me.m_Data.InCol
                         If m_Data.Depth(i, j) > 0.0 Then
@@ -8075,26 +8075,24 @@ exitline:
                 Dim bUseHapCapInput As Boolean = False
 
                 ' If no input bUseHapCapInput will be false, and homogenous map input of 1 will be assumed
-                If ((Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.EnvResponses) Or (Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.Both)) Then
-                    Dim irow As Integer = 1
-                    While (bUseHapCapInput = False) And (irow <= Me.m_Data.InRow)
-                        Dim icol As Integer = 1
-                        While (bUseHapCapInput = False) And (icol <= Me.m_Data.InCol)
-                            If Me.m_Data.Depth(irow, icol) > 0 Then
-                                If (Me.m_Data.HabCapInput(igrp)(irow, icol) > 0) Then
-                                    bUseHapCapInput = True
-                                End If
+                Dim irow As Integer = 1
+                While (bUseHapCapInput = False) And (irow <= Me.m_Data.InRow)
+                    Dim icol As Integer = 1
+                    While (bUseHapCapInput = False) And (icol <= Me.m_Data.InCol)
+                        If Me.m_Data.Depth(irow, icol) > 0 Then
+                            If (Me.m_Data.HabCapInput(igrp)(irow, icol) > 0) Then
+                                bUseHapCapInput = True
                             End If
-                            icol += 1
-                        End While
-                        irow += 1
+                        End If
+                        icol += 1
                     End While
-                End If
+                    irow += 1
+                End While
 
                 'Get the baseline capacity values from the user input capacity map 
                 'This is done first so the values are just copied in
                 'All others capacity drivers act as a multiplier on this baseline 
-                For irow As Integer = 1 To Me.m_Data.InRow
+                For irow = 1 To Me.m_Data.InRow
                     For icol As Integer = 1 To Me.m_Data.InCol
                         If Me.m_Data.Depth(irow, icol) > 0 Then
                             If Not bUseHapCapInput Then
@@ -8417,7 +8415,7 @@ exitline:
                 For igrp = 1 To Me.m_Data.NGroups
                     'Has the habitat for this group changed
                     If (Me.m_Data.isGroupHabCapChanged(igrp) = True) And
-                      ((Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.EnvResponses) Or (Me.m_Data.CapCalType(igrp) = eEcospaceCapacityCalType.Both)) Then
+                      ((Me.m_Data.CapCalType(igrp) And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Then
                         'Does this group contain a response function for this map
                         If map.ResponseIndexForGroup(igrp) > 0 Then
                             'System.Console.Write(igrp.ToString + ",")

@@ -20,7 +20,6 @@
 
 Option Strict On
 Imports EwEUtils.Database
-Imports EwEUtils.Core
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -34,6 +33,20 @@ Imports EwEUtils.Core
 ''' --------------------------------------------------------------------------
 Friend Class cDBUpdate6_50_00_09
     Inherits cDBUpdate
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type stating supported Ecospace habitat foraging capacity calculation methods.
+    '''</summary>
+    ''' -----------------------------------------------------------------------
+    Private Enum cOldCapCalcType As Integer
+        ''' <summary>Only environmental responses and capacity input layers are used to calculate capacity. Habitats are ignored for this purpose</summary>
+        EnvResponses = 0
+        ''' <summary>Only habitats are used to calculate capacity. Capacity inputs are ignored.</summary>
+        Habitat = 1
+        ''' <summary>Both environmental responses and habitats are used to calculate capacity.</summary>
+        Both = 2
+    End Enum
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cDBUpdate.UpdateVersion"/>
@@ -59,10 +72,10 @@ Friend Class cDBUpdate6_50_00_09
             Return False
         End If
 
-        Dim ct As eEcospaceCapacityCalType = eEcospaceCapacityCalType.Habitat
+        Dim ct As cOldCapCalcType = cOldCapCalcType.Habitat
         Dim nScenarios As Integer = CInt(db.GetValue("SELECT COUNT(*) FROM EcospaceScenario"))
         Dim hasDrivers(nScenarios) As Boolean
-        Dim capmode(nScenarios) As eEcospaceCapacityCalType
+        Dim capmode(nScenarios) As cOldCapCalcType
         Dim iScenarioDBID(nScenarios) As Integer
         Dim iScenario As Integer = 1
         Dim bSuccess As Boolean = True
@@ -72,7 +85,7 @@ Friend Class cDBUpdate6_50_00_09
             While reader.Read()
                 iScenarioDBID(iScenario) = CInt(reader("ScenarioID"))
                 hasDrivers(iScenario) = (CInt(db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioCapacityDrivers WHERE ScenarioID={0}", iScenarioDBID(iScenario)))) > 0)
-                capmode(iScenario) = DirectCast(CInt(db.ReadSafe(reader, "CapacityCalType", 0)), eEcospaceCapacityCalType)
+                capmode(iScenario) = DirectCast(CInt(db.ReadSafe(reader, "CapacityCalType", 0)), cOldCapCalcType)
                 iScenario += 1
             End While
         End If
@@ -86,14 +99,14 @@ Friend Class cDBUpdate6_50_00_09
                 Dim bHasCapAssignments As Boolean = (CInt(db.GetValue("SELECT COUNT (*) FROM EcospaceScenarioCapacityDrivers WHERE (GroupID=" & CStr(drow("GroupID")) & ")")) > 0)
                 Select Case capmode(iScenario)
 
-                    Case eEcospaceCapacityCalType.Both, eEcospaceCapacityCalType.EnvResponses
+                    Case cOldCapCalcType.Both, cOldCapCalcType.EnvResponses
                         If Not bHasCapAssignments Or Not hasDrivers(iScenario) Then
-                            ct = eEcospaceCapacityCalType.Habitat
+                            ct = cOldCapCalcType.Habitat
                         End If
 
-                    Case eEcospaceCapacityCalType.Habitat
+                    Case cOldCapCalcType.Habitat
                         If bHasCapAssignments And hasDrivers(iScenario) Then
-                            ct = eEcospaceCapacityCalType.Both
+                            ct = cOldCapCalcType.Both
                         End If
 
                 End Select
