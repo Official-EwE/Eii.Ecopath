@@ -6137,14 +6137,11 @@ Public Class cCore
         grp.AllowValidation = False
 
         For iHabitat As Integer = 0 To Me.nHabitats - 1
-            Select Case grp.CapacityCalculationType
-                Case eEcospaceCapacityCalType.Habitat, eEcospaceCapacityCalType.Both
-                    grp.ClearStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
-                Case eEcospaceCapacityCalType.EnvResponses ' , eEcospaceCapacityCalType.None
-                    grp.SetStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
-                Case Else
-                    Debug.Assert(False)
-            End Select
+            If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.Habitat) = eEcospaceCapacityCalType.Habitat) Then
+                grp.ClearStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
+            Else
+                grp.SetStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)
+            End If
         Next
         grp.AllowValidation = b
 

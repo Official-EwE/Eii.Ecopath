@@ -216,7 +216,7 @@ Namespace Ecospace
             Dim style As cStyleGuide.eStyleFlags
             Dim mapManager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
 
-            If (grp.CapacityCalculationType = eEcospaceCapacityCalType.EnvResponses) Or (grp.CapacityCalculationType = eEcospaceCapacityCalType.Both) Then
+            If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Then
                 style = cStyleGuide.eStyleFlags.OK
             Else
                 style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null

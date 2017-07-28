@@ -36,6 +36,7 @@ Imports EwEUtils.Core
 Friend Class cDBUpdate6_02_00_02
     Inherits cDBUpdate
 
+
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cDBUpdate.UpdateVersion"/>
     ''' -----------------------------------------------------------------------
@@ -143,7 +144,8 @@ Friend Class cDBUpdate6_02_00_02
 
         Dim bSuccess As Boolean = True
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN CapacityCalType SHORT")
-        bSuccess = bSuccess And db.Execute(String.Format("UPDATE EcospaceScenario SET CapacityCalType={0}", CInt(eEcospaceCapacityCalType.Habitat)))
+        'bSuccess = bSuccess And db.Execute(String.Format("UPDATE EcospaceScenario SET CapacityCalType={0}", CInt(eEcospaceCapacityCalType.Habitat)))
+        bSuccess = bSuccess And db.Execute(String.Format("UPDATE EcospaceScenario SET CapacityCalType={0}", 1))
         Me.LogProgress("Updated table EcospaceScenario", True)
         Return bSuccess
 

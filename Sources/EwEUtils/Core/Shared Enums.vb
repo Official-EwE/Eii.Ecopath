@@ -1917,10 +1917,7 @@ Namespace Core
         ''' Data belongs to the Ecopath fleet inputs,
         ''' which are provided for a parameter estimation run.
         '''</summary>
-        EcopathFleetInput = 4
-
-        <Obsolete("Use EcopathFleetInput instead")>
-        FleetInput = EcopathFleetInput
+        FleetInput = 4
 
         ''' <summary>
         ''' Data belongs to an Ecosim scenario.
@@ -3255,18 +3252,15 @@ Namespace Core
     ''' Enumerated type stating supported Ecospace habitat foraging capacity calculation methods.
     '''</summary>
     ''' -----------------------------------------------------------------------
+    <Flags()>
     Public Enum eEcospaceCapacityCalType As Integer
-        '''' <summary>Capacity is not calculated, but is obtained from inputs only.</summary>
-        'None = -1
-        ''' <summary>Only environmental responses and capacity input layers are used to calculate capacity. Habitats are ignored for this purpose</summary>
-        EnvResponses = 0
-        ''' <summary>Only habitats are used to calculate capacity. Capacity inputs are ignored.</summary>
-        Habitat = 1
-        ''' <summary>Both environmental responses and habitats are used to calculate capacity.</summary>
-        Both = 2
+        ''' <summary>Default; base capacity is obtained from input maps.</summary>
+        Input = 0
+        ''' <summary>Include environmental responses in the capacity calculations.</summary>
+        EnvResponses = 1
+        ''' <summary>Include habitats in the capacity calculations.</summary>
+        Habitat = 2
     End Enum
-
-
 
     ''' <summary>
     ''' Averaging/summary time periods for the Ecospace regions results files

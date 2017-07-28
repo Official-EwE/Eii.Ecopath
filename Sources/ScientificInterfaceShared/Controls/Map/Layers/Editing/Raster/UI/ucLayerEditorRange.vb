@@ -75,20 +75,21 @@ Namespace Controls.Map.Layers
 
             Dim edt As cLayerEditorRaster = Me.Editor
             Dim prop As cProperty = edt.Layer.GetDataProperty()
+            Dim md As cVariableMetaData = Nothing
 
             If (prop IsNot Nothing) Then
-                Me.m_fpValue = New cPropertyFormatProvider(Me.UIContext, Me.m_nudValue, prop)
-            Else
-                ' Try to obtain editor metadata from layer
-                Dim md As cVariableMetaData = Nothing
+                md = prop.GetVariableMetadata()
+            End If
 
+            ' Try to resolve metadata
+            If (md Is Nothing) Then
                 If (edt.Layer.Data IsNot Nothing) Then
                     If (edt.Layer.Data.MetadataCell IsNot Nothing) Then
                         md = edt.Layer.Data.MetadataCell
                     End If
                 End If
 
-                ' No default metadata found?
+                ' Still no luck?
                 If (md Is Nothing) Then
                     ' #Yes: create metadata from layer editor settings
                     md = New cVariableMetaData(Convert.ToDecimal(Math.Max(-100000, Me.Editor.CellValueMin)),
@@ -96,20 +97,20 @@ Namespace Controls.Map.Layers
                                             cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo),
                                             cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
                 End If
-                Me.m_fpValue = New cEwEFormatProvider(Me.UIContext, Me.m_nudValue, edt.Layer.ValueType, md)
+            End If
 
-                ' Config numerical precision
-                If edt.Layer.ValueType Is GetType(Integer) Then
-                    Me.m_nudValue.DecimalPlaces = 0
-                Else
-                    Me.m_nudValue.DecimalPlaces = Me.UIContext.StyleGuide.NumDigits
-                End If
+            Me.m_fpValue = New cEwEFormatProvider(Me.UIContext, Me.m_nudValue, edt.Layer.ValueType, md)
 
-                ' Config increment
-                If (md.Max - md.Min) <= 1000 Then
-                    Me.m_nudValue.Increment = CDec((md.Max - md.Min) / 100)
-                End If
+            ' Config numerical precision
+            If edt.Layer.ValueType Is GetType(Integer) Then
+                Me.m_nudValue.DecimalPlaces = 0
+            Else
+                Me.m_nudValue.DecimalPlaces = Me.UIContext.StyleGuide.NumDigits
+            End If
 
+            ' Config increment
+            If (md.Max - md.Min) <= 1000 Then
+                Me.m_nudValue.Increment = CDec((md.Max - md.Min) / 100)
             End If
 
             AddHandler Me.m_fpValue.OnValueChanged, AddressOf OnValueChanged

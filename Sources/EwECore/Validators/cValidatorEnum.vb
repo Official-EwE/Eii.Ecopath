@@ -33,6 +33,8 @@ Public Class cValidatorEnum
 
     Public Overrides Function Validate(ByVal ValueObject As ValueWrapper.cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = -9999) As Boolean
 
+        ' ToDo: add support for FlagsAttribute enums
+
         ' Perform 'normal' validation
         If Not MyBase.Validate(ValueObject, MetaData, iSecondaryIndex) Then Return False
         ' Check type
