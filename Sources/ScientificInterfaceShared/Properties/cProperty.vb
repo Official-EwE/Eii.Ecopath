@@ -310,7 +310,14 @@ Namespace Properties
 
             ' Anything changed?
             ' JS 03Jul17: do not send out change notification when the property is actively being edited
-            If (changeFlags <> 0 And Not Me.m_bInUpdate) Then
+            'If (changeFlags <> 0 And Not Me.m_bInUpdate) Then
+
+            'jb 7-Aug-2017 Removed the m_bInUpdate flag 
+            'because it was preventing the diet matrix sum col from updating in response to FireChangeNotification(...) when edited
+            'In the Diet Matrix edit case the FireChangeNotification() should be handled by SetValue(), not here, 
+            'unfortunatly SetValue() calls cCore.OnValidation() which sends a message which causes this to be called which handles the update.
+            'Then SetValue(...) can no longer tell there has been an edit to call FireChangeNotification()
+            If (changeFlags <> 0) Then
                 ' #Yes: fire away
                 Me.FireChangeNotification(changeFlags)
             End If
