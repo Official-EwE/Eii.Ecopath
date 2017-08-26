@@ -312,7 +312,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' </summary>
     ''' -----------------------------------------------------------------------
     <EditorBrowsable(EditorBrowsableState.Advanced)>
-    Public Function getID() As String _
+    Public Function GetID() As String _
         Implements ICoreInterface.GetID
         Return cValueID.GetDataTypeID(Me.m_dataType, Me.DBID)
     End Function

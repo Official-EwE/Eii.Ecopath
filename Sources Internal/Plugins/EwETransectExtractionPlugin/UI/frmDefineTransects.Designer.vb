@@ -78,7 +78,6 @@ Partial Class frmDefineTransects
         Me.m_mapzoom.Name = "m_mapzoom"
         Me.m_mapzoom.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
         Me.m_mapzoom.UIContext = Nothing
-        Me.m_mapzoom.ZoomPercentage = 100.0!
         '
         'm_toolstrip
         '

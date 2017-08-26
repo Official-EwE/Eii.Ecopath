@@ -102,7 +102,7 @@ Public Class cTransectDefinePlugin
 
     Public ReadOnly Property ControlImage As Image Implements IGUIPlugin.ControlImage
         Get
-            Return SharedResources.nav0_application_get
+            Return SharedResources.nav_input
         End Get
     End Property
 
