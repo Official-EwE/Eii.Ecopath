@@ -113,7 +113,9 @@ Public Class cVariableMetaData
         ' in 
         Me.Metadata(eVarNameFlags.Biomass) = New cVariableMetaData(0, Single.MaxValue, gt, lt, , cUnits.Currency)
         Me.Metadata(eVarNameFlags.HabitatArea) = New cVariableMetaData(0, 1, gt, le, cCore.NULL_VALUE, cUnits.Proportion)
-        Me.Metadata(eVarNameFlags.BioAccumInput) = New cVariableMetaData(0, 1, gt, le, cCore.NULL_VALUE, cUnits.Proportion)
+        'jb allow BA to have a greater range then 0-1
+        'Me.Metadata(eVarNameFlags.BioAccumInput) = New cVariableMetaData(0, 1, gt, le, cCore.NULL_VALUE, cUnits.Proportion)
+        Me.Metadata(eVarNameFlags.BioAccumInput) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, le, cCore.NULL_VALUE, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.BioAccumRate) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt,, cUnits.OverTime)
         Me.Metadata(eVarNameFlags.BiomassAreaInput) = New cVariableMetaData(0, Single.MaxValue, gt, lt, cCore.NULL_VALUE, cUnits.Currency) ' Set to null when cleared
         Me.Metadata(eVarNameFlags.PBInput) = New cVariableMetaData(0, Single.MaxValue, gt, lt, cCore.NULL_VALUE, cUnits.OverTime) ' Set to null when cleared

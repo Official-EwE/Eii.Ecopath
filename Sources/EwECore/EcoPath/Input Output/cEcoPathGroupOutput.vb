@@ -288,8 +288,10 @@ Public Class cEcoPathGroupOutput
         m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         Me.DBID = DBID
-
-        val = New cValue(New Single, eVarNameFlags.EEOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
+        'jb 25-Aug-2017 Allow EE-Output to be zero in the UI.
+        'There is something strane going on here. This worked for some models with the default metadata operator, EE would show as zero, but not others...
+        'val = New cValue(New Single, eVarNameFlags.EEOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
+        val = New cValue(New Single, eVarNameFlags.EEOutput, eStatusFlags.NotEditable, eValueTypes.Sng, New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo)))
         m_values.Add(val.varName, val)
 
         val = New cValue(New Single, eVarNameFlags.PBOutput, eStatusFlags.NotEditable, eValueTypes.Sng)
