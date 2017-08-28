@@ -1,6 +1,4 @@
-﻿Option Strict On
-Imports System.Drawing
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -21,6 +19,8 @@ Imports System.Drawing
 '
 #Region " Imports "
 
+Option Strict On
+Imports System.Drawing
 Imports System.Xml
 Imports EwECore
 Imports EwECore.Core
