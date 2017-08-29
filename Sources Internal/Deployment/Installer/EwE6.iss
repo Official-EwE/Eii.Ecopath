@@ -8,19 +8,21 @@
 #define MyAppPublisher "UBC Institute for Oceans and Fisheries & Ecopath International Initiative"
 
 #define Ecosampler 0
-#define SpatTemp 0
 #define MergeGroups 0
+#define Transects 0
+#define Spinup 0
+#define SpatTemp 0
 
 [Setup]
 ; SignTool=Signtool
-WizardImageFile=C:\Setup\EwE5Logo.bmp
-WizardSmallImageFile=C:\Setup\EwE6Header.bmp
+WizardImageFile=EwE5Logo.bmp
+WizardSmallImageFile=EwE6Header.bmp
 WizardImageStretch=False
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppCopyright={#MyAppPublisher}
 AppId={{113d96bb-5c02-464c-a936-0813ce272e03}
-SetupIconFile=C:\Setup\Ecopath_install.ico
+SetupIconFile=Ecopath_install.ico
 UninstallDisplayIcon={app}\{#MyAppName}
 AllowNoIcons=True
 AppPublisher={#MyAppPublisher}
@@ -105,6 +107,12 @@ Source: "C:\Temp\Build\UserGuide\EcoSampler.pdf"; DestDir: "{app}\UserGuide\"; F
 #endif
 #if MergeGroups == 1
 Source: "C:\Temp\Build\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\mergegroups
+#endif
+#if Transects == 1
+Source: "C:\Temp\Build\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\transects
+#endif
+#if Spinup == 1
+Source: "C:\Temp\Build\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\spinup
 #endif
 #if SpatTemp == 1
 Source: "C:\Temp\Build\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
@@ -250,6 +258,12 @@ Name: "plugin\automation\mergegroups"; Description: "Merge groups"; Types: full
 #endif
 #if SpatTemp == 1
 Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange framework"
+#endif
+#if Transects == 1
+Name: "plugin\output\transects"; Description: "Transects extraction"
+#endif
+#if Spinup == 1
+Name: "plugin\automation\spinup"; Description: "Ecospace spin-up"
 #endif
 
 [Tasks]
