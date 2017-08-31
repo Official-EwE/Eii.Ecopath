@@ -54,7 +54,7 @@ Public Class frmSelectPreyPredator
             'Check which functional groups are prey to given predator and add to prey chklist
             With Me.chklstAttached.Items
                 For i As Integer = 1 To m_core.nGroups
-                    If m_core.EcoSimGroupOutputs(i).IsPrey(PreyIndex) Then
+                    If m_core.EcoPathGroupInputs(i).IsPrey(PreyIndex) Then
                         .Add(m_core.EcoSimGroupOutputs(i).Name)
                     End If
                 Next

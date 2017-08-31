@@ -23,9 +23,7 @@
 Option Strict On
 
 Imports System.IO
-Imports System.Text
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -630,7 +628,7 @@ Public MustInherit Class cTimeSeriesTextReader
                 Dim bAllowCoreNull As Boolean = Me.m_ts(iColumn - 1).SupportsNull()
 
                 ' Reset value
-                sValue = cSystemUtils.IIF(bAllowCoreNull, cCore.NULL_VALUE, 0)
+                sValue = If(bAllowCoreNull, cCore.NULL_VALUE, 0)
 
                 ' Reset preview
                 Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = ""
