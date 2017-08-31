@@ -50,6 +50,7 @@ Partial Class frmStatusPanel
         Me.m_tvStatus.FullRowSelect = True
         Me.m_tvStatus.HideSelection = False
         Me.m_tvStatus.Name = "m_tvStatus"
+        Me.m_tvStatus.ShowImages = True
         Me.m_tvStatus.ShowLines = False
         Me.m_tvStatus.ShowTime = False
         '

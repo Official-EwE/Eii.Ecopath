@@ -163,7 +163,7 @@ Namespace Controls
             Dim clrText As Color = SystemColors.ControlText
             Dim ft As Font = Nothing
             Dim rcItem As Rectangle = e.Bounds
-            Dim bShowTime As Boolean = Me.m_bShowTime And (TypeOf (e.Node) Is cHyperlinkTreeNode)
+            Dim bShowTime As Boolean = Me.m_bShowTime ' And (TypeOf (e.Node) Is cHyperlinkTreeNode)
 
             Dim dx As Integer = Me.ClientRectangle.Width - e.Bounds.Width
             If Threading.Thread.CurrentThread.CurrentUICulture.TextInfo.IsRightToLeft Then
@@ -175,8 +175,13 @@ Namespace Controls
             End If
             Dim rcTime As Rectangle = e.Bounds
 
+            Dim rcFull As Rectangle = e.Bounds
+            rcFull.Width = Me.ClientRectangle.Width ' And this happily ignores R2L reading order...
             If ((e.State And (TreeNodeStates.Focused)) > 0) Then
+                e.Graphics.FillRectangle(SystemBrushes.Highlight, rcFull)
                 clrText = SystemColors.HighlightText
+            Else
+                e.Graphics.FillRectangle(SystemBrushes.Window, rcFull)
             End If
 
             If m_bShowTime And e.Node.Parent Is Nothing Then
@@ -189,7 +194,7 @@ Namespace Controls
                 End If
 
                 ft = New Font(Me.Font, FontStyle.Regular)
-                TextRenderer.DrawText(e.Graphics, DirectCast(e.Node, cHyperlinkTreeNode).Time.ToShortTimeString, _
+                TextRenderer.DrawText(e.Graphics, DirectCast(e.Node, cHyperlinkTreeNode).Time.ToShortTimeString,
                                       ft, rcTime, clrText, fmt)
                 ft.Dispose()
             End If
@@ -201,6 +206,8 @@ Namespace Controls
             End If
             TextRenderer.DrawText(e.Graphics, e.Node.Text, ft, rcItem, clrText, fmt)
             ft.Dispose()
+
+            '  e.DrawDefault = False
 
         End Sub
 

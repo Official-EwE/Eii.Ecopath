@@ -139,7 +139,7 @@
     <value>m_tvStatus</value>
   </data>
   <data name="&gt;&gt;m_tvStatus.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cNavigateTreeview, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cNavigateTreeview, ScientificInterfaceShared, Version=6.6.14818.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tvStatus.Parent" xml:space="preserve">
     <value>$this</value>
@@ -221,6 +221,6 @@
     <value>frmStatusPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEDockContent, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEDockContent, ScientificInterfaceShared, Version=6.6.14818.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
