@@ -111,7 +111,9 @@ Friend Class cEngine
         End Function
 
         Public Sub Update()
+            Me.m_ff.LockUpdates()
             Me.m_ff.Update()
+            Me.m_ff.UnlockUpdates(bUpdate:=False)
         End Sub
 
     End Class
@@ -408,7 +410,7 @@ Friend Class cEngine
             Me.m_lManagers.Add(Me.m_core.FishingEffortShapeManager)
         End If
 
-        ' Explore all maangers
+        ' Explore all managers
         For i As Integer = 0 To Me.m_lManagers.Count - 1
             Dim man As cBaseShapeManager = Me.m_lManagers(i)
 
@@ -838,29 +840,33 @@ Friend Class cEngine
 
         ' First, step over the managers in the proper commit order (which ensures that Fmort 
         ' is committed before any possibly overriding effort)
-        For i As Integer = 0 To Me.m_lManagers.Count - 1
+        For iMan As Integer = 0 To Me.m_lManagers.Count - 1
 
-            Dim man As cBaseShapeManager = Me.m_lManagers(i)
+            Dim man As cBaseShapeManager = Me.m_lManagers(iMan)
             Dim bUpdate As Boolean = False
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'OK HACK Warning
+            'Fishing Effort shapes include the "All Fleets" shape. If the Manager Updates the 'All Fleets' shape it will overwrite the other shapes with the 'All Fleets' values
+            'Stop the manager via the cShapeBaseManager.Update(bUpdateAll:=False)
+            Dim bUpdateAll As Boolean = True ' True for all manager except Fishing Effort
+            If TypeOf (man) Is cFishingEffortShapeManger Then bUpdateAll = False
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-            ' Check all cached shapes
+            ' Check and Update all cached shapes
             For Each ff As cFFCache In Me.m_FFCache.Values
-                ' Is this shape changed, and is the manager not updated yet?
-                If (ff.IsChanged() And bUpdate = False) Then
-                    ' Does the manager owns this shape?
-                    If (ff.BelongsTo(man)) Then
-                        ' Ok, give'r
-                        ff.Update()
-                        ' Do not update again for this type of manager
-                        bUpdate = True
-                    End If
-                End If
-            Next
+                ' Is this shape changed and does the manager owns this shape?
+                If ff.IsChanged() And ff.BelongsTo(man) Then
+                    ' Ok, give'r Update the shape
+                    ff.Update()
+                    bUpdate = True
+
+                End If 'ff.IsChanged() And ff.BelongsTo(man)
+            Next ff
 
             ' Now update the manager itself
-            If bUpdate Then man.Update()
+            If bUpdate Then man.Update(bUpdateAll:=bUpdateAll)
 
-        Next
+        Next iMan
 
     End Sub
 

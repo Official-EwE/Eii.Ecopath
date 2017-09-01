@@ -255,7 +255,7 @@ Public MustInherit Class cBaseShapeManager
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks>This is dumb it will clear all the existing data and repopulte all the data. It has no idea what has changed </remarks>
-    Public Overridable Function Update() As Boolean
+    Public Overridable Function Update(Optional bUpdateAll As Boolean = True) As Boolean
 
         Try
             'have each shape will update the underlying EcoSim data
