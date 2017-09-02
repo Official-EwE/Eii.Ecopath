@@ -41,7 +41,6 @@ Public Class cEcospaceLayerImportance
         MyBase.New(theCore, manager, "", eVarNameFlags.LayerImportance, iIndex)
 
         Dim val As cValue
-        Dim meta As cVariableMetaData
         Dim desc As Char()
 
         Me.AllowValidation = False
@@ -53,13 +52,11 @@ Public Class cEcospaceLayerImportance
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             ' Weight
-            val = New cValue(0, eVarNameFlags.ImportanceWeight, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(0, eVarNameFlags.ImportanceWeight, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             ' Description
-            meta = New cVariableMetaData(60000)
-            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
             m_values.Add(val.varName, val)
 
             'set status flags to default values

@@ -864,14 +864,8 @@
   <data name="VARIABLE_ASCENDTHROUGHPUTGROUP" xml:space="preserve">
     <value>AscendThroughputGroup</value>
   </data>
-  <data name="VARIABLE_ASSIMILATION" xml:space="preserve">
-    <value>Assimilation</value>
-  </data>
   <data name="VARIABLE_ASSUMESQUARECELLS" xml:space="preserve">
     <value>AssumeSquareCells</value>
-  </data>
-  <data name="VARIABLE_AUTHOR" xml:space="preserve">
-    <value>Author</value>
   </data>
   <data name="VARIABLE_BASEMAPSTEPSIZE" xml:space="preserve">
     <value>BasemapStepSize</value>
@@ -890,9 +884,6 @@
   </data>
   <data name="VARIABLE_BIODIVERSITYINDICATORTYPE" xml:space="preserve">
     <value>BiodiversityIndicatorType</value>
-  </data>
-  <data name="VARIABLE_BIOMASS" xml:space="preserve">
-    <value>B||Biomass</value>
   </data>
   <data name="VARIABLE_BIOMASSAVGSZWT" xml:space="preserve">
     <value>BiomassAvgSzWt</value>
@@ -953,9 +944,6 @@
   </data>
   <data name="VARIABLE_CINFLOW" xml:space="preserve">
     <value>CInflow</value>
-  </data>
-  <data name="VARIABLE_CLASS" xml:space="preserve">
-    <value>Class</value>
   </data>
   <data name="VARIABLE_CLIMATETYPE" xml:space="preserve">
     <value>Climate</value>
@@ -1020,9 +1008,6 @@
   <data name="VARIABLE_DENDEPCATCHABILITY" xml:space="preserve">
     <value>DenDepCatchability</value>
   </data>
-  <data name="VARIABLE_DESCRIPTION" xml:space="preserve">
-    <value>Description</value>
-  </data>
   <data name="VARIABLE_DETCONSFLOW" xml:space="preserve">
     <value>DetConsFlow</value>
   </data>
@@ -1040,9 +1025,6 @@
   </data>
   <data name="VARIABLE_DETTODETFLOW" xml:space="preserve">
     <value>DetToDetFlow</value>
-  </data>
-  <data name="VARIABLE_DISCARDS" xml:space="preserve">
-    <value>Discards</value>
   </data>
   <data name="VARIABLE_DISCOUNT" xml:space="preserve">
     <value>Discount</value>
@@ -1503,9 +1485,6 @@
   <data name="VARIABLE_F2TSVULNERABILITYVARIANCE" xml:space="preserve">
     <value>F2TSVulnerabilityVariance</value>
   </data>
-  <data name="VARIABLE_FAMILY" xml:space="preserve">
-    <value>Family</value>
-  </data>
   <data name="VARIABLE_FEEDINGTIMEADJRATE" xml:space="preserve">
     <value>FeedingTimeAdjRate</value>
   </data>
@@ -1608,9 +1587,6 @@
   <data name="VARIABLE_FPSVALUECOMPONENTTYPE" xml:space="preserve">
     <value>FPSValueComponentType</value>
   </data>
-  <data name="VARIABLE_GENUS" xml:space="preserve">
-    <value>Genus</value>
-  </data>
   <data name="VARIABLE_GROUPDIGITS" xml:space="preserve">
     <value>Group digits</value>
   </data>
@@ -1667,9 +1643,6 @@
   </data>
   <data name="VARIABLE_KEMPTONSQPM" xml:space="preserve">
     <value>KemptonsQPM</value>
-  </data>
-  <data name="VARIABLE_LANDINGS" xml:space="preserve">
-    <value>Landings</value>
   </data>
   <data name="VARIABLE_LASTSAVED" xml:space="preserve">
     <value>Last saved</value>
@@ -2451,9 +2424,6 @@
   <data name="VARIABLE_MSYSTARTTIME" xml:space="preserve">
     <value>MSYStartTime</value>
   </data>
-  <data name="VARIABLE_NAME" xml:space="preserve">
-    <value>Name</value>
-  </data>
   <data name="VARIABLE_NATMORTPERTOTMORT" xml:space="preserve">
     <value>NatMortPerTotMort</value>
   </data>
@@ -2464,10 +2434,10 @@
     <value>nEffortDistThreads</value>
   </data>
   <data name="VARIABLE_NETEFFICIENCY" xml:space="preserve">
-    <value>NetEfficiency</value>
+    <value>Net efficiency</value>
   </data>
   <data name="VARIABLE_NETMIGRATION" xml:space="preserve">
-    <value>NetMigration</value>
+    <value>Net migration</value>
   </data>
   <data name="VARIABLE_NETWORKABSFLOW" xml:space="preserve">
     <value>NetworkAbsFlow</value>
@@ -2476,7 +2446,7 @@
     <value>NetworkRelFlow</value>
   </data>
   <data name="VARIABLE_NGRIDSOLVERTHREADS" xml:space="preserve">
-    <value>nGridSolverThreads</value>
+    <value>No. solver threads</value>
   </data>
   <data name="VARIABLE_NORTH" xml:space="preserve">
     <value>North</value>
@@ -2497,7 +2467,7 @@
     <value>NumStepAvg</value>
   </data>
   <data name="VARIABLE_NUMTIMESTEPSPERYEAR" xml:space="preserve">
-    <value>NumTimeStepsPerYear</value>
+    <value>No. time steps per year</value>
   </data>
   <data name="VARIABLE_NUTBASEFREEPROP" xml:space="preserve">
     <value>NutBaseFreeProp</value>
@@ -2507,9 +2477,6 @@
   </data>
   <data name="VARIABLE_OMNIVORYINDEX" xml:space="preserve">
     <value>Omnivory index</value>
-  </data>
-  <data name="VARIABLE_ORDER" xml:space="preserve">
-    <value>Order</value>
   </data>
   <data name="VARIABLE_OTHERMORTFEEDINGTIME" xml:space="preserve">
     <value>OtherMortFeedingTime</value>
@@ -2543,9 +2510,6 @@
   </data>
   <data name="VARIABLE_PEDIGREE" xml:space="preserve">
     <value>Pedigree</value>
-  </data>
-  <data name="VARIABLE_PHYLUM" xml:space="preserve">
-    <value>Phylum</value>
   </data>
   <data name="VARIABLE_PLAP" xml:space="preserve">
     <value>Plap</value>
@@ -2625,9 +2589,6 @@
   <data name="VARIABLE_RELAXATION" xml:space="preserve">
     <value>Relaxation</value>
   </data>
-  <data name="VARIABLE_RESPIRATION" xml:space="preserve">
-    <value>Respiration</value>
-  </data>
   <data name="VARIABLE_RHALFB0RATIO" xml:space="preserve">
     <value>RHalfB0Ratio</value>
   </data>
@@ -2672,9 +2633,6 @@
   </data>
   <data name="VARIABLE_SOUTH" xml:space="preserve">
     <value>South</value>
-  </data>
-  <data name="VARIABLE_SPECIES" xml:space="preserve">
-    <value>Species</value>
   </data>
   <data name="VARIABLE_STANZABIOMASS" xml:space="preserve">
     <value>StanzaBiomass</value>

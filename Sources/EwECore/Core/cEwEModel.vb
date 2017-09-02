@@ -70,7 +70,7 @@ Public Class cEwEModel
             m_values.Add(val.varName, val)
 
             ' NumDigits
-            val = New cValue(New Integer, eVarNameFlags.NumDigits, eStatusFlags.OK, eValueTypes.Int, Nothing, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
+            val = New cValue(New Integer, eVarNameFlags.NumDigits, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
@@ -105,12 +105,12 @@ Public Class cEwEModel
             m_values.Add(val.varName, val)
 
             ' GroupDigits
-            val = New cValue(New Boolean, eVarNameFlags.GroupDigits, eStatusFlags.OK, eValueTypes.Bool, Nothing, m_core.m_validators.getValidator(eVarNameFlags.GroupDigits))
+            val = New cValue(New Boolean, eVarNameFlags.GroupDigits, eStatusFlags.OK, eValueTypes.Bool)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             ' Time unit (enum)
-            val = New cValue(New Integer, eVarNameFlags.UnitTime, eStatusFlags.OK, eValueTypes.Int, Nothing, m_core.m_validators.getValidator(eVarNameFlags.UnitTime))
+            val = New cValue(New Integer, eVarNameFlags.UnitTime, eStatusFlags.OK, eValueTypes.Int)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
@@ -178,7 +178,7 @@ Public Class cEwEModel
             m_values.Add(val.varName, val)
 
             ' Last saved julian date
-            val = New cValue(New Double, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.LastSaved))
+            val = New cValue(New Double, eVarNameFlags.LastSaved, eStatusFlags.OK, eValueTypes.Sng)
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 

@@ -189,13 +189,13 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_FISHMORTRATE, "ndFleetFishingMortality", eCoreExecutionState.EcopathCompleted, GetType(gridFleetFishingMortality), eNodeImages.Output, nodeFolder) ' ToDo: connect to help
 
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_CONSUMPTION, "ndConsumption", eCoreExecutionState.EcopathCompleted, GetType(gridConsumption), eNodeImages.Output, nodeOutput, "Consumption.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_RESPIRATION, "ndRespiration", eCoreExecutionState.EcopathCompleted, GetType(gridRespiration), eNodeImages.Output, nodeOutput, "Respiration.htm")
 
         nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_NICHEOVERLAP, "ndNicheOverlap", eCoreExecutionState.EcopathCompleted, Nothing, eNodeImages.OutputFolder, nodeOutput)
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PREYOVERLAP, "ndPreyOverlap", eCoreExecutionState.EcopathCompleted, GetType(gridNicheOverlapPrey), eNodeImages.Output, nodeFolder, "Niche overlap.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PREDATOROVERLAP, "ndPredatorOverlap", eCoreExecutionState.EcopathCompleted, GetType(gridNicheOverlapPredator), eNodeImages.Output, nodeFolder, "Niche overlap.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_NICHEOVERLAPPLOT, "ndNichePredPreyPlot", eCoreExecutionState.EcopathCompleted, GetType(frmNichePredPreyPlot), eNodeImages.Output, nodeFolder)
 
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_RESPIRATION, "ndRespiration", eCoreExecutionState.EcopathCompleted, GetType(gridRespiration), eNodeImages.Output, nodeOutput, "Respiration.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ELECTIVITY, "ndElectivity", eCoreExecutionState.EcopathCompleted, GetType(gridElectivity), eNodeImages.Output, nodeOutput, "Electivity.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SEARCHRATES, "ndSearchRates", eCoreExecutionState.EcopathCompleted, GetType(gridSearchRates), eNodeImages.Output, nodeOutput, "Search rates.htm")
 

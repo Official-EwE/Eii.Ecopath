@@ -65,7 +65,7 @@ Namespace Ecopath.Output
             Next
 
             ' Total catch column
-            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALCATCH)
+            Me(0, Core.nFleets + 2) = New EwEColumnHeaderCell(eVarNameFlags.TotalCatch)
 
             Me.FixedColumns = 2
         End Sub

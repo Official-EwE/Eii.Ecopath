@@ -42,23 +42,23 @@ Public Class cEcosimFleetInput
         Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         'EPower
-        val = New cValue(New Single, eVarNameFlags.EPower, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.EPower))
+        val = New cValue(New Single, eVarNameFlags.EPower, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         'PcapBase
-        val = New cValue(New Single, eVarNameFlags.PcapBase, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.PcapBase))
+        val = New cValue(New Single, eVarNameFlags.PcapBase, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         'CapDepreciate
-        val = New cValue(New Single, eVarNameFlags.CapDepreciate, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.CapDepreciate))
+        val = New cValue(New Single, eVarNameFlags.CapDepreciate, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         'CapBaseGrowth
-        val = New cValue(New Single, eVarNameFlags.CapBaseGrowth, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.CapBaseGrowth))
+        val = New cValue(New Single, eVarNameFlags.CapBaseGrowth, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         ' FleetEffortConversion
-        val = New cValue(New Single, eVarNameFlags.FleetEffortConversion, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.FleetEffortConversion, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
 
         AllowValidation = True

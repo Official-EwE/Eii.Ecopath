@@ -1,4 +1,3 @@
-Option Strict On
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -19,7 +18,7 @@ Option Strict On
 ' ===============================================================================
 '
 
-Imports EwECore.Style
+Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities

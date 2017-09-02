@@ -90,19 +90,19 @@ Public Class cEcoPathGroupInput
         val = New cValue(New Single, eVarNameFlags.BioAccumInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' Biomass
-        val = New cValue(New Single, eVarNameFlags.Biomass, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.Biomass))
+        val = New cValue(New Single, eVarNameFlags.Biomass, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' BiomassAreaInput
-        val = New cValue(New Single, eVarNameFlags.BiomassAreaInput, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.BiomassAreaInput))
+        val = New cValue(New Single, eVarNameFlags.BiomassAreaInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' DetImp
         val = New cValue(New Single, eVarNameFlags.DetImp, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' EEInput
-        val = New cValue(New Single, eVarNameFlags.EEInput, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.EEInput))
+        val = New cValue(New Single, eVarNameFlags.EEInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' OtherMortInput
-        val = New cValue(New Single, eVarNameFlags.OtherMortInput, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.OtherMortInput))
+        val = New cValue(New Single, eVarNameFlags.OtherMortInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' Emig
         val = New cValue(New Single, eVarNameFlags.Emig, eStatusFlags.Null, eValueTypes.Sng)
@@ -111,19 +111,19 @@ Public Class cEcoPathGroupInput
         val = New cValue(New Single, eVarNameFlags.EmigRate, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' GEInput
-        val = New cValue(New Single, eVarNameFlags.GEInput, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.GEInput))
+        val = New cValue(New Single, eVarNameFlags.GEInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' GS
-        val = New cValue(New Single, eVarNameFlags.GS, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.GS))
+        val = New cValue(New Single, eVarNameFlags.GS, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' PBInput
-        val = New cValue(New Single, eVarNameFlags.PBInput, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.PBInput))
+        val = New cValue(New Single, eVarNameFlags.PBInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' Immig
         val = New cValue(New Single, eVarNameFlags.Immig, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' QBInput
-        val = New cValue(New Single, eVarNameFlags.QBInput, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.QBInput))
+        val = New cValue(New Single, eVarNameFlags.QBInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' BioAccumRate
         val = New cValue(New Single, eVarNameFlags.BioAccumRate, eStatusFlags.Null, eValueTypes.Sng)
@@ -139,7 +139,7 @@ Public Class cEcoPathGroupInput
         val = New cValue(New Single, eVarNameFlags.NonMarketValue, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' IsFished
-        val = New cValue(New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool, Nothing, m_core.m_validators.getValidator(eVarNameFlags.IsFished))
+        val = New cValue(New Boolean, eVarNameFlags.IsFished, eStatusFlags.OK, eValueTypes.Bool)
         val.AffectsRunState = False
         val.Stored = False
         m_values.Add(val.varName, val)
@@ -153,28 +153,28 @@ Public Class cEcoPathGroupInput
         val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.DetritusFate, eStatusFlags.Null, eCoreCounterTypes.nDetritus, AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
         ' VBK
-        val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.VBK))
+        val = New cValue(New Single, eVarNameFlags.VBK, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' TCatchInput
-        val = New cValue(New Single, eVarNameFlags.TCatchInput, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.TCatchInput))
+        val = New cValue(New Single, eVarNameFlags.TCatchInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' AinLWInput
-        val = New cValue(New Single, eVarNameFlags.AinLWInput, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.AinLWInput))
+        val = New cValue(New Single, eVarNameFlags.AinLWInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' BinLWInput
-        val = New cValue(New Single, eVarNameFlags.BinLWInput, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.BinLWInput))
+        val = New cValue(New Single, eVarNameFlags.BinLWInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' LooInput
-        val = New cValue(New Single, eVarNameFlags.LooInput, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.LooInput))
+        val = New cValue(New Single, eVarNameFlags.LooInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' WinfInput
-        val = New cValue(New Single, eVarNameFlags.WinfInput, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.WinfInput))
+        val = New cValue(New Single, eVarNameFlags.WinfInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' t0Input
-        val = New cValue(New Single, eVarNameFlags.t0Input, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.t0Input))
+        val = New cValue(New Single, eVarNameFlags.t0Input, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' TmaxInput
-        val = New cValue(New Single, eVarNameFlags.TmaxInput, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.TmaxInput))
+        val = New cValue(New Single, eVarNameFlags.TmaxInput, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
         ' GroupTaxa - dimensioned by nTaxa(iIndex)
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScientificInterface", "ScientificInterface", "{5969ADB4-4FDE-4385-986B-6C28A162AD78}"
 EndProject
@@ -396,5 +396,8 @@ Global
 		{19B57860-D7C5-479A-8979-E4DFE9A46B50} = {CD098C3C-5773-403D-8344-0412C2006537}
 		{B0F5742B-7A4E-4513-91D8-8921ABDBAEB2} = {CAFA2E5E-DF1C-4982-A43C-031A03C89767}
 		{A0F75147-C78F-4B42-83FE-0F7C73213582} = {B0F5742B-7A4E-4513-91D8-8921ABDBAEB2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95C63F26-75FD-4801-881F-04EB9E2D6425}
 	EndGlobalSection
 EndGlobal
