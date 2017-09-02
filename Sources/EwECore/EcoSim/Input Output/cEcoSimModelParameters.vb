@@ -53,90 +53,90 @@ Public Class cEcoSimModelParameters
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
             'StepSize
-            val = New cValue(New Single, eVarNameFlags.StepSize, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.StepSize))
+            val = New cValue(New Single, eVarNameFlags.StepSize, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'Discount
-            val = New cValue(New Single, eVarNameFlags.Discount, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.Discount))
+            val = New cValue(New Single, eVarNameFlags.Discount, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'EquilibriumStepSize
-            val = New cValue(New Single, eVarNameFlags.EquilibriumStepSize, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.EquilibriumStepSize))
+            val = New cValue(New Single, eVarNameFlags.EquilibriumStepSize, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'EquilMaxFishingRate
-            val = New cValue(New Single, eVarNameFlags.EquilMaxFishingRate, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.EquilMaxFishingRate))
+            val = New cValue(New Single, eVarNameFlags.EquilMaxFishingRate, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'NumStepAvg
-            val = New cValue(New Single, eVarNameFlags.NumStepAvg, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.NumStepAvg))
+            val = New cValue(New Single, eVarNameFlags.NumStepAvg, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'NutBaseFreeProp
-            val = New cValue(New Single, eVarNameFlags.NutBaseFreeProp, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.NutBaseFreeProp))
+            val = New cValue(New Single, eVarNameFlags.NutBaseFreeProp, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'NutPBMax
-            val = New cValue(New Single, eVarNameFlags.NutPBMax, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.NutPBMax))
+            val = New cValue(New Single, eVarNameFlags.NutPBMax, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'SystemRecovery
-            val = New cValue(New Single, eVarNameFlags.SystemRecovery, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.SystemRecovery))
+            val = New cValue(New Single, eVarNameFlags.SystemRecovery, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'ForagingTimeLowerLimit
-            val = New cValue(New Single, eVarNameFlags.ForagingTimeLowerLimit, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.SystemRecovery))
+            val = New cValue(New Single, eVarNameFlags.ForagingTimeLowerLimit, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
             'boolean
             'NudgeChecked
-            val = New cValue(New Boolean, eVarNameFlags.NudgeChecked, eStatusFlags.Null, eValueTypes.Bool, Nothing, m_core.m_validators.getValidator(eVarNameFlags.NudgeChecked))
+            val = New cValue(New Boolean, eVarNameFlags.NudgeChecked, eStatusFlags.Null, eValueTypes.Bool)
             m_values.Add(val.varName, val)
 
             'UseVarPQ
-            val = New cValue(New Boolean, eVarNameFlags.UseVarPQ, eStatusFlags.Null, eValueTypes.Bool, Nothing, m_core.m_validators.getValidator(eVarNameFlags.UseVarPQ))
+            val = New cValue(New Boolean, eVarNameFlags.UseVarPQ, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             m_values.Add(val.varName, val)
 
             'BiomassOn
-            val = New cValue(New Boolean, eVarNameFlags.BiomassOn, eStatusFlags.Null, eValueTypes.Bool, Nothing, m_core.m_validators.getValidator(eVarNameFlags.BiomassOn))
+            val = New cValue(New Boolean, eVarNameFlags.BiomassOn, eStatusFlags.Null, eValueTypes.Bool)
             m_values.Add(val.varName, val)
 
             ''integers
             'NutForceFunctionNumber
-            val = New cValue(New Integer, eVarNameFlags.NutForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int, Nothing, m_core.m_validators.getValidator(eVarNameFlags.NutForceFunctionNumber))
+            val = New cValue(New Integer, eVarNameFlags.NutForceFunctionNumber, eStatusFlags.Null, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             'EcoSimNYears max 1000 year?!
-            val = New cValue(New Integer, eVarNameFlags.EcoSimNYears, eStatusFlags.Null, eValueTypes.Int, Nothing, m_core.m_validators.getValidator(eVarNameFlags.EcoSimNYears))
+            val = New cValue(New Integer, eVarNameFlags.EcoSimNYears, eStatusFlags.Null, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             'start summary
-            val = New cValue(New Single, eVarNameFlags.EcosimSumStart, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.EcosimSumStart))
+            val = New cValue(New Single, eVarNameFlags.EcosimSumStart, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'end summary
-            val = New cValue(New Single, eVarNameFlags.EcosimSumEnd, eStatusFlags.Null, eValueTypes.Sng, Nothing, m_core.m_validators.getValidator(eVarNameFlags.EcosimSumEnd))
+            val = New cValue(New Single, eVarNameFlags.EcosimSumEnd, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'summary num time steps
-            val = New cValue(New Integer, eVarNameFlags.EcosimSumNTimeSteps, eStatusFlags.Null, eValueTypes.Int, Nothing, m_core.m_validators.getValidator(eVarNameFlags.EcosimSumNTimeSteps))
+            val = New cValue(New Integer, eVarNameFlags.EcosimSumNTimeSteps, eStatusFlags.Null, eValueTypes.Int)
             val.Stored = False
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'Contaminant tracing
-            val = New cValue(New Boolean, eVarNameFlags.ConSimOnEcoSim, eStatusFlags.Null, eValueTypes.Bool, Nothing, m_core.m_validators.getValidator(eVarNameFlags.ConSimOnEcoSim))
+            val = New cValue(New Boolean, eVarNameFlags.ConSimOnEcoSim, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
             'PredictEffort
-            val = New cValue(New Boolean, eVarNameFlags.PredictEffort, eStatusFlags.Null, eValueTypes.Bool, Nothing, m_core.m_validators.getValidator(eVarNameFlags.PredictEffort))
+            val = New cValue(New Boolean, eVarNameFlags.PredictEffort, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
             val.AffectsRunState = False
             m_values.Add(val.varName, val)

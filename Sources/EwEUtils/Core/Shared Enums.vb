@@ -1729,7 +1729,7 @@ Namespace Core
         ''' <summary>Value of selected biodiversity indicator</summary>
         BiodiversityIndicator
 
-        ''' <summary>To document</summary>
+        ''' <summary>Total catch</summary>
         TotalCatch
 
         ''' <summary>Start year of the Ecopath model</summary>
@@ -2572,6 +2572,7 @@ Namespace Core
     ''' multiple statuses for a variable.</para>
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
+    <Flags()>
     Public Enum eStatusFlags
 
         ''' <summary>

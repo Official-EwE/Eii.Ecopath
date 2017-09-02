@@ -115,7 +115,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.HabitatArea) = New cVariableMetaData(0, 1, gt, le, cCore.NULL_VALUE, cUnits.Proportion)
         'jb allow BA to have a greater range then 0-1
         'Me.Metadata(eVarNameFlags.BioAccumInput) = New cVariableMetaData(0, 1, gt, le, cCore.NULL_VALUE, cUnits.Proportion)
-        Me.Metadata(eVarNameFlags.BioAccumInput) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, le, cCore.NULL_VALUE, cUnits.Proportion)
+        Me.Metadata(eVarNameFlags.BioAccumInput) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, le, cCore.NULL_VALUE, cUnits.Currency)
         Me.Metadata(eVarNameFlags.BioAccumRate) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt,, cUnits.OverTime)
         Me.Metadata(eVarNameFlags.BiomassAreaInput) = New cVariableMetaData(0, Single.MaxValue, gt, lt, cCore.NULL_VALUE, cUnits.Currency) ' Set to null when cleared
         Me.Metadata(eVarNameFlags.PBInput) = New cVariableMetaData(0, Single.MaxValue, gt, lt, cCore.NULL_VALUE, cUnits.OverTime) ' Set to null when cleared
@@ -164,8 +164,8 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.MortCoBioAcumRate) = [Default](eValueTypes.Sng, cUnits.OverTime)
         Me.Metadata(eVarNameFlags.MortCoNetMig) = [Default](eValueTypes.Sng, cUnits.OverTime)
         Me.Metadata(eVarNameFlags.MortCoOtherMort) = [Default](eValueTypes.Sng, cUnits.OverTime)
-        Me.Metadata(eVarNameFlags.NetMigration) = [Default](eValueTypes.Sng)
-        Me.Metadata(eVarNameFlags.FlowToDet) = [Default](eValueTypes.Sng)
+        Me.Metadata(eVarNameFlags.NetMigration) = [Default](eValueTypes.Sng, cUnits.CurrencyOverTime)
+        Me.Metadata(eVarNameFlags.FlowToDet) = [Default](eValueTypes.Sng, cUnits.CurrencyOverTime)
         Me.Metadata(eVarNameFlags.NetEfficiency) = [Default](eValueTypes.Sng)
         Me.Metadata(eVarNameFlags.OmnivoryIndex) = [Default](eValueTypes.Sng)
 
@@ -372,7 +372,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.TLCatch) = [Default](eValueTypes.Sng)
         Me.Metadata(eVarNameFlags.KemptonsQ) = [Default](eValueTypes.Sng)
         Me.Metadata(eVarNameFlags.ShannonDiversity) = [Default](eValueTypes.Sng)
-        Me.Metadata(eVarNameFlags.TotalCatch) = [Default](eValueTypes.Sng, cUnits.Currency)
+        Me.Metadata(eVarNameFlags.TotalCatch) = [Default](eValueTypes.Sng, cUnits.CurrencyOverTime)
 
         ' -- Ecospace --
         ' parameters
@@ -625,6 +625,26 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.MPAOptEndYear) = New cVariableMetaData(0, 2000, ge, le)
 
         ' -- MSE --
+        ' group in
+        Me.Metadata(eVarNameFlags.MSEBioCV) = New cVariableMetaData(0, 1, ge, le)
+        Me.Metadata(eVarNameFlags.MSELowerRisk) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSEUpperRisk) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSERefBioLower) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSERefBioUpper) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSERefBioEstLower) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSERefBioEstUpper) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSERefGroupCatchLower) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSERefGroupCatchUpper) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSEForcastGain) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.RHalfB0Ratio) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSEFixedF) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSERecruitmentCV) = New cVariableMetaData(0, 1, ge, le)
+        Me.Metadata(eVarNameFlags.MSETAC) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSEBBase) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSEBLim) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSEFmax) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.MSEFmin) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
+
         ' fleet in
         Me.Metadata(eVarNameFlags.MSEQIncrease) = New cVariableMetaData(0, Single.MaxValue, gt, lt)
         Me.Metadata(eVarNameFlags.MSEFleetCV) = New cVariableMetaData(0, 1, ge, le)
@@ -656,13 +676,11 @@ Public Class cVariableMetaData
         ' batch group
         Me.Metadata(eVarNameFlags.MSEBatchFLower) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.MSEBatchFUpper) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
-        Me.Metadata(eVarNameFlags.MSEFixedF) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.MSEBatchFManaged) = New cVariableMetaData()
 
         ' batch TAC group
         Me.Metadata(eVarNameFlags.MSEBatchTACLower) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.MSEBatchTACUpper) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
-        Me.Metadata(eVarNameFlags.MSETAC) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.MSEBatchTACManaged) = New cVariableMetaData()
 
         ' batch TFM group
@@ -672,10 +690,6 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.MSETFMBBaseUpper) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.MSETFMFOptLower) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.MSETFMFOptUpper) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
-        Me.Metadata(eVarNameFlags.MSEBBase) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
-        Me.Metadata(eVarNameFlags.MSEBLim) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
-        Me.Metadata(eVarNameFlags.MSEFmax) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
-        Me.Metadata(eVarNameFlags.MSEFmin) = New cVariableMetaData(0, Single.MaxValue, ge, lt)
         Me.Metadata(eVarNameFlags.MSEBatchTFMManaged) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.MSETFMFOptValues) = New cVariableMetaData(1, Single.MaxValue, ge, lt, 1)
         Me.Metadata(eVarNameFlags.MSETFMBBaseValues) = New cVariableMetaData(1, Single.MaxValue, ge, lt, 1)

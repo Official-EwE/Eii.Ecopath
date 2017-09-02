@@ -156,11 +156,16 @@ Namespace ValueWrapper
             Me.m_status = Status
             Me.m_metadata = MetaData
 
-            ' Set the validator and its properties
-            Me.m_bValidate = (Validator IsNot Nothing)
-            Me.m_validator = Validator
-            If (Me.m_validator Is Nothing) Then
-                Me.m_validator = cValidatorManager.Get(VarName)
+            ' Do not validate output values
+            Me.m_bValidate = (Status And eStatusFlags.NotEditable) = 0
+
+            If (Me.m_bValidate) Then
+                ' Set the validator and its properties
+                Me.m_validator = Validator
+                ' Resolve default validator if missing
+                If (Me.m_validator Is Nothing) Then
+                    Me.m_validator = cValidatorManager.Get(VarName)
+                End If
             End If
 
             Me.m_bStored = True

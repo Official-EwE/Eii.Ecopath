@@ -56,7 +56,6 @@ Namespace Samples
             MyBase.New(core)
 
             Dim val As cValue = Nothing
-            Dim meta As cVariableMetaData = Nothing
 
             Me.m_coreComponent = eCoreComponentType.EcopathSample
             Me.m_dataType = eDataTypes.EcopathSample
@@ -69,8 +68,7 @@ Namespace Samples
             Me.Name = "Sample " & iIndex
 
             'Rating
-            meta = New cVariableMetaData(0, 5, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Integer, eVarNameFlags.SampleRating, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val = New cValue(New Integer, eVarNameFlags.SampleRating, eStatusFlags.Null, eValueTypes.Int)
             Me.m_values.Add(val.varName, val)
 
             Me.AllowValidation = True
