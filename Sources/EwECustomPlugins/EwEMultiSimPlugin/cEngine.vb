@@ -154,6 +154,7 @@ Friend Class cEngine
     ''' <summary>
     ''' Bit flags of forcing types to include
     ''' </summary>
+    <Flags()>
     Public Enum eFunctionTypes As Byte
         Forcing = 0
         Effort = 1
@@ -444,7 +445,6 @@ Friend Class cEngine
     Private Function Key(strName As String) As String
         Return strName.Trim().ToLowerInvariant()
     End Function
-
 
 #Region " Running "
 
@@ -845,9 +845,10 @@ Friend Class cEngine
             Dim man As cBaseShapeManager = Me.m_lManagers(iMan)
             Dim bUpdate As Boolean = False
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'OK HACK Warning
-            'Fishing Effort shapes include the "All Fleets" shape. If the Manager Updates the 'All Fleets' shape it will overwrite the other shapes with the 'All Fleets' values
-            'Stop the manager via the cShapeBaseManager.Update(bUpdateAll:=False)
+            ' JB Aug 2017 - HACK Warning!
+            ' Fishing Effort shapes include the "All Fleets" shape. If the effort manager updates 
+            ' the 'All Fleets' shape it will overwrite the other shapes with the 'All Fleets' values.
+            ' This can be stopped via cShapeBaseManager.Update(bUpdateAll:=False)
             Dim bUpdateAll As Boolean = True ' True for all manager except Fishing Effort
             If TypeOf (man) Is cFishingEffortShapeManger Then bUpdateAll = False
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -856,15 +857,14 @@ Friend Class cEngine
             For Each ff As cFFCache In Me.m_FFCache.Values
                 ' Is this shape changed and does the manager owns this shape?
                 If ff.IsChanged() And ff.BelongsTo(man) Then
-                    ' Ok, give'r Update the shape
+                    ' Ok, update the shape
                     ff.Update()
                     bUpdate = True
-
                 End If 'ff.IsChanged() And ff.BelongsTo(man)
             Next ff
 
             ' Now update the manager itself
-            If bUpdate Then man.Update(bUpdateAll:=bUpdateAll)
+            If bUpdate Then man.Update(bUpdateAll)
 
         Next iMan
 
