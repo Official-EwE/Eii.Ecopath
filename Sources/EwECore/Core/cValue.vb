@@ -90,8 +90,6 @@ Namespace ValueWrapper
 
         Protected m_metadata As cVariableMetaData
 
-        Protected m_bValidate As Boolean
-
         ''' <summary>
         ''' Default constructor.
         ''' </summary>
@@ -105,50 +103,22 @@ Namespace ValueWrapper
         End Sub
 
         ''' <summary>
-        ''' Constructs a new value instance, without metadata and validation
-        ''' </summary>
-        ''' <param name="Value">The object to hold the value.</param>
-        ''' <param name="VarName">The variable name representing the value.</param>
-        ''' <param name="Status">Value status.</param>
-        ''' <param name="VarType"><see cref="eValueTypes">Value type</see>.</param>
-        Sub New(ByVal Value As Object,
-                ByVal VarName As eVarNameFlags,
-                ByVal Status As eStatusFlags,
-                ByVal VarType As eValueTypes)
-            Me.New(Value, VarName, Status, VarType, Nothing)
-        End Sub
-
-        ''' <summary>
-        ''' Constructs a new value instance without validation.
-        ''' </summary>
-        ''' <param name="Value">The object to hold the value.</param>
-        ''' <param name="VarName">The variable name representing the value.</param>
-        ''' <param name="Status">Value status.</param>
-        ''' <param name="VarType"><see cref="eValueTypes">Value type</see>.</param>
-        ''' <param name="MetaData"><see cref="cVariableMetaData">Value metadata</see>.</param>
-        Sub New(ByVal Value As Object,
-                ByVal VarName As eVarNameFlags,
-                ByVal Status As eStatusFlags,
-                ByVal VarType As eValueTypes,
-                ByVal MetaData As cVariableMetaData)
-            Me.New(Value, VarName, Status, VarType, MetaData, Nothing)
-        End Sub
-
-        ''' <summary>
         ''' Constructs a new value instance.
         ''' </summary>
         ''' <param name="Value">The object to hold the value.</param>
         ''' <param name="VarName">The variable name representing the value.</param>
-        ''' <param name="Status">Value status.</param>
+        ''' <param name="Status">Bitwise <see cref="eStatusFlags">status flag pattern</see> to initialize the value with.</param>
         ''' <param name="VarType"><see cref="eValueTypes">Value type</see>.</param>
         ''' <param name="MetaData"><see cref="cVariableMetaData">Value metadata</see> to use.</param>
-        ''' <param name="Validator"><see cref="cValidatorDefault">Validator</see> to use.</param>
+        ''' <param name="Validator">The <see cref="cValidatorDefault">Validator</see> to use. If no validator is provided
+        ''' a default validator will be obtained unless the value is flagged as <see cref="eStatusFlags.NotEditable"/>
+        ''' in the <paramref name="Status"/> parameter.</param>
         Sub New(ByVal Value As Object,
                 ByVal VarName As eVarNameFlags,
                 ByVal Status As eStatusFlags,
                 ByVal VarType As eValueTypes,
-                ByVal MetaData As cVariableMetaData,
-                ByVal Validator As cValidatorDefault)
+                Optional ByVal MetaData As cVariableMetaData = Nothing,
+                Optional ByVal Validator As cValidatorDefault = Nothing)
 
             Me.m_value = Value
             Me.m_varType = VarType
@@ -157,9 +127,9 @@ Namespace ValueWrapper
             Me.m_metadata = MetaData
 
             ' Do not validate output values
-            Me.m_bValidate = (Status And eStatusFlags.NotEditable) = 0
+            Me.AllowValidation = ((Status And eStatusFlags.NotEditable) = 0)
 
-            If (Me.m_bValidate) Then
+            If (Me.AllowValidation) Then
                 ' Set the validator and its properties
                 Me.m_validator = Validator
                 ' Resolve default validator if missing
@@ -325,7 +295,7 @@ Namespace ValueWrapper
             m_value = Me.convertEmptyInputs(NewValue)
 
             'is it ok to run the validator?
-            If Not m_bValidate Then
+            If Not Me.AllowValidation Then
                 'No Validation set the value without running the validator
                 m_validationstatus = eStatusFlags.OK
                 Return False 'validation was not run???
@@ -380,15 +350,7 @@ Namespace ValueWrapper
 
         End Sub
 
-        Public Property AllowValidation() As Boolean
-            Get
-                Return m_bValidate
-            End Get
-            Set(ByVal value As Boolean)
-                m_bValidate = value
-            End Set
-        End Property
-
+        Public Property AllowValidation() As Boolean = False
 
         Protected Overrides Sub Finalize()
             MyBase.Finalize()
@@ -522,356 +484,6 @@ Namespace ValueWrapper
             Me.m_orgvalue = Nothing
             Me.m_validator = Nothing
         End Sub
-
-    End Class
-
-#End Region
-
-#Region "cValueArray"
-
-    ''' <summary>
-    ''' Provides an implemention of cValue that is used for Array values
-    ''' </summary>
-    ''' <remarks>At this time the internal array is weak typed as an object</remarks>
-    Public Class cValueArray
-        Inherits cValue
-
-        Protected m_statusarray() As eStatusFlags
-        Protected m_values As Object
-        Protected m_nObjects As Integer = cCore.NULL_VALUE 'number of object in the array
-        Protected m_CounterDelegate As CoreCounterDelegate = Nothing
-        Protected m_Countertype As eCoreCounterTypes
-
-
-        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes,
-                ByVal CounterDelegate As CoreCounterDelegate, ByVal MetaData As cVariableMetaData, ByVal Validator As cValidatorDefault)
-            MyBase.New(Nothing, VarName, Status, theValueType, MetaData, Validator)
-
-            varType = theValueType
-            m_varName = VarName
-
-            ' Sanity check
-            Debug.Assert(Me.m_metadata IsNot Nothing)
-
-            ' JS 01may17: Do not overwrite base class smartness
-            'm_validator = Validator
-
-            m_CounterDelegate = CounterDelegate
-            m_Countertype = CounterType
-            Me.m_bStored = True
-
-            If SetSize() Then 'this will redim the arrays and set m_nObjects
-                For i As Integer = 0 To m_nObjects
-                    m_statusarray(i) = Status
-                Next
-            End If
-
-        End Sub
-
-        ''' <summary>
-        ''' Construct a value object of array data that does not do data validation
-        ''' </summary>
-        ''' <param name="VarName">eVarNameFlags of the data to hold</param>
-        ''' <param name="Status">Default status</param>
-        ''' <param name="CounterType">Type of core counter to use for dimensioning the array</param>
-        ''' <param name="CounterDelegate">Delegate supplied by the core use to retrieve the size of the data</param>
-        ''' <remarks></remarks>
-        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags,
-                ByVal CounterType As eCoreCounterTypes, ByVal CounterDelegate As CoreCounterDelegate)
-            Me.New(theValueType, VarName, Status, CounterType, CounterDelegate, Nothing, Nothing)
-        End Sub
-
-        ''' <summary>
-        ''' Set the size of the array to the value in the cores data counter i.e. nGroups
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks>This will only dimension the array data if the core counter is of a different size then the existing data.
-        '''  Once the data has been resized it will need to be repopulated.</remarks>
-        Public Overrides Function SetSize() As Boolean
-
-            If m_CounterDelegate IsNot Nothing Then
-
-                Dim newsize As Integer = m_CounterDelegate(m_Countertype)
-
-                'only resize the data if it is different
-                If newsize <> m_nObjects Then
-                    m_nObjects = newsize
-
-                    Select Case Me.varType
-                        Case eValueTypes.BoolArray
-                            Dim s(m_nObjects) As Boolean
-                            m_values = s
-                        Case eValueTypes.IntArray
-                            Dim s(m_nObjects) As Integer
-                            m_values = s
-                        Case eValueTypes.SingleArray
-                            Dim s(m_nObjects) As Single
-                            m_values = s
-                    End Select
-
-                    ReDim m_statusarray(m_nObjects)
-
-                    For i As Integer = 0 To m_nObjects
-                        m_statusarray(i) = eStatusFlags.Null
-                    Next
-                End If
-
-                Return True
-
-            Else
-                System.Console.WriteLine(Me.ToString & ".setSize() not implemented.")
-                Return False
-            End If
-
-        End Function
-
-        Public Overrides Property Status(Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
-            Get
-                If iSecondaryIndex <> cCore.NULL_VALUE Then
-                    Return m_statusarray(iSecondaryIndex)
-                Else
-                    'if iSecondaryIndex is NULL for an arrayed value then return NULL
-                    'we have no way of know what the user wanted
-                    Return eStatusFlags.Null
-                End If
-            End Get
-            Friend Set(ByVal value As eStatusFlags)
-                If iSecondaryIndex <> cCore.NULL_VALUE Then
-                    m_statusarray(iSecondaryIndex) = value
-                Else
-                    'no index so set all status flags to the new value
-                    For i As Integer = 1 To m_nObjects
-                        m_statusarray(i) = value
-                    Next
-                End If
-            End Set
-        End Property
-
-        Public Overrides Property Value(Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Object
-
-            Get
-                Try
-                    If iSecondaryIndex <> cCore.NULL_VALUE Then
-                        'Debug.Assert(iSecondaryIndex <= m_nObjects And iSecondaryIndex >= 0, String.Format("{0}.Value({1}, {2}) secondary index out of bounds", Me.ToString(), Me.m_varName, iSecondaryIndex))
-                        Return DirectCast(m_values, Array).GetValue(iSecondaryIndex)
-                    Else
-                        Return m_values
-                    End If
-                Catch ex As Exception
-                    Debug.Assert(False, Me.ToString & ".Value Error: " & ex.Message)
-                    Return Nothing
-                End Try
-
-            End Get
-
-            Set(ByVal value As Object)
-
-                Try
-                    If TypeOf value Is System.Array Then
-                        'no data validation on arrays
-                        'Oh my..........
-                        Try
-                            System.Array.Copy(DirectCast(value, Array), DirectCast(m_values, Array), DirectCast(m_values, Array).Length)
-                        Catch ex As Exception
-                            Debug.Assert(False, Me.ToString & ".Value() Failed to convert value to array.")
-                            Me.Status = eStatusFlags.ErrorEncountered ' I think this will work???
-                        End Try
-
-                    Else
-                        Debug.Assert(iSecondaryIndex <= m_nObjects And iSecondaryIndex >= 0, Me.ToString & ".Value() iGroup out of bounds.")
-                        Validate(value, iSecondaryIndex)
-                    End If
-                Catch ex As Exception
-                    Debug.Assert(False, Me.ToString & ".Value Error: " & ex.Message)
-                End Try
-
-            End Set
-
-        End Property
-
-        Public Overrides ReadOnly Property Length() As Integer
-            Get
-                Return m_nObjects
-            End Get
-        End Property
-
-        Public ReadOnly Property CoreCounterType() As eCoreCounterTypes
-            Get
-                Return Me.m_Countertype
-            End Get
-        End Property
-
-        Public Overrides ReadOnly Property IsArray() As Boolean
-            Get
-                Return True
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Validate an array value object
-        ''' </summary>
-        ''' <param name="NewValue"></param>
-        ''' <param name="iSecondaryIndex"></param>
-        ''' <returns></returns>
-        ''' <remarks>This can not be handled by the cValue base class because the underlying data is handled differently. Array values are stored in an array (duh...)</remarks>
-        Protected Overrides Function Validate(ByRef NewValue As Object, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
-
-            'convert null or empty inputs into something that can be used
-            NewValue = Me.convertEmptyInputs(NewValue)
-
-            ' JS 06Mar11: Array.SetValue cannot perform certain type conversions, such as Single to Integer.
-            '             If an integer array receives a single value Array.SetValue will throw an exception.
-            '             A dynamic type conversion will prevent this problem.
-
-            ' Determine the type that this array accepts
-            Dim arr As Array = DirectCast(m_values, Array)
-            Dim tArr As Type = arr.GetType.GetElementType
-
-            'set the value to the newvalue 
-            'keep the old value in case the newvalue fails validation
-            Me.m_orgvalue = arr.GetValue(iSecondaryIndex)
-            arr.SetValue(Convert.ChangeType(NewValue, tArr), iSecondaryIndex)
-
-            If Not m_bValidate Then
-                m_validationstatus = eStatusFlags.OK
-                Return False ' validation not run
-            End If
-
-            'no validator so boot out of here
-            If m_validator Is Nothing Then
-                m_validationstatus = eStatusFlags.OK
-                ' System.Console.WriteLine("No Validator for " & m_varName.ToString)
-                Return False
-            End If
-
-            'Ok run the validator
-            If m_validator.Validate(Me, m_metadata, iSecondaryIndex) Then
-
-                If m_validationstatus = eStatusFlags.FailedValidation Then
-                    'if the new value failed validation then set the value back to it's original value
-                    Try
-                        arr.SetValue(Me.m_orgvalue, iSecondaryIndex)
-                    Catch ex As Exception
-                        Debug.Assert(False, "Failed to reset value")
-                    End Try
-                End If
-
-                If m_statusarray(iSecondaryIndex) = eStatusFlags.Null Then
-                    ' m_values(iSecondaryIndex) = m_metadata.NullValue
-                    Try
-                        arr.SetValue(Convert.ChangeType(m_metadata.NullValue, tArr), iSecondaryIndex)
-                    Catch ex As Exception
-                        Debug.Assert(False, "Failed to set default value")
-                    End Try
-                End If
-
-            End If
-
-            Return True ' validation run
-
-        End Function
-
-        Public Overrides Sub Dispose()
-            MyBase.Dispose()
-            Me.m_values = Nothing
-            Me.m_CounterDelegate = Nothing
-        End Sub
-
-    End Class
-
-#End Region ' cValueArray
-
-#Region "cValueArrayIndexed"
-
-    Public Class cValueArrayIndexed
-        Inherits cValueArray
-
-        Protected m_dataType As eDataTypes
-        Protected m_iArrayIndex As Integer
-        Shadows m_CounterDelegate As CoreIndexedCounterDelegate
-
-        ''' <summary>
-        ''' Constructor with no validation object
-        ''' </summary>
-        ''' <param name="theValueType"></param>
-        ''' <param name="VarName"></param>
-        ''' <param name="Status"></param>
-        ''' <param name="CounterType"></param>
-        ''' <param name="CounterDelegate"></param>
-        ''' <remarks></remarks>
-        Sub New(ByVal theValueType As eValueTypes, ByVal VarName As eVarNameFlags, ByVal Status As eStatusFlags, ByVal CounterType As eCoreCounterTypes,
-                ByRef CounterDelegate As CoreIndexedCounterDelegate, ByVal iArrayIndex As Integer, ByVal DataType As eDataTypes)
-            MyBase.New(theValueType, VarName, Status, CounterType, Nothing)
-
-            varType = theValueType
-            m_varName = VarName
-            m_dataType = DataType
-            m_iArrayIndex = iArrayIndex
-
-            m_CounterDelegate = CounterDelegate
-            m_Countertype = CounterType
-
-            If SetSize() Then 'this will redim the arrays and set m_nObjects
-                For i As Integer = 0 To m_nObjects
-                    m_statusarray(i) = Status
-                Next
-            Else
-                Debug.Assert(False, "Something is wrong in " & Me.ToString & ".New()")
-            End If
-
-        End Sub
-
-
-        ''' <summary>
-        ''' Set the size of the array to the value in the cores data counter i.e. nGroups
-        ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks>This will only dimension the array data if the core counter is of a different size then the existing data.
-        '''  Once the data has been resized it will need to be repopulated.</remarks>
-        Public Overrides Function SetSize() As Boolean
-
-            If m_CounterDelegate IsNot Nothing Then
-
-                Dim newsize As Integer = m_CounterDelegate(m_Countertype, m_iArrayIndex)
-
-                'only resize the data if it is different
-                If newsize <> m_nObjects Then
-                    m_nObjects = newsize
-                    Select Case Me.varType
-                        Case eValueTypes.BoolArray
-                            Dim s(m_nObjects) As Boolean
-                            m_values = s
-                        Case eValueTypes.IntArray
-                            Dim s(m_nObjects) As Integer
-                            m_values = s
-                        Case eValueTypes.SingleArray
-                            Dim s(m_nObjects) As Single
-                            m_values = s
-                    End Select
-
-                    ReDim m_statusarray(m_nObjects)
-
-                End If
-
-                Return True
-
-            Else
-                'System.Console.WriteLine(Me.ToString & ".setSize() not implemented.")
-                'When a cValueArrayIndexed object in constructed it will call the base class constructor will a null m_CounterDelegate
-                'which in turn calls this method before cValueArrayIndexed has had a chance to set m_CounterDelegate
-                Return False
-            End If
-
-        End Function
-
-
-        Public Overrides Sub Dispose()
-            MyBase.Dispose()
-
-            Me.m_CounterDelegate = Nothing
-
-        End Sub
-
 
     End Class
 
