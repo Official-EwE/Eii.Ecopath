@@ -20,6 +20,9 @@
 
 Imports EwEUtils.Core
 
+''' <summary>
+''' Core data collector for the OceanViz game server.
+''' </summary>
 Public Class cGameServerInterface
 
     Private m_core As cCore
@@ -65,11 +68,6 @@ Public Class cGameServerInterface
         m_dctCoreListData.Add(eDataTypes.MSEBiomassStats, Me.m_core.MSEManager.BiomassStats)
 
         m_dctCoreListData.Add(eDataTypes.MSEGroupInput, Me.m_core.MSEManager.GroupInputs)
-
-        ''Wow check this out HACK HACK HACK
-        'Dim list As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEOutput, 0)
-        'list.Add(Me.m_core.MSEManager.Output)
-        'm_dctCoreListData.Add(eDataTypes.MSEOutput, list)
 
         m_dctCoreData.Add(eDataTypes.MSEOutput, New GetCoreIOObjectDelegate(AddressOf Me.m_core.MSEManager.Output))
         m_dctCoreData.Add(eDataTypes.EcosimOutput, New GetCoreIOObjectDelegate(AddressOf Me.m_core.EcosimOutputs))
