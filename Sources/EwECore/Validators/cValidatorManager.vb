@@ -89,12 +89,6 @@ Public Class cValidatorManager
         m_validators.Add(eVarNameFlags.EcosimSumStart, validator)
         m_validators.Add(eVarNameFlags.EcosimSumEnd, validator)
 
-        'Output validator
-        validator = New cValidatorOutput(eStatusFlags.NotEditable Or eStatusFlags.OK)
-        m_validators.Add(eVarNameFlags.EcospaceBiomassOverTime, validator)
-        m_validators.Add(eVarNameFlags.MSELowerRiskPercent, validator)
-        m_validators.Add(eVarNameFlags.MSEUpperRiskPercent, validator)
-
         'Fishing Policy search base year validated via a core counter
         validator = New cValidatorCounter(theCore, eCoreCounterTypes.nEcosimYears)
         m_validators.Add(eVarNameFlags.SearchBaseYear, validator)

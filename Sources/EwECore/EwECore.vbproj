@@ -143,6 +143,8 @@
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerResultWriter.vb" />
     <Compile Include="Contaminant Tracer\Model\cContaminanTracerDataStructures.vb" />
     <Compile Include="Core\cCoreSettings.vb" />
+    <Compile Include="Core\cValueArray.vb" />
+    <Compile Include="Core\cValueArrayIndexed.vb" />
     <Compile Include="Database\Updates\Release 6.5\6.5.1\cDBUpdate6_50_10_02.vb" />
     <Compile Include="Database\Updates\Release 6.5\6.5.1\cDBUpdate6_50_10_01.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_19.vb" />
@@ -412,7 +414,6 @@
     <Compile Include="Validators\cValidatorEnum.vb" />
     <Compile Include="Validators\cValidatorManager.vb" />
     <Compile Include="Validators\cValidatorOddEven.vb" />
-    <Compile Include="Validators\cValidatorOutput.vb" />
     <Compile Include="Validators\cValidatorNumericSetToNull.vb" />
   </ItemGroup>
   <ItemGroup>
