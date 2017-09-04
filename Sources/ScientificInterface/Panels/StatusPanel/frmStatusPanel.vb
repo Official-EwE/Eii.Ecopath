@@ -172,10 +172,10 @@ Public Class frmStatusPanel
 
     Private Function GetPropertylistFromNode(ByVal tn As TreeNode) As cProperty()
 
-        If Object.ReferenceEquals(tn, Nothing) Then Return Nothing
-        If Object.ReferenceEquals(tn.Tag, Nothing) Then Return Nothing
-        If Object.ReferenceEquals(Me.m_uic, Nothing) Then Return Nothing
-        If Object.ReferenceEquals(Me.m_uic.PropertyManager, Nothing) Then Return Nothing
+        If (tn Is Nothing) Then Return Nothing
+        If (tn.Tag Is Nothing) Then Return Nothing
+        If (Me.m_uic Is Nothing) Then Return Nothing
+        If (Me.m_uic.PropertyManager Is Nothing) Then Return Nothing
 
         If TypeOf (tn.Tag) Is cMessageHistory.cHistoryItem Then
             Return DirectCast(tn.Tag, cMessageHistory.cHistoryItem).Properties(Me.m_uic.PropertyManager)

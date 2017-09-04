@@ -32,7 +32,7 @@ Partial Class frmRemarkPanel
         MyBase.Dispose(disposing)
     End Sub
 
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmRemarkPanel))
         Me.m_tsRemarks = New ScientificInterfaceShared.Controls.cEwEToolstrip()
@@ -44,6 +44,7 @@ Partial Class frmRemarkPanel
         Me.m_lblDomain = New System.Windows.Forms.Label()
         Me.m_lblDescription = New System.Windows.Forms.Label()
         Me.m_lblStatus = New System.Windows.Forms.Label()
+        Me.m_hdrInfo = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tlpRemarks = New System.Windows.Forms.TableLayoutPanel()
         Me.m_btnApply = New System.Windows.Forms.Button()
         Me.m_tsRemarks.SuspendLayout()
@@ -98,9 +99,10 @@ Partial Class frmRemarkPanel
         'm_tlpInfo
         '
         resources.ApplyResources(Me.m_tlpInfo, "m_tlpInfo")
-        Me.m_tlpInfo.Controls.Add(Me.m_lblDomain, 0, 0)
-        Me.m_tlpInfo.Controls.Add(Me.m_lblDescription, 0, 1)
-        Me.m_tlpInfo.Controls.Add(Me.m_lblStatus, 0, 2)
+        Me.m_tlpInfo.Controls.Add(Me.m_lblDomain, 0, 1)
+        Me.m_tlpInfo.Controls.Add(Me.m_lblDescription, 0, 2)
+        Me.m_tlpInfo.Controls.Add(Me.m_lblStatus, 0, 3)
+        Me.m_tlpInfo.Controls.Add(Me.m_hdrInfo, 0, 0)
         Me.m_tlpInfo.Name = "m_tlpInfo"
         '
         'm_lblDomain
@@ -117,6 +119,14 @@ Partial Class frmRemarkPanel
         '
         resources.ApplyResources(Me.m_lblStatus, "m_lblStatus")
         Me.m_lblStatus.Name = "m_lblStatus"
+        '
+        'm_hdrInfo
+        '
+        Me.m_hdrInfo.CanCollapseParent = False
+        Me.m_hdrInfo.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrInfo, "m_hdrInfo")
+        Me.m_hdrInfo.IsCollapsed = False
+        Me.m_hdrInfo.Name = "m_hdrInfo"
         '
         'm_tlpRemarks
         '
@@ -172,4 +182,5 @@ Partial Class frmRemarkPanel
     Private WithEvents m_tsbnInfo As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tlpRemarks As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_btnApply As System.Windows.Forms.Button
+    Private WithEvents m_hdrInfo As cEwEHeaderLabel
 End Class

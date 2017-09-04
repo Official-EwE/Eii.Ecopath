@@ -309,10 +309,11 @@ Public Class frmRemarkPanel
         Dim strDomain As String = ""
         Dim strStatus As String = ""
         Dim strRemark As String = ""
+        Dim strUnits As String = ""
         Dim props() As cProperty = Me.m_mon.Selection
         Dim prop As cProperty = Nothing
         Dim vnf As New cVarnameTypeFormatter()
-        Dim mdf As New cMetadataTypeFormatter(Me.m_uic.StyleGuide)
+        Dim mdf As New cMetadataTypeFormatter(Me.m_uic.Core, Me.m_uic.StyleGuide)
         Dim stf As New cStyleTypeFormatter()
         Dim bEditable As Boolean = False
 

@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -4844,15 +4844,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Flow to detr. ({0}/{1}).
-        '''</summary>
-        Public ReadOnly Property HEADER_FLOWTODETR_UNIT() As String
-            Get
-                Return ResourceManager.GetString("HEADER_FLOWTODETR_UNIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to FMax.
         '''</summary>
         Public ReadOnly Property HEADER_FMAX() As String
@@ -8253,20 +8244,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Alert|||This variable requires your attention.
+        '''  Looks up a localized string similar to Alert|||Value requires your attention.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_CHECKED() As String
             Get
                 Return ResourceManager.GetString("STYLEFLAGS_CHECKED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Computed|||The value in this variable was computed by EwE.
-        '''</summary>
-        Public ReadOnly Property STYLEFLAGS_COMPUTED() As String
-            Get
-                Return ResourceManager.GetString("STYLEFLAGS_COMPUTED", resourceCulture)
             End Get
         End Property
         
@@ -8280,7 +8262,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Unknown error|||An unknown error occurred for this variable.
+        '''  Looks up a localized string similar to Unknown error|||An unknown error occurred.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_ERRORENCOUNTERED() As String
             Get
@@ -8289,7 +8271,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Input error||Invalid input|The model did not accept the value that was entered into this variable.
+        '''  Looks up a localized string similar to Input error||Invalid input|Entered value not accepted.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_FAILEDVALIDATION() As String
             Get
@@ -8298,7 +8280,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Highlight|||This variable is highlighted.
+        '''  Looks up a localized string similar to Highlight|||Value is highlighted.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_HIGHLIGHT() As String
             Get
@@ -8307,7 +8289,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Model error||Invalid model results|The model computed an invalid value for this variable.
+        '''  Looks up a localized string similar to Model error||Invalid model results|Value could not be computed.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_INVALIDMODELRESULT() As String
             Get
@@ -8316,7 +8298,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Name|||This variable reflects a name.
+        '''  Looks up a localized string similar to Name|||Value is a name.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_NAMES() As String
             Get
@@ -8325,7 +8307,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Not editable|||This variable cannot be edited.
+        '''  Looks up a localized string similar to Not editable|||Value cannot be edited.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_NOTEDITABLE() As String
             Get
@@ -8334,7 +8316,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Null||No value|This variable has no value, or its value is not used by EwE.
+        '''  Looks up a localized string similar to Null||No value|Value is not used or is left blank.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_NULL() As String
             Get
@@ -8352,7 +8334,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Remarks|||This variable has attached remarks.
+        '''  Looks up a localized string similar to Remarks|||Value has attached remarks.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_REMARKS() As String
             Get
@@ -8361,7 +8343,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Sum|||This variable reflects a sum of a range of values.
+        '''  Looks up a localized string similar to Sum|||Value is a formula result.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_SUM() As String
             Get
@@ -8370,11 +8352,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Taxon|||This variable reflects a taxonomic name.
+        '''  Looks up a localized string similar to Taxon|||Value is a taxonomic name.
         '''</summary>
         Public ReadOnly Property STYLEFLAGS_TAXONNAME() As String
             Get
                 Return ResourceManager.GetString("STYLEFLAGS_TAXONNAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Computed|||Value was computed or estimated.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_VALUECOMPUTED() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_VALUECOMPUTED", resourceCulture)
             End Get
         End Property
         

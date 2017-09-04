@@ -26,6 +26,7 @@ Imports EwEUtils.Utilities
 Imports EwECore
 Imports EwEUtils.SystemUtilities
 Imports System.Text
+Imports EwECore.Style
 
 #End Region ' Imports
 
@@ -40,22 +41,47 @@ Namespace Style
         Implements ITypeFormatter
 
         Private m_sg As cStyleGuide = Nothing
+        Private m_units As cUnits = Nothing
 
-        Public Sub New(sg As cStyleGuide)
+        Public Sub New(core As cCore, sg As cStyleGuide)
             Me.m_sg = sg
+            Me.m_units = New cUnits(core)
         End Sub
 
         Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
 
-            ' ToDo: globalize this
-
             If (value Is Nothing) Then Return ""
 
             Debug.Assert(value.GetType.IsAssignableFrom(Me.GetDescribedType()))
 
             Dim md As cVariableMetaData = DirectCast(value, cVariableMetaData)
+
+            Dim strUnits As String = Me.UnitText(md)
+            Dim strDescr As String = Me.ValueText(md)
+
+            Dim n As Integer = If(String.IsNullOrWhiteSpace(strUnits), 0, 1) + If(String.IsNullOrWhiteSpace(strDescr), 0, 1)
+            Select Case n
+                Case 1 : Return strUnits & strDescr
+                Case 2 : Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, strDescr, strUnits)
+            End Select
+
+            Return ""
+
+        End Function
+
+        Public Function GetDescribedType() As System.Type _
+            Implements ITypeFormatter.GetDescribedType
+            Return GetType(cVariableMetaData)
+        End Function
+
+#Region " Internals "
+
+        Private Function ValueText(md As cVariableMetaData) As String
+
+            ' ToDo: globalize this method
+
             Dim sbDescr As New StringBuilder()
 
             Select Case md.VarType
@@ -85,14 +111,15 @@ Namespace Style
                     sbDescr.Append(String.Format(My.Resources.METADATA_TEXT, iMax))
 
             End Select
+
             Return sbDescr.ToString()
-
         End Function
 
-        Public Function GetDescribedType() As System.Type _
-            Implements ITypeFormatter.GetDescribedType
-            Return GetType(cVariableMetaData)
+        Private Function UnitText(md As cVariableMetaData) As String
+            Return Me.m_units.ToString(md.Units)
         End Function
+
+#End Region ' Internals
 
     End Class
 
