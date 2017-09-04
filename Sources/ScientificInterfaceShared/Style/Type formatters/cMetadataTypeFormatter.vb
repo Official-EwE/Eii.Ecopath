@@ -64,7 +64,7 @@ Namespace Style
             Dim n As Integer = If(String.IsNullOrWhiteSpace(strUnits), 0, 1) + If(String.IsNullOrWhiteSpace(strDescr), 0, 1)
             Select Case n
                 Case 1 : Return strUnits & strDescr
-                Case 2 : Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, strDescr, strUnits)
+                Case 2 : Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, strDescr, strUnits)
             End Select
 
             Return ""
