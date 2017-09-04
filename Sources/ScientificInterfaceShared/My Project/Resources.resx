@@ -2336,48 +2336,48 @@
     <value>Save to geo-referenced map(s)</value>
   </data>
   <data name="STYLEFLAGS_CHECKED" xml:space="preserve">
-    <value>Alert|||This variable requires your attention</value>
+    <value>Alert|||Value requires your attention</value>
   </data>
-  <data name="STYLEFLAGS_COMPUTED" xml:space="preserve">
-    <value>Computed|||The value in this variable was computed by EwE</value>
+  <data name="STYLEFLAGS_VALUECOMPUTED" xml:space="preserve">
+    <value>Computed|||Value was computed or estimated</value>
   </data>
   <data name="STYLEFLAGS_CORESTATUSFLAGSMASK" xml:space="preserve">
     <value />
     <comment>Do not translate</comment>
   </data>
   <data name="STYLEFLAGS_ERRORENCOUNTERED" xml:space="preserve">
-    <value>Unknown error|||An unknown error occurred for this variable</value>
+    <value>Unknown error|||An unknown error occurred</value>
   </data>
   <data name="STYLEFLAGS_FAILEDVALIDATION" xml:space="preserve">
-    <value>Input error||Invalid input|The model did not accept the value that was entered into this variable</value>
+    <value>Input error||Invalid input|Entered value not accepted</value>
   </data>
   <data name="STYLEFLAGS_HIGHLIGHT" xml:space="preserve">
-    <value>Highlight|||This variable is highlighted</value>
+    <value>Highlight|||Value is highlighted</value>
   </data>
   <data name="STYLEFLAGS_INVALIDMODELRESULT" xml:space="preserve">
-    <value>Model error||Invalid model results|The model computed an invalid value for this variable</value>
+    <value>Model error||Invalid model results|Value could not be computed</value>
   </data>
   <data name="STYLEFLAGS_NAMES" xml:space="preserve">
-    <value>Name|||This variable reflects a name</value>
+    <value>Name|||Value is a name</value>
   </data>
   <data name="STYLEFLAGS_NOTEDITABLE" xml:space="preserve">
-    <value>Not editable|||This variable cannot be edited</value>
+    <value>Not editable|||Value cannot be edited</value>
   </data>
   <data name="STYLEFLAGS_NULL" xml:space="preserve">
-    <value>Null||No value|This variable has no value, or its value is not used by EwE</value>
+    <value>Null||No value|Value is not used or is left blank</value>
   </data>
   <data name="STYLEFLAGS_OK" xml:space="preserve">
     <value />
     <comment>Do not translate OK</comment>
   </data>
   <data name="STYLEFLAGS_REMARKS" xml:space="preserve">
-    <value>Remarks|||This variable has attached remarks</value>
+    <value>Remarks|||Value has attached remarks</value>
   </data>
   <data name="STYLEFLAGS_SUM" xml:space="preserve">
-    <value>Sum|||This variable reflects a sum of a range of values</value>
+    <value>Sum|||Value is a formula result</value>
   </data>
   <data name="STYLEFLAGS_TAXONNAME" xml:space="preserve">
-    <value>Taxon|||This variable reflects a taxonomic name</value>
+    <value>Taxon|||Value is a taxonomic name</value>
   </data>
   <data name="COMMAND_DEFINEGROUPS" xml:space="preserve">
     <value>Define functional groups</value>
