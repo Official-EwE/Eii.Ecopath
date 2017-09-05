@@ -34,11 +34,12 @@ Imports EwEUtils.Utilities
 ''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> 
 ''' and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
 ''' to write Ecospace area averaged results to csv files. This class provides 
-''' the framework for writting the file. The actual data is supplied by an implementation of <see cref="cEcospaceResultsWriterDataSourceBase">cEcospaceResultsWriterDataSourceBase</see> 
+''' the framework for writting the file. The actual data is supplied by an implementation 
+''' of <see cref="cEcospaceResultsWriterDataSourceBase">cEcospaceResultsWriterDataSourceBase</see> 
 ''' that supplies the data in a generic format.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cEcospaceAvgModelAreaResultsWriter
+Public Class cEcospaceRegionAvgResultsWriter
     Inherits cEcospaceBaseResultsWriter
 
     Public Const cDATA_NAME As String = "regavg"

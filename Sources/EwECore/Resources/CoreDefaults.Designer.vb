@@ -416,7 +416,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biomass ASCII maps.
+        '''  Looks up a localized string similar to Biomass maps (ASCII format).
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_WRITER_ASC_BIOMASS() As String
             Get
@@ -425,7 +425,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catch ASCII maps.
+        '''  Looks up a localized string similar to Catch maps (ASCII format).
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_WRITER_ASC_CATCH() As String
             Get
@@ -434,7 +434,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Contaminant Concentrations ASCII map.
+        '''  Looks up a localized string similar to Contaminant Concentrations map (ASCII format).
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_WRITER_ASC_CONTAMINANTS() As String
             Get
@@ -443,7 +443,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Total discards ASCII maps.
+        '''  Looks up a localized string similar to Total discards maps (ASCII format).
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_WRITER_ASC_DISCARDS() As String
             Get
@@ -452,7 +452,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Effort ASCII maps.
+        '''  Looks up a localized string similar to Effort maps (ASCII format).
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_WRITER_ASC_EFFORT() As String
             Get
@@ -461,20 +461,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to CSV maps.
-        '''</summary>
-        Public Shared ReadOnly Property ECOSPACE_WRITER_CSVMAP() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_WRITER_CSVMAP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Region averages.
+        '''  Looks up a localized string similar to Region averages (csv format).
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_WRITER_REGAVG() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_WRITER_REGAVG", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to XYZT point values (csv format).
+        '''</summary>
+        Public Shared ReadOnly Property ECOSPACE_WRITER_XYZT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_WRITER_XYZT", resourceCulture)
             End Get
         End Property
         

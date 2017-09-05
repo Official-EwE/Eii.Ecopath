@@ -32,7 +32,7 @@ Imports EwEUtils.Utilities
 #Region "Must inherit Base class"
 
 ''' <summary>
-''' Base class for data source objects used by the <see cref="cEcospaceAvgModelAreaResultsWriter">cEcospaceAvgModelAreaResultsWriter</see>
+''' Base class for data source objects used by the <see cref="cEcospaceRegionAvgResultsWriter">cEcospaceAvgModelAreaResultsWriter</see>
 ''' to write averaged Ecospace results to a csv file. 
 ''' </summary>
 ''' <remarks></remarks>
