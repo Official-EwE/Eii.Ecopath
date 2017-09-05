@@ -36,7 +36,7 @@ Imports EwEUtils.Utilities
 ''' </summary>
 ''' <remarks>There will be one CSV file for each group containing data for all the time steps.</remarks>
 ''' ---------------------------------------------------------------------------
-Public Class cEcospaceCSVMapResultsWriter
+Public Class cEcospaceXYZTResultsWriter
     Inherits cEcospaceBaseResultsWriter
 
 #Region " Overrides "
@@ -46,7 +46,7 @@ Public Class cEcospaceCSVMapResultsWriter
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property DisplayName As String
         Get
-            Return My.Resources.CoreDefaults.ECOSPACE_WRITER_CSVMAP
+            Return My.Resources.CoreDefaults.ECOSPACE_WRITER_XYZT
         End Get
     End Property
 

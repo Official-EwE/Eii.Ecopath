@@ -223,7 +223,7 @@
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapContaminants.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapDiscardsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapEffortWriter.vb" />
-    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceAvgModelAreaResultsWriter.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceRegionAvgResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerBoolean.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
     <Compile Include="EcoSpace\Input Output\IEcospaceLayerManager.vb" />
@@ -467,7 +467,7 @@
     <Compile Include="EcoPath\Utility\cEcopathModelFromEcosim.vb" />
     <Compile Include="EcoSim\Model\cMediationDataStructures.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceBaseResultsWriter.vb" />
-    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceCSVMapResultsWriter.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceXYZTResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\cEnviroInputMap.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerHabitatCapacity.vb" />
     <Compile Include="HelperClasses\cPathUtility.vb" />

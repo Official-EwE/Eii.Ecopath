@@ -252,25 +252,25 @@
     <comment>{0} date and time, converted to string in current Locale</comment>
   </data>
   <data name="ECOSPACE_WRITER_ASC_BIOMASS" xml:space="preserve">
-    <value>Biomass ASCII maps</value>
+    <value>Biomass maps (ASCII format)</value>
   </data>
   <data name="ECOSPACE_WRITER_ASC_CATCH" xml:space="preserve">
-    <value>Catch ASCII maps</value>
+    <value>Catch maps (ASCII format)</value>
   </data>
   <data name="ECOSPACE_WRITER_ASC_CONTAMINANTS" xml:space="preserve">
-    <value>Contaminant Concentrations ASCII map</value>
+    <value>Contaminant Concentrations map (ASCII format)</value>
   </data>
   <data name="ECOSPACE_WRITER_ASC_DISCARDS" xml:space="preserve">
-    <value>Total discards ASCII maps</value>
+    <value>Total discards maps (ASCII format)</value>
   </data>
   <data name="ECOSPACE_WRITER_ASC_EFFORT" xml:space="preserve">
-    <value>Effort ASCII maps</value>
+    <value>Effort maps (ASCII format)</value>
   </data>
-  <data name="ECOSPACE_WRITER_CSVMAP" xml:space="preserve">
-    <value>CSV maps</value>
+  <data name="ECOSPACE_WRITER_XYZT" xml:space="preserve">
+    <value>XYZT point values (csv format)</value>
   </data>
   <data name="ECOSPACE_WRITER_REGAVG" xml:space="preserve">
-    <value>Region averages</value>
+    <value>Region averages (csv format)</value>
   </data>
   <data name="MONTECARLO_WRITER_MULTIPLE" xml:space="preserve">
     <value>Separate files per trial</value>
