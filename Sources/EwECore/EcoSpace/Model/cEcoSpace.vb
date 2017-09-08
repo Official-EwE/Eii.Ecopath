@@ -1063,7 +1063,9 @@ Public Class cEcoSpace
                 ReDim Btime(m_Data.NGroups) 'this clears out btime
                 ReDim ConTotal(m_Data.NGroups)
 
+#If DEBUG Then
                 Me.m_Data.debugTestDiscardsMaps()
+#End If
                 Array.Clear(Me.m_Data.CatchMap, 0, Me.m_Data.CatchMap.Length)
                 Array.Clear(Me.m_Data.Landings, 0, Me.m_Data.Landings.Length)
                 Array.Clear(Me.m_Data.DiscardsMap, 0, Me.m_Data.DiscardsMap.Length)
