@@ -385,9 +385,9 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.MaxIterations) = New cVariableMetaData(1, Integer.MaxValue, ge, lt, 1)
         Me.Metadata(eVarNameFlags.UseExact) = New cVariableMetaData(False)
         Me.Metadata(eVarNameFlags.ConSimOnEcoSpace) = New cVariableMetaData(False)
-        Me.Metadata(eVarNameFlags.nGridSolverThreads) = New cVariableMetaData(0, Environment.ProcessorCount, gt, lt, 1) ' Was N_CORES_HUNGABEE
-        Me.Metadata(eVarNameFlags.nSpaceThreads) = New cVariableMetaData(0, Environment.ProcessorCount, gt, lt, 1) ' Was N_CORES_HUNGABEE
-        Me.Metadata(eVarNameFlags.nEffortDistThreads) = New cVariableMetaData(0, Environment.ProcessorCount, gt, lt, 1) ' Was N_CORES_HUNGABEE
+        Me.Metadata(eVarNameFlags.nGridSolverThreads) = New cVariableMetaData(0, Environment.ProcessorCount, gt, le, 1) ' Was N_CORES_HUNGABEE
+        Me.Metadata(eVarNameFlags.nSpaceThreads) = New cVariableMetaData(0, Environment.ProcessorCount, gt, le, 1) ' Was N_CORES_HUNGABEE
+        Me.Metadata(eVarNameFlags.nEffortDistThreads) = New cVariableMetaData(0, Environment.ProcessorCount, gt, le, 1) ' Was N_CORES_HUNGABEE
         Me.Metadata(eVarNameFlags.PacketsMultiplier) = New cVariableMetaData(0, Single.MaxValue, gt, lt)
         Me.Metadata(eVarNameFlags.EcospaceSummaryTimeStart) = New cVariableMetaData(1, Single.MaxValue, gt, lt)
         Me.Metadata(eVarNameFlags.EcospaceSummaryTimeEnd) = New cVariableMetaData(1, Single.MaxValue, gt, lt)
