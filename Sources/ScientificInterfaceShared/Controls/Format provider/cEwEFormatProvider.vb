@@ -545,9 +545,9 @@ Namespace Controls
                     If objValue Is Nothing Then Return
 
                     ' Update control
-                    ' - Set value truncated to min and max ranges. Note that value_none is not
-                    '   explicitly supported here!
+                    ' - Set value truncated to min and max ranges. Note that value_none is not supported here!
                     Me.m_ud.Value = Math.Max(Me.m_ud.Minimum, Math.Min(Me.m_ud.Maximum, Convert.ToDecimal(objValue)))
+
                 End If
 
                 If (cf And Properties.cProperty.eChangeFlags.CoreStatus) > 0 Then
@@ -642,8 +642,18 @@ Namespace Controls
 #Region " Internals "
 
             Private m_bInUpdate As Boolean = False
+            Private m_decLatValidated As Decimal = -9999D
 
             Private Sub Validate()
+
+                ' JS 12Sep17: Prevent loss of focus/validation/message/focus/loss of focus loops
+                ' This can only occur on control initialization, where values in the model contain 
+                ' impossible values. Later changes will be constrained by the min and max set in 
+                ' the Control according to variable metadata.
+                ' Values can only be disallowed for a handful parameters such as machine-specific 
+                ' number of threads, or for values that have been changed in the database.
+                If (Me.m_decLatValidated = Me.m_ud.Value) Then Return
+                Me.m_decLatValidated = Me.m_ud.Value
 
                 If (Me.m_bInUpdate) Then Return
                 Me.m_bInUpdate = True
