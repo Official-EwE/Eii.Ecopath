@@ -1430,7 +1430,13 @@ Public Class cEcoSpace
         m_Data.YearNow = 1 + Math.Truncate(m_Data.TimeNow)
         If m_Data.YearNow > Math.Truncate(Me.m_Data.TotalTime) Then m_Data.YearNow = Math.Truncate(Me.m_Data.TotalTime)
 
-        Debug.Assert(iDataTimeStep = iCumTimeStep)
+        'xxxxxxxxxxxxxxxxxxxxxxxxx
+        'For debugging
+        'The time loop counter (iCumTimeStep) and the data time step counter (iDataTimeStep)
+        'should be the same when nTimeStepsPerYear = 12
+        'Not otherwise
+        'Debug.Assert(iDataTimeStep = iCumTimeStep)
+        'xxxxxxxxxxxxxxxxxxxxxxxxx
 
     End Sub
 
