@@ -331,10 +331,12 @@ Friend Class cEngine
 
             For Each man As cBaseShapeManager In Me.m_lManagers
                 For Each ff As cForcingFunction In man
-                    lShapes.Add(ff)
-                    If (i > 0) Then sw.Write(",")
-                    sw.Write(cStringUtils.ToCSVField(ff.Name))
-                    i += 1
+                    If Not Me.IsAllFleet(man, ff) Then
+                        lShapes.Add(ff)
+                        If (i > 0) Then sw.Write(",")
+                        sw.Write(cStringUtils.ToCSVField(ff.Name))
+                        i += 1
+                    End If
                 Next
             Next
             sw.WriteLine()
@@ -426,14 +428,13 @@ Friend Class cEngine
 
                     ' Add error
                     Me.m_valDetails.Add(New cVariableStatus(eStatusFlags.FailedValidation,
-                                                            cStringUtils.Localize(My.Resources.VALIDATION_DETAIL_FN_DUPLICATE, ff.Name),
-                                                            eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0))
+                                                                cStringUtils.Localize(My.Resources.VALIDATION_DETAIL_FN_DUPLICATE, ff.Name),
+                                                                eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0))
                     Me.m_valStatus = Me.m_valStatus Or eStatusFlags.FailedValidation
                 End If
 
                 ' Add function
                 Me.m_FFCache(strKey) = New cFFCache(ff)
-
             Next
         Next
 
@@ -444,6 +445,25 @@ Friend Class cEngine
 
     Private Function Key(strName As String) As String
         Return strName.Trim().ToLowerInvariant()
+    End Function
+
+    Private Function IsAllFleet(man As cBaseShapeManager, ff As cForcingFunction) As Boolean
+
+        If ((TypeOf man Is cFishingEffortShapeManger) Or (TypeOf man Is cFishingMortalityShapeManger)) Then
+            Return ff.Index > Me.m_core.nFleets
+        End If
+        Return False
+
+    End Function
+
+    Private Function IsAllFleetName(man As cBaseShapeManager, strName As String) As Boolean
+
+        If ((TypeOf man Is cFishingEffortShapeManger) Or (TypeOf man Is cFishingMortalityShapeManger)) Then
+            Dim ff As cForcingFunction = man.Item(Me.m_core.nFleets)
+            Return String.Compare(strName, ff.Name, True) = 0
+        End If
+        Return False
+
     End Function
 
 #Region " Running "
@@ -704,10 +724,20 @@ Friend Class cEngine
 
         Dim reader As StreamReader = Nothing
         Dim values() As String = Nothing
+        Dim item As cFFCache = Nothing
         Dim strName As String = ""
         Dim iNumMissing As Integer = 0
         Dim status As eStatusFlags = eStatusFlags.OK
         Dim vsInfo As cVariableStatus = Nothing
+        Dim bOK As Boolean = True
+
+        ' For effort / mort validation
+        Dim manEffort As cBaseShapeManager = Me.m_core.FishingEffortShapeManager
+        Dim manFMort As cBaseShapeManager = Me.m_core.FishMortShapeManager
+        Dim bHasEffort As Boolean = False
+        Dim bHasFMort As Boolean = False
+        Dim bHasFleet As Boolean = False
+        Dim bHasAllFleet As Boolean = False
 
         Me.m_log.Add(cStringUtils.Localize(My.Resources.VAL_CSV_READ, strFileName))
 
@@ -726,7 +756,7 @@ Friend Class cEngine
                 For i As Integer = 0 To values.Length - 1
                     ' Get file
                     strName = values(i).Trim()
-                    ' Does exist?
+                    ' Does not exist?
                     If Not Me.m_FFCache.ContainsKey(Me.Key(strName)) Then
                         ' #No: count missing
                         iNumMissing += 1
@@ -742,20 +772,52 @@ Friend Class cEngine
                             ' #Yes: call home
                             Me.m_dgtDisableFile.Invoke(strName)
                         End If
+                    Else
+                        item = Me.m_FFCache(Me.Key(strName))
+                        Dim bIsEffort As Boolean = item.BelongsTo(manEffort)
+                        Dim bIsFMort As Boolean = item.BelongsTo(manFMort)
+                        If (bIsEffort Or bIsFMort) Then
+                            If Me.IsAllFleetName(manEffort, strName) Then bHasAllFleet = True Else bHasFleet = True
+                            If bIsEffort Then bHasEffort = True Else bHasFMort = True
+                        End If
                     End If
                 Next
 
+                ' Summarize
+                bOK = (iNumMissing = 0) And (bHasEffort = False Or bHasFMort = False) And (bHasFleet = False Or bHasAllFleet = False)
+
                 ' Log summary
-                If (iNumMissing = 0) Then
+                If (bOK) Then
                     vsInfo = New cVariableStatus(eStatusFlags.OK,
                                                  My.Resources.VAL_CSV_SUMMARY_OK,
                                                  eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
                     Me.m_valDetails.Add(vsInfo)
+
                 Else
-                    vsInfo = New cVariableStatus(eStatusFlags.MissingParameter,
-                                                 cStringUtils.Localize(My.Resources.VAL_CSV_SUMMARY_MISSING, strFileName, iNumMissing),
-                                                 eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
-                    Me.m_valDetails.Add(vsInfo)
+                    ' Missing parameters
+                    If (iNumMissing > 0) Then
+                        vsInfo = New cVariableStatus(eStatusFlags.MissingParameter,
+                                                     cStringUtils.Localize(My.Resources.VAL_CSV_SUMMARY_MISSING, strFileName, iNumMissing),
+                                                     eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
+                        Me.m_valDetails.Add(vsInfo)
+                    End If
+
+                    ' Flag possible effort / mort problems
+                    If (bHasEffort And bHasFMort) Then
+                        vsInfo = New cVariableStatus(eStatusFlags.MissingParameter,
+                                                     cStringUtils.Localize(My.Resources.VAL_CSV_SUMMARY_EFFORT_FMORT_WARNING, strFileName),
+                                                     eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
+                        Me.m_valDetails.Add(vsInfo)
+                    End If
+
+                    ' Flag single fleet / all fleet problemts
+                    If (bHasFleet And bHasAllFleet) Then
+                        vsInfo = New cVariableStatus(eStatusFlags.ErrorEncountered,
+                                                     cStringUtils.Localize(My.Resources.VAL_CSV_SUMMARY_FLEET_ERROR, strFileName),
+                                                     eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
+                        Me.m_valDetails.Add(vsInfo)
+                    End If
+
                 End If
 
             Catch ex As Exception
@@ -763,16 +825,18 @@ Friend Class cEngine
                                              cStringUtils.Localize(My.Resources.VAL_CSV_READ_ERROR, strFileName, ex.Message),
                                              eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
                 Me.m_valDetails.Add(vsInfo)
-                status = status Or vsInfo.Status
             End Try
         Else
             vsInfo = New cVariableStatus(eStatusFlags.ErrorEncountered,
                                          cStringUtils.Localize(My.Resources.VAL_CSV_READ_MISSING, strFileName),
                                          eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
             Me.m_valDetails.Add(vsInfo)
-            status = status Or vsInfo.Status
         End If
 
+        ' Combine status
+        For Each vsInfo In Me.m_valDetails
+            status = status Or vsInfo.Status
+        Next
         Return status
 
     End Function
