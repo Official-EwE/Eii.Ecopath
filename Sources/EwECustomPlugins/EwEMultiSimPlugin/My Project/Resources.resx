@@ -206,4 +206,12 @@
     <value>Multi-sim example CSV input file written to '{0}', but some problems were encountered for scenario {1}.</value>
     <comment>{0} = file name, {1} = scenario name</comment>
   </data>
+  <data name="VAL_CSV_SUMMARY_EFFORT_FMORT_WARNING" xml:space="preserve">
+    <value>CSV file {0} uses both effort and fishing mortality shapes, which could lead to unpredictable results in Ecosim</value>
+    <comment>{0} = file name</comment>
+  </data>
+  <data name="VAL_CSV_SUMMARY_FLEET_ERROR" xml:space="preserve">
+    <value>CSF file {0} cannot vary both individual fleets and all fleets; the data for all fleets will take precedence. Either remove the individual fleets or remove the all fleets data</value>
+    <comment>{0} = file name</comment>
+  </data>
 </root>

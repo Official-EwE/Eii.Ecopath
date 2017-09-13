@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -221,6 +221,24 @@ Namespace My.Resources
         Friend ReadOnly Property VAL_CSV_READ_MISSING() As String
             Get
                 Return ResourceManager.GetString("VAL_CSV_READ_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to CSV file {0} uses both effort and fishing mortality shapes, which could lead to unpredictable results in Ecosim.
+        '''</summary>
+        Friend ReadOnly Property VAL_CSV_SUMMARY_EFFORT_FMORT_WARNING() As String
+            Get
+                Return ResourceManager.GetString("VAL_CSV_SUMMARY_EFFORT_FMORT_WARNING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to CSF file {0} cannot vary both individual fleets and all fleets; the data for all fleets will take precedence. Either remove the individual fleets or remove the all fleets data.
+        '''</summary>
+        Friend ReadOnly Property VAL_CSV_SUMMARY_FLEET_ERROR() As String
+            Get
+                Return ResourceManager.GetString("VAL_CSV_SUMMARY_FLEET_ERROR", resourceCulture)
             End Get
         End Property
         
