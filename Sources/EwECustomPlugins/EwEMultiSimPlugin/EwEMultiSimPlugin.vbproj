@@ -185,6 +185,7 @@
   <ItemGroup>
     <Content Include="Resources\logo_canada.png" />
     <Content Include="Resources\logo_canada_large.png" />
+    <None Include="Resources\ÖCengsvart-1.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\EwECore\EwECore.vbproj">

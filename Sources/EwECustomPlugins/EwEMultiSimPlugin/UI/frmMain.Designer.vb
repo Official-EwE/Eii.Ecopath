@@ -70,12 +70,18 @@ Partial Class frmMain
         Me.m_btnAllVars = New System.Windows.Forms.Button()
         Me.m_btnChooseOut = New System.Windows.Forms.Button()
         Me.m_lblVars = New System.Windows.Forms.Label()
-        Me.m_pbLogo = New System.Windows.Forms.PictureBox()
+        Me.m_pbLogoDFO = New System.Windows.Forms.PictureBox()
+        Me.m_tlpCredits = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_pbLogoSU = New System.Windows.Forms.PictureBox()
+        Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
         Me.m_scMain.SuspendLayout()
-        CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbLogoDFO, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_tlpCredits.SuspendLayout()
+        CType(Me.m_pbLogoSU, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_tlpMain.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_scMain
@@ -277,13 +283,36 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_lblVars, "m_lblVars")
         Me.m_lblVars.Name = "m_lblVars"
         '
-        'm_pbLogo
+        'm_pbLogoDFO
         '
-        resources.ApplyResources(Me.m_pbLogo, "m_pbLogo")
-        Me.m_pbLogo.BackColor = System.Drawing.Color.White
-        Me.m_pbLogo.BackgroundImage = Global.EwEMultiSimPlugin.My.Resources.Resources.logo_canada_large
-        Me.m_pbLogo.Name = "m_pbLogo"
-        Me.m_pbLogo.TabStop = False
+        Me.m_pbLogoDFO.BackColor = System.Drawing.Color.White
+        Me.m_pbLogoDFO.BackgroundImage = Global.EwEMultiSimPlugin.My.Resources.Resources.logo_canada_large
+        resources.ApplyResources(Me.m_pbLogoDFO, "m_pbLogoDFO")
+        Me.m_pbLogoDFO.Name = "m_pbLogoDFO"
+        Me.m_pbLogoDFO.TabStop = False
+        '
+        'm_tlpCredits
+        '
+        Me.m_tlpCredits.BackColor = System.Drawing.Color.White
+        resources.ApplyResources(Me.m_tlpCredits, "m_tlpCredits")
+        Me.m_tlpCredits.Controls.Add(Me.m_pbLogoSU, 3, 0)
+        Me.m_tlpCredits.Controls.Add(Me.m_pbLogoDFO, 1, 0)
+        Me.m_tlpCredits.Name = "m_tlpCredits"
+        '
+        'm_pbLogoSU
+        '
+        Me.m_pbLogoSU.BackColor = System.Drawing.Color.White
+        Me.m_pbLogoSU.BackgroundImage = Global.EwEMultiSimPlugin.My.Resources.Resources.ÖCengsvart_1
+        resources.ApplyResources(Me.m_pbLogoSU, "m_pbLogoSU")
+        Me.m_pbLogoSU.Name = "m_pbLogoSU"
+        Me.m_pbLogoSU.TabStop = False
+        '
+        'm_tlpMain
+        '
+        resources.ApplyResources(Me.m_tlpMain, "m_tlpMain")
+        Me.m_tlpMain.Controls.Add(Me.m_tlpCredits, 0, 1)
+        Me.m_tlpMain.Controls.Add(Me.m_scMain, 0, 0)
+        Me.m_tlpMain.Name = "m_tlpMain"
         '
         'frmMain
         '
@@ -291,8 +320,7 @@ Partial Class frmMain
         Me.AllowDrop = True
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.Controls.Add(Me.m_scMain)
-        Me.Controls.Add(Me.m_pbLogo)
+        Me.Controls.Add(Me.m_tlpMain)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmMain"
         Me.ShowInTaskbar = False
@@ -303,7 +331,10 @@ Partial Class frmMain
         Me.m_scMain.Panel2.PerformLayout()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scMain.ResumeLayout(False)
-        CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbLogoDFO, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tlpCredits.ResumeLayout(False)
+        CType(Me.m_pbLogoSU, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tlpMain.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -325,7 +356,7 @@ Partial Class frmMain
     Private WithEvents m_btnAllVars As System.Windows.Forms.Button
     Private WithEvents m_btnChooseOut As System.Windows.Forms.Button
     Private WithEvents m_lblVars As System.Windows.Forms.Label
-    Private WithEvents m_pbLogo As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbLogoDFO As System.Windows.Forms.PictureBox
     Private WithEvents m_btnRun As System.Windows.Forms.Button
     Private WithEvents m_cbCreateRunFolder As System.Windows.Forms.CheckBox
     Private WithEvents m_btnValidate As System.Windows.Forms.Button
@@ -335,4 +366,7 @@ Partial Class frmMain
     Private WithEvents m_lblApply As System.Windows.Forms.Label
     Private WithEvents m_cbEggProduction As System.Windows.Forms.CheckBox
     Private WithEvents m_btnGenerateSample As System.Windows.Forms.Button
+    Private WithEvents m_tlpCredits As TableLayoutPanel
+    Friend WithEvents m_tlpMain As TableLayoutPanel
+    Private WithEvents m_pbLogoSU As PictureBox
 End Class
