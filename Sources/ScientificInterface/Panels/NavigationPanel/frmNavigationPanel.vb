@@ -229,7 +229,7 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_TIMESERIES, "ndTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(frmTimeSeries), eNodeImages.Input, nodeInput, "Time series.htm")
 
         nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MEDIATION, "ndMediation", eCoreExecutionState.EcosimLoaded, GetType(frmMediationFunction), eNodeImages.Input, nodeInput, "Forcing function.htm")
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYMEDCONS, "ndApplyMediation", eCoreExecutionState.EcosimLoaded, GetType(frmMediationFunction), eNodeImages.Input, nodeFolder, "Mediation.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYMEDCONS, "ndApplyMediation", eCoreExecutionState.EcosimLoaded, GetType(frmApplyMedConsumer), eNodeImages.Input, nodeFolder, "Mediation.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYMEDPROD, "ndApplyMediationPP", eCoreExecutionState.EcosimLoaded, GetType(frmApplyMedPP), eNodeImages.Input, nodeFolder, "Apply mediation.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_APPLYMEDDET, "ndApplyMediationDetritus", eCoreExecutionState.EcosimLoaded, GetType(frmApplyMedDetritus), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
