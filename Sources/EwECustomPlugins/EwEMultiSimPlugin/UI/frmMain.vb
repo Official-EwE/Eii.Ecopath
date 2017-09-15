@@ -293,13 +293,12 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub OnVisitSponsor(sender As Object, e As System.EventArgs) Handles m_pbLogo.Click
-        Try
-            Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-            cmd.Invoke("http://www.dfo-mpo.gc.ca")
-        Catch ex As Exception
-            cLog.Write(ex, "MultiSim.frmMain::OnVisitSponsor")
-        End Try
+    Private Sub OnDFOclicked(sender As Object, e As System.EventArgs) Handles m_pbLogoDFO.Click
+        Me.VisitSponsor("http://www.dfo-mpo.gc.ca")
+    End Sub
+
+    Private Sub OnBSCclicked(sender As Object, e As System.EventArgs) Handles m_pbLogoSU.Click
+        Me.VisitSponsor("http://www.su.se/ostersjocentrum/")
     End Sub
 
 #End Region ' Event handlers
@@ -473,6 +472,14 @@ Public Class frmMain
         Me.m_clbFilesSrc.Items.Remove(strFile)
     End Sub
 
+    Private Sub VisitSponsor(strURL As String)
+        Try
+            Dim cmd As cBrowserCommand = CType(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.Invoke(strURL)
+        Catch ex As Exception
+            cLog.Write(ex, "MultiSim.frmMain::VisitSponsor")
+        End Try
+    End Sub
 #End Region ' Internals
 
 End Class

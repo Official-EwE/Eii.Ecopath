@@ -118,8 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_scMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="m_scMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_scMain.Location" type="System.Drawing.Point, System.Drawing">
@@ -142,7 +142,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbEggProduction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>234, 242</value>
+    <value>234, 225</value>
   </data>
   <data name="m_cbEggProduction.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 17</value>
@@ -175,7 +175,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbMort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>234, 221</value>
+    <value>234, 204</value>
   </data>
   <data name="m_cbMort.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 17</value>
@@ -205,7 +205,7 @@
     <value>True</value>
   </data>
   <data name="m_cbEffort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 242</value>
+    <value>84, 225</value>
   </data>
   <data name="m_cbEffort.Size" type="System.Drawing.Size, System.Drawing">
     <value>51, 17</value>
@@ -238,7 +238,7 @@
     <value>False</value>
   </data>
   <data name="m_cbFF.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 221</value>
+    <value>84, 204</value>
   </data>
   <data name="m_cbFF.Size" type="System.Drawing.Size, System.Drawing">
     <value>144, 17</value>
@@ -301,7 +301,7 @@
     <value>84, 49</value>
   </data>
   <data name="m_clbFilesSrc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>346, 143</value>
+    <value>346, 126</value>
   </data>
   <data name="m_clbFilesSrc.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -343,7 +343,7 @@
     <value>m_hdrIn</value>
   </data>
   <data name="&gt;&gt;m_hdrIn.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14838.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrIn.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -388,7 +388,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnGenerateSample.Location" type="System.Drawing.Point, System.Drawing">
-    <value>436, 169</value>
+    <value>436, 152</value>
   </data>
   <data name="m_btnGenerateSample.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -418,7 +418,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnValidate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>437, 238</value>
+    <value>437, 221</value>
   </data>
   <data name="m_btnValidate.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -481,7 +481,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbAnnual.Location" type="System.Drawing.Point, System.Drawing">
-    <value>152, 198</value>
+    <value>152, 181</value>
   </data>
   <data name="m_rbAnnual.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 17</value>
@@ -538,7 +538,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbMonthly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 198</value>
+    <value>84, 181</value>
   </data>
   <data name="m_rbMonthly.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 17</value>
@@ -601,7 +601,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblApply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 222</value>
+    <value>6, 205</value>
   </data>
   <data name="m_lblApply.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 13</value>
@@ -634,7 +634,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblReadAs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 200</value>
+    <value>6, 183</value>
   </data>
   <data name="m_lblReadAs.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 13</value>
@@ -679,7 +679,7 @@
     <value>True</value>
   </data>
   <data name="m_cbCreateRunFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 147</value>
+    <value>84, 137</value>
   </data>
   <data name="m_cbCreateRunFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>183, 17</value>
@@ -727,7 +727,7 @@
     <value>m_hrdOut</value>
   </data>
   <data name="&gt;&gt;m_hrdOut.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14838.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hrdOut.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -766,7 +766,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>436, 143</value>
+    <value>436, 133</value>
   </data>
   <data name="m_btnRun.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -802,7 +802,7 @@
     <value>84, 50</value>
   </data>
   <data name="m_clbValues.Size" type="System.Drawing.Size, System.Drawing">
-    <value>346, 91</value>
+    <value>346, 81</value>
   </data>
   <data name="m_clbValues.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -955,10 +955,10 @@
     <value>74</value>
   </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>515, 431</value>
+    <value>515, 404</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>261</value>
+    <value>244</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -970,43 +970,148 @@
     <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scMain.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>m_tlpMain</value>
   </data>
   <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
-  <data name="m_pbLogo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="m_pbLogo.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+  <data name="m_pbLogoDFO.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>Center</value>
   </data>
-  <data name="m_pbLogo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_pbLogoDFO.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_pbLogoDFO.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_pbLogo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 438</value>
+  <data name="m_pbLogoDFO.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 0</value>
   </data>
-  <data name="m_pbLogo.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_pbLogoDFO.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_pbLogo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>515, 67</value>
+  <data name="m_pbLogoDFO.Size" type="System.Drawing.Size, System.Drawing">
+    <value>227, 100</value>
   </data>
-  <data name="m_pbLogo.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_pbLogoDFO.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
   </data>
-  <data name="&gt;&gt;m_pbLogo.Name" xml:space="preserve">
-    <value>m_pbLogo</value>
+  <data name="&gt;&gt;m_pbLogoDFO.Name" xml:space="preserve">
+    <value>m_pbLogoDFO</value>
   </data>
-  <data name="&gt;&gt;m_pbLogo.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_pbLogoDFO.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_pbLogo.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_pbLogoDFO.Parent" xml:space="preserve">
+    <value>m_tlpCredits</value>
+  </data>
+  <data name="&gt;&gt;m_pbLogoDFO.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpCredits.ColumnCount" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_pbLogoSU.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="m_pbLogoSU.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_pbLogoSU.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbLogoSU.Location" type="System.Drawing.Point, System.Drawing">
+    <value>267, 0</value>
+  </data>
+  <data name="m_pbLogoSU.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_pbLogoSU.Size" type="System.Drawing.Size, System.Drawing">
+    <value>227, 100</value>
+  </data>
+  <data name="m_pbLogoSU.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="&gt;&gt;m_pbLogoSU.Name" xml:space="preserve">
+    <value>m_pbLogoSU</value>
+  </data>
+  <data name="&gt;&gt;m_pbLogoSU.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbLogoSU.Parent" xml:space="preserve">
+    <value>m_tlpCredits</value>
+  </data>
+  <data name="&gt;&gt;m_pbLogoSU.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpCredits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlpCredits.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 404</value>
+  </data>
+  <data name="m_tlpCredits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpCredits.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tlpCredits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>515, 100</value>
+  </data>
+  <data name="m_tlpCredits.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="&gt;&gt;m_tlpCredits.Name" xml:space="preserve">
+    <value>m_tlpCredits</value>
+  </data>
+  <data name="&gt;&gt;m_tlpCredits.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpCredits.Parent" xml:space="preserve">
+    <value>m_tlpMain</value>
+  </data>
+  <data name="&gt;&gt;m_tlpCredits.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpCredits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbLogoSU" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_pbLogoDFO" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,20,Percent,50,Absolute,20,Percent,50,Absolute,21" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="m_tlpMain.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tlpMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlpMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tlpMain.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpMain.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_tlpMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>515, 504</value>
+  </data>
+  <data name="m_tlpMain.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="&gt;&gt;m_tlpMain.Name" xml:space="preserve">
+    <value>m_tlpMain</value>
+  </data>
+  <data name="&gt;&gt;m_tlpMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpMain.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_pbLogo.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;m_tlpMain.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tlpCredits" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_scMain" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,Absolute,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1030,6 +1135,6 @@
     <value>frmMain</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14838.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
