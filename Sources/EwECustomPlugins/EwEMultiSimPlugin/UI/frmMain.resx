@@ -679,7 +679,7 @@
     <value>True</value>
   </data>
   <data name="m_cbCreateRunFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 137</value>
+    <value>84, 134</value>
   </data>
   <data name="m_cbCreateRunFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>183, 17</value>
@@ -766,7 +766,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>436, 133</value>
+    <value>436, 130</value>
   </data>
   <data name="m_btnRun.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -802,7 +802,7 @@
     <value>84, 50</value>
   </data>
   <data name="m_clbValues.Size" type="System.Drawing.Size, System.Drawing">
-    <value>346, 81</value>
+    <value>346, 78</value>
   </data>
   <data name="m_clbValues.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>

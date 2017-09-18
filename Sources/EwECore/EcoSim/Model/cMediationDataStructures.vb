@@ -1,4 +1,6 @@
-﻿' ===============================================================================
+﻿Imports EwEUtils.Core
+
+fMDP ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -176,16 +178,25 @@ Public Class cMediationDataStructures
     ''' <returns>Value(Y) on the mediation shape for the input(X)</returns>
     ''' <remarks></remarks>
     Public Function getMedValue(ByVal iMedShapeIndex As Integer, ByVal Xvalue As Single) As Single
-        Dim ip As Long 'MDP changed to long int because in rare circumstances the division produced a number so big that an int could not hold it
-        '060328 CJW found that without the +0.01 below it could be unstable when slope
-        'was large around Ecopath base point in mediation function, causing instability.
-        'This solves it. VC.
-        ip = CLng(Math.Truncate(Me.IMedBase(iMedShapeIndex) * Xvalue / Me.MedXbase(iMedShapeIndex) + 0.01))
 
-        'if the index is out of bounds use the fist or last value
-        If ip < 1 Then ip = 1
-        If ip > Me.NMedPoints Then ip = Me.NMedPoints
-        Return Me.Medpoints(CInt(ip), iMedShapeIndex) / Me.MedYbase(iMedShapeIndex)
+        Dim ip As Integer
+
+        ' MDP changed to long int because in rare circumstances the division produced a number so big that an int could not hold it
+        ' JS18Sep17: indeed, but a long is not 100% catch for numerical overflows. Try/Catch is.
+
+        Try
+            '280306 CJW found that without the +0.01 below it could be unstable when slope
+            'was large around Ecopath base point in mediation function, causing instability.
+            'This solves it. VC.
+            ip = Math.Truncate(Me.IMedBase(iMedShapeIndex) * Xvalue / Me.MedXbase(iMedShapeIndex) + 0.01)
+        Catch ex As Exception
+            ' Log numerical overflow
+            cLog.Write(ex, "Calculation mediation value")
+        End Try
+
+        ' Truncate to allowed range
+        ip = Math.Max(1, Math.Min(Me.NMedPoints, ip))
+        Return Me.Medpoints(ip, iMedShapeIndex) / Me.MedYbase(iMedShapeIndex)
 
     End Function
 
