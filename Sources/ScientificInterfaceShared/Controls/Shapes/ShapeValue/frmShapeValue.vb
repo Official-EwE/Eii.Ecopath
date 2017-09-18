@@ -23,6 +23,7 @@
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
@@ -353,7 +354,7 @@ Public Class frmShapeValue
     Private Sub LoadForcingDataToGrid()
 
         Dim iOffset As Integer = 0
-        Dim bIsMediation As Boolean = (TypeOf Me.m_handler Is cMediationShapeGUIHandler)
+        Dim bIsMediation As Boolean = (Array.IndexOf(Me.m_handler.Datatypes, eDataTypes.Mediation) > 0)
 
         'Set the plot title
         Me.Text = My.Resources.HEADER_VALUES
@@ -588,7 +589,7 @@ Public Class frmShapeValue
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub UpdateControls()
 
-        Dim bIsMediation As Boolean = (TypeOf (Me.m_handler) Is cMediationShapeGUIHandler)
+        Dim bIsMediation As Boolean = (Array.IndexOf(Me.m_handler.Datatypes, eDataTypes.Mediation) > 0)
         Dim bEnableOk As Boolean = True
 
         Try

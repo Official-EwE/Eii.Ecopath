@@ -185,7 +185,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.Datatypes"/>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+        Public Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
             Return New eDataTypes() {eDataTypes.Forcing, eDataTypes.EggProd}
         End Function
 

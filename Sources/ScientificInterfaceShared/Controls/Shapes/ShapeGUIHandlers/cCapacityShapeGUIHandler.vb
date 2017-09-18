@@ -154,7 +154,7 @@ Namespace Controls
         ''' <see cref="cEnviroResponseFunction">environmental response functions</see>.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+        Public Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
             Return New eDataTypes() {eDataTypes.CapacityMediation}
         End Function
 
