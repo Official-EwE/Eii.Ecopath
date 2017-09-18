@@ -186,7 +186,7 @@ Public Class cMediationDataStructures
             '280306 CJW found that without the +0.01 below it could be unstable when slope
             'was large around Ecopath base point in mediation function, causing instability.
             'This solves it. VC.
-            ip = Math.Truncate(Me.IMedBase(iMedShapeIndex) * Xvalue / Me.MedXbase(iMedShapeIndex) + 0.01)
+            ip = CInt(Math.Truncate(Me.IMedBase(iMedShapeIndex) * Xvalue / Me.MedXbase(iMedShapeIndex) + 0.01))
         Catch ex As Exception
             ' Log numerical overflow
             cLog.Write(ex, "Calculating mediation value for shape " & iMedShapeIndex & ", value " & Xvalue)
