@@ -332,7 +332,7 @@ Namespace Controls
         ''' Override to specify the datatypes to respond to in core messages.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Function Datatypes() As eDataTypes()
+        Public MustOverride Function Datatypes() As eDataTypes()
 
         ''' -------------------------------------------------------------------
         ''' <summary>

@@ -76,7 +76,7 @@ Namespace Controls
             Return My.Resources.ECOSIM_DEFAULT_NEWLANDINGSSHAPE
         End Function
 
-        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+        Public Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
             Return New eDataTypes() {eDataTypes.PriceMediation}
         End Function
 

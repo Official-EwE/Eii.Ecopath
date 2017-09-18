@@ -717,7 +717,7 @@ Namespace Controls
             Return Nothing
         End Function
 
-        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+        Public Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
             Return New eDataTypes() {eDataTypes.GroupTimeSeries, eDataTypes.FleetTimeSeries}
         End Function
 
