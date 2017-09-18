@@ -14,7 +14,7 @@
 #define SpatTemp 0
 
 [Setup]
-; SignTool=Signtool
+; SignTool=codesign
 WizardImageFile=EwE5Logo.bmp
 WizardSmallImageFile=EwE6Header.bmp
 WizardImageStretch=False
