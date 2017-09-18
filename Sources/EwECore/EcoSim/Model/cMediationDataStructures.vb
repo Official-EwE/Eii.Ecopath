@@ -191,7 +191,7 @@ Public Class cMediationDataStructures
             ip = Math.Truncate(Me.IMedBase(iMedShapeIndex) * Xvalue / Me.MedXbase(iMedShapeIndex) + 0.01)
         Catch ex As Exception
             ' Log numerical overflow
-            cLog.Write(ex, "Calculation mediation value")
+            cLog.Write(ex, "Calculating mediation value for shape " & iMedShapeIndex & ", value " & Xvalue)
         End Try
 
         ' Truncate to allowed range
