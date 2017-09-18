@@ -134,7 +134,7 @@
     <Compile Include="Core\IMonteCarloResultsWriter.vb" />
     <Compile Include="Core\ITaxonSearchCapabilities.vb" />
     <Compile Include="Core\IConfigurable.vb" />
-    <Compile Include="Core\IConfigurationSummary.vb" />
+    <Compile Include="Core\ISummarizable.vb" />
     <Compile Include="Core\IEcospaceImportExport.vb" />
     <Compile Include="Core\IFeedbackMessage.vb" />
     <Compile Include="Core\IEcospaceResultsWriter.vb" />

@@ -20,8 +20,6 @@
 
 Option Strict Off ' OUCH
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports EwEUtils.Utilities
 
 ''' <summary>
 ''' Wrapper for the underlying data structures of the EcoPath model. 
