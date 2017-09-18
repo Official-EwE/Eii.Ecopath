@@ -473,7 +473,7 @@ Namespace Ecosim
                         Dim simYears As Integer = CInt(Math.Floor((data.GetLength(1) - 1) / cCore.N_MONTHS))
                         Dim nGroups As Integer = data.GetLength(0) - 1
                         Dim sum(nGroups) As Single
-                        sw.WriteLine("year," & strGroups)
+                        sw.WriteLine(cStringUtils.ToCSVField("year\group") & "," & strGroups)
                         For j As Integer = 1 To simYears
                             sw.Write(Me.m_core.EcosimFirstYear - 1 + j)
                             For i As Integer = 1 To nGroups
@@ -487,7 +487,7 @@ Namespace Ecosim
                             sw.WriteLine()
                         Next
                     Else
-                        sw.WriteLine("timestep," & strGroups)
+                        sw.WriteLine(cStringUtils.ToCSVField("timestep\group") & "," & strGroups)
                         'Each time steps
                         For j As Integer = 1 To data.GetLength(1) - 1
                             sw.Write(j)
