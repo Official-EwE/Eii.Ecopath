@@ -316,6 +316,10 @@ Namespace Controls.Map.Layers
         ''' <summary>
         ''' Smooth layer data across water cells.
         ''' </summary>
+        ''' <remarks>
+        ''' Cells with NoData values are not considered in the smoothing, and
+        ''' will not receive new values.
+        ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Overridable Sub Smooth()
 
@@ -336,8 +340,11 @@ Namespace Controls.Map.Layers
                     For ii As Integer = i - 1 To i + 1
                         For jj As Integer = j - 1 To j + 1
                             If Not (ii = 0 Or jj = 0 Or ii = bm.InRow + 1 Or jj = bm.InCol + 1) And (layerDepth.IsWaterCell(ii, jj)) Then
-                                t += CSng(Me.Layer.Value(ii, jj))
-                                n += 1
+                                Dim v As Single = CSng(Me.Layer.Value(ii, jj))
+                                If (v <> cCore.NULL_VALUE) Then
+                                    t += CSng(Me.Layer.Value(ii, jj))
+                                    n += 1
+                                End If
                             End If
                         Next jj
                     Next ii
@@ -348,7 +355,10 @@ Namespace Controls.Map.Layers
             For i = 1 To bm.InRow
                 For j = 1 To bm.InCol
                     If layerDepth.IsWaterCell(i, j) Then
-                        Me.Layer.Value(i, j) = cnew(i, j)
+                        Dim v As Single = CSng(Me.Layer.Value(i, j))
+                        If (v <> cCore.NULL_VALUE) Then
+                            Me.Layer.Value(i, j) = cnew(i, j)
+                        End If
                     End If
                 Next
             Next
@@ -365,8 +375,10 @@ Namespace Controls.Map.Layers
 
             If (Not Me.IsEditable) Then Return
 
+            Dim v As Object = Me.CellValue
+
             ' ToDo: globalize this
-            Dim msg As New cFeedbackMessage(cStringUtils.Localize("Are you sure you want to set all cells in this map to {0}?", Me.CellValue),
+            Dim msg As New cFeedbackMessage(cStringUtils.Localize("Are you sure you want to set all cells in this map to {0}?", v),
                                             eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question)
             msg.ReplyStyle = eMessageReplyStyle.YES_NO
             msg.Reply = eMessageReply.YES
@@ -381,7 +393,7 @@ Namespace Controls.Map.Layers
             For i As Integer = 1 To bm.InRow
                 For j As Integer = 1 To bm.InCol
                     If layerDepth.IsWaterCell(i, j) Then
-                        Me.Layer.Value(i, j) = Me.CellValue
+                        Me.Layer.Value(i, j) = v
                     End If
                 Next j
             Next i
