@@ -321,7 +321,7 @@ Namespace Controls.Map
                     renderer = New cLayerRendererSymbol(vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Always
                     editor = New cLayerEditorPorts(GetType(ucLayerEditorPort))
-                    layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerPort), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerPort, 1.0!, 0.0!)
+                    layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerPort), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerPort, CSng(True), CSng(False))
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerSail

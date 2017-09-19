@@ -422,23 +422,23 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.LayerRelPP) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerRelCin) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerDepth) = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, gt, lt, 0, "[m]")
-        Me.Metadata(eVarNameFlags.LayerHabitat) = New cVariableMetaData(0, Single.MaxValue, ge, lt, cCore.NULL_VALUE, cUnits.Proportion)
-        Me.Metadata(eVarNameFlags.LayerHabitatCapacityInput) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Proportion)
+        Me.Metadata(eVarNameFlags.LayerHabitat) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.Proportion)
+        Me.Metadata(eVarNameFlags.LayerHabitatCapacityInput) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerHabitatCapacity) = cVariableMetaData.Get(eVarNameFlags.LayerHabitatCapacityInput)
-        Me.Metadata(eVarNameFlags.LayerRegion) = New cVariableMetaData(0, 1000, ge, le, cCore.NULL_VALUE)
+        Me.Metadata(eVarNameFlags.LayerRegion) = New cVariableMetaData(0, 1000, ge, le, 0)
         Me.Metadata(eVarNameFlags.LayerMigration) = New cVariableMetaData(0, 1000, ge, le, 0, cUnits.Proportion)
-        Me.Metadata(eVarNameFlags.LayerMPASeed) = New cVariableMetaData(0, Integer.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.LayerMPASeed) = New cVariableMetaData(0, Integer.MaxValue, ge, lt, 0)
         Me.Metadata(eVarNameFlags.LayerPort) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.LayerSail) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerAdvection) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, "[cm]/[sec]")
         Me.Metadata(eVarNameFlags.LayerWind) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, "[cm]/[sec]")
-        Me.Metadata(eVarNameFlags.LayerUpwelling) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt)
-        Me.Metadata(eVarNameFlags.LayerDriver) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt)
+        Me.Metadata(eVarNameFlags.LayerUpwelling) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0)
+        Me.Metadata(eVarNameFlags.LayerDriver) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0)
         Me.Metadata(eVarNameFlags.LayerBiomassForcing) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, cUnits.Biomass)
         Me.Metadata(eVarNameFlags.LayerBiomassRelativeForcing) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerExclusion) = New cVariableMetaData()
-        Me.Metadata(eVarNameFlags.LayerMPA) = New cVariableMetaData(0, Integer.MaxValue, ge, le, cCore.NULL_VALUE)
-        Me.Metadata(eVarNameFlags.ImportanceWeight) = New cVariableMetaData(0, Single.MaxValue, gt, lt)
+        Me.Metadata(eVarNameFlags.LayerMPA) = New cVariableMetaData(0, Integer.MaxValue, ge, le, 0)
+        Me.Metadata(eVarNameFlags.ImportanceWeight) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 0)
 
         ' group in
         Me.Metadata(eVarNameFlags.MVel) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 300)
@@ -741,6 +741,8 @@ Public Class cVariableMetaData
     Public Sub New(Optional ByVal bValueDefault As Boolean = False)
         Me.NullValue = bValueDefault
         Me.m_vartype = eValueTypes.Bool
+        Me.Min = Math.Min(CSng(True), CSng(False))
+        Me.Max = Math.Max(CSng(True), CSng(False))
     End Sub
 
     ''' -----------------------------------------------------------------------

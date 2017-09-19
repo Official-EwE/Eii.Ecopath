@@ -35,7 +35,7 @@ Namespace Controls.Map.Layers
 #Region " Private vars "
 
         ''' <summary>The current value 'under the cursor'.</summary>
-        Private m_sValue As Single = cCore.NULL_VALUE
+        Private m_sValue As Single = 0
         ''' <summary>Draw helper flag: previous draw point.</summary>
         Private m_ptScreenPrevious As Point = Nothing
 
@@ -64,6 +64,7 @@ Namespace Controls.Map.Layers
                     If (md IsNot Nothing) Then
                         Me.CellValueMin = md.Min
                         Me.CellValueMax = md.Max
+                        Me.CellValue = md.NullValue
                     End If
                 End If
             End If
