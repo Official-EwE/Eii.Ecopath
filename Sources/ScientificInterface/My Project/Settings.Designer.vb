@@ -14,7 +14,7 @@ Option Explicit On
 
 
 <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
- Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.1.0.0"),  _
+ Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0"),  _
  Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
 Partial Friend NotInheritable Class Settings
     Inherits Global.System.Configuration.ApplicationSettingsBase
@@ -932,6 +932,78 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("UseHabitatAreaCorrection") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+    Public Property MapShowMPAs() As Boolean
+        Get
+            Return CType(Me("MapShowMPAs"),Boolean)
+        End Get
+        Set
+            Me("MapShowMPAs") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+    Public Property MapShowLabels() As Boolean
+        Get
+            Return CType(Me("MapShowLabels"),Boolean)
+        End Get
+        Set
+            Me("MapShowLabels") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+    Public Property MapShowLabelDate() As Boolean
+        Get
+            Return CType(Me("MapShowLabelDate"),Boolean)
+        End Get
+        Set
+            Me("MapShowLabelDate") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+    Public Property MapShowLabelInvertedColor() As Boolean
+        Get
+            Return CType(Me("MapShowLabelInvertedColor"),Boolean)
+        End Get
+        Set
+            Me("MapShowLabelInvertedColor") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+    Public Property MapLabelPosHorz() As Integer
+        Get
+            Return CType(Me("MapLabelPosHorz"),Integer)
+        End Get
+        Set
+            Me("MapLabelPosHorz") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+    Public Property MapLabelPosVert() As Integer
+        Get
+            Return CType(Me("MapLabelPosVert"),Integer)
+        End Get
+        Set
+            Me("MapLabelPosVert") = value
         End Set
     End Property
 End Class

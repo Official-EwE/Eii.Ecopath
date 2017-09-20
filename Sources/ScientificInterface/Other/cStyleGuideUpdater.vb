@@ -213,7 +213,13 @@ Friend Class cStyleGuideUpdater
             .MapReferenceLayerFile = My.Settings.MapLayerRefFile
             .MapReferenceLayerTL = New PointF(My.Settings.MapLayerRefLonMin, My.Settings.MapLayerRefLatMax)
             .MapReferenceLayerBR = New PointF(My.Settings.MapLayerRefLonMax, My.Settings.MapLayerRefLatMin)
-            .ShowExcludedCells = My.Settings.MapShowExcludedCells
+            .ShowMapsExcludedCells = My.Settings.MapShowExcludedCells
+            .ShowMapsMPAs = My.Settings.MapShowMPAs
+            .ShowMapsLabels = My.Settings.MapShowLabels
+            .ShowMapsDateInLabels = My.Settings.MapShowLabelDate
+            .InvertMapLabelColor = My.Settings.MapShowLabelInvertedColor
+            .MapLabelPosHorizontal = CType(My.Settings.MapLabelPosHorz, StringAlignment)
+            .MapLabelPosVertical = CType(My.Settings.MapLabelPosVert, StringAlignment)
             .UseHabitatAreaCorrection = My.Settings.UseHabitatAreaCorrection
 
             .PreferredDPI = My.Settings.OutputDPI
@@ -266,7 +272,14 @@ Friend Class cStyleGuideUpdater
             My.Settings.MapLayerRefLonMax = .MapReferenceLayerBR.X
             My.Settings.MapLayerRefLatMin = .MapReferenceLayerBR.Y
             My.Settings.MapLayerRefLatMax = .MapReferenceLayerTL.Y
-            My.Settings.MapShowExcludedCells = .ShowExcludedCells
+            My.Settings.MapShowExcludedCells = .ShowMapsExcludedCells
+            My.Settings.MapShowMPAs = .ShowMapsMPAs
+            My.Settings.MapShowLabels = .ShowMapsLabels
+            My.Settings.MapShowLabelDate = .ShowMapsDateInLabels
+            My.Settings.MapLabelPosHorz = .MapLabelPosHorizontal
+            My.Settings.MapLabelPosVert = .MapLabelPosVertical
+            My.Settings.MapShowLabelInvertedColor = .InvertMapLabelColor
+
             My.Settings.UseHabitatAreaCorrection = .UseHabitatAreaCorrection
 
             My.Settings.CountryNames = .EcoBaseFields(cStyleGuide.eEcobaseFieldType.CountryName)

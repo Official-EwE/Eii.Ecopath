@@ -82,6 +82,8 @@ Namespace Ecospace
 
 #Region " Variables "
 
+        Private m_bInUpdate As Boolean = False
+
         ''' <summary>The previous number of timesteps UI has drawn.</summary>
         Private m_iTimeStepPrev As Integer
         ''' <summary>The current number of timesteps available to draw.</summary>
@@ -130,13 +132,7 @@ Namespace Ecospace
         ''' <summary>Tracker to detect plot type changes. Initial value indicates fleet stuff, not groups</summary>
         Private m_mapPlotTypeLast As ePlotTypes = ePlotTypes.Effort
         Private m_bOverlay As Boolean = False
-        Private m_bShowMPA As Boolean = True
         Private m_bShowIBM As Boolean = True
-        Private m_bShowLabels As Boolean = True
-        Private m_bShowDateInLabel As Boolean = True
-        Private m_bInvertLabelColor As Boolean = False
-        Private m_labelposHorz As StringAlignment = StringAlignment.Near
-        Private m_labelposVert As StringAlignment = StringAlignment.Near
         Private m_bpConTracing As cBooleanProperty = Nothing
         Private m_showitemMode As eShowItemType = eShowItemType.ShowAll
         Private m_iItemToShow As Integer = 1
@@ -170,6 +166,8 @@ Namespace Ecospace
 
         Public Sub New()
             MyBase.New()
+            ' To prevent premature control events from tryingto update Styleguide etc. Nasty
+            Me.m_bInUpdate = True
             Me.InitializeComponent()
         End Sub
 
@@ -270,7 +268,7 @@ Namespace Ecospace
                 End Select
                 drawer.Graphics = Graphics.FromImage(Me.m_bmpMap)
                 drawer.Colors = Me.m_legend.Colors
-                drawer.ShowExcluded = Me.StyleGuide.ShowExcludedCells
+                drawer.ShowExcluded = Me.StyleGuide.ShowMapsExcludedCells
                 Me.m_drawers.Add(drawer)
             Next
 
@@ -289,7 +287,12 @@ Namespace Ecospace
             End If
             If ((changeType And cStyleGuide.eChangeType.Map) = cStyleGuide.eChangeType.Map) Then
                 For Each d As cMapDrawerBase In Me.m_drawers
-                    d.ShowExcluded = Me.StyleGuide.ShowExcludedCells
+                    d.ShowExcluded = Me.StyleGuide.ShowMapsExcludedCells
+                    d.ShowMPA = Me.StyleGuide.ShowMapsMPAs
+                    d.ShowLabels = Me.StyleGuide.ShowMapsLabels
+                    d.ShowDateInLabel = Me.StyleGuide.ShowMapsDateInLabels
+                    d.InvertLabelColors = Me.StyleGuide.InvertMapLabelColor
+                    d.SetLabelPosition(Me.StyleGuide.MapLabelPosHorizontal, Me.StyleGuide.MapLabelPosVertical)
                 Next
                 Me.RefreshPlot()
             End If
@@ -314,7 +317,6 @@ Namespace Ecospace
             Me.m_legend.UIContext = Me.UIContext
             Me.m_legend.Colors = Me.StyleGuide.GetEwE5ColorRamp(cColourBins)
 
-            Me.m_bInUpdate = True
             Dim pm As cPropertyManager = Me.PropertyManager
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
@@ -341,7 +343,6 @@ Namespace Ecospace
                 Me.m_cmdDisplayGroups.AddControl(Me.m_btnDisplayGroups1)
                 AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked
             End If
-            Me.m_cmbLabelPos.SelectedIndex = 0
 
             Me.ShowItemMode = eShowItemType.ShowAll
 
@@ -575,11 +576,11 @@ Namespace Ecospace
                         drawer.OriginList = originList
                         drawer.RectList = rectList
                         drawer.Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
-                        drawer.ShowLabels = Me.m_bShowLabels
-                        drawer.ShowDateInLabel = Me.m_bShowDateInLabel
+                        drawer.ShowLabels = Me.StyleGuide.ShowMapsLabels
+                        drawer.ShowDateInLabel = Me.StyleGuide.ShowMapsDateInLabels
                         drawer.Date = strDate
-                        drawer.InvertLabelColors = Me.m_bInvertLabelColor
-                        drawer.SetLabelPosition(Me.m_labelposHorz, Me.m_labelposVert)
+                        drawer.InvertLabelColors = Me.StyleGuide.InvertMapLabelColor
+                        drawer.SetLabelPosition(Me.StyleGuide.MapLabelPosHorizontal, Me.StyleGuide.MapLabelPosVertical)
 
                         drawer.StanzaDS = Nothing
 
@@ -641,7 +642,7 @@ Namespace Ecospace
                         For i As Integer = ifirst To ilast
                             drawer.AddItem(lVisItems(i), i)
                         Next
-                        drawer.ShowMPA = Me.m_bShowMPA
+                        drawer.ShowMPA = Me.StyleGuide.ShowMapsMPAs
 
                         drawer.SignalState.Reset()
 
@@ -723,11 +724,11 @@ Namespace Ecospace
                         drawer.OriginList = originList
                         drawer.RectList = rectList
                         drawer.Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
-                        drawer.ShowLabels = Me.m_bShowLabels
-                        drawer.ShowDateInLabel = Me.m_bShowDateInLabel
+                        drawer.ShowLabels = Me.StyleGuide.ShowMapsLabels
+                        drawer.ShowDateInLabel = Me.StyleGuide.ShowMapsDateInLabels
                         drawer.Date = strDate
-                        drawer.InvertLabelColors = Me.m_bInvertLabelColor
-                        drawer.SetLabelPosition(Me.m_labelposHorz, Me.m_labelposVert)
+                        drawer.InvertLabelColors = Me.StyleGuide.InvertMapLabelColor
+                        drawer.SetLabelPosition(Me.StyleGuide.MapLabelPosHorizontal, Me.StyleGuide.MapLabelPosVertical)
 
                         drawer.StanzaDS = Nothing
 
@@ -742,7 +743,7 @@ Namespace Ecospace
                         For i As Integer = iFrom To iTo
                             drawer.AddItem(lVisItems(i), i)
                         Next
-                        drawer.ShowMPA = Me.m_bShowMPA
+                        drawer.ShowMPA = Me.StyleGuide.ShowMapsMPAs
 
                         drawer.SignalState.Reset()
 
@@ -870,7 +871,7 @@ Namespace Ecospace
                             tmpBrush.Dispose()
 
                             ' Draw MPA
-                            If Me.m_bShowMPA Then
+                            If Me.StyleGuide.ShowMapsMPAs Then
                                 For k As Integer = 1 To Me.Core.nMPAs - 1
                                     Dim iMPA As Integer = CInt(Me.Core.EcospaceBasemap.LayerMPA(k).Cell(i, j))
                                     If iMPA > 0 Then
@@ -891,7 +892,7 @@ Namespace Ecospace
                         tmpBrush.Dispose()
                     End If
 
-                    If Me.StyleGuide.ShowExcludedCells And (excl.IsExcludedCell(i, j)) Then
+                    If Me.StyleGuide.ShowMapsExcludedCells And (excl.IsExcludedCell(i, j)) Then
                         g.FillRectangle(brExcluded, tmpRect)
                     End If
                 Next
@@ -906,10 +907,10 @@ Namespace Ecospace
             brExcluded = Nothing
 
             'Display the group name
-            If Me.m_bShowLabels Then
+            If Me.StyleGuide.ShowMapsLabels Then
 
                 Dim strLabel As String = ""
-                If Me.m_bShowDateInLabel Then
+                If Me.StyleGuide.ShowMapsDateInLabels Then
                     strLabel = String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, Core.EcospaceFleets(iFleet).Name, strDate)
                 Else
                     strLabel = Core.EcospaceFleets(iFleet).Name
@@ -918,10 +919,10 @@ Namespace Ecospace
                 Dim br As Brush = Brushes.Black
                 Dim fmt As New StringFormat()
 
-                fmt.Alignment = Me.m_labelposHorz
-                fmt.LineAlignment = Me.m_labelposVert
+                fmt.Alignment = Me.StyleGuide.MapLabelPosHorizontal
+                fmt.LineAlignment = Me.StyleGuide.MapLabelPosVertical
 
-                If Me.m_bInvertLabelColor Then br = Brushes.White
+                If Me.StyleGuide.InvertMapLabelColor Then br = Brushes.White
 
                 g.DrawString(strLabel, Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend), br, rcPos, fmt)
             End If
@@ -1026,15 +1027,14 @@ Namespace Ecospace
             End Try
         End Sub
 
-        Private Sub OnSelectDriverToShow(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        'Private Sub OnSelectDriverToShow(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
+        '    Dim iSel As Integer = Math.Max(Math.Min(9, Me.m_cmbLabelPos.SelectedIndex), 0)
+        '    Me.m_labelposHorz = DirectCast(CInt(iSel Mod 3), StringAlignment)
+        '    Me.m_labelposVert = DirectCast(CInt(Math.Floor(iSel / 3)), StringAlignment)
+        '    Me.RefreshMap()
 
-            Dim iSel As Integer = Math.Max(Math.Min(9, Me.m_cmbLabelPos.SelectedIndex), 0)
-            Me.m_labelposHorz = DirectCast(CInt(iSel Mod 3), StringAlignment)
-            Me.m_labelposVert = DirectCast(CInt(Math.Floor(iSel / 3)), StringAlignment)
-            Me.RefreshMap()
-
-        End Sub
+        'End Sub
 
         Private Sub OnAutosaveTimeStepsChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbAutoSavePNG.CheckedChanged
@@ -1048,6 +1048,8 @@ Namespace Ecospace
         Private Sub OnDisplayOptionCheckChanged(ByVal sender As Object, ByVal e As EventArgs) _
                 Handles m_rbShowAll.CheckedChanged, m_rbShowNonHidden.CheckedChanged, m_rbShowSingle.CheckedChanged
 
+            If (Me.m_bInUpdate) Then Return
+
             If Me.m_rbShowAll.Checked Then Me.ShowItemMode = eShowItemType.ShowAll
             If Me.m_rbShowNonHidden.Checked Then Me.ShowItemMode = eShowItemType.ShowNonHidden
             If Me.m_rbShowSingle.Checked Then Me.ShowItemMode = eShowItemType.ShowSingle
@@ -1055,12 +1057,15 @@ Namespace Ecospace
 
             Me.RefreshPlot()
             Me.RefreshMap()
+
         End Sub
 
         Private Sub m_cbMPA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbMPA.CheckedChanged
 
-            Me.m_bShowMPA = m_cbMPA.Checked
+            If (Me.m_bInUpdate) Then Return
+
+            Me.StyleGuide.ShowMapsMPAs = m_cbMPA.Checked
             Me.UpdateControls()
             Me.RefreshMap()
 
@@ -1068,6 +1073,8 @@ Namespace Ecospace
 
         Private Sub m_cbShowIBMPackets_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbShowIBMPackets.CheckedChanged
+
+            If (Me.m_bInUpdate) Then Return
 
             Me.m_bShowIBM = m_cbShowIBMPackets.Checked
             Me.UpdateControls()
@@ -1078,7 +1085,9 @@ Namespace Ecospace
         Private Sub OnShowLabelsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbShowLabels.CheckedChanged
 
-            Me.m_bShowLabels = Me.m_cbShowLabels.Checked
+            If (Me.m_bInUpdate) Then Return
+
+            Me.StyleGuide.ShowMapsLabels = Me.m_cbShowLabels.Checked
             Me.UpdateControls()
             Me.RefreshMap()
 
@@ -1087,7 +1096,9 @@ Namespace Ecospace
         Private Sub OnShowLabelTimeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbShowDateInLabel.CheckedChanged
 
-            Me.m_bShowDateInLabel = Me.m_cbShowDateInLabel.Checked
+            If (Me.m_bInUpdate) Then Return
+
+            Me.StyleGuide.ShowMapsDateInLabels = Me.m_cbShowDateInLabel.Checked
             Me.RefreshMap()
 
         End Sub
@@ -1095,7 +1106,9 @@ Namespace Ecospace
         Private Sub OnInvertLabelsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbInvertColor.CheckedChanged
 
-            Me.m_bInvertLabelColor = Me.m_cbInvertColor.Checked
+            If (Me.m_bInUpdate) Then Return
+
+            Me.StyleGuide.InvertMapLabelColor = Me.m_cbInvertColor.Checked
             Me.RefreshMap()
 
         End Sub
@@ -1103,9 +1116,11 @@ Namespace Ecospace
         Private Sub OnChangeLabelPos(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbLabelPos.SelectedIndexChanged
 
+            If (Me.m_bInUpdate) Then Return
+
             Dim iSel As Integer = Math.Max(Math.Min(9, Me.m_cmbLabelPos.SelectedIndex), 0)
-            Me.m_labelposHorz = DirectCast(CInt(iSel Mod 3), StringAlignment)
-            Me.m_labelposVert = DirectCast(CInt(Math.Floor(iSel / 3)), StringAlignment)
+            Me.StyleGuide.MapLabelPosHorizontal = DirectCast(CInt(iSel Mod 3), StringAlignment)
+            Me.StyleGuide.MapLabelPosVertical = DirectCast(CInt(Math.Floor(iSel / 3)), StringAlignment)
             Me.RefreshMap()
 
         End Sub
@@ -1531,8 +1546,6 @@ Namespace Ecospace
             End Set
         End Property
 
-        Private m_bInUpdate As Boolean = False
-
         Protected Overrides Sub UpdateControls()
 
             ' Sanity check
@@ -1576,7 +1589,7 @@ Namespace Ecospace
             Me.m_cbOverlay.Checked = Me.m_bOverlay
             Me.m_cbOverlay.Enabled = Me.Core.StateMonitor.IsEcospaceRunning
 
-            Me.m_cbMPA.Checked = Me.m_bShowMPA
+            Me.m_cbMPA.Checked = Me.StyleGuide.ShowMapsMPAs
             Me.m_cbMPA.Enabled = (Me.m_rbDisplayFishingEffort.Checked Or Me.m_rbDisplayRelBiomass.Checked)
 
             Me.m_cbShowIBMPackets.Checked = Me.m_bShowIBM
@@ -1589,9 +1602,14 @@ Namespace Ecospace
             Me.m_cmbRunType.SelectedIndex = iIndex
             Me.m_cmbRunType.Enabled = (Me.IsRunning = False)
 
-            Me.m_cbShowDateInLabel.Enabled = Me.m_bShowLabels
-            Me.m_cmbLabelPos.Enabled = Me.m_bShowLabels
-            Me.m_cbInvertColor.Enabled = Me.m_bShowLabels
+            Me.m_cbShowDateInLabel.Enabled = Me.StyleGuide.ShowMapsLabels
+            Me.m_cmbLabelPos.Enabled = Me.m_cbShowDateInLabel.Enabled
+            Me.m_cbInvertColor.Enabled = Me.m_cbShowDateInLabel.Enabled
+
+            Me.m_cbShowLabels.Checked = Me.StyleGuide.ShowMapsLabels
+            Me.m_cbShowDateInLabel.Checked = Me.StyleGuide.ShowMapsDateInLabels
+            Me.m_cbInvertColor.Checked = Me.StyleGuide.InvertMapLabelColor
+            Me.m_cmbLabelPos.SelectedIndex = Me.StyleGuide.MapLabelPosVertical * 3 + Me.StyleGuide.MapLabelPosHorizontal
 
             Me.m_hoverMenu.IsEnabled(eHoverCommands.SaveImageGeoRef) = (Me.m_mapPlotType <> ePlotTypes.Effort) And (Me.Core.StateMonitor.HasEcospaceRan)
 

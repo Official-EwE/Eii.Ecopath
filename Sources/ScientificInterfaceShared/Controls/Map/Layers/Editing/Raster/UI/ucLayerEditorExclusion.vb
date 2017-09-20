@@ -61,7 +61,7 @@ Namespace Controls.Map.Layers
             Me.m_nudDepth.Increment = 10
 
             Dim sg As cStyleGuide = editor.UIContext.StyleGuide
-            Me.m_cbAlwaysShowExcluded.Checked = sg.ShowExcludedCells
+            Me.m_cbAlwaysShowExcluded.Checked = sg.ShowMapsExcludedCells
 
         End Sub
 
@@ -105,7 +105,7 @@ Namespace Controls.Map.Layers
 
             Try
                 Dim sg As cStyleGuide = Editor.UIContext.StyleGuide
-                sg.ShowExcludedCells = Me.m_cbAlwaysShowExcluded.Checked
+                sg.ShowMapsExcludedCells = Me.m_cbAlwaysShowExcluded.Checked
             Catch ex As Exception
                 cLog.Write(ex, "ucLayerEditorExclusion:OnShowExcludedCellsToggled()")
             End Try

@@ -423,7 +423,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.LayerRelCin) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerDepth) = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, gt, lt, 0, "[m]")
         Me.Metadata(eVarNameFlags.LayerHabitat) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.Proportion)
-        Me.Metadata(eVarNameFlags.LayerHabitatCapacityInput) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.Proportion)
+        Me.Metadata(eVarNameFlags.LayerHabitatCapacityInput) = New cVariableMetaData(0, 1, ge, le, 1, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerHabitatCapacity) = cVariableMetaData.Get(eVarNameFlags.LayerHabitatCapacityInput)
         Me.Metadata(eVarNameFlags.LayerRegion) = New cVariableMetaData(0, 1000, ge, le, 0)
         Me.Metadata(eVarNameFlags.LayerMigration) = New cVariableMetaData(0, 1000, ge, le, 0, cUnits.Proportion)

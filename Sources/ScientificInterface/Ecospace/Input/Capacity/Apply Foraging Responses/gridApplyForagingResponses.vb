@@ -224,7 +224,9 @@ Namespace Ecospace
 
             For iMap As Integer = 1 To mapManager.nEnviroData
                 Dim cell As EwECell = CType(Me(iGroup, 1 + iMap), EwECell)
-                cell.Style = style
+                Dim map As IEnviroInputData = mapManager.EnviroData(iMap)
+                ' Reflect
+                cell.Style = style Or If(map.IsDriverActive, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
                 Me.InvalidateCell(cell)
             Next
 

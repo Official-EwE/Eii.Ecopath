@@ -93,7 +93,7 @@ Namespace Other
             Me.UpdateControls()
             Me.UpdatePreviewImage()
 
-            Me.m_cbShowExcludedCells.Checked = Me.UIContext.StyleGuide.ShowExcludedCells
+            Me.m_cbShowExcludedCells.Checked = Me.UIContext.StyleGuide.ShowMapsExcludedCells
 
         End Sub
 
@@ -238,7 +238,7 @@ Namespace Other
                 Debug.Assert(False, ex.Message)
                 cLog.Write(ex, "ucOptionsMap::Apply")
             End Try
-            sg.ShowExcludedCells = Me.m_cbShowExcludedCells.Checked
+            sg.ShowMapsExcludedCells = Me.m_cbShowExcludedCells.Checked
 
             sg.ResumeEvents()
             Return IOptionsPage.eApplyResultType.Success
