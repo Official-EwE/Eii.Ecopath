@@ -577,7 +577,7 @@ Namespace Controls.Map
                     End Select
 
                     ' Special cases
-                    If (dt = eDataTypes.EcospaceLayerExclusion And Me.UIContext.StyleGuide.ShowExcludedCells) Then
+                    If (dt = eDataTypes.EcospaceLayerExclusion And Me.UIContext.StyleGuide.ShowMapsExcludedCells) Then
                         bDrawLayer = True
                     End If
 

@@ -6136,6 +6136,8 @@ Public Class cCore
         Dim s As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
         grp.AllowValidation = False
 
+        ' ToDo: CEFAS requested that users can turn off specific habitats for capacity calculations (just like can be done for env drivers)
+        '       Habitat enabled / disabled state check needs to be included in the status flags
         For iHabitat As Integer = 0 To Me.nHabitats - 1
             If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.Habitat) = eEcospaceCapacityCalType.Habitat) Then
                 grp.ClearStatusFlags(eVarNameFlags.PreferredHabitat, s, iHabitat)

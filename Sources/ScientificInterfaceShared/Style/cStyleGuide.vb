@@ -128,7 +128,15 @@ Namespace Style
         Private m_ptMapRefLayerTL As PointF
         Private m_ptMapRefLayerBR As PointF
         ''' <summary>Display of excluded cells.</summary>
-        Private m_bShowExcludedCells As Boolean = False
+        Private m_bShowMapExcludedCells As Boolean = False
+        ''' <summary>Display of MPAs.</summary>
+        Private m_bShowMapMPAs As Boolean = False
+        ''' <summary>Show labels on maps.</summary>
+        Private m_bShowMapLabels As Boolean = True
+        Private m_bShowMapLabelDate As Boolean = True
+        Private m_bInvertMapLabelColor As Boolean = False
+        Private m_posMapLabelHorz As StringAlignment = StringAlignment.Near
+        Private m_posMapLabelVert As StringAlignment = StringAlignment.Near
 
         ' -- pedigree --
         Private m_bShowPedigree As Boolean = True
@@ -403,7 +411,7 @@ Namespace Style
         ''' </summary>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        <Obsolete("Use cSystemUtils.IsRightToLeft instead")> _
+        <Obsolete("Use cSystemUtils.IsRightToLeft instead")>
         Public Shared Function IsRightToLeft() As Boolean
             Return cSystemUtils.IsRightToLeft()
         End Function
@@ -477,7 +485,7 @@ Namespace Style
         ''' of the </param>
         ''' <returns>A formatted value that always displays the least significant precision digit.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function FormatNumber(ByVal iValue As Integer, _
+        Public Function FormatNumber(ByVal iValue As Integer,
                                      Optional ByVal style As eStyleFlags = eStyleFlags.OK) As String
             Return Me.FormatNumber(CDbl(iValue), style, 0)
         End Function
@@ -499,9 +507,9 @@ Namespace Style
         ''' of the </param>
         ''' <returns>A formatted value that always displays the least significant precision digit.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function FormatNumber(ByVal sValue As Single, _
-                                     Optional ByVal style As eStyleFlags = eStyleFlags.OK, _
-                                     Optional ByVal iNumDigits As Integer = -1, _
+        Public Function FormatNumber(ByVal sValue As Single,
+                                     Optional ByVal style As eStyleFlags = eStyleFlags.OK,
+                                     Optional ByVal iNumDigits As Integer = -1,
                                      Optional ByVal tsGroupDigits As TriState = TriState.UseDefault) As String
             Return Me.FormatNumber(CDbl(sValue), style, iNumDigits, tsGroupDigits)
         End Function
@@ -522,9 +530,9 @@ Namespace Style
         ''' be represented with exactly the requested number of decimal digits.</param>
         ''' <returns>A formatted value that always displays the least significant precision digit.</returns>
         ''' -----------------------------------------------------------------------
-        Public Function FormatNumber(ByVal dValue As Double, _
-                                     Optional ByVal style As eStyleFlags = eStyleFlags.OK, _
-                                     Optional ByVal iNumDigits As Integer = -1, _
+        Public Function FormatNumber(ByVal dValue As Double,
+                                     Optional ByVal style As eStyleFlags = eStyleFlags.OK,
+                                     Optional ByVal iNumDigits As Integer = -1,
                                      Optional ByVal tsGroupDigits As TriState = TriState.UseDefault) As String
 
             ' Use styleguide numdigits setting if value not provided
@@ -911,12 +919,102 @@ Namespace Style
         ''' Get/set if maps should show excluded cells.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property ShowExcludedCells() As Boolean
+        Public Property ShowMapsExcludedCells() As Boolean
             Get
-                Return Me.m_bShowExcludedCells
+                Return Me.m_bShowMapExcludedCells
             End Get
             Set(ByVal value As Boolean)
-                Me.m_bShowExcludedCells = value
+                Me.m_bShowMapExcludedCells = value
+                Me.MapStyleChanged()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set if maps should show MPA cells.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property ShowMapsMPAs() As Boolean
+            Get
+                Return Me.m_bShowMapMPAs
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bShowMapMPAs = value
+                Me.MapStyleChanged()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set if maps should show labels.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property ShowMapsLabels() As Boolean
+            Get
+                Return Me.m_bShowMapLabels
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bShowMapLabels = value
+                Me.MapStyleChanged()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set if maps should show datas in labels.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property ShowMapsDateInLabels() As Boolean
+            Get
+                Return Me.m_bShowMapLabelDate
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bShowMapLabelDate = value
+                Me.MapStyleChanged()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set if maps labels should be drawn in inverted colours.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property InvertMapLabelColor() As Boolean
+            Get
+                Return Me.m_bInvertMapLabelColor
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bInvertMapLabelColor = value
+                Me.MapStyleChanged()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the horizontal map position
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property MapLabelPosHorizontal() As StringAlignment
+            Get
+                Return Me.m_posMapLabelHorz
+            End Get
+            Set(ByVal value As StringAlignment)
+                Me.m_posMapLabelHorz = value
+                Me.MapStyleChanged()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the vertical map position
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property MapLabelPosVertical() As StringAlignment
+            Get
+                Return Me.m_posMapLabelVert
+            End Get
+            Set(ByVal value As StringAlignment)
+                Me.m_posMapLabelVert = value
                 Me.MapStyleChanged()
             End Set
         End Property
