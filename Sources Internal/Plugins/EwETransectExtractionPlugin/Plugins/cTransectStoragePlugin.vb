@@ -58,7 +58,7 @@ Public Class cTransectStoragePlugin
     Public Sub LoadEcospaceScenario(dataSource As Object) Implements IEcospacePlugin.LoadEcospaceScenario
 
         Dim ds As IEcospaceDatasource = DirectCast(dataSource, IEcospaceDatasource)
-        Dim strDBFileNme As String = Me.TransectFileName(ds.FileName)
+        Dim strDBFileNme As String = Me.TransectFileName(ds.ToString)
 
         If Me.m_data.FromXML(strDBFileNme) Then
             ' NOP
@@ -72,6 +72,7 @@ Public Class cTransectStoragePlugin
 
         Dim ds As IEcospaceDatasource = DirectCast(dataSource, IEcospaceDatasource)
         Dim strDBFileNme As String = Me.TransectFileName(ds.ToString)
+
         If Me.m_data.ToXML(strDBFileNme) Then
             ' NOP
         Else

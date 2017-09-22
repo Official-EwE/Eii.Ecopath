@@ -117,10 +117,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CAPTION_BIOMASS" xml:space="preserve">
+    <value>Biomass along transect</value>
+  </data>
+  <data name="CAPTION_CATCH" xml:space="preserve">
+    <value>Catch along transect</value>
+  </data>
+  <data name="CAPTION_DEPTH" xml:space="preserve">
+    <value>Depth along transect</value>
+  </data>
   <data name="CAPTION_IN" xml:space="preserve">
     <value>Transects</value>
   </data>
+  <data name="CAPTION_MPA" xml:space="preserve">
+    <value>MPAs along transect</value>
+  </data>
   <data name="CAPTION_OUT" xml:space="preserve">
     <value>Transect summary</value>
+  </data>
+  <data name="GENERIC_LABEL_POINT" xml:space="preserve">
+    <value>({0}, {1})</value>
+    <comment>{0}: X coordinate, {1}: Y coordinate</comment>
+  </data>
+  <data name="LABEL_CELL" xml:space="preserve">
+    <value>Cell</value>
+  </data>
+  <data name="LABEL_NODATA" xml:space="preserve">
+    <value>(no summary yet)</value>
+  </data>
+  <data name="LABEL_TIMESTEP" xml:space="preserve">
+    <value>Timestep {0}/{1}</value>
+    <comment>{0}: current time step. {1}: total time steps</comment>
+  </data>
+  <data name="UNIT_MPACOUNT" xml:space="preserve">
+    <value>Num. intersecting MPAs</value>
   </data>
 </root>

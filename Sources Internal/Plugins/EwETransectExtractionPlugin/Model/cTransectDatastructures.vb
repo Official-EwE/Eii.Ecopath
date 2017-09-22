@@ -24,6 +24,7 @@ Imports System.Drawing
 Imports System.Xml
 Imports EwECore
 Imports EwECore.Core
+Imports EwECore.DataSources
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
@@ -145,6 +146,11 @@ Public Class cTransectDatastructures
     Public Sub OnChanged(t As cTransect)
         Try
             RaiseEvent OnTransectChanged(Me, t)
+
+            ' Hijack the system to flag Ecospace as dirty
+            Dim parms As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters
+            Me.m_core.onChanged(parms)
+
         Catch ex As Exception
 
         End Try

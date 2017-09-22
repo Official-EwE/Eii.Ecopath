@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -61,6 +61,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Biomass along transect.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_BIOMASS() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_BIOMASS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Catch along transect.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_CATCH() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_CATCH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Depth along transect.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_DEPTH() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_DEPTH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Transects.
         '''</summary>
         Friend ReadOnly Property CAPTION_IN() As String
@@ -70,11 +97,65 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to MPAs along transect.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_MPA() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_MPA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Transect summary.
         '''</summary>
         Friend ReadOnly Property CAPTION_OUT() As String
             Get
                 Return ResourceManager.GetString("CAPTION_OUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to ({0}, {1}).
+        '''</summary>
+        Friend ReadOnly Property GENERIC_LABEL_POINT() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_POINT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Cell.
+        '''</summary>
+        Friend ReadOnly Property LABEL_CELL() As String
+            Get
+                Return ResourceManager.GetString("LABEL_CELL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (no summary yet).
+        '''</summary>
+        Friend ReadOnly Property LABEL_NODATA() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NODATA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Timestep {0}/{1}.
+        '''</summary>
+        Friend ReadOnly Property LABEL_TIMESTEP() As String
+            Get
+                Return ResourceManager.GetString("LABEL_TIMESTEP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Num. intersecting MPAs.
+        '''</summary>
+        Friend ReadOnly Property UNIT_MPACOUNT() As String
+            Get
+                Return ResourceManager.GetString("UNIT_MPACOUNT", resourceCulture)
             End Get
         End Property
     End Module

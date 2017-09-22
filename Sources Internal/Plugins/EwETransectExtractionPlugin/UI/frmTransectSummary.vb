@@ -31,8 +31,12 @@ Imports ScientificInterfaceShared.Definitions
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore.Style
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
+
+' ToDo: show transect cell coordinates in value tooltip. This requires overriding zedgraph 
 
 Public Class frmTransectSummary
 
@@ -55,22 +59,30 @@ Public Class frmTransectSummary
 
         If (Me.UIContext Is Nothing) Then Return
 
+        Dim cmdh As cCommandHandler = Me.CommandHandler
+        Dim cmd As cCommand = Nothing
+
         ' Make pretty
         Me.m_tsbnPlay.Image = SharedResources.PlayHS
         Me.m_tsbnStop.Image = SharedResources.StopHS
         Me.m_tsbnSaveToCSV.Image = SharedResources.saveOutputHS
 
-        ' ToDo: globalize this, include units, etc
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_graph, 4)
-        Me.m_zgh.ConfigurePane("Depth", "Cell", cUnits.Depth, False, iPane:=1)
-        Me.m_zgh.ConfigurePane("MPA", "Cell", "Num. MPA overlap", False, iPane:=2)
-        Me.m_zgh.ConfigurePane("Biomass", "Cell", cUnits.Currency, False, iPane:=3)
-        Me.m_zgh.ConfigurePane("Catch", "Cell", cUnits.Currency, False, iPane:=4)
+        Me.m_zgh.ConfigurePane(My.Resources.CAPTION_DEPTH, My.Resources.LABEL_CELL, cUnits.Depth, False, iPane:=1)
+        Me.m_zgh.ConfigurePane(My.Resources.CAPTION_MPA, My.Resources.LABEL_CELL, My.Resources.UNIT_MPACOUNT, False, iPane:=2)
+        Me.m_zgh.ConfigurePane(My.Resources.CAPTION_BIOMASS, My.Resources.LABEL_CELL, cUnits.Currency, False, iPane:=3)
+        Me.m_zgh.ConfigurePane(My.Resources.CAPTION_CATCH, My.Resources.LABEL_CELL, cUnits.Currency, False, iPane:=4)
 
         For i As Integer = 1 To 4
             AddHandler Me.m_zgh.GetPane(i).XAxis.ScaleFormatEvent, AddressOf OnFormatXScale
         Next
+
+        ' Display Groups
+        cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        If Not Object.ReferenceEquals(cmd, Nothing) Then
+            cmd.AddControl(Me.m_tsbtnShowHideGroups)
+        End If
 
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
         Me.FillTransectBox()
@@ -80,8 +92,17 @@ Public Class frmTransectSummary
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
+
         Me.m_timerPlay.Enabled = False
         Me.m_zgh.Detach()
+
+        ' Show/Hide Groups
+        Dim cmdh As cCommandHandler = Me.CommandHandler
+        Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        If Not Object.ReferenceEquals(cmd, Nothing) Then
+            cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
+        End If
+
         MyBase.OnFormClosed(e)
     End Sub
 
@@ -98,6 +119,12 @@ Public Class frmTransectSummary
         Me.m_tsbnStop.Enabled = bIsPlaying
         Me.m_tsbnSaveToCSV.Enabled = bHasResults
 
+    End Sub
+
+    Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+        If (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
+            Me.UpdateGraph(True)
+        End If
     End Sub
 
 #End Region ' Overrides 
@@ -147,8 +174,7 @@ Public Class frmTransectSummary
             Dim cells As Point() = t.Cells(bm)
             If (cells.Count > 0) And (val < t.NumCells) Then
                 Dim pt As Point = cells(CInt(val))
-                ' ToDo: globalize this
-                Return cStringUtils.Localize("({0}, {1})", pt.X, pt.Y)
+                Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_POINT, pt.X, pt.Y)
             End If
         End If
         Return ""
@@ -229,52 +255,66 @@ Public Class frmTransectSummary
 
     End Sub
 
-    ' ToDo: fix redundancy between FillInputPane and FillOutputPane
-
     Private Sub FillInputPane(iPane As Integer, t As cTransect, var As eVarNameFlags)
-
-        ' ToDo: sum values across all layers of a given type. This will yield ok depth, and num of MPA overlap
 
         Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
         Dim gp As GraphPane = Me.m_zgh.GetPane(iPane)
+        Dim strName As String = ""
+
+        Select Case var
+            Case eVarNameFlags.LayerDepth : strName = Me.Core.EcospaceBasemap.LayerDepth.Name
+            Case eVarNameFlags.LayerMPA : strName = My.Resources.UNIT_MPACOUNT
+        End Select
 
         gp.CurveList.Clear()
 
         If (t IsNot Nothing) Then
 
             Dim cells As Point() = t.Cells(Me.Core.EcospaceBasemap)
+            Dim values(cells.Count) As Single
 
             Try
                 For Each l As cEcospaceLayer In bm.Layers(var)
 
                     Dim s As cTransectSummary = t.Summary(bm, l, -1)
-                    Dim ppl As New PointPairList()
-                    Dim bIsMissing As Boolean = False
-
                     For i As Integer = 0 To t.NumCells - 1
 
                         Dim pt As Point = cells(i)
                         Dim sVal As Single = s.Value(i)
 
                         If ((bm.IsModelledCell(pt.Y, pt.X)) Or (var = eVarNameFlags.LayerDepth)) And (sVal >= 0) Then
-                            If bIsMissing Then
-                                ppl.Add(i, 0)
-                                bIsMissing = False
-                            End If
-                            ppl.Add(i, sVal)
-                            ppl.Add(i + 1, sVal)
-                        Else
-                            If Not bIsMissing Then
-                                ppl.Add(i, 0)
-                                bIsMissing = True
-                            End If
-                            ppl.Add(i, PointPair.Missing)
-                            ppl.Add(i + 1, PointPair.Missing)
+                            values(i) += sVal
                         End If
                     Next
-
-                    gp.CurveList.Add(Me.m_zgh.CreateLineItem(s.Name, eSketchDrawModeTypes.Line, Color.Blue, ppl))
                 Next
+
+                Dim ppl As New PointPairList()
+                Dim bIsMissing As Boolean = False
+
+                For i As Integer = 0 To t.NumCells - 1
+
+                    Dim pt As Point = cells(i)
+                    Dim sVal As Single = values(i)
+
+                    If ((bm.IsModelledCell(pt.Y, pt.X)) Or (var = eVarNameFlags.LayerDepth)) And (sVal >= 0) Then
+                        If bIsMissing Then
+                            ppl.Add(i, 0)
+                            bIsMissing = False
+                        End If
+                        values(i) += sVal
+                        ppl.Add(i, sVal)
+                        ppl.Add(i + 1, sVal)
+                    Else
+                        If Not bIsMissing Then
+                            ppl.Add(i, 0)
+                            bIsMissing = True
+                        End If
+                        ppl.Add(i, PointPair.Missing)
+                        ppl.Add(i + 1, PointPair.Missing)
+                    End If
+
+                Next
+                gp.CurveList.Add(Me.m_zgh.CreateLineItem(strName, eSketchDrawModeTypes.Line, Color.Blue, ppl, t))
 
                 With gp.XAxis.Scale
                     .Min = 0
@@ -297,6 +337,7 @@ Public Class frmTransectSummary
 
         Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
         Dim gp As GraphPane = Me.m_zgh.GetPane(iPane)
+        Dim vnf As New cVarnameTypeFormatter()
 
         gp.CurveList.Clear()
 
@@ -307,41 +348,44 @@ Public Class frmTransectSummary
             Try
                 For iGroup As Integer = 1 To Me.Core.nGroups
 
-                    Dim s As cTransectSummary = t.Summary(Me.m_tick, iGroup, var)
-                    Dim ppl As New PointPairList()
-                    Dim bIsMissing As Boolean = False
+                    If Me.StyleGuide.GroupVisible(iGroup) Then
 
-                    If (s IsNot Nothing) Then
-                        For i As Integer = 0 To t.NumCells - 1
+                        Dim s As cTransectSummary = t.Summary(Me.m_tick, iGroup, var)
+                        Dim ppl As New PointPairList()
+                        Dim bIsMissing As Boolean = False
 
-                            Dim pt As Point = cells(i)
-                            Dim sVal As Single = s.Value(i)
+                        If (s IsNot Nothing) Then
+                            For i As Integer = 0 To t.NumCells - 1
 
-                            If (bm.IsModelledCell(pt.Y, pt.X) And (sVal >= 0)) Then
-                                If bIsMissing Then
-                                    ppl.Add(i, 0)
-                                    bIsMissing = False
+                                Dim pt As Point = cells(i)
+                                Dim sVal As Single = s.Value(i)
+
+                                If (bm.IsModelledCell(pt.Y, pt.X) And (sVal >= 0)) Then
+                                    If bIsMissing Then
+                                        ppl.Add(i, 0)
+                                        bIsMissing = False
+                                    End If
+                                    ppl.Add(i, sVal)
+                                    ppl.Add(i + 1, sVal)
+                                Else
+                                    If Not bIsMissing Then
+                                        ppl.Add(i, 0)
+                                        bIsMissing = True
+                                    End If
+                                    ppl.Add(i, PointPair.Missing)
+                                    ppl.Add(i + 1, PointPair.Missing)
                                 End If
-                                ppl.Add(i, sVal)
-                                ppl.Add(i + 1, sVal)
-                            Else
-                                If Not bIsMissing Then
-                                    ppl.Add(i, 0)
-                                    bIsMissing = True
-                                End If
-                                ppl.Add(i, PointPair.Missing)
-                                ppl.Add(i + 1, PointPair.Missing)
-                            End If
 
-                        Next
+                            Next
+                        End If
+
+                        gp.CurveList.Add(Me.m_zgh.CreateLineItem(Me.Core.EcoPathGroupInputs(iGroup), ppl, t))
+
+                        Dim strData As String = If(var = cTransect.eSummaryType.Biomass, vnf.GetDescriptor(eVarNameFlags.Biomass), vnf.GetDescriptor(eVarNameFlags.TotalCatch))
+                        Dim strTime As String = If(t.HasSummaries, cStringUtils.Localize(My.Resources.LABEL_TIMESTEP, Me.m_tick, Me.Core.nEcospaceTimeSteps), My.Resources.LABEL_NODATA)
+                        gp.Title.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, strData, strTime.ToLower())
+
                     End If
-
-                    gp.CurveList.Add(Me.m_zgh.CreateLineItem(Me.Core.EcoPathGroupInputs(iGroup), ppl))
-                    ' ToDo: globalize this
-                    Dim strData As String = IIF(var = cTransect.eSummaryType.Biomass, "Biomass", "Catch")
-                    Dim strTime As String = IIF(t.HasSummaries, cStringUtils.Localize("timestep {0}/{1}", Me.m_tick, Me.Core.nEcospaceTimeSteps), "(no data)")
-                    gp.Title.Text = cStringUtils.Localize("{0} {1}", strData, strTime)
-
                 Next
 
                 With gp.XAxis.Scale
