@@ -98,7 +98,7 @@ Namespace Ecospace
                 Dim strLabel As String
 
                 For igrp As Integer = 1 To Core.nGroups
-                    Dim grp As cEcospaceGroupInput = Me.Core.EcospaceGroups(igrp)
+                    Dim grp As cEcospaceGroupInput = Me.Core.EcospaceGroupInputs(igrp)
                     For imap As Integer = 1 To Manager.nEnviroData
                         Dim map As IEnviroInputData = Manager.EnviroData(imap)
                         strLabel = ""

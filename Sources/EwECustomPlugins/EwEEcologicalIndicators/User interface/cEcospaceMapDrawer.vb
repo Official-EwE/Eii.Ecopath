@@ -29,7 +29,7 @@ Imports ScientificInterfaceShared.Style
 #End Region ' Imports
 
 ''' <summary>
-''' 
+''' Renderer for Ecospace-derived indicators
 ''' </summary>
 Public Class cEcospaceMapDrawer
     Inherits cMapDrawerBase
@@ -54,7 +54,7 @@ Public Class cEcospaceMapDrawer
         Dim maptype As cMapDrawerBase.eMapType = Args.MapType
         Dim RelScaler() As Single = Args.RelMapScaler
         Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
-
+        Dim font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Legend)
 
         For i As Integer = 1 To Me.InRow
             For j As Integer = 1 To Me.InCol
@@ -107,17 +107,19 @@ Public Class cEcospaceMapDrawer
 
         MyBase.DrawMap(iItem, rcPos, Args)
 
-        If Me.ShowLabels And Me.Labels IsNot Nothing Then
+        If Me.m_sg.ShowMapLabels And Me.Labels IsNot Nothing Then
             Dim br As Brush = Brushes.Black
             Dim fmt As New StringFormat()
 
-            fmt.Alignment = Me.m_labelposHorz
-            fmt.LineAlignment = Me.m_labelposVert
+            fmt.Alignment = Me.m_sg.MapLabelPosHorizontal
+            fmt.LineAlignment = Me.m_sg.MapLabelPosVertical
 
-            If Me.InvertLabelColors Then br = Brushes.White
+            If Me.m_sg.InvertMapLabelColor Then br = Brushes.White
 
-            Me.Graphics.DrawString(Labels(iItem), Me.Font, br, rcPos, fmt)
+            Me.Graphics.DrawString(Labels(iItem), font, br, rcPos, fmt)
         End If
+
+        font.Dispose()
 
     End Sub
 

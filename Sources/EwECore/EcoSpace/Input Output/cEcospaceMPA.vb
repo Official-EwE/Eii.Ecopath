@@ -22,6 +22,11 @@ Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
+''' <summary>
+''' The definition of a Marine Protected Area in Ecospace.
+''' </summary>
+''' <seealso cref="EwECore.cCoreInputOutputBase" />
+''' <seealso cref="EwECore.cEcospaceBasemap.LayerMPA(Integer)"/>
 Public Class cEcospaceMPA
     Inherits cCoreInputOutputBase
 
@@ -60,7 +65,7 @@ Public Class cEcospaceMPA
     ''' Get the number of cells in a MPA.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property NumCells() As Integer 
+    Public ReadOnly Property NumCells() As Integer
         Get
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim l As cEcospaceLayerMPA = bm.LayerMPA(Me.Index)
@@ -70,13 +75,23 @@ Public Class cEcospaceMPA
             For iRow As Integer = 1 To bm.InRow
                 For iCol As Integer = 1 To bm.InCol
                     ' Only include modelled cells in this count
-                    If (CInt(l.Cell(iRow, iCol)) = iIndex) And (bm.IsModelledCell(iRow, iCol)) Then
+                    If (CInt(l.Cell(iRow, iCol)) > 0) And (bm.IsModelledCell(iRow, iCol)) Then
                         iNumCells += 1
                     End If
                 Next
             Next
             Return iNumCells
 
+        End Get
+    End Property
+
+    Public ReadOnly Property IsActive() As Boolean
+        Get
+            Dim bIsClosed As Boolean = False
+            Dim bIsApplied As Boolean = False
+            For i As Integer = 1 To cCore.N_MONTHS : bIsClosed = bIsClosed Or Me.IsClosed(i) : Next
+            For i As Integer = 1 To Me.m_core.nFleets : bIsApplied = bIsApplied Or (Me.m_core.EcospaceFleets(i).MPAFishery(Me.Index) = False) : Next
+            Return bIsClosed And bIsApplied
         End Get
     End Property
 

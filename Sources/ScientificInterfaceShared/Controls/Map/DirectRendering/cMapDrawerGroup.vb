@@ -24,7 +24,6 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -51,6 +50,7 @@ Namespace Controls.Map
             Dim RelScaler() As Single = Args.RelMapScaler
             Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
             Dim brExcluded As New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Red, Color.FromArgb(&H88FF4500))
+            Dim font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Legend)
 
             If maptype = eMapType.FishingMortRate Then
                 FScaler = Me.Colors.Count / Args.FishingMortLegendMax
@@ -175,24 +175,26 @@ Namespace Controls.Map
 
             MyBase.DrawMap(iItem, rcPos, Args)
 
-            If Me.ShowLabels Then
+            If Me.m_sg.ShowMapLabels Then
 
                 Dim strLabel As String = ""
-                If Me.ShowDateInLabel Then
-                    strLabel = String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, Me.m_core.EcospaceGroups(iItem).Name, Me.Date)
+                If Me.m_sg.ShowMapsDateInLabels Then
+                    strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, Me.m_core.EcospaceGroupInputs(iItem).Name, Me.Date)
                 Else
-                    strLabel = Me.m_core.EcospaceGroups(iItem).Name
+                    strLabel = Me.m_core.EcospaceGroupInputs(iItem).Name
                 End If
                 Dim br As Brush = Brushes.Black
                 Dim fmt As New StringFormat()
 
-                fmt.Alignment = Me.m_labelposHorz
-                fmt.LineAlignment = Me.m_labelposVert
+                fmt.Alignment = Me.m_sg.MapLabelPosHorizontal
+                fmt.LineAlignment = Me.m_sg.MapLabelPosVertical
 
-                If Me.InvertLabelColors Then br = Brushes.White
+                If Me.m_sg.InvertMapLabelColor Then br = Brushes.White
 
-                Me.Graphics.DrawString(strLabel, Me.Font, br, rcPos, fmt)
+                Me.Graphics.DrawString(strLabel, font, br, rcPos, fmt)
             End If
+
+            font.Dispose()
 
         End Sub
 

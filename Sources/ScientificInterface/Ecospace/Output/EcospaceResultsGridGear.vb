@@ -79,7 +79,7 @@ Namespace Ecospace
 
             Dim aName(core.nFleets) As String
             For i As Integer = 1 To core.nFleets
-                aName(i) = core.EcospaceFleets(i).Name
+                aName(i) = core.EcospaceFleetInputs(i).Name
             Next
 
             Dim aCalc() As Integer = {4, 7, 10}

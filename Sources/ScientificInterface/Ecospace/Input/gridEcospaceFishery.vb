@@ -98,7 +98,7 @@ Namespace Ecospace
 
             'Dynamic row header - Fleet name
             For i As Integer = 1 To Me.Core.nFleets
-                source = Me.Core.EcospaceFleets(i)
+                source = Me.Core.EcospaceFleetInputs(i)
                 Me(i, 0) = New EwERowHeaderCell(CStr(i))
                 '# Fleet name header 
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
@@ -131,7 +131,7 @@ Namespace Ecospace
 
             For i As Integer = 1 To Me.Core.nFleets
 
-                Dim source As cEcospaceFleetInput = Me.Core.EcospaceFleets(i)
+                Dim source As cEcospaceFleetInput = Me.Core.EcospaceFleetInputs(i)
 
                 If (bEnable) Then
                     Me(i, 2) = New Cells.Real.CheckBox(False)
@@ -190,7 +190,7 @@ Namespace Ecospace
 
             If (Me.m_bInUpdate) Then Return True
 
-            Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleets(p.Row)
+            Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleetInputs(p.Row)
             Dim bChecked As Boolean = CBool(cell.GetValue(p))
 
             Select Case p.Column
@@ -230,7 +230,7 @@ Namespace Ecospace
         ''' <param name="i">Row number to update.</param>
         Private Sub UpdateRow(ByVal i As Integer)
 
-            Dim source As cEcospaceFleetInput = Me.Core.EcospaceFleets(i)
+            Dim source As cEcospaceFleetInput = Me.Core.EcospaceFleetInputs(i)
             Dim bChecked As Boolean = False
             Dim bAllHabs As Boolean = CBool(source.HabitatFishery(0))
             Dim nHabs As Integer = 0

@@ -224,10 +224,6 @@ Public Class cEcospaceMapWrapper
                 'init the drawer to the latest values
                 drawer.OriginList = originList
                 drawer.RectList = rectList
-                drawer.Font = sg.Font(cStyleGuide.eApplicationFontType.Legend)
-                drawer.ShowLabels = True
-                drawer.InvertLabelColors = False
-                drawer.SetLabelPosition(StringAlignment.Center, StringAlignment.Near)
 
                 drawer.StanzaDS = Nothing
 
@@ -237,7 +233,6 @@ Public Class cEcospaceMapWrapper
 
                 drawer.ClearItems()
                 drawer.AddItem(i, i)
-                drawer.ShowMPA = True
 
                 drawer.Labels = astrLabels
                 drawer.Descriptions = astrDescriptions

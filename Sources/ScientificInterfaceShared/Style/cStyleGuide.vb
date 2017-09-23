@@ -949,7 +949,7 @@ Namespace Style
         ''' Get/set if maps should show labels.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property ShowMapsLabels() As Boolean
+        Public Property ShowMapLabels() As Boolean
             Get
                 Return Me.m_bShowMapLabels
             End Get

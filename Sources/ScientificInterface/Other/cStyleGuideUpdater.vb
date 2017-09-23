@@ -215,7 +215,7 @@ Friend Class cStyleGuideUpdater
             .MapReferenceLayerBR = New PointF(My.Settings.MapLayerRefLonMax, My.Settings.MapLayerRefLatMin)
             .ShowMapsExcludedCells = My.Settings.MapShowExcludedCells
             .ShowMapsMPAs = My.Settings.MapShowMPAs
-            .ShowMapsLabels = My.Settings.MapShowLabels
+            .ShowMapLabels = My.Settings.MapShowLabels
             .ShowMapsDateInLabels = My.Settings.MapShowLabelDate
             .InvertMapLabelColor = My.Settings.MapShowLabelInvertedColor
             .MapLabelPosHorizontal = CType(My.Settings.MapLabelPosHorz, StringAlignment)
@@ -274,7 +274,7 @@ Friend Class cStyleGuideUpdater
             My.Settings.MapLayerRefLatMax = .MapReferenceLayerTL.Y
             My.Settings.MapShowExcludedCells = .ShowMapsExcludedCells
             My.Settings.MapShowMPAs = .ShowMapsMPAs
-            My.Settings.MapShowLabels = .ShowMapsLabels
+            My.Settings.MapShowLabels = .ShowMapLabels
             My.Settings.MapShowLabelDate = .ShowMapsDateInLabels
             My.Settings.MapLabelPosHorz = .MapLabelPosHorizontal
             My.Settings.MapLabelPosVert = .MapLabelPosVertical

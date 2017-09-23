@@ -496,7 +496,7 @@ Public Class dlgSelectResponse
             If Me.m_seltype = eSelectionType.DriverGroup Then
                 If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.m_nGroups Then
                     If (Me.m_bEcospace) Then
-                        bCanCommit = Me.CanCommit(core.EcospaceGroups(Me.m_iSelGrp).CapacityCalculationType)
+                        bCanCommit = Me.CanCommit(core.EcospaceGroupInputs(Me.m_iSelGrp).CapacityCalculationType)
                     Else
                         bCanCommit = True
                     End If
@@ -507,7 +507,7 @@ Public Class dlgSelectResponse
                 'Apply the same shape to all the groups of the current map
                 For igrp As Integer = 1 To Me.m_nGroups
                     If (Me.m_bEcospace) Then
-                        bCanCommit = Me.CanCommit(core.EcospaceGroups(igrp).CapacityCalculationType)
+                        bCanCommit = Me.CanCommit(core.EcospaceGroupInputs(igrp).CapacityCalculationType)
                     Else
                         bCanCommit = True
                     End If
@@ -517,7 +517,7 @@ Public Class dlgSelectResponse
             ElseIf Me.m_seltype = eSelectionType.Group Then
                 'Apply the selected shape to the same group for all the maps
                 If (Me.m_bEcospace) Then
-                    bCanCommit = Me.CanCommit(core.EcospaceGroups(Me.m_iSelGrp).CapacityCalculationType)
+                    bCanCommit = Me.CanCommit(core.EcospaceGroupInputs(Me.m_iSelGrp).CapacityCalculationType)
                 Else
                     bCanCommit = True
                 End If
