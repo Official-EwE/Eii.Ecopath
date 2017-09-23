@@ -56,7 +56,7 @@ Namespace Ecospace
         Public Sub SetAllCalcTypes(type As eEcospaceCapacityCalType, bSet As Boolean)
 
             For iGroup As Integer = 1 To Core.nGroups
-                Dim group As cEcospaceGroupInput = Core.EcospaceGroups(iGroup)
+                Dim group As cEcospaceGroupInput = Core.EcospaceGroupInputs(iGroup)
                 Select Case type
                     Case eEcospaceCapacityCalType.Input : group.CapacityCalculationType = eEcospaceCapacityCalType.Input
                     Case Else
@@ -93,7 +93,7 @@ Namespace Ecospace
 
             For iGroup As Integer = 1 To Core.nGroups
 
-                group = Core.EcospaceGroups(iGroup)
+                group = Core.EcospaceGroupInputs(iGroup)
 
                 ' # Group name row header cells
                 Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
@@ -137,7 +137,7 @@ Namespace Ecospace
         Protected Overrides Function OnCellValueChanged(p As Position, cell As ICellVirtual) As Boolean
 
             If (Not Me.m_bInUpdate) Then
-                Dim group As cEcospaceGroupInput = Core.EcospaceGroups(p.Row)
+                Dim group As cEcospaceGroupInput = Core.EcospaceGroupInputs(p.Row)
                 Dim val As eEcospaceCapacityCalType = group.CapacityCalculationType
                 Dim bSet As Boolean = CBool(cell.GetValue(p))
 

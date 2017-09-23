@@ -64,7 +64,7 @@ Namespace Ecospace
             Me.m_tsbnEnvResponses.Image = SharedResources.FunctionHS
 
             For i As Integer = 1 To Me.Core.nLivingGroups
-                Dim grp As cEcospaceGroupInput = Me.Core.EcospaceGroups(i)
+                Dim grp As cEcospaceGroupInput = Me.Core.EcospaceGroupInputs(i)
                 Dim prop As cProperty = Me.PropertyManager.GetProperty(grp, eVarNameFlags.EcospaceCapCalType)
                 Me.m_lProps.Add(prop)
                 AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged

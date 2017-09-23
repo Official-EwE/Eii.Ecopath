@@ -55,6 +55,7 @@ Namespace Controls.Map
             Using br As New SolidBrush(Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
                 Me.Graphics.FillRectangle(br, rcPos)
             End Using
+            Dim font As Font = Me.m_sg.Font(cStyleGuide.eApplicationFontType.Legend)
 
             map.Invalidate()
             Dim min As Single = map.MinValue
@@ -120,24 +121,26 @@ Namespace Controls.Map
 
             MyBase.DrawMap(iItem, rcPos, Args)
 
-            If Me.ShowLabels Then
+            If Me.m_sg.ShowMapLabels Then
 
                 Dim strLabel As String = ""
-                If Me.ShowDateInLabel Then
+                If Me.m_sg.ShowMapsDateInLabels Then
                     strLabel = String.Format(SharedResources.Resources.GENERIC_LABEL_DOUBLE, bm.LayerDriver(iItem).Name, Me.Date)
                 Else
-                    strLabel = Me.m_core.EcospaceGroups(iItem).Name
+                    strLabel = Me.m_core.EcospaceGroupInputs(iItem).Name
                 End If
                 Dim br As Brush = Brushes.Black
                 Dim fmt As New StringFormat()
 
-                fmt.Alignment = Me.m_labelposHorz
-                fmt.LineAlignment = Me.m_labelposVert
+                fmt.Alignment = Me.m_sg.MapLabelPosHorizontal
+                fmt.LineAlignment = Me.m_sg.MapLabelPosVertical
 
-                If Me.InvertLabelColors Then br = Brushes.White
+                If Me.m_sg.InvertMapLabelColor Then br = Brushes.White
 
-                Me.Graphics.DrawString(strLabel, Me.Font, br, rcPos, fmt)
+                Me.Graphics.DrawString(strLabel, font, br, rcPos, fmt)
             End If
+
+            font.Dispose()
 
         End Sub
 

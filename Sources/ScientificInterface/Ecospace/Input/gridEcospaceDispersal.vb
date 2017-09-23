@@ -91,7 +91,7 @@ Namespace Ecospace
             For iGroup As Integer = 1 To Me.Core.nGroups
                 Me.Rows.Insert(iGroup)
 
-                source = Me.Core.EcospaceGroups(iGroup)
+                source = Me.Core.EcospaceGroupInputs(iGroup)
                 Me(iGroup, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                 Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
 

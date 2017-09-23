@@ -92,6 +92,12 @@ Public Class cEcospaceFleetInput
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set whether a fleet is allowed to fish in an mpa
+    ''' </summary>
+    ''' <value>
+    '''   <c>true</c> if [mpa fishery]; otherwise, <c>false</c>.
+    ''' </value>
     Public Property MPAFishery(ByVal iMPA As Integer) As Boolean
         Get
             Return CBool(GetVariable(eVarNameFlags.MPAFishery, iMPA))

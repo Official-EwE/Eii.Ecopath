@@ -60,8 +60,6 @@ Namespace Controls.Map
         Protected m_sg As cStyleGuide = Nothing
         Protected m_lItems As New List(Of Integer)
         Protected m_lLocations As New List(Of Integer)
-        Protected m_labelposHorz As StringAlignment = StringAlignment.Near
-        Protected m_labelposVert As StringAlignment = StringAlignment.Near
 
 #End Region ' Private vars
 
@@ -81,7 +79,6 @@ Namespace Controls.Map
 #Region " Public properties "
 
         Public Property AllowedToRun() As Boolean
-        Public Property ShowMPA() As Boolean
         Public Property ShowLand() As Boolean
         Public Property ShowBorder() As Boolean
         Public Property ShowExcluded() As Boolean
@@ -93,13 +90,6 @@ Namespace Controls.Map
         Public Property Colors() As List(Of Color)
         Public Property OriginList() As List(Of PointF)
         Public Property RectList() As List(Of Rectangle)
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the font to render labels with.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Property Font() As Font
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -145,43 +135,10 @@ Namespace Controls.Map
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether labels should be shown.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Property ShowLabels() As Boolean
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set whether date should be shown in the label
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Property ShowDateInLabel As Boolean
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' Get/set the date of the current time step.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Property [Date]() As String
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set whether labels should be rendered with inverse colors.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Property InvertLabelColors() As Boolean
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Set the position of labels
-        ''' </summary>
-        ''' <param name="horz">Horizontal label alignment.</param>
-        ''' <param name="vert">Vertical label alignment.</param>
-        ''' -----------------------------------------------------------------------
-        Public Sub SetLabelPosition(ByVal horz As StringAlignment, ByVal vert As StringAlignment)
-            Me.m_labelposHorz = horz
-            Me.m_labelposVert = vert
-        End Sub
 
         Public ReadOnly Property SignalState As ManualResetEvent
             Get
@@ -237,7 +194,7 @@ Namespace Controls.Map
             Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
 
             Try
-                If Me.ShowMPA Then
+                If Me.m_sg.ShowMapsMPAs Then
                     For i As Integer = 1 To Me.InRow
                         For j As Integer = 1 To Me.InCol
                             For k As Integer = 1 To Me.m_core.nMPAs
@@ -245,9 +202,9 @@ Namespace Controls.Map
                                 sMPA = CSng(mpa.Cell(i, j))
                                 If sMPA > 0 Then
                                     'If CBool(excl.Cell(i, j)) = False Then
-                                    rcfCell = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol), _
-                                                                 CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow), _
-                                                                 CSng(rcPos.Width() / Me.InCol), _
+                                    rcfCell = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol),
+                                                                 CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow),
+                                                                 CSng(rcPos.Width() / Me.InCol),
                                                                  CSng(rcPos.Height() / Me.InRow))
                                     If Me.m_core.EcospaceMPAs(k).MPAMonth(Me.Month) Then
                                         brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)

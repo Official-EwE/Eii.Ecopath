@@ -103,7 +103,7 @@ Namespace Ecospace
 
             For i As Integer = 1 To Me.Core.nFleets
 
-                Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleets(i)
+                Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleetInputs(i)
                 Dim iRow As Integer = Me.AddRow()
 
                 Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Index)

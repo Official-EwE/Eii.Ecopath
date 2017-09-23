@@ -75,7 +75,7 @@ Namespace Ecospace
 
             'Dynamic row header - group name 
             For i As Integer = 1 To Me.Core.nGroups
-                source = Me.Core.EcospaceGroups(i)
+                source = Me.Core.EcospaceGroupInputs(i)
                 Me(i, 0) = New EwERowHeaderCell(CStr(i))
                 ' # Group name row header cells
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
@@ -106,7 +106,7 @@ Namespace Ecospace
             For iGroup As Integer = 1 To Me.Core.nGroups
 
                 ' Get sources
-                groupEcospace = Me.Core.EcospaceGroups(iGroup)
+                groupEcospace = Me.Core.EcospaceGroupInputs(iGroup)
                 groupEcopath = Me.Core.EcoPathGroupInputs(iGroup)
 
                 For iHabitat As Integer = 0 To Me.Core.nHabitats - 1

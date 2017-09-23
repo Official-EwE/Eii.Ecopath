@@ -288,11 +288,6 @@ Namespace Ecospace
             If ((changeType And cStyleGuide.eChangeType.Map) = cStyleGuide.eChangeType.Map) Then
                 For Each d As cMapDrawerBase In Me.m_drawers
                     d.ShowExcluded = Me.StyleGuide.ShowMapsExcludedCells
-                    d.ShowMPA = Me.StyleGuide.ShowMapsMPAs
-                    d.ShowLabels = Me.StyleGuide.ShowMapsLabels
-                    d.ShowDateInLabel = Me.StyleGuide.ShowMapsDateInLabels
-                    d.InvertLabelColors = Me.StyleGuide.InvertMapLabelColor
-                    d.SetLabelPosition(Me.StyleGuide.MapLabelPosHorizontal, Me.StyleGuide.MapLabelPosVertical)
                 Next
                 Me.RefreshPlot()
             End If
@@ -575,12 +570,7 @@ Namespace Ecospace
                         'init the drawer to the latest values
                         drawer.OriginList = originList
                         drawer.RectList = rectList
-                        drawer.Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
-                        drawer.ShowLabels = Me.StyleGuide.ShowMapsLabels
-                        drawer.ShowDateInLabel = Me.StyleGuide.ShowMapsDateInLabels
                         drawer.Date = strDate
-                        drawer.InvertLabelColors = Me.StyleGuide.InvertMapLabelColor
-                        drawer.SetLabelPosition(Me.StyleGuide.MapLabelPosHorizontal, Me.StyleGuide.MapLabelPosVertical)
 
                         drawer.StanzaDS = Nothing
 
@@ -642,7 +632,6 @@ Namespace Ecospace
                         For i As Integer = ifirst To ilast
                             drawer.AddItem(lVisItems(i), i)
                         Next
-                        drawer.ShowMPA = Me.StyleGuide.ShowMapsMPAs
 
                         drawer.SignalState.Reset()
 
@@ -723,12 +712,7 @@ Namespace Ecospace
                         'init the drawer to the latest values
                         drawer.OriginList = originList
                         drawer.RectList = rectList
-                        drawer.Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
-                        drawer.ShowLabels = Me.StyleGuide.ShowMapsLabels
-                        drawer.ShowDateInLabel = Me.StyleGuide.ShowMapsDateInLabels
                         drawer.Date = strDate
-                        drawer.InvertLabelColors = Me.StyleGuide.InvertMapLabelColor
-                        drawer.SetLabelPosition(Me.StyleGuide.MapLabelPosHorizontal, Me.StyleGuide.MapLabelPosVertical)
 
                         drawer.StanzaDS = Nothing
 
@@ -743,7 +727,6 @@ Namespace Ecospace
                         For i As Integer = iFrom To iTo
                             drawer.AddItem(lVisItems(i), i)
                         Next
-                        drawer.ShowMPA = Me.StyleGuide.ShowMapsMPAs
 
                         drawer.SignalState.Reset()
 
@@ -907,13 +890,13 @@ Namespace Ecospace
             brExcluded = Nothing
 
             'Display the group name
-            If Me.StyleGuide.ShowMapsLabels Then
+            If Me.StyleGuide.ShowMapLabels Then
 
                 Dim strLabel As String = ""
                 If Me.StyleGuide.ShowMapsDateInLabels Then
-                    strLabel = String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, Core.EcospaceFleets(iFleet).Name, strDate)
+                    strLabel = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, Core.EcospaceFleetInputs(iFleet).Name, strDate)
                 Else
-                    strLabel = Core.EcospaceFleets(iFleet).Name
+                    strLabel = Core.EcospaceFleetInputs(iFleet).Name
                 End If
 
                 Dim br As Brush = Brushes.Black
@@ -1087,7 +1070,7 @@ Namespace Ecospace
 
             If (Me.m_bInUpdate) Then Return
 
-            Me.StyleGuide.ShowMapsLabels = Me.m_cbShowLabels.Checked
+            Me.StyleGuide.ShowMapLabels = Me.m_cbShowLabels.Checked
             Me.UpdateControls()
             Me.RefreshMap()
 
@@ -1338,7 +1321,7 @@ Namespace Ecospace
 
             Me.AppendPlotData()
             Me.m_pbMap.Invalidate()
-            Me.UpdateControls()
+            'Me.UpdateControls()
 
             ' Save map image
             If (Me.m_cbAutoSavePNG.Checked) Then
@@ -1602,11 +1585,11 @@ Namespace Ecospace
             Me.m_cmbRunType.SelectedIndex = iIndex
             Me.m_cmbRunType.Enabled = (Me.IsRunning = False)
 
-            Me.m_cbShowDateInLabel.Enabled = Me.StyleGuide.ShowMapsLabels
+            Me.m_cbShowDateInLabel.Enabled = Me.StyleGuide.ShowMapLabels
             Me.m_cmbLabelPos.Enabled = Me.m_cbShowDateInLabel.Enabled
             Me.m_cbInvertColor.Enabled = Me.m_cbShowDateInLabel.Enabled
 
-            Me.m_cbShowLabels.Checked = Me.StyleGuide.ShowMapsLabels
+            Me.m_cbShowLabels.Checked = Me.StyleGuide.ShowMapLabels
             Me.m_cbShowDateInLabel.Checked = Me.StyleGuide.ShowMapsDateInLabels
             Me.m_cbInvertColor.Checked = Me.StyleGuide.InvertMapLabelColor
             Me.m_cmbLabelPos.SelectedIndex = Me.StyleGuide.MapLabelPosVertical * 3 + Me.StyleGuide.MapLabelPosHorizontal
@@ -1644,7 +1627,7 @@ Namespace Ecospace
             Select Case Me.m_mapPlotType
                 Case ePlotTypes.Effort
                     For i As Integer = 1 To Me.Core.nFleets
-                        Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceFleets(i), eDescriptorTypes.Name))
+                        Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceFleetInputs(i), eDescriptorTypes.Name))
                     Next i
                 Case ePlotTypes.Driver
                     Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
@@ -1653,7 +1636,7 @@ Namespace Ecospace
                     Next
                 Case Else
                     For i As Integer = 1 To Me.Core.nGroups
-                        Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceGroups(i), eDescriptorTypes.Name))
+                        Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceGroupInputs(i), eDescriptorTypes.Name))
                     Next i
             End Select
             Me.m_cmbDisplayItem.SelectedIndex = Math.Min(Me.m_cmbDisplayItem.Items.Count - 1, 0)
@@ -1853,8 +1836,6 @@ Namespace Ecospace
             Dim drawer As New cMapDrawerGroup(Me.Core, Me.StyleGuide)
             drawer.Graphics = Graphics.FromImage(bmp)
             drawer.Colors = Me.m_legend.Colors
-            drawer.ShowLabels = False
-            drawer.ShowMPA = False
             drawer.ShowLand = False
             drawer.ShowBorder = False
             drawer.InCol = Me.m_iInCol

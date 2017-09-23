@@ -454,14 +454,6 @@ Public Class cCore
         End Get
     End Property
 
-    ''' <inheritdocs cref="nEnvironmentalDriverLayers"/>
-    <Obsolete("Use nEnvironmentalDriverLayers instead")>
-    Public ReadOnly Property nEnvironmentalLayers() As Integer
-        Get
-            Return Me.nEnvironmentalDriverLayers
-        End Get
-    End Property
-
     ''' <summary>
     ''' Number of years to run an Ecospace model.
     ''' </summary>
@@ -4782,22 +4774,6 @@ Public Class cCore
 
     End Function
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Obtain an Ecopath fleet input. Provided for backward compatibility; 
-    ''' <see cref="EcopathFleetInputs"/> should be used instead.
-    ''' </summary>
-    ''' <param name="iFleet">The one-based index of the fleet to obtain,
-    ''' or 0 to obtain the "all fleet".</param>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    <Obsolete("Use EcopathFleetInputs instead")>
-    Public ReadOnly Property FleetInputs(ByVal iFleet As Integer) As cEcopathFleetInput
-        Get
-            Return Me.EcopathFleetInputs(iFleet)
-        End Get
-    End Property
-
     Public ReadOnly Property EcopathFleetInputs(ByVal iFleet As Integer) As cEcopathFleetInput
         Get
             Try
@@ -6554,22 +6530,6 @@ Public Class cCore
         Get
             Try
                 Return Me.m_EcoPathData.NumEcosimScenarios
-            Catch ex As Exception
-                Return 0
-            End Try
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' <inheritdocs cref="nEcosimScenarios"/>
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    <Obsolete("Please use nEcosimScenarios instead")>
-    Public ReadOnly Property EcosimScenarioCount() As Integer
-        Get
-            Try
-                Return Me.nEcosimScenarios
             Catch ex As Exception
                 Return 0
             End Try
@@ -9516,20 +9476,6 @@ Public Class cCore
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="nEcospaceScenarios"/>
-    ''' -----------------------------------------------------------------------
-    <Obsolete("Use nEcospaceScenarios instead")>
-    Public ReadOnly Property EcospaceScenarioCount() As Integer
-        Get
-            Try
-                Return Me.nEcospaceScenarios
-            Catch ex As Exception
-                Return 0
-            End Try
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get an <see cref="cEcoSpacescenario">Ecospace scenario</see> from the available scenarios.
     ''' </summary>
@@ -9584,7 +9530,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iGroup">The index to obtain the Ecospace group for.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceGroups(ByVal iGroup As Integer) As cEcospaceGroupInput
+    Public ReadOnly Property EcospaceGroupInputs(ByVal iGroup As Integer) As cEcospaceGroupInput
         Get
             ' JS 06Jul07: list will handle group index / item index offsets
             Return DirectCast(Me.m_EcoSpaceGroups.Item(iGroup), cEcospaceGroupInput)
@@ -9597,7 +9543,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iFleet">The index to obtain the Ecospace fleet for.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceFleets(ByVal iFleet As Integer) As cEcospaceFleetInput
+    Public ReadOnly Property EcospaceFleetInputs(ByVal iFleet As Integer) As cEcospaceFleetInput
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
             Return DirectCast(Me.m_EcoSpaceFleets.Item(iFleet), cEcospaceFleetInput)
@@ -12094,20 +12040,6 @@ Public Class cCore
             Try
                 ' Return Ecopath administration number here instead of counting UI items
                 Return Me.m_EcoPathData.NumEcotracerScenarios
-            Catch ex As Exception
-                Return 0
-            End Try
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="nEcotracerScenarios"/>
-    ''' -----------------------------------------------------------------------
-    <Obsolete("Use nEcotracerScenarios instead")>
-    Public ReadOnly Property EcotracerScenarioCount() As Integer
-        Get
-            Try
-                Return Me.nEcotracerScenarios
             Catch ex As Exception
                 Return 0
             End Try
@@ -14918,6 +14850,72 @@ Public Class cCore
     Public ReadOnly Property EcoFunction() As cEcoFunctions
         Get
             Return Me.m_Functions
+        End Get
+    End Property
+
+#End Region
+
+#Region " Deprecated "
+
+    <Obsolete("Use EcopathFleetInputs instead")>
+    Public ReadOnly Property FleetInputs(ByVal iFleet As Integer) As cEcopathFleetInput
+        Get
+            Return Me.EcopathFleetInputs(iFleet)
+        End Get
+    End Property
+
+    <Obsolete("Please use nEcosimScenarios instead")>
+    Public ReadOnly Property EcosimScenarioCount() As Integer
+        Get
+            Try
+                Return Me.nEcosimScenarios
+            Catch ex As Exception
+                Return 0
+            End Try
+        End Get
+    End Property
+
+    <Obsolete("Use nEcospaceScenarios instead")>
+    Public ReadOnly Property EcospaceScenarioCount() As Integer
+        Get
+            Try
+                Return Me.nEcospaceScenarios
+            Catch ex As Exception
+                Return 0
+            End Try
+        End Get
+    End Property
+
+    <Obsolete("Use nEcotracerScenarios instead")>
+    Public ReadOnly Property EcotracerScenarioCount() As Integer
+        Get
+            Try
+                Return Me.nEcotracerScenarios
+            Catch ex As Exception
+                Return 0
+            End Try
+        End Get
+    End Property
+
+    <Obsolete("Use EcospaceGroupInputs instead")>
+    Public ReadOnly Property EcospaceGroups(ByVal iGroup As Integer) As cEcospaceGroupInput
+        Get
+            Return Me.EcospaceGroupInputs(iGroup)
+        End Get
+    End Property
+
+    <Obsolete("Use EcospaceFleetInputs instead")>
+    Public ReadOnly Property EcospaceFleets(ByVal iFleet As Integer) As cEcospaceFleetInput
+        Get
+            Return Me.EcospaceFleetInputs(iFleet)
+        End Get
+    End Property
+
+    ''' <inheritdocs cref="nEnvironmentalDriverLayers"/>
+    <Obsolete("Use nEnvironmentalDriverLayers instead")>
+    Public ReadOnly Property nEnvironmentalLayers() As Integer
+        Get
+            Return Me.nEnvironmentalDriverLayers
         End Get
     End Property
 
