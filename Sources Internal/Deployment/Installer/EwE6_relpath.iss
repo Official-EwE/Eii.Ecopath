@@ -34,7 +34,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL=http://ecopathinternational.org
 AppSupportURL=mailto:support@ecopath.org
 MinVersion=0,6.0sp2
-DefaultDirName={pf}\{#MyAppName} {#MyAppVersion}
+DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AlwaysShowGroupOnReadyPage=True
 AlwaysShowDirOnReadyPage=True
@@ -42,7 +42,6 @@ SolidCompression=True
 Compression=zip 
 UninstallDisplayName={#MyAppName} {#MyAppVersion}
 OutputBaseFilename=ewe
-
 
 [Dirs]
 Name: "{app}\Includes\LPSolve\"
