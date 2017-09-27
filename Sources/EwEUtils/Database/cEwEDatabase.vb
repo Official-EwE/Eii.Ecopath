@@ -676,13 +676,18 @@ Namespace Database
         ''' <summary>
         ''' Get a directory associated with this database.
         ''' </summary>
+        ''' <seealso cref="Extension"/>
+        ''' <seealso cref="FileName"/>
         ''' -------------------------------------------------------------------
         Public MustOverride ReadOnly Property Directory() As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get a file name associated with this database.
+        ''' Get a file name associated with this database, excluding the
+        ''' file extension.
         ''' </summary>
+        ''' <seealso cref="Extension"/>
+        ''' <seealso cref="Directory"/>
         ''' -------------------------------------------------------------------
         Public MustOverride ReadOnly Property FileName() As String
 
@@ -690,6 +695,8 @@ Namespace Database
         ''' <summary>
         ''' Get a file extension associated with this database.
         ''' </summary>
+        ''' <seealso cref="FileName"/>
+        ''' <seealso cref="Directory"/>
         ''' -------------------------------------------------------------------
         Public MustOverride ReadOnly Property Extension() As String
 
