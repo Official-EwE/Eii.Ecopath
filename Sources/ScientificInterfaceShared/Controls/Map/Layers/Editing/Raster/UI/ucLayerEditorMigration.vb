@@ -69,7 +69,7 @@ Namespace Controls.Map.Layers
                 Me.m_bInUpdate = True
                 Try
                     Dim layer As cEcospaceLayer = Me.Editor.Layer.Data
-                    Dim grp As cEcospaceGroupInput = Me.UIContext.Core.EcospaceGroups(layer.Index)
+                    Dim grp As cEcospaceGroupInput = Me.UIContext.Core.EcospaceGroupInputs(layer.Index)
 
                     Me.m_cmbMonth.SelectedIndex = Math.Max(0, Me.Editor.Month - 1)
                 Catch ex As Exception

@@ -226,7 +226,7 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerMigration
 
                     For iLayer As Integer = 1 To core.nGroups
-                        Dim grp As cEcospaceGroupInput = core.EcospaceGroups(iLayer)
+                        Dim grp As cEcospaceGroupInput = core.EcospaceGroupInputs(iLayer)
                         If grp.IsMigratory Then
                             Dim src As cEcospaceLayerMigration = core.EcospaceBasemap.LayerMigration(iLayer)
                             key = New cValueID(eDataTypes.EcospaceLayerMigration, src.DBID, eVarNameFlags.Name)

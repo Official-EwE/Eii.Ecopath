@@ -90,7 +90,7 @@ Public Class cEcospaceMPA
             Dim bIsClosed As Boolean = False
             Dim bIsApplied As Boolean = False
             For i As Integer = 1 To cCore.N_MONTHS : bIsClosed = bIsClosed Or Me.IsClosed(i) : Next
-            For i As Integer = 1 To Me.m_core.nFleets : bIsApplied = bIsApplied Or (Me.m_core.EcospaceFleets(i).MPAFishery(Me.Index) = False) : Next
+            For i As Integer = 1 To Me.m_core.nFleets : bIsApplied = bIsApplied Or (Me.m_core.EcospaceFleetInputs(i).MPAFishery(Me.Index) = False) : Next
             Return bIsClosed And bIsApplied
         End Get
     End Property

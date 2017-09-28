@@ -6193,7 +6193,7 @@ Public Class cCore
                 End If
 
                 If Me.m_StateMonitor.HasEcospaceLoaded() Then
-                    objCascade = Me.EcospaceGroups(obj.Index)
+                    objCascade = Me.EcospaceGroupInputs(obj.Index)
                     If Not Object.ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
                         bAllowValidationOrg = objCascade.AllowValidation
                         objCascade.AllowValidation = False
@@ -6249,7 +6249,7 @@ Public Class cCore
                 End If
 
                 If Me.m_StateMonitor.HasEcospaceLoaded() Then
-                    objCascade = Me.EcospaceFleets(obj.Index)
+                    objCascade = Me.EcospaceFleetInputs(obj.Index)
                     bAllowValidationOrg = objCascade.AllowValidation
                     objCascade.AllowValidation = False
                     objCascade.Name = strName
@@ -6289,7 +6289,7 @@ Public Class cCore
         End If
 
         If Me.m_StateMonitor.HasEcospaceLoaded() Then
-            objCascade = Me.EcospaceGroups(obj.Index)
+            objCascade = Me.EcospaceGroupInputs(obj.Index)
             If objCascade IsNot Nothing Then
                 bAllowValidationOrg = objCascade.AllowValidation
                 objCascade.AllowValidation = True
@@ -10668,7 +10668,7 @@ Public Class cCore
             ' Convert the Database ID into an iGroup
             iGroup = Array.IndexOf(m_EcoSpaceData.GroupDBID, iDBID)
             ' Get the group
-            grp = Me.EcospaceGroups(iGroup)
+            grp = Me.EcospaceGroupInputs(iGroup)
 
             ' Suck it empty
             m_EcoSpaceData.Mvel(iGroup) = grp.MVel
@@ -11302,7 +11302,7 @@ Public Class cCore
             ' Convert the Database ID into an index
             iFleet = Array.IndexOf(m_EcoSpaceData.FleetDBID, iDBID)
             ' Get the object
-            fleet = Me.EcospaceFleets(iFleet)
+            fleet = Me.EcospaceFleetInputs(iFleet)
 
             m_EcoPathData.FleetName(iFleet) = fleet.Name
             ' JS 04feb08: in sync with EwE5, this value is now read into space.EffPower
