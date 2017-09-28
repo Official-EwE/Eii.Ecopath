@@ -372,17 +372,16 @@ Namespace SystemUtilities
             Return (PowerLineStatus.Offline = SystemInformation.PowerStatus.PowerLineStatus)
         End Function
 
+        Public Shared Property ApplicationName As String = "Ecopath with Ecosim"
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the path for storing application settings
         ''' </summary>
         ''' <param name="bPerUserSetting">States if this is a per-user setting
         ''' (True) or a setting for all users (False).</param>
-        ''' <param name="strApplication">Application to obtain the path for.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ApplicationSettingsPath(Optional ByVal bPerUserSetting As Boolean = True, _
-                                                       Optional ByVal strApplication As String = "Ecopath with Ecosim") As String
+        Public Shared Function ApplicationSettingsPath(Optional ByVal bPerUserSetting As Boolean = True) As String
 
             Dim strBaseDir As String = ""
             Dim strPath As String = ""
@@ -393,8 +392,8 @@ Namespace SystemUtilities
                 strBaseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
             End If
 
-            If (Not String.IsNullOrEmpty(strApplication)) Then
-                strPath = Path.Combine(strBaseDir, cFileUtils.ToValidFileName(strApplication, False))
+            If (Not String.IsNullOrEmpty(ApplicationName)) Then
+                strPath = Path.Combine(strBaseDir, cFileUtils.ToValidFileName(ApplicationName, False))
             End If
             If Not Directory.Exists(strPath) Then
                 Try
