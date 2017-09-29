@@ -372,14 +372,25 @@ Namespace SystemUtilities
             Return (PowerLineStatus.Offline = SystemInformation.PowerStatus.PowerLineStatus)
         End Function
 
-        Public Shared Property ApplicationName As String = "Ecopath with Ecosim"
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the name of the folder to store application settings. Please note 
+        ''' that this value needs to be set before an application framework loads its 
+        ''' settings. If left empty, a default is obtained from the launching 
+        ''' assembly information.
+        ''' </summary>
+        ''' <seealso cref="ApplicationSettingsPath"/>
+        ''' -----------------------------------------------------------------------
+        Public Shared Property ApplicationSettingsFolderName As String = ""
+
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the path for storing application settings
+        ''' Get the path for storing application settings.
         ''' </summary>
         ''' <param name="bPerUserSetting">States if this is a per-user setting
         ''' (True) or a setting for all users (False).</param>
-        ''' <returns></returns>
+        ''' <returns>The path</returns>
+        ''' <seealso cref="ApplicationSettingsFolderName"/>
         ''' -------------------------------------------------------------------
         Public Shared Function ApplicationSettingsPath(Optional ByVal bPerUserSetting As Boolean = True) As String
 
@@ -392,16 +403,18 @@ Namespace SystemUtilities
                 strBaseDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
             End If
 
-            If (Not String.IsNullOrEmpty(ApplicationName)) Then
-                strPath = Path.Combine(strBaseDir, cFileUtils.ToValidFileName(ApplicationName, False))
+            If (String.IsNullOrEmpty(ApplicationSettingsFolderName)) Then
+                ' Prefer product name, but uif that does not work, use assembly name
+                ApplicationSettingsFolderName = My.Application.Info.ProductName
+                If (String.IsNullOrEmpty(ApplicationSettingsFolderName)) Then
+                    ApplicationSettingsFolderName = My.Application.Info.AssemblyName
+                End If
             End If
-            If Not Directory.Exists(strPath) Then
-                Try
-                    Directory.CreateDirectory(strPath)
-                Catch ex As Exception
 
-                End Try
-            End If
+            strPath = Path.Combine(strBaseDir, cFileUtils.ToValidFileName(ApplicationSettingsFolderName, False))
+
+            cFileUtils.IsDirectoryAvailable(strPath, True)
+
             Return strPath
 
         End Function
@@ -420,7 +433,7 @@ Namespace SystemUtilities
         ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        <Obsolete("Use new Roslyn If(condition, truepart, falsepart) construction instead")>
+        <Obsolete("Use If(condition, truepart, falsepart) construction instead")>
         Public Shared Function IIF(Of T)(ByVal bValue As Boolean, ByVal cTrue As T, ByVal cFalse As T) As T
             Return If(bValue, cTrue, cFalse)
         End Function
