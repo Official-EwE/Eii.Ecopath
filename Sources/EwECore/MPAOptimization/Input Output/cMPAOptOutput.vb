@@ -107,7 +107,7 @@ Public Class cMPAOptOutput
             For ic As Integer = 1 To SpaceData.InCol
                 'SpaceData.MPA(ir, ic) = mpaData.iMPAtoUse
                 'If SpaceData.MPA(ir, ic) = mpaData.iMPAtoUse Then
-                If SpaceData.MPA(mpaData.iMPAtoUse)(ir, ic) = mpaData.iMPAtoUse Then
+                If SpaceData.MPA(mpaData.iMPAtoUse)(ir, ic) = True Then
                     nMPACells += 1
                 End If
             Next

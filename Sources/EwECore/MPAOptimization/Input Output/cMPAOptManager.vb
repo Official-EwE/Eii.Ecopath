@@ -803,7 +803,7 @@ Public Class cObjectiveResult
                             '    Cells.Add(New cMPACell(ir, ic, SpaceData.MPA(ir, ic)))
                             'End If
                             For impa As Integer = 1 To SpaceData.MPAno
-                                If SpaceData.MPA(impa)(ir, ic) <> 0 Then
+                                If SpaceData.MPA(impa)(ir, ic) Then
                                     Cells.Add(New cMPACell(ir, ic, impa))
                                 End If
                             Next
@@ -832,7 +832,7 @@ Public Class cObjectiveResult
         For ir As Integer = 1 To SpaceData.InRow
             For ic As Integer = 1 To SpaceData.InCol
                 'If SpaceData.MPA(ir, ic) = MPAData.iMPAtoUse Then
-                If SpaceData.MPA(MPAData.iMPAtoUse)(ir, ic) = MPAData.iMPAtoUse Then
+                If SpaceData.MPA(MPAData.iMPAtoUse)(ir, ic) = True Then
                     nMPACells += 1
                 End If
             Next

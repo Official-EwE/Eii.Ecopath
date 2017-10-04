@@ -333,6 +333,10 @@ Namespace Controls.EwEGrid
                 If (tValue Is GetType(Double)) Then
                     ' #Yes: apply format
                     Dim dValue As Double = 0
+
+                    ' JS 27Mar17: Avoid costly exception
+                    If (objValue Is Nothing) Then objValue = Me.DataModel.DefaultValue
+
                     Try
                         dValue = CDbl(Val(objValue))
                     Catch ex As Exception

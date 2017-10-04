@@ -9079,7 +9079,7 @@ Namespace DataSources
                     End If
 
                     drow("MPAName") = ecospaceDS.MPAname(iMPA)
-                    drow("MPAMap") = cStringUtils.ArrayToString(ecospaceDS.MPA(iMPA), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True, 1)
+                    drow("MPAMap") = cStringUtils.ArrayToString(ecospaceDS.MPA(iMPA), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True, True)
 
                     ' Create MPA month bit pattern
                     sbMPAMonth.Length = 0

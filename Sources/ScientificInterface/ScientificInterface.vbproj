@@ -309,9 +309,6 @@
     <Compile Include="Ecospace\Input\frmMPAs.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridEcospaceFishery.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Ecospace\Input\gridEcospaceFleetDynamics.vb">
       <SubType>Component</SubType>
     </Compile>

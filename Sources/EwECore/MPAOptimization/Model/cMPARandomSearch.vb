@@ -152,7 +152,7 @@ Public Class cMPARandomSearch
             'Array.Clear(Me.m_SpaceData.MPA, 0, Me.m_SpaceData.MPA.Length)
             For i As Integer = 1 To iR
                 For j As Integer = 1 To iC
-                    Me.m_SpaceData.MPA(m_data.iMPAtoUse)(i, j) = 0
+                    Me.m_SpaceData.MPA(m_data.iMPAtoUse)(i, j) = False
                 Next
             Next
 
@@ -162,7 +162,7 @@ Public Class cMPARandomSearch
             Dim CellCount As Integer
             For i As Integer = 1 To iR
                 For j As Integer = 1 To iC
-                    If Me.m_SpaceData.Depth(i, j) > 0 And (m_SpaceData.MPA(m_data.iMPAtoUse)(i, j) > 0 Or Me.IsMPA(i, j) = False) Then
+                    If Me.m_SpaceData.Depth(i, j) > 0 And (m_SpaceData.MPA(m_data.iMPAtoUse)(i, j) Or Me.IsMPA(i, j) = False) Then
                         CellCount += 1
                     End If
                 Next j
@@ -240,7 +240,7 @@ Public Class cMPARandomSearch
             ' Clear data cells with the currently selected MPA
             For i As Integer = 1 To Me.m_SpaceData.InRow
                 For j As Integer = 1 To Me.m_SpaceData.InCol
-                    m_SpaceData.MPA(m_data.iMPAtoUse)(i, j) = 0
+                    m_SpaceData.MPA(m_data.iMPAtoUse)(i, j) = False
                 Next
             Next
 
@@ -262,8 +262,8 @@ Public Class cMPARandomSearch
 
                 'now we know which cell to close
                 'but check that the cell hasn't been made into an mpa already
-                If Me.m_SpaceData.Depth(GetRow, GetCol) > 0 And m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) = 0 Then
-                    m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) = curMPA
+                If Me.m_SpaceData.Depth(GetRow, GetCol) > 0 And m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) = False Then
+                    m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) = True
                     'System.Console.WriteLine(GetRow.ToString & "  " & GetCol.ToString)
                     m_data.AddCell(GetRow, GetCol, curMPA)
                     iC += 1
@@ -445,7 +445,7 @@ Public Class cMPARandomSearch
         For iL As Integer = 1 To Me.m_SpaceData.nImportanceLayers
             For iR As Integer = 1 To m_SpaceData.InRow
                 For iC As Integer = 1 To m_SpaceData.InCol
-                    If m_SpaceData.MPA(m_data.iMPAtoUse)(iR, iC) = m_data.iMPAtoUse Then 'this is a protected cell, so check what 
+                    If m_SpaceData.MPA(m_data.iMPAtoUse)(iR, iC) Then 'this is a protected cell, so check what 
                         LayerSumInMPA(iL) += Data(iL)(iR, iC)
                     End If
                 Next iC

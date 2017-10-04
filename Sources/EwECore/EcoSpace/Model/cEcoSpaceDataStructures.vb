@@ -237,6 +237,9 @@ Public Class cEcospaceDataStructures
     ''' <summary>Catch by Row, Col, Group.</summary>
     Public CatchMap(,,) As Single
 
+    ''' <summary>Catch by Row, Col, Fleet.</summary>
+    Public CatchFleetMap(,,) As Single
+
     ' DISCARDLESS: explicitly state what this map contains. All discards? Dead discards?
     ''' <summary>Discards (all? mortality?) by Row, Col, Group.</summary>
     ''' <remarks>This is not exposed by the interface at this time. It was included for the Biodiversity plugin and can only be accessed via code.</remarks>
@@ -277,9 +280,9 @@ Public Class cEcospaceDataStructures
     Public RelCin(,) As Single
 
     ''' <summary>
-    ''' Development-time 3-dimensional MPA array for implementing overlapping MPAs
+    ''' MPA layout, dimensioned as mpa x (row, col)
     ''' </summary>
-    Public MPA()(,) As Integer
+    Public MPA()(,) As Boolean
 
     ''' <summary>
     ''' Base value for relative PP (relative PP at t=0). Set after PP has been read from the database.
@@ -1897,6 +1900,7 @@ Public Class cEcospaceDataStructures
 
             Me.allocate(CatchMap, InRow, InCol, NGroups)
             Me.allocate(DiscardsMap, InRow, InCol, NGroups)
+            Me.allocate(CatchFleetMap, InRow, InCol, nFleets)
 
             'For Nereus EcoOcean there are more fleets than groups
             'so dimension the fleets first
