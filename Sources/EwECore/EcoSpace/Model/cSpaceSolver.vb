@@ -1148,6 +1148,7 @@ Public Class cSpaceSolver
                             Dim f As Single = m_SimData.relQ(iFlt, iGrp) * (m_SimData.PropLandedTime(iFlt, iGrp) + m_SimData.Propdiscardtime(iFlt, iGrp))
                             cellCatch = Biomass(iGrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * f
 
+                            Me.m_Data.CatchFleetMap(iRow, iCol, iFlt) += cellCatch
                             'Sum the total catch by gear
                             Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt) += cellCatch
                             'sum all fleets

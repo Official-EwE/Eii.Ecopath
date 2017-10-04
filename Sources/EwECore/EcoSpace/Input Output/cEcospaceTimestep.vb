@@ -217,12 +217,18 @@ Public Class cEcospaceTimestep
     ''' <summary>
     ''' Catch map dimensioned by Row, Col, Group
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property CatchMap() As Single(,,)
         Get
             Return Me.m_spaceData.CatchMap
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Catch map dimensioned by Row, Col, Fleet
+    ''' </summary>
+    Public ReadOnly Property CatchFleetMap() As Single(,,)
+        Get
+            Return Me.m_spaceData.CatchFleetMap
         End Get
     End Property
 

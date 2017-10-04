@@ -1067,6 +1067,7 @@ Public Class cEcoSpace
                 Me.m_Data.debugTestDiscardsMaps()
 #End If
                 Array.Clear(Me.m_Data.CatchMap, 0, Me.m_Data.CatchMap.Length)
+                Array.Clear(Me.m_Data.CatchFleetMap, 0, Me.m_Data.CatchFleetMap.Length)
                 Array.Clear(Me.m_Data.Landings, 0, Me.m_Data.Landings.Length)
                 Array.Clear(Me.m_Data.DiscardsMap, 0, Me.m_Data.DiscardsMap.Length)
 
@@ -4451,7 +4452,7 @@ exitline:
                             ' Is this MPA active in this cell?
                             '   - Me.m_Data.MPAfishery(ig, iMPA) = True if this fleet can fish in the MPA
                             '   - Me.m_Data.MPAmonth(Me.m_Data.MonthNow, iCellMPA) = True if the MPA is open for fishing (e.g., is NOT enforced) in this month
-                            If (Me.m_Data.MPA(iMPA)(i, j) > 0) And (Not Me.m_Data.MPAfishery(ig, iMPA)) And (Not Me.m_Data.MPAmonth(Me.m_Data.MonthNow, iMPA)) Then
+                            If (Me.m_Data.MPA(iMPA)(i, j)) And (Not Me.m_Data.MPAfishery(ig, iMPA)) And (Not Me.m_Data.MPAmonth(Me.m_Data.MonthNow, iMPA)) Then
                                 ' #Yes: This MPA prohibits this fleet from fishing in this cell for this month
                                 bFished = False
                                 Exit For

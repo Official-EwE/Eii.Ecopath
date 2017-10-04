@@ -295,8 +295,8 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_DISPERSAL, "ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceDispersal), eNodeImages.Input, nodeInput, "Dispersal.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_ADVECTION, "ndAdvection", eCoreExecutionState.EcospaceLoaded, GetType(Advection.frmAdvection), eNodeImages.Input, nodeInput)
 
-        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_FISHERY, "ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceFishery), eNodeImages.Input, nodeInput, "Ecospace Fishery.htm")
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_MPA, "ndEcospaceMPA", eCoreExecutionState.EcospaceLoaded, GetType(frmMPAs), eNodeImages.Input, nodeFolder)
+        nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_FISHERY, "ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(frmMPAs), eNodeImages.Input, nodeInput, "Ecospace Fishery.htm")
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_MPA, "ndEcospaceMPA", eCoreExecutionState.EcospaceLoaded, GetType(frmMPAs), eNodeImages.Input, nodeFolder, "Ecospace Fishery.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_MPAENFORCEMENT, "ndEcospaceMPAEnforcement", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceMPAEnforcement), eNodeImages.Input, nodeFolder, "Ecospace Fishery.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_HABFISHERY, "ndEcospaceHabitatFishery", eCoreExecutionState.EcospaceLoaded, GetType(frmEcospaceHabitatFishery), eNodeImages.Input, nodeFolder, "Ecospace Fishery.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SPACE_FLEETDYNAMICS, "ndEcospaceFisheriesDynamics", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceHabitatDyncamis), eNodeImages.Input, nodeFolder, "Ecospace Fishery.htm")
