@@ -23,6 +23,7 @@
 Option Strict On
 Imports System
 Imports System.Collections.Generic
+Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Linq
 Imports System.Security.AccessControl
@@ -133,8 +134,8 @@ Namespace Utilities
         ''' <param name="bRecursive">Flag stating if subdirectories should be searched recursively.</param>
         ''' <returns>The full path to the file if found, or an empty string if the file could not be located.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function FindFile(ByVal strFile As String, _
-                                        ByVal strPath As String, _
+        Public Shared Function FindFile(ByVal strFile As String,
+                                        ByVal strPath As String,
                                         Optional ByVal bRecursive As Boolean = False) As String
 
             Dim strFullPath As String = Path.Combine(strPath, strFile)
@@ -202,9 +203,9 @@ Namespace Utilities
         ''' <param name="cSeparator">The character that separates extentions.</param>
         ''' <returns>A merged </returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function CleanupExtensions(ByVal strExt As String, _
-                                                 Optional ByVal bIgnoreCase As Boolean = True, _
-                                                 Optional ByVal cSeparator As Char = ";"c, _
+        Public Shared Function CleanupExtensions(ByVal strExt As String,
+                                                 Optional ByVal bIgnoreCase As Boolean = True,
+                                                 Optional ByVal cSeparator As Char = ";"c,
                                                  Optional ByVal bSort As Boolean = True) As String
 
             Dim sb As New StringBuilder()
@@ -254,8 +255,8 @@ Namespace Utilities
         ''' created that looks like '[original name].[original ext].[short date]'.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function CreateBackup(ByVal strSrc As String, _
-                                            ByRef strDest As String, _
+        Public Shared Function CreateBackup(ByVal strSrc As String,
+                                            ByRef strDest As String,
                                             Optional ByVal attributes As FileAttributes = FileAttributes.Archive Or FileAttributes.NotContentIndexed) As Boolean
 
             If String.IsNullOrWhiteSpace(strDest) Then
@@ -398,7 +399,7 @@ Namespace Utilities
         ''' should be created if it does not exist yet.</param>
         ''' <returns>True if the directory is available.</returns>
         ''' -----------------------------------------------------------------------
-        Public Shared Function IsDirectoryAvailable(ByVal strDirectory As String, _
+        Public Shared Function IsDirectoryAvailable(ByVal strDirectory As String,
                                                     Optional ByVal bCreate As Boolean = False) As Boolean
 
             ' Test if already exists as a file
@@ -520,15 +521,10 @@ Namespace Utilities
         ''' -------------------------------------------------------------------
         Public Shared Function ToWorldFileName(strFileName As String) As String
 
-            Dim strExt As String = Path.GetExtension(strFileName)
-
-            If Not String.IsNullOrWhiteSpace(strExt) And strExt.Length > 2 Then
-                strExt = strExt.Substring(0, 2) & strExt(strExt.Length - 1) & "w"
-            Else
-                strExt = ".wld"
-            End If
-
-            Return Path.ChangeExtension(strFileName, strExt)
+            ' Use new convention
+            ' https://en.wikipedia.org/wiki/World_file
+            ' http://webhelp.esri.com/arcgisdesktop/9.3/index.cfm?id=3121&pid=3109&topicname=World%20files%20for%20raster%20datasets&
+            Return Path.ChangeExtension(strFileName, Path.GetExtension(strFileName) & "w")
 
         End Function
 
@@ -605,12 +601,38 @@ Namespace Utilities
         ''' http://stackoverflow.com/questions/2281531/how-can-i-compare-directory-paths-in-c
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Shadows Function Equals(ByVal strPath1 As String, _
-                                              ByVal strPath2 As String, _
+        Public Shared Shadows Function Equals(ByVal strPath1 As String,
+                                              ByVal strPath2 As String,
                                               Optional bIgnoreCase As Boolean = True) As Boolean
             Return String.Compare(NormalizePath(strPath1), NormalizePath(strPath2), bIgnoreCase) = 0
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the <see cref="System.Drawing.Imaging.ImageFormat"/> for a file,
+        ''' or Nothing if the file extension did not resolve to a known image format.
+        ''' </summary>
+        ''' <param name="strFileName">Name of file to convert.</param>
+        ''' <returns>A imageformat, or nothing if the file extension was not
+        ''' recognized as a known format.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ImageFormat(strFileName As String) As ImageFormat
+
+            Dim strExt As String = Path.GetExtension(strFileName)
+            Select Case strExt.ToLower()
+                Case ".bmp" : Return ImageFormat.Bmp
+                Case ".emf" : Return ImageFormat.Emf
+                Case ".exit" : Return ImageFormat.Exif
+                Case ".gif" : Return ImageFormat.Gif
+                Case ".icon", ".ico" : Return ImageFormat.Icon
+                Case ".jpg", ".jpeg", ".jp2" : Return ImageFormat.Jpeg
+                Case ".png" : Return ImageFormat.Png
+                Case ".tiff", ".tif" : Return ImageFormat.Tiff
+                Case ".wmf" : Return ImageFormat.Wmf
+            End Select
+            Return Nothing
+
+        End Function
     End Class
 
 End Namespace

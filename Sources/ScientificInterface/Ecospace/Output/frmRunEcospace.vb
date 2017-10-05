@@ -1731,15 +1731,8 @@ Namespace Ecospace
 
             cmdFS.Invoke(cFileUtils.ToValidFileName(scenario.Name & " results", False), SharedResources.FILEFILTER_IMAGE)
 
-            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
-
-                Select Case cmdFS.FilterIndex
-                    Case 0 : imgFormat = ImageFormat.Bmp
-                    Case 1 : imgFormat = ImageFormat.Jpeg
-                    Case 2 : imgFormat = ImageFormat.Gif
-                    Case 3 : imgFormat = ImageFormat.Png
-                    Case 4 : imgFormat = ImageFormat.Tiff
-                End Select
+            If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
+                imgFormat = cFileUtils.ImageFormat(cmdFS.FileName)
                 Return cmdFS.FileName
             End If
             Return ""
@@ -1922,9 +1915,9 @@ Namespace Ecospace
                         Using sw As New StreamWriter(cFileUtils.ToWorldFileName(strFileSub))
                             ' Horz. pixel size, in map units
                             sw.WriteLine(cStringUtils.FormatNumber(bm.CellSize))
-                            ' Rotation around x axis
-                            sw.WriteLine(0)
                             ' Rotation around y axis
+                            sw.WriteLine(0)
+                            ' Rotation around x axis
                             sw.WriteLine(0)
                             ' Vert. pixel size, in map units
                             sw.WriteLine(cStringUtils.FormatNumber(-bm.CellSize))
