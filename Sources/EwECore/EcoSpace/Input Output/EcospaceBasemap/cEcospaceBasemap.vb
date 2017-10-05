@@ -826,7 +826,7 @@ Public Class cEcospaceBasemap
                         Case eVarNameFlags.LayerMigration
                             Dim tmp As cEcospaceLayer() = Me.m_dictLayers(vn)
                             For i As Integer = 1 To Me.m_core.nGroups
-                                If Me.m_core.EcospaceGroups(i).IsMigratory Then
+                                If Me.m_core.EcospaceGroupInputs(i).IsMigratory Then
                                     l.Add(tmp(i - 1))
                                 End If
                             Next
