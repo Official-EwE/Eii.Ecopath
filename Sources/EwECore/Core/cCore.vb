@@ -14919,6 +14919,25 @@ Public Class cCore
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Add an Ecosim Time Series to the data source.
+    ''' </summary>
+    ''' <param name="strName">Name of the new Time Series to add.</param>
+    ''' <param name="iPool">Index of item to assign this TS to.</param>
+    ''' <param name="timeSeriesType"><see cref="eTimeSeriesType">Type</see> of the time series.</param>
+    ''' <param name="asValues">Initial values to set in the TS.</param>
+    ''' <param name="iDBID">Database ID assigned to the new TS.</param>
+    ''' -----------------------------------------------------------------------
+    <Obsolete("Use AddTimeSeries(String, Integer, Integer, eTimeSeriesType, Single, Single(), ByRef Integer) instead")>
+    Public Function AddTimeSeries(ByVal strName As String,
+                                  ByVal iPool As Integer,
+                                  ByVal timeSeriesType As eTimeSeriesType,
+                                  ByVal sWeight As Single, ByVal asValues() As Single,
+                                  ByRef iDBID As Integer) As Boolean
+        Return Me.AddTimeSeries(strName, iPool, 0, timeSeriesType, sWeight, asValues, iDBID)
+    End Function
+
 #End Region
 
 End Class
