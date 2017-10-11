@@ -11,12 +11,12 @@
 #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #define DefDB "Database"
 
-#define Ecosampler 0
-#define MergeGroups 0
-#define Transects 0
+#define Ecosampler 1
+#define MergeGroups 1
+#define Transects 1
 #define Spinup 0
 #define SpatTemp 0
-#define MSPTools 1
+#define MSPTools 0
 
 [Setup]
 SignTool=codesign
@@ -106,7 +106,7 @@ Source: "{#DefRoot}{#DefDB}\Anchovy Bay Spatial.ewemdb"; DestDir: "{userdocs}\Ew
 Source: "{#DefRoot}{#DefDB}\Tampa_Bay.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 Source: "{#DefRoot}{#DefDB}\Georgia_Strait.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 #if Ecosampler == 1
-Source: "{#DefRoot}{#DefSrc}\EcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\sampler
+Source: "{#DefRoot}{#DefSrc}\EwEEcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\sampler
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\sampler
 #endif
 #if MergeGroups == 1
