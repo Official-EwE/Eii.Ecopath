@@ -33,10 +33,12 @@ Imports EwECore
 #End Region ' Imports 
 
 Public Enum eConvertTypes As Integer
+    ''' <summary>Do not convert values</summary>
+    None = 0
     ''' <summary>Convert Biomass from interface Tonnes^3 (kt) to t/km2</summary>
-    ToEcopathBio
+    ToEcopathBio = 1
     ''' <summary>Convert Biomass from Ecopath t/km2 to Tonnes^3 (kt)</summary>
-    ToDisplayBio
+    ToDisplayBio = 2
 End Enum
 
 Public Class Units
@@ -51,7 +53,8 @@ Public Class Units
 
         Try
             Select Case ConversionType
-
+                Case eConvertTypes.None
+                    ' Do nothing ;-)
                 Case eConvertTypes.ToEcopathBio
                     Return Value / _core_.EwEModel.Area * 1000
                 Case eConvertTypes.ToDisplayBio
@@ -61,7 +64,6 @@ Public Class Units
         Catch ex As Exception
             Debug.Assert(False, "Exception converting units. " + ex.Message)
         End Try
-
         Return Value
 
     End Function

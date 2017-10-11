@@ -26,20 +26,15 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwEUtils.Core
-Imports EwECore.MSE
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports System.Windows.Forms
-Imports ZedGraph
-Imports ScientificInterfaceShared.Controls
-Imports SourceGrid2
 Imports System.IO
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Style
-Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports EwEMSEPlugin.HCR_GroupNS
-Imports EwEMSEPlugin.HCR_GroupNS.HCR_Group
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports ScientificInterfaceShared.Style
+Imports ZedGraph
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -77,6 +72,9 @@ Public Class frmTFMpolicy
     Private m_shares As cQuotaShares
     Private m_bStrategiesSaved As Boolean = True
 
+    Private m_conversionToDisplay As eConvertTypes = eConvertTypes.ToDisplayBio
+    Private m_conversionToData As eConvertTypes = Me.m_conversionToData
+
 #End Region ' Internals
 
 #Region " Construction Initialization "
@@ -108,7 +106,7 @@ Public Class frmTFMpolicy
 
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
-        Me.m_zgh.ConfigurePane("", String.Format(My.Resources.LABEL_BIOMASS_UNIT, "kt"), SharedResources.HEADER_TFM, True)
+        Me.m_zgh.ConfigurePane("", SharedResources.HEADER_BIOMASS, SharedResources.HEADER_TFM, True)
 
         Me.m_zgh.AllowZoom = False
         Me.m_zgh.AllowPan = False
@@ -126,12 +124,16 @@ Public Class frmTFMpolicy
         AddHandler Me.m_grid.onEdited, AddressOf OnGridEdited
         AddHandler Me.m_gridRegulations.onEdited, AddressOf OnGridEdited
 
+        Me.m_chkUnits.Checked = My.Settings.DisplayRelativeValues
+
         Me.UpdateStrategies()
 
         If (Me.m_tscmStrategies.Items.Count > 0) Then
             Me.m_tscmStrategies.SelectedIndex = 0
         End If
 
+        ' Initialize
+        Me.DisplayRelativeValues = (m_chkUnits.Checked)
         Me.UpdateControls()
 
     End Sub
@@ -142,6 +144,9 @@ Public Class frmTFMpolicy
             e.Cancel = (Me.m_MSE.AskUser(My.Resources.PROMPT_UNSAVED_CHANGES, eMessageReplyStyle.YES_NO) = eMessageReplyStyle.OK)
         End If
         Me.m_qeh.Detach()
+
+        My.Settings.DisplayRelativeValues = Me.m_chkUnits.Checked
+        My.Settings.Save()
 
         MyBase.OnFormClosing(e)
 
@@ -162,6 +167,22 @@ Public Class frmTFMpolicy
     End Sub
 
 #End Region ' Form overrides
+
+#Region " Public access "
+
+    Public Property DisplayRelativeValues As Boolean
+        Get
+            Return (Me.m_conversionToDisplay = eConvertTypes.None)
+        End Get
+        Set(value As Boolean)
+            Me.m_conversionToDisplay = If(value, eConvertTypes.None, eConvertTypes.ToDisplayBio)
+            Me.m_conversionToData = If(value, eConvertTypes.None, eConvertTypes.ToEcopathBio)
+            Me.m_grid.DisplayRelativeValues = value
+            Me.UpdatePlot()
+        End Set
+    End Property
+
+#End Region ' Public access
 
 #Region " Events "
 
@@ -403,6 +424,7 @@ Public Class frmTFMpolicy
     Private Sub UpdatePlot()
 
         If (Me.m_zgh Is Nothing) Then Return
+        If (Me.IsDisposed) Then Return
 
         Dim lpts As New PointPairList
         Dim line As LineItem = Nothing
@@ -410,6 +432,11 @@ Public Class frmTFMpolicy
         Dim fmt As New cCoreInterfaceFormatter()
 
         Try
+            ' Update Xaxis units
+            Dim gp As GraphPane = Me.m_zgh.GetPane(1)
+            Dim xaxis As Axis = gp.XAxis
+            Dim title As AxisLabel = xaxis.Title
+            title.Text = String.Format(My.Resources.LABEL_BIOMASS_UNIT, If(Me.DisplayRelativeValues, "t/km2", "kt"))
 
             If Me.m_HCR IsNot Nothing Then
 
@@ -569,17 +596,17 @@ Public Class frmTFMpolicy
 
                 Select Case Me.m_dragtype
                     Case eDragType.Point1
-                        Me.m_HCR.BStep = Math.Max(CSng(Units.Convert(eConvertTypes.ToEcopathBio, dX)), 0)
+                        Me.m_HCR.BStep = Math.Max(CSng(Units.Convert(Me.m_conversionToData, dX)), 0)
                         Me.m_HCR.MinF = Math.Max(Math.Min(Math.Max(CSng(dy), 0), m_HCR.MaxF), 0)
                     Case eDragType.Point2
-                        If Units.Convert(eConvertTypes.ToEcopathBio, dX) <= m_HCR.UpperLimit And CSng(dy) <= m_HCR.MaxF Then
-                            Me.m_HCR.BStep = Math.Min(Math.Max(CSng(Units.Convert(eConvertTypes.ToEcopathBio, dX)), 0), m_HCR.UpperLimit)
-                            Me.m_HCR.LowerLimit = Math.Min(Math.Max(CSng(Units.Convert(eConvertTypes.ToEcopathBio, dX)) - ((m_HCR.UpperLimit - CSng(Units.Convert(eConvertTypes.ToEcopathBio, dX))) / (m_HCR.MaxF - CSng(dy))) * (CSng(dy) - m_HCR.MinF), 0), m_HCR.UpperLimit)
+                        If Units.Convert(Me.m_conversionToData, dX) <= m_HCR.UpperLimit And CSng(dy) <= m_HCR.MaxF Then
+                            Me.m_HCR.BStep = Math.Min(Math.Max(CSng(Units.Convert(Me.m_conversionToData, dX)), 0), m_HCR.UpperLimit)
+                            Me.m_HCR.LowerLimit = Math.Min(Math.Max(CSng(Units.Convert(Me.m_conversionToData, dX)) - ((m_HCR.UpperLimit - CSng(Units.Convert(Me.m_conversionToData, dX))) / (m_HCR.MaxF - CSng(dy))) * (CSng(dy) - m_HCR.MinF), 0), m_HCR.UpperLimit)
                         Else
                             Me.m_HCR.BStep = m_HCR.UpperLimit - CSng(0.00001)
                         End If
                     Case eDragType.Point3
-                        Me.m_HCR.UpperLimit = CSng(Math.Max(Me.m_HCR.BStep, Units.Convert(eConvertTypes.ToEcopathBio, dX)))
+                        Me.m_HCR.UpperLimit = CSng(Math.Max(Me.m_HCR.BStep, Units.Convert(Me.m_conversionToData, dX)))
                         Me.m_HCR.MaxF = Math.Max(m_HCR.MinF, CSng(dy))
 
                 End Select
@@ -587,9 +614,9 @@ Public Class frmTFMpolicy
             ElseIf m_HCR.HCR_Type = eHCR_Type.Traditional Then
                 Select Case Me.m_dragtype
                     Case eDragType.Point1
-                        Me.m_HCR.LowerLimit = CSng(Math.Max(0, Math.Min(Units.Convert(eConvertTypes.ToEcopathBio, dX), Me.m_HCR.UpperLimit)))
+                        Me.m_HCR.LowerLimit = CSng(Math.Max(0, Math.Min(Units.Convert(Me.m_conversionToData, dX), Me.m_HCR.UpperLimit)))
                     Case eDragType.Point2
-                        Me.m_HCR.UpperLimit = CSng(Math.Max(Me.m_HCR.LowerLimit, Units.Convert(eConvertTypes.ToEcopathBio, dX)))
+                        Me.m_HCR.UpperLimit = CSng(Math.Max(Me.m_HCR.LowerLimit, Units.Convert(Me.m_conversionToData, dX)))
                         Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
                         'Case eDragType.FMax
                         '    Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
@@ -612,6 +639,13 @@ Public Class frmTFMpolicy
         Return True
 
     End Function
+
+    Private Sub m_chkUnits_CheckedChanged(sender As Object, e As EventArgs) Handles m_chkUnits.CheckedChanged
+
+        Me.DisplayRelativeValues = m_chkUnits.Checked
+        Me.UpdatePlot()
+
+    End Sub
 
 #End Region ' Dragging
 

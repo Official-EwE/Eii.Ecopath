@@ -479,18 +479,36 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Lower biomass limit (kt).
         '''</summary>
-        Friend ReadOnly Property HEADER_LIMIT_LOWER_B() As String
+        Friend ReadOnly Property HEADER_LIMIT_LOWER_B_KT() As String
             Get
-                Return ResourceManager.GetString("HEADER_LIMIT_LOWER_B", resourceCulture)
+                Return ResourceManager.GetString("HEADER_LIMIT_LOWER_B_KT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Lower biomass limit (t/km2).
+        '''</summary>
+        Friend ReadOnly Property HEADER_LIMIT_LOWER_B_T_KM2() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LIMIT_LOWER_B_T_KM2", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Upper biomass limit (kt).
         '''</summary>
-        Friend ReadOnly Property HEADER_LIMIT_UPPER_B() As String
+        Friend ReadOnly Property HEADER_LIMIT_UPPER_B_KT() As String
             Get
-                Return ResourceManager.GetString("HEADER_LIMIT_UPPER_B", resourceCulture)
+                Return ResourceManager.GetString("HEADER_LIMIT_UPPER_B_KT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Upper biomass limit (t/km2).
+        '''</summary>
+        Friend ReadOnly Property HEADER_LIMIT_UPPER_B_T_KM2() As String
+            Get
+                Return ResourceManager.GetString("HEADER_LIMIT_UPPER_B_T_KM2", resourceCulture)
             End Get
         End Property
         
@@ -587,9 +605,18 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Step Biomass (kt).
         '''</summary>
-        Friend ReadOnly Property HEADER_STEP_BIOMASS() As String
+        Friend ReadOnly Property HEADER_STEP_BIOMASS_KT() As String
             Get
-                Return ResourceManager.GetString("HEADER_STEP_BIOMASS", resourceCulture)
+                Return ResourceManager.GetString("HEADER_STEP_BIOMASS_KT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Step Biomass (t/km2).
+        '''</summary>
+        Friend ReadOnly Property HEADER_STEP_BIOMASS_T_KM2() As String
+            Get
+                Return ResourceManager.GetString("HEADER_STEP_BIOMASS_T_KM2", resourceCulture)
             End Get
         End Property
         

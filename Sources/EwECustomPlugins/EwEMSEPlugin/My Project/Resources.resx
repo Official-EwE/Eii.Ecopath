@@ -237,10 +237,10 @@
   <data name="HEADER_FMORT_GROUP" xml:space="preserve">
     <value>Fishing Mort. Group</value>
   </data>
-  <data name="HEADER_LIMIT_LOWER_B" xml:space="preserve">
+  <data name="HEADER_LIMIT_LOWER_B_KT" xml:space="preserve">
     <value>Lower biomass limit (kt)</value>
   </data>
-  <data name="HEADER_LIMIT_UPPER_B" xml:space="preserve">
+  <data name="HEADER_LIMIT_UPPER_B_KT" xml:space="preserve">
     <value>Upper biomass limit (kt)</value>
   </data>
   <data name="HEADER_MAXRELFEEDTIME" xml:space="preserve">
@@ -407,7 +407,7 @@
   <data name="HEADER_RUN_YES_NO" xml:space="preserve">
     <value>Run (Yes/No)</value>
   </data>
-  <data name="HEADER_STEP_BIOMASS" xml:space="preserve">
+  <data name="HEADER_STEP_BIOMASS_KT" xml:space="preserve">
     <value>Step Biomass (kt)</value>
   </data>
   <data name="HCRTYPE_MULTILEVEL" xml:space="preserve">
@@ -424,5 +424,14 @@
   </data>
   <data name="HEADER_HCR_TYPE" xml:space="preserve">
     <value>HCR Type</value>
+  </data>
+  <data name="HEADER_LIMIT_LOWER_B_T_KM2" xml:space="preserve">
+    <value>Lower biomass limit (t/km2)</value>
+  </data>
+  <data name="HEADER_LIMIT_UPPER_B_T_KM2" xml:space="preserve">
+    <value>Upper biomass limit (t/km2)</value>
+  </data>
+  <data name="HEADER_STEP_BIOMASS_T_KM2" xml:space="preserve">
+    <value>Step Biomass (t/km2)</value>
   </data>
 </root>

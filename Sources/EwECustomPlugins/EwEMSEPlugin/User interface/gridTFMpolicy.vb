@@ -27,15 +27,13 @@
 
 Option Strict On
 Imports EwECore
-Imports EwECore.MSE
+Imports EwEMSEPlugin.HCR_GroupNS
 Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
-Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
-Imports EwEMSEPlugin.HCR_GroupNS
-Imports EwEMSEPlugin.HCR_GroupNS.HCR_Group
+Imports SourceGrid2
+Imports SourceGrid2.Cells
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -70,6 +68,8 @@ Public Class gridTargetFishingMortalityPolicy
     Private m_strategy As Strategy = Nothing
     Private m_editorTarg_Or_Cons As EwEComboBoxCellEditor = Nothing
     Private m_editorHCR_Type As EwEComboBoxCellEditor = Nothing
+    Private m_conversionToDisplay As eConvertTypes = eConvertTypes.ToDisplayBio
+    Private m_conversionToData As eConvertTypes = eConvertTypes.ToEcopathBio
 
 #Region " Constructor "
 
@@ -102,6 +102,33 @@ Public Class gridTargetFishingMortalityPolicy
         End Set
     End Property
 
+    Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
+        Get
+            Return eCoreComponentType.EcoSim
+        End Get
+    End Property
+
+    Public Property SelectedStrategy As Strategy
+        Get
+            Return Me.m_strategy
+        End Get
+        Set(value As Strategy)
+            Me.m_strategy = value
+            Me.FillData()
+        End Set
+    End Property
+
+    Public Property DisplayRelativeValues As Boolean
+        Get
+            Return (Me.m_conversionToDisplay = eConvertTypes.None)
+        End Get
+        Set(value As Boolean)
+            Me.m_conversionToDisplay = If(value, eConvertTypes.None, eConvertTypes.ToDisplayBio)
+            Me.m_conversionToData = If(value, eConvertTypes.None, eConvertTypes.ToEcopathBio)
+            Me.RefreshContent()
+        End Set
+    End Property
+
 #End Region ' Public interfaces
 
 #Region " Overrides "
@@ -113,12 +140,14 @@ Public Class gridTargetFishingMortalityPolicy
 
         Me.Redim(1, iNumCols)
 
+        ' Mark: you need display proper units according to the DisplayRelativeValues flag. I did this for the upper b lim to show an example
+
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.BioGroupName) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
         Me(0, eColumnTypes.HCR_Type) = New EwEColumnHeaderCell(My.Resources.HEADER_HCR_TYPE)
-        Me(0, eColumnTypes.BLowerLim) = New EwEColumnHeaderCell(My.Resources.HEADER_LIMIT_LOWER_B)
-        Me(0, eColumnTypes.BStep) = New EwEColumnHeaderCell(My.Resources.HEADER_STEP_BIOMASS)
-        Me(0, eColumnTypes.BUpperLim) = New EwEColumnHeaderCell(My.Resources.HEADER_LIMIT_UPPER_B)
+        Me(0, eColumnTypes.BLowerLim) = New EwEColumnHeaderCell(If(Me.DisplayRelativeValues, My.Resources.HEADER_LIMIT_LOWER_B_T_KM2, My.Resources.HEADER_LIMIT_LOWER_B_KT))
+        Me(0, eColumnTypes.BStep) = New EwEColumnHeaderCell(If(Me.DisplayRelativeValues, My.Resources.HEADER_STEP_BIOMASS_T_KM2, My.Resources.HEADER_STEP_BIOMASS_KT))
+        Me(0, eColumnTypes.BUpperLim) = New EwEColumnHeaderCell(If(Me.DisplayRelativeValues, My.Resources.HEADER_LIMIT_UPPER_B_T_KM2, My.Resources.HEADER_LIMIT_UPPER_B_KT))
         Me(0, eColumnTypes.FGroupName) = New EwEColumnHeaderCell(My.Resources.HEADER_FMORT_GROUP)
         Me(0, eColumnTypes.MinF) = New EwEColumnHeaderCell(My.Resources.HEADER_F_MORT_MIN)
         Me(0, eColumnTypes.MaxF) = New EwEColumnHeaderCell(My.Resources.HEADER_F_MORT_MAX)
@@ -160,11 +189,11 @@ Public Class gridTargetFishingMortalityPolicy
                 If Rule.BStep = cCore.NULL_VALUE Then
                     cell = New EwECell(Rule.BStep, GetType(Double), cStyleGuide.eStyleFlags.NotEditable)
                 Else
-                    cell = New EwECell(Units.Convert(eConvertTypes.ToDisplayBio, Rule.BStep))
+                    cell = New EwECell(Units.Convert(Me.m_conversionToDisplay, Rule.BStep))
                 End If
                 DirectCast(cell, EwECell).Style = cStyleGuide.eStyleFlags.NotEditable
             ElseIf Rule.HCR_Type = eHCR_Type.Multilevel Then
-                cell = New EwECell(Units.Convert(eConvertTypes.ToDisplayBio, Rule.BStep))
+                cell = New EwECell(Units.Convert(Me.m_conversionToDisplay, Rule.BStep))
                 'End If
                 DirectCast(cell, EwECell).Style = cStyleGuide.eStyleFlags.OK
             End If
@@ -186,12 +215,12 @@ Public Class gridTargetFishingMortalityPolicy
             Me(iHCR, eColumnTypes.MinF) = cell
 
             'Biomass lower limit
-            cell = New EwECell(Units.Convert(eConvertTypes.ToDisplayBio, Rule.LowerLimit))
+            cell = New EwECell(Units.Convert(Me.m_conversionToDisplay, Rule.LowerLimit))
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.BLowerLim) = cell
 
             'Biomass upper limit
-            cell = New EwECell(Units.Convert(eConvertTypes.ToDisplayBio, Rule.UpperLimit))
+            cell = New EwECell(Units.Convert(Me.m_conversionToDisplay, Rule.UpperLimit))
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.BUpperLim) = cell
 
@@ -221,6 +250,10 @@ Public Class gridTargetFishingMortalityPolicy
 
     Public Sub UpdateContent()
         Dim curHCR As HCR_Group = Me.HarvestControlRule
+
+        ' Mark: please revise this. I ran into a case where curHCR was nothing. Not sure how to make this work properly
+        If (curHCR Is Nothing) Then Return
+
         For Each row As RowInfo In Rows
             If row.Tag IsNot Nothing Then
 
@@ -229,14 +262,14 @@ Public Class gridTargetFishingMortalityPolicy
 
                     DirectCast(row.GetCells(eColumnTypes.BioGroupName), EwECell).Value = hcr.GroupB.Name
                     DirectCast(row.GetCells(eColumnTypes.FGroupName), EwECell).Value = hcr.GroupF.Name
-                    DirectCast(row.GetCells(eColumnTypes.BLowerLim), EwECell).Value = Units.Convert(eConvertTypes.ToDisplayBio, hcr.LowerLimit)
+                    DirectCast(row.GetCells(eColumnTypes.BLowerLim), EwECell).Value = Units.Convert(Me.m_conversionToDisplay, hcr.LowerLimit)
                     If hcr.BStep = cCore.NULL_VALUE Then
                         DirectCast(row.GetCells(eColumnTypes.BStep), EwECell).Value = cCore.NULL_VALUE
                     Else
-                        DirectCast(row.GetCells(eColumnTypes.BStep), EwECell).Value = Units.Convert(eConvertTypes.ToDisplayBio, hcr.BStep)
+                        DirectCast(row.GetCells(eColumnTypes.BStep), EwECell).Value = Units.Convert(Me.m_conversionToDisplay, hcr.BStep)
                     End If
 
-                    DirectCast(row.GetCells(eColumnTypes.BUpperLim), EwECell).Value = Units.Convert(eConvertTypes.ToDisplayBio, hcr.UpperLimit)
+                    DirectCast(row.GetCells(eColumnTypes.BUpperLim), EwECell).Value = Units.Convert(Me.m_conversionToDisplay, hcr.UpperLimit)
 
                     DirectCast(row.GetCells(eColumnTypes.MinF), EwECell).Value = CDbl(hcr.MinF)
 
@@ -257,24 +290,6 @@ Public Class gridTargetFishingMortalityPolicy
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.Columns(eColumnTypes.Index).Width = 20
     End Sub
-
-    Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
-        Get
-            Return eCoreComponentType.EcoSim
-        End Get
-    End Property
-
-    Public Property SelectedStrategy As Strategy
-        Get
-            Return Me.m_strategy
-        End Get
-        Set(value As Strategy)
-            Me.m_strategy = value
-            Me.FillData()
-        End Set
-    End Property
-
-#End Region ' Overrides
 
     Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
 
@@ -305,34 +320,34 @@ Public Class gridTargetFishingMortalityPolicy
 
                 Case eColumnTypes.BLowerLim
                     'bounds checking lower limit can not be > upper limit
-                    Dim LowerLim As Double = Units.Convert(eConvertTypes.ToEcopathBio, CDbl(cell.GetValue(p)))
+                    Dim LowerLim As Double = Units.Convert(Me.m_conversionToData, CDbl(cell.GetValue(p)))
                     If LowerLim > Me.HarvestControlRule.UpperLimit Then
                         LowerLim = Me.HarvestControlRule.UpperLimit
-                        cell.SetValue(p, Units.Convert(eConvertTypes.ToDisplayBio, LowerLim))
+                        cell.SetValue(p, Units.Convert(Me.m_conversionToDisplay, LowerLim))
                     End If
 
                     Me.HarvestControlRule.LowerLimit = CSng(LowerLim)
 
                 Case eColumnTypes.BStep
                     'bounds checking: cannot be <Lowerlim or >UpperLim
-                    Dim BStep As Double = Units.Convert(eConvertTypes.ToEcopathBio, CDbl(cell.GetValue(p)))
+                    Dim BStep As Double = Units.Convert(Me.m_conversionToData, CDbl(cell.GetValue(p)))
 
                     If BStep > Me.HarvestControlRule.UpperLimit Then
                         BStep = Me.HarvestControlRule.UpperLimit
-                        cell.SetValue(p, Units.Convert(eConvertTypes.ToDisplayBio, BStep))
+                        cell.SetValue(p, Units.Convert(Me.m_conversionToDisplay, BStep))
                     ElseIf BStep < Me.HarvestControlRule.LowerLimit Then
                         BStep = Me.HarvestControlRule.LowerLimit
-                        cell.SetValue(p, Units.Convert(eConvertTypes.ToDisplayBio, BStep))
+                        cell.SetValue(p, Units.Convert(Me.m_conversionToDisplay, BStep))
                     End If
 
                     Me.HarvestControlRule.BStep = CSng(BStep)
 
                 Case eColumnTypes.BUpperLim
                     'bounds checking upper limit can not be < lower limit
-                    Dim upperLim As Double = Units.Convert(eConvertTypes.ToEcopathBio, CDbl(cell.GetValue(p)))
+                    Dim upperLim As Double = Units.Convert(Me.m_conversionToData, CDbl(cell.GetValue(p)))
                     If upperLim < Me.HarvestControlRule.LowerLimit Then
                         upperLim = Me.HarvestControlRule.LowerLimit
-                        cell.SetValue(p, Units.Convert(eConvertTypes.ToDisplayBio, upperLim))
+                        cell.SetValue(p, Units.Convert(Me.m_conversionToDisplay, upperLim))
                     End If
 
                     Me.HarvestControlRule.UpperLimit = CSng(upperLim)
@@ -366,5 +381,7 @@ Public Class gridTargetFishingMortalityPolicy
 
         Return True
     End Function
+
+#End Region ' Overrides
 
 End Class
