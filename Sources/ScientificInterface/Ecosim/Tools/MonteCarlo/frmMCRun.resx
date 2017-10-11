@@ -216,764 +216,6 @@
   <data name="m_tbpSettings.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;m_lblEnabledVariables.Name" xml:space="preserve">
-    <value>m_lblEnabledVariables</value>
-  </data>
-  <data name="&gt;&gt;m_lblEnabledVariables.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblEnabledVariables.Parent" xml:space="preserve">
-    <value>m_tbpSettings</value>
-  </data>
-  <data name="&gt;&gt;m_lblEnabledVariables.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_clbEnabledVariables.Name" xml:space="preserve">
-    <value>m_clbEnabledVariables</value>
-  </data>
-  <data name="&gt;&gt;m_clbEnabledVariables.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cFlickerFreeCheckedListBox, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_clbEnabledVariables.Parent" xml:space="preserve">
-    <value>m_tbpSettings</value>
-  </data>
-  <data name="&gt;&gt;m_clbEnabledVariables.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetainEstimates.Name" xml:space="preserve">
-    <value>m_cbRetainEstimates</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetainEstimates.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetainEstimates.Parent" xml:space="preserve">
-    <value>m_tbpSettings</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetainEstimates.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_btDefaultTol.Name" xml:space="preserve">
-    <value>m_btDefaultTol</value>
-  </data>
-  <data name="&gt;&gt;m_btDefaultTol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btDefaultTol.Parent" xml:space="preserve">
-    <value>m_tbpSettings</value>
-  </data>
-  <data name="&gt;&gt;m_btDefaultTol.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_cbSRA.Name" xml:space="preserve">
-    <value>m_cbSRA</value>
-  </data>
-  <data name="&gt;&gt;m_cbSRA.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbSRA.Parent" xml:space="preserve">
-    <value>m_tbpSettings</value>
-  </data>
-  <data name="&gt;&gt;m_cbSRA.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetainCurPattern.Name" xml:space="preserve">
-    <value>m_cbRetainCurPattern</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetainCurPattern.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetainCurPattern.Parent" xml:space="preserve">
-    <value>m_tbpSettings</value>
-  </data>
-  <data name="&gt;&gt;m_cbRetainCurPattern.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_lblFMratio.Name" xml:space="preserve">
-    <value>m_lblFMratio</value>
-  </data>
-  <data name="&gt;&gt;m_lblFMratio.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblFMratio.Parent" xml:space="preserve">
-    <value>m_tbpSettings</value>
-  </data>
-  <data name="&gt;&gt;m_lblFMratio.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_lblEEtol.Name" xml:space="preserve">
-    <value>m_lblEEtol</value>
-  </data>
-  <data name="&gt;&gt;m_lblEEtol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblEEtol.Parent" xml:space="preserve">
-    <value>m_tbpSettings</value>
-  </data>
-  <data name="&gt;&gt;m_lblEEtol.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_tbxFMratio.Name" xml:space="preserve">
-    <value>m_tbxFMratio</value>
-  </data>
-  <data name="&gt;&gt;m_tbxFMratio.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxFMratio.Parent" xml:space="preserve">
-    <value>m_tbpSettings</value>
-  </data>
-  <data name="&gt;&gt;m_tbxFMratio.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_tbxEETol.Name" xml:space="preserve">
-    <value>m_tbxEETol</value>
-  </data>
-  <data name="&gt;&gt;m_tbxEETol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxEETol.Parent" xml:space="preserve">
-    <value>m_tbpSettings</value>
-  </data>
-  <data name="&gt;&gt;m_tbxEETol.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="m_tbpSettings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tbpSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_tbpSettings.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_tbpSettings.Text" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="&gt;&gt;m_tbpSettings.Name" xml:space="preserve">
-    <value>m_tbpSettings</value>
-  </data>
-  <data name="&gt;&gt;m_tbpSettings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbpSettings.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tbpSettings.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <metadata name="m_tsB.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <data name="&gt;&gt;m_gridB.Name" xml:space="preserve">
-    <value>m_gridB</value>
-  </data>
-  <data name="&gt;&gt;m_gridB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_gridB.Parent" xml:space="preserve">
-    <value>m_tbpB</value>
-  </data>
-  <data name="&gt;&gt;m_gridB.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsB.Name" xml:space="preserve">
-    <value>m_tsB</value>
-  </data>
-  <data name="&gt;&gt;m_tsB.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsB.Parent" xml:space="preserve">
-    <value>m_tbpB</value>
-  </data>
-  <data name="&gt;&gt;m_tsB.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tbpB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tbpB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_tbpB.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_tbpB.Text" xml:space="preserve">
-    <value>B</value>
-  </data>
-  <data name="&gt;&gt;m_tbpB.Name" xml:space="preserve">
-    <value>m_tbpB</value>
-  </data>
-  <data name="&gt;&gt;m_tbpB.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbpB.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tbpB.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <metadata name="m_tsPB.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>116, 17</value>
-  </metadata>
-  <data name="&gt;&gt;m_gridPB.Name" xml:space="preserve">
-    <value>m_gridPB</value>
-  </data>
-  <data name="&gt;&gt;m_gridPB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_gridPB.Parent" xml:space="preserve">
-    <value>m_tbpPB</value>
-  </data>
-  <data name="&gt;&gt;m_gridPB.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsPB.Name" xml:space="preserve">
-    <value>m_tsPB</value>
-  </data>
-  <data name="&gt;&gt;m_tsPB.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsPB.Parent" xml:space="preserve">
-    <value>m_tbpPB</value>
-  </data>
-  <data name="&gt;&gt;m_tsPB.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tbpPB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tbpPB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_tbpPB.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_tbpPB.Text" xml:space="preserve">
-    <value>P/B</value>
-  </data>
-  <data name="&gt;&gt;m_tbpPB.Name" xml:space="preserve">
-    <value>m_tbpPB</value>
-  </data>
-  <data name="&gt;&gt;m_tbpPB.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbpPB.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tbpPB.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <metadata name="m_tsQB.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>215, 17</value>
-  </metadata>
-  <data name="&gt;&gt;m_gridQB.Name" xml:space="preserve">
-    <value>m_gridQB</value>
-  </data>
-  <data name="&gt;&gt;m_gridQB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_gridQB.Parent" xml:space="preserve">
-    <value>m_tbpQB</value>
-  </data>
-  <data name="&gt;&gt;m_gridQB.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsQB.Name" xml:space="preserve">
-    <value>m_tsQB</value>
-  </data>
-  <data name="&gt;&gt;m_tsQB.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsQB.Parent" xml:space="preserve">
-    <value>m_tbpQB</value>
-  </data>
-  <data name="&gt;&gt;m_tsQB.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tbpQB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tbpQB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_tbpQB.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="m_tbpQB.Text" xml:space="preserve">
-    <value>Q/B</value>
-  </data>
-  <data name="&gt;&gt;m_tbpQB.Name" xml:space="preserve">
-    <value>m_tbpQB</value>
-  </data>
-  <data name="&gt;&gt;m_tbpQB.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbpQB.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tbpQB.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <metadata name="m_tsEE.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>314, 17</value>
-  </metadata>
-  <data name="&gt;&gt;m_gridEE.Name" xml:space="preserve">
-    <value>m_gridEE</value>
-  </data>
-  <data name="&gt;&gt;m_gridEE.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_gridEE.Parent" xml:space="preserve">
-    <value>m_tbpEE</value>
-  </data>
-  <data name="&gt;&gt;m_gridEE.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsEE.Name" xml:space="preserve">
-    <value>m_tsEE</value>
-  </data>
-  <data name="&gt;&gt;m_tsEE.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsEE.Parent" xml:space="preserve">
-    <value>m_tbpEE</value>
-  </data>
-  <data name="&gt;&gt;m_tsEE.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tbpEE.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tbpEE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_tbpEE.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_tbpEE.Text" xml:space="preserve">
-    <value>EE</value>
-  </data>
-  <data name="&gt;&gt;m_tbpEE.Name" xml:space="preserve">
-    <value>m_tbpEE</value>
-  </data>
-  <data name="&gt;&gt;m_tbpEE.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbpEE.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tbpEE.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <metadata name="m_tsBA.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>403, 17</value>
-  </metadata>
-  <data name="&gt;&gt;m_gridBA.Name" xml:space="preserve">
-    <value>m_gridBA</value>
-  </data>
-  <data name="&gt;&gt;m_gridBA.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_gridBA.Parent" xml:space="preserve">
-    <value>m_tbpBA</value>
-  </data>
-  <data name="&gt;&gt;m_gridBA.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsBA.Name" xml:space="preserve">
-    <value>m_tsBA</value>
-  </data>
-  <data name="&gt;&gt;m_tsBA.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsBA.Parent" xml:space="preserve">
-    <value>m_tbpBA</value>
-  </data>
-  <data name="&gt;&gt;m_tsBA.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tbpBA.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tbpBA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_tbpBA.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_tbpBA.Text" xml:space="preserve">
-    <value>BA</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBA.Name" xml:space="preserve">
-    <value>m_tbpBA</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBA.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBA.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBA.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <metadata name="m_tsBaBi.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>945, 17</value>
-  </metadata>
-  <data name="&gt;&gt;m_gridBaBi.Name" xml:space="preserve">
-    <value>m_gridBaBi</value>
-  </data>
-  <data name="&gt;&gt;m_gridBaBi.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_gridBaBi.Parent" xml:space="preserve">
-    <value>m_tbpBABi</value>
-  </data>
-  <data name="&gt;&gt;m_gridBaBi.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsBaBi.Name" xml:space="preserve">
-    <value>m_tsBaBi</value>
-  </data>
-  <data name="&gt;&gt;m_tsBaBi.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsBaBi.Parent" xml:space="preserve">
-    <value>m_tbpBABi</value>
-  </data>
-  <data name="&gt;&gt;m_tsBaBi.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tbpBABi.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tbpBABi.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_tbpBABi.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="m_tbpBABi.Text" xml:space="preserve">
-    <value>BA rate</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBABi.Name" xml:space="preserve">
-    <value>m_tbpBABi</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBABi.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBABi.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBABi.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="m_gridDiets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_gridDiets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
-  </data>
-  <data name="m_gridDiets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_gridDiets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 285</value>
-  </data>
-  <data name="m_gridDiets.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_gridDiets.Name" xml:space="preserve">
-    <value>m_gridDiets</value>
-  </data>
-  <data name="&gt;&gt;m_gridDiets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_gridDiets.Parent" xml:space="preserve">
-    <value>m_tbpDiets</value>
-  </data>
-  <data name="&gt;&gt;m_gridDiets.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <metadata name="m_tsDiets.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>841, 17</value>
-  </metadata>
-  <data name="m_tslblMethodDC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 22</value>
-  </data>
-  <data name="m_tslblMethodDC.Text" xml:space="preserve">
-    <value>Sample method:</value>
-  </data>
-  <data name="m_tscmbMethodDC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 25</value>
-  </data>
-  <data name="m_tssepDC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="m_tsbnLoadPedDC.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJ8SURBVDhPdZPvS1NhFMf9A0IFUWYNRcOSUFH6SWQW/aIX
-        mhCZv9CRUu5FuRdpivgi6J1gyXAQDBdIoIIaYjSiXjgCmZOLImNsiGzIkAmCGBTcQZ/Oc+/VqPTA4bn3
-        ec73c865z7kZ/9pST3ZNqDd7Qq3W1qF7R5oK3Jk9S+RVDqHerJfK1fPOdKW8Z09YYX/bUk+WRw5VAPGh
-        HEi4SEc72HxbYHg63A7rTuNsP05pLLmRFZZbIPxIArsE0A3JJ7A9AKk+0pFGkp9rWPGdg5U2CDYbEEtu
-        AbRW+HZN1tsQrYd4I2y2kY7dZ2O2CrezAI/TjjZyEkItfwBa/7FcrV8Aq1JmUMSrtRBrEEAr6fUmtr7W
-        4O6ysxt+QSrQhLszT5K0oTRKa/S/6RGqKl+rY8tfzUinjeSX60SnKhntOs6e5uRn2MWYq4iIt0jimkm4
-        C83vYJS/6oDFWhFflQw2gt5LDLXbcD+2sbfYwo+QA5+rkNhYMfrHKpi7CAsPzTYMwHwdjJfy2pFHZPw8
-        v5YbWJ++ye7CPb4H6hnrLiDmK0KfK4FJqdZXCp/qTYAqIzFkh0ADqXfFjErW1OwV+aB32fPfwPfMzsbU
-        afQFyewvE8Apyf6AxLDdbCH4PNem9UkVAmC+jOR4MW8cuayMloj4BPHpUnStWlqUsv3lIDAFUBqlNW7C
-        aMMCELhA6kM53qf5JObOoEfugPLFywKoOAAY5e/bAUANSUwGSCaRZAfsDJrDtCEzIpPImlx1qPl/gOpF
-        bSiPDmYaAF2uNT6cb7i+ZgLU2X6c0f9hJocz25NVhAdUoPkzqeft9xVKOGOFHW2h3sxbKlCt1tahe6Zl
-        ZPwGVIMhYfzR0BMAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="m_tsbnLoadPedDC.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnLoadPedDC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>177, 22</value>
-  </data>
-  <data name="m_tsbnLoadPedDC.Text" xml:space="preserve">
-    <value>Load diet CVs from pedigree</value>
-  </data>
-  <data name="m_tsDiets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsDiets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 25</value>
-  </data>
-  <data name="m_tsDiets.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_tsDiets.Name" xml:space="preserve">
-    <value>m_tsDiets</value>
-  </data>
-  <data name="&gt;&gt;m_tsDiets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsDiets.Parent" xml:space="preserve">
-    <value>m_tbpDiets</value>
-  </data>
-  <data name="&gt;&gt;m_tsDiets.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tbpDiets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tbpDiets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_tbpDiets.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="m_tbpDiets.Text" xml:space="preserve">
-    <value>Diets</value>
-  </data>
-  <data name="&gt;&gt;m_tbpDiets.Name" xml:space="preserve">
-    <value>m_tbpDiets</value>
-  </data>
-  <data name="&gt;&gt;m_tbpDiets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbpDiets.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tbpDiets.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <metadata name="m_tsLandings.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>593, 17</value>
-  </metadata>
-  <data name="&gt;&gt;m_gridLandings.Name" xml:space="preserve">
-    <value>m_gridLandings</value>
-  </data>
-  <data name="&gt;&gt;m_gridLandings.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_gridLandings.Parent" xml:space="preserve">
-    <value>m_tbpLandings</value>
-  </data>
-  <data name="&gt;&gt;m_gridLandings.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsLandings.Name" xml:space="preserve">
-    <value>m_tsLandings</value>
-  </data>
-  <data name="&gt;&gt;m_tsLandings.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsLandings.Parent" xml:space="preserve">
-    <value>m_tbpLandings</value>
-  </data>
-  <data name="&gt;&gt;m_tsLandings.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tbpLandings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tbpLandings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_tbpLandings.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="m_tbpLandings.Text" xml:space="preserve">
-    <value>Landings</value>
-  </data>
-  <data name="&gt;&gt;m_tbpLandings.Name" xml:space="preserve">
-    <value>m_tbpLandings</value>
-  </data>
-  <data name="&gt;&gt;m_tbpLandings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbpLandings.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tbpLandings.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <metadata name="m_tsDiscards.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>719, 17</value>
-  </metadata>
-  <data name="&gt;&gt;m_gridDiscards.Name" xml:space="preserve">
-    <value>m_gridDiscards</value>
-  </data>
-  <data name="&gt;&gt;m_gridDiscards.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_gridDiscards.Parent" xml:space="preserve">
-    <value>m_tbpDiscards</value>
-  </data>
-  <data name="&gt;&gt;m_gridDiscards.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsDiscards.Name" xml:space="preserve">
-    <value>m_tsDiscards</value>
-  </data>
-  <data name="&gt;&gt;m_tsDiscards.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsDiscards.Parent" xml:space="preserve">
-    <value>m_tbpDiscards</value>
-  </data>
-  <data name="&gt;&gt;m_tsDiscards.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tbpDiscards.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tbpDiscards.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_tbpDiscards.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="m_tbpDiscards.Text" xml:space="preserve">
-    <value>Discards</value>
-  </data>
-  <data name="&gt;&gt;m_tbpDiscards.Name" xml:space="preserve">
-    <value>m_tbpDiscards</value>
-  </data>
-  <data name="&gt;&gt;m_tbpDiscards.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbpDiscards.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tbpDiscards.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Name" xml:space="preserve">
-    <value>m_spPlot</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Parent" xml:space="preserve">
-    <value>m_tbpBPlot</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tbpBPlot.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tbpBPlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_tbpBPlot.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="m_tbpBPlot.Text" xml:space="preserve">
-    <value>Biomass plot</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBPlot.Name" xml:space="preserve">
-    <value>m_tbpBPlot</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBPlot.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBPlot.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBPlot.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_gridBestFit.Name" xml:space="preserve">
-    <value>m_gridBestFit</value>
-  </data>
-  <data name="&gt;&gt;m_gridBestFit.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunOutput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_gridBestFit.Parent" xml:space="preserve">
-    <value>m_tbpBestTrial</value>
-  </data>
-  <data name="&gt;&gt;m_gridBestFit.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tbpBestTrial.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tbpBestTrial.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_tbpBestTrial.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_tbpBestTrial.Text" xml:space="preserve">
-    <value>Best fitting trial</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBestTrial.Name" xml:space="preserve">
-    <value>m_tbpBestTrial</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBestTrial.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBestTrial.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tbpBestTrial.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="m_tcMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 82</value>
-  </data>
-  <data name="m_tcMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>599, 336</value>
-  </data>
-  <data name="m_tcMain.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.Name" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucTabControlEx, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
   <data name="m_lblEnabledVariables.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1020,7 +262,7 @@
     <value>m_clbEnabledVariables</value>
   </data>
   <data name="&gt;&gt;m_clbEnabledVariables.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cFlickerFreeCheckedListBox, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cFlickerFreeCheckedListBox, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_clbEnabledVariables.Parent" xml:space="preserve">
     <value>m_tbpSettings</value>
@@ -1253,6 +495,30 @@
   <data name="&gt;&gt;m_tbxEETol.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
+  <data name="m_tbpSettings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpSettings.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_tbpSettings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="&gt;&gt;m_tbpSettings.Name" xml:space="preserve">
+    <value>m_tbpSettings</value>
+  </data>
+  <data name="&gt;&gt;m_tbpSettings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpSettings.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpSettings.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_gridB.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1272,7 +538,7 @@
     <value>m_gridB</value>
   </data>
   <data name="&gt;&gt;m_gridB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridB.Parent" xml:space="preserve">
     <value>m_tbpB</value>
@@ -1283,27 +549,6 @@
   <metadata name="m_tsB.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="m_tsB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 25</value>
-  </data>
-  <data name="m_tsB.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsB.Name" xml:space="preserve">
-    <value>m_tsB</value>
-  </data>
-  <data name="&gt;&gt;m_tsB.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsB.Parent" xml:space="preserve">
-    <value>m_tbpB</value>
-  </data>
-  <data name="&gt;&gt;m_tsB.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tsbnLoadPedB.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -1330,6 +575,51 @@
   <data name="m_tsbnLoadPedB.Text" xml:space="preserve">
     <value>Load Biomass CVs from pedigree</value>
   </data>
+  <data name="m_tsB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 25</value>
+  </data>
+  <data name="m_tsB.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tsB.Name" xml:space="preserve">
+    <value>m_tsB</value>
+  </data>
+  <data name="&gt;&gt;m_tsB.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsB.Parent" xml:space="preserve">
+    <value>m_tbpB</value>
+  </data>
+  <data name="&gt;&gt;m_tsB.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbpB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpB.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_tbpB.Text" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="&gt;&gt;m_tbpB.Name" xml:space="preserve">
+    <value>m_tbpB</value>
+  </data>
+  <data name="&gt;&gt;m_tbpB.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpB.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpB.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_gridPB.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1346,7 +636,7 @@
     <value>m_gridPB</value>
   </data>
   <data name="&gt;&gt;m_gridPB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridPB.Parent" xml:space="preserve">
     <value>m_tbpPB</value>
@@ -1357,27 +647,6 @@
   <metadata name="m_tsPB.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>116, 17</value>
   </metadata>
-  <data name="m_tsPB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsPB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 25</value>
-  </data>
-  <data name="m_tsPB.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsPB.Name" xml:space="preserve">
-    <value>m_tsPB</value>
-  </data>
-  <data name="&gt;&gt;m_tsPB.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsPB.Parent" xml:space="preserve">
-    <value>m_tbpPB</value>
-  </data>
-  <data name="&gt;&gt;m_tsPB.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tsbnLoadPedPB.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -1404,6 +673,51 @@
   <data name="m_tsbnLoadPedPB.Text" xml:space="preserve">
     <value>Load P/B CVs from pedigree...</value>
   </data>
+  <data name="m_tsPB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsPB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 25</value>
+  </data>
+  <data name="m_tsPB.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tsPB.Name" xml:space="preserve">
+    <value>m_tsPB</value>
+  </data>
+  <data name="&gt;&gt;m_tsPB.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsPB.Parent" xml:space="preserve">
+    <value>m_tbpPB</value>
+  </data>
+  <data name="&gt;&gt;m_tsPB.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbpPB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpPB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpPB.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tbpPB.Text" xml:space="preserve">
+    <value>P/B</value>
+  </data>
+  <data name="&gt;&gt;m_tbpPB.Name" xml:space="preserve">
+    <value>m_tbpPB</value>
+  </data>
+  <data name="&gt;&gt;m_tbpPB.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpPB.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpPB.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="m_gridQB.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1420,7 +734,7 @@
     <value>m_gridQB</value>
   </data>
   <data name="&gt;&gt;m_gridQB.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridQB.Parent" xml:space="preserve">
     <value>m_tbpQB</value>
@@ -1431,27 +745,6 @@
   <metadata name="m_tsQB.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>215, 17</value>
   </metadata>
-  <data name="m_tsQB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsQB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 25</value>
-  </data>
-  <data name="m_tsQB.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tsQB.Name" xml:space="preserve">
-    <value>m_tsQB</value>
-  </data>
-  <data name="&gt;&gt;m_tsQB.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsQB.Parent" xml:space="preserve">
-    <value>m_tbpQB</value>
-  </data>
-  <data name="&gt;&gt;m_tsQB.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tsbnLoadPedQB.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -1478,6 +771,51 @@
   <data name="m_tsbnLoadPedQB.Text" xml:space="preserve">
     <value>Load Q/B CVs from pedigree</value>
   </data>
+  <data name="m_tsQB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsQB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 25</value>
+  </data>
+  <data name="m_tsQB.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_tsQB.Name" xml:space="preserve">
+    <value>m_tsQB</value>
+  </data>
+  <data name="&gt;&gt;m_tsQB.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsQB.Parent" xml:space="preserve">
+    <value>m_tbpQB</value>
+  </data>
+  <data name="&gt;&gt;m_tsQB.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbpQB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpQB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpQB.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_tbpQB.Text" xml:space="preserve">
+    <value>Q/B</value>
+  </data>
+  <data name="&gt;&gt;m_tbpQB.Name" xml:space="preserve">
+    <value>m_tbpQB</value>
+  </data>
+  <data name="&gt;&gt;m_tbpQB.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpQB.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpQB.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <data name="m_gridEE.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1494,7 +832,7 @@
     <value>m_gridEE</value>
   </data>
   <data name="&gt;&gt;m_gridEE.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridEE.Parent" xml:space="preserve">
     <value>m_tbpEE</value>
@@ -1518,13 +856,37 @@
     <value>m_tsEE</value>
   </data>
   <data name="&gt;&gt;m_tsEE.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsEE.Parent" xml:space="preserve">
     <value>m_tbpEE</value>
   </data>
   <data name="&gt;&gt;m_tsEE.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="m_tbpEE.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpEE.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpEE.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_tbpEE.Text" xml:space="preserve">
+    <value>EE</value>
+  </data>
+  <data name="&gt;&gt;m_tbpEE.Name" xml:space="preserve">
+    <value>m_tbpEE</value>
+  </data>
+  <data name="&gt;&gt;m_tbpEE.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpEE.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpEE.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="m_gridBA.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1545,7 +907,7 @@
     <value>m_gridBA</value>
   </data>
   <data name="&gt;&gt;m_gridBA.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridBA.Parent" xml:space="preserve">
     <value>m_tbpBA</value>
@@ -1569,13 +931,37 @@
     <value>m_tsBA</value>
   </data>
   <data name="&gt;&gt;m_tsBA.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsBA.Parent" xml:space="preserve">
     <value>m_tbpBA</value>
   </data>
   <data name="&gt;&gt;m_tsBA.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="m_tbpBA.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpBA.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpBA.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_tbpBA.Text" xml:space="preserve">
+    <value>BA</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBA.Name" xml:space="preserve">
+    <value>m_tbpBA</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBA.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBA.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBA.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="m_gridBaBi.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1596,7 +982,7 @@
     <value>m_gridBaBi</value>
   </data>
   <data name="&gt;&gt;m_gridBaBi.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridBaBi.Parent" xml:space="preserve">
     <value>m_tbpBABi</value>
@@ -1620,13 +1006,150 @@
     <value>m_tsBaBi</value>
   </data>
   <data name="&gt;&gt;m_tsBaBi.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsBaBi.Parent" xml:space="preserve">
     <value>m_tbpBABi</value>
   </data>
   <data name="&gt;&gt;m_tsBaBi.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="m_tbpBABi.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpBABi.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpBABi.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_tbpBABi.Text" xml:space="preserve">
+    <value>BA rate</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBABi.Name" xml:space="preserve">
+    <value>m_tbpBABi</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBABi.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBABi.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBABi.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_gridDiets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_gridDiets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="m_gridDiets.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_gridDiets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 285</value>
+  </data>
+  <data name="m_gridDiets.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_gridDiets.Name" xml:space="preserve">
+    <value>m_gridDiets</value>
+  </data>
+  <data name="&gt;&gt;m_gridDiets.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+  </data>
+  <data name="&gt;&gt;m_gridDiets.Parent" xml:space="preserve">
+    <value>m_tbpDiets</value>
+  </data>
+  <data name="&gt;&gt;m_gridDiets.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="m_tsDiets.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>841, 17</value>
+  </metadata>
+  <data name="m_tslblMethodDC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 22</value>
+  </data>
+  <data name="m_tslblMethodDC.Text" xml:space="preserve">
+    <value>Sample method:</value>
+  </data>
+  <data name="m_tscmbMethodDC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 25</value>
+  </data>
+  <data name="m_tssepDC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="m_tsbnLoadPedDC.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJ8SURBVDhPdZPvS1NhFMf9A0IFUWYNRcOSUFH6SWQW/aIX
+        mhCZv9CRUu5FuRdpivgi6J1gyXAQDBdIoIIaYjSiXjgCmZOLImNsiGzIkAmCGBTcQZ/Oc+/VqPTA4bn3
+        ec73c865z7kZ/9pST3ZNqDd7Qq3W1qF7R5oK3Jk9S+RVDqHerJfK1fPOdKW8Z09YYX/bUk+WRw5VAPGh
+        HEi4SEc72HxbYHg63A7rTuNsP05pLLmRFZZbIPxIArsE0A3JJ7A9AKk+0pFGkp9rWPGdg5U2CDYbEEtu
+        AbRW+HZN1tsQrYd4I2y2kY7dZ2O2CrezAI/TjjZyEkItfwBa/7FcrV8Aq1JmUMSrtRBrEEAr6fUmtr7W
+        4O6ysxt+QSrQhLszT5K0oTRKa/S/6RGqKl+rY8tfzUinjeSX60SnKhntOs6e5uRn2MWYq4iIt0jimkm4
+        C83vYJS/6oDFWhFflQw2gt5LDLXbcD+2sbfYwo+QA5+rkNhYMfrHKpi7CAsPzTYMwHwdjJfy2pFHZPw8
+        v5YbWJ++ye7CPb4H6hnrLiDmK0KfK4FJqdZXCp/qTYAqIzFkh0ADqXfFjErW1OwV+aB32fPfwPfMzsbU
+        afQFyewvE8Apyf6AxLDdbCH4PNem9UkVAmC+jOR4MW8cuayMloj4BPHpUnStWlqUsv3lIDAFUBqlNW7C
+        aMMCELhA6kM53qf5JObOoEfugPLFywKoOAAY5e/bAUANSUwGSCaRZAfsDJrDtCEzIpPImlx1qPl/gOpF
+        bSiPDmYaAF2uNT6cb7i+ZgLU2X6c0f9hJocz25NVhAdUoPkzqeft9xVKOGOFHW2h3sxbKlCt1tahe6Zl
+        ZPwGVIMhYfzR0BMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="m_tsbnLoadPedDC.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnLoadPedDC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>177, 22</value>
+  </data>
+  <data name="m_tsbnLoadPedDC.Text" xml:space="preserve">
+    <value>Load diet CVs from pedigree</value>
+  </data>
+  <data name="m_tsDiets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsDiets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 25</value>
+  </data>
+  <data name="m_tsDiets.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_tsDiets.Name" xml:space="preserve">
+    <value>m_tsDiets</value>
+  </data>
+  <data name="&gt;&gt;m_tsDiets.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsDiets.Parent" xml:space="preserve">
+    <value>m_tbpDiets</value>
+  </data>
+  <data name="&gt;&gt;m_tsDiets.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbpDiets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpDiets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpDiets.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="m_tbpDiets.Text" xml:space="preserve">
+    <value>Diets</value>
+  </data>
+  <data name="&gt;&gt;m_tbpDiets.Name" xml:space="preserve">
+    <value>m_tbpDiets</value>
+  </data>
+  <data name="&gt;&gt;m_tbpDiets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpDiets.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpDiets.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
   <data name="m_gridLandings.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1644,7 +1167,7 @@
     <value>m_gridLandings</value>
   </data>
   <data name="&gt;&gt;m_gridLandings.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridLandings.Parent" xml:space="preserve">
     <value>m_tbpLandings</value>
@@ -1655,27 +1178,6 @@
   <metadata name="m_tsLandings.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>593, 17</value>
   </metadata>
-  <data name="m_tsLandings.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsLandings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 25</value>
-  </data>
-  <data name="m_tsLandings.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_tsLandings.Name" xml:space="preserve">
-    <value>m_tsLandings</value>
-  </data>
-  <data name="&gt;&gt;m_tsLandings.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsLandings.Parent" xml:space="preserve">
-    <value>m_tbpLandings</value>
-  </data>
-  <data name="&gt;&gt;m_tsLandings.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tsbnLoadPedLandings.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -1702,6 +1204,51 @@
   <data name="m_tsbnLoadPedLandings.Text" xml:space="preserve">
     <value>Load Catch CVs from pedigree</value>
   </data>
+  <data name="m_tsLandings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsLandings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 25</value>
+  </data>
+  <data name="m_tsLandings.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_tsLandings.Name" xml:space="preserve">
+    <value>m_tsLandings</value>
+  </data>
+  <data name="&gt;&gt;m_tsLandings.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsLandings.Parent" xml:space="preserve">
+    <value>m_tbpLandings</value>
+  </data>
+  <data name="&gt;&gt;m_tsLandings.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbpLandings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpLandings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpLandings.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_tbpLandings.Text" xml:space="preserve">
+    <value>Landings</value>
+  </data>
+  <data name="&gt;&gt;m_tbpLandings.Name" xml:space="preserve">
+    <value>m_tbpLandings</value>
+  </data>
+  <data name="&gt;&gt;m_tbpLandings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpLandings.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpLandings.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
   <data name="m_gridDiscards.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1718,7 +1265,7 @@
     <value>m_gridDiscards</value>
   </data>
   <data name="&gt;&gt;m_gridDiscards.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunInput, EwE6, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridDiscards.Parent" xml:space="preserve">
     <value>m_tbpDiscards</value>
@@ -1729,27 +1276,6 @@
   <metadata name="m_tsDiscards.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>719, 17</value>
   </metadata>
-  <data name="m_tsDiscards.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsDiscards.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 25</value>
-  </data>
-  <data name="m_tsDiscards.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tsDiscards.Name" xml:space="preserve">
-    <value>m_tsDiscards</value>
-  </data>
-  <data name="&gt;&gt;m_tsDiscards.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsDiscards.Parent" xml:space="preserve">
-    <value>m_tbpDiscards</value>
-  </data>
-  <data name="&gt;&gt;m_tsDiscards.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tsbnLoadPedDiscards.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -1775,6 +1301,51 @@
   </data>
   <data name="m_tsbnLoadPedDiscards.Text" xml:space="preserve">
     <value>Load Catch CVs from pedigree</value>
+  </data>
+  <data name="m_tsDiscards.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsDiscards.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 25</value>
+  </data>
+  <data name="m_tsDiscards.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_tsDiscards.Name" xml:space="preserve">
+    <value>m_tsDiscards</value>
+  </data>
+  <data name="&gt;&gt;m_tsDiscards.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsDiscards.Parent" xml:space="preserve">
+    <value>m_tbpDiscards</value>
+  </data>
+  <data name="&gt;&gt;m_tsDiscards.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbpDiscards.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpDiscards.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpDiscards.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_tbpDiscards.Text" xml:space="preserve">
+    <value>Discards</value>
+  </data>
+  <data name="&gt;&gt;m_tbpDiscards.Name" xml:space="preserve">
+    <value>m_tbpDiscards</value>
+  </data>
+  <data name="&gt;&gt;m_tbpDiscards.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpDiscards.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpDiscards.ZOrder" xml:space="preserve">
+    <value>9</value>
   </data>
   <data name="m_spPlot.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1818,135 +1389,6 @@
   <metadata name="m_tsPlot.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>495, 17</value>
   </metadata>
-  <data name="m_tsPlot.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsPlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>432, 25</value>
-  </data>
-  <data name="m_tsPlot.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsPlot.Name" xml:space="preserve">
-    <value>m_tsPlot</value>
-  </data>
-  <data name="&gt;&gt;m_tsPlot.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsPlot.Parent" xml:space="preserve">
-    <value>m_spPlot.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tsPlot.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Panel1.Name" xml:space="preserve">
-    <value>m_spPlot.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Panel1.Parent" xml:space="preserve">
-    <value>m_spPlot</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_lbGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_lbGroups.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_lbGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 18</value>
-  </data>
-  <data name="m_lbGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_lbGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 290</value>
-  </data>
-  <data name="m_lbGroups.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_lbGroups.Name" xml:space="preserve">
-    <value>m_lbGroups</value>
-  </data>
-  <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
-    <value>m_spPlot.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_lbGroups.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_lblGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_lblGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
-  </data>
-  <data name="m_lblGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>147, 18</value>
-  </data>
-  <data name="m_lblGroups.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_lblGroups.Text" xml:space="preserve">
-    <value>Groups</value>
-  </data>
-  <data name="m_lblGroups.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_lblGroups.Name" xml:space="preserve">
-    <value>m_lblGroups</value>
-  </data>
-  <data name="&gt;&gt;m_lblGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lblGroups.Parent" xml:space="preserve">
-    <value>m_spPlot.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_lblGroups.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Panel2.Name" xml:space="preserve">
-    <value>m_spPlot.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Panel2.Parent" xml:space="preserve">
-    <value>m_spPlot</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_spPlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>591, 310</value>
-  </data>
-  <data name="m_spPlot.SplitterDistance" type="System.Int32, mscorlib">
-    <value>434</value>
-  </data>
-  <data name="m_spPlot.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Name" xml:space="preserve">
-    <value>m_spPlot</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.Parent" xml:space="preserve">
-    <value>m_tbpBPlot</value>
-  </data>
-  <data name="&gt;&gt;m_spPlot.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="m_tsbnUpdatePlot.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -2007,6 +1449,159 @@
   <data name="m_tsbnShowGroups.Text" xml:space="preserve">
     <value>Show groups list</value>
   </data>
+  <data name="m_tsPlot.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsPlot.Size" type="System.Drawing.Size, System.Drawing">
+    <value>432, 25</value>
+  </data>
+  <data name="m_tsPlot.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tsPlot.Name" xml:space="preserve">
+    <value>m_tsPlot</value>
+  </data>
+  <data name="&gt;&gt;m_tsPlot.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsPlot.Parent" xml:space="preserve">
+    <value>m_spPlot.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_tsPlot.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel1.Name" xml:space="preserve">
+    <value>m_spPlot.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel1.Parent" xml:space="preserve">
+    <value>m_spPlot</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lbGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_lbGroups.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_lbGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 18</value>
+  </data>
+  <data name="m_lbGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_lbGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 290</value>
+  </data>
+  <data name="m_lbGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_lbGroups.Name" xml:space="preserve">
+    <value>m_lbGroups</value>
+  </data>
+  <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
+    <value>m_spPlot.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_lbGroups.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lblGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_lblGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="m_lblGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 18</value>
+  </data>
+  <data name="m_lblGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lblGroups.Text" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="m_lblGroups.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroups.Name" xml:space="preserve">
+    <value>m_lblGroups</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroups.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroups.Parent" xml:space="preserve">
+    <value>m_spPlot.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_lblGroups.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel2.Name" xml:space="preserve">
+    <value>m_spPlot.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel2.Parent" xml:space="preserve">
+    <value>m_spPlot</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_spPlot.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_spPlot.SplitterDistance" type="System.Int32, mscorlib">
+    <value>434</value>
+  </data>
+  <data name="m_spPlot.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Name" xml:space="preserve">
+    <value>m_spPlot</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.Parent" xml:space="preserve">
+    <value>m_tbpBPlot</value>
+  </data>
+  <data name="&gt;&gt;m_spPlot.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tbpBPlot.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpBPlot.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpBPlot.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_tbpBPlot.Text" xml:space="preserve">
+    <value>Biomass plot</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBPlot.Name" xml:space="preserve">
+    <value>m_tbpBPlot</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBPlot.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBPlot.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBPlot.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
   <data name="m_gridBestFit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -2023,13 +1618,58 @@
     <value>m_gridBestFit</value>
   </data>
   <data name="&gt;&gt;m_gridBestFit.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecosim.gridMCRunOutput, EwE6, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecosim.gridMCRunOutput, EwE6, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridBestFit.Parent" xml:space="preserve">
     <value>m_tbpBestTrial</value>
   </data>
   <data name="&gt;&gt;m_gridBestFit.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_tbpBestTrial.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tbpBestTrial.Size" type="System.Drawing.Size, System.Drawing">
+    <value>591, 310</value>
+  </data>
+  <data name="m_tbpBestTrial.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_tbpBestTrial.Text" xml:space="preserve">
+    <value>Best fitting trial</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBestTrial.Name" xml:space="preserve">
+    <value>m_tbpBestTrial</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBestTrial.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBestTrial.Parent" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tbpBestTrial.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="m_tcMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 82</value>
+  </data>
+  <data name="m_tcMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>599, 336</value>
+  </data>
+  <data name="m_tcMain.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;m_tcMain.Name" xml:space="preserve">
+    <value>m_tcMain</value>
+  </data>
+  <data name="&gt;&gt;m_tcMain.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.ucTabControlEx, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tcMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tcMain.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="m_cbSave.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -2149,7 +1789,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblSScurr.Location" type="System.Drawing.Point, System.Drawing">
-    <value>107, 22</value>
+    <value>113, 22</value>
   </data>
   <data name="m_lblSScurr.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -2188,7 +1828,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblSSbest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>205, 0</value>
+    <value>217, 0</value>
   </data>
   <data name="m_lblSSbest.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -2298,9 +1938,6 @@
   <data name="&gt;&gt;m_btnTS.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="m_lblERunValue.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="m_lblERunValue.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -2314,7 +1951,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblERunValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 24</value>
+    <value>34, 24</value>
   </data>
   <data name="m_lblERunValue.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -2337,9 +1974,6 @@
   <data name="&gt;&gt;m_lblERunValue.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_lblSSbestValue.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="m_lblSSbestValue.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -2347,13 +1981,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblSSbestValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 0</value>
+    <value>265, 0</value>
   </data>
   <data name="m_lblSSbestValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblSSbestValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 22</value>
+    <value>34, 22</value>
   </data>
   <data name="m_lblSSbestValue.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -2376,9 +2010,6 @@
   <data name="&gt;&gt;m_lblSSbestValue.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="m_lblSScurrValue.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="m_lblSScurrValue.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -2386,13 +2017,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblSScurrValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 22</value>
+    <value>177, 22</value>
   </data>
   <data name="m_lblSScurrValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblSScurrValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 24</value>
+    <value>34, 24</value>
   </data>
   <data name="m_lblSScurrValue.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -2415,9 +2046,6 @@
   <data name="&gt;&gt;m_lblSScurrValue.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="m_lblSSorgValue.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="m_lblSSorgValue.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -2425,13 +2053,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblSSorgValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 0</value>
+    <value>177, 0</value>
   </data>
   <data name="m_lblSSorgValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblSSorgValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 22</value>
+    <value>34, 22</value>
   </data>
   <data name="m_lblSSorgValue.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -2454,9 +2082,6 @@
   <data name="&gt;&gt;m_lblSSorgValue.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="m_lblTrialValue.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <data name="m_lblTrialValue.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -2470,7 +2095,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblTrialValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 22</value>
+    <value>34, 22</value>
   </data>
   <data name="m_lblTrialValue.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2503,7 +2128,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lbSSOrg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>107, 0</value>
+    <value>113, 0</value>
   </data>
   <data name="m_lbSSOrg.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -2554,7 +2179,7 @@
     <value>m_hdrInputOpt</value>
   </data>
   <data name="&gt;&gt;m_hdrInputOpt.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrInputOpt.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2587,7 +2212,7 @@
     <value>m_hdrOutputParam</value>
   </data>
   <data name="&gt;&gt;m_hdrOutputParam.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOutputParam.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2694,6 +2319,24 @@
   <data name="&gt;&gt;m_tsbnLoadPedQB.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tslblMethodDC.Name" xml:space="preserve">
+    <value>m_tslblMethodDC</value>
+  </data>
+  <data name="&gt;&gt;m_tslblMethodDC.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tscmbMethodDC.Name" xml:space="preserve">
+    <value>m_tscmbMethodDC</value>
+  </data>
+  <data name="&gt;&gt;m_tscmbMethodDC.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tssepDC.Name" xml:space="preserve">
+    <value>m_tssepDC</value>
+  </data>
+  <data name="&gt;&gt;m_tssepDC.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_tsbnLoadPedDC.Name" xml:space="preserve">
     <value>m_tsbnLoadPedDC</value>
   </data>
@@ -2730,28 +2373,10 @@
   <data name="&gt;&gt;m_tsbnShowGroups.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tscmbMethodDC.Name" xml:space="preserve">
-    <value>m_tscmbMethodDC</value>
-  </data>
-  <data name="&gt;&gt;m_tscmbMethodDC.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tslblMethodDC.Name" xml:space="preserve">
-    <value>m_tslblMethodDC</value>
-  </data>
-  <data name="&gt;&gt;m_tslblMethodDC.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tssepDC.Name" xml:space="preserve">
-    <value>m_tssepDC</value>
-  </data>
-  <data name="&gt;&gt;m_tssepDC.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmMCRun</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14891.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

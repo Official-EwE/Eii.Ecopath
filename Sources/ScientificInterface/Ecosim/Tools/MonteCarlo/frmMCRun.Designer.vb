@@ -84,6 +84,9 @@ Namespace Ecosim
             Me.m_tbpDiets = New System.Windows.Forms.TabPage()
             Me.m_gridDiets = New ScientificInterface.Ecosim.gridMCRunInput()
             Me.m_tsDiets = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tslblMethodDC = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tscmbMethodDC = New System.Windows.Forms.ToolStripComboBox()
+            Me.m_tssepDC = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbnLoadPedDC = New System.Windows.Forms.ToolStripButton()
             Me.m_tbpLandings = New System.Windows.Forms.TabPage()
             Me.m_gridLandings = New ScientificInterface.Ecosim.gridMCRunInput()
@@ -122,9 +125,6 @@ Namespace Ecosim
             Me.m_hdrOutputParam = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel()
             Me.m_cmbSaveFormat = New System.Windows.Forms.ComboBox()
-            Me.m_tscmbMethodDC = New System.Windows.Forms.ToolStripComboBox()
-            Me.m_tslblMethodDC = New System.Windows.Forms.ToolStripLabel()
-            Me.m_tssepDC = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tcMain.SuspendLayout()
             Me.m_tbpSettings.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
@@ -618,6 +618,22 @@ Namespace Ecosim
             Me.m_tsDiets.Name = "m_tsDiets"
             Me.m_tsDiets.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
+            'm_tslblMethodDC
+            '
+            Me.m_tslblMethodDC.Name = "m_tslblMethodDC"
+            resources.ApplyResources(Me.m_tslblMethodDC, "m_tslblMethodDC")
+            '
+            'm_tscmbMethodDC
+            '
+            Me.m_tscmbMethodDC.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbMethodDC.Name = "m_tscmbMethodDC"
+            resources.ApplyResources(Me.m_tscmbMethodDC, "m_tscmbMethodDC")
+            '
+            'm_tssepDC
+            '
+            Me.m_tssepDC.Name = "m_tssepDC"
+            resources.ApplyResources(Me.m_tssepDC, "m_tssepDC")
+            '
             'm_tsbnLoadPedDC
             '
             resources.ApplyResources(Me.m_tsbnLoadPedDC, "m_tsbnLoadPedDC")
@@ -973,22 +989,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_cmbSaveFormat, "m_cmbSaveFormat")
             Me.m_cmbSaveFormat.Name = "m_cmbSaveFormat"
             Me.m_cmbSaveFormat.Sorted = True
-            '
-            'm_tscmbMethodDC
-            '
-            Me.m_tscmbMethodDC.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_tscmbMethodDC.Name = "m_tscmbMethodDC"
-            resources.ApplyResources(Me.m_tscmbMethodDC, "m_tscmbMethodDC")
-            '
-            'm_tslblMethodDC
-            '
-            Me.m_tslblMethodDC.Name = "m_tslblMethodDC"
-            resources.ApplyResources(Me.m_tslblMethodDC, "m_tslblMethodDC")
-            '
-            'm_tssepDC
-            '
-            Me.m_tssepDC.Name = "m_tssepDC"
-            resources.ApplyResources(Me.m_tssepDC, "m_tssepDC")
             '
             'frmMCRun
             '
