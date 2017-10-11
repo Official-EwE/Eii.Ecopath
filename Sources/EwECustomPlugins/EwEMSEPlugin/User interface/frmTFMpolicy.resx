@@ -131,6 +131,34 @@
   <data name="m_scMain.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_chkUnits.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkUnits.Location" type="System.Drawing.Point, System.Drawing">
+    <value>789, 3</value>
+  </data>
+  <data name="m_chkUnits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 17</value>
+  </data>
+  <data name="m_chkUnits.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_chkUnits.Text" xml:space="preserve">
+    <value>t/km2</value>
+  </data>
+  <data name="&gt;&gt;m_chkUnits.Name" xml:space="preserve">
+    <value>m_chkUnits</value>
+  </data>
+  <data name="&gt;&gt;m_chkUnits.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkUnits.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_chkUnits.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_graph.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -141,9 +169,8 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>852, 194</value>
+    <value>852, 200</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -157,7 +184,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <metadata name="m_tsStrategy.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>107, 0</value>
@@ -238,13 +265,13 @@
     <value>m_tsStrategy</value>
   </data>
   <data name="&gt;&gt;m_tsStrategy.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsStrategy.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_tsStrategy.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -280,7 +307,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>592, 180</value>
+    <value>592, 174</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -289,7 +316,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEMSEPlugin.gridTargetFishingMortalityPolicy, EwEMSEPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSEPlugin.gridTargetFishingMortalityPolicy, EwEMSEPlugin, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tlpHCR</value>
@@ -379,7 +406,7 @@
     <value>m_tsHCR</value>
   </data>
   <data name="&gt;&gt;m_tsHCR.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsHCR.Parent" xml:space="preserve">
     <value>m_tlpHCR</value>
@@ -412,7 +439,7 @@
     <value>m_hdrHCR</value>
   </data>
   <data name="&gt;&gt;m_hdrHCR.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrHCR.Parent" xml:space="preserve">
     <value>m_tlpHCR</value>
@@ -430,7 +457,7 @@
     <value>3</value>
   </data>
   <data name="m_tlpHCR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>592, 223</value>
+    <value>592, 217</value>
   </data>
   <data name="m_tlpHCR.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -490,7 +517,7 @@
     <value>m_hdrRegulations</value>
   </data>
   <data name="&gt;&gt;m_hdrRegulations.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRegulations.Parent" xml:space="preserve">
     <value>m_tlpRegulations</value>
@@ -508,7 +535,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_gridRegulations.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 205</value>
+    <value>256, 199</value>
   </data>
   <data name="m_gridRegulations.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -517,7 +544,7 @@
     <value>m_gridRegulations</value>
   </data>
   <data name="&gt;&gt;m_gridRegulations.Type" xml:space="preserve">
-    <value>EwEMSEPlugin.gridRegulations, EwEMSEPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSEPlugin.gridRegulations, EwEMSEPlugin, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gridRegulations.Parent" xml:space="preserve">
     <value>m_tlpRegulations</value>
@@ -535,7 +562,7 @@
     <value>2</value>
   </data>
   <data name="m_tlpRegulations.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 223</value>
+    <value>256, 217</value>
   </data>
   <data name="m_tlpRegulations.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -568,7 +595,7 @@
     <value>1</value>
   </data>
   <data name="m_scDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>852, 223</value>
+    <value>852, 217</value>
   </data>
   <data name="m_scDetails.SplitterDistance" type="System.Int32, mscorlib">
     <value>592</value>
@@ -604,7 +631,7 @@
     <value>852, 446</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>219</value>
+    <value>225</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -748,6 +775,6 @@
     <value>frmTFMpolicy</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.14711.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

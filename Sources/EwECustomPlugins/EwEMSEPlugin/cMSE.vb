@@ -3868,11 +3868,6 @@ Public Class cMSE
 
     Private Function SetEmaxBelowUserSpecifiedMaxEffort(ByVal Effort As Single, ByVal iFleet As Integer) As Single
 
-        'Code redundant because we use time frame rules now to limit the amount effort can drop by
-        'If Effort < MinEffortThisYear(iFleet - 1) Then
-        '    Effort = MinEffortThisYear(iFleet - 1)
-        'End If
-
         If Effort > MaxEffortThisYear(iFleet - 1) Then
             Effort = MaxEffortThisYear(iFleet - 1)
         End If
@@ -4205,8 +4200,6 @@ Public Class cMSE
                                          + Me.EcopathData.FleetName(iFleet) + " = zero.")
             End If
 
-            'MinEffortThisYear(iFleet - 1) = _simdata.FishRateGear(iFleet, iTime - 1) * (1 - m_effortlimits.Value(iFleet))
-            'If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MinEffortThisYear(iFleet - 1) = 0
             MaxEffortThisYear(iFleet - 1) = _simdata.FishRateGear(iFleet, iTime - 1) * (1 + m_effortlimits.Value(iFleet))
             If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MaxEffortThisYear(iFleet - 1) = 200
         Next

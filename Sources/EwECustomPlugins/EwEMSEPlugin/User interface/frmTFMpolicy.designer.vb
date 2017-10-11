@@ -54,6 +54,7 @@ Partial Class frmTFMpolicy
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTFMpolicy))
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
+        Me.m_chkUnits = New System.Windows.Forms.CheckBox()
         Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_tsStrategy = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tslSelectStratagy = New System.Windows.Forms.ToolStripLabel()
@@ -94,12 +95,21 @@ Partial Class frmTFMpolicy
         '
         'm_scMain.Panel1
         '
+        Me.m_scMain.Panel1.Controls.Add(Me.m_chkUnits)
         Me.m_scMain.Panel1.Controls.Add(Me.m_graph)
         Me.m_scMain.Panel1.Controls.Add(Me.m_tsStrategy)
         '
         'm_scMain.Panel2
         '
         Me.m_scMain.Panel2.Controls.Add(Me.m_scDetails)
+        '
+        'm_chkUnits
+        '
+        resources.ApplyResources(Me.m_chkUnits, "m_chkUnits")
+        Me.m_chkUnits.Checked = True
+        Me.m_chkUnits.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.m_chkUnits.Name = "m_chkUnits"
+        Me.m_chkUnits.UseVisualStyleBackColor = True
         '
         'm_graph
         '
@@ -182,6 +192,7 @@ Partial Class frmTFMpolicy
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
         Me.m_grid.DataName = "grid content"
+        Me.m_grid.DisplayRelativeValues = False
         Me.m_grid.FixedColumnWidths = True
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
@@ -351,7 +362,7 @@ Partial Class frmTFMpolicy
     Private WithEvents m_gridRegulations As gridRegulations
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tsbnEditHCR As System.Windows.Forms.ToolStripButton
-
+    Friend WithEvents m_chkUnits As CheckBox
 End Class
 
 
