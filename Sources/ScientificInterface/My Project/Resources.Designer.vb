@@ -3039,7 +3039,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Disperal.
+        '''  Looks up a localized string similar to Dispersal.
         '''</summary>
         Public ReadOnly Property LABEL_NAV_SPACE_DISPERSAL() As String
             Get

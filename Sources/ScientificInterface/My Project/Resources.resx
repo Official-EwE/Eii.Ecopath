@@ -13401,7 +13401,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Advection</value>
   </data>
   <data name="LABEL_NAV_SPACE_DISPERSAL" xml:space="preserve">
-    <value>Disperal</value>
+    <value>Dispersal</value>
   </data>
   <data name="LABEL_NAV_SPACE_EXTERNALDATA" xml:space="preserve">
     <value>External data</value>
