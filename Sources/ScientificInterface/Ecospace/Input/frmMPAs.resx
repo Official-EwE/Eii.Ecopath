@@ -180,7 +180,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>284, 25</value>
+    <value>912, 25</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
@@ -202,10 +202,10 @@
     <value>Fill</value>
   </data>
   <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 60</value>
+    <value>3, 47</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 198</value>
+    <value>906, 382</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -214,7 +214,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.gridMPAs, EwE6, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.gridMPAs, EwE6, Version=6.6.14902.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tlpContent</value>
@@ -244,13 +244,13 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_lblInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 32</value>
+    <value>906, 19</value>
   </data>
   <data name="m_lblInfo.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="m_lblInfo.Text" xml:space="preserve">
-    <value>Set a check mark for each MPA fishing closure that applies to a fleet</value>
+    <value>Set a check mark for each month that a MPA is closed for fishing</value>
   </data>
   <data name="m_lblInfo.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -277,7 +277,7 @@
     <value>3</value>
   </data>
   <data name="m_tlpContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>284, 261</value>
+    <value>912, 432</value>
   </data>
   <data name="m_tlpContent.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -307,16 +307,10 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>284, 261</value>
+    <value>912, 432</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnDefineMPAs.Name" xml:space="preserve">
-    <value>m_tsbnDefineMPAs</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnDefineMPAs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsbnQuickHelp.Name" xml:space="preserve">
     <value>m_tsbnQuickHelp</value>
@@ -330,10 +324,16 @@
   <data name="&gt;&gt;ToolStripSeparator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsbnDefineMPAs.Name" xml:space="preserve">
+    <value>m_tsbnDefineMPAs</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnDefineMPAs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmMPAs</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.6.14902.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
