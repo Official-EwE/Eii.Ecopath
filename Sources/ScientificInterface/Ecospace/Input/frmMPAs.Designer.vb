@@ -44,13 +44,13 @@ Namespace Ecospace
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMPAs))
-            Me.m_tsMain = New System.Windows.Forms.ToolStrip()
+            Me.m_tsMain = New cEwEToolstrip()
+            Me.m_tsbnQuickHelp = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbnDefineMPAs = New System.Windows.Forms.ToolStripButton()
             Me.m_grid = New ScientificInterface.Ecospace.gridMPAs()
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblInfo = New System.Windows.Forms.Label()
-            Me.m_tsbnQuickHelp = New System.Windows.Forms.ToolStripButton()
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsMain.SuspendLayout()
             Me.m_tlpContent.SuspendLayout()
             Me.SuspendLayout()
@@ -60,6 +60,18 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnQuickHelp, Me.ToolStripSeparator1, Me.m_tsbnDefineMPAs})
             Me.m_tsMain.Name = "m_tsMain"
+            '
+            'm_tsbnQuickHelp
+            '
+            Me.m_tsbnQuickHelp.AutoToolTip = False
+            Me.m_tsbnQuickHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnQuickHelp, "m_tsbnQuickHelp")
+            Me.m_tsbnQuickHelp.Name = "m_tsbnQuickHelp"
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
             '
             'm_tsbnDefineMPAs
             '
@@ -109,18 +121,6 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_lblInfo, "m_lblInfo")
             Me.m_lblInfo.Name = "m_lblInfo"
             '
-            'm_tsbnQuickHelp
-            '
-            Me.m_tsbnQuickHelp.AutoToolTip = False
-            Me.m_tsbnQuickHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            resources.ApplyResources(Me.m_tsbnQuickHelp, "m_tsbnQuickHelp")
-            Me.m_tsbnQuickHelp.Name = "m_tsbnQuickHelp"
-            '
-            'ToolStripSeparator1
-            '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
-            '
             'frmMPAs
             '
             resources.ApplyResources(Me, "$this")
@@ -135,13 +135,13 @@ Namespace Ecospace
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents m_tsMain As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_tsbnDefineMPAs As System.Windows.Forms.ToolStripButton
         Private WithEvents m_grid As gridMPAs
-        Friend WithEvents m_tlpContent As TableLayoutPanel
+        Private WithEvents m_tlpContent As TableLayoutPanel
         Private WithEvents m_lblInfo As Label
         Private WithEvents m_tsbnQuickHelp As ToolStripButton
-        Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+        Private WithEvents ToolStripSeparator1 As ToolStripSeparator
     End Class
 
 End Namespace
