@@ -752,6 +752,16 @@ Public Class cCoreStateMonitor
         Me.m_bIsBatchLocked = bIsBatchLocked
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' This only fires off a core execution state event to allow depending 
+    ''' elements to check the <see cref="IsPaused()"/> state.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub SetIsPaused()
+        RaiseEvent CoreExecutionStateEvent(Me)
+    End Sub
+
 #End Region ' Busy state
 
 #End Region ' Ececution

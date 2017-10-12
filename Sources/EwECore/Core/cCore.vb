@@ -9137,6 +9137,7 @@ Public Class cCore
 
         Set(ByVal value As Boolean)
             Me.m_Ecospace.isPaused = value
+            Me.m_StateMonitor.SetIsPaused()
         End Set
 
     End Property
