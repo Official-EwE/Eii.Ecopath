@@ -25,6 +25,7 @@ Imports System.IO
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+
 #End Region ' Imports
 
 Public Class cMPADynamicsEngine
@@ -63,6 +64,9 @@ Public Class cMPADynamicsEngine
     End Sub
 
     Public Sub OnEcospaceTimeStep(iTime As Integer)
+
+        ' ToDo: globalize this method
+
         Dim timestamp As Date = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
         If (Me.m_dtStates.ContainsKey(timestamp)) Then
             For Each state As cMPAState In Me.m_dtStates(timestamp)
@@ -70,6 +74,7 @@ Public Class cMPADynamicsEngine
                 SendStatusMessage(cStringUtils.Localize("{0}: Updated {1}", timestamp.ToShortDateString(), state.ToString()), eMessageImportance.Information)
             Next
         End If
+
     End Sub
 
     Private Shared sFORMATS As String() = New String() {"yyyy/MM", "yyyy-MM"}
@@ -77,6 +82,8 @@ Public Class cMPADynamicsEngine
 
     ' Hack 'n slash
     Public Function LoadCSV(strCSV As String) As Boolean
+
+        ' ToDo: globalize this method
 
         Me.m_dtStates.Clear()
 

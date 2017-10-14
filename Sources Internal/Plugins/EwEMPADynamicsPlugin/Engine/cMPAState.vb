@@ -73,18 +73,24 @@ Public Class cMPAState
 
     Public Overrides Function ToString() As String
 
+        ' ToDo: globalize this method
         Return cStringUtils.Localize("MPA '{0}' {1}", Me.MPA.Name, Me.ClosureText())
 
     End Function
 
     Public Function ClosureText() As String
 
+        ' ToDo: globalize this method
+
         Dim sb As New StringBuilder()
         Dim bIsClosed As Boolean = False
         Dim nLength As Integer = 0
+        Dim nClosed As Integer = 0
 
         For i As Integer = 1 To cCore.N_MONTHS
             If Me.IsClosed(i) Then
+                nClosed += 1
+
                 If (bIsClosed = False) Then
                     bIsClosed = True
                     nLength = 0
@@ -112,7 +118,13 @@ Public Class cMPAState
             End If
         Next
 
-        Return If(sb.Length = 0, "open all year", "closed " & sb.ToString())
+        Select Case nClosed
+            Case 0
+                Return "open all year"
+            Case cCore.N_MONTHS
+                Return "closed all year"
+        End Select
+        Return sb.ToString()
 
     End Function
 

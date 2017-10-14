@@ -62,6 +62,7 @@ Public Class cEwEMPADynamicsPlugin
 
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
+            ' ToDo: globalize this method
             Return "A plug-in to control MPA open/closed dynamics over time"
         End Get
     End Property
