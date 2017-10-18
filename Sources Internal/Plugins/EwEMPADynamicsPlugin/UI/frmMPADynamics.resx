@@ -121,6 +121,31 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="CEwEToolstrip1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="CEwEToolstrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>514, 25</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="CEwEToolstrip1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="CEwEToolstrip1.Text" xml:space="preserve">
+    <value>CEwEToolstrip1</value>
+  </data>
+  <data name="&gt;&gt;CEwEToolstrip1.Name" xml:space="preserve">
+    <value>CEwEToolstrip1</value>
+  </data>
+  <data name="&gt;&gt;CEwEToolstrip1.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14912.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;CEwEToolstrip1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;CEwEToolstrip1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_tsbnLoadCSV.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -145,31 +170,6 @@
   <data name="m_tsbnLoadCSV.Text" xml:space="preserve">
     <value>&amp;Load MPA closed state CSV file</value>
   </data>
-  <data name="CEwEToolstrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="CEwEToolstrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>514, 25</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="CEwEToolstrip1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="CEwEToolstrip1.Text" xml:space="preserve">
-    <value>CEwEToolstrip1</value>
-  </data>
-  <data name="&gt;&gt;CEwEToolstrip1.Name" xml:space="preserve">
-    <value>CEwEToolstrip1</value>
-  </data>
-  <data name="&gt;&gt;CEwEToolstrip1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14909.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;CEwEToolstrip1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;CEwEToolstrip1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <metadata name="m_colTime.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -187,12 +187,6 @@
   </data>
   <data name="m_colMPA.Width" type="System.Int32, mscorlib">
     <value>55</value>
-  </data>
-  <metadata name="m_colPattern.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="m_colPattern.HeaderText" xml:space="preserve">
-    <value>Closed</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_dgvStates.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -252,16 +246,10 @@
   <data name="&gt;&gt;m_colMPA.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_colPattern.Name" xml:space="preserve">
-    <value>m_colPattern</value>
-  </data>
-  <data name="&gt;&gt;m_colPattern.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmMPADynamics</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14909.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14912.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

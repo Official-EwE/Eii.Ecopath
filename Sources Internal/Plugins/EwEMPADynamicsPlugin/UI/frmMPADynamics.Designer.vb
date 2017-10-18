@@ -42,7 +42,6 @@ Partial Class frmMPADynamics
         Me.m_dgvStates = New System.Windows.Forms.DataGridView()
         Me.m_colTime = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.m_colMPA = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.m_colPattern = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.CEwEToolstrip1.SuspendLayout()
         CType(Me.m_dgvStates, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -66,7 +65,7 @@ Partial Class frmMPADynamics
         Me.m_dgvStates.AllowUserToDeleteRows = False
         Me.m_dgvStates.AllowUserToResizeRows = False
         Me.m_dgvStates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.m_dgvStates.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.m_colTime, Me.m_colMPA, Me.m_colPattern})
+        Me.m_dgvStates.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.m_colTime, Me.m_colMPA})
         resources.ApplyResources(Me.m_dgvStates, "m_dgvStates")
         Me.m_dgvStates.MultiSelect = False
         Me.m_dgvStates.Name = "m_dgvStates"
@@ -87,13 +86,6 @@ Partial Class frmMPADynamics
         resources.ApplyResources(Me.m_colMPA, "m_colMPA")
         Me.m_colMPA.Name = "m_colMPA"
         Me.m_colMPA.ReadOnly = True
-        '
-        'm_colPattern
-        '
-        Me.m_colPattern.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        resources.ApplyResources(Me.m_colPattern, "m_colPattern")
-        Me.m_colPattern.Name = "m_colPattern"
-        Me.m_colPattern.ReadOnly = True
         '
         'frmMPADynamics
         '
@@ -116,5 +108,4 @@ Partial Class frmMPADynamics
     Private WithEvents m_dgvStates As Windows.Forms.DataGridView
     Friend WithEvents m_colTime As Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents m_colMPA As Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents m_colPattern As Windows.Forms.DataGridViewTextBoxColumn
 End Class

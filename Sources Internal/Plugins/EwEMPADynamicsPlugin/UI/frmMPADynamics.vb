@@ -21,6 +21,8 @@
 
 Option Strict On
 Imports System.Windows.Forms
+Imports EwECore
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -45,18 +47,49 @@ Public Class frmMPADynamics
 
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
+
+        ' Create grid cols
+        For i As Integer = 1 To cCore.N_MONTHS
+            Dim col As New DataGridViewCheckBoxColumn(True)
+            col.Name = "m_colM" & i
+            col.HeaderText = cDateUtils.GetMonthName(i, False)
+            col.ReadOnly = True
+            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader
+            Me.m_dgvStates.Columns.Add(col)
+        Next
+
+        For i As Integer = 1 To Me.Core.nFleets
+            Dim col As New DataGridViewCheckBoxColumn(True)
+            Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
+            col.Name = "m_colF" & i
+            col.HeaderText = fleet.Name
+            col.ReadOnly = True
+            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader
+            Me.m_dgvStates.Columns.Add(col)
+        Next
+
         Me.UpdateGrid()
+
     End Sub
 
     Private Sub UpdateGrid()
         Dim states As ICollection(Of cMPAState) = Me.m_engine.MPAStates
         Me.m_dgvStates.Rows.Clear()
-        For i As Integer = 0 To states.Count - 1
-            Dim state As cMPAState = states(i)
-            Me.m_dgvStates.Rows.Add(state.TimeStamp.ToShortDateString(),
-                                    state.MPA.Name,
-                                    state.ClosureText())
-        Next
+        If (states.Count > 0) Then
+            Me.m_dgvStates.Rows.Add(states.Count)
+            For i As Integer = 0 To states.Count - 1
+                Dim state As cMPAState = states(i)
+                Dim row As DataGridViewRow = Me.m_dgvStates.Rows(i)
+                row.Cells("m_colTime").Value = state.TimeStamp.ToShortDateString()
+                row.Cells("m_colMPA").Value = state.MPA.Name
+                For j As Integer = 1 To cCore.N_MONTHS
+                    row.Cells("m_colM" & j).Value = state.IsClosed(j)
+                Next
+                For j As Integer = 1 To Me.Core.nFleets
+                    row.Cells("m_colF" & j).Value = state.IsEnforced(j)
+                Next
+            Next
+        End If
     End Sub
 
     Private Sub OnLoadCSV(sender As Object, e As EventArgs) Handles m_tsbnLoadCSV.Click

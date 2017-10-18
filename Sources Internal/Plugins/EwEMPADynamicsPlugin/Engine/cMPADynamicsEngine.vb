@@ -22,6 +22,7 @@ Imports System.Globalization
 #Region " Imports "
 
 Imports System.IO
+Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
@@ -93,28 +94,38 @@ Public Class cMPADynamicsEngine
             Using sr As New StreamReader(strCSV)
                 strText = sr.ReadToEnd()
             End Using
+
             Dim dt As DataTable = Me.LoadText(strText)
             If (dt Is Nothing) Then Return False
             Dim bTimeStepMode As Boolean = dt.Columns.Contains("timestep")
+
             For Each drow As DataRow In dt.Rows
+
                 Dim timestamp As Date
                 If (bTimeStepMode) Then
                     timestamp = Me.m_core.EcospaceTimestepToAbsoluteTime(CInt(drow("timestep")))
                 Else
                     Date.TryParseExact(CStr(drow("date")), sFORMATS, sLOCALE, DateTimeStyles.None, timestamp)
                 End If
+
                 Dim mpa As cEcospaceMPA = Me.ToMPA(CStr(drow("MPA")))
                 Dim state As New cMPAState(Me.m_core, mpa, timestamp)
-                For i As Integer = 1 To 12
-                    state.IsClosed(i) = Not String.IsNullOrWhiteSpace(Me.ReadSafe(drow, "m" & i, ""))
+                For i As Integer = 1 To cCore.N_MONTHS
+                    state.IsClosed(i) = ToCheckState(Me.ReadSafe(drow, "m" & i, ""))
                 Next
+
+                For i As Integer = 1 To Me.m_core.nFleets
+                    state.IsEnforced(i) = ToCheckState(Me.ReadSafe(drow, "f" & i, ""))
+                Next
+
                 If (Not Me.m_dtStates.ContainsKey(timestamp)) Then
                     Me.m_dtStates(timestamp) = New List(Of cMPAState)
                 End If
                 Me.m_dtStates(timestamp).Add(state)
-            Next
-            SendStatusMessage(cStringUtils.Localize("MPA Dynamics CSV file {0} loaded", strCSV), eMessageImportance.Information)
 
+            Next
+
+            SendStatusMessage(cStringUtils.Localize("MPA Dynamics CSV file {0} loaded", strCSV), eMessageImportance.Information)
             Return True
 
         Catch ex As Exception
@@ -205,7 +216,7 @@ Public Class cMPADynamicsEngine
             Dim row As DataRow = Nothing
 
             For Each s As String In strArray
-                dt.Columns.Add(New DataColumn(Me.ToMonthCol(s), GetType(String)))
+                dt.Columns.Add(New DataColumn(Me.ToSimpleColumnName(s), GetType(String)))
             Next
 
             strLine = sr.ReadLine
@@ -227,18 +238,33 @@ Public Class cMPADynamicsEngine
 
     End Function
 
-    Private Function ToMonthCol(strColName As String) As String
+    Private Function ToSimpleColumnName(strColName As String) As String
 
+        Dim strTest As String = strColName.ToLower()
         Dim n As Integer = 0
+
         If (Not Integer.TryParse(strColName, n)) Then
-            Dim strTest As String = strColName.ToLower()
-            For t As Integer = 1 To cCore.N_MONTHS
-                If strTest.StartsWith(cDateUtils.GetMonthName(t, False).ToLower()) Then
-                    n = t
+            For i As Integer = 1 To cCore.N_MONTHS
+                If strTest.StartsWith(cDateUtils.GetMonthName(i, False).ToLower()) Then
+                    n = i
                 End If
             Next
         End If
         If (n > 0) Then Return "m" & n
+
+        If strTest.StartsWith("fleet") Then
+            strTest = strTest.Substring(5).Trim()
+            If (Not Integer.TryParse(strTest, n)) Then
+                For i As Integer = 1 To Me.m_core.nFleets
+                    Dim fleet As cEcopathFleetInput = Me.m_core.EcopathFleetInputs(i)
+                    If (String.Compare(strTest, fleet.Name, True) = 0) Then
+                        n = i
+                    End If
+                Next
+            End If
+        End If
+        If (n > 0) Then Return "f" & n
+
         Return strColName
 
     End Function
@@ -256,9 +282,29 @@ Public Class cMPADynamicsEngine
     End Function
 
     Private Function ReadSafe(drow As DataRow, strField As String, strDefault As String) As String
+
+        If Not drow.Table.Columns.Contains(strField) Then Return strDefault
+
         Dim val As Object = drow(strField)
         If Convert.IsDBNull(val) Then Return strDefault
+
         Return CStr(val)
+
+    End Function
+
+    Private Const s_TRUE As String = "1yv+"
+    Private Const s_FALSE As String = "0nx-"
+    Private Const s_DEFAULT As String = "?="
+
+    Private Function ToCheckState(strVal As String) As CheckState
+
+        If (String.IsNullOrWhiteSpace(strVal)) Then Return CheckState.Indeterminate
+        strVal = strVal.Trim().ToLower()(0)
+        If (s_DEFAULT.Contains(strVal)) Then Return CheckState.Indeterminate
+        If (s_TRUE.Contains(strVal)) Then Return CheckState.Checked
+        If (s_FALSE.Contains(strVal)) Then Return CheckState.Unchecked
+        ' Unknown?!
+        Return CheckState.Indeterminate
     End Function
 
     Private Sub SendStatusMessage(strMessage As String, importance As eMessageImportance)
