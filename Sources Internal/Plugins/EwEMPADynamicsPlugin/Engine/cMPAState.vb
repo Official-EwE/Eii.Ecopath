@@ -97,8 +97,8 @@ Public Class cMPAState
             If (Me.IsEnforced(iFleet) <> CheckState.Indeterminate) Then
                 Dim fleet As cEcospaceFleetInput = Me.m_core.EcospaceFleetInputs(iFleet)
                 bValidation = val.AllowValidation
-                val.AllowValidation = False
                 val = fleet.ValueDescriptor(eVarNameFlags.MPAFishery)
+                val.AllowValidation = False
                 ' Reverse thinking!
                 fleet.MPAFishery(Me.MPA.Index) = (Me.IsEnforced(iFleet) = CheckState.Unchecked)
                 val.AllowValidation = bValidation
