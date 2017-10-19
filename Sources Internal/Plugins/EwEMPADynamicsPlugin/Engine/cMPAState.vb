@@ -1,4 +1,5 @@
 ﻿Option Strict On
+Imports System.Text
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -24,6 +25,7 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -115,79 +117,79 @@ Public Class cMPAState
 
     End Function
 
-    'Public Function ClosureText() As String
+    Public Function ClosureState() As String
 
-    '    ' ToDo: globalize this method
+        ' ToDo: globalize this method
 
-    '    Dim sb As New StringBuilder()
-    '    Dim bIsClosed As Boolean = False
-    '    Dim nLength As Integer = 0
-    '    Dim nClosed As Integer = 0
+        Dim sb As New StringBuilder()
+        Dim bIsClosed As Boolean = False
+        Dim nLength As Integer = 0
+        Dim nClosed As Integer = 0
 
-    '    For i As Integer = 1 To cCore.N_MONTHS
-    '        If Me.IsClosed(i) Then
-    '            nClosed += 1
+        For i As Integer = 1 To cCore.N_MONTHS
+            If Me.MPA.IsClosed(i) Then
+                nClosed += 1
 
-    '            If (bIsClosed = False) Then
-    '                bIsClosed = True
-    '                nLength = 0
-    '                If (sb.Length > 0) Then sb.Append(", ")
-    '                sb.Append(cDateUtils.GetMonthName(i, False))
-    '            Else
-    '                nLength += 1
-    '                ' Peek ahead
-    '                Dim bTerminate As Boolean = False
-    '                If (i < cCore.N_MONTHS) Then
-    '                    bTerminate = (Me.IsClosed(i + 1) = False)
-    '                Else
-    '                    bTerminate = True
-    '                End If
+                If (bIsClosed = False) Then
+                    bIsClosed = True
+                    nLength = 0
+                    If (sb.Length > 0) Then sb.Append(", ")
+                    sb.Append(cDateUtils.GetMonthName(i, False))
+                Else
+                    nLength += 1
+                    ' Peek ahead
+                    Dim bTerminate As Boolean = False
+                    If (i < cCore.N_MONTHS) Then
+                        bTerminate = (Me.MPA.IsClosed(i + 1) = False)
+                    Else
+                        bTerminate = True
+                    End If
 
-    '                If (bTerminate) Then
-    '                    If (nLength >= 1) Then
-    '                        sb.Append("-")
-    '                        sb.Append(cDateUtils.GetMonthName(i, False))
-    '                    End If
-    '                End If
-    '            End If
-    '        Else
-    '            bIsClosed = False
-    '        End If
-    '    Next
+                    If (bTerminate) Then
+                        If (nLength >= 1) Then
+                            sb.Append("-")
+                            sb.Append(cDateUtils.GetMonthName(i, False))
+                        End If
+                    End If
+                End If
+            Else
+                bIsClosed = False
+            End If
+        Next
 
-    '    Select Case nClosed
-    '        Case 0
-    '            Return "open all year"
-    '        Case cCore.N_MONTHS
-    '            Return "closed all year"
-    '    End Select
-    '    Return sb.ToString()
+        Select Case nClosed
+            Case 0
+                Return "open all year"
+            Case cCore.N_MONTHS
+                Return "closed all year"
+        End Select
+        Return sb.ToString()
 
-    'End Function
+    End Function
 
-    'Public Function RegulationText() As String
+    Public Function RegulationState() As String
 
-    '    ' ToDo: globalize this method
+        ' ToDo: globalize this method
 
-    '    Dim sb As New StringBuilder()
-    '    Dim n As Integer = 0
+        Dim sb As New StringBuilder()
+        Dim n As Integer = 0
 
-    '    For i As Integer = 1 To Me.m_core.nFleets
-    '        Dim fleet As cEcospaceFleetInput = Me.m_core.EcospaceFleetInputs(i)
-    '        If Not fleet.MPAFishery(Me.MPA.Index) Then
-    '            n += 1
-    '            If (sb.Length > 0) Then sb.Append(", ")
-    '            sb.Append(fleet.Name)
-    '        End If
-    '    Next
-    '    Select Case n
-    '        Case 0
-    '            Return "open to all fleets"
-    '        Case Me.m_core.nFleets
-    '            Return "closed to all fleets"
-    '    End Select
-    '    Return sb.ToString()
+        For i As Integer = 1 To Me.m_core.nFleets
+            Dim fleet As cEcospaceFleetInput = Me.m_core.EcospaceFleetInputs(i)
+            If Not fleet.MPAFishery(Me.MPA.Index) Then
+                n += 1
+                If (sb.Length > 0) Then sb.Append(", ")
+                sb.Append(fleet.Name)
+            End If
+        Next
+        Select Case n
+            Case 0
+                Return "open to all fleets"
+            Case Me.m_core.nFleets
+                Return "closed to all fleets"
+        End Select
+        Return sb.ToString()
 
-    'End Function
+    End Function
 
 End Class

@@ -72,7 +72,12 @@ Public Class cMPADynamicsEngine
         If (Me.m_dtStates.ContainsKey(timestamp)) Then
             For Each state As cMPAState In Me.m_dtStates(timestamp)
                 state.Apply()
-                SendStatusMessage(cStringUtils.Localize("{0}: Updated {1}", timestamp.ToShortDateString(), state.ToString()), eMessageImportance.Information)
+                SendStatusMessage(cStringUtils.Localize("{0}: Updated {1}: {2}; {3}",
+                                                        timestamp.ToShortDateString(),
+                                                        state.ToString(),
+                                                        state.ClosureState(),
+                                                        state.RegulationState()),
+                                  eMessageImportance.Information)
             Next
         End If
 
@@ -292,8 +297,8 @@ Public Class cMPADynamicsEngine
 
     End Function
 
-    Private Const s_TRUE As String = "1yv+"
-    Private Const s_FALSE As String = "0nx-"
+    Private Const s_TRUE As String = "1yv+t"
+    Private Const s_FALSE As String = "0nx-f"
     Private Const s_DEFAULT As String = "?="
 
     Private Function ToCheckState(strVal As String) As CheckState
