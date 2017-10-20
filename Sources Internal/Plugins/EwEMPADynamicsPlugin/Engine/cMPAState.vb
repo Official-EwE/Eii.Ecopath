@@ -83,25 +83,17 @@ Public Class cMPAState
     End Sub
 
     Public Sub Apply()
-        Dim val As cValue = MPA.ValueDescriptor(eVarNameFlags.MPAMonth)
-        Dim bValidation As Boolean = val.AllowValidation
-        val.AllowValidation = False
         For iMonth As Integer = 1 To cCore.N_MONTHS
-            If Me.IsClosed(iMonth) <> CheckState.Indeterminate Then
+            If (Me.IsClosed(iMonth) <> CheckState.Indeterminate) Then
                 Me.MPA.IsClosed(iMonth) = (Me.IsClosed(iMonth) = CheckState.Checked)
             End If
         Next
-        val.AllowValidation = bValidation
 
         For iFleet As Integer = 1 To Me.m_core.nFleets
             If (Me.IsEnforced(iFleet) <> CheckState.Indeterminate) Then
                 Dim fleet As cEcospaceFleetInput = Me.m_core.EcospaceFleetInputs(iFleet)
-                bValidation = val.AllowValidation
-                val = fleet.ValueDescriptor(eVarNameFlags.MPAFishery)
-                val.AllowValidation = False
                 ' Reverse thinking!
                 fleet.MPAFishery(Me.MPA.Index) = (Me.IsEnforced(iFleet) = CheckState.Unchecked)
-                val.AllowValidation = bValidation
             End If
         Next
 
