@@ -210,7 +210,6 @@ Namespace Controls
             Dim br As Brush = Nothing
 
             e.Graphics.FillRectangle(Brushes.White, e.ClipRectangle)
-
             If ((Me.RepresentationStyles And cVisualStyle.eVisualStyleTypes.Hatch) > 0) Then
                 br = New HatchBrush(Me.m_hbs, Me.m_clrFore, Me.m_clrBack)
             Else
@@ -223,7 +222,7 @@ Namespace Controls
         End Sub
 
         Private Sub pbForeColor_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
-            Handles plForeColor.Paint, pbBrush.Paint
+            Handles plForeColor.Paint
 
             Dim rcOuter As New Rectangle(e.ClipRectangle.X, e.ClipRectangle.Y, e.ClipRectangle.Width, e.ClipRectangle.Height)
             Dim rcInner As New Rectangle(e.ClipRectangle.X + 3, e.ClipRectangle.Y + 3, e.ClipRectangle.Width - 6, e.ClipRectangle.Height - 6)

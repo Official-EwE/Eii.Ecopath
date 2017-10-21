@@ -35,6 +35,12 @@ Imports ScientificInterfaceShared
 Public Class gridLayerData
     Inherits EwEGrid
 
+    Private Enum eDataModes As Integer
+        Value = 0
+        ValueX = 1
+        ValueY = 2
+    End Enum
+
     Private m_basemap As cEcospaceBasemap = Nothing
     Private m_layer As cDisplayLayerRaster = Nothing
     Private m_iVectorField As Integer = 0
@@ -141,11 +147,11 @@ Public Class gridLayerData
                 ' Prepare cell
 
                 Select Case Me.DataMode
-                    Case 0
+                    Case eDataModes.Value
                         value = data.Cell(iRow, iCol)
-                    Case 1
+                    Case eDataModes.ValueX
                         value = dataV.XVelocity(iRow, iCol)
-                    Case 2
+                    Case eDataModes.ValueY
                         value = dataV.YVelocity(iRow, iCol)
                     Case Else
                         Debug.Assert(False)
@@ -162,7 +168,7 @@ Public Class gridLayerData
 
     End Sub
 
-    Private Property DataMode As Integer = 0
+    Private Property DataMode As eDataModes = eDataModes.Value
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -183,13 +189,13 @@ Public Class gridLayerData
 
                 Me.m_layer = value
                 Me.m_bReadOnly = True
-                Me.DataMode = 0
+                Me.DataMode = eDataModes.Value
 
                 If (Me.m_layer IsNot Nothing) Then
 
                     ' Assess layer
                     If (TypeOf Me.m_layer.Data Is cEcospaceLayerVelocity) Then
-                        Me.DataMode = 1
+                        Me.DataMode = eDataModes.ValueX
                     End If
 
                     If (Me.m_layer.Editor IsNot Nothing) Then
@@ -212,7 +218,7 @@ Public Class gridLayerData
         Set(value As Integer)
             Me.m_iVectorField = value
             If (Me.DataMode > 0) Then
-                Me.DataMode = 1 + Me.m_iVectorField
+                Me.DataMode = CType(1 + Me.m_iVectorField, eDataModes)
             End If
         End Set
     End Property
@@ -257,11 +263,11 @@ Public Class gridLayerData
 
                 ' Get original value from layer
                 Select Case Me.DataMode
-                    Case 0
+                    Case eDataModes.Value
                         sOrg = CSng(data.Cell(iRow, iCol))
-                    Case 1
+                    Case eDataModes.ValueX
                         sOrg = dataV.XVelocity(iRow, iCol)
-                    Case 2
+                    Case eDataModes.ValueY
                         sOrg = dataV.YVelocity(iRow, iCol)
                 End Select
 
@@ -273,11 +279,11 @@ Public Class gridLayerData
                 If (sNew <> sOrg) Then
                     ' #Yes: set it
                     Select Case Me.DataMode
-                        Case 0
+                        Case eDataModes.Value
                             data.Cell(iRow, iCol) = sNew
-                        Case 1
+                        Case eDataModes.ValueX
                             dataV.XVelocity(iRow, iCol) = sNew
-                        Case 2
+                        Case eDataModes.ValueY
                             dataV.YVelocity(iRow, iCol) = sNew
                         Case Else
                             Debug.Assert(False)

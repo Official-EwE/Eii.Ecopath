@@ -135,6 +135,22 @@ Public Class cEcospaceLayerSingle
 
 #Region " Internals "
 
+    Protected Overrides Function ValidateCellValue(ByVal value As Object) As Boolean
+
+        If (Convert.IsDBNull(value)) Then Return False
+        Dim sValue As Single = Convert.ToSingle(value)
+        If (sValue = cCore.NULL_VALUE) Then Return False
+
+        Dim md As cVariableMetaData = Me.MetadataCell
+        If (md Is Nothing) Then Return True
+        If (md.MinOperator Is Nothing) Or (md.MaxOperator Is Nothing) Then Return True
+
+        Return md.MinOperator.Compare(sValue, md.Min) And
+               md.MaxOperator.Compare(sValue, md.Max)
+
+    End Function
+
+
     Protected Overridable Sub RecalcStats()
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap

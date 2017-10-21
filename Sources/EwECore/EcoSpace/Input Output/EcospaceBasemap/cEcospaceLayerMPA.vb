@@ -30,7 +30,7 @@ Imports EwEUtils.Utilities
 ''' Layer providing access to Ecospace migration data.
 ''' </summary>
 Public Class cEcospaceLayerMPA
-    Inherits cEcospaceLayerInteger
+    Inherits cEcospaceLayerBoolean
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
         MyBase.New(theCore, manager, "", EwEUtils.Core.eVarNameFlags.LayerMPA, iIndex)
