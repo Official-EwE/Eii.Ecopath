@@ -138,6 +138,21 @@ Public Class cEcospaceLayerInteger
 
 #Region " Internals "
 
+    Protected Overrides Function ValidateCellValue(ByVal value As Object) As Boolean
+
+        If (Convert.IsDBNull(value)) Then Return False
+        Dim iValue As Integer = CInt(value)
+        If (iValue = cCore.NULL_VALUE) Then Return False
+
+        Dim md As cVariableMetaData = Me.MetadataCell
+        If (md Is Nothing) Then Return True
+        If (md.MinOperator Is Nothing) Or (md.MaxOperator Is Nothing) Then Return True
+
+        Return md.MinOperator.Compare(iValue, md.Min) And
+               md.MaxOperator.Compare(iValue, md.Max)
+
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Recalculate layer statistics

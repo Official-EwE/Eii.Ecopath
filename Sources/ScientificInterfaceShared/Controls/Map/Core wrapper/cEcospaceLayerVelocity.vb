@@ -173,6 +173,10 @@ Namespace Controls.Map.Layers
 
 #Region " Internals "
 
+        Protected Overrides Function ValidateCellValue(value As Object) As Boolean
+            Return True
+        End Function
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Calc max vector size in data layer.

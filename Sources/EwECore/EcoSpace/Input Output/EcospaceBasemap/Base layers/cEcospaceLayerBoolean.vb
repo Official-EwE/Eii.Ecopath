@@ -88,8 +88,8 @@ Public Class cEcospaceLayerBoolean
         End Get
         Set(ByVal value As Object)
             Dim d As Boolean(,) = DirectCast(Me.Data, Boolean(,))
-            Dim i As Boolean = CBool(value)
-            If Me.ValidateCellValue(i) Then
+            If Me.ValidateCellValue(value) Then
+                Dim i As Boolean = CBool(value)
                 If Me.ValidateCellPosition(iRow, iCol) Then
                     d(iRow, iCol) = i
                 End If
@@ -123,5 +123,13 @@ Public Class cEcospaceLayerBoolean
     End Sub
 
 #End Region ' Cell interaction
+
+    Protected Overrides Function ValidateCellValue(ByVal value As Object) As Boolean
+
+        If Convert.IsDBNull(value) Then Return False
+        Dim sValue As Single = Convert.ToSingle(value)
+        Return (cCore.NULL_VALUE <> sValue)
+
+    End Function
 
 End Class

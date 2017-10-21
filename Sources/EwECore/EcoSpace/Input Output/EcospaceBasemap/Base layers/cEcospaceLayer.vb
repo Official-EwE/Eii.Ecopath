@@ -172,23 +172,7 @@ Public MustInherit Class cEcospaceLayer
         Return iRow > 0 And iRow <= bm.InRow And iCol > 0 And iCol <= bm.InCol
     End Function
 
-    Protected Function ValidateCellValue(ByVal value As Object) As Boolean
-        Dim sValue As Single = 0.0
-        Dim md As cVariableMetaData = Me.MetadataCell
-
-        If (md Is Nothing) Then Return True
-        If (md.MinOperator Is Nothing) Or (md.MaxOperator Is Nothing) Then Return True
-
-        Try
-            sValue = Convert.ToSingle(value)
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return md.MinOperator.Compare(sValue, md.Min) And
-               md.MaxOperator.Compare(sValue, md.Max)
-
-    End Function
+    Protected MustOverride Function ValidateCellValue(ByVal value As Object) As Boolean
 
     Protected ReadOnly Property Data() As Object
         Get

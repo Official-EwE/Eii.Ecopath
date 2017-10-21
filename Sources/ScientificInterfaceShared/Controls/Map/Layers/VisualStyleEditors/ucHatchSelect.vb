@@ -79,7 +79,8 @@ Namespace Controls
 
 #Region " Events "
 
-        Private Sub ucHatchSelect_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Overrides Sub OnLoad(e As EventArgs)
+            MyBase.OnLoad(e)
 
             Me.SuspendLayout()
 
