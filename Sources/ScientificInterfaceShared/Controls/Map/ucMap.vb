@@ -294,21 +294,6 @@ Namespace Controls.Map
                 Me.Capture = True
             End If
 
-            'If ((e.Button And Windows.Forms.MouseButtons.Right) > 0) Then
-
-            '    Me.Capture = False
-            '    edt.ProcessMouseClick(e, Me)
-
-            'ElseIf ((e.Button And MouseButtons.Left) > 0) Then
-
-            '    Me.Capture = True
-
-            '    ' Start editing
-            '    edt.StartEdit(e, Me)
-            '    Me.ProcessMouseMove(e)
-
-            'End If
-
         End Sub
 
         ''' -------------------------------------------------------------------

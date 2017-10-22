@@ -373,7 +373,7 @@ Namespace Controls.Map
                         ctrlZoom.ZoomScale *= 1.5!
                     Case ucMapZoom.eZoomTypes.ZoomOut
                         ' Decrease zoom rate to prev increment
-                        ctrlZoom.ZoomScale /= 1.5!
+                        ctrlZoom.ZoomScale = Math.Max(1.0!, ctrlZoom.ZoomScale / 1.5!)
                     Case ucMapZoom.eZoomTypes.ZoomReset
                         ' Zoom to 100%
                         ctrlZoom.ZoomScale = 1.0!
