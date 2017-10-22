@@ -4326,6 +4326,8 @@ Public Class frmEwE6
 
     Private Sub OnImportLayerData(ByVal cmd As cCommand) _
         Handles m_cmdImportLayerData.OnInvoke
+
+        Dim msg As cMessage = Nothing
         Try
             Select Case Me.m_cmdImportLayerData.Format
                 Case eNativeLayerFileFormatTypes.Default,
@@ -4348,14 +4350,20 @@ Public Class frmEwE6
                                 Next
                             Next
                             l.Invalidate()
+                            msg = New cMessage(cStringUtils.Localize(My.Resources.IMPORT_FILE_SUCCESS, ofd.FileName), eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
                         Else
-
+                            msg = New cMessage(cStringUtils.Localize(My.Resources.IMPORT_FILE_FAILED, ofd.FileName), eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                         End If
                     End If
             End Select
         Catch ex As Exception
             cLog.Write(ex, "frmEwE6:OnImportLayerData")
         End Try
+
+        If (msg IsNot Nothing) Then
+            Me.Core.Messages.SendMessage(msg)
+        End If
+
     End Sub
 
     ''' <summary>
