@@ -45,15 +45,15 @@ Public MustInherit Class cEwEScenario
 
             ' Description
             meta = New cVariableMetaData(60000)
-            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK, eValueTypes.Str)
             m_values.Add(val.varName, val)
 
             ' Author
-            val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(New String(desc), eVarNameFlags.Author, eStatusFlags.OK, eValueTypes.Str)
             m_values.Add(val.varName, val)
 
             ' Contact
-            val = New cValue(New String(desc), eVarNameFlags.Contact, eStatusFlags.OK Or eStatusFlags.Null, eValueTypes.Str)
+            val = New cValue(New String(desc), eVarNameFlags.Contact, eStatusFlags.OK, eValueTypes.Str)
             m_values.Add(val.varName, val)
 
             ' Last saved julian date
