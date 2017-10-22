@@ -286,6 +286,8 @@ Namespace Controls.Map.Layers
             If (Me.GUI Is Nothing) Or (Not Me.IsEditable) Then Return
             ' Notify the editor GUI, if any
             Me.GUI.StartEdit(Me)
+            ' Perform edit
+            Me.ProcessMouseDraw(args, map)
 
         End Sub
 
