@@ -268,15 +268,15 @@ Public MustInherit Class cCoreInputOutputBase
         Me.m_ValidationStatus = New cVariableStatus()
         Me.m_ValidationStatus.CoreDataObject = Me
 
-        val = New cValue(New String(name), eVarNameFlags.Name, eStatusFlags.NotEditable, eValueTypes.Str)
+        val = New cValue(New String(name), eVarNameFlags.Name, eStatusFlags.OK, eValueTypes.Str)
         val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.Index, eStatusFlags.NotEditable, eValueTypes.Int)
+        val = New cValue(New Integer, eVarNameFlags.Index, eStatusFlags.OK, eValueTypes.Int)
         val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.DBID, eStatusFlags.NotEditable, eValueTypes.Int)
+        val = New cValue(New Integer, eVarNameFlags.DBID, eStatusFlags.OK, eValueTypes.Int)
         val.AffectsRunState = False
         m_values.Add(val.varName, val)
 
