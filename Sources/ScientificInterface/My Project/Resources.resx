@@ -13515,4 +13515,12 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="LABEL_NAV_APPLYOTHERMORT" xml:space="preserve">
     <value>Apply forcing (other mortality)</value>
   </data>
+  <data name="IMPORT_FILE_FAILED" xml:space="preserve">
+    <value>Failed to import {0}</value>
+    <comment>{0}=file</comment>
+  </data>
+  <data name="IMPORT_FILE_SUCCESS" xml:space="preserve">
+    <value>File {0} imported successfully</value>
+    <comment>{0}=file</comment>
+  </data>
 </root>

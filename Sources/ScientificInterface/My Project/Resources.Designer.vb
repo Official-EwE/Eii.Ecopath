@@ -2112,6 +2112,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to import {0}.
+        '''</summary>
+        Public ReadOnly Property IMPORT_FILE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("IMPORT_FILE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to File {0} imported successfully.
+        '''</summary>
+        Public ReadOnly Property IMPORT_FILE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("IMPORT_FILE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Description: {0}.
         '''</summary>
         Public ReadOnly Property INFOPANEL_DESCRIPTION() As String
