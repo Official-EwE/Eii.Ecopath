@@ -298,7 +298,7 @@ Namespace Controls.Map
         ''' <param name="g">The graphics to calculate for.</param>
         ''' <returns>A size.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Measure(g As Graphics) As Size
+        Private Function Measure(g As Graphics) As Size
 
             Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
             Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
@@ -307,6 +307,9 @@ Namespace Controls.Map
             Dim iWidth As Integer = 0
             Dim iHeight As Integer = 0
             Dim szfItem As SizeF = Nothing
+
+            g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
+            g.TextRenderingHint = Drawing.Text.TextRenderingHint.AntiAlias
 
             Try
                 If Me.ShowTitle Then
@@ -317,10 +320,9 @@ Namespace Controls.Map
 
                 For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
                     szfItem = Me.MeasureLayer(g, ftLayer, Me.m_lLayers(iLayer))
-
+                    If iLayer > 0 Then iHeight += 2 * Me.LayerBoxVSpacing
                     iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
                     iHeight += CInt(Math.Ceiling(szfItem.Height))
-                    If iLayer > 0 Then iHeight += 2 * Me.LayerBoxVSpacing
                 Next iLayer
             Catch ex As Exception
 
@@ -399,7 +401,7 @@ Namespace Controls.Map
             Dim szLegend As Size = Nothing
             Dim bSuccess As Boolean = True
 
-            Using bmp As New Bitmap(1000, 300, Imaging.PixelFormat.Format32bppArgb)
+            Using bmp As Bitmap = sg.GetImage(1000, 300, format)
                 Using g As Graphics = Graphics.FromImage(bmp)
                     szLegend = Me.Measure(g)
                 End Using ' g
