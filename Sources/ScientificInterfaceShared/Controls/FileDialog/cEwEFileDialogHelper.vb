@@ -109,7 +109,7 @@ Namespace Controls
             Dim dlg As New SaveFileDialog()
             With dlg
                 .FileName = strFileName
-                .Filter = AddAllFilesEntry(strFilters)
+                .Filter = strFilters
                 .FilterIndex = iDefaultFilter
                 .CheckPathExists = True
                 .CheckFileExists = False
