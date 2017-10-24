@@ -13523,4 +13523,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>File {0} imported successfully</value>
     <comment>{0}=file</comment>
   </data>
+  <data name="LABEL_NAV_SIM_FMSY" xml:space="preserve">
+    <value>FMSY</value>
+  </data>
 </root>

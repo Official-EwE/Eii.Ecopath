@@ -278,7 +278,7 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_MONTECARLO, "ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(frmMCRun), eNodeImages.Output, nodeTools, "Monte Carlo runs.htm") ' ToDo: connect to help
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_FISHINGPOLICY, "ndFishingPolicySearch", eCoreExecutionState.EcosimLoaded, GetType(frmFishingPolicySearch), eNodeImages.Output, nodeTools, "Fishing policy search.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_FIT2TS, "ndFitToTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(frmFitToTimeSeries), eNodeImages.Output, nodeTools, "Fit to time series.htm")
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_SUSTPLOT, "ndMSY", eCoreExecutionState.EcosimLoaded, GetType(frmMSY), eNodeImages.Output, nodeTools) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_FMSY, "ndMSY", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMSY), eNodeImages.Output, nodeTools) ' ToDo: connect to help
 
         ' -- Ecospace --
         nodeModel = Me.m_nodecontroller.Add(SharedResources.HEADER_ECOSPACE, "ndSpatialDynamic", eCoreExecutionState.EcospaceLoaded, Nothing, eNodeImages.Ecospace)
