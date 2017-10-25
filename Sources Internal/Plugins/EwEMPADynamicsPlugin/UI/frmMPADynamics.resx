@@ -121,31 +121,6 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="CEwEToolstrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="CEwEToolstrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>514, 25</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="CEwEToolstrip1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="CEwEToolstrip1.Text" xml:space="preserve">
-    <value>CEwEToolstrip1</value>
-  </data>
-  <data name="&gt;&gt;CEwEToolstrip1.Name" xml:space="preserve">
-    <value>CEwEToolstrip1</value>
-  </data>
-  <data name="&gt;&gt;CEwEToolstrip1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14912.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;CEwEToolstrip1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;CEwEToolstrip1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tsbnLoadCSV.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -169,6 +144,31 @@
   </data>
   <data name="m_tsbnLoadCSV.Text" xml:space="preserve">
     <value>&amp;Load MPA closed state CSV file</value>
+  </data>
+  <data name="CEwEToolstrip1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="CEwEToolstrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>514, 25</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="CEwEToolstrip1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="CEwEToolstrip1.Text" xml:space="preserve">
+    <value>CEwEToolstrip1</value>
+  </data>
+  <data name="&gt;&gt;CEwEToolstrip1.Name" xml:space="preserve">
+    <value>CEwEToolstrip1</value>
+  </data>
+  <data name="&gt;&gt;CEwEToolstrip1.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.14936.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;CEwEToolstrip1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;CEwEToolstrip1.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <metadata name="m_colTime.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -250,6 +250,6 @@
     <value>frmMPADynamics</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14912.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14936.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

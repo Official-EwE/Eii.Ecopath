@@ -76,6 +76,7 @@ Partial Class frmMPADynamics
         '
         Me.m_colTime.Frozen = True
         resources.ApplyResources(Me.m_colTime, "m_colTime")
+        Me.m_colTime.MaxInputLength = 12
         Me.m_colTime.Name = "m_colTime"
         Me.m_colTime.ReadOnly = True
         '

@@ -1,6 +1,4 @@
-﻿Option Strict On
-Imports System.Text
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -21,10 +19,10 @@ Imports System.Text
 '
 #Region " Imports "
 
+Option Strict On
+Imports System.Text
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwECore.ValueWrapper
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -73,7 +71,8 @@ Public Class cMPAState
 
     Public Sub Load()
         For iMonth As Integer = 1 To cCore.N_MONTHS
-            Me.IsClosed(iMonth) = If(Me.m_ds.MPAmonth(iMonth, Me.MPA), CheckState.Checked, CheckState.Unchecked)
+            ' Reverse thinking!
+            Me.IsClosed(iMonth) = If(Me.m_ds.MPAmonth(iMonth, Me.MPA), CheckState.Unchecked, CheckState.Checked)
         Next
         For iFleet As Integer = 1 To Me.m_ds.nFleets
             ' Reverse thinking!
@@ -84,7 +83,8 @@ Public Class cMPAState
     Public Sub Apply()
         For iMonth As Integer = 1 To cCore.N_MONTHS
             If (Me.IsClosed(iMonth) <> CheckState.Indeterminate) Then
-                Me.m_ds.MPAmonth(iMonth, Me.MPA) = (Me.IsClosed(iMonth) = CheckState.Checked)
+                ' Reverse thinking!
+                Me.m_ds.MPAmonth(iMonth, Me.MPA) = (Me.IsClosed(iMonth) = CheckState.Unchecked)
             End If
         Next
 

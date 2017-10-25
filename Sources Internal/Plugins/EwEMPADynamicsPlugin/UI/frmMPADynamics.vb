@@ -23,6 +23,7 @@ Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -72,23 +73,59 @@ Public Class frmMPADynamics
         Next
 
         Me.UpdateGrid()
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
+    End Sub
+
+    Public Overrides Sub OnCoreMessage(msg As cMessage)
+        MyBase.OnCoreMessage(msg)
+
+        If (msg.Source = eCoreComponentType.EcoSpace And msg.Type = eMessageType.DataValidation) Then
+            If (msg.DataType = eDataTypes.EcospaceMPA Or msg.DataType = eDataTypes.EcospaceFleet) Then
+                Me.InvalidateGrid()
+            End If
+        End If
+
+    End Sub
+
+    Private m_bGridInvalid As Boolean = True
+
+    Private Sub InvalidateGrid()
+        ' Bundle multiple messages into one update
+        If (m_bGridInvalid = False) Then
+            Me.m_bGridInvalid = True
+            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateGrid))
+        End If
     End Sub
 
     Private Sub UpdateGrid()
 
-        Dim states As ICollection(Of cMPAState) = Me.m_engine.MPAStates
+        ' ToDo: globalize this
+
+        Me.m_bGridInvalid = False
+        If (Me.IsDisposed) Then Return
+
+        Dim states As ICollection(Of cMPAState) = Me.m_engine.MPAStates(True)
         Dim fmt As New cCoreInterfaceFormatter()
 
         Me.m_dgvStates.Rows.Clear()
 
         If (states.Count > 0) Then
+
             Me.m_dgvStates.Rows.Add(states.Count)
             For i As Integer = 0 To states.Count - 1
+
                 Dim state As cMPAState = states(i)
                 Dim row As DataGridViewRow = Me.m_dgvStates.Rows(i)
                 Dim mpa As cEcospaceMPA = Me.Core.EcospaceMPAs(state.MPA)
-                row.Cells("m_colTime").Value = state.TimeStamp.ToShortDateString()
+
+                Dim timestamp As Date = state.TimeStamp
+                If (timestamp = New Date(1, 1, 1)) Then
+                    row.Cells("m_colTime").Value = "{initial}"
+                    row.DefaultCellStyle.BackColor = Drawing.Color.FromArgb(255, 230, 230, 230)
+                Else
+                    row.Cells("m_colTime").Value = state.TimeStamp.ToShortDateString()
+                End If
                 row.Cells("m_colMPA").Value = fmt.GetDescriptor(mpa)
                 For j As Integer = 1 To cCore.N_MONTHS
                     row.Cells("m_colM" & j).Value = state.IsClosed(j)

@@ -141,9 +141,19 @@ Public Class cMPADynamicsEngine
 
     End Function
 
-    Public ReadOnly Property MPAStates() As ICollection(Of cMPAState)
+    Public ReadOnly Property MPAStates(bIncludeStartup As Boolean) As ICollection(Of cMPAState)
         Get
             Dim lStates As New List(Of cMPAState)
+
+            If (bIncludeStartup) Then
+                Dim timestamp As New Date(1, 1, 1)
+                For iMPA As Integer = 1 To Me.m_ds.MPAno
+                    Dim state As New cMPAState(Me.m_ds, iMPA, timestamp)
+                    state.Load()
+                    lStates.Add(state)
+                Next
+            End If
+
             For Each value As List(Of cMPAState) In Me.m_dtStates.Values
                 lStates.AddRange(value)
             Next
