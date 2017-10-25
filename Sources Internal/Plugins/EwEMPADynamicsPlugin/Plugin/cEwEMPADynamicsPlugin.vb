@@ -31,12 +31,13 @@ Imports EwECore
 #End Region ' Imports
 
 Public Class cEwEMPADynamicsPlugin
-    Implements EwEPlugin.INavigationTreeItemPlugin
-    Implements EwEPlugin.IEcospaceBeginTimestepPlugin
-    Implements EwEPlugin.IEcospaceInitRunCompletedPlugin
-    Implements EwEPlugin.IEcospaceRunCompletedPlugin
-    Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.IEcospacePlugin
+    Implements INavigationTreeItemPlugin
+    Implements IEcospaceInitializedPlugin
+    Implements IEcospaceBeginTimestepPlugin
+    Implements IEcospaceInitRunCompletedPlugin
+    Implements IEcospaceRunCompletedPlugin
+    Implements IUIContextPlugin
+    Implements IEcospacePlugin
 
 #Region " Private vars "
 
@@ -44,14 +45,14 @@ Public Class cEwEMPADynamicsPlugin
     Private m_uic As cUIContext = Nothing
     Private m_ui As frmMPADynamics = Nothing
     Private m_engine As cMPADynamicsEngine = Nothing
+    Private m_spaceDS As cEcospaceDataStructures = Nothing
 
 #End Region ' Private vars
 
 #Region " Generic plug-in bits "
 
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
-        Me.m_core = CType(core, cCore)
-        Me.m_engine = New cMPADynamicsEngine(Me.m_core)
+        Me.m_core = DirectCast(core, cCore)
     End Sub
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
@@ -126,14 +127,23 @@ Public Class cEwEMPADynamicsPlugin
 #Region " Ecospace integration "
 
     Public Sub LoadEcospaceScenario(dataSource As Object) Implements IEcospacePlugin.LoadEcospaceScenario
-        Me.m_engine.Clear()
+        ' NOP
     End Sub
 
     Public Sub SaveEcospaceScenario(dataSource As Object) Implements IEcospacePlugin.SaveEcospaceScenario
+        ' NOP
     End Sub
 
     Public Sub CloseEcospaceScenario() Implements IEcospacePlugin.CloseEcospaceScenario
-        Me.m_engine.Clear()
+        If (Me.m_engine IsNot Nothing) Then
+            Me.m_engine.Clear()
+            Me.m_engine = Nothing
+        End If
+    End Sub
+
+    Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements IEcospaceInitializedPlugin.EcospaceInitialized
+        Me.m_spaceDS = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
+        Me.m_engine = New cMPADynamicsEngine(Me.m_core, Me.m_spaceDS)
     End Sub
 
     Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) Implements IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted

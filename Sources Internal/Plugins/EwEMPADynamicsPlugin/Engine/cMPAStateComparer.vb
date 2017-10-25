@@ -29,7 +29,9 @@ Public Class cMPAStateComparer
     Public Function Compare(x As cMPAState, y As cMPAState) As Integer Implements IComparer(Of cMPAState).Compare
         If (x.TimeStamp < y.TimeStamp) Then Return -1
         If (x.TimeStamp > y.TimeStamp) Then Return 1
-        Return String.Compare(x.MPA.Name, y.MPA.Name, True)
+        If (x.MPA < y.MPA) Then Return -1
+        If (x.MPA > y.MPA) Then Return 1
+        Return 0
     End Function
 
 End Class

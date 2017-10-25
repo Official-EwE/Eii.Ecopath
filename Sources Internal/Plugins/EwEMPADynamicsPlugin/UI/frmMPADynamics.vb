@@ -24,6 +24,7 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -48,6 +49,8 @@ Public Class frmMPADynamics
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
 
+        Dim fmt As New cCoreInterfaceFormatter()
+
         ' Create grid cols
         For i As Integer = 1 To cCore.N_MONTHS
             Dim col As New DataGridViewCheckBoxColumn(True)
@@ -62,7 +65,7 @@ Public Class frmMPADynamics
             Dim col As New DataGridViewCheckBoxColumn(True)
             Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
             col.Name = "m_colF" & i
-            col.HeaderText = fleet.Name
+            col.HeaderText = fmt.GetDescriptor(fleet)
             col.ReadOnly = True
             col.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader
             Me.m_dgvStates.Columns.Add(col)
@@ -73,15 +76,20 @@ Public Class frmMPADynamics
     End Sub
 
     Private Sub UpdateGrid()
+
         Dim states As ICollection(Of cMPAState) = Me.m_engine.MPAStates
+        Dim fmt As New cCoreInterfaceFormatter()
+
         Me.m_dgvStates.Rows.Clear()
+
         If (states.Count > 0) Then
             Me.m_dgvStates.Rows.Add(states.Count)
             For i As Integer = 0 To states.Count - 1
                 Dim state As cMPAState = states(i)
                 Dim row As DataGridViewRow = Me.m_dgvStates.Rows(i)
+                Dim mpa As cEcospaceMPA = Me.Core.EcospaceMPAs(state.MPA)
                 row.Cells("m_colTime").Value = state.TimeStamp.ToShortDateString()
-                row.Cells("m_colMPA").Value = state.MPA.Name
+                row.Cells("m_colMPA").Value = fmt.GetDescriptor(mpa)
                 For j As Integer = 1 To cCore.N_MONTHS
                     row.Cells("m_colM" & j).Value = state.IsClosed(j)
                 Next

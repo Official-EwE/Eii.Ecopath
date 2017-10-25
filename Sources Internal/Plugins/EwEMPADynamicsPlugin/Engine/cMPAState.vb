@@ -31,18 +31,18 @@ Imports EwEUtils.Utilities
 
 Public Class cMPAState
 
-    Private m_core As cCore = Nothing
+    Private m_ds As cEcospaceDataStructures = Nothing
     Private m_bIsClosed() As CheckState
     Private m_bIsEnforced() As CheckState
 
-    Public Sub New(core As cCore, mpa As cEcospaceMPA, timestamp As Date)
+    Public Sub New(ds As cEcospaceDataStructures, iMPA As Integer, timestamp As Date)
+
+        Me.m_ds = ds
+        Me.MPA = iMPA
+        Me.TimeStamp = timestamp
 
         ReDim Me.m_bIsClosed(cCore.N_MONTHS)
-        ReDim Me.m_bIsEnforced(core.nFleets)
-
-        Me.m_core = core
-        Me.MPA = mpa
-        Me.TimeStamp = timestamp
+        ReDim Me.m_bIsEnforced(ds.nFleets)
 
     End Sub
 
@@ -59,54 +59,46 @@ Public Class cMPAState
 
     Public Property IsEnforced(iFleet As Integer) As CheckState
         Get
-            iFleet = Math.Min(Me.m_core.nFleets, Math.Max(1, iFleet))
+            iFleet = Math.Min(Me.m_ds.nFleets, Math.Max(1, iFleet))
             Return Me.m_bIsEnforced(iFleet)
         End Get
         Set(value As CheckState)
-            iFleet = Math.Min(Me.m_core.nFleets, Math.Max(1, iFleet))
+            iFleet = Math.Min(Me.m_ds.nFleets, Math.Max(1, iFleet))
             Me.m_bIsEnforced(iFleet) = value
         End Set
     End Property
 
-    Public ReadOnly Property MPA As cEcospaceMPA = Nothing
+    Public ReadOnly Property MPA As Integer = Nothing
     Public ReadOnly Property TimeStamp As Date
 
     Public Sub Load()
         For iMonth As Integer = 1 To cCore.N_MONTHS
-            Me.IsClosed(iMonth) = If(Me.MPA.IsClosed(iMonth), CheckState.Checked, CheckState.Unchecked)
+            Me.IsClosed(iMonth) = If(Me.m_ds.MPAmonth(iMonth, Me.MPA), CheckState.Checked, CheckState.Unchecked)
         Next
-        For iFleet As Integer = 1 To Me.m_core.nFleets
-            Dim fleet As cEcospaceFleetInput = Me.m_core.EcospaceFleetInputs(iFleet)
+        For iFleet As Integer = 1 To Me.m_ds.nFleets
             ' Reverse thinking!
-            Me.IsEnforced(iFleet) = If(fleet.MPAFishery(Me.MPA.Index), CheckState.Unchecked, CheckState.Checked)
+            Me.IsEnforced(iFleet) = If(Me.m_ds.MPAfishery(iFleet, Me.MPA), CheckState.Unchecked, CheckState.Checked)
         Next
     End Sub
 
     Public Sub Apply()
         For iMonth As Integer = 1 To cCore.N_MONTHS
             If (Me.IsClosed(iMonth) <> CheckState.Indeterminate) Then
-                Me.MPA.IsClosed(iMonth) = (Me.IsClosed(iMonth) = CheckState.Checked)
+                Me.m_ds.MPAmonth(iMonth, Me.MPA) = (Me.IsClosed(iMonth) = CheckState.Checked)
             End If
         Next
 
-        For iFleet As Integer = 1 To Me.m_core.nFleets
+        For iFleet As Integer = 1 To Me.m_ds.nFleets
             If (Me.IsEnforced(iFleet) <> CheckState.Indeterminate) Then
-                Dim fleet As cEcospaceFleetInput = Me.m_core.EcospaceFleetInputs(iFleet)
                 ' Reverse thinking!
-                fleet.MPAFishery(Me.MPA.Index) = (Me.IsEnforced(iFleet) = CheckState.Unchecked)
+                Me.m_ds.MPAfishery(iFleet, Me.MPA) = (Me.IsEnforced(iFleet) = CheckState.Unchecked)
             End If
         Next
-
-        Me.m_core.onChanged(Me.MPA)
 
     End Sub
 
     Public Overrides Function ToString() As String
-
-        Return Me.MPA.Name
-        '' ToDo: globalize this method
-        'Return cStringUtils.Localize("MPA '{0}' {1}, {2} ", Me.MPA.Name, Me.ClosureText(), Me.RegulationText())
-
+        Return Me.m_ds.MPAname(Me.MPA)
     End Function
 
     Public Function ClosureState() As String
@@ -118,21 +110,21 @@ Public Class cMPAState
         Dim nLength As Integer = 0
         Dim nClosed As Integer = 0
 
-        For i As Integer = 1 To cCore.N_MONTHS
-            If Me.MPA.IsClosed(i) Then
+        For iMonth As Integer = 1 To cCore.N_MONTHS
+            If Me.m_ds.MPAmonth(iMonth, Me.MPA) Then
                 nClosed += 1
 
                 If (bIsClosed = False) Then
                     bIsClosed = True
                     nLength = 0
                     If (sb.Length > 0) Then sb.Append(", ")
-                    sb.Append(cDateUtils.GetMonthName(i, False))
+                    sb.Append(cDateUtils.GetMonthName(iMonth, False))
                 Else
                     nLength += 1
                     ' Peek ahead
                     Dim bTerminate As Boolean = False
-                    If (i < cCore.N_MONTHS) Then
-                        bTerminate = (Me.MPA.IsClosed(i + 1) = False)
+                    If (iMonth < cCore.N_MONTHS) Then
+                        bTerminate = (Me.m_ds.MPAmonth(iMonth + 1, Me.MPA) = False)
                     Else
                         bTerminate = True
                     End If
@@ -140,7 +132,7 @@ Public Class cMPAState
                     If (bTerminate) Then
                         If (nLength >= 1) Then
                             sb.Append("-")
-                            sb.Append(cDateUtils.GetMonthName(i, False))
+                            sb.Append(cDateUtils.GetMonthName(iMonth, False))
                         End If
                     End If
                 End If
@@ -166,18 +158,17 @@ Public Class cMPAState
         Dim sb As New StringBuilder()
         Dim n As Integer = 0
 
-        For i As Integer = 1 To Me.m_core.nFleets
-            Dim fleet As cEcospaceFleetInput = Me.m_core.EcospaceFleetInputs(i)
-            If Not fleet.MPAFishery(Me.MPA.Index) Then
+        For iFleet As Integer = 1 To Me.m_ds.nFleets
+            If Not Me.m_ds.MPAfishery(iFleet, Me.MPA) Then
                 n += 1
                 If (sb.Length > 0) Then sb.Append(", ")
-                sb.Append(fleet.Name)
+                sb.Append(iFleet)
             End If
         Next
         Select Case n
             Case 0
                 Return "open to all fleets"
-            Case Me.m_core.nFleets
+            Case Me.m_ds.nFleets
                 Return "closed to all fleets"
         End Select
         Return sb.ToString()

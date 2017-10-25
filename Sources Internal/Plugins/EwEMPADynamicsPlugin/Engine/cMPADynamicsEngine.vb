@@ -32,11 +32,13 @@ Imports EwEUtils.Utilities
 Public Class cMPADynamicsEngine
 
     Private m_core As cCore = Nothing
+    Private m_ds As cEcospaceDataStructures = Nothing
     Private m_dtStates As New Dictionary(Of Date, List(Of cMPAState))
     Private m_lPreserved As New List(Of cMPAState)
 
-    Public Sub New(core As cCore)
+    Public Sub New(core As cCore, ds As cEcospaceDataStructures)
         Me.m_core = core
+        Me.m_ds = ds
     End Sub
 
     Public Sub Clear()
@@ -48,9 +50,8 @@ Public Class cMPADynamicsEngine
 
         Me.m_lPreserved.Clear()
         Dim timestamp As Date = Me.m_core.EcospaceTimestepToAbsoluteTime(1)
-        For i As Integer = 1 To Me.m_core.nMPAs
-            Dim mpa As cEcospaceMPA = Me.m_core.EcospaceMPAs(i)
-            Dim state As New cMPAState(Me.m_core, mpa, timestamp)
+        For iMPA As Integer = 1 To Me.m_ds.MPAno
+            Dim state As New cMPAState(Me.m_ds, iMPA, timestamp)
             state.Load()
             Me.m_lPreserved.Add(state)
         Next
@@ -113,8 +114,7 @@ Public Class cMPADynamicsEngine
                     Date.TryParseExact(CStr(drow("date")), sFORMATS, sLOCALE, DateTimeStyles.None, timestamp)
                 End If
 
-                Dim mpa As cEcospaceMPA = Me.ToMPA(CStr(drow("MPA")))
-                Dim state As New cMPAState(Me.m_core, mpa, timestamp)
+                Dim state As New cMPAState(Me.m_ds, Me.ToMPA(CStr(drow("MPA"))), timestamp)
                 For i As Integer = 1 To cCore.N_MONTHS
                     state.IsClosed(i) = ToCheckState(Me.ReadSafe(drow, "m" & i, ""))
                 Next
@@ -274,12 +274,12 @@ Public Class cMPADynamicsEngine
 
     End Function
 
-    Private Function ToMPA(strName As String) As cEcospaceMPA
+    Private Function ToMPA(strName As String) As Integer
 
         For i As Integer = 1 To Me.m_core.nMPAs
             Dim mpa As cEcospaceMPA = Me.m_core.EcospaceMPAs(i)
             If (String.Compare(mpa.Name, strName, True) = 0) Then
-                Return mpa
+                Return i
             End If
         Next
         Return Nothing
