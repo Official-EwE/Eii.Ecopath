@@ -20,24 +20,24 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEPlugin
-Imports EwEUtils.Core
 Imports System.Drawing
 Imports System.Windows.Forms
+Imports EwECore
+Imports EwEPlugin
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore
 
 #End Region ' Imports
 
 Public Class cEwEMPADynamicsPlugin
+    Implements IUIContextPlugin
     Implements INavigationTreeItemPlugin
+    Implements IEcospacePlugin
     Implements IEcospaceInitializedPlugin
     Implements IEcospaceBeginTimestepPlugin
     Implements IEcospaceInitRunCompletedPlugin
     Implements IEcospaceRunCompletedPlugin
-    Implements IUIContextPlugin
-    Implements IEcospacePlugin
 
 #Region " Private vars "
 

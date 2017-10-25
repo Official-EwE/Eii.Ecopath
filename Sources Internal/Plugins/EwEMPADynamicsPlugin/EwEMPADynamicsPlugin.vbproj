@@ -171,6 +171,7 @@
     </None>
     <None Include="Sample data\HongKong.csv" />
     <None Include="Sample data\HongKong2.csv" />
+    <None Include="~design~\Overview.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj">
