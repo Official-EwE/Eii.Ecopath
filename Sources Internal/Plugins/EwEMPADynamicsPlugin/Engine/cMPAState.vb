@@ -103,8 +103,6 @@ Public Class cMPAState
 
     Public Function ClosureState() As String
 
-        ' ToDo: globalize this method
-
         Dim sb As New StringBuilder()
         Dim bIsClosed As Boolean = False
         Dim nLength As Integer = 0
@@ -143,17 +141,15 @@ Public Class cMPAState
 
         Select Case nClosed
             Case 0
-                Return "open all year"
+                Return My.Resources.STATUS_YEAR_OPEN
             Case cCore.N_MONTHS
-                Return "closed all year"
+                Return My.Resources.STATUS_YEAR_CLOSED
         End Select
         Return sb.ToString()
 
     End Function
 
     Public Function RegulationState() As String
-
-        ' ToDo: globalize this method
 
         Dim sb As New StringBuilder()
         Dim n As Integer = 0
@@ -167,9 +163,9 @@ Public Class cMPAState
         Next
         Select Case n
             Case 0
-                Return "open to all fleets"
+                Return My.Resources.STATUS_FLEETS_OPEN
             Case Me.m_ds.nFleets
-                Return "closed to all fleets"
+                Return My.Resources.STATUS_FLEETS_CLOSED
         End Select
         Return sb.ToString()
 

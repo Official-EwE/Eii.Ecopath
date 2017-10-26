@@ -117,7 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="GENERIC_VALUE_INITIAL" xml:space="preserve">
+    <value>(initial)</value>
+  </data>
   <data name="PLUGIN_TITLE" xml:space="preserve">
     <value>MPA dynamics</value>
+  </data>
+  <data name="PROMPT_SELECT_FILE" xml:space="preserve">
+    <value>Select MPA closed state file to load</value>
+  </data>
+  <data name="STATUS_CONFIG_LOAD_FAILED" xml:space="preserve">
+    <value>MPA Dynamics CSV file {0} faied to load. {1}</value>
+    <comment>{0}=file name, {1}=exception text</comment>
+  </data>
+  <data name="STATUS_CONFIG_LOAD_SUCCESS" xml:space="preserve">
+    <value>MPA Dynamics CSV file {0} loaded</value>
+    <comment>{0}=file name</comment>
+  </data>
+  <data name="STATUS_FLEETS_CLOSED" xml:space="preserve">
+    <value>closed to all fleets</value>
+  </data>
+  <data name="STATUS_FLEETS_OPEN" xml:space="preserve">
+    <value>open to all fleets</value>
+  </data>
+  <data name="STATUS_MPA_CHANGED" xml:space="preserve">
+    <value>{0}: updated {1}: {2}, {3}</value>
+    <comment>{0}=time, {1}=mpa name, {2}=month pattern, {3}=fleet pattern</comment>
+  </data>
+  <data name="STATUS_YEAR_CLOSED" xml:space="preserve">
+    <value>closed all year</value>
+  </data>
+  <data name="STATUS_YEAR_OPEN" xml:space="preserve">
+    <value>open all year</value>
   </data>
 </root>

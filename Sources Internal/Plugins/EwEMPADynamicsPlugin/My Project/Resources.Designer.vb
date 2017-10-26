@@ -61,11 +61,92 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (initial).
+        '''</summary>
+        Friend ReadOnly Property GENERIC_VALUE_INITIAL() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_INITIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to MPA dynamics.
         '''</summary>
         Friend ReadOnly Property PLUGIN_TITLE() As String
             Get
                 Return ResourceManager.GetString("PLUGIN_TITLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Select MPA closed state file to load.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_SELECT_FILE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SELECT_FILE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MPA Dynamics CSV file {0} faied to load. {1}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_CONFIG_LOAD_FAILED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_CONFIG_LOAD_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MPA Dynamics CSV file {0} loaded.
+        '''</summary>
+        Friend ReadOnly Property STATUS_CONFIG_LOAD_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_CONFIG_LOAD_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to closed to all fleets.
+        '''</summary>
+        Friend ReadOnly Property STATUS_FLEETS_CLOSED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_FLEETS_CLOSED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to open to all fleets.
+        '''</summary>
+        Friend ReadOnly Property STATUS_FLEETS_OPEN() As String
+            Get
+                Return ResourceManager.GetString("STATUS_FLEETS_OPEN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0}: updated {1}: {2}, {3}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_MPA_CHANGED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_MPA_CHANGED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to closed all year.
+        '''</summary>
+        Friend ReadOnly Property STATUS_YEAR_CLOSED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_YEAR_CLOSED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to open all year.
+        '''</summary>
+        Friend ReadOnly Property STATUS_YEAR_OPEN() As String
+            Get
+                Return ResourceManager.GetString("STATUS_YEAR_OPEN", resourceCulture)
             End Get
         End Property
     End Module

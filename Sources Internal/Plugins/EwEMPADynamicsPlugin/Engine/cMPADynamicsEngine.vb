@@ -1,6 +1,4 @@
-﻿Option Strict On
-Imports System.Globalization
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -21,6 +19,8 @@ Imports System.Globalization
 '
 #Region " Imports "
 
+Option Strict On
+Imports System.Globalization
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
@@ -73,7 +73,7 @@ Public Class cMPADynamicsEngine
         If (Me.m_dtStates.ContainsKey(timestamp)) Then
             For Each state As cMPAState In Me.m_dtStates(timestamp)
                 state.Apply()
-                SendStatusMessage(cStringUtils.Localize("{0}: Updated {1}: {2}; {3}",
+                SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_MPA_CHANGED,
                                                         timestamp.ToShortDateString(),
                                                         state.ToString(),
                                                         state.ClosureState(),
@@ -89,8 +89,6 @@ Public Class cMPADynamicsEngine
 
     ' Hack 'n slash
     Public Function LoadCSV(strCSV As String) As Boolean
-
-        ' ToDo: globalize this method
 
         Me.m_dtStates.Clear()
 
@@ -130,11 +128,11 @@ Public Class cMPADynamicsEngine
 
             Next
 
-            SendStatusMessage(cStringUtils.Localize("MPA Dynamics CSV file {0} loaded", strCSV), eMessageImportance.Information)
+            SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_SUCCESS, strCSV), eMessageImportance.Information)
             Return True
 
         Catch ex As Exception
-            SendStatusMessage(cStringUtils.Localize("MPA Dynamics CSV file {0} faied to load. {1}", strCSV, ex.Message), eMessageImportance.Information)
+            SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ex.Message), eMessageImportance.Information)
         End Try
 
         Return False
@@ -318,8 +316,8 @@ Public Class cMPADynamicsEngine
         If (s_DEFAULT.Contains(strVal)) Then Return CheckState.Indeterminate
         If (s_TRUE.Contains(strVal)) Then Return CheckState.Checked
         If (s_FALSE.Contains(strVal)) Then Return CheckState.Unchecked
-        ' Unknown?!
         Return CheckState.Indeterminate
+
     End Function
 
     Private Sub SendStatusMessage(strMessage As String, importance As eMessageImportance)

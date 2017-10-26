@@ -100,8 +100,6 @@ Public Class frmMPADynamics
 
     Private Sub UpdateGrid()
 
-        ' ToDo: globalize this
-
         Me.m_bGridInvalid = False
         If (Me.IsDisposed) Then Return
 
@@ -121,7 +119,7 @@ Public Class frmMPADynamics
 
                 Dim timestamp As Date = state.TimeStamp
                 If (timestamp = New Date(1, 1, 1)) Then
-                    row.Cells("m_colTime").Value = "{initial}"
+                    row.Cells("m_colTime").Value = My.Resources.GENERIC_VALUE_INITIAL
                     row.DefaultCellStyle.BackColor = Drawing.Color.FromArgb(255, 230, 230, 230)
                 Else
                     row.Cells("m_colTime").Value = state.TimeStamp.ToShortDateString()
@@ -138,8 +136,7 @@ Public Class frmMPADynamics
     End Sub
 
     Private Sub OnLoadCSV(sender As Object, e As EventArgs) Handles m_tsbnLoadCSV.Click
-        ' ToDo: globalize this method
-        Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Select MPA closed state CSV file", "", SharedResources.FILEFILTER_CSV)
+        Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_SELECT_FILE, "", SharedResources.FILEFILTER_CSV)
         If (ofd.ShowDialog() = DialogResult.OK) Then
             Me.m_engine.LoadCSV(ofd.FileName)
             Me.UpdateGrid()
