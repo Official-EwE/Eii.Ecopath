@@ -84,20 +84,24 @@ Namespace Controls.Map.Layers
             If TypeOf value Is Single() Then
                 asValues = DirectCast(value, Single())
                 If asValues.Length = 2 Then
+                    If (asValues(0) <> cCore.NULL_VALUE And asValues(1) <> cCore.NULL_VALUE) Then
 
-                    ' Calc display scale, rounded to two decimals between -1 and 1
-                    Try
-                        sScaleX = Math.Max(-1, Math.Min(cNumberUtils.FixValue(CSng(Math.Round(asValues(0) / sMax, 2))), 1))
-                        sScaleY = Math.Max(-1, Math.Min(cNumberUtils.FixValue(CSng(Math.Round(asValues(1) / sMax, 2))), 1))
-                    Catch ex As Exception
-                        sScaleX = 0
-                        sScaleY = 0
-                    End Try
+                        ' Calc display scale, rounded to two decimals between -1 and 1
+                        Try
+                            sScaleX = Math.Max(-1, Math.Min(cNumberUtils.FixValue(CSng(Math.Round(asValues(0) / sMax, 2))), 1))
+                            sScaleY = Math.Max(-1, Math.Min(cNumberUtils.FixValue(CSng(Math.Round(asValues(1) / sMax, 2))), 1))
 
-                    Dim sCol As Single = CSng(Math.Sqrt(sScaleX * sScaleX + sScaleY * sScaleY))
-                    Dim clr As Color = Me.ColorRamp.GetColor(sCol)
-                    cArrowIndicator.DrawArrowDxDy(g, clr, rc, sScaleX, sScaleY)
+                            Dim sCol As Single = CSng(Math.Sqrt(sScaleX * sScaleX + sScaleY * sScaleY))
+                            Dim clr As Color = Me.ColorRamp.GetColor(sCol)
+                            cArrowIndicator.DrawArrowDxDy(g, clr, rc, sScaleX, sScaleY)
 
+                        Catch ex As Exception
+                            sScaleX = 0
+                            sScaleY = 0
+                        End Try
+                    Else
+                        ' Draw nothing
+                    End If
                 End If
             End If
 
