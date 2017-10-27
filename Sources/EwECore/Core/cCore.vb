@@ -1,4 +1,3 @@
-Option Strict On
 ' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
@@ -21,6 +20,7 @@ Option Strict On
 
 #Region " Imports "
 
+Option Strict On
 Imports System.IO
 Imports System.Text
 Imports System.Xml

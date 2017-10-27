@@ -22,7 +22,7 @@ Option Strict On
 Imports System.ComponentModel
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 
 #Region " Definition of interfaces "
 
@@ -39,16 +39,16 @@ Public Interface ICoreInterface
     Property Index() As Integer
 
     ''' <summary>Globally unique ID identifying a core data entity.</summary>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Function GetID() As String
     ''' <summary>Unique ID per type of core data used to distinguish a core data entity in a storage medium. DBID is short for Database ID</summary>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     Property DBID() As Integer
     ''' <summary><see cref="eDataTypes">Data type</see> identifying the class of a core data entity.</summary>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     ReadOnly Property DataType() As eDataTypes
     ''' <summary><see cref="eCoreComponentType">Message source</see> identifying the section of core data entity where this logic originates from.</summary>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     ReadOnly Property CoreComponent() As eCoreComponentType
 
 End Interface ' ICoreInterface
@@ -103,7 +103,7 @@ Public Interface ICoreInputOutput
     ''' <returns>A <see cref="cVariableStatus">cVariableStatus</see> containing 
     ''' the result of the most recent attempt to <see cref="SetVariable">Set</see> 
     ''' a variable.</returns>
-    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    <EditorBrowsable(EditorBrowsableState.Advanced)>
     ReadOnly Property ValidationStatus() As cVariableStatus
 
     ''' <summary>
@@ -376,6 +376,11 @@ Public MustInherit Class cCoreInputOutputBase
         End Set
     End Property
 
+    Public Overrides Function ToString() As String
+        ' ToDo: use formatter for this. OK for now
+        Return cStringUtils.Localize("{0}: {1}", Me.Index, Me.Name)
+    End Function
+
 #End Region ' Public Functions/Methods
 
 #Region " Mustoverride Methods "
@@ -439,7 +444,7 @@ Public MustInherit Class cCoreInputOutputBase
             Next
             Me.m_values.Clear()
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".Dispose() Exception: " & ex.Message)
+            Debug.Assert(False, "Dispose() Exception: " & ex.Message)
             cLog.Write(ex)
         End Try
     End Sub
@@ -477,7 +482,7 @@ Public MustInherit Class cCoreInputOutputBase
             Dim val As cValue = m_values.Item(VarName)
             Return val.Status(iIndex) Or CType(If(val.Stored, eStatusFlags.Stored, 0), eStatusFlags)
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".getVariable()Error " & ex.Message)
+            Debug.Assert(False, "GetStatus() Error " & ex.Message)
             Return Nothing
         End Try
     End Function
@@ -498,7 +503,7 @@ Public MustInherit Class cCoreInputOutputBase
             m_values.Item(VarName).Status(iIndex) = newStatus
             Return True
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".setStatus(...) Failed to set Status " & VarName.ToString)
+            Debug.Assert(False, "SetStatus(...) Failed to set Status " & VarName.ToString)
             Return False
         End Try
     End Function
@@ -519,7 +524,7 @@ Public MustInherit Class cCoreInputOutputBase
             m_values.Item(VarName).Status(iIndex) = m_values.Item(VarName).Status(iIndex) Or statusFlags
             Return True
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".SetStatusFlags(...) Failed to set status flags " & VarName.ToString)
+            Debug.Assert(False, "SetStatusFlags(...) Failed to set status flags " & VarName.ToString)
             Return False
         End Try
     End Function
@@ -538,7 +543,7 @@ Public MustInherit Class cCoreInputOutputBase
             m_values.Item(VarName).Status(iIndex) = m_values.Item(VarName).Status(iIndex) And (Not statusFlags)
             Return True
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".ClearStatusFlags(...) Failed to clear status flags " & VarName.ToString)
+            Debug.Assert(False, "ClearStatusFlags(...) Failed to clear status flags " & VarName.ToString)
             Return False
         End Try
     End Function
@@ -560,10 +565,10 @@ Public MustInherit Class cCoreInputOutputBase
     Public Overridable Function GetVariable(ByVal VarName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, Optional ByVal iIndex2 As Integer = cCore.NULL_VALUE, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object Implements ICoreInputOutput.GetVariable
 
         Try
-            Debug.Assert(iIndex2 = cCore.NULL_VALUE, Me.ToString & ".GetVariable(eVarNameFlags,Option Integer, Optional Integer) Called with optional argument iIndex2 this behavior must be implemented in a derived class.")
+            Debug.Assert(iIndex2 = cCore.NULL_VALUE, "GetVariable(eVarNameFlags,Option Integer, Optional Integer) Called with optional argument iIndex2 this behavior must be implemented in a derived class.")
             Return m_values.Item(VarName).Value(iIndex)
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".getVariable()Error: " & VarName.ToString & " " & ex.Message)
+            Debug.Assert(False, "GetVariable() Error: " & VarName.ToString & " " & ex.Message)
             Return Nothing
         End Try
 
