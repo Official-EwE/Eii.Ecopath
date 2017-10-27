@@ -24,6 +24,7 @@ Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -109,7 +110,7 @@ Public Class cMPAState
         Dim nClosed As Integer = 0
 
         For iMonth As Integer = 1 To cCore.N_MONTHS
-            If Me.m_ds.MPAmonth(iMonth, Me.MPA) Then
+            If (Not Me.m_ds.MPAmonth(iMonth, Me.MPA)) Then
                 nClosed += 1
 
                 If (bIsClosed = False) Then
@@ -141,9 +142,9 @@ Public Class cMPAState
 
         Select Case nClosed
             Case 0
-                Return My.Resources.STATUS_YEAR_OPEN
+                Return My.Resources.VALUE_NEVER
             Case cCore.N_MONTHS
-                Return My.Resources.STATUS_YEAR_CLOSED
+                Return My.Resources.VALUE_ALL_YEAR
         End Select
         Return sb.ToString()
 
@@ -153,19 +154,20 @@ Public Class cMPAState
 
         Dim sb As New StringBuilder()
         Dim n As Integer = 0
+        Dim pathDS As cEcopathDataStructures = Me.m_ds.EcoPathData
 
         For iFleet As Integer = 1 To Me.m_ds.nFleets
-            If Not Me.m_ds.MPAfishery(iFleet, Me.MPA) Then
+            If (Not Me.m_ds.MPAfishery(iFleet, Me.MPA)) Then
                 n += 1
                 If (sb.Length > 0) Then sb.Append(", ")
-                sb.Append(iFleet)
+                sb.Append(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, iFleet, pathDS.FleetName(iFleet)))
             End If
         Next
         Select Case n
             Case 0
-                Return My.Resources.STATUS_FLEETS_OPEN
+                Return My.Resources.VALUE_NONE
             Case Me.m_ds.nFleets
-                Return My.Resources.STATUS_FLEETS_CLOSED
+                Return My.Resources.VALUE_ALL_FLEETS
         End Select
         Return sb.ToString()
 

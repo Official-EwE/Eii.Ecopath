@@ -108,7 +108,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MPA {0} not found in Ecospace.
+        '''  Looks up a localized string similar to MPA &apos;{0}&apos; not found in Ecospace.
         '''</summary>
         Friend ReadOnly Property STATUS_CONFIG_LOAD_ERROR_MPA_UNKNOWN() As String
             Get
@@ -117,7 +117,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MPA Dynamics CSV file {0} faied to load. {1}.
+        '''  Looks up a localized string similar to MPA Dynamics CSV file &apos;{0}&apos; failed to load. {1}.
         '''</summary>
         Friend ReadOnly Property STATUS_CONFIG_LOAD_FAILED() As String
             Get
@@ -126,7 +126,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MPA Dynamics CSV file {0} loaded.
+        '''  Looks up a localized string similar to MPA Dynamics CSV file &apos;{0}&apos; loaded.
         '''</summary>
         Friend ReadOnly Property STATUS_CONFIG_LOAD_SUCCESS() As String
             Get
@@ -135,25 +135,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to closed to all fleets.
-        '''</summary>
-        Friend ReadOnly Property STATUS_FLEETS_CLOSED() As String
-            Get
-                Return ResourceManager.GetString("STATUS_FLEETS_CLOSED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to open to all fleets.
-        '''</summary>
-        Friend ReadOnly Property STATUS_FLEETS_OPEN() As String
-            Get
-                Return ResourceManager.GetString("STATUS_FLEETS_OPEN", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to {0}: updated {1}: {2}, {3}.
+        '''  Looks up a localized string similar to MPA &apos;{1}&apos; changed at {0}. Temporal closure: {2}. Fleet closure: {3}.
         '''</summary>
         Friend ReadOnly Property STATUS_MPA_CHANGED() As String
             Get
@@ -162,20 +144,38 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to closed all year.
+        '''  Looks up a localized string similar to all fleets.
         '''</summary>
-        Friend ReadOnly Property STATUS_YEAR_CLOSED() As String
+        Friend ReadOnly Property VALUE_ALL_FLEETS() As String
             Get
-                Return ResourceManager.GetString("STATUS_YEAR_CLOSED", resourceCulture)
+                Return ResourceManager.GetString("VALUE_ALL_FLEETS", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to open all year.
+        '''  Looks up a localized string similar to all year.
         '''</summary>
-        Friend ReadOnly Property STATUS_YEAR_OPEN() As String
+        Friend ReadOnly Property VALUE_ALL_YEAR() As String
             Get
-                Return ResourceManager.GetString("STATUS_YEAR_OPEN", resourceCulture)
+                Return ResourceManager.GetString("VALUE_ALL_YEAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to never.
+        '''</summary>
+        Friend ReadOnly Property VALUE_NEVER() As String
+            Get
+                Return ResourceManager.GetString("VALUE_NEVER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to none.
+        '''</summary>
+        Friend ReadOnly Property VALUE_NONE() As String
+            Get
+                Return ResourceManager.GetString("VALUE_NONE", resourceCulture)
             End Get
         End Property
     End Module

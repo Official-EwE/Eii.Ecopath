@@ -83,7 +83,7 @@ Public Class cMPADynamicsEngine
 
     End Sub
 
-    Private Shared sFORMATS As String() = New String() {"yyyy/MM", "yyyy-MM"}
+    Private Shared sFORMATS As String() = New String() {"yyyy/MM", "yyyy-MM", "MM/yyyy", "MM-yyyy"}
     Private Shared sLOCALE As New CultureInfo("en-US")
 
     ' Hack 'n slash
