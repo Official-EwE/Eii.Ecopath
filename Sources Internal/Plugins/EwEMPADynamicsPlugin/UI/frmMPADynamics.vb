@@ -58,10 +58,11 @@ Public Class frmMPADynamics
         MyBase.OnLoad(e)
 
         Dim fmt As New cCoreInterfaceFormatter()
+        Dim col As DataGridViewColumn = Nothing
 
         ' Create grid cols
         For i As Integer = 1 To cCore.N_MONTHS
-            Dim col As New DataGridViewCheckBoxColumn(True)
+            col = New DataGridViewImageColumn()
             col.Name = "m_colM" & i
             col.HeaderText = cDateUtils.GetMonthName(i, False)
             col.ReadOnly = True
@@ -70,8 +71,8 @@ Public Class frmMPADynamics
         Next
 
         For i As Integer = 1 To Me.Core.nFleets
-            Dim col As New DataGridViewCheckBoxColumn(True)
             Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
+            col = New DataGridViewImageColumn()
             col.Name = "m_colF" & i
             col.HeaderText = fmt.GetDescriptor(fleet)
             col.ReadOnly = True
@@ -159,14 +160,15 @@ Public Class frmMPADynamics
     Private Function ToCellValue(state As TriState) As Object
         Select Case state
             Case TriState.True
-                Return CheckState.Checked
+                Return My.Resources.enforced
             Case TriState.False
-                Return CheckState.Unchecked
+                Return SharedResources.fishing_gear
             Case TriState.UseDefault
-                Return CheckState.Indeterminate
+                Return My.Resources.none
         End Select
         Return Nothing
     End Function
 
 #End Region ' Internals
+
 End Class
