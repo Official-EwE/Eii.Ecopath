@@ -4719,6 +4719,14 @@ Public Class frmEwE6
                         pgcmd.Form.Icon = My.Resources.Ecotracer
                 End Select
 
+                ' Inherit plug-in execution state if needed
+                If (TypeOf pgcmd.Form Is frmEwE) Then
+                    Dim frmEwE As frmEwE = DirectCast(pgcmd.Form, frmEwE)
+                    If (frmEwE.CoreExecutionState = eCoreExecutionState.Idle) Then
+                        frmEwE.CoreExecutionState = pgcmd.CoreExecutionState
+                    End If
+                End If
+
                 ' Able to activate this form from the open tabs?
                 If Not ActivateForm(pgcmd.Form.Text) Then
                     ' #No: form is not currently integrated in the dock panel, it must be nested in the GUI.

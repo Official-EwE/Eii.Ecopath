@@ -40,8 +40,6 @@ Public Class cPluginGUICommand
     Private m_ip As IGUIPlugin = Nothing
     Private m_sender As Object = Nothing
     Private m_e As EventArgs = Nothing
-    Private m_form As Windows.Forms.Form = Nothing
-    Private m_iDockState As Integer = 0 ' Unknown
 
     Private m_bHasRun As Boolean = False
 
@@ -63,13 +61,6 @@ Public Class cPluginGUICommand
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Form() As Windows.Forms.Form
-        Get
-            Return Me.m_form
-        End Get
-        Protected Set(ByVal value As Windows.Forms.Form)
-            Me.m_form = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -78,13 +69,6 @@ Public Class cPluginGUICommand
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property DockState() As Integer
-        Get
-            Return Me.m_iDockState
-        End Get
-        Protected Set(ByVal iDockState As Integer)
-            Me.m_iDockState = iDockState
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -143,7 +127,7 @@ Public Class cPluginGUICommand
         End If
 
         Try
-            Me.m_ip.OnControlClick(Me.m_sender, Me.m_e, Me.m_form)
+            Me.m_ip.OnControlClick(Me.m_sender, Me.m_e, Me.Form)
         Catch ex As Exception
             Debug.Assert(False, String.Format("Error {0} occurred while running plugin {1}", ex.Message, Me.m_ip.Name))
         Finally
@@ -156,8 +140,8 @@ Public Class cPluginGUICommand
 
         ' Reset fields
         Me.m_bHasRun = False
-        Me.m_form = Nothing
-        Me.m_iDockState = 0
+        Me.Form = Nothing
+        Me.DockState = 0
 
         Me.m_ip = ip
         Me.m_sender = sender
