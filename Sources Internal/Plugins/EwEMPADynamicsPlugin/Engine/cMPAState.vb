@@ -21,8 +21,8 @@
 
 Option Strict On
 Imports System.Text
-Imports System.Windows.Forms
 Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -30,8 +30,8 @@ Imports EwEUtils.Utilities
 Public Class cMPAState
 
     Private m_ds As cEcospaceDataStructures = Nothing
-    Private m_bIsClosed() As CheckState
-    Private m_bIsEnforced() As CheckState
+    Private m_bIsClosed() As TriState
+    Private m_bIsEnforced() As TriState
 
     Public Sub New(ds As cEcospaceDataStructures, iMPA As Integer, timestamp As Date)
 
@@ -44,23 +44,23 @@ Public Class cMPAState
 
     End Sub
 
-    Public Property IsClosed(iMonth As Integer) As CheckState
+    Public Property IsClosed(iMonth As Integer) As TriState
         Get
             iMonth = Math.Min(cCore.N_MONTHS, Math.Max(1, iMonth))
             Return Me.m_bIsClosed(iMonth)
         End Get
-        Set(value As CheckState)
+        Set(value As TriState)
             iMonth = Math.Min(cCore.N_MONTHS, Math.Max(1, iMonth))
             Me.m_bIsClosed(iMonth) = value
         End Set
     End Property
 
-    Public Property IsEnforced(iFleet As Integer) As CheckState
+    Public Property IsEnforced(iFleet As Integer) As TriState
         Get
             iFleet = Math.Min(Me.m_ds.nFleets, Math.Max(1, iFleet))
             Return Me.m_bIsEnforced(iFleet)
         End Get
-        Set(value As CheckState)
+        Set(value As TriState)
             iFleet = Math.Min(Me.m_ds.nFleets, Math.Max(1, iFleet))
             Me.m_bIsEnforced(iFleet) = value
         End Set
@@ -72,26 +72,26 @@ Public Class cMPAState
     Public Sub Load()
         For iMonth As Integer = 1 To cCore.N_MONTHS
             ' Reverse thinking!
-            Me.IsClosed(iMonth) = If(Me.m_ds.MPAmonth(iMonth, Me.MPA), CheckState.Unchecked, CheckState.Checked)
+            Me.IsClosed(iMonth) = If(Me.m_ds.MPAmonth(iMonth, Me.MPA), TriState.False, TriState.True)
         Next
         For iFleet As Integer = 1 To Me.m_ds.nFleets
             ' Reverse thinking!
-            Me.IsEnforced(iFleet) = If(Me.m_ds.MPAfishery(iFleet, Me.MPA), CheckState.Unchecked, CheckState.Checked)
+            Me.IsEnforced(iFleet) = If(Me.m_ds.MPAfishery(iFleet, Me.MPA), TriState.False, TriState.True)
         Next
     End Sub
 
     Public Sub Apply()
         For iMonth As Integer = 1 To cCore.N_MONTHS
-            If (Me.IsClosed(iMonth) <> CheckState.Indeterminate) Then
+            If (Me.IsClosed(iMonth) <> TriState.UseDefault) Then
                 ' Reverse thinking!
-                Me.m_ds.MPAmonth(iMonth, Me.MPA) = (Me.IsClosed(iMonth) = CheckState.Unchecked)
+                Me.m_ds.MPAmonth(iMonth, Me.MPA) = (Me.IsClosed(iMonth) = TriState.False)
             End If
         Next
 
         For iFleet As Integer = 1 To Me.m_ds.nFleets
-            If (Me.IsEnforced(iFleet) <> CheckState.Indeterminate) Then
+            If (Me.IsEnforced(iFleet) <> TriState.UseDefault) Then
                 ' Reverse thinking!
-                Me.m_ds.MPAfishery(iFleet, Me.MPA) = (Me.IsEnforced(iFleet) = CheckState.Unchecked)
+                Me.m_ds.MPAfishery(iFleet, Me.MPA) = (Me.IsEnforced(iFleet) = TriState.False)
             End If
         Next
 

@@ -135,6 +135,7 @@ Public Class cEwEMPADynamicsPlugin
 
     Public Sub CloseEcospaceScenario() Implements IEcospacePlugin.CloseEcospaceScenario
         If (Me.m_engine IsNot Nothing) Then
+            'Me.CloseUI()
             Me.m_engine.Clear()
             Me.m_engine = Nothing
         End If
@@ -175,6 +176,14 @@ Public Class cEwEMPADynamicsPlugin
         End If
         Return Me.m_ui
     End Function
+
+    Private Sub CloseUI()
+        If Me.HasUI() Then
+            Me.m_ui.Close()
+            Me.m_ui.Dispose()
+            Me.m_ui = Nothing
+        End If
+    End Sub
 
 #End Region ' Internals
 

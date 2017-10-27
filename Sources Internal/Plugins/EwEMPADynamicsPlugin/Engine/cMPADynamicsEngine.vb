@@ -22,7 +22,6 @@
 Option Strict On
 Imports System.Globalization
 Imports System.IO
-Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
@@ -90,6 +89,9 @@ Public Class cMPADynamicsEngine
     ' Hack 'n slash
     Public Function LoadCSV(strCSV As String) As Boolean
 
+        Dim bSucces As Boolean = True
+        Dim lDetails As New List(Of String)
+
         Me.m_dtStates.Clear()
 
         strCSV = Path.GetFullPath(strCSV)
@@ -106,36 +108,49 @@ Public Class cMPADynamicsEngine
             For Each drow As DataRow In dt.Rows
 
                 Dim timestamp As Date
+                Dim iMPA As Integer = Me.ToMPA(CStr(drow("MPA")))
+
                 If (bTimeStepMode) Then
                     timestamp = Me.m_core.EcospaceTimestepToAbsoluteTime(CInt(drow("timestep")))
                 Else
                     Date.TryParseExact(CStr(drow("date")), sFORMATS, sLOCALE, DateTimeStyles.None, timestamp)
                 End If
 
-                Dim state As New cMPAState(Me.m_ds, Me.ToMPA(CStr(drow("MPA"))), timestamp)
-                For i As Integer = 1 To cCore.N_MONTHS
-                    state.IsClosed(i) = ToCheckState(Me.ReadSafe(drow, "m" & i, ""))
-                Next
+                If (iMPA >= 1) Then
+                    Dim state As New cMPAState(Me.m_ds, iMPA, timestamp)
+                    For i As Integer = 1 To cCore.N_MONTHS
+                        state.IsClosed(i) = IsEnforced(Me.ReadSafe(drow, "m" & i, ""))
+                    Next
 
-                For i As Integer = 1 To Me.m_core.nFleets
-                    state.IsEnforced(i) = ToCheckState(Me.ReadSafe(drow, "f" & i, ""))
-                Next
+                    For i As Integer = 1 To Me.m_core.nFleets
+                        state.IsEnforced(i) = IsEnforced(Me.ReadSafe(drow, "f" & i, ""))
+                    Next
 
-                If (Not Me.m_dtStates.ContainsKey(timestamp)) Then
-                    Me.m_dtStates(timestamp) = New List(Of cMPAState)
+                    If (Not Me.m_dtStates.ContainsKey(timestamp)) Then
+                        Me.m_dtStates(timestamp) = New List(Of cMPAState)
+                    End If
+                    Me.m_dtStates(timestamp).Add(state)
+                Else
+                    Dim strError As String = cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_ERROR_MPA_UNKNOWN, CStr(drow("MPA")))
+                    If (lDetails.IndexOf(strError) = -1) Then
+                        lDetails.Add(strError)
+                    End If
                 End If
-                Me.m_dtStates(timestamp).Add(state)
 
             Next
 
-            SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_SUCCESS, strCSV), eMessageImportance.Information)
-            Return True
+            If (bSucces) Then
+                SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_SUCCESS, strCSV), eMessageImportance.Information)
+            Else
+                SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ""), eMessageImportance.Critical, lDetails)
+            End If
 
         Catch ex As Exception
-            SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ex.Message), eMessageImportance.Information)
+            SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ex.Message), eMessageImportance.Critical)
+            bSucces = False
         End Try
 
-        Return False
+        Return bSucces
 
     End Function
 
@@ -309,19 +324,25 @@ Public Class cMPADynamicsEngine
     Private Const s_FALSE As String = "0nx-f"
     Private Const s_DEFAULT As String = "?="
 
-    Private Function ToCheckState(strVal As String) As CheckState
+    Private Function IsEnforced(strVal As String) As TriState
 
-        If (String.IsNullOrWhiteSpace(strVal)) Then Return CheckState.Indeterminate
+        If (String.IsNullOrWhiteSpace(strVal)) Then Return TriState.UseDefault
         strVal = strVal.Trim().ToLower()(0)
-        If (s_DEFAULT.Contains(strVal)) Then Return CheckState.Indeterminate
-        If (s_TRUE.Contains(strVal)) Then Return CheckState.Checked
-        If (s_FALSE.Contains(strVal)) Then Return CheckState.Unchecked
-        Return CheckState.Indeterminate
+        If (s_DEFAULT.Contains(strVal)) Then Return TriState.UseDefault
+        If (s_TRUE.Contains(strVal)) Then Return TriState.True
+        If (s_FALSE.Contains(strVal)) Then Return TriState.False
+        Return TriState.UseDefault
 
     End Function
 
-    Private Sub SendStatusMessage(strMessage As String, importance As eMessageImportance)
+    Private Sub SendStatusMessage(strMessage As String, importance As eMessageImportance, Optional lDetails As ICollection(Of String) = Nothing)
         Dim msg As New cMessage(strMessage, eMessageType.DataImport, eCoreComponentType.External, importance)
+        If (lDetails IsNot Nothing) Then
+            For Each strDetail As String In lDetails
+                Dim vs As New cVariableStatus(Nothing, eStatusFlags.ErrorEncountered, strDetail, eVarNameFlags.NotSet)
+                msg.Variables.Add(vs)
+            Next
+        End If
         Me.m_core.Messages.SendMessage(msg)
     End Sub
 

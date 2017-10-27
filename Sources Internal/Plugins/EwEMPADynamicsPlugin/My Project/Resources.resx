@@ -126,6 +126,9 @@
   <data name="PROMPT_SELECT_FILE" xml:space="preserve">
     <value>Select MPA closed state file to load</value>
   </data>
+  <data name="STATUS_CONFIG_LOAD_ERROR_MPA_UNKNOWN" xml:space="preserve">
+    <value>MPA {0} not found in Ecospace</value>
+  </data>
   <data name="STATUS_CONFIG_LOAD_FAILED" xml:space="preserve">
     <value>MPA Dynamics CSV file {0} faied to load. {1}</value>
     <comment>{0}=file name, {1}=exception text</comment>
@@ -149,5 +152,12 @@
   </data>
   <data name="STATUS_YEAR_OPEN" xml:space="preserve">
     <value>open all year</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="enforced" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\enforced.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="open" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\open.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -61,11 +61,31 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property enforced() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("enforced", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to (initial).
         '''</summary>
         Friend ReadOnly Property GENERIC_VALUE_INITIAL() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_INITIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property open() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("open", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -84,6 +104,15 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_SELECT_FILE() As String
             Get
                 Return ResourceManager.GetString("PROMPT_SELECT_FILE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MPA {0} not found in Ecospace.
+        '''</summary>
+        Friend ReadOnly Property STATUS_CONFIG_LOAD_ERROR_MPA_UNKNOWN() As String
+            Get
+                Return ResourceManager.GetString("STATUS_CONFIG_LOAD_ERROR_MPA_UNKNOWN", resourceCulture)
             End Get
         End Property
         

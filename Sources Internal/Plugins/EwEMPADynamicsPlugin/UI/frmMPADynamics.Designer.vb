@@ -104,9 +104,10 @@ Partial Class frmMPADynamics
 
     End Sub
 
-    Friend WithEvents CEwEToolstrip1 As ScientificInterfaceShared.Controls.cEwEToolstrip
+    Private WithEvents CEwEToolstrip1 As ScientificInterfaceShared.Controls.cEwEToolstrip
     Private WithEvents m_tsbnLoadCSV As Windows.Forms.ToolStripButton
     Private WithEvents m_dgvStates As Windows.Forms.DataGridView
-    Friend WithEvents m_colTime As Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents m_colMPA As Windows.Forms.DataGridViewTextBoxColumn
+    Private WithEvents m_colTime As Windows.Forms.DataGridViewTextBoxColumn
+    Private WithEvents m_colMPA As Windows.Forms.DataGridViewTextBoxColumn
+
 End Class

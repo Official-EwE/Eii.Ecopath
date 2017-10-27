@@ -32,7 +32,12 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Public Class frmMPADynamics
 
+#Region " Private vars "
+
     Private m_engine As cMPADynamicsEngine = Nothing
+    Private m_bGridInvalid As Boolean = True
+
+#End Region ' Private vars
 
     Public Sub New(uic As cUIContext, engine As cMPADynamicsEngine)
 
@@ -46,6 +51,8 @@ Public Class frmMPADynamics
         Me.m_tsbnLoadCSV.Image = SharedResources.openHS
 
     End Sub
+
+#Region " Overrides "
 
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
@@ -88,7 +95,21 @@ Public Class frmMPADynamics
 
     End Sub
 
-    Private m_bGridInvalid As Boolean = True
+#End Region ' Overrides
+
+#Region " Event handlers "
+
+    Private Sub OnLoadCSV(sender As Object, e As EventArgs) Handles m_tsbnLoadCSV.Click
+        Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_SELECT_FILE, "", SharedResources.FILEFILTER_CSV)
+        If (ofd.ShowDialog() = DialogResult.OK) Then
+            Me.m_engine.LoadCSV(ofd.FileName)
+            Me.UpdateGrid()
+        End If
+    End Sub
+
+#End Region ' Event handlers
+
+#Region " Internals "
 
     Private Sub InvalidateGrid()
         ' Bundle multiple messages into one update
@@ -126,21 +147,26 @@ Public Class frmMPADynamics
                 End If
                 row.Cells("m_colMPA").Value = fmt.GetDescriptor(mpa)
                 For j As Integer = 1 To cCore.N_MONTHS
-                    row.Cells("m_colM" & j).Value = state.IsClosed(j)
+                    row.Cells("m_colM" & j).Value = ToCellValue(state.IsClosed(j))
                 Next
                 For j As Integer = 1 To Me.Core.nFleets
-                    row.Cells("m_colF" & j).Value = state.IsEnforced(j)
+                    row.Cells("m_colF" & j).Value = ToCellValue(state.IsEnforced(j))
                 Next
             Next
         End If
     End Sub
 
-    Private Sub OnLoadCSV(sender As Object, e As EventArgs) Handles m_tsbnLoadCSV.Click
-        Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_SELECT_FILE, "", SharedResources.FILEFILTER_CSV)
-        If (ofd.ShowDialog() = DialogResult.OK) Then
-            Me.m_engine.LoadCSV(ofd.FileName)
-            Me.UpdateGrid()
-        End If
-    End Sub
+    Private Function ToCellValue(state As TriState) As Object
+        Select Case state
+            Case TriState.True
+                Return CheckState.Checked
+            Case TriState.False
+                Return CheckState.Unchecked
+            Case TriState.UseDefault
+                Return CheckState.Indeterminate
+        End Select
+        Return Nothing
+    End Function
 
+#End Region ' Internals
 End Class
