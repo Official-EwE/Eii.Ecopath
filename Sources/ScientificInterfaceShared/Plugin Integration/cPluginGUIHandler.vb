@@ -273,13 +273,6 @@ Namespace Integration
                 Else
                     ' #No: activate plugin directly
                     ip.OnControlClick(sender, e, frm)
-                    ' Inherit plug-in execution state if needed
-                    If (TypeOf frm Is Forms.frmEwE) Then
-                        Dim frmEwE As Forms.frmEwE = DirectCast(frm, Forms.frmEwE)
-                        If (frmEwE.CoreExecutionState = eCoreExecutionState.Idle) Then
-                            frmEwE.CoreExecutionState = ip.EnabledState
-                        End If
-                    End If
                 End If
 
             Catch ex As Exception
