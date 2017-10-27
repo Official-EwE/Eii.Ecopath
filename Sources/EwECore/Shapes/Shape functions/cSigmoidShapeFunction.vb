@@ -58,6 +58,23 @@ Public Class cSigmoidShapeFunction
                     Me.m_points(i) = sYZero + ((sYEnd - sYZero) * xPow / (xHalf + xPow))
                 End If
             Next i
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Sigmoid base on entering the data range
+            'x min, x max, x mid point and slope
+            'Dim xZero As Single = Me.ParamValue(1)
+            'Dim xMax As Single = Me.ParamValue(2)
+            'Dim xMid As Single = Me.ParamValue(3)
+            'Dim k As Single = Me.ParamValue(4)
+
+            'Dim dx As Single = (xMax - xZero) / nPoints
+            'For i As Integer = 1 To nPoints
+            '    Dim x As Single = xZero + (i - 1) * dx
+            '    Me.m_points(i) = CSng(1 / (1 + Math.Exp(-k * (x - xMid))))
+            '    System.Console.WriteLine(x.ToString + ", " + Me.m_points(i).ToString)
+            'Next i
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
         End If
 
         Me.ScaleData(nPoints, 1.0)

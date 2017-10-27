@@ -1747,7 +1747,7 @@ Namespace Ecosim
         Private Sub debugTestRelQFishMGear()
 
             'fishing mortality at the current effort
-            For iGrp As Integer = 1 To m_Data.nGroups
+            For iGrp As Integer = 1 To Me.m_EPData.NumLiving
                 If (Not m_Data.FisForced(iGrp)) Then
 
                     For iFlt As Integer = 1 To m_Data.nGear
