@@ -1044,6 +1044,7 @@ Namespace Database
                            (String.Compare(CStr(drow("FK_TABLE_NAME")), strTableTo) = 0) And
                            (String.Compare(CStr(drow("FK_COLUMN_NAME")), strColumn) = 0) Then
                             strFKKey = CStr(drow("FK_NAME"))
+                            Exit For
                         End If
                     Next
                 Catch ex As Exception
