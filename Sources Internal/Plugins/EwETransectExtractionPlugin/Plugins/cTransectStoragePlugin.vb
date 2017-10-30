@@ -73,10 +73,12 @@ Public Class cTransectStoragePlugin
         Dim ds As IEcospaceDatasource = DirectCast(dataSource, IEcospaceDatasource)
         Dim strDBFileNme As String = Me.TransectFileName(ds.ToString)
 
-        If Me.m_data.ToXML(strDBFileNme) Then
-            ' NOP
-        Else
-            ' NOP
+        If (Me.m_data.Transects.Count > 0) Then
+            If Me.m_data.ToXML(strDBFileNme) Then
+                ' NOP
+            Else
+                ' NOP
+            End If
         End If
 
     End Sub
