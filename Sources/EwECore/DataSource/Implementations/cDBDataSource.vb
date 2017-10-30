@@ -6691,7 +6691,7 @@ Namespace DataSources
                 bSucces = False
             End Try
 
-            Me.m_db.ReleaseWriter(writerFleet, True)
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writerFleet, True)
 
             Return bSucces
 

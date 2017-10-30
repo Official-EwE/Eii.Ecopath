@@ -1964,6 +1964,7 @@ Public Class cEIIXMLDataSource
         Dim iTimeSeriesID As Integer = 0
         Dim iSeries As Integer = 1
         Dim iIndex As Integer = 0
+        Dim iIndexSec As Integer = 0
         Dim iPoint As Integer = 0
         Dim bSucces As Boolean = True
         Dim dtTS As DataTable = Me.ReadTable("EcosimTimeSeries")
@@ -2028,7 +2029,8 @@ Public Class cEIIXMLDataSource
                          eTimeSeriesCategoryType.FleetGroup
                         For Each drowSub As DataRow In dtFlt.Select("TimeSeriesID=" & iTSID)
                             Try
-                                iIndex = Array.IndexOf(ecopathDS.GroupDBID, CInt(drowSub("FleetID")))
+                                iIndex = Array.IndexOf(ecopathDS.FleetDBID, CInt(drowSub("FleetID")))
+                                iIndexSec = Array.IndexOf(ecopathDS.GroupDBID, CInt(drowSub("GroupID")))
                             Catch ex As Exception
                                 iIndex = -1
                             End Try
@@ -2045,6 +2047,7 @@ Public Class cEIIXMLDataSource
                 End Select
 
                 tsDS.iPool(iSeries) = iIndex
+                tsDS.iPoolSec(iSeries) = Math.Max(0, iIndexSec)
 
                 astrTimeValues = CStr(drow("TimeValues")).Split(CChar(" "))
 
