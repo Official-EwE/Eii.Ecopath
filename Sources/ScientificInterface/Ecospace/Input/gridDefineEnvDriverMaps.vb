@@ -55,6 +55,7 @@ Namespace Ecospace
             LayerIndex = 0
             LayerName
             LayerIsCApacityEnabled
+            LayerUnits
             LayerDescription
             LayerStatus
         End Enum
@@ -93,10 +94,13 @@ Namespace Ecospace
                 Me.Name = Layer.Name
                 If (TypeOf Layer Is cEcospaceLayerDriver) Then
                     Me.Description = DirectCast(Layer, cEcospaceLayerDriver).Description
+                    Me.Units = DirectCast(Layer, cEcospaceLayerDriver).Units
                 Else
                     ' Fixed description
                     Dim fmt As New cVarnameTypeFormatter()
                     Me.Description = fmt.GetDescriptor(Layer.VarName, eDescriptorTypes.Description)
+                    ' Standard units
+                    Me.Units = cVariableMetaData.Get(Layer.VarName).Units
                 End If
                 Me.Status = eItemStatusTypes.Original
                 Me.IsCapacityEnabled = True
@@ -110,10 +114,11 @@ Namespace Ecospace
             ''' </summary>
             ''' <param name="strName">Name to assign to this administrative unit.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(ByVal strName As String, ByVal strDescription As String, ByVal sWeight As Single)
+            Public Sub New(ByVal strName As String, ByVal strDescription As String, ByVal strUnits As String)
                 Me.m_Layer = Nothing
                 Me.Name = strName
                 Me.Description = strDescription
+                Me.Units = strUnits
                 Me.Status = eItemStatusTypes.Added
                 Me.IsCapacityEnabled = True
                 Me.IsEditable = True
@@ -125,6 +130,13 @@ Namespace Ecospace
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public Property Name() As String
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set the units of this administrative unit.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public Property Units() As String
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -170,7 +182,12 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Function IsChanged() As Boolean
                 If (Me.IsNew()) Then Return False
-                Return (Me.m_Layer.Name <> Me.Name) Or _
+                If (TypeOf Layer Is cEcospaceLayerDriver) Then
+                    If (DirectCast(Layer, cEcospaceLayerDriver).Units <> Me.Units) Then
+                        Return False
+                    End If
+                End If
+                Return (Me.m_Layer.Name <> Me.Name) Or
                        (Me.Layer.Description <> Me.Description)
             End Function
 
@@ -271,6 +288,7 @@ Namespace Ecospace
             ' Layer index cell
             Me(0, eColumnTypes.LayerIndex) = New EwEColumnHeaderCell()
             Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
+            Me(0, eColumnTypes.LayerUnits) = New EwEColumnHeaderCell(SharedResources.HEADER_UNITS)
             Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
             Me(0, eColumnTypes.LayerIsCApacityEnabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLED_CAPACITY)
 
@@ -362,6 +380,9 @@ Namespace Ecospace
                 Me(iRow, eColumnTypes.LayerName) = New EwECell("", GetType(String), style)
                 If li.IsEditable Then Me(iRow, eColumnTypes.LayerName).Behaviors.Add(Me.EwEEditHandler)
 
+                Me(iRow, eColumnTypes.LayerUnits) = New EwECell("", GetType(String), style)
+                If li.IsEditable Then Me(iRow, eColumnTypes.LayerUnits).Behaviors.Add(Me.EwEEditHandler)
+
                 Me(iRow, eColumnTypes.LayerDescription) = New EwECell("", GetType(String), style)
                 If li.IsEditable Then Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
 
@@ -414,6 +435,9 @@ Namespace Ecospace
 
             pos = New Position(iRow, eColumnTypes.LayerName)
             aCells(eColumnTypes.LayerName).SetValue(pos, CStr(li.Name))
+
+            pos = New Position(iRow, eColumnTypes.LayerUnits)
+            aCells(eColumnTypes.LayerUnits).SetValue(pos, CStr(li.Units))
 
             pos = New Position(iRow, eColumnTypes.LayerDescription)
             aCells(eColumnTypes.LayerDescription).SetValue(pos, CStr(li.Description))
@@ -472,6 +496,11 @@ Namespace Ecospace
                         Next
                         ' Allow name change
                         li.Name = strName
+
+                    Case eColumnTypes.LayerUnits
+                        Dim val As Object = cell.GetValue(p)
+                        If (val Is Nothing) Then val = ""
+                        li.Units = CStr(val)
 
                     Case eColumnTypes.LayerDescription
                         Dim val As Object = cell.GetValue(p)
@@ -632,7 +661,7 @@ Namespace Ecospace
             Dim iNextNum As Integer = cStringUtils.GetNextNumber(lstrLayers.ToArray(), SharedResources.DEFAULT_NEWLAYER_NUM)
             Dim strName As String = cStringUtils.Localize(SharedResources.DEFAULT_NEWLAYER_NUM, iNextNum)
 
-            li = New cLayerInfo(strName, "", 1.0!)
+            li = New cLayerInfo(strName, "", "")
             Me.m_alLayers.Insert(iLayer, li)
 
             Me.UpdateGrid()
@@ -865,7 +894,7 @@ Namespace Ecospace
                 While (bSuccess = True) And (iLayer < Me.m_alLayers.Count)
                     li = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
                     If (li.IsNew()) Then
-                        bSuccess = bSuccess And Me.Core.AddEcospaceDriverLayer(li.Name, li.Description, li.LayerID)
+                        bSuccess = bSuccess And Me.Core.AddEcospaceDriverLayer(li.Name, li.Description, li.Units, li.LayerID)
                     Else
                         If ((iLayer + 1) <> li.Layer.Index) Then
                             If Not Me.Core.MoveDriverLayer(li.Layer.Index, iLayer + 1) Then

@@ -49,6 +49,7 @@ Public Class cVariableMetaData
 
     ' -- Variables for numeric values --
     Private m_vartype As eValueTypes
+    Private m_units As String = ""
 
 #End Region 'Private vars    
 
@@ -416,28 +417,28 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.CellSize) = New cVariableMetaData(0, Single.MaxValue, gt, lt,, cUnits.Mapping)
         Me.Metadata(eVarNameFlags.Latitude) = New cVariableMetaData(Single.MinValue, Single.MaxValue, ge, le,, cUnits.Mapping)
         Me.Metadata(eVarNameFlags.Longitude) = New cVariableMetaData(Single.MinValue, Single.MaxValue, ge, le,, cUnits.Mapping)
-        Me.Metadata(eVarNameFlags.AssumeSquareCells) = New cVariableMetaData()
+        Me.Metadata(eVarNameFlags.AssumeSquareCells) = New cVariableMetaData(cUnits.TrueFalse)
 
         ' layers
         Me.Metadata(eVarNameFlags.LayerRelPP) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerRelCin) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Proportion)
-        Me.Metadata(eVarNameFlags.LayerDepth) = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, gt, lt, 0, "[m]")
-        Me.Metadata(eVarNameFlags.LayerHabitat) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 1, cUnits.Proportion)
+        Me.Metadata(eVarNameFlags.LayerDepth) = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, gt, lt, 0, cUnits.Depth)
+        Me.Metadata(eVarNameFlags.LayerHabitat) = New cVariableMetaData(0, 1, ge, le, 1, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerHabitatCapacityInput) = New cVariableMetaData(0, 1, ge, le, 1, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerHabitatCapacity) = cVariableMetaData.Get(eVarNameFlags.LayerHabitatCapacityInput)
-        Me.Metadata(eVarNameFlags.LayerRegion) = New cVariableMetaData(0, 1000, ge, le, 0)
+        Me.Metadata(eVarNameFlags.LayerRegion) = New cVariableMetaData(0, 1000, ge, le, 0, cUnits.Number)
         Me.Metadata(eVarNameFlags.LayerMigration) = New cVariableMetaData(0, 1000, ge, le, 0, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerMPASeed) = New cVariableMetaData(0, Integer.MaxValue, ge, lt, 0)
-        Me.Metadata(eVarNameFlags.LayerPort) = New cVariableMetaData()
+        Me.Metadata(eVarNameFlags.LayerPort) = New cVariableMetaData(cUnits.PresenceAbsence)
         Me.Metadata(eVarNameFlags.LayerSail) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Proportion)
-        Me.Metadata(eVarNameFlags.LayerAdvection) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, "[cm]/[sec]")
-        Me.Metadata(eVarNameFlags.LayerWind) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, "[cm]/[sec]")
+        Me.Metadata(eVarNameFlags.LayerAdvection) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, cUnits.Velocity)
+        Me.Metadata(eVarNameFlags.LayerWind) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, cUnits.Velocity)
         Me.Metadata(eVarNameFlags.LayerUpwelling) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0)
         Me.Metadata(eVarNameFlags.LayerDriver) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0)
         Me.Metadata(eVarNameFlags.LayerBiomassForcing) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, cUnits.Biomass)
         Me.Metadata(eVarNameFlags.LayerBiomassRelativeForcing) = New cVariableMetaData(Single.MinValue, Single.MaxValue, gt, lt, 0, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerExclusion) = New cVariableMetaData()
-        Me.Metadata(eVarNameFlags.LayerMPA) = New cVariableMetaData(0, Integer.MaxValue, ge, le, 0)
+        Me.Metadata(eVarNameFlags.LayerMPA) = New cVariableMetaData(cUnits.PresenceAbsence)
         Me.Metadata(eVarNameFlags.ImportanceWeight) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 0)
 
         ' group in
@@ -733,16 +734,29 @@ Public Class cVariableMetaData
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Constructor for boolean values.
+    ''' </summary>
+    ''' <param name="units">Units format mask</param>
+    ''' <param name="bValueDefault">Default value to assign to variable when in error.</param>
+    ''' <remarks>Booleans do not have min or max values.</remarks>
+    ''' -----------------------------------------------------------------------
+    Public Sub New(units As String, Optional ByVal bValueDefault As Boolean = False)
+        Me.NullValue = bValueDefault
+        Me.m_vartype = eValueTypes.Bool
+        Me.Min = Math.Min(CSng(True), CSng(False))
+        Me.Max = Math.Max(CSng(True), CSng(False))
+        Me.Units = units
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Constructor use boolean values.
     ''' </summary>
     ''' <param name="bValueDefault">Default value to assign to variable when in error.</param>
     ''' <remarks>Booleans do not have min or max values.</remarks>
     ''' -----------------------------------------------------------------------
     Public Sub New(Optional ByVal bValueDefault As Boolean = False)
-        Me.NullValue = bValueDefault
-        Me.m_vartype = eValueTypes.Bool
-        Me.Min = Math.Min(CSng(True), CSng(False))
-        Me.Max = Math.Max(CSng(True), CSng(False))
+        Me.New(cUnits.TrueFalse, bValueDefault)
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -925,10 +939,17 @@ Public Class cVariableMetaData
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the units for this variable.
+    ''' Get/set the units for this variable.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Units As String
+    Public Property Units As String
+        Get
+            Return Me.m_units
+        End Get
+        Friend Set(value As String)
+            Me.m_units = value
+        End Set
+    End Property
 
 #End Region 'Properties
 

@@ -9444,6 +9444,7 @@ Namespace DataSources
                     ecospaceDS.EnvironmentalLayerDBID(iLayer) = CInt(readerLayer("LayerID"))
                     ecospaceDS.EnvironmentalLayerName(iLayer) = CStr(readerLayer("LayerName"))
                     ecospaceDS.EnvironmentalLayerDescription(iLayer) = CStr(readerLayer("LayerDescription"))
+                    ecospaceDS.EnvironmentalLayerUnits(iLayer) = CStr(Me.m_db.ReadSafe(readerLayer, "LayerUnits", ""))
 
                     Dim strMap As String = CStr(Me.m_db.ReadSafe(readerLayer, "LayerMap", ""))
                     bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.EnvironmentalLayerMap(iLayer),
@@ -9540,6 +9541,7 @@ Namespace DataSources
                     drow("Sequence") = iLayer
                     drow("LayerName") = ecospaceDS.EnvironmentalLayerName(iLayer)
                     drow("LayerDescription") = ecospaceDS.EnvironmentalLayerDescription(iLayer)
+                    drow("LayerUnits") = ecospaceDS.EnvironmentalLayerUnits(iLayer)
                     drow("LayerMap") = cStringUtils.ArrayToString(ecospaceDS.EnvironmentalLayerMap(iLayer),
                                                                   ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
 
@@ -9606,7 +9608,7 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IEcospaceDatasource.AddEcospaceDriverLayer" />"
         ''' -------------------------------------------------------------------
-        Public Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean _
+        Public Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, strUnits As String, ByRef iDBID As Integer) As Boolean _
             Implements IEcospaceDatasource.AddEcospaceDriverLayer
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -9626,6 +9628,7 @@ Namespace DataSources
             drow("Sequence") = iDBID
             drow("LayerName") = strName
             drow("LayerDescription") = strDescription
+            drow("LayerUnits") = strUnits
             drow("LayerMap") = ""
             writer.AddRow(drow)
 

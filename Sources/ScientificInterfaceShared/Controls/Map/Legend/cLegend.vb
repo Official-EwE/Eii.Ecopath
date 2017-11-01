@@ -29,6 +29,7 @@ Imports ScientificInterfaceShared.Style
 Imports EwECore
 Imports System.IO
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -47,7 +48,7 @@ Namespace Controls.Map
         ''' An entry in the legend.
         ''' </summary>
         Private MustInherit Class cLegendEntry
-            MustOverride ReadOnly Property Name As String
+            MustOverride ReadOnly Property Label As String
             MustOverride ReadOnly Property Renderer As cLayerRenderer
             MustOverride ReadOnly Property Max As Single
             MustOverride ReadOnly Property Min As Single
@@ -59,43 +60,28 @@ Namespace Controls.Map
         Private Class cStaticEntry
             Inherits cLegendEntry
 
-            Private m_sMin As Single
-            Private m_sMax As Single
-            Private m_strName As String
-            Private m_renderer As cLayerRenderer = Nothing
+            Public Sub New(strName As String, strUnits As String, sMin As Single, sMax As Single)
 
-            Public Sub New(strName As String, sMin As Single, sMax As Single)
-                Me.m_strName = strName
-                Me.m_sMin = sMin
-                Me.m_sMax = sMax
-                Me.m_renderer = New cLayerRendererValue(New EwECore.Auxiliary.cVisualStyle())
-                Me.m_renderer.ScaleMin = Me.m_sMin
-                Me.m_renderer.ScaleMax = Me.m_sMax
+                If String.IsNullOrWhiteSpace(strUnits) Then
+                    Me.Label = strName
+                Else
+                    Me.Label = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, strName, strUnits)
+                End If
+                Me.Min = sMin
+                Me.Max = sMax
+                Me.Renderer = New cLayerRendererValue(New Auxiliary.cVisualStyle())
+                Me.Renderer.ScaleMin = Me.Min
+                Me.Renderer.ScaleMax = Me.Max
             End Sub
 
             Public Overrides ReadOnly Property Renderer As Layers.cLayerRenderer
-                Get
-                    Return Me.m_renderer
-                End Get
-            End Property
 
-            Public Overrides ReadOnly Property Name As String
-                Get
-                    Return Me.m_strName
-                End Get
-            End Property
+            Public Overrides ReadOnly Property Label As String
 
             Public Overrides ReadOnly Property Max As Single
-                Get
-                    Return Me.m_sMax
-                End Get
-            End Property
 
             Public Overrides ReadOnly Property Min As Single
-                Get
-                    Return Me.m_sMin
-                End Get
-            End Property
+
         End Class
 
         ''' -------------------------------------------------------------------
@@ -118,9 +104,13 @@ Namespace Controls.Map
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property Name As String
+            Public Overrides ReadOnly Property Label As String
                 Get
-                    Return Me.m_layer.Name
+                    If String.IsNullOrWhiteSpace(Me.m_layer.Units) Then
+                        Return Me.m_layer.Name
+                    Else
+                        Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, Me.m_layer.Name, Me.m_layer.Units)
+                    End If
                 End Get
             End Property
 
@@ -284,9 +274,10 @@ Namespace Controls.Map
         ''' <param name="strName"></param>
         ''' <param name="sMin"></param>
         ''' <param name="sMax"></param>
+        ''' <param name="strUnits">Units mask to show</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddGradient(strName As String, sMin As Single, sMax As Single)
-            Me.m_lLayers.Add(New cStaticEntry(strName, sMin, sMax))
+        Public Sub AddGradient(strName As String, sMin As Single, sMax As Single, Optional strUnits As String = "")
+            Me.m_lLayers.Add(New cStaticEntry(strName, strUnits, sMin, sMax))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -443,7 +434,7 @@ Namespace Controls.Map
             For i As Integer = 0 To l.Renderer.nSymbols
 
                 If (i = 0) Then
-                    strText = l.Name
+                    strText = l.Label
                 Else
                     strText = l.Renderer.SymbolName(i)
                     style = eLayerRenderStyle.Element
@@ -476,7 +467,7 @@ Namespace Controls.Map
 
             For i As Integer = 0 To l.Renderer.nSymbols
 
-                Dim strText As String = l.Name
+                Dim strText As String = l.Label
                 If (i > 0) Then
                     strText = l.Renderer.SymbolName(i)
                     style = eLayerRenderStyle.Element
@@ -499,7 +490,7 @@ Namespace Controls.Map
                     Case eLayerRenderStyle.Gradient
                         g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Max),
                                      ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y)
-                        g.DrawString(l.Name,
+                        g.DrawString(l.Label,
                                      ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y + rcPreview.Height)
                         g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Min),
                                      ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y + rcPreview.Height * 2)

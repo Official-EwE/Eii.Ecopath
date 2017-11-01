@@ -10499,6 +10499,7 @@ Public Class cCore
             dest.Index = i
             dest.Name = Me.m_EcoSpaceData.EnvironmentalLayerName(i)
             dest.Description = Me.m_EcoSpaceData.EnvironmentalLayerDescription(i)
+            dest.Units = Me.m_EcoSpaceData.EnvironmentalLayerUnits(i)
             dest.AllowValidation = True
 
         Next i
@@ -10557,6 +10558,7 @@ Public Class cCore
             src = Me.m_EcospaceBasemap.LayerDriver(i)
             Me.m_EcoSpaceData.EnvironmentalLayerName(i) = src.Name
             Me.m_EcoSpaceData.EnvironmentalLayerDescription(i) = src.Description
+            Me.m_EcoSpaceData.EnvironmentalLayerUnits(i) = src.Units
         Next i
 
     End Sub
@@ -11418,7 +11420,7 @@ Public Class cCore
     ''' <param name="strDescription">Description of layer to add.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean
+    Public Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, ByVal strUnits As String, ByRef iDBID As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
         Dim obj As cCoreInputOutputBase = Nothing
         Dim bSucces As Boolean = True
@@ -11432,7 +11434,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
-        If ds.AddEcospaceDriverLayer(strName, strDescription, iDBID) Then
+        If ds.AddEcospaceDriverLayer(strName, strDescription, strUnits, iDBID) Then
             ' Broadcast update
             Me.m_publisher.AddMessage(New cMessage(cStringUtils.Localize("Ecospace driver layer {0} has been added", strName),
                 eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))

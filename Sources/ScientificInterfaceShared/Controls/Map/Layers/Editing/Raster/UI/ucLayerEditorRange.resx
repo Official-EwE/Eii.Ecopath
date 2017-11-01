@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_lbValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 128</value>
+    <value>3, 154</value>
   </data>
   <data name="m_lbValue.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 13</value>
@@ -151,7 +151,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_nudValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>68, 126</value>
+    <value>68, 152</value>
   </data>
   <data name="m_nudValue.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 20</value>
@@ -163,7 +163,7 @@
     <value>m_nudValue</value>
   </data>
   <data name="&gt;&gt;m_nudValue.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.14951.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudValue.Parent" xml:space="preserve">
     <value>$this</value>
@@ -178,7 +178,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbPreview.Location" type="System.Drawing.Point, System.Drawing">
-    <value>170, 126</value>
+    <value>170, 152</value>
   </data>
   <data name="m_pbPreview.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 20</value>
@@ -205,7 +205,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnSmooth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>68, 152</value>
+    <value>68, 178</value>
   </data>
   <data name="m_btnSmooth.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
@@ -232,7 +232,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnReset.Location" type="System.Drawing.Point, System.Drawing">
-    <value>170, 152</value>
+    <value>170, 178</value>
   </data>
   <data name="m_btnReset.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 23</value>
@@ -258,13 +258,16 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>96, 96</value>
   </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowOnly</value>
+  </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 181</value>
+    <value>200, 208</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucLayerEditorRange</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorDefault, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorDefault, ScientificInterfaceShared, Version=6.6.14951.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

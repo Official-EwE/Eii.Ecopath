@@ -372,6 +372,8 @@ Namespace Core
         UnitMonetary
         ''' <summary>Unit value for georeferencing</summary>
         UnitMapRef
+        ''' <summary>Unit value for environmental drivers</summary>
+        UnitEnvDriver
         ''' <summary>Author of an EwE component</summary>
         Author
         ''' <summary>Contact info of an EwE component</summary>

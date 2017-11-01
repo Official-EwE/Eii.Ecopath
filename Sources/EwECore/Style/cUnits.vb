@@ -40,6 +40,11 @@ Namespace Style
             Me.m_core = core
         End Sub
 
+        Public Overloads Function ToString(md As cVariableMetaData) As String
+            If (md Is Nothing) Then Return ""
+            Return Me.ToString(md.Units)
+        End Function
+
         Public Overloads Function ToString(strUnits As String) As String
 
             Dim n As Integer = 0
@@ -106,6 +111,12 @@ Namespace Style
                         Dim fmt As New cMapUnitFormatter()
                         Return fmt.GetDescriptor(eUnitMapRefType.m)
 
+                    Case "true"
+                        Return True.ToString()
+
+                    Case "false"
+                        Return False.ToString()
+
                 End Select
 
                 Dim strResource As String = cResourceUtils.LoadString("UNIT_" & str.ToUpper(), My.Resources.CoreDefaults.ResourceManager)
@@ -135,6 +146,10 @@ Namespace Style
         Public Shared ReadOnly Property ProportionOverTime As String = "[proportion]/[time]"
         Public Shared ReadOnly Property Mapping As String = "[location]"
         Public Shared ReadOnly Property Depth As String = "[depth]"
+        Public Shared ReadOnly Property TrueFalse As String = "[true]/[false]"
+        Public Shared ReadOnly Property PresenceAbsence As String = "[presence]/[absence]"
+        Public Shared ReadOnly Property Velocity As String = "[cm]/[sec]"
+        Public Shared ReadOnly Property Number As String = "[number]"
 
     End Class
 

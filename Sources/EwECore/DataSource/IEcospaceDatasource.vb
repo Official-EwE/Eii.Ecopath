@@ -234,10 +234,11 @@ Namespace DataSources
         ''' </summary>
         ''' <param name="strName">Name to assign to new driver layer.</param>
         ''' <param name="strDescription">Description to assign to new driver layer.</param>
+        ''' <param name="strUnits">Units to assign to new driver layer.</param>
         ''' <param name="iDBID">Database ID assigned to the new driver layer.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean
+        Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, strUnits As String, ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
