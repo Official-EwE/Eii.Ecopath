@@ -27,6 +27,7 @@ Imports EwECore
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Definitions
+Imports EwECore.Style
 
 #End Region ' Imports
 
@@ -34,7 +35,7 @@ Namespace Controls.Map.Layers
 
     ''' =======================================================================
     ''' <summary>
-    ''' 
+    ''' Default layer editor control for working with Ecospace map layers.
     ''' </summary>
     ''' =======================================================================
     Public Class ucLayerEditorDefault
@@ -73,7 +74,7 @@ Namespace Controls.Map.Layers
 
             If (Me.Layer IsNot Nothing) Then
                 Me.m_fpName.Enabled = Me.HasUniqueSource()
-                Me.m_fpName.Value = Layer.Name
+                Me.m_fpName.Value = Me.Layer.Name
 
                 Dim sMin As Single = cCore.NULL_VALUE
                 Dim sMax As Single = cCore.NULL_VALUE
@@ -89,6 +90,8 @@ Namespace Controls.Map.Layers
 
                 Me.m_tbxMin.Text = cStringUtils.FormatNumber(sMin)
                 Me.m_tbxMax.Text = cStringUtils.FormatNumber(sMax)
+                Me.m_tbxunits.Text = Me.Layer.Units
+
             Else
                 Me.m_fpName.Enabled = False
             End If
@@ -142,7 +145,7 @@ Namespace Controls.Map.Layers
         End Function
 
         Private Sub OnDoubleclickValue(sender As System.Object, e As System.EventArgs) _
-            Handles m_tbxMax.DoubleClick, m_tbxMin.DoubleClick
+            Handles m_tbxMax.DoubleClick, m_tbxunits.DoubleClick, m_tbxMin.DoubleClick
             Me.EditLayer(eLayerEditTypes.EditData)
         End Sub
 

@@ -83,7 +83,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Advection ({0}).
+        '''  Looks up a localized string similar to Advection {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_ADVECTION() As String
             Get
@@ -299,7 +299,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Contaminants (rel).
+        '''  Looks up a localized string similar to Contaminants.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_RELCIN() As String
             Get
@@ -308,7 +308,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to PP (relative).
+        '''  Looks up a localized string similar to Relative PP.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_RELPP() As String
             Get
@@ -677,6 +677,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to absence.
+        '''</summary>
+        Public Shared ReadOnly Property UNIT_ABSENCE() As String
+            Get
+                Return ResourceManager.GetString("UNIT_ABSENCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to km².
         '''</summary>
         Public Shared ReadOnly Property UNIT_AREA_KM2() As String
@@ -785,7 +794,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to fraction.
+        '''  Looks up a localized string similar to presence.
+        '''</summary>
+        Public Shared ReadOnly Property UNIT_PRESENCE() As String
+            Get
+                Return ResourceManager.GetString("UNIT_PRESENCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to proportion.
         '''</summary>
         Public Shared ReadOnly Property UNIT_PROPORTION() As String
             Get
@@ -808,6 +826,24 @@ Namespace My.Resources
         Public Shared ReadOnly Property UNIT_TIME_YEAR() As String
             Get
                 Return ResourceManager.GetString("UNIT_TIME_YEAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to #.
+        '''</summary>
+        Public Shared ReadOnly Property UNITS_NUMBER() As String
+            Get
+                Return ResourceManager.GetString("UNITS_NUMBER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to weight.
+        '''</summary>
+        Public Shared ReadOnly Property UNITS_WEIGHT() As String
+            Get
+                Return ResourceManager.GetString("UNITS_WEIGHT", resourceCulture)
             End Get
         End Property
         
@@ -2063,7 +2099,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to TotalValue.
+        '''  Looks up a localized string similar to Total value.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHSTATSTOTALVALUE() As String
             Get
@@ -2081,7 +2117,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcopathWeight.
+        '''  Looks up a localized string similar to Weight.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOPATHWEIGHT() As String
             Get
@@ -2783,7 +2819,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcospaceMapBiomass.
+        '''  Looks up a localized string similar to Biomass map.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACEMAPBIOMASS() As String
             Get
@@ -2792,7 +2828,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcospaceMapCatch.
+        '''  Looks up a localized string similar to Catch map.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACEMAPCATCH() As String
             Get
@@ -2801,7 +2837,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcospaceMapEffort.
+        '''  Looks up a localized string similar to Effort map.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACEMAPEFFORT() As String
             Get
@@ -2819,7 +2855,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcospaceMapSumEffort.
+        '''  Looks up a localized string similar to Total effort map.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACEMAPSUMEFFORT() As String
             Get
@@ -2837,7 +2873,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcospaceRegionBiomass.
+        '''  Looks up a localized string similar to Biomass per region.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACEREGIONBIOMASS() As String
             Get
@@ -2909,7 +2945,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcospaceRegionNumber.
+        '''  Looks up a localized string similar to Region no||Region number.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACEREGIONNUMBER() As String
             Get
@@ -2927,7 +2963,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EcospaceSS.
+        '''  Looks up a localized string similar to Sum of squares.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOSPACESS() As String
             Get
@@ -3080,7 +3116,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to EndAge.
+        '''  Looks up a localized string similar to End age.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ENDAGE() As String
             Get

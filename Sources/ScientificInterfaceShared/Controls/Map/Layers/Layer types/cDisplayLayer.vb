@@ -199,6 +199,17 @@ Namespace Controls.Map.Layers
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Get the units of this layer.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Overridable ReadOnly Property Units() As String
+            Get
+                Return ""
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Get the layer <see cref="cLayerRenderer">renderer</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------

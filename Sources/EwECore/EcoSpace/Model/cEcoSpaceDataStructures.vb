@@ -325,6 +325,8 @@ Public Class cEcospaceDataStructures
     Public EnvironmentalLayerName() As String
     ''' <summary>Environmental layer descriptions</summary>
     Public EnvironmentalLayerDescription() As String
+    ''' <summary>Environmental layer units</summary>
+    Public EnvironmentalLayerUnits() As String
     ''' <summary>Environmental layer data (layer)(row, col)</summary>
     Public EnvironmentalLayerMap()(,) As Single
 
@@ -1312,6 +1314,7 @@ Public Class cEcospaceDataStructures
             ReDim Me.EnvironmentalLayerDBID(nEnvironmentalDriverLayers)
             ReDim Me.EnvironmentalLayerName(nEnvironmentalDriverLayers)
             ReDim Me.EnvironmentalLayerDescription(nEnvironmentalDriverLayers)
+            ReDim Me.EnvironmentalLayerUnits(nEnvironmentalDriverLayers)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".ReDimMapVars() Error: " & ex.Message)

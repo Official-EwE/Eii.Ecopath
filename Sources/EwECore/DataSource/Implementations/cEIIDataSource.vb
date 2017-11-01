@@ -1061,7 +1061,7 @@ Public Class cEIIDataSource
 
 #End Region ' EcoSim
 
-#Region "Ecospace"
+#Region " Ecospace "
 
     Public Function LoadEcospaceScenario(ByVal iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.LoadEcospaceScenario
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -1161,7 +1161,7 @@ Public Class cEIIDataSource
         Return bSucces
     End Function
 
-    Public Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AddEcospaceDriverLayer
+    Public Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, strUnits As String, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AddEcospaceDriverLayer
         Return False
     End Function
 

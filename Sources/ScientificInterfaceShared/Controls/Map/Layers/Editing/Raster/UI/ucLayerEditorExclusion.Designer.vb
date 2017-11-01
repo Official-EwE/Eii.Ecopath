@@ -41,7 +41,6 @@ Namespace Controls.Map.Layers
             Me.m_rbInclude = New System.Windows.Forms.RadioButton()
             Me.m_lblValue = New System.Windows.Forms.Label()
             Me.m_rbExclude = New System.Windows.Forms.RadioButton()
-            Me.m_hdrUtility = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpButtons.SuspendLayout()
             Me.SuspendLayout()
@@ -49,7 +48,7 @@ Namespace Controls.Map.Layers
             'm_lblDepth
             '
             Me.m_lblDepth.AutoSize = True
-            Me.m_lblDepth.Location = New System.Drawing.Point(0, 188)
+            Me.m_lblDepth.Location = New System.Drawing.Point(0, 199)
             Me.m_lblDepth.Name = "m_lblDepth"
             Me.m_lblDepth.Size = New System.Drawing.Size(51, 13)
             Me.m_lblDepth.TabIndex = 2
@@ -58,9 +57,9 @@ Namespace Controls.Map.Layers
             'm_nudDepth
             '
             Me.m_nudDepth.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_nudDepth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-            Me.m_nudDepth.Location = New System.Drawing.Point(68, 186)
+            Me.m_nudDepth.Location = New System.Drawing.Point(68, 197)
             Me.m_nudDepth.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudDepth.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudDepth.Name = "m_nudDepth"
@@ -82,7 +81,7 @@ Namespace Controls.Map.Layers
             'm_btnSet
             '
             Me.m_btnSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnSet.Location = New System.Drawing.Point(147, 183)
+            Me.m_btnSet.Location = New System.Drawing.Point(147, 194)
             Me.m_btnSet.Name = "m_btnSet"
             Me.m_btnSet.Size = New System.Drawing.Size(50, 23)
             Me.m_btnSet.TabIndex = 4
@@ -92,7 +91,7 @@ Namespace Controls.Map.Layers
             'm_cbAlwaysShowExcluded
             '
             Me.m_cbAlwaysShowExcluded.AutoSize = True
-            Me.m_cbAlwaysShowExcluded.Location = New System.Drawing.Point(3, 241)
+            Me.m_cbAlwaysShowExcluded.Location = New System.Drawing.Point(3, 252)
             Me.m_cbAlwaysShowExcluded.Name = "m_cbAlwaysShowExcluded"
             Me.m_cbAlwaysShowExcluded.Size = New System.Drawing.Size(157, 17)
             Me.m_cbAlwaysShowExcluded.TabIndex = 6
@@ -102,13 +101,13 @@ Namespace Controls.Map.Layers
             'm_tlpButtons
             '
             Me.m_tlpButtons.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tlpButtons.ColumnCount = 2
             Me.m_tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.m_tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
             Me.m_tlpButtons.Controls.Add(Me.m_btnClear, 0, 0)
             Me.m_tlpButtons.Controls.Add(Me.m_btnInvert, 1, 0)
-            Me.m_tlpButtons.Location = New System.Drawing.Point(3, 212)
+            Me.m_tlpButtons.Location = New System.Drawing.Point(3, 223)
             Me.m_tlpButtons.Name = "m_tlpButtons"
             Me.m_tlpButtons.RowCount = 1
             Me.m_tlpButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -129,7 +128,7 @@ Namespace Controls.Map.Layers
             'm_rbInclude
             '
             Me.m_rbInclude.AutoSize = True
-            Me.m_rbInclude.Location = New System.Drawing.Point(68, 122)
+            Me.m_rbInclude.Location = New System.Drawing.Point(68, 151)
             Me.m_rbInclude.Name = "m_rbInclude"
             Me.m_rbInclude.Size = New System.Drawing.Size(79, 17)
             Me.m_rbInclude.TabIndex = 7
@@ -140,7 +139,7 @@ Namespace Controls.Map.Layers
             'm_lblValue
             '
             Me.m_lblValue.AutoSize = True
-            Me.m_lblValue.Location = New System.Drawing.Point(3, 124)
+            Me.m_lblValue.Location = New System.Drawing.Point(3, 153)
             Me.m_lblValue.Name = "m_lblValue"
             Me.m_lblValue.Size = New System.Drawing.Size(37, 13)
             Me.m_lblValue.TabIndex = 8
@@ -149,7 +148,7 @@ Namespace Controls.Map.Layers
             'm_rbExclude
             '
             Me.m_rbExclude.AutoSize = True
-            Me.m_rbExclude.Location = New System.Drawing.Point(68, 145)
+            Me.m_rbExclude.Location = New System.Drawing.Point(68, 174)
             Me.m_rbExclude.Name = "m_rbExclude"
             Me.m_rbExclude.Size = New System.Drawing.Size(82, 17)
             Me.m_rbExclude.TabIndex = 7
@@ -157,26 +156,10 @@ Namespace Controls.Map.Layers
             Me.m_rbExclude.Text = "&Exclude cell"
             Me.m_rbExclude.UseVisualStyleBackColor = True
             '
-            'm_hdrUtility
-            '
-            Me.m_hdrUtility.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_hdrUtility.CanCollapseParent = False
-            Me.m_hdrUtility.CollapsedParentHeight = 0
-            Me.m_hdrUtility.IsCollapsed = False
-            Me.m_hdrUtility.Location = New System.Drawing.Point(3, 165)
-            Me.m_hdrUtility.Name = "m_hdrUtility"
-            Me.m_hdrUtility.Size = New System.Drawing.Size(194, 18)
-            Me.m_hdrUtility.TabIndex = 9
-            Me.m_hdrUtility.Text = "Utilities"
-            Me.m_hdrUtility.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
             'ucLayerEditorExclusion
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-            Me.Controls.Add(Me.m_hdrUtility)
             Me.Controls.Add(Me.m_lblValue)
             Me.Controls.Add(Me.m_rbExclude)
             Me.Controls.Add(Me.m_rbInclude)
@@ -186,7 +169,7 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_btnSet)
             Me.Controls.Add(Me.m_nudDepth)
             Me.Name = "ucLayerEditorExclusion"
-            Me.Size = New System.Drawing.Size(200, 262)
+            Me.Size = New System.Drawing.Size(200, 275)
             Me.Controls.SetChildIndex(Me.m_nudDepth, 0)
             Me.Controls.SetChildIndex(Me.m_btnSet, 0)
             Me.Controls.SetChildIndex(Me.m_lblDepth, 0)
@@ -195,7 +178,6 @@ Namespace Controls.Map.Layers
             Me.Controls.SetChildIndex(Me.m_rbInclude, 0)
             Me.Controls.SetChildIndex(Me.m_rbExclude, 0)
             Me.Controls.SetChildIndex(Me.m_lblValue, 0)
-            Me.Controls.SetChildIndex(Me.m_hdrUtility, 0)
             CType(Me.m_nudDepth, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpButtons.ResumeLayout(False)
             Me.ResumeLayout(False)
@@ -212,7 +194,6 @@ Namespace Controls.Map.Layers
         Private WithEvents m_rbInclude As System.Windows.Forms.RadioButton
         Private WithEvents m_lblValue As System.Windows.Forms.Label
         Private WithEvents m_rbExclude As System.Windows.Forms.RadioButton
-        Private WithEvents m_hdrUtility As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
     End Class
 

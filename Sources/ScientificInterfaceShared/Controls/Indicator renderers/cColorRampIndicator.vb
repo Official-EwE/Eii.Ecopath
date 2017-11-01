@@ -54,13 +54,13 @@ Namespace Controls
             Dim gtmp As Graphics = Graphics.FromImage(bmp)
 
             If bHorizontal Then
-                For i As Integer = 0 To rc.Width - 1
+                For i As Integer = 0 To rc.Width
                     Using p As New Pen(ramp.GetColor(i / rc.Width), 1)
                         gtmp.DrawLine(p, i, 0, i, rc.Height - 1)
                     End Using
                 Next
             Else
-                For i As Integer = 0 To rc.Height - 1
+                For i As Integer = 0 To rc.Height
                     Using p As New Pen(ramp.GetColor(i / rc.Height), 1)
                         gtmp.DrawLine(p, 0, rc.Height - i, rc.Width - 1, rc.Height - i)
                     End Using

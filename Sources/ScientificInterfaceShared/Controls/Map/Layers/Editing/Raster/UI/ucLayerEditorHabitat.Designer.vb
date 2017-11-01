@@ -58,7 +58,7 @@ Namespace Controls.Map.Layers
             'ucLayerEditorHabitat
             '
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_cbUseHabitatAreaCorrection)
             Me.Name = "ucLayerEditorHabitat"
             Me.Controls.SetChildIndex(Me.m_cbUseHabitatAreaCorrection, 0)

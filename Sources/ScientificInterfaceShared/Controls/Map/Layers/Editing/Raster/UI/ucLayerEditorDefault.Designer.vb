@@ -48,11 +48,13 @@ Namespace Controls.Map.Layers
             Me.m_lblCursor = New System.Windows.Forms.Label()
             Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_tbxName = New System.Windows.Forms.TextBox()
-            Me.m_lblMin = New System.Windows.Forms.Label()
-            Me.m_tbxMin = New System.Windows.Forms.TextBox()
+            Me.m_lblUnits = New System.Windows.Forms.Label()
+            Me.m_tbxunits = New System.Windows.Forms.TextBox()
             Me.m_tbxMax = New System.Windows.Forms.TextBox()
             Me.m_lblMax = New System.Windows.Forms.Label()
             Me.m_plLegend = New System.Windows.Forms.Panel()
+            Me.m_lblMin = New System.Windows.Forms.Label()
+            Me.m_tbxMin = New System.Windows.Forms.TextBox()
             Me.SuspendLayout()
             '
             'm_ucSlider
@@ -79,16 +81,16 @@ Namespace Controls.Map.Layers
             resources.ApplyResources(Me.m_tbxName, "m_tbxName")
             Me.m_tbxName.Name = "m_tbxName"
             '
-            'm_lblMin
+            'm_lblUnits
             '
-            resources.ApplyResources(Me.m_lblMin, "m_lblMin")
-            Me.m_lblMin.Name = "m_lblMin"
+            resources.ApplyResources(Me.m_lblUnits, "m_lblUnits")
+            Me.m_lblUnits.Name = "m_lblUnits"
             '
-            'm_tbxMin
+            'm_tbxunits
             '
-            resources.ApplyResources(Me.m_tbxMin, "m_tbxMin")
-            Me.m_tbxMin.Name = "m_tbxMin"
-            Me.m_tbxMin.ReadOnly = True
+            resources.ApplyResources(Me.m_tbxunits, "m_tbxunits")
+            Me.m_tbxunits.Name = "m_tbxunits"
+            Me.m_tbxunits.ReadOnly = True
             '
             'm_tbxMax
             '
@@ -107,6 +109,17 @@ Namespace Controls.Map.Layers
             Me.m_plLegend.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_plLegend.Name = "m_plLegend"
             '
+            'm_lblMin
+            '
+            resources.ApplyResources(Me.m_lblMin, "m_lblMin")
+            Me.m_lblMin.Name = "m_lblMin"
+            '
+            'm_tbxMin
+            '
+            resources.ApplyResources(Me.m_tbxMin, "m_tbxMin")
+            Me.m_tbxMin.Name = "m_tbxMin"
+            Me.m_tbxMin.ReadOnly = True
+            '
             'ucLayerEditorDefault
             '
             resources.ApplyResources(Me, "$this")
@@ -114,9 +127,11 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_plLegend)
             Me.Controls.Add(Me.m_tbxMax)
             Me.Controls.Add(Me.m_tbxMin)
+            Me.Controls.Add(Me.m_tbxunits)
             Me.Controls.Add(Me.m_tbxName)
-            Me.Controls.Add(Me.m_lblMax)
             Me.Controls.Add(Me.m_lblMin)
+            Me.Controls.Add(Me.m_lblMax)
+            Me.Controls.Add(Me.m_lblUnits)
             Me.Controls.Add(Me.m_lblName)
             Me.Controls.Add(Me.m_lblCursor)
             Me.Controls.Add(Me.m_ucSlider)
@@ -124,9 +139,11 @@ Namespace Controls.Map.Layers
             Me.Controls.SetChildIndex(Me.m_ucSlider, 0)
             Me.Controls.SetChildIndex(Me.m_lblCursor, 0)
             Me.Controls.SetChildIndex(Me.m_lblName, 0)
-            Me.Controls.SetChildIndex(Me.m_lblMin, 0)
+            Me.Controls.SetChildIndex(Me.m_lblUnits, 0)
             Me.Controls.SetChildIndex(Me.m_lblMax, 0)
+            Me.Controls.SetChildIndex(Me.m_lblMin, 0)
             Me.Controls.SetChildIndex(Me.m_tbxName, 0)
+            Me.Controls.SetChildIndex(Me.m_tbxunits, 0)
             Me.Controls.SetChildIndex(Me.m_tbxMin, 0)
             Me.Controls.SetChildIndex(Me.m_tbxMax, 0)
             Me.Controls.SetChildIndex(Me.m_plLegend, 0)
@@ -139,12 +156,13 @@ Namespace Controls.Map.Layers
         Private WithEvents m_lblCursor As System.Windows.Forms.Label
         Private WithEvents m_lblName As System.Windows.Forms.Label
         Private WithEvents m_tbxName As System.Windows.Forms.TextBox
-        Private WithEvents m_lblMin As System.Windows.Forms.Label
-        Private WithEvents m_tbxMin As System.Windows.Forms.TextBox
+        Private WithEvents m_lblUnits As System.Windows.Forms.Label
+        Private WithEvents m_tbxunits As System.Windows.Forms.TextBox
         Private WithEvents m_tbxMax As System.Windows.Forms.TextBox
         Private WithEvents m_lblMax As System.Windows.Forms.Label
         Private WithEvents m_plLegend As System.Windows.Forms.Panel
-
+        Private WithEvents m_lblMin As Label
+        Private WithEvents m_tbxMin As TextBox
     End Class
 
 End Namespace

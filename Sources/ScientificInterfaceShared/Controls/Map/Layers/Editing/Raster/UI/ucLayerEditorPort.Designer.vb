@@ -58,7 +58,7 @@ Namespace Controls.Map.Layers
             Me.m_tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.55556!))
             Me.m_tlpButtons.Controls.Add(Me.m_btnClear, 0, 0)
             Me.m_tlpButtons.Controls.Add(Me.m_btnSet, 1, 0)
-            Me.m_tlpButtons.Location = New System.Drawing.Point(68, 152)
+            Me.m_tlpButtons.Location = New System.Drawing.Point(68, 178)
             Me.m_tlpButtons.Name = "m_tlpButtons"
             Me.m_tlpButtons.RowCount = 1
             Me.m_tlpButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
@@ -90,10 +90,10 @@ Namespace Controls.Map.Layers
             'm_cmbFleet
             '
             Me.m_cmbFleet.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cmbFleet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbFleet.FormattingEnabled = True
-            Me.m_cmbFleet.Location = New System.Drawing.Point(68, 125)
+            Me.m_cmbFleet.Location = New System.Drawing.Point(68, 151)
             Me.m_cmbFleet.MaxDropDownItems = 12
             Me.m_cmbFleet.Name = "m_cmbFleet"
             Me.m_cmbFleet.Size = New System.Drawing.Size(129, 21)
@@ -103,7 +103,7 @@ Namespace Controls.Map.Layers
             '
             Me.m_lblFleet.AutoSize = True
             Me.m_lblFleet.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblFleet.Location = New System.Drawing.Point(0, 128)
+            Me.m_lblFleet.Location = New System.Drawing.Point(3, 154)
             Me.m_lblFleet.Name = "m_lblFleet"
             Me.m_lblFleet.Size = New System.Drawing.Size(33, 13)
             Me.m_lblFleet.TabIndex = 4
@@ -113,12 +113,11 @@ Namespace Controls.Map.Layers
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-            Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_cmbFleet)
             Me.Controls.Add(Me.m_lblFleet)
             Me.Controls.Add(Me.m_tlpButtons)
             Me.Name = "ucLayerEditorPort"
-            Me.Size = New System.Drawing.Size(200, 186)
+            Me.Size = New System.Drawing.Size(200, 211)
             Me.Controls.SetChildIndex(Me.m_tlpButtons, 0)
             Me.Controls.SetChildIndex(Me.m_lblFleet, 0)
             Me.Controls.SetChildIndex(Me.m_cmbFleet, 0)

@@ -23,6 +23,7 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.SpatialData
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Properties
@@ -319,6 +320,22 @@ Namespace Controls.Map.Layers
             Set(ByVal value As String)
                 MyBase.Name = value
             End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the formatted units for this layer.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Overrides ReadOnly Property Units As String
+            Get
+                Dim u As New cUnits(Me.m_uic.Core)
+                Dim md As cVariableMetaData = cVariableMetaData.Get(Me.VarName)
+                If (Me.Data IsNot Nothing) Then
+                    md = Me.Data.MetadataCell
+                End If
+                Return u.ToString(md)
+            End Get
         End Property
 
         ''' -----------------------------------------------------------------------

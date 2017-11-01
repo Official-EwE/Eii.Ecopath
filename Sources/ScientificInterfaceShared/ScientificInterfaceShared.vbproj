@@ -809,6 +809,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitat.resx">
       <DependentUpon>ucLayerEditorHabitat.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacity.resx">
       <DependentUpon>ucLayerEditorHabitatCapacity.vb</DependentUpon>

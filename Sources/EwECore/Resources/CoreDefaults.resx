@@ -124,7 +124,7 @@
     <value>(default)</value>
   </data>
   <data name="CORE_DEFAULT_ADVECTION" xml:space="preserve">
-    <value>Advection ({0})</value>
+    <value>Advection {0}</value>
     <comment>{0} velocity field name</comment>
   </data>
   <data name="CORE_DEFAULT_BIOMASSFORCING" xml:space="preserve">
@@ -210,10 +210,10 @@
     <value>Regions</value>
   </data>
   <data name="CORE_DEFAULT_RELCIN" xml:space="preserve">
-    <value>Contaminants (rel)</value>
+    <value>Contaminants</value>
   </data>
   <data name="CORE_DEFAULT_RELPP" xml:space="preserve">
-    <value>PP (relative)</value>
+    <value>Relative PP</value>
   </data>
   <data name="CORE_DEFAULT_SAILCOST" xml:space="preserve">
     <value>Sailing cost ({0}: {1})</value>
@@ -379,7 +379,7 @@
     <value>m</value>
   </data>
   <data name="UNIT_PROPORTION" xml:space="preserve">
-    <value>fraction</value>
+    <value>proportion</value>
   </data>
   <data name="UNIT_TIME_DAY" xml:space="preserve">
     <value>day</value>
@@ -1114,13 +1114,13 @@
     <value>Total throughput</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALVALUE" xml:space="preserve">
-    <value>TotalValue</value>
+    <value>Total value</value>
   </data>
   <data name="VARIABLE_ECOPATHSTATSTOTALVARCOST" xml:space="preserve">
     <value>Total variable cost</value>
   </data>
   <data name="VARIABLE_ECOPATHWEIGHT" xml:space="preserve">
-    <value>EcopathWeight</value>
+    <value>Weight</value>
   </data>
   <data name="VARIABLE_ECOSIMAVGPRED" xml:space="preserve">
     <value>EcosimAvgPred</value>
@@ -1351,25 +1351,25 @@
     <value>EcospaceIsEcosimBioForcingLoaded</value>
   </data>
   <data name="VARIABLE_ECOSPACEMAPBIOMASS" xml:space="preserve">
-    <value>EcospaceMapBiomass</value>
+    <value>Biomass map</value>
   </data>
   <data name="VARIABLE_ECOSPACEMAPCATCH" xml:space="preserve">
-    <value>EcospaceMapCatch</value>
+    <value>Catch map</value>
   </data>
   <data name="VARIABLE_ECOSPACEMAPEFFORT" xml:space="preserve">
-    <value>EcospaceMapEffort</value>
+    <value>Effort map</value>
   </data>
   <data name="VARIABLE_ECOSPACEMAPOUTPUTDIR" xml:space="preserve">
     <value>EcospaceMapOutputDir</value>
   </data>
   <data name="VARIABLE_ECOSPACEMAPSUMEFFORT" xml:space="preserve">
-    <value>EcospaceMapSumEffort</value>
+    <value>Total effort map</value>
   </data>
   <data name="VARIABLE_ECOSPACENUMBERSUMMARYTIMESTEPS" xml:space="preserve">
     <value>EcospaceNumberSummaryTimeSteps</value>
   </data>
   <data name="VARIABLE_ECOSPACEREGIONBIOMASS" xml:space="preserve">
-    <value>EcospaceRegionBiomass</value>
+    <value>Biomass per region</value>
   </data>
   <data name="VARIABLE_ECOSPACEREGIONBIOMASSEND" xml:space="preserve">
     <value>EcospaceRegionBiomassEnd</value>
@@ -1393,13 +1393,13 @@
     <value>EcospaceRegionFleetGroupCatchYear</value>
   </data>
   <data name="VARIABLE_ECOSPACEREGIONNUMBER" xml:space="preserve">
-    <value>EcospaceRegionNumber</value>
+    <value>Region no||Region number</value>
   </data>
   <data name="VARIABLE_ECOSPACERELATIVEBIOMASSOVERTIME" xml:space="preserve">
     <value>EcospaceRelativeBiomassOverTime</value>
   </data>
   <data name="VARIABLE_ECOSPACESS" xml:space="preserve">
-    <value>EcospaceSS</value>
+    <value>Sum of squares</value>
   </data>
   <data name="VARIABLE_ECOSPACESSCALCULATED" xml:space="preserve">
     <value>EcospaceSSCalculated</value>
@@ -1438,7 +1438,7 @@
     <value>EggAtSpawn</value>
   </data>
   <data name="VARIABLE_ENDAGE" xml:space="preserve">
-    <value>EndAge</value>
+    <value>End age</value>
   </data>
   <data name="VARIABLE_EQUILIBRIUMSTEPSIZE" xml:space="preserve">
     <value>EquilibriumStepSize</value>
@@ -2762,5 +2762,17 @@
   </data>
   <data name="VERSION_EXT_COMPILED" xml:space="preserve">
     <value>{0} (compiled {1})</value>
+  </data>
+  <data name="UNITS_NUMBER" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="UNITS_WEIGHT" xml:space="preserve">
+    <value>weight</value>
+  </data>
+  <data name="UNIT_ABSENCE" xml:space="preserve">
+    <value>absence</value>
+  </data>
+  <data name="UNIT_PRESENCE" xml:space="preserve">
+    <value>presence</value>
   </data>
 </root>

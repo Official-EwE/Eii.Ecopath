@@ -55,8 +55,11 @@ Public Class cEcospaceLayerDriver
 
             ' Description
             meta = New cVariableMetaData(60000)
-            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str,
-                                meta)
+            val = New cValue(New String(desc), eVarNameFlags.Description, eStatusFlags.OK, eValueTypes.Str, meta)
+            m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData(50)
+            val = New cValue(New String(desc), eVarNameFlags.UnitEnvDriver, eStatusFlags.OK, eValueTypes.Str, meta)
             m_values.Add(val.varName, val)
 
             'set status flags to default values
@@ -68,6 +71,9 @@ Public Class cEcospaceLayerDriver
             Debug.Assert(False, "Error creating new cEcospaceLayerDriver.")
             cLog.Write(Me.ToString & ".New(..) Error creating new cEcospaceLayerDriver. Error: " & ex.Message)
         End Try
+
+        ' Use local metadata for distributing per-layer units
+        Me.m_metadata = cVariableMetaData.Default(eValueTypes.Sng)
 
     End Sub
 
@@ -125,6 +131,17 @@ Public Class cEcospaceLayerDriver
         End Get
         Set(ByVal value As String)
             SetVariable(eVarNameFlags.Description, value)
+        End Set
+    End Property
+
+    Public Property Units() As String
+        Get
+            Return CStr(GetVariable(eVarNameFlags.UnitEnvDriver))
+        End Get
+        Set(ByVal value As String)
+            ' Store units in local metadata
+            Me.m_metadata.Units = value
+            SetVariable(eVarNameFlags.UnitEnvDriver, value)
         End Set
     End Property
 

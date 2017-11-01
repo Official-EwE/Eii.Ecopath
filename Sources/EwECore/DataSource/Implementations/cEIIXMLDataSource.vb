@@ -2667,6 +2667,7 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.EnvironmentalLayerDBID(iLayer) = CInt(drow("LayerID"))
                 ecospaceDS.EnvironmentalLayerName(iLayer) = CStr(drow("LayerName"))
                 ecospaceDS.EnvironmentalLayerDescription(iLayer) = CStr(drow("LayerDescription"))
+                ecospaceDS.EnvironmentalLayerUnits(iLayer) = CStr(ReadSafe(drow, "LayerUnits", ""))
 
                 Dim strMap As String = CStr(Me.ReadSafe(drow, "LayerMap", ""))
                 bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.EnvironmentalLayerMap(iLayer),
@@ -3401,7 +3402,7 @@ Public Class cEIIXMLDataSource
 
 #Region " Ecospace bits "
 
-    Public Function AddEcospaceDriverLayer(strName As String, strDescription As String, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AddEcospaceDriverLayer
+    Public Function AddEcospaceDriverLayer(strName As String, strDescription As String, strUnits As String, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AddEcospaceDriverLayer
         Return False
     End Function
 
