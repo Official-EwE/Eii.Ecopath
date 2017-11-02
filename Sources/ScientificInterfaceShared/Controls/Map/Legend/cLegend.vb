@@ -192,6 +192,8 @@ Namespace Controls.Map
         Public Sub New(uic As cUIContext, strTitle As String)
             Me.m_uic = uic
             Me.m_strTitle = strTitle
+            Me.m_fmt.Alignment = If(cSystemUtils.IsRightToLeft, StringAlignment.Far, StringAlignment.Near)
+            Me.m_fmt.LineAlignment = StringAlignment.Center
         End Sub
 
 #End Region ' Constructors
@@ -234,28 +236,28 @@ Namespace Controls.Map
         ''' Get/set the width of a layer box.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property LayerBoxWidth As Integer = 20
+        Public Property LayerBoxWidth As Integer = 24
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the height of a layer box.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property LayerBoxHeight As Integer = 12
+        Public Property LayerBoxHeight As Integer = 16
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the horizontal spacing between a layer box and its label.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property LayerBoxHSpacing As Integer = 5
+        Public Property LayerBoxHSpacing As Integer = 4
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the vertical spacing between two layer boxes.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property LayerBoxVSpacing As Integer = 4
+        Public Property LayerBoxVSpacing As Integer = 6
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -293,6 +295,7 @@ Namespace Controls.Map
 
             Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
             Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+            Dim ftScale As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
 
             ' Measure size of legend
             Dim iWidth As Integer = 0
@@ -310,7 +313,7 @@ Namespace Controls.Map
                 End If
 
                 For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
-                    szfItem = Me.MeasureLayer(g, ftLayer, Me.m_lLayers(iLayer))
+                    szfItem = Me.MeasureLayer(g, ftLayer, ftScale, Me.m_lLayers(iLayer))
                     If iLayer > 0 Then iHeight += 2 * Me.LayerBoxVSpacing
                     iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
                     iHeight += CInt(Math.Ceiling(szfItem.Height))
@@ -319,9 +322,10 @@ Namespace Controls.Map
 
             End Try
 
-            iHeight += 1
-            iWidth += 1
+            iHeight += 1 + 2 * Me.LayerBoxVSpacing
+            iWidth += 1 + 2 * Me.LayerBoxHSpacing
 
+            ftScale.Dispose()
             ftTitle.Dispose()
             ftLayer.Dispose()
 
@@ -341,6 +345,7 @@ Namespace Controls.Map
 
             Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
             Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+            Dim ftScale As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
             Dim szfItem As SizeF = Nothing
             Dim iHeight As Integer
             Dim bSuccess As Boolean = True
@@ -348,8 +353,8 @@ Namespace Controls.Map
             g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
             g.TextRenderingHint = Drawing.Text.TextRenderingHint.AntiAlias
 
-            'ptOrigin.X += Me.LayerBoxHSpacing
-            'ptOrigin.Y += Me.LayerBoxHSpacing
+            ptOrigin.X += Me.LayerBoxHSpacing
+            ptOrigin.Y += Me.LayerBoxHSpacing
 
             Try
 
@@ -360,9 +365,9 @@ Namespace Controls.Map
                 End If
 
                 For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
-                    szfItem = Me.MeasureLayer(g, ftLayer, Me.m_lLayers(iLayer))
+                    szfItem = Me.MeasureLayer(g, ftLayer, ftScale, Me.m_lLayers(iLayer))
                     If iLayer > 0 Then iHeight += 2 * Me.LayerBoxVSpacing
-                    Me.DrawLayer(g, ftLayer, Me.m_lLayers(iLayer), New Point(ptOrigin.X, ptOrigin.Y + iHeight))
+                    Me.DrawLayer(g, ftLayer, ftScale, Me.m_lLayers(iLayer), New Point(ptOrigin.X, ptOrigin.Y + iHeight))
                     iHeight += CInt(Math.Ceiling(szfItem.Height))
                 Next iLayer
 
@@ -370,6 +375,7 @@ Namespace Controls.Map
                 bSuccess = False
             End Try
 
+            ftScale.Dispose()
             ftTitle.Dispose()
             ftLayer.Dispose()
 
@@ -425,7 +431,7 @@ Namespace Controls.Map
             g.DrawString(Me.m_strTitle, ft, Brushes.Black, pt)
         End Sub
 
-        Private Function MeasureLayer(ByVal g As Graphics, ByVal ft As Font, ByVal l As cLegendEntry) As SizeF
+        Private Function MeasureLayer(ByVal g As Graphics, ByVal ftLabel As Font, ByVal ftScale As Font, ByVal l As cLegendEntry) As SizeF
 
             Dim style As eLayerRenderStyle = Me.GetRenderStyle(l)
             Dim szBox As New SizeF(0, 0)
@@ -441,19 +447,17 @@ Namespace Controls.Map
                     szBox.Height += Me.LayerBoxVSpacing
                 End If
 
-                Dim szItem As SizeF = g.MeasureString(If(String.IsNullOrWhiteSpace(strText), "X", strText), ft, 10000, Me.m_fmt)
-                Debug.Print(szItem.Width & " = " & strText)
+                Dim szName As SizeF = g.MeasureString(If(String.IsNullOrWhiteSpace(strText), "X", strText), ftLabel, 10000, Me.m_fmt)
 
                 Select Case style
                     Case eLayerRenderStyle.Element, eLayerRenderStyle.Symbol
-                        szItem.Height = Math.Max(Me.LayerBoxHeight, szItem.Height)
+                        szName.Height = Math.Max(Me.LayerBoxHeight, szName.Height)
                     Case eLayerRenderStyle.Gradient
-                        szItem.Height = Math.Max(Me.LayerBoxHeight, szItem.Height * 3)
+                        szName.Height = Math.Max(Me.LayerBoxHeight, szName.Height * 3)
                 End Select
-                szItem.Width += (Me.LayerBoxWidth + Me.LayerBoxHSpacing)
 
-                szBox.Width = Math.Max(szBox.Width, szItem.Width)
-                szBox.Height += szItem.Height
+                szBox.Width = Me.LayerBoxWidth + Me.LayerBoxHSpacing + szName.Width
+                szBox.Height += szName.Height
 
             Next
 
@@ -461,42 +465,50 @@ Namespace Controls.Map
 
         End Function
 
-        Private Sub DrawLayer(ByVal g As Graphics, ByVal ft As Font, ByVal l As cLegendEntry, ByVal pt As Point)
+        Private Sub DrawLayer(ByVal g As Graphics, ByVal ftLabel As Font, ByVal ftScale As Font, ByVal l As cLegendEntry, ByVal pt As Point)
 
             Dim style As eLayerRenderStyle = Me.GetRenderStyle(l)
+            Dim strText As String = ""
 
             For i As Integer = 0 To l.Renderer.nSymbols
 
-                Dim strText As String = l.Label
-                If (i > 0) Then
+                If (i = 0) Then
+                    strText = l.Label
+                Else
                     strText = l.Renderer.SymbolName(i)
                     style = eLayerRenderStyle.Element
                 End If
 
-                Dim szBox As SizeF = g.MeasureString(If(String.IsNullOrWhiteSpace(strText), "X", strText), ft, 10000, Me.m_fmt)
-                Dim rcPreview As Rectangle = New Rectangle(pt.X, pt.Y, Me.LayerBoxWidth, CInt(Math.Max(Me.LayerBoxHeight, szBox.Height)))
+                Dim szName As SizeF = g.MeasureString(If(String.IsNullOrWhiteSpace(strText), "X", strText), ftLabel, 10000, Me.m_fmt)
+                Dim rcPreview As Rectangle = New Rectangle(pt.X, pt.Y, Me.LayerBoxWidth, CInt(Math.Max(Me.LayerBoxHeight, szName.Height)))
                 Dim iSymbolKey As Integer = l.Renderer.SymbolKey(i)
+                Dim fmt As StringFormat = CType(Me.m_fmt.Clone(), StringFormat)
+                Dim rcItem As New RectangleF(pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y, szName.Width, szName.Height)
+
                 Select Case style
 
                     Case eLayerRenderStyle.Element
                         l.Renderer.RenderPreview(g, rcPreview, iSymbolKey)
                         g.DrawRectangle(Pens.Black, rcPreview)
-                        g.DrawString(strText, ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y)
+                        g.DrawString(strText, ftLabel, Brushes.Black, rcItem, fmt)
 
                     Case eLayerRenderStyle.Symbol
                         l.Renderer.RenderPreview(g, rcPreview, iSymbolKey)
-                        g.DrawString(strText, ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y)
+                        g.DrawString(strText, ftLabel, Brushes.Black, rcItem, fmt)
 
                     Case eLayerRenderStyle.Gradient
-                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Max),
-                                     ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y)
-                        g.DrawString(l.Label,
-                                     ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y + rcPreview.Height)
-                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Min),
-                                     ft, Brushes.Black, pt.X + Me.LayerBoxHSpacing + rcPreview.Width, pt.Y + rcPreview.Height * 2)
+                        fmt.LineAlignment = StringAlignment.Near
+                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Max), ftScale, Brushes.Black, rcItem, fmt)
+
+                        rcItem.Y += rcPreview.Height
+                        fmt.LineAlignment = StringAlignment.Center
+                        g.DrawString(l.Label, ftLabel, Brushes.Black, rcItem, fmt)
+
+                        rcItem.Y += rcPreview.Height
+                        fmt.LineAlignment = StringAlignment.Far
+                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Min), ftScale, Brushes.Black, rcItem, fmt)
 
                         rcPreview.Height *= 3
-
                         l.Renderer.RenderPreview(g, rcPreview)
                         g.DrawRectangle(Pens.Black, rcPreview)
 

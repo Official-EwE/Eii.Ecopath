@@ -47,7 +47,9 @@ Namespace Controls.Map.Layers
                                            ByVal rc As Rectangle,
                                            Optional iSymbol As Integer = 0)
             If Me.IsStyleValid Then
-                Me.RenderCell(g, rc, Nothing, New Single() {5, 5}, cStyleGuide.eStyleFlags.OK)
+                Dim sz As Integer = Math.Min(rc.Width, rc.Height)
+                Dim rcSymbol As New Rectangle(rc.X + CInt((rc.Width - sz) / 2), rc.Y + CInt((rc.Height - sz) / 2), sz, sz)
+                Me.RenderCell(g, rcSymbol, Nothing, New Single() {5, 5}, cStyleGuide.eStyleFlags.OK)
             Else
                 Me.RenderError(g, rc)
             End If

@@ -75,19 +75,19 @@ Namespace Controls.Map.Layers
                                    ByVal rc As Rectangle,
                                    ByVal colorFill As Color)
             If Me.IsStyleValid() Then
-                rc.Inflate(CInt(-rc.Width * 0.75), CInt(-rc.Height * 0.75))
+                rc.Inflate(CInt(-rc.Width * 0.1), CInt(-rc.Height * 0.1))
 
                 ' JS 05Sep16: center symbol
                 Dim sz As Integer = Math.Min(rc.Width, rc.Height)
-                rc = New Rectangle(rc.X + CInt((rc.Width - sz) / 2), rc.Y + CInt((rc.Height - sz) / 2), sz, sz)
+                Dim rcSymbol As New Rectangle(rc.X + CInt((rc.Width - sz) / 2), rc.Y + CInt((rc.Height - sz) / 2), sz, sz)
 
                 Using p As New Pen(Color.White, 3)
-                    g.DrawEllipse(p, rc)
+                    g.DrawEllipse(p, rcSymbol)
                 End Using
                 Using br As New SolidBrush(colorFill)
-                    g.FillEllipse(br, rc)
+                    g.FillEllipse(br, rcSymbol)
                 End Using
-                g.DrawEllipse(Pens.Black, rc)
+                g.DrawEllipse(Pens.Black, rcSymbol)
             Else
                 Me.RenderError(g, rc)
             End If
