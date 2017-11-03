@@ -1394,4 +1394,11 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="ECOSIM_RESPONSE_NO_OVERLAP" xml:space="preserve">
     <value>Warning: please check your functional response and forcing data. The applied functional response does not overlap with forcing data at time step 1.</value>
   </data>
+  <data name="UPDATE_600007_ERROR" xml:space="preserve">
+    <value>MPA fishery settings may contain errors in Ecospace scenario(s) {0}</value>
+    <comment>{0}=scenario list</comment>
+  </data>
+  <data name="UPDATE_NEED_REVIEW" xml:space="preserve">
+    <value>The update process identified some possible problems that you should review!</value>
+  </data>
 </root>

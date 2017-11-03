@@ -8864,7 +8864,7 @@ Namespace DataSources
 
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
-                            drow("FleetID") = idm.GetID(eDataTypes.EcospaceFleet, ecopathDS.FleetDBID(iFleet))
+                            drow("FleetID") = idm.GetID(eDataTypes.EcospaceFleet, ecospaceDS.FleetDBID(iFleet))
                             drow("MPAID") = idm.GetID(eDataTypes.EcospaceMPA, ecospaceDS.MPADBID(iMPA))
                             writer.AddRow(drow)
 
