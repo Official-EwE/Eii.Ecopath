@@ -17,6 +17,7 @@
 #define Spinup 0
 #define SpatTemp 0
 #define MSPTools 0
+#define MPAdynamics 1
 
 [Setup]
 SignTool=codesign
@@ -105,15 +106,12 @@ Source: "{#DefRoot}{#DefDB}\Generic_37.EwEmdb"; DestDir: "{userdocs}\EwE sample 
 Source: "{#DefRoot}{#DefDB}\Anchovy Bay Spatial.ewemdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 Source: "{#DefRoot}{#DefDB}\Tampa_Bay.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 Source: "{#DefRoot}{#DefDB}\Georgia_Strait.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
-#if Ecosampler == 1
 Source: "{#DefRoot}{#DefSrc}\EwEEcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\sampler
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\sampler
-#endif
-#if MergeGroups == 1
 Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\mergegroups
-#endif
-#if Transects == 1
 Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\transects
+#if MPAdynamics == 1
+Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\mpadynamics
 #endif
 #if Spinup == 1
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\spinup
@@ -255,21 +253,18 @@ Name: "plugin\automation"; Description: "Automation"; Types: full custom
 Name: "plugin\automation\multisim"; Description: "Multi-Sim"; Types: custom full
 Name: "plugin\automation\stepwisef"; Description: "Stepwise Fitting"; Types: full
 Name: "plugin\automation\mse"; Description: "Cefas MSE"; Types: custom full
-#if Ecosampler == 1
 Name: "plugin\automation\sampler"; Description: "Ecosampler"; Types: full
-#endif
 Name: "plugin\ui"; Description: "Usability"; Types: full custom
 Name: "plugin\ui\remarks"; Description: "Remarks collector"; Types: full custom
 Name: "plugin\ui\shapegrid"; Description: "Shape grids"; Types: full custom
-#if MergeGroups == 1
 Name: "plugin\automation\mergegroups"; Description: "Merge groups"; Types: full
+#if MPAdynamics == 1
+Name: "plugin\automation\mpadynamics"; Description: "MPA dynamics"; Types: full
 #endif
 #if SpatTemp == 1
 Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange framework"; Types: full
 #endif
-#if Transects == 1
 Name: "plugin\output\transects"; Description: "Transects extraction"; Types: full
-#endif
 #if Spinup == 1
 Name: "plugin\automation\spinup"; Description: "Ecospace spin-up"; Types: full
 #endif
