@@ -8609,6 +8609,8 @@ Namespace DataSources
 #Region " Load "
 
         Private Function LoadEcospaceFleets(ByVal iScenarioID As Integer) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.EcopathDataStructures
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim reader As IDataReader = Nothing
             Dim strMap As String = ""
@@ -8620,7 +8622,9 @@ Namespace DataSources
 
             Try
                 While reader.Read()
-                    iFleet += 1
+
+                    iFleet = Array.IndexOf(ecopathDS.FleetDBID, CInt(reader("EcopathFleetID")))
+                    Debug.Assert(iFleet >= 1)
                     ecospaceDS.FleetDBID(iFleet) = CInt(reader("FleetID"))
                     ecospaceDS.EcopathFleetDBID(iFleet) = CInt(reader("EcopathFleetID"))
                     ecospaceDS.EffPower(iFleet) = CSng(reader("EffPower"))
