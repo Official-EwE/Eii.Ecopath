@@ -102,6 +102,9 @@ Public Class cMPAState
         Return Me.m_ds.MPAname(Me.MPA)
     End Function
 
+    ''' <summary>
+    ''' Returns the closure state of the MPA in a short string.
+    ''' </summary>
     Public Function ClosureState() As String
 
         Dim sb As New StringBuilder()
@@ -150,6 +153,9 @@ Public Class cMPAState
 
     End Function
 
+    ''' <summary>
+    ''' Returns the fisheries regulation state of the MPA in a short string.
+    ''' </summary>
     Public Function RegulationState() As String
 
         Dim sb As New StringBuilder()

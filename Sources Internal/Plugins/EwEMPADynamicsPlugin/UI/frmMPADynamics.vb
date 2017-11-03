@@ -80,6 +80,19 @@ Public Class frmMPADynamics
             Me.m_dgvStates.Columns.Add(col)
         Next
 
+        Me.m_tsbnShowMonths.Image = SharedResources.CalendarHS
+        Me.m_tsbnShowFleets.Image = SharedResources.fishing_gear
+        For i As Integer = 0 To Me.Core.nFleets
+            If (i = 0) Then
+                Me.m_tscmbFleets.Items.Add(SharedResources.GENERIC_VALUE_ALLFLEETS)
+            Else
+                Me.m_tscmbFleets.Items.Add(Me.Core.EcopathFleetInputs(i))
+            End If
+        Next
+
+        Me.m_tsbnShowMonths.Checked = My.Settings.ShowMonths
+        Me.m_tsbnShowFleets.Checked = My.Settings.ShowFleets
+        Me.m_tscmbFleets.SelectedIndex = 0
         Me.UpdateGrid()
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
 
@@ -100,12 +113,37 @@ Public Class frmMPADynamics
 
 #Region " Event handlers "
 
+    Private Sub OnDropFile(sender As Object, e As DragEventArgs) Handles m_dgvStates.DragDrop
+        Try
+            Dim files As String() = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            Me.m_engine.Clear()
+            For Each file As String In files
+                Me.m_engine.LoadCSV(file, False)
+            Next
+            Me.UpdateGrid()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
     Private Sub OnLoadCSV(sender As Object, e As EventArgs) Handles m_tsbnLoadCSV.Click
         Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_SELECT_FILE, "", SharedResources.FILEFILTER_CSV)
         If (ofd.ShowDialog() = DialogResult.OK) Then
             Me.m_engine.LoadCSV(ofd.FileName)
             Me.UpdateGrid()
         End If
+    End Sub
+
+    Private Sub OnShowMonthsChanged(sender As Object, e As EventArgs) Handles m_tsbnShowMonths.Click
+        Me.UpdateGrid()
+    End Sub
+
+    Private Sub OnShowFleetsChanged(sender As Object, e As EventArgs) Handles m_tsbnShowFleets.Click
+        Me.UpdateGrid()
+    End Sub
+
+    Private Sub OnShowFleetIndexChanged(sender As Object, e As EventArgs) Handles m_tscmbFleets.SelectedIndexChanged
+        Me.UpdateGrid()
     End Sub
 
 #End Region ' Event handlers
@@ -128,7 +166,19 @@ Public Class frmMPADynamics
         Dim states As ICollection(Of cMPAState) = Me.m_engine.MPAStates(True)
         Dim fmt As New cCoreInterfaceFormatter()
 
+        Me.m_dgvStates.Enabled = False
         Me.m_dgvStates.Rows.Clear()
+
+        ' Show/hide columns
+        Dim bShowMonths As Boolean = Me.m_tsbnShowMonths.Checked
+        Dim iShowFleets As Integer = If(Me.m_tsbnShowFleets.Checked, Me.m_tscmbFleets.SelectedIndex, -1)
+
+        For j As Integer = 1 To cCore.N_MONTHS
+            Me.m_dgvStates.Columns("m_colM" & j).Visible = bShowMonths
+        Next
+        For j As Integer = 1 To Me.Core.nFleets
+            Me.m_dgvStates.Columns("m_colF" & j).Visible = (iShowFleets = j) Or (iShowFleets = 0)
+        Next
 
         If (states.Count > 0) Then
 
@@ -155,6 +205,9 @@ Public Class frmMPADynamics
                 Next
             Next
         End If
+
+        Me.m_dgvStates.Enabled = True
+
     End Sub
 
     Private Function ToCellValue(state As TriState) As Object

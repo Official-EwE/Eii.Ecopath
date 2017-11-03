@@ -87,12 +87,12 @@ Public Class cMPADynamicsEngine
     Private Shared sLOCALE As New CultureInfo("en-US")
 
     ' Hack 'n slash
-    Public Function LoadCSV(strCSV As String) As Boolean
+    Public Function LoadCSV(strCSV As String, Optional bAppend As Boolean = False) As Boolean
 
         Dim bSucces As Boolean = True
         Dim lDetails As New List(Of String)
 
-        Me.m_dtStates.Clear()
+        If Not bAppend Then Me.m_dtStates.Clear()
 
         strCSV = Path.GetFullPath(strCSV)
         Try
