@@ -2116,6 +2116,10 @@
       <Project>{ADA9F604-2A16-4816-9FE5-31487778902D}</Project>
       <Name>EwEEcologicalIndicatorsPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEEcoSamplerPlugin\EwEEcoSamplerPlugin.vbproj">
+      <Project>{22ed1c02-0c01-460b-9305-0a6fef0032d9}</Project>
+      <Name>EwEEcoSamplerPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEEcotroph\EwEEcotroph.vbproj">
       <Project>{FEF1031B-9933-4364-AD29-C4F8B2E68382}</Project>
       <Name>EwEEcotroph</Name>
@@ -2155,6 +2159,10 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEStepwiseFittingPlugin\EwEStepwiseFittingPlugin.vbproj">
       <Project>{DFBA19D6-8E39-48F9-A503-CBC2519130B5}</Project>
       <Name>EwEStepwiseFittingPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwETransectExtractionPlugin\EwETransectExtractionPlugin.vbproj">
+      <Project>{86d3251d-678f-4ab3-9c95-3d29d8fa7797}</Project>
+      <Name>EwETransectExtractionPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
       <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>
