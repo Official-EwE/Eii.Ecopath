@@ -19,13 +19,8 @@
 '
 
 Option Strict On
-Imports EwEPlugin
-Imports EwEUtils.Database
-Imports System.Data
 Imports EwEUtils.Core
-Imports System.Xml
-
-Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Database
 
 
 ''' --------------------------------------------------------------------------
@@ -58,7 +53,7 @@ Friend MustInherit Class cDBUpdate
     ''' <param name="db"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public MustOverride Function ApplyUpdate(ByRef db As EwEUtils.Database.cEwEDatabase) As Boolean
+    Public MustOverride Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -75,24 +70,9 @@ Friend MustInherit Class cDBUpdate
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get whether an update should always run. It is advised to use this method
-    ''' only to insert database changes into both the EwE trunk and older, already 
-    ''' released versions of EwE.
+    ''' Message text to show to the user to take action, if any.
     ''' </summary>
-    ''' <remarks>
-    ''' By default, updates will only run if their reported <see cref="UpdateVersion"/>
-    ''' exceeds the <see cref="cEwEDatabase.GetVersion">version of a database</see>.
-    ''' Updates that always run will, well, always run, and therefore will need to 
-    ''' perform extra rigorous tests whether execution is necessary prior to 
-    ''' affecting a database. Please use this flag with utmost care. Preferably do
-    ''' not use it at all.
-    ''' </remarks>
     ''' -----------------------------------------------------------------------
-    <Obsolete("Method discontinued")> _
-    Public Overridable ReadOnly Property RunAlways As Boolean
-        Get
-            Return False
-        End Get
-    End Property
+    Public Overridable ReadOnly Property UserAction As String = ""
 
 End Class

@@ -202,6 +202,7 @@ Namespace Database
             Dim update As cDBUpdate = Nothing
             Dim aUpdates As cDBUpdate() = Nothing
             Dim bSucces As Boolean = True
+            Dim messages As New List(Of String)
 
             ' Sanity checks
             If (db Is Nothing) Then Return False
@@ -236,6 +237,7 @@ Namespace Database
                         If bSucces Then
                             ' #Yes: Update database version
                             db.SetVersion(update.UpdateVersion, Me.ToShortDescription(update.UpdateDescription))
+                            If (update.UserAction IsNot Nothing) Then messages.Add(update.UserAction)
                         Else
                             ' #No: report a generic error
                             Me.ReportUpdateError(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED, update.UpdateVersion))
@@ -268,6 +270,16 @@ Namespace Database
 
             Me.ReportUpdateProgress(eProgressState.Finished, "", 100)
 
+            If (bSucces) Then
+                If (messages.Count > 0) Then
+                    Dim msg As New cMessage(My.Resources.CoreMessages.UPDATE_NEED_REVIEW, eMessageType.DataImport, eCoreComponentType.DataSource, eMessageImportance.Warning)
+                    For i As Integer = 0 To messages.Count - 1
+                        Dim vs As New cVariableStatus With {.Message = messages(i)}
+                        msg.AddVariable(vs)
+                    Next
+                    Me.m_core.Messages.SendMessage(msg)
+                End If
+            End If
             Return bSucces
 
         End Function

@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class CoreMessages
@@ -678,7 +678,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("ECOPATH_MODEL_UPDATE_SUCCESS", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to Respiration cannot be negative. Summary statistics for the system are suppressed. Please check parameters and rerun program..
         '''</summary>
@@ -3178,6 +3178,24 @@ Namespace My.Resources
         Public Shared ReadOnly Property TRACER_RESULTS_SAVE_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("TRACER_RESULTS_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MPA fishery settings may contain errors in Ecospace scenario(s) {0}.
+        '''</summary>
+        Public Shared ReadOnly Property UPDATE_600007_ERROR() As String
+            Get
+                Return ResourceManager.GetString("UPDATE_600007_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The update process identified some possible problems that you should review!.
+        '''</summary>
+        Public Shared ReadOnly Property UPDATE_NEED_REVIEW() As String
+            Get
+                Return ResourceManager.GetString("UPDATE_NEED_REVIEW", resourceCulture)
             End Get
         End Property
         

@@ -154,6 +154,7 @@
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_23.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_24.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_26.vb" />
+    <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_07.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_06.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_05.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_04.vb" />
