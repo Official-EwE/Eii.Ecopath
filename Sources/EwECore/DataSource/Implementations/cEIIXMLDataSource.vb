@@ -2521,6 +2521,7 @@ Public Class cEIIXMLDataSource
 
     Private Function LoadEcospaceFleets(ByVal iScenarioID As Integer) As Boolean
 
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.EcopathDataStructures
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioFleet")
         Dim strMap As String = ""
@@ -2531,6 +2532,7 @@ Public Class cEIIXMLDataSource
 
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
             Try
+                iFleet = Array.IndexOf(ecopathDS.FleetDBID, CInt(drow("EcopathFleetID")))
                 ecospaceDS.FleetDBID(iFleet) = CInt(drow("FleetID"))
                 ecospaceDS.EcopathFleetDBID(iFleet) = CInt(drow("EcopathFleetID"))
                 ecospaceDS.EffPower(iFleet) = CSng(drow("EffPower"))
