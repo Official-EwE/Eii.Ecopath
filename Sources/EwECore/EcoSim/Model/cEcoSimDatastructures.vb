@@ -220,7 +220,7 @@ Public Class cEcosimDatastructures
     Public FtimeMax() As Single
     ''' <summary>Feeding time adjustment rate (0-1).</summary>
     Public FtimeAdjust() As Single
-    ''' <summary>Fration of other mortality.</summary>
+    ''' <summary>Fraction of other mortality.</summary>
     Public MoPred() As Single
 
     ''' <summary>
