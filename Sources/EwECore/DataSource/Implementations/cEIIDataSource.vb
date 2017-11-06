@@ -222,15 +222,15 @@ Public Class cEIIDataSource
             Next i
 
             ecopathDS.bInitialized = True
+            ecopathDS.NumEcosimScenarios = 0
+            ecopathDS.NumEcospaceScenarios = 0
+            ecopathDS.NumEcotracerScenarios = 0
 
             Me.LoadStanza()
-            Me.LoadEcosimScenarioDefinitions()
 
-            Me.LoadSpaceScenarioDefinitions()
             ' Make sure that the core knows not to expect anything else
             ecopathDS.RedimEcospaceScenarios()
             ecopathDS.RedimEcotracerScenarios()
-
 
             ' Invoke plugin point
             If (Me.m_core.PluginManager IsNot Nothing) Then Me.m_core.PluginManager.LoadModel(Me)
