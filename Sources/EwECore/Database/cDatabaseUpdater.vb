@@ -237,7 +237,10 @@ Namespace Database
                         If bSucces Then
                             ' #Yes: Update database version
                             db.SetVersion(update.UpdateVersion, Me.ToShortDescription(update.UpdateDescription))
-                            If (update.UserAction IsNot Nothing) Then messages.Add(update.UserAction)
+                            ' Keep user actions
+                            If (Not String.IsNullOrWhiteSpace(update.UserAction)) Then
+                                messages.Add(update.UserAction)
+                            End If
                         Else
                             ' #No: report a generic error
                             Me.ReportUpdateError(cStringUtils.Localize(My.Resources.CoreMessages.DATABASE_UPDATE_FAILED, update.UpdateVersion))
@@ -274,7 +277,7 @@ Namespace Database
                 If (messages.Count > 0) Then
                     Dim msg As New cMessage(My.Resources.CoreMessages.UPDATE_NEED_REVIEW, eMessageType.DataImport, eCoreComponentType.DataSource, eMessageImportance.Warning)
                     For i As Integer = 0 To messages.Count - 1
-                        Dim vs As New cVariableStatus With {.Message = messages(i)}
+                        Dim vs As New cVariableStatus(eStatusFlags.InvalidModelResult, messages(0), eVarNameFlags.NotSet, eDataTypes.External, eCoreComponentType.External, 0)
                         msg.AddVariable(vs)
                     Next
                     Me.m_core.Messages.SendMessage(msg)
