@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cTimeFrameRule.vb" />
+    <Compile Include="cFleetMaxEffort.vb" />
     <Compile Include="Results\cResultsCollector_PredationMortality_PreyOnly.vb" />
     <Compile Include="Results\cResultsCollector_PredationMortality_PreyOnly_Yearly.vb" />
     <Compile Include="Results\cResultsWriter_2DArray_Group_Group.vb" />
