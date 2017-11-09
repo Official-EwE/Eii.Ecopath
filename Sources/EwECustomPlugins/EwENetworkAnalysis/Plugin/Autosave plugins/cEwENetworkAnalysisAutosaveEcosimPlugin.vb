@@ -30,7 +30,13 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cENAAutoSave
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Plug-in point to connect ENA to the EwE Autosave system. This plug-in point
+''' manages auto-saving of Ecosim indicators.
+''' </summary>
+''' ---------------------------------------------------------------------------
+Public Class cEwENetworkAnalysisAutosaveEcosimPlugin
     Implements IAutoSavePlugin
 
     Public ReadOnly Property Name As String Implements IPlugin.Name

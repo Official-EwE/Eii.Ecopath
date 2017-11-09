@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -1097,7 +1097,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Group rank by keystone index #3(Valls et al, 2015) .
+        '''  Looks up a localized string similar to Group rank by keystone index #3 (Valls et al, 2015) .
         '''</summary>
         Friend ReadOnly Property LBL_KEYSTONE3() As String
             Get
@@ -1277,7 +1277,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Keystone index #&amp;1.
+        '''  Looks up a localized string similar to Keystone index #&amp;1  (Libralato et al, 2006).
         '''</summary>
         Friend ReadOnly Property MNU_CONTENT_KEYSTONE1() As String
             Get
@@ -1286,7 +1286,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Keystone index #&amp;2.
+        '''  Looks up a localized string similar to Keystone index #&amp;2  (Power et al, 1996).
         '''</summary>
         Friend ReadOnly Property MNU_CONTENT_KEYSTONE2() As String
             Get
@@ -1295,7 +1295,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Keystone index #&amp;3.
+        '''  Looks up a localized string similar to Keystone index #&amp;3 (Valls et al, 2015).
         '''</summary>
         Friend ReadOnly Property MNU_CONTENT_KEYSTONE3() As String
             Get
