@@ -53,8 +53,12 @@ Partial Class frmEditDecreaseEffort
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEditDecreaseEffort))
         Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_btnSave = New System.Windows.Forms.Button()
-        Me.m_grid = New EwEMSEPlugin.gridMaxDecreaseEffort()
         Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.MaxEffortType = New System.Windows.Forms.GroupBox()
+        Me.rbProportion = New System.Windows.Forms.RadioButton()
+        Me.rbDecaying = New System.Windows.Forms.RadioButton()
+        Me.m_grid = New EwEMSEPlugin.gridMaxDecreaseEffort()
+        Me.MaxEffortType.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_btnCancel
@@ -69,6 +73,35 @@ Partial Class frmEditDecreaseEffort
         resources.ApplyResources(Me.m_btnSave, "m_btnSave")
         Me.m_btnSave.Name = "m_btnSave"
         Me.m_btnSave.UseVisualStyleBackColor = True
+        '
+        'm_ts
+        '
+        resources.ApplyResources(Me.m_ts, "m_ts")
+        Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_ts.Name = "m_ts"
+        Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        '
+        'MaxEffortType
+        '
+        Me.MaxEffortType.Controls.Add(Me.rbProportion)
+        Me.MaxEffortType.Controls.Add(Me.rbDecaying)
+        resources.ApplyResources(Me.MaxEffortType, "MaxEffortType")
+        Me.MaxEffortType.Name = "MaxEffortType"
+        Me.MaxEffortType.TabStop = False
+        '
+        'rbProportion
+        '
+        resources.ApplyResources(Me.rbProportion, "rbProportion")
+        Me.rbProportion.Name = "rbProportion"
+        Me.rbProportion.UseVisualStyleBackColor = True
+        '
+        'rbDecaying
+        '
+        resources.ApplyResources(Me.rbDecaying, "rbDecaying")
+        Me.rbDecaying.Checked = True
+        Me.rbDecaying.Name = "rbDecaying"
+        Me.rbDecaying.TabStop = True
+        Me.rbDecaying.UseVisualStyleBackColor = True
         '
         'm_grid
         '
@@ -89,6 +122,7 @@ Partial Class frmEditDecreaseEffort
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
+        Me.m_grid.IsOutputGrid = False
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -101,19 +135,13 @@ Partial Class frmEditDecreaseEffort
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
         '
-        'm_ts
-        '
-        resources.ApplyResources(Me.m_ts, "m_ts")
-        Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_ts.Name = "m_ts"
-        Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        '
         'frmEditDecreaseEffort
         '
         Me.AcceptButton = Me.m_btnSave
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.MaxEffortType)
         Me.Controls.Add(Me.m_ts)
         Me.Controls.Add(Me.m_grid)
         Me.Controls.Add(Me.m_btnSave)
@@ -123,6 +151,8 @@ Partial Class frmEditDecreaseEffort
         Me.Name = "frmEditDecreaseEffort"
         Me.ShowInTaskbar = False
         Me.TabText = ""
+        Me.MaxEffortType.ResumeLayout(False)
+        Me.MaxEffortType.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -131,4 +161,7 @@ Partial Class frmEditDecreaseEffort
     Private WithEvents m_btnSave As System.Windows.Forms.Button
     Private WithEvents m_grid As gridMaxDecreaseEffort
     Private WithEvents m_ts As cEwEToolstrip
+    Friend WithEvents MaxEffortType As GroupBox
+    Friend WithEvents rbProportion As RadioButton
+    Friend WithEvents rbDecaying As RadioButton
 End Class

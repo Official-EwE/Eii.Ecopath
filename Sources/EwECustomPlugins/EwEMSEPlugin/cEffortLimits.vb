@@ -44,6 +44,7 @@ Public Class cEffortLimits
     Private m_mse As cMSE = Nothing
     Private m_data As Single()
     Private m_bChanged As Boolean = False
+    Private m_decaying_max_effort As Boolean
 
 #End Region ' Private variables
 
@@ -103,16 +104,35 @@ Public Class cEffortLimits
                 Dim EffortLimitsCSV As New CsvReader(reader, True)
                 Dim iFleet As Integer = 0
 
-                While Not EffortLimitsCSV.EndOfStream
+                'While Not EffortLimitsCSV.EndOfStream
+                '    If EffortLimitsCSV.ReadNextRecord() Then
+                '        iFleet = cStringUtils.ConvertToInteger(EffortLimitsCSV(0))
+                '        If (1 <= iFleet) And (iFleet <= Me.nFleets) Then
+                '            Me.Value(iFleet) = cStringUtils.ConvertToSingle(EffortLimitsCSV(2))
+                '            If Me.Value(iFleet) > 0.9 Then Me.Value(iFleet) = 0.9
+                '        End If
+                '    End If
+                'End While
+                'EffortLimitsCSV.Dispose()
+
+                Do
                     If EffortLimitsCSV.ReadNextRecord() Then
+                        If EffortLimitsCSV(0) = "Decaying_Max_Effort" Then
+                            Me.m_decaying_max_effort = Boolean.Parse(EffortLimitsCSV(1))
+                            Exit Do
+                        End If
                         iFleet = cStringUtils.ConvertToInteger(EffortLimitsCSV(0))
                         If (1 <= iFleet) And (iFleet <= Me.nFleets) Then
                             Me.Value(iFleet) = cStringUtils.ConvertToSingle(EffortLimitsCSV(2))
                             If Me.Value(iFleet) > 0.9 Then Me.Value(iFleet) = 0.9
                         End If
+                    Else
+                        Exit Do
                     End If
-                End While
-                EffortLimitsCSV.Dispose()
+                Loop
+
+
+
             Catch ex As Exception
                 ' CSV malformed
                 cMSEUtils.LogError(msg, "Effort limits cannot load from " & strFilename & ". " & ex.Message)
@@ -146,6 +166,7 @@ Public Class cEffortLimits
                               cStringUtils.ToCSVField(Me.m_core.EcopathFleetInputs(iFleet).Name),
                               cStringUtils.FormatNumber(Me.Value(iFleet)))
         Next
+        writer.WriteLine("Decaying_Max_Effort," & Me.decaying_max_effort)
 
         cMSEUtils.ReleaseWriter(writer)
         Return True
@@ -182,6 +203,16 @@ Public Class cEffortLimits
             Return Me.m_core.nFleets
         End Get
     End Property
+
+    Public Property decaying_max_effort As Boolean
+        Get
+            Return m_decaying_max_effort
+        End Get
+        Set(ByVal value As Boolean)
+            m_decaying_max_effort = value
+        End Set
+    End Property
+
 
 #End Region ' Public bits
 
