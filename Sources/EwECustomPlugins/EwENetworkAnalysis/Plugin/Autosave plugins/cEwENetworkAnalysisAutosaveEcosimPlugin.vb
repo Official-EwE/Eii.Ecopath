@@ -44,19 +44,19 @@ Public Class cENAAutoSave
 
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
-            Return ""
+            Return "Ecosim-based autosave functionality for the EwE Ecological Network Analysis plug-in"
         End Get
     End Property
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
-            Return ""
+            Return "EwE development team"
         End Get
     End Property
 
     Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
-            Return ""
+            Return "ewedevteam@gmail.com"
         End Get
     End Property
 

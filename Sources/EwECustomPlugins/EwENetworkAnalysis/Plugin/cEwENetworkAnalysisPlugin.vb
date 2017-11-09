@@ -509,6 +509,7 @@ Public Class cEwENetworkAnalysisPlugin
                         My.Settings.AutosaveEcopath = value
                     Case eAutosaveType.Ecosim
                         If (value = True) Then
+                            ' Select default w/o PPR if none of the two Ecosim autosave options is selected
                             If (My.Settings.AutosaveEcosimWoPPR = False And My.Settings.AutosaveEcosimWithPPR = False) Then
                                 My.Settings.AutosaveEcosimWoPPR = True
                             End If
