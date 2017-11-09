@@ -111,6 +111,7 @@ Public Class cNormalShapeFunction
                 End If
                 x = x0 + dx * (i - 1)
                 Me.m_points(i) = CSng(Math.Exp(-0.5 * (x / sd) ^ 2)) * max
+                ' System.Console.WriteLine(x.ToString + ", " + Me.m_points(i).ToString)
             Next
 
         End If
@@ -234,6 +235,25 @@ Public Class cNormalShapeFunction
         End Get
         Set(value As Single)
             Me.ParamValue(eParNames.Max) = value
+        End Set
+    End Property
+
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IShapeFunction.ParamValue"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Property ParamValue(iParam As Integer) As Single
+
+        Get
+            Debug.Assert((iParam >= 1) And (iParam <= Me.nParameters))
+            Return Me.m_parameters(iParam - 1)
+        End Get
+        Set(value As Single)
+            Debug.Assert((iParam >= 1) And (iParam <= Me.nParameters))
+            If (Me.m_parameters(iParam - 1) <> value) Then
+                Me.m_parameters(iParam - 1) = value
+                Me.ParamsChanged = True
+            End If
         End Set
     End Property
 

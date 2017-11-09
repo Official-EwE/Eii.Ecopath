@@ -218,6 +218,8 @@ Public MustInherit Class cShapeFunction
             shp.ShapeFunctionParameter(i) = Me.ParamValue(i)
         Next
 
+        shp.Update()
+
         Return True
 
     End Function
