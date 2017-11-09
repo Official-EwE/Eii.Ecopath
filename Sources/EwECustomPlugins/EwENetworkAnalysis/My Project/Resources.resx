@@ -2933,10 +2933,10 @@
     <comment>Beware of shortcut conflict with pre-defined toolstip accelerators in dialog template</comment>
   </data>
   <data name="MNU_CONTENT_KEYSTONE1" xml:space="preserve">
-    <value>Keystone index #&amp;1</value>
+    <value>Keystone index #&amp;1  (Libralato et al, 2006)</value>
   </data>
   <data name="MNU_CONTENT_KEYSTONE2" xml:space="preserve">
-    <value>Keystone index #&amp;2</value>
+    <value>Keystone index #&amp;2  (Power et al, 1996)</value>
   </data>
   <data name="MNU_STYLE" xml:space="preserve">
     <value>Graph &amp;style</value>
@@ -3270,9 +3270,9 @@
     <value>Keystone index #3</value>
   </data>
   <data name="MNU_CONTENT_KEYSTONE3" xml:space="preserve">
-    <value>Keystone index #&amp;3</value>
+    <value>Keystone index #&amp;3 (Valls et al, 2015)</value>
   </data>
   <data name="LBL_KEYSTONE3" xml:space="preserve">
-    <value>Group rank by keystone index #3(Valls et al, 2015) </value>
+    <value>Group rank by keystone index #3 (Valls et al, 2015) </value>
   </data>
 </root>

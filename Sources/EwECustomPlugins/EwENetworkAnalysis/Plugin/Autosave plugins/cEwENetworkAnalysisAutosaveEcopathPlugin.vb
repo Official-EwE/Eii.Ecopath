@@ -30,6 +30,12 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Plug-in point to connect ENA to the EwE Autosave system. This plug-in point
+''' manages auto-saving of Ecopath indicators.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cEwENetworkAnalysisAutosaveEcopathPlugin
     Implements IAutoSavePlugin
 
