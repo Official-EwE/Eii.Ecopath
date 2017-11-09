@@ -518,6 +518,7 @@ Public Class cEwENetworkAnalysisPlugin
                             My.Settings.AutosaveEcosimWithPPR = False
                         End If
                 End Select
+                My.Settings.Save()
             End If
         End Set
     End Property
