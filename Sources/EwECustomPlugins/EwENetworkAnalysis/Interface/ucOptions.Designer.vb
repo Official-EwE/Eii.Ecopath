@@ -22,18 +22,6 @@
 Partial Class ucOptions
     Inherits System.Windows.Forms.UserControl
 
-    'UserControl overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        Try
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-        Finally
-            MyBase.Dispose(disposing)
-        End Try
-    End Sub
-
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
@@ -42,78 +30,99 @@ Partial Class ucOptions
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptions))
         Me.m_hdrOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_cbUseTimeout = New System.Windows.Forms.CheckBox()
         Me.m_lblTimeout = New System.Windows.Forms.Label()
         Me.m_nudTimeOut = New System.Windows.Forms.NumericUpDown()
         Me.m_lblTimeOutUnit = New System.Windows.Forms.Label()
+        Me.m_hdrAutosave = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_cbAutosaveRoot = New System.Windows.Forms.CheckBox()
+        Me.m_cbAutosaveEcopath = New System.Windows.Forms.CheckBox()
+        Me.m_cbAutosaveEcosimWoPPR = New System.Windows.Forms.CheckBox()
+        Me.m_cbAutosaveEcosimWithPPR = New System.Windows.Forms.CheckBox()
         CType(Me.m_nudTimeOut, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_hdrOptions
         '
-        Me.m_hdrOptions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        resources.ApplyResources(Me.m_hdrOptions, "m_hdrOptions")
         Me.m_hdrOptions.CanCollapseParent = False
         Me.m_hdrOptions.CollapsedParentHeight = 0
         Me.m_hdrOptions.IsCollapsed = False
-        Me.m_hdrOptions.Location = New System.Drawing.Point(3, 4)
         Me.m_hdrOptions.Name = "m_hdrOptions"
-        Me.m_hdrOptions.Size = New System.Drawing.Size(161, 18)
-        Me.m_hdrOptions.TabIndex = 0
-        Me.m_hdrOptions.Text = "Generic options"
-        Me.m_hdrOptions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_cbUseTimeout
         '
-        Me.m_cbUseTimeout.AutoSize = True
-        Me.m_cbUseTimeout.Location = New System.Drawing.Point(6, 32)
+        resources.ApplyResources(Me.m_cbUseTimeout, "m_cbUseTimeout")
         Me.m_cbUseTimeout.Name = "m_cbUseTimeout"
-        Me.m_cbUseTimeout.Size = New System.Drawing.Size(156, 17)
-        Me.m_cbUseTimeout.TabIndex = 1
-        Me.m_cbUseTimeout.Text = "&Use timeout for calculations"
         Me.m_cbUseTimeout.UseVisualStyleBackColor = True
         '
         'm_lblTimeout
         '
-        Me.m_lblTimeout.AutoSize = True
-        Me.m_lblTimeout.Location = New System.Drawing.Point(22, 57)
+        resources.ApplyResources(Me.m_lblTimeout, "m_lblTimeout")
         Me.m_lblTimeout.Name = "m_lblTimeout"
-        Me.m_lblTimeout.Size = New System.Drawing.Size(51, 13)
-        Me.m_lblTimeout.TabIndex = 2
-        Me.m_lblTimeout.Text = "Time out:"
         '
         'm_nudTimeOut
         '
-        Me.m_nudTimeOut.Location = New System.Drawing.Point(79, 55)
+        resources.ApplyResources(Me.m_nudTimeOut, "m_nudTimeOut")
         Me.m_nudTimeOut.Maximum = New Decimal(New Integer() {360, 0, 0, 0})
         Me.m_nudTimeOut.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.m_nudTimeOut.Name = "m_nudTimeOut"
-        Me.m_nudTimeOut.Size = New System.Drawing.Size(49, 20)
-        Me.m_nudTimeOut.TabIndex = 3
         Me.m_nudTimeOut.Value = New Decimal(New Integer() {30, 0, 0, 0})
         '
         'm_lblTimeOutUnit
         '
-        Me.m_lblTimeOutUnit.AutoSize = True
-        Me.m_lblTimeOutUnit.Location = New System.Drawing.Point(134, 57)
+        resources.ApplyResources(Me.m_lblTimeOutUnit, "m_lblTimeOutUnit")
         Me.m_lblTimeOutUnit.Name = "m_lblTimeOutUnit"
-        Me.m_lblTimeOutUnit.Size = New System.Drawing.Size(31, 13)
-        Me.m_lblTimeOutUnit.TabIndex = 4
-        Me.m_lblTimeOutUnit.Text = "mins."
+        '
+        'm_hdrAutosave
+        '
+        resources.ApplyResources(Me.m_hdrAutosave, "m_hdrAutosave")
+        Me.m_hdrAutosave.CanCollapseParent = False
+        Me.m_hdrAutosave.CollapsedParentHeight = 0
+        Me.m_hdrAutosave.IsCollapsed = False
+        Me.m_hdrAutosave.Name = "m_hdrAutosave"
+        '
+        'm_cbAutosaveRoot
+        '
+        resources.ApplyResources(Me.m_cbAutosaveRoot, "m_cbAutosaveRoot")
+        Me.m_cbAutosaveRoot.Name = "m_cbAutosaveRoot"
+        Me.m_cbAutosaveRoot.UseVisualStyleBackColor = True
+        '
+        'm_cbAutosaveEcopath
+        '
+        resources.ApplyResources(Me.m_cbAutosaveEcopath, "m_cbAutosaveEcopath")
+        Me.m_cbAutosaveEcopath.Name = "m_cbAutosaveEcopath"
+        Me.m_cbAutosaveEcopath.UseVisualStyleBackColor = True
+        '
+        'm_cbAutosaveEcosimWoPPR
+        '
+        resources.ApplyResources(Me.m_cbAutosaveEcosimWoPPR, "m_cbAutosaveEcosimWoPPR")
+        Me.m_cbAutosaveEcosimWoPPR.Name = "m_cbAutosaveEcosimWoPPR"
+        Me.m_cbAutosaveEcosimWoPPR.UseVisualStyleBackColor = True
+        '
+        'm_cbAutosaveEcosimWithPPR
+        '
+        resources.ApplyResources(Me.m_cbAutosaveEcosimWithPPR, "m_cbAutosaveEcosimWithPPR")
+        Me.m_cbAutosaveEcosimWithPPR.Name = "m_cbAutosaveEcosimWithPPR"
+        Me.m_cbAutosaveEcosimWithPPR.UseVisualStyleBackColor = True
         '
         'ucOptions
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.Controls.Add(Me.m_cbAutosaveEcosimWithPPR)
+        Me.Controls.Add(Me.m_cbAutosaveEcosimWoPPR)
+        Me.Controls.Add(Me.m_cbAutosaveEcopath)
+        Me.Controls.Add(Me.m_cbAutosaveRoot)
+        Me.Controls.Add(Me.m_hdrAutosave)
         Me.Controls.Add(Me.m_lblTimeOutUnit)
         Me.Controls.Add(Me.m_nudTimeOut)
         Me.Controls.Add(Me.m_lblTimeout)
         Me.Controls.Add(Me.m_cbUseTimeout)
         Me.Controls.Add(Me.m_hdrOptions)
         Me.Name = "ucOptions"
-        Me.Size = New System.Drawing.Size(167, 83)
         CType(Me.m_nudTimeOut, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -124,5 +133,9 @@ Partial Class ucOptions
     Private WithEvents m_lblTimeout As System.Windows.Forms.Label
     Private WithEvents m_nudTimeOut As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblTimeOutUnit As System.Windows.Forms.Label
-
+    Private WithEvents m_hdrAutosave As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_cbAutosaveRoot As Windows.Forms.CheckBox
+    Private WithEvents m_cbAutosaveEcopath As Windows.Forms.CheckBox
+    Private WithEvents m_cbAutosaveEcosimWoPPR As Windows.Forms.CheckBox
+    Private WithEvents m_cbAutosaveEcosimWithPPR As Windows.Forms.CheckBox
 End Class

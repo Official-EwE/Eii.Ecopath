@@ -491,7 +491,7 @@ Public Class cNetworkManager
 
             If Not Core.StateMonitor.HasEcosimLoaded Then
                 'No Ecosim Scenario is loaded the Ecosim network analysis can not be run
-                Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_LOAD_ECOSIM, _
+                Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_LOAD_ECOSIM,
                          eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Warning))
 
                 Return False
@@ -505,8 +505,8 @@ Public Class cNetworkManager
 
         Catch ex As Exception
             cLog.Write(ex)
-            Core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_ECOSIM, ex.Message), _
-                                                   eMessageType.ErrorEncountered, _
+            Core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_ECOSIM, ex.Message),
+                                                   eMessageType.ErrorEncountered,
                                                    eCoreComponentType.Plugin, eMessageImportance.Critical))
             Return False
         End Try
