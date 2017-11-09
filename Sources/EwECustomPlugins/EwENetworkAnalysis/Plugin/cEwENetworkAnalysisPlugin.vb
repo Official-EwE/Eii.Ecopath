@@ -35,12 +35,13 @@ Imports EwEUtils.Utilities
 
 Public Class cEwENetworkAnalysisPlugin
     Inherits cNavTreeControlPlugin
-    Implements EwEPlugin.IEcopathRunCompletedPlugin
-    Implements EwEPlugin.IEcosimRunInitializedPlugin
-    Implements EwEPlugin.IEcosimEndTimestepPlugin
-    Implements EwEPlugin.IEcosimRunCompletedPlugin
-    Implements EwEPlugin.Data.IDataProducerPlugin
-    Implements EwEPlugin.IUIContextPlugin
+    Implements IEcopathRunInitializedPlugin
+    Implements IEcopathRunCompletedPlugin
+    Implements IEcosimRunInitializedPlugin
+    Implements IEcosimEndTimestepPlugin
+    Implements IEcosimRunCompletedPlugin
+    Implements IDataProducerPlugin
+    Implements IUIContextPlugin
     Implements IDisposedPlugin
 
 #Region " Private vars "
@@ -151,23 +152,15 @@ Public Class cEwENetworkAnalysisPlugin
     ''' <param name="core"></param>
     Public Overrides Sub Initialize(ByVal core As Object)
 
-        Debug.Assert(TypeOf core Is EwECore.cCore, Me.ToString & ".Initialize() argument core is not a cCore object.")
         m_bInitOK = False
         Try
-            If TypeOf core Is EwECore.cCore Then
-                Me.m_core = DirectCast(core, EwECore.cCore)
+            Me.m_core = DirectCast(core, EwECore.cCore)
 
-                Me.m_manager = New cNetworkManager(Me.m_core)
+            Me.m_manager = New cNetworkManager(Me.m_core)
 
-                Me.m_bInitOK = True
-                Me.m_ddx = New cEwENetworkAnalysisData(cTypeUtils.TypeToString(Me.GetType()), Me.m_manager)
+            Me.m_bInitOK = True
+            Me.m_ddx = New cEwENetworkAnalysisData(cTypeUtils.TypeToString(Me.GetType()), Me.m_manager)
 
-                'System.Console.WriteLine(Me.ToString & ".Initialize() successful.")
-            Else
-                'some kind of a message
-                System.Console.WriteLine(Me.ToString & ".Initialize() Failed.")
-                Return
-            End If
         Catch ex As Exception
             cLog.Write(ex)
             System.Console.WriteLine(Me.ToString & ".Initialize() Error: " & ex.Message)
@@ -199,9 +192,26 @@ Public Class cEwENetworkAnalysisPlugin
         End Get
     End Property
 
+    Public ReadOnly Property UI As frmNetworkAnalysis
+        Get
+            If Me.HasUI() Then Return Me.m_frmNA
+            Return Nothing
+        End Get
+    End Property
+
 #End Region ' Core
 
 #Region " Ecopath "
+
+    Private m_bRunWithPathOld As Boolean = False
+
+    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements IEcopathRunInitializedPlugin.EcopathRunInitialized
+
+        If (Me.Autosave(eAutosaveType.Ecopath)) Then
+            Me.m_bRunWithPathOld = Me.Manager.RunWithEcopath
+            Me.Manager.RunWithEcopath = True
+        End If
+    End Sub
 
     ''' <summary>
     ''' Called by the core when Ecopath has run successfuly 
@@ -211,41 +221,31 @@ Public Class cEwENetworkAnalysisPlugin
     Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object) _
         Implements EwEPlugin.IEcopathRunCompletedPlugin.EcopathRunCompleted
 
-        'test the error handling 
-        ' Throw New Exception("Error Test from Network Analysis Plugin.")
-
-        Debug.Assert(TypeOf EcopathDataStructures Is EwECore.cEcopathDataStructures, Me.ToString & _
+        Debug.Assert(TypeOf EcopathDataStructures Is EwECore.cEcopathDataStructures, Me.ToString &
                             ".EcopathRan() argument EcopathDataStructure is not a cEcopathDataStructures object.")
         Try
-            If TypeOf EcopathDataStructures Is EwECore.cEcopathDataStructures Then
-                'set the Ecopath data in the network manager object
-                'this is the data the Network analysis will be run on
-                m_manager.EcopathData = DirectCast(EcopathDataStructures, EwECore.cEcopathDataStructures)
-                'Bug 252 fix by joeh
-                'Add
-                m_manager.IsMainNetworkRun = False
-                m_manager.IsRequiredPrimaryProdRun = False
-                m_manager.IsEcosimNetworkRun = False
-                'End Add
+            Me.m_manager.EcopathData = DirectCast(EcopathDataStructures, EwECore.cEcopathDataStructures)
+            'Bug 252 fix by joeh
+            Me.m_manager.IsMainNetworkRun = False
+            Me.m_manager.IsRequiredPrimaryProdRun = False
+            Me.m_manager.IsEcosimNetworkRun = False
+            'End 252
 
-                If Me.m_manager.RunWithEcopath Then
-                    Me.m_manager.RunMainNetwork()
-                    Me.BroadcastResults()
+            If Me.m_manager.RunWithEcopath Then
+                Me.m_manager.RunMainNetwork()
+                Me.BroadcastResults()
+
+                ' JS 09No17: added autosave support
+                If My.Settings.AutosaveEcopath Then
+                    Dim wr As New cNetworkAnalysisEcopathResultWriter(Me.m_manager)
+                    wr.WriteResults(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecopath))
+                    Me.Manager.RunWithEcopath = Me.m_bRunWithPathOld
                 End If
-
-                'System.Console.WriteLine(Me.ToString & ".EcopathRan() Successfull.")
-            Else
-
-                'some kind of a message
-                m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() argument EcopathDataStructure is not a cEcopathDataStructures object.", _
-                                                                eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Warning))
             End If
+
         Catch ex As Exception
+            cLog.Write(ex, "cEwENetworkAnalysisPlugin.EcopathRunCompleted")
             Debug.Assert(False, ex.Message)
-
-            m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() Error: " & ex.Message, _
-                                                            eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Warning))
-
         End Try
 
     End Sub
@@ -254,6 +254,8 @@ Public Class cEwENetworkAnalysisPlugin
 
 #Region " Ecosim "
 
+    Private m_bRunWithSimOld As Boolean = False
+
     ''' <summary>
     ''' Ecosim is about to enter the time loop. All the data has been initialized
     ''' </summary>
@@ -261,40 +263,36 @@ Public Class cEwENetworkAnalysisPlugin
     ''' <remarks></remarks>
     Public Sub EcosimRunInitialized(ByVal EcosimDatastructures As Object) Implements EwEPlugin.IEcosimRunInitializedPlugin.EcosimRunInitialized
 
-        Debug.Assert(TypeOf EcosimDatastructures Is EwECore.cEcosimDatastructures, Me.ToString & _
+        Debug.Assert(TypeOf EcosimDatastructures Is EwECore.cEcosimDatastructures, Me.ToString &
                             ".EcosimRunInitialized() argument EcosimDatastructures is not a cEcosimDatastructures object.")
 
-        'Only initialize the Ecosim Network Analysis if it is turned on
-        If Not m_manager.UseEcosimNetwork Then
-            Return
+        ' Need to turn on Ecosim Network Analysis?
+        If Me.Autosave(eAutosaveType.Ecosim) And Not Me.m_manager.UseEcosimNetwork Then
+            Me.m_bRunWithSimOld = Me.m_manager.UseEcosimNetwork
+            Me.m_manager.UseEcosimNetwork = True
+            Me.m_manager.EcosimPPROn = My.Settings.AutosaveEcosimWithPPR
         End If
 
+        'Only proceed if Ecosim Network Analysis is turned on
+        If Not m_manager.UseEcosimNetwork Then Return
+
         Try
-            If TypeOf EcosimDatastructures Is EwECore.cEcosimDatastructures Then
-                'set the EcosimData data in the network manager object
-                'this is the data the Network analysis will be run on
-                m_manager.EcosimData = DirectCast(EcosimDatastructures, EwECore.cEcosimDatastructures)
-
-                'm_NetworkManager.bEcoismNetwork = True
-
-                'Initialize the Network Analysis for Ecosim
-                m_manager.InitNetworkForEcosim()
-
-                'System.Console.WriteLine(Me.ToString & ".EcosimRunInitialized() called.")
-            Else
-
-                'some kind of a message
-                m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcosimRunInitialized() argument EcosimDatastructures is not a cEcosimDatastructures object.", _
-                                                                eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Warning))
+            If Not Me.m_manager.IsMainNetworkRun Then
+                If Not Me.Manager.RunMainNetwork() Then
+                    Return
+                End If
             End If
+
+            'set the EcosimData data in the network manager object
+            'this is the data the Network analysis will be run on
+            Me.m_manager.EcosimData = DirectCast(EcosimDatastructures, EwECore.cEcosimDatastructures)
+            'Initialize the Network Analysis for Ecosim
+            Me.m_manager.InitNetworkForEcosim()
+
         Catch ex As Exception
+            cLog.Write(ex, "cEwENetworkAnalysisPlugin.EcosimRunInitialized")
             Debug.Assert(False, ex.Message)
-
-            m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcosimRunInitialized() Error: " & ex.Message, _
-                                                            eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Warning))
-
         End Try
-
 
     End Sub
 
@@ -305,8 +303,8 @@ Public Class cEwENetworkAnalysisPlugin
     ''' <param name="iTime"></param>
     ''' <param name="Ecosimresults"></param>
     ''' <remarks></remarks>
-    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, _
-                                 ByVal EcosimDatastructures As Object, _
+    Public Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single,
+                                 ByVal EcosimDatastructures As Object,
                                  ByVal iTime As Integer, ByVal Ecosimresults As Object) _
         Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
@@ -326,9 +324,8 @@ Public Class cEwENetworkAnalysisPlugin
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "cEwENetworkAnalysisPlugin.EcosimEndTimeStep")
             Debug.Assert(False, ex.StackTrace)
-            'eat the exception
         End Try
 
     End Sub
@@ -337,13 +334,22 @@ Public Class cEwENetworkAnalysisPlugin
         Implements EwEPlugin.IEcosimRunCompletedPlugin.EcosimRunCompleted
 
         Try
+            ' JS 170911: Sim broadcasting was never used, and the code below might tigger a new Sim run. Idea abadoned
+            'If (Me.m_manager.RunWithEcosim) Then
+            '    If Me.m_manager.RunEcosimNetwork() Then
+            '        Me.BroadcastResults()
+            '    End If
+            'End If
 
-            If Me.m_manager.RunWithEcosim Then
-                If Me.m_manager.RunEcosimNetwork() Then
-                    Me.BroadcastResults()
-                End If
+            If Me.Autosave(eAutosaveType.Ecosim) Then
+                ' Flag Ecosim run as completed
+                Me.m_manager.IsEcosimNetworkRun = True
+
+                Dim wr As New cNetworkAnalysisEcosimResultWriter(Me.m_manager)
+                Dim strPath As String = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim)
+                wr.WriteResults(strPath)
+                Me.m_manager.UseEcosimNetwork = Me.m_bRunWithSimOld
             End If
-
         Catch ex As Exception
 
         End Try
@@ -478,6 +484,44 @@ Public Class cEwENetworkAnalysisPlugin
     End Sub
 
 #End Region ' Data exchange
+
+#Region " Autosave "
+
+    Friend Enum eAutosaveType As Integer
+        Ecopath
+        Ecosim
+    End Enum
+
+    Friend Property Autosave(savetype As eAutosaveType) As Boolean
+        Get
+            Select Case savetype
+                Case eAutosaveType.Ecopath
+                    Return My.Settings.AutosaveEcopath
+                Case eAutosaveType.Ecosim
+                    Return My.Settings.AutosaveEcosimWoPPR Or My.Settings.AutosaveEcosimWithPPR
+            End Select
+            Return False
+        End Get
+        Set(value As Boolean)
+            If (value <> Autosave(savetype)) Then
+                Select Case savetype
+                    Case eAutosaveType.Ecopath
+                        My.Settings.AutosaveEcopath = value
+                    Case eAutosaveType.Ecosim
+                        If (value = True) Then
+                            If (My.Settings.AutosaveEcosimWoPPR = False And My.Settings.AutosaveEcosimWithPPR = False) Then
+                                My.Settings.AutosaveEcosimWoPPR = True
+                            End If
+                        Else
+                            My.Settings.AutosaveEcosimWoPPR = False
+                            My.Settings.AutosaveEcosimWithPPR = False
+                        End If
+                End Select
+            End If
+        End Set
+    End Property
+
+#End Region ' Autosave
 
 #Region " Internal helpers "
 

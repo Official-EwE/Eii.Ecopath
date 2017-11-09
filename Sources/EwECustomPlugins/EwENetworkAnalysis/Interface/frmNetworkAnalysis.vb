@@ -196,9 +196,8 @@ Public Class frmNetworkAnalysis
 
             If (cmdDOC.Result = DialogResult.OK) Then
                 Try
-                    Dim writer As New cResultWriter(Me.m_networkmanager)
-                    Dim strData As String = ""
-                    writer.WriteCurrentResults(cmdDOC.Directory)
+                    Dim writer As New cNetworkAnalysisEcosimResultWriter(Me.m_networkmanager)
+                    writer.WriteResults(cmdDOC.Directory)
                 Catch ex As Exception
                     ' Woops
                 End Try
@@ -371,7 +370,7 @@ Public Class frmNetworkAnalysis
         If bClosePage Then Me.m_pageCurrent = Nothing
 
         ' Fixes bug 937
-        Me.ShowPage(Me.m_pageCurrent)
+        Me.RefreshContent()
 
     End Sub
 
@@ -581,6 +580,10 @@ Public Class frmNetworkAnalysis
 
         Me.m_bInUpdate = False
 
+    End Sub
+
+    Public Sub RefreshContent()
+        Me.ShowPage(Me.m_pageCurrent)
     End Sub
 
     Private Sub ShowOptions(ByVal bShow As Boolean)

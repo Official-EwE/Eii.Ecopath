@@ -22,7 +22,7 @@ Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmNetworkAnalysis
     Inherits DockContent
 
@@ -40,7 +40,7 @@ Partial Class frmNetworkAnalysis
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-     Private Sub InitializeComponent()
+    Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim ts3 As System.Windows.Forms.ToolStripSeparator
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNetworkAnalysis))
