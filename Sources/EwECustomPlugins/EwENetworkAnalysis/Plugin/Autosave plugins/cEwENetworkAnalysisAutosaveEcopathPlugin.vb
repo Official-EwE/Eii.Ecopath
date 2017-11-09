@@ -53,13 +53,13 @@ Public Class cEwENetworkAnalysisAutosaveEcopathPlugin
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
-            Return ""
+            Return "EwE development team"
         End Get
     End Property
 
     Public ReadOnly Property Contact As String Implements IPlugin.Contact
         Get
-            Return ""
+            Return "ewedevteam@gmail.com"
         End Get
     End Property
 
