@@ -135,7 +135,7 @@ Namespace Controls.EwEGrid
             End If
 
             ' Create export button
-            Me.m_btnExport = New ToolStripButton(My.Resources.ExportXMLHS)
+            Me.m_btnExport = New ToolStripButton(My.Resources.ExportHS)
             Me.m_btnExport.ToolTipText = My.Resources.TOOLTIP_SAVETOCSV
             AddHandler Me.m_btnExport.Click, AddressOf OnExportGrid
 

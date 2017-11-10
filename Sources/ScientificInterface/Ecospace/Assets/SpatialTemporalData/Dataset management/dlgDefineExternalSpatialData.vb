@@ -94,7 +94,7 @@ Namespace Ecospace.Controls
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.m_btnExport.Image = ScientificInterfaceShared.My.Resources.ExportDatabaseHS
+            Me.m_btnExport.Image = ScientificInterfaceShared.My.Resources.ExportHS
 
             If (Me.UIContext Is Nothing) Then Return
 

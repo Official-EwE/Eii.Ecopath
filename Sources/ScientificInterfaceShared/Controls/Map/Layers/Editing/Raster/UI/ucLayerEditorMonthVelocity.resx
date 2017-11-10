@@ -123,10 +123,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_btnCopy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>170, 179</value>
+    <value>170, 205</value>
   </data>
   <data name="m_btnCopy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 23</value>
+    <value>27, 24</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnCopy.TabIndex" type="System.Int32, mscorlib">
@@ -148,7 +148,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbMonth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>68, 181</value>
+    <value>69, 207</value>
   </data>
   <data name="m_cmbMonth.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 3, 0, 3</value>
@@ -175,7 +175,7 @@
     <value>True</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 186</value>
+    <value>3, 210</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 13</value>
@@ -208,12 +208,12 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 210</value>
+    <value>200, 236</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucLayerEditorMonthVelocity</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorRange, ScientificInterfaceShared, Version=6.5.14053.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorRange, ScientificInterfaceShared, Version=6.6.14962.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

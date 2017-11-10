@@ -52,11 +52,11 @@ Public Class cNetworkAnalysisEcopathResultWriter
 
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return False
 
-        'If Not Me.Manager.IsMainNetworkRun Then
-        '    If Not Me.Manager.RunMainNetwork() Then
-        '        Return False
-        '    End If
-        'End If
+        If Not Me.Manager.IsMainNetworkRun Then
+            If Not Me.Manager.RunMainNetwork() Then
+                Return False
+            End If
+        End If
 
         ' ToDo: write other ENA indicators to file when requested
 
