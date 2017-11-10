@@ -2135,7 +2135,6 @@ Public Class cEIIXMLDataSource
         ' SetDefaults properly redimensions the ecospaceDS group variables, which
         ' may wreck havoc if the implementation of SetDefaults were to change.
         ecospaceDS.SetDefaults()
-        spatialDS.SetDefaults()
 
         dtScenario.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
 
@@ -2727,6 +2726,8 @@ Public Class cEIIXMLDataSource
         Dim strConverterType As String = ""
         Dim strConverterCfg As String = ""
         Dim bSucces As Boolean = True
+
+        spatialDS.SetDefaults()
 
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
