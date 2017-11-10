@@ -581,6 +581,7 @@ Namespace Utilities
             ' Sanity checks
             If (String.IsNullOrWhiteSpace(strPath)) Then Return String.Empty
             If Not (strPath.Contains(Path.DirectorySeparatorChar) Or strPath.Contains(Path.AltDirectorySeparatorChar)) Then Return String.Empty
+            If Not (Directory.Exists(strPath)) Then Return strPath
 
             ' Validate paths and folders
             Return Path.GetFullPath(New Uri(strPath).LocalPath)

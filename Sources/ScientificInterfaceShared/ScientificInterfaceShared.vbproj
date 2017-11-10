@@ -1046,6 +1046,7 @@
     <None Include="Resources\MPA.png" />
     <None Include="Resources\Raster.png" />
     <Content Include="Resources\bug.png" />
+    <Content Include="Resources\CalendarHS.png" />
     <Content Include="Resources\CaseSensitive.png" />
     <Content Include="Resources\CogHS.png" />
     <Content Include="Resources\ConnectHS.png" />
@@ -1053,6 +1054,7 @@
     <None Include="Resources\DownloadHS.png" />
     <Content Include="Resources\ExportDatabaseHS.PNG" />
     <None Include="Resources\FilterHS off.png" />
+    <None Include="Resources\ExportHS.png" />
     <Content Include="Resources\FilterHS.png" />
     <None Include="Resources\fish_dead.png" />
     <Content Include="Resources\glyph_hl_fine_blue.png" />

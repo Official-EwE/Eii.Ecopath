@@ -315,9 +315,6 @@
   <data name="ZoomInHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ZoomInHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ExportXMLHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ExportXMLHS.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="GENERIC_LABEL_APPLY" xml:space="preserve">
     <value>Apply</value>
   </data>
@@ -2326,9 +2323,6 @@
   <data name="GENERIC_ZOOM_RESET" xml:space="preserve">
     <value>Reset zoom</value>
   </data>
-  <data name="ExportPictureHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\exportpicturehs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="TOOLTIP_SAVETOIMAGE" xml:space="preserve">
     <value>Save to image</value>
   </data>
@@ -2602,9 +2596,6 @@
   </data>
   <data name="NavHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\navhs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ExportDatabaseHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\exportdatabasehs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_SHOW_HIDDEN" xml:space="preserve">
     <value>Show hidden nodes</value>
@@ -3068,5 +3059,8 @@
   </data>
   <data name="FFAPPLICATIONTARGET_MORTOTHER" xml:space="preserve">
     <value>Mortality other</value>
+  </data>
+  <data name="ExportHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExportHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

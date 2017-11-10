@@ -2650,7 +2650,7 @@ Namespace Controls
             item.Checked = Me.IsAxisLabelsVisible
             menuStrip.Items.Add(item)
 
-            item = New ToolStripMenuItem(My.Resources.GENERIC_SAVE_TO_CSV, My.Resources.ExportXMLHS, AddressOf OnExtractToCSV)
+            item = New ToolStripMenuItem(My.Resources.GENERIC_SAVE_TO_CSV, My.Resources.ExportHS, AddressOf OnExtractToCSV)
             item.ShowShortcutKeys = True
             menuStrip.Items.Add(item)
 
@@ -2846,7 +2846,7 @@ Namespace Controls
             Me.m_hovermenu.AddItem(My.Resources.LegendHS, My.Resources.GENERIC_SHOW_LEGEND, eHoverCommands.ShowLegend)
             Me.m_hovermenu.AddItem(My.Resources.tag, My.Resources.GENERIC_SHOW_LABELS, eHoverCommands.ShowLabels)
             Me.m_hovermenu.AddSeparator()
-            Me.m_hovermenu.AddItem(My.Resources.ExportXMLHS, My.Resources.GENERIC_SAVE_TO_CSV, eHoverCommands.ExportToCSV)
+            Me.m_hovermenu.AddItem(My.Resources.ExportHS, My.Resources.GENERIC_SAVE_TO_CSV, eHoverCommands.ExportToCSV)
             AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
             Me.m_hovermenu.Attach(Me.m_zgc)
