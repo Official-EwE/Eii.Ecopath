@@ -7272,7 +7272,6 @@ Namespace DataSources
             ' SetDefaults properly redimensions the ecospaceDS group variables, which
             ' may wreck havoc if the implementation of SetDefaults were to change.
             ecospaceDS.SetDefaults()
-            spatialDS.SetDefaults()
 
             reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
             Try
@@ -9693,6 +9692,10 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             If (reader Is Nothing) Then Return Me.IsReadOnly
+
+            ' Spatial datastructures may use core counters that are defined only in Ecospace 
+            ' Therefore, spatialDS can only be properly initialized now, right before loading the actual connection data
+            spatialDS.SetDefaults()
 
             While (reader.Read())
                 Try

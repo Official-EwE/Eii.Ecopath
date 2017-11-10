@@ -376,11 +376,6 @@ Public MustInherit Class cCoreInputOutputBase
         End Set
     End Property
 
-    Public Overrides Function ToString() As String
-        ' ToDo: use formatter for this. OK for now
-        Return cStringUtils.Localize("{0}: {1}", Me.Index, Me.Name)
-    End Function
-
 #End Region ' Public Functions/Methods
 
 #Region " Mustoverride Methods "

@@ -687,6 +687,10 @@ Namespace SpatialData
 
 #End Region ' Connections
 
+        Public Overrides Function ToString() As String
+            Return Me.VarName.ToString()
+        End Function
+
     End Class
 
 End Namespace
