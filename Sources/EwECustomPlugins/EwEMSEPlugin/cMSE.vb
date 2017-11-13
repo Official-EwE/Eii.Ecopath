@@ -2152,12 +2152,6 @@ Public Class cMSE
         ReDim TargConsQuota(m_core.nGroups - 1, 1)
         ReDim MaxEffortThisYear(m_core.nFleets - 1)
 
-        m_fleet_max_effort = New List(Of cFleetMaxEffort)
-
-        For iFleet = 1 To m_core.nFleets
-            m_fleet_max_effort.Add(New cFleetMaxEffort(iFleet:=iFleet, start_effort:=1, max_percentage_change_in_max_effort:=m_effortlimits.Value(iFleet)))
-        Next
-
     End Sub
 
 
@@ -3716,6 +3710,18 @@ Public Class cMSE
 
             If (iTime - 1) Mod 12 = 0 Then 'if it is the first timestep of the year
 
+                If iTime = OriginalNTimesteps + 1 Then
+                    m_fleet_max_effort = New List(Of cFleetMaxEffort)
+                    For iFleet = 1 To m_core.nFleets
+                        m_fleet_max_effort.Add(New cFleetMaxEffort(iFleet:=iFleet,
+                                                                   final_hindcast_effort:=_simdata.FishRateGear(iFleet, iTime - 1),
+                                                                   max_percentage_change_in_max_effort:=m_effortlimits.Value(iFleet),
+                                                                   decaying_max_effort:=m_effortlimits.decaying_max_effort))
+                    Next
+                Else
+
+                End If
+
                 For iFleet = 1 To m_ecosim.EcosimData.nGear
                     m_FleetImpError(iFleet) = StockAssessment.getImplementationError(iFleet)
                 Next
@@ -4205,12 +4211,14 @@ Public Class cMSE
                                          + Me.EcopathData.FleetName(iFleet) + " = zero.")
             End If
 
-            If m_effortlimits.decaying_max_effort Then
-                MaxEffortThisYear(iFleet - 1) = m_fleet_max_effort(iFleet - 1).MaxEffort
-                m_fleet_max_effort(iFleet - 1).UpdateLimit(_simdata.FishRateGear(iFleet, iTime - 1))
-            Else
-                MaxEffortThisYear(iFleet - 1) = _simdata.FishRateGear(iFleet, iTime - 1) * (1 + m_effortlimits.Value(iFleet))
-            End If
+            'If m_effortlimits.decaying_max_effort Then
+            '    m_fleet_max_effort(iFleet - 1).UpdateLimit(_simdata.FishRateGear(iFleet, iTime - 1))
+            '    MaxEffortThisYear(iFleet - 1) = m_fleet_max_effort(iFleet - 1).MaxEffort
+            'Else
+            '    MaxEffortThisYear(iFleet - 1) = _simdata.FishRateGear(iFleet, iTime - 1) * (1 + m_effortlimits.Value(iFleet))
+            'End If
+            m_fleet_max_effort(iFleet - 1).UpdateLimit(_simdata.FishRateGear(iFleet, iTime - 1))
+            MaxEffortThisYear(iFleet - 1) = m_fleet_max_effort(iFleet - 1).MaxEffort
 
             If m_effortlimits.Value(iFleet) = cCore.NULL_VALUE Then MaxEffortThisYear(iFleet - 1) = 200
 
