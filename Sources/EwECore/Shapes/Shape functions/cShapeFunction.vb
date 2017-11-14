@@ -206,20 +206,11 @@ Public MustInherit Class cShapeFunction
         Implements IShapeFunction.Apply
 
         If (Not TypeOf (obj) Is cForcingFunction) Then Return False
-
         Dim shp As cForcingFunction = DirectCast(obj, cForcingFunction)
-
         Debug.Assert(Me.IsCompatible(shp.DataType))
 
-        shp.ShapeFunctionType = CType(Me.ShapeFunctionType, eShapeFunctionType)
-
-        shp.ShapeData = Me.m_points
-        For i As Integer = 1 To Me.nParameters
-            shp.ShapeFunctionParameter(i) = Me.ParamValue(i)
-        Next
-
-        shp.Update()
-
+        ' Update shape to this function
+        shp.Reshape(Me)
         Return True
 
     End Function

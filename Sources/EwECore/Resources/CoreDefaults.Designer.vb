@@ -470,7 +470,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to XYZT point values (csv format).
+        '''  Looks up a localized string similar to Biomass, Catch and Effort XYZT point values (csv format).
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_WRITER_XYZT() As String
             Get

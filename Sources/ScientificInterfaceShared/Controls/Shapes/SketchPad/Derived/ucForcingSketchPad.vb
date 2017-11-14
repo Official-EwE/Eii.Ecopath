@@ -209,7 +209,7 @@ Namespace Controls
 
             If (TypeOf Me.Shape Is cForcingFunction) Then
                 Dim ff As cForcingFunction = DirectCast(Me.Shape, cForcingFunction)
-                If (ff.ShapeFunctionType <> 0) Then
+                If (ff.ShapeFunctionType <> eShapeFunctionType.NotSet) Then
                     Dim fn As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(ff, Me.UIContext.Core.PluginManager)
                     Dim fmt As New cShapeFunctionFormatter()
                     sb.AppendLine(fmt.GetDescriptor(fn))
