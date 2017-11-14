@@ -54,12 +54,12 @@ Partial Public Class frmEwE6
         Dim m_tssEcospace3 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssHelp1 As System.Windows.Forms.ToolStripSeparator
         Dim MenuEcospace As System.Windows.Forms.ToolStripMenuItem
-        Dim sep3 As System.Windows.Forms.ToolStripSeparator
-        Dim sep2 As System.Windows.Forms.ToolStripSeparator
         Dim sep1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssHelp3 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssEcotracer1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssTools1 As System.Windows.Forms.ToolStripSeparator
+        Dim sep2 As System.Windows.Forms.ToolStripSeparator
+        Dim sep3 As System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcospaceNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceLoad = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceClose = New System.Windows.Forms.ToolStripMenuItem()
@@ -105,6 +105,7 @@ Partial Public Class frmEwE6
         Me.m_tsmiEcobaseImport = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExportModel = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcobaseExport = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEIIXMLExport = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiFileClose = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiFileSave = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiFileSaveAs = New System.Windows.Forms.ToolStripMenuItem()
@@ -160,7 +161,6 @@ Partial Public Class frmEwE6
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
-        Me.m_tsmiEIIXMLExport = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -173,12 +173,12 @@ Partial Public Class frmEwE6
         m_tssEcospace3 = New System.Windows.Forms.ToolStripSeparator()
         m_tssHelp1 = New System.Windows.Forms.ToolStripSeparator()
         MenuEcospace = New System.Windows.Forms.ToolStripMenuItem()
-        sep3 = New System.Windows.Forms.ToolStripSeparator()
-        sep2 = New System.Windows.Forms.ToolStripSeparator()
         sep1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssHelp3 = New System.Windows.Forms.ToolStripSeparator()
         m_tssEcotracer1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssTools1 = New System.Windows.Forms.ToolStripSeparator()
+        sep2 = New System.Windows.Forms.ToolStripSeparator()
+        sep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_menuMain.SuspendLayout()
         Me.m_tsModel.SuspendLayout()
         Me.SuspendLayout()
@@ -328,16 +328,6 @@ Partial Public Class frmEwE6
         '
         Me.m_tsmiEcospaceLoadXYRefData.Name = "m_tsmiEcospaceLoadXYRefData"
         resources.ApplyResources(Me.m_tsmiEcospaceLoadXYRefData, "m_tsmiEcospaceLoadXYRefData")
-        '
-        'sep3
-        '
-        sep3.Name = "sep3"
-        resources.ApplyResources(sep3, "sep3")
-        '
-        'sep2
-        '
-        sep2.Name = "sep2"
-        resources.ApplyResources(sep2, "sep2")
         '
         'sep1
         '
@@ -505,6 +495,11 @@ Partial Public Class frmEwE6
         '
         Me.m_tsmiEcobaseExport.Name = "m_tsmiEcobaseExport"
         resources.ApplyResources(Me.m_tsmiEcobaseExport, "m_tsmiEcobaseExport")
+        '
+        'm_tsmiEIIXMLExport
+        '
+        Me.m_tsmiEIIXMLExport.Name = "m_tsmiEIIXMLExport"
+        resources.ApplyResources(Me.m_tsmiEIIXMLExport, "m_tsmiEIIXMLExport")
         '
         'm_tsmiFileClose
         '
@@ -766,24 +761,28 @@ Partial Public Class frmEwE6
         '
         'm_tsbEcopath
         '
+        Me.m_tsbEcopath.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbEcopath, "m_tsbEcopath")
         Me.m_tsbEcopath.Name = "m_tsbEcopath"
         '
         'm_tsbEcosim
         '
         Me.m_tsbEcosim.BackColor = System.Drawing.SystemColors.Control
+        Me.m_tsbEcosim.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.m_tsbEcosim.DropDownButtonWidth = 16
         resources.ApplyResources(Me.m_tsbEcosim, "m_tsbEcosim")
         Me.m_tsbEcosim.Name = "m_tsbEcosim"
         '
         'm_tsbEcospace
         '
+        Me.m_tsbEcospace.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.m_tsbEcospace.DropDownButtonWidth = 16
         resources.ApplyResources(Me.m_tsbEcospace, "m_tsbEcospace")
         Me.m_tsbEcospace.Name = "m_tsbEcospace"
         '
         'm_tsbEcotracer
         '
+        Me.m_tsbEcotracer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbEcotracer, "m_tsbEcotracer")
         Me.m_tsbEcotracer.Name = "m_tsbEcotracer"
         '
@@ -809,16 +808,21 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tslbReadOnly, "m_tslbReadOnly")
         Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
         '
+        'sep2
+        '
+        sep2.Name = "sep2"
+        resources.ApplyResources(sep2, "sep2")
+        '
         'm_ssMain
         '
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
-        'm_tsmiEIIXMLExport
+        'sep3
         '
-        Me.m_tsmiEIIXMLExport.Name = "m_tsmiEIIXMLExport"
-        resources.ApplyResources(Me.m_tsmiEIIXMLExport, "m_tsmiEIIXMLExport")
+        sep3.Name = "sep3"
+        resources.ApplyResources(sep3, "sep3")
         '
         'frmEwE6
         '
