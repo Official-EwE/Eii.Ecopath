@@ -8111,7 +8111,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (Original shape)|||Shape as imported or sketched.
+        '''  Looks up a localized string similar to (sketched)|||Shape is sketched, and is not a primitive.
         '''</summary>
         Public ReadOnly Property SHAPEFUNCTION_NOTSET() As String
             Get
