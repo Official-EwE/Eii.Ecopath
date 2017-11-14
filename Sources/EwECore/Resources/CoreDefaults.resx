@@ -267,7 +267,7 @@
     <value>Effort maps (ASCII format)</value>
   </data>
   <data name="ECOSPACE_WRITER_XYZT" xml:space="preserve">
-    <value>XYZT point values (csv format)</value>
+    <value>Biomass, Catch and Effort XYZT point values (csv format)</value>
   </data>
   <data name="ECOSPACE_WRITER_REGAVG" xml:space="preserve">
     <value>Region averages (csv format)</value>

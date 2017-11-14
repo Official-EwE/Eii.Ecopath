@@ -34,14 +34,13 @@ Imports EwEUtils.Core
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cEwESinoidShapeFunctionPlugin
-    Implements EwEPlugin.IEcosimShapeFunctionPlugin
+    Inherits cShapeFunction
+    Implements IEcosimShapeFunctionPlugin
 
 #Region " Internal vars "
 
     ''' <summary>The core to operate on.</summary>
     Private m_core As cCore
-    ''' <summary>The points of the shape</summary>
-    Protected m_points As Single() = Nothing
 
     ''' <summary>Degree-to-radians conversion factor.</summary>
     Private Const cDegToRad As Single = Math.PI / 180.0!
@@ -127,28 +126,18 @@ Public Class cEwESinoidShapeFunctionPlugin
 
     Public Sub Init(shape As Object) _
         Implements IEcosimShapeFunctionPlugin.Init
-
-        If (Not TypeOf shape Is cForcingFunction) Then Return
-        Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
-        Me.m_points = ff.ShapeData
-
-        If (ff.ShapeFunctionType <> Me.ShapeFunctionType) Then Return
-
-        For i As Integer = 1 To Me.nParameters
-            Me.ParamValue(i) = ff.ShapeFunctionParameter(i)
-        Next
-
+        MyBase.Init(shape)
     End Sub
 
-    Public Function IsCompatible(datatype As eDataTypes) As Boolean _
+    Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean _
         Implements IEcosimShapeFunctionPlugin.IsCompatible
 
-        ' This shape function only applies to forcing functions
-        Return (datatype = eDataTypes.Forcing)
+        ' This shape function only applies to forcing-type functions
+        Return Me.IsForcing(datatype)
 
     End Function
 
-    Public Sub Defaults() _
+    Public Overrides Sub Defaults() _
         Implements IEcosimShapeFunctionPlugin.Defaults
 
         ' Pick some nice defaults
@@ -159,7 +148,7 @@ Public Class cEwESinoidShapeFunctionPlugin
 
     End Sub
 
-    Public ReadOnly Property nParameters As Integer _
+    Public Overrides ReadOnly Property nParameters As Integer _
         Implements IEcosimShapeFunctionPlugin.nParameters
         Get
             ' Tell EwE that the Sinoid shape function has four configurable parameters
@@ -167,7 +156,7 @@ Public Class cEwESinoidShapeFunctionPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ParamName(iParam As Integer) As String _
+    Public Overrides ReadOnly Property ParamName(iParam As Integer) As String _
         Implements IEcosimShapeFunctionPlugin.ParamName
         Get
             ' Tell EwE the names of each configurable parameter
@@ -181,7 +170,7 @@ Public Class cEwESinoidShapeFunctionPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ParamUnit(iParam As Integer) As String _
+    Public Overrides ReadOnly Property ParamUnit(iParam As Integer) As String _
         Implements IEcosimShapeFunctionPlugin.ParamUnit
         Get
             ' Tell EwE the units of configurable parameters, if any
@@ -194,7 +183,7 @@ Public Class cEwESinoidShapeFunctionPlugin
         End Get
     End Property
 
-    Public Property ParamValue(iParam As Integer) As Single _
+    Public Overrides Property ParamValue(iParam As Integer) As Single _
         Implements IEcosimShapeFunctionPlugin.ParamValue
         Get
             ' Tell EwE the value of each configurable parameter
@@ -217,7 +206,7 @@ Public Class cEwESinoidShapeFunctionPlugin
         End Set
     End Property
 
-    Public Function Shape(nPoints As Integer) As Single() _
+    Public Overrides Function Shape(nPoints As Integer) As Single() _
         Implements IEcosimShapeFunctionPlugin.Shape
 
         ' Tell EwE the actual shape, computed from the current parameter values
@@ -240,24 +229,7 @@ Public Class cEwESinoidShapeFunctionPlugin
 
     End Function
 
-    Public Function Apply(shape As Object) As Boolean _
-        Implements IEcosimShapeFunctionPlugin.Apply
-
-        If (Not TypeOf shape Is cForcingFunction) Then Return False
-        Dim shp As cForcingFunction = DirectCast(shape, cForcingFunction)
-        shp.ShapeData = Me.m_points
-        shp.ShapeFunctionType = Me.ShapeFunctionType
-
-        ' Store configuration parameters
-        For i As Integer = 1 To Me.nParameters
-            shp.ShapeFunctionParameter(i) = Me.ParamValue(i)
-        Next
-
-        Return True
-
-    End Function
-
-    Public ReadOnly Property ShapeFunctionType As Long _
+    Public Overrides ReadOnly Property ShapeFunctionType As Long _
         Implements IEcosimShapeFunctionPlugin.ShapeFunctionType
         Get
             ' This is quite a random number
@@ -267,10 +239,11 @@ Public Class cEwESinoidShapeFunctionPlugin
 
 #End Region ' Shape function
 
-    Public ReadOnly Property ParamStatus(iParam As Integer) As eStatusFlags _
+    Public Overrides ReadOnly Property ParamStatus(iParam As Integer) As eStatusFlags _
         Implements IShapeFunction.ParamStatus
         Get
             Return eStatusFlags.OK
         End Get
     End Property
+
 End Class

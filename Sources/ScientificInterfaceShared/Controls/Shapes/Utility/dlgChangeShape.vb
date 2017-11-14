@@ -86,7 +86,6 @@ Namespace Controls
             ' Show available options
             For Each sft As IShapeFunction In cShapeFunctionFactory.GetShapeFunctions(Me.m_shape, Me.m_uic.Core.PluginManager)
                 Me.m_lbShapeFunctionTypes.Items.Add(sft)
-                ' This selection logic will have to change when plug-in provided shape function types become available
                 If (TypeOf sft Is IShapeFunction) Then
                     If (DirectCast(sft, IShapeFunction).ShapeFunctionType = Me.m_shape.ShapeFunctionType) Then
                         Me.SelectedShapeFunction = sft

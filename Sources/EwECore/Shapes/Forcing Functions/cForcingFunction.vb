@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
+
 #Region " Forcing Shape "
 
 ''' -----------------------------------------------------------------------
@@ -57,18 +58,39 @@ Public Class cForcingFunction
 
 #Region " Public fields/properties "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Update the shape from a shape function. This updates the shape data,
+    ''' the <see cref="ShapeFunctionType"/>, and <see cref="ShapeFunctionParameter(Integer)"/>
+    ''' values.
+    ''' </summary>
+    ''' <param name="fn">The shapefunction to update from.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub Reshape(fn As IShapeFunction)
+        ' Safety check
+        If (fn Is Nothing) Then Return
+        ' Update
+        Me.ShapeData = fn.Shape(Me.nPoints)
+        Me.m_ShapeFunctionType = fn.ShapeFunctionType
+        ReDim Me.m_params(fn.nParameters)
+        For i As Integer = 1 To fn.nParameters
+            Me.ShapeFunctionParameter(i) = fn.ParamValue(i)
+        Next
+        Me.Update()
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="eShapeFunctionType"/> that defines the forcing function.
+    ''' </summary>
+    ''' <seealso cref="Reshape(IShapeFunction)"/>
+    ''' -----------------------------------------------------------------------
     Public Property ShapeFunctionType() As Long
         Get
             Return Me.m_ShapeFunctionType
         End Get
-        Set(ByVal value As Long)
-            If (Me.m_ShapeFunctionType <> value) Then
-                Me.m_ShapeFunctionType = value
-                Dim fn As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(value)
-                If (fn IsNot Nothing) Then
-                    ReDim Me.m_params(fn.nParameters)
-                End If
-            End If
+        Friend Set(ByVal value As Long)
+            Me.m_ShapeFunctionType = value
             Me.Update()
         End Set
     End Property
@@ -79,11 +101,13 @@ Public Class cForcingFunction
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get/set the value of a shape function parameter.
     ''' </summary>
     ''' <param name="iParam">One-based parameter index.</param>
     ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Public Property ShapeFunctionParameter(iParam As Integer) As Single
         Get
             If 1 <= iParam And iParam <= Me.nParams Then
@@ -98,29 +122,23 @@ Public Class cForcingFunction
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get an array with the values for all shape function parameters.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property ShapeFunctionParameters() As Single()
         Get
             Return Me.m_params
         End Get
     End Property
 
-    'Public Property ForcingApplicationType() As eForcingApplicationTypes
-    '    Get
-    '        Return Me.m_ForcingApplicationType
-    '    End Get
-    '    Set(ByVal value As eForcingApplicationTypes)
-    '        Me.m_ForcingApplicationType = value
-    '        Me.Update()
-    '    End Set
-    'End Property
-
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Index of the shape in the list managers list of shape
     ''' </summary>
     ''' <remarks>This is a zero based index set when the shape is added to the manager (Construction of the shape) </remarks>
+    ''' -----------------------------------------------------------------------
     Public Property ID() As Integer
         Get
             Return Me.m_ID
@@ -305,9 +323,7 @@ Public Class cForcingFunction
 #End Region ' Updating
 
     Public Overridable Function ToCSVString() As String
-
         Return Me.Name '+ ", mean " + Me.m_p3.ToString + ", YZero " + Me.m_p0.ToString + ", YEnd " + Me.m_p2.ToString
-
     End Function
 
 End Class ' cForcingFunction

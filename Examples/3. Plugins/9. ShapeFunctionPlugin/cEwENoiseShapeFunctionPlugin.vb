@@ -33,14 +33,15 @@ Imports EwEUtils.Core
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cEwENoseShapeFunctionPlugin
+    Inherits cShapeFunction
     Implements EwEPlugin.IEcosimShapeFunctionPlugin
 
 #Region " Internal vars "
 
     ''' <summary>The core to operate on.</summary>
     Private m_core As cCore
-    ''' <summary>The points of the shape</summary>
-    Protected m_points As Single() = Nothing
+    ''' <summary>The original points of the shape.</summary>
+    Protected m_pointsOrg As Single() = Nothing
 
 #End Region ' Internal vars
 
@@ -98,7 +99,7 @@ Public Class cEwENoseShapeFunctionPlugin
     ''' <summary>
     ''' Min noise value.
     ''' </summary>
-    Private Property Band As Single = 0.1
+    Private Property Amplitude As Single = 0.1
 
     Public ReadOnly Property ParamStatus(iParam As Integer) As eStatusFlags _
     Implements IShapeFunction.ParamStatus
@@ -111,82 +112,78 @@ Public Class cEwENoseShapeFunctionPlugin
 
 #Region " Shape function "
 
-    Public Sub Init(shape As Object) _
+    Public Overrides Sub Init(shape As Object) _
         Implements IEcosimShapeFunctionPlugin.Init
 
         If (Not TypeOf shape Is cForcingFunction) Then Return
         Dim ff As cForcingFunction = DirectCast(shape, cForcingFunction)
 
-        Me.m_points = ff.ShapeData
+        Me.m_pointsOrg = ff.ShapeData
 
-        If (ff.ShapeFunctionType <> Me.ShapeFunctionType) Then Return
-
-        For i As Integer = 1 To Me.nParameters
-            Me.ParamValue(i) = ff.ShapeFunctionParameter(i)
-        Next
+        MyBase.Init(shape)
+        Me.Defaults()
 
     End Sub
 
-    Public Function IsCompatible(datatype As eDataTypes) As Boolean _
+    Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean _
         Implements IEcosimShapeFunctionPlugin.IsCompatible
 
-        ' This shape function only applies to any type of function
-        Return True
+        ' This shape function only to forcing-type functions
+        Return IsForcing(datatype)
 
     End Function
 
-    Public Sub Defaults() _
+    Public Overrides Sub Defaults() _
         Implements IEcosimShapeFunctionPlugin.Defaults
 
-        Me.Band = 0.1
+        Me.Amplitude = 0.05
 
     End Sub
 
-    Public ReadOnly Property nParameters As Integer _
+    Public Overrides ReadOnly Property nParameters As Integer _
         Implements IEcosimShapeFunctionPlugin.nParameters
         Get
-            ' Tell EwE that the noise shape function has three configurable parameters
+            ' Tell EwE that the noise shape function has one configurable parameter
             Return 1
         End Get
     End Property
 
-    Public ReadOnly Property ParamName(iParam As Integer) As String _
+    Public Overrides ReadOnly Property ParamName(iParam As Integer) As String _
         Implements IEcosimShapeFunctionPlugin.ParamName
         Get
             ' Tell the EwE interface the name of configurable parameter 'iParam'
             Select Case iParam
-                Case 1 : Return My.Resources.PARAM_BAND
+                Case 1 : Return My.Resources.PARAM_AMPLITUDE
             End Select
             Return "?"
         End Get
     End Property
 
-    Public ReadOnly Property ParamUnit(iParam As Integer) As String _
+    Public Overrides ReadOnly Property ParamUnit(iParam As Integer) As String _
         Implements IEcosimShapeFunctionPlugin.ParamUnit
         Get
-            ' No units for any of the noise function parameters
-            Return ""
+            Return MyBase.ParamUnit(iParam)
         End Get
     End Property
 
-    Public Property ParamValue(iParam As Integer) As Single _
+    Public Overrides Property ParamValue(iParam As Integer) As Single _
         Implements IEcosimShapeFunctionPlugin.ParamValue
         Get
             ' Tell EwE the values of each configurable parameter
             Select Case iParam
-                Case 1 : Return Me.Band
+                Case 1 : Return Me.Amplitude
             End Select
             Return cCore.NULL_VALUE
         End Get
         Set(value As Single)
             ' Allow EwE to set the value of each configurable parameter
             Select Case iParam
-                Case 1 : Me.Band = value
+                Case 1 : Me.Amplitude = value
             End Select
         End Set
     End Property
 
-    Public Function Shape(nPoints As Integer) As Single() _
+    Public Overrides Function Shape(nPoints As Integer) As Single() _
         Implements IEcosimShapeFunctionPlugin.Shape
 
         ' Tell EwE the actual shape, computed from the current parameter values
@@ -194,7 +191,8 @@ Public Class cEwENoseShapeFunctionPlugin
         Dim rnd As New Random()
 
         While (pt < Me.m_points.Length)
-            Me.m_points(pt) += CSng(Me.Band * rnd.NextDouble() - Me.Band / 2)
+            ' Add noise to the original shape. We do not want a runaway noise effect ;)
+            Me.m_points(pt) = Me.m_pointsOrg(pt) + CSng(Me.Amplitude * rnd.NextDouble() - Me.Amplitude / 2)
             pt += 1
         End While
 
@@ -203,29 +201,13 @@ Public Class cEwENoseShapeFunctionPlugin
 
     End Function
 
-    Public ReadOnly Property ShapeFunctionType As Long _
+    Public Overrides ReadOnly Property ShapeFunctionType As Long _
         Implements IEcosimShapeFunctionPlugin.ShapeFunctionType
         Get
             ' This is quite a random number
             Return -421300666
         End Get
     End Property
-
-    Public Function Apply(shape As Object) As Boolean _
-        Implements IEcosimShapeFunctionPlugin.Apply
-
-        If (Not TypeOf shape Is cForcingFunction) Then Return False
-        Dim shp As cForcingFunction = DirectCast(shape, cForcingFunction)
-        shp.ShapeData = Me.m_points
-        shp.ShapeFunctionType = Me.ShapeFunctionType
-
-        ' Store configuration parameters
-        For i As Integer = 1 To Me.nParameters
-            shp.ShapeFunctionParameter(i) = Me.ParamValue(i)
-        Next
-        Return True
-
-    End Function
 
 #End Region ' Shape function
 

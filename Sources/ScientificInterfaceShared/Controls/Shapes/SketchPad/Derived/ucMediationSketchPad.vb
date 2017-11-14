@@ -185,7 +185,7 @@ Namespace Controls
 
             sb.AppendLine(cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, ff.ID + 1, Me.Shape.Name))
 
-            If (ff.ShapeFunctionType <> 0) Then
+            If (ff.ShapeFunctionType <> eShapeFunctionType.NotSet) Then
                 Dim fn As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(ff, Me.UIContext.Core.PluginManager)
                 Dim fmt As New cShapeFunctionFormatter()
                 sb.AppendLine(fmt.GetDescriptor(fn))

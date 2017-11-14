@@ -124,7 +124,7 @@
     <value>Plug-in that adds noise to a shape in EwE 6</value>
   </data>
   <data name="NAME_NOISE" xml:space="preserve">
-    <value>Add noise</value>
+    <value>Noised up</value>
   </data>
   <data name="NAME_SINOID" xml:space="preserve">
     <value>Sinoid</value>
