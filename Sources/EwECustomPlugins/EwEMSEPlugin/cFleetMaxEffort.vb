@@ -31,15 +31,15 @@ Option Explicit On
 ' param m_max_percentage_change_in_max_effort is the maximum percentage that the max effort can change each year and is taken from the ChangesInEffortLimits.csv file
 Public Class cFleetMaxEffort
 
+    Private m_iFleet As Integer 'index for the fleet
+    Private m_max_effort As Single 'the current max effort for a given fleet
+    Private m_max_percentage_change_in_max_effort As Single 'this is taken from the ChangesInEffortLimits.csv file
+    Private m_max_effort_type As eMaxEffortType 'whether it be the newer decaying type of the older proportion of last year method
+
     Enum eMaxEffortType As Integer
         Decaying
         LastYearProp
     End Enum
-
-    Private m_iFleet As Integer
-    Private m_max_effort As Single
-    Private m_max_percentage_change_in_max_effort As Single
-    Private m_max_effort_type As eMaxEffortType
 
     ' returns the max effort for a fleet in the current year
     Public ReadOnly Property MaxEffort As Single
@@ -75,6 +75,7 @@ Public Class cFleetMaxEffort
 
     End Sub
 
+    ' Calculates the max effort using the improved decaying max effort method
     Private Sub UpdateUsingDecaying(end_previous_year_effort As Single)
 
         Dim max_reduction_in_max_effort As Single
@@ -87,6 +88,7 @@ Public Class cFleetMaxEffort
 
     End Sub
 
+    ' Calculates the max effort as a proportion of the final effort from the previous year
     Private Sub UpdateUsingProp(end_previous_year_effort As Single)
         m_max_effort = end_previous_year_effort * (1 + m_max_percentage_change_in_max_effort)
     End Sub
