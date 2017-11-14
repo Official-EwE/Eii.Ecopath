@@ -109,7 +109,7 @@ Public MustInherit Class gridShapeBase
                 For Each item As Object In man
                     If TypeOf item Is cShapeData Then
                         shape = DirectCast(item, cShapeData)
-                        If shape.IsSeasonal = Me.IsSeasonal Then
+                        If Me.Include(shape) Then
                             lShapes.Add(shape)
                         End If
                     End If
@@ -119,6 +119,10 @@ Public MustInherit Class gridShapeBase
             Return lShapes.ToArray
         End Get
     End Property
+
+    Protected Overridable Function Include(shape As cShapeData) As Boolean
+        Return (shape.IsSeasonal = Me.IsSeasonal)
+    End Function
 
     Protected Property Shape(ByVal iCol As Integer) As cShapeData
         Get

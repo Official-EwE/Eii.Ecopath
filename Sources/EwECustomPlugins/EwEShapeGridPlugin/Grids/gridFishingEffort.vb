@@ -1,4 +1,5 @@
-﻿' ===============================================================================
+﻿Option Strict On
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -20,8 +21,7 @@
 
 #Region " Imports "
 
-Option Strict On
-
+Imports EwECore
 Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
@@ -54,5 +54,10 @@ Public Class gridFishingEffort
             Return Me.UIContext.Core.FishingEffortShapeManager
         End Get
     End Property
+
+    Protected Overrides Function Include(shape As cShapeData) As Boolean
+        ' Exclude 'all fleets' shape, which has a NULL DBID
+        Return MyBase.Include(shape) And (shape.DBID > 0)
+    End Function
 
 End Class
