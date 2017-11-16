@@ -115,7 +115,6 @@ Public Class cMPAState
         For iMonth As Integer = 1 To cCore.N_MONTHS
             If (Not Me.m_ds.MPAmonth(iMonth, Me.MPA)) Then
                 nClosed += 1
-
                 If (bIsClosed = False) Then
                     bIsClosed = True
                     nLength = 0
@@ -158,18 +157,44 @@ Public Class cMPAState
     ''' </summary>
     Public Function RegulationState() As String
 
-        Dim sb As New StringBuilder()
-        Dim n As Integer = 0
         Dim pathDS As cEcopathDataStructures = Me.m_ds.EcoPathData
+
+        Dim sb As New StringBuilder()
+        Dim bIsClosed As Boolean = False
+        Dim nLength As Integer = 0
+        Dim nClosed As Integer = 0
 
         For iFleet As Integer = 1 To Me.m_ds.nFleets
             If (Not Me.m_ds.MPAfishery(iFleet, Me.MPA)) Then
-                n += 1
-                If (sb.Length > 0) Then sb.Append(", ")
-                sb.Append(cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, iFleet, pathDS.FleetName(iFleet)))
+                nClosed += 1
+                If (bIsClosed = False) Then
+                    bIsClosed = True
+                    nLength = 0
+                    If (sb.Length > 0) Then sb.Append(", ")
+                    sb.Append(iFleet)
+                Else
+                    nLength += 1
+                    ' Peek ahead
+                    Dim bTerminate As Boolean = False
+                    If (iFleet < Me.m_ds.nFleets) Then
+                        bTerminate = (Me.m_ds.MPAfishery(iFleet + 1, Me.MPA) = True)
+                    Else
+                        bTerminate = True
+                    End If
+
+                    If (bTerminate) Then
+                        If (nLength >= 1) Then
+                            sb.Append("-")
+                            sb.Append(iFleet)
+                        End If
+                    End If
+                End If
+            Else
+                bIsClosed = False
             End If
         Next
-        Select Case n
+
+        Select Case nClosed
             Case 0
                 Return My.Resources.VALUE_NONE
             Case Me.m_ds.nFleets
