@@ -1143,7 +1143,7 @@ Public Class cCore
             'ToDo_jb this could throw an error back to the shape manager
         End If
 
-        'At this time the shape manager has not had time to add the shape to it's list 
+        'At this time the shape manager has not had time to add the shape to its list 
         'so sending a message or telling the other manager what has happend is premature.
         'The shape manager will handle telling the other shape managers that it has changed the underlying data
         Return bSucces
@@ -1175,6 +1175,7 @@ Public Class cCore
         '3 reloading the Ecosim data arrays with the values from the database
         'The shape manager that asked for the remove will handle loading the Ecosim data back into the shape managers
         Return ds.RemoveShape(iDBID)
+
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -14100,6 +14101,7 @@ Public Class cCore
                             manager.Load()
 
                             Me.m_EcosimEnviroResponseManager.Load(Me.ForcingShapeManager)
+                            Me.m_MediatedInteractionManager.Load()
                         End If
                     End If
 
