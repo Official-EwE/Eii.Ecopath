@@ -59,7 +59,6 @@ Partial Public Class frmEwE6
         Dim m_tssEcotracer1 As System.Windows.Forms.ToolStripSeparator
         Dim m_tssTools1 As System.Windows.Forms.ToolStripSeparator
         Dim sep2 As System.Windows.Forms.ToolStripSeparator
-        Dim sep3 As System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcospaceNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceLoad = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceClose = New System.Windows.Forms.ToolStripMenuItem()
@@ -178,7 +177,6 @@ Partial Public Class frmEwE6
         m_tssEcotracer1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssTools1 = New System.Windows.Forms.ToolStripSeparator()
         sep2 = New System.Windows.Forms.ToolStripSeparator()
-        sep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_menuMain.SuspendLayout()
         Me.m_tsModel.SuspendLayout()
         Me.SuspendLayout()
@@ -348,6 +346,11 @@ Partial Public Class frmEwE6
         '
         m_tssTools1.Name = "m_tssTools1"
         resources.ApplyResources(m_tssTools1, "m_tssTools1")
+        '
+        'sep2
+        '
+        sep2.Name = "sep2"
+        resources.ApplyResources(sep2, "sep2")
         '
         'm_tsmiHelpContents
         '
@@ -738,7 +741,7 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
         Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnPreview, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, sep3, Me.m_tsbnAutosaveResults, Me.m_tsbnFeedback, Me.m_tslbReadOnly})
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnPreview, sep1, Me.m_tsbSave, Me.m_tsbnAutosaveResults, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, Me.m_tsbnFeedback, Me.m_tslbReadOnly})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.Path = ""
@@ -808,21 +811,11 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tslbReadOnly, "m_tslbReadOnly")
         Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
         '
-        'sep2
-        '
-        sep2.Name = "sep2"
-        resources.ApplyResources(sep2, "sep2")
-        '
         'm_ssMain
         '
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
-        '
-        'sep3
-        '
-        sep3.Name = "sep3"
-        resources.ApplyResources(sep3, "sep3")
         '
         'frmEwE6
         '
