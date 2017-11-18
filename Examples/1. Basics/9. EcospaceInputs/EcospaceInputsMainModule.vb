@@ -164,7 +164,7 @@ Module EcospaceInputs
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'First add a Enviromental Driver layer
         'Creates a new layer in the core and gives us the DatabaseID for the layer
-        core.AddEcospaceDriverLayer("Example-Layer", "Layer added for example", DatabaseID)
+        core.AddEcospaceDriverLayer("Example-Layer", "Layer added for example", "Sample units", DatabaseID)
 
         'Get the layer we just created from the core based on the DatabaseID that was set in AddEcospaceDriverLayer(,,DatabaseID)
         For iLayer As Integer = 1 To core.nEnvironmentalDriverLayers

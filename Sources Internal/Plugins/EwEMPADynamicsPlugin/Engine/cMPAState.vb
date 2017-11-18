@@ -45,6 +45,12 @@ Public Class cMPAState
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether an MPA is closed at a given month.
+    ''' </summary>
+    ''' <param name="iMonth">One-based month index.</param>
+    ''' -----------------------------------------------------------------------
     Public Property IsClosed(iMonth As Integer) As TriState
         Get
             iMonth = Math.Min(cCore.N_MONTHS, Math.Max(1, iMonth))
@@ -56,6 +62,12 @@ Public Class cMPAState
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether an MPA is closed for a given fleet.
+    ''' </summary>
+    ''' <param name="iFleet">One-based fleet index.</param>
+    ''' -----------------------------------------------------------------------
     Public Property IsEnforced(iFleet As Integer) As TriState
         Get
             iFleet = Math.Min(Me.m_ds.nFleets, Math.Max(1, iFleet))
@@ -71,6 +83,11 @@ Public Class cMPAState
     Public ReadOnly Property TimeStamp As Date
 
     Public Sub Load()
+
+        ' This is always confusing:
+        ' - MPAmonth(month, mpa) = true = OPEN to fishing during that month
+        ' - MPAfishery(fleet, mpa) = true = OPEN to a fleet for fishing
+
         For iMonth As Integer = 1 To cCore.N_MONTHS
             ' Reverse thinking!
             Me.IsClosed(iMonth) = If(Me.m_ds.MPAmonth(iMonth, Me.MPA), TriState.False, TriState.True)
@@ -82,6 +99,11 @@ Public Class cMPAState
     End Sub
 
     Public Sub Apply()
+
+        ' This is always confusing:
+        ' - MPAmonth(month, mpa) = true = OPEN to fishing during that month
+        ' - MPAfishery(fleet, mpa) = true = OPEN to a fleet for fishing
+
         For iMonth As Integer = 1 To cCore.N_MONTHS
             If (Me.IsClosed(iMonth) <> TriState.UseDefault) Then
                 ' Reverse thinking!
@@ -101,6 +123,8 @@ Public Class cMPAState
     Public Overrides Function ToString() As String
         Return Me.m_ds.MPAname(Me.MPA)
     End Function
+
+#Region " Formatting "
 
     ''' <summary>
     ''' Returns the closure state of the MPA in a short string.
@@ -125,7 +149,7 @@ Public Class cMPAState
                     ' Peek ahead
                     Dim bTerminate As Boolean = False
                     If (iMonth < cCore.N_MONTHS) Then
-                        bTerminate = (Me.m_ds.MPAmonth(iMonth + 1, Me.MPA) = False)
+                        bTerminate = (Me.m_ds.MPAmonth(iMonth + 1, Me.MPA) = True)
                     Else
                         bTerminate = True
                     End If
@@ -203,5 +227,7 @@ Public Class cMPAState
         Return sb.ToString()
 
     End Function
+
+#End Region ' Formatting
 
 End Class

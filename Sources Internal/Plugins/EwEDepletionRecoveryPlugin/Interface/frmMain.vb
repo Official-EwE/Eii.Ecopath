@@ -1350,8 +1350,8 @@ Public Class frmMain
                                             Try
                                                 ' Tell Network Analysis to write data
                                                 If (Me.m_naManager IsNot Nothing) Then
-                                                    Dim writerNA As New EwENetworkAnalysis.cResultWriter(Me.m_naManager)
-                                                    writerNA.WriteCurrentResults(strDirectory)
+                                                    Dim writerNA As New EwENetworkAnalysis.cNetworkAnalysisEcosimResultWriter(Me.m_naManager)
+                                                    writerNA.WriteResults(strDirectory)
                                                 End If
                                             Catch ex As Exception
                                                 Me.ReportError(String.Format("Network Analysis error: {0}", ex.Message))
@@ -1436,8 +1436,8 @@ Public Class frmMain
                                             Try
                                                 ' Tell Network Analysis to write data
                                                 If (Me.m_naManager IsNot Nothing) Then
-                                                    Dim writerNA As New EwENetworkAnalysis.cResultWriter(Me.m_naManager)
-                                                    writerNA.WriteCurrentResults(strDirectory)
+                                                    Dim writerNA As New EwENetworkAnalysis.cNetworkAnalysisEcosimResultWriter(Me.m_naManager)
+                                                    writerNA.WriteResults(strDirectory)
                                                 End If
                                             Catch ex As Exception
                                                 Me.ReportError(String.Format("Network Analysis error: {0}", ex.Message))
