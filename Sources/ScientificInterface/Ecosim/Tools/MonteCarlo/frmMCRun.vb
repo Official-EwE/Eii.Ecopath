@@ -24,13 +24,12 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
-Imports EwEUtils.SystemUtilities
-Imports EwECore.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -237,12 +236,11 @@ Namespace Ecosim
             For i As Integer = 1 To Me.m_mcmanager.nResultWriters
                 Dim writer As IMonteCarloResultsWriter = Me.m_mcmanager.ResultWriter(i)
                 Me.m_cmbSaveFormat.Items.Add(Me.m_mcmanager.ResultWriter(i))
-                If (Me.m_mcmanager.ActiveResultWriter IsNot Nothing) Then
-                    If (Me.m_mcmanager.ActiveResultWriter.GetType() Is writer.GetType()) Then
-                        m_cmbSaveFormat.SelectedItem = writer
-                    End If
+                If (Object.ReferenceEquals(Me.m_mcmanager.ActiveResultWriter, writer)) Then
+                    Me.m_cmbSaveFormat.SelectedItem = writer
                 End If
             Next
+            If (Me.m_cmbSaveFormat.SelectedIndex = -1) Then Me.m_cmbSaveFormat.SelectedIndex = 0
 
             Me.m_bInUpdate = False
 
@@ -265,7 +263,7 @@ Namespace Ecosim
                 Me.m_mcmanager.MonteCarloCompletedHandler = Nothing
                 Me.m_mcmanager.EcosimTimeStepHandler = Nothing
                 Me.m_mcmanager.SyncObject = Nothing
-                Me.m_mcmanager.ActiveResultWriter = Nothing
+                'Me.m_mcmanager.ActiveResultWriter = Nothing
 
                 ' -- cleanup grids  --
                 Me.m_qeB.Detach()

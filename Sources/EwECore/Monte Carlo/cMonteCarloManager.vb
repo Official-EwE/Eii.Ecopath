@@ -174,9 +174,11 @@ Public Class cMonteCarloManager
 
     Public Property ActiveResultWriter As IMonteCarloResultsWriter
         Get
+            If (Me.m_mc Is Nothing) Then Return Nothing
             Return Me.m_mc.ResultWriter
         End Get
         Set(value As IMonteCarloResultsWriter)
+            If (Me.m_mc Is Nothing) Then Return
             Me.m_mc.ResultWriter = value
         End Set
     End Property
