@@ -121,7 +121,7 @@ Namespace Database
 
             If Not Me.m_bHasLoaded Then Return Nothing
 
-            Dim info As New cExternalModelInfo("1", Me.m_data.Model.Name, Me.m_data.Model.Country, 0)
+            Dim info As New cExternalModelInfo(Me.m_data.Model.EcobaseCode, Me.m_data.Model.Name, Me.m_data.Model.Country, 0)
             Return New cExternalModelInfo() {info}
 
         End Function
@@ -182,7 +182,7 @@ Namespace Database
             Me.ImportTaxonomy()
 
             ' Set version
-            Me.m_dbTarget.SetVersion(Me.m_dbTarget.GetVersion(), "Imported from Ecobase")
+            Me.m_dbTarget.SetVersion(Me.m_dbTarget.GetVersion(), "Imported from Ecobase model '" & Me.m_strSource & "'")
 
             ' Now run all available updates on the new EwE6 database
             dbUpd = New cDatabaseUpdater(Me.m_core, 6.0!)
