@@ -188,7 +188,6 @@ Namespace Controls.Map
 
             If (Me.Map Is Nothing) Then Return
 
-            Dim sMPA As Single = 0
             Dim rcfCell As RectangleF = Nothing
             Dim brCell As Brush = Nothing
             Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
@@ -199,9 +198,7 @@ Namespace Controls.Map
                         For j As Integer = 1 To Me.InCol
                             For k As Integer = 1 To Me.m_core.nMPAs
                                 Dim mpa As cEcospaceLayerMPA = m_core.EcospaceBasemap.LayerMPA(k)
-                                sMPA = CSng(mpa.Cell(i, j))
-                                If sMPA > 0 Then
-                                    'If CBool(excl.Cell(i, j)) = False Then
+                                If (CBool(mpa.Cell(i, j))) Then
                                     rcfCell = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol),
                                                                  CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow),
                                                                  CSng(rcPos.Width() / Me.InCol),
