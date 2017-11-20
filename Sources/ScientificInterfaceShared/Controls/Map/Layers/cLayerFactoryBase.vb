@@ -111,39 +111,45 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerHabitatCapacityInput
 
-                    key = New cValueID(eDataTypes.EcospaceLayerHabitatCapacityInput, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
+                    If (core.nGroups > 0) Then
 
-                    vs = ad.VisualStyle
-                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererValue(vs)
-                    renderer.ScaleMin = 0
-                    renderer.RenderMode = Definitions.eLayerRenderType.Selected
+                        key = New cValueID(eDataTypes.EcospaceLayerHabitatCapacityInput, bmd.DBID, eVarNameFlags.Name)
+                        ad = core.AuxillaryData(key)
 
-                    editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
-                    layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacityInput),
-                                            renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerHabitatCapacityInput)
+                        vs = ad.VisualStyle
+                        If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+                        renderer = New cLayerRendererValue(vs)
+                        renderer.ScaleMin = 0
+                        renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
-                    lLayers.Add(layer)
+                        editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
+                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacityInput),
+                                                renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerHabitatCapacityInput)
+
+                        lLayers.Add(layer)
+                    End If
 
                 Case eVarNameFlags.LayerHabitatCapacity
 
-                    key = New cValueID(eDataTypes.EcospaceLayerHabitatCapacity, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
+                    If (core.nGroups > 0) Then
 
-                    vs = ad.VisualStyle
-                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererValue(vs)
-                    renderer.ScaleMin = 0
-                    renderer.RenderMode = Definitions.eLayerRenderType.Selected
+                        key = New cValueID(eDataTypes.EcospaceLayerHabitatCapacity, bmd.DBID, eVarNameFlags.Name)
+                        ad = core.AuxillaryData(key)
 
-                    editor = New cLayerEditorGroup(GetType(ucLayerEditorGroup))
-                    editor.IsReadOnly = True
+                        vs = ad.VisualStyle
+                        If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+                        renderer = New cLayerRendererValue(vs)
+                        renderer.ScaleMin = 0
+                        renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
-                    layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacity),
-                                            renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerHabitatCapacity)
+                        editor = New cLayerEditorGroup(GetType(ucLayerEditorGroup))
+                        editor.IsReadOnly = True
 
-                    lLayers.Add(layer)
+                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacity),
+                                                renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerHabitatCapacity)
+
+                        lLayers.Add(layer)
+                    End If
 
                 Case eVarNameFlags.LayerRegion
 
@@ -313,31 +319,36 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerPort
 
-                    key = New cValueID(eDataTypes.EcospaceLayerPort, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
+                    If (core.nFleets > 0) Then
+                        key = New cValueID(eDataTypes.EcospaceLayerPort, bmd.DBID, eVarNameFlags.Name)
+                        ad = core.AuxillaryData(key)
 
-                    vs = ad.VisualStyle
-                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererSymbol(vs)
-                    renderer.RenderMode = Definitions.eLayerRenderType.Always
-                    editor = New cLayerEditorPorts(GetType(ucLayerEditorPort))
-                    layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerPort), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerPort, CSng(True), CSng(False))
-                    lLayers.Add(layer)
+                        vs = ad.VisualStyle
+                        If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+                        renderer = New cLayerRendererSymbol(vs)
+                        renderer.RenderMode = Definitions.eLayerRenderType.Always
+                        editor = New cLayerEditorPorts(GetType(ucLayerEditorPort))
+                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerPort), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerPort, CSng(True), CSng(False))
+                        lLayers.Add(layer)
+                    End If
 
                 Case eVarNameFlags.LayerSail
 
-                    key = New cValueID(eDataTypes.EcospaceLayerSail, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
+                    If (core.nFleets > 0) Then
 
-                    vs = ad.VisualStyle
-                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererValue(vs)
-                    renderer.ScaleMin = 0
-                    renderer.RenderMode = Definitions.eLayerRenderType.Selected
-                    editor = New cLayerEditorSailCost(GetType(ucLayerEditorSailCost))
-                    layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerSail), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerSail)
+                        key = New cValueID(eDataTypes.EcospaceLayerSail, bmd.DBID, eVarNameFlags.Name)
+                        ad = core.AuxillaryData(key)
 
-                    lLayers.Add(layer)
+                        vs = ad.VisualStyle
+                        If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+                        renderer = New cLayerRendererValue(vs)
+                        renderer.ScaleMin = 0
+                        renderer.RenderMode = Definitions.eLayerRenderType.Selected
+                        editor = New cLayerEditorSailCost(GetType(ucLayerEditorSailCost))
+                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerSail), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerSail)
+
+                        lLayers.Add(layer)
+                    End If
 
                 Case eVarNameFlags.LayerImportance
 
