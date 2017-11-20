@@ -36,15 +36,16 @@ Imports EwEUtils.Utilities
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cTransectDatastructures
+    Inherits cCoreInputOutputBase
     Implements IEcospaceLayerManager
 
 #Region " Private vars "
 
     Private Shared Instances As New Dictionary(Of cCore, cTransectDatastructures)
 
-    Private m_core As cCore = Nothing
     Private m_transects As New List(Of cTransect)
     Private m_selection As cTransect = Nothing
+    Private m_bIsChanged As Boolean = False
 
 #End Region ' Private vars
 
@@ -58,7 +59,8 @@ Public Class cTransectDatastructures
     End Function
 
     Protected Sub New(core As cCore)
-        Me.m_core = core
+        MyBase.New(core)
+        Me.m_coreComponent = eCoreComponentType.EcoSpace
     End Sub
 
 #End Region ' Singleton
@@ -100,7 +102,7 @@ Public Class cTransectDatastructures
     ''' <summary>
     ''' Erase all transects.
     ''' </summary>
-    Public Sub Clear()
+    Public Overrides Sub Clear()
         Dim transects() As cTransect = Me.m_transects.ToArray()
         For Each t As cTransect In transects
             Me.Delete(t)
@@ -146,11 +148,8 @@ Public Class cTransectDatastructures
     Public Sub OnChanged(t As cTransect)
         Try
             RaiseEvent OnTransectChanged(Me, t)
-
-            ' Hijack the system to flag Ecospace as dirty
-            Dim parms As cEcospaceModelParameters = Me.m_core.EcospaceModelParameters
-            Me.m_core.onChanged(parms)
-
+            Me.m_bIsChanged = True
+            Me.m_core.onChanged(Me)
         Catch ex As Exception
 
         End Try
@@ -162,9 +161,15 @@ Public Class cTransectDatastructures
         End Get
     End Property
 
+    Public ReadOnly Property IsChanged As Boolean
+        Get
+            Return Me.m_bIsChanged
+        End Get
+    End Property
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set whether transect data is automatically saved.
+    ''' Get/set whether transect summaries are automatically saved.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Autosaving As Boolean = False
