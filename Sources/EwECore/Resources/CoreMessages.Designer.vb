@@ -2480,6 +2480,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Unsaved changes in {0} will be lost if you proceed. Do you wish to save these changes?.
+        '''</summary>
+        Public Shared ReadOnly Property PROMPT_SAVE_CHANGES_DETAILED() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SAVE_CHANGES_DETAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to The PSD estimation routine can work only when groups fall into at least two weight classes. Please redefine the weight range by adjusting the number of weight classes and/or the lowest weight class..
         '''</summary>
         Public Shared ReadOnly Property PSD_ERROR_WEIGHTCLASSES() As String

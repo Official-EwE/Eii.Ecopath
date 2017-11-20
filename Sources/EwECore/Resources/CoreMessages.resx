@@ -1401,4 +1401,8 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="UPDATE_NEED_REVIEW" xml:space="preserve">
     <value>The update process identified some possible problems that you should review!</value>
   </data>
+  <data name="PROMPT_SAVE_CHANGES_DETAILED" xml:space="preserve">
+    <value>Unsaved changes in {0} will be lost if you proceed. Do you wish to save these changes?</value>
+    <comment>{0}=list of EwE modules</comment>
+  </data>
 </root>

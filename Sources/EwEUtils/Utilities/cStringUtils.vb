@@ -1431,6 +1431,48 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Concatenates a collection of items into a natural language list of terms.
+        ''' </summary>
+        ''' <param name="items">The textual items to concatenate.</param>
+        ''' <param name="bAnd">States if the last item is added by 'and' or by 'or'</param>
+        ''' <returns></returns>
+        ''' <example>
+        '''     Dim items As New String() {"Ecopath", "Ecosim", "Ecospace"}
+        '''     FormatList(items, False) 
+        '''     
+        ''' ' Output: "Ecopath, Ecosim or Ecospace"
+        ''' </example>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FormatList(items As IEnumerable(Of String), Optional bAnd As Boolean = True) As String
+
+            Dim sb As New StringBuilder()
+            Dim n As Integer = 0
+
+            For Each item As String In items
+                If (Not String.IsNullOrWhiteSpace(item)) Then n += 1
+            Next
+
+            If (n > 0) Then
+                Dim t As Integer = 0
+                For Each item As String In items
+                    If (Not String.IsNullOrWhiteSpace(item)) Then
+                        t += 1
+                        If cSystemUtils.IsRightToLeft Then
+                            If (t > 1) Then sb.Insert(0, If(t < n, " ,", " " & If(bAnd, My.Resources.SEP_AND, My.Resources.SEP_OR) & " "))
+                            sb.Insert(0, item)
+                        Else
+                            If (t > 1) Then sb.Append(If(t < n, ", ", " " & If(bAnd, My.Resources.SEP_AND, My.Resources.SEP_OR) & " "))
+                            sb.Append(item)
+                        End If
+                    End If
+                Next
+            End If
+            Return sb.ToString()
+
+        End Function
+
 #Region " Date parsing "
 
         ''' -------------------------------------------------------------------

@@ -258,7 +258,7 @@ Friend Class cEngine
                    ByVal options As cEcosimResultWriter.eResultTypes())
 
         If (Me.IsRunning) Then Return
-        If (Not Me.m_core.SaveChanges()) Then Return
+        If (Not Me.m_core.SaveChanges(False, cCore.eBatchChangeLevelFlags.Ecosim)) Then Return
 
         Dim strDate As String = Date.Now.ToString("yy-MM-dd hh-mm")
         Dim strScope As String = If(bReadMonthly, "monthly", "annual")
