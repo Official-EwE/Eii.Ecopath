@@ -27,6 +27,7 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.DataSources
 Imports EwEPlugin
+Imports EwEPlugin.Data
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -40,6 +41,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' ---------------------------------------------------------------------------
 Public Class cTransectStoragePlugin
     Implements IEcospacePlugin
+    Implements Data.IDatabasePlugin
 
 #Region " Private vars "
 
@@ -73,7 +75,7 @@ Public Class cTransectStoragePlugin
         Dim ds As IEcospaceDatasource = DirectCast(dataSource, IEcospaceDatasource)
         Dim strDBFileNme As String = Me.TransectFileName(ds.ToString)
 
-        If (Me.m_data.Transects.Count > 0) Then
+        If (Me.m_data.IsChanged()) Then
             If Me.m_data.ToXML(strDBFileNme) Then
                 ' NOP
             Else
@@ -122,6 +124,18 @@ Public Class cTransectStoragePlugin
         Dim strFile As String = Path.GetFileNameWithoutExtension(strDB) & "_" & scenario.DBID & "_transects.xml"
         Return Path.Combine(strPath, strFile)
 
+    End Function
+
+    Public Function Open(strName As String) As Boolean Implements IDatabasePlugin.Open
+        ' NOP
+        Return True
+    End Function
+
+    Public Sub Close() Implements IDatabasePlugin.Close
+    End Sub
+
+    Public Function IsModified() As Boolean Implements IDatabasePlugin.IsModified
+        Return Me.m_data.IsChanged()
     End Function
 
 #End Region ' Internals
