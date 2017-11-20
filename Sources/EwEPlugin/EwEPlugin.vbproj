@@ -133,9 +133,12 @@
     <Compile Include="Plugin templates\Ecosim\IEcosimTimeSeriesPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimModifyEffort.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimShapeFunctionPlugin.vb" />
+    <Compile Include="Plugin templates\Ecosim\IEcosimScenarioAddedOrRemovedPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceLayerChangePlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceInitRunCompletedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceScenarioAddedOrRemovedPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceResultWriterUtils.vb" />
+    <Compile Include="Plugin templates\Ecotracer\IEcotracerScenarioAddedOrRemovedPlugin.vb" />
     <Compile Include="Plugin templates\GUI\ICommandHandlerPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IMenuItemKeyboardShortcutPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IMenuItemTogglePlugin.vb" />

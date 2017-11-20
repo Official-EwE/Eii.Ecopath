@@ -1101,6 +1101,36 @@ Public Class cPluginManager
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
+    ''' Bridge, invokes the EcosimScenarioAdded plug-in point on any available and responsive 
+    ''' <see cref="IEcosimScenarioAddedOrRemovedPlugin"/>.
+    ''' </summary>
+    ''' <param name="dataSource">The datasource that invoked this plug-in point.</param>
+    ''' <param name="scenarioID">The database ID of the scanerio that was just added.</param>
+    ''' ---------------------------------------------------------------------------
+    Public Sub EcosimScenarioAdded(ByVal datasource As Object, ByVal scenarioID As Integer)
+
+        ' Invoke IEcosimScenarioAddedOrRemovedPlugin.EcosimScenarioAdded(datasource, scenarioID)
+        Me.TryInvokeMethod(GetType(IEcosimScenarioAddedOrRemovedPlugin), "EcosimScenarioAdded", New Object() {datasource, scenarioID})
+
+    End Sub
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the EcosimScenarioRemoved plug-in point on any available and responsive 
+    ''' <see cref="IEcosimScenarioAddedOrRemovedPlugin"/>.
+    ''' </summary>
+    ''' <param name="dataSource">The datasource that invoked this plug-in point.</param>
+    ''' <param name="scenarioID">The database ID of the scanerio that was just removed.</param>
+    ''' ---------------------------------------------------------------------------
+    Public Sub EcosimScenarioRemoved(ByVal datasource As Object, ByVal scenarioID As Integer)
+
+        ' Invoke IEcosimScenarioAddedOrRemovedPlugin.EcosimScenarioRemoved(datasource, scenarioID)
+        Me.TryInvokeMethod(GetType(IEcosimScenarioAddedOrRemovedPlugin), "EcosimScenarioRemoved", New Object() {datasource, scenarioID})
+
+    End Sub
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
     ''' Bridge, invokes the LoadEcosimScenario plug-in point on any available and responsive 
     ''' <see cref="IEcosimPlugin">Ecosim plug-in</see>.
     ''' </summary>
@@ -1346,6 +1376,36 @@ Public Class cPluginManager
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
+    ''' Bridge, invokes the EcospaceScenarioAdded plug-in point on any available and responsive 
+    ''' <see cref="IEcospaceScenarioAddedOrRemovedPlugin"/>.
+    ''' </summary>
+    ''' <param name="dataSource">The datasource that invoked this plug-in point.</param>
+    ''' <param name="scenarioID">The database ID of the scanerio that was just added.</param>
+    ''' ---------------------------------------------------------------------------
+    Public Sub EcospaceScenarioAdded(ByVal datasource As Object, ByVal scenarioID As Integer)
+
+        ' Invoke IEcospaceScenarioAddedOrRemovedPlugin.EcospaceScenarioAdded(datasource, scenarioID)
+        Me.TryInvokeMethod(GetType(IEcospaceScenarioAddedOrRemovedPlugin), "EcospaceScenarioAdded", New Object() {datasource, scenarioID})
+
+    End Sub
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the EcospaceScenarioRemoved plug-in point on any available and responsive 
+    ''' <see cref="IEcospaceScenarioAddedOrRemovedPlugin"/>.
+    ''' </summary>
+    ''' <param name="dataSource">The datasource that invoked this plug-in point.</param>
+    ''' <param name="scenarioID">The database ID of the scanerio that was just removed.</param>
+    ''' ---------------------------------------------------------------------------
+    Public Sub EcospaceScenarioRemoved(ByVal datasource As Object, ByVal scenarioID As Integer)
+
+        ' Invoke IEcospaceScenarioAddedOrRemovedPlugin.EcospaceScenarioRemoved(datasource, scenarioID)
+        Me.TryInvokeMethod(GetType(IEcospaceScenarioAddedOrRemovedPlugin), "EcospaceScenarioRemoved", New Object() {datasource, scenarioID})
+
+    End Sub
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
     ''' Bridge, invokes the LoadEcospaceScenario plug-in point on any available and responsive 
     ''' <see cref="IEcospacePlugin">Ecospace plug-in</see>.
     ''' </summary>
@@ -1561,6 +1621,36 @@ Public Class cPluginManager
 #End Region ' Ecospace
 
 #Region " Ecotracer "
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the EcotracerScenarioAdded plug-in point on any available and responsive 
+    ''' <see cref="IEcotracerScenarioAddedOrRemovedPlugin"/>.
+    ''' </summary>
+    ''' <param name="dataSource">The datasource that invoked this plug-in point.</param>
+    ''' <param name="scenarioID">The database ID of the scanerio that was just added.</param>
+    ''' ---------------------------------------------------------------------------
+    Public Sub EcotracerScenarioAdded(ByVal datasource As Object, ByVal scenarioID As Integer)
+
+        ' Invoke IEcotracerScenarioAddedOrRemovedPlugin.EcotracerScenarioAdded(datasource, scenarioID)
+        Me.TryInvokeMethod(GetType(IEcotracerScenarioAddedOrRemovedPlugin), "EcotracerScenarioAdded", New Object() {datasource, scenarioID})
+
+    End Sub
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the EcotracerScenarioRemoved plug-in point on any available and responsive 
+    ''' <see cref="IEcotracerScenarioAddedOrRemovedPlugin"/>.
+    ''' </summary>
+    ''' <param name="dataSource">The datasource that invoked this plug-in point.</param>
+    ''' <param name="scenarioID">The database ID of the scanerio that was just removed.</param>
+    ''' ---------------------------------------------------------------------------
+    Public Sub EcotracerScenarioRemoved(ByVal datasource As Object, ByVal scenarioID As Integer)
+
+        ' Invoke IEcotracerScenarioAddedOrRemovedPlugin.EcotracerScenarioRemoved(datasource, scenarioID)
+        Me.TryInvokeMethod(GetType(IEcotracerScenarioAddedOrRemovedPlugin), "EcotracerScenarioRemoved", New Object() {datasource, scenarioID})
+
+    End Sub
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>

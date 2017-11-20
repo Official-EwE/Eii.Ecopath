@@ -45,7 +45,6 @@ Public Class cTransectDatastructures
 
     Private m_transects As New List(Of cTransect)
     Private m_selection As cTransect = Nothing
-    Private m_bIsChanged As Boolean = False
 
 #End Region ' Private vars
 
@@ -148,7 +147,7 @@ Public Class cTransectDatastructures
     Public Sub OnChanged(t As cTransect)
         Try
             RaiseEvent OnTransectChanged(Me, t)
-            Me.m_bIsChanged = True
+            Me.IsChanged = True
             Me.m_core.onChanged(Me)
         Catch ex As Exception
 
@@ -161,11 +160,7 @@ Public Class cTransectDatastructures
         End Get
     End Property
 
-    Public ReadOnly Property IsChanged As Boolean
-        Get
-            Return Me.m_bIsChanged
-        End Get
-    End Property
+    Public Property IsChanged As Boolean = False
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -217,7 +212,6 @@ Public Class cTransectDatastructures
             cLog.Write(ex, "cTransectDataStructures.Load(" & strFile & ")")
             Return False
         End Try
-
         Return True
 
     End Function
