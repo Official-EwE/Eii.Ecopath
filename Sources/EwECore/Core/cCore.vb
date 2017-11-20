@@ -785,7 +785,7 @@ Public Class cCore
         TimeSeries = 2
         Ecospace = 3
         Ecotracer = 4
-        NotSet = 42 ' Just the highest number, and a random value at that :p
+        NotSet = 777 ' Just the highest number, and a random value at that :p
     End Enum
 
     ''' <summary>
@@ -2309,13 +2309,8 @@ Public Class cCore
         Dim fm As cFeedbackMessage = Nothing
         Dim msg As cMessage = Nothing
         Dim strPrompt As String = ""
+        Dim terms As New List(Of String)
         Dim bSuccess As Boolean = True
-
-        ' For future use:
-        ' Save level is the MINIMUM level of data to save. For instance, when
-        '    loading a new Ecospace scenario, any pending Ecospace changes have to
-        '    be stored but there is no need to save Sim or Path. A savelevel value 
-        '    of Ecospace would achieve this.
 
         ' Hang on, can we do this at all?
         If (Me.DataSource Is Nothing) Then Return True
@@ -2324,42 +2319,40 @@ Public Class cCore
         If (Me.m_iBatchLock > 0) Then Return True
 
         ' Assess tracer
-        Dim bIsModified As Boolean = Me.m_StateMonitor.IsEcotracerModified
-        If (savelevel = eBatchChangeLevelFlags.Ecotracer) Then
-            If Not bIsModified Then Return True
-        End If
+        Dim bIsModified As Boolean = Me.m_StateMonitor.IsEcotracerModified()
+        If (savelevel = eBatchChangeLevelFlags.Ecotracer) Then If Not bIsModified Then Return True
+        If (savelevel <= eBatchChangeLevelFlags.Ecotracer And Me.m_StateMonitor.IsEcotracerModified()) Then terms.Insert(0, "Ecotracer")
 
         ' Assess ecospace
-        bIsModified = bIsModified Or Me.m_StateMonitor.IsEcospaceModified
-        If savelevel = eBatchChangeLevelFlags.Ecospace Then
-            If Not bIsModified Then Return True
-        End If
+        bIsModified = bIsModified Or Me.m_StateMonitor.IsEcospaceModified()
+        If (savelevel = eBatchChangeLevelFlags.Ecospace) Then If Not bIsModified Then Return True
+        If (savelevel <= eBatchChangeLevelFlags.Ecospace And Me.m_StateMonitor.IsEcospaceModified()) Then terms.Insert(0, "Ecospace")
 
         ' Assess Ecosim
-        bIsModified = bIsModified Or Me.m_StateMonitor.IsEcosimModified
-        If savelevel = eBatchChangeLevelFlags.Ecosim Then
-            If Not bIsModified Then Return True
-        End If
+        bIsModified = bIsModified Or Me.m_StateMonitor.IsEcosimModified()
+        If (savelevel = eBatchChangeLevelFlags.Ecosim) Then If Not bIsModified Then Return True
+        If (savelevel <= eBatchChangeLevelFlags.Ecosim And Me.m_StateMonitor.IsEcosimModified()) Then terms.Insert(0, "Ecosim")
 
         ' Assess Ecopath
-        If Not Me.m_StateMonitor.IsModified Then Return True
+        If (Not Me.m_StateMonitor.IsModified) Then Return True
+        If (savelevel <= eBatchChangeLevelFlags.Ecopath) And (Me.m_StateMonitor.IsEcopathModified()) Then terms.Insert(0, "Ecopath")
+
+        If (Me.m_StateMonitor.IsPluginModified) Then terms.Add(My.Resources.CoreDefaults.SOURCE_PLUGINS)
 
         ' OK, changes are assessed. Now decide how to handle these changes, which may require user input.
 
-        If Me.DataSource.IsReadOnly Then
+        ' Read-only datasources require special prompt
+        If (Me.DataSource.IsReadOnly = True) Then
             ' Prepare feedback message
             strPrompt = My.Resources.CoreMessages.PROMPT_DISCARD_CHANGES
             fm = New cFeedbackMessage(strPrompt,
                                       eCoreComponentType.Core, eMessageType.Any,
                                       eMessageImportance.Maintenance, eMessageReplyStyle.YES_NO)
-
             ' Auto-affirm
             fm.Reply = eMessageReply.YES
 
-            If (Not bQuiet) Then
-                ' Send and see what happens
-                Me.m_publisher.SendMessage(fm)
-            End If
+            ' Send and see what happens
+            If (Not bQuiet) Then Me.m_publisher.SendMessage(fm)
 
             Select Case fm.Reply
                 Case eMessageReply.YES
@@ -2371,18 +2364,19 @@ Public Class cCore
         End If
 
         ' Prepare feedback message
-        strPrompt = My.Resources.CoreMessages.PROMPT_SAVE_CHANGES
+        If (savelevel = eBatchChangeLevelFlags.NotSet) Then
+            strPrompt = My.Resources.CoreMessages.PROMPT_SAVE_CHANGES
+        Else
+            strPrompt = cStringUtils.Localize(My.Resources.CoreMessages.PROMPT_SAVE_CHANGES_DETAILED, cStringUtils.FormatList(terms, True))
+        End If
         fm = New cFeedbackMessage(strPrompt,
                                   eCoreComponentType.Core, eMessageType.Any,
                                   eMessageImportance.Maintenance, eMessageReplyStyle.YES_NO_CANCEL)
 
         ' Auto-affirm
         fm.Reply = eMessageReply.YES
-
-        If (Not bQuiet) Then
-            ' Send and see what happens
-            Me.m_publisher.SendMessage(fm)
-        End If
+        ' Send and see what happens
+        If (Not bQuiet) Then Me.m_publisher.SendMessage(fm)
 
         ' Do not save
         If (fm.Reply = eMessageReply.CANCEL) Then Return False
@@ -2401,7 +2395,7 @@ Public Class cCore
 
         ' Plug-ins
         If (Me.PluginManager IsNot Nothing) And (bSuccess = True) And (Me.m_StateMonitor.IsPluginModified) Then
-            If Not Me.PluginManager.SaveModel(Me.DataSource) Then
+            If (Not Me.PluginManager.SaveModel(Me.DataSource)) Then
                 bSuccess = False
             Else
                 Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
@@ -2409,9 +2403,9 @@ Public Class cCore
         End If
 
         ' Ecotracer
-        If bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecotracer) Then
-            If Me.m_StateMonitor.IsEcotracerModified Then
-                If Not Me.SaveEcotracerScenario() Then
+        If (bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecotracer)) Then
+            If (Me.m_StateMonitor.IsEcotracerModified) Then
+                If (Not Me.SaveEcotracerScenario()) Then
                     bSuccess = False
                 Else
                     Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
@@ -2420,9 +2414,9 @@ Public Class cCore
         End If
 
         ' Ecospace
-        If bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecospace) Then
-            If Me.m_StateMonitor.IsEcospaceModified Then
-                If Not Me.SaveEcospaceScenario() Then
+        If (bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecospace)) Then
+            If (Me.m_StateMonitor.IsEcospaceModified) Then
+                If (Not Me.SaveEcospaceScenario()) Then
                     bSuccess = False
                 Else
                     Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
@@ -2431,9 +2425,9 @@ Public Class cCore
         End If
 
         ' Ecosim
-        If bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecosim) Then
-            If Me.m_StateMonitor.IsEcosimModified Then
-                If Not Me.SaveEcosimScenario() Then
+        If (bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecosim)) Then
+            If (Me.m_StateMonitor.IsEcosimModified) Then
+                If (Not Me.SaveEcosimScenario()) Then
                     bSuccess = False
                 Else
                     Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
@@ -2442,9 +2436,9 @@ Public Class cCore
         End If
 
         ' The bottom of it all
-        If bSuccess = (savelevel <= eBatchChangeLevelFlags.Ecopath) Then
-            If Me.m_StateMonitor.IsEcopathModified Or Me.m_StateMonitor.IsDatasourceModified Then
-                If Not Me.SaveModel() Then
+        If (bSuccess And (savelevel <= eBatchChangeLevelFlags.Ecopath)) Then
+            If (Me.m_StateMonitor.IsEcopathModified Or Me.m_StateMonitor.IsDatasourceModified) Then
+                If (Not Me.SaveModel()) Then
                     bSuccess = False
                 Else
                     Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.False)
@@ -10408,14 +10402,15 @@ Public Class cCore
         If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
         If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
 
-        If Not Me.SaveChanges(False) Then Return False
+        If Not Me.SaveChanges(False, eBatchChangeLevelFlags.Ecospace) Then Return False
 
         ' Increase batch count
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
         If ds.ResizeEcospaceBasemap(InRow, InCol) Then
-
+            ' Save Ecospace
+            Me.SaveChanges(True, eBatchChangeLevelFlags.Ecospace)
             ' Reload the scenario
             If Me.LoadEcospaceScenario(Me.ActiveEcospaceScenarioIndex) Then
 

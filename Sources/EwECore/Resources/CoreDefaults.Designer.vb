@@ -677,6 +677,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to plug-in(s).
+        '''</summary>
+        Public Shared ReadOnly Property SOURCE_PLUGINS() As String
+            Get
+                Return ResourceManager.GetString("SOURCE_PLUGINS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to absence.
         '''</summary>
         Public Shared ReadOnly Property UNIT_ABSENCE() As String
