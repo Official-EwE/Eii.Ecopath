@@ -41,7 +41,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' ---------------------------------------------------------------------------
 Public Class cTransectStoragePlugin
     Implements IEcospacePlugin
-    Implements Data.IDatabasePlugin
+    Implements IEcospaceScenarioAddedOrRemovedPlugin
 
 #Region " Private vars "
 
@@ -60,12 +60,11 @@ Public Class cTransectStoragePlugin
     Public Sub LoadEcospaceScenario(dataSource As Object) Implements IEcospacePlugin.LoadEcospaceScenario
 
         Dim ds As IEcospaceDatasource = DirectCast(dataSource, IEcospaceDatasource)
-        Dim strDBFileNme As String = Me.TransectFileName(ds.ToString)
+        Dim scenario As cEcospaceScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
+        Dim strDBFileNme As String = Me.TransectFileName(ds, scenario.DBID)
 
         If Me.m_data.FromXML(strDBFileNme) Then
-            ' NOP
-        Else
-            ' NOP
+            Me.m_data.IsChanged = False
         End If
 
     End Sub
@@ -73,13 +72,12 @@ Public Class cTransectStoragePlugin
     Public Sub SaveEcospaceScenario(dataSource As Object) Implements IEcospacePlugin.SaveEcospaceScenario
 
         Dim ds As IEcospaceDatasource = DirectCast(dataSource, IEcospaceDatasource)
-        Dim strDBFileNme As String = Me.TransectFileName(ds.ToString)
+        Dim scenario As cEcospaceScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
+        Dim strDBFileNme As String = Me.TransectFileName(ds, scenario.DBID)
 
         If (Me.m_data.IsChanged()) Then
             If Me.m_data.ToXML(strDBFileNme) Then
-                ' NOP
-            Else
-                ' NOP
+                Me.m_data.IsChanged = False
             End If
         End If
 
@@ -87,6 +85,23 @@ Public Class cTransectStoragePlugin
 
     Public Sub CloseEcospaceScenario() Implements IEcospacePlugin.CloseEcospaceScenario
         Me.m_data.Clear()
+    End Sub
+
+    Public Sub EcospaceScenarioAdded(dataSource As Object, scenarioID As Integer) _
+        Implements IEcospaceScenarioAddedOrRemovedPlugin.EcospaceScenarioAdded
+        ' NOP
+    End Sub
+
+    Public Sub EcospaceScenarioRemoved(dataSource As Object, scenarioID As Integer) _
+        Implements IEcospaceScenarioAddedOrRemovedPlugin.EcospaceScenarioRemoved
+
+        Try
+            Dim strFile As String = Me.TransectFileName(DirectCast(dataSource, IEcospaceDatasource), scenarioID)
+            If (File.Exists(strFile)) Then File.Delete(strFile)
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
@@ -117,25 +132,11 @@ Public Class cTransectStoragePlugin
 
 #Region " Internals "
 
-    Private Function TransectFileName(strDB As String) As String
-
+    Private Function TransectFileName(ds As IEcospaceDatasource, iScenarioID As Integer) As String
+        Dim strDB As String = ds.ToString()
         Dim strPath As String = Path.GetDirectoryName(strDB)
-        Dim scenario As cEwEScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
-        Dim strFile As String = Path.GetFileNameWithoutExtension(strDB) & "_" & scenario.DBID & "_transects.xml"
+        Dim strFile As String = Path.GetFileNameWithoutExtension(strDB) & "_" & iScenarioID & "_transects.xml"
         Return Path.Combine(strPath, strFile)
-
-    End Function
-
-    Public Function Open(strName As String) As Boolean Implements IDatabasePlugin.Open
-        ' NOP
-        Return True
-    End Function
-
-    Public Sub Close() Implements IDatabasePlugin.Close
-    End Sub
-
-    Public Function IsModified() As Boolean Implements IDatabasePlugin.IsModified
-        Return Me.m_data.IsChanged()
     End Function
 
 #End Region ' Internals

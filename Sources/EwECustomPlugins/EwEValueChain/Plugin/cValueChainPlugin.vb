@@ -203,7 +203,7 @@ Public Class cValueChainPlugin
     End Sub
 
     Public Sub Dispose() _
-    Implements EwEPlugin.IDisposedPlugin.Dispose
+        Implements EwEPlugin.IDisposedPlugin.Dispose
         ' Clean up message handler
         If (Me.m_mhEcopath IsNot Nothing) Then
             Me.m_core.Messages.RemoveMessageHandler(Me.m_mhEcopath)

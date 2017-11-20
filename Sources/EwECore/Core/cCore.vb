@@ -6845,6 +6845,11 @@ Public Class cCore
                 Me.InitEcosimScenarios()
                 DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
                 iScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID)
+
+                If (Me.PluginManager IsNot Nothing) Then
+                    Me.PluginManager.EcosimScenarioAdded(Me.DataSource, iScenarioID)
+                End If
+
                 Return Me.LoadEcosimScenario(iScenario)
 
             End If
@@ -7204,6 +7209,7 @@ Public Class cCore
     Public Function RemoveEcosimScenario(ByVal iScenario As Integer) As Boolean
 
         Dim ds As IEcosimDatasource = Nothing
+        Dim iScenarioIDDeleted As Integer = Me.m_EcoPathData.EcosimScenarioDBID(iScenario)
         Dim iScenarioID As Integer = cCore.NULL_VALUE ' Scenario to restore
         Dim bSucces As Boolean = False
 
@@ -7231,11 +7237,16 @@ Public Class cCore
 
         ds = DirectCast(Me.DataSource, IEcosimDatasource)
         ' Scenario removed succesfully?
-        If ds.RemoveEcosimScenario(Me.m_EcoPathData.EcosimScenarioDBID(iScenario)) Then
+        If ds.RemoveEcosimScenario(iScenarioIDDeleted) Then
             ' #Yes: reload scenario list
             bSucces = Me.InitEcosimScenarios()
             ' Restore active scenario ID
             Me.m_EcoPathData.ActiveEcosimScenario = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iScenarioID)
+
+            If (Me.PluginManager IsNot Nothing) Then
+                Me.PluginManager.EcosimScenarioRemoved(Me.DataSource, iScenarioIDDeleted)
+            End If
+
             ' Broadcast change
             Me.DataAddedOrRemovedMessage("Ecosim number of scenarios has changed.", eCoreComponentType.EcoSim, eDataTypes.EcoSimScenario)
         End If
@@ -9806,6 +9817,11 @@ Public Class cCore
                 Me.StateMonitor.UpdateDataState(Me.DataSource)
                 Me.InitEcospaceScenarios()
                 iScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
+
+                If (Me.PluginManager IsNot Nothing) Then
+                    Me.PluginManager.EcospaceScenarioAdded(Me.DataSource, iScenarioID)
+                End If
+
                 Return Me.LoadEcospaceScenario(iScenario)
             End If
 
@@ -10151,6 +10167,7 @@ Public Class cCore
     Public Function RemoveEcospaceScenario(ByVal iScenario As Integer) As Boolean
 
         Dim ds As IEcospaceDatasource = Nothing
+        Dim iScenarioIDDeleted As Integer = Me.m_EcoPathData.EcospaceScenarioDBID(iScenario)
         Dim iScenarioID As Integer = cCore.NULL_VALUE ' Scenario to restore
         Dim bSucces As Boolean = False
 
@@ -10179,11 +10196,16 @@ Public Class cCore
 
         ds = DirectCast(Me.DataSource, IEcospaceDatasource)
         ' Scenario removed succesfully?
-        If ds.RemoveEcospaceScenario(Me.m_EcoPathData.EcospaceScenarioDBID(iScenario)) Then
+        If ds.RemoveEcospaceScenario(iScenarioIDDeleted) Then
             ' #Yes: reload scenario list
             bSucces = Me.InitEcospaceScenarios()
             ' Restore active scenario ID
             Me.m_EcoPathData.ActiveEcospaceScenario = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iScenarioID)
+
+            If (Me.PluginManager IsNot Nothing) Then
+                Me.PluginManager.EcospaceScenarioRemoved(Me.DataSource, iScenarioIDDeleted)
+            End If
+
             ' Broadcast change
             Me.DataAddedOrRemovedMessage("Ecospace number of scenarios has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcoSpaceScenario)
         End If
@@ -12107,6 +12129,11 @@ Public Class cCore
                 Me.InitEcotracerScenarios()
                 Me.DataAddedOrRemovedMessage("Ecotracer number of scenarios has changed.", eCoreComponentType.Ecotracer, eDataTypes.EcotracerScenario)
                 iScenario = Array.IndexOf(Me.m_EcoPathData.EcotracerScenarioDBID, iScenarioID)
+
+                If (Me.PluginManager IsNot Nothing) Then
+                    Me.PluginManager.EcotracerScenarioAdded(Me.DataSource, iScenarioID)
+                End If
+
                 Return Me.LoadEcotracerScenario(iScenario)
             End If
 
@@ -12346,6 +12373,7 @@ Public Class cCore
     Public Function RemoveEcotracerScenario(ByVal iScenario As Integer) As Boolean
 
         Dim ds As IEcotracerDatasource = Nothing
+        Dim iScenarioIDDeleted As Integer = Me.m_EcoPathData.EcotracerScenarioDBID(iScenario)
         Dim iScenarioID As Integer = cCore.NULL_VALUE
         Dim bSucces As Boolean = False
 
@@ -12374,11 +12402,16 @@ Public Class cCore
 
         ds = DirectCast(Me.DataSource, IEcotracerDatasource)
         ' Scenario removed succesfully?
-        If ds.RemoveEcotracerScenario(Me.m_EcoPathData.EcotracerScenarioDBID(iScenario)) Then
+        If ds.RemoveEcotracerScenario(iScenarioIDDeleted) Then
             ' #Yes: reload scenario list
             bSucces = Me.InitEcotracerScenarios()
             ' Restore active scenario ID
             Me.m_EcoPathData.ActiveEcotracerScenario = Array.IndexOf(Me.m_EcoPathData.EcotracerScenarioDBID, iScenarioID)
+
+            If (Me.PluginManager IsNot Nothing) Then
+                Me.PluginManager.EcotracerScenarioRemoved(Me.DataSource, iScenarioIDDeleted)
+            End If
+
             ' Broadcast change
             Me.DataAddedOrRemovedMessage("Ecotracer number of scenarios has changed.", eCoreComponentType.Ecotracer, eDataTypes.EcotracerScenario)
         End If
