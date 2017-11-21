@@ -25,6 +25,7 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
+
 Public Class cSigmoidShapeFunction
     Inherits cShapeFunction
 
@@ -41,46 +42,58 @@ Public Class cSigmoidShapeFunction
     Public Overrides Function Shape(nPoints As Integer) As Single()
 
         If (Me.ParamsChanged) Then
-            Dim sYZero As Single = Me.ParamValue(1)
-            Dim sYEnd As Single = Me.ParamValue(2)
-            Dim sYBase As Single = Me.ParamValue(3)
-            Dim sSteep As Single = Me.ParamValue(4)
-            Dim xHalf, xPow As Single
-
-            If sYBase <> sYZero Then
-                xHalf = CSng((sYEnd - sYZero) * ((cShapeFunction.xBase ^ sSteep) / (sYBase - sYZero)) - (cShapeFunction.xBase ^ sSteep))
-            Else
-                xHalf = 1000
-            End If
-            For i As Integer = 1 To nPoints
-                xPow = CSng((i / nPoints) ^ sSteep)
-                If (xHalf + xPow <> 0) Then
-                    Me.m_points(i) = sYZero + ((sYEnd - sYZero) * xPow / (xHalf + xPow))
-                End If
-            Next i
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Sigmoid base on entering the data range
-            'x min, x max, x mid point and slope
-            'Dim xZero As Single = Me.ParamValue(1)
-            'Dim xMax As Single = Me.ParamValue(2)
-            'Dim xMid As Single = Me.ParamValue(3)
-            'Dim k As Single = Me.ParamValue(4)
+            'x min, x max, x mid point And slope
+            Dim xZero As Single = Me.ParamValue(1)
+            Dim xMax As Single = Me.ParamValue(2)
+            Dim xMid As Single = Me.ParamValue(3)
+            Dim XOpt As Single = Me.ParamValue(4)
+            Dim k As Single = Me.ParamValue(5)
+            Dim scalar As Single = Me.ParamValue(6)
 
-            'Dim dx As Single = (xMax - xZero) / nPoints
-            'For i As Integer = 1 To nPoints
-            '    Dim x As Single = xZero + (i - 1) * dx
-            '    Me.m_points(i) = CSng(1 / (1 + Math.Exp(-k * (x - xMid))))
-            '    System.Console.WriteLine(x.ToString + ", " + Me.m_points(i).ToString)
-            'Next i
+            'If the user has supplied an XOpt (x axis at optimum) or no K (steepness or slope)
+            'then calculate K at XOpt
+            If (XOpt <> 0.0) Or (k = 0.0) Then
+                k = calSlope()
+                If Single.IsNaN(k) Or Single.IsInfinity(k) Then
+                    k = Me.ParamValue(5)
+                Else
+                    Me.ParamValue(5) = k
+                End If
+            End If
+
+
+            Dim dx As Single = (xMax - xZero) / nPoints
+            For i As Integer = 1 To nPoints
+                Dim x As Single = xZero + (i - 1) * dx
+                Me.m_points(i) = CSng(1 / (1 + Math.Exp(-k * (x - xMid))))
+                ' System.Console.WriteLine(x.ToString + ", " + Me.m_points(i).ToString)
+            Next i
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+            ' Dim tmpSlp As Single = calSlope()
+
+            Me.ScaleData(nPoints, scalar)
 
         End If
 
-        Me.ScaleData(nPoints, 1.0)
+
 
         Return MyBase.Shape(nPoints)
 
+    End Function
+
+
+    Private Function calSlope() As Single
+        Dim xMid As Single = Me.ParamValue(3)
+        Dim Xopt As Single = Me.ParamValue(4)
+        Dim Yopt As Single = 0.998
+        'solve for k 
+        'Yopt = 1 / (1 + Exp(-k * x))
+        Dim slope As Single = CSng(Math.Log(-Yopt / (Yopt - 1)) / (Xopt - xMid))
+        Return CSng(slope)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -88,9 +101,12 @@ Public Class cSigmoidShapeFunction
     ''' -----------------------------------------------------------------------
     Public Overrides Sub Defaults()
         Me.ParamValue(1) = 0.0
-        Me.ParamValue(2) = 2.0
+        Me.ParamValue(2) = 1
         Me.ParamValue(3) = 0.5
-        Me.ParamValue(4) = 3.0
+        Me.ParamValue(4) = 0.9
+        Me.ParamValue(5) = 10.0
+        Me.ParamValue(6) = 1.0
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -105,7 +121,25 @@ Public Class cSigmoidShapeFunction
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property nParameters As Integer
         Get
-            Return 4
+            Return 6
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.ParamName"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
+        Get
+            Select Case iParam
+                Case 1 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_XMIN'"X min."'My.Resources.CoreDefaults.PARAM_SD_LEFT
+                Case 2 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_XMAX'"X max."'My.Resources.CoreDefaults.PARAM_SD_WIDTH
+                Case 3 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_XMID'"X mid point"'My.Resources.CoreDefaults.PARAM_SD_RIGHT
+
+                Case 4 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_XOPT'"X opt. (y = 0.998)" 'My.Resources.CoreDefaults.PARAM_MEAN
+                Case 5 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_STEEP'"Steep" 'My.Resources.CoreDefaults.PARAM_MEAN
+                Case 6 : Return My.Resources.CoreDefaults.PARAM_SIGMOID_SCALAR '"Y axis max." ' My.Resources.CoreDefaults.PARAM_MAX
+            End Select
+            Return MyBase.ParamName(iParam)
         End Get
     End Property
 
@@ -118,5 +152,24 @@ Public Class cSigmoidShapeFunction
         End Get
     End Property
 
-End Class
+    Public Overrides Function Apply(obj As Object) As Boolean
+        If Not MyBase.Apply(obj) Then
+            Return False
+        End If
+        Try
+            If (TypeOf obj Is cEnviroResponseFunction) Then
+                Dim shp As cEnviroResponseFunction = DirectCast(obj, cEnviroResponseFunction)
+                Debug.Assert(shp.ShapeFunctionType = eShapeFunctionType.Sigmoid)
+                shp.ResponseLeftLimit = Me.ParamValue(1)
+                shp.ResponseRightLimit = Me.ParamValue(2)
+            End If
+        Catch ex As Exception
 
+        End Try
+
+        Return True
+
+    End Function
+
+
+End Class

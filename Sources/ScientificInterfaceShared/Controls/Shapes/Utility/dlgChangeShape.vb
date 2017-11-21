@@ -205,11 +205,15 @@ Namespace Controls
                     g.FillRectangle(br, New Rectangle(x, 0, rc.Width, rc.Height))
                 End Using
 
+                'Some response functions can update their parameters based on the inputs 
+                '(Sigmoid shapes can update Steep parameter based on Xopt.)
+                'Instead of checking the type or a flag 
+                'just udpate all the shape types...
+                Me.m_grid.Update()
+
             Catch ex As Exception
 
             End Try
-
-
 
         End Sub
 
