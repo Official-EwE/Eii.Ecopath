@@ -221,6 +221,7 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerBiomassRelativeForcing.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerExclusion.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCBaseResultsWriter.vb" />
+    <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapCapacityWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapBiomassWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapCatchWriter.vb" />
     <Compile Include="EcoSpace\Input Output\ResultWriters\cEcospaceASCMapContaminants.vb" />

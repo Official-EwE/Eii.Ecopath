@@ -88,8 +88,17 @@ Public Class cEcospaceTimestep
         ''' -----------------------------------------------------------------------
         Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer, Optional iIndexSec As Integer = cCore.NULL_VALUE) As Object
             Get
-                Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
-                Return data(iRow, iCol, Me.m_iGroup)
+                If (TypeOf Me.Data Is Single(,,)) Then
+                    Dim d As Single(,,) = DirectCast(Me.Data, Single(,,))
+                    Return d(iRow, iCol, Me.m_iGroup)
+                ElseIf (TypeOf Me.Data Is Single()(,)) Then
+                    Dim d As Single()(,) = DirectCast(Me.Data, Single()(,))
+                    Return d(Me.m_iGroup)(iRow, iCol)
+                ElseIf (TypeOf Me.Data Is Single(,)) Then
+                    Dim d As Single(,) = DirectCast(Me.Data, Single(,))
+                    Return d(iRow, iCol)
+                End If
+                Return cCore.NULL_VALUE
             End Get
             Set(ByVal value As Object)
                 ' NOP
@@ -641,7 +650,8 @@ Public Class cEcospaceTimestep
             Case eVarNameFlags.EcospaceMapBiomass,
                  eVarNameFlags.EcospaceMapCatch,
                  eVarNameFlags.LayerHabitatCapacity,
-                 eVarNameFlags.EcospaceMapDiscards
+                 eVarNameFlags.EcospaceMapDiscards,
+                 eVarNameFlags.LayerHabitatCapacity
                 lLayers.Add(Nothing) ' Add 0-item emptyness
                 For igroup As Integer = 1 To Me.m_core.nGroups
                     lLayers.Add(New cTimestepLayerGroup(Me.m_core, Me, varName, igroup))
@@ -660,6 +670,7 @@ Public Class cEcospaceTimestep
                 For iFleet As Integer = 1 To Me.m_core.nFleets
                     lLayers.Add(New cTimestepLayerFleet(Me.m_core, Me, varName, iFleet))
                 Next
+
         End Select
         Return lLayers.ToArray
 
