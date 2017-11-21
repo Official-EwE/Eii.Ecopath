@@ -416,6 +416,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Computed habitat capacity (ASCII maps).
+        '''</summary>
+        Public Shared ReadOnly Property ECOSAPCE_WRITER_ASC_COMPUTEDCAPACITY() As String
+            Get
+                Return ResourceManager.GetString("ECOSAPCE_WRITER_ASC_COMPUTEDCAPACITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biomass maps (ASCII format).
         '''</summary>
         Public Shared ReadOnly Property ECOSPACE_WRITER_ASC_BIOMASS() As String
