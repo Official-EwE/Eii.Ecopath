@@ -2778,6 +2778,9 @@
   <data name="SOURCE_PLUGINS" xml:space="preserve">
     <value>plug-in(s)</value>
   </data>
+  <data name="ECOSAPCE_WRITER_ASC_COMPUTEDCAPACITY" xml:space="preserve">
+    <value>Computed habitat capacity (ASCII maps)</value>
+  </data>
   <data name="PARAM_SIGMOID_SCALAR" xml:space="preserve">
     <value>Y axis max.</value>
   </data>
