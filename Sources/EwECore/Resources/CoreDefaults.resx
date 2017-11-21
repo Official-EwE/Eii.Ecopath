@@ -2778,4 +2778,22 @@
   <data name="SOURCE_PLUGINS" xml:space="preserve">
     <value>plug-in(s)</value>
   </data>
+  <data name="PARAM_SIGMOID_SCALAR" xml:space="preserve">
+    <value>Y axis max.</value>
+  </data>
+  <data name="PARAM_SIGMOID_STEEP" xml:space="preserve">
+    <value>Steep</value>
+  </data>
+  <data name="PARAM_SIGMOID_XMAX" xml:space="preserve">
+    <value>X max.</value>
+  </data>
+  <data name="PARAM_SIGMOID_XMID" xml:space="preserve">
+    <value>X mid. point</value>
+  </data>
+  <data name="PARAM_SIGMOID_XMIN" xml:space="preserve">
+    <value>X min.</value>
+  </data>
+  <data name="PARAM_SIGMOID_XOPT" xml:space="preserve">
+    <value>X opt. (y = 0.998)</value>
+  </data>
 </root>

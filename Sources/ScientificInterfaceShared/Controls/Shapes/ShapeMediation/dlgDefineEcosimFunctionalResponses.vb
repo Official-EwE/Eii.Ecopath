@@ -418,7 +418,8 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
         If ((Me.m_shape.ShapeFunctionType = eShapeFunctionType.Normal) Or
             (Me.m_shape.ShapeFunctionType = eShapeFunctionType.LeftShoulder) Or
             (Me.m_shape.ShapeFunctionType = eShapeFunctionType.RightShoulder) Or
-            (Me.m_shape.ShapeFunctionType = eShapeFunctionType.Trapezoid)) Then
+            (Me.m_shape.ShapeFunctionType = eShapeFunctionType.Trapezoid) Or
+            (Me.m_shape.ShapeFunctionType = eShapeFunctionType.Sigmoid)) Then
             Return False
         End If
 
@@ -472,7 +473,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
                 sPlotMin = CSng(Me.m_fpMin.Value)
                 sPlotMax = CSng(Me.m_fpMax.Value)
 
-            Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder, eShapeFunctionType.Trapezoid
+            Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder, eShapeFunctionType.Trapezoid, eShapeFunctionType.Sigmoid
                 'Shoulder shape min and max can not be set here
                 'They only get set from the ChangeShape dialogue
 

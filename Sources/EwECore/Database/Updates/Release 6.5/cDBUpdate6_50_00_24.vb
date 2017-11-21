@@ -122,7 +122,7 @@ Friend Class cDBUpdate6_50_00_24
 
                     Case eShapeFunctionType.Exponential,
                          eShapeFunctionType.Hyperbolic,
-                         eShapeFunctionType.Sigmoid
+                         eShapeFunctionType.Sigmoid_Legacy
                         ' These three functions need reworking, the type and its parameters are not usable anymore.
                         ' For backwards compatibility just keep the point data and forget the original primitive.
                         functiontype = 0

@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class CoreDefaults
@@ -610,6 +610,60 @@ Namespace My.Resources
         Public Shared ReadOnly Property PARAM_SD_WIDTH() As String
             Get
                 Return ResourceManager.GetString("PARAM_SD_WIDTH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Y axis max..
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_SIGMOID_SCALAR() As String
+            Get
+                Return ResourceManager.GetString("PARAM_SIGMOID_SCALAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Steep.
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_SIGMOID_STEEP() As String
+            Get
+                Return ResourceManager.GetString("PARAM_SIGMOID_STEEP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to X max..
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_SIGMOID_XMAX() As String
+            Get
+                Return ResourceManager.GetString("PARAM_SIGMOID_XMAX", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to X mid. point.
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_SIGMOID_XMID() As String
+            Get
+                Return ResourceManager.GetString("PARAM_SIGMOID_XMID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to X min..
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_SIGMOID_XMIN() As String
+            Get
+                Return ResourceManager.GetString("PARAM_SIGMOID_XMIN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to X opt. (y = 0.998).
+        '''</summary>
+        Public Shared ReadOnly Property PARAM_SIGMOID_XOPT() As String
+            Get
+                Return ResourceManager.GetString("PARAM_SIGMOID_XOPT", resourceCulture)
             End Get
         End Property
         

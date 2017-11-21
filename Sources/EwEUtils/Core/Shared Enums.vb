@@ -3439,7 +3439,7 @@ Namespace Core
     Public Enum eShapeFunctionType As Long
         NotSet = 0
         Linear
-        Sigmoid
+        Sigmoid_Legacy
         Hyperbolic
         Exponential
         Betapdf
@@ -3447,6 +3447,7 @@ Namespace Core
         RightShoulder
         LeftShoulder
         Trapezoid
+        Sigmoid
     End Enum
 
 #End Region ' Shape resolution

@@ -117,9 +117,26 @@ Public Class gridShapeFunctionParameters
                 RaiseEvent OnShapeFunctionChanged()
         End Select
 
-
         Return True
 
     End Function
+
+    Public Overloads Sub Update()
+        MyBase.Update()
+        Me.UpdateValues()
+    End Sub
+
+
+    Private Sub UpdateValues()
+        Try
+
+            For iRow As Integer = 1 To Me.RowsCount - 1
+                Me(iRow, eColumnTypes.Value).Value = Me.m_shapefunction.ParamValue(iRow)
+            Next iRow
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
 End Class
