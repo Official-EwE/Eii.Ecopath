@@ -3436,18 +3436,21 @@ Namespace Core
     ''' <summary>
     ''' The type of function used to create a shape.
     '''</summary>
+    '''<remarks>These enum values are stored in the database. Please do not 
+    '''alter the numerical value below, but feel free to add new function 
+    '''types.</remarks>
     Public Enum eShapeFunctionType As Long
         NotSet = 0
-        Linear
-        Sigmoid_Legacy
-        Hyperbolic
-        Exponential
-        Betapdf
-        Normal
-        RightShoulder
-        LeftShoulder
-        Trapezoid
-        Sigmoid
+        Linear = 1
+        Sigmoid_Legacy = 2
+        Hyperbolic = 3
+        Exponential = 4
+        Betapdf = 5
+        Normal = 6
+        RightShoulder = 7
+        LeftShoulder = 8
+        Trapezoid = 9
+        Sigmoid = 10
     End Enum
 
 #End Region ' Shape resolution
