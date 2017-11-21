@@ -17,7 +17,7 @@
 #define Spinup 0
 #define SpatTemp 0
 #define MSPTools 0
-#define MPAdynamics 1
+#define MPAdynamics 0
 
 [Setup]
 SignTool=codesign
