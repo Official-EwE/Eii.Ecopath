@@ -196,11 +196,6 @@ Namespace Ecospace.Advection
                 Me.m_parameters.UpwellingThreshold = Me.m_comp.UpwellingThreshold
                 Me.m_parameters.UpwellingPPMultiplier = Me.m_data.PPupWell
 
-                m_parameters.XVelocity = Me.m_data.XVelocity
-                m_parameters.YVelocity = Me.m_data.YVelocity
-                m_parameters.Coriolis = Me.m_data.Coriolis
-                m_parameters.SorWv = Me.m_data.SorWv
-
                 m_parameters.ResetStatusFlags()
                 m_parameters.AllowValidation = True
                 Return True
@@ -220,11 +215,6 @@ Namespace Ecospace.Advection
 
             Me.m_comp.UpwellingThreshold = Me.m_parameters.UpwellingThreshold
             Me.m_data.PPupWell = Me.m_parameters.UpwellingPPMultiplier
-
-            Me.m_data.XVelocity = Me.m_parameters.XVelocity
-            Me.m_data.YVelocity = Me.m_parameters.YVelocity
-            Me.m_data.Coriolis = Me.m_parameters.Coriolis
-            Me.m_data.SorWv = Me.m_parameters.SorWv
 
             Return True
 

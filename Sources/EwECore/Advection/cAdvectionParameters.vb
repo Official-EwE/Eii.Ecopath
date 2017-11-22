@@ -108,55 +108,6 @@ Namespace Ecospace.Advection
             End Set
         End Property
 
-
-#Region "Obsolete Properties of the old Advection Model"
-
-        <Obsolete("Not supported by new Advection Model")> _
-        Public Property XVelocity() As Single
-            Get
-                Return CSng(GetVariable(eVarNameFlags.XVelocity))
-            End Get
-
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.XVelocity, value)
-            End Set
-        End Property
-
-        <Obsolete("Not supported by new Advection Model")> _
-        Public Property YVelocity() As Single
-            Get
-                Return CSng(GetVariable(eVarNameFlags.YVelocity))
-            End Get
-
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.YVelocity, value)
-            End Set
-        End Property
-
-        <Obsolete("Not supported by new Advection Model")> _
-        Public Property Coriolis() As Single
-            Get
-                Return CSng(GetVariable(eVarNameFlags.Coriolis))
-            End Get
-
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.Coriolis, value)
-            End Set
-        End Property
-
-        <Obsolete("Not supported by new Advection Model")> _
-        Public Property SorWv() As Single
-            Get
-                Return CSng(GetVariable(eVarNameFlags.SorWv))
-            End Get
-
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.SorWv, value)
-            End Set
-        End Property
-
-#End Region
-
     End Class
 
 End Namespace
