@@ -636,7 +636,7 @@ Namespace Ecospace
                 .AddCurve(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_aptsProgress(1), zgcr.NextColor, ZedGraph.SymbolType.None)
                 .AddCurve(SharedResources.HEADER_MANDATED_REBUILDING, Me.m_aptsProgress(2), zgcr.NextColor, ZedGraph.SymbolType.None)
                 .AddCurve(SharedResources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_aptsProgress(3), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(SharedResources.HEADER_BIOMASS_DIVERSITY, Me.m_aptsProgress(4), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_BIODIVERSITY, Me.m_aptsProgress(4), zgcr.NextColor, ZedGraph.SymbolType.None)
                 .AddCurve(SharedResources.HEADER_BOUNDARYWEIGHT, Me.m_aptsProgress(5), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             End With
@@ -675,7 +675,7 @@ Namespace Ecospace
                 .AddCurve(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_aptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
                 .AddCurve(SharedResources.HEADER_MANDATED_REBUILDING, Me.m_aptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
                 .AddCurve(SharedResources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_aptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(SharedResources.HEADER_BIOMASS_DIVERSITY, Me.m_aptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_BIODIVERSITY, Me.m_aptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
                 .AddCurve(SharedResources.HEADER_BOUNDARYWEIGHT, Me.m_aptsResults(6), zgcr.NextColor, ZedGraph.SymbolType.None)
                 .AddCurve(My.Resources.SEARCH_LABEL_TOTAL_WEIGHTED, Me.m_aptsResults(0), zgcr.NextColor, ZedGraph.SymbolType.None)
 

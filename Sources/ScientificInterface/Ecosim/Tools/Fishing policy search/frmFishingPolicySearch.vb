@@ -603,7 +603,7 @@ Namespace Ecosim
             Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_lptsResults(4), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             Me.m_lptsResults(5) = New ResultPoints()
-            Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_BIOMASS_DIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+            Me.m_graphResults.GraphPane.AddCurve(SharedResources.HEADER_BIODIVERSITY, Me.m_lptsResults(5), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             ' Will not plot blocks for now
             'For i As Integer = 1 To nSearchBlocks

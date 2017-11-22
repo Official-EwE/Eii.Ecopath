@@ -74,7 +74,7 @@ Public Class gridMPAOptimizations
         c.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Me(4, eColumnTypes.Value) = c
 
-        Me(5, eColumnTypes.Variable) = New EwERowHeaderCell(SharedResources.HEADER_BIOMASS_DIVERSITY)
+        Me(5, eColumnTypes.Variable) = New EwERowHeaderCell(SharedResources.HEADER_BIODIVERSITY)
         c = New EwECell(0.0!, GetType(Single))
         c.Style = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
         Me(5, eColumnTypes.Value) = c

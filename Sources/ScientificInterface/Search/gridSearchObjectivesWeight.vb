@@ -164,7 +164,7 @@ Namespace Ecosim
             End If
 
             iRow = Me.AddRow()
-            Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_BIOMASS_DIVERSITY)
+            Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_BIODIVERSITY)
             Me(iRow, 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FPSBiomassDiversityWeight)
 
             If Me.m_bShowMPAOptParams Then

@@ -591,11 +591,8 @@
   <data name="HEADER_BIOMASS_CUMULATIVE" xml:space="preserve">
     <value>Cumulative biomass</value>
   </data>
-  <data name="HEADER_BIOMASS_DIVERSITY" xml:space="preserve">
-    <value>Biomass diversity</value>
-  </data>
-  <data name="HEADER_BIOMASS_DIVERSITY_ABBR" xml:space="preserve">
-    <value>Divers.</value>
+  <data name="HEADER_BIODIVERSITY" xml:space="preserve">
+    <value>Biodiversity</value>
   </data>
   <data name="HEADER_BIOMASS_LIMIT" xml:space="preserve">
     <value>Biomass limit</value>
