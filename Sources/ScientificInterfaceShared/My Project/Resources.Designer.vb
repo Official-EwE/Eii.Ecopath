@@ -3582,6 +3582,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Biodiversity.
+        '''</summary>
+        Public ReadOnly Property HEADER_BIODIVERSITY() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BIODIVERSITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Biom. acc..
         '''</summary>
         Public ReadOnly Property HEADER_BIOMACCUM_ABBR() As String
@@ -3632,24 +3641,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_BIOMASS_CV() As String
             Get
                 Return ResourceManager.GetString("HEADER_BIOMASS_CV", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Biomass diversity.
-        '''</summary>
-        Public ReadOnly Property HEADER_BIOMASS_DIVERSITY() As String
-            Get
-                Return ResourceManager.GetString("HEADER_BIOMASS_DIVERSITY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Divers..
-        '''</summary>
-        Public ReadOnly Property HEADER_BIOMASS_DIVERSITY_ABBR() As String
-            Get
-                Return ResourceManager.GetString("HEADER_BIOMASS_DIVERSITY_ABBR", resourceCulture)
             End Get
         End Property
         

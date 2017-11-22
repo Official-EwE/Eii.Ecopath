@@ -64,7 +64,7 @@ Namespace Ecosim
             Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Employment) = New EwEColumnHeaderCell(SharedResources.HEADER_SOCIAL)
             Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.MandateReb) = New EwEColumnHeaderCell(SharedResources.HEADER_MANDATED_ABBR)
             Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.Ecological) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOSYSTEM_STRUCTURE_ABBR)
-            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.BioDiversity) = New EwEColumnHeaderCell(SharedResources.HEADER_BIOMASS_DIVERSITY_ABBR)
+            Me(0, eColumnTypes.Total + eSearchCriteriaResultTypes.BioDiversity) = New EwEColumnHeaderCell(SharedResources.HEADER_BIODIVERSITY)
 
         End Sub
 

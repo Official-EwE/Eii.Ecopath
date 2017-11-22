@@ -4447,7 +4447,7 @@ Namespace Ecosim
         ''' <param name="i">i Index</param>
         ''' <param name="j">j Index</param>
         ''' <param name="UseTime">True if the modifier is over time (Ecosim), False if not (Ecospace) </param>
-        Public Sub ___ApplyAVmodifiers___(ByVal iTime As Integer, ByRef A As Single, ByRef v As Single, ByVal i As Integer, ByVal j As Integer, ByVal UseTime As Boolean)
+        Public Sub ApplyAVmodifiersXX(ByVal iTime As Integer, ByRef A As Single, ByRef v As Single, ByVal i As Integer, ByVal j As Integer, ByVal UseTime As Boolean)
             Dim K As Integer, Mult As Single
 
             Me.ApplyEnvironmentalResponse(A, j, iTime)
