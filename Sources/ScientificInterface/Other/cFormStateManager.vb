@@ -33,14 +33,12 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-#Region " cFormStateHelper "
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' Helper class; maintains form enabled / availability states in the AppLauncher.
 ''' </summary>
 ''' -----------------------------------------------------------------------
-Friend Class cEwEFormStateHelper
+Friend Class cEwEFormStateManager
     Implements IDisposable
 
 #Region " Privates "
@@ -56,8 +54,8 @@ Friend Class cEwEFormStateHelper
 
 #Region " Construction "
 
-    Public Sub New(ByVal csm As cCoreStateMonitor, _
-                   ByVal cc As cCoreController, _
+    Public Sub New(ByVal csm As cCoreStateMonitor,
+                   ByVal cc As cCoreController,
                    ByVal dp As DockPanel)
         Me.m_dp = dp
         Me.m_cc = cc
@@ -210,5 +208,3 @@ Friend Class cEwEFormStateHelper
 #End Region ' Internals
 
 End Class
-
-#End Region ' cFormStateHelper

@@ -2647,8 +2647,8 @@ Public Class cCore
             Try
                 If (value <> Me.m_settings.Autosave(savetype)) Then
                     Me.m_settings.Autosave(savetype) = value
+                    Me.OnSettingsChanged()
                 End If
-                Me.OnSettingsChanged()
             Catch ex As Exception
                 cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
             End Try
@@ -2673,8 +2673,10 @@ Public Class cCore
         End Get
         Set(value As Boolean)
             Try
-                Me.m_settings.AutosaveHeaders = value
-                Me.OnSettingsChanged()
+                If (value <> Me.m_settings.AutosaveHeaders) Then
+                    Me.m_settings.AutosaveHeaders = value
+                    Me.OnSettingsChanged()
+                End If
             Catch ex As Exception
                 cLog.Write(ex, "cCore::SaveWithFileHeader")
             End Try

@@ -402,15 +402,18 @@ Namespace Ecospace
 
         Private Sub UpdateResultWriters()
 
+            Dim bAutoSaving As Boolean = False
+
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
 
             For i As Integer = 0 To Me.m_clbAutosave.Items.Count - 1
                 Dim wr As IEcospaceResultsWriter = DirectCast(Me.m_clbAutosave.Items(i), IEcospaceResultsWriter)
                 wr.Enabled = Me.m_clbAutosave.GetItemChecked(i)
+                bAutoSaving = bAutoSaving Or wr.Enabled
             Next
+            Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = bAutoSaving
 
-            cAutosaveSettingsHelper.Store(Me.Core)
             Me.m_bInUpdate = False
 
         End Sub

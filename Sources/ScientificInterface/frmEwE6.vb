@@ -73,9 +73,12 @@ Public Class frmEwE6
     Private m_coreController As cCoreController = Nothing
     Private m_pluginManager As cPluginManager = Nothing
     Private m_pluginMenuHandler As cPluginMenuHandler = Nothing
-    Private m_FormStateHelper As cEwEFormStateHelper = Nothing
+    Private m_formstatemanager As cEwEFormStateManager = Nothing
     Private m_styleguideupdater As cStyleGuideUpdater = Nothing
-    Private m_MessageHistory As cMessageHistory = Nothing
+    Private m_autosavemanager As cAutosaveSettingsManager = Nothing
+
+    ''' <summary>Foundation for undo stack?</summary>
+    Private m_messageHistory As cMessageHistory = Nothing
 
     ''' <summary>Status messages stack.</summary>
     Private m_lstrStatus As New List(Of String)
@@ -754,7 +757,7 @@ Public Class frmEwE6
         ' Initialize panels
         Try
             Me.m_dtPanels(cPANEL_NAV) = New frmNavigationPanel(Me.UIContext, Me.m_pluginManager)
-            Me.m_dtPanels(cPANEL_STATUS) = New frmStatusPanel(Me.UIContext, Me.m_MessageHistory)
+            Me.m_dtPanels(cPANEL_STATUS) = New frmStatusPanel(Me.UIContext, Me.m_messageHistory)
             Me.m_dtPanels(cPANEL_REMARKS) = New frmRemarkPanel(Me.UIContext)
             Me.m_dtPanels(cPANEL_START) = New frmStartPanel(Me.UIContext)
         Catch ex As Exception
@@ -820,8 +823,8 @@ Public Class frmEwE6
         Me.Core.Messages.AddMessageHandler(Me.m_mhTimeseries)
 
         ' Create message history
-        Me.m_MessageHistory = New cMessageHistory()
-        Me.m_MessageHistory.UIContext = Me.UIContext
+        Me.m_messageHistory = New cMessageHistory()
+        Me.m_messageHistory.UIContext = Me.UIContext
 
         ' Create plug-in manager for this GUI
         Me.m_pluginManager = New cPluginManager()
@@ -844,6 +847,9 @@ Public Class frmEwE6
         ' Initialize style guide updater
         Me.m_styleguideupdater = New cStyleGuideUpdater(Me.UIContext)
         Me.m_styleguideupdater.Load()
+
+        ' Initialize autosave logic
+        Me.m_autosavemanager = New cAutosaveSettingsManager(Me.UIContext.Core)
 
         Me.Core.SetMessagePumpDelegate(AddressOf Me.OnPumpCoreMessages)
 
@@ -999,7 +1005,7 @@ Public Class frmEwE6
         ' Start controlling the status strip
         Me.m_ssMain.Attach(Me.UIContext, Me)
         ' Start controlling forms
-        Me.m_FormStateHelper = New cEwEFormStateHelper(Me.Core.StateMonitor, Me.m_coreController, Me.m_DockPanel)
+        Me.m_formstatemanager = New cEwEFormStateManager(Me.Core.StateMonitor, Me.m_coreController, Me.m_DockPanel)
         Me.Help.HelpTopic(Me.Panel(cPANEL_START)) = "Ecopath with Ecosim 6 Getting started.htm"
 
         Try
@@ -1079,8 +1085,8 @@ Public Class frmEwE6
                 RemoveHandler My.Settings.SettingsSaving, AddressOf OnSettingsSaving
                 RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
 
-                Me.m_FormStateHelper.Dispose()
-                Me.m_FormStateHelper = Nothing
+                Me.m_formstatemanager.Dispose()
+                Me.m_formstatemanager = Nothing
 
                 Me.Core.Messages.RemoveMessageHandler(Me.m_mhProgress)
                 Me.Core.Messages.RemoveMessageHandler(Me.m_mhEcosim)
@@ -1116,8 +1122,8 @@ Public Class frmEwE6
                 'Next
                 Me.m_dtPanels.Clear()
 
-                Me.m_MessageHistory.Dispose()
-                Me.m_MessageHistory = Nothing
+                Me.m_messageHistory.Dispose()
+                Me.m_messageHistory = Nothing
 
                 Me.UIContext.PropertyManager.Dispose()
                 Me.UIContext.StyleGuide.Dispose()
@@ -2311,6 +2317,8 @@ Public Class frmEwE6
             Me.CloseAllDocuments()
             Me.ClearScenarioDropdowns()
 
+            Me.m_autosavemanager.GatherSettings()
+
             ' Reset components
             DirectCast(Me.Panel(cPANEL_NAV), frmNavigationPanel).Reset()
             DirectCast(Me.Panel(cPANEL_STATUS), frmStatusPanel).Reset()
@@ -2404,6 +2412,7 @@ Public Class frmEwE6
             ' #Yes: Load it
             cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSIM_LOADING, es.Name))
             bSucces = Me.Core.LoadEcosimScenario(es)
+            Me.m_autosavemanager.ApplySettingsAndEnsureDefaults()
             cApplicationStatusNotifier.EndProgress(Me.Core)
         End If
         Return bSucces
@@ -2541,6 +2550,7 @@ Public Class frmEwE6
             ' #Yes: Load it
             cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOSPACE_LOADING, es.Name))
             bSucces = Me.Core.LoadEcospaceScenario(es)
+            Me.m_autosavemanager.ApplySettingsAndEnsureDefaults()
             cApplicationStatusNotifier.EndProgress(Me.Core)
         End If
         Return bSucces
@@ -2641,6 +2651,7 @@ Public Class frmEwE6
             ' #Yes: Load it
             cApplicationStatusNotifier.StartProgress(Me.Core, cStringUtils.Localize(My.Resources.STATUS_ECOTRACER_LOADING, es.Name))
             bSucces = Me.Core.LoadEcotracerScenario(es)
+            Me.m_autosavemanager.ApplySettingsAndEnsureDefaults()
             cApplicationStatusNotifier.EndProgress(Me.Core)
         End If
         Return bSucces
@@ -3687,6 +3698,7 @@ Public Class frmEwE6
     ''' Command handler; closes the current Ecosim scenario
     ''' </summary>
     Private Sub OnCloseEcosimScenario(ByVal cmd As cCommand) Handles m_cmdCloseEcosimScenario.OnInvoke
+        Me.m_autosavemanager.GatherSettings()
         Me.Core.CloseEcosimScenario()
     End Sub
 
@@ -3979,6 +3991,7 @@ Public Class frmEwE6
 
     Private Sub OnCloseEcospaceScenario(ByVal cmd As cCommand) _
         Handles m_cmdCloseEcospaceScenario.OnInvoke
+        Me.m_autosavemanager.GatherSettings()
         Me.Core.CloseEcospaceScenario()
     End Sub
 
@@ -4537,6 +4550,7 @@ Public Class frmEwE6
     ''' </summary>
     Private Sub OnCloseEcotracerScenario(ByVal cmd As cCommand) _
         Handles m_cmdCloseEcotracerScenario.OnInvoke
+        Me.m_autosavemanager.GatherSettings()
         Me.Core.CloseEcotracerScenario()
     End Sub
 
@@ -4861,7 +4875,7 @@ Public Class frmEwE6
             Me.Core.DefaultContact = My.Settings.Contact
 
             Me.Core.SaveWithFileHeader = My.Settings.AutosaveHeaders
-            cAutosaveSettingsHelper.LoadFromSettings(My.Settings.AutosaveResults, Me.Core)
+            Me.m_autosavemanager.Settings = My.Settings.AutosaveResults
 
             Dim man As cSpatialDataSetManager = Me.Core.SpatialDataConnectionManager.DatasetManager
             man.IsIndexingAllowed = My.Settings.AutoIndexDatasets
@@ -4889,7 +4903,7 @@ Public Class frmEwE6
             Select Case e.PropertyName
 
                 Case "StatusMaxMessages", "StatusShowTime"
-                    If (Me.m_MessageHistory IsNot Nothing) Then Me.m_MessageHistory.Refresh()
+                    If (Me.m_messageHistory IsNot Nothing) Then Me.m_messageHistory.Refresh()
 
                 Case "MdbRecentlyUsedCount"
                     Me.PopulateModelMRUDropdown()
@@ -4914,7 +4928,7 @@ Public Class frmEwE6
                     Me.Core.SpatialDataConnectionManager.DatasetManager.IsIndexingAllowed = My.Settings.AutoIndexDatasets
 
                 Case "AutosaveResults"
-                    cAutosaveSettingsHelper.Init(Me.Core)
+                    Me.m_autosavemanager.ApplySettingsAndEnsureDefaults()
             End Select
 
             Me.m_ssMain.UpdateModelPanes()
@@ -4927,12 +4941,7 @@ Public Class frmEwE6
 
     Private Sub OnSettingsSaving(ByVal sender As Object, args As CancelEventArgs)
 
-        Dim strAutosave As String = ""
-        For Each setting As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
-            strAutosave = strAutosave & CChar(If(Me.Core.Autosave(setting), "1"c, "0"c))
-        Next
-
-        My.Settings.AutosaveResults = cAutosaveSettingsHelper.SaveToSettings(Me.Core)
+        My.Settings.AutosaveResults = Me.m_autosavemanager.Settings()
         My.Settings.AutoIndexDatasets = Me.Core.SpatialDataConnectionManager.DatasetManager.IsIndexingAllowed
 
         args.Cancel = False
@@ -5055,6 +5064,11 @@ Public Class frmEwE6
                    (msg.DataType = eDataTypes.TimeSeriesDataset) Or
                    (msg.DataType = eDataTypes.EcospaceSpatialDataConnection) Then
                     Me.PopulateScenarioDropdowns()
+                End If
+            End If
+            If msg.Source = eCoreComponentType.Core Then
+                If (msg.Type = eMessageType.GlobalSettingsChanged) Then
+                    My.Settings.Save()
                 End If
             End If
         Catch ex As Exception
