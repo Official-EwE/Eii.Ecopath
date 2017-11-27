@@ -534,8 +534,8 @@
     <Compile Include="Other\Options\ucOptionsFileManagement.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Other\cAutosaveSettingsHelper.vb" />
-    <Compile Include="Other\cFormStateHelper.vb" />
+    <Compile Include="Other\cAutosaveSettingsManager.vb" />
+    <Compile Include="Other\cFormStateManager.vb" />
     <Compile Include="Panels\RemarkPanel\frmRemarkPanel.Designer.vb">
       <DependentUpon>frmRemarkPanel.vb</DependentUpon>
     </Compile>
