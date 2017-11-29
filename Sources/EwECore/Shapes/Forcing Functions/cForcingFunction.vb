@@ -90,8 +90,10 @@ Public Class cForcingFunction
             Return Me.m_ShapeFunctionType
         End Get
         Friend Set(ByVal value As Long)
-            Me.m_ShapeFunctionType = value
-            Me.Update()
+            If (value <> Me.m_ShapeFunctionType) Then
+                Me.m_ShapeFunctionType = value
+                Me.Update()
+            End If
         End Set
     End Property
 
