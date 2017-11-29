@@ -171,7 +171,7 @@ Public Class ucDriverResponseView
     End Sub
 
     Private Sub OnChangeShape(sender As System.Object, e As System.EventArgs) _
-        Handles m_btChangeShape.Click
+        Handles m_btnChangeShape.Click
         Try
             Me.ChangeFFShape()
             ' Type of shape may have changed
