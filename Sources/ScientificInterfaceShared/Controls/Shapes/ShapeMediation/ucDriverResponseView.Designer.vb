@@ -16,11 +16,11 @@ Partial Class ucDriverResponseView
         Me.m_lblXMax = New System.Windows.Forms.Label()
         Me.m_tbxXMax = New System.Windows.Forms.TextBox()
         Me.m_lblMean = New System.Windows.Forms.Label()
-        Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_tbxMean = New System.Windows.Forms.TextBox()
         Me.m_btnDefaultMinMax = New System.Windows.Forms.Button()
         Me.m_btnChangeShape = New System.Windows.Forms.Button()
         Me.m_tlpControls = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_tlpControls.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -32,15 +32,16 @@ Partial Class ucDriverResponseView
         Me.m_lblXMin.Location = New System.Drawing.Point(3, 3)
         Me.m_lblXMin.Margin = New System.Windows.Forms.Padding(3)
         Me.m_lblXMin.Name = "m_lblXMin"
-        Me.m_lblXMin.Size = New System.Drawing.Size(42, 22)
+        Me.m_lblXMin.Size = New System.Drawing.Size(37, 22)
         Me.m_lblXMin.TabIndex = 0
-        Me.m_lblXMin.Text = "X m&in:  "
+        Me.m_lblXMin.Text = "X m&in:"
         Me.m_lblXMin.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'm_tbxXMin
         '
         Me.m_tbxXMin.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_tbxXMin.Location = New System.Drawing.Point(51, 3)
+        Me.m_tbxXMin.Location = New System.Drawing.Point(43, 5)
+        Me.m_tbxXMin.Margin = New System.Windows.Forms.Padding(0, 5, 0, 0)
         Me.m_tbxXMin.Name = "m_tbxXMin"
         Me.m_tbxXMin.Size = New System.Drawing.Size(50, 20)
         Me.m_tbxXMin.TabIndex = 1
@@ -50,7 +51,7 @@ Partial Class ucDriverResponseView
         Me.m_lblXMax.AutoSize = True
         Me.m_lblXMax.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lblXMax.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_lblXMax.Location = New System.Drawing.Point(127, 3)
+        Me.m_lblXMax.Location = New System.Drawing.Point(116, 3)
         Me.m_lblXMax.Margin = New System.Windows.Forms.Padding(3)
         Me.m_lblXMax.Name = "m_lblXMax"
         Me.m_lblXMax.Size = New System.Drawing.Size(45, 22)
@@ -61,7 +62,8 @@ Partial Class ucDriverResponseView
         'm_tbxXMax
         '
         Me.m_tbxXMax.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_tbxXMax.Location = New System.Drawing.Point(178, 3)
+        Me.m_tbxXMax.Location = New System.Drawing.Point(164, 5)
+        Me.m_tbxXMax.Margin = New System.Windows.Forms.Padding(0, 5, 0, 0)
         Me.m_tbxXMax.Name = "m_tbxXMax"
         Me.m_tbxXMax.Size = New System.Drawing.Size(50, 20)
         Me.m_tbxXMax.TabIndex = 3
@@ -74,34 +76,16 @@ Partial Class ucDriverResponseView
         Me.m_lblMean.Location = New System.Drawing.Point(3, 31)
         Me.m_lblMean.Margin = New System.Windows.Forms.Padding(3)
         Me.m_lblMean.Name = "m_lblMean"
-        Me.m_lblMean.Size = New System.Drawing.Size(42, 23)
+        Me.m_lblMean.Size = New System.Drawing.Size(37, 23)
         Me.m_lblMean.TabIndex = 5
         Me.m_lblMean.Text = "Mean:"
         Me.m_lblMean.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'm_graph
-        '
-        Me.m_graph.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_graph.Location = New System.Drawing.Point(0, 61)
-        Me.m_graph.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
-        Me.m_graph.Name = "m_graph"
-        Me.m_graph.ScrollGrace = 0R
-        Me.m_graph.ScrollMaxX = 0R
-        Me.m_graph.ScrollMaxY = 0R
-        Me.m_graph.ScrollMaxY2 = 0R
-        Me.m_graph.ScrollMinX = 0R
-        Me.m_graph.ScrollMinY = 0R
-        Me.m_graph.ScrollMinY2 = 0R
-        Me.m_graph.Size = New System.Drawing.Size(367, 274)
-        Me.m_graph.TabIndex = 2
-        '
         'm_tbxMean
         '
         Me.m_tbxMean.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_tbxMean.Location = New System.Drawing.Point(51, 31)
+        Me.m_tbxMean.Location = New System.Drawing.Point(43, 33)
+        Me.m_tbxMean.Margin = New System.Windows.Forms.Padding(0, 5, 0, 0)
         Me.m_tbxMean.Name = "m_tbxMean"
         Me.m_tbxMean.Size = New System.Drawing.Size(50, 20)
         Me.m_tbxMean.TabIndex = 6
@@ -110,9 +94,10 @@ Partial Class ucDriverResponseView
         '
         Me.m_btnDefaultMinMax.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_btnDefaultMinMax.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_btnDefaultMinMax.Location = New System.Drawing.Point(264, 3)
+        Me.m_btnDefaultMinMax.Location = New System.Drawing.Point(267, 3)
+        Me.m_btnDefaultMinMax.Margin = New System.Windows.Forms.Padding(0, 3, 0, 2)
         Me.m_btnDefaultMinMax.Name = "m_btnDefaultMinMax"
-        Me.m_btnDefaultMinMax.Size = New System.Drawing.Size(100, 22)
+        Me.m_btnDefaultMinMax.Size = New System.Drawing.Size(100, 23)
         Me.m_btnDefaultMinMax.TabIndex = 4
         Me.m_btnDefaultMinMax.Text = "&Default X axis"
         Me.m_btnDefaultMinMax.UseVisualStyleBackColor = True
@@ -121,9 +106,10 @@ Partial Class ucDriverResponseView
         '
         Me.m_btnChangeShape.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_btnChangeShape.ImeMode = System.Windows.Forms.ImeMode.NoControl
-        Me.m_btnChangeShape.Location = New System.Drawing.Point(264, 31)
+        Me.m_btnChangeShape.Location = New System.Drawing.Point(267, 31)
+        Me.m_btnChangeShape.Margin = New System.Windows.Forms.Padding(0, 3, 0, 2)
         Me.m_btnChangeShape.Name = "m_btnChangeShape"
-        Me.m_btnChangeShape.Size = New System.Drawing.Size(100, 23)
+        Me.m_btnChangeShape.Size = New System.Drawing.Size(100, 24)
         Me.m_btnChangeShape.TabIndex = 7
         Me.m_btnChangeShape.Text = "&Shange shape..."
         Me.m_btnChangeShape.UseVisualStyleBackColor = True
@@ -146,7 +132,8 @@ Partial Class ucDriverResponseView
         Me.m_tlpControls.Controls.Add(Me.m_tbxXMin, 1, 0)
         Me.m_tlpControls.Controls.Add(Me.m_lblMean, 0, 1)
         Me.m_tlpControls.Controls.Add(Me.m_tbxMean, 1, 1)
-        Me.m_tlpControls.Location = New System.Drawing.Point(0, 3)
+        Me.m_tlpControls.Dock = System.Windows.Forms.DockStyle.Top
+        Me.m_tlpControls.Location = New System.Drawing.Point(0, 0)
         Me.m_tlpControls.Name = "m_tlpControls"
         Me.m_tlpControls.RowCount = 2
         Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -154,12 +141,28 @@ Partial Class ucDriverResponseView
         Me.m_tlpControls.Size = New System.Drawing.Size(367, 57)
         Me.m_tlpControls.TabIndex = 1
         '
+        'm_graph
+        '
+        Me.m_graph.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_graph.Location = New System.Drawing.Point(0, 57)
+        Me.m_graph.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
+        Me.m_graph.Name = "m_graph"
+        Me.m_graph.ScrollGrace = 0R
+        Me.m_graph.ScrollMaxX = 0R
+        Me.m_graph.ScrollMaxY = 0R
+        Me.m_graph.ScrollMaxY2 = 0R
+        Me.m_graph.ScrollMinX = 0R
+        Me.m_graph.ScrollMinY = 0R
+        Me.m_graph.ScrollMinY2 = 0R
+        Me.m_graph.Size = New System.Drawing.Size(367, 278)
+        Me.m_graph.TabIndex = 3
+        '
         'ucDriverResponseView
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.m_tlpControls)
         Me.Controls.Add(Me.m_graph)
+        Me.Controls.Add(Me.m_tlpControls)
         Me.Name = "ucDriverResponseView"
         Me.Size = New System.Drawing.Size(367, 335)
         Me.m_tlpControls.ResumeLayout(False)
@@ -173,9 +176,9 @@ Partial Class ucDriverResponseView
     Private WithEvents m_lblXMax As Label
     Private WithEvents m_tbxXMax As TextBox
     Private WithEvents m_lblMean As Label
-    Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tbxMean As TextBox
     Private WithEvents m_btnDefaultMinMax As Button
     Private WithEvents m_btnChangeShape As Button
     Private WithEvents m_tlpControls As TableLayoutPanel
+    Private WithEvents m_graph As ZedGraph.ZedGraphControl
 End Class

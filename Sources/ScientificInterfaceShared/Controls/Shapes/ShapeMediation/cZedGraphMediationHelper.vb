@@ -48,7 +48,7 @@ Namespace Controls
         Public Shadows Function CreateLineItem(ByVal strName As String, ByVal ppl As ZedGraph.PointPairList, ByVal lineType As eEnvResponseLineType) As ZedGraph.LineItem
             Dim clr As Color
             Select Case lineType
-                Case eEnvResponseLineType.Histogram : clr = Color.RoyalBlue
+                Case eEnvResponseLineType.Histogram : clr = Color.Gray
                 Case eEnvResponseLineType.Response : clr = Color.SandyBrown
                 Case Else : Debug.Assert(False)
             End Select
