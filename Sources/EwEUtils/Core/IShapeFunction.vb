@@ -123,6 +123,14 @@ Namespace Core
         ''' -------------------------------------------------------------------
         ReadOnly Property ShapeFunctionType() As Long
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether the shape function is a true distribution, with fixed
+        ''' min and max values.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property IsDistribution() As Boolean
+
     End Interface
 
 End Namespace

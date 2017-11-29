@@ -99,11 +99,22 @@ Public MustInherit Class cShapeFunction
         Implements IShapeFunction.IsCompatible
 
     ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IShapeFunction.IsDistribution()"/>
+    ''' -----------------------------------------------------------------------
+    Public MustOverride ReadOnly Property IsDistribution As Boolean _
+        Implements IShapeFunction.IsDistribution
+
+    ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IShapeFunction.nParameters"/>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property nParameters As Integer _
         Implements IShapeFunction.nParameters
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the array of function parameters.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Overridable ReadOnly Property Parameters As Single()
         Get
             Return Me.m_parameters

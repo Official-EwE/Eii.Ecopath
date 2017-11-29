@@ -98,11 +98,20 @@ Public Class cTrapezoidShapeFunction
     End Sub
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cShapeFunction.IsCompatible"/>
+    ''' <inheritdocs cref="cShapeFunction.IsCompatible(eDataTypes)"/>
     ''' -----------------------------------------------------------------------
     Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
         Return Me.IsMediation(datatype)
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.IsDistribution()"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property IsDistribution As Boolean
+        Get
+            Return True
+        End Get
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

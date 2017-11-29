@@ -4338,6 +4338,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Driver histogram.
+        '''</summary>
+        Public ReadOnly Property HEADER_DRIVER_HISTOGRAM() As String
+            Get
+                Return ResourceManager.GetString("HEADER_DRIVER_HISTOGRAM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecology.
         '''</summary>
         Public ReadOnly Property HEADER_ECOLOGY() As String
@@ -5324,15 +5333,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_MANDATED_REBUILDING() As String
             Get
                 Return ResourceManager.GetString("HEADER_MANDATED_REBUILDING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Map histogram.
-        '''</summary>
-        Public ReadOnly Property HEADER_MAP_HISTOGRAM() As String
-            Get
-                Return ResourceManager.GetString("HEADER_MAP_HISTOGRAM", resourceCulture)
             End Get
         End Property
         
@@ -7905,7 +7905,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Map values.
+        '''  Looks up a localized string similar to Driver values.
         '''</summary>
         Public ReadOnly Property RESPONSE_GRAPH_XLABEL() As String
             Get

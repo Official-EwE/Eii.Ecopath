@@ -122,6 +122,9 @@
     <value>1</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_sketchPadToolbar.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
   <data name="m_sketchPadToolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -142,7 +145,7 @@
     <value>m_sketchPadToolbar</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSketchPadToolbar, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPadToolbar.Parent" xml:space="preserve">
     <value>m_tlpSketchPad</value>
@@ -152,6 +155,9 @@
   </data>
   <data name="m_sketchPad.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_sketchPad.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="m_sketchPad.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 25</value>
@@ -169,7 +175,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationSketchPad, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucMediationSketchPad, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>m_tlpSketchPad</value>
@@ -268,13 +274,16 @@
     <value>m_shapeToolBox</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolbox, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.Parent" xml:space="preserve">
     <value>m_tlpToolbox</value>
   </data>
   <data name="&gt;&gt;m_shapeToolBox.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_shapeToolboxToolbar.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="m_shapeToolboxToolbar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -295,7 +304,7 @@
     <value>m_shapeToolboxToolbar</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucShapeToolboxToolbar, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_shapeToolboxToolbar.Parent" xml:space="preserve">
     <value>m_tlpToolbox</value>
@@ -351,6 +360,9 @@
   <data name="m_tlpAssingments.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
+  <data name="m_assignments.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
   <data name="m_assignments.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -370,7 +382,7 @@
     <value>m_assignments</value>
   </data>
   <data name="&gt;&gt;m_assignments.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationAssignments, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucMediationAssignments, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_assignments.Parent" xml:space="preserve">
     <value>m_tlpAssingments</value>
@@ -400,7 +412,7 @@
     <value>m_assignmentsToolbar</value>
   </data>
   <data name="&gt;&gt;m_assignmentsToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucMediationAssignmentsToolbar, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_assignmentsToolbar.Parent" xml:space="preserve">
     <value>m_tlpAssingments</value>
@@ -529,6 +541,6 @@
     <value>frmForagingResponse</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -1829,7 +1829,7 @@
     <value>Driver histogram &amp; response function</value>
   </data>
   <data name="RESPONSE_GRAPH_XLABEL" xml:space="preserve">
-    <value>Map values</value>
+    <value>Driver values</value>
   </data>
   <data name="RESPONSE_GRAPH_YLABEL" xml:space="preserve">
     <value>Response</value>
@@ -2703,8 +2703,8 @@
   <data name="GENERAL_LABEL_MONTHLY" xml:space="preserve">
     <value>Monthly</value>
   </data>
-  <data name="HEADER_MAP_HISTOGRAM" xml:space="preserve">
-    <value>Map histogram</value>
+  <data name="HEADER_DRIVER_HISTOGRAM" xml:space="preserve">
+    <value>Driver histogram</value>
   </data>
   <data name="HEADER_PLOT_MAX" xml:space="preserve">
     <value>Plot max</value>

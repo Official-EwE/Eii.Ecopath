@@ -72,9 +72,7 @@ Public Class cHyperbolicShapeFunction
         Me.ParamValue(2) = 3.0
         Me.ParamValue(3) = 0.75
         Me.ParamValue(4) = 1.0F 'Scalar
-
     End Sub
-
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.ParamName"/>
@@ -90,11 +88,20 @@ Public Class cHyperbolicShapeFunction
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cShapeFunction.IsCompatible"/>
+    ''' <inheritdocs cref="cShapeFunction.IsCompatible(eDataTypes)"/>
     ''' -----------------------------------------------------------------------
     Public Overrides Function IsCompatible(datatype As eDataTypes) As Boolean
         Return Me.IsForcing(datatype) Or Me.IsMediation(datatype)
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.IsDistribution()"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property IsDistribution As Boolean
+        Get
+            Return False
+        End Get
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.nParameters"/>

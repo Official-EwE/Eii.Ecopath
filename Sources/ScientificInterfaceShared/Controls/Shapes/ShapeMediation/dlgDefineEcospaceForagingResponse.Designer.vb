@@ -43,26 +43,17 @@ Partial Class dlgDefineEcospaceForagingResponse
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineEcospaceForagingResponse))
         Me.m_btnOk = New System.Windows.Forms.Button()
         Me.m_lblDrivers = New System.Windows.Forms.Label()
-        Me.m_tbxXMax = New System.Windows.Forms.TextBox()
-        Me.m_lblXMax = New System.Windows.Forms.Label()
-        Me.m_graph = New ZedGraph.ZedGraphControl()
-        Me.m_tbxXMin = New System.Windows.Forms.TextBox()
-        Me.m_lblXMin = New System.Windows.Forms.Label()
-        Me.m_btnDefaultMinMax = New System.Windows.Forms.Button()
         Me.m_tvDrivers = New System.Windows.Forms.TreeView()
         Me.m_lblGroups = New System.Windows.Forms.Label()
         Me.m_btnRemove = New System.Windows.Forms.Button()
         Me.m_btnAdd = New System.Windows.Forms.Button()
-        Me.m_lblMean = New System.Windows.Forms.Label()
-        Me.m_btChangeShape = New System.Windows.Forms.Button()
-        Me.m_tbxMean = New System.Windows.Forms.TextBox()
         Me.m_hdrReponse = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lbxGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
         Me.m_hdrConfig = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_graph = New ScientificInterfaceShared.ucDriverResponseView()
         Me.SuspendLayout()
         '
         'm_btnOk
@@ -74,45 +65,6 @@ Partial Class dlgDefineEcospaceForagingResponse
         '
         resources.ApplyResources(Me.m_lblDrivers, "m_lblDrivers")
         Me.m_lblDrivers.Name = "m_lblDrivers"
-        '
-        'm_tbxXMax
-        '
-        resources.ApplyResources(Me.m_tbxXMax, "m_tbxXMax")
-        Me.m_tbxXMax.Name = "m_tbxXMax"
-        '
-        'm_lblXMax
-        '
-        resources.ApplyResources(Me.m_lblXMax, "m_lblXMax")
-        Me.m_lblXMax.Name = "m_lblXMax"
-        '
-        'm_graph
-        '
-        resources.ApplyResources(Me.m_graph, "m_graph")
-        Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_graph.Name = "m_graph"
-        Me.m_graph.ScrollGrace = 0.0R
-        Me.m_graph.ScrollMaxX = 0.0R
-        Me.m_graph.ScrollMaxY = 0.0R
-        Me.m_graph.ScrollMaxY2 = 0.0R
-        Me.m_graph.ScrollMinX = 0.0R
-        Me.m_graph.ScrollMinY = 0.0R
-        Me.m_graph.ScrollMinY2 = 0.0R
-        '
-        'm_tbxXMin
-        '
-        resources.ApplyResources(Me.m_tbxXMin, "m_tbxXMin")
-        Me.m_tbxXMin.Name = "m_tbxXMin"
-        '
-        'm_lblXMin
-        '
-        resources.ApplyResources(Me.m_lblXMin, "m_lblXMin")
-        Me.m_lblXMin.Name = "m_lblXMin"
-        '
-        'm_btnDefaultMinMax
-        '
-        resources.ApplyResources(Me.m_btnDefaultMinMax, "m_btnDefaultMinMax")
-        Me.m_btnDefaultMinMax.Name = "m_btnDefaultMinMax"
-        Me.m_btnDefaultMinMax.UseVisualStyleBackColor = True
         '
         'm_tvDrivers
         '
@@ -140,22 +92,6 @@ Partial Class dlgDefineEcospaceForagingResponse
         Me.m_btnAdd.Image = Global.ScientificInterfaceShared.My.Resources.Resources.forward
         Me.m_btnAdd.Name = "m_btnAdd"
         Me.m_btnAdd.UseVisualStyleBackColor = True
-        '
-        'm_lblMean
-        '
-        resources.ApplyResources(Me.m_lblMean, "m_lblMean")
-        Me.m_lblMean.Name = "m_lblMean"
-        '
-        'm_btChangeShape
-        '
-        resources.ApplyResources(Me.m_btChangeShape, "m_btChangeShape")
-        Me.m_btChangeShape.Name = "m_btChangeShape"
-        Me.m_btChangeShape.UseVisualStyleBackColor = True
-        '
-        'm_tbxMean
-        '
-        resources.ApplyResources(Me.m_tbxMean, "m_tbxMean")
-        Me.m_tbxMean.Name = "m_tbxMean"
         '
         'm_hdrReponse
         '
@@ -189,25 +125,25 @@ Partial Class dlgDefineEcospaceForagingResponse
         Me.m_hdrConfig.IsCollapsed = False
         Me.m_hdrConfig.Name = "m_hdrConfig"
         '
+        'm_graph
+        '
+        Me.m_graph.Driver = Nothing
+        resources.ApplyResources(Me.m_graph, "m_graph")
+        Me.m_graph.Name = "m_graph"
+        Me.m_graph.Shape = Nothing
+        Me.m_graph.UIContext = Nothing
+        '
         'dlgDefineEcospaceForagingResponse
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.Controls.Add(Me.m_lblXMin)
-        Me.Controls.Add(Me.m_tbxXMin)
-        Me.Controls.Add(Me.m_lblXMax)
-        Me.Controls.Add(Me.m_hdrReponse)
-        Me.Controls.Add(Me.m_tbxXMax)
-        Me.Controls.Add(Me.m_lbxGroups)
-        Me.Controls.Add(Me.m_lblMean)
         Me.Controls.Add(Me.m_graph)
-        Me.Controls.Add(Me.m_tbxMean)
+        Me.Controls.Add(Me.m_hdrReponse)
+        Me.Controls.Add(Me.m_lbxGroups)
         Me.Controls.Add(Me.m_hdrConfig)
         Me.Controls.Add(Me.m_btnRemove)
         Me.Controls.Add(Me.m_lblDrivers)
-        Me.Controls.Add(Me.m_btnDefaultMinMax)
         Me.Controls.Add(Me.m_btnAdd)
-        Me.Controls.Add(Me.m_btChangeShape)
         Me.Controls.Add(Me.m_btnOk)
         Me.Controls.Add(Me.m_tvDrivers)
         Me.Controls.Add(Me.m_lblGroups)
@@ -228,16 +164,7 @@ Partial Class dlgDefineEcospaceForagingResponse
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
     Protected WithEvents m_tvDrivers As System.Windows.Forms.TreeView
     Private WithEvents m_lbxGroups As cGroupListBox
-    Private WithEvents m_btnDefaultMinMax As System.Windows.Forms.Button
-    Private WithEvents m_lblXMin As System.Windows.Forms.Label
-    Private WithEvents m_lblXMax As System.Windows.Forms.Label
-    Private WithEvents m_graph As ZedGraph.ZedGraphControl
-    Private WithEvents m_tbxXMin As System.Windows.Forms.TextBox
-    Private WithEvents m_tbxXMax As System.Windows.Forms.TextBox
     Private WithEvents m_hdrReponse As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrConfig As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_lblMean As System.Windows.Forms.Label
-    Private WithEvents m_btChangeShape As System.Windows.Forms.Button
-    Private WithEvents m_tbxMean As System.Windows.Forms.TextBox
-
+    Private WithEvents m_graph As ucDriverResponseView
 End Class
