@@ -62,8 +62,6 @@ Public Class cEnviroResponseShapeManager
             medFunct.ID = m_shapes.Count
             medFunct.Load()
 
-            medFunct.ShapeFunctionType = shapeType
-
             'Add the new shape to the list 
             MyBase.Add(medFunct)
 
