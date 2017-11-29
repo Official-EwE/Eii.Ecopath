@@ -435,13 +435,10 @@
     <value>Fill</value>
   </data>
   <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
-    <value>164, 18</value>
-  </data>
-  <data name="m_graph.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+    <value>167, 21</value>
   </data>
   <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 295</value>
+    <value>390, 289</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -488,6 +485,15 @@
   <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="m_tslbFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 22</value>
+  </data>
+  <data name="m_tslbFilter.Text" xml:space="preserve">
+    <value>&amp;Filter:</value>
+  </data>
+  <data name="m_tstbFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 25</value>
+  </data>
   <data name="m_tsbnCaseSensitive.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -499,15 +505,6 @@
   </data>
   <data name="m_tsbnCaseSensitive.ToolTipText" xml:space="preserve">
     <value>Search case sensitive</value>
-  </data>
-  <data name="m_tstbFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 25</value>
-  </data>
-  <data name="m_tslbFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 22</value>
-  </data>
-  <data name="m_tslbFilter.Text" xml:space="preserve">
-    <value>&amp;Filter:</value>
   </data>
   <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
