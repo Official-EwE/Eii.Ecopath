@@ -261,9 +261,6 @@ Public Class ucDriverResponseView
                     strXMin = My.Resources.HEADER_PLOT_MIN
                     strXMax = My.Resources.HEADER_PLOT_MAX
 
-                'Me.m_tbxMean.Text = Me.m_shape.Steep.ToString
-                'Me.m_tbxSD.Text = Me.m_SD.ToString
-
                 Case eShapeFunctionType.LeftShoulder,
                      eShapeFunctionType.RightShoulder,
                      eShapeFunctionType.Trapezoid
@@ -395,7 +392,9 @@ Public Class ucDriverResponseView
             Dim x As Double
             For ipt As Integer = 1 To Me.m_shape.nPoints
                 x = XDataMin + dx * (ipt - 1)
+                If (ipt = 1) Then lstPts.Add(x, 0.0!)
                 lstPts.Add(x, Me.m_shape.ShapeData(ipt) * YScale)
+                If (ipt = Me.m_shape.nPoints) Then lstPts.Add(x, 0.0!)
             Next
 
             'add the last point out at the end of the graph
@@ -468,12 +467,12 @@ Public Class ucDriverResponseView
                 lstPts.Add(histPts(ipt).X, histPts(ipt).Y)
             Next
 
-            Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_HISTOGRAM_TARGET, Me.m_driver.Name),
+            Dim li As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_HISTOGRAM_TARGET, Me.m_driver.Name),
                                                          lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Histogram)
 
-            il.IsY2Axis = True
-            il.Line.Fill = New Fill(System.Drawing.Color.Gray)
-            Me.m_zgh.GetPane(1).CurveList.Add(il)
+            li.IsY2Axis = True
+            li.Line.Fill = New Fill(cColorUtils.GetVariant(li.Color, 0.5))
+            Me.m_zgh.GetPane(1).CurveList.Add(li)
 
             'Let the response function decide the plot window size
             'Me.m_zgh.XScaleMax = Me.m_map.Max
