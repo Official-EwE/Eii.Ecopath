@@ -320,6 +320,7 @@ Public Class dlgSelectCapacityResponse
             Me.UpdateControls()
         End Set
     End Property
+
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Limit user interactions.
@@ -387,53 +388,47 @@ Public Class dlgSelectCapacityResponse
 
     Private Sub LoadAppliedShapes()
 
-        ' ToDo: set m_shape to the env response fn that has been applied most frequently
+        Dim shape As cEnviroResponseFunction = Nothing
+        Dim lShapes As New List(Of cEnviroResponseFunction)
 
-        Try
-            'Dim isp As Integer = 0
-            'Dim lShapes As New List(Of Integer)
+        Dim isp As Integer = 0
 
-            'Me.m_lvAppliedShapes.Items.Clear()
+        'Only populate the selected shapes if the user selected a cell
+        'If it's a row or col then there is potentially more than one shape selected
+        If Me.m_seltype = dlgSelectResponse.eSelectionType.DriverGroup Then
 
-            ''Only populate the selected shapes if the user selected a cell
-            ''If it's a row or col then there is potentially more than one shape selected
-            'If Me.m_seltype = eSelectionType.DriverGroup Then
+            isp = Me.m_driver.ResponseIndexForGroup(Me.m_iSelGrp)
+            If isp < 1 Then
+                'No Shape selected for this Map/Group
+                Exit Sub
+            End If
 
-            '    isp = Me.m_driver.ResponseIndexForGroup(Me.m_iSelGrp)
-            '    If isp < 1 Then
-            '        'No Shape selected for this Map/Group
-            '        Exit Sub
-            '    End If
+            lShapes.Add(CType(Me.m_shapeManager.Item(isp), cEnviroResponseFunction))
 
-            '    Me.AddShapeToApplied(isp)
+        ElseIf Me.m_seltype = dlgSelectResponse.eSelectionType.Driver Then
 
-            'ElseIf Me.m_seltype = eSelectionType.Driver Then
+            For igrp As Integer = 1 To Me.m_nGroups
+                isp = Me.m_driver.ResponseIndexForGroup(igrp)
+                If (isp > 0) Then
+                    shape = CType(Me.m_shapeManager.Item(isp), cEnviroResponseFunction)
+                    If Not lShapes.Contains(shape) Then lShapes.Add(shape)
+                End If
+            Next
 
-            '    For igrp As Integer = 1 To Me.m_nGroups
-            '        isp = Me.m_driver.ResponseIndexForGroup(igrp)
-            '        If (isp > 0) And (Not lShapes.Contains(isp)) Then
-            '            Me.AddShapeToApplied(isp)
-            '            lShapes.Add(isp)
-            '        End If
-            '    Next
+        ElseIf Me.m_seltype = dlgSelectResponse.eSelectionType.Group Then
 
-            'ElseIf Me.m_seltype = eSelectionType.Group Then
+            'update all the maps with this selected shape
+            For imap As Integer = 1 To Me.m_drivermanager.nEnviroData
+                isp = Me.m_drivermanager.EnviroData(imap).ResponseIndexForGroup(Me.m_iSelGrp)
+                If (isp > 0) Then
+                    shape = CType(Me.m_shapeManager.Item(isp), cEnviroResponseFunction)
+                    If Not lShapes.Contains(shape) Then lShapes.Add(shape)
+                End If
+            Next
+        End If
 
-            '    'update all the maps with this selected shape
-            '    For imap As Integer = 1 To Me.m_drivermanager.nEnviroData
-            '        isp = Me.m_drivermanager.EnviroData(imap).ResponseIndexForGroup(Me.m_iSelGrp)
-            '        If (isp > 0) And (Not lShapes.Contains(isp)) Then
-            '            Me.AddShapeToApplied(isp)
-            '            lShapes.Add(isp)
-            '        End If
-            '    Next
-
-            'End If
-
-
-        Catch ex As Exception
-
-        End Try
+        ' Not very refined, but hey...
+        If (lShapes.Count > 0) Then Me.Shape = lShapes(0)
 
     End Sub
 

@@ -53,11 +53,11 @@ Partial Class dlgSelectCapacityResponse
         Me.m_plButtons = New System.Windows.Forms.Panel()
         Me.m_hdrResp = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrApplied = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_graph = New ScientificInterfaceShared.ucDriverResponseView()
         Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnCaseSensitive = New System.Windows.Forms.ToolStripButton()
         Me.m_tstbFilter = New System.Windows.Forms.ToolStripTextBox()
         Me.m_tslbFilter = New System.Windows.Forms.ToolStripLabel()
-        Me.m_graph = New ScientificInterfaceShared.ucDriverResponseView()
         Me.m_tlMain.SuspendLayout()
         Me.m_plButtons.SuspendLayout()
         Me.m_tsMain.SuspendLayout()
@@ -131,17 +131,24 @@ Partial Class dlgSelectCapacityResponse
         Me.m_hdrApplied.IsCollapsed = False
         Me.m_hdrApplied.Name = "m_hdrApplied"
         '
+        'm_graph
+        '
+        resources.ApplyResources(Me.m_graph, "m_graph")
+        Me.m_graph.Driver = Nothing
+        Me.m_graph.Name = "m_graph"
+        Me.m_graph.Shape = Nothing
+        Me.m_graph.UIContext = Nothing
+        '
         'm_tsMain
         '
         Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnCaseSensitive, Me.m_tstbFilter, Me.m_tslbFilter})
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslbFilter, Me.m_tstbFilter, Me.m_tsbnCaseSensitive})
         resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
         Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'm_tsbnCaseSensitive
         '
-        Me.m_tsbnCaseSensitive.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.m_tsbnCaseSensitive.AutoToolTip = False
         Me.m_tsbnCaseSensitive.CheckOnClick = True
         Me.m_tsbnCaseSensitive.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
@@ -150,23 +157,13 @@ Partial Class dlgSelectCapacityResponse
         '
         'm_tstbFilter
         '
-        Me.m_tstbFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.m_tstbFilter.Name = "m_tstbFilter"
         resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
         '
         'm_tslbFilter
         '
-        Me.m_tslbFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.m_tslbFilter.Name = "m_tslbFilter"
         resources.ApplyResources(Me.m_tslbFilter, "m_tslbFilter")
-        '
-        'm_graph
-        '
-        resources.ApplyResources(Me.m_graph, "m_graph")
-        Me.m_graph.Driver = Nothing
-        Me.m_graph.Name = "m_graph"
-        Me.m_graph.Shape = Nothing
-        Me.m_graph.UIContext = Nothing
         '
         'dlgSelectCapacityResponse
         '
@@ -206,5 +203,5 @@ Partial Class dlgSelectCapacityResponse
     Private WithEvents m_tstbFilter As System.Windows.Forms.ToolStripTextBox
     Private WithEvents m_tsbnCaseSensitive As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsMain As ScientificInterfaceShared.Controls.cEwEToolstrip
-    Friend WithEvents m_graph As ScientificInterfaceShared.ucDriverResponseView
+    Private WithEvents m_graph As ScientificInterfaceShared.ucDriverResponseView
 End Class
