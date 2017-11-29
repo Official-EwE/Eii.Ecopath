@@ -76,8 +76,8 @@ Partial Class frmForagingResponse
         '
         'm_sketchPadToolbar
         '
-        Me.m_sketchPadToolbar.BackColor = System.Drawing.SystemColors.Control
         resources.ApplyResources(Me.m_sketchPadToolbar, "m_sketchPadToolbar")
+        Me.m_sketchPadToolbar.BackColor = System.Drawing.SystemColors.Control
         Me.m_sketchPadToolbar.Handler = Nothing
         Me.m_sketchPadToolbar.Name = "m_sketchPadToolbar"
         Me.m_sketchPadToolbar.UIContext = Nothing
@@ -106,7 +106,7 @@ Partial Class frmForagingResponse
         Me.m_sketchPad.XAxisMaxValue = -9999
         Me.m_sketchPad.XMarkValue = -9999.0!
         Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
-        Me.m_sketchPad.YAxisMaxValue = 0.0!
+        Me.m_sketchPad.YAxisMaxValue = 0!
         Me.m_sketchPad.YAxisMinValue = -9999.0!
         Me.m_sketchPad.YMarkLabel = ""
         Me.m_sketchPad.YMarkValue = -9999.0!
@@ -174,8 +174,8 @@ Partial Class frmForagingResponse
         '
         'm_assignments
         '
-        Me.m_assignments.Data = Nothing
         resources.ApplyResources(Me.m_assignments, "m_assignments")
+        Me.m_assignments.Data = Nothing
         Me.m_assignments.Name = "m_assignments"
         Me.m_assignments.Shape = Nothing
         Me.m_assignments.Title = ""

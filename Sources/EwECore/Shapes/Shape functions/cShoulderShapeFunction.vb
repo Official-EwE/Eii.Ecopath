@@ -110,6 +110,15 @@ Public MustInherit Class cShoulderShapeFunction
     End Function
 
     ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cShapeFunction.IsDistribution()"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides ReadOnly Property IsDistribution As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.nParameters"/>
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property nParameters As Integer

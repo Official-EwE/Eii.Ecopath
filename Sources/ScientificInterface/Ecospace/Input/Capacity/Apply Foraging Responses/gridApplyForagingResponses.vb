@@ -173,12 +173,22 @@ Namespace Ecospace
                 Dim MapManager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
                 Dim ShapeManager As cBaseShapeManager = Core.EnviroResponseShapeManager
 
-                Dim dlg As New dlgSelectResponse(Me.UIContext, ShapeManager, MapManager, iMap, iGrp, SelectionType)
-                dlg.ShowDialog()
-                If dlg.DialogResult = DialogResult.OK Then
-                    'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
-                    'update the interface from the CapacitMapInteractionManager data
-                    Me.FillData()
+                If ((Control.ModifierKeys And Keys.Shift) <> 0) Then
+                    Dim dlg As New dlgSelectCapacityResponse(Me.UIContext, ShapeManager, MapManager, iMap, iGrp, SelectionType)
+                    dlg.ShowDialog()
+                    If dlg.DialogResult = DialogResult.OK Then
+                        'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
+                        'update the interface from the CapacitMapInteractionManager data
+                        Me.FillData()
+                    End If
+                Else
+                    Dim dlg As New dlgSelectResponse(Me.UIContext, ShapeManager, MapManager, iMap, iGrp, SelectionType)
+                    dlg.ShowDialog()
+                    If dlg.DialogResult = DialogResult.OK Then
+                        'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
+                        'update the interface from the CapacitMapInteractionManager data
+                        Me.FillData()
+                    End If
                 End If
 
             Catch ex As Exception

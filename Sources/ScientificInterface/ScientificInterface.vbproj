@@ -169,6 +169,12 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\dlgSelectCapacityResponse.Designer.vb">
+      <DependentUpon>dlgSelectCapacityResponse.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\dlgSelectCapacityResponse.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecobase\cEcoBaseModelListBox.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -983,6 +989,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\dlgSelectCapacityResponse.resx">
+      <DependentUpon>dlgSelectCapacityResponse.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecobase\dlgEcobaseExport.resx">
       <DependentUpon>dlgEcobaseExport.vb</DependentUpon>
     </EmbeddedResource>

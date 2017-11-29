@@ -1,0 +1,507 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- 
+'    UBC Fisheries Centre, Vancouver BC, Canada, and 
+'    Ecopath International Initiative, Barcelona, Spain
+' ===============================================================================
+'
+
+#Region " Imports "
+
+Option Strict On
+Option Explicit On
+
+Imports System.Windows.Forms
+Imports System.Drawing
+Imports System.Drawing.Drawing2D
+Imports EwECore
+Imports ScientificInterface.Other
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared
+Imports ZedGraph
+Imports EwEUtils.Utilities
+
+#End Region ' Imports
+
+Public Class dlgSelectCapacityResponse
+
+    '''' <summary>
+    '''' Enumerated type, indicating for what type of data the dialog was invoked.
+    '''' </summary>
+    'Public Enum eSelectionType
+    '    ''' <summary>Dialog was invoked for a specific driver / group combination.</summary>
+    '    DriverGroup
+    '    ''' <summary>Dialog was invoked for all drivers and a single group.</summary>
+    '    Group
+    '    ''' <summary>Dialog was invoked for all groups and a single driver.</summary>
+    '    Driver
+    'End Enum
+
+    Private m_shapeManager As cBaseShapeManager
+    Private m_lFFs As New List(Of cEnviroResponseFunction)
+    Private m_driver As EwECore.IEnviroInputData
+    Private m_shapeGUI As cShapeGUIHandler
+    Private m_iSelGrp As Integer = cCore.NULL_VALUE
+    Private m_iSelDriver As Integer = cCore.NULL_VALUE
+
+    ''' <summary>Small thumbnails</summary>
+    Private m_ilSmall As New ImageList()
+    ''' <summary>Large thumbnails</summary>
+    Private m_ilLarge As New ImageList()
+
+    Private m_nGroups As Integer = 0
+    Private m_seltype As dlgSelectResponse.eSelectionType = dlgSelectResponse.eSelectionType.DriverGroup
+    Private m_drivermanager As IEnvironmentalResponseManager = Nothing
+
+    Private m_bEcosim As Boolean = False
+    Private m_bEcospace As Boolean = False
+
+#Region " Construction "
+
+    ''' <summary>
+    ''' Constructor.
+    ''' </summary>
+    ''' <param name="uic">UI context to use.</param>
+    ''' <param name="responseManager">Manager providing available environmental response functions.</param>
+    ''' <param name="driverManager">Manager providing available environmental response drivers.</param>
+    ''' <param name="iDriver">Index of selected driver in the <paramref name="driverManager">driver manager</paramref>.</param>
+    ''' <param name="iSelGroup"></param>
+    ''' <param name="selection">Flag indicating <see cref="dlgSelectResponse.eSelectionType">how the dialog was invoked</see>.</param>
+    Public Sub New(ByVal uic As cUIContext,
+                   ByVal responseManager As cBaseShapeManager,
+                   ByVal driverManager As IEnvironmentalResponseManager,
+                   ByVal iDriver As Integer,
+                   ByVal iSelGroup As Integer,
+                   ByVal selection As dlgSelectResponse.eSelectionType)
+
+        Me.UIContext = uic
+        Me.m_seltype = selection
+        Me.m_shapeManager = responseManager
+        Me.m_drivermanager = driverManager
+        Me.m_shapeGUI = cShapeGUIHandler.GetShapeUIHandler(Me.m_shapeManager.DataType, uic)
+
+        Me.m_iSelDriver = iDriver
+        Me.m_iSelGrp = iSelGroup
+
+        Me.m_bEcosim = (TypeOf driverManager Is cEcosimEnviroResponseManager)
+        Me.m_bEcospace = (TypeOf driverManager Is cEcospaceEnviroResponseManager)
+        ' One or the other needs to be set
+        Debug.Assert(Me.m_bEcosim <> Me.m_bEcospace)
+
+        Me.InitializeComponent()
+
+    End Sub
+
+#End Region ' Construction
+
+#Region " Overrides "
+
+    Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+        MyBase.OnLoad(e)
+
+        If (Me.UIContext Is Nothing) Then Return
+
+        Me.Init()
+        Me.m_graph.Init(Me.UIContext)
+
+        Me.m_tslbFilter.Image = SharedResources.FilterHS
+
+        Dim p As New cSettingsParser(Me.Settings)
+        Me.m_tstbFilter.Text = p("filter", "")
+        Me.m_tsbnCaseSensitive.Checked = (p("casesensitive") = "1")
+
+        Me.m_graph.Driver = Me.m_drivermanager.EnviroData(Me.m_iSelDriver)
+
+        Me.LoadAvailableShapes()
+        Me.LoadAppliedShapes()
+
+    End Sub
+
+    Protected Overrides Sub OnClosing(e As System.ComponentModel.CancelEventArgs)
+
+        Dim p As New cSettingsParser()
+        p("filter") = Me.m_tstbFilter.Text
+        p("casesensitive") = If(Me.m_tsbnCaseSensitive.Checked, "1", "0")
+        Me.Settings = p
+        MyBase.OnClosing(e)
+
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
+
+        Me.m_graph.Dispose()
+        MyBase.OnFormClosed(e)
+
+    End Sub
+
+#End Region ' Overrides
+
+#Region " Control Event handlers "
+
+    Private Sub OnFilterChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_tstbFilter.TextChanged
+
+        Try
+            Me.LoadAvailableShapes()
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub OnCaseSensitiveFilterChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnCaseSensitive.Click
+
+        Try
+            If Not String.IsNullOrWhiteSpace(Me.m_tstbFilter.Text) Then
+                Me.LoadAvailableShapes()
+            End If
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub OnAdd(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_btnAdd.Click, m_lvAllShapes.DoubleClick
+        Try
+            Me.SelectShape()
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnRemove(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_btnRemove.Click
+        Try
+            Me.RemoveShapes()
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnAppliedShapesSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnAvailableShapesSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_lvAllShapes.SelectedIndexChanged
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles OK_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Me.UpdateSelectedResponseDriver()
+        Me.Close()
+    End Sub
+
+    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.Close()
+    End Sub
+
+#End Region ' Control Event handlers
+
+#Region " Private methods "
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Populate the dialog.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Private Sub Init()
+
+        If Me.m_iSelDriver > 0 Then
+            Me.m_driver = Me.m_drivermanager.EnviroData(Me.m_iSelDriver)
+        End If
+
+        ' Get the available shapes that can be applied
+        For Each shape As cEnviroResponseFunction In Me.m_shapeManager
+            Me.m_lFFs.Add(shape)
+        Next
+
+        ' Generate thumbnails from shapes
+        Me.m_ilSmall.ImageSize = New Size(SmallIconSize, SmallIconSize)
+        Me.GenerateShapeThumbnails(Me.m_ilSmall, SmallIconSize)
+
+        Me.m_ilLarge.ImageSize = New Size(LargeIconSize, LargeIconSize)
+        Me.GenerateShapeThumbnails(Me.m_ilLarge, LargeIconSize)
+
+        Me.m_lvAllShapes.LargeImageList = Me.m_ilLarge
+        Me.m_lvAllShapes.SmallImageList = Me.m_ilSmall
+
+        Me.m_nGroups = Me.UIContext.Core.nGroups
+
+    End Sub
+
+    Private ReadOnly Property LargeIconSize() As Integer
+        Get
+            Debug.Assert(Me.UIContext.StyleGuide IsNot Nothing)
+            Return CInt(Me.UIContext.StyleGuide.ThumbnailSize)
+        End Get
+    End Property
+
+    Private ReadOnly Property SmallIconSize() As Integer
+        Get
+            Debug.Assert(Me.UIContext.StyleGuide IsNot Nothing)
+            Return CInt(Math.Ceiling(Me.UIContext.StyleGuide.ThumbnailSize / 3))
+        End Get
+    End Property
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the selected shape for a list view item.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Private Property Shape(ByVal lvi As ListViewItem) As cEnviroResponseFunction
+        Get
+            Return DirectCast(lvi.Tag, cEnviroResponseFunction)
+        End Get
+        Set(ByVal value As cEnviroResponseFunction)
+            lvi.Tag = value
+        End Set
+    End Property
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Add avaliable shapes to the applications.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Private Sub SelectShape()
+
+        For Each itemSrc As ListViewItem In Me.m_lvAllShapes.SelectedItems
+            Me.Shape = Shape(itemSrc)
+            Exit For
+        Next
+
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Remove applications.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public Sub RemoveShapes()
+        Me.Shape = Nothing
+    End Sub
+
+    Private Property Shape As cEnviroResponseFunction
+        Get
+            Return Me.m_graph.Shape
+        End Get
+        Set(value As cEnviroResponseFunction)
+            Me.m_graph.Shape = value
+            Me.UpdateControls()
+        End Set
+    End Property
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Limit user interactions.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Protected Overrides Sub UpdateControls()
+
+        ' Can add only one shape
+        Me.m_btnAdd.Enabled = (Me.m_lvAllShapes.SelectedItems.Count = 1)
+        ' Can only remove selected shape(s)
+        Me.m_btnRemove.Enabled = (Me.Shape IsNot Nothing)
+
+    End Sub
+
+    Private Sub GenerateShapeThumbnails(ByVal Icons As ImageList, ByVal IconSize As Integer)
+
+        Dim xMax As Integer = Me.m_shapeGUI.XAxisMaxValue
+
+        ' For all selectable shapes
+        For Each shape As cForcingFunction In Me.m_lFFs
+            ' Create and Add the thumbnail image
+            Icons.Images.Add(cShapeImage.IconImage(Me.UIContext, shape, Me.m_shapeGUI.Color, eSketchDrawModeTypes.Fill,
+                                                   xMax, DirectCast(shape, cEnviroResponseFunction).YMax, False))
+        Next
+
+    End Sub
+
+    Private Sub LoadAvailableShapes()
+
+        Dim item As ListViewItem = Nothing
+        Dim bUseShape As Boolean = True
+        Dim strFilter As String = Me.m_tstbFilter.Text
+        Dim i As Integer = 0
+
+        Me.m_lvAllShapes.Items.Clear()
+
+        For Each ff As cEnviroResponseFunction In Me.m_lFFs
+
+            If Not String.IsNullOrWhiteSpace(strFilter) Then
+                If (Me.m_tsbnCaseSensitive.Checked) Then
+                    bUseShape = (ff.Name.IndexOf(strFilter, StringComparison.CurrentCulture) > -1)
+                Else
+                    bUseShape = (ff.Name.IndexOf(strFilter, StringComparison.CurrentCultureIgnoreCase) > -1)
+                End If
+            Else
+                bUseShape = True
+            End If
+
+            If (bUseShape) Then
+                item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, ff.Index, ff.Name))
+                item.ImageIndex = Me.m_lFFs.IndexOf(ff)
+                item.Tag = ff
+                Me.m_lvAllShapes.Items.Add(item)
+                i += 1
+            End If
+        Next
+
+        If Me.m_lvAllShapes.Items.Count > 0 Then
+            Me.m_lvAllShapes.Items(0).Selected = True
+        End If
+
+        Me.UpdateControls()
+
+    End Sub
+
+    Private Sub LoadAppliedShapes()
+
+        ' ToDo: set m_shape to the env response fn that has been applied most frequently
+
+        Try
+            'Dim isp As Integer = 0
+            'Dim lShapes As New List(Of Integer)
+
+            'Me.m_lvAppliedShapes.Items.Clear()
+
+            ''Only populate the selected shapes if the user selected a cell
+            ''If it's a row or col then there is potentially more than one shape selected
+            'If Me.m_seltype = eSelectionType.DriverGroup Then
+
+            '    isp = Me.m_driver.ResponseIndexForGroup(Me.m_iSelGrp)
+            '    If isp < 1 Then
+            '        'No Shape selected for this Map/Group
+            '        Exit Sub
+            '    End If
+
+            '    Me.AddShapeToApplied(isp)
+
+            'ElseIf Me.m_seltype = eSelectionType.Driver Then
+
+            '    For igrp As Integer = 1 To Me.m_nGroups
+            '        isp = Me.m_driver.ResponseIndexForGroup(igrp)
+            '        If (isp > 0) And (Not lShapes.Contains(isp)) Then
+            '            Me.AddShapeToApplied(isp)
+            '            lShapes.Add(isp)
+            '        End If
+            '    Next
+
+            'ElseIf Me.m_seltype = eSelectionType.Group Then
+
+            '    'update all the maps with this selected shape
+            '    For imap As Integer = 1 To Me.m_drivermanager.nEnviroData
+            '        isp = Me.m_drivermanager.EnviroData(imap).ResponseIndexForGroup(Me.m_iSelGrp)
+            '        If (isp > 0) And (Not lShapes.Contains(isp)) Then
+            '            Me.AddShapeToApplied(isp)
+            '            lShapes.Add(isp)
+            '        End If
+            '    Next
+
+            'End If
+
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Function UpdateSelectedResponseDriver() As Boolean
+
+        Dim core As cCore = Me.UIContext.Core
+        Dim iSelResponseShape As Integer = Me.AppliedResponseIndex
+        Dim bCanCommit As Boolean = True
+
+        Try
+            If Me.m_seltype = dlgSelectResponse.eSelectionType.DriverGroup Then
+                If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.m_nGroups Then
+                    If (Me.m_bEcospace) Then
+                        bCanCommit = Me.CanCommit(core.EcospaceGroupInputs(Me.m_iSelGrp).CapacityCalculationType)
+                    Else
+                        bCanCommit = True
+                    End If
+                    If (bCanCommit) Then Me.m_driver.ResponseIndexForGroup(m_iSelGrp) = iSelResponseShape
+                    Return True
+                End If
+            ElseIf Me.m_seltype = dlgSelectResponse.eSelectionType.Driver Then
+                'Apply the same shape to all the groups of the current map
+                For igrp As Integer = 1 To Me.m_nGroups
+                    If (Me.m_bEcospace) Then
+                        bCanCommit = Me.CanCommit(core.EcospaceGroupInputs(igrp).CapacityCalculationType)
+                    Else
+                        bCanCommit = True
+                    End If
+                    If (bCanCommit) Then Me.m_driver.ResponseIndexForGroup(igrp) = iSelResponseShape
+                Next
+
+            ElseIf Me.m_seltype = dlgSelectResponse.eSelectionType.Group Then
+                'Apply the selected shape to the same group for all the maps
+                If (Me.m_bEcospace) Then
+                    bCanCommit = Me.CanCommit(core.EcospaceGroupInputs(Me.m_iSelGrp).CapacityCalculationType)
+                Else
+                    bCanCommit = True
+                End If
+                If (bCanCommit) Then
+                    For iDriver As Integer = 1 To Me.m_drivermanager.nEnviroData
+                        Me.m_drivermanager.EnviroData(iDriver).ResponseIndexForGroup(Me.m_iSelGrp) = iSelResponseShape
+                    Next
+                End If
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".UpdateSelectedResponseDriver() Exception " & ex.Message)
+        End Try
+
+        Return False
+
+    End Function
+
+    Private Function CanCommit(t As eEcospaceCapacityCalType) As Boolean
+        Return ((t And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses)
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the index of the shape in the Applied Shapes list view control
+    ''' </summary>
+    ''' <returns>Index of the Applied shape, or cCore.NULL_VALUE if nothing is Applied</returns>
+    ''' -------------------------------------------------------------------
+    Private Function AppliedResponseIndex() As Integer
+        If (Me.Shape Is Nothing) Then Return cCore.NULL_VALUE
+        Return Me.Shape.Index
+    End Function
+
+#End Region
+
+End Class

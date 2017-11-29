@@ -43,15 +43,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
 #Region " Private variables "
 
     Protected m_uic As cUIContext = Nothing
-    Protected m_shape As EwECore.cEnviroResponseFunction = Nothing
-    Protected m_shapefunction As IShapeFunction = Nothing
     Protected m_manager As IEnvironmentalResponseManager = Nothing
-
-    Private m_zgh As cZedGraphMediationHelper = Nothing
-    Private m_map As IEnviroInputData = Nothing
-    Private m_fpMin As cEwEFormatProvider = Nothing
-    Private m_fpMax As cEwEFormatProvider = Nothing
-    Private m_fpMean As cEwEFormatProvider = Nothing
 
     Private m_bInUpdate As Boolean = False
 
@@ -69,22 +61,19 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
     Public Sub New(ByVal uic As cUIContext,
                    ByVal shape As EwECore.cEnviroResponseFunction,
                    ByVal manager As EwECore.IEnvironmentalResponseManager)
+
         Me.InitializeComponent()
 
-        Me.m_shape = shape
-        Me.m_shapefunction = cShapeFunctionFactory.GetShapeFunction(shape)
+        Me.m_uic = uic
         Me.m_manager = manager
 
-        Me.m_uic = uic
+        Me.m_graph.Init(Me.m_uic)
+        Me.m_graph.Shape = shape
 
-        Me.m_zgh = New cZedGraphMediationHelper()
-        Me.m_zgh.Attach(Me.m_uic, Me.m_graph)
-        Me.m_zgh.ShowPointValue = True
-
-        Debug.Print("Load dialogue " + Me.m_shape.ToCSVString())
+        Debug.Print("Load dialogue " + Me.m_graph.Shape.ToCSVString())
 
         Try
-            Me.Text = cStringUtils.Localize(Me.Text, New cShapeDataFormatter().GetDescriptor(Me.m_shape))
+            Me.Text = cStringUtils.Localize(Me.Text, New cShapeDataFormatter().GetDescriptor(shape))
         Catch ex As Exception
             ' Whoah!
         End Try
@@ -99,45 +88,16 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Try
             Me.m_bInUpdate = True
 
-            Me.m_zgh.ConfigurePane(My.Resources.RESPONSE_GRAPH_TITLE, My.Resources.RESPONSE_GRAPH_XLABEL, My.Resources.RESPONSE_GRAPH_YLABEL, True)
-
-            'Yaxis (left) grid lines
-            Me.m_zgh.GetPane(1).YAxis.MajorGrid.IsVisible = True
-
-            ' JB: the cool thing to do here would be to only show the 1.0 grid line;not all the grid line....
-            ' JS: This should help
-            Me.m_zgh.GetPane(1).YAxis.MajorTic.IsAllTics = False
-
-            Me.m_zgh.GetPane(1).Y2Axis.IsVisible = True
-
-            Me.m_zgh.GetPane(1).Y2Axis.Title.Text = My.Resources.HEADER_MAP_HISTOGRAM
-            Me.m_zgh.GetPane(1).Y2Axis.Title.IsVisible = True
-            Me.m_zgh.GetPane(1).Y2Axis.Title.FontSpec = Me.m_zgh.GetPane(1).YAxis.Title.FontSpec
-
-            Me.m_zgh.GetPane(1).Y2Axis.MinorTic.IsAllTics = False
-            Me.m_zgh.GetPane(1).Y2Axis.MinorTic.IsOpposite = False
-            Me.m_zgh.GetPane(1).Y2Axis.MajorTic.IsOpposite = False
-
-            'somehow set the Y2Axis label font size
-            Me.m_zgh.GetPane(1).Y2Axis.Scale.MaxAuto = True
-
             Me.m_lbxGroups.Attach(Me.m_uic)
             Me.m_lbxGroups.Populate(Me.GetGroupList())
 
-            Me.m_fpMin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMin, GetType(Single))
-            Me.m_fpMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMax, GetType(Single))
-            Me.m_fpMean = New cEwEFormatProvider(Me.m_uic, Me.m_tbxMean, GetType(Single))
-
-            ' Set min and max
-            Me.m_fpMin.Value = Me.m_shape.ResponseLeftLimit
-            Me.m_fpMax.Value = Me.m_shape.ResponseRightLimit
+            Me.LoadDrivers()
 
         Catch ex As Exception
 
         End Try
 
         Me.m_bInUpdate = False
-        Me.InitToShapeType()
 
     End Sub
 
@@ -157,50 +117,9 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         If (Me.m_uic Is Nothing) Then Return
 
         Me.m_lbxGroups.Detach()
-
-        ' Clear out shape to de-init UI
-        Me.m_shape = Nothing
-        Me.InitToShapeType()
-
-        Me.m_fpMin.Release()
-        Me.m_fpMax.Release()
-        Me.m_fpMean.Release()
+        Me.m_graph.Dispose()
 
         MyBase.OnFormClosed(e)
-
-    End Sub
-
-    Protected Sub InitToShapeType()
-
-        Me.m_shapefunction = cShapeFunctionFactory.GetShapeFunction(Me.m_shape)
-
-        If (Me.ShowMinMax) Then
-            RemoveHandler Me.m_fpMin.OnValueChanged, AddressOf OnMinMaxValueChanged
-            RemoveHandler Me.m_fpMax.OnValueChanged, AddressOf OnMinMaxValueChanged
-        End If
-
-        If (Me.CanEditMean) Then
-            RemoveHandler Me.m_fpMean.OnValueChanged, AddressOf OnMeanValueChanged
-        End If
-
-        If (Me.m_shape Is Nothing) Then Return
-
-        If (Me.ShowMinMax) Then
-            AddHandler Me.m_fpMin.OnValueChanged, AddressOf OnMinMaxValueChanged
-            AddHandler Me.m_fpMax.OnValueChanged, AddressOf OnMinMaxValueChanged
-        End If
-
-        If (Me.CanEditMean) Then
-
-            Dim normdist As cNormalShapeFunction = DirectCast(Me.m_shapefunction, cNormalShapeFunction)
-            Me.m_fpMean.Value = normdist.Mean
-
-            AddHandler Me.m_fpMean.OnValueChanged, AddressOf OnMeanValueChanged
-        End If
-
-        Me.LoadDrivers()
-        Me.UpdatePlots()
-        Me.UpdateControls()
 
     End Sub
 
@@ -223,12 +142,15 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Handles m_btnAdd.Click
 
         Try
+            Dim driver As IEnviroInputData = Me.m_graph.Driver
+            Dim shape As cEnviroResponseFunction = Me.m_graph.Shape
+
             ' Abort if no selected map
-            If Me.m_map Is Nothing Then Return
+            If (driver Is Nothing) Then Return
 
             'Yes add all the groups 
             For Each i As Integer In Me.m_lbxGroups.SelectedIndices
-                Me.m_map.ResponseIndexForGroup(Me.m_lbxGroups.GetGroupIndexAt(i)) = Me.m_shape.Index
+                driver.ResponseIndexForGroup(Me.m_lbxGroups.GetGroupIndexAt(i)) = shape.Index
             Next
 
             'bluntly reload the map tree
@@ -244,7 +166,8 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Handles m_btnRemove.Click
 
         Try
-            If (Me.m_map Is Nothing) Then Return
+            Dim driver As IEnviroInputData = Me.m_graph.Driver
+            If (driver Is Nothing) Then Return
 
             Dim node As TreeNode
             node = Me.m_tvDrivers.SelectedNode
@@ -253,7 +176,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
                 If (TypeOf (node.Tag) Is cCoreGroupBase) Then
                     ' #Yes: group was put in the tag when the tree was populated
                     Dim grp As cCoreGroupBase = DirectCast(node.Tag, cCoreGroupBase)
-                    Me.m_map.ResponseIndexForGroup(grp.Index) = cCore.NULL_VALUE
+                    driver.ResponseIndexForGroup(grp.Index) = cCore.NULL_VALUE
                     node.Remove()
                 Else
                     Dim lGroupNodes As New List(Of TreeNode)
@@ -262,7 +185,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
                     Next
                     For Each ndChild As TreeNode In lGroupNodes
                         Dim grp As cCoreGroupBase = DirectCast(ndChild.Tag, cCoreGroupBase)
-                        Me.m_map.ResponseIndexForGroup(grp.Index) = cCore.NULL_VALUE
+                        driver.ResponseIndexForGroup(grp.Index) = cCore.NULL_VALUE
                         ndChild.Remove()
                     Next
                 End If
@@ -286,57 +209,18 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Handles m_tvDrivers.AfterExpand
 
         Try
-            Me.m_map = Me.GetSelectedMap(e.Node)
+            Me.m_graph.Driver = Me.GetSelectedDriver(e.Node)
         Catch ex As Exception
 
         End Try
 
     End Sub
 
-    Private Sub OnMapTreeSelected(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+    Private Sub OnDriverSelected(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
         Handles m_tvDrivers.AfterSelect
         Try
-            Me.m_map = GetSelectedMap(e.Node)
+            Me.m_graph.Driver = GetSelectedDriver(e.Node)
             Me.UpdateControls()
-            Me.UpdatePlots()
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-    Private Sub OnMinMaxValueChanged(ByVal sender As Object, args As EventArgs)
-        Me.ApplyMinMax()
-    End Sub
-
-    Private Sub OnSetDefaultMinMax(ByVal sender As Object, ByVal e As EventArgs) _
-        Handles m_btnDefaultMinMax.Click
-        Me.SetDefaultMinMax()
-    End Sub
-
-    Private Sub OnMeanValueChanged(sender As System.Object, e As System.EventArgs)
-        Try
-            If Me.m_bInUpdate Then Return
-
-            Debug.Assert(Me.CanEditMean(), "Oppss BUG! should not be setting the Mean for this type of shape.")
-            'Mean is stored in the Steep variable
-
-            Dim normdist As cNormalShapeFunction = DirectCast(Me.m_shapefunction, cNormalShapeFunction)
-            normdist.Mean = CSng(Me.m_fpMean.Value)
-            normdist.Apply(Me.m_shape)
-
-            Me.UpdatePlots()
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
-    Private Sub OnChangeShape(sender As System.Object, e As System.EventArgs) _
-        Handles m_btChangeShape.Click
-        Try
-            Me.ChangeFFShape()
-            ' Type of shape may have changed
-            Me.InitToShapeType()
         Catch ex As Exception
 
         End Try
@@ -346,205 +230,13 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
 
 #Region " Private Methods "
 
-    Private Sub UpdatePlots()
-
-        Try
-            'Always clear out the old data????
-            'Maybe not!!!
-            Me.m_zgh.GetPane(1).CurveList.Clear()
-
-            Me.PlotShape()
-            Me.PlotMap()
-
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
     Private Sub UpdateControls()
-
-        ' ToDo JS: this must be connected to IShapeFunction behaviour
 
         Dim bCanAddGroup As Boolean = (Me.m_lbxGroups.SelectedItems.Count > 0)
         Dim bCanRemoveGroup As Boolean = (Me.m_tvDrivers.SelectedNode IsNot Nothing)
-        Dim bCanSetMinMax As Boolean = Me.ShowMinMax() Or True
-        Dim bCanSetMeanSD As Boolean = Me.CanEditMean()
-
-        Dim strXMin As String = My.Resources.HEADER_X_MIN
-        Dim strXMax As String = My.Resources.HEADER_X_MAX
-        Dim strMean As String = My.Resources.HEADER_MEAN
-        Dim strSD As String = My.Resources.HEADER_STANDARDDEVIATION
-
-        Select Case Me.m_shape.ShapeFunctionType
-
-            Case eShapeFunctionType.Normal
-                strXMin = My.Resources.HEADER_PLOT_MIN
-                strXMax = My.Resources.HEADER_PLOT_MAX
-
-                'Me.m_tbxMean.Text = Me.m_shape.Steep.ToString
-                'Me.m_tbxSD.Text = Me.m_SD.ToString
-
-            Case eShapeFunctionType.LeftShoulder,
-                 eShapeFunctionType.RightShoulder,
-                 eShapeFunctionType.Trapezoid
-                strXMin = My.Resources.HEADER_PLOT_MIN
-                strXMax = My.Resources.HEADER_PLOT_MAX
-
-            Case Else
-                ' NOP
-        End Select
 
         Me.m_btnAdd.Enabled = bCanAddGroup
         Me.m_btnRemove.Enabled = bCanRemoveGroup
-
-        Me.m_lblXMin.Text = cStyleGuide.ToControlLabel(strXMin)
-        Me.m_lblXMax.Text = cStyleGuide.ToControlLabel(strXMax)
-        Me.m_fpMin.Enabled = bCanSetMinMax
-        Me.m_fpMax.Enabled = bCanSetMinMax
-
-        Me.m_lblMean.Text = cStyleGuide.ToControlLabel(strMean)
-        '    Me.m_lblSD.Text = cStyleGuide.ToControlLabel(strSD)
-        Me.m_fpMean.Enabled = bCanSetMeanSD
-        '  Me.m_fpSD.Enabled = bCanSetMeanSD
-
-    End Sub
-
-
-    Private Function ShowMinMax() As Boolean
-
-        Return (Me.m_shape IsNot Nothing)
-
-    End Function
-
-    Private Function CanEditMinMax() As Boolean
-
-        If (Me.m_shape Is Nothing) Then Return False
-
-        If ((Me.m_shape.ShapeFunctionType = eShapeFunctionType.Normal) Or
-            (Me.m_shape.ShapeFunctionType = eShapeFunctionType.LeftShoulder) Or
-            (Me.m_shape.ShapeFunctionType = eShapeFunctionType.RightShoulder) Or
-            (Me.m_shape.ShapeFunctionType = eShapeFunctionType.Trapezoid) Or
-            (Me.m_shape.ShapeFunctionType = eShapeFunctionType.Sigmoid)) Then
-            Return False
-        End If
-
-        Return True
-
-    End Function
-
-    Private Function CanEditMean() As Boolean
-
-        If (Me.m_shape Is Nothing) Then Return False
-        If (Me.m_shapefunction Is Nothing) Then Return False
-
-        Return (TypeOf Me.m_shapefunction Is cNormalShapeFunction)
-
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Launch EwE 'change shape' interface.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub ChangeFFShape()
-        Try
-            Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand("ChangeEcosimShape")
-            cmd.Tag = Me.m_shape
-            cmd.Invoke()
-            cmd.Tag = Nothing
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' ToDo: document this
-    ''' </summary>
-    ''' <param name="sShapeMin"></param>
-    ''' <param name="sShapeMax"></param>
-    ''' <param name="sPlotMin"></param>
-    ''' <param name="sPlotMax"></param>
-    ''' -----------------------------------------------------------------------
-    Private Sub GetPlotMinMax(ByRef sShapeMin As Single, ByRef sShapeMax As Single,
-                              ByRef sPlotMin As Single, ByRef sPlotMax As Single)
-
-        Select Case Me.m_shape.ShapeFunctionType
-
-            Case eShapeFunctionType.Normal
-                'Normal distribution shape min and max are set from the Mean and SD values
-
-                'Use the Min Max on the interface to set the plot window size
-                sPlotMin = CSng(Me.m_fpMin.Value)
-                sPlotMax = CSng(Me.m_fpMax.Value)
-
-            Case eShapeFunctionType.LeftShoulder, eShapeFunctionType.RightShoulder, eShapeFunctionType.Trapezoid, eShapeFunctionType.Sigmoid
-                'Shoulder shape min and max can not be set here
-                'They only get set from the ChangeShape dialogue
-
-                'Min and Max of the plot window NOT the data
-                sPlotMin = CSng(Me.m_fpMin.Value)
-                sPlotMax = CSng(Me.m_fpMax.Value)
-
-                'The min and max of the data cannot be changed here
-                sShapeMin = Me.m_shape.ResponseLeftLimit
-                sShapeMax = Me.m_shape.ResponseRightLimit
-
-            Case Else
-                'For all other shape the Min Max get set for the Min and Max textbox on this form
-                sShapeMin = CSng(Me.m_tbxXMin.Text)
-                sShapeMax = CSng(Me.m_tbxXMax.Text)
-                sPlotMin = sShapeMin
-                sPlotMax = sShapeMax
-
-        End Select
-
-    End Sub
-
-    Private Sub PlotShape()
-
-        Try
-            ' Obtain Min and Max from the response function
-            ' this is what the core will use to find the x value
-            Dim XDataMin As Single = Me.m_shape.ResponseLeftLimit
-            Dim XDataMax As Single = Me.m_shape.ResponseRightLimit
-
-            Dim XWinMax As Single
-            Dim XWinMin As Single
-
-            Me.GetPlotMinMax(XDataMin, XDataMax, XWinMin, XWinMax)
-
-            Dim Xrange As Single = XDataMax - XDataMin
-            Dim fmt As New cCoreInterfaceFormatter()
-
-            Dim dx As Single = Xrange / Me.m_shape.nPoints
-
-            Dim YScale As Single = 1
-            Dim lstPts As New PointPairList
-
-            Dim x As Double
-            For ipt As Integer = 1 To Me.m_shape.nPoints
-                x = XDataMin + dx * (ipt - 1)
-                lstPts.Add(x, Me.m_shape.ShapeData(ipt) * YScale)
-            Next
-
-            'add the last point out at the end of the graph
-            lstPts.Add(XDataMax, Me.m_shape.ShapeData(Me.m_shape.nPoints) * YScale)
-
-            Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(Me.m_shape)),
-                                                         lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Response)
-            Me.m_zgh.GetPane(1).CurveList.Add(il)
-
-            'X axis for plotting
-            Me.m_zgh.XScaleMin = XWinMin
-            Me.m_zgh.XScaleMax = XWinMax
-            Me.m_zgh.YScaleMax = Me.m_shape.YMax + Me.m_shape.YMax * 0.1
-            Me.m_zgh.YScaleMin = 0
-
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
 
     End Sub
 
@@ -552,6 +244,9 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
 
         Dim map As IEnviroInputData = Nothing
         Dim fmt As New cCoreInterfaceFormatter()
+
+        Dim shape As cEnviroResponseFunction = Me.m_graph.Shape
+        Debug.Assert(shape IsNot Nothing)
 
         Try
             Me.m_tvDrivers.Nodes.Clear()
@@ -564,18 +259,20 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
 
                 For igrp As Integer = 1 To Me.m_uic.Core.nGroups
                     'Is the current shape selected as the response function for any group
-                    If Me.m_shape.Index = map.ResponseIndexForGroup(igrp) Then
-                        'Yes this shape is set for this group
-                        'add a group node
-                        Dim grp As cEcospaceGroupInput = Me.m_uic.Core.EcospaceGroupInputs(igrp)
-                        If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Then
+                    If (shape IsNot Nothing) Then
+                        If (shape.Index = map.ResponseIndexForGroup(igrp)) Then
+                            'Yes this shape is set for this group
+                            'add a group node
+                            Dim grp As cEcospaceGroupInput = Me.m_uic.Core.EcospaceGroupInputs(igrp)
+                            If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Then
 
-                            Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.GetDescriptor(grp))
-                            ndgrp.Tag = grp
+                                Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.GetDescriptor(grp))
+                                ndgrp.Tag = grp
 
-                            If Not ndApply.IsExpanded Then
-                                'if there are groups assigned to this Map/Node then expand it the tree to this point
-                                ndApply.ExpandAll()
+                                If Not ndApply.IsExpanded Then
+                                    'if there are groups assigned to this Map/Node then expand it the tree to this point
+                                    ndApply.ExpandAll()
+                                End If
                             End If
                         End If
                     End If
@@ -589,42 +286,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
 
     End Sub
 
-    Private Sub SetDefaultMinMax()
-
-        If (Me.m_map Is Nothing) Then Return
-
-        Me.m_bInUpdate = True
-
-        Me.m_fpMin.Value = Me.m_map.Min
-        Me.m_fpMax.Value = Me.m_map.Max
-
-        Me.m_bInUpdate = False
-        Me.ApplyMinMax()
-
-    End Sub
-
-    Private Sub ApplyMinMax()
-        If Me.m_bInUpdate Then Return
-
-        Debug.Assert(Me.ShowMinMax())
-
-        'Not all shapes use the Min and Mix data range
-        If Me.CanEditMinMax() Then
-            Try
-                Me.m_shape.LockUpdates()
-                Me.m_shape.ResponseLeftLimit = CSng(Me.m_fpMin.Value)
-                Me.m_shape.ResponseRightLimit = CSng(Me.m_fpMax.Value)
-                Me.m_shape.UnlockUpdates(True)
-            Catch ex As Exception
-
-            End Try
-        End If ' If Me.CanEditMinMax() Then
-
-        Me.UpdatePlots()
-
-    End Sub
-
-    Private Function GetSelectedMap(ByVal node As TreeNode) As IEnviroInputData
+    Private Function GetSelectedDriver(ByVal node As TreeNode) As IEnviroInputData
         Try
 
             Dim ob As Object = Nothing
@@ -650,40 +312,6 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Return Nothing
 
     End Function
-
-    Private Sub PlotMap()
-        Try
-            If (Me.m_map Is Nothing) Then Return
-
-            Dim histPts() As Drawing.PointF = Me.m_map.Histogram()
-            Dim binWidth As Single = Me.m_map.HistogramBinWidth
-            Dim lstPts As New PointPairList()
-            Dim fmt As New cCoreInterfaceFormatter()
-
-            'The X value in the histogram is the max value of the bin, right hand side of the bin
-            'So an input value of 1.0 will be in the .X = 1.0 bin
-            For ipt As Integer = 1 To histPts.Length - 1
-                lstPts.Add(histPts(ipt).X - binWidth, histPts(ipt).Y)
-                lstPts.Add(histPts(ipt).X, histPts(ipt).Y)
-            Next
-
-            Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_HISTOGRAM_TARGET, Me.m_map.Name),
-                                                         lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Histogram)
-
-            il.IsY2Axis = True
-            il.Line.Fill = New Fill(System.Drawing.Color.Gray)
-            Me.m_zgh.GetPane(1).CurveList.Add(il)
-
-            'Let the response function decide the plot window size
-            'Me.m_zgh.XScaleMax = Me.m_map.Max
-            Me.m_zgh.YScaleMin = 0
-
-        Catch ex As Exception
-            Debug.Assert(False, "PlotMap " & ex.Message)
-            cLog.Write(ex)
-        End Try
-
-    End Sub
 
 #End Region ' Private Methods
 

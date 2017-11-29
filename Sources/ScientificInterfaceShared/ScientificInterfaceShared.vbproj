@@ -219,6 +219,12 @@
     <Compile Include="Controls\Shapes\ShapeMediation\dlgDefineEcosimFunctionalResponses.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\Shapes\ShapeMediation\ucDriverResponseView.Designer.vb">
+      <DependentUpon>ucDriverResponseView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Shapes\ShapeMediation\ucDriverResponseView.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\Shapes\Utility\dlgChangeShape.Designer.vb">
       <DependentUpon>dlgChangeShape.vb</DependentUpon>
     </Compile>
@@ -903,6 +909,9 @@
     <EmbeddedResource Include="Controls\Shapes\ShapeMediation\dlgDefineMediationAssignments.resx">
       <DependentUpon>dlgDefineMediationAssignments.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Shapes\ShapeMediation\ucDriverResponseView.resx">
+      <DependentUpon>ucDriverResponseView.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Shapes\Utility\dlgGraphDisplayOptions.resx">
       <DependentUpon>dlgGraphDisplayOptions.vb</DependentUpon>
