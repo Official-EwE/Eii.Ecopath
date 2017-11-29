@@ -40,7 +40,6 @@ Public Class cForcingFunction
     Protected m_data As cEcosimDatastructures
     Protected m_manager As cBaseShapeManager
 
-    Protected m_ID As Integer
     '   Protected m_Type As eDataTypes
     Protected m_nYears As Integer
 
@@ -97,6 +96,16 @@ Public Class cForcingFunction
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the number of shape function parameters.
+    ''' </summary>
+    ''' <seealso cref="ShapeFunctionType()"/>
+    ''' <seealso cref="ShapeFunctionParameter(Integer)"/>
+    ''' <seealso cref="ShapeFunctionParameters()"/>
+    ''' <seealso cref="Reshape(IShapeFunction)"/>
+    ''' <seealso cref="IShapeFunction"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property nParams As Integer
         Get
             Return Me.m_params.Count
@@ -108,7 +117,11 @@ Public Class cForcingFunction
     ''' Get/set the value of a shape function parameter.
     ''' </summary>
     ''' <param name="iParam">One-based parameter index.</param>
-    ''' <returns></returns>
+    ''' <seealso cref="ShapeFunctionType()"/>
+    ''' <seealso cref="nParams()"/>
+    ''' <seealso cref="ShapeFunctionParameters()"/>
+    ''' <seealso cref="Reshape(IShapeFunction)"/>
+    ''' <seealso cref="IShapeFunction"/>
     ''' -----------------------------------------------------------------------
     Public Property ShapeFunctionParameter(iParam As Integer) As Single
         Get
@@ -128,6 +141,10 @@ Public Class cForcingFunction
     ''' <summary>
     ''' Get an array with the values for all shape function parameters.
     ''' </summary>
+    ''' <seealso cref="ShapeFunctionType()"/>
+    ''' <seealso cref="nParams()"/>
+    ''' <seealso cref="Reshape(IShapeFunction)"/>
+    ''' <seealso cref="IShapeFunction"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ShapeFunctionParameters() As Single()
         Get
@@ -142,14 +159,6 @@ Public Class cForcingFunction
     ''' <remarks>This is a zero based index set when the shape is added to the manager (Construction of the shape) </remarks>
     ''' -----------------------------------------------------------------------
     Public Property ID() As Integer
-        Get
-            Return Me.m_ID
-        End Get
-        Friend Set(ByVal value As Integer)
-            Me.m_ID = value
-            '  Update()
-        End Set
-    End Property
 
     Public Property NYears() As Integer
         Get
