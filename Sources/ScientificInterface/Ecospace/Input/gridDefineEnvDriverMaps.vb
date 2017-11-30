@@ -953,7 +953,7 @@ Namespace Ecospace
                                 If (li.IsChanged()) Then
                                     layTest.Name = li.Name
                                     layTest.Description = li.Description
-                                    ' Are we relieved or what!
+                                    layTest.Units = li.Units
                                 End If
                                 ' Set enabled state
                                 layTest.IsActive = li.IsCapacityEnabled
