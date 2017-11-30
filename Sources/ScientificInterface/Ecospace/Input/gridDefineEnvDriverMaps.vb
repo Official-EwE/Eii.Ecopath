@@ -76,9 +76,6 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Private Class cLayerInfo
 
-            ''' <summary><see cref="cEcospaceBasemap">cEcospaceBasemap</see> associated with this Layer, if any.</summary>
-            Private m_Layer As cEcospaceLayer = Nothing
-
             ''' -------------------------------------------------------------------
             ''' <summary>
             ''' Constructor, initializes a new instanze of this class.
@@ -90,7 +87,7 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Sub New(ByVal Layer As cEcospaceLayer, Optional bEditable As Boolean = True)
                 Debug.Assert(Layer IsNot Nothing)
-                Me.m_Layer = Layer
+                Me.Layer = Layer
                 Me.Name = Layer.Name
                 If (TypeOf Layer Is cEcospaceLayerDriver) Then
                     Me.Description = DirectCast(Layer, cEcospaceLayerDriver).Description
@@ -115,7 +112,7 @@ Namespace Ecospace
             ''' <param name="strName">Name to assign to this administrative unit.</param>
             ''' -------------------------------------------------------------------
             Public Sub New(ByVal strName As String, ByVal strDescription As String, ByVal strUnits As String)
-                Me.m_Layer = Nothing
+                Me.Layer = Nothing
                 Me.Name = strName
                 Me.Description = strDescription
                 Me.Units = strUnits
@@ -151,11 +148,7 @@ Namespace Ecospace
             ''' with this administrative unit.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property Layer() As cEcospaceLayer
-                Get
-                    Return Me.m_Layer
-                End Get
-            End Property
+            Public ReadOnly Property Layer() As cEcospaceLayer = Nothing
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -187,7 +180,7 @@ Namespace Ecospace
                         Return False
                     End If
                 End If
-                Return (Me.m_Layer.Name <> Me.Name) Or
+                Return (Me.Layer.Name <> Me.Name) Or
                        (Me.Layer.Description <> Me.Description)
             End Function
 
@@ -200,7 +193,7 @@ Namespace Ecospace
             ''' </returns>
             ''' -------------------------------------------------------------------
             Public Function IsNew() As Boolean
-                Return (Me.m_Layer Is Nothing)
+                Return (Me.Layer Is Nothing)
             End Function
 
             ''' -------------------------------------------------------------------
@@ -214,7 +207,7 @@ Namespace Ecospace
                     Return (Me.Status = eItemStatusTypes.Removed)
                 End Get
                 Set(ByVal bDelete As Boolean)
-                    If (Me.m_Layer IsNot Nothing) Then
+                    If (Me.Layer IsNot Nothing) Then
                         If bDelete Then
                             Me.Status = eItemStatusTypes.Removed
                         Else
@@ -420,6 +413,8 @@ Namespace Ecospace
             Dim aCells() As Cells.ICellVirtual = Nothing
             Dim cell As EwECell = Nothing
             Dim pos As SourceGrid2.Position = Nothing
+            Dim u As New cUnits(Me.Core)
+
             Me.AllowUpdates = False
 
             li = DirectCast(Me.m_alLayers(iRow - iFIRSTDATAROW), cLayerInfo)
@@ -431,19 +426,20 @@ Namespace Ecospace
             Dim bEditable As Boolean = li.IsEditable
 
             pos = New Position(iRow, eColumnTypes.LayerIndex)
-            aCells(eColumnTypes.LayerIndex).SetValue(pos, CInt(iRow))
+            aCells(eColumnTypes.LayerIndex).SetValue(pos, iRow)
 
             pos = New Position(iRow, eColumnTypes.LayerName)
-            aCells(eColumnTypes.LayerName).SetValue(pos, CStr(li.Name))
+            aCells(eColumnTypes.LayerName).SetValue(pos, li.Name)
 
             pos = New Position(iRow, eColumnTypes.LayerUnits)
-            aCells(eColumnTypes.LayerUnits).SetValue(pos, CStr(li.Units))
+            ' Show units for 'Depth' layer as formatted
+            aCells(eColumnTypes.LayerUnits).SetValue(pos, If(iRow = 1, u.ToString(li.Units), li.Units))
 
             pos = New Position(iRow, eColumnTypes.LayerDescription)
-            aCells(eColumnTypes.LayerDescription).SetValue(pos, CStr(li.Description))
+            aCells(eColumnTypes.LayerDescription).SetValue(pos, li.Description)
 
             pos = New Position(iRow, eColumnTypes.LayerIsCApacityEnabled)
-            aCells(eColumnTypes.LayerIsCApacityEnabled).SetValue(pos, CBool(li.IsCapacityEnabled))
+            aCells(eColumnTypes.LayerIsCApacityEnabled).SetValue(pos, li.IsCapacityEnabled)
 
             pos = New Position(iRow, eColumnTypes.LayerStatus)
             aCells(eColumnTypes.LayerStatus).SetValue(pos, li.Status)
