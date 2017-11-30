@@ -51,26 +51,38 @@ Partial Class frmTransectSummary
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTransectSummary))
         Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
+        Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tslblTransect = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmbTransect = New System.Windows.Forms.ToolStripComboBox()
-        Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnPlay = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnStop = New System.Windows.Forms.ToolStripButton()
-        Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_sep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnSaveToCSV = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnAutosave = New System.Windows.Forms.ToolStripButton()
         Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_timerPlay = New System.Windows.Forms.Timer(Me.components)
-        Me.m_sep3 = New System.Windows.Forms.ToolStripSeparator()
-        Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
         Me.m_ts.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_ts
         '
         Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_sep1, Me.m_tslblTransect, Me.m_tscmbTransect, Me.m_sep2, Me.m_tsbnPlay, Me.m_tsbnStop, Me.m_sep3, Me.m_tsbnSaveToCSV})
+        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_sep1, Me.m_tslblTransect, Me.m_tscmbTransect, Me.m_sep2, Me.m_tsbnPlay, Me.m_tsbnStop, Me.m_sep3, Me.m_tsbnSaveToCSV, Me.m_tsbnAutosave})
         resources.ApplyResources(Me.m_ts, "m_ts")
         Me.m_ts.Name = "m_ts"
+        Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        '
+        'm_tsbtnShowHideGroups
+        '
+        resources.ApplyResources(Me.m_tsbtnShowHideGroups, "m_tsbtnShowHideGroups")
+        Me.m_tsbtnShowHideGroups.Name = "m_tsbtnShowHideGroups"
+        '
+        'm_sep1
+        '
+        Me.m_sep1.Name = "m_sep1"
+        resources.ApplyResources(Me.m_sep1, "m_sep1")
         '
         'm_tslblTransect
         '
@@ -83,10 +95,10 @@ Partial Class frmTransectSummary
         Me.m_tscmbTransect.Name = "m_tscmbTransect"
         resources.ApplyResources(Me.m_tscmbTransect, "m_tscmbTransect")
         '
-        'm_sep1
+        'm_sep2
         '
-        Me.m_sep1.Name = "m_sep1"
-        resources.ApplyResources(Me.m_sep1, "m_sep1")
+        Me.m_sep2.Name = "m_sep2"
+        resources.ApplyResources(Me.m_sep2, "m_sep2")
         '
         'm_tsbnPlay
         '
@@ -100,15 +112,21 @@ Partial Class frmTransectSummary
         resources.ApplyResources(Me.m_tsbnStop, "m_tsbnStop")
         Me.m_tsbnStop.Name = "m_tsbnStop"
         '
-        'm_sep2
+        'm_sep3
         '
-        Me.m_sep2.Name = "m_sep2"
-        resources.ApplyResources(Me.m_sep2, "m_sep2")
+        Me.m_sep3.Name = "m_sep3"
+        resources.ApplyResources(Me.m_sep3, "m_sep3")
         '
         'm_tsbnSaveToCSV
         '
         resources.ApplyResources(Me.m_tsbnSaveToCSV, "m_tsbnSaveToCSV")
         Me.m_tsbnSaveToCSV.Name = "m_tsbnSaveToCSV"
+        '
+        'm_tsbnAutosave
+        '
+        Me.m_tsbnAutosave.CheckOnClick = True
+        resources.ApplyResources(Me.m_tsbnAutosave, "m_tsbnAutosave")
+        Me.m_tsbnAutosave.Name = "m_tsbnAutosave"
         '
         'm_graph
         '
@@ -124,16 +142,6 @@ Partial Class frmTransectSummary
         '
         'm_timerPlay
         '
-        '
-        'm_sep3
-        '
-        Me.m_sep3.Name = "m_sep3"
-        resources.ApplyResources(Me.m_sep3, "m_sep3")
-        '
-        'm_tsbtnShowHideGroups
-        '
-        resources.ApplyResources(Me.m_tsbtnShowHideGroups, "m_tsbtnShowHideGroups")
-        Me.m_tsbtnShowHideGroups.Name = "m_tsbtnShowHideGroups"
         '
         'frmTransectSummary
         '
@@ -160,6 +168,7 @@ Partial Class frmTransectSummary
     Private WithEvents m_tsbnSaveToCSV As Windows.Forms.ToolStripButton
     Private WithEvents m_tslblTransect As Windows.Forms.ToolStripLabel
     Private WithEvents m_sep1 As Windows.Forms.ToolStripSeparator
-    Friend WithEvents m_sep3 As Windows.Forms.ToolStripSeparator
+    Private WithEvents m_sep3 As Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbtnShowHideGroups As Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnAutosave As Windows.Forms.ToolStripButton
 End Class
