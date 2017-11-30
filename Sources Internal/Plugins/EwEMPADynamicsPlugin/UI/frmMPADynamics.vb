@@ -86,7 +86,7 @@ Public Class frmMPADynamics
             If (i = 0) Then
                 Me.m_tscmbFleets.Items.Add(SharedResources.GENERIC_VALUE_ALLFLEETS)
             Else
-                Me.m_tscmbFleets.Items.Add(Me.Core.EcopathFleetInputs(i))
+                Me.m_tscmbFleets.Items.Add(fmt.GetDescriptor(Me.Core.EcopathFleetInputs(i)))
             End If
         Next
 
