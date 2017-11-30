@@ -65,7 +65,8 @@ Public Class frmTransectSummary
         ' Make pretty
         Me.m_tsbnPlay.Image = SharedResources.PlayHS
         Me.m_tsbnStop.Image = SharedResources.StopHS
-        Me.m_tsbnSaveToCSV.Image = SharedResources.saveOutputHS
+        Me.m_tsbnSaveToCSV.Image = SharedResources.saveHS
+        Me.m_tsbnAutosave.Image = SharedResources.saveOutputHS
 
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_graph, 4)
@@ -89,6 +90,8 @@ Public Class frmTransectSummary
         Me.UpdateGraph()
         Me.UpdateControls()
 
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core}
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
@@ -103,11 +106,27 @@ Public Class frmTransectSummary
             cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
         End If
 
+        Me.CoreComponents = Nothing
         MyBase.OnFormClosed(e)
+
+    End Sub
+
+    Private m_bNeedUpdateControls As Boolean = False
+
+    Public Overrides Sub OnCoreMessage(msg As cMessage)
+        If (msg.Type = eMessageType.GlobalSettingsChanged) Then
+            If Me.m_bNeedUpdateControls = False Then
+                Me.m_bNeedUpdateControls = True
+                BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
+            End If
+        End If
+        MyBase.OnCoreMessage(msg)
     End Sub
 
     Protected Overrides Sub UpdateControls()
         MyBase.UpdateControls()
+
+        Me.m_bNeedUpdateControls = False
 
         If (Me.UIContext Is Nothing) Then Return
 
@@ -118,6 +137,14 @@ Public Class frmTransectSummary
         Me.m_tsbnPlay.Enabled = bHasResults And Not bIsPlaying
         Me.m_tsbnStop.Enabled = bIsPlaying
         Me.m_tsbnSaveToCSV.Enabled = bHasResults
+
+        Dim w As cTransectResultWriterPlugin = Me.GetWriter()
+        If (w IsNot Nothing) Then
+            Me.m_tsbnAutosave.Checked = w.Enabled
+            Me.m_tsbnAutosave.Enabled = True
+        Else
+            Me.m_tsbnAutosave.Enabled = False
+        End If
 
     End Sub
 
@@ -221,16 +248,46 @@ Public Class frmTransectSummary
     Private Sub OnSaveTransectsToCSV(sender As Object, e As EventArgs) _
         Handles m_tsbnSaveToCSV.Click
 
-        ' We can take these humongous shortcuts here because we have inside information ;)
-        Dim w As New cTransectResultWriterPlugin()
-        w.Init(Me.Core)
-        w.EndWrite()
+        Dim w As cTransectResultWriterPlugin = Me.GetWriter()
+        If (w IsNot Nothing) Then
+            ' We happen to know how this thing works
+            w.EndWrite()
+        End If
+
+    End Sub
+
+    Private Sub OnToggleAutosave(sender As Object, e As EventArgs) _
+        Handles m_tsbnAutosave.CheckedChanged
+
+        Dim w As cTransectResultWriterPlugin = Me.GetWriter()
+        If (w IsNot Nothing) Then
+            w.Enabled = m_tsbnAutosave.Checked
+        End If
+
+        Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+        Dim bAutosaving As Boolean = False
+        For i As Integer = 1 To Me.Core.nEcospaceResultWriters
+            Dim test As IEcospaceResultsWriter = parms.ResultWriter(i)
+            bAutosaving = bAutosaving Or test.Enabled
+        Next
+        Me.Core.Autosave(eAutosaveTypes.EcospaceResults) = bAutosaving
 
     End Sub
 
 #End Region ' Control events
 
 #Region " Internals "
+
+    Private Function GetWriter() As cTransectResultWriterPlugin
+        Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
+        For i As Integer = 1 To Me.Core.nEcospaceResultWriters
+            Dim test As IEcospaceResultsWriter = parms.ResultWriter(i)
+            If (TypeOf (test) Is cTransectResultWriterPlugin) Then
+                Return DirectCast(test, cTransectResultWriterPlugin)
+            End If
+        Next
+        Return Nothing
+    End Function
 
     Private Sub FillTransectBox()
         Me.m_tscmbTransect.Items.Clear()

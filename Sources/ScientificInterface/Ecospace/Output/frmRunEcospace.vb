@@ -1619,7 +1619,6 @@ Namespace Ecospace
             If (Me.m_mapPlotTypeLast = Me.m_mapPlotType) Then Return
 
             Me.m_mapPlotTypeLast = Me.m_mapPlotType
-            Me.m_bInUpdate = True
 
             Dim desc As New cCoreInterfaceFormatter()
             Me.m_cmbDisplayItem.Items.Clear()
@@ -1640,7 +1639,6 @@ Namespace Ecospace
                     Next i
             End Select
             Me.m_cmbDisplayItem.SelectedIndex = Math.Min(Me.m_cmbDisplayItem.Items.Count - 1, 0)
-            Me.m_bInUpdate = False
 
         End Sub
 
