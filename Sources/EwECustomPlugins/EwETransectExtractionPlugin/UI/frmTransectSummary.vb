@@ -96,6 +96,7 @@ Public Class frmTransectSummary
 
     Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
 
+        Me.m_data = Nothing
         Me.m_timerPlay.Enabled = False
         Me.m_zgh.Detach()
 
@@ -170,6 +171,7 @@ Public Class frmTransectSummary
     Private Sub OnTransectAdded(sender As cTransectDatastructures, transect As cTransect) _
         Handles m_data.OnTransectAdded
         Try
+            If Me.IsDisposed Then Return
             Me.m_tscmbTransect.Items.Add(transect)
         Catch ex As Exception
             ' NOP
@@ -179,6 +181,7 @@ Public Class frmTransectSummary
     Private Sub OnTransectRemoved(sender As cTransectDatastructures, transect As cTransect) _
         Handles m_data.OnTransectRemoved
         Try
+            If Me.IsDisposed Then Return
             Me.m_tscmbTransect.Items.Remove(transect)
         Catch ex As Exception
             ' NOP
@@ -188,6 +191,7 @@ Public Class frmTransectSummary
     Private Sub OnTransectChanged(sender As cTransectDatastructures, transect As cTransect) _
         Handles m_data.OnTransectChanged
         Try
+            If Me.IsDisposed Then Return
             Me.UpdateGraph()
         Catch ex As Exception
             ' NOP

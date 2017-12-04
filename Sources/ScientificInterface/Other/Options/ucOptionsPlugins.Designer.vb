@@ -39,15 +39,9 @@ Namespace Other
             Me.m_ilPlugins = New System.Windows.Forms.ImageList(Me.components)
             Me.m_split = New System.Windows.Forms.SplitContainer()
             Me.m_cbEnablePlugin = New System.Windows.Forms.CheckBox()
-            Me.m_lblStopTryingPost = New System.Windows.Forms.Label()
-            Me.m_lblStopTryingPre = New System.Windows.Forms.Label()
-            Me.m_nudTimeOut = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_cbDownloadUpdates = New System.Windows.Forms.CheckBox()
-            Me.m_btnClear = New System.Windows.Forms.Button()
             CType(Me.m_split, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_split.Panel1.SuspendLayout()
             Me.m_split.SuspendLayout()
-            CType(Me.m_nudTimeOut, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_hdrCaption
@@ -75,8 +69,9 @@ Namespace Other
             Me.m_tvPlugins.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tvPlugins.Name = "m_tvPlugins"
             Me.m_tvPlugins.SelectedImageIndex = 0
+            Me.m_tvPlugins.ShowImages = True
             Me.m_tvPlugins.ShowLines = False
-            Me.m_tvPlugins.Size = New System.Drawing.Size(136, 259)
+            Me.m_tvPlugins.Size = New System.Drawing.Size(136, 300)
             Me.m_tvPlugins.TabIndex = 0
             '
             'm_ilPlugins
@@ -88,17 +83,17 @@ Namespace Other
             'm_split
             '
             Me.m_split.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_split.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_split.Location = New System.Drawing.Point(0, 72)
+            Me.m_split.Location = New System.Drawing.Point(0, 25)
             Me.m_split.Margin = New System.Windows.Forms.Padding(0)
             Me.m_split.Name = "m_split"
             '
             'm_split.Panel1
             '
             Me.m_split.Panel1.Controls.Add(Me.m_tvPlugins)
-            Me.m_split.Size = New System.Drawing.Size(414, 261)
+            Me.m_split.Size = New System.Drawing.Size(414, 302)
             Me.m_split.SplitterDistance = 138
             Me.m_split.TabIndex = 7
             '
@@ -113,68 +108,11 @@ Namespace Other
             Me.m_cbEnablePlugin.Text = "&Load selected plug-in module next time EwE starts"
             Me.m_cbEnablePlugin.UseVisualStyleBackColor = True
             '
-            'm_lblStopTryingPost
-            '
-            Me.m_lblStopTryingPost.AutoSize = True
-            Me.m_lblStopTryingPost.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblStopTryingPost.Location = New System.Drawing.Point(187, 47)
-            Me.m_lblStopTryingPost.Name = "m_lblStopTryingPost"
-            Me.m_lblStopTryingPost.Size = New System.Drawing.Size(47, 13)
-            Me.m_lblStopTryingPost.TabIndex = 5
-            Me.m_lblStopTryingPost.Text = "seconds"
-            '
-            'm_lblStopTryingPre
-            '
-            Me.m_lblStopTryingPre.AutoSize = True
-            Me.m_lblStopTryingPre.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblStopTryingPre.Location = New System.Drawing.Point(19, 47)
-            Me.m_lblStopTryingPre.Name = "m_lblStopTryingPre"
-            Me.m_lblStopTryingPre.Size = New System.Drawing.Size(81, 13)
-            Me.m_lblStopTryingPre.TabIndex = 3
-            Me.m_lblStopTryingPre.Text = "Stop trying &after"
-            '
-            'm_nudTimeOut
-            '
-            Me.m_nudTimeOut.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
-            Me.m_nudTimeOut.Location = New System.Drawing.Point(106, 45)
-            Me.m_nudTimeOut.Maximum = New Decimal(New Integer() {60, 0, 0, 0})
-            Me.m_nudTimeOut.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-            Me.m_nudTimeOut.Name = "m_nudTimeOut"
-            Me.m_nudTimeOut.Size = New System.Drawing.Size(75, 20)
-            Me.m_nudTimeOut.TabIndex = 4
-            Me.m_nudTimeOut.Value = New Decimal(New Integer() {10, 0, 0, 0})
-            '
-            'm_cbDownloadUpdates
-            '
-            Me.m_cbDownloadUpdates.AutoSize = True
-            Me.m_cbDownloadUpdates.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_cbDownloadUpdates.Location = New System.Drawing.Point(3, 25)
-            Me.m_cbDownloadUpdates.Name = "m_cbDownloadUpdates"
-            Me.m_cbDownloadUpdates.Size = New System.Drawing.Size(219, 17)
-            Me.m_cbDownloadUpdates.TabIndex = 1
-            Me.m_cbDownloadUpdates.Text = "&Download updates for plug-ins at start up"
-            Me.m_cbDownloadUpdates.UseVisualStyleBackColor = True
-            '
-            'm_btnClear
-            '
-            Me.m_btnClear.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnClear.Location = New System.Drawing.Point(279, 21)
-            Me.m_btnClear.Name = "m_btnClear"
-            Me.m_btnClear.Size = New System.Drawing.Size(132, 23)
-            Me.m_btnClear.TabIndex = 2
-            Me.m_btnClear.Text = "Clear overwrite prompts"
-            Me.m_btnClear.UseVisualStyleBackColor = True
-            '
             'ucOptionsPlugins
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-            Me.Controls.Add(Me.m_btnClear)
-            Me.Controls.Add(Me.m_lblStopTryingPost)
-            Me.Controls.Add(Me.m_lblStopTryingPre)
-            Me.Controls.Add(Me.m_nudTimeOut)
-            Me.Controls.Add(Me.m_cbDownloadUpdates)
             Me.Controls.Add(Me.m_cbEnablePlugin)
             Me.Controls.Add(Me.m_split)
             Me.Controls.Add(Me.m_hdrCaption)
@@ -184,7 +122,6 @@ Namespace Other
             Me.m_split.Panel1.ResumeLayout(False)
             CType(Me.m_split, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_split.ResumeLayout(False)
-            CType(Me.m_nudTimeOut, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -194,11 +131,6 @@ Namespace Other
         Private WithEvents m_ilPlugins As System.Windows.Forms.ImageList
         Private WithEvents m_hdrCaption As cEwEHeaderLabel
         Private WithEvents m_cbEnablePlugin As System.Windows.Forms.CheckBox
-        Private WithEvents m_lblStopTryingPost As System.Windows.Forms.Label
-        Private WithEvents m_lblStopTryingPre As System.Windows.Forms.Label
-        Private WithEvents m_nudTimeOut As ScientificInterfaceShared.Controls.cEwENumericUpDown
-        Private WithEvents m_cbDownloadUpdates As System.Windows.Forms.CheckBox
-        Private WithEvents m_btnClear As System.Windows.Forms.Button
 
     End Class
 

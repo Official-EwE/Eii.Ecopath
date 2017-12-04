@@ -280,6 +280,7 @@ Namespace Utilities
         End Function
 
         Public Shared Function BeginsWith(ByVal strSrc As String, ByVal strCompareTo As String, Optional ByVal bIgnoreCase As Boolean = True) As Boolean
+            If (strSrc.Length < strCompareTo.Length) Then Return False
             Dim iLen As Integer = Math.Min(strSrc.Length, strCompareTo.Length)
 
             strSrc = strSrc.Substring(0, iLen)

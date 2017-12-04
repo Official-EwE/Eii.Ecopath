@@ -3289,8 +3289,8 @@ Public Class frmEwE6
         Dim strURL As String = bcmd.URL(New cWebLinks(Me.Core))
 
         ' Is a hyperlink?
-        If cUriBuilder.IsValidURI(strURL) Then
-            If (My.Settings.UseExternalBrowser) Then
+        If cUriBuilder.IsValidURI(strURL) Or String.IsNullOrWhiteSpace(strURL) Then
+            If (My.Settings.UseExternalBrowser) And Not String.IsNullOrWhiteSpace(strURL) Then
                 Try
                     ' Fire off system default URL handling
                     System.Diagnostics.Process.Start(strURL)
@@ -3302,12 +3302,12 @@ Public Class frmEwE6
                 End Try
             Else
                 ' #Yes: extract hyperlink bit, and pass it to the desired browser
-                If Not cmd.Checked Or Not String.IsNullOrWhiteSpace(strURL) Then
+                If Not cmd.Checked Then
                     If panel.IsDisposed() Then
                         panel = New frmStartPanel(Me.UIContext)
                         Me.m_dtPanels(cPANEL_START) = panel
                     End If
-                    panel.URL = strURL
+                    If Not String.IsNullOrWhiteSpace(strURL) Then panel.URL = strURL
                     panel.Show(Me.m_DockPanel, DockState.Document)
                 Else
                     If Not panel.IsDisposed Then

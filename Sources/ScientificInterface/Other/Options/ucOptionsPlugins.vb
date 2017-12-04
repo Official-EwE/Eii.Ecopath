@@ -29,6 +29,7 @@ Imports System.Collections.Specialized
 Imports EwECore
 Imports EwEPlugin
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports System.Reflection
 
 #End Region
 
@@ -53,38 +54,24 @@ Namespace Other
 
         Private Class cPluginAssemblyInfo
 
-            Private m_pa As cPluginAssembly = Nothing
-            Private m_bEnabled As Boolean = True
-
             Public Sub New(ByVal pa As cPluginAssembly)
-                Me.m_pa = pa
-                Me.m_bEnabled = pa.Enabled
+                Me.PluginAssembly = pa
+                Me.Enabled = pa.Enabled
             End Sub
 
-            Public ReadOnly Property PluginAssembly() As cPluginAssembly
-                Get
-                    Return Me.m_pa
-                End Get
-            End Property
+            Public ReadOnly Property PluginAssembly() As cPluginAssembly = Nothing
 
             Public Property Enabled() As Boolean
-                Get
-                    Return Me.m_bEnabled
-                End Get
-                Set(ByVal bEnabled As Boolean)
-                    Me.m_bEnabled = bEnabled
-                End Set
-            End Property
 
             Public ReadOnly Property AlwaysEnabled() As Boolean
                 Get
-                    Return Me.m_pa.AlwaysEnabled
+                    Return Me.PluginAssembly.AlwaysEnabled
                 End Get
             End Property
 
             Public ReadOnly Property Compatible() As Boolean
                 Get
-                    Return Me.m_pa.IsCompatible
+                    Return Me.PluginAssembly.IsCompatible
                 End Get
             End Property
 
@@ -113,7 +100,7 @@ Namespace Other
 
 #Region " Interface implementation "
 
- 
+
 #End Region ' Interface implementation
 
 #Region " Public interfaces "
@@ -148,15 +135,6 @@ Namespace Other
             Dim bChanged As Boolean = False
             Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
 
-            ' Only when toggling this option on
-            If (Me.m_cbDownloadUpdates.Checked And My.Settings.AutoUpdatePlugins = False) Then
-                If (Not EwEUtils.SystemUtilities.cSystemUtils.IsAdministrator()) Then
-                    result = IOptionsPage.eApplyResultType.Success_administrator
-                Else
-                    result = IOptionsPage.eApplyResultType.Success_restart
-                End If
-            End If
-
             ' Build list of plugins to disable
             For Each info As cPluginAssemblyInfo In Me.m_dictPluginAssemblyInfo.Values
                 If (info.Enabled = False) Then
@@ -178,8 +156,6 @@ Namespace Other
 
             ' Update settings
             My.Settings.DisabledPlugins = alDisabledPlugins
-            My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
-            My.Settings.UpdatePluginsTimeout = CInt(Me.m_nudTimeOut.Value * 1000)
 
             ' Convey result
             If bChanged Then result = DirectCast(Math.Max(result, IOptionsPage.eApplyResultType.Success_restart), IOptionsPage.eApplyResultType)
@@ -192,9 +168,8 @@ Namespace Other
         ''' <inheritdocs cref="IOptionsPage.SetDefaults"/>
         ''' -------------------------------------------------------------------
         Public Sub SetDefaults() _
-               Implements IOptionsPage.SetDefaults
-            Me.m_cbDownloadUpdates.Checked = CBool(My.Settings.GetDefaultValue("AutoUpdatePlugins"))
-            Me.m_nudTimeOut.Value = CDec(Math.Max(1, Math.Round(CDec(My.Settings.GetDefaultValue("UpdatePluginsTimeout")) / 1000)))
+            Implements IOptionsPage.SetDefaults
+            ' NOP
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -202,7 +177,7 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Public Function CanSetDefaults() As Boolean _
             Implements IOptionsPage.CanSetDefaults
-            Return True
+            Return False
         End Function
 
 #End Region ' Public interfaces
@@ -211,17 +186,15 @@ Namespace Other
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
+            If (Me.m_pm Is Nothing) Then Return
+
             Dim collPA As ICollection(Of cPluginAssembly) = Nothing
             Dim info As cPluginAssemblyInfo = Nothing
             Dim pa As cPluginAssembly = Nothing
             Dim tnPA As TreeNode = Nothing
             Dim p As IPlugin = Nothing
             Dim tnP As TreeNode = Nothing
-
-            If (Me.m_pm Is Nothing) Then Return
-
-            Me.m_cbDownloadUpdates.Checked = My.Settings.AutoUpdatePlugins
-            Me.m_nudTimeOut.Value = CDec(Math.Max(1, Math.Round(My.Settings.UpdatePluginsTimeout / 1000)))
+            Dim asmCore As Assembly = Assembly.GetAssembly(GetType(cCore))
 
             ' Prepare image list
             Me.m_ilPlugins.Images.Add(SharedResources.nav_ecopath)
@@ -232,30 +205,33 @@ Namespace Other
 
             collPA = Me.m_pm.PluginAssemblies
             For Each pa In collPA
+                ' Do not list EwE core here
+                If (String.Compare(asmCore.FullName, pa.Assembly.FullName, True) <> 0) Then
 
-                info = New cPluginAssemblyInfo(pa)
+                    info = New cPluginAssemblyInfo(pa)
 
-                tnPA = New TreeNode(Path.GetFileNameWithoutExtension(pa.Filename))
-                tnPA.Tag = pa
-                tnPA.ImageIndex = Me.GetPluginAssemblyImageIndex(info)
-                tnPA.SelectedImageIndex = tnPA.ImageIndex
-                Me.m_dictPluginAssemblyInfo(pa) = info
+                    tnPA = New TreeNode(Path.GetFileNameWithoutExtension(pa.Filename))
+                    tnPA.Tag = pa
+                    tnPA.ImageIndex = Me.GetPluginAssemblyImageIndex(info)
+                    tnPA.SelectedImageIndex = tnPA.ImageIndex
+                    Me.m_dictPluginAssemblyInfo(pa) = info
 
-                For Each p In pa.Plugins(Nothing, True)
+                    For Each p In pa.Plugins(Nothing, True)
 
-                    ' Name plug-ins by rich text if possible
-                    If (TypeOf p Is IGUIPlugin) Then
-                        tnP = New TreeNode(DirectCast(p, IGUIPlugin).ControlText)
-                    Else
-                        tnP = New TreeNode(p.Name)
-                    End If
-                    tnP.Tag = p
-                    tnP.ImageIndex = cIMAGE_ANYPLUGINPOINT
-                    tnP.SelectedImageIndex = cIMAGE_ANYPLUGINPOINT
+                        ' Name plug-ins by rich text if possible
+                        If (TypeOf p Is IGUIPlugin) Then
+                            tnP = New TreeNode(DirectCast(p, IGUIPlugin).ControlText)
+                        Else
+                            tnP = New TreeNode(p.Name)
+                        End If
+                        tnP.Tag = p
+                        tnP.ImageIndex = cIMAGE_ANYPLUGINPOINT
+                        tnP.SelectedImageIndex = cIMAGE_ANYPLUGINPOINT
 
-                    tnPA.Nodes.Add(tnP)
-                Next
-                Me.m_tvPlugins.Nodes.Add(tnPA)
+                        tnPA.Nodes.Add(tnP)
+                    Next
+                    Me.m_tvPlugins.Nodes.Add(tnPA)
+                End If
 
             Next pa
 
@@ -305,11 +281,6 @@ Namespace Other
                 Me.UpdatePluginImage(info)
             End If
 
-        End Sub
-
-        Private Sub m_btnClear_Click(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnClear.Click
-            My.Settings.SuppressedOverwritePrompts = ""
         End Sub
 
 #End Region ' Events
@@ -412,7 +383,6 @@ Namespace Other
 
             Me.m_cbEnablePlugin.Enabled = bCanDisable
             Me.m_cbEnablePlugin.Checked = bEnabled
-            Me.m_btnClear.Enabled = bHasSuppressedPrompts
 
         End Sub
 

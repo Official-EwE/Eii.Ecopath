@@ -43,7 +43,7 @@ Public Class cPluginAssembly
         Implements IComparer(Of IPlugin)
 
         Public Function Compare(ByVal x As IPlugin, ByVal y As IPlugin) As Integer _
-        Implements System.Collections.Generic.IComparer(Of IPlugin).Compare
+            Implements IComparer(Of IPlugin).Compare
             Return String.Compare(x.Name, y.Name)
         End Function
 
