@@ -70,7 +70,7 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Public Overrides Function IsCompatible(ds As ISpatialDataSet) As Boolean
             If (ds Is Nothing) Then Return False
-            Return (ds.ConversionFormat = "DotSpatialVector") And (ds.VarName = eVarNameFlags.LayerDepth)
+            Return (ds.ConversionFormat = "DotSpatialVector") And ((ds.VarName = eVarNameFlags.LayerDepth) Or (ds.VarName = eVarNameFlags.NotSet))
         End Function
 
         ''' -----------------------------------------------------------------------

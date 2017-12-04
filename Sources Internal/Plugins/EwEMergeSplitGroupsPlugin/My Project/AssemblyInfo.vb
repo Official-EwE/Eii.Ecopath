@@ -28,11 +28,11 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("EwEMergeSplitGroupsPlugin")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("EwEMergeSplitGroupsPlugin")> 
-<Assembly: AssemblyCopyright("Copyright ©  2016")> 
+<Assembly: AssemblyTitle("EwEMergeSplitGroupsPlugin")>
+<Assembly: AssemblyDescription("Utility plug-in for EwE to merge and split functional groups")>
+<Assembly: AssemblyCompany("Geomar")>
+<Assembly: AssemblyProduct("EwEMergeSplitGroupsPlugin")>
+<Assembly: AssemblyCopyright("Copyright © 2017 Geomar")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
