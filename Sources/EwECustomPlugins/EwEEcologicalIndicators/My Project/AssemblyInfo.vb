@@ -31,8 +31,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("EwEEcologicalIndicatorsPlugin")> 
 <Assembly: AssemblyDescription("Plug-in for EwE6 that computes additional ecological indocators")> 
 <Assembly: AssemblyCompany("ICM-CSIC")> 
-<Assembly: AssemblyProduct("EwEEcologicalIndicatorsPlugin")> 
-<Assembly: AssemblyCopyright("Copyright © ICM-CSIC")> 
+<Assembly: AssemblyProduct("EwEEcologicalIndicatorsPlugin")>
+<Assembly: AssemblyCopyright("Copyright © 2016 ICM-CSIC")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
