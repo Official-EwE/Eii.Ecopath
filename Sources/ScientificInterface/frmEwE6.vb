@@ -1017,12 +1017,6 @@ Public Class frmEwE6
 
         End Try
 
-        ' Update plug-ins first, if required
-        If My.Settings.AutoUpdatePlugins Then
-            Dim frm As New frmUpdateComponents(Me.UIContext, Me.m_pluginManager)
-            frm.ShowDialog()
-        End If
-
         ' Load plugins once GUI has been created.
         Me.LoadPlugins()
         ' Auto-launch plugins
@@ -1110,7 +1104,7 @@ Public Class frmEwE6
                 ts.Dispose()
 
                 ' JS 26Aug15: the start panel throws a null ref exception in release mode during explicit cleanup.
-                ' This cannot be reproduced in debug mode> I suspect that the issue is caused by the nexted version of IE
+                ' This cannot be reproduced in debug mode> I suspect that the issue is caused by the nested version of IE
                 ' Bypassing explicit destruction also makes the issue go away. Whoah.
                 'For Each p As frmEwEDockContent In Me.m_dtPanels.Values
                 '    Try
@@ -1167,25 +1161,10 @@ Public Class frmEwE6
             End If
 
             ' Egg!
-            If (e.KeyCode = Keys.F12) Then
-                MessageBox.Show("Blub", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            End If
-
-            ' Egg!
             If e.Alt And e.Control And e.Shift Then
                 Dim strURL As String = ""
                 Select Case e.KeyCode
                     Case Keys.Oemtilde : strURL = "http://farm1.static.flickr.com/160/374820104_5ec655655c.jpg"
-                    Case Keys.D1 : strURL = "http://farm1.static.flickr.com/82/261884734_01ad1712a6.jpg"
-                    Case Keys.D2 : strURL = "http://farm2.static.flickr.com/1218/536646225_09f93a0b8c.jpg"
-                    Case Keys.D3 : strURL = "http://farm1.static.flickr.com/112/261883295_1cab2a9714.jpg"
-                    Case Keys.D4 : strURL = "http://farm1.static.flickr.com/87/261883288_06e5599f56.jpg"
-                    Case Keys.D5 : strURL = "http://farm1.static.flickr.com/89/261883279_6c8b139ed9.jpg"
-                    Case Keys.D6 : strURL = "http://farm1.static.flickr.com/121/261883269_cf6fd5f287.jpg"
-                    Case Keys.D7 : strURL = "http://farm2.static.flickr.com/1312/1400452382_47306892c0.jpg"
-                    Case Keys.D8 : strURL = "http://farm2.static.flickr.com/1012/1400449350_7dfad8dd60.jpg"
-                    Case Keys.D9 : strURL = "http://farm3.static.flickr.com/2344/1536185215_fe4d413654.jpg"
-                    Case Keys.D0 : strURL = "http://farm1.static.flickr.com/143/377851455_28924928b1.jpg"
                 End Select
 
                 If Not String.IsNullOrEmpty(strURL) Then
