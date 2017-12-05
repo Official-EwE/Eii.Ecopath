@@ -1,4 +1,5 @@
-﻿' ===============================================================================
+﻿Option Strict On
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -18,7 +19,7 @@
 
 #Region " Imports "
 
-Option Strict On
+Imports System.ComponentModel
 Imports System.Threading
 Imports ScientificInterfaceShared.GeoCode
 
@@ -51,7 +52,7 @@ Namespace Controls
         ''' 
         ''' </summary>
         Public Sub New()
-            Me.m_lookup = New cGoogleMapsLookup()
+            Me.m_lookup = New cMarineRegionsLookup()
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -94,6 +95,9 @@ Namespace Controls
             End Get
         End Property
 
+        Public Property AutoSearch As Boolean = True
+
+        <Browsable(False)>
         Public Property LookupEngine() As IGeoCodeLookup
             Get
                 Return Me.m_lookup
@@ -103,6 +107,10 @@ Namespace Controls
                 Me.m_lookup = value
             End Set
         End Property
+
+        Public Sub Search()
+            Me.Search(Me.Text)
+        End Sub
 
 #End Region ' Public interfacs
 
@@ -129,6 +137,8 @@ Namespace Controls
         End Sub
 
         Protected Overrides Sub OnTextChanged(e As System.EventArgs)
+
+            If Not Me.AutoSearch Then Return
 
             If Me.Text.Length <= 4 Then
                 Me.Search("")
@@ -182,6 +192,7 @@ Namespace Controls
 
             Dim aLocations As cGeoCodeLocation() = Me.m_lookup.FindPlaces(CStr(strFindStr))
             Me.BeginInvoke(New OnSearchResultsDelegate(AddressOf OnSearchResults), New Object() {aLocations})
+
         End Sub
 
         ''' -----------------------------------------------------------------------

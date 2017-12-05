@@ -24,54 +24,28 @@ Namespace GeoCode
     ''' </summary>
     Public Class cGeoCodeLocation
 
-        Private m_strDescription As String
-        Private m_sWest As Single
-        Private m_sSouth As Single
-        Private m_sEast As Single
-        Private m_sNorth As Single
-
-        Friend Sub New(ByVal strDescription As String, _
-                       ByVal sEast As Single, ByVal sNorth As Single, _
+        Friend Sub New(ByVal strDescription As String,
+                       ByVal sEast As Single, ByVal sNorth As Single,
                        ByVal sWest As Single, ByVal sSouth As Single)
-            Me.m_strDescription = strDescription
-            Me.m_sNorth = sNorth
-            Me.m_sWest = sWest
-            Me.m_sSouth = sSouth
-            Me.m_sEast = sEast
+            Me.Description = strDescription
+            Me.North = sNorth
+            Me.West = sWest
+            Me.South = sSouth
+            Me.East = sEast
         End Sub
 
         Public ReadOnly Property Description() As String
-            Get
-                Return Me.m_strDescription
-            End Get
-        End Property
 
         Public ReadOnly Property West() As Single
-            Get
-                Return Me.m_sWest
-            End Get
-        End Property
 
         Public ReadOnly Property East() As Single
-            Get
-                Return Me.m_sEast
-            End Get
-        End Property
 
         Public ReadOnly Property South() As Single
-            Get
-                Return Me.m_sSouth
-            End Get
-        End Property
 
         Public ReadOnly Property North() As Single
-            Get
-                Return Me.m_sNorth
-            End Get
-        End Property
 
         Public Overrides Function ToString() As String
-            Return Me.m_strDescription
+            Return Me.Description
         End Function
 
     End Class

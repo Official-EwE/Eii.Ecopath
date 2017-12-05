@@ -25,7 +25,7 @@ Partial Class frmModelParameters
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -42,9 +42,10 @@ Partial Class frmModelParameters
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmModelParameters))
+        Dim CMarineRegionsLookup1 As ScientificInterfaceShared.GeoCode.cMarineRegionsLookup = New ScientificInterfaceShared.GeoCode.cMarineRegionsLookup()
         Me.m_udNumDigits = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.lbNumDigits = New System.Windows.Forms.Label()
         Me.m_lblOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -95,12 +96,19 @@ Partial Class frmModelParameters
         Me.m_lblEast = New System.Windows.Forms.Label()
         Me.m_lblSouth = New System.Windows.Forms.Label()
         Me.m_plDescr = New System.Windows.Forms.Panel()
+        Me.m_btnSearch = New System.Windows.Forms.Button()
+        Me.m_gcmbAreaName = New ScientificInterfaceShared.Controls.cGeocodeLookupComboBox()
+        Me.m_lblAreaName = New System.Windows.Forms.Label()
         Me.m_tbContact = New System.Windows.Forms.TextBox()
         Me.m_tbDescription = New System.Windows.Forms.TextBox()
         Me.m_tbxNumYears = New System.Windows.Forms.TextBox()
         Me.m_tbxFirstYear = New System.Windows.Forms.TextBox()
         Me.m_lblNoYears = New System.Windows.Forms.Label()
+        Me.m_lblSouthUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
+        Me.m_lblEastUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
+        Me.m_lblNorthUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
         Me.m_lblModelBounds = New System.Windows.Forms.Label()
+        Me.m_lblWestUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plExecution = New System.Windows.Forms.Panel()
@@ -123,10 +131,6 @@ Partial Class frmModelParameters
         Me.m_lblPublicationDOI = New System.Windows.Forms.Label()
         Me.m_lblPublicationURL = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.m_lblNorthUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
-        Me.m_lblEastUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
-        Me.m_lblWestUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
-        Me.m_lblSouthUnit = New ScientificInterfaceShared.Controls.cEwEUnitLabel()
         CType(Me.m_udNumDigits, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpUnits.SuspendLayout()
         Me.m_gbCurrencyUnit.SuspendLayout()
@@ -417,26 +421,26 @@ Partial Class frmModelParameters
         '
         'm_nudNorth
         '
-        resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
         Me.m_nudNorth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
         Me.m_nudNorth.Name = "m_nudNorth"
         '
         'm_nudSouth
         '
-        resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
         Me.m_nudSouth.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
         Me.m_nudSouth.Name = "m_nudSouth"
         '
         'm_nudWest
         '
-        resources.ApplyResources(Me.m_nudWest, "m_nudWest")
         Me.m_nudWest.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        resources.ApplyResources(Me.m_nudWest, "m_nudWest")
         Me.m_nudWest.Name = "m_nudWest"
         '
         'm_nudEast
         '
-        resources.ApplyResources(Me.m_nudEast, "m_nudEast")
         Me.m_nudEast.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
+        resources.ApplyResources(Me.m_nudEast, "m_nudEast")
         Me.m_nudEast.Name = "m_nudEast"
         '
         'm_lblNorth
@@ -461,6 +465,9 @@ Partial Class frmModelParameters
         '
         'm_plDescr
         '
+        Me.m_plDescr.Controls.Add(Me.m_btnSearch)
+        Me.m_plDescr.Controls.Add(Me.m_gcmbAreaName)
+        Me.m_plDescr.Controls.Add(Me.m_lblAreaName)
         Me.m_plDescr.Controls.Add(Me.m_tbContact)
         Me.m_plDescr.Controls.Add(Me.m_tbDescription)
         Me.m_plDescr.Controls.Add(Me.m_lbAuthor)
@@ -493,6 +500,25 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.m_plDescr, "m_plDescr")
         Me.m_plDescr.Name = "m_plDescr"
         '
+        'm_btnSearch
+        '
+        resources.ApplyResources(Me.m_btnSearch, "m_btnSearch")
+        Me.m_btnSearch.Name = "m_btnSearch"
+        Me.m_btnSearch.UseVisualStyleBackColor = True
+        '
+        'm_gcmbAreaName
+        '
+        resources.ApplyResources(Me.m_gcmbAreaName, "m_gcmbAreaName")
+        Me.m_gcmbAreaName.AutoSearch = True
+        CMarineRegionsLookup1.Term = Nothing
+        Me.m_gcmbAreaName.LookupEngine = CMarineRegionsLookup1
+        Me.m_gcmbAreaName.Name = "m_gcmbAreaName"
+        '
+        'm_lblAreaName
+        '
+        resources.ApplyResources(Me.m_lblAreaName, "m_lblAreaName")
+        Me.m_lblAreaName.Name = "m_lblAreaName"
+        '
         'm_tbContact
         '
         resources.ApplyResources(Me.m_tbContact, "m_tbContact")
@@ -518,10 +544,34 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.m_lblNoYears, "m_lblNoYears")
         Me.m_lblNoYears.Name = "m_lblNoYears"
         '
+        'm_lblSouthUnit
+        '
+        resources.ApplyResources(Me.m_lblSouthUnit, "m_lblSouthUnit")
+        Me.m_lblSouthUnit.Name = "m_lblSouthUnit"
+        Me.m_lblSouthUnit.UIContext = Nothing
+        '
+        'm_lblEastUnit
+        '
+        resources.ApplyResources(Me.m_lblEastUnit, "m_lblEastUnit")
+        Me.m_lblEastUnit.Name = "m_lblEastUnit"
+        Me.m_lblEastUnit.UIContext = Nothing
+        '
+        'm_lblNorthUnit
+        '
+        resources.ApplyResources(Me.m_lblNorthUnit, "m_lblNorthUnit")
+        Me.m_lblNorthUnit.Name = "m_lblNorthUnit"
+        Me.m_lblNorthUnit.UIContext = Nothing
+        '
         'm_lblModelBounds
         '
         resources.ApplyResources(Me.m_lblModelBounds, "m_lblModelBounds")
         Me.m_lblModelBounds.Name = "m_lblModelBounds"
+        '
+        'm_lblWestUnit
+        '
+        resources.ApplyResources(Me.m_lblWestUnit, "m_lblWestUnit")
+        Me.m_lblWestUnit.Name = "m_lblWestUnit"
+        Me.m_lblWestUnit.UIContext = Nothing
         '
         'Panel2
         '
@@ -672,30 +722,6 @@ Partial Class frmModelParameters
         resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
         '
-        'm_lblNorthUnit
-        '
-        resources.ApplyResources(Me.m_lblNorthUnit, "m_lblNorthUnit")
-        Me.m_lblNorthUnit.Name = "m_lblNorthUnit"
-        Me.m_lblNorthUnit.UIContext = Nothing
-        '
-        'm_lblEastUnit
-        '
-        resources.ApplyResources(Me.m_lblEastUnit, "m_lblEastUnit")
-        Me.m_lblEastUnit.Name = "m_lblEastUnit"
-        Me.m_lblEastUnit.UIContext = Nothing
-        '
-        'm_lblWestUnit
-        '
-        resources.ApplyResources(Me.m_lblWestUnit, "m_lblWestUnit")
-        Me.m_lblWestUnit.Name = "m_lblWestUnit"
-        Me.m_lblWestUnit.UIContext = Nothing
-        '
-        'm_lblSouthUnit
-        '
-        resources.ApplyResources(Me.m_lblSouthUnit, "m_lblSouthUnit")
-        Me.m_lblSouthUnit.Name = "m_lblSouthUnit"
-        Me.m_lblSouthUnit.UIContext = Nothing
-        '
         'frmModelParameters
         '
         resources.ApplyResources(Me, "$this")
@@ -813,4 +839,7 @@ Partial Class frmModelParameters
     Private WithEvents m_lblEastUnit As cEwEUnitLabel
     Private WithEvents m_lblNorthUnit As cEwEUnitLabel
     Private WithEvents m_lblWestUnit As cEwEUnitLabel
+    Private WithEvents m_gcmbAreaName As cGeocodeLookupComboBox
+    Private WithEvents m_lblAreaName As Label
+    Private WithEvents m_btnSearch As Button
 End Class
