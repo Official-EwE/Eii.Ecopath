@@ -24,10 +24,9 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports EwEUtils.SystemUtilities
 Imports System.Collections.Specialized
-Imports ScientificInterfaceShared.Commands
 Imports System.Web
+Imports ScientificInterfaceShared.GeoCode
 
 #End Region ' Imports
 
@@ -146,6 +145,8 @@ Public Class frmModelParameters
 
         Me.m_hdrClassification.IsCollapsed = True
         Me.m_hdrPublication.IsCollapsed = True
+
+        Me.m_gcmbAreaName.AutoSearch = False
 
         Me.UpdateControls()
 
@@ -369,6 +370,36 @@ Public Class frmModelParameters
         Catch ex As Exception
             cLog.Write(ex, "frmModelParameters.OnViewDOIOnline(" & strDOI & ")")
         End Try
+
+    End Sub
+
+    Private Sub OnSearchLocation(sender As Object, e As EventArgs) _
+        Handles m_btnSearch.Click
+        Me.m_gcmbAreaName.Search()
+    End Sub
+
+    Private Sub OnSearchingLocation(ByVal sender As cGeocodeLookupComboBox, ByVal bSearching As Boolean) _
+        Handles m_gcmbAreaName.OnSeaching
+
+        If bSearching Then
+            Me.m_btnSearch.Image = ScientificInterfaceShared.My.Resources.ani_loader
+        Else
+            Me.m_btnSearch.Image = Nothing
+        End If
+    End Sub
+
+    Private Sub OnLocationSelected(ByVal sender As Object, ByVal e As EventArgs) _
+        Handles m_gcmbAreaName.SelectedIndexChanged
+
+        If (Me.IsDisposed) Then Return
+
+        Dim location As cGeoCodeLocation = Me.m_gcmbAreaName.SelectedLocation
+        If location Is Nothing Then Return
+
+        Me.m_fpNorth.Value = location.North
+        Me.m_fpEast.Value = location.East
+        Me.m_fpSouth.Value = location.South
+        Me.m_fpWest.Value = location.West
 
     End Sub
 
