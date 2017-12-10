@@ -72,10 +72,8 @@ Partial Class dlgEcobaseExport
         Me.m_cmbCountry = New System.Windows.Forms.ComboBox()
         Me.m_tcExport = New System.Windows.Forms.TabControl()
         Me.m_tpEcoBase = New System.Windows.Forms.TabPage()
-        Me.m_pbEcobaseAgreement = New System.Windows.Forms.PictureBox()
         Me.m_rtfAuthorAgreement = New System.Windows.Forms.RichTextBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.m_cbAuthorAgreement = New System.Windows.Forms.CheckBox()
         Me.m_tpModel = New System.Windows.Forms.TabPage()
         Me.m_tbxModelLastYear = New System.Windows.Forms.TextBox()
         Me.m_tbxModelFirstYear = New System.Windows.Forms.TextBox()
@@ -165,6 +163,8 @@ Partial Class dlgEcobaseExport
         Me.m_rbSubmUpdate = New System.Windows.Forms.RadioButton()
         Me.m_lblSubmExistingModel = New System.Windows.Forms.Label()
         Me.m_lblSubmInfo = New System.Windows.Forms.Label()
+        Me.m_pbEcobaseAgreement = New System.Windows.Forms.PictureBox()
+        Me.m_cbAuthorAgreement = New System.Windows.Forms.CheckBox()
         Me.m_wrkGetAuthorAgreement = New System.ComponentModel.BackgroundWorker()
         Me.m_wrkGetModels = New System.ComponentModel.BackgroundWorker()
         CType(Me.m_pbModelName, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -174,7 +174,6 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbAreaName, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tcExport.SuspendLayout()
         Me.m_tpEcoBase.SuspendLayout()
-        CType(Me.m_pbEcobaseAgreement, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpModel.SuspendLayout()
         CType(Me.m_pbModelIsAuthor, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -202,6 +201,7 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbSubmModifications, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbSubmExistingModel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbSubmType, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbEcobaseAgreement, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblModelName
@@ -361,19 +361,11 @@ Partial Class dlgEcobaseExport
         '
         'm_tpEcoBase
         '
-        Me.m_tpEcoBase.Controls.Add(Me.m_pbEcobaseAgreement)
         Me.m_tpEcoBase.Controls.Add(Me.m_rtfAuthorAgreement)
         Me.m_tpEcoBase.Controls.Add(Me.PictureBox1)
-        Me.m_tpEcoBase.Controls.Add(Me.m_cbAuthorAgreement)
         resources.ApplyResources(Me.m_tpEcoBase, "m_tpEcoBase")
         Me.m_tpEcoBase.Name = "m_tpEcoBase"
         Me.m_tpEcoBase.UseVisualStyleBackColor = True
-        '
-        'm_pbEcobaseAgreement
-        '
-        resources.ApplyResources(Me.m_pbEcobaseAgreement, "m_pbEcobaseAgreement")
-        Me.m_pbEcobaseAgreement.Name = "m_pbEcobaseAgreement"
-        Me.m_pbEcobaseAgreement.TabStop = False
         '
         'm_rtfAuthorAgreement
         '
@@ -388,12 +380,6 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.PictureBox1, "PictureBox1")
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.TabStop = False
-        '
-        'm_cbAuthorAgreement
-        '
-        resources.ApplyResources(Me.m_cbAuthorAgreement, "m_cbAuthorAgreement")
-        Me.m_cbAuthorAgreement.Name = "m_cbAuthorAgreement"
-        Me.m_cbAuthorAgreement.UseVisualStyleBackColor = True
         '
         'm_tpModel
         '
@@ -1001,6 +987,18 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me.m_lblSubmInfo, "m_lblSubmInfo")
         Me.m_lblSubmInfo.Name = "m_lblSubmInfo"
         '
+        'm_pbEcobaseAgreement
+        '
+        resources.ApplyResources(Me.m_pbEcobaseAgreement, "m_pbEcobaseAgreement")
+        Me.m_pbEcobaseAgreement.Name = "m_pbEcobaseAgreement"
+        Me.m_pbEcobaseAgreement.TabStop = False
+        '
+        'm_cbAuthorAgreement
+        '
+        resources.ApplyResources(Me.m_cbAuthorAgreement, "m_cbAuthorAgreement")
+        Me.m_cbAuthorAgreement.Name = "m_cbAuthorAgreement"
+        Me.m_cbAuthorAgreement.UseVisualStyleBackColor = True
+        '
         'm_wrkGetAuthorAgreement
         '
         '
@@ -1012,9 +1010,11 @@ Partial Class dlgEcobaseExport
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_pbEcobaseAgreement)
         Me.Controls.Add(Me.m_tcExport)
         Me.Controls.Add(Me.m_btnSubmit)
         Me.Controls.Add(Me.m_btnCancel)
+        Me.Controls.Add(Me.m_cbAuthorAgreement)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgEcobaseExport"
@@ -1027,8 +1027,6 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbAreaName, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tcExport.ResumeLayout(False)
         Me.m_tpEcoBase.ResumeLayout(False)
-        Me.m_tpEcoBase.PerformLayout()
-        CType(Me.m_pbEcobaseAgreement, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpModel.ResumeLayout(False)
         Me.m_tpModel.PerformLayout()
@@ -1063,7 +1061,9 @@ Partial Class dlgEcobaseExport
         CType(Me.m_pbSubmModifications, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbSubmExistingModel, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbSubmType, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbEcobaseAgreement, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Private WithEvents m_lblModelName As System.Windows.Forms.Label
