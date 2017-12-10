@@ -25,17 +25,27 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+''' <summary>
+''' User control that allows users to align a response function to environmental 
+''' data. This control contains a graph showing a histogram for selected environmental 
+''' driver data, onto which the driver function is placed. Controls are available to
+''' customize the lower and upper limit of the response function, and to set the mean
+''' of the response function. These controls are enabled only for specific 
+''' <see cref="IShapeFunction">shape functions</see>.
+''' </summary>
 Public Class ucDriverResponseView
     Implements IUIElement
     Implements IDisposable
+
+#Region " Private vars "
 
     Private m_shape As EwECore.cEnviroResponseFunction = Nothing
     Private m_shapefunction As IShapeFunction = Nothing
@@ -48,11 +58,40 @@ Public Class ucDriverResponseView
 
     Private m_bInUpdate As Boolean = False
 
+#End Region ' Private vars
+
+#Region " Construction / destruction "
+
     Public Sub New()
 
         Me.InitializeComponent()
 
     End Sub
+
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+
+                Me.m_zgh.Detach()
+                Me.m_zgh = Nothing
+
+                Me.Shape = Nothing
+
+                Me.m_fpMin.Release()
+                Me.m_fpMax.Release()
+                Me.m_fpMean.Release()
+
+                components.Dispose()
+
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+#End Region ' Construction / destruction
+
+#Region " Public bits "
 
     Public Sub Init(uic As cUIContext)
 
@@ -90,32 +129,17 @@ Public Class ucDriverResponseView
 
     End Sub
 
-    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        Try
-            If disposing AndAlso components IsNot Nothing Then
-
-                Me.m_zgh.Detach()
-                Me.m_zgh = Nothing
-
-                Me.Shape = Nothing
-
-                Me.m_fpMin.Release()
-                Me.m_fpMax.Release()
-                Me.m_fpMean.Release()
-
-                components.Dispose()
-
-            End If
-        Finally
-            MyBase.Dispose(disposing)
-        End Try
-    End Sub
-
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IUIElement.UIContext"/>
+    ''' -----------------------------------------------------------------------
     Public Property UIContext As cUIContext _
         Implements IUIElement.UIContext
 
-    Public ReadOnly Property Manager As IEnvironmentalResponseManager
-
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="IEnviroInputData">driver</see> to display in the control.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property Driver As IEnviroInputData
         Get
             Return Me.m_driver
@@ -127,6 +151,11 @@ Public Class ucDriverResponseView
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="cEnviroResponseFunction"/> to display in the control.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property Shape As cEnviroResponseFunction
         Get
             Return Me.m_shape
@@ -140,6 +169,7 @@ Public Class ucDriverResponseView
         End Set
     End Property
 
+#End Region ' Public bits
 
 #Region " Control Event Handlers "
 
