@@ -160,7 +160,7 @@
     <value>250</value>
   </data>
   <data name="m_tbxModelName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>484, 20</value>
+    <value>604, 20</value>
   </data>
   <data name="m_tbxModelName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -271,7 +271,7 @@
     <value>50</value>
   </data>
   <data name="m_tbxModelAuthor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>485, 20</value>
+    <value>605, 20</value>
   </data>
   <data name="m_tbxModelAuthor.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -298,7 +298,7 @@
     <value>6, 29</value>
   </data>
   <data name="m_cbConfirmDessiminate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>583, 33</value>
+    <value>703, 33</value>
   </data>
   <data name="m_cbConfirmDessiminate.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -325,7 +325,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>537, 406</value>
+    <value>657, 526</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -346,7 +346,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCancel.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_btnSubmit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -355,7 +355,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnSubmit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>456, 406</value>
+    <value>576, 526</value>
   </data>
   <data name="m_btnSubmit.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -376,7 +376,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnSubmit.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_lblModelEmail.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -418,7 +418,7 @@
     <value>50</value>
   </data>
   <data name="m_tbxModelEmail.Size" type="System.Drawing.Size, System.Drawing">
-    <value>485, 20</value>
+    <value>605, 20</value>
   </data>
   <data name="m_tbxModelEmail.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -475,7 +475,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbModelName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>570, 6</value>
+    <value>690, 6</value>
   </data>
   <data name="m_pbModelName.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 20</value>
@@ -505,7 +505,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbModelAuthorEmail.Location" type="System.Drawing.Point, System.Drawing">
-    <value>570, 137</value>
+    <value>690, 137</value>
   </data>
   <data name="m_pbModelAuthorEmail.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 46</value>
@@ -535,7 +535,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbPublication.Location" type="System.Drawing.Point, System.Drawing">
-    <value>573, 0</value>
+    <value>693, 0</value>
   </data>
   <data name="m_pbPublication.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 46</value>
@@ -601,7 +601,7 @@
     <value>Vertical</value>
   </data>
   <data name="m_tbxModelDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>484, 45</value>
+    <value>604, 45</value>
   </data>
   <data name="m_tbxModelDescription.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -628,7 +628,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbModelDescription.Location" type="System.Drawing.Point, System.Drawing">
-    <value>570, 34</value>
+    <value>690, 34</value>
   </data>
   <data name="m_pbModelDescription.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 44</value>
@@ -658,7 +658,7 @@
     <value>100</value>
   </data>
   <data name="m_tbxHyperlink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>487, 20</value>
+    <value>607, 20</value>
   </data>
   <data name="m_tbxHyperlink.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -715,7 +715,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbAreaName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>566, 28</value>
+    <value>686, 28</value>
   </data>
   <data name="m_pbAreaName.Size" type="System.Drawing.Size, System.Drawing">
     <value>20, 21</value>
@@ -802,7 +802,7 @@
     <value>80, 180</value>
   </data>
   <data name="m_cmbEcoType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 21</value>
+    <value>600, 21</value>
   </data>
   <data name="m_cmbEcoType.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -826,7 +826,7 @@
     <value>80, 28</value>
   </data>
   <data name="m_cmbCountry.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 21</value>
+    <value>600, 21</value>
   </data>
   <data name="m_cmbCountry.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -846,51 +846,6 @@
   <data name="m_tcExport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="m_pbEcobaseAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="m_pbEcobaseAgreement.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Center</value>
-  </data>
-  <data name="m_pbEcobaseAgreement.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_pbEcobaseAgreement.Location" type="System.Drawing.Point, System.Drawing">
-    <value>526, 317</value>
-  </data>
-  <data name="m_pbEcobaseAgreement.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 16</value>
-  </data>
-  <data name="m_pbEcobaseAgreement.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
-  </data>
-  <data name="&gt;&gt;m_pbEcobaseAgreement.Name" xml:space="preserve">
-    <value>m_pbEcobaseAgreement</value>
-  </data>
-  <data name="&gt;&gt;m_pbEcobaseAgreement.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbEcobaseAgreement.Parent" xml:space="preserve">
-    <value>m_tpEcoBase</value>
-  </data>
-  <data name="&gt;&gt;m_pbEcobaseAgreement.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_rtfAuthorAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_rtfAuthorAgreement.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 6</value>
-  </data>
-  <data name="m_rtfAuthorAgreement.Size" type="System.Drawing.Size, System.Drawing">
-    <value>415, 304</value>
-  </data>
-  <data name="m_rtfAuthorAgreement.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_rtfAuthorAgreement.Text" xml:space="preserve">
-    <value />
-  </data>
   <data name="&gt;&gt;m_rtfAuthorAgreement.Name" xml:space="preserve">
     <value>m_rtfAuthorAgreement</value>
   </data>
@@ -901,22 +856,7 @@
     <value>m_tpEcoBase</value>
   </data>
   <data name="&gt;&gt;m_rtfAuthorAgreement.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="PictureBox1.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>Zoom</value>
-  </data>
-  <data name="PictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="PictureBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 6</value>
-  </data>
-  <data name="PictureBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>115, 124</value>
-  </data>
-  <data name="PictureBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;PictureBox1.Name" xml:space="preserve">
     <value>PictureBox1</value>
@@ -928,40 +868,7 @@
     <value>m_tpEcoBase</value>
   </data>
   <data name="&gt;&gt;PictureBox1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_cbAuthorAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="m_cbAuthorAgreement.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbAuthorAgreement.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbAuthorAgreement.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 317</value>
-  </data>
-  <data name="m_cbAuthorAgreement.Size" type="System.Drawing.Size, System.Drawing">
-    <value>293, 17</value>
-  </data>
-  <data name="m_cbAuthorAgreement.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="m_cbAuthorAgreement.Text" xml:space="preserve">
-    <value>I have read and agree to the &amp;EcoBase author agreement</value>
-  </data>
-  <data name="&gt;&gt;m_cbAuthorAgreement.Name" xml:space="preserve">
-    <value>m_cbAuthorAgreement</value>
-  </data>
-  <data name="&gt;&gt;m_cbAuthorAgreement.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbAuthorAgreement.Parent" xml:space="preserve">
-    <value>m_tpEcoBase</value>
-  </data>
-  <data name="&gt;&gt;m_cbAuthorAgreement.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_tpEcoBase.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -970,7 +877,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpEcoBase.Size" type="System.Drawing.Size, System.Drawing">
-    <value>592, 362</value>
+    <value>712, 482</value>
   </data>
   <data name="m_tpEcoBase.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1189,7 +1096,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbModelIsAuthor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>570, 189</value>
+    <value>690, 189</value>
   </data>
   <data name="m_pbModelIsAuthor.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 33</value>
@@ -1219,7 +1126,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbArea.Location" type="System.Drawing.Point, System.Drawing">
-    <value>570, 111</value>
+    <value>690, 111</value>
   </data>
   <data name="m_pbArea.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 20</value>
@@ -1249,7 +1156,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbModelYear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>570, 85</value>
+    <value>690, 85</value>
   </data>
   <data name="m_pbModelYear.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 20</value>
@@ -1276,7 +1183,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpModel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>592, 362</value>
+    <value>712, 482</value>
   </data>
   <data name="m_tpModel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1549,7 +1456,7 @@
     <value>Vertical</value>
   </data>
   <data name="m_tbxObjectives.Size" type="System.Drawing.Size, System.Drawing">
-    <value>530, 164</value>
+    <value>650, 284</value>
   </data>
   <data name="m_tbxObjectives.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1576,7 +1483,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbOtherText.Location" type="System.Drawing.Point, System.Drawing">
-    <value>573, 191</value>
+    <value>693, 191</value>
   </data>
   <data name="m_pbOtherText.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 22</value>
@@ -1606,7 +1513,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbOtherNeeded.Location" type="System.Drawing.Point, System.Drawing">
-    <value>573, 168</value>
+    <value>693, 168</value>
   </data>
   <data name="m_pbOtherNeeded.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 17</value>
@@ -1636,7 +1543,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbObjectives.Location" type="System.Drawing.Point, System.Drawing">
-    <value>573, 9</value>
+    <value>693, 9</value>
   </data>
   <data name="m_pbObjectives.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 16</value>
@@ -1660,7 +1567,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tpObjectives.Size" type="System.Drawing.Size, System.Drawing">
-    <value>592, 362</value>
+    <value>712, 482</value>
   </data>
   <data name="m_tpObjectives.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1891,7 +1798,7 @@
     <value>Top</value>
   </data>
   <data name="m_nudSouth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>213, 63</value>
+    <value>273, 63</value>
   </data>
   <data name="m_nudSouth.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1906,7 +1813,7 @@
     <value>m_nudSouth</value>
   </data>
   <data name="&gt;&gt;m_nudSouth.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15059.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudSouth.Parent" xml:space="preserve">
     <value>m_plExtent</value>
@@ -1918,7 +1825,7 @@
     <value>Top</value>
   </data>
   <data name="m_nudNorth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>213, 0</value>
+    <value>273, 0</value>
   </data>
   <data name="m_nudNorth.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1933,7 +1840,7 @@
     <value>m_nudNorth</value>
   </data>
   <data name="&gt;&gt;m_nudNorth.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15059.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudNorth.Parent" xml:space="preserve">
     <value>m_plExtent</value>
@@ -1945,7 +1852,7 @@
     <value>Top</value>
   </data>
   <data name="m_nudWest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>121, 31</value>
+    <value>181, 31</value>
   </data>
   <data name="m_nudWest.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1960,7 +1867,7 @@
     <value>m_nudWest</value>
   </data>
   <data name="&gt;&gt;m_nudWest.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15059.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudWest.Parent" xml:space="preserve">
     <value>m_plExtent</value>
@@ -1972,7 +1879,7 @@
     <value>Top</value>
   </data>
   <data name="m_nudEast.Location" type="System.Drawing.Point, System.Drawing">
-    <value>347, 31</value>
+    <value>407, 31</value>
   </data>
   <data name="m_nudEast.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1987,7 +1894,7 @@
     <value>m_nudEast</value>
   </data>
   <data name="&gt;&gt;m_nudEast.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15059.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudEast.Parent" xml:space="preserve">
     <value>m_plExtent</value>
@@ -2005,7 +1912,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblNorth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>169, 5</value>
+    <value>229, 5</value>
   </data>
   <data name="m_lblNorth.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -2041,7 +1948,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblWest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 33</value>
+    <value>140, 33</value>
   </data>
   <data name="m_lblWest.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -2077,7 +1984,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblEast.Location" type="System.Drawing.Point, System.Drawing">
-    <value>304, 33</value>
+    <value>364, 33</value>
   </data>
   <data name="m_lblEast.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -2113,7 +2020,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblSouth.Location" type="System.Drawing.Point, System.Drawing">
-    <value>169, 65</value>
+    <value>229, 65</value>
   </data>
   <data name="m_lblSouth.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -2146,7 +2053,7 @@
     <value>304, 84</value>
   </data>
   <data name="m_plExtent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 84</value>
+    <value>600, 84</value>
   </data>
   <data name="m_plExtent.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -2353,7 +2260,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbEnvVars.Location" type="System.Drawing.Point, System.Drawing">
-    <value>566, 213</value>
+    <value>686, 213</value>
   </data>
   <data name="m_pbEnvVars.Size" type="System.Drawing.Size, System.Drawing">
     <value>20, 72</value>
@@ -2383,7 +2290,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbEcosystem.Location" type="System.Drawing.Point, System.Drawing">
-    <value>566, 180</value>
+    <value>686, 180</value>
   </data>
   <data name="m_pbEcosystem.Size" type="System.Drawing.Size, System.Drawing">
     <value>20, 21</value>
@@ -2413,7 +2320,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbBoundingBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>566, 55</value>
+    <value>686, 55</value>
   </data>
   <data name="m_pbBoundingBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>20, 84</value>
@@ -2599,7 +2506,7 @@
     <value>3, 157</value>
   </data>
   <data name="m_hdrEcosystem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>583, 18</value>
+    <value>703, 18</value>
   </data>
   <data name="m_hdrEcosystem.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -2614,7 +2521,7 @@
     <value>m_hdrEcosystem</value>
   </data>
   <data name="&gt;&gt;m_hdrEcosystem.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15059.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEcosystem.Parent" xml:space="preserve">
     <value>m_tpClassification</value>
@@ -2632,7 +2539,7 @@
     <value>3, 3</value>
   </data>
   <data name="m_hdrClassification.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 18</value>
+    <value>706, 18</value>
   </data>
   <data name="m_hdrClassification.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2647,7 +2554,7 @@
     <value>m_hdrClassification</value>
   </data>
   <data name="&gt;&gt;m_hdrClassification.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15059.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrClassification.Parent" xml:space="preserve">
     <value>m_tpClassification</value>
@@ -2677,7 +2584,7 @@
     <value>m_hdrArea</value>
   </data>
   <data name="&gt;&gt;m_hdrArea.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15059.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrArea.Parent" xml:space="preserve">
     <value>m_tpClassification</value>
@@ -2692,7 +2599,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpClassification.Size" type="System.Drawing.Size, System.Drawing">
-    <value>592, 362</value>
+    <value>712, 482</value>
   </data>
   <data name="m_tpClassification.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2719,7 +2626,7 @@
     <value>True</value>
   </data>
   <data name="m_lblExtraInfo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 270</value>
+    <value>3, 390</value>
   </data>
   <data name="m_lblExtraInfo.Size" type="System.Drawing.Size, System.Drawing">
     <value>271, 13</value>
@@ -2812,7 +2719,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbEcospaceUsed.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 337</value>
+    <value>80, 457</value>
   </data>
   <data name="m_cbEcospaceUsed.Size" type="System.Drawing.Size, System.Drawing">
     <value>122, 17</value>
@@ -2845,7 +2752,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbFittedToTimeSeries.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 314</value>
+    <value>80, 434</value>
   </data>
   <data name="m_cbFittedToTimeSeries.Size" type="System.Drawing.Size, System.Drawing">
     <value>160, 17</value>
@@ -2908,7 +2815,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbEcosimUsed.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 291</value>
+    <value>80, 411</value>
   </data>
   <data name="m_cbEcosimUsed.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 17</value>
@@ -2941,7 +2848,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbDifference.Location" type="System.Drawing.Point, System.Drawing">
-    <value>573, 162</value>
+    <value>693, 162</value>
   </data>
   <data name="m_pbDifference.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 16</value>
@@ -2971,7 +2878,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbRef.Location" type="System.Drawing.Point, System.Drawing">
-    <value>573, 56</value>
+    <value>693, 56</value>
   </data>
   <data name="m_pbRef.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 16</value>
@@ -3007,7 +2914,7 @@
     <value>Vertical</value>
   </data>
   <data name="m_tbxDifference.Size" type="System.Drawing.Size, System.Drawing">
-    <value>487, 101</value>
+    <value>607, 221</value>
   </data>
   <data name="m_tbxDifference.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -3040,7 +2947,7 @@
     <value>Vertical</value>
   </data>
   <data name="m_tbxReference.Size" type="System.Drawing.Size, System.Drawing">
-    <value>487, 77</value>
+    <value>607, 77</value>
   </data>
   <data name="m_tbxReference.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -3061,7 +2968,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tpPublication.Size" type="System.Drawing.Size, System.Drawing">
-    <value>592, 362</value>
+    <value>712, 482</value>
   </data>
   <data name="m_tpPublication.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -3103,7 +3010,7 @@
     <value>m_hdrAccess</value>
   </data>
   <data name="&gt;&gt;m_hdrAccess.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15059.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAccess.Parent" xml:space="preserve">
     <value>m_tpAccess</value>
@@ -3121,7 +3028,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbPermissionComment.Location" type="System.Drawing.Point, System.Drawing">
-    <value>573, 93</value>
+    <value>693, 93</value>
   </data>
   <data name="m_pbPermissionComment.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 16</value>
@@ -3184,7 +3091,7 @@
     <value>Vertical</value>
   </data>
   <data name="m_tbxPermissionComments.Size" type="System.Drawing.Size, System.Drawing">
-    <value>530, 262</value>
+    <value>650, 382</value>
   </data>
   <data name="m_tbxPermissionComments.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -3205,7 +3112,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tpAccess.Size" type="System.Drawing.Size, System.Drawing">
-    <value>592, 362</value>
+    <value>712, 482</value>
   </data>
   <data name="m_tpAccess.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -3235,7 +3142,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbSubmModifications.Location" type="System.Drawing.Point, System.Drawing">
-    <value>526, 182</value>
+    <value>646, 182</value>
   </data>
   <data name="m_pbSubmModifications.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 21</value>
@@ -3265,7 +3172,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbSubmExistingModel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>526, 123</value>
+    <value>646, 123</value>
   </data>
   <data name="m_pbSubmExistingModel.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 21</value>
@@ -3295,7 +3202,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbSubmType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>526, 7</value>
+    <value>646, 7</value>
   </data>
   <data name="m_pbSubmType.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 17</value>
@@ -3325,7 +3232,7 @@
     <value>True</value>
   </data>
   <data name="m_tbxSubmModifications.Size" type="System.Drawing.Size, System.Drawing">
-    <value>483, 164</value>
+    <value>603, 284</value>
   </data>
   <data name="m_tbxSubmModifications.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -3349,7 +3256,7 @@
     <value>36, 123</value>
   </data>
   <data name="m_cmbSubmEcobaseModel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>484, 21</value>
+    <value>604, 21</value>
   </data>
   <data name="m_cmbSubmEcobaseModel.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -3553,7 +3460,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpSubmission.Size" type="System.Drawing.Size, System.Drawing">
-    <value>592, 362</value>
+    <value>712, 482</value>
   </data>
   <data name="m_tpSubmission.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -3577,7 +3484,7 @@
     <value>12, 12</value>
   </data>
   <data name="m_tcExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>600, 388</value>
+    <value>720, 508</value>
   </data>
   <data name="m_tcExport.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -3592,7 +3499,124 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tcExport.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_rtfAuthorAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_rtfAuthorAgreement.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 6</value>
+  </data>
+  <data name="m_rtfAuthorAgreement.Size" type="System.Drawing.Size, System.Drawing">
+    <value>579, 470</value>
+  </data>
+  <data name="m_rtfAuthorAgreement.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
+  </data>
+  <data name="m_rtfAuthorAgreement.Text" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;m_rtfAuthorAgreement.Name" xml:space="preserve">
+    <value>m_rtfAuthorAgreement</value>
+  </data>
+  <data name="&gt;&gt;m_rtfAuthorAgreement.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rtfAuthorAgreement.Parent" xml:space="preserve">
+    <value>m_tpEcoBase</value>
+  </data>
+  <data name="&gt;&gt;m_rtfAuthorAgreement.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="PictureBox1.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="PictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="PictureBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="PictureBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>115, 124</value>
+  </data>
+  <data name="PictureBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;PictureBox1.Name" xml:space="preserve">
+    <value>PictureBox1</value>
+  </data>
+  <data name="&gt;&gt;PictureBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PictureBox1.Parent" xml:space="preserve">
+    <value>m_tpEcoBase</value>
+  </data>
+  <data name="&gt;&gt;PictureBox1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_pbEcobaseAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="m_pbEcobaseAgreement.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Center</value>
+  </data>
+  <data name="m_pbEcobaseAgreement.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbEcobaseAgreement.Location" type="System.Drawing.Point, System.Drawing">
+    <value>315, 530</value>
+  </data>
+  <data name="m_pbEcobaseAgreement.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="m_pbEcobaseAgreement.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="&gt;&gt;m_pbEcobaseAgreement.Name" xml:space="preserve">
+    <value>m_pbEcobaseAgreement</value>
+  </data>
+  <data name="&gt;&gt;m_pbEcobaseAgreement.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbEcobaseAgreement.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_pbEcobaseAgreement.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_cbAuthorAgreement.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="m_cbAuthorAgreement.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbAuthorAgreement.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbAuthorAgreement.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 530</value>
+  </data>
+  <data name="m_cbAuthorAgreement.Size" type="System.Drawing.Size, System.Drawing">
+    <value>293, 17</value>
+  </data>
+  <data name="m_cbAuthorAgreement.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_cbAuthorAgreement.Text" xml:space="preserve">
+    <value>I have read and agree to the &amp;EcoBase author agreement</value>
+  </data>
+  <data name="&gt;&gt;m_cbAuthorAgreement.Name" xml:space="preserve">
+    <value>m_cbAuthorAgreement</value>
+  </data>
+  <data name="&gt;&gt;m_cbAuthorAgreement.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbAuthorAgreement.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbAuthorAgreement.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <metadata name="m_wrkGetAuthorAgreement.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -3610,7 +3634,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>624, 441</value>
+    <value>744, 561</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -3637,6 +3661,6 @@
     <value>dlgEcobaseExport</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15059.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
