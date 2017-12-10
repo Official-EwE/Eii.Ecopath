@@ -58,8 +58,6 @@ Public Class dlgSelectCapacityResponse
     Private m_iSelGrp As Integer = cCore.NULL_VALUE
     Private m_iSelDriver As Integer = cCore.NULL_VALUE
 
-    ''' <summary>Small thumbnails</summary>
-    Private m_ilSmall As New ImageList()
     ''' <summary>Large thumbnails</summary>
     Private m_ilLarge As New ImageList()
 
@@ -247,14 +245,11 @@ Public Class dlgSelectCapacityResponse
         Next
 
         ' Generate thumbnails from shapes
-        Me.m_ilSmall.ImageSize = New Size(SmallIconSize, SmallIconSize)
-        Me.GenerateShapeThumbnails(Me.m_ilSmall, SmallIconSize)
-
-        Me.m_ilLarge.ImageSize = New Size(LargeIconSize, LargeIconSize)
-        Me.GenerateShapeThumbnails(Me.m_ilLarge, LargeIconSize)
-
+        Dim size As Integer = LargeIconSize
+        Me.m_ilLarge.ImageSize = New Size(size, size)
+        Me.GenerateShapeThumbnails(Me.m_ilLarge)
+        Me.m_lvAllShapes.SmallImageList = Me.m_ilLarge
         Me.m_lvAllShapes.LargeImageList = Me.m_ilLarge
-        Me.m_lvAllShapes.SmallImageList = Me.m_ilSmall
 
         Me.m_nGroups = Me.UIContext.Core.nGroups
 
@@ -264,13 +259,6 @@ Public Class dlgSelectCapacityResponse
         Get
             Debug.Assert(Me.UIContext.StyleGuide IsNot Nothing)
             Return CInt(Me.UIContext.StyleGuide.ThumbnailSize)
-        End Get
-    End Property
-
-    Private ReadOnly Property SmallIconSize() As Integer
-        Get
-            Debug.Assert(Me.UIContext.StyleGuide IsNot Nothing)
-            Return CInt(Math.Ceiling(Me.UIContext.StyleGuide.ThumbnailSize / 3))
         End Get
     End Property
 
@@ -335,7 +323,7 @@ Public Class dlgSelectCapacityResponse
 
     End Sub
 
-    Private Sub GenerateShapeThumbnails(ByVal Icons As ImageList, ByVal IconSize As Integer)
+    Private Sub GenerateShapeThumbnails(ByVal Icons As ImageList)
 
         Dim xMax As Integer = Me.m_shapeGUI.XAxisMaxValue
 
@@ -400,7 +388,7 @@ Public Class dlgSelectCapacityResponse
             isp = Me.m_driver.ResponseIndexForGroup(Me.m_iSelGrp)
             If isp < 1 Then
                 'No Shape selected for this Map/Group
-                Exit Sub
+                Return
             End If
 
             lShapes.Add(CType(Me.m_shapeManager.Item(isp), cEnviroResponseFunction))
