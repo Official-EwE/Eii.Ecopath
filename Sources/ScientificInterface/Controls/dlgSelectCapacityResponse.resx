@@ -123,7 +123,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="OK_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>434, 351</value>
+    <value>534, 351</value>
   </data>
   <data name="OK_Button.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 23</value>
@@ -151,7 +151,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="Cancel_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>507, 351</value>
+    <value>607, 351</value>
   </data>
   <data name="Cancel_Button.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 23</value>
@@ -184,7 +184,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lvAllShapes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 295</value>
+    <value>188, 295</value>
   </data>
   <data name="m_lvAllShapes.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -342,7 +342,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plButtons.Location" type="System.Drawing.Point, System.Drawing">
-    <value>132, 18</value>
+    <value>188, 18</value>
   </data>
   <data name="m_plButtons.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -375,7 +375,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_hdrResp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 18</value>
+    <value>188, 18</value>
   </data>
   <data name="m_hdrResp.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -390,7 +390,7 @@
     <value>m_hdrResp</value>
   </data>
   <data name="&gt;&gt;m_hdrResp.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrResp.Parent" xml:space="preserve">
     <value>m_tlMain</value>
@@ -402,13 +402,13 @@
     <value>Fill</value>
   </data>
   <data name="m_hdrApplied.Location" type="System.Drawing.Point, System.Drawing">
-    <value>164, 0</value>
+    <value>220, 0</value>
   </data>
   <data name="m_hdrApplied.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_hdrApplied.Size" type="System.Drawing.Size, System.Drawing">
-    <value>396, 18</value>
+    <value>440, 18</value>
   </data>
   <data name="m_hdrApplied.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -423,7 +423,7 @@
     <value>m_hdrApplied</value>
   </data>
   <data name="&gt;&gt;m_hdrApplied.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrApplied.Parent" xml:space="preserve">
     <value>m_tlMain</value>
@@ -435,10 +435,10 @@
     <value>Fill</value>
   </data>
   <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
-    <value>167, 21</value>
+    <value>223, 21</value>
   </data>
   <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>390, 289</value>
+    <value>434, 289</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -447,7 +447,7 @@
     <value>m_graph</value>
   </data>
   <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.ucDriverResponseView, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.ucDriverResponseView, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
     <value>m_tlMain</value>
@@ -462,7 +462,7 @@
     <value>2</value>
   </data>
   <data name="m_tlMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>560, 313</value>
+    <value>660, 313</value>
   </data>
   <data name="m_tlMain.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -480,11 +480,35 @@
     <value>1</value>
   </data>
   <data name="m_tlMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lvAllShapes" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plButtons" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrResp" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrApplied" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_graph" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,25,AutoSize,0,Percent,75" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lvAllShapes" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plButtons" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrResp" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrApplied" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_graph" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,30,AutoSize,0,Percent,70" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>684, 25</value>
+  </data>
+  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="m_tsMain.Text" xml:space="preserve">
+    <value>ToolStrip1</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
+    <value>m_tsMain</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_tslbFilter.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 22</value>
   </data>
@@ -506,30 +530,6 @@
   <data name="m_tsbnCaseSensitive.ToolTipText" xml:space="preserve">
     <value>Search case sensitive</value>
   </data>
-  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>584, 25</value>
-  </data>
-  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="m_tsMain.Text" xml:space="preserve">
-    <value>ToolStrip1</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
-    <value>m_tsMain</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -540,7 +540,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>584, 386</value>
+    <value>684, 386</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -554,11 +554,11 @@
   <data name="$this.Text" xml:space="preserve">
     <value>Apply environmental response function</value>
   </data>
-  <data name="&gt;&gt;m_tsbnCaseSensitive.Name" xml:space="preserve">
-    <value>m_tsbnCaseSensitive</value>
+  <data name="&gt;&gt;m_tslbFilter.Name" xml:space="preserve">
+    <value>m_tslbFilter</value>
   </data>
-  <data name="&gt;&gt;m_tsbnCaseSensitive.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tslbFilter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tstbFilter.Name" xml:space="preserve">
     <value>m_tstbFilter</value>
@@ -566,16 +566,16 @@
   <data name="&gt;&gt;m_tstbFilter.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tslbFilter.Name" xml:space="preserve">
-    <value>m_tslbFilter</value>
+  <data name="&gt;&gt;m_tsbnCaseSensitive.Name" xml:space="preserve">
+    <value>m_tsbnCaseSensitive</value>
   </data>
-  <data name="&gt;&gt;m_tslbFilter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tsbnCaseSensitive.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>dlgSelectCapacityResponse</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15041.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -55,9 +55,9 @@ Partial Class dlgSelectCapacityResponse
         Me.m_hdrApplied = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_graph = New ScientificInterfaceShared.ucDriverResponseView()
         Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-        Me.m_tsbnCaseSensitive = New System.Windows.Forms.ToolStripButton()
-        Me.m_tstbFilter = New System.Windows.Forms.ToolStripTextBox()
         Me.m_tslbFilter = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tstbFilter = New System.Windows.Forms.ToolStripTextBox()
+        Me.m_tsbnCaseSensitive = New System.Windows.Forms.ToolStripButton()
         Me.m_tlMain.SuspendLayout()
         Me.m_plButtons.SuspendLayout()
         Me.m_tsMain.SuspendLayout()
@@ -84,7 +84,7 @@ Partial Class dlgSelectCapacityResponse
         Me.m_lvAllShapes.Name = "m_lvAllShapes"
         Me.m_lvAllShapes.ShowItemToolTips = True
         Me.m_lvAllShapes.UseCompatibleStateImageBehavior = False
-        Me.m_lvAllShapes.View = System.Windows.Forms.View.List
+        Me.m_lvAllShapes.View = System.Windows.Forms.View.SmallIcon
         '
         'm_btnRemove
         '
@@ -147,6 +147,16 @@ Partial Class dlgSelectCapacityResponse
         Me.m_tsMain.Name = "m_tsMain"
         Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
+        'm_tslbFilter
+        '
+        Me.m_tslbFilter.Name = "m_tslbFilter"
+        resources.ApplyResources(Me.m_tslbFilter, "m_tslbFilter")
+        '
+        'm_tstbFilter
+        '
+        Me.m_tstbFilter.Name = "m_tstbFilter"
+        resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
+        '
         'm_tsbnCaseSensitive
         '
         Me.m_tsbnCaseSensitive.AutoToolTip = False
@@ -154,16 +164,6 @@ Partial Class dlgSelectCapacityResponse
         Me.m_tsbnCaseSensitive.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.m_tsbnCaseSensitive, "m_tsbnCaseSensitive")
         Me.m_tsbnCaseSensitive.Name = "m_tsbnCaseSensitive"
-        '
-        'm_tstbFilter
-        '
-        Me.m_tstbFilter.Name = "m_tstbFilter"
-        resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
-        '
-        'm_tslbFilter
-        '
-        Me.m_tslbFilter.Name = "m_tslbFilter"
-        resources.ApplyResources(Me.m_tslbFilter, "m_tslbFilter")
         '
         'dlgSelectCapacityResponse
         '
@@ -197,11 +197,12 @@ Partial Class dlgSelectCapacityResponse
     Private WithEvents Cancel_Button As System.Windows.Forms.Button
     Private WithEvents m_tlMain As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_plButtons As System.Windows.Forms.Panel
-    Private WithEvents m_hdrResp As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_hdrApplied As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private m_hdrResp As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private m_hdrApplied As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_tslbFilter As System.Windows.Forms.ToolStripLabel
     Private WithEvents m_tstbFilter As System.Windows.Forms.ToolStripTextBox
     Private WithEvents m_tsbnCaseSensitive As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsMain As ScientificInterfaceShared.Controls.cEwEToolstrip
     Private WithEvents m_graph As ScientificInterfaceShared.ucDriverResponseView
+
 End Class
