@@ -157,14 +157,16 @@ Partial Class dlgDefineEcosimFunctionalResponses
         Me.PerformLayout()
 
     End Sub
+
     Private WithEvents m_btnOk As System.Windows.Forms.Button
     Private WithEvents m_btnRemove As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
-    Protected WithEvents m_tvDrivers As System.Windows.Forms.TreeView
+    Private WithEvents m_tvDrivers As System.Windows.Forms.TreeView
     Private WithEvents m_lbxGroups As cGroupListBox
-    Private WithEvents m_hdrReponse As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_hdrConfig As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private m_hdrReponse As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private m_hdrConfig As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_lblDrivers As Label
     Private WithEvents m_lblGroups As Label
     Private WithEvents m_graph As ucDriverResponseView
+
 End Class
