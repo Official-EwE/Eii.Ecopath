@@ -259,8 +259,6 @@ Public Class ucDriverResponseView
         If (Me.m_zgh Is Nothing) Then Return
 
         Try
-            'Always clear out the old data????
-            'Maybe not!!!
             Me.m_zgh.GetPane(1).CurveList.Clear()
 
             Me.PlotShape()
@@ -276,16 +274,17 @@ Public Class ucDriverResponseView
 
         If (Me.m_zgh Is Nothing) Then Return
 
-        Dim bCanSetMinMax As Boolean = Me.CanEditMinMax()
-        Dim bCanSetMeanSD As Boolean = Me.CanEditMean()
+        Dim bHasShape As Boolean = (Me.Shape IsNot Nothing)
+        Dim bCanSetMinMax As Boolean = bHasShape And Me.CanEditMinMax()
+        Dim bCanSetMeanSD As Boolean = bHasShape And Me.CanEditMean()
 
         Dim strXMin As String = My.Resources.HEADER_X_MIN
         Dim strXMax As String = My.Resources.HEADER_X_MAX
         Dim strMean As String = My.Resources.HEADER_MEAN
 
-        If (Me.m_shape IsNot Nothing) Then
+        If (bHasShape) Then
 
-            Select Case Me.m_shape.ShapeFunctionType
+            Select Case Me.Shape.ShapeFunctionType
 
                 Case eShapeFunctionType.Normal
                     strXMin = My.Resources.HEADER_PLOT_MIN
@@ -310,6 +309,8 @@ Public Class ucDriverResponseView
         Me.m_lblMean.Text = cStyleGuide.ToControlLabel(strMean)
         Me.m_fpMean.Enabled = bCanSetMeanSD
 
+        Me.m_btnChangeShape.Enabled = bHasShape
+
     End Sub
 
     Private Function ShowMinMax() As Boolean
@@ -320,18 +321,14 @@ Public Class ucDriverResponseView
 
     Private Function CanEditMinMax() As Boolean
 
-        If (Me.m_shape Is Nothing) Then Return False
         If (Me.m_shapefunction Is Nothing) Then Return True
-
         Return Not Me.m_shapefunction.IsDistribution()
 
     End Function
 
     Private Function CanEditMean() As Boolean
 
-        If (Me.m_shape Is Nothing) Then Return False
         If (Me.m_shapefunction Is Nothing) Then Return False
-
         Return (Me.m_shape.ShapeFunctionType = eShapeFunctionType.Normal)
 
     End Function
@@ -342,6 +339,7 @@ Public Class ucDriverResponseView
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub ChangeFFShape()
+        Debug.Assert(Me.m_shape IsNot Nothing)
         Try
             Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("ChangeEcosimShape")
             cmd.Tag = Me.m_shape
