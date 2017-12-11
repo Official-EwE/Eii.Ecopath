@@ -3421,7 +3421,7 @@ Public Class cEcoSpace
         Next
 
         'Make the detritus calculations here:
-        m_Ecosim.SimDetritusMT(Biomass, m_SimData.FishRateGear, m_SimData.Eatenby, m_SimData.Eatenof, ToDetritus, GrpDet)
+        m_Ecosim.SimDetritusMT(its, Biomass, m_SimData.FishRateGear, m_SimData.Eatenby, m_SimData.Eatenof, ToDetritus, GrpDet)
 
         For i = 1 To m_Data.NGroups
 

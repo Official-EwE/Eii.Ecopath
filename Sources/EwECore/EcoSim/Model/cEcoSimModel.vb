@@ -2733,7 +2733,7 @@ Namespace Ecosim
                 Next
 
                 'Make the detritus calculations here:
-                SimDetritusMT(Biomass, m_Data.FishRateGear, m_Data.Eatenby, m_Data.Eatenof, m_Data.ToDetritus, m_Data.GroupDetritus)
+                SimDetritusMT(iTimeStepIndex, Biomass, m_Data.FishRateGear, m_Data.Eatenby, m_Data.Eatenof, m_Data.ToDetritus, m_Data.GroupDetritus)
 
                 For i = 1 To nGroups
 
@@ -2744,7 +2744,6 @@ Namespace Ecosim
                         Pmult = 1.0
                         MoMult = 1.0
                         ApplyAVmodifiers(iTimeStepIndex, Pmult, Veff(1), MoMult, i, i, True)
-                        ' Debug.Assert(MoMult = 1)
                         'pbm(i) = 0 for all non PP groups
                         'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
 
@@ -2812,10 +2811,11 @@ Namespace Ecosim
         ''' <summary>
         ''' Thread safe version of SimDetritus
         ''' </summary>
-        Public Sub SimDetritusMT(ByVal Biomass() As Single, ByVal FishRateGear(,) As Single, ByVal Eatenby() As Single, ByVal EatenOf() As Single, ByRef ToDetritus() As Single, ByRef DetritusByGroup() As Single)
+        Public Sub SimDetritusMT(iTime As Integer, ByVal Biomass() As Single, ByVal FishRateGear(,) As Single, ByVal Eatenby() As Single, ByVal EatenOf() As Single, ByRef ToDetritus() As Single, ByRef DetritusByGroup() As Single)
             ' Dim Surplus As Single
             Dim i As Integer, j As Integer, K As Integer
             Dim ToDet As Single, DetFlowN As Single
+            Dim AMult As Single, VMult As Single, MortMult As Single
             DetFlowN = 0
 
             'DetritusByGroup() needs to be cleared because the values are summed into it
@@ -2825,8 +2825,14 @@ Namespace Ecosim
                 For j = m_EPData.NumLiving + 1 To nGroups
                     'First take egestion
                     ToDet = m_EPData.GS(i) * Eatenby(i) * m_EPData.DF(i, j - m_EPData.NumLiving)
-                    'Add dying organisms
-                    ToDet = ToDet + m_Data.mo(i) * Biomass(i) * m_EPData.DF(i, j - m_EPData.NumLiving)
+
+                    'get the other mortality multiplier/driver from the forcing functions
+                    'this will only affect other mort if the multiplier is non-zero
+                    MortMult = 1
+                    ApplyAVmodifiers(iTime, AMult, VMult, MortMult, i, i, True)
+
+                    'Add dying organisms-including other mort forcing/driver
+                    ToDet = ToDet + m_Data.mo(i) * MortMult * Biomass(i) * m_EPData.DF(i, j - m_EPData.NumLiving)
 
                     For K = 1 To m_EPData.NumFleet
                         'proportion of fishing mortality that was discarded and died
@@ -4538,7 +4544,10 @@ Namespace Ecosim
                     Case eForcingFunctionApplication.Import
                         A = A * Mult
                     Case eForcingFunctionApplication.MortOther
-                        Mo = Mo * Mult
+                        'only drive mortality if the multiplier is not zero
+                        If Mult <> 0 Then
+                            Mo = Mo * Mult
+                        End If
                 End Select
 
             Next
