@@ -44,13 +44,13 @@ Public MustInherit Class cResultsCollector_2DArray
 
     End Sub
 
-    Public ReadOnly Property nGroups
+    Public ReadOnly Property nGroups As Integer
         Get
             Return m_MSE.Core.nGroups
         End Get
     End Property
 
-    Public ReadOnly Property nFleets
+    Public ReadOnly Property nFleets As Integer
         Get
             Return m_MSE.Core.nFleets
         End Get

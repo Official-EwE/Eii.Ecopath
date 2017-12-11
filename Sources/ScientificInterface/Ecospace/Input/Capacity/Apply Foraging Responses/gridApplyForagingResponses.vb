@@ -155,12 +155,12 @@ Namespace Ecospace
             Try
 
                 Dim iGrp As Integer = e.Position.Row
-                Dim iMap As Integer = e.Position.Column - 1
+                Dim iDriver As Integer = e.Position.Column - 1
                 Dim cell As EwECell = DirectCast(Me(e.Position.Row, e.Position.Column), EwECell)
 
                 If ((cell.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable) Then Return
 
-                Me.ShowSelectionDialog(dlgSelectResponse.eSelectionType.DriverGroup, iGrp, iMap)
+                Me.ShowSelectionDialog(eEnvironmentalResponseSelectionType.DriverGroup, iGrp, iDriver)
 
             Catch ex As Exception
                 ' Whoah
@@ -168,47 +168,19 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub ShowSelectionDialog(ByVal SelectionType As dlgSelectResponse.eSelectionType, ByVal iGrp As Integer, ByVal iMap As Integer)
-            Try
-                Dim MapManager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
-                Dim ShapeManager As cBaseShapeManager = Core.EnviroResponseShapeManager
-
-                If ((Control.ModifierKeys And Keys.Shift) <> 0) Then
-                    Dim dlg As New dlgSelectCapacityResponse(Me.UIContext, ShapeManager, MapManager, iMap, iGrp, SelectionType)
-                    dlg.ShowDialog()
-                    If dlg.DialogResult = DialogResult.OK Then
-                        'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
-                        'update the interface from the CapacitMapInteractionManager data
-                        Me.FillData()
-                    End If
-                Else
-                    Dim dlg As New dlgSelectResponse(Me.UIContext, ShapeManager, MapManager, iMap, iGrp, SelectionType)
-                    dlg.ShowDialog()
-                    If dlg.DialogResult = DialogResult.OK Then
-                        'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
-                        'update the interface from the CapacitMapInteractionManager data
-                        Me.FillData()
-                    End If
-                End If
-
-            Catch ex As Exception
-
-            End Try
-        End Sub
-
         Protected Overrides Sub OnRowColClicked(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
             Try
 
                 Dim igrp As Integer = e.Position.Row
-                Dim iMap As Integer = e.Position.Column - 1
-                'just assume it is the column that the user has selected!!!
-                Dim selectionType As dlgSelectResponse.eSelectionType = dlgSelectResponse.eSelectionType.Driver
-                If iMap < 0 Then
-                    'the user has selected a Row not the Col(as set above)
-                    selectionType = dlgSelectResponse.eSelectionType.Group
-                End If
+                Dim iDriver As Integer = e.Position.Column - 1
 
-                Me.ShowSelectionDialog(selectionType, igrp, iMap)
+                ' Can no longer invoke UI for one group, multiple drivers. This makes no sense
+                If (iDriver < 0) Then Return
+
+                'just assume it is the column that the user has selected!!!
+                Dim selectionType As eEnvironmentalResponseSelectionType = eEnvironmentalResponseSelectionType.Driver
+
+                Me.ShowSelectionDialog(selectionType, igrp, iDriver)
 
             Catch ex As Exception
 
@@ -218,6 +190,34 @@ Namespace Ecospace
 
         Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
             Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroupInput))
+        End Sub
+
+        Private Sub ShowSelectionDialog(ByVal SelectionType As eEnvironmentalResponseSelectionType, ByVal iGrp As Integer, ByVal iDriver As Integer)
+            Try
+                Dim MapManager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
+                Dim ShapeManager As cBaseShapeManager = Core.EnviroResponseShapeManager
+
+                If ((Control.ModifierKeys And Keys.Shift) <> 0) Then
+                    Dim dlg As New dlgSelectEnvironmentalResponse(Me.UIContext, ShapeManager, MapManager, iDriver, iGrp, SelectionType)
+                    dlg.ShowDialog()
+                    If dlg.DialogResult = DialogResult.OK Then
+                        'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
+                        'update the interface from the CapacitMapInteractionManager data
+                        Me.FillData()
+                    End If
+                Else
+                    Dim dlg As New dlgSelectResponse(Me.UIContext, ShapeManager, MapManager, iDriver, iGrp, SelectionType)
+                    dlg.ShowDialog()
+                    If dlg.DialogResult = DialogResult.OK Then
+                        'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
+                        'update the interface from the CapacitMapInteractionManager data
+                        Me.FillData()
+                    End If
+                End If
+
+            Catch ex As Exception
+
+            End Try
         End Sub
 
         Private Sub UpdateRow(grp As cEcospaceGroupInput)

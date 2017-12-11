@@ -20,7 +20,7 @@
 
 Imports ScientificInterfaceShared.Forms
 
-Partial Class dlgSelectCapacityResponse
+Partial Class dlgSelectEnvironmentalResponse
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
@@ -43,7 +43,7 @@ Partial Class dlgSelectCapacityResponse
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSelectCapacityResponse))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSelectEnvironmentalResponse))
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.m_lvAllShapes = New System.Windows.Forms.ListView()
@@ -54,12 +54,14 @@ Partial Class dlgSelectCapacityResponse
         Me.m_hdrResp = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrApplied = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_graph = New ScientificInterfaceShared.ucDriverResponseView()
+        Me.m_tlpFunctions = New System.Windows.Forms.TableLayoutPanel()
         Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-        Me.m_tslbFilter = New System.Windows.Forms.ToolStripLabel()
-        Me.m_tstbFilter = New System.Windows.Forms.ToolStripTextBox()
         Me.m_tsbnCaseSensitive = New System.Windows.Forms.ToolStripButton()
+        Me.m_tstbFilter = New System.Windows.Forms.ToolStripTextBox()
+        Me.m_tslbFilter = New System.Windows.Forms.ToolStripLabel()
         Me.m_tlMain.SuspendLayout()
         Me.m_plButtons.SuspendLayout()
+        Me.m_tlpFunctions.SuspendLayout()
         Me.m_tsMain.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -84,7 +86,6 @@ Partial Class dlgSelectCapacityResponse
         Me.m_lvAllShapes.Name = "m_lvAllShapes"
         Me.m_lvAllShapes.ShowItemToolTips = True
         Me.m_lvAllShapes.UseCompatibleStateImageBehavior = False
-        Me.m_lvAllShapes.View = System.Windows.Forms.View.SmallIcon
         '
         'm_btnRemove
         '
@@ -101,11 +102,11 @@ Partial Class dlgSelectCapacityResponse
         'm_tlMain
         '
         resources.ApplyResources(Me.m_tlMain, "m_tlMain")
-        Me.m_tlMain.Controls.Add(Me.m_lvAllShapes, 0, 1)
         Me.m_tlMain.Controls.Add(Me.m_plButtons, 1, 1)
         Me.m_tlMain.Controls.Add(Me.m_hdrResp, 0, 0)
         Me.m_tlMain.Controls.Add(Me.m_hdrApplied, 2, 0)
         Me.m_tlMain.Controls.Add(Me.m_graph, 2, 1)
+        Me.m_tlMain.Controls.Add(Me.m_tlpFunctions, 0, 1)
         Me.m_tlMain.Name = "m_tlMain"
         '
         'm_plButtons
@@ -139,54 +140,66 @@ Partial Class dlgSelectCapacityResponse
         Me.m_graph.Shape = Nothing
         Me.m_graph.UIContext = Nothing
         '
+        'm_tlpFunctions
+        '
+        resources.ApplyResources(Me.m_tlpFunctions, "m_tlpFunctions")
+        Me.m_tlpFunctions.Controls.Add(Me.m_tsMain, 0, 0)
+        Me.m_tlpFunctions.Controls.Add(Me.m_lvAllShapes, 0, 1)
+        Me.m_tlpFunctions.Name = "m_tlpFunctions"
+        '
         'm_tsMain
         '
         Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslbFilter, Me.m_tstbFilter, Me.m_tsbnCaseSensitive})
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnCaseSensitive, Me.m_tstbFilter, Me.m_tslbFilter})
         resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
         Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
-        'm_tslbFilter
-        '
-        Me.m_tslbFilter.Name = "m_tslbFilter"
-        resources.ApplyResources(Me.m_tslbFilter, "m_tslbFilter")
-        '
-        'm_tstbFilter
-        '
-        Me.m_tstbFilter.Name = "m_tstbFilter"
-        resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
-        '
         'm_tsbnCaseSensitive
         '
+        Me.m_tsbnCaseSensitive.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.m_tsbnCaseSensitive.AutoToolTip = False
         Me.m_tsbnCaseSensitive.CheckOnClick = True
         Me.m_tsbnCaseSensitive.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.m_tsbnCaseSensitive, "m_tsbnCaseSensitive")
         Me.m_tsbnCaseSensitive.Name = "m_tsbnCaseSensitive"
+        Me.m_tsbnCaseSensitive.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
         '
-        'dlgSelectCapacityResponse
+        'm_tstbFilter
+        '
+        Me.m_tstbFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.m_tstbFilter.Name = "m_tstbFilter"
+        Me.m_tstbFilter.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+        resources.ApplyResources(Me.m_tstbFilter, "m_tstbFilter")
+        '
+        'm_tslbFilter
+        '
+        Me.m_tslbFilter.Name = "m_tslbFilter"
+        Me.m_tslbFilter.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+        resources.ApplyResources(Me.m_tslbFilter, "m_tslbFilter")
+        '
+        'dlgSelectEnvironmentalResponse
         '
         Me.AcceptButton = Me.OK_Button
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.Controls.Add(Me.m_tsMain)
         Me.Controls.Add(Me.m_tlMain)
         Me.Controls.Add(Me.OK_Button)
         Me.Controls.Add(Me.Cancel_Button)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "dlgSelectCapacityResponse"
+        Me.Name = "dlgSelectEnvironmentalResponse"
         Me.ShowInTaskbar = False
         Me.TabText = ""
         Me.m_tlMain.ResumeLayout(False)
         Me.m_plButtons.ResumeLayout(False)
+        Me.m_tlpFunctions.ResumeLayout(False)
+        Me.m_tlpFunctions.PerformLayout()
         Me.m_tsMain.ResumeLayout(False)
         Me.m_tsMain.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
 
@@ -199,10 +212,10 @@ Partial Class dlgSelectCapacityResponse
     Private WithEvents m_plButtons As System.Windows.Forms.Panel
     Private m_hdrResp As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private m_hdrApplied As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_tslbFilter As System.Windows.Forms.ToolStripLabel
     Private WithEvents m_tstbFilter As System.Windows.Forms.ToolStripTextBox
     Private WithEvents m_tsbnCaseSensitive As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsMain As ScientificInterfaceShared.Controls.cEwEToolstrip
     Private WithEvents m_graph As ScientificInterfaceShared.ucDriverResponseView
-
+    Private WithEvents m_tlpFunctions As TableLayoutPanel
+    Private WithEvents m_tslbFilter As ToolStripLabel
 End Class

@@ -35,19 +35,8 @@ Imports ScientificInterfaceShared
 
 #End Region ' Imports
 
+<Obsolete("Use dlgSelectCapacityResponse instead")>
 Public Class dlgSelectResponse
-
-    ''' <summary>
-    ''' Enumerated type, indicating for what type of data the dialog was invoked.
-    ''' </summary>
-    Public Enum eSelectionType
-        ''' <summary>Dialog was invoked for a specific driver / group combination.</summary>
-        DriverGroup
-        ''' <summary>Dialog was invoked for all drivers and a single group.</summary>
-        Group
-        ''' <summary>Dialog was invoked for all groups and a single driver.</summary>
-        Driver
-    End Enum
 
     Private m_shapeManager As cBaseShapeManager
     Private m_lFFs As New List(Of cForcingFunction)
@@ -62,7 +51,7 @@ Public Class dlgSelectResponse
     Private m_ilLarge As New ImageList()
 
     Private m_nGroups As Integer = 0
-    Private m_seltype As eSelectionType = eSelectionType.DriverGroup
+    Private m_seltype As eEnvironmentalResponseSelectionType = eEnvironmentalResponseSelectionType.DriverGroup
     Private m_drivermanager As IEnvironmentalResponseManager = Nothing
 
     Private m_bEcosim As Boolean = False
@@ -78,13 +67,13 @@ Public Class dlgSelectResponse
     ''' <param name="driverManager">Manager providing available environmental response drivers.</param>
     ''' <param name="iDriver">Index of selected driver in the <paramref name="driverManager">driver manager</paramref>.</param>
     ''' <param name="iSelGroup"></param>
-    ''' <param name="selection">Flag indicating <see cref="eSelectionType">how the dialog was invoked</see>.</param>
-    Public Sub New(ByVal uic As cUIContext, _
-                   ByVal responseManager As cBaseShapeManager, _
-                   ByVal driverManager As IEnvironmentalResponseManager, _
-                   ByVal iDriver As Integer, _
-                   ByVal iSelGroup As Integer, _
-                   ByVal selection As eSelectionType)
+    ''' <param name="selection">Flag indicating <see cref="eEnvironmentalResponseSelectionType">how the dialog was invoked</see>.</param>
+    Public Sub New(ByVal uic As cUIContext,
+                   ByVal responseManager As cBaseShapeManager,
+                   ByVal driverManager As IEnvironmentalResponseManager,
+                   ByVal iDriver As Integer,
+                   ByVal iSelGroup As Integer,
+                   ByVal selection As eEnvironmentalResponseSelectionType)
 
         Me.UIContext = uic
         Me.m_seltype = selection
@@ -371,7 +360,7 @@ Public Class dlgSelectResponse
         ' For all selectable shapes
         For Each shape As cForcingFunction In Me.m_lFFs
             ' Create and Add the thumbnail image
-            Icons.Images.Add(cShapeImage.IconImage(Me.UIContext, shape, Me.m_shapeGUI.Color, eSketchDrawModeTypes.Fill, _
+            Icons.Images.Add(cShapeImage.IconImage(Me.UIContext, shape, Me.m_shapeGUI.Color, eSketchDrawModeTypes.Fill,
                                                    xMax, DirectCast(shape, cEnviroResponseFunction).YMax, False))
         Next
 
@@ -425,7 +414,7 @@ Public Class dlgSelectResponse
 
             'Only populate the selected shapes if the user selected a cell
             'If it's a row or col then there is potentially more than one shape selected
-            If Me.m_seltype = eSelectionType.DriverGroup Then
+            If Me.m_seltype = eEnvironmentalResponseSelectionType.DriverGroup Then
 
                 isp = Me.m_driver.ResponseIndexForGroup(Me.m_iSelGrp)
                 If isp < 1 Then
@@ -435,21 +424,10 @@ Public Class dlgSelectResponse
 
                 Me.AddShapeToApplied(isp)
 
-            ElseIf Me.m_seltype = eSelectionType.Driver Then
+            ElseIf Me.m_seltype = eEnvironmentalResponseSelectionType.Driver Then
 
                 For igrp As Integer = 1 To Me.m_nGroups
                     isp = Me.m_driver.ResponseIndexForGroup(igrp)
-                    If (isp > 0) And (Not lShapes.Contains(isp)) Then
-                        Me.AddShapeToApplied(isp)
-                        lShapes.Add(isp)
-                    End If
-                Next
-
-            ElseIf Me.m_seltype = eSelectionType.Group Then
-
-                'update all the maps with this selected shape
-                For imap As Integer = 1 To Me.m_drivermanager.nEnviroData
-                    isp = Me.m_drivermanager.EnviroData(imap).ResponseIndexForGroup(Me.m_iSelGrp)
                     If (isp > 0) And (Not lShapes.Contains(isp)) Then
                         Me.AddShapeToApplied(isp)
                         lShapes.Add(isp)
@@ -493,7 +471,7 @@ Public Class dlgSelectResponse
         Dim bCanCommit As Boolean = True
 
         Try
-            If Me.m_seltype = eSelectionType.DriverGroup Then
+            If Me.m_seltype = eEnvironmentalResponseSelectionType.DriverGroup Then
                 If Me.m_iSelGrp > 0 And Me.m_iSelGrp <= Me.m_nGroups Then
                     If (Me.m_bEcospace) Then
                         bCanCommit = Me.CanCommit(core.EcospaceGroupInputs(Me.m_iSelGrp).CapacityCalculationType)
@@ -503,7 +481,7 @@ Public Class dlgSelectResponse
                     If (bCanCommit) Then Me.m_driver.ResponseIndexForGroup(m_iSelGrp) = iSelResponseShape
                     Return True
                 End If
-            ElseIf Me.m_seltype = eSelectionType.Driver Then
+            ElseIf Me.m_seltype = eEnvironmentalResponseSelectionType.Driver Then
                 'Apply the same shape to all the groups of the current map
                 For igrp As Integer = 1 To Me.m_nGroups
                     If (Me.m_bEcospace) Then
@@ -513,19 +491,6 @@ Public Class dlgSelectResponse
                     End If
                     If (bCanCommit) Then Me.m_driver.ResponseIndexForGroup(igrp) = iSelResponseShape
                 Next
-
-            ElseIf Me.m_seltype = eSelectionType.Group Then
-                'Apply the selected shape to the same group for all the maps
-                If (Me.m_bEcospace) Then
-                    bCanCommit = Me.CanCommit(core.EcospaceGroupInputs(Me.m_iSelGrp).CapacityCalculationType)
-                Else
-                    bCanCommit = True
-                End If
-                If (bCanCommit) Then
-                    For iDriver As Integer = 1 To Me.m_drivermanager.nEnviroData
-                        Me.m_drivermanager.EnviroData(iDriver).ResponseIndexForGroup(Me.m_iSelGrp) = iSelResponseShape
-                    Next
-                End If
             End If
 
         Catch ex As Exception

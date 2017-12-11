@@ -168,7 +168,7 @@ Namespace Ecosim
 
                 If ((cell.Style And cStyleGuide.eStyleFlags.NotEditable) = cStyleGuide.eStyleFlags.NotEditable) Then Return
 
-                Me.ShowSelectionDialog(dlgSelectResponse.eSelectionType.DriverGroup, iGrp, iDriver)
+                Me.ShowSelectionDialog(eEnvironmentalResponseSelectionType.DriverGroup, iGrp, iDriver)
 
             Catch ex As Exception
                 ' Whoah
@@ -176,16 +176,26 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub ShowSelectionDialog(ByVal SelectionType As dlgSelectResponse.eSelectionType, ByVal iGrp As Integer, ByVal iDriver As Integer)
+        Private Sub ShowSelectionDialog(ByVal SelectionType As eEnvironmentalResponseSelectionType, ByVal iGrp As Integer, ByVal iDriver As Integer)
             Try
-                Dim dlg As New dlgSelectResponse(Me.UIContext, Me.m_shapeManager, Me.m_driverManager, iDriver, iGrp, SelectionType)
-                dlg.ShowDialog()
-                If dlg.DialogResult = DialogResult.OK Then
-                    'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
-                    'update the interface from the CapacitMapInteractionManager data
-                    Me.FillData()
-                End If
 
+                If ((Control.ModifierKeys And Keys.Shift) <> 0) Then
+                    Dim dlg As New dlgSelectEnvironmentalResponse(Me.UIContext, Me.m_shapeManager, Me.m_driverManager, iDriver, iGrp, SelectionType)
+                    dlg.ShowDialog()
+                    If dlg.DialogResult = DialogResult.OK Then
+                        'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
+                        'update the interface from the CapacitMapInteractionManager data
+                        Me.FillData()
+                    End If
+                Else
+                    Dim dlg As New dlgSelectResponse(Me.UIContext, Me.m_shapeManager, Me.m_driverManager, iDriver, iGrp, SelectionType)
+                    dlg.ShowDialog()
+                    If dlg.DialogResult = DialogResult.OK Then
+                        'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
+                        'update the interface from the CapacitMapInteractionManager data
+                        Me.FillData()
+                    End If
+                End If
             Catch ex As Exception
 
             End Try
@@ -196,14 +206,11 @@ Namespace Ecosim
 
                 Dim igrp As Integer = e.Position.Row
                 Dim iDriver As Integer = e.Position.Column - 1
-                'just assume it is the column that the user has selected!!!
-                Dim selectionType As dlgSelectResponse.eSelectionType = dlgSelectResponse.eSelectionType.Driver
-                If iDriver < 0 Then
-                    'the user has selected a Row not the Col(as set above)
-                    selectionType = dlgSelectResponse.eSelectionType.Group
-                End If
 
-                Me.ShowSelectionDialog(selectionType, igrp, iDriver)
+                ' Can no longer invoke UI for one group, multiple drivers. This makes no sense
+                If iDriver < 0 Then Return
+
+                Me.ShowSelectionDialog(eEnvironmentalResponseSelectionType.Driver, igrp, iDriver)
 
             Catch ex As Exception
 

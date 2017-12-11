@@ -130,7 +130,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="OK_Button.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="OK_Button.Text" xml:space="preserve">
     <value>OK</value>
@@ -145,7 +145,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -157,7 +157,7 @@
     <value>67, 23</value>
   </data>
   <data name="Cancel_Button.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="Cancel_Button.Text" xml:space="preserve">
     <value>Cancel</value>
@@ -172,19 +172,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_lvAllShapes.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="m_lvAllShapes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 18</value>
+    <value>0, 28</value>
   </data>
   <data name="m_lvAllShapes.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+    <value>0, 3, 0, 0</value>
   </data>
   <data name="m_lvAllShapes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>188, 295</value>
+    <value>188, 287</value>
   </data>
   <data name="m_lvAllShapes.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -196,10 +196,10 @@
     <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lvAllShapes.Parent" xml:space="preserve">
-    <value>m_tlMain</value>
+    <value>m_tlpFunctions</value>
   </data>
   <data name="&gt;&gt;m_lvAllShapes.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_btnRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -224,13 +224,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 148</value>
+    <value>3, 158</value>
   </data>
   <data name="m_btnRemove.Size" type="System.Drawing.Size, System.Drawing">
     <value>26, 23</value>
   </data>
   <data name="m_btnRemove.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_btnRemove.Name" xml:space="preserve">
     <value>m_btnRemove</value>
@@ -312,13 +312,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 119</value>
+    <value>3, 129</value>
   </data>
   <data name="m_btnAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>26, 23</value>
   </data>
   <data name="m_btnAdd.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_btnAdd.Name" xml:space="preserve">
     <value>m_btnAdd</value>
@@ -348,10 +348,10 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plButtons.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 295</value>
+    <value>32, 315</value>
   </data>
   <data name="m_plButtons.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_plButtons.Name" xml:space="preserve">
     <value>m_plButtons</value>
@@ -363,7 +363,7 @@
     <value>m_tlMain</value>
   </data>
   <data name="&gt;&gt;m_plButtons.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="m_hdrResp.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -378,7 +378,7 @@
     <value>188, 18</value>
   </data>
   <data name="m_hdrResp.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>0</value>
   </data>
   <data name="m_hdrResp.Text" xml:space="preserve">
     <value>Response functions</value>
@@ -396,7 +396,7 @@
     <value>m_tlMain</value>
   </data>
   <data name="&gt;&gt;m_hdrResp.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="m_hdrApplied.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -411,7 +411,7 @@
     <value>440, 18</value>
   </data>
   <data name="m_hdrApplied.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>3</value>
   </data>
   <data name="m_hdrApplied.Text" xml:space="preserve">
     <value>Applied response</value>
@@ -429,19 +429,22 @@
     <value>m_tlMain</value>
   </data>
   <data name="&gt;&gt;m_hdrApplied.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_graph.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
-    <value>223, 21</value>
+    <value>220, 18</value>
+  </data>
+  <data name="m_graph.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>434, 289</value>
+    <value>440, 315</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
     <value>m_graph</value>
@@ -453,71 +456,14 @@
     <value>m_tlMain</value>
   </data>
   <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
-  <data name="m_tlMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 32</value>
-  </data>
-  <data name="m_tlMain.RowCount" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_tlMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>660, 313</value>
-  </data>
-  <data name="m_tlMain.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_tlMain.Name" xml:space="preserve">
-    <value>m_tlMain</value>
-  </data>
-  <data name="&gt;&gt;m_tlMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlMain.ZOrder" xml:space="preserve">
+  <data name="m_tlpFunctions.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="m_tlMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lvAllShapes" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plButtons" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrResp" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrApplied" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_graph" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,30,AutoSize,0,Percent,70" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>684, 25</value>
-  </data>
-  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="m_tsMain.Text" xml:space="preserve">
-    <value>ToolStrip1</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
-    <value>m_tsMain</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tslbFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 22</value>
-  </data>
-  <data name="m_tslbFilter.Text" xml:space="preserve">
-    <value>&amp;Filter:</value>
-  </data>
-  <data name="m_tstbFilter.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 25</value>
-  </data>
   <data name="m_tsbnCaseSensitive.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -529,6 +475,99 @@
   </data>
   <data name="m_tsbnCaseSensitive.ToolTipText" xml:space="preserve">
     <value>Search case sensitive</value>
+  </data>
+  <data name="m_tstbFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 25</value>
+  </data>
+  <data name="m_tslbFilter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>10, 22</value>
+  </data>
+  <data name="m_tslbFilter.Text" xml:space="preserve">
+    <value>:</value>
+  </data>
+  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 25</value>
+  </data>
+  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_tsMain.Text" xml:space="preserve">
+    <value>ToolStrip1</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
+    <value>m_tsMain</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
+    <value>m_tlpFunctions</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpFunctions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlpFunctions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 18</value>
+  </data>
+  <data name="m_tlpFunctions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpFunctions.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_tlpFunctions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 315</value>
+  </data>
+  <data name="m_tlpFunctions.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_tlpFunctions.Name" xml:space="preserve">
+    <value>m_tlpFunctions</value>
+  </data>
+  <data name="&gt;&gt;m_tlpFunctions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpFunctions.Parent" xml:space="preserve">
+    <value>m_tlMain</value>
+  </data>
+  <data name="&gt;&gt;m_tlpFunctions.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_tlpFunctions.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tsMain" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lvAllShapes" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="m_tlMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
+  </data>
+  <data name="m_tlMain.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_tlMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>660, 333</value>
+  </data>
+  <data name="m_tlMain.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tlMain.Name" xml:space="preserve">
+    <value>m_tlMain</value>
+  </data>
+  <data name="&gt;&gt;m_tlMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlMain.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tlMain.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlMain.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plButtons" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrResp" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrApplied" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_graph" Row="1" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpFunctions" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,30,AutoSize,0,Percent,70" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -552,19 +591,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Apply environmental response function</value>
-  </data>
-  <data name="&gt;&gt;m_tslbFilter.Name" xml:space="preserve">
-    <value>m_tslbFilter</value>
-  </data>
-  <data name="&gt;&gt;m_tslbFilter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tstbFilter.Name" xml:space="preserve">
-    <value>m_tstbFilter</value>
-  </data>
-  <data name="&gt;&gt;m_tstbFilter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>Define environmental response to {0}</value>
   </data>
   <data name="&gt;&gt;m_tsbnCaseSensitive.Name" xml:space="preserve">
     <value>m_tsbnCaseSensitive</value>
@@ -572,8 +599,20 @@
   <data name="&gt;&gt;m_tsbnCaseSensitive.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tstbFilter.Name" xml:space="preserve">
+    <value>m_tstbFilter</value>
+  </data>
+  <data name="&gt;&gt;m_tstbFilter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tslbFilter.Name" xml:space="preserve">
+    <value>m_tslbFilter</value>
+  </data>
+  <data name="&gt;&gt;m_tslbFilter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgSelectCapacityResponse</value>
+    <value>dlgSelectEnvironmentalResponse</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
