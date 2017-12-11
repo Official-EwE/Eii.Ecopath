@@ -21,9 +21,10 @@
 ' Cefas MSE plug-in copyright: 
 '    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
-
-Imports EwECore
 '
+Option Strict Off
+Imports EwECore
+
 Public Class cResultsCollector_PredationMortality
     Inherits cResultsCollector_2DArray_Group_Group
 

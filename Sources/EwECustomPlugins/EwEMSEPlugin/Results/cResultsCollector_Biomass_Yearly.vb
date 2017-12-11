@@ -22,7 +22,7 @@
 '    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
-
+Option Strict Off
 Imports EwECore
 Imports EwEUtils.Utilities
 

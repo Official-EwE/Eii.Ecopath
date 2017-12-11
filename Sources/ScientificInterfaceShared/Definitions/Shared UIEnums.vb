@@ -235,5 +235,17 @@ Namespace Definitions
         Grouped
     End Enum
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type, indicating how the user wishes to configure capacity drivers.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eEnvironmentalResponseSelectionType
+        ''' <summary>Dialog was invoked for a specific driver / group combination.</summary>
+        DriverGroup
+        ''' <summary>Dialog was invoked for all groups and a single driver.</summary>
+        Driver
+    End Enum
+
 End Namespace
 

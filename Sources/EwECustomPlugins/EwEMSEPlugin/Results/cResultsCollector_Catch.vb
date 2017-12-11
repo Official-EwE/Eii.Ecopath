@@ -22,6 +22,7 @@
 '    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
+Option Strict Off
 
 Public MustInherit Class cResultsCollector_Catch
     Inherits cResultsCollector_2DArray
