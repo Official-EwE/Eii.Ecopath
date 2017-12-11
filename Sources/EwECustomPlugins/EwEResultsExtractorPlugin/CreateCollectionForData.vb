@@ -18,9 +18,8 @@
 ' ===============================================================================
 '
 
+Option Strict Off
 Imports EwECore
-Imports System.Drawing
-Imports WeifenLuo.WinFormsUI.Docking
 
 Public MustInherit Class CreateCollectionForData
 

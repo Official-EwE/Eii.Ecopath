@@ -18,6 +18,7 @@
 ' ===============================================================================
 '
 
+Option Strict Off
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
 
