@@ -51,7 +51,7 @@ Namespace Controls
             Me.m_hdrShape = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrParams = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_grid = New ScientificInterfaceShared.gridShapeFunctionParameters()
-            Me.m_btnRefresh = New System.Windows.Forms.Button()
+            Me.m_btnRedrawShape = New System.Windows.Forms.Button()
             Me.m_tbxName = New System.Windows.Forms.TextBox()
             Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
@@ -102,7 +102,7 @@ Namespace Controls
             Me.m_tlpInput.Controls.Add(Me.m_lbShapeFunctionTypes, 0, 1)
             Me.m_tlpInput.Controls.Add(Me.m_hdrParams, 0, 2)
             Me.m_tlpInput.Controls.Add(Me.m_grid, 0, 3)
-            Me.m_tlpInput.Controls.Add(Me.m_btnRefresh, 0, 4)
+            Me.m_tlpInput.Controls.Add(Me.m_btnRedrawShape, 0, 4)
             Me.m_tlpInput.Name = "m_tlpInput"
             '
             'm_hdrShape
@@ -131,8 +131,8 @@ Namespace Controls
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
             Me.m_grid.DataName = "ShapeFunction"
             resources.ApplyResources(Me.m_grid, "m_grid")
@@ -144,22 +144,22 @@ Namespace Controls
             Me.m_grid.Name = "m_grid"
             Me.m_grid.ShapeFunction = Nothing
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TrackPropertySelection = False
             Me.m_grid.UIContext = Nothing
             '
-            'm_btnRefresh
+            'm_btnRedrawShape
             '
-            resources.ApplyResources(Me.m_btnRefresh, "m_btnRefresh")
-            Me.m_btnRefresh.Name = "m_btnRefresh"
-            Me.m_btnRefresh.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnRedrawShape, "m_btnRedrawShape")
+            Me.m_btnRedrawShape.Name = "m_btnRedrawShape"
+            Me.m_btnRedrawShape.UseVisualStyleBackColor = True
             '
             'm_tbxName
             '
@@ -218,7 +218,7 @@ Namespace Controls
         Private WithEvents m_tlpInput As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_tbxName As System.Windows.Forms.TextBox
         Private WithEvents m_lblName As System.Windows.Forms.Label
-        Private WithEvents m_btnRefresh As System.Windows.Forms.Button
+        Private WithEvents m_btnRedrawShape As System.Windows.Forms.Button
         Private WithEvents m_grid As gridShapeFunctionParameters
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
 

@@ -301,7 +301,7 @@
     <value>m_hdrShape</value>
   </data>
   <data name="&gt;&gt;m_hdrShape.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrShape.Parent" xml:space="preserve">
     <value>m_tlpInput</value>
@@ -334,7 +334,7 @@
     <value>m_hdrParams</value>
   </data>
   <data name="&gt;&gt;m_hdrParams.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrParams.Parent" xml:space="preserve">
     <value>m_tlpInput</value>
@@ -361,7 +361,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.gridShapeFunctionParameters, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.gridShapeFunctionParameters, ScientificInterfaceShared, Version=6.6.15066.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tlpInput</value>
@@ -369,37 +369,37 @@
   <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_btnRefresh.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_btnRedrawShape.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_btnRefresh.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnRedrawShape.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_btnRefresh.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_btnRedrawShape.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 295</value>
   </data>
-  <data name="m_btnRefresh.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_btnRedrawShape.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 3, 0, 0</value>
   </data>
-  <data name="m_btnRefresh.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_btnRedrawShape.Size" type="System.Drawing.Size, System.Drawing">
     <value>209, 24</value>
   </data>
-  <data name="m_btnRefresh.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_btnRedrawShape.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="m_btnRefresh.Text" xml:space="preserve">
-    <value>&amp;Update shape</value>
+  <data name="m_btnRedrawShape.Text" xml:space="preserve">
+    <value>&amp;Redraw shape</value>
   </data>
-  <data name="&gt;&gt;m_btnRefresh.Name" xml:space="preserve">
-    <value>m_btnRefresh</value>
+  <data name="&gt;&gt;m_btnRedrawShape.Name" xml:space="preserve">
+    <value>m_btnRedrawShape</value>
   </data>
-  <data name="&gt;&gt;m_btnRefresh.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_btnRedrawShape.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnRefresh.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnRedrawShape.Parent" xml:space="preserve">
     <value>m_tlpInput</value>
   </data>
-  <data name="&gt;&gt;m_btnRefresh.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnRedrawShape.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="m_tlpInput.Location" type="System.Drawing.Point, System.Drawing">
@@ -430,7 +430,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpInput.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_hdrShape" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbShapeFunctionTypes" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrParams" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_grid" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnRefresh" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,50,AutoSize,0,Percent,50,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_hdrShape" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbShapeFunctionTypes" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrParams" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_grid" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnRedrawShape" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,50,AutoSize,0,Percent,50,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tbxName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>

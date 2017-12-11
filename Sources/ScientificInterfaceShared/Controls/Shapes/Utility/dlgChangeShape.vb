@@ -218,7 +218,7 @@ Namespace Controls
         End Sub
 
         Private Sub OnRefreshShape(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnRefresh.Click
+            Handles m_btnRedrawShape.Click
             Me.UpdatePreview()
         End Sub
 
