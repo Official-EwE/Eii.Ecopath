@@ -355,6 +355,7 @@ Public Class frmShapeValue
 
         Dim iOffset As Integer = 0
         Dim bIsMediation As Boolean = (Array.IndexOf(Me.m_handler.Datatypes, eDataTypes.Mediation) > 0)
+        Dim bIsTimeSeries As Boolean = (Array.IndexOf(Me.m_handler.Datatypes, eDataTypes.TimeSeriesDataset) > 0)
 
         'Set the plot title
         Me.Text = My.Resources.HEADER_VALUES
@@ -362,9 +363,9 @@ Public Class frmShapeValue
         Me.m_txtName.Enabled = True
         Me.m_txtName.Text = Me.m_shape.Name
 
-        ' Hide seasonal flag for mediation functions
-        Me.m_lblViewAs.Visible = Not bIsMediation
-        Me.m_cmbViewAs.Visible = Not bIsMediation
+        ' Hide seasonal flag for mediation functions and time series
+        Me.m_lblViewAs.Visible = Not bIsMediation And Not bIsTimeSeries
+        Me.m_cmbViewAs.Visible = Not bIsMediation And Not bIsTimeSeries
 
         Me.m_lblWeight.Visible = False
         Me.m_txtWeight.Visible = False

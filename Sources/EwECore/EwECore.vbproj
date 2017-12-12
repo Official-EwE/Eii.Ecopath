@@ -377,7 +377,7 @@
     <Compile Include="Shapes\Shape functions\cHyperbolicShapeFunction.vb" />
     <Compile Include="Shapes\Shape functions\cLinearShapeFunction.vb" />
     <Compile Include="Shapes\Shape functions\cNormalShapeFunction.vb" />
-    <Compile Include="Shapes\Shape functions\cSketchedShapeFunction.vb" />
+    <Compile Include="Shapes\Shape functions\cFreehandShapeFunction.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesDataStructures.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesReaderFactory.vb" />
     <Compile Include="Shapes\TimeSeries\Readers\cTimeSeriesClipboardReader.vb" />

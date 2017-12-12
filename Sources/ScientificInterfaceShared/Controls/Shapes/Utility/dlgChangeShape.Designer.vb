@@ -25,7 +25,7 @@ Namespace Controls
         Inherits System.Windows.Forms.Form
 
         'UserControl overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -39,7 +39,7 @@ Namespace Controls
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgChangeShape))
             Me.m_btnOk = New System.Windows.Forms.Button()
@@ -51,7 +51,6 @@ Namespace Controls
             Me.m_hdrShape = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrParams = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_grid = New ScientificInterfaceShared.gridShapeFunctionParameters()
-            Me.m_btnRedrawShape = New System.Windows.Forms.Button()
             Me.m_tbxName = New System.Windows.Forms.TextBox()
             Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
@@ -102,7 +101,6 @@ Namespace Controls
             Me.m_tlpInput.Controls.Add(Me.m_lbShapeFunctionTypes, 0, 1)
             Me.m_tlpInput.Controls.Add(Me.m_hdrParams, 0, 2)
             Me.m_tlpInput.Controls.Add(Me.m_grid, 0, 3)
-            Me.m_tlpInput.Controls.Add(Me.m_btnRedrawShape, 0, 4)
             Me.m_tlpInput.Name = "m_tlpInput"
             '
             'm_hdrShape
@@ -154,12 +152,6 @@ Namespace Controls
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TrackPropertySelection = False
             Me.m_grid.UIContext = Nothing
-            '
-            'm_btnRedrawShape
-            '
-            resources.ApplyResources(Me.m_btnRedrawShape, "m_btnRedrawShape")
-            Me.m_btnRedrawShape.Name = "m_btnRedrawShape"
-            Me.m_btnRedrawShape.UseVisualStyleBackColor = True
             '
             'm_tbxName
             '
@@ -218,10 +210,8 @@ Namespace Controls
         Private WithEvents m_tlpInput As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_tbxName As System.Windows.Forms.TextBox
         Private WithEvents m_lblName As System.Windows.Forms.Label
-        Private WithEvents m_btnRedrawShape As System.Windows.Forms.Button
         Private WithEvents m_grid As gridShapeFunctionParameters
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
-
     End Class
 
 End Namespace

@@ -1801,7 +1801,7 @@
     <value>Linear</value>
   </data>
   <data name="SHAPEFUNCTION_NOTSET" xml:space="preserve">
-    <value>(sketched)|||Shape is sketched, and is not a primitive</value>
+    <value>(Freehand)|||Shape is not a primitive, and is either sketched or data is obtained by other means</value>
   </data>
   <data name="SHAPEFUNCTION_SIGMOID" xml:space="preserve">
     <value>Sigmoid</value>
