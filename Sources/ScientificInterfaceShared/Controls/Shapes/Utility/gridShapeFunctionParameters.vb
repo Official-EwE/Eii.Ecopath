@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
@@ -42,6 +43,7 @@ Public Class gridShapeFunctionParameters
     End Enum
 
     Private m_shapefunction As IShapeFunction = Nothing
+    Private m_bIsFreehand As Boolean = False
 
     Public Property ShapeFunction As IShapeFunction
         Get
@@ -52,13 +54,15 @@ Public Class gridShapeFunctionParameters
             If (Me.m_shapefunction IsNot Nothing) Then
                 ' Cleanup
                 Me.RowsCount = 1
+                Me.m_bIsFreehand = False
             End If
 
             Me.m_shapefunction = value
 
             If (Me.m_shapefunction IsNot Nothing) Then
                 ' Set new
-                Me.RowsCount = Me.m_shapefunction.nParameters + 1
+                Me.m_bIsFreehand = TypeOf (Me.m_shapefunction) Is cFreehandShapeFunction
+                Me.RowsCount = If(Me.m_bIsFreehand, DirectCast(Me.m_shapefunction, cFreehandShapeFunction).nPoints, Me.m_shapefunction.nParameters + 1)
                 Me.FillData()
             End If
 
@@ -85,16 +89,22 @@ Public Class gridShapeFunctionParameters
 
     Protected Overrides Sub FillData()
 
-        For iRow As Integer = 1 To Me.RowsCount - 1
-
-            Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(Me.m_shapefunction.ParamName(iRow))
-
-            Me(iRow, eColumnTypes.Value) = New EwECell(Me.m_shapefunction.ParamValue(iRow), CType(Me.m_shapefunction.ParamStatus(iRow), Style.cStyleGuide.eStyleFlags))
-            Me(iRow, eColumnTypes.Value).Behaviors.Add(Me.EwEEditHandler)
-
-            Me(iRow, eColumnTypes.Units) = New EwECell(Me.m_shapefunction.ParamUnit(iRow), cStyleGuide.eStyleFlags.NotEditable)
-
-        Next iRow
+        If (Me.m_bIsFreehand) Then
+            Dim fh As cFreehandShapeFunction = DirectCast(Me.m_shapefunction, cFreehandShapeFunction)
+            For iRow As Integer = 1 To Me.RowsCount - 1
+                Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(CStr(iRow))
+                Me(iRow, eColumnTypes.Value) = New EwECell(fh.ShapeData(iRow))
+                Me(iRow, eColumnTypes.Value).Behaviors.Add(Me.EwEEditHandler)
+                Me(iRow, eColumnTypes.Units) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
+            Next iRow
+        Else
+            For iRow As Integer = 1 To Me.RowsCount - 1
+                Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(Me.m_shapefunction.ParamName(iRow))
+                Me(iRow, eColumnTypes.Value) = New EwECell(Me.m_shapefunction.ParamValue(iRow), CType(Me.m_shapefunction.ParamStatus(iRow), Style.cStyleGuide.eStyleFlags))
+                Me(iRow, eColumnTypes.Value).Behaviors.Add(Me.EwEEditHandler)
+                Me(iRow, eColumnTypes.Units) = New EwECell(Me.m_shapefunction.ParamUnit(iRow), cStyleGuide.eStyleFlags.NotEditable)
+            Next iRow
+        End If
 
     End Sub
 
@@ -112,8 +122,12 @@ Public Class gridShapeFunctionParameters
             Case eColumnTypes.Value
                 Dim iParam As Integer = p.Row
                 Dim sValue As Single = CSng(cell.GetValue(p))
-                Console.WriteLine(sValue)
-                Me.m_shapefunction.ParamValue(iParam) = sValue
+                If (Me.m_bIsFreehand) Then
+                    Dim fh As cFreehandShapeFunction = DirectCast(Me.m_shapefunction, cFreehandShapeFunction)
+                    fh.ShapeData(iParam) = sValue
+                Else
+                    Me.m_shapefunction.ParamValue(iParam) = sValue
+                End If
                 RaiseEvent OnShapeFunctionChanged()
         End Select
 
@@ -129,11 +143,16 @@ Public Class gridShapeFunctionParameters
 
     Private Sub UpdateValues()
         Try
-
-            For iRow As Integer = 1 To Me.RowsCount - 1
-                Me(iRow, eColumnTypes.Value).Value = Me.m_shapefunction.ParamValue(iRow)
-            Next iRow
-
+            If (Me.m_bIsFreehand) Then
+                Dim fh As cFreehandShapeFunction = DirectCast(Me.m_shapefunction, cFreehandShapeFunction)
+                For iRow As Integer = 1 To Me.RowsCount - 1
+                    Me(iRow, eColumnTypes.Value).Value = fh.ShapeData(iRow)
+                Next iRow
+            Else
+                For iRow As Integer = 1 To Me.RowsCount - 1
+                    Me(iRow, eColumnTypes.Value).Value = Me.m_shapefunction.ParamValue(iRow)
+                Next iRow
+            End If
         Catch ex As Exception
 
         End Try

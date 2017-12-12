@@ -27,19 +27,16 @@ Imports EwEUtils.Core
 
 #End Region ' Imports
 
-Public Class cSketchedShapeFunction
+''' <summary>
+''' A <see cref="cShapeFunction"/> which points are not defined through a primitive,
+''' but instead have been sketching in the EwE user interface or have been obtained
+''' by other means.
+''' </summary>
+Public Class cFreehandShapeFunction
     Inherits cShapeFunction
-
-    Private m_shapeOrg As Single() = Nothing
 
     Public Sub New()
         MyBase.New()
-    End Sub
-
-    Public Overrides Sub Init(obj As Object)
-        MyBase.Init(obj)
-        Me.m_shapeOrg = CType(Me.m_points.Clone(), Single())
-        Me.ParamValue(1) = Me.Max
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -70,46 +67,9 @@ Public Class cSketchedShapeFunction
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property nParameters As Integer
         Get
-            Return 1
+            Return 0
         End Get
     End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cShapeFunction.ParamName"/>
-    ''' -----------------------------------------------------------------------
-    Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
-        Get
-            Select Case iParam
-                Case 1 : Return My.Resources.CoreDefaults.PARAM_MAX
-            End Select
-            Return "?"
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cShapeFunction.Shape"/>
-    ''' <summary>
-    ''' Returns the points for a sketched shape.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Overrides Function Shape(ByVal nPoints As Integer) As Single()
-
-        If (Me.ParamsChanged) Then
-            Dim sMax As Single = Me.Max
-            Dim sScale As Single = 1
-
-            If (sMax > 0) Then
-                sScale = Me.ParamValue(1) / sMax
-            End If
-
-            For i As Integer = 1 To nPoints
-                Me.m_points(i) = Me.m_shapeOrg(i) * sScale
-            Next i
-        End If
-
-        Return MyBase.Shape(nPoints)
-
-    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cShapeFunction.Defaults"/>
@@ -118,6 +78,21 @@ Public Class cSketchedShapeFunction
         Get
             Return eShapeFunctionType.NotSet
         End Get
+    End Property
+
+    Public ReadOnly Property nPoints As Integer
+        Get
+            Return Me.m_points.Count - 1
+        End Get
+    End Property
+
+    Public Property ShapeData(iPoint As Integer) As Single
+        Get
+            Return Me.m_points(iPoint)
+        End Get
+        Set(value As Single)
+            Me.m_points(iPoint) = value
+        End Set
     End Property
 
 End Class

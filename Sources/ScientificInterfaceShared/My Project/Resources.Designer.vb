@@ -8092,7 +8092,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to (sketched)|||Shape is sketched, and is not a primitive.
+        '''  Looks up a localized string similar to (Freehand)|||Shape is not a primitive, and is either sketched or data is obtained by other means.
         '''</summary>
         Public ReadOnly Property SHAPEFUNCTION_NOTSET() As String
             Get

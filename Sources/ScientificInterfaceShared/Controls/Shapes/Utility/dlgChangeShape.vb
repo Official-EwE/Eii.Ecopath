@@ -30,6 +30,8 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
+' To consider: replace preview panel with a sketchpad? The GUI handler is already there, could be hooked up with the benefit of extra functionality
+
 Namespace Controls
 
     ''' <summary>
@@ -217,8 +219,8 @@ Namespace Controls
 
         End Sub
 
-        Private Sub OnRefreshShape(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnRedrawShape.Click
+        Private Sub OnRefreshShape(sender As System.Object, e As System.EventArgs)
+
             Me.UpdatePreview()
         End Sub
 
