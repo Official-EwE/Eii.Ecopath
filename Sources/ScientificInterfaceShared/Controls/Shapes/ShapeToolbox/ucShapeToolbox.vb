@@ -372,11 +372,17 @@ Namespace Controls
             Me.RemoveToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Remove)
             Me.RemoveToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Remove)
 
-            Me.RenameToolStripMenuItem.Visible = False
-            Me.RenameToolStripMenuItem.Enabled = False
-
             Me.ResetToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Reset)
             Me.ResetToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Reset)
+
+            Me.ValuesToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.Modify)
+            Me.ValuesToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.Modify)
+
+            Me.ChangeShapeToolStripMenuItem.Visible = Me.CanShowButton(cShapeGUIHandler.eShapeCommandTypes.ChangeShape)
+            Me.ChangeShapeToolStripMenuItem.Enabled = Me.CanEnableButton(cShapeGUIHandler.eShapeCommandTypes.ChangeShape)
+
+            Me.RenameToolStripMenuItem.Visible = False
+            Me.RenameToolStripMenuItem.Enabled = False
 
         End Sub
 
@@ -511,7 +517,7 @@ Namespace Controls
         ''' </summary>
         Private Sub lvShapes_ItemActivate(ByVal sender As Object, ByVal e As System.EventArgs) _
                     Handles m_lvShapes.ItemActivate
-            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Modify, Me.Selection)
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape, Me.Selection)
         End Sub
 
         Private Sub lvShapes_ItemChecked(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckedEventArgs) _
@@ -586,6 +592,14 @@ Namespace Controls
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Add)
         End Sub
 
+        Private Sub ChangeShape_Click(sender As Object, e As EventArgs) Handles ChangeShapeToolStripMenuItem.Click
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ChangeShape)
+        End Sub
+
+        Private Sub ValuesToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ValuesToolStripMenuItem.Click
+            Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Modify)
+        End Sub
+
         Private Sub ResetToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
             Handles ResetToolStripMenuItem.Click
             Me.m_handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset)
@@ -614,6 +628,10 @@ Namespace Controls
             If (ct And cStyleGuide.eChangeType.Thumbnails) > 0 Then
                 Me.UpdateThumbnails(Me.Selection)
             End If
+        End Sub
+
+        Private Sub m_lvContextMenuStrip_Opening(sender As Object, e As CancelEventArgs) Handles m_lvContextMenuStrip.Opening
+            Me.UpdateControls()
         End Sub
 
 #End Region ' Event handlers

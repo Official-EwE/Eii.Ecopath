@@ -343,7 +343,7 @@ Namespace Controls
         ''' <inheritdocs cref="cShapeGUIHandler.Datatypes"/>
         ''' <remarks>Overridden to enable handler for mediation shapes.</remarks>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
+        Protected Overrides Function Datatypes() As EwEUtils.Core.eDataTypes()
             Return New eDataTypes() {eDataTypes.Mediation}
         End Function
 

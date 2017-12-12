@@ -62,7 +62,7 @@ Public Class gridShapeFunctionParameters
             If (Me.m_shapefunction IsNot Nothing) Then
                 ' Set new
                 Me.m_bIsFreehand = TypeOf (Me.m_shapefunction) Is cFreehandShapeFunction
-                Me.RowsCount = If(Me.m_bIsFreehand, DirectCast(Me.m_shapefunction, cFreehandShapeFunction).nPoints, Me.m_shapefunction.nParameters + 1)
+                Me.RowsCount = If(Me.m_bIsFreehand, DirectCast(Me.m_shapefunction, cFreehandShapeFunction).nPoints, Me.m_shapefunction.nParameters) + 1
                 Me.FillData()
             End If
 

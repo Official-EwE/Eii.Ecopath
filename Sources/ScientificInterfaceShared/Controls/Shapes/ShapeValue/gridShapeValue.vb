@@ -65,7 +65,7 @@ Public Class gridShapeValue
         Me.m_bSuppressZeroes = bSuppressZeroes
         Me.m_shape = Nothing
 
-        Me.InitLayout()
+        Me.RefreshContent()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -92,7 +92,7 @@ Public Class gridShapeValue
         Me.m_displayMode = displayMode
         Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape, Me.UIContext)
 
-        Me.InitLayout()
+        Me.RefreshContent()
 
     End Sub
 
