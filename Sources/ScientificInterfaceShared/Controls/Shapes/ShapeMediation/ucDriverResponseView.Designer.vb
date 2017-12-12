@@ -113,7 +113,7 @@ Partial Class ucDriverResponseView
         Me.m_btnChangeShape.Name = "m_btnChangeShape"
         Me.m_btnChangeShape.Size = New System.Drawing.Size(100, 24)
         Me.m_btnChangeShape.TabIndex = 7
-        Me.m_btnChangeShape.Text = "&Shange shape..."
+        Me.m_btnChangeShape.Text = "&Change shape..."
         Me.m_btnChangeShape.UseVisualStyleBackColor = True
         '
         'm_tlpControls
