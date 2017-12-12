@@ -32,6 +32,8 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
+' JS 12/12/17: This dialog has gotten way too cluttered. Needs to be rethought and rebuilt from scratch
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Shape value edit form.
@@ -99,7 +101,6 @@ Public Class frmShapeValue
 
     Private Enum eDialogEditModeType
         AddTimeSeries
-        AddForcing
         EditTimeSeries
         EditForcing
     End Enum
@@ -140,7 +141,7 @@ Public Class frmShapeValue
                     Debug.Assert(False)
             End Select
         Else
-            Me.m_editMode = eDialogEditModeType.AddForcing
+            Me.m_editMode = eDialogEditModeType.EditForcing
             If (TypeOf (Me.m_handler) Is cMediationShapeGUIHandler) Then
                 Me.m_displayMode = frmShapeValue.eDisplayMode.Index
             End If
@@ -158,38 +159,8 @@ Public Class frmShapeValue
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal uic As cUIContext, ByVal shape As cShapeData)
 
-        Me.InitializeComponent()
-
-        ' Config
-        Me.UIContext = uic
-        Me.m_grid.UIContext = uic
-
-        ' Store shape
+        Me.New(uic, If(shape Is Nothing, cShapeGUIHandler.GetShapeUIHandler(eDataTypes.TimeSeriesDataset, uic), cShapeGUIHandler.GetShapeUIHandler(shape, uic)))
         Me.m_shape = shape
-        Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape, uic)
-
-        ' Determine interface mode
-        If (shape Is Nothing) Then
-            Me.m_editMode = eDialogEditModeType.AddTimeSeries
-        Else
-            Me.m_editMode = If(TypeOf shape Is cTimeSeries, eDialogEditModeType.EditTimeSeries, eDialogEditModeType.EditForcing)
-        End If
-
-        ' Determine display mode
-        If TypeOf (shape) Is cMediationBaseFunction Then
-            Me.m_displayMode = frmShapeValue.eDisplayMode.Index
-        ElseIf TypeOf (shape) Is cTimeSeries Then
-            Select Case (DirectCast(shape, cTimeSeries)).Interval
-                Case eTSDataSetInterval.Annual
-                    Me.m_displayMode = frmShapeValue.eDisplayMode.Yearly
-                Case eTSDataSetInterval.TimeStep
-                    Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly
-                Case Else
-                    Debug.Assert(False)
-            End Select
-        Else
-            Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly
-        End If
 
     End Sub
 
@@ -231,7 +202,7 @@ Public Class frmShapeValue
                 Dim ds As cTimeSeriesDataset = Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex)
                 Me.NumPoints = ds.NumPoints
 
-            Case eDialogEditModeType.AddForcing, eDialogEditModeType.EditForcing
+            Case eDialogEditModeType.EditForcing
                 If (Me.m_shape Is Nothing) Then
                     Me.NumPoints = cNUMROWS_EMTPY
                 Else
@@ -263,9 +234,6 @@ Public Class frmShapeValue
                 bSucces = Me.OnUpdateTimeSeries()
             Case eDialogEditModeType.EditForcing
                 bSucces = Me.OnApplyForcing()
-            Case eDialogEditModeType.AddForcing
-                ' Mode not supported yet (anymore?)
-                Debug.Assert(False)
         End Select
 
         If bSucces Then
@@ -340,9 +308,6 @@ Public Class frmShapeValue
                 Me.LoadForcingDataToGrid()
             Case eDialogEditModeType.EditTimeSeries
                 Me.LoadTimeSeriesDataToGrid()
-            Case eDialogEditModeType.AddForcing
-                ' Mode not supported yet(/anymore?)
-                Debug.Assert(False)
         End Select
 
         Me.m_bInUpdate = False
@@ -354,8 +319,9 @@ Public Class frmShapeValue
     Private Sub LoadForcingDataToGrid()
 
         Dim iOffset As Integer = 0
-        Dim bIsMediation As Boolean = (Array.IndexOf(Me.m_handler.Datatypes, eDataTypes.Mediation) > 0)
-        Dim bIsTimeSeries As Boolean = (Array.IndexOf(Me.m_handler.Datatypes, eDataTypes.TimeSeriesDataset) > 0)
+        Dim bIsMediation As Boolean = Me.m_handler.IsMediation
+        Dim bIsTimeSeries As Boolean = Me.m_handler.IsTimeSeries
+        Dim bIsCapacity As Boolean = TypeOf Me.m_handler Is cCapacityShapeGUIHandler
 
         'Set the plot title
         Me.Text = My.Resources.HEADER_VALUES
@@ -365,7 +331,7 @@ Public Class frmShapeValue
 
         ' Hide seasonal flag for mediation functions and time series
         Me.m_lblViewAs.Visible = Not bIsMediation And Not bIsTimeSeries
-        Me.m_cmbViewAs.Visible = Not bIsMediation And Not bIsTimeSeries
+        Me.m_cmbViewAs.Visible = Me.m_lblViewAs.Visible
 
         Me.m_lblWeight.Visible = False
         Me.m_txtWeight.Visible = False
@@ -382,8 +348,8 @@ Public Class frmShapeValue
         Me.m_lblNoOfPoints.Visible = False
         Me.m_tlpNoOfYears.Visible = False
 
-        Me.m_lblXBase.Visible = bIsMediation
-        Me.m_txtXBase.Visible = bIsMediation
+        Me.m_lblXBase.Visible = bIsMediation And Not bIsCapacity ' Ugh
+        Me.m_txtXBase.Visible = Me.m_lblXBase.Visible
 
         If bIsMediation Then
             Me.m_fpXBase.Value = DirectCast(Me.m_shape, cMediationBaseFunction).XBaseIndex
@@ -590,7 +556,8 @@ Public Class frmShapeValue
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub UpdateControls()
 
-        Dim bIsMediation As Boolean = (Array.IndexOf(Me.m_handler.Datatypes, eDataTypes.Mediation) > 0)
+        Dim bIsMediation As Boolean = Me.m_handler.IsMediation
+        Dim bIsTimeSeries As Boolean = Me.m_handler.IsTimeSeries
         Dim bEnableOk As Boolean = True
 
         Try
@@ -603,8 +570,7 @@ Public Class frmShapeValue
             End If
 
             ' Time series specific tests:
-            If (Me.m_editMode = eDialogEditModeType.EditTimeSeries) Or
-               (Me.m_editMode = eDialogEditModeType.AddTimeSeries) Then
+            If (bIsTimeSeries) Then
                 ' TS need a valid weight factor
                 ' Parse value using UI number settings
                 bEnableOk = bEnableOk And (Single.Parse(Me.m_txtWeight.Text) >= 0)
@@ -622,6 +588,9 @@ Public Class frmShapeValue
 
             Me.m_lblPoolCodeSec.Visible = (cTimeSeriesFactory.TimeSeriesCategory(Me.SelectedTimeSeriesType()) = eTimeSeriesCategoryType.FleetGroup)
             Me.m_cmbPoolCodeSec.Visible = Me.m_lblPoolCodeSec.Visible
+
+            Me.m_lblViewAs.Visible = Not bIsMediation And Not bIsTimeSeries
+            Me.m_cmbViewAs.Visible = Me.m_lblViewAs.Visible
 
         Catch ex As Exception
             bEnableOk = False

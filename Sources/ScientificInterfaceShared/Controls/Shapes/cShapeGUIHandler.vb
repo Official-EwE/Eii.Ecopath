@@ -27,6 +27,8 @@ Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
+' ToDo_JS: remove commands from handlers, and move to central handling across the UI
+
 Namespace Controls
 
     ''' -----------------------------------------------------------------------
@@ -332,7 +334,7 @@ Namespace Controls
         ''' Override to specify the datatypes to respond to in core messages.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function Datatypes() As eDataTypes()
+        Protected MustOverride Function Datatypes() As eDataTypes()
 
         ''' -------------------------------------------------------------------
         ''' <summary>

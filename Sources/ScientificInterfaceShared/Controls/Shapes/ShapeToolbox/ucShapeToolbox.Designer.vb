@@ -41,76 +41,96 @@ Namespace Controls
             Me.ImportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.ExportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
-            Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ChangeShapeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ValuesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.RenameToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
             Me.ResetToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+            Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_lvShapes = New ScientificInterfaceShared.Controls.cSmoothListView()
             Me.m_lvContextMenuStrip.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_lvContextMenuStrip
             '
-            Me.m_lvContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddToolStripMenuItem, Me.ApplyToolStripMenuItem, Me.DuplicateToolStripMenuItem, Me.ToolStripSeparator1, Me.ImportToolStripMenuItem, Me.ExportToolStripMenuItem, Me.ToolStripSeparator2, Me.RemoveToolStripMenuItem, Me.RenameToolStripMenuItem, Me.ResetToolStripMenuItem})
+            Me.m_lvContextMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddToolStripMenuItem, Me.ApplyToolStripMenuItem, Me.DuplicateToolStripMenuItem, Me.ToolStripSeparator1, Me.ImportToolStripMenuItem, Me.ExportToolStripMenuItem, Me.ToolStripSeparator2, Me.ChangeShapeToolStripMenuItem, Me.ValuesToolStripMenuItem, Me.RenameToolStripMenuItem, Me.ToolStripSeparator3, Me.ResetToolStripMenuItem, Me.RemoveToolStripMenuItem})
             Me.m_lvContextMenuStrip.Name = "lvContextMenuStrip"
-            Me.m_lvContextMenuStrip.Size = New System.Drawing.Size(125, 192)
+            Me.m_lvContextMenuStrip.Size = New System.Drawing.Size(159, 242)
             '
             'AddToolStripMenuItem
             '
             Me.AddToolStripMenuItem.Name = "AddToolStripMenuItem"
-            Me.AddToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
+            Me.AddToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
             Me.AddToolStripMenuItem.Text = "A&dd..."
             '
             'ApplyToolStripMenuItem
             '
             Me.ApplyToolStripMenuItem.Name = "ApplyToolStripMenuItem"
-            Me.ApplyToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
+            Me.ApplyToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
             Me.ApplyToolStripMenuItem.Text = "A&pply..."
             '
             'DuplicateToolStripMenuItem
             '
             Me.DuplicateToolStripMenuItem.Name = "DuplicateToolStripMenuItem"
-            Me.DuplicateToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
+            Me.DuplicateToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
             Me.DuplicateToolStripMenuItem.Text = "&Duplicate"
             '
             'ToolStripSeparator1
             '
             Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            Me.ToolStripSeparator1.Size = New System.Drawing.Size(121, 6)
+            Me.ToolStripSeparator1.Size = New System.Drawing.Size(155, 6)
             '
             'ImportToolStripMenuItem
             '
             Me.ImportToolStripMenuItem.Name = "ImportToolStripMenuItem"
-            Me.ImportToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
+            Me.ImportToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
             Me.ImportToolStripMenuItem.Text = "&Import..."
             '
             'ExportToolStripMenuItem
             '
             Me.ExportToolStripMenuItem.Name = "ExportToolStripMenuItem"
-            Me.ExportToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
+            Me.ExportToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
             Me.ExportToolStripMenuItem.Text = "E&xport..."
             '
             'ToolStripSeparator2
             '
             Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-            Me.ToolStripSeparator2.Size = New System.Drawing.Size(121, 6)
+            Me.ToolStripSeparator2.Size = New System.Drawing.Size(155, 6)
             '
-            'RemoveToolStripMenuItem
+            'ChangeShapeToolStripMenuItem
             '
-            Me.RemoveToolStripMenuItem.Name = "RemoveToolStripMenuItem"
-            Me.RemoveToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
-            Me.RemoveToolStripMenuItem.Text = "Re&move"
+            Me.ChangeShapeToolStripMenuItem.Name = "ChangeShapeToolStripMenuItem"
+            Me.ChangeShapeToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
+            Me.ChangeShapeToolStripMenuItem.Text = "&Change shape..."
+            '
+            'ValuesToolStripMenuItem
+            '
+            Me.ValuesToolStripMenuItem.Name = "ValuesToolStripMenuItem"
+            Me.ValuesToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
+            Me.ValuesToolStripMenuItem.Text = "Values..."
             '
             'RenameToolStripMenuItem
             '
             Me.RenameToolStripMenuItem.Name = "RenameToolStripMenuItem"
-            Me.RenameToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
+            Me.RenameToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
             Me.RenameToolStripMenuItem.Text = "Re&name"
+            '
+            'ToolStripSeparator3
+            '
+            Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+            Me.ToolStripSeparator3.Size = New System.Drawing.Size(155, 6)
             '
             'ResetToolStripMenuItem
             '
             Me.ResetToolStripMenuItem.Name = "ResetToolStripMenuItem"
-            Me.ResetToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
+            Me.ResetToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
             Me.ResetToolStripMenuItem.Text = "Re&set"
+            '
+            'RemoveToolStripMenuItem
+            '
+            Me.RemoveToolStripMenuItem.Name = "RemoveToolStripMenuItem"
+            Me.RemoveToolStripMenuItem.Size = New System.Drawing.Size(158, 22)
+            Me.RemoveToolStripMenuItem.Text = "Re&move"
             '
             'm_lvShapes
             '
@@ -120,7 +140,7 @@ Namespace Controls
             Me.m_lvShapes.HideSelection = False
             Me.m_lvShapes.Location = New System.Drawing.Point(0, 0)
             Me.m_lvShapes.Name = "m_lvShapes"
-            Me.m_lvShapes.Size = New System.Drawing.Size(10, 10)
+            Me.m_lvShapes.Size = New System.Drawing.Size(10, 24)
             Me.m_lvShapes.TabIndex = 0
             Me.m_lvShapes.UseCompatibleStateImageBehavior = False
             '
@@ -135,7 +155,7 @@ Namespace Controls
             Me.Margin = New System.Windows.Forms.Padding(0)
             Me.MinimumSize = New System.Drawing.Size(10, 10)
             Me.Name = "ucShapeToolbox"
-            Me.Size = New System.Drawing.Size(10, 10)
+            Me.Size = New System.Drawing.Size(10, 24)
             Me.m_lvContextMenuStrip.ResumeLayout(False)
             Me.ResumeLayout(False)
 
@@ -152,7 +172,9 @@ Namespace Controls
         Friend WithEvents ExportToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
         Friend WithEvents ResetToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-
+        Friend WithEvents ChangeShapeToolStripMenuItem As ToolStripMenuItem
+        Friend WithEvents ValuesToolStripMenuItem As ToolStripMenuItem
+        Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
     End Class
 
 End Namespace
