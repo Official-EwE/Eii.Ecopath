@@ -210,36 +210,6 @@
   <data name="&gt;&gt;m_plPreview.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_lbShapeFunctionTypes.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_lbShapeFunctionTypes.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_lbShapeFunctionTypes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 18</value>
-  </data>
-  <data name="m_lbShapeFunctionTypes.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 4</value>
-  </data>
-  <data name="m_lbShapeFunctionTypes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 137</value>
-  </data>
-  <data name="m_lbShapeFunctionTypes.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_lbShapeFunctionTypes.Name" xml:space="preserve">
-    <value>m_lbShapeFunctionTypes</value>
-  </data>
-  <data name="&gt;&gt;m_lbShapeFunctionTypes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbShapeFunctionTypes.Parent" xml:space="preserve">
-    <value>m_tlpInput</value>
-  </data>
-  <data name="&gt;&gt;m_lbShapeFunctionTypes.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_btDefaults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -269,171 +239,6 @@
   </data>
   <data name="&gt;&gt;m_btDefaults.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="m_tlpInput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_tlpInput.ColumnCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShape.Name" xml:space="preserve">
-    <value>m_hdrShape</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShape.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15074.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShape.Parent" xml:space="preserve">
-    <value>m_tlpInput</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShape.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_hdrParams.Name" xml:space="preserve">
-    <value>m_hdrParams</value>
-  </data>
-  <data name="&gt;&gt;m_hdrParams.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15074.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrParams.Parent" xml:space="preserve">
-    <value>m_tlpInput</value>
-  </data>
-  <data name="&gt;&gt;m_hdrParams.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.gridShapeFunctionParameters, ScientificInterfaceShared, Version=6.6.15074.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>m_tlpInput</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_tlpInput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 29</value>
-  </data>
-  <data name="m_tlpInput.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_tlpInput.RowCount" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_tlpInput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 319</value>
-  </data>
-  <data name="m_tlpInput.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInput.Name" xml:space="preserve">
-    <value>m_tlpInput</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInput.Parent" xml:space="preserve">
-    <value>m_scMain.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInput.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tlpInput.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_hdrShape" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbShapeFunctionTypes" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrParams" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_grid" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,50,AutoSize,0,Percent,50,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_hdrShape.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_hdrShape.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrShape.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
-  </data>
-  <data name="m_hdrShape.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 18</value>
-  </data>
-  <data name="m_hdrShape.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_hdrShape.Text" xml:space="preserve">
-    <value>Shape type</value>
-  </data>
-  <data name="m_hdrShape.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShape.Name" xml:space="preserve">
-    <value>m_hdrShape</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShape.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15074.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShape.Parent" xml:space="preserve">
-    <value>m_tlpInput</value>
-  </data>
-  <data name="&gt;&gt;m_hdrShape.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_hdrParams.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_hdrParams.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrParams.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 159</value>
-  </data>
-  <data name="m_hdrParams.Size" type="System.Drawing.Size, System.Drawing">
-    <value>203, 18</value>
-  </data>
-  <data name="m_hdrParams.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_hdrParams.Text" xml:space="preserve">
-    <value>Parameters</value>
-  </data>
-  <data name="m_hdrParams.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrParams.Name" xml:space="preserve">
-    <value>m_hdrParams</value>
-  </data>
-  <data name="&gt;&gt;m_hdrParams.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15074.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrParams.Parent" xml:space="preserve">
-    <value>m_tlpInput</value>
-  </data>
-  <data name="&gt;&gt;m_hdrParams.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_grid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_grid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 177</value>
-  </data>
-  <data name="m_grid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 142</value>
-  </data>
-  <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Name" xml:space="preserve">
-    <value>m_grid</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.gridShapeFunctionParameters, ScientificInterfaceShared, Version=6.6.15074.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
-    <value>m_tlpInput</value>
-  </data>
-  <data name="&gt;&gt;m_grid.ZOrder" xml:space="preserve">
-    <value>3</value>
   </data>
   <data name="m_tbxName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -495,6 +300,30 @@
   <data name="m_scMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
   </data>
+  <data name="m_controlpanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_controlpanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 26</value>
+  </data>
+  <data name="m_controlpanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 322</value>
+  </data>
+  <data name="m_controlpanel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_controlpanel.Name" xml:space="preserve">
+    <value>m_controlpanel</value>
+  </data>
+  <data name="&gt;&gt;m_controlpanel.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.ucChangeShapeType, ScientificInterfaceShared, Version=6.6.15082.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_controlpanel.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_controlpanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
@@ -551,6 +380,9 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>624, 401</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>640, 400</value>

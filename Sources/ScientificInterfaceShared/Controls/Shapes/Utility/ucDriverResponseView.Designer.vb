@@ -118,6 +118,8 @@ Partial Class ucDriverResponseView
         '
         'm_tlpControls
         '
+        Me.m_tlpControls.AutoSize = True
+        Me.m_tlpControls.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_tlpControls.ColumnCount = 7
         Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.m_tlpControls.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -136,11 +138,11 @@ Partial Class ucDriverResponseView
         Me.m_tlpControls.Controls.Add(Me.m_tbxMean, 1, 1)
         Me.m_tlpControls.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_tlpControls.Location = New System.Drawing.Point(0, 0)
-        Me.m_tlpControls.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_tlpControls.Margin = New System.Windows.Forms.Padding(0, 0, 0, 3)
         Me.m_tlpControls.Name = "m_tlpControls"
         Me.m_tlpControls.RowCount = 2
-        Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.m_tlpControls.Size = New System.Drawing.Size(367, 57)
         Me.m_tlpControls.TabIndex = 0
         '
@@ -149,7 +151,7 @@ Partial Class ucDriverResponseView
         Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_graph.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_graph.Location = New System.Drawing.Point(0, 63)
-        Me.m_graph.Margin = New System.Windows.Forms.Padding(0, 6, 0, 0)
+        Me.m_graph.Margin = New System.Windows.Forms.Padding(0, 3, 0, 0)
         Me.m_graph.Name = "m_graph"
         Me.m_graph.ScrollGrace = 0R
         Me.m_graph.ScrollMaxX = 0R
@@ -187,6 +189,7 @@ Partial Class ucDriverResponseView
         Me.m_tlpControls.ResumeLayout(False)
         Me.m_tlpControls.PerformLayout()
         Me.m_tlpBits.ResumeLayout(False)
+        Me.m_tlpBits.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
