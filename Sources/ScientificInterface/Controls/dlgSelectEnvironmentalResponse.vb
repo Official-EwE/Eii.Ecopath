@@ -115,6 +115,8 @@ Public Class dlgSelectEnvironmentalResponse
         Debug.Assert(Me.m_driver IsNot Nothing)
 
         Me.Text = cStringUtils.Localize(Me.Text, Me.m_driver.Name)
+        Me.m_changeshape.Visible = False
+        Me.m_graph.ShowShapeControls = False
 
     End Sub
 
@@ -123,17 +125,18 @@ Public Class dlgSelectEnvironmentalResponse
 #Region " Overrides "
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
+        Me.Visible = False
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
-
-        Me.SuspendLayout()
 
         Me.m_tslbFilter.Image = SharedResources.FilterHS
 
         ' Get the available shapes that can be applied
         For Each shape As cEnviroResponseFunction In Me.m_shapeManager
-            ' ToDo: duplicate shapes here
+            ' ToDo: work on cloned shape
+            'Me.m_lFFs.Add(DirectCast(shape.Clone(), cEnviroResponseFunction))
             Me.m_lFFs.Add(shape)
         Next
 
@@ -152,13 +155,11 @@ Public Class dlgSelectEnvironmentalResponse
         Me.m_tstbFilter.Text = p("filter", "")
         Me.m_tsbnCaseSensitive.Checked = (p("casesensitive") = "1")
 
-        Me.m_changeshape.Visible = False
-        Me.m_graph.ShowShapeControls = False
-
         Me.LoadAvailableShapes()
         Me.LoadAppliedShapes()
 
-        Me.ResumeLayout()
+        Me.CenterToScreen()
+        Me.Visible = True
 
     End Sub
 
@@ -177,6 +178,23 @@ Public Class dlgSelectEnvironmentalResponse
         Me.m_graph.Dispose()
         MyBase.OnFormClosed(e)
 
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Limit user interactions.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Protected Overrides Sub UpdateControls()
+
+        ' Can add only one shape
+        Me.m_btnAdd.Enabled = (Me.m_lvAllShapes.SelectedItems.Count = 1)
+        ' Can only remove selected shape(s)
+        Me.m_btnRemove.Enabled = (Me.Shape IsNot Nothing)
+
+        Me.m_btnChangeShape.Enabled = (Me.Shape IsNot Nothing)
+
+        If (Me.Shape Is Nothing) And Me.m_changeshape.Visible Then Me.m_changeshape.Visible = False
     End Sub
 
 #End Region ' Overrides
@@ -227,15 +245,6 @@ Public Class dlgSelectEnvironmentalResponse
         End Try
     End Sub
 
-    Private Sub OnAppliedShapesSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs)
-
-        Try
-            Me.UpdateControls()
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
     Private Sub OnAvailableShapesSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
         Handles m_lvAllShapes.SelectedIndexChanged
         Try
@@ -246,16 +255,36 @@ Public Class dlgSelectEnvironmentalResponse
     End Sub
 
     Private Sub OnShapeReshaped() Handles m_changeshape.OnShapeFunctionChanged
-        ' Refresh thumbnails
-        Me.m_graph.Update()
+        ' Update shape
+        Dim fn As IShapeFunction = Me.m_changeshape.SelectedShapeFunction
+        If (fn IsNot Nothing And Me.Shape IsNot Nothing) Then
+            fn.Apply(Me.Shape)
+        End If
+        ' Refresh thumbnail
+        Me.UpdateShapeImage(Me.m_lvAllShapes.LargeImageList, Me.Shape)
+        Me.m_graph.Shape = Me.Shape
+        ' Totally redraw
+        Me.Invalidate()
     End Sub
 
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
 
-        ' ToDo: update original shapes from changed duplicates here
-        Me.UpdateSelectedResponseDriver()
+        Me.DialogResult = DialogResult.OK
+
+        If Me.UpdateSelectedResponseDriver() Then
+            ' ToDo: update original shapes from changes made to the cloned shapes
+            'For i As Integer = 0 To Me.m_lFFs.Count - 1
+            '    Dim src As cEnviroResponseFunction = Me.m_lFFs(i)
+            '    Dim tgt As cForcingFunction = Me.m_shapeManager.Item(i)
+            '    tgt.LockUpdates()
+            '    tgt.ShapeData = src.ShapeData
+            '    tgt.ShapeFunctionType = src.ShapeFunctionType
+            '    tgt.ShapeFunctionParameters = src.ShapeFunctionParameters
+            '    tgt.UnlockUpdates()
+            'Next
+            Me.m_shapeManager.Update()
+        End If
         Me.Close()
     End Sub
 
@@ -325,31 +354,24 @@ Public Class dlgSelectEnvironmentalResponse
 
     Private ReadOnly Property Modeltype As eModelType
 
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Limit user interactions.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Protected Overrides Sub UpdateControls()
-
-        ' Can add only one shape
-        Me.m_btnAdd.Enabled = (Me.m_lvAllShapes.SelectedItems.Count = 1)
-        ' Can only remove selected shape(s)
-        Me.m_btnRemove.Enabled = (Me.Shape IsNot Nothing)
-
-    End Sub
-
-    Private Sub GenerateShapeThumbnails(ByVal images As ImageList)
+    Private Sub GenerateShapeThumbnails(ByVal il As ImageList)
 
         Dim xMax As Integer = Me.m_shapeGUI.XAxisMaxValue
 
         ' For all selectable shapes
         For Each shape As cForcingFunction In Me.m_lFFs
-            ' Create and Add the thumbnail image
-            images.Images.Add(cShapeImage.IconImage(Me.UIContext, shape, Me.m_shapeGUI.Color, eSketchDrawModeTypes.Fill,
-                                                   xMax, DirectCast(shape, cEnviroResponseFunction).YMax, False))
+            ' Create and add the thumbnail image
+            il.Images.Add(cShapeImage.IconImage(Me.UIContext, shape, Me.m_shapeGUI.Color, eSketchDrawModeTypes.Fill, xMax, DirectCast(shape, cEnviroResponseFunction).YMax, False))
         Next
 
+    End Sub
+
+    Private Sub UpdateShapeImage(ByVal il As ImageList, shape As cEnviroResponseFunction)
+        Dim iShape As Integer = Me.m_lFFs.IndexOf(shape)
+        Dim xMax As Integer = Me.m_shapeGUI.XAxisMaxValue
+        If (iShape < 0) Then Return
+        il.Images.Item(iShape) = cShapeImage.IconImage(Me.UIContext, shape, Me.m_shapeGUI.Color, eSketchDrawModeTypes.Fill, xMax, DirectCast(shape, cEnviroResponseFunction).YMax, False)
+        Me.m_lvAllShapes.Invalidate()
     End Sub
 
     Private Sub LoadAvailableShapes()
