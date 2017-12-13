@@ -59,10 +59,14 @@ Partial Class dlgSelectEnvironmentalResponse
         Me.m_tsbnCaseSensitive = New System.Windows.Forms.ToolStripButton()
         Me.m_tstbFilter = New System.Windows.Forms.ToolStripTextBox()
         Me.m_tslbFilter = New System.Windows.Forms.ToolStripLabel()
+        Me.m_plControl = New System.Windows.Forms.Panel()
+        Me.m_btnChangeShape = New System.Windows.Forms.Button()
+        Me.m_changeshape = New ScientificInterfaceShared.Controls.ucChangeShapeType()
         Me.m_tlMain.SuspendLayout()
         Me.m_plButtons.SuspendLayout()
         Me.m_tlpFunctions.SuspendLayout()
         Me.m_tsMain.SuspendLayout()
+        Me.m_plControl.SuspendLayout()
         Me.SuspendLayout()
         '
         'OK_Button
@@ -107,6 +111,8 @@ Partial Class dlgSelectEnvironmentalResponse
         Me.m_tlMain.Controls.Add(Me.m_hdrApplied, 2, 0)
         Me.m_tlMain.Controls.Add(Me.m_graph, 2, 1)
         Me.m_tlMain.Controls.Add(Me.m_tlpFunctions, 0, 1)
+        Me.m_tlMain.Controls.Add(Me.m_plControl, 2, 2)
+        Me.m_tlMain.Controls.Add(Me.m_changeshape, 4, 1)
         Me.m_tlMain.Name = "m_tlMain"
         '
         'm_plButtons
@@ -138,6 +144,7 @@ Partial Class dlgSelectEnvironmentalResponse
         Me.m_graph.Driver = Nothing
         Me.m_graph.Name = "m_graph"
         Me.m_graph.Shape = Nothing
+        Me.m_graph.ShowShapeControls = True
         Me.m_graph.UIContext = Nothing
         '
         'm_tlpFunctions
@@ -174,9 +181,30 @@ Partial Class dlgSelectEnvironmentalResponse
         '
         'm_tslbFilter
         '
+        Me.m_tslbFilter.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.m_tslbFilter.Name = "m_tslbFilter"
         Me.m_tslbFilter.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
         resources.ApplyResources(Me.m_tslbFilter, "m_tslbFilter")
+        '
+        'm_plControl
+        '
+        Me.m_plControl.Controls.Add(Me.m_btnChangeShape)
+        Me.m_plControl.Controls.Add(Me.OK_Button)
+        Me.m_plControl.Controls.Add(Me.Cancel_Button)
+        resources.ApplyResources(Me.m_plControl, "m_plControl")
+        Me.m_plControl.Name = "m_plControl"
+        '
+        'm_btnChangeShape
+        '
+        resources.ApplyResources(Me.m_btnChangeShape, "m_btnChangeShape")
+        Me.m_btnChangeShape.Name = "m_btnChangeShape"
+        '
+        'm_changeshape
+        '
+        resources.ApplyResources(Me.m_changeshape, "m_changeshape")
+        Me.m_changeshape.Name = "m_changeshape"
+        Me.m_changeshape.Shape = Nothing
+        Me.m_changeshape.UIContext = Nothing
         '
         'dlgSelectEnvironmentalResponse
         '
@@ -185,9 +213,7 @@ Partial Class dlgSelectEnvironmentalResponse
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
         Me.Controls.Add(Me.m_tlMain)
-        Me.Controls.Add(Me.OK_Button)
-        Me.Controls.Add(Me.Cancel_Button)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgSelectEnvironmentalResponse"
@@ -199,7 +225,9 @@ Partial Class dlgSelectEnvironmentalResponse
         Me.m_tlpFunctions.PerformLayout()
         Me.m_tsMain.ResumeLayout(False)
         Me.m_tsMain.PerformLayout()
+        Me.m_plControl.ResumeLayout(False)
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
@@ -218,4 +246,7 @@ Partial Class dlgSelectEnvironmentalResponse
     Private WithEvents m_graph As ScientificInterfaceShared.ucDriverResponseView
     Private WithEvents m_tlpFunctions As TableLayoutPanel
     Private WithEvents m_tslbFilter As ToolStripLabel
+    Private WithEvents m_btnChangeShape As Button
+    Friend WithEvents m_plControl As Panel
+    Private WithEvents m_changeshape As ucChangeShapeType
 End Class

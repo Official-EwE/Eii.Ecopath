@@ -67,11 +67,14 @@ Namespace Controls
 
             ' Init
             Me.m_uic = uic
-            Me.m_shape = shape
-            Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape, uic)
-            Me.m_grid.UIContext = uic
+            Me.m_controlpanel.UIContext = uic
 
-            Debug.Print("Change Shape " + Me.m_shape.ToCSVString())
+            Me.m_shape = shape
+            Me.m_controlpanel.Shape = shape
+
+            Me.m_handler = cShapeGUIHandler.GetShapeUIHandler(shape, uic)
+
+            'Debug.Print("Change Shape " + Me.m_shape.ToCSVString())
 
         End Sub
 
@@ -85,45 +88,16 @@ Namespace Controls
             ' Add shape name 
             Me.m_tbxName.Text = Me.m_shape.Name
 
-            ' Show available options
-            For Each sft As IShapeFunction In cShapeFunctionFactory.GetShapeFunctions(Me.m_shape, Me.m_uic.Core.PluginManager)
-                Me.m_lbShapeFunctionTypes.Items.Add(sft)
-                If (TypeOf sft Is IShapeFunction) Then
-                    If (DirectCast(sft, IShapeFunction).ShapeFunctionType = Me.m_shape.ShapeFunctionType) Then
-                        Me.SelectedShapeFunction = sft
-                    End If
-                End If
-            Next
-
-            ' Initialize shape function
-            Me.m_lbShapeFunctionTypes.SelectedIndex = Me.GetShapeTypeIndex(Me.m_shape.ShapeFunctionType)
-
-            AddHandler Me.m_grid.OnShapeFunctionChanged, AddressOf OnShapeParametersChanged
-
             Me.UpdatePreview()
             Me.UpdateControls()
             Me.CenterToScreen()
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-
-            RemoveHandler Me.m_grid.OnShapeFunctionChanged, AddressOf OnShapeParametersChanged
-            Me.SelectedShapeFunction = Nothing
-
-            MyBase.OnFormClosed(e)
-
-        End Sub
-
         Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btDefaults.Click
 
-            Dim template As IShapeFunction = Me.SelectedShapeFunction()
-            If (template Is Nothing) Then Return
-
-            template.Defaults()
-            Me.m_grid.ShapeFunction = template
-
+            Me.m_controlpanel.Defaults()
             Me.UpdatePreview()
 
         End Sub
@@ -131,7 +105,7 @@ Namespace Controls
         Private Sub OnOk(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnOk.Click
 
-            Dim fs As IShapeFunction = Me.SelectedShapeFunction()
+            Dim fs As IShapeFunction = Me.m_controlpanel.SelectedShapeFunction()
             If (fs Is Nothing) Then Return
 
             Me.m_shape.Name = Me.m_tbxName.Text
@@ -148,25 +122,6 @@ Namespace Controls
             Me.Close()
         End Sub
 
-        Private Sub OnFormatShapeFunction(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
-            Handles m_lbShapeFunctionTypes.Format
-            Dim fmt As New cShapeFunctionFormatter()
-            e.Value = fmt.GetDescriptor(e.ListItem)
-        End Sub
-
-        Private Sub OnShapeFunctionTypeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_lbShapeFunctionTypes.SelectedIndexChanged
-
-            Me.SelectedShapeFunction = DirectCast(Me.m_lbShapeFunctionTypes.SelectedItem, IShapeFunction)
-        End Sub
-
-        Private Sub OnShapeParametersChanged()
-
-            Me.UpdatePreview()
-            Debug.Print("OnShapeParametersChanged " + Me.m_shape.ToCSVString())
-
-        End Sub
-
         Private Sub OnNameChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_tbxName.TextChanged
 
@@ -174,12 +129,17 @@ Namespace Controls
 
         End Sub
 
+        Private Sub OnShapeFunctionChanged() Handles m_controlpanel.OnShapeFunctionChanged
+            Me.UpdatePreview()
+            Debug.Print("OnShapeFunctionChanged " + Me.m_shape.ToCSVString())
+        End Sub
+
         Private Sub OnPaintPreview(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) _
             Handles m_plPreview.Paint
 
             Try
 
-                Dim fs As IShapeFunction = Me.SelectedShapeFunction()
+                Dim fs As IShapeFunction = Me.m_controlpanel.SelectedShapeFunction()
                 If (fs Is Nothing) Then Return
 
                 Dim sDataMax As Single = 0.0
@@ -207,21 +167,10 @@ Namespace Controls
                     g.FillRectangle(br, New Rectangle(x, 0, rc.Width, rc.Height))
                 End Using
 
-                'Some response functions can update their parameters based on the inputs 
-                '(Sigmoid shapes can update Steep parameter based on Xopt.)
-                'Instead of checking the type or a flag 
-                'just udpate all the shape types...
-                Me.m_grid.Update()
-
             Catch ex As Exception
 
             End Try
 
-        End Sub
-
-        Private Sub OnRefreshShape(sender As System.Object, e As System.EventArgs)
-
-            Me.UpdatePreview()
         End Sub
 
 #End Region ' Events
@@ -234,17 +183,6 @@ Namespace Controls
             Me.m_btnOk.Enabled = bHasName
 
         End Sub
-
-        Private Property SelectedShapeFunction As IShapeFunction
-            Get
-                Return DirectCast(Me.m_lbShapeFunctionTypes.SelectedItem, IShapeFunction)
-            End Get
-            Set(template As IShapeFunction)
-                Me.m_lbShapeFunctionTypes.SelectedItem = template
-                Me.m_grid.ShapeFunction = template
-                Me.UpdatePreview()
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -267,20 +205,6 @@ Namespace Controls
                 Return Me.m_uic.Core.nEcosimYears * cCore.N_MONTHS
             End If
             Return Me.m_shape.nPoints
-        End Function
-
-        Private Function GetShapeTypeIndex(shapeType As Long) As Integer
-
-            ' JS 3dec14: do not rely on for each to return items in a known order
-            'For Each sft As Object In Me.m_lbShapeFunctionTypes.Items
-            For iShp As Integer = 0 To Me.m_lbShapeFunctionTypes.Items.Count - 1
-                Dim sft As IShapeFunction = DirectCast(Me.m_lbShapeFunctionTypes.Items(iShp), IShapeFunction)
-                If (sft.ShapeFunctionType = shapeType) Then
-                    Return iShp
-                End If
-            Next
-            Return 0
-
         End Function
 
 #End Region ' Internals

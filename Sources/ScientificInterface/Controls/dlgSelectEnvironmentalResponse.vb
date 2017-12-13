@@ -38,6 +38,9 @@ Imports ScientificInterface
 
 #End Region ' Imports
 
+' ToDo: In order to enable in-place shape editing, all shapes need to be duplicated,
+'       and on OK, changed shapes will need to be applied. That is a big change
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Dialog to select an environmental response for a given driver and group(s).
@@ -48,6 +51,8 @@ Imports ScientificInterface
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class dlgSelectEnvironmentalResponse
+
+#Region " Private vars "
 
     Private Enum eModelType As Integer
         NotSet = 0
@@ -63,6 +68,8 @@ Public Class dlgSelectEnvironmentalResponse
 
     Private m_seltype As eEnvironmentalResponseSelectionType = eEnvironmentalResponseSelectionType.DriverGroup
     Private m_drivermanager As IEnvironmentalResponseManager = Nothing
+
+#End Region ' Private vars
 
 #Region " Construction "
 
@@ -85,6 +92,8 @@ Public Class dlgSelectEnvironmentalResponse
         Me.UIContext = uic
 
         Me.InitializeComponent()
+
+        Me.m_changeshape.UIContext = uic
 
         If (TypeOf driverManager Is cEcosimEnviroResponseManager) Then
             Me.Modeltype = eModelType.Ecosim
@@ -118,10 +127,13 @@ Public Class dlgSelectEnvironmentalResponse
 
         If (Me.UIContext Is Nothing) Then Return
 
+        Me.SuspendLayout()
+
         Me.m_tslbFilter.Image = SharedResources.FilterHS
 
         ' Get the available shapes that can be applied
         For Each shape As cEnviroResponseFunction In Me.m_shapeManager
+            ' ToDo: duplicate shapes here
             Me.m_lFFs.Add(shape)
         Next
 
@@ -140,8 +152,13 @@ Public Class dlgSelectEnvironmentalResponse
         Me.m_tstbFilter.Text = p("filter", "")
         Me.m_tsbnCaseSensitive.Checked = (p("casesensitive") = "1")
 
+        Me.m_changeshape.Visible = False
+        Me.m_graph.ShowShapeControls = False
+
         Me.LoadAvailableShapes()
         Me.LoadAppliedShapes()
+
+        Me.ResumeLayout()
 
     End Sub
 
@@ -228,9 +245,16 @@ Public Class dlgSelectEnvironmentalResponse
         End Try
     End Sub
 
+    Private Sub OnShapeReshaped() Handles m_changeshape.OnShapeFunctionChanged
+        ' Refresh thumbnails
+        Me.m_graph.Update()
+    End Sub
+
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
+
+        ' ToDo: update original shapes from changed duplicates here
         Me.UpdateSelectedResponseDriver()
         Me.Close()
     End Sub
@@ -294,6 +318,7 @@ Public Class dlgSelectEnvironmentalResponse
         End Get
         Set(value As cEnviroResponseFunction)
             Me.m_graph.Shape = value
+            Me.m_changeshape.Shape = value
             Me.UpdateControls()
         End Set
     End Property
@@ -453,6 +478,10 @@ Public Class dlgSelectEnvironmentalResponse
         If (Me.Shape Is Nothing) Then Return cCore.NULL_VALUE
         Return Me.Shape.Index
     End Function
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles m_btnChangeShape.Click
+        Me.m_changeshape.Visible = Not Me.m_changeshape.Visible
+    End Sub
 
 #End Region
 

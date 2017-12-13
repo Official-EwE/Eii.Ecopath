@@ -153,6 +153,23 @@ Public Class ucDriverResponseView
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get/set whether the shape controls should be show, such as the 'change shape' 
+    ''' button and the controls to alter the shape mean.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property ShowShapeControls As Boolean
+        Get
+            Return Me.m_btnChangeShape.Visible
+        End Get
+        Set(value As Boolean)
+            Me.m_btnChangeShape.Visible = value
+            Me.m_lblMean.Visible = value
+            Me.m_tbxMean.Visible = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Get/set the <see cref="cEnviroResponseFunction"/> to display in the control.
     ''' </summary>
     ''' -----------------------------------------------------------------------
