@@ -178,13 +178,13 @@
     <value>Fill</value>
   </data>
   <data name="m_lvAllShapes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 28</value>
+    <value>0, 32</value>
   </data>
   <data name="m_lvAllShapes.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 3, 0, 0</value>
   </data>
   <data name="m_lvAllShapes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 287</value>
+    <value>200, 283</value>
   </data>
   <data name="m_lvAllShapes.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -491,6 +491,12 @@
   <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="m_tsMain.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 4</value>
+  </data>
+  <data name="m_tsMain.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
   <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>200, 25</value>
   </data>
@@ -609,10 +615,13 @@
     <value>Fill</value>
   </data>
   <data name="m_changeshape.Location" type="System.Drawing.Point, System.Drawing">
-    <value>668, 33</value>
+    <value>665, 30</value>
+  </data>
+  <data name="m_changeshape.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_changeshape.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 309</value>
+    <value>200, 315</value>
   </data>
   <data name="m_changeshape.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -642,7 +651,7 @@
     <value>3</value>
   </data>
   <data name="m_tlMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>850, 387</value>
+    <value>877, 387</value>
   </data>
   <data name="m_tlMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
