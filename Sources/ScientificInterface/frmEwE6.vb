@@ -4881,7 +4881,7 @@ Public Class frmEwE6
 
             Select Case e.PropertyName
 
-                Case "StatusMaxMessages", "StatusShowTime"
+                Case "StatusMaxMessages", "StatusShowTime", "StatusSortNewestFirst"
                     If (Me.m_messageHistory IsNot Nothing) Then Me.m_messageHistory.Refresh()
 
                 Case "MdbRecentlyUsedCount"

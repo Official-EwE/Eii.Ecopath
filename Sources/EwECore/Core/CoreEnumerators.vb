@@ -327,6 +327,7 @@ Public Enum eTimeSeriesType As Integer
     AverageWeight = 7
     ' EcotracerConcRel = 8
     ' EcotracerConcAbs = 9
+#If DISCARDS Then
     ''' <summary>Absolute discard proportion (fleet x group, driver)</summary>
     DiscardProportion = 10
     ''' <summary>Absolute discard mortality rate (fleet x group, driver)</summary>
@@ -335,6 +336,7 @@ Public Enum eTimeSeriesType As Integer
     Landings = 12
     ''' <summary>Absolute discards (fleet x group, reference)</summary>
     Discards = 13
+#End If
     FishingMortalityRef = 104
     NotSet = cCore.NULL_VALUE
 End Enum

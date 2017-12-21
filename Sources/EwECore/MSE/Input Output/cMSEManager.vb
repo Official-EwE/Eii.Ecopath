@@ -411,6 +411,7 @@ Namespace MSE
         Public Function ValidateRun() As Boolean
             Dim bOK As Boolean = True
 
+#If DISCARDS Then
             For iTimeSeries As Integer = 1 To m_core.nTimeSeries
                 If m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardProportion Or m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardMortality Then
                     If m_core.EcosimTimeSeries(iTimeSeries).Enabled Then
@@ -425,6 +426,7 @@ Namespace MSE
                     End If
                 End If
             Next
+#End If
 
             If Me.ModelParameters.UseLPSolution Then
                 'When running the LP solution

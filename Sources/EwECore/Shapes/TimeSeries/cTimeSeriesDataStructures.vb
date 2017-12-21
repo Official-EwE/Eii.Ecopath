@@ -842,7 +842,7 @@ Public Class cTimeSeriesDataStructures
                             'jb EwE6 does not have split pools! I'm not sure if this also applies to multi stanza groups??
                             If DatVal(iDatPt, iDType) > 0 Then Iobs = Iobs + 1
 
-
+#If discards Then
                         Case eTimeSeriesType.DiscardMortality
 
                             Dim value As Single = DatVal(iDatPt, iDType)
@@ -863,6 +863,7 @@ Public Class cTimeSeriesDataStructures
 
                         Case eTimeSeriesType.Discards
                             Iobs = Iobs + 1
+#End If
 
 
                     End Select

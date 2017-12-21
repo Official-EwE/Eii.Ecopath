@@ -89,8 +89,9 @@ Namespace Other
             Me.m_cbShowHost.Checked = My.Settings.ShowHostInfo
             Me.m_cbUseExternalBrowser.Checked = My.Settings.UseExternalBrowser
 
-            Me.m_cbShowVariableValidations.Checked = My.Settings.ShowVariableValidations
             Me.m_cbShowTime.Checked = My.Settings.StatusShowTime
+            Me.m_cbShowNewestFirst.Checked = My.Settings.StatusSortNewestFirst
+            Me.m_cbShowVariableValidations.Checked = My.Settings.StatusShowVariableValidations
             Me.m_tbxAuthor.Text = My.Settings.Author
             Me.m_tbxContact.Text = My.Settings.Contact
 
@@ -129,7 +130,8 @@ Namespace Other
                 My.Settings.MdbRecentlyUsedCount = CInt(Me.m_nudMRU.Value)
                 My.Settings.StatusMaxMessages = CInt(Me.m_nudMaxNumMessages.Value)
                 My.Settings.StatusShowTime = Me.m_cbShowTime.Checked
-                My.Settings.ShowVariableValidations = Me.m_cbShowVariableValidations.Checked
+                My.Settings.StatusSortNewestFirst = Me.m_cbShowNewestFirst.Checked
+                My.Settings.StatusShowVariableValidations = Me.m_cbShowVariableValidations.Checked
                 My.Settings.ShowHostInfo = Me.m_cbShowHost.Checked
                 My.Settings.LogVerboseLevel = DirectCast(Me.m_fpVerboseLevel.Value, eVerboseLevel)
                 My.Settings.Author = Me.m_tbxAuthor.Text
@@ -155,7 +157,8 @@ Namespace Other
                 Me.m_nudMaxNumMessages.Value = CInt(My.Settings.GetDefaultValue("StatusMaxMessages"))
                 Me.m_cbShowHost.Checked = CBool(My.Settings.GetDefaultValue("ShowHostInfo"))
                 Me.m_cbShowTime.Checked = CBool(My.Settings.GetDefaultValue("StatusShowTime"))
-                Me.m_cbShowVariableValidations.Checked = CBool(My.Settings.GetDefaultValue("ShowVariableValidations"))
+                Me.m_cbShowNewestFirst.Checked = CBool(My.Settings.GetDefaultValue("StatusSortNewestFirst"))
+                Me.m_cbShowVariableValidations.Checked = CBool(My.Settings.GetDefaultValue("StatusShowVariableValidations"))
                 Me.m_fpVerboseLevel.Value = My.Settings.GetDefaultValue("LogVerboseLevel")
                 Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
                 Me.m_cbUseExternalBrowser.Checked = CBool(My.Settings.GetDefaultValue("UseExternalBrowser"))
