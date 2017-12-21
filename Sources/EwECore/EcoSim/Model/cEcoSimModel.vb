@@ -106,6 +106,7 @@ Namespace Ecosim
         Private MakeTestData As Boolean
         Private AbortRun As Boolean
         Private IsDatWtSet As Boolean
+        Friend IsDatTypeDriver() As Boolean
 
         Friend A(,) As Single
 
@@ -353,6 +354,18 @@ Namespace Ecosim
                 'Make sure FishMGear and relQ are set correctly 
                 Me.debugTestRelQFishMGear()
 #End If
+                ReDim IsDatTypeDriver([Enum].GetValues(GetType(eTimeSeriesType)).Length)
+                IsDatTypeDriver(eTimeSeriesType.BiomassRel) = True
+                IsDatTypeDriver(eTimeSeriesType.BiomassAbs) = True
+                IsDatTypeDriver(eTimeSeriesType.TotalMortality) = True
+                IsDatTypeDriver(eTimeSeriesType.AverageWeight) = True
+                IsDatTypeDriver(eTimeSeriesType.Catches) = True
+                IsDatTypeDriver(eTimeSeriesType.CatchesRel) = True
+                IsDatTypeDriver(eTimeSeriesType.CatchesForcing) = True
+#If DISCARDS Then
+                IsDatTypeDriver(eTimeSeriesType.Discards) = True
+#End If
+
 
                 If bFullInitialization Then
 
@@ -846,7 +859,7 @@ Namespace Ecosim
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             For iyr = 1 To NumberOfYears + ExtraTime
                 'Constrain the Ecosim year index to the run length passed in as the arguement NumberOfYears
-                iyf = if(iyr <= NumberOfYears, iyr, NumberOfYears)
+                iyf = If(iyr <= NumberOfYears, iyr, NumberOfYears)
 
                 'set Fgear() fishing effort at timestep that can be modified by a search routine
                 Me.SetFGear(Fgear, RelFopt, QYear, iyr)
@@ -1433,7 +1446,7 @@ Namespace Ecosim
             'Constrain the year index to the Ecosim run length
             'When run for the Fishing Policy Search Ecosim is run past the end of the run length
             'This makes sure the iYear index is not out of bounds
-            Dim iyf As Integer = CInt(if(iYear <= Me.m_Data.NumYears, iYear, Me.m_Data.NumYears))
+            Dim iyf As Integer = CInt(If(iYear <= Me.m_Data.NumYears, iYear, Me.m_Data.NumYears))
 
             'Set Fgear() to values entered by the user
             For iFlt As Integer = 1 To Me.m_EPData.NumFleet
@@ -2372,16 +2385,7 @@ Namespace Ecosim
                     If Me.m_RefData.setRefDataIndex(iDYear, iTimeStep, iMonth, iYear) Then
 
                         Debug.Assert(iDYear <> cCore.NULL_VALUE, "Warning: Ecosim.AccumulateDataInfo() failed to find a valid reference data index.")
-                        'If m_RefData.DatVal(iDType)(iDYear) > 0 And _
-                        If m_RefData.DatVal(iDYear, iDType) > 0 And
-                                        (m_RefData.DatType(iDType) = eTimeSeriesType.BiomassRel Or
-                                         m_RefData.DatType(iDType) = eTimeSeriesType.BiomassAbs Or
-                                         m_RefData.DatType(iDType) = eTimeSeriesType.TotalMortality Or
-                                         m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight Or
-                                         m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or
-                                         m_RefData.DatType(iDType) = eTimeSeriesType.CatchesRel Or
-                                         m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing) _
-                                         Or m_RefData.DatType(iDType) = eTimeSeriesType.Discards Then
+                        If m_RefData.DatVal(iDYear, iDType) > 0 And IsDatTypeDriver(m_RefData.DatType(iDType)) Then
 
                             Zstat = 0
                             m_RefData.Iobs += 1
@@ -2431,6 +2435,7 @@ Namespace Ecosim
                                         End If
 
                                     End If
+#If DISCARDS Then
                                 Case eTimeSeriesType.Discards
 
                                     ' PoolForceDiscardMort(DatPool(iDType), DatPoolSec(iDType), iDatPt) = value
@@ -2447,7 +2452,7 @@ Namespace Ecosim
                                     Zstat = CSng(Math.Log(obsDiscard / predDiscard))
                                     m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(obsDiscard))
                                     '  End If
-
+#End If
 
                             End Select
 
@@ -3534,13 +3539,7 @@ Namespace Ecosim
                 iYear = m_RefData.DatYear(iDatPt) - m_RefData.DatYear(1)
                 For iDType = 1 To m_RefData.NdatType
                     If (m_RefData.DatVal(iDatPt, iDType) > 0 And iYear < m_Data.NumYears + 1 And
-                       (m_RefData.DatType(iDType) = eTimeSeriesType.BiomassRel Or
-                        m_RefData.DatType(iDType) = eTimeSeriesType.BiomassAbs Or
-                        m_RefData.DatType(iDType) = eTimeSeriesType.TotalMortality Or
-                        m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or
-                        m_RefData.DatType(iDType) = eTimeSeriesType.CatchesRel Or
-                        m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing Or
-                        m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight)) Or m_RefData.DatType(iDType) = eTimeSeriesType.Discards Then
+                       IsDatTypeDriver(m_RefData.DatType(iDType))) Then
 
                         m_RefData.Iobs = m_RefData.Iobs + 1
                         'following debug.print checks to insure m_refdata.Iobs data alignment has been

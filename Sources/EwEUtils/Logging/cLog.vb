@@ -211,7 +211,7 @@ Namespace Core
 
             If (cLog.m_logwriter Is Nothing) Then
                 Try
-                    cLog.m_logwriter = Activator.CreateInstance(cLog.m_typeLogWriter)
+                    cLog.m_logwriter = CType(Activator.CreateInstance(cLog.m_typeLogWriter), cXMLLogWriter)
                 Catch ex As Exception
                     ' Fallback
                     Debug.Assert(False, ex.Message)

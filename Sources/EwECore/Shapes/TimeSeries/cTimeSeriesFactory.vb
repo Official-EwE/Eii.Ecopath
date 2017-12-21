@@ -66,11 +66,13 @@ Public Class cTimeSeriesFactory
             Case eTimeSeriesType.FishingEffort
                 Return eTimeSeriesCategoryType.Fleet
 
+#If DISCARDS Then
             Case eTimeSeriesType.DiscardMortality,
                  eTimeSeriesType.DiscardProportion,
                  eTimeSeriesType.Landings,
                  eTimeSeriesType.Discards
                 Return eTimeSeriesCategoryType.FleetGroup
+#End If
 
             Case Else
                 Return eTimeSeriesCategoryType.Group

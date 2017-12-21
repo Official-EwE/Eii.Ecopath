@@ -455,7 +455,7 @@ Public Class cMessageHistory
                     Return
                 Case eMessageImportance.Maintenance
                     ' Validation messages may be shown
-                    If (msg.Type <> eMessageType.DataValidation) Or (My.Settings.ShowVariableValidations = False) Then
+                    If (msg.Type <> eMessageType.DataValidation) Or (My.Settings.StatusShowVariableValidations = False) Then
                         Return
                     End If
 

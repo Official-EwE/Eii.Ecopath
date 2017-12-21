@@ -205,18 +205,11 @@ Public MustInherit Class cTimeSeries
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function IsReference() As Boolean
-        Return (Me.m_timeSeriesType = eTimeSeriesType.BiomassRel) Or
-               (Me.m_timeSeriesType = eTimeSeriesType.BiomassAbs) Or
-               (Me.m_timeSeriesType = eTimeSeriesType.TotalMortality) Or
-               (Me.m_timeSeriesType = eTimeSeriesType.FishingMortalityRef) Or
-               (Me.m_timeSeriesType = eTimeSeriesType.Catches) Or
-               (Me.m_timeSeriesType = eTimeSeriesType.CatchesRel) Or
-               (Me.m_timeSeriesType = eTimeSeriesType.Landings) Or
-               (Me.m_timeSeriesType = eTimeSeriesType.Discards)
+        Return Not Me.IsDriver()
     End Function
 
     Public Function IsDriver() As Boolean
-        Return Not Me.IsReference()
+        Return Me.m_core.m_EcoSim.IsDatTypeDriver(Me.m_timeSeriesType)
     End Function
 
     Public Function IsRelative() As Boolean
@@ -231,10 +224,14 @@ Public MustInherit Class cTimeSeries
 
     <Obsolete("Remove when time series properly use cCore.NULL_VALUE")>
     Public Function SupportsNull() As Boolean
+#If DISCARDS Then
         Return Me.m_timeSeriesType = eTimeSeriesType.DiscardMortality Or
                Me.m_timeSeriesType = eTimeSeriesType.DiscardProportion Or
                Me.m_timeSeriesType = eTimeSeriesType.Landings Or
                Me.m_timeSeriesType = eTimeSeriesType.Discards
+#Else
+        Return False
+#End If
     End Function
 
     ''' -----------------------------------------------------------------------

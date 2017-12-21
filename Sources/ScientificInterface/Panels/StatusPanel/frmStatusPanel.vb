@@ -317,6 +317,7 @@ Public Class frmStatusPanel
 
         Dim iMaxMessages As Integer = Math.Max(10, Math.Min(200, My.Settings.StatusMaxMessages))
         Dim bSuppressChildren As Boolean = False
+        Dim bDescending As Boolean = My.Settings.StatusSortNewestFirst
 
         ' Prepare treenode
         Dim tnMessage As TreeNode = New cNavigateTreeview.cHyperlinkTreeNode(Me.GetLogText(item), item.Hyperlink, item.Time)
@@ -333,13 +334,23 @@ Public Class frmStatusPanel
         If (tnParent Is Nothing) Then
             ' #Yes: add tnMessage as a master node to the tree view
             Try
-                ' Add node(s) to the TOP of the list
-                Me.m_tvStatus.Nodes.Insert(0, tnMessage)
+                ' Add node
+                If (bDescending = True) Then
+                    Me.m_tvStatus.Nodes.Insert(0, tnMessage)
+                Else
+                    Me.m_tvStatus.Nodes.Add(tnMessage)
+                End If
+
                 ' Truncate log size
                 While (Me.m_tvStatus.Nodes.Count = iMaxMessages)
-                    ' Remove old messages from the bottom of the list
-                    Me.m_tvStatus.Nodes.RemoveAt(iMaxMessages - 1)
+                    ' Remove extra old message(s) 
+                    If (bDescending = True) Then
+                        Me.m_tvStatus.Nodes.RemoveAt(iMaxMessages - 1)
+                    Else
+                        Me.m_tvStatus.Nodes.RemoveAt(0)
+                    End If
                 End While
+
                 ' JS 10feb2010: ensure visible not always seem to do reveal the newest item
                 ' tnMessage.EnsureVisible()
                 Me.m_tvStatus.TopNode = tnMessage

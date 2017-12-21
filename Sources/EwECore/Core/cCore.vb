@@ -1785,11 +1785,13 @@ Public Class cCore
                 status = eStatusFlags.ErrorEncountered
                 strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, fts.FleetIndex)
             End If
+#If DISCARDS Then
             If (fts.TimeSeriesType = eTimeSeriesType.DiscardMortality Or fts.TimeSeriesType = eTimeSeriesType.DiscardProportion) And
                (fts.GroupIndex <= 0 Or fts.GroupIndex > nGroups) Then
                 status = eStatusFlags.ErrorEncountered
                 strStatus = cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, fts.GroupIndex)
             End If
+#End If
         End If
 
         ts.ValidationStatus = status

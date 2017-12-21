@@ -53,6 +53,7 @@ Namespace Other
             Me.m_btnViewLogFileDir = New System.Windows.Forms.Button()
             Me.m_cbShowVariableValidations = New System.Windows.Forms.CheckBox()
             Me.m_cbUseExternalBrowser = New System.Windows.Forms.CheckBox()
+            Me.m_cbShowNewestFirst = New System.Windows.Forms.CheckBox()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -175,6 +176,12 @@ Namespace Other
             Me.m_cbUseExternalBrowser.Name = "m_cbUseExternalBrowser"
             Me.m_cbUseExternalBrowser.UseVisualStyleBackColor = True
             '
+            'm_cbShowNewestFirst
+            '
+            resources.ApplyResources(Me.m_cbShowNewestFirst, "m_cbShowNewestFirst")
+            Me.m_cbShowNewestFirst.Name = "m_cbShowNewestFirst"
+            Me.m_cbShowNewestFirst.UseVisualStyleBackColor = True
+            '
             'ucOptionsGeneral
             '
             resources.ApplyResources(Me, "$this")
@@ -184,6 +191,7 @@ Namespace Other
             Me.Controls.Add(Me.m_cmbLogLevel)
             Me.Controls.Add(Me.m_nudMaxNumMessages)
             Me.Controls.Add(Me.m_cbShowVariableValidations)
+            Me.Controls.Add(Me.m_cbShowNewestFirst)
             Me.Controls.Add(Me.m_cbShowTime)
             Me.Controls.Add(Me.m_lblMaxNumMessages)
             Me.Controls.Add(Me.m_hdrAuthor)
@@ -224,6 +232,7 @@ Namespace Other
         Private WithEvents m_btnViewLogFileDir As System.Windows.Forms.Button
         Private WithEvents m_cbShowVariableValidations As System.Windows.Forms.CheckBox
         Private WithEvents m_cbUseExternalBrowser As CheckBox
+        Private WithEvents m_cbShowNewestFirst As CheckBox
     End Class
 
 End Namespace
