@@ -106,7 +106,6 @@ Namespace Ecosim
         Private MakeTestData As Boolean
         Private AbortRun As Boolean
         Private IsDatWtSet As Boolean
-        Friend IsDatTypeDriver() As Boolean
 
         Friend A(,) As Single
 
@@ -354,30 +353,16 @@ Namespace Ecosim
                 'Make sure FishMGear and relQ are set correctly 
                 Me.debugTestRelQFishMGear()
 #End If
-                ReDim IsDatTypeDriver([Enum].GetValues(GetType(eTimeSeriesType)).Length)
-                IsDatTypeDriver(eTimeSeriesType.BiomassRel) = True
-                IsDatTypeDriver(eTimeSeriesType.BiomassAbs) = True
-                IsDatTypeDriver(eTimeSeriesType.TotalMortality) = True
-                IsDatTypeDriver(eTimeSeriesType.AverageWeight) = True
-                IsDatTypeDriver(eTimeSeriesType.Catches) = True
-                IsDatTypeDriver(eTimeSeriesType.CatchesRel) = True
-                IsDatTypeDriver(eTimeSeriesType.CatchesForcing) = True
-#If DISCARDS Then
-                IsDatTypeDriver(eTimeSeriesType.Discards) = True
-#End If
-
 
                 If bFullInitialization Then
-
                     SetBaseFFromGear()
-
                 End If
 
                 SetTimeSteps()
 
                 CalculateAssimilationEfficiencies()
 
-                Me.m_ConTracer = New cContaminantTracer
+                Me.m_ConTracer = New cContaminantTracer()
 
                 m_publisher.sendAllMessages()
 
@@ -385,6 +370,24 @@ Namespace Ecosim
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
+        End Function
+
+        Public Function IsDatTypeDriver(DatType As eTimeSeriesType) As Boolean
+            Select Case DatType
+                Case eTimeSeriesType.BiomassRel,
+                     eTimeSeriesType.BiomassAbs,
+                     eTimeSeriesType.TotalMortality,
+                     eTimeSeriesType.AverageWeight,
+                     eTimeSeriesType.Catches,
+                     eTimeSeriesType.CatchesRel,
+                     eTimeSeriesType.CatchesForcing
+                    Return True
+#If DISCARDS Then
+                Case eTimeSeriesType.Discards
+                    Return True
+#End If
+            End Select
+            Return False
         End Function
 
         Public Sub Clear()
