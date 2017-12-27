@@ -57,8 +57,6 @@ Namespace GeoCode
            ''' <summary>Google geocode api v3 - per nov 2010</summary>
         Private Const SERVICE_URL As String = "http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false"
 
-        Private m_strSearchTerm As String = ""
-
         Public Sub New()
         End Sub
 
@@ -86,13 +84,6 @@ Namespace GeoCode
         End Function
 
         Public Property Term As String Implements IGeoCodeLookup.Term
-            Get
-                Return Me.m_strSearchTerm
-            End Get
-            Set(value As String)
-                Me.m_strSearchTerm = value
-            End Set
-        End Property
 
         Public Function FindPlaces(ByVal strTerm As String) As cGeoCodeLocation() _
             Implements IGeoCodeLookup.FindPlaces

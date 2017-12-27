@@ -11,9 +11,6 @@
 #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #define DefDB "Database"
 
-#define Ecosampler 1
-#define MergeGroups 1
-#define Transects 1
 #define Spinup 0
 #define SpatTemp 0
 #define MSPTools 0
@@ -275,7 +272,7 @@ Name: "plugin\ui\msptools"; Description: "MSP tools"; Types: full
 [Tasks]
 Name: "desktopicon"; Description: "Add desktop icon"
 Name: "quicklaunchicon"; Description: "Add quick launch icon"
-Name: "associatefiles"; Description: "Associate EwE model databases with {#MyAppName}"; GroupDescription: "File extensions"
+Name: "associatefiles"; Description: "Open EwE models and web links in this version by default"; GroupDescription: "File associations"
 
 [Icons]
 Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
