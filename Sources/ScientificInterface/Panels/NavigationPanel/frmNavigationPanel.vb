@@ -330,7 +330,7 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_OPTIONS, "ndOptions", eCoreExecutionState.EcosimLoaded, GetType(frmMSEOptions), eNodeImages.Input, nodeInput) ' ToDo: connect to help
 
         nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_REGULATORY, "ndRegInput", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.InputFolder, nodeInput)
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_OPTIONS, "ndRegFishingMort", eCoreExecutionState.EcosimLoaded, GetType(frmTargetFishingMortalityPolicy), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_TFM, "ndRegFishingMort", eCoreExecutionState.EcosimLoaded, GetType(frmTargetFishingMortalityPolicy), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_FIXEDESCAPE, "ndRefFixedEscape", eCoreExecutionState.EcosimLoaded, GetType(gridFixedEscapement), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_MSE_QUOTASHARE, "ndQuotaShare", eCoreExecutionState.EcosimLoaded, GetType(frmQuotaShare), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
