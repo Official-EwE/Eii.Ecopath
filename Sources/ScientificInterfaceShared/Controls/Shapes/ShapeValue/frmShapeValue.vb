@@ -100,7 +100,7 @@ Public Class frmShapeValue
     Private m_editMode As eDialogEditModeType = eDialogEditModeType.EditTimeSeries
 
     Private Enum eDialogEditModeType
-        AddTimeSeries
+        'AddTimeSeries
         EditTimeSeries
         EditForcing
     End Enum
@@ -130,7 +130,7 @@ Public Class frmShapeValue
         Me.m_displayMode = frmShapeValue.eDisplayMode.Monthly
 
         If (TypeOf (Me.m_handler) Is cTimeSeriesShapeGUIHandler) Then
-            Me.m_editMode = eDialogEditModeType.AddTimeSeries
+            Me.m_editMode = eDialogEditModeType.EditTimeSeries
             Dim ds As cTimeSeriesDataset = uic.Core.TimeSeriesDataset(Core.ActiveTimeSeriesDatasetIndex)
             Select Case ds.TimeSeriesInterval
                 Case eTSDataSetInterval.Annual
@@ -196,8 +196,7 @@ Public Class frmShapeValue
         ' Kick off
         Select Case Me.m_editMode
 
-            Case eDialogEditModeType.AddTimeSeries,
-                 eDialogEditModeType.EditTimeSeries
+            Case eDialogEditModeType.EditTimeSeries
 
                 Dim ds As cTimeSeriesDataset = Me.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex)
                 Me.NumPoints = ds.NumPoints
@@ -228,8 +227,6 @@ Public Class frmShapeValue
         Dim bSucces As Boolean = False
 
         Select Case Me.m_editMode
-            Case eDialogEditModeType.AddTimeSeries
-                bSucces = Me.OnAddTimeSeries()
             Case eDialogEditModeType.EditTimeSeries
                 bSucces = Me.OnUpdateTimeSeries()
             Case eDialogEditModeType.EditForcing
@@ -302,8 +299,6 @@ Public Class frmShapeValue
         Me.m_grid.SuspendLayoutGrid()
 
         Select Case Me.m_editMode
-            Case eDialogEditModeType.AddTimeSeries
-                Me.LoadEmptyGrid()
             Case eDialogEditModeType.EditForcing
                 Me.LoadForcingDataToGrid()
             Case eDialogEditModeType.EditTimeSeries
@@ -439,9 +434,8 @@ Public Class frmShapeValue
         Me.m_cmbViewAs.Visible = False
 
         Me.FillPoolCodeComboBoxes()
-        Me.m_cmbPoolCode.Text = m_cmbPoolCode.Items(0).ToString
 
-        Me.m_grid.Clear(Me.NumPoints, (Me.m_editMode = eDialogEditModeType.AddTimeSeries Or Me.m_editMode = eDialogEditModeType.EditTimeSeries))
+        Me.m_grid.Clear(Me.NumPoints, (Me.m_editMode = eDialogEditModeType.EditTimeSeries))
 
     End Sub
 
