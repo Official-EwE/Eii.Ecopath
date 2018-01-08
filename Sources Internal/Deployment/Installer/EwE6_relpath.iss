@@ -17,7 +17,10 @@
 #define MPAdynamics 0
 
 [Setup]
-SignTool=codesign
+; In Inno Setup UI, define Sign tool 'codesign' as:
+;   <full path to signtool.exe> /f <cert file> /p <password> /t <path to timestamp server> $f
+;   "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /a /f "D:\Dropbox\EII_cert.p12" /p <muahaha> /t http://timestamp.comodoca.com/authenticode $f
+SignTool=codesign /d $q{#MyAppName}$q $f
 WizardImageFile=EwE5Logo.bmp
 WizardSmallImageFile=EwE6Header.bmp
 WizardImageStretch=False
