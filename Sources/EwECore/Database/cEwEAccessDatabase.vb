@@ -42,9 +42,9 @@ Namespace Database
     ''' Access databases.
     ''' </summary>
     ''' <remarks>
-    ''' This class wraps Microsoft Aaarghcess specifics such as connection
+    ''' This class wraps Microsoft Access specifics such as connection
     ''' strings, deals with deficiencies in the SQL implementation of Bill's 
-    ''' beast, and provids default field values from the Access DB schema.
+    ''' beast, and provides default field values from the Access DB schema.
     ''' </remarks>
     ''' =======================================================================
     Public Class cEwEAccessDatabase
@@ -59,7 +59,7 @@ Namespace Database
         ' Download from http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=13255.
         ' only works if office is 64 bit too. To detect
         ' To determine if office 2010 is 32 bit or 64 bit, we could check a registry key named 
-        ' Bitness. For more information, please refer to this article: http://technet.microsoft.com/en-us/library/ee681792.aspx.
+        ' bitness. For more information, please refer to this article: http://technet.microsoft.com/en-us/library/ee681792.aspx.
         ' Also here is a resource with a same question you could refer to: 
         ' Detect whether Office 2010 is 32bit or 64bit via the registry (http://stackoverflow.com/questions/2203980/detect-whether-office-2010-is-32bit-or-64bit-via-the-registry).
         ''' <summary>The connection string to connect to a ACCDB database.</summary>
@@ -182,12 +182,12 @@ Namespace Database
             ' Test if we can create a new DB at the intended location
             datResult = Me.Create(strDatabaseTo, strModelName, bOverwrite)
 
-            ' Succes?
+            ' Success?
             If (datResult = eDatasourceAccessType.Success) Then
 
                 ' #Yes: this is painful... File Copy the current DB on top of the newly created DB
                 Try
-                    ' Can copy databse from old to new MDB?
+                    ' Can copy database from old to new MDB?
                     System.IO.File.Copy(strDatabaseFrom, strDatabaseTo, True)
                 Catch ex As Exception
                     ' #Failure
@@ -215,13 +215,13 @@ Namespace Database
         ''' <param name="strDatabase">The database to open.</param>
         ''' <param name="databaseType">Type to use to open the database. Set this
         ''' to 'NotSet' to auto-detect the database type.</param>
-        ''' <returns>True if connected succesfully.</returns>
+        ''' <returns>True if connected successfully.</returns>
         ''' -------------------------------------------------------------------
         Public Overrides Function Open(ByVal strDatabase As String, _
                                        Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, _
                                        Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType
 
-            ' Pre
+            ' Preconditions
             Debug.Assert(Not String.IsNullOrEmpty(strDatabase), "Invalid data source specified")
             Debug.Assert(Not Me.IsConnected(), "Connection already open, close first")
 
@@ -299,7 +299,7 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Overrides Sub Close()
 
-            ' Pre
+            ' Preconditions
             Debug.Assert(Me.IsConnected(), "Cannot close a connection that is not open")
 
             Me.m_conn.Close()
@@ -333,7 +333,7 @@ Namespace Database
         ''' Obtains and configures a <see cref="OleDbDataAdapter">OleDbDataAdapter</see>
         ''' for the current M$ Access database.
         ''' </summary>
-        ''' <param name="strSQL">The SQL query to obtain the adaper for.</param>
+        ''' <param name="strSQL">The SQL query to obtain the adapter for.</param>
         ''' <returns>A <see cref="OleDbDataAdapter">OleDbDataAdapter</see> if
         ''' successful, or Nothing when an error occurred.</returns>
         ''' <remarks>
@@ -390,8 +390,8 @@ Namespace Database
         ''' <summary>
         ''' Returns whether the database can connect to an indicated type.
         ''' </summary>
-        ''' <param name="dst">The datasource type to test.</param>
-        ''' <returns>True if the OS can connect to a given datasource type.</returns>
+        ''' <param name="dst">The data source type to test.</param>
+        ''' <returns>True if the OS can connect to a given data source type.</returns>
         ''' -------------------------------------------------------------------
         Public Overrides Function CanConnect(ByVal dst As EwEUtils.Core.eDataSourceTypes) As Boolean
 
@@ -462,7 +462,7 @@ Namespace Database
             '  If read-only: report only status and abort
             If (Me.IsReadOnly) Then Return eDatasourceAccessType.Failed_ReadOnly
 
-            ' Fix params
+            ' Fix parameters
             If String.IsNullOrEmpty(strFileTo) Then strFileTo = strFileFrom
 
             Dim bCompactToOriginal As Boolean = (String.Compare(strFileFrom, strFileTo, True) = 0)
@@ -518,7 +518,7 @@ Namespace Database
                     Return result
                 End If
 
-                ' Is succesfully compacted?
+                ' Is successfully compacted?
                 If File.Exists(strFileTo) Then
                     ' #Yes: Need to copy from temp location?
                     If (bCompactToOriginal) Then
