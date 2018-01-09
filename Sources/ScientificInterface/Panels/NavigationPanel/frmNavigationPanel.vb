@@ -140,9 +140,9 @@ Public Class frmNavigationPanel
                 Case eNodeImages.Ecospace : img = SharedResources.nav_ecospace
                 Case eNodeImages.Ecotracer : img = SharedResources.nav_ecotracer
                 Case eNodeImages.Input : img = SharedResources.nav_input
-                Case eNodeImages.InputFolder : img = SharedResources.nav_input_folder
+                Case eNodeImages.InputFolder : img = SharedResources.nav_input
                 Case eNodeImages.Output : img = SharedResources.nav_output
-                Case eNodeImages.OutputFolder : img = SharedResources.nav_output_folder
+                Case eNodeImages.OutputFolder : img = SharedResources.nav_output
                 Case eNodeImages.Tool : img = SharedResources.nav_tool
                 Case Else : Debug.Assert(False)
             End Select
