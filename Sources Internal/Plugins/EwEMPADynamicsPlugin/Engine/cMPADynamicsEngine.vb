@@ -28,6 +28,8 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+' ToDo: add leniency to date parsing (yy vs yyyy, M vs MM)
+
 Public Class cMPADynamicsEngine
 
     Private m_core As cCore = Nothing
@@ -83,7 +85,7 @@ Public Class cMPADynamicsEngine
 
     End Sub
 
-    Private Shared sFORMATS As String() = New String() {"yyyy/MM", "yyyy-MM", "MM/yyyy", "MM-yyyy"}
+    Private Shared sFORMATS As String() = New String() {"yyyy/MM", "yyyy-MM", "MM/yyyy", "MM-yyyy", "yyyy/M", "yyyy-M", "M/yyyy", "M-yyyy"}
     Private Shared sLOCALE As New CultureInfo("en-US")
 
     ' Hack 'n slash
@@ -113,10 +115,10 @@ Public Class cMPADynamicsEngine
                 If (bTimeStepMode) Then
                     timestamp = Me.m_core.EcospaceTimestepToAbsoluteTime(CInt(drow("timestep")))
                 Else
-                    Date.TryParseExact(CStr(drow("date")), sFORMATS, sLOCALE, DateTimeStyles.None, timestamp)
+                    bSucces = bSucces And Date.TryParseExact(CStr(drow("date")), sFORMATS, sLOCALE, DateTimeStyles.None, timestamp)
                 End If
 
-                If (iMPA >= 1) Then
+                If (iMPA >= 1) And bSucces Then
                     Dim state As New cMPAState(Me.m_ds, iMPA, timestamp)
                     For i As Integer = 1 To cCore.N_MONTHS
                         state.IsClosed(i) = IsEnforced(Me.ReadSafe(drow, "m" & i, ""))
@@ -143,6 +145,7 @@ Public Class cMPADynamicsEngine
                 SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_SUCCESS, strCSV), eMessageImportance.Information)
             Else
                 SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strCSV, ""), eMessageImportance.Critical, lDetails)
+                Me.m_dtStates.Clear()
             End If
 
         Catch ex As Exception
@@ -298,6 +301,13 @@ Public Class cMPADynamicsEngine
     End Function
 
     Private Function ToMPA(strName As String) As Integer
+
+        Dim iTest As Integer = 0
+        If Integer.TryParse(strName, iTest) Then
+            If iTest > 0 Then
+                Return iTest
+            End If
+        End If
 
         For i As Integer = 1 To Me.m_core.nMPAs
             Dim mpa As cEcospaceMPA = Me.m_core.EcospaceMPAs(i)
