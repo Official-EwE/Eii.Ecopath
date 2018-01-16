@@ -261,7 +261,7 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PRICEELAST, "ndPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmPriceElasticity), eNodeImages.Input, nodeInput) ' ToDo: connect to help
 
         ' output
-        nodeOutput = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_OUTPUT, "ndEcosimOutput", eCoreExecutionState.EcosimCompleted, Nothing, eNodeImages.OutputFolder, nodeModel)
+        nodeOutput = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_OUTPUT, "ndEcosimOutput", eCoreExecutionState.EcosimLoaded, Nothing, eNodeImages.OutputFolder, nodeModel)
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_RUN, "ndRunEcosim", eCoreExecutionState.EcosimLoaded, GetType(frmRunEcosim), eNodeImages.Output, nodeOutput, "Run Ecosim.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_GROUPPLOTS, "ndEcosimPlots", eCoreExecutionState.EcosimCompleted, GetType(frmEcosimOutputGroupPlots), eNodeImages.Output, nodeOutput, "Ecosim plot.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_SIM_FLEETPLOTS, "ndEcosimFleetPlots", eCoreExecutionState.EcosimCompleted, GetType(frmEcosimOutputFleetPlots), eNodeImages.Output, nodeOutput, "Ecosim fleet plot.htm")
