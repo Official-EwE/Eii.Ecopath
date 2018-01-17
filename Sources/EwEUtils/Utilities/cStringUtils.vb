@@ -1021,6 +1021,32 @@ Namespace Utilities
             Return cStringUtils.ToUTF8(strIn, Encoding.ASCII)
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a column number to an Excel-style column name. The resulting 
+        ''' column name will always be upper case.
+        ''' </summary>
+        ''' <param name="iColumn">The one-based column number to convert.</param>
+        ''' <returns>A character-based, Excel-style column name.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToExcelColumnName(iColumn As Integer) As String
+
+            Debug.Assert(iColumn >= 1)
+
+            Dim iDiv As Integer = iColumn
+            Dim iMod As Integer
+            Dim sb As New StringBuilder()
+
+            While iDiv > 0
+                iMod = (iDiv - 1) Mod 26
+                sb.Insert(0, Convert.ToChar(65 + iMod))
+                iDiv = CInt((iDiv - iMod) / 26)
+            End While
+
+            Return sb.ToString()
+
+        End Function
+
         ''' <summary>Default string split delimiters, in order of decreasing relevance.</summary>
         Public Shared c_DELIMITERS As Char() = New Char() {Convert.ToChar(Keys.Tab), ";"c, Convert.ToChar(Keys.Space), ","c}
 
