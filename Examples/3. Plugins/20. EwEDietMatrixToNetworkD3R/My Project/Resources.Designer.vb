@@ -59,5 +59,23 @@ Namespace My.Resources
                 resourceCulture = value
             End Set
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to NetworkD3 {0}  script could not be generated. {1}.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_ERROR() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to NetworkD3 {0} script copied to clipboard.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SUCCESS", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace
