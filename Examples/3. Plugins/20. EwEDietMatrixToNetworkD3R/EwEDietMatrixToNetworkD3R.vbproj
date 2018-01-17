@@ -108,7 +108,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="cForceNetwork.vb" />
+    <Compile Include="cNetwork.vb" />
     <Compile Include="cNetworkD3RWriterPlugin.vb" />
+    <Compile Include="cSimpleNetwork.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
