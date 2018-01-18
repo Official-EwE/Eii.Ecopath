@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -22,7 +22,7 @@ Namespace Ecospace
 
     Partial Class gridCapacityCalcType
 
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Public Sub New(ByVal container As System.ComponentModel.IContainer)
             MyClass.New()
 
@@ -33,7 +33,7 @@ Namespace Ecospace
 
         End Sub
 
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Public Sub New()
             MyBase.New()
 
@@ -43,7 +43,7 @@ Namespace Ecospace
         End Sub
 
         'Component overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Try
                 If disposing AndAlso components IsNot Nothing Then
@@ -60,7 +60,7 @@ Namespace Ecospace
         'NOTE: The following procedure is required by the Component Designer
         'It can be modified using the Component Designer.
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             components = New System.ComponentModel.Container()
         End Sub

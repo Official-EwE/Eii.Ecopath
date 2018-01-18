@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -26,8 +26,8 @@ Namespace Controls.Map
         Private m_relscaler() As Single
         Private m_sMaxLegendF As Single
 
-        Public Sub New(ByVal maptype As cMapDrawerBase.eMapType, _
-                       ByVal theRelScaler() As Single, _
+        Public Sub New(ByVal maptype As cMapDrawerBase.eMapType,
+                       ByVal theRelScaler() As Single,
                        ByVal MaxLegendF As Single)
 
             Dim data As Single() = Nothing

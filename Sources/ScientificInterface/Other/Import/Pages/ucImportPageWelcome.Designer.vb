@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -24,7 +24,7 @@ Namespace Import
         Inherits System.Windows.Forms.UserControl
 
         'UserControl overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Try
                 If disposing AndAlso components IsNot Nothing Then
@@ -41,7 +41,7 @@ Namespace Import
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Me.m_pbWelcome = New System.Windows.Forms.PictureBox()
             Me.m_lblWelcomeInstructions = New System.Windows.Forms.Label()
@@ -72,7 +72,7 @@ Namespace Import
             Me.m_lblWelcomeInstructions.Name = "m_lblWelcomeInstructions"
             Me.m_lblWelcomeInstructions.Size = New System.Drawing.Size(290, 46)
             Me.m_lblWelcomeInstructions.TabIndex = 8
-            Me.m_lblWelcomeInstructions.Text = "The Ecopath data that you selected contains one or more models that must be conve" & _
+            Me.m_lblWelcomeInstructions.Text = "The Ecopath data that you selected contains one or more models that must be conve" &
         "rted to the format used by this version of EwE."
             '
             'm_lblNext

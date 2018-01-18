@@ -13,7 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -25,9 +25,9 @@ Namespace Controls
 
         Public Sub New()
             MyBase.New()
-            Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or _
-                        ControlStyles.OptimizedDoubleBuffer Or _
-                        ControlStyles.UserPaint Or _
+            Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or
+                        ControlStyles.OptimizedDoubleBuffer Or
+                        ControlStyles.UserPaint Or
                         ControlStyles.ResizeRedraw, True)
         End Sub
 

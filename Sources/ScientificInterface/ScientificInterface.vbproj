@@ -81,7 +81,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>BETA=1</DefineConstants>
+    <DefineConstants>BETA=0, DISCARDS=1</DefineConstants>
     <DocumentationFile>EwE6.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -92,7 +92,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>BETA=1</DefineConstants>
+    <DefineConstants>BETA=1, DISCARDS=1</DefineConstants>
     <DocumentationFile>EwE6.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>None</DebugType>
@@ -2100,9 +2100,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Examples\3. Plugins\20. EwEDietMatrixToNetworkD3R\EwEDietMatrixToNetworkD3R.vbproj">
+      <Project>{e4c0340c-046c-46ae-a854-e64dfc99e003}</Project>
+      <Name>EwEDietMatrixToNetworkD3R</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Sources Internal\Plugins\EwEMergeSplitGroupsPlugin\EwEMergeSplitGroupsPlugin.vbproj">
       <Project>{88137892-3068-42b7-bcca-b811d7264b4a}</Project>
       <Name>EwEMergeSplitGroupsPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEMPADynamicsPlugin\EwEMPADynamicsPlugin.vbproj">
+      <Project>{220ff584-9bfa-4872-949a-52c7a6877b65}</Project>
+      <Name>EwEMPADynamicsPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
