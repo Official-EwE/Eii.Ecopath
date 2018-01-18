@@ -86,7 +86,7 @@ Public Class cNetworkD3RWriterPlugin
 
     Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Windows.Forms.Form) Implements IGUIPlugin.OnControlClick
         Try
-            Me.ToScript(True)
+            Me.ToScript(False)
         Catch ex As Exception
 
         End Try

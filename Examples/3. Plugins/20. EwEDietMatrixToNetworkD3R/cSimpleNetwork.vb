@@ -61,12 +61,14 @@ Public Class cSimpleNetwork
         Next
 
         Dim sb As New StringBuilder()
+
+        sb.AppendLine(Me.ModelLine())
+        If (UseSymbolicNames) Then sb.AppendLine(Me.SymbolicLine)
+        sb.AppendLine()
         sb.AppendLine("library(networkD3)")
         sb.AppendLine()
-        sb.AppendLine("# Diet network from EwE model " & Me.ToRString(Me.Core.EwEModel.Name))
-        If (UseSymbolicNames) Then sb.AppendLine("# Group names have been replaced with symbolic names")
-        sb.AppendLine(MakeArray(src, lSrc))
-        sb.AppendLine(MakeArray(target, lTgt))
+        sb.AppendLine(ArrayLine(src, lSrc))
+        sb.AppendLine(ArrayLine(target, lTgt))
         sb.AppendLine()
         sb.AppendLine("networkData <- data.frame(" & src & ", " & target & ")")
         sb.AppendLine("# Plot")

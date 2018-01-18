@@ -22,9 +22,14 @@
 Option Strict On
 Imports System.Text
 Imports EwECore
+Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
+''' <summary>
+''' Helper class for generating a NetworkD3 forceNetwork graph
+''' </summary>
 Public Class cForceNetwork
     Inherits cNetwork
 
@@ -44,21 +49,17 @@ Public Class cForceNetwork
         Dim strLinks As String = "links_df"
         Dim strNodes As String = "nodes_df"
 
-        sb.AppendLine("library(networkD3)")
+        sb.AppendLine(Me.ModelLine())
         sb.AppendLine()
-        sb.AppendLine("# Diet network from EwE model " & Me.ToRString(Me.Core.EwEModel.Name))
-        If (UseSymbolicNames) Then sb.AppendLine("# Group names have been replaced with symbolic names")
+        sb.AppendLine("library(networkD3)")
         sb.AppendLine()
         sb.AppendLine("# Links")
         sb.AppendLine(MakeLinks(strLinks))
-        sb.AppendLine()
-        sb.AppendLine("# Targets")
+        sb.AppendLine("# Nodes")
+        If (UseSymbolicNames) Then sb.AppendLine(Me.SymbolicLine)
         sb.AppendLine(MakeNodes(strNodes))
         sb.AppendLine()
-        sb.AppendLine("data(" & strLinks & ")")
-        sb.AppendLine("data(" & strNodes & ")")
-        sb.AppendLine()
-        sb.AppendLine("# Create graph")
+        sb.AppendLine("# Plot")
         sb.AppendLine("forceNetwork(Links = " & strLinks & ", Nodes = " & strNodes & ", Source = 'source',")
         sb.AppendLine("             Target = 'target', Value = 'value', NodeID = 'name', Nodesize = 'biomass',")
         sb.AppendLine("             Group = 'group', opacity = 1, zoom = T, legend = T, bounded = T)")
@@ -86,11 +87,11 @@ Public Class cForceNetwork
         Next
 
         Dim sb As New StringBuilder()
-        sb.AppendLine(MakeArray("src", lSrc))
-        sb.AppendLine(MakeArray("tgt", lTgt))
-        sb.AppendLine(MakeArray("dc", lDC))
+        sb.AppendLine(ArrayLine("src", lSrc))
+        sb.AppendLine(ArrayLine("tgt", lTgt))
+        sb.AppendLine(ArrayLine("dc", lDC))
         sb.AppendLine(strVar & " <- data.frame(src, tgt, dc)")
-        sb.AppendLine(MakeArray("colnames(" & strVar & ")", lCol))
+        sb.AppendLine(ArrayLine("colnames(" & strVar & ")", lCol))
         Return sb.ToString()
 
     End Function
@@ -99,23 +100,33 @@ Public Class cForceNetwork
 
         Dim lCol As String() = {"name", "group", "biomass"}
         Dim lNms As New List(Of String)
-        Dim lGrp As New List(Of Integer)
+        Dim lGrp As New List(Of String)
         Dim lSz As New List(Of Double)
         Dim lSzLog As New List(Of Double)
 
         For iGroup As Integer = 1 To Me.Core.nGroups
             Dim grp As cEcoPathGroupOutput = Me.Core.EcoPathGroupOutputs(iGroup)
-            lNms.Add(ToRString(grp.Name))
-            lGrp.Add(CInt(grp.PP + 1)) ' ;-)
+            If (UseSymbolicNames) Then
+                lNms.Add(cStringUtils.ToExcelColumnName(iGroup))
+            Else
+                lNms.Add(ToRString(grp.Name))
+            End If
+            If grp.IsConsumer Then
+                lGrp.Add(SharedResources.HEADER_CONSUMER)
+            ElseIf grp.IsProducer Then
+                lGrp.Add(SharedResources.HEADER_PRODUCER)
+            Else
+                lGrp.Add(SharedResources.HEADER_DETRITUS)
+            End If
             lSz.Add(grp.Biomass)
         Next
 
         Dim sb As New StringBuilder()
-        sb.AppendLine(MakeArray("name", lNms))
-        sb.AppendLine(MakeArray("group", lGrp))
-        sb.AppendLine(MakeArray("biomass", lSz))
+        sb.AppendLine(ArrayLine("name", lNms))
+        sb.AppendLine(ArrayLine("group", lGrp))
+        sb.AppendLine(ArrayLine("biomass", lSz))
         sb.AppendLine(strVar & " <- data.frame(name, group, biomass)")
-        sb.AppendLine(MakeArray("colnames(" & strVar & ")", lCol))
+        sb.Append(ArrayLine("colnames(" & strVar & ")", lCol))
         Return sb.ToString()
 
     End Function

@@ -163,6 +163,10 @@
       <Project>{5c331318-c23e-4eeb-ad1e-2edef85e0205}</Project>
       <Name>EwEUtils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
+      <Project>{70af596e-7d27-4d39-bde7-89d4525bd60f}</Project>
+      <Name>ScientificInterfaceShared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

@@ -40,13 +40,23 @@ Public MustInherit Class cNetwork
 
 #Region " Internals "
 
+    Private Const cSPECIAL_CHARS As String = "_-., "
+
+    ''' <summary>
+    ''' Returns a string fit for inclusion in R code by eradicating conflicting characters.
+    ''' </summary>
+    ''' <param name="strIn"></param>
+    ''' <returns></returns>
     Protected Function ToRString(strIn As String) As String
 
         Dim sb As New StringBuilder()
 
         For i As Integer = 0 To strIn.Length - 1
             Dim c As Char = strIn(i)
-            If Char.IsLetterOrDigit(c) Or Char.IsWhiteSpace(c) Then
+            ' Spaceyfy (nothing to do with Kevin! EwE was only a victim!)
+            If (Char.IsWhiteSpace(c)) Then c = " "c
+            ' Accept only allowed characters
+            If (Char.IsLetterOrDigit(c) Or cSPECIAL_CHARS.IndexOf(c) >= 0) Then
                 sb.Append(c)
             End If
         Next
@@ -55,7 +65,26 @@ Public MustInherit Class cNetwork
 
     End Function
 
-    Protected Function MakeArray(Of T)(strPrefix As String, items As IEnumerable(Of T)) As String
+    Protected Function ModelLine() As String
+        Dim sb As New StringBuilder()
+        sb.AppendLine("# NetworkD3 " & Me.Name & " generated from Ecopath with Ecosim - EwEEcopathExportDietToNetworkD3 plug-in")
+        sb.AppendLine("# EwE model: " & Me.Core.EwEModel.Name)
+        sb.Append("# EwE file: " & Me.Core.DataSource.ToString())
+        Return sb.ToString()
+    End Function
+
+    Protected Function SymbolicLine() As String
+        Return "# !Group names have been replaced with symbolic names"
+    End Function
+
+    ''' <summary>
+    ''' Returns a R code line that assigns the items in a collection to an array.
+    ''' </summary>
+    ''' <typeparam name="T"></typeparam>
+    ''' <param name="strPrefix"></param>
+    ''' <param name="items"></param>
+    ''' <returns></returns>
+    Protected Function ArrayLine(Of T)(strPrefix As String, items As IEnumerable(Of T)) As String
 
         Dim sb As New StringBuilder()
         Dim iLineLength As Integer = 0
