@@ -22,6 +22,7 @@
 '    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
 '
+
 Option Strict Off
 
 Public Class cResultsCollector_Value_Yearly
