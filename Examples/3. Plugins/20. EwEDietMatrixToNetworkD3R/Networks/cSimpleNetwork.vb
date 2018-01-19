@@ -50,7 +50,7 @@ Public Class cSimpleNetwork
             For iPrey As Integer = 1 To Me.Core.nGroups
                 If pred.DietComp(iPrey) > 0 Then
                     Dim prey As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iPred)
-                    If Me.UseSymbolicNames Then
+                    If My.Settings.UseSymbolicNames Then
                         lSrc.Add(cStringUtils.ToExcelColumnName(iPred))
                         lTgt.Add(cStringUtils.ToExcelColumnName(iPrey))
                     Else
@@ -63,8 +63,7 @@ Public Class cSimpleNetwork
 
         Dim sb As New StringBuilder()
 
-        sb.AppendLine(Me.ModelLine())
-        If (UseSymbolicNames) Then sb.AppendLine(Me.SymbolicLine)
+        sb.AppendLine(Me.HeaderLine())
         sb.AppendLine()
         sb.AppendLine("library(networkD3)")
         sb.AppendLine()

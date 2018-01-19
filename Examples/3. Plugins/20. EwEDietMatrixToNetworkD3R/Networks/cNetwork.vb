@@ -34,8 +34,6 @@ Public MustInherit Class cNetwork
 
     Public ReadOnly Property Core As cCore = Nothing
 
-    Public Property UseSymbolicNames As Boolean = True
-
     MustOverride Function Name() As String
     MustOverride Function GenerateScript() As String
 
@@ -66,16 +64,13 @@ Public MustInherit Class cNetwork
 
     End Function
 
-    Protected Function ModelLine() As String
+    Protected Function HeaderLine() As String
         Dim sb As New StringBuilder()
         sb.AppendLine("# NetworkD3 " & Me.Name & " generated from Ecopath with Ecosim - EwEEcopathExportDietToNetworkD3 plug-in")
         sb.AppendLine("# EwE model: " & Me.Core.EwEModel.Name)
         sb.Append("# EwE file: " & Me.Core.DataSource.ToString())
+        If (My.Settings.UseSymbolicNames) Then sb.AppendLine("# !EwE names have been replaced with symbolic names")
         Return sb.ToString()
-    End Function
-
-    Protected Function SymbolicLine() As String
-        Return "# !Group names have been replaced with symbolic names"
     End Function
 
     ''' <summary>

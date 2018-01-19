@@ -108,10 +108,11 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cForceNetwork.vb" />
-    <Compile Include="cNetwork.vb" />
+    <Compile Include="My Project\Settings.vb" />
+    <Compile Include="Networks\cForceNetwork.vb" />
+    <Compile Include="Networks\cNetwork.vb" />
     <Compile Include="cNetworkD3RWriterPlugin.vb" />
-    <Compile Include="cSimpleNetwork.vb" />
+    <Compile Include="Networks\cSimpleNetwork.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -140,6 +141,7 @@
     <None Include="..\..\..\..\Ecopath6\Sources Internal\Deployment\License\EwE.licenseheader">
       <Link>EwE.licenseheader</Link>
     </None>
+    <None Include="app.config" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
