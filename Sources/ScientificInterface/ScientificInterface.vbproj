@@ -2100,10 +2100,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Examples\3. Plugins\20. EwEDietMatrixToNetworkD3R\EwEDietMatrixToNetworkD3R.vbproj">
-      <Project>{e4c0340c-046c-46ae-a854-e64dfc99e003}</Project>
-      <Name>EwEDietMatrixToNetworkD3R</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Sources Internal\Plugins\EwEMergeSplitGroupsPlugin\EwEMergeSplitGroupsPlugin.vbproj">
       <Project>{88137892-3068-42b7-bcca-b811d7264b4a}</Project>
       <Name>EwEMergeSplitGroupsPlugin</Name>
