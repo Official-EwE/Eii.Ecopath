@@ -2104,10 +2104,6 @@
       <Project>{88137892-3068-42b7-bcca-b811d7264b4a}</Project>
       <Name>EwEMergeSplitGroupsPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEMPADynamicsPlugin\EwEMPADynamicsPlugin.vbproj">
-      <Project>{220ff584-9bfa-4872-949a-52c7a6877b65}</Project>
-      <Name>EwEMPADynamicsPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
