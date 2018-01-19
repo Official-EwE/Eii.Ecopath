@@ -50,14 +50,13 @@ Public Class cForceNetwork
         Dim strLinks As String = "links_df"
         Dim strNodes As String = "nodes_df"
 
-        sb.AppendLine(Me.ModelLine())
+        sb.AppendLine(Me.HeaderLine())
         sb.AppendLine()
         sb.AppendLine("library(networkD3)")
         sb.AppendLine()
         sb.AppendLine("# Links")
         sb.AppendLine(MakeLinks(strLinks))
         sb.AppendLine("# Nodes")
-        If (UseSymbolicNames) Then sb.AppendLine(Me.SymbolicLine)
         sb.AppendLine(MakeNodes(strNodes))
         sb.AppendLine()
         sb.AppendLine("# Plot")
@@ -107,7 +106,7 @@ Public Class cForceNetwork
 
         For iGroup As Integer = 1 To Me.Core.nGroups
             Dim grp As cEcoPathGroupOutput = Me.Core.EcoPathGroupOutputs(iGroup)
-            If (UseSymbolicNames) Then
+            If (My.Settings.UseSymbolicNames) Then
                 lNms.Add(cStringUtils.ToExcelColumnName(iGroup))
             Else
                 lNms.Add(ToRString(grp.Name))

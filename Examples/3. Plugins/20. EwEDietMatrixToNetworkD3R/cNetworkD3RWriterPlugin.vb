@@ -17,6 +17,7 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
 
 Option Strict On
 Imports System.Windows.Forms
@@ -25,34 +26,19 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
+#End Region ' Imports
+
 Public Class cNetworkD3RWriterPlugin
     Implements IMenuItemPlugin
+    Implements IConfigurablePlugin
 
-    Private m_core As cCore
+    Private m_core As cCore = Nothing
 
-    Public ReadOnly Property MenuItemLocation As String Implements IMenuItemPlugin.MenuItemLocation
-        Get
-            Return "MenuFile\ExportModel"
-        End Get
-    End Property
+#Region " Generic "
 
-    Public ReadOnly Property ControlImage As System.Drawing.Image Implements IGUIPlugin.ControlImage
-        Get
-            Return Nothing
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
-        Get
-            Return "To NetworkD3 simple network"
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
-        Get
-            Return ""
-        End Get
-    End Property
+    Public Sub Initialize(core As Object) Implements IPlugin.Initialize
+        Me.m_core = DirectCast(core, cCore)
+    End Sub
 
     Public ReadOnly Property EnabledState As eCoreExecutionState Implements IGUIPlugin.EnabledState
         Get
@@ -84,32 +70,62 @@ Public Class cNetworkD3RWriterPlugin
         End Get
     End Property
 
+#End Region ' Generic
+
+#Region " UI integration "
+
+    Public ReadOnly Property MenuItemLocation As String Implements IMenuItemPlugin.MenuItemLocation
+        Get
+            Return "MenuFile\ExportModel"
+        End Get
+    End Property
+
+    Public ReadOnly Property ControlImage As System.Drawing.Image Implements IGUIPlugin.ControlImage
+        Get
+            Return Nothing
+        End Get
+    End Property
+
+    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
+        Get
+            Return "To NetworkD3 simple network"
+        End Get
+    End Property
+
+    Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
+        Get
+            Return ""
+        End Get
+    End Property
+
     Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Windows.Forms.Form) Implements IGUIPlugin.OnControlClick
         Try
-            Me.ToScript(False)
+            Me.CreateNetworkD3RScript()
         Catch ex As Exception
 
         End Try
     End Sub
 
-    Public Sub Initialize(core As Object) Implements IPlugin.Initialize
-        Me.m_core = DirectCast(core, cCore)
-    End Sub
+#End Region ' Generic
 
 #Region " Internals "
 
     ''' <summary>
     ''' Generates the R script and copies it to the clipboard.
     ''' </summary>
-    ''' <param name="bUseSymbolicNames"></param>
-    Private Sub ToScript(bUseSymbolicNames As Boolean)
+    Private Sub CreateNetworkD3RScript()
 
         Dim network As cNetwork = Nothing
         Dim msg As cMessage = Nothing
 
-        'network = New cSimpleNetwork(Me.m_core)
-        network = New cForceNetwork(Me.m_core)
-        network.UseSymbolicNames = bUseSymbolicNames
+        Select Case My.Settings.NetworkType
+            Case 0
+                network = New cSimpleNetwork(Me.m_core)
+            Case 1
+                network = New cForceNetwork(Me.m_core)
+            Case Else
+                network = New cSimpleNetwork(Me.m_core)
+        End Select
 
         Try
             Clipboard.SetText(network.GenerateScript())
@@ -122,6 +138,14 @@ Public Class cNetworkD3RWriterPlugin
         Me.m_core.Messages.SendMessage(msg)
 
     End Sub
+
+    Public Function IsConfigured() As Boolean Implements IConfigurable.IsConfigured
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function GetConfigUI() As Control Implements IConfigurable.GetConfigUI
+        Throw New NotImplementedException()
+    End Function
 
 #End Region ' Internals
 
