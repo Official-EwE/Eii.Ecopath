@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScientificInterface", "ScientificInterface", "{5969ADB4-4FDE-4385-986B-6C28A162AD78}"
 EndProject
@@ -94,8 +94,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwETransectExtractionPlugin", "EwECustomPlugins\EwETransectExtractionPlugin\EwETransectExtractionPlugin.vbproj", "{86D3251D-678F-4AB3-9C95-3D29D8FA7797}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEMPADynamicsPlugin", "..\Sources Internal\Plugins\EwEMPADynamicsPlugin\EwEMPADynamicsPlugin.vbproj", "{220FF584-9BFA-4872-949A-52C7A6877B65}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEDietMatrixToNetworkD3R", "..\Examples\3. Plugins\20. EwEDietMatrixToNetworkD3R\EwEDietMatrixToNetworkD3R.vbproj", "{E4C0340C-046C-46AE-A854-E64DFC99E003}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -387,18 +385,6 @@ Global
 		{220FF584-9BFA-4872-949A-52C7A6877B65}.Release|x64.Build.0 = Release|x64
 		{220FF584-9BFA-4872-949A-52C7A6877B65}.Release|x86.ActiveCfg = Release|x86
 		{220FF584-9BFA-4872-949A-52C7A6877B65}.Release|x86.Build.0 = Release|x86
-		{E4C0340C-046C-46AE-A854-E64DFC99E003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4C0340C-046C-46AE-A854-E64DFC99E003}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4C0340C-046C-46AE-A854-E64DFC99E003}.Debug|x64.ActiveCfg = Debug|x64
-		{E4C0340C-046C-46AE-A854-E64DFC99E003}.Debug|x64.Build.0 = Debug|x64
-		{E4C0340C-046C-46AE-A854-E64DFC99E003}.Debug|x86.ActiveCfg = Debug|x86
-		{E4C0340C-046C-46AE-A854-E64DFC99E003}.Debug|x86.Build.0 = Debug|x86
-		{E4C0340C-046C-46AE-A854-E64DFC99E003}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4C0340C-046C-46AE-A854-E64DFC99E003}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4C0340C-046C-46AE-A854-E64DFC99E003}.Release|x64.ActiveCfg = Release|x64
-		{E4C0340C-046C-46AE-A854-E64DFC99E003}.Release|x64.Build.0 = Release|x64
-		{E4C0340C-046C-46AE-A854-E64DFC99E003}.Release|x86.ActiveCfg = Release|x86
-		{E4C0340C-046C-46AE-A854-E64DFC99E003}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -443,7 +429,6 @@ Global
 		{22ED1C02-0C01-460B-9305-0A6FEF0032D9} = {50B6DD60-873B-410D-97BC-BB87754F9C49}
 		{8E3D5D14-69A7-44BA-8C0B-31253033E552} = {CAFA2E5E-DF1C-4982-A43C-031A03C89767}
 		{86D3251D-678F-4AB3-9C95-3D29D8FA7797} = {8E3D5D14-69A7-44BA-8C0B-31253033E552}
-		{E4C0340C-046C-46AE-A854-E64DFC99E003} = {CAFA2E5E-DF1C-4982-A43C-031A03C89767}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95C63F26-75FD-4801-881F-04EB9E2D6425}
