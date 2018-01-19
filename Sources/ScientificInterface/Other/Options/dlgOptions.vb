@@ -18,6 +18,8 @@
 ' ===============================================================================
 '
 
+' ToDo: integrate option pages provided through plug-ins
+
 #Region " Imports "
 
 Option Strict On
