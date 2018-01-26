@@ -30,6 +30,7 @@ Imports System.Windows.Forms
 Public Class cPluginPoint
     Implements IMenuItemPlugin
     Implements IUIContextPlugin
+    Implements IHelpPlugin
 
     Private m_uic As cUIContext = Nothing
 
@@ -108,6 +109,30 @@ Public Class cPluginPoint
             Return "ndAquamapsImport"
         End Get
     End Property
+
+#Region " Help plug-in "
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IHelpPlugin.HelpTopic"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpTopic As String _
+        Implements IHelpPlugin.HelpTopic
+        Get
+            Return ".\UserGuide\Using aquamaps environmental responses.pdf"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IHelpPlugin.HelpURL"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpURL As String _
+        Implements IHelpPlugin.HelpURL
+        Get
+            Return Me.HelpTopic
+        End Get
+    End Property
+
+#End Region ' Help plug-in
 
     Private Sub LaunchUI()
         ' Open UI as dialog box
