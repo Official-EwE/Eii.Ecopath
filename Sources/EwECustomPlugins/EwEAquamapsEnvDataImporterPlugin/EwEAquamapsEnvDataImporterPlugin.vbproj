@@ -155,7 +155,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Documentation\Using aquamaps environmental responses.docx" />
-    <None Include="Documentation\Using aquamaps environmental responses.pdf" />
+    <None Include="Documentation\Using aquamaps environmental responses.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="EwEAquamapsEnvDataImporterPlugin.snk" />
     <None Include="_ Design _\Overview.cd" />
     <None Include="JRC.licenseheader" />
