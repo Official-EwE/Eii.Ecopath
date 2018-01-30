@@ -1582,12 +1582,17 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Protected Overridable Sub OnGotFocus(ByVal sender As Object, ByVal e As System.EventArgs)
-            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
-            Dim dsc As cPropertySelectionCommand = DirectCast(cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
 
-            If Object.ReferenceEquals(dsc, Nothing) Then Return
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+            If (cmdh Is Nothing) Then Return
+
+            Dim dsc As cPropertySelectionCommand = DirectCast(cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
+            If (dsc Is Nothing) Then Return
 
             dsc.Invoke()
+
         End Sub
 
         ''' -----------------------------------------------------------------------
