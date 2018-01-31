@@ -119,12 +119,7 @@ Public Class cNetworkD3RWriterPlugin
 
         If (Me.m_engine Is Nothing) Then
             REngine.SetEnvironmentVariables()
-            If (Not Me.m_engine.IsRunning) Then
-                ' Panic, alert user, abort
-            Else
-                ' Ready to go
-                Me.m_engine = REngine.GetInstance()
-            End If
+            Me.m_engine = REngine.GetInstance()
         End If
 
         Dim network As cNetwork = Nothing
