@@ -25,6 +25,7 @@ Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports RDotNet
 
 #End Region ' Imports
 
@@ -33,6 +34,7 @@ Public Class cNetworkD3RWriterPlugin
     Implements IConfigurablePlugin
 
     Private m_core As cCore = Nothing
+    Private m_engine As REngine = Nothing
 
 #Region " Generic "
 
@@ -114,6 +116,16 @@ Public Class cNetworkD3RWriterPlugin
     ''' Generates the R script and copies it to the clipboard.
     ''' </summary>
     Private Sub CreateNetworkD3RScript()
+
+        If (Me.m_engine Is Nothing) Then
+            REngine.SetEnvironmentVariables()
+            If (Not Me.m_engine.IsRunning) Then
+                ' Panic, alert user, abort
+            Else
+                ' Ready to go
+                Me.m_engine = REngine.GetInstance()
+            End If
+        End If
 
         Dim network As cNetwork = Nothing
         Dim msg As cMessage = Nothing
