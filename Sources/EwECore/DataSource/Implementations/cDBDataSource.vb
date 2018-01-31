@@ -8245,7 +8245,7 @@ Namespace DataSources
                     ' Sanity check
                     If (iGroup = -1) Or (iHabitat = -1) Then
                         If (iGroup = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
-                        If (iHabitat = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Habitat ID {1} no longer exist", iHabitatID))
+                        If (iHabitat = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Habitat ID {0} no longer exist", iHabitatID))
                     Else
                         ' Flag as preferred
                         ecospaceDS.PrefHab(iGroup, 0) = 0
