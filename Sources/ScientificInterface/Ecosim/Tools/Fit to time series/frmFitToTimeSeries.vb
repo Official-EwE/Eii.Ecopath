@@ -395,7 +395,7 @@ Namespace Ecosim
             Dim shape As cShapeData = Me.m_shapeHandler.SelectedShape
 
             ' Reset year range when new shape selected
-            If (Not Object.ReferenceEquals(m_shapeSelected, shape)) Then
+            If (Not ReferenceEquals(m_shapeSelected, shape)) Then
 
                 ' Remember newly selected shape
                 Me.m_shapeSelected = shape

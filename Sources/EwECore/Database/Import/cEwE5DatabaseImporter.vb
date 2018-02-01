@@ -430,7 +430,7 @@ Namespace Database
                 Dim dict As Dictionary(Of String, Integer) = m_adtKeys(CInt(dt))
                 Dim strKeyInt As String = Me.MakeHashKey(strKey, iScenarioID, dtScenario)
                 ' Already allocated?
-                If (Object.ReferenceEquals(dict, Nothing)) Then
+                If (ReferenceEquals(dict, Nothing)) Then
                     ' #No: create new
                     dict = New Dictionary(Of String, Integer)
                     ' Store dict
@@ -467,7 +467,7 @@ Namespace Database
                 ' Get proper dictionary
                 Dim dict As Dictionary(Of Integer, Integer) = Me.m_adtIndexes(CInt(dt))
                 ' Already allocated?
-                If (Object.ReferenceEquals(dict, Nothing)) Then
+                If (ReferenceEquals(dict, Nothing)) Then
                     ' #No: create new
                     dict = New Dictionary(Of Integer, Integer)
                     ' Store dict
@@ -755,7 +755,7 @@ Namespace Database
             Me.m_dbTarget.Execute("DELETE * FROM EcopathModel")
 
             reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Models] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = m_dbTarget.GetWriter("EcopathModel")
 
@@ -869,7 +869,7 @@ Namespace Database
             Me.m_dbTarget.Execute("DELETE * FROM Stanza")
 
             readerStanza = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group Stanza] where modelName='{0}' ORDER BY StanzaName, Sequence ASC", Me.m_strModelName))
-            If Object.ReferenceEquals(readerStanza, Nothing) Then Return
+            If ReferenceEquals(readerStanza, Nothing) Then Return
 
             writerStanza = m_dbTarget.GetWriter("Stanza")
             writerLifeStages = m_dbTarget.GetWriter("StanzaLifeStage")
@@ -1008,7 +1008,7 @@ Namespace Database
             Me.m_dbTarget.Execute("DELETE * FROM EcopathGroup")
 
             reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Group Info] WHERE modelName='{0}' ORDER BY Sequence ASC", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = m_dbTarget.GetWriter("EcopathGroup")
             writerPedigree = Me.m_dbTarget.GetWriter("EcopathGroupPedigree")
@@ -1134,7 +1134,7 @@ Namespace Database
             Dim sValue As Single = 0.0
 
             reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group x Group] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = m_dbTarget.GetWriter("EcopathDietComp")
 
@@ -1204,7 +1204,7 @@ Namespace Database
 
             ' Merge EwE5 Group Size data with EwE6 GroupInfo for non-stanza groups
             reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Group size] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             While reader.Read()
 
@@ -1277,7 +1277,7 @@ Namespace Database
             Me.m_dbTarget.Execute("DELETE * FROM EcopathFleet")
 
             reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Gear] where modelName='{0}' ORDER BY Sequence ASC", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = m_dbTarget.GetWriter("EcopathFleet")
 
@@ -1331,7 +1331,7 @@ Namespace Database
             Dim nFleetID As Integer = 0
 
             reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Catch] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = m_dbTarget.GetWriter("EcopathCatch")
 
@@ -1380,7 +1380,7 @@ Namespace Database
             Dim nGroupID As Integer = 0
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Catch Codes] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbTarget.GetWriter("EcopathCatchCode")
 
@@ -1413,7 +1413,7 @@ Namespace Database
             Dim nFleetID As Integer = 0
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Discard Fate] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbTarget.GetWriter("EcopathDiscardFate")
 
@@ -1453,7 +1453,7 @@ Namespace Database
             Dim varName As eVarNameFlags = eVarNameFlags.NotSet
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [BasicParam Remarks] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             While reader.Read()
                 ' Get GroupID
@@ -1518,7 +1518,7 @@ Namespace Database
             End Try
 
             reader = Me.m_dbEwE5.GetReader("SELECT * from [Pedigree]")
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbTarget.GetWriter("Pedigree")
 
@@ -1606,7 +1606,7 @@ Namespace Database
             Me.m_dbTarget.Execute("DELETE * FROM EcosimScenario")
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return False
+            If ReferenceEquals(reader, Nothing) Then Return False
 
             writer = Me.m_dbTarget.GetWriter("EcosimScenario")
 
@@ -1698,7 +1698,7 @@ Namespace Database
 
             ' JS 070212: Every Ecopath group should have an Ecosim counterpart
             reader = Me.m_dbTarget.GetReader("SELECT * from EcopathGroup")
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbTarget.GetWriter("EcosimScenarioGroup")
 
@@ -1850,7 +1850,7 @@ Namespace Database
             Dim bWarned As Boolean = False
 
             reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim Pairs] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             While reader.Read
 
@@ -1997,7 +1997,7 @@ Namespace Database
 
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Ecosim nshapes] WHERE modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbTarget.GetWriter("EcosimShape")
 
@@ -2463,7 +2463,7 @@ Namespace Database
 
             ' Resolve Scenario dependent forcing shapes
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [Ecosim] WHERE modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbTarget.GetWriter("EcosimScenario")
 
@@ -2523,7 +2523,7 @@ Namespace Database
             Me.m_dbTarget.Execute("DELETE * FROM EcosimStanzaShape")
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT groupName, stanzaName, EggProdShape, HatchCode FROM [Group Stanza] WHERE (modelName='{0}')", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             ' Determine number of ecosim scenarios
             iNumEcosimScenarios = dtEcosimScenarios.Values.Count
@@ -2645,7 +2645,7 @@ Namespace Database
             Dim drow As DataRow = Nothing
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim NxN] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbTarget.GetWriter("EcosimScenarioForcingMatrix")
 
@@ -2719,7 +2719,7 @@ Namespace Database
             Dim iShapeID As Integer = 0
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim MedWeights] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writerGroup = Me.m_dbTarget.GetWriter("EcosimScenarioShapeMedWeightsGroup")
             writerFleet = Me.m_dbTarget.GetWriter("EcosimScenarioShapeMedWeightsFleet")
@@ -2779,7 +2779,7 @@ Namespace Database
 
             ' EwE6: Shape type explicitly identifies a shape type
             reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Ecosim NxN Forcing] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbTarget.GetWriter("EcosimScenarioPredPreyShape")
 
@@ -2913,7 +2913,7 @@ Namespace Database
                 reader = m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [Time Series] where modelName='{0}'", Me.m_strModelName))
             End If
 
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             ' Time series are scenario-independent
             writerTimeSeries = Me.m_dbTarget.GetWriter("EcosimTimeSeries")
@@ -3125,7 +3125,7 @@ Namespace Database
             Me.m_dbTarget.Execute("DELETE * FROM EcospaceScenario")
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace] WHERE modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return False
+            If ReferenceEquals(reader, Nothing) Then Return False
 
             writer = Me.m_dbTarget.GetWriter("EcospaceScenario")
 
@@ -3267,7 +3267,7 @@ Namespace Database
             Dim sbMPA As StringBuilder = Nothing
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace MPA] WHERE modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbTarget.GetWriter("EcospaceScenarioMPA")
 
@@ -3656,7 +3656,7 @@ Namespace Database
             Dim iNumRegions As Integer = 0
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * FROM [EcoSpace] WHERE modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbTarget.GetWriter("EcospaceScenario")
             dt = writer.GetDataTable()
@@ -3794,7 +3794,7 @@ Namespace Database
             Dim iScenarioID As Integer = 1
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [EcoTracer] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return False
+            If ReferenceEquals(reader, Nothing) Then Return False
 
             writer = Me.m_dbTarget.GetWriter("EcotracerScenario")
 
@@ -3842,7 +3842,7 @@ Namespace Database
             Dim iGroupID As Integer = 0
 
             reader = Me.m_dbEwE5.GetReader(cStringUtils.Localize("SELECT * from [EcoTracer N] where modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbTarget.GetWriter("EcotracerScenarioGroup")
 
@@ -3887,7 +3887,7 @@ Namespace Database
             Dim iGroupID As Integer = 0
 
             reader = Me.m_dbEwE5.GetReader("SELECT * from Quote")
-            If Object.ReferenceEquals(reader, Nothing) Then Return
+            If ReferenceEquals(reader, Nothing) Then Return
 
             writer = Me.m_dbTarget.GetWriter("Quote")
 

@@ -92,7 +92,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>BETA=1, DISCARDS=1</DefineConstants>
+    <DefineConstants>BETA=1</DefineConstants>
     <DocumentationFile>EwE6.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>None</DebugType>
@@ -502,12 +502,6 @@
       <DependentUpon>ucAutosaveOption.vb</DependentUpon>
     </Compile>
     <Compile Include="Other\Options\AutoSaveOptionAssets\ucAutosaveOption.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Other\Options\ucOptionsWindowSize.Designer.vb">
-      <DependentUpon>ucOptionsWindowSize.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Other\Options\ucOptionsWindowSize.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Other\Options\ucOptionsSpatialTemporal.Designer.vb">
@@ -1183,10 +1177,6 @@
     <EmbeddedResource Include="Other\Options\AutoSaveOptionAssets\ucAutosaveOption.resx">
       <DependentUpon>ucAutosaveOption.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\ucOptionsWindowSize.resx">
-      <DependentUpon>ucOptionsWindowSize.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsSpatialTemporal.resx">
       <DependentUpon>ucOptionsSpatialTemporal.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1396,8 +1386,8 @@
       <DependentUpon>frmStartPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\ucOptionsPresentation.resx">
-      <DependentUpon>ucOptionsPresentation.vb</DependentUpon>
+    <EmbeddedResource Include="Other\Options\ucOptionsMainWindow.resx">
+      <DependentUpon>ucOptionsMainWindow.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Resources\ecopath_logo.ico" />
@@ -1690,10 +1680,10 @@
     <Compile Include="Panels\StartPanel\frmStartPanel.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Other\Options\ucOptionsPresentation.Designer.vb">
-      <DependentUpon>ucOptionsPresentation.vb</DependentUpon>
+    <Compile Include="Other\Options\ucOptionsMainWindow.Designer.vb">
+      <DependentUpon>ucOptionsMainWindow.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\Options\ucOptionsPresentation.vb">
+    <Compile Include="Other\Options\ucOptionsMainWindow.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="MSE\MSEBatch\frmMSERunBatch.Designer.vb">

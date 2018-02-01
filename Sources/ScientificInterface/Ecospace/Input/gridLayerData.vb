@@ -185,7 +185,7 @@ Public Class gridLayerData
             '    RemoveHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
             'End If
 
-            If Not Object.ReferenceEquals(Me.m_layer, value) Then
+            If Not ReferenceEquals(Me.m_layer, value) Then
 
                 Me.m_layer = value
                 Me.m_bReadOnly = True

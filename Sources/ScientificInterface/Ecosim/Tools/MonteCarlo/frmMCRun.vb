@@ -236,7 +236,7 @@ Namespace Ecosim
             For i As Integer = 1 To Me.m_mcmanager.nResultWriters
                 Dim writer As IMonteCarloResultsWriter = Me.m_mcmanager.ResultWriter(i)
                 Me.m_cmbSaveFormat.Items.Add(Me.m_mcmanager.ResultWriter(i))
-                If (Object.ReferenceEquals(Me.m_mcmanager.ActiveResultWriter, writer)) Then
+                If (ReferenceEquals(Me.m_mcmanager.ActiveResultWriter, writer)) Then
                     Me.m_cmbSaveFormat.SelectedItem = writer
                 End If
             Next

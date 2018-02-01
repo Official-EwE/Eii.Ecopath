@@ -26,6 +26,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports EwEPlugin
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -65,6 +66,39 @@ Namespace Other
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
+
+            ' Create nodes
+            Me.m_tvOptions.Nodes.Clear()
+
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("General", GetType(ucOptionsGeneral)))
+
+            Dim tnDisplay As TreeNode = Me.CreateNode("Display", GetType(ucOptionsStatusColors))
+            tnDisplay.Nodes.Add(Me.CreateNode("Colors", GetType(ucOptionsStatusColors)))
+            tnDisplay.Nodes.Add(Me.CreateNode("Fonts", GetType(ucOptionsGraphs)))
+            tnDisplay.Nodes.Add(Me.CreateNode("Maps", GetType(ucOptionsMap)))
+            tnDisplay.Nodes.Add(Me.CreateNode("Pedigree", GetType(ucOptionsPedigree)))
+            tnDisplay.Nodes.Add(Me.CreateNode("Main window", GetType(ucOptionsPresentation)))
+            Me.m_tvOptions.Nodes.Add(tnDisplay)
+
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("File management", GetType(ucOptionsFileManagement)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Plug-ins", GetType(ucOptionsPlugins)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("External data", GetType(ucOptionsSpatialTemporal)))
+
+            ' Add plug-ins
+            Dim pm As cPluginManager = Me.m_uic.Core.PluginManager
+            If (pm IsNot Nothing) Then
+                ' ToDo: sort
+                For Each pi As IPlugin In pm.GetPlugins(GetType(IEwEOptionsPlugin))
+                    Dim opt As IEwEOptionsPlugin = DirectCast(pi, IEwEOptionsPlugin)
+                    Dim page As Control = opt.GetConfigUI()
+                    Debug.Assert(TypeOf page Is IOptionsPage)
+                    Me.m_lPages.Add(DirectCast(page, IOptionsPage))
+                    Me.m_tvOptions.Nodes.Add(Me.CreateNode(opt.Label, page.GetType()))
+                Next
+            End If
+
+            Me.m_tvOptions.ExpandAll()
+
             Me.m_tvOptions.ExpandAll()
         End Sub
 
@@ -86,7 +120,129 @@ Namespace Other
 
 #End Region ' Constructor
 
+#Region " Event handlers "
+
+        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnOk.Click
+
+            Try
+                Me.Apply()
+            Catch ex As Exception
+                cLog.Write(ex, "dlgOptions::OnOK")
+            End Try
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.Close()
+
+        End Sub
+
+        Private Sub OnSetDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+                Handles m_btnSetDefaults.Click
+
+            Try
+                Me.SetDefaults()
+            Catch ex As Exception
+                cLog.Write(ex, "dlgOptions::OnSetDefaults")
+            End Try
+
+        End Sub
+
+        Private Sub OnApply(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+                Handles m_btnApply.Click
+
+            Try
+                Me.Apply()
+            Catch ex As Exception
+                cLog.Write(ex, "dlgOptions::OnApply")
+            End Try
+
+        End Sub
+
+        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnCancel.Click
+
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.Close()
+
+        End Sub
+
+        Private Sub OnSelectedNode(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
+            Handles m_tvOptions.AfterSelect
+
+            If (e.Node Is Nothing) Then Return
+            ' Suppress auto-select event when dialog initializes (indicated by unknown action), 
+            ' because this will switch away from the page that was selected at launch.
+            If (e.Action = TreeViewAction.Unknown) Then Return
+
+            Try
+                Dim tag As Object = e.Node.Tag
+                If (tag IsNot Nothing) Then
+                    Dim page As IOptionsPage = Me.GetPage(DirectCast(tag, Type))
+                    Me.SelectPage(page)
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex, "dlgOptions::OnSelectedNode(" & e.Node.Name & ")")
+            End Try
+
+        End Sub
+
+#End Region ' Event handlers
+
 #Region " Internals "
+
+        Private Function CreateNode(strLabel As String, type As Type) As TreeNode
+            Return New TreeNode(strLabel) With {.Tag = type}
+        End Function
+
+        Private Function CreateNode(strLabel As String, plugin As IEwEOptionsPlugin) As TreeNode
+            Return New TreeNode(strLabel) With {.Tag = plugin}
+        End Function
+
+        Private Function ToPageType(opt As eApplicationOptionTypes) As Type
+
+            Dim t As Type = GetType(ucOptionsGeneral)
+            Dim strNode As String = "ndGeneral"
+
+            Select Case opt
+                Case eApplicationOptionTypes.General,
+                     eApplicationOptionTypes.Messages
+
+                Case eApplicationOptionTypes.PresentationMode
+                    t = GetType(ucOptionsPresentation)
+                    strNode = "ndPresentation"
+
+                Case eApplicationOptionTypes.Colours
+                    t = GetType(ucOptionsStatusColors)
+                    strNode = "ndStatusColors"
+
+                Case eApplicationOptionTypes.Graphs,
+                     eApplicationOptionTypes.Fonts
+                    t = GetType(ucOptionsGraphs)
+                    strNode = "ndGraphCharts"
+
+                Case eApplicationOptionTypes.ReferenceMaps
+                    t = GetType(ucOptionsMap)
+                    strNode = "ndMap"
+
+                Case eApplicationOptionTypes.Autosave, eApplicationOptionTypes.FileLocations
+                    t = GetType(ucOptionsFileManagement)
+                    strNode = "ndAutosave"
+
+                Case eApplicationOptionTypes.Plugins
+                    t = GetType(ucOptionsPlugins)
+                    strNode = "ndPlugins"
+
+                Case eApplicationOptionTypes.SpatialTemporal
+                    t = GetType(ucOptionsSpatialTemporal)
+                    strNode = "ndSpatialTemporal"
+
+                Case Else
+                    Debug.Assert(False, "Option not recognized")
+            End Select
+
+            Me.m_tvOptions.SelectedNode = Me.m_tvOptions.Nodes.Find(strNode, True)(0)
+            Return t
+        End Function
 
         Private Function CreatePage(ByVal t As Type) As IOptionsPage
 
@@ -112,7 +268,7 @@ Namespace Other
 
         Private Function GetPage(ByVal t As Type) As IOptionsPage
 
-            ' Saniiy check - if this fails something is really wrong
+            ' Sanity check - if this fails something is really wrong
             Debug.Assert(t IsNot Nothing, "Page type not know, cannot continue")
 
             For Each optionspage As IOptionsPage In Me.m_lPages
@@ -181,7 +337,7 @@ Namespace Other
 
         Private Sub SelectPage(ByVal page As IOptionsPage)
 
-             Me.SuspendLayout()
+            Me.SuspendLayout()
 
             ' Optimization
             If Object.ReferenceEquals(page, Me.m_pageCurrent) Then Return
@@ -203,145 +359,6 @@ Namespace Other
         End Sub
 
 #End Region ' Internals
-
-#Region " Event handlers "
-
-        Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnOk.Click
-
-            Try
-                Me.Apply()
-            Catch ex As Exception
-                cLog.Write(ex, "dlgOptions::OnOK")
-            End Try
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
-            Me.Close()
-
-        End Sub
-
-        Private Sub OnSetDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles m_btnSetDefaults.Click
-
-            Try
-                Me.SetDefaults()
-            Catch ex As Exception
-                cLog.Write(ex, "dlgOptions::OnSetDefaults")
-            End Try
-
-        End Sub
-
-        Private Sub OnApply(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-                Handles m_btnApply.Click
-
-            Try
-                Me.Apply()
-            Catch ex As Exception
-                cLog.Write(ex, "dlgOptions::OnApply")
-            End Try
-
-        End Sub
-
-        Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnCancel.Click
-
-            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.Close()
-
-        End Sub
-
-        Private Sub OnSelectedNode(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
-            Handles m_tvOptions.AfterSelect
-
-            If (e.Node Is Nothing) Then Return
-            ' Suppress auto-select event when dialog initializes (indicated by unknown action), 
-            ' because this will switch away from the page that was selected at launch.
-            If (e.Action = TreeViewAction.Unknown) Then Return
-
-            Try
-                Dim t As Type = Me.ToPageType(e.Node.Name)
-                Dim page As IOptionsPage = Me.GetPage(t)
-                Me.SelectPage(page)
-            Catch ex As Exception
-                cLog.Write(ex, "dlgOptions::OnSelectedNode(" & e.Node.Name & ")")
-            End Try
-
-        End Sub
-
-#End Region ' Event handlers
-
-#Region " Internals "
-
-        Private Function ToPageType(strNodeName As String) As Type
-
-            Dim t As Type = GetType(ucOptionsGeneral)
-            Select Case strNodeName
-                Case "", "ndGeneral" : t = GetType(ucOptionsGeneral)
-                Case "ndAutosave" : t = GetType(ucOptionsFileManagement)
-                Case "ndPresentation" : t = GetType(ucOptionsPresentation)
-                Case "ndDisplay", "ndStatusColors" : t = GetType(ucOptionsStatusColors)
-                Case "ndGraphCharts" : t = GetType(ucOptionsGraphs)
-                Case "ndPlugins" : t = GetType(ucOptionsPlugins)
-                Case "ndMap" : t = GetType(ucOptionsMap)
-                Case "ndPedigree" : t = GetType(ucOptionsPedigree)
-                Case "ndWindow" : t = GetType(ucOptionsWindowSize)
-                Case "ndSpatialTemporal" : t = GetType(ucOptionsSpatialTemporal)
-                Case Else
-                    Debug.Assert(False, "Node name not recognized")
-            End Select
-            Return t
-        End Function
-
-        Private Function ToPageType(opt As eApplicationOptionTypes) As Type
-
-            Dim t As Type = GetType(ucOptionsGeneral)
-            Dim strNode As String = "ndGeneral"
-
-            Select Case opt
-                Case eApplicationOptionTypes.General, _
-                     eApplicationOptionTypes.Messages
-
-                Case eApplicationOptionTypes.PresentationMode
-                    t = GetType(ucOptionsPresentation)
-                    strNode = "ndPresentation"
-
-                Case eApplicationOptionTypes.Colours
-                    t = GetType(ucOptionsStatusColors)
-                    strNode = "ndStatusColors"
-
-                Case eApplicationOptionTypes.Graphs, _
-                     eApplicationOptionTypes.Fonts
-                    t = GetType(ucOptionsGraphs)
-                    strNode = "ndGraphCharts"
-
-                Case eApplicationOptionTypes.ReferenceMaps
-                    t = GetType(ucOptionsMap)
-                    strNode = "ndMap"
-
-                Case eApplicationOptionTypes.Autosave, eApplicationOptionTypes.FileLocations
-                    t = GetType(ucOptionsFileManagement)
-                    strNode = "ndAutosave"
-
-                Case eApplicationOptionTypes.Window
-                    t = GetType(ucOptionsWindowSize)
-                    strNode = "ndWindow"
-
-                Case eApplicationOptionTypes.Plugins
-                    t = GetType(ucOptionsPlugins)
-                    strNode = "ndPlugins"
-
-                Case eApplicationOptionTypes.SpatialTemporal
-                    t = GetType(ucOptionsSpatialTemporal)
-                    strNode = "ndSpatialTemporal"
-
-                Case Else
-                    Debug.Assert(False, "Option not recognized")
-            End Select
-
-            Me.m_tvOptions.SelectedNode = Me.m_tvOptions.Nodes.Find(strNode, True)(0)
-            Return t
-        End Function
-
-#End Region ' Internals 
 
     End Class
 

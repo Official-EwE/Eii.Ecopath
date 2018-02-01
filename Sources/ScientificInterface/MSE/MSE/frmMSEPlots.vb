@@ -63,7 +63,7 @@ Public Class frmMSEPlots
 
         ' Display Groups
         Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-        If Not Object.ReferenceEquals(cmd, Nothing) Then
+        If Not ReferenceEquals(cmd, Nothing) Then
             cmd.AddControl(Me.m_btnShowHide)
         End If
 
@@ -101,7 +101,7 @@ Public Class frmMSEPlots
 
         ' Show/Hide Groups
         Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-        If Not Object.ReferenceEquals(cmd, Nothing) Then
+        If Not ReferenceEquals(cmd, Nothing) Then
             cmd.RemoveControl(Me.m_btnShowHide)
         End If
 

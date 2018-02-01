@@ -164,7 +164,7 @@ Public Class cBiomassLimits
         Implements ICollection(Of cBiomassLimit).Contains
         'If Me.lstBiomassLimits.Count = 0 Then Return False
         For Each iLimit As cBiomassLimit In Me.lstBiomassLimits
-            If Object.ReferenceEquals(item.mGroup, iLimit.mGroup) Then
+            If ReferenceEquals(item.mGroup, iLimit.mGroup) Then
                 Return True
             End If
         Next

@@ -75,7 +75,7 @@ Public Class cAnomalySearchShapeGUIHandler
             If (interact IsNot Nothing) Then
                 For i As Integer = 1 To interact.nAppliedShapes
                     If (interact.getShape(i, shpTest, ft)) Then
-                        If Object.ReferenceEquals(shape, shpTest) Then
+                        If ReferenceEquals(shape, shpTest) Then
                             Return True
                         End If
                     End If

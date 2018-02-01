@@ -60,7 +60,7 @@ Public Class cFlowPosition
             Return Me.m_diagram
         End Get
         Set(ByVal value As cFlowDiagram)
-            If (Not Object.ReferenceEquals(value, Me.m_diagram)) Then
+            If (Not ReferenceEquals(value, Me.m_diagram)) Then
                 Me.m_diagram = value
                 Me.SetChanged()
             End If
@@ -77,7 +77,7 @@ Public Class cFlowPosition
             Return Me.m_unit
         End Get
         Set(ByVal value As cUnit)
-            If (Not Object.ReferenceEquals(value, Me.m_unit)) Then
+            If (Not ReferenceEquals(value, Me.m_unit)) Then
                 Me.m_unit = value
                 Me.SetChanged()
             End If

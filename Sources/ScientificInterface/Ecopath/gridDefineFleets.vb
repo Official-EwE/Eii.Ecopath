@@ -469,7 +469,7 @@ Imports EwEUtils.Core
 
         For iRow As Integer = iFIRSTFLEETROW To Me.RowsCount - 1
             fi = DirectCast(Me.m_lfiFleets(iRow - iFIRSTFLEETROW), cFleetInfo)
-            If (Object.ReferenceEquals(fi.FleetIndex, fleet.Index)) Then
+            If (ReferenceEquals(fi.FleetIndex, fleet.Index)) Then
                 Me.SelectRow(iRow)
                 Return
             End If
@@ -702,7 +702,7 @@ Imports EwEUtils.Core
 
     Private Overloads Sub SelectRow(ByVal fi As cFleetInfo)
         For iFleet As Integer = 0 To Me.m_lfiFleets.Count - 1
-            If Object.ReferenceEquals(Me.m_lfiFleets(iFleet), fi) Then
+            If ReferenceEquals(Me.m_lfiFleets(iFleet), fi) Then
                 Me.SelectRow(iFleet + iFIRSTFLEETROW)
             End If
         Next
@@ -803,7 +803,7 @@ Imports EwEUtils.Core
         For i As Integer = 0 To Me.m_lfiFleets.Count - 1
             Dim fiTmp As cFleetInfo = DirectCast(Me.m_lfiFleets(i), cFleetInfo)
             ' Does name already exist?
-            If (Not Object.ReferenceEquals(fiTmp, fi)) And (String.Compare(strName, fiTmp.Name, True) = 0) Then
+            If (Not ReferenceEquals(fiTmp, fi)) And (String.Compare(strName, fiTmp.Name, True) = 0) Then
                 ' Report failure
                 Return False
             End If

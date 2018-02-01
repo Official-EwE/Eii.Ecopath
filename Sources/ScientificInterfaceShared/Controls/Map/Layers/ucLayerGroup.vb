@@ -503,7 +503,7 @@ Namespace Controls.Map
             Dim ucl As ucLayer = Nothing
             For Each uc As UserControl In Me.m_fpItems.Controls
                 ucl = DirectCast(uc, ucLayer)
-                If Object.ReferenceEquals(ucl.Layer, layer) Then
+                If ReferenceEquals(ucl.Layer, layer) Then
                     Return ucl
                 End If
             Next uc

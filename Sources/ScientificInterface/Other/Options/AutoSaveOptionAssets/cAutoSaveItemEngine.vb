@@ -32,22 +32,6 @@ Namespace Other
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper class to sort plug-ins by name.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Friend Class cPluginSorter
-        Implements IComparer(Of IAutoSavePlugin)
-
-        Public Function Compare(x As EwEPlugin.IAutoSavePlugin, _
-                                y As EwEPlugin.IAutoSavePlugin) As Integer _
-                            Implements IComparer(Of EwEPlugin.IAutoSavePlugin).Compare
-            Return String.Compare(x.Name, y.Name)
-        End Function
-
-    End Class
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Auto-save UI item engine. This engine creates a hierarchy of 
     ''' <see cref="ucAutosaveOption"/> controls that reflect the various
     ''' components in EwE that support auto-save functionality.
@@ -64,6 +48,22 @@ Namespace Other
         Private m_lControls As List(Of ucAutosaveOption) = Nothing
 
 #End Region ' Private vars
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper class to sort plug-ins by name.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Class cPluginSorter
+            Implements IComparer(Of IAutoSavePlugin)
+
+            Public Function Compare(x As EwEPlugin.IAutoSavePlugin,
+                                y As EwEPlugin.IAutoSavePlugin) As Integer _
+                            Implements IComparer(Of EwEPlugin.IAutoSavePlugin).Compare
+                Return String.Compare(x.Name, y.Name)
+            End Function
+
+        End Class
 
 #Region " Constructor "
 

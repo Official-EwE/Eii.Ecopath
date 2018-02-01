@@ -93,7 +93,7 @@ Public Class gridTargetFishingMortalityPolicy
         End Get
         Set(ByVal value As HCR_Group)
             For iRow As Integer = 1 To Me.RowsCount - 1
-                If Object.ReferenceEquals(Me.Rows(iRow).Tag, value) Then
+                If ReferenceEquals(Me.Rows(iRow).Tag, value) Then
                     Me.SelectRow(iRow)
                     Return
                 End If
@@ -258,7 +258,7 @@ Public Class gridTargetFishingMortalityPolicy
             If row.Tag IsNot Nothing Then
 
                 Dim hcr As HCR_Group = DirectCast(row.Tag, HCR_Group)
-                If Object.ReferenceEquals(hcr.GroupB, curHCR.GroupB) Then
+                If ReferenceEquals(hcr.GroupB, curHCR.GroupB) Then
 
                     DirectCast(row.GetCells(eColumnTypes.BioGroupName), EwECell).Value = hcr.GroupB.Name
                     DirectCast(row.GetCells(eColumnTypes.FGroupName), EwECell).Value = hcr.GroupF.Name

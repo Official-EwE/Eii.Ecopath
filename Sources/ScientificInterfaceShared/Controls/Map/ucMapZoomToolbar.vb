@@ -257,7 +257,7 @@ Namespace Controls.Map
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
             For Each ctrlZoom As ucMapZoom In Me.m_lZoomContainers
-                If Not Object.ReferenceEquals(ctrlZoom, sender) Then
+                If Not ReferenceEquals(ctrlZoom, sender) Then
                     ctrlZoom.UpdatePosition(sender)
                 End If
             Next

@@ -240,7 +240,7 @@ Namespace Controls
             For iRow As Integer = 1 To Me.RowsCount - 1
                 objTest = Me.RowItemPrim(iRow)
                 objTestSec = Me.RowItemSec(iRow)
-                If (Object.ReferenceEquals(obj, objTest) And Object.ReferenceEquals(objSec, objTestSec)) Then
+                If (ReferenceEquals(obj, objTest) And ReferenceEquals(objSec, objTestSec)) Then
                     Return iRow
                 End If
             Next

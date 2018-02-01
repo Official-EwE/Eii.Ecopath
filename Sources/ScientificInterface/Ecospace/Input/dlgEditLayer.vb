@@ -125,8 +125,8 @@ Namespace Ecospace.Basemap.Layers
             Me.m_zoommap.Map.AddLayer(Me.m_layerWork)
 
             ' Do not add depth layer if already showing depth layer
-            If ((Not Object.ReferenceEquals(Me.m_layerOriginal, Me.m_layerDepth)) And
-                (Not Object.ReferenceEquals(Me.m_layerDepth, Nothing))) Then
+            If ((Not ReferenceEquals(Me.m_layerOriginal, Me.m_layerDepth)) And
+                (Not ReferenceEquals(Me.m_layerDepth, Nothing))) Then
                 Me.m_zoommap.Map.AddLayer(Me.m_layerDepth)
             End If
 

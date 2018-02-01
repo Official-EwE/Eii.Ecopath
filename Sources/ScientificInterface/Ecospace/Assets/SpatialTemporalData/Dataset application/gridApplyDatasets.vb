@@ -217,7 +217,7 @@ Namespace Ecospace.Controls
                     For iRow As Integer = 1 To Me.RowsCount - 1
                         Dim conn As cSpatialDataConnection = Me.ConnectionAtRow(iRow)
                         Debug.Assert(conn IsNot Nothing)
-                        If (Object.ReferenceEquals(conn.Dataset, Me.m_manSets.IndexDataset)) Then
+                        If (ReferenceEquals(conn.Dataset, Me.m_manSets.IndexDataset)) Then
                             Me.UpdateConnectionRow(iRow)
                         End If
                     Next
@@ -256,7 +256,7 @@ Namespace Ecospace.Controls
             End Get
             Set(value As cSpatialDataConnection)
                 For iRow As Integer = 1 To Me.RowsCount
-                    If (Object.ReferenceEquals(value, ConnectionAtRow(iRow))) Then
+                    If (ReferenceEquals(value, ConnectionAtRow(iRow))) Then
                         Me.SelectRow(iRow)
                         Return
                     End If

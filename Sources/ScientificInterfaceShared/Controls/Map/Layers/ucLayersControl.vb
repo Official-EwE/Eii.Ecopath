@@ -125,7 +125,7 @@ Namespace Controls.Map
 
             Dim ucg As ucLayerGroup = Me.FindGroup(layer)
 
-            If Object.ReferenceEquals(ucg, Nothing) Then Return
+            If ReferenceEquals(ucg, Nothing) Then Return
 
             ' Remove link to editor, if any
             If (TypeOf layer Is cDisplayLayerRaster) Then
@@ -421,7 +421,7 @@ Namespace Controls.Map
             ' Clean selection state of all other layer
             For Each layerTest As cDisplayLayer In Me.m_dtLayerToGroup.Keys
                 ' #Yes: is it selected?
-                If ((Not Object.ReferenceEquals(layerTest, layerSelect)) And (layerTest.IsSelected() = True)) Then
+                If ((Not ReferenceEquals(layerTest, layerSelect)) And (layerTest.IsSelected() = True)) Then
                     ' #Yes: clear its selection state
                     layerTest.IsSelected = False
                     ' Make the world respond to this. Note that this call will call
@@ -453,7 +453,7 @@ Namespace Controls.Map
             Dim sc As cPropertySelectionCommand = Nothing
             Dim prop As cProperty = Nothing
 
-            If (Not Object.ReferenceEquals(layer, Nothing)) Then
+            If (Not ReferenceEquals(layer, Nothing)) Then
                 prop = layer.GetNameProperty()
             End If
 

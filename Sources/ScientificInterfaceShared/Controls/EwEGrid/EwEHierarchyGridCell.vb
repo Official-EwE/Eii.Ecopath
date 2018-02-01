@@ -120,7 +120,7 @@ Namespace Controls.EwEGrid
 
             If g IsNot Nothing Then
                 For Each ri As RowInfo In Me.m_lChildRows
-                    If Not Object.ReferenceEquals(ri, Nothing) Then
+                    If Not ReferenceEquals(ri, Nothing) Then
                         ri.Visible = Me.m_bExpanded
                     End If
                 Next

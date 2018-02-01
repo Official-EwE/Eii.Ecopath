@@ -229,7 +229,7 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
 
-            If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
+            If ReferenceEquals(Me.Basemap, Nothing) Then Return
 
             Try
 
@@ -471,7 +471,7 @@ Namespace Controls.Map
         Public Sub UpdateMap()
 
             ' Sanity check
-            If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
+            If ReferenceEquals(Me.Basemap, Nothing) Then Return
             ' Set reminder
             Me.m_bRefreshMap = True
             ' Refresh
@@ -491,7 +491,7 @@ Namespace Controls.Map
         Private Sub UpdateMap(ByVal bmp As Bitmap, ByVal ptCellFrom As Point, ByVal ptCellTo As Point)
 
             ' Sanity check
-            If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
+            If ReferenceEquals(Me.Basemap, Nothing) Then Return
 
             Dim bm As cEcospaceBasemap = Me.Basemap
             Dim g As Graphics = Graphics.FromImage(bmp)
@@ -640,7 +640,7 @@ Namespace Controls.Map
         Private Sub UpdateSelection(ByVal l As cDisplayLayer)
 
             ' Sanity check
-            If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
+            If ReferenceEquals(Me.Basemap, Nothing) Then Return
 
             ' New selection?
             If l.IsSelected Then
@@ -648,7 +648,7 @@ Namespace Controls.Map
                 Me.m_layerSelected = l
             Else
                 ' #No: current selection being cleared?
-                If Object.ReferenceEquals(Me.m_layerSelected, l) Then
+                If ReferenceEquals(Me.m_layerSelected, l) Then
                     ' #Yes: clear selection
                     Me.m_layerSelected = Nothing
                 End If
@@ -751,7 +751,7 @@ Namespace Controls.Map
             RemoveHandler layer.LayerChanged, AddressOf Me.OnLayerChanged
 
             ' Clear selection
-            If Object.ReferenceEquals(layer, Me.m_layerSelected) Then
+            If ReferenceEquals(layer, Me.m_layerSelected) Then
                 Me.m_layerSelected = Nothing
             End If
 

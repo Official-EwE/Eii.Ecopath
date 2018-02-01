@@ -100,7 +100,7 @@ Namespace Ecospace.Controls
 
             If (Me.m_adt IsNot Nothing) Then
                 For Each conn2 As cSpatialDataConnection In Me.m_adt.Connections(Me.m_iLayer)
-                    Me.m_gridConnections.AddConnection(conn2, Object.ReferenceEquals(conn2, conn))
+                    Me.m_gridConnections.AddConnection(conn2, ReferenceEquals(conn2, conn))
                 Next
             End If
 
@@ -821,7 +821,7 @@ Namespace Ecospace.Controls
                 Dim conn As cSpatialDataConnection = Me.m_gridConnections.SelectedConnection
                 If (conn IsNot Nothing) Then
                     ' Apply
-                    If (Not Object.ReferenceEquals(conn.Converter, converter)) Then
+                    If (Not ReferenceEquals(conn.Converter, converter)) Then
                         conn.Converter = converter
                         Me.LayerChanged()
                     End If

@@ -573,7 +573,7 @@ Namespace Ecospace
         Private m_bInUpdate As Boolean = False
 
         Private Sub OnSearchTypeChanged(ByVal prop As cProperty, ByVal change As cProperty.eChangeFlags)
-            Debug.Assert(Object.ReferenceEquals(prop, Me.m_propSearchType))
+            Debug.Assert(ReferenceEquals(prop, Me.m_propSearchType))
 
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
@@ -1613,7 +1613,7 @@ Namespace Ecospace
 
             ' The %^@#$^#@$ check boxes throw events even before the form OnLoad has been called. Nice.
             ' Added sanity check to prevent premature control handling
-            If (Object.ReferenceEquals(Me.m_manager, Nothing)) Then Return
+            If (ReferenceEquals(Me.m_manager, Nothing)) Then Return
 
             Dim bIsPreparing As Boolean = (Me.RunMode = eFormModeTypes.Prepare)
             Dim bIsRunning As Boolean = (Me.RunMode = eFormModeTypes.Searching Or Me.RunMode = eFormModeTypes.Initializing Or Me.RunMode = eFormModeTypes.Stopping)

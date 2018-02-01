@@ -424,13 +424,13 @@ Namespace Controls.EwEGrid
             End If
 
             ' Enable set label if the grid has editable cells that represent only one type of variable.
-            If Not Object.ReferenceEquals(Me.m_lblSet, Nothing) Then
+            If Not ReferenceEquals(Me.m_lblSet, Nothing) Then
                 Me.m_lblSet.Enabled = bHasEditableCells And Not bIsMixedSelection
                 Me.m_lblSet.Visible = bIsInputGrid And bHasEditableCells
             End If
 
             ' Enable edit control if the grid has editable cells that represent only one type of variable.
-            If Not Object.ReferenceEquals(Me.m_ctrlValue, Nothing) Then
+            If Not ReferenceEquals(Me.m_ctrlValue, Nothing) Then
                 Me.m_ctrlValue.Enabled = bHasEditableCells And Not bIsMixedSelection
                 Me.m_ctrlValue.Visible = bIsInputGrid And bHasEditableCells
                 Me.m_ctrlValue.Text = ""
@@ -465,18 +465,18 @@ Namespace Controls.EwEGrid
             End If
 
             ' Enable set button if the grid has editable cells that represent only one type of variable.
-            If Not Object.ReferenceEquals(Me.m_btnSet, Nothing) Then
+            If Not ReferenceEquals(Me.m_btnSet, Nothing) Then
                 Me.m_btnSet.Enabled = bHasEditableCells And Not bIsMixedSelection
                 Me.m_btnSet.Visible = bIsInputGrid And Not bIsStandardValuesExclusive And bHasEditableCells
             End If
 
             ' Show import button only for input forms - and when allowed to show
-            If Not Object.ReferenceEquals(Me.m_btnImport, Nothing) Then
+            If Not ReferenceEquals(Me.m_btnImport, Nothing) Then
                 Me.m_btnImport.Visible = bIsInputGrid And Me.ShowImportExport
             End If
 
             ' Show export button only  allowed to show
-            If Not Object.ReferenceEquals(Me.m_btnExport, Nothing) Then
+            If Not ReferenceEquals(Me.m_btnExport, Nothing) Then
                 Me.m_btnExport.Visible = Me.ShowImportExport
             End If
 

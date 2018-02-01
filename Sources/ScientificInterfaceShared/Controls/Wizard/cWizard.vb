@@ -149,7 +149,7 @@ Namespace Controls.Wizard
         ''' -------------------------------------------------------------------
         Public Overridable Sub PageChanged(ByVal page As IWizardPage)
             ' Is this the current active page?
-            If (Object.ReferenceEquals(page, Me.m_page)) Then
+            If (ReferenceEquals(page, Me.m_page)) Then
                 ' #Yes: refresh navigation
                 Me.m_nav.UpdateNavigation()
                 ' Set parent wait cursor

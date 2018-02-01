@@ -138,7 +138,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnPropertyChanged(ByVal prop As Properties.cProperty, ByVal changeFlags As Properties.cProperty.eChangeFlags)
             MyBase.OnPropertyChanged(prop, changeFlags)
-            If (Object.ReferenceEquals(prop, Me.m_propTooltip) And _
+            If (ReferenceEquals(prop, Me.m_propTooltip) And _
                 (changeFlags And cProperty.eChangeFlags.Value) = cProperty.eChangeFlags.Value) Then
                 Me.UpdateTooltip()
             End If

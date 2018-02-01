@@ -1,4 +1,4 @@
-﻿' ===============================================================================
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -21,18 +21,23 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
 
 #End Region ' Imports
 
-''' ===========================================================================
+''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Plug-in point that provides a <see cref="IConfigurable">configurable</see>
-''' interactions.
+''' Plug-in interface that defines all functionality required to add a custom
+''' item to the EwE options tree.
 ''' </summary>
-''' ===========================================================================
-Public Interface IConfigurablePlugin
-    Inherits IPlugin
-    Inherits IConfigurable
+''' ---------------------------------------------------------------------------
+Public Interface IEwEOptionsPlugin
+    Inherits IConfigurablePlugin
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Override this to specify the options tree node name for this plug-in.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    ReadOnly Property Label() As String
 
 End Interface

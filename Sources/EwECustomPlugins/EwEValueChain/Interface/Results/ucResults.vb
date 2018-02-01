@@ -766,7 +766,7 @@ Public Class ucResults
         Dim item As cCoreComboItem = Nothing
         For i As Integer = 0 To cmb.Items.Count - 1
             item = DirectCast(cmb.Items(i), cCoreComboItem)
-            If Object.ReferenceEquals(source, item.Source) Then
+            If ReferenceEquals(source, item.Source) Then
                 Return item
             End If
         Next
@@ -786,7 +786,7 @@ Public Class ucResults
         Dim item As cUnitComboItem = Nothing
         For i As Integer = 0 To cmb.Items.Count - 1
             item = DirectCast(cmb.Items(i), cUnitComboItem)
-            If Object.ReferenceEquals(source, item.Source) Then
+            If ReferenceEquals(source, item.Source) Then
                 Return item
             End If
         Next

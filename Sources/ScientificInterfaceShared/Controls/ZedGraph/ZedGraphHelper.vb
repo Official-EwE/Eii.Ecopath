@@ -319,7 +319,7 @@ Namespace Controls
             ''' <returns>True if true. Well, that is a surprise.</returns>
             ''' ---------------------------------------------------------------
             Public Function IsReferenceTo(ByVal src As cCurveInfo) As Boolean
-                Return Object.ReferenceEquals(src.m_source, Me.m_source)
+                Return ReferenceEquals(src.m_source, Me.m_source)
             End Function
 
         End Class

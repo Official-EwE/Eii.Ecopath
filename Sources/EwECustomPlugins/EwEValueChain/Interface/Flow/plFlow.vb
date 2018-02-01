@@ -658,11 +658,11 @@ Public Class plFlow
                 Dim ptT As Point = Me.FindIntersect(ctrlSource.Center, ctrlTarget.Center, ctrlTarget)
 
                 ' Paint link on visible canvas
-                If Object.ReferenceEquals(Me.Selection, c) Then
+                If ReferenceEquals(Me.Selection, c) Then
                     clrFore = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
-                ElseIf Object.ReferenceEquals(Me.Selection, ctrlSource) Then
+                ElseIf ReferenceEquals(Me.Selection, ctrlSource) Then
                     clrFore = sg.ApplicationColor(cStyleGuide.eApplicationColorType.PREY)
-                ElseIf Object.ReferenceEquals(Me.Selection, ctrlTarget) Then
+                ElseIf ReferenceEquals(Me.Selection, ctrlTarget) Then
                     clrFore = sg.ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR)
                 Else
                     clrFore = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
@@ -716,7 +716,7 @@ Public Class plFlow
 
         Private Set(ByVal value As Object)
             ' Optimization
-            If Object.ReferenceEquals(Me.m_selection, value) Then Return
+            If ReferenceEquals(Me.m_selection, value) Then Return
 
             If TypeOf (Me.m_selection) Is plUnitControl Then
                 DirectCast(Me.m_selection, plUnitControl).Selected = False
@@ -785,7 +785,7 @@ Public Class plFlow
             fleet = core.EcopathFleetInputs(iFleet)
             For Each unit As cUnit In lUnits
                 pu = DirectCast(unit, cProducerUnit)
-                If (Object.ReferenceEquals(fleet, pu.Fleet)) Then
+                If (ReferenceEquals(fleet, pu.Fleet)) Then
                     bProducerExists = True
                     Exit For
                 End If
@@ -936,9 +936,9 @@ Public Class plFlow
         Next
 
         ' Clear selection if neccesary
-        If Object.ReferenceEquals(Me.m_selection, unit) Then Me.m_selection = Nothing
+        If ReferenceEquals(Me.m_selection, unit) Then Me.m_selection = Nothing
         ' Clear dragged object if neccesary
-        If Object.ReferenceEquals(Me.m_ucDrag, uc) Then Me.m_ucDrag = Nothing
+        If ReferenceEquals(Me.m_ucDrag, uc) Then Me.m_ucDrag = Nothing
 
         ' Remove control
         Me.m_dtControls.Remove(unit)
@@ -1066,7 +1066,7 @@ Public Class plFlow
         RemoveHandler link.OnChanged, AddressOf OnElementChanged
 
         ' Clear selection if neccesary
-        If Object.ReferenceEquals(Me.m_selection, link) Then Me.m_selection = Nothing
+        If ReferenceEquals(Me.m_selection, link) Then Me.m_selection = Nothing
 
         Dim w As LinkWrapper = Me.FindLinkWrapper(link)
         If w IsNot Nothing Then

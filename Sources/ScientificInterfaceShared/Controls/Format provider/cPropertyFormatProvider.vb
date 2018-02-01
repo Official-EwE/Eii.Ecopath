@@ -200,7 +200,7 @@ Namespace Controls
         Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
 
             ' Sanity check
-            Debug.Assert(Object.ReferenceEquals(prop, Me.m_prop))
+            Debug.Assert(ReferenceEquals(prop, Me.m_prop))
 
             ' Update control
             If (changeFlags And (cProperty.eChangeFlags.CoreStatus Or cProperty.eChangeFlags.Value)) > 0 Then
@@ -227,7 +227,7 @@ Namespace Controls
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim dsc As cPropertySelectionCommand = DirectCast(cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
 
-            If Object.ReferenceEquals(dsc, Nothing) Then Return
+            If ReferenceEquals(dsc, Nothing) Then Return
 
             dsc.Invoke(Me.m_prop)
         End Sub

@@ -214,7 +214,7 @@ Public Class frmMSE
         ' Enable/disable panel 2 in a loop
         'Me.m_plStep2.Enabled = mon.IsStateAvailable(cMSEStateMonitor.eState.HasParams) And Not bIsRunning
         For Each ctrl As Control In Me.m_plStep2.Controls
-            If (Object.ReferenceEquals(ctrl, Me.m_btnStopCreateModels)) Then
+            If (ReferenceEquals(ctrl, Me.m_btnStopCreateModels)) Then
                 ctrl.Enabled = bHasParams And bIsRunningModels
             Else
                 ctrl.Enabled = bHasParams And Not bIsRunning
@@ -224,7 +224,7 @@ Public Class frmMSE
         ' Enable/disable panel 4 in a loop
         'Me.m_plStep4.Enabled = bHasModels And Not bIsRunning
         For Each ctrl As Control In Me.m_plStep4.Controls
-            If (Object.ReferenceEquals(ctrl, Me.Button1)) Then
+            If (ReferenceEquals(ctrl, Me.Button1)) Then
                 ctrl.Enabled = bHasParams And bIsRunningMSE
             Else
                 ctrl.Enabled = bHasParams And Not bIsRunning

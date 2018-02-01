@@ -139,7 +139,7 @@ Namespace Ecosim
 
             ' Display Groups
             cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-            If Not Object.ReferenceEquals(cmd, Nothing) Then
+            If Not ReferenceEquals(cmd, Nothing) Then
                 cmd.AddControl(Me.m_tsbtnShowHideGroups)
             End If
 
@@ -173,7 +173,7 @@ Namespace Ecosim
             ' Show/Hide Groups
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-            If Not Object.ReferenceEquals(cmd, Nothing) Then
+            If Not ReferenceEquals(cmd, Nothing) Then
                 cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
             End If
 
@@ -622,7 +622,7 @@ Namespace Ecosim
         Private Sub OnSelectTarget(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbnFleet.Click, m_tsbnGroup.Click
             Try
-                If Object.ReferenceEquals(sender, Me.m_tsbnFleet) Then
+                If ReferenceEquals(sender, Me.m_tsbnFleet) Then
                     Me.SelectionMode = eSelectionModeType.Fleets
                 Else
                     Me.SelectionMode = eSelectionModeType.Groups

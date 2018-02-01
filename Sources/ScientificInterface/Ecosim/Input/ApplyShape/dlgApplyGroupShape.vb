@@ -363,7 +363,7 @@ Namespace Ecosim
                 bFound = False
                 For Each itemTest As ListViewItem In Me.m_lvAppliedShapes.Items
                     shapeTest = Shape(itemTest)
-                    If Object.ReferenceEquals(shapeSelected, shapeTest) Then bFound = True
+                    If ReferenceEquals(shapeSelected, shapeTest) Then bFound = True
                 Next
 
                 ' Not found, and still room for more?

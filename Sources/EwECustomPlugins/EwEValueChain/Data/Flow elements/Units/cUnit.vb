@@ -99,7 +99,7 @@ Public MustInherit Class cUnit
     Public Function Links(ByVal unitTarget As cUnit) As cLink()
         Dim lLinks As New List(Of cLink)
         For Each link As cLink In Me.m_llinkOutput
-            If Object.ReferenceEquals(link.Target, unitTarget) Then
+            If ReferenceEquals(link.Target, unitTarget) Then
                 lLinks.Add(link)
             End If
         Next
@@ -109,7 +109,7 @@ Public MustInherit Class cUnit
     Public Sub AddLink(ByVal link As cLink)
 
         ' Sanity check
-        Debug.Assert(Object.ReferenceEquals(link.Source, Me))
+        Debug.Assert(ReferenceEquals(link.Source, Me))
 
         Me.m_llinkOutput.Add(link)
         link.Target.AddInputLink(link)
@@ -130,7 +130,7 @@ Public MustInherit Class cUnit
 
     Protected Sub AddInputLink(ByVal link As cLink)
         ' Sanity check
-        Debug.Assert(Object.ReferenceEquals(link.Target, Me))
+        Debug.Assert(ReferenceEquals(link.Target, Me))
         Me.m_llinkInput.Add(link)
         Me.UpdateComputeStatus()
     End Sub
@@ -143,7 +143,7 @@ Public MustInherit Class cUnit
     Public Function IsLoop(ByVal unit As cUnit) As Boolean
 
         ' Linked to self?
-        Dim bIsLoop As Boolean = Object.ReferenceEquals(unit, Me)
+        Dim bIsLoop As Boolean = ReferenceEquals(unit, Me)
 
         ' If no loop yet
         If Not bIsLoop Then

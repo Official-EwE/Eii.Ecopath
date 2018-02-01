@@ -889,7 +889,7 @@ Public Class frmEwE6
         Get
             If (Me.Core Is Nothing) Then Return ""
             Dim ds As IEwEDataSource = Me.Core.DataSource
-            If (Object.ReferenceEquals(ds, Nothing)) Then
+            If (ReferenceEquals(ds, Nothing)) Then
                 Return ""
             Else
                 If bFullPath Then
@@ -1843,7 +1843,7 @@ Public Class frmEwE6
         Dim frmNew As Form = Nothing
         Dim strCaption As String = ""
 
-        If Object.ReferenceEquals(t, Nothing) Then Return Nothing
+        If ReferenceEquals(t, Nothing) Then Return Nothing
 
         Try
             classObject = Activator.CreateInstance(t)
@@ -2817,7 +2817,7 @@ Public Class frmEwE6
     Private Sub OnCloseDocument(ByVal cmd As cCommand) Handles m_cmdCloseDocument.OnInvoke
         ' Is the window docked?
         ' Check whether an active document exists; this will occur when all panels are already closed.
-        If Not Object.ReferenceEquals(Me.m_DockPanel.ActiveDocument, Nothing) Then
+        If Not ReferenceEquals(Me.m_DockPanel.ActiveDocument, Nothing) Then
             ' Close active doc
             Me.m_DockPanel.ActiveDocument.DockHandler.Close()
         End If
@@ -2830,7 +2830,7 @@ Public Class frmEwE6
     Private Sub OnUpdateCloseDocument(ByVal cmd As cCommand) Handles m_cmdCloseDocument.OnUpdate, m_cmdCloseAllForms.OnUpdate
         cmd.Enabled = False
         ' Is the window docked?
-        cmd.Enabled = Not Object.ReferenceEquals(Me.m_DockPanel.ActiveDocument, Nothing)
+        cmd.Enabled = Not ReferenceEquals(Me.m_DockPanel.ActiveDocument, Nothing)
     End Sub
 
     ''' <summary>
@@ -4003,7 +4003,7 @@ Public Class frmEwE6
                 Next
 
                 ' About to overwrite?
-                If (Not Object.ReferenceEquals(scenarioTarget, Nothing)) Then
+                If (Not ReferenceEquals(scenarioTarget, Nothing)) Then
                     ' #Yes: prompt for overwrite confirmation
                     Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                     Me.Core.Messages.SendMessage(fmsg)
@@ -4979,10 +4979,10 @@ Public Class frmEwE6
         ' UI is CONTROLLING the nav tree, do NOT respond to events
         If Me.m_bNavigating Then Return
 
-        If Not Object.ReferenceEquals(idc, Nothing) Then
+        If Not ReferenceEquals(idc, Nothing) Then
             dch = idc.DockHandler
 
-            If Not Object.ReferenceEquals(dch, Nothing) Then
+            If Not ReferenceEquals(dch, Nothing) Then
                 ' Get default nav link
                 strNewNodeName = dch.TabText
             End If

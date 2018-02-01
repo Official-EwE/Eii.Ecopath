@@ -394,7 +394,7 @@ Namespace Ecospace
                     For iMPA As Integer = 0 To Me.m_alMPAs.Count - 1
                         Dim giTemp As cMPAInfo = DirectCast(Me.m_alMPAs(iMPA), cMPAInfo)
                         ' Does name already exist?
-                        If (Not Object.ReferenceEquals(giTemp, mi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
+                        If (Not ReferenceEquals(giTemp, mi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                             ' Change is not allowed
                             Me.UpdateRow(p.Row)
                             ' Report failure
@@ -570,7 +570,7 @@ Namespace Ecospace
 
         Private Overloads Sub SelectRow(ByVal mi As cMPAInfo)
             For iMPA As Integer = 0 To Me.m_alMPAs.Count - 1
-                If Object.ReferenceEquals(Me.m_alMPAs(iMPA), mi) Then
+                If ReferenceEquals(Me.m_alMPAs(iMPA), mi) Then
                     Me.SelectRow(iMPA + iFIRSTMPAROW)
                 End If
             Next
@@ -638,7 +638,7 @@ Namespace Ecospace
                 ' Only compare new items
                 If (infoTmp.Status <> eItemStatusTypes.Removed And info.Status <> eItemStatusTypes.Removed) Then
                     ' Does name already exist?
-                    If (Not Object.ReferenceEquals(infoTmp, info)) And (String.Compare(strName, infoTmp.Name, True) = 0) Then
+                    If (Not ReferenceEquals(infoTmp, info)) And (String.Compare(strName, infoTmp.Name, True) = 0) Then
                         ' Report failure
                         Return False
                     End If

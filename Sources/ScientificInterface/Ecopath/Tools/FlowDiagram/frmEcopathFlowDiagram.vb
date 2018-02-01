@@ -120,13 +120,13 @@ Namespace Ecopath.Controls.FlowDiagram
 
             ' Display Groups
             cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-            If Not Object.ReferenceEquals(cmd, Nothing) Then
+            If Not ReferenceEquals(cmd, Nothing) Then
                 cmd.AddControl(Me.m_tsbtnShowHideGroups)
             End If
 
             ' Fonts
             cmd = cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME)
-            If Not Object.ReferenceEquals(cmd, Nothing) Then
+            If Not ReferenceEquals(cmd, Nothing) Then
                 cmd.AddControl(Me.m_tsmiFont, eApplicationOptionTypes.Fonts)
             End If
 
@@ -145,13 +145,13 @@ Namespace Ecopath.Controls.FlowDiagram
 
             ' Display Groups
             cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-            If Not Object.ReferenceEquals(cmd, Nothing) Then
+            If Not ReferenceEquals(cmd, Nothing) Then
                 cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
             End If
 
             ' Fonts
             cmd = cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME)
-            If Not Object.ReferenceEquals(cmd, Nothing) Then
+            If Not ReferenceEquals(cmd, Nothing) Then
                 cmd.RemoveControl(Me.m_tsmiFont)
             End If
 

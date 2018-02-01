@@ -95,7 +95,7 @@ Namespace Auxiliary
                 vs.FontName = Me.FontName
                 vs.FontSize = Me.FontSize
                 vs.FontStyle = Me.FontStyle
-                If Not Object.ReferenceEquals(Me.Image, Nothing) Then
+                If Not ReferenceEquals(Me.Image, Nothing) Then
                     vs.Image = DirectCast(Me.Image.Clone(), Image)
                 Else
                     vs.Image = Nothing

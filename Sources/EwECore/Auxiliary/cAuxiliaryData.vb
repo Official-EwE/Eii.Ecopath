@@ -169,7 +169,7 @@ Namespace Auxiliary
             End Get
             Set(ByVal value As cVisualStyle)
 
-                If Object.ReferenceEquals(value, Me.VisualStyle) Then Return
+                If ReferenceEquals(value, Me.VisualStyle) Then Return
 
                 If (Me.m_visualstyle IsNot Nothing) Then
                     Me.m_visualstyle.Container = Nothing

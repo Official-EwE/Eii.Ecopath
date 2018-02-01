@@ -214,10 +214,10 @@ Public Class cProducerUnit
             Dim link As cLink = Me.LinkOut(iLink)
             If TypeOf link Is cLinkLandings Then
                 Dim linkSpec As cLinkLandings = DirectCast(link, cLinkLandings)
-                If Object.ReferenceEquals(linkSpec.Target, unit) And Object.ReferenceEquals(linkSpec.Group, group) Then Return True
+                If ReferenceEquals(linkSpec.Target, unit) And ReferenceEquals(linkSpec.Group, group) Then Return True
             Else
                 ' See the target link is the requesting unit
-                If Object.ReferenceEquals(link.Target, unit) Then Return True
+                If ReferenceEquals(link.Target, unit) Then Return True
             End If
         Next iLink
         Return False
