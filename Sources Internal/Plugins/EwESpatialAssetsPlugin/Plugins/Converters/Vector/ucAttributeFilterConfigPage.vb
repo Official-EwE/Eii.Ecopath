@@ -22,7 +22,6 @@
 
 Option Strict On
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.SpatialData
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -79,8 +78,8 @@ Namespace SpatialData
 
 #End Region ' Private helper classes
 
-        Public Property UIContext As ScientificInterfaceShared.Controls.cUIContext _
-            Implements ScientificInterfaceShared.Controls.IUIElement.UIContext
+        Public Property UIContext As cUIContext _
+            Implements IUIElement.UIContext
 
         Public Property Converter As cSpatialDataConverter
 
@@ -94,8 +93,8 @@ Namespace SpatialData
 
         End Sub
 
-        Public Function Apply() As ScientificInterfaceShared.Controls.IOptionsPage.eApplyResultType _
-            Implements ScientificInterfaceShared.Controls.IOptionsPage.Apply
+        Public Function Apply() As IOptionsPage.eApplyResultType _
+            Implements IOptionsPage.Apply
 
             Me.Converter.AttributeFilter = Me.m_tbxValue.Text
             Me.Converter.AttributeName = ""
@@ -104,14 +103,14 @@ Namespace SpatialData
         End Function
 
         Public Function CanApply() As Boolean _
-            Implements ScientificInterfaceShared.Controls.IOptionsPage.CanApply
+            Implements IOptionsPage.CanApply
             Return True
         End Function
 
-        Public Event OnChanged(sender As ScientificInterfaceShared.Controls.IOptionsPage, args As System.EventArgs) _
-            Implements ScientificInterfaceShared.Controls.IOptionsPage.OnChanged
+        Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) _
+            Implements IOptionsPage.OnChanged
 
-        Public Sub SetDefaults() Implements ScientificInterfaceShared.Controls.IOptionsPage.SetDefaults
+        Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
             ' NOP
         End Sub
 

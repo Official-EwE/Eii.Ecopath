@@ -342,7 +342,7 @@ Public Class ucEditFlow
             Return Me.m_diagram
         End Get
         Set(ByVal value As cFlowDiagram)
-            If Object.ReferenceEquals(value, Me.m_diagram) Then Return
+            If ReferenceEquals(value, Me.m_diagram) Then Return
 
             If (Me.m_diagram IsNot Nothing) Then
                 Me.m_selector.Init(Nothing, Nothing, Nothing, Nothing)

@@ -603,7 +603,7 @@ Public Class dlgEcobaseImport
 
                 If (bUseModel) Then
                     Me.m_lbxModels.Items.Add(model)
-                    bKeepSelection = bKeepSelection Or (Object.ReferenceEquals(model, Me.m_model))
+                    bKeepSelection = bKeepSelection Or (ReferenceEquals(model, Me.m_model))
                 End If
             End If
         Next

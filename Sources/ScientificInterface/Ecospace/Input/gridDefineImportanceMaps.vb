@@ -457,7 +457,7 @@ Namespace Ecospace
                     For iLayer As Integer = 0 To Me.m_alLayers.Count - 1
                         Dim giTemp As cLayerInfo = DirectCast(Me.m_alLayers(iLayer), cLayerInfo)
                         ' Does name already exist?
-                        If (Not Object.ReferenceEquals(giTemp, li)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
+                        If (Not ReferenceEquals(giTemp, li)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                             ' Change is not allowed
                             Me.UpdateRow(p.Row)
                             ' Report failure
@@ -647,7 +647,7 @@ Namespace Ecospace
 
         Private Overloads Sub SelectRow(ByVal li As cLayerInfo)
             For iLayer As Integer = 0 To Me.m_alLayers.Count - 1
-                If Object.ReferenceEquals(Me.m_alLayers(iLayer), li) Then
+                If ReferenceEquals(Me.m_alLayers(iLayer), li) Then
                     Me.SelectRow(iLayer + iFIRSTDATAROW)
                 End If
             Next

@@ -22,7 +22,6 @@
 
 Option Strict On
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.SpatialData
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 

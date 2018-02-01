@@ -39,11 +39,20 @@ Namespace Other
     ''' -----------------------------------------------------------------------
     Public Class ucOptionsPresentation
         Implements IOptionsPage
+        Implements IUIElement
+
+        Private m_fpW As cEwEFormatProvider = Nothing
+        Private m_fpH As cEwEFormatProvider = Nothing
+        Private m_szFrame As Size
+        Private m_bInUpdate As Boolean = False
 
 #Region " Constructors "
 
         Public Sub New(ByVal uic As cUIContext)
+
+            Me.UIContext = uic
             Me.InitializeComponent()
+
         End Sub
 
 #End Region ' Constructors
@@ -58,6 +67,21 @@ Namespace Other
             Me.m_cbHideStatusBar.Checked = My.Settings.PresentationModeHideStatusBar
             Me.m_cbCollapseNavPanel.Checked = My.Settings.PresentationModeCollapseNavPanel
 
+            Dim frm As Form = Me.UIContext.FormMain
+            Dim szOut As Size = frm.Size
+            Dim szIn As Size = frm.ClientRectangle.Size
+
+            Me.m_szFrame = New Size(szOut.Width - szIn.Width, szOut.Height - szIn.Height)
+
+            Me.m_fpW = New cEwEFormatProvider(Me.UIContext, Me.m_tbxW, GetType(Integer))
+            Me.m_fpH = New cEwEFormatProvider(Me.UIContext, Me.m_tbxH, GetType(Integer))
+            Me.m_fpW.Value = szOut.Width
+            Me.m_fpH.Value = szOut.Height
+
+            Me.m_bInUpdate = True
+            Me.m_rbOut.Checked = True
+            Me.m_bInUpdate = False
+
             Me.UpdateControls()
 
         End Sub
@@ -65,6 +89,12 @@ Namespace Other
 #End Region ' Overrides
 
 #Region " Public access "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -------------------------------------------------------------------
+        Public Property UIContext As cUIContext _
+             Implements IUIElement.UIContext
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IOptionsPage.CanApply"/>
@@ -93,6 +123,8 @@ Namespace Other
             My.Settings.PresentationModeHideStatusBar = Me.m_cbHideStatusBar.Checked
             My.Settings.PresentationModeCollapseNavPanel = Me.m_cbCollapseNavPanel.Checked
 
+            Me.UIContext.FormMain.Size = Me.OuterSize
+
             Return IOptionsPage.eApplyResultType.Success
 
         End Function
@@ -108,6 +140,7 @@ Namespace Other
                 Me.m_cbHideMainMenu.Checked = CBool(My.Settings.GetDefaultValue("PresentationModeHideMainMenu"))
                 Me.m_cbHideStatusBar.Checked = CBool(My.Settings.GetDefaultValue("PresentationModeHideStatusBar"))
                 Me.m_cbCollapseNavPanel.Checked = CBool(My.Settings.GetDefaultValue("PresentationModeCollapseNavPanel"))
+                Me.m_rbIn.Checked = True
             Catch ex As Exception
                 cLog.Write(ex, "ucOptionsPresentation::SetDefaults")
             End Try
@@ -127,6 +160,41 @@ Namespace Other
 #Region " Internals "
 
         Private Sub UpdateControls()
+            ' NOP
+        End Sub
+
+        Private Function OuterSize() As Size
+
+            Dim w As Integer = CInt(Me.m_fpW.Value)
+            Dim h As Integer = CInt(Me.m_fpH.Value)
+
+            If (Me.m_rbIn.Checked) Then
+                w += Me.m_szFrame.Width
+                h += Me.m_szFrame.Height
+            End If
+
+            Return New Size(w, h)
+
+        End Function
+
+        Private Sub OnSizeModeToggled(sender As System.Object, e As System.EventArgs) _
+            Handles m_rbOut.CheckedChanged
+
+            If (Me.m_bInUpdate) Then Return
+
+            Dim w As Integer = CInt(Me.m_fpW.Value)
+            Dim h As Integer = CInt(Me.m_fpH.Value)
+
+            If Me.m_rbOut.Checked Then
+                w += Me.m_szFrame.Width
+                h += Me.m_szFrame.Height
+            Else
+                w -= Me.m_szFrame.Width
+                h -= Me.m_szFrame.Height
+            End If
+
+            Me.m_fpW.Value = w
+            Me.m_fpH.Value = h
 
         End Sub
 

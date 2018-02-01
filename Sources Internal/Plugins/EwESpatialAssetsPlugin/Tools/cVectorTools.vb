@@ -64,10 +64,10 @@ Public Class cVectorTools
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Shared Function Rasterize(ByVal fs As IFeatureSet,
-                                     ByVal ptfTL As PointF, _
-                                     ByVal ptfBR As PointF, _
-                                     ByVal dCellSize As Double, _
-                                     ByVal dValueNull As Double, _
+                                     ByVal ptfTL As PointF,
+                                     ByVal ptfBR As PointF,
+                                     ByVal dCellSize As Double,
+                                     ByVal dValueNull As Double,
                                      ByVal strFileName As String,
                                      ByVal dgt As TranslateValueDelegate) As IRaster
 

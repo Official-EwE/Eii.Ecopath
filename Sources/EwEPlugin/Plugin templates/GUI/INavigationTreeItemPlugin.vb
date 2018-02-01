@@ -26,7 +26,7 @@ Option Strict On
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Plugin interface that defines all functionality required to add a custom
+''' Plug-in interface that defines all functionality required to add a custom
 ''' item to the EwE navigation tree.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
@@ -35,7 +35,7 @@ Public Interface INavigationTreeItemPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Override this to specify the navigation tree item location for this plugin.
+    ''' Override this to specify the navigation tree item location for this plug-in.
     ''' </summary>
     ''' <remarks>
     ''' <para>A location is a '\' separated series of TreeNode names, starting 

@@ -332,7 +332,7 @@ Namespace Controls.Map.Layers
                 Return Me.m_layer
             End Get
             Protected Set(ByVal value As cDisplayLayer)
-                If Object.ReferenceEquals(value, Me.m_layer) Then Return
+                If ReferenceEquals(value, Me.m_layer) Then Return
 
                 ' Already has a layer?
                 If (Me.m_layer IsNot Nothing) Then

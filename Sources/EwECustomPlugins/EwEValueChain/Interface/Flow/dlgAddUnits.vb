@@ -98,7 +98,7 @@ Public Class dlgAddUnits
             bFound = False
             ' Is part of this diagram?
             For Each fp As cFlowPosition In afp
-                If Object.ReferenceEquals(fp.Unit, unit) Then bFound = True : Exit For
+                If ReferenceEquals(fp.Unit, unit) Then bFound = True : Exit For
             Next
 
             ' Unit not used in current diagram yet?

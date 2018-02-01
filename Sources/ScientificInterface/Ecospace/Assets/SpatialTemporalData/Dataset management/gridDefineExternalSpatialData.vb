@@ -272,7 +272,7 @@ Namespace Ecospace.Controls
         Private Function DatasetRowIndex(ds As ISpatialDataSet) As Integer
             For iRow As Integer = 1 To Me.RowsCount - 1
                 Dim ri As RowInfo = Me.Rows(iRow)
-                If (Object.ReferenceEquals(ri.Tag, ds)) Then
+                If (ReferenceEquals(ri.Tag, ds)) Then
                     Return iRow
                 End If
             Next

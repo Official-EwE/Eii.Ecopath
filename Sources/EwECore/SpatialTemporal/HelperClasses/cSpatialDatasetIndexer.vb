@@ -155,7 +155,7 @@ Namespace SpatialData
         Public Function IsIndexing(ds As ISpatialDataSet) As Boolean
             ' These are atomic thread-safe checks; no need for critical sections
             If (ds Is Nothing) Then Return (Me.m_dsCurrent IsNot Nothing)
-            Return Object.ReferenceEquals(Me.m_dsCurrent, ds)
+            Return ReferenceEquals(Me.m_dsCurrent, ds)
         End Function
 
 #End Region ' Public bits
@@ -203,7 +203,7 @@ Namespace SpatialData
 
                             ' Next
                             iTS += 1
-                            bDone = (Not Object.ReferenceEquals(Me.m_dsCurrent, ds)) Or _
+                            bDone = (Not ReferenceEquals(Me.m_dsCurrent, ds)) Or _
                                     (iTS > Me.m_core.nEcospaceTimeSteps)
                         End While
 

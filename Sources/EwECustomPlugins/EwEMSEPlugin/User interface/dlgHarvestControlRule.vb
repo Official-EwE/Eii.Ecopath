@@ -93,7 +93,7 @@ Public Class dlgHarvestControlRule
             If Core.EcoPathGroupInputs(igrp).IsFished Then
                 Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(igrp)
                 Dim i As Integer = Me.m_cmbBiomassGroups.Items.Add(grp)
-                If (Object.ReferenceEquals(grp, Me.m_HCR.GroupB)) Then
+                If (ReferenceEquals(grp, Me.m_HCR.GroupB)) Then
                     Me.m_cmbBiomassGroups.SelectedIndex = i
                 End If
             End If
@@ -103,7 +103,7 @@ Public Class dlgHarvestControlRule
             If Core.EcoPathGroupInputs(igrp).IsFished Then
                 Dim grp As cEcoPathGroupInput = Core.EcoPathGroupInputs(igrp)
                 Dim i As Integer = Me.m_cmbFMortGroups.Items.Add(grp)
-                If (Object.ReferenceEquals(grp, Me.m_HCR.GroupF)) Then
+                If (ReferenceEquals(grp, Me.m_HCR.GroupF)) Then
                     Me.m_cmbFMortGroups.SelectedIndex = i
                 End If
             End If

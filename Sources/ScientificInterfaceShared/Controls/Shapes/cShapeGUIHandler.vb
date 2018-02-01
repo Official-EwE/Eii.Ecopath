@@ -594,7 +594,7 @@ Namespace Controls
             Set(ByVal value As ucSketchPad)
 
                 If (Me.m_sketchPad IsNot Nothing) Then
-                    If (Object.ReferenceEquals(Me.m_sketchPad.Handler, Me)) Then Me.m_sketchPad.Handler = Nothing
+                    If (ReferenceEquals(Me.m_sketchPad.Handler, Me)) Then Me.m_sketchPad.Handler = Nothing
                     RemoveHandler Me.m_sketchPad.ShapeChanged, AddressOf OnShapeChanged
                     RemoveHandler Me.m_sketchPad.ShapeFinalized, AddressOf OnShapeFinalized
                 End If

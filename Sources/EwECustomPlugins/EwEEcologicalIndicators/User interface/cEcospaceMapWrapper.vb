@@ -119,7 +119,7 @@ Public Class cEcospaceMapWrapper
 
         If (Me.m_indCurrent Is Nothing) Then
             ' Group mode
-            If (Not Object.ReferenceEquals(Me.m_groupCurrent, indGroup)) Then
+            If (Not ReferenceEquals(Me.m_groupCurrent, indGroup)) Then
                 ' Get stuff
                 Me.m_groupCurrent = indGroup
                 For i As Integer = 0 To Me.m_groupCurrent.NumIndicators - 1
@@ -127,7 +127,7 @@ Public Class cEcospaceMapWrapper
                 Next
             End If
         Else
-            If (Not Object.ReferenceEquals(Me.m_indCurrent, indSingle)) Then
+            If (Not ReferenceEquals(Me.m_indCurrent, indSingle)) Then
                 ' Indicator mode
                 Me.m_indCurrent = indSingle
                 lInfo.Add(Me.m_indCurrent)

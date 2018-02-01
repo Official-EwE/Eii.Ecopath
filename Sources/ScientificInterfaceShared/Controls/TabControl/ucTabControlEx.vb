@@ -214,7 +214,7 @@ Namespace Controls
             For Each tab As TabPage In Me.m_admin.Keys
                 If (Me.m_admin(tab)) Then
                     Me.TabPages.Add(tab)
-                    bSelOK = bSelOK Or (Object.ReferenceEquals(tab, tabSel))
+                    bSelOK = bSelOK Or (ReferenceEquals(tab, tabSel))
                 End If
             Next
             Me.m_bInUpdate = False

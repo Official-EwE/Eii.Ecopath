@@ -21,15 +21,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Collections.Generic
 Imports System.Drawing
 Imports DotSpatial.Data
+Imports DotSpatial.Projections
 Imports EwECore
-Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports DotSpatial.Projections
 
 #End Region ' Imports
 
@@ -53,7 +51,7 @@ Namespace SpatialData
         End Sub
 
         Public Overridable Function GetConfigUI() As System.Windows.Forms.Control _
-            Implements EwEUtils.Core.IConfigurable.GetConfigUI
+            Implements IConfigurable.GetConfigUI
             Dim pg As New ucAttributeFilterConfigPage()
             pg.Converter = Me
             Return pg
@@ -63,7 +61,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="cSpatialDataConverter.IsConfigured"/>
         ''' -----------------------------------------------------------------------
         Public Overrides Function IsConfigured() As Boolean _
-            Implements EwEUtils.Core.IConfigurable.IsConfigured
+            Implements IConfigurable.IsConfigured
             Return True
         End Function
 
@@ -107,7 +105,7 @@ Namespace SpatialData
                     Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_EXTRACTVECTOR, Me.AttributeFilter), eStatusFlags.ValueComputed)
                 End If
 
-                ' Reproject
+                ' Re-project
                 If (Not fs.Projection.Equals(projTo)) Then
                     fs.Reproject(projTo)
                     Me.LogMessage(cStringUtils.Localize(My.Resources.OPERATION_REPROJECT, fs.ProjectionString), eStatusFlags.ValueComputed)

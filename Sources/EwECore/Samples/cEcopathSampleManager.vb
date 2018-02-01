@@ -563,7 +563,7 @@ Namespace Samples
         ''' -------------------------------------------------------------------
         Public Function IsLoaded(s As cEcopathSample) As Boolean
             If (s Is Nothing) Then Return False
-            Return Object.ReferenceEquals(s, Me.m_data.m_loaded)
+            Return ReferenceEquals(s, Me.m_data.m_loaded)
         End Function
 
         ''' -------------------------------------------------------------------

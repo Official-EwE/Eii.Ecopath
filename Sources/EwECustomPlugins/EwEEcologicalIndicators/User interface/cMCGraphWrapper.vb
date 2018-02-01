@@ -118,14 +118,14 @@ Public Class cMCGraphWrapper
 
         If (indSingle Is Nothing) Then
             ' Group mode
-            If Not Object.ReferenceEquals(indGroup, Me.m_groupCurrent) Then
+            If Not ReferenceEquals(indGroup, Me.m_groupCurrent) Then
                 For i As Integer = 0 To indGroup.NumIndicators - 1
                     lInfo.Add(indGroup.Indicator(i))
                 Next
             End If
         Else
             ' Indicator mode
-            If Not Object.ReferenceEquals(indSingle, Me.m_indCurrent) Then
+            If Not ReferenceEquals(indSingle, Me.m_indCurrent) Then
                 lInfo.Add(indSingle)
             End If
         End If

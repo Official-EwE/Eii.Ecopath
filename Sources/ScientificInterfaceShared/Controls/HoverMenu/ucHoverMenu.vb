@@ -357,7 +357,7 @@ Namespace Controls
                 End Try
 
                 ' Express my target control (0,0) location in the coordinate system of my parent
-                If Not Object.ReferenceEquals(Me.m_ctrlTarget, Me.m_ctrlParent) Then
+                If Not ReferenceEquals(Me.m_ctrlTarget, Me.m_ctrlParent) Then
                     ptHover = Me.m_ctrlParent.PointToClient(Me.m_ctrlTarget.PointToScreen(ptHover))
                 End If
 

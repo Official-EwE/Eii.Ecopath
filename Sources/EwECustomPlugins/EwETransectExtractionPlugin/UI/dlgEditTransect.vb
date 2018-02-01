@@ -134,7 +134,7 @@ Public Class dlgEditTransect
     Private Function IsUniqueName(strName As String) As Boolean
         Dim bIsUnique As Boolean = Not String.IsNullOrWhiteSpace(strName)
         For Each t As cTransect In Me.m_data.Transects
-            If (Not Object.ReferenceEquals(t, Me.m_transect)) Then
+            If (Not ReferenceEquals(t, Me.m_transect)) Then
                 bIsUnique = (bIsUnique And String.Compare(t.Name, strName, True) <> 0)
             End If
         Next

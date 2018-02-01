@@ -249,7 +249,7 @@ Public Class cWoRMSPluginPoint
     Friend Function SearchResults(ByVal dataTerm As Object, ByRef results As IDataSearchResults) As Boolean _
         Implements IDataSearchProducerPlugin.SearchResults
 
-        If (Object.ReferenceEquals(dataTerm, Me.m_term)) Then
+        If (ReferenceEquals(dataTerm, Me.m_term)) Then
             results = Me.m_results
             Return True
         End If

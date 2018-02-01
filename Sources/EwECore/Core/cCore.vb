@@ -3400,7 +3400,7 @@ Public Class cCore
         Debug.Assert(TypeOf ds Is IEcopathDataSource, "Invalid data source type specified")
 
         ' Only perform a total close if not reopening for the same datasource
-        If Not Me.CloseModel(Not Object.ReferenceEquals(ds, Me.DataSource)) Then Return False
+        If Not Me.CloseModel(Not ReferenceEquals(ds, Me.DataSource)) Then Return False
 
         Me.m_EcoPath.RunState = Ecopath.eEcopathRunState.NotRun
         Me.m_EcoPathData.ActiveEcosimScenario = -1
@@ -5874,7 +5874,7 @@ Public Class cCore
             ' Get the leading group for this stanza config
 
             groupLeading = Me.EcoPathGroupInputs(sg.iGroups(sg.LeadingB))
-            bIsLeadingGroup = Object.ReferenceEquals(groupLeading, group)
+            bIsLeadingGroup = ReferenceEquals(groupLeading, group)
 
             ' Is leading stanza?
             If bIsLeadingGroup Then
@@ -6152,7 +6152,7 @@ Public Class cCore
 
                 ' Cascase group name to all relevant core IO objects
                 objCascade = Me.EcoPathGroupInputs(obj.Index)
-                If Not Object.ReferenceEquals(objCascade, obj) Then
+                If Not ReferenceEquals(objCascade, obj) Then
                     bAllowValidationOrg = objCascade.AllowValidation
                     objCascade.AllowValidation = False
                     objCascade.Name = strName
@@ -6162,7 +6162,7 @@ Public Class cCore
                 End If
 
                 objCascade = Me.EcoPathGroupOutputs(obj.Index)
-                If Not Object.ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
+                If Not ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
                     bAllowValidationOrg = objCascade.AllowValidation
                     objCascade.AllowValidation = False
                     objCascade.Name = strName
@@ -6173,7 +6173,7 @@ Public Class cCore
 
                 If Me.m_StateMonitor.HasEcosimLoaded() Then
                     objCascade = Me.EcoSimGroupInputs(obj.Index)
-                    If Not Object.ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
+                    If Not ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
                         bAllowValidationOrg = objCascade.AllowValidation
                         objCascade.AllowValidation = False
                         objCascade.Name = strName
@@ -6182,7 +6182,7 @@ Public Class cCore
 
                     ' Ugh
                     objCascade = Me.MSEBatchManager.TFMGroups(obj.Index)
-                    If Not Object.ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
+                    If Not ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
                         bAllowValidationOrg = objCascade.AllowValidation
                         objCascade.AllowValidation = False
                         objCascade.Name = strName
@@ -6192,7 +6192,7 @@ Public Class cCore
 
                 If Me.m_StateMonitor.HasEcospaceLoaded() Then
                     objCascade = Me.EcospaceGroupInputs(obj.Index)
-                    If Not Object.ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
+                    If Not ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
                         bAllowValidationOrg = objCascade.AllowValidation
                         objCascade.AllowValidation = False
                         objCascade.Name = strName
@@ -6204,7 +6204,7 @@ Public Class cCore
 
                 If Me.m_StateMonitor.HasEcotracerLoaded() Then
                     objCascade = Me.EcotracerGroupInputs(obj.Index)
-                    If Not Object.ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
+                    If Not ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
                         bAllowValidationOrg = objCascade.AllowValidation
                         objCascade.AllowValidation = False
                         objCascade.Name = strName
@@ -6231,14 +6231,14 @@ Public Class cCore
 
                 If Me.m_StateMonitor.HasEcosimLoaded() Then
                     objCascade = Me.EcosimFleetInputs(obj.Index)
-                    If Not Object.ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
+                    If Not ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
                         bAllowValidationOrg = objCascade.AllowValidation
                         objCascade.AllowValidation = False
                         objCascade.Name = strName
                         objCascade.AllowValidation = bAllowValidationOrg
                     End If
                     objCascade = Me.EcosimFleetOutput(obj.Index)
-                    If Not Object.ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
+                    If Not ReferenceEquals(objCascade, obj) And objCascade IsNot Nothing Then
                         bAllowValidationOrg = objCascade.AllowValidation
                         objCascade.AllowValidation = False
                         objCascade.Name = strName
@@ -13152,7 +13152,7 @@ Public Class cCore
 
                 ' Notify plug-ins
                 Try
-                    If Not Object.ReferenceEquals(Me.PluginManager, Nothing) Then
+                    If Not ReferenceEquals(Me.PluginManager, Nothing) Then
                         Me.PluginManager.DataValidated(vs.VarName, dtAffected)
                     End If
                 Catch ex As Exception
@@ -13160,7 +13160,7 @@ Public Class cCore
                 End Try
 
                 ' Dirty data source
-                If Not Object.ReferenceEquals(DataSource, Nothing) Then
+                If Not ReferenceEquals(DataSource, Nothing) Then
 
                     ' Block non-stored variables from dirtying the data source
                     bBlock = (value.Stored = False)
@@ -14369,7 +14369,7 @@ Public Class cCore
             End If
 
             Try
-                If Not Object.ReferenceEquals(Me.PluginManager, Nothing) Then
+                If Not ReferenceEquals(Me.PluginManager, Nothing) Then
                     Me.PluginManager.DataValidated(eVarNameFlags.NotSet, obj.DataType)
                 End If
             Catch ex As Exception
@@ -14416,7 +14416,7 @@ Public Class cCore
                 ' Hand plugin manager a delegate to check core enabled state
                 Me.m_pluginManager.CoreExecutionStateDelegate = New cPluginManager.CanExecutePlugin(AddressOf Me.CanExecutePlugin)
 
-                If Not Object.ReferenceEquals(Me.m_pluginManager.Core, Me) Then
+                If Not ReferenceEquals(Me.m_pluginManager.Core, Me) Then
                     Me.m_pluginManager.Core = Me
                 End If
 

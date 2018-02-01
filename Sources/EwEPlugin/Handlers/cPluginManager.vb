@@ -210,7 +210,7 @@ Public Class cPluginManager
             Return m_core
         End Get
         Set(ByVal core As Object)
-            If Object.ReferenceEquals(core, Me.m_core) Then Return
+            If ReferenceEquals(core, Me.m_core) Then Return
 
             ' Remember core
             m_core = core

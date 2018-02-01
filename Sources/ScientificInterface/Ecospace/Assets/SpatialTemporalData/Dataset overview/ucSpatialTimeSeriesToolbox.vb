@@ -667,7 +667,7 @@ Namespace Ecospace.Controls
         Private Function DatasetPos(ds As ISpatialDataSet) As cDatasetInfo
             If ds Is Nothing Then Return Nothing
             For Each pos As cDatasetInfo In Me.m_lInfo
-                If Object.ReferenceEquals(pos.m_ds, ds) Then Return pos
+                If ReferenceEquals(pos.m_ds, ds) Then Return pos
             Next
             Return Nothing
         End Function

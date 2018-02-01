@@ -90,8 +90,8 @@ Namespace SpatialData
         ''' <see cref="cVectorTools.TranslateValueDelegate">Callback</see> to
         ''' determine the value to set when rasterizing
         ''' </summary>
-        ''' <param name="drow">The datarow for the vector object.</param>
-        ''' <param name="dValueNone">The nodata value for the underlying raster.</param>
+        ''' <param name="drow">The data row for the vector object.</param>
+        ''' <param name="dValueNone">The NoData value for the underlying raster.</param>
         ''' <returns>A converted value.</returns>
         ''' -------------------------------------------------------------------
         Protected Overrides Function ToValue(drow As System.Data.DataRow, dValueNone As Double) As Double

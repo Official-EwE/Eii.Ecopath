@@ -448,8 +448,8 @@ Namespace Ecosim
                     If results.hasSRData(i, j) Then
                         tmpSR = New cSRData(results.BStock(i, j), results.BRecruitment(i, j))
                         For k As Integer = 0 To m_SRResults.Count - 1
-                            If (Object.ReferenceEquals(stanza, Me.m_SRResults(k).StanzaGroup)) And _
-                               (Object.ReferenceEquals(group, Me.m_SRResults(k).GroupStart)) Then
+                            If (ReferenceEquals(stanza, Me.m_SRResults(k).StanzaGroup)) And _
+                               (ReferenceEquals(group, Me.m_SRResults(k).GroupStart)) Then
                                 Me.m_SRResults(k).Data.Add(tmpSR)
                                 Exit For
                             End If
@@ -538,7 +538,7 @@ Namespace Ecosim
         Private Sub ShowStanza(ByVal stanzaGroup As cStanzaGroup)
             For i As Integer = 0 To m_SRResults.Count - 1
                 Dim srl As cSRLine = Me.m_SRResults(i)
-                srl.IsVisible = Object.ReferenceEquals(m_SRResults(i).StanzaGroup, stanzaGroup)
+                srl.IsVisible = ReferenceEquals(m_SRResults(i).StanzaGroup, stanzaGroup)
             Next
             Me.UpdateCurves("", "")
         End Sub
@@ -550,7 +550,7 @@ Namespace Ecosim
 
             For i As Integer = 0 To m_SRResults.Count - 1
                 srl = Me.m_SRResults(i)
-                If Object.ReferenceEquals(srlShow, srl) Then
+                If ReferenceEquals(srlShow, srl) Then
                     srl.IsVisible = True
                     strTitleX = srl.GroupEnd.Name
                     strTitleY = srl.GroupStart.Name

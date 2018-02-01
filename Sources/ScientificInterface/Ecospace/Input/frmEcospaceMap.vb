@@ -99,7 +99,7 @@ Namespace Ecospace.Basemap
             Me.m_zoomToolbar.AddZoomContainer(Me.m_zoomContainer)
 
             Me.m_cmdEditBasemap = cmdh.GetCommand("EditBasemap")
-            If (Not Object.ReferenceEquals(Me.m_cmdEditBasemap, Nothing)) Then
+            If (Not ReferenceEquals(Me.m_cmdEditBasemap, Nothing)) Then
                 Me.m_cmdEditBasemap.AddControl(Me.tsbEditBasemap)
                 AddHandler Me.m_cmdEditBasemap.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 AddHandler Me.m_cmdEditBasemap.OnPostInvoke, AddressOf OnPostIvokeEditcommand
@@ -140,7 +140,7 @@ Namespace Ecospace.Basemap
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
 
-            If (Not Object.ReferenceEquals(Me.m_cmdEditBasemap, Nothing)) Then
+            If (Not ReferenceEquals(Me.m_cmdEditBasemap, Nothing)) Then
                 Me.m_cmdEditBasemap.RemoveControl(Me.tsbEditBasemap)
                 RemoveHandler Me.m_cmdEditBasemap.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 RemoveHandler Me.m_cmdEditBasemap.OnPostInvoke, AddressOf OnPostIvokeEditcommand
@@ -296,7 +296,7 @@ Namespace Ecospace.Basemap
             Me.m_ucBasemap.RemoveLayer(l)
             Me.m_ucLayers.RemoveLayer(l)
 
-            If (Object.ReferenceEquals(Me.SelectedLayer, l)) Then
+            If (ReferenceEquals(Me.SelectedLayer, l)) Then
                 Me.SelectedLayer = Nothing
             End If
 
@@ -319,7 +319,7 @@ Namespace Ecospace.Basemap
             End Get
             Set(ByVal layer As cDisplayLayer)
 
-                If Object.ReferenceEquals(layer, Me.m_layerSelected) Then Return
+                If ReferenceEquals(layer, Me.m_layerSelected) Then Return
 
                 Me.SuspendLayout()
 

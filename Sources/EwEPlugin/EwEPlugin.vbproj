@@ -188,6 +188,7 @@
     <Compile Include="Plugin templates\GUI\IConfigurablePlugin.vb" />
     <Compile Include="Plugin templates\GUI\IDockStatePlugin.vb" />
     <Compile Include="Plugin templates\GUI\IHelpPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IEwEOptionsPlugin.vb" />
     <Compile Include="Plugin templates\GUI\INavigationTreeItemPlugin.vb" />
     <Compile Include="Handlers\cPluginAssembly.vb" />
     <Compile Include="Handlers\cPluginException.vb" />

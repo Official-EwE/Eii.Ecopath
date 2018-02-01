@@ -523,7 +523,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnBaseYearChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
-            Debug.Assert(Object.ReferenceEquals(prop, Me.m_propBaseYear))
+            Debug.Assert(ReferenceEquals(prop, Me.m_propBaseYear))
 
             If Me.m_bInUpdate Then Return
 

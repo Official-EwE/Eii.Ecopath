@@ -127,8 +127,8 @@ Public Class LinkWrapper
 
     Public Function HasLink(ByVal obj As Object) As Boolean
         If TypeOf obj Is cLink Then
-            Return Object.ReferenceEquals(DirectCast(obj, cLink).Source, Me.Source) And _
-                   Object.ReferenceEquals(DirectCast(obj, cLink).Target, Me.Target)
+            Return ReferenceEquals(DirectCast(obj, cLink).Source, Me.Source) And _
+                   ReferenceEquals(DirectCast(obj, cLink).Target, Me.Target)
         End If
         Return False
     End Function

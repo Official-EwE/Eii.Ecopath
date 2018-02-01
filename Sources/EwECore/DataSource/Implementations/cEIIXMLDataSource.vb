@@ -332,7 +332,7 @@ Public Class cEIIXMLDataSource
         Dim bSucces As Boolean = True
 
         ' Crash prevention check
-        If Object.ReferenceEquals(dt, Nothing) Then
+        If ReferenceEquals(dt, Nothing) Then
             'Debug.Assert(False, "Failed to access table EcopathModel")
             Return False
         End If
@@ -3627,9 +3627,9 @@ Public Class cEIIXMLDataSource
             Console.WriteLine("DB: Exception {2} occurred while accessing field '{0}', returning provided default '{1}'", strField, objValueDefault, ex.ToString)
         End Try
 
-        If (Object.ReferenceEquals(objResult, Nothing)) Then
+        If (ReferenceEquals(objResult, Nothing)) Then
             objResult = objValueDefault
-        ElseIf (Not Object.ReferenceEquals(objValueIgnore, Nothing)) _
+        ElseIf (Not ReferenceEquals(objValueIgnore, Nothing)) _
             And Not (Convert.IsDBNull(objResult)) _
             And Not (Convert.IsDBNull(objValueIgnore)) Then
 

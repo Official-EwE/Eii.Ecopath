@@ -22,7 +22,8 @@ Namespace Controls
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Interface for implementing an Options page
+    ''' Interface for implementing an configuration page for integration in a 
+    ''' settings dialog
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Interface IOptionsPage

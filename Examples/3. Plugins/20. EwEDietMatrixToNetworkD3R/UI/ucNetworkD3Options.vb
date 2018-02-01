@@ -17,22 +17,40 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-
-#Region " Imports "
+#Region " imports "
 
 Option Strict On
-Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls
 
-#End Region ' Imports
+#End Region ' imports
 
-''' ===========================================================================
-''' <summary>
-''' Plug-in point that provides a <see cref="IConfigurable">configurable</see>
-''' interactions.
-''' </summary>
-''' ===========================================================================
-Public Interface IConfigurablePlugin
-    Inherits IPlugin
-    Inherits IConfigurable
+Public Class ucNetworkD3Options
+    Implements IOptionsPage
 
-End Interface
+    Public Sub New()
+        Me.InitializeComponent()
+    End Sub
+
+    Protected Overrides Sub OnLoad(e As EventArgs)
+        MyBase.OnLoad(e)
+    End Sub
+
+    Public Event OnChanged As IOptionsPage.OnChangedEventHandler Implements IOptionsPage.OnChanged
+
+    Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
+        ' NOP
+    End Sub
+
+    Public Function CanApply() As Boolean Implements IOptionsPage.CanApply
+        Return True
+    End Function
+
+    Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
+        Return IOptionsPage.eApplyResultType.Success
+    End Function
+
+    Public Function CanSetDefaults() As Boolean Implements IOptionsPage.CanSetDefaults
+        Return True
+    End Function
+
+End Class

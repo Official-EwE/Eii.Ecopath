@@ -434,7 +434,7 @@ Public Class gridDefineGroups
             Dim iPos As Integer = Me.FindGroups(gi)
 
             Debug.Assert(iPos <> -1)
-            Debug.Assert(Object.ReferenceEquals(gi.Stanza, Me))
+            Debug.Assert(ReferenceEquals(gi.Stanza, Me))
 
             Me.m_alGroups.RemoveAt(iPos)
             gi.Stanza = Nothing
@@ -524,7 +524,7 @@ Public Class gridDefineGroups
         ''' -------------------------------------------------------------------
         Public Function FindGroups(ByVal gi As cGroupInfo) As Integer
             For i As Integer = 0 To Me.m_alGroups.Count - 1
-                If Object.ReferenceEquals(Me.m_alGroups(i), gi) Then
+                If ReferenceEquals(Me.m_alGroups(i), gi) Then
                     Return i
                 End If
             Next
@@ -543,7 +543,7 @@ Public Class gridDefineGroups
             Dim group As cEcoPathGroupInput = Nothing
 
             ' Not associated with an existing stanza group? Flag as changed.
-            If Object.ReferenceEquals(Me.m_sg, Nothing) Then Return True
+            If ReferenceEquals(Me.m_sg, Nothing) Then Return True
             ' Name modified? Flag as changed.
             If Me.m_sg.Name <> Me.m_strName Then Return True
             ' Different number of groups? Flag as changed.
@@ -927,7 +927,7 @@ Public Class gridDefineGroups
 
         Me.AllowUpdates = False
 
-        If Not Object.ReferenceEquals(astrStanzaNames, Nothing) Then
+        If Not ReferenceEquals(astrStanzaNames, Nothing) Then
             Dim cmb As Cells.Real.ComboBox = DirectCast(Me(iRow, eColumnTypes.StanzaName), Cells.Real.ComboBox)
             cmb.DataModel.StandardValues = astrStanzaNames
         End If
@@ -1069,7 +1069,7 @@ Public Class gridDefineGroups
             Case eColumnTypes.StanzaName
                 Dim strStanzaName As String = CStr(cell.GetValue(p))
                 ' Was part of stanza config?
-                If Not Object.ReferenceEquals(si, Nothing) Then
+                If Not ReferenceEquals(si, Nothing) Then
                     ' Remove group from this stanza config
                     si.RemoveGroup(gi)
                     gi.Stanza = Nothing
@@ -1089,7 +1089,7 @@ Public Class gridDefineGroups
                     ' Try to find existing stanza group
                     si = Me.FindStanzaInfo(strStanzaName)
                     ' Existing group?
-                    If (Object.ReferenceEquals(si, Nothing)) Then
+                    If (ReferenceEquals(si, Nothing)) Then
                         si = New cStanzaInfo(strStanzaName)
                         Me.m_lsiStanza.Add(si)
                     Else
@@ -1581,7 +1581,7 @@ Public Class gridDefineGroups
                 ' For all groups
                 For iGroup As Integer = 0 To si.NumGroups - 1
                     gi = si.GroupList(iGroup)
-                    bValid = bValid And (Object.ReferenceEquals(gi.Stanza, si))
+                    bValid = bValid And (ReferenceEquals(gi.Stanza, si))
                 Next iGroup
             End If
         Next iStanza
@@ -1706,7 +1706,7 @@ Public Class gridDefineGroups
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
             Dim giTemp As cGroupInfo = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
             ' Does name already exist?
-            If (Not Object.ReferenceEquals(giTemp, gi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
+            If (Not ReferenceEquals(giTemp, gi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                 ' Report failure
                 Return False
             End If

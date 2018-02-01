@@ -323,7 +323,7 @@ Namespace Controls
                         group = m_uic.Core.EcoPathGroupInputs(iGroup)
                         Dim node As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(group)
                         lChildren.Add(node)
-                        If Object.ReferenceEquals(group, objSelected) Then nodeSelected = node
+                        If ReferenceEquals(group, objSelected) Then nodeSelected = node
                     Next
                     Me.m_tvAvailable.Nodes.Add(New cCoreInputOutputControlItem(My.Resources.HEADER_GROUPS, lChildren.ToArray))
 
@@ -332,7 +332,7 @@ Namespace Controls
                         fleet = m_uic.Core.EcopathFleetInputs(iFleet)
                         Dim node As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(fleet)
                         lChildren.Add(node)
-                        If Object.ReferenceEquals(group, objSelected) Then nodeSelected = node
+                        If ReferenceEquals(group, objSelected) Then nodeSelected = node
                     Next
                     Me.m_tvAvailable.Nodes.Add(New cCoreInputOutputControlItem(My.Resources.HEADER_FLEETS, lChildren.ToArray))
                 Else
@@ -346,7 +346,7 @@ Namespace Controls
                                 group = m_uic.Core.EcoPathGroupInputs(iGroup)
 
                                 Dim node As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(group)
-                                If Object.ReferenceEquals(fleet, objSelected) Then nodeSelected = node
+                                If ReferenceEquals(fleet, objSelected) Then nodeSelected = node
                                 lChildren.Add(node)
                             End If
                         Next
@@ -354,7 +354,7 @@ Namespace Controls
                         If lChildren.Count > 0 Then
                             Dim nodeParent As cCoreInputOutputControlItem = New cCoreInputOutputControlItem(fleet, lChildren.ToArray)
                             Me.m_tvAvailable.Nodes.Add(nodeParent)
-                            If Object.ReferenceEquals(group, objSelected) Then nodeSelected = nodeParent
+                            If ReferenceEquals(group, objSelected) Then nodeSelected = nodeParent
                         End If
                     Next
                 End If

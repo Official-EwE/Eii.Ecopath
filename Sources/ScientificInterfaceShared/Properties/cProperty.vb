@@ -464,7 +464,7 @@ Namespace Properties
 
         Public Overridable Function GetVariableMetadata() As cVariableMetaData
             ' Santiy checks
-            If Object.ReferenceEquals(Me.m_Source, Nothing) Then
+            If ReferenceEquals(Me.m_Source, Nothing) Then
                 Return Nothing
             End If
 

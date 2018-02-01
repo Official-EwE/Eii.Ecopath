@@ -269,7 +269,7 @@ Namespace Controls.Map
         ''' -----------------------------------------------------------------------
         Private Sub SetPositionMode()
 
-            If Object.ReferenceEquals(Me.m_map, Nothing) Then Return
+            If ReferenceEquals(Me.m_map, Nothing) Then Return
 
             Select Case Me.PositionMode
                 Case ePositionModeTypes.Stretch
@@ -291,7 +291,7 @@ Namespace Controls.Map
         ''' -----------------------------------------------------------------------
         Private Sub SetZoomLevel()
 
-            If Object.ReferenceEquals(Me.m_map, Nothing) Then Return
+            If ReferenceEquals(Me.m_map, Nothing) Then Return
 
             Me.UpdateControls()
 
@@ -344,7 +344,7 @@ Namespace Controls.Map
         ''' -----------------------------------------------------------------------
         Private Sub UpdatePosition()
 
-            If Object.ReferenceEquals(Me.m_map, Nothing) Then Return
+            If ReferenceEquals(Me.m_map, Nothing) Then Return
 
             Me.UpdateControls()
 
@@ -380,7 +380,7 @@ Namespace Controls.Map
         Private Sub UpdateControls()
 
             If (Me.IsDisposed) Then Return
-            If (Object.ReferenceEquals(Me.m_map, Nothing)) Then Return
+            If (ReferenceEquals(Me.m_map, Nothing)) Then Return
 
             ' In stretch mode zooming and scrolling is disabled since
             ' the map fills the entire available area. When the zoom percentage is 

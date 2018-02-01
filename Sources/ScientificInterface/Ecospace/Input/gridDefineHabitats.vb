@@ -381,7 +381,7 @@ Namespace Ecospace
                     For iHabitat As Integer = 0 To Me.m_alHabitats.Count - 1
                         Dim giTemp As cHabitatInfo = DirectCast(Me.m_alHabitats(iHabitat), cHabitatInfo)
                         ' Does name already exist?
-                        If (Not Object.ReferenceEquals(giTemp, hi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
+                        If (Not ReferenceEquals(giTemp, hi)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                             ' Change is not allowed
                             Me.UpdateRow(p.Row)
                             ' Report failure
@@ -637,7 +637,7 @@ Namespace Ecospace
 
         Private Overloads Sub SelectRow(ByVal hi As cHabitatInfo)
             For iHabitat As Integer = 0 To Me.m_alHabitats.Count - 1
-                If Object.ReferenceEquals(Me.m_alHabitats(iHabitat), hi) Then
+                If ReferenceEquals(Me.m_alHabitats(iHabitat), hi) Then
                     Me.SelectRow(iHabitat + iFIRSTHABITATROW)
                 End If
             Next
@@ -705,7 +705,7 @@ Namespace Ecospace
                 ' Only compare new items
                 If (infoTmp.Status <> eItemStatusTypes.Removed And info.Status <> eItemStatusTypes.Removed) Then
                     ' Does name already exist?
-                    If (Not Object.ReferenceEquals(infoTmp, info)) And (String.Compare(strName, infoTmp.Name, True) = 0) Then
+                    If (Not ReferenceEquals(infoTmp, info)) And (String.Compare(strName, infoTmp.Name, True) = 0) Then
                         ' Report failure
                         Return False
                     End If

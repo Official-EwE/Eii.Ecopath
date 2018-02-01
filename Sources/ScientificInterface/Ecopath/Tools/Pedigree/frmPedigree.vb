@@ -331,7 +331,7 @@ Namespace Ecopath.Tools
             Set(ByVal value As cPedigreeLevel)
                 For i As Integer = 0 To Me.m_lbLevels.Items.Count - 1
                     Dim item As cPedigreeLevelListboxItem = DirectCast(Me.m_lbLevels.Items(i), cPedigreeLevelListboxItem)
-                    If Object.ReferenceEquals(item.Level, value) Then
+                    If ReferenceEquals(item.Level, value) Then
                         Me.m_lbLevels.SelectedIndex = i
                         Return
                     End If

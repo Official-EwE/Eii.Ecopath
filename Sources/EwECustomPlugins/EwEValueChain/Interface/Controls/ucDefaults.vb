@@ -146,7 +146,7 @@ Public Class ucDefaults
         For iItem As Integer = 0 To Me.m_cbDefault.Items.Count - 1
             If TypeOf Me.m_cbDefault.Items(iItem) Is cOOPStorableComboItem Then
                 item = DirectCast(Me.m_cbDefault.Items(iItem), cOOPStorableComboItem)
-                If Object.ReferenceEquals(item.ObjDefault, obj) Then
+                If ReferenceEquals(item.ObjDefault, obj) Then
                     Return iItem
                 End If
             End If
@@ -168,7 +168,7 @@ Public Class ucDefaults
         End Get
         Set(ByVal objSelNew As cOOPStorable)
             ' Optimization
-            If Not Object.ReferenceEquals(objSelNew, Me.m_objSelected) Then
+            If Not ReferenceEquals(objSelNew, Me.m_objSelected) Then
 
                 ' Prevent loops
                 If Me.m_bInUpdate = True Then Return

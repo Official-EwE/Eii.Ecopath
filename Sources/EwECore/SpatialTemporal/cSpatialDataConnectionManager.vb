@@ -375,7 +375,7 @@ Namespace SpatialData
                 For i As Integer = 1 To adt.MaxLength
                     If adt.IsEnabled(i) Or bEnabledOnly = False Then
                         For Each conn As cSpatialDataConnection In adt.Connections(i)
-                            If Object.ReferenceEquals(conn.Dataset, ds) Then Return True
+                            If ReferenceEquals(conn.Dataset, ds) Then Return True
                         Next
                     End If
                 Next

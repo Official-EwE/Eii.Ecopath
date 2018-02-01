@@ -785,7 +785,7 @@ Public Class gridDefineTaxonomy
         Set(ByVal taxon As ITaxonSearchData)
             If Not (TypeOf taxon Is cTaxonInfo) Then Return
             For iRow As Integer = 1 To Me.RowsCount - 1
-                If Object.ReferenceEquals(TaxonInfo(iRow), taxon) Then
+                If ReferenceEquals(TaxonInfo(iRow), taxon) Then
                     Me.SelectRow(iRow)
                     Return
                 End If
@@ -1058,8 +1058,8 @@ Public Class gridDefineTaxonomy
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function IsSearchTerm(ByVal taxon As ITaxonSearchData) As Boolean
-        Return (Object.ReferenceEquals(taxon, Me.m_tiSearch)) And _
-               (Object.ReferenceEquals(Me.SelectedTaxon, Me.m_tiSearchLinked))
+        Return (ReferenceEquals(taxon, Me.m_tiSearch)) And _
+               (ReferenceEquals(Me.SelectedTaxon, Me.m_tiSearchLinked))
     End Function
 
 #End Region ' Search

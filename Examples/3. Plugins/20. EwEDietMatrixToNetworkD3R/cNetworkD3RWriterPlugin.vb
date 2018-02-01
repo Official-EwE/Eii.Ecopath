@@ -31,7 +31,7 @@ Imports RDotNet
 
 Public Class cNetworkD3RWriterPlugin
     Implements IMenuItemPlugin
-    Implements IConfigurablePlugin
+    Implements IEwEOptionsPlugin
 
     Private m_core As cCore = Nothing
     Private m_engine As REngine = Nothing
@@ -100,6 +100,12 @@ Public Class cNetworkD3RWriterPlugin
         End Get
     End Property
 
+    Public ReadOnly Property Label As String Implements IEwEOptionsPlugin.Label
+        Get
+            Return "NetworkD3"
+        End Get
+    End Property
+
     Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Windows.Forms.Form) Implements IGUIPlugin.OnControlClick
         Try
             Me.CreateNetworkD3RScript()
@@ -147,11 +153,11 @@ Public Class cNetworkD3RWriterPlugin
     End Sub
 
     Public Function IsConfigured() As Boolean Implements IConfigurable.IsConfigured
-        Throw New NotImplementedException()
+        Return True
     End Function
 
     Public Function GetConfigUI() As Control Implements IConfigurable.GetConfigUI
-        Throw New NotImplementedException()
+        Return New ucNetworkD3Options()
     End Function
 
 #End Region ' Internals

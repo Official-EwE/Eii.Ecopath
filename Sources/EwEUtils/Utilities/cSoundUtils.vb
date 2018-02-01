@@ -114,7 +114,7 @@ Namespace Utilities
 
         Private Shared Sub InitSounds()
 
-            If Object.ReferenceEquals(s_sounds, Nothing) Then
+            If ReferenceEquals(s_sounds, Nothing) Then
 
                 s_sounds = New sSystemSounds()
 

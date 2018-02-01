@@ -457,7 +457,7 @@ Namespace Wizard
             End Get
             Set(ByVal value As cEwEScenario)
                 For Each item As ListViewItem In lv.Items
-                    item.Selected = Object.ReferenceEquals(item.Tag, value)
+                    item.Selected = ReferenceEquals(item.Tag, value)
                 Next
             End Set
         End Property
@@ -538,7 +538,7 @@ Namespace Wizard
                 Handles tabctrlModes.SelectedIndexChanged
 
             ' Sanity check
-            Debug.Assert(Object.ReferenceEquals(sender, Me.tabctrlModes))
+            Debug.Assert(ReferenceEquals(sender, Me.tabctrlModes))
             Me.Mode = DirectCast(Me.tabctrlModes.TabPages(Me.tabctrlModes.SelectedIndex).Tag, eDialogModeType)
 
         End Sub
@@ -593,7 +593,7 @@ Namespace Wizard
             Dim scenario As cEwEScenario = Me.Scenario
 
             ' Sanity check
-            If Object.ReferenceEquals(scenario, Nothing) Then Return
+            If ReferenceEquals(scenario, Nothing) Then Return
 
             ' Ask for confirmation
             Dim strMessage As String = cStringUtils.Localize(My.Resources.SCENARIO_CONFIRMDELETE_PROMPT, scenario.Name)
@@ -652,7 +652,7 @@ Namespace Wizard
                     lv = Me.lvSaveAs
             End Select
 
-            If (Not Object.ReferenceEquals(lv, Nothing)) Then
+            If (Not ReferenceEquals(lv, Nothing)) Then
                 If (lv.SelectedItems.Count = 1) Then
                     lvi = lv.SelectedItems(0)
                     lvi.BeginEdit()

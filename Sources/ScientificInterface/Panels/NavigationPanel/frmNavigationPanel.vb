@@ -446,7 +446,7 @@ Public Class frmNavigationPanel
                 nd = Me.FindNode(Me.m_tvNavigation.Nodes, value)
             End If
 
-            If Not Object.ReferenceEquals(nd, Me.m_tvNavigation.SelectedNode) Then
+            If Not ReferenceEquals(nd, Me.m_tvNavigation.SelectedNode) Then
                 Me.m_tvNavigation.SelectedNode = nd
             End If
 

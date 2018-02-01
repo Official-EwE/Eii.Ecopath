@@ -106,7 +106,7 @@ Public Class Strategy
 
     Public Function Contains(item As HCR_Group) As Boolean Implements ICollection(Of HCR_Group).Contains
         For Each Rule As HCR_Group In Me
-            If Object.ReferenceEquals(item.GroupB, Rule.GroupB) And Object.ReferenceEquals(item.GroupF, Rule.GroupF) Then
+            If ReferenceEquals(item.GroupB, Rule.GroupB) And ReferenceEquals(item.GroupF, Rule.GroupF) Then
                 Return True
             End If
         Next

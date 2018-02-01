@@ -126,7 +126,7 @@ Public Class cTransectDatastructures
         Catch ex As Exception
 
         End Try
-        If (Object.ReferenceEquals(Me.m_selection, t)) Then Me.Selection = Nothing
+        If (ReferenceEquals(Me.m_selection, t)) Then Me.Selection = Nothing
     End Sub
 
     Public Property Selection As cTransect
@@ -134,7 +134,7 @@ Public Class cTransectDatastructures
             Return Me.m_selection
         End Get
         Set(value As cTransect)
-            If (Not Object.ReferenceEquals(Me.m_selection, value)) Then
+            If (Not ReferenceEquals(Me.m_selection, value)) Then
                 Me.m_selection = value
                 Try
                     RaiseEvent OnTransectSelected(Me, Me.m_selection)

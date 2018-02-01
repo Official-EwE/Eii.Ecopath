@@ -423,7 +423,7 @@ Public Class cData
     Public Sub RemoveParameters(ByVal parms As cParameters)
 
         If Me.m_parameters Is Nothing Then Return
-        Debug.Assert(Object.ReferenceEquals(Me.m_parameters, parms))
+        Debug.Assert(ReferenceEquals(Me.m_parameters, parms))
 
         ' Stop listening for generic change events
         RemoveHandler parms.OnChanged, AddressOf OnElementChanged
@@ -1052,7 +1052,7 @@ Public Class cData
         For i As Integer = 0 To Me.m_lFlowPositions.Count - 1
             fp = Me.m_lFlowPositions(i)
             ' Compare object references since DBIDs can be 0 (for unsaved objects)
-            If (Object.ReferenceEquals(fp.Unit, unit)) Then lfp.Add(fp)
+            If (ReferenceEquals(fp.Unit, unit)) Then lfp.Add(fp)
         Next
         Return lfp.ToArray()
     End Function
@@ -1063,7 +1063,7 @@ Public Class cData
         For i As Integer = 0 To Me.m_lFlowPositions.Count - 1
             fp = Me.m_lFlowPositions(i)
             ' Compare object references since DBIDs can be 0 (for unsaved objects)
-            If (Object.ReferenceEquals(fp.Diagram, diagram)) Then lfp.Add(fp)
+            If (ReferenceEquals(fp.Diagram, diagram)) Then lfp.Add(fp)
         Next
         Return lfp.ToArray()
     End Function
@@ -1073,7 +1073,7 @@ Public Class cData
         For i As Integer = 0 To Me.m_lFlowPositions.Count - 1
             fp = Me.m_lFlowPositions(i)
             ' Compare object references since DBIDs can be 0 (for unsaved objects)
-            If (Object.ReferenceEquals(fp.Diagram, diagram) And Object.ReferenceEquals(fp.Unit, unit)) Then
+            If (ReferenceEquals(fp.Diagram, diagram) And ReferenceEquals(fp.Unit, unit)) Then
                 Return fp
             End If
         Next
@@ -1150,7 +1150,7 @@ Public Class cData
             ' Filtering by fleet?
             If (TypeOf item Is cEcopathFleetInput) Then
                 ' #Yes: include producer if it uses this fleet
-                bUseUnit = Object.ReferenceEquals(pu.Fleet, item)
+                bUseUnit = ReferenceEquals(pu.Fleet, item)
             Else
                 ' #Yes: include producer if its fleet lands or discards a group
                 bUseUnit = (pu.Fleet.Landings(item.Index) > 0) Or (pu.Fleet.Discards(item.Index) > 0)

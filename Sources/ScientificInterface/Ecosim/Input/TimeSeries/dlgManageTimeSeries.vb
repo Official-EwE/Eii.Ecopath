@@ -369,7 +369,7 @@ Public Class dlgManageTimeSeries
         ' -- APPLY --
 
         ' -- IMPORT --
-        Dim bHasPreview As Boolean = Not (Object.ReferenceEquals(Me.m_tr.Preview(), Nothing))
+        Dim bHasPreview As Boolean = Not (ReferenceEquals(Me.m_tr.Preview(), Nothing))
         Dim bHasDataset As Boolean = Not (String.IsNullOrEmpty(Me.m_cmbImportDataset.Text))
         Dim bHasErrors As Boolean = False
 
@@ -604,7 +604,7 @@ Public Class dlgManageTimeSeries
         Me.FillImportDatasetCombo()
         Me.UpdateControls()
 
-        If Object.ReferenceEquals(tsrPreview, Nothing) Then
+        If ReferenceEquals(tsrPreview, Nothing) Then
             Return
         End If
 

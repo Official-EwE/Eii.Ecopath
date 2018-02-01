@@ -90,7 +90,7 @@ Public Class ucLinkGrid
             Return Me.m_group
         End Get
         Set(value As cCoreInputOutputBase)
-            If (Object.ReferenceEquals(value, Me.m_group)) Then Return
+            If (ReferenceEquals(value, Me.m_group)) Then Return
             Me.m_group = value
             Me.RefreshContent()
         End Set
@@ -101,7 +101,7 @@ Public Class ucLinkGrid
             Return Me.m_fleet
         End Get
         Set(value As cCoreInputOutputBase)
-            If (Object.ReferenceEquals(value, Me.m_fleet)) Then Return
+            If (ReferenceEquals(value, Me.m_fleet)) Then Return
             Me.m_fleet = value
             Me.RefreshContent()
         End Set

@@ -35,7 +35,7 @@ Namespace SpatialData
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Spatial data converter that converts the area of all ploygons with a given
+    ''' Spatial data converter that converts the area of all polygons with a given
     ''' attribute value to a fractions of cell area value.
     ''' </summary>
     ''' <remarks>

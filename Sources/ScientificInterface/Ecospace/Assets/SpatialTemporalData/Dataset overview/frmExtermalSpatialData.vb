@@ -175,7 +175,7 @@ Namespace Ecospace
         Private Sub OnSelectedDatasetChanged(owner As Object, ds As EwEUtils.SpatialData.ISpatialDataSet) _
             Handles m_toolbox.OnSelectedDatasetChanged
 
-            If (Object.ReferenceEquals(ds, Me.m_ds)) Then Return
+            If (ReferenceEquals(ds, Me.m_ds)) Then Return
 
             If (Me.m_ds IsNot Nothing) Then
                 ' Clear selection
