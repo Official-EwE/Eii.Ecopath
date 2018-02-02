@@ -78,7 +78,7 @@ Namespace Properties
 
             Dim prop As cProperty = Nothing
 
-            If Not ReferenceEquals(source, Nothing) Then
+            If source IsNot Nothing Then
                 ' Get property
                 prop = pm.GetProperty(source, varName, sourceSec)
             End If

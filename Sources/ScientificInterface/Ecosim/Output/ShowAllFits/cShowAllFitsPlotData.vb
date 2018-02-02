@@ -80,7 +80,7 @@ Namespace Ecosim
             Me.TSDataScale = 1.0
 
             ' Find data max across time series
-            If (Not ReferenceEquals(Me.m_ts, Nothing)) Then
+            If (Me.m_ts IsNot Nothing) Then
                 If ((Me.m_ts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or
                     (Me.m_ts.TimeSeriesType = eTimeSeriesType.CatchesRel) Or
                     (Me.m_ts.TimeSeriesType = eTimeSeriesType.AverageWeight)) Then

@@ -13152,7 +13152,7 @@ Public Class cCore
 
                 ' Notify plug-ins
                 Try
-                    If Not ReferenceEquals(Me.PluginManager, Nothing) Then
+                    If Me.PluginManager IsNot Nothing Then
                         Me.PluginManager.DataValidated(vs.VarName, dtAffected)
                     End If
                 Catch ex As Exception
@@ -13160,7 +13160,7 @@ Public Class cCore
                 End Try
 
                 ' Dirty data source
-                If Not ReferenceEquals(DataSource, Nothing) Then
+                If DataSource IsNot Nothing Then
 
                     ' Block non-stored variables from dirtying the data source
                     bBlock = (value.Stored = False)
@@ -14369,7 +14369,7 @@ Public Class cCore
             End If
 
             Try
-                If Not ReferenceEquals(Me.PluginManager, Nothing) Then
+                If Me.PluginManager IsNot Nothing Then
                     Me.PluginManager.DataValidated(eVarNameFlags.NotSet, obj.DataType)
                 End If
             Catch ex As Exception

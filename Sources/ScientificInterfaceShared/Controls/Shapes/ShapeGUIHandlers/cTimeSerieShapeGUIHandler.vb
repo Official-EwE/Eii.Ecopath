@@ -682,7 +682,7 @@ Namespace Controls
             Next
 
             ' Select a shape
-            If ReferenceEquals(ashapeSelect, Nothing) Then
+            If ashapeSelect Is Nothing Then
                 If Me.m_lShapes.Count > 0 Then
                     Select Case selectMode
                         Case eAutoSelectMode.None

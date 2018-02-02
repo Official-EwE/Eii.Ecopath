@@ -739,7 +739,7 @@ Namespace Controls
 
             Dim shapeNew As cForcingFunction = ShapeManager.CreateNewShape(strName, Nothing)
             ' Validate
-            If ReferenceEquals(shapeNew, Nothing) Then Return
+            If shapeNew Is Nothing Then Return
             ' Update 
             Me.UpdateShapeList(New cShapeData() {shapeNew})
         End Sub

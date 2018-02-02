@@ -82,7 +82,7 @@ Public Class frmTransectSummary
 
         ' Display Groups
         cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-        If Not ReferenceEquals(cmd, Nothing) Then
+        If cmd IsNot Nothing Then
             cmd.AddControl(Me.m_tsbtnShowHideGroups)
         End If
 
@@ -104,7 +104,7 @@ Public Class frmTransectSummary
         ' Show/Hide Groups
         Dim cmdh As cCommandHandler = Me.CommandHandler
         Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-        If Not ReferenceEquals(cmd, Nothing) Then
+        If cmd IsNot Nothing Then
             cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
         End If
 

@@ -99,7 +99,7 @@ Namespace Ecospace.Basemap
             Me.m_zoomToolbar.AddZoomContainer(Me.m_zoomContainer)
 
             Me.m_cmdEditBasemap = cmdh.GetCommand("EditBasemap")
-            If (Not ReferenceEquals(Me.m_cmdEditBasemap, Nothing)) Then
+            If (Me.m_cmdEditBasemap IsNot Nothing) Then
                 Me.m_cmdEditBasemap.AddControl(Me.tsbEditBasemap)
                 AddHandler Me.m_cmdEditBasemap.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 AddHandler Me.m_cmdEditBasemap.OnPostInvoke, AddressOf OnPostIvokeEditcommand
@@ -140,7 +140,7 @@ Namespace Ecospace.Basemap
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
 
-            If (Not ReferenceEquals(Me.m_cmdEditBasemap, Nothing)) Then
+            If (Me.m_cmdEditBasemap IsNot Nothing) Then
                 Me.m_cmdEditBasemap.RemoveControl(Me.tsbEditBasemap)
                 RemoveHandler Me.m_cmdEditBasemap.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 RemoveHandler Me.m_cmdEditBasemap.OnPostInvoke, AddressOf OnPostIvokeEditcommand

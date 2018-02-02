@@ -62,14 +62,14 @@ Public Class cSelectionMonitorFormatter
 
                 Case 1
                     ' Get selection text
-                    If (Not ReferenceEquals(props(0).Source, Nothing)) Then
+                    If (props(0).Source IsNot Nothing) Then
 
                         ' Get variable descriptor
                         Dim var As eVarNameFlags = props(0).VarName
                         Dim fmt As New cCoreInterfaceFormatter()
 
                         ' Format message
-                        If Not ReferenceEquals(props(0).SourceSec, Nothing) Then
+                        If props(0).SourceSec IsNot Nothing Then
                             strSelection = String.Format(My.Resources.SELECTION_INDEXEDVAR,
                                                          fmt.GetDescriptor(props(0).Source),
                                                          vd.GetDescriptor(var, eDescriptorTypes.Name),

@@ -133,7 +133,7 @@ Public Class cMessageHandler
                    (message.Source = m_corecomponent) Then
 
                     Try
-                        If ReferenceEquals(Me.m_syncobj, Nothing) Then
+                        If Me.m_syncobj Is Nothing Then
                             Me.marshallSendMessage(message)
                         Else
                             'marshall the call to the delegate onto the thread that created this handler

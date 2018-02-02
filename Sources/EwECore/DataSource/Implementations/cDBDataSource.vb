@@ -709,7 +709,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             ' Crash prevention check
-            If ReferenceEquals(reader, Nothing) Then
+            If reader Is Nothing Then
                 'Debug.Assert(False, "Failed to access table EcopathModel")
                 Return False
             End If
@@ -4468,7 +4468,7 @@ Namespace DataSources
                 objKeys(1) = iFleetID
                 drow = dt.Rows.Find(objKeys)
                 ' Check wheter a new row or an existing row
-                Debug.Assert(Not ReferenceEquals(drow, Nothing))
+                Debug.Assert(drow IsNot Nothing)
                 Try
                     drow.BeginEdit()
                     drow("FishRateShapeID") = iShapeID
@@ -4806,7 +4806,7 @@ Namespace DataSources
                     objKeys(1) = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
                     drow = dt.Rows.Find(objKeys)
                     ' Check wheter a new row or an existing row
-                    bNewRow = ReferenceEquals(drow, Nothing)
+                    bNewRow = drow Is Nothing
                     ' New row?
                     If bNewRow Then
                         ' #Yes: create new row
@@ -6325,7 +6325,7 @@ Namespace DataSources
                 drow("ShapeID") = iShapeID
                 drow("Title") = strShapeName.Substring(0, Math.Min(strShapeName.Length, 50))
 
-                If ReferenceEquals(asData, Nothing) Then
+                If asData Is Nothing Then
                     drow("zScale") = ""
                 Else
                     Dim sbZScale As New Text.StringBuilder()
@@ -6889,7 +6889,7 @@ Namespace DataSources
                              eTimeSeriesCategoryType.FleetGroup
 
                             drow = dtFleets.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
-                            bHasRow = (ReferenceEquals(drow, Nothing) = False)
+                            bHasRow = (drow Is Nothing = False)
 
                             If bHasRow Then drow.BeginEdit() Else drow = writerFleets.NewRow() : drow("TimeSeriesID") = tsDS.iTimeSeriesDBID(iTS)
 
@@ -6912,7 +6912,7 @@ Namespace DataSources
                         Case eTimeSeriesCategoryType.Group
 
                             drow = dtGroups.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
-                            bHasRow = (ReferenceEquals(drow, Nothing) = False)
+                            bHasRow = (drow Is Nothing = False)
 
                             If bHasRow Then drow.BeginEdit() Else drow = writerGroups.NewRow() : drow("TimeSeriesID") = tsDS.iTimeSeriesDBID(iTS)
 
@@ -8748,7 +8748,7 @@ Namespace DataSources
                     ' Find existing row
                     drow = dt.Rows.Find(objKeys)
                     ' Check wheter a new row or an existing row
-                    bNewRow = ReferenceEquals(drow, Nothing)
+                    bNewRow = drow Is Nothing
                     ' New row?
                     If bNewRow Then
                         ' #Yes: create new row

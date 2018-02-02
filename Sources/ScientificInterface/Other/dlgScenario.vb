@@ -593,7 +593,7 @@ Namespace Wizard
             Dim scenario As cEwEScenario = Me.Scenario
 
             ' Sanity check
-            If ReferenceEquals(scenario, Nothing) Then Return
+            If scenario Is Nothing Then Return
 
             ' Ask for confirmation
             Dim strMessage As String = cStringUtils.Localize(My.Resources.SCENARIO_CONFIRMDELETE_PROMPT, scenario.Name)
@@ -652,7 +652,7 @@ Namespace Wizard
                     lv = Me.lvSaveAs
             End Select
 
-            If (Not ReferenceEquals(lv, Nothing)) Then
+            If (lv IsNot Nothing) Then
                 If (lv.SelectedItems.Count = 1) Then
                     lvi = lv.SelectedItems(0)
                     lvi.BeginEdit()

@@ -863,7 +863,7 @@ Namespace Ecopath
                     If m_Data.PB(i) = 0 Then
 
                         ' Msg for PB0 not created yet?
-                        If ReferenceEquals(msgPB0, Nothing) Then
+                        If msgPB0 Is Nothing Then
                             ' #Not existing, create it
                             msgPB0 = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_PB0_GENERIC, _
                                      eMessageType.InvalidModel_PB0_Generic, eCoreComponentType.EcoPath, eMessageImportance.Warning, _
@@ -879,7 +879,7 @@ Namespace Ecopath
 
                     ElseIf m_Data.QB(i) = 0 Then
 
-                        If ReferenceEquals(msgQB0, Nothing) Then
+                        If msgQB0 Is Nothing Then
                             ' #Not existing, create it
                             msgQB0 = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_QB0_GENERIC, _
                                      eMessageType.InvalidModel_QB0_Generic, eCoreComponentType.EcoPath, eMessageImportance.Warning, _
@@ -897,8 +897,8 @@ Namespace Ecopath
             Next
 
             ' Send messages, if any
-            If Not ReferenceEquals(msgPB0, Nothing) Then Me.m_msgPub.SendMessage(msgPB0)
-            If Not ReferenceEquals(msgQB0, Nothing) Then Me.m_msgPub.SendMessage(msgQB0)
+            If msgPB0 IsNot Nothing Then Me.m_msgPub.SendMessage(msgPB0)
+            If msgQB0 IsNot Nothing Then Me.m_msgPub.SendMessage(msgQB0)
         End Sub
 
         Private Sub Omniv(ByVal DC(,) As Single, ByVal TTLX() As Single, ByVal BQB() As Single, ByVal NumGroups As Integer)

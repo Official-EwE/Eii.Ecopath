@@ -227,7 +227,7 @@ Namespace Controls
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
             Dim dsc As cPropertySelectionCommand = DirectCast(cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
 
-            If ReferenceEquals(dsc, Nothing) Then Return
+            If dsc Is Nothing Then Return
 
             dsc.Invoke(Me.m_prop)
         End Sub
