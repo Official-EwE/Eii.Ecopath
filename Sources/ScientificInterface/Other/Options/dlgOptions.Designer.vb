@@ -71,7 +71,7 @@ Namespace Other
             Me.m_tvOptions.HideSelection = False
             Me.m_tvOptions.LineColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
             Me.m_tvOptions.Name = "m_tvOptions"
-            Me.m_tvOptions.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvOptions.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes3"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes4"), System.Windows.Forms.TreeNode)})
+            Me.m_tvOptions.ShowImages = True
             Me.m_tvOptions.ShowLines = False
             '
             'm_btnApply
