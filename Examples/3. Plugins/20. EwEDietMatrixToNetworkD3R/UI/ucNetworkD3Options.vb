@@ -20,6 +20,7 @@
 #Region " imports "
 
 Option Strict On
+Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
 
 #End Region ' imports
@@ -27,18 +28,39 @@ Imports ScientificInterfaceShared.Controls
 Public Class ucNetworkD3Options
     Implements IOptionsPage
 
+    Private m_plugin As cNetworkD3RWriterPlugin = Nothing
+
     Public Sub New()
         Me.InitializeComponent()
     End Sub
 
-    Protected Overrides Sub OnLoad(e As EventArgs)
-        MyBase.OnLoad(e)
+    Friend Sub Init(plugin As cNetworkD3RWriterPlugin)
+        Me.m_plugin = plugin
     End Sub
 
-    Public Event OnChanged As IOptionsPage.OnChangedEventHandler Implements IOptionsPage.OnChanged
+    Protected Overrides Sub OnLoad(e As EventArgs)
+        MyBase.OnLoad(e)
+
+        Debug.Assert(Me.m_plugin IsNot Nothing)
+
+        Me.m_cmbNetworkType.Items.Clear()
+        For Each t As eNetworkD3DiagramType In [Enum].GetValues(GetType(eNetworkD3DiagramType))
+            Me.m_cmbNetworkType.Items.Add(t)
+        Next
+
+        Me.UpdateControls()
+    End Sub
+
+    Public Event OnChanged As IOptionsPage.OnChangedEventHandler _
+        Implements IOptionsPage.OnChanged
 
     Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
-        ' NOP
+
+        Me.m_plugin.UseSymbolicNames = True
+        Me.m_plugin.UseClipboard = True
+        Me.m_plugin.NetworkType = eNetworkD3DiagramType.simpleNetwork
+        Me.UpdateControls()
+
     End Sub
 
     Public Function CanApply() As Boolean Implements IOptionsPage.CanApply
@@ -47,10 +69,34 @@ Public Class ucNetworkD3Options
 
     Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
         Return IOptionsPage.eApplyResultType.Success
+
+        ' For some bizarre reason the body of this method is skipped
+
+        If Me.InvokeRequired Then
+            Me.Invoke(New MethodInvoker(AddressOf ApplySafe))
+        Else
+            Me.ApplySafe()
+        End If
+        Return IOptionsPage.eApplyResultType.Success
+
     End Function
 
     Public Function CanSetDefaults() As Boolean Implements IOptionsPage.CanSetDefaults
         Return True
     End Function
+
+    Private Sub UpdateControls()
+
+        Me.m_cbUseSymbolicaNames.Checked = Me.m_plugin.UseSymbolicNames
+        Me.m_cbUseClipboard.Checked = Me.m_plugin.UseClipboard
+        Me.m_cmbNetworkType.SelectedItem = Me.m_plugin.NetworkType
+
+    End Sub
+
+    Private Sub ApplySafe()
+        Me.m_plugin.UseSymbolicNames = Me.m_cbUseSymbolicaNames.Checked
+        Me.m_plugin.UseClipboard = Me.m_cbUseClipboard.Checked
+        Me.m_plugin.NetworkType = CType(Me.m_cmbNetworkType.SelectedItem, eNetworkD3DiagramType)
+    End Sub
 
 End Class

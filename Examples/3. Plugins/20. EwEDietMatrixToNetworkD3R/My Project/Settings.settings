@@ -5,11 +5,11 @@
     <Setting Name="UseSymbolicNames" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="IncludeFleets" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+    <Setting Name="NetworkType" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="NetworkType" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
+    <Setting Name="UseClipboard" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

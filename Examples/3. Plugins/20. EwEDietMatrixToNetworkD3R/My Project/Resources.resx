@@ -117,12 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PROMPT_ERROR" xml:space="preserve">
-    <value>NetworkD3 {0}  script could not be generated. {1}</value>
+  <data name="FILEFILTER_R" xml:space="preserve">
+    <value>r files|*.r</value>
+  </data>
+  <data name="PROMPT_CLIPBOARD_ERROR" xml:space="preserve">
+    <value>NetworkD3 {0} script could not be saved to the clipboard. {1}</value>
     <comment>{0}: script type, {1}: error</comment>
   </data>
-  <data name="PROMPT_SUCCESS" xml:space="preserve">
-    <value>NetworkD3 {0} script copied to clipboard</value>
+  <data name="PROMPT_CLIPBOARD_SUCCESS" xml:space="preserve">
+    <value>NetworkD3 {0} script copied to the clipboard</value>
     <comment>{0}: script type</comment>
+  </data>
+  <data name="PROMPT_FILESAVE_ERROR" xml:space="preserve">
+    <value>NetworkD3 {0}  script could not be saved to {1}. {2}</value>
+    <comment>{0}: script type, {1}: file name, {2}: error</comment>
+  </data>
+  <data name="PROMPT_FILESAVE_SUCCESS" xml:space="preserve">
+    <value>NetworkD3 {0} script saved to {1}</value>
+    <comment>{0}: script type, {1}: file name</comment>
   </data>
 </root>
