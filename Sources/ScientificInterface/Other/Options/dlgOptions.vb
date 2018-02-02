@@ -49,6 +49,9 @@ Namespace Other
         Private m_lPages As New List(Of IOptionsPage)
         ''' <summary>Current page.</summary>
         Private m_pageCurrent As IOptionsPage = Nothing
+        ''' <summary></summary>
+        Private m_optStartup As eApplicationOptionTypes = eApplicationOptionTypes.General
+
         ' ToDo: track changes in pages, and only show prompts after changes occurred. Not very important right now.
         Private m_bHasFiredPrompt As Boolean = False
 
@@ -60,7 +63,7 @@ Namespace Other
 
             Me.m_uic = uic
             Me.InitializeComponent()
-            Me.SelectPage(Me.GetPage(ToPageType(opt)))
+            Me.m_optStartup = opt
 
         End Sub
 
@@ -99,7 +102,8 @@ Namespace Other
 
             Me.m_tvOptions.ExpandAll()
 
-            Me.m_tvOptions.ExpandAll()
+            Me.SelectPage(Me.GetPage(ToPageType(Me.m_optStartup)))
+
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
@@ -201,7 +205,6 @@ Namespace Other
         Private Function ToPageType(opt As eApplicationOptionTypes) As Type
 
             Dim t As Type = GetType(ucOptionsGeneral)
-            Dim strNode As String = "ndGeneral"
 
             Select Case opt
                 Case eApplicationOptionTypes.General,
@@ -209,40 +212,44 @@ Namespace Other
 
                 Case eApplicationOptionTypes.PresentationMode
                     t = GetType(ucOptionsPresentation)
-                    strNode = "ndPresentation"
 
                 Case eApplicationOptionTypes.Colours
                     t = GetType(ucOptionsStatusColors)
-                    strNode = "ndStatusColors"
 
                 Case eApplicationOptionTypes.Graphs,
                      eApplicationOptionTypes.Fonts
                     t = GetType(ucOptionsGraphs)
-                    strNode = "ndGraphCharts"
 
                 Case eApplicationOptionTypes.ReferenceMaps
                     t = GetType(ucOptionsMap)
-                    strNode = "ndMap"
 
                 Case eApplicationOptionTypes.Autosave, eApplicationOptionTypes.FileLocations
                     t = GetType(ucOptionsFileManagement)
-                    strNode = "ndAutosave"
 
                 Case eApplicationOptionTypes.Plugins
                     t = GetType(ucOptionsPlugins)
-                    strNode = "ndPlugins"
 
                 Case eApplicationOptionTypes.SpatialTemporal
                     t = GetType(ucOptionsSpatialTemporal)
-                    strNode = "ndSpatialTemporal"
 
                 Case Else
                     Debug.Assert(False, "Option not recognized")
             End Select
-
-            Me.m_tvOptions.SelectedNode = Me.m_tvOptions.Nodes.Find(strNode, True)(0)
             Return t
+
         End Function
+
+        Private Sub SelectNode(t As Type, nodes As TreeNodeCollection)
+            For Each n As TreeNode In nodes
+                If ReferenceEquals(n.Tag, t) Then
+                    Me.m_tvOptions.SelectedNode = n
+                    Return
+                Else
+                    SelectNode(t, n.Nodes)
+                End If
+            Next
+
+        End Sub
 
         Private Function CreatePage(ByVal t As Type) As IOptionsPage
 
@@ -345,7 +352,9 @@ Namespace Other
             Me.m_pageCurrent = page
             ' Yo
             Me.m_scContent.Panel2.Controls.Clear()
-            Me.m_scContent.Panel2.Controls.Add(DirectCast(Me.m_pageCurrent, Control))
+            Dim ctrl As Control = DirectCast(Me.m_pageCurrent, Control)
+            ctrl.Dock = DockStyle.Fill
+            Me.m_scContent.Panel2.Controls.Add(ctrl)
 
             Me.ResumeLayout()
 
