@@ -749,7 +749,7 @@ Namespace Controls
                     AddHandler Me.m_cmb.Format, AddressOf OnComboBoxFormat
 
                     ' Populate combo
-                    If Not ReferenceEquals(aItems, Nothing) Then
+                    If aItems IsNot Nothing Then
                         ' Eradicate content
                         Me.Items = aItems
                     End If
@@ -910,7 +910,7 @@ Namespace Controls
                     Me.m_cmb.Items.Clear()
 
                     ' Populate if new items given
-                    If (Not ReferenceEquals(aItems, Nothing)) Then
+                    If (aItems IsNot Nothing) Then
                         Me.m_lItems.AddRange(aItems)
                         ' Populate
                         For iItem As Integer = 0 To aItems.Length - 1
@@ -1498,7 +1498,7 @@ Namespace Controls
                 End Try
 
                 ' Check for changes
-                If Not ReferenceEquals(Me.m_objValue, Nothing) Then
+                If Me.m_objValue IsNot Nothing Then
                     If Me.m_objValue.Equals(objValueConverted) Then
                         ' No changes: do not set value
                         Return

@@ -94,7 +94,7 @@ Public Class frmMSE
 
         ' Display Groups
         Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-        If Not ReferenceEquals(cmd, Nothing) Then
+        If cmd IsNot Nothing Then
             cmd.AddControl(Me.m_btnShowHide)
         End If
 
@@ -134,7 +134,7 @@ Public Class frmMSE
         ' Show/Hide Groups
         Dim cmdh As cCommandHandler = Me.CommandHandler
         Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-        If Not ReferenceEquals(cmd, Nothing) Then
+        If cmd IsNot Nothing Then
             cmd.RemoveControl(Me.m_btnShowHide)
         End If
 

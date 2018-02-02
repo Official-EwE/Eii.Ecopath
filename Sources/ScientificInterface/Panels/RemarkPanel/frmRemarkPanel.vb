@@ -328,7 +328,7 @@ Public Class frmRemarkPanel
                     prop = props(0)
 
                     ' Get selection text
-                    If (Not ReferenceEquals(prop.Source, Nothing)) Then
+                    If (prop.Source IsNot Nothing) Then
 
                         ' Get variable descriptor
                         Dim var As eVarNameFlags = prop.VarName
@@ -337,7 +337,7 @@ Public Class frmRemarkPanel
                         strVarN = vnf.GetDescriptor(var, eDescriptorTypes.Name)
 
                         ' Format message
-                        If Not ReferenceEquals(prop.SourceSec, Nothing) Then
+                        If prop.SourceSec IsNot Nothing Then
                             strName = String.Format(My.Resources.SELECTION_INDEXEDVAR, _
                                                     fmt.GetDescriptor(prop.Source), _
                                                     strVarN, _

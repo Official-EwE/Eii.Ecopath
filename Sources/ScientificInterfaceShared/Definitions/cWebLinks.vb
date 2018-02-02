@@ -102,7 +102,7 @@ Public Class cWebLinks
             End If
         Next an
 
-        If (Not ReferenceEquals(pm, Nothing)) Then
+        If (pm IsNot Nothing) Then
             aAssemblyNames = pm.PluginAssemblyNames
             For Each an As AssemblyName In aAssemblyNames
                 If Not ub.QueryString.ContainsKey(an.Name) Then ub.QueryString(an.Name) = an.Version.ToString

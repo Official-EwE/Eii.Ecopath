@@ -90,7 +90,7 @@ Namespace Ecopath.Output
 
             ' Connect to show/hide groups command
             Me.m_cmdShowGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
-            If Not ReferenceEquals(Me.m_cmdShowGroups, Nothing) Then
+            If Me.m_cmdShowGroups IsNot Nothing Then
                 Me.m_cmdShowGroups.AddControl(Me.m_bntShowGroups)
                 AddHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf OnAfterShowGroups
             End If
@@ -128,7 +128,7 @@ Namespace Ecopath.Output
             Me.m_zgh = Nothing
 
             ' Detach from show/hide groups command
-            If Not ReferenceEquals(Me.m_cmdShowGroups, Nothing) Then
+            If Me.m_cmdShowGroups IsNot Nothing Then
                 RemoveHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf OnAfterShowGroups
                 Me.m_cmdShowGroups.RemoveControl(Me.m_bntShowGroups)
             End If

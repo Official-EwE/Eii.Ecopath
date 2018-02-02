@@ -543,7 +543,7 @@ Public Class gridDefineGroups
             Dim group As cEcoPathGroupInput = Nothing
 
             ' Not associated with an existing stanza group? Flag as changed.
-            If ReferenceEquals(Me.m_sg, Nothing) Then Return True
+            If Me.m_sg Is Nothing Then Return True
             ' Name modified? Flag as changed.
             If Me.m_sg.Name <> Me.m_strName Then Return True
             ' Different number of groups? Flag as changed.
@@ -927,7 +927,7 @@ Public Class gridDefineGroups
 
         Me.AllowUpdates = False
 
-        If Not ReferenceEquals(astrStanzaNames, Nothing) Then
+        If astrStanzaNames IsNot Nothing Then
             Dim cmb As Cells.Real.ComboBox = DirectCast(Me(iRow, eColumnTypes.StanzaName), Cells.Real.ComboBox)
             cmb.DataModel.StandardValues = astrStanzaNames
         End If
@@ -1069,7 +1069,7 @@ Public Class gridDefineGroups
             Case eColumnTypes.StanzaName
                 Dim strStanzaName As String = CStr(cell.GetValue(p))
                 ' Was part of stanza config?
-                If Not ReferenceEquals(si, Nothing) Then
+                If si IsNot Nothing Then
                     ' Remove group from this stanza config
                     si.RemoveGroup(gi)
                     gi.Stanza = Nothing
@@ -1089,7 +1089,7 @@ Public Class gridDefineGroups
                     ' Try to find existing stanza group
                     si = Me.FindStanzaInfo(strStanzaName)
                     ' Existing group?
-                    If (ReferenceEquals(si, Nothing)) Then
+                    If (si Is Nothing) Then
                         si = New cStanzaInfo(strStanzaName)
                         Me.m_lsiStanza.Add(si)
                     Else

@@ -220,7 +220,7 @@ Namespace Utilities
             Dim strNumber As String = "" ' Number string extracted from items
             Dim iMax As Integer = 0 ' The max number found
 
-            If (Not ReferenceEquals(astrItems, Nothing)) Then
+            If (astrItems IsNot Nothing) Then
 
                 ' Give this a sensible start value
                 iMax = astrItems.Length

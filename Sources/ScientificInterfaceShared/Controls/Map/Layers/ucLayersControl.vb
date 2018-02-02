@@ -125,7 +125,7 @@ Namespace Controls.Map
 
             Dim ucg As ucLayerGroup = Me.FindGroup(layer)
 
-            If ReferenceEquals(ucg, Nothing) Then Return
+            If ucg Is Nothing Then Return
 
             ' Remove link to editor, if any
             If (TypeOf layer Is cDisplayLayerRaster) Then
@@ -453,7 +453,7 @@ Namespace Controls.Map
             Dim sc As cPropertySelectionCommand = Nothing
             Dim prop As cProperty = Nothing
 
-            If (Not ReferenceEquals(layer, Nothing)) Then
+            If (layer IsNot Nothing) Then
                 prop = layer.GetNameProperty()
             End If
 

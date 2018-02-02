@@ -1613,7 +1613,7 @@ Namespace Ecospace
 
             ' The %^@#$^#@$ check boxes throw events even before the form OnLoad has been called. Nice.
             ' Added sanity check to prevent premature control handling
-            If (ReferenceEquals(Me.m_manager, Nothing)) Then Return
+            If (Me.m_manager Is Nothing) Then Return
 
             Dim bIsPreparing As Boolean = (Me.RunMode = eFormModeTypes.Prepare)
             Dim bIsRunning As Boolean = (Me.RunMode = eFormModeTypes.Searching Or Me.RunMode = eFormModeTypes.Initializing Or Me.RunMode = eFormModeTypes.Stopping)

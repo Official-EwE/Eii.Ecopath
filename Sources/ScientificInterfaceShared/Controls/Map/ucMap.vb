@@ -229,7 +229,7 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
 
-            If ReferenceEquals(Me.Basemap, Nothing) Then Return
+            If Me.Basemap Is Nothing Then Return
 
             Try
 
@@ -471,7 +471,7 @@ Namespace Controls.Map
         Public Sub UpdateMap()
 
             ' Sanity check
-            If ReferenceEquals(Me.Basemap, Nothing) Then Return
+            If Me.Basemap Is Nothing Then Return
             ' Set reminder
             Me.m_bRefreshMap = True
             ' Refresh
@@ -491,7 +491,7 @@ Namespace Controls.Map
         Private Sub UpdateMap(ByVal bmp As Bitmap, ByVal ptCellFrom As Point, ByVal ptCellTo As Point)
 
             ' Sanity check
-            If ReferenceEquals(Me.Basemap, Nothing) Then Return
+            If Me.Basemap Is Nothing Then Return
 
             Dim bm As cEcospaceBasemap = Me.Basemap
             Dim g As Graphics = Graphics.FromImage(bmp)
@@ -640,7 +640,7 @@ Namespace Controls.Map
         Private Sub UpdateSelection(ByVal l As cDisplayLayer)
 
             ' Sanity check
-            If ReferenceEquals(Me.Basemap, Nothing) Then Return
+            If Me.Basemap Is Nothing Then Return
 
             ' New selection?
             If l.IsSelected Then

@@ -39,22 +39,22 @@ Namespace Utilities
 
 #Region " Private vars "
 
-        Private Shared s_sounds As sSystemSounds = Nothing
+        Private Shared s_sounds As cSystemSounds = Nothing
 
-        Private Structure sSystemSounds
+        Private Class cSystemSounds
             ''' <summary>SystemAsterisk</summary>
-            Dim Asterisk As String
+            Public Property Asterisk As String
             ''' <summary>SystemExclamation</summary>
-            Dim Exclamation As String
+            Public Property Exclamation As String
             ''' <summary>SystemHand</summary>
-            Dim Hand As String
+            Public Property Hand As String
             ''' <summary>SystemNotification</summary>
-            Dim Notification As String
+            Public Property Notification As String
             ''' <summary>SystemQuestion</summary>
-            Dim Question As String
+            Public Property Question As String
             ''' <summary>A default sound</summary>
-            Dim [Default] As String
-        End Structure
+            Public Property [Default] As String
+        End Class
 
 #End Region ' Private vars
 
@@ -114,18 +114,15 @@ Namespace Utilities
 
         Private Shared Sub InitSounds()
 
-            If ReferenceEquals(s_sounds, Nothing) Then
-
-                s_sounds = New sSystemSounds()
-
-                With s_sounds
-                    .Asterisk = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemAsterisk\.Current", "")
-                    .Exclamation = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemExclamation\.Current", "")
-                    .Hand = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemHand\.Current", "")
-                    .Notification = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemNotification\.Current", "")
-                    .Question = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemQuestion\.Current", "")
+            If (cSoundUtilities.s_sounds Is Nothing) Then
+                cSoundUtilities.s_sounds = New cSystemSounds() With {
+                    .Asterisk = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemAsterisk\.Current", ""),
+                    .Exclamation = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemExclamation\.Current", ""),
+                    .Hand = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemHand\.Current", ""),
+                    .Notification = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemNotification\.Current", ""),
+                    .Question = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemQuestion\.Current", ""),
                     .[Default] = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\.Default\.Current", "")
-                End With
+                }
             End If
         End Sub
 

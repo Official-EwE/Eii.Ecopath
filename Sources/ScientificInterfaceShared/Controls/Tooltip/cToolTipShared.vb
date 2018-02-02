@@ -60,7 +60,7 @@ Namespace Controls
         ''' <returns>Zhe tuhltipp inschtanz.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function GetInstance() As cToolTipShared
-            If ReferenceEquals(cToolTipShared.__inst__, Nothing) Then
+            If cToolTipShared.__inst__ Is Nothing Then
                 cToolTipShared.__inst__ = New cToolTipShared
                 cToolTipShared.__inst__.Active = True
             End If
