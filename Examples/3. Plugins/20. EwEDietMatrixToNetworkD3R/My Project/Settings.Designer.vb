@@ -68,25 +68,25 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-        Public Property IncludeFleets() As Boolean
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property NetworkType() As String
             Get
-                Return CType(Me("IncludeFleets"),Boolean)
+                Return CType(Me("NetworkType"),String)
             End Get
             Set
-                Me("IncludeFleets") = value
+                Me("NetworkType") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("1")>  _
-        Public Property NetworkType() As Integer
+         Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+        Public Property UseClipboard() As Boolean
             Get
-                Return CType(Me("NetworkType"),Integer)
+                Return CType(Me("UseClipboard"),Boolean)
             End Get
             Set
-                Me("NetworkType") = value
+                Me("UseClipboard") = value
             End Set
         End Property
     End Class

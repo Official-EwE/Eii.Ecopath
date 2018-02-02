@@ -20,23 +20,39 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports RDotNet
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
+
+' ToDo: globalize this class
+
+Public Enum eNetworkD3DiagramType As Integer
+    simpleNetwork = 0
+    forceNetwork
+End Enum
 
 Public Class cNetworkD3RWriterPlugin
     Implements IMenuItemPlugin
     Implements IEwEOptionsPlugin
+    Implements IUIContextPlugin
 
+    Private m_uic As cUIContext = Nothing
     Private m_core As cCore = Nothing
-    Private m_engine As REngine = Nothing
 
 #Region " Generic "
+
+    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
+
+        Me.m_uic = DirectCast(uic, cUIContext)
+
+    End Sub
 
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
         Me.m_core = DirectCast(core, cCore)
@@ -90,7 +106,7 @@ Public Class cNetworkD3RWriterPlugin
 
     Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
         Get
-            Return "To NetworkD3 simple network"
+            Return "To NetworkD3 network"
         End Get
     End Property
 
@@ -123,31 +139,46 @@ Public Class cNetworkD3RWriterPlugin
     ''' </summary>
     Private Sub CreateNetworkD3RScript()
 
-        If (Me.m_engine Is Nothing) Then
-            REngine.SetEnvironmentVariables()
-            Me.m_engine = REngine.GetInstance()
-        End If
-
         Dim network As cNetwork = Nothing
         Dim msg As cMessage = Nothing
 
-        Select Case My.Settings.NetworkType
-            Case 0
+        Select Case Me.NetworkType
+            Case eNetworkD3DiagramType.simpleNetwork
                 network = New cSimpleNetwork(Me.m_core)
-            Case 1
+            Case eNetworkD3DiagramType.forceNetwork
                 network = New cForceNetwork(Me.m_core)
             Case Else
-                network = New cSimpleNetwork(Me.m_core)
+                Debug.Assert(False)
         End Select
 
-        Try
-            Clipboard.SetText(network.GenerateScript())
-            msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SUCCESS, network.Name),
+        If My.Settings.UseClipboard Then
+            Try
+                Clipboard.SetText(network.GenerateScript())
+                msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_CLIPBOARD_SUCCESS, network.Name),
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+            Catch ex As Exception
+                msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_CLIPBOARD_ERROR, network.Name, ex.Message),
                                eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-        Catch ex As Exception
-            msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR, network.Name, ex.Message),
-                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-        End Try
+            End Try
+        Else
+            Dim cmd As cFileSaveCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+            Dim model As cEwEModel = Me.m_core.EwEModel
+            cmd.Invoke(cFileUtils.ToValidFileName(model.Name & "_" & network.Name & ".r", False), My.Resources.FILEFILTER_R)
+            If (cmd.Result = DialogResult.OK) Then
+                Try
+                    Using sw As New StreamWriter(cmd.FileName)
+                        sw.Write(network.GenerateScript())
+                        sw.Flush()
+                    End Using
+                    msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_FILESAVE_SUCCESS, network.Name, cmd.FileName),
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                Catch ex As Exception
+                    msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_FILESAVE_ERROR, network.Name, cmd.FileName, ex.Message),
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                End Try
+            End If
+        End If
+
         Me.m_core.Messages.SendMessage(msg)
 
     End Sub
@@ -157,8 +188,47 @@ Public Class cNetworkD3RWriterPlugin
     End Function
 
     Public Function GetConfigUI() As Control Implements IConfigurable.GetConfigUI
-        Return New ucNetworkD3Options()
+        Dim ui As New ucNetworkD3Options()
+        ui.Init(Me)
+        Return ui
     End Function
+
+    Public Property UseSymbolicNames As Boolean
+        Get
+            Return My.Settings.UseSymbolicNames
+        End Get
+        Set(value As Boolean)
+            If (My.Settings.UseSymbolicNames <> value) Then
+                My.Settings.UseSymbolicNames = value
+                My.Settings.Save()
+            End If
+        End Set
+    End Property
+
+    Public Property UseClipboard As Boolean
+        Get
+            Return My.Settings.UseClipboard
+        End Get
+        Set(value As Boolean)
+            If (value <> My.Settings.UseClipboard) Then
+                My.Settings.UseClipboard = value
+                My.Settings.Save()
+            End If
+        End Set
+    End Property
+
+    Public Property NetworkType As eNetworkD3DiagramType
+        Get
+            Dim net As eNetworkD3DiagramType = eNetworkD3DiagramType.simpleNetwork
+            If (Not String.IsNullOrWhiteSpace(My.Settings.NetworkType)) Then
+                [Enum].TryParse(My.Settings.NetworkType, net)
+            End If
+            Return net
+        End Get
+        Set(value As eNetworkD3DiagramType)
+            My.Settings.NetworkType = value.ToString()
+        End Set
+    End Property
 
 #End Region ' Internals
 
