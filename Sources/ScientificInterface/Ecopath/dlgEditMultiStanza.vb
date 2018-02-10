@@ -43,7 +43,6 @@ Namespace Ecopath
         Private m_fpRecPwr As cEwEFormatProvider = Nothing
         Private m_fpBab As cEwEFormatProvider = Nothing
         Private m_fpWmatWinf As cEwEFormatProvider = Nothing
-        Private m_fpFFHatchStocking As cEwEFormatProvider = Nothing
         Private m_fpStanza As cEwEFormatProvider = Nothing
         Private m_zgh As cZedGraphHelper = Nothing
         Private m_groupInitial As cEcoPathGroupInput = Nothing
@@ -100,19 +99,13 @@ Namespace Ecopath
             Me.m_fpWmatWinf = New cEwEFormatProvider(Me.m_uic, Me.m_txtWmatWinf, GetType(Single))
 
             ' Gather forcing functions
-            lItems.Clear()
+            Me.m_cmbFF.Enabled = (bEcosimLoaded)
             If bEcosimLoaded Then
-                lItems.Add(SharedResources.GENERIC_VALUE_NONE)
+                Me.m_cmbFF.Items.Clear()
+                Me.m_cmbFF.Items.Add(SharedResources.GENERIC_VALUE_NONE)
                 For iIndex As Integer = 0 To mgr.Count - 1
-                    lItems.Add(mgr(iIndex))
+                    Me.m_cmbFF.Items.Add(mgr(iIndex))
                 Next
-            End If
-            Me.m_fpFFHatchStocking = New cEwEFormatProvider(Me.m_uic, Me.m_cmbFF, GetType(Integer), lItems.ToArray)
-            If bEcosimLoaded Then
-                Me.m_fpFFHatchStocking.Style = cStyleGuide.eStyleFlags.OK
-            Else
-                Me.m_fpFFHatchStocking.Style = cStyleGuide.eStyleFlags.NotEditable
-                Me.m_fpFFHatchStocking.Value = 0
             End If
 
             Me.m_cbEggAtSpawn.Enabled = bEcospaceLoaded
@@ -131,7 +124,6 @@ Namespace Ecopath
             Me.m_fpRecPwr.Release()
             Me.m_fpBab.Release()
             Me.m_fpWmatWinf.Release()
-            Me.m_fpFFHatchStocking.Release()
             Me.m_fpStanza.Release()
 
             MyBase.OnFormClosed(e)
@@ -140,6 +132,13 @@ Namespace Ecopath
 
 #Region "Event handlers "
 
+        Private Sub OnFormatFFItem(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbFF.Format
+            If (TypeOf e.ListItem Is cForcingFunction) Then
+                Dim fmt As New cShapeDataFormatter()
+                e.Value = fmt.GetDescriptor(e.ListItem)
+            End If
+
+        End Sub
         Private Sub OnCalculate(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnCalculate.Click
 
@@ -287,10 +286,15 @@ Namespace Ecopath
             Me.m_fpBab.Value = stanza.BiomassAccumulationRate
             Me.m_fpWmatWinf.Value = stanza.WmatWinf
 
+            Dim iSel As Integer = 0
             If bEcosimLoaded Then
-                ' Only sync FF when sim scenario is loaded
-                Me.m_fpFFHatchStocking.Value = stanza.HatchCode
+                For i As Integer = 1 To Me.m_cmbFF.Items.Count - 1
+                    If (DirectCast(Me.m_cmbFF.Items(i), cForcingFunction).Index = stanza.HatchCode) Then
+                        iSel = i
+                    End If
+                Next
             End If
+            Me.m_cmbFF.SelectedIndex = iSel
 
             Me.m_cbFFecun.Checked = stanza.FixedFecundity
             Me.m_cbEggAtSpawn.Checked = stanza.EggAtSpawn
@@ -322,7 +326,11 @@ Namespace Ecopath
 
             If bEcosimLoaded Then
                 ' Only update FF when scenario is loaded
-                Me.m_grid.StanzaGroup.HatchCode = CInt(Me.m_fpFFHatchStocking.Value)
+                If (Me.m_cmbFF.SelectedIndex = 0) Then
+                    Me.m_grid.StanzaGroup.HatchCode = 0
+                Else
+                    Me.m_grid.StanzaGroup.HatchCode = DirectCast(Me.m_cmbFF.SelectedItem, cForcingFunction).Index
+                End If
             End If
 
             stanza.FixedFecundity = Me.m_cbFFecun.Checked
@@ -332,6 +340,7 @@ Namespace Ecopath
             Me.m_grid.SetStanzaGroupValues(bApplyToCore)
 
         End Sub
+
 
 #End Region ' Internals
 
