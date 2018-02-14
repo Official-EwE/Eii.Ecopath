@@ -56,7 +56,7 @@ Namespace Style
 
             Try
                 Dim obj As cShapeData = DirectCast(value, cShapeData)
-                ' Only include index in desciptor only if object has a valid index
+                ' Only include index in descriptor only if object has a valid index
                 If (obj.Index >= 1) Then
                     Return String.Format(My.Resources.GENERIC_LABEL_INDEXED, obj.Index, obj.Name)
                 End If
