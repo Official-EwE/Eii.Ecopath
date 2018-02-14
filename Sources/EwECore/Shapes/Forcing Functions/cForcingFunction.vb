@@ -281,6 +281,14 @@ Public Class cForcingFunction
                 Return False
             End If
 
+            If Me.IsSeasonal Then
+                ' At the end of an edit, extend seasonal pattern until the end of the shape
+                Me.LockUpdates()
+                For ipt As Integer = 1 To Me.nPoints
+                    Me.ShapeData(ipt) = Me.ShapeData(1 + ((ipt - 1) Mod 12))
+                Next ipt
+                Me.UnlockUpdates(False)
+            End If
 
             'turn the Database ID into an Array index using the Ecosim Data structures database ID this value should be good
             m_iEcoSimIndex = Array.IndexOf(m_data.ForcingDBIDs, m_iDBID)
