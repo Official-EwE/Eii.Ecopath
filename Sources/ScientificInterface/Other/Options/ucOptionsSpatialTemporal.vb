@@ -80,7 +80,7 @@ Namespace Other
             Dim core As cCore = Me.UIContext.Core
             Dim man As cSpatialDataSetManager = core.SpatialDataConnectionManager.DatasetManager
 
-            Me.m_cbAllowIndexing.Checked = man.IsIndexingAllowed
+            Me.m_cbAllowIndexing.Checked = man.IsIndexingEnabled
             Me.AllowDrop = True
 
             Me.UpdateConfigFileList()
@@ -343,7 +343,7 @@ Namespace Other
             '    cLog.Write(ex, "ucOptionsSpatialTemporal::Apply")
             'End Try
 
-            man.IsIndexingAllowed = Me.m_cbAllowIndexing.Checked
+            man.IsIndexingEnabled = Me.m_cbAllowIndexing.Checked
 
             If bSuccess Then Return IOptionsPage.eApplyResultType.Success
             Return IOptionsPage.eApplyResultType.Failed

@@ -56,12 +56,12 @@ Namespace SpatialData
         Private m_lDeleted As List(Of Guid) = Nothing
         Private m_lVirtual As List(Of ISpatialDataSet) = Nothing
 
-        'Private m_fswSpy As FileSystemWatcher = Nothing
         Private m_core As cCore = Nothing
         Private m_bReadOnly As Boolean = False
 
         Private m_indexer As cSpatialDatasetIndexer = Nothing
-        Private m_bIndexingAllowed As Boolean = False
+        Private m_bIndexingEnabled As Boolean = False
+        Private m_iIndexingSuspendCount As Integer = 0
 
         Private m_bAllowValidation As Boolean = True
         Private m_bValidationPending As Boolean = False
@@ -87,29 +87,18 @@ Namespace SpatialData
             Me.m_lVirtual = New List(Of ISpatialDataSet)
             Me.m_lConfigFiles = New List(Of cSpatialDataConfigFile)
 
-            '' Create folder watcher
-            'Me.m_fswSpy = New FileSystemWatcher()
-            'Me.m_fswSpy.Path = Path.GetDirectoryName(cSpatialDataSetManager.DefaultConfigFileName())
-            'Me.m_fswSpy.NotifyFilter = NotifyFilters.LastWrite
-            'Me.m_fswSpy.Filter = "*.xml"
-            'Me.m_fswSpy.EnableRaisingEvents = True
-
             Me.m_indexer = New cSpatialDatasetIndexer(core, Me)
 
-            'AddHandler Me.m_fswSpy.Changed, AddressOf OnConfigFileChanged
+            AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
         End Sub
 
         Public Sub Dispose() _
             Implements IDisposable.Dispose
 
-            Me.IndexDataset = Nothing
+            RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
-            ' Cleanup
-            'If (Me.m_fswSpy IsNot Nothing) Then
-            '    RemoveHandler Me.m_fswSpy.Changed, AddressOf OnConfigFileChanged
-            '    Me.m_fswSpy = Nothing
-            'End If
+            Me.IndexDataset = Nothing
 
             Me.m_lAvailable = Nothing
             Me.m_lDeleted = Nothing
@@ -163,7 +152,7 @@ Namespace SpatialData
         ''' <returns>False if the config file is corrupted, True otherwise.</returns>
         ''' <remarks>This method can also be used to import extra datasets.</remarks>
         ''' -------------------------------------------------------------------
-        Public Function Load(Optional strFile As String = "", _
+        Public Function Load(Optional strFile As String = "",
                              Optional bClearFirst As Boolean = True) As Boolean
 
             Dim bSuccess As Boolean = False
@@ -205,11 +194,11 @@ Namespace SpatialData
         ''' <para>Note that this method can also be used to export datasets.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function Save(Optional strFile As String = "", _
-                             Optional datasets As ISpatialDataSet() = Nothing, _
-                             Optional strDescription As String = "", _
-                             Optional strAuthor As String = "", _
-                             Optional strContact As String = "", _
+        Public Function Save(Optional strFile As String = "",
+                             Optional datasets As ISpatialDataSet() = Nothing,
+                             Optional strDescription As String = "",
+                             Optional strAuthor As String = "",
+                             Optional strContact As String = "",
                              Optional bExportData As Boolean = True) As Boolean
 
             Dim bChanged As Boolean = False
@@ -231,7 +220,7 @@ Namespace SpatialData
             If (String.IsNullOrWhiteSpace(strContact)) Then strContact = Me.DataContact
 
             ' Any switch of destination other than to the default location is considered as an export
-            Dim bExporting As Boolean = (cFileUtils.Equals(strFile, cSpatialDataSetManager.DefaultConfigFile) = False) And _
+            Dim bExporting As Boolean = (cFileUtils.Equals(strFile, cSpatialDataSetManager.DefaultConfigFile) = False) And
                                         (cFileUtils.Equals(strFile, Me.CurrentConfigFile()) = False) And bExportData
 
             ' Create dir
@@ -248,11 +237,11 @@ Namespace SpatialData
 
             ' Make sure save exceptions do not affect current configuration
             Try
-                Dim cfg As New cSpatialDataConfigFile(strFile, _
-                                                      Path.GetFileNameWithoutExtension(strFile), _
-                                                      strDescription, _
-                                                      cSystemUtils.GetHostName(), _
-                                                      strAuthor, _
+                Dim cfg As New cSpatialDataConfigFile(strFile,
+                                                      Path.GetFileNameWithoutExtension(strFile),
+                                                      strDescription,
+                                                      cSystemUtils.GetHostName(),
+                                                      strAuthor,
                                                       strContact)
                 bSuccess = cfg.Save(Me.m_core, Me, datasets, bExporting)
             Catch ex As Exception
@@ -307,31 +296,41 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether spatial dataset indexing is allowed.
+        ''' Get/set user preference for indexing datasets.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property IsIndexingAllowed As Boolean
+        Public Property IsIndexingEnabled As Boolean
             Get
-                Return m_bIndexingAllowed
+                Return Me.m_bIndexingEnabled
             End Get
             Set(value As Boolean)
-                Me.m_bIndexingAllowed = value
-                If Not Me.m_bIndexingAllowed Then
-                    Me.m_indexer.Add(Nothing)
+                If (value <> Me.m_bIndexingEnabled) Then
+                    Me.m_bIndexingEnabled = value
+                    Me.UpdateIndexer()
                 End If
             End Set
         End Property
 
-        Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
-            Dim result As Boolean = True
-            Try
-                Me.IndexDataset = Nothing
-                result = Me.Wait(WaitTimeInMillSec)
-            Catch ex As Exception
-                result = False
-            End Try
-            Return result
-        End Function
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the indexer is paused.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub SuspendIndexing()
+            Me.m_iIndexingSuspendCount += 1
+            Me.UpdateIndexer()
+        End Sub
+
+        Public Sub ResumeIndexing()
+            Me.m_iIndexingSuspendCount -= 1
+            Me.UpdateIndexer()
+        End Sub
+
+        Private Sub UpdateIndexer()
+            Me.m_indexer.Enabled = Me.IsIndexingEnabled And
+                                   (Me.m_iIndexingSuspendCount <= 0) And
+                                   (Not Me.m_core.StateMonitor.IsBusy())
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -340,14 +339,14 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Property IndexDataset As ISpatialDataSet
             Get
-                If (Not Me.IsIndexingAllowed) Then
+                If (Not Me.IsIndexingEnabled) Then
                     Return Nothing
                 End If
                 Return Me.m_indexer.Current
             End Get
             Set(ds As ISpatialDataSet)
-                If (Me.IsIndexingAllowed) Then
-                    Me.m_indexer.Add(ds)
+                If (Me.IsIndexingEnabled) Then
+                    Me.m_indexer.Prioritize(ds)
                 End If
             End Set
         End Property
@@ -364,10 +363,6 @@ Namespace SpatialData
             Return Me.m_indexer.IsIndexing(ds)
         End Function
 
-        Public Sub StopIndexing()
-            Me.StopRun(5000)
-        End Sub
-
 #End Region ' Dataset indexing
 
 #Region " Dataset list interface "
@@ -376,12 +371,13 @@ Namespace SpatialData
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).Add"/>
         ''' -------------------------------------------------------------------
         Public Sub Add(ByVal item As ISpatialDataSet) _
-            Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Add
+            Implements ICollection(Of ISpatialDataSet).Add
             Me.m_lAvailable.Add(item)
             ' Assign ID if necessary
             If (Guid.Equals(Guid.Empty, item.GUID)) Then
                 item.GUID = Guid.NewGuid()
             End If
+            Me.UpdateIndexer()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -389,11 +385,11 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Private Sub Clear() _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Clear
-            Me.m_indexer.Stop()
             Me.m_lAvailable.Clear()
             Me.m_lVirtual.Clear()
             Me.m_lDeleted.Clear()
             Me.m_lComp.Clear()
+            Me.UpdateIndexer()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -462,7 +458,9 @@ Namespace SpatialData
             If (item Is Nothing) Then Return False
             If (Me.IsIndexing(item)) Then Me.IndexDataset = Nothing
             Me.m_lDeleted.Add(item.GUID)
-            Return Me.m_lAvailable.Remove(item)
+            Dim bOK As Boolean = Me.m_lAvailable.Remove(item)
+            Me.UpdateIndexer()
+            Return bOK
         End Function
 
         ''' -------------------------------------------------------------------
@@ -555,8 +553,8 @@ Namespace SpatialData
         Public Function Datasets(var As eVarNameFlags) As ISpatialDataSet()
             Dim lFiltered As New List(Of ISpatialDataSet)
             For Each ds As ISpatialDataSet In Me.m_lAvailable
-                If ((var = eVarNameFlags.NotSet) Or _
-                    (ds.VarName = eVarNameFlags.NotSet) Or _
+                If ((var = eVarNameFlags.NotSet) Or
+                    (ds.VarName = eVarNameFlags.NotSet) Or
                     (var = ds.VarName)) Then
                     lFiltered.Add(ds)
                 End If
@@ -637,8 +635,8 @@ Namespace SpatialData
         ''' </remarks>
         ''' <returns>The created dataset, or nothing if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Function CreateConfigFile(ByVal strFile As String, _
-                                         ByVal strName As String, _
+        Public Function CreateConfigFile(ByVal strFile As String,
+                                         ByVal strName As String,
                                          ByVal strDescription As String) As cSpatialDataConfigFile
 
             Dim cfg As cSpatialDataConfigFile = Nothing
@@ -649,8 +647,8 @@ Namespace SpatialData
                 If String.Compare(cfg.FileName, strFile, True) = 0 Then Return Nothing
             Next
 
-            cfg = New cSpatialDataConfigFile(strFile, strName, strDescription, _
-                                             cSystemUtils.GetHostName(), _
+            cfg = New cSpatialDataConfigFile(strFile, strName, strDescription,
+                                             cSystemUtils.GetHostName(),
                                              Me.m_core.DefaultAuthor, Me.m_core.DefaultContact)
             cfg.Save(Me.m_core, Me, Nothing, False)
             Me.m_lConfigFiles.Add(cfg)
@@ -716,6 +714,18 @@ Namespace SpatialData
         End Function
 
 #End Region ' Compatibility
+
+#Region " Events "
+
+        Private Sub OnCoreExecutionStateChanged(statemonitor As cCoreStateMonitor)
+            Me.UpdateIndexer()
+        End Sub
+
+        Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
+            Me.m_indexer.StopRun(WaitTimeInMillSec)
+        End Function
+
+#End Region ' Events
 
 #Region " Internals "
 
@@ -794,7 +804,7 @@ Namespace SpatialData
         ''' Store a dataset into provided configuration info.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend Function UpdateDataset(ByVal ds As ISpatialDataSet, _
+        Friend Function UpdateDataset(ByVal ds As ISpatialDataSet,
                                       ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As Boolean
 
             If (ds Is Nothing) Then
@@ -864,7 +874,7 @@ Namespace SpatialData
             End Get
         End Property
 
-        Friend Function UpdateConverter(ByVal cv As ISpatialDataConverter, _
+        Friend Function UpdateConverter(ByVal cv As ISpatialDataConverter,
                                         ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As Boolean
 
             If (cv Is Nothing) Then
@@ -932,7 +942,7 @@ Namespace SpatialData
             Dim bMustSave As Boolean = bExport
             Dim bSuccess As Boolean = True
 
-            ' Create dir
+            ' Create directory
             If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
                 Return False
             End If
@@ -960,9 +970,9 @@ Namespace SpatialData
                 Dim bDelete As Boolean = False
                 If (xa IsNot Nothing) Then
                     Try
-                        guid = guid.Parse(xa.InnerText)
+                        guid = Guid.Parse(xa.InnerText)
                     Catch ex As Exception
-                        guid = guid.Empty
+                        guid = Guid.Empty
                     End Try
                 End If
                 For Each gTest As Guid In Me.m_lDeleted : bDelete = bDelete Or gTest.Equals(gTest) : Next
@@ -975,7 +985,7 @@ Namespace SpatialData
             Next
             lDelete.Clear()
 
-            ' Gather dataset config nodes, but do not add to the doc until all done
+            ' Gather dataset configuration nodes, but do not add to the doc until all done
             For Each ds As ISpatialDataSet In datasets
 
                 If (bExport) Then ds = ds.ExportTo(Path.GetDirectoryName(strFile))

@@ -98,7 +98,7 @@ Namespace Ecospace.Controls
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.m_cbEnableIndexing.Checked = Me.m_manSets.IsIndexingAllowed
+            Me.m_cbEnableIndexing.Checked = Me.m_manSets.IsIndexingEnabled
 
             AddHandler Me.m_gridDatasets.OnSelectionChanged, AddressOf OnGridSelectionChanged
 
@@ -213,7 +213,7 @@ Namespace Ecospace.Controls
         Private Sub OnEnableIndexingChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cbEnableIndexing.CheckedChanged
             Try
-                Me.m_manSets.IsIndexingAllowed = Me.m_cbEnableIndexing.Checked
+                Me.m_manSets.IsIndexingEnabled = Me.m_cbEnableIndexing.Checked
                 Me.m_manSets.IndexDataset = Me.SelectedDataset
             Catch ex As Exception
 

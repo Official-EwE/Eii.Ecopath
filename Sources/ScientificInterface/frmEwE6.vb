@@ -4857,10 +4857,11 @@ Public Class frmEwE6
             Me.m_autosavemanager.Settings = My.Settings.AutosaveResults
 
             Dim man As cSpatialDataSetManager = Me.Core.SpatialDataConnectionManager.DatasetManager
-            man.IsIndexingAllowed = My.Settings.AutoIndexDatasets
+            man.IsIndexingEnabled = My.Settings.AutoIndexDatasets
             man.ConfigFiles = My.Settings.SpatialTempConfigurations
+
             ' Wait for Ecospace
-            'man.Load(My.Settings.SpatialTemporalConfigFile)
+            man.Load(My.Settings.SpatialTemporalConfigFile)
 
         Catch ex As Exception
 
@@ -4904,7 +4905,7 @@ Public Class frmEwE6
                     Me.Core.DefaultContact = My.Settings.Contact
 
                 Case "AutoIndexDatasets"
-                    Me.Core.SpatialDataConnectionManager.DatasetManager.IsIndexingAllowed = My.Settings.AutoIndexDatasets
+                    Me.Core.SpatialDataConnectionManager.DatasetManager.IsIndexingEnabled = My.Settings.AutoIndexDatasets
 
                 Case "AutosaveResults"
                     Me.m_autosavemanager.ApplySettingsAndEnsureDefaults()
@@ -4921,7 +4922,7 @@ Public Class frmEwE6
     Private Sub OnSettingsSaving(ByVal sender As Object, args As CancelEventArgs)
 
         My.Settings.AutosaveResults = Me.m_autosavemanager.Settings()
-        My.Settings.AutoIndexDatasets = Me.Core.SpatialDataConnectionManager.DatasetManager.IsIndexingAllowed
+        My.Settings.AutoIndexDatasets = Me.Core.SpatialDataConnectionManager.DatasetManager.IsIndexingEnabled
 
         args.Cancel = False
 
