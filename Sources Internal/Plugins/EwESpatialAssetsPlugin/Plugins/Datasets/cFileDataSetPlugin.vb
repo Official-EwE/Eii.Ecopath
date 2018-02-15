@@ -314,7 +314,7 @@ Namespace SpatialData
             ' Get cache file name
             Dim strFileName As String = Me.CacheFileName(strLayerName)
             ' Does file exist in cache AND allowed to use it?
-            If (System.IO.File.Exists(strFileName)) And (Me.ReadFromCache = True) Then
+            If (File.Exists(strFileName)) And (Me.ReadFromCache = True) Then
                 ' #Yes: grab file from cache
                 Dim ds As IDataSet = cDotSpatialUtils.OpenFile(strFileName)
                 ' Is loaded?
@@ -567,7 +567,7 @@ Namespace SpatialData
                 End If
 
                 Me.m_dsSourceData = cDotSpatialUtils.OpenFile(strFileName)
-                If (m_dsSourceData IsNot Nothing) Then
+                If (Me.m_dsSourceData IsNot Nothing) Then
                     Me.StoreExtent(Me.m_dsSourceData.Extent)
                     Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOADED, strFileName), eStatusFlags.OK)
                     Return True

@@ -183,7 +183,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="cFileDataSetPlugin.IsDataAvailable"/>
         ''' -------------------------------------------------------------------
         Public Overrides Function IsDataAvailable(ByVal runtype As IRunType) As Boolean
-            Return System.IO.File.Exists(Me.Source)
+            Return File.Exists(Me.Source)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -340,12 +340,14 @@ Namespace SpatialData
                             ' -- Index status --
                             Me.m_indexstatus = ISpatialDataSet.eIndexStatus.NotIndexed
                             If (xn.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
-                                ' JS 06Nov13: added file exist check when loading dataset metadata
-                                If Boolean.Parse(xn.Attributes("Indexed").InnerText) And IO.File.Exists(Me.SourceFileName) Then
+                                ' JS 06Nov13: added file exist check when loading dataset meta-data
+                                ' JS 15Feb18: File.exists is expensive because of internal exception trapping (http://stackoverflow.com/questions/2225415/why-is-file-exists-much-slower-when-the-file-does-not-exist)
+                                '             This should really be done via background indexing 
+                                If Boolean.Parse(xn.Attributes("Indexed").InnerText) Then
                                     Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Indexed
-                                    Me.m_ptTL = New PointF(CSng(cStringUtils.ConvertToNumber(xn.Attributes("LonMin").InnerText, GetType(Single))), _
+                                    Me.m_ptTL = New PointF(CSng(cStringUtils.ConvertToNumber(xn.Attributes("LonMin").InnerText, GetType(Single))),
                                                            CSng(cStringUtils.ConvertToNumber(xn.Attributes("LatMax").InnerText, GetType(Single))))
-                                    Me.m_ptBR = New PointF(CSng(cStringUtils.ConvertToNumber(xn.Attributes("LonMax").InnerText, GetType(Single))), _
+                                    Me.m_ptBR = New PointF(CSng(cStringUtils.ConvertToNumber(xn.Attributes("LonMax").InnerText, GetType(Single))),
                                                            CSng(cStringUtils.ConvertToNumber(xn.Attributes("LatMin").InnerText, GetType(Single))))
                                 End If
                             End If

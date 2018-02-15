@@ -35,19 +35,21 @@ Namespace SpatialData
     ''' The indexer has a queue of datasets to index.
     ''' </summary>
     Friend Class cSpatialDatasetIndexer
+        Inherits cThreadWaitBase
 
 #Region " Private vars "
 
-        ''' <summary>Synclock</summary>
+        ''' <summary>Synchronization lock</summary>
         Private m_sync As New Object()
         ''' <summary>The core to operate on.</summary>
         Private m_core As cCore = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
 
-        ''' <summary>One-item wait queue.</summary>
-        Private m_dsNext As ISpatialDataSet = Nothing
-        ''' <summary>Currently indexed dataset.</summary>
-        Private m_dsCurrent As ISpatialDataSet = Nothing
+        Private m_bEnabled As Boolean = True
+
+        ''' <summary>Queue of datasets to index.</summary>
+        Private m_queue As New List(Of ISpatialDataSet)
+
         ''' <summary>THe worker thread to perform the indexing.</summary>
         Private m_threadIndex As Threading.Thread = Nothing
 
@@ -68,12 +70,12 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Add a dataset for indexing.
+        ''' Prioritize a dataset for indexing.
         ''' </summary>
         ''' <param name="ds">The <see cref="ISpatialDataSet"/> to index, or
         ''' nothing to stop indexing.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Add(ds As ISpatialDataSet)
+        Public Sub Prioritize(ds As ISpatialDataSet)
 
             ' JS 25jan14: A fundamental weakness in the earlier implementation of 
             ' the indexing process is that its ability to index, and more importantly, 
@@ -83,7 +85,6 @@ Namespace SpatialData
             ' spatial temporal framework is stalled, and user interfaces may be 
             ' deadlocked. This is not good. As a solution, control over the indexing 
             ' process has been moved to this class. 
-
             ' Check if there is work to do
             If (ds IsNot Nothing) Then
                 ' Check if we really need to do this
@@ -94,33 +95,13 @@ Namespace SpatialData
                     ' JS: This could also stop the indexer. Not sure what is the best approach
                     Return
                 End If
+
+                SyncLock Me.m_sync
+                    ' Move dataset to the head of the queue
+                    Me.m_queue.Remove(ds)
+                    Me.m_queue.Insert(0, ds)
+                End SyncLock
             End If
-
-            ' Critical section bit
-            SyncLock Me.m_sync
-
-                ' Line dataset up as the next one to process
-                Me.m_dsNext = ds
-
-                ' Is indexing?
-                If (Me.m_dsCurrent IsNot Nothing) Then
-                    ' #Yes: Stop processing current dataset
-                    Me.m_dsCurrent = Nothing
-                Else
-                    ' #No: ah, ready for a new dataset to index
-                    ' Get the dataset that is lined up next
-                    Me.m_dsCurrent = Me.m_dsNext
-                    Me.m_dsNext = Nothing
-                    ' Is there more to do?
-                    If (Me.m_dsCurrent IsNot Nothing) Then
-                        ' #Yes: start thread. Note that the dying thread will move the indexing queue forward
-                        Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
-                        Me.m_threadIndex.IsBackground = True
-                        Me.m_threadIndex.Start()
-                    End If
-                End If
-
-            End SyncLock
 
         End Sub
 
@@ -130,8 +111,7 @@ Namespace SpatialData
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub [Stop]()
-            ' JS140125: let's consider applying an abort timer here
-            Me.Add(Nothing)
+            Me.StopRun(500)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -141,7 +121,8 @@ Namespace SpatialData
         ''' <returns>The <see cref="ISpatialDataSet"/> currently being indexed.</returns>
         ''' -------------------------------------------------------------------
         Public Function Current() As ISpatialDataSet
-            Return Me.m_dsCurrent
+            If (Me.m_queue.Count = 0) Then Return Nothing
+            Return Me.m_queue(0)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -153,9 +134,83 @@ Namespace SpatialData
         ''' <returns>True if a dataset is being indexed.</returns>
         ''' -------------------------------------------------------------------
         Public Function IsIndexing(ds As ISpatialDataSet) As Boolean
-            ' These are atomic thread-safe checks; no need for critical sections
-            If (ds Is Nothing) Then Return (Me.m_dsCurrent IsNot Nothing)
-            Return ReferenceEquals(Me.m_dsCurrent, ds)
+
+            If (Me.m_queue.Count = 0) Then Return False
+
+            If (ds Is Nothing) Then Return True
+            Return ReferenceEquals(Me.m_queue(0), ds)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Enable/disable indexing. This state is managed by the data set manager
+        ''' who knows he bigger picture.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Friend Property Enabled As Boolean
+            Get
+                Return Me.m_bEnabled
+            End Get
+            Set(value As Boolean)
+
+                Me.m_bEnabled = value
+
+                If (value = True) Then
+                    SyncLock Me.m_sync
+
+                        ' Augment the indexer queue with content from the dataset manager
+                        For Each ds As ISpatialDataSet In Me.m_manSets
+                            If Not Me.m_queue.Contains(ds) Then
+                                Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
+                                ' Is not yet fully indexed?
+                                If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
+                                    ' #Yes: add to queue
+                                    Me.m_queue.Add(ds)
+                                End If
+                            End If
+                        Next
+
+                        ' Clear queued data sets that are no longer there
+                        For i As Integer = 0 To Me.m_queue.Count - 1
+                            If Not m_manSets.Contains(Me.m_queue(i)) Then
+                                Me.m_queue(i) = Nothing
+                            End If
+                        Next
+
+                    End SyncLock
+
+                    If (Me.m_threadIndex Is Nothing) And (Me.m_queue.Count > 0) Then
+                        Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
+                        Me.m_threadIndex.IsBackground = True
+                        Me.m_threadIndex.Start()
+                    End If
+                Else
+                    Me.m_queue.Clear()
+                    Me.StopRun(500)
+                End If
+            End Set
+        End Property
+
+        Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
+            Dim result As Boolean = True
+            Try
+                Me.m_queue.Clear()
+                result = Me.Wait(WaitTimeInMillSec)
+                If (Me.m_threadIndex IsNot Nothing) Then
+                    If Me.m_threadIndex.IsAlive Then
+                        Try
+                            ' Me.m_threadIndex.Abort()
+                            Me.m_threadIndex = Nothing
+                        Catch ex As Exception
+                            ' You asked for it
+                        End Try
+                    End If
+                End If
+            Catch ex As Exception
+                result = False
+            End Try
+            Return result
         End Function
 
 #End Region ' Public bits
@@ -169,64 +224,69 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Private Sub IndexDatasetThread()
 
-            Dim ds As ISpatialDataSet = Me.m_dsCurrent
-            Dim iTS As Integer = 1
-            Dim nTS As Integer = Me.m_core.nEcospaceTimeSteps
-            Dim dt As DateTime
-            Dim ptfTL As New PointF(-180, 90)
-            Dim ptfBR As New PointF(180, -90)
-            Dim c As ISpatialDataCache = Nothing
-            Dim strMessage As String = ""
-            Dim bDone As Boolean = False
+            While (Me.m_queue.Count > 0)
 
-            If (ds IsNot Nothing) Then
-                If (ds.IsConfigured) Then
+                Dim ds As ISpatialDataSet = Me.m_queue(0)
+                Dim iTS As Integer = 1
+                Dim nTS As Integer = Me.m_core.nEcospaceTimeSteps
+                Dim dt As DateTime
+                Dim ptfTL As New PointF(-180, 90)
+                Dim ptfBR As New PointF(180, -90)
+                Dim c As ISpatialDataCache = Nothing
+                Dim strMessage As String = ""
+                Dim bDone As Boolean = False
 
-                    c = ds.Cache
+                If (ds IsNot Nothing) Then
+                    If (ds.IsConfigured) Then
 
-                    Try
-                        strMessage = cStringUtils.Localize(My.Resources.CoreMessages.STATUS_INDEXING_DATASET, ds.DisplayName)
-                        Me.OnSpatialIndexUpdated(strMessage, eProgressState.Start, 0)
+                        c = ds.Cache
 
-                        While Not bDone
+                        Try
+                            strMessage = cStringUtils.Localize(My.Resources.CoreMessages.STATUS_INDEXING_DATASET, ds.DisplayName)
+                            Me.OnSpatialIndexUpdated(strMessage, eProgressState.Start, 0)
 
-                            dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTS)
-                            If (ds.HasDataAtT(dt)) Then
-                                If (ds.IndexStatusAtT(dt) = ISpatialDataSet.eIndexStatus.NotIndexed) Then
-                                    ' ToDo: Every dataset call should be subject to a timeout
-                                    ds.UpdateIndexAtT(dt)
-                                    Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
-                                    comp.Refresh()
-                                    Me.OnSpatialIndexUpdated(strMessage, eProgressState.Running, CSng(comp.NumIndexed / comp.NumOverlappingTimeSteps))
+                            While Not bDone
+
+                                dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTS)
+                                If (ds.HasDataAtT(dt)) Then
+                                    If (ds.IndexStatusAtT(dt) = ISpatialDataSet.eIndexStatus.NotIndexed) Then
+                                        ' ToDo: Every dataset call should be subject to a timeout
+                                        ds.UpdateIndexAtT(dt)
+                                        Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
+                                        comp.Refresh()
+                                        Me.OnSpatialIndexUpdated(strMessage, eProgressState.Running, CSng(comp.NumIndexed / comp.NumOverlappingTimeSteps))
+                                    End If
                                 End If
-                            End If
 
-                            ' Next
-                            iTS += 1
-                            bDone = (Not ReferenceEquals(Me.m_dsCurrent, ds)) Or _
-                                    (iTS > Me.m_core.nEcospaceTimeSteps)
-                        End While
+                                ' Next
+                                iTS += 1
 
-                    Catch ex As Threading.ThreadAbortException
-                        ' NOP
-                    Catch ex As Exception
-                        cLog.Write(ex, "cSpatialDatasetIndexer::IndexDatasetThread(" & ds.DisplayName & ")")
-                        'Console.WriteLine(ex.Message)
-                    Finally
-                        ' Cleanup: restore cache
-                        ds.Cache = c
-                        ' Flag that this indexing is done
-                        Me.m_dsCurrent = Nothing
-                        ' Done threading
-                        Me.m_threadIndex = Nothing
-                        ' Done (send just in case)
-                        Me.OnSpatialIndexUpdated("", eProgressState.Finished, 1.0!)
-                    End Try
+                                ' Queue may have been cleared, current data set may have been removed... be ready to stop
+                                bDone = (iTS > Me.m_core.nEcospaceTimeSteps) Or (Not Me.m_queue.Contains(ds))
+                            End While
+
+                            ' Done (send just in case)
+                            Me.OnSpatialIndexUpdated("", eProgressState.Finished, 1.0!)
+
+                        Catch ex As Threading.ThreadAbortException
+                            ' NOP
+                        Catch ex As Exception
+                            cLog.Write(ex, "cSpatialDatasetIndexer::IndexDatasetThread(" & ds.DisplayName & ")")
+                            'Console.WriteLine(ex.Message)
+                        Finally
+                            ' Cleanup: restore cache
+                            ds.Cache = c
+                            ' Remove dataset from the queue
+                            Me.m_queue.Remove(ds)
+                        End Try
+                    End If
+                Else
+                    Me.m_queue.RemoveAt(0)
                 End If
-            End If
+            End While
 
-            ' Next, if any
-            Me.Add(Me.m_dsNext)
+            ' Done threading
+            Me.m_threadIndex = Nothing
 
         End Sub
 

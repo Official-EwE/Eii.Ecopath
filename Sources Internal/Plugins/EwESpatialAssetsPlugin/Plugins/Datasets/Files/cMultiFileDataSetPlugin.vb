@@ -512,7 +512,7 @@ Namespace SpatialData
                                 Dim f As New cTemporalFile(dt, Path.Combine(Me.Source, strName))
 
                                 f.IndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
-                                ' JS 24Nov14: Fixed file exist check when loading dataset metadata
+                                ' JS 24Nov14: Fixed file exist check when loading dataset meta-data
                                 ' JS 16Jan17: File.exists is expensive because of internal exception trapping (http://stackoverflow.com/questions/2225415/why-is-file-exists-much-slower-when-the-file-does-not-exist)
                                 '             This should really be done via background indexing 
                                 'If Not IO.File.Exists(f.FileName) Then

@@ -133,8 +133,8 @@ Namespace SpatialData
             ' Early bail-out
             If Not Me.IsConnected(iLayerIndex) Then Return result
 
-            ' Terminate indexing
-            manSets.StopIndexing()
+            ' Suspend indexing
+            manSets.SuspendIndexing()
 
             Dim ds As ISpatialDataSet = conn.Dataset
             Dim cv As ISpatialDataConverter = conn.Converter
@@ -213,6 +213,8 @@ Namespace SpatialData
             'Get the scalar value from a function
             'So different adapters can use a different scalar calculation
             dScale = Me.CalculateScalar(dMapTotValue, iNumWaterCells)
+
+            manSets.ResumeIndexing()
 
             ' Report for the calculation period
             Dim man As cSpatialDataSetManager = Me.m_core.SpatialDataConnectionManager.DatasetManager
