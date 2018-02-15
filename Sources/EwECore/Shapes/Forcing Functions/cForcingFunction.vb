@@ -284,8 +284,8 @@ Public Class cForcingFunction
             If Me.IsSeasonal Then
                 ' At the end of an edit, extend seasonal pattern until the end of the shape
                 Me.LockUpdates()
-                For ipt As Integer = 1 To Me.nPoints
-                    Me.ShapeData(ipt) = Me.ShapeData(1 + ((ipt - 1) Mod 12))
+                For ipt As Integer = cCore.N_MONTHS + 1 To Me.nPoints
+                    Me.ShapeData(ipt) = Me.ShapeData(1 + ((ipt - 1) Mod cCore.N_MONTHS))
                 Next ipt
                 Me.UnlockUpdates(False)
             End If
