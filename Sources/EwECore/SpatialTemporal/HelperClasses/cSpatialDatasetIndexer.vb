@@ -77,24 +77,10 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Sub Prioritize(ds As ISpatialDataSet)
 
-            ' JS 25jan14: A fundamental weakness in the earlier implementation of 
-            ' the indexing process is that its ability to index, and more importantly, 
-            ' its ability to abort indexing when needed, totally relies on the 
-            ' implementation of indexing logic within individual datasets. If the 
-            ' indexing process of a dataset somehow deadlocks, the ability to run the 
-            ' spatial temporal framework is stalled, and user interfaces may be 
-            ' deadlocked. This is not good. As a solution, control over the indexing 
-            ' process has been moved to this class. 
-            ' Check if there is work to do
             If (ds IsNot Nothing) Then
-                ' Check if we really need to do this
+                ' Do not change anything if data set is already indexed
                 Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(ds)
-                ' Is set full indexed?
-                If (comp.NumIndexed = comp.NumOverlappingTimeSteps) Then
-                    ' #Yes: nothing to index for the current scenario
-                    ' JS: This could also stop the indexer. Not sure what is the best approach
-                    Return
-                End If
+                If (comp.NumIndexed = comp.NumOverlappingTimeSteps) Then Return
 
                 SyncLock Me.m_sync
                     ' Move dataset to the head of the queue
@@ -166,7 +152,13 @@ Namespace SpatialData
                                 ' Is not yet fully indexed?
                                 If (comp.NumIndexed < comp.NumOverlappingTimeSteps) Then
                                     ' #Yes: add to queue
-                                    Me.m_queue.Add(ds)
+                                    ' Do not mess up priority dataset, but process applied datasets quickly
+                                    Dim conn As cSpatialDataConnectionManager = Me.m_core.SpatialDataConnectionManager
+                                    If conn.IsApplied(ds) And (Me.m_queue.Count > 0) Then
+                                        Me.m_queue.Insert(1, ds)
+                                    Else
+                                        Me.m_queue.Add(ds)
+                                    End If
                                 End If
                             End If
                         Next
