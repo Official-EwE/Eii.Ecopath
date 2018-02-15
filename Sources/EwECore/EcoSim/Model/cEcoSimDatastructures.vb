@@ -1051,10 +1051,10 @@ Public Class cEcosimDatastructures
                     sLast = orgZscale(ipt, ishape)
                     zscale(ipt, ishape) = sLast
                 Next
-                ' populate extra time (fixed #1427)
+                ' populate extra time (fixes #1427, #1557)
                 If isSeasonal(ishape) Then
                     For ipt = orgPts + 1 To ForcePoints
-                        zscale(ipt, ishape) = orgZscale(ipt Mod cCore.N_MONTHS, ishape)
+                        zscale(ipt, ishape) = orgZscale(1 + ((ipt - 1) Mod cCore.N_MONTHS), ishape)
                     Next
                 Else
                     For ipt = orgPts + 1 To ForcePoints
