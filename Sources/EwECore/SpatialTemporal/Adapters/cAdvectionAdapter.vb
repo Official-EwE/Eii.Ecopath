@@ -32,8 +32,11 @@ Namespace SpatialData
     ''' <summary>
     ''' Adapter to populate the Advection monthly maps
     ''' </summary>
+    ''' <remarks>
+    ''' A scalar is needed to perform unit conversions, direction swapping, etc
+    ''' </remarks>
     Public Class cAdvectionAdapter
-        Inherits cSpatialDataAdapter
+        Inherits cSpatialScalarDataAdapter
 
         Private m_spaceData As cEcospaceDataStructures
         Private m_iMonthIndex As Integer
