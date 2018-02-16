@@ -554,8 +554,9 @@ Namespace Controls
                     ' - Set colours
                     Me.m_sg.GetStyleColors(style, Me.m_ud.ForeColor, Me.m_ud.BackColor)
                     ' - Set read-only state
-                    Me.m_ud.ReadOnly = (bEditable = False)
-                    Me.m_ud.TabStop = (bEditable = True)
+                    ' JS 16Feb18: Fixed #1559; 'readonly' state still allows a NUD to be changed through the up/down buttons. Aargh
+                    Me.m_ud.Enabled = bEditable
+                    Me.m_ud.TabStop = bEditable
 
                     ' Highlight border
                     If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
