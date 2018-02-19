@@ -316,10 +316,11 @@ Public Class cIBMSolver
         '        m_Stanza.jPacket(isp, ia, ip) = m_Stanza.jPacket(isp, ia, ip) - Dmove
         '    End If
         'End If
-        'If iPacket(isp, ia, ip) < 1 Then iPacket(isp, ia, ip) = 1
-        'If iPacket(isp, ia, ip) > Inrow + 0.9999 Then iPacket(isp, ia, ip) = Inrow + 0.9
-        'If jPacket(isp, ia, ip) < 1 Then jPacket(isp, ia, ip) = 1
-        'If jPacket(isp, ia, ip) > Incol + 0.9999 Then jPacket(isp, ia, ip) = Incol + 0.9
+
+        If m_Stanza.iPacket(isp, ia, ip) < 1 Then m_Stanza.iPacket(isp, ia, ip) = 1
+        If m_Stanza.iPacket(isp, ia, ip) > Me.m_Data.InRow + 0.9999 Then m_Stanza.iPacket(isp, ia, ip) = Me.m_Data.InRow + 0.9
+        If m_Stanza.jPacket(isp, ia, ip) < 1 Then m_Stanza.jPacket(isp, ia, ip) = 1
+        If m_Stanza.jPacket(isp, ia, ip) > Me.m_Data.InCol + 0.9999 Then m_Stanza.jPacket(isp, ia, ip) = Me.m_Data.InCol + 0.9
 
     End Sub
 
