@@ -23,6 +23,7 @@
 Option Strict On
 Imports System.IO
 Imports EwECore
+Imports EwECore.DataSources
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
 Imports EwEPlugin
@@ -348,9 +349,7 @@ Public Class cEcospaceSpinupPlugin
         Try
 
             'Cast the datasource 
-            Dim ModelDataBase As EwECore.DataSources.cDBDataSource
-            ModelDataBase = DirectCast(dataSource, EwECore.DataSources.cDBDataSource)
-
+            Dim ModelDataBase As IEwEDataSource = DirectCast(dataSource, IEwEDataSource)
             System.Console.WriteLine(Me.ToString + ".LoadModel() " + ModelDataBase.FileName)
 
         Catch ex As Exception
