@@ -52,14 +52,14 @@ Public Class cOperatorManager
 
     Private Shared Sub init()
 
-        If m_operators Is Nothing Then
-            m_operators = New Dictionary(Of eOperators, cOperatorBase)
-
-            m_operators.Add(eOperators.LessThan, New cLessThan)
-            m_operators.Add(eOperators.GreaterThan, New cGreaterThan)
-            m_operators.Add(eOperators.EqualTo, New cEqualTo)
-            m_operators.Add(eOperators.LessThanOrEqualTo, New cLessThanOrEqualTo)
-            m_operators.Add(eOperators.GreaterThanOrEqualTo, New cGreaterThanOrEqualTo)
+        If (m_operators Is Nothing) Then
+            m_operators = New Dictionary(Of eOperators, cOperatorBase) From {
+                {eOperators.LessThan, New cLessThan},
+                {eOperators.GreaterThan, New cGreaterThan},
+                {eOperators.EqualTo, New cEqualTo},
+                {eOperators.LessThanOrEqualTo, New cLessThanOrEqualTo},
+                {eOperators.GreaterThanOrEqualTo, New cGreaterThanOrEqualTo}
+            }
         End If
 
     End Sub
