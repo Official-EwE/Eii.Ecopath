@@ -140,9 +140,6 @@
     <Setting Name="MapLayerRefLatMax" Type="System.Single" Scope="User">
       <Value Profile="(Default)">90</Value>
     </Setting>
-    <Setting Name="UpdatePluginsTimeout" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5000</Value>
-    </Setting>
     <Setting Name="LogVerboseLevel" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
@@ -184,9 +181,6 @@
     </Setting>
     <Setting Name="MapShowExcludedCells" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="AutoIndexDatasets" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SpatialTempConfigurations" Type="System.Collections.ArrayList" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
@@ -241,6 +235,9 @@
     </Setting>
     <Setting Name="StatusSortNewestFirst" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SpatialTempAllowIndexing" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
