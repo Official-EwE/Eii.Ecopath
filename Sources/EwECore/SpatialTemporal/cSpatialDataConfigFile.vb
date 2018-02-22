@@ -197,38 +197,25 @@ Namespace SpatialData
                         If (xa IsNot Nothing) Then
                             Try
                                 Dim strTypeName As String = xa.InnerText
-                                ' Hack
+                                ' Type name mapping
                                 strTypeName = strTypeName.Replace("cAAASFileDataSetPlugin", "cASCIIFilesDataSetPlugin")
                                 ' Get plug-in
                                 Dim t As Type = cTypeUtils.StringToType(strTypeName)
-                                If (t IsNot Nothing) Then
-
-                                    ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
-                                    If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(core)
-                                    ds.Configuration(doc, strRoot) = xn.ChildNodes(0)
-
-                                    ' Assign GUID
-                                    xa = xn.Attributes("GUID")
-                                    ds.GUID = GUID.Parse(xa.InnerText)
-
-
-                                Else '(t IsNot Nothing)
-                                    cLog.Write("Unable to instantiate data set " & strTypeName)
-
-                                    '                                    If (msgWarning Is Nothing) Then
-                                    '                                        msgWarning = New cMessage(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_GENERIC, _
-                                    '                                                                  eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
-                                    '                                                                  eMessageImportance.Warning)
-                                    '#If DEBUG Then
-                                    '                                        ' When debugging turn this message to a mere info message ;)
-                                    '                                        msgWarning.Importance = eMessageImportance.Information
-                                    '#End If
-                                    '                                    End If
-                                    '                                    Dim vs As New cVariableStatus(eStatusFlags.MissingParameter, _
-                                    '                                                                  cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_LOAD_ERROR_DETAIL, strTypeName), _
-                                    '                                                                  eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSpace, 0)
-                                    '                                    msgWarning.AddVariable(vs)
+                                If (t Is Nothing) Then
+                                    t = GetType(cSpatialDatasetPlaceholder)
                                 End If
+
+                                ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
+                                If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(core)
+
+                                If (TypeOf ds Is cSpatialDatasetPlaceholder) Then
+                                    DirectCast(ds, cSpatialDatasetPlaceholder).PreservedType = xa.InnerText
+                                End If
+                                ds.Configuration(doc, strRoot) = xn.ChildNodes(0)
+
+                                ' Assign GUID
+                                xa = xn.Attributes("GUID")
+                                ds.GUID = Guid.Parse(xa.InnerText)
 
                             Catch ex As Exception
                                 ds = Nothing
@@ -296,47 +283,8 @@ Namespace SpatialData
                 Return False
             End If
 
-            Try
-                ' Load existing datasets from file if not exporting. This is done to ensure that
-                ' datasets that are defined but that could not be instantiated (for example due to
-                ' a missing plug-in) are not destroyed in the save process.
-                If ((Not bExporting) And (File.Exists(strFile))) Then
-                    doc.Load(strFile)
-                    xnRoot = doc.GetElementsByTagName("Datasets")(0)
-                End If
-            Catch ex As Exception
-                ' Plop
-            End Try
-
-            ' Create a new XML doc if needed.
-            If (xnRoot Is Nothing) Then
-                ' Build new base doc
-                doc = cSpatialDataSetManager.NewDoc(xnRoot)
-            End If
-
-            ' Remove all deleted or current datasets from the XML nodes; these will be
-            ' recreated by the save process.
-            Dim lDelete As New List(Of XmlNode)
-            For Each xnDataset In xnRoot.ChildNodes
-                Dim guid As Guid
-                Dim xa As XmlAttribute = xnDataset.Attributes("GUID")
-                Dim bDelete As Boolean = False
-                If (xa IsNot Nothing) Then
-                    Try
-                        guid = guid.Parse(xa.InnerText)
-                    Catch ex As Exception
-                        guid = guid.Empty
-                    End Try
-                End If
-                For Each gTest As Guid In man.Deleted : bDelete = bDelete Or gTest.Equals(gTest) : Next
-                For Each ds As ISpatialDataSet In datasets : bDelete = bDelete Or guid.Equals(ds.GUID) : Next
-                If bDelete Then lDelete.Add(xnDataset)
-            Next
-            For Each xnDataset In lDelete
-                xnRoot.RemoveChild(xnDataset)
-                bChanged = True
-            Next
-            lDelete.Clear()
+            ' Build new base doc
+            doc = cSpatialDataSetManager.NewDoc(xnRoot)
 
             ' Complete root info
             xaRoot = CType(xnRoot.Attributes.GetNamedItem("Name"), XmlAttribute)
@@ -389,7 +337,11 @@ Namespace SpatialData
                         xnDataset = doc.CreateElement("Dataset")
 
                         xaDataset = doc.CreateAttribute("Type")
-                        xaDataset.Value = cTypeUtils.TypeToString(ds.GetType)
+                        If (TypeOf ds Is cSpatialDatasetPlaceholder) Then
+                            xaDataset.Value = DirectCast(ds, cSpatialDatasetPlaceholder).PreservedType
+                        Else
+                            xaDataset.Value = cTypeUtils.TypeToString(ds.GetType)
+                        End If
                         xnDataset.Attributes.Append(xaDataset)
 
                         xaDataset = doc.CreateAttribute("GUID")

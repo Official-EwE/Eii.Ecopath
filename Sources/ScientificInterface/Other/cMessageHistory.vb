@@ -472,8 +472,15 @@ Public Class cMessageHistory
                 Else
                     ' #No: handle pop-up feedback for criticals and warnings only
                     Select Case msg.Importance
-                        Case eMessageImportance.Critical, eMessageImportance.Warning
+                        Case eMessageImportance.Critical
+                            ' Always show critical messages
                             Me.ShowMessageBox(msg)
+
+                        Case eMessageImportance.Warning
+                            ' Only show wanring messages when core is not busy
+                            Dim sm As cCoreStateMonitor = Me.UIContext.Core.StateMonitor
+                            If (Not sm.IsBusy) Then Me.ShowMessageBox(msg)
+
                     End Select
                 End If
             Catch ex As Exception

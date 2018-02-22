@@ -117,11 +117,15 @@ Namespace Utilities
             If (iNumDigits < 0) Then iNumDigits = 3
 
             If (TypeOf value Is Double) Then
-                If (Double.IsNaN(CDbl(value))) Then Return 0
+                Dim d As Double = CDbl(value)
+                If (Double.IsNaN(d)) Then Return 0
+                If (d <= Decimal.MinValue) Or (d >= Decimal.MaxValue) Then Return 0
             End If
 
             If (TypeOf value Is Single) Then
-                If (Double.IsNaN(CSng(value))) Then Return 0
+                Dim s As Single = CSng(value)
+                If (Single.IsNaN(s)) Then Return 0
+                If (s <= Decimal.MinValue) Or (s >= Decimal.MaxValue) Then Return 0
             End If
 
             Try

@@ -34,6 +34,18 @@ Imports EwEUtils.Utilities
 
 ' ToDo: change this class to solely work with cSpatialDataConfigFile instances
 
+' JS 21Feb18: The current dataset system suffers from a few problems
+'   FIXED: The incremental save logic is too complicated. It is trying to prevent unloaded datasets from being destroyed, but this can be done easier
+'   FIXED: Deleting a dataset does not remove its application(s) in the underlying connection manager, who simply recreates datasets. Ugh.
+'   3) The virtual dataset logic can be simplified, but that is less urgent
+
+' JS 22Feb18: Related to the above is the issue of convoluted three-location storage. This is necessary but is fragile.
+'   1) Data structures contain all connections as defined in the model. This data is loaded from the model and saved back into it.
+'   2) Adapters hold configured connections, read from the data structures, that contain a configured dataset, a configured converter
+'   3) The dataset manager is the repository of defined datasets. This is yet a different list than maintained in the connections. 
+'      The dataset manager also keeps track which dataset are defined system-wide, and which are defined in the model
+
+
 Namespace SpatialData
 
     ''' -----------------------------------------------------------------------
@@ -53,7 +65,6 @@ Namespace SpatialData
         Private m_lComp As New Dictionary(Of ISpatialDataSet, cDatasetCompatilibity)
 
         Private m_lAvailable As List(Of ISpatialDataSet) = Nothing
-        Private m_lDeleted As List(Of Guid) = Nothing
         Private m_lVirtual As List(Of ISpatialDataSet) = Nothing
 
         Private m_core As cCore = Nothing
@@ -83,7 +94,6 @@ Namespace SpatialData
             Me.m_core = core
 
             Me.m_lAvailable = New List(Of ISpatialDataSet)
-            Me.m_lDeleted = New List(Of Guid)
             Me.m_lVirtual = New List(Of ISpatialDataSet)
             Me.m_lConfigFiles = New List(Of cSpatialDataConfigFile)
 
@@ -101,7 +111,6 @@ Namespace SpatialData
             Me.IndexDataset = Nothing
 
             Me.m_lAvailable = Nothing
-            Me.m_lDeleted = Nothing
             Me.m_lVirtual = Nothing
             GC.SuppressFinalize(Me)
 
@@ -384,10 +393,9 @@ Namespace SpatialData
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).Clear"/>
         ''' -------------------------------------------------------------------
         Private Sub Clear() _
-            Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Clear
+            Implements ICollection(Of ISpatialDataSet).Clear
             Me.m_lAvailable.Clear()
             Me.m_lVirtual.Clear()
-            Me.m_lDeleted.Clear()
             Me.m_lComp.Clear()
             Me.UpdateIndexer()
         End Sub
@@ -396,7 +404,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).Contains"/>
         ''' -------------------------------------------------------------------
         Public Function Contains(ByVal item As ISpatialDataSet) As Boolean _
-            Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Contains
+            Implements ICollection(Of ISpatialDataSet).Contains
             If (item Is Nothing) Then Return False
             Return Me.m_lAvailable.Contains(item)
         End Function
@@ -426,7 +434,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).CopyTo"/>
         ''' -------------------------------------------------------------------
         Public Sub CopyTo(ByVal array() As ISpatialDataSet, ByVal arrayIndex As Integer) _
-            Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).CopyTo
+            Implements ICollection(Of ISpatialDataSet).CopyTo
             Me.m_lAvailable.CopyTo(array, arrayIndex)
         End Sub
 
@@ -434,7 +442,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).Count"/>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Count As Integer _
-            Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Count
+            Implements ICollection(Of ISpatialDataSet).Count
             Get
                 Return Me.m_lAvailable.Count
             End Get
@@ -444,7 +452,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).IsReadOnly"/>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property IsReadOnly As Boolean _
-            Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).IsReadOnly
+            Implements ICollection(Of ISpatialDataSet).IsReadOnly
             Get
                 Return Me.m_bReadOnly
             End Get
@@ -454,12 +462,18 @@ Namespace SpatialData
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).Remove"/>
         ''' -------------------------------------------------------------------
         Public Function Remove(ByVal item As ISpatialDataSet) As Boolean _
-            Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Remove
+            Implements ICollection(Of ISpatialDataSet).Remove
             If (item Is Nothing) Then Return False
-            If (Me.IsIndexing(item)) Then Me.IndexDataset = Nothing
-            Me.m_lDeleted.Add(item.GUID)
             Dim bOK As Boolean = Me.m_lAvailable.Remove(item)
             Me.UpdateIndexer()
+
+            Try
+                ' Kapow!
+                Me.m_core.SpatialDataConnectionManager.OnDatasetRemoved(item)
+            Catch ex As Exception
+
+            End Try
+
             Return bOK
         End Function
 
@@ -474,8 +488,8 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).GetEnumerator"/>
         ''' -------------------------------------------------------------------
-        Public Function GetEnumerator() As System.Collections.Generic.IEnumerator(Of ISpatialDataSet) _
-            Implements System.Collections.Generic.IEnumerable(Of ISpatialDataSet).GetEnumerator
+        Public Function GetEnumerator() As IEnumerator(Of ISpatialDataSet) _
+            Implements IEnumerable(Of ISpatialDataSet).GetEnumerator
             Return Me.m_lAvailable.GetEnumerator
         End Function
 
@@ -574,10 +588,6 @@ Namespace SpatialData
 
         Friend Function Virtual() As ISpatialDataSet()
             Return Me.m_lVirtual.ToArray()
-        End Function
-
-        Friend Function Deleted() As Guid()
-            Return Me.m_lDeleted.ToArray()
         End Function
 
 #End Region ' Internal lists
@@ -752,14 +762,25 @@ Namespace SpatialData
                 ' Abort if missing dataset creation info
                 If (String.IsNullOrWhiteSpace(cfg.DatasetTypeName)) Then Return Nothing
 
-                ' Abort if dataset cannot be instantiated
-                ' yuck...
+                ' Dataset type name mapping, yuck...
                 Dim t As Type = cTypeUtils.StringToType(cfg.DatasetTypeName.Replace("cAAASFileDataSetPlugin", "cASCIIFilesDataSetPlugin"))
-                If (t Is Nothing) Then Return Nothing
+
+                ' Still no dataset type found?
+                If (t Is Nothing) Then
+                    ' Type unreachable, most likely because a plug-in is missing. We don't want the dataset to get lost.
+                    ' Keep the dataset in a placeholder during the EwE session
+                    t = GetType(cSpatialDatasetPlaceholder)
+                End If
 
                 Try
                     ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
+                    Debug.Assert(ds IsNot Nothing)
+
                     If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
+
+                    If (TypeOf ds Is cSpatialDatasetPlaceholder) Then
+                        DirectCast(ds, cSpatialDatasetPlaceholder).PreservedType = cfg.DatasetTypeName
+                    End If
 
                     ' This needs some restructuring. Perhaps it is easiest to add XML serializer classes
                     ' for datasets and converters. This XML logic is becoming too fragmented
@@ -938,7 +959,6 @@ Namespace SpatialData
             Dim xnDataset As XmlNode = Nothing
             Dim xnDetails As XmlNode = Nothing
             Dim xaDataset As XmlAttribute = Nothing
-            Dim datasets As ISpatialDataSet() = Me.Datasets()
             Dim bMustSave As Boolean = bExport
             Dim bSuccess As Boolean = True
 
@@ -947,54 +967,26 @@ Namespace SpatialData
                 Return False
             End If
 
-            Try
-                ' To make sure that defined datasets for unknown providers (due to missing plug-ins) are not lost
-                If File.Exists(strFile) And Not bExport Then
-                    doc.Load(strFile)
-                    xnRoot = doc.GetElementsByTagName("Datasets")(0)
+            ' Build new base doc
+            doc = cSpatialDataSetManager.NewDoc(xnRoot)
+
+            For Each ds As ISpatialDataSet In Me.m_lAvailable
+
+                If (bExport) Then
+                    ds = ds.ExportTo(Path.GetDirectoryName(strFile))
+                ElseIf Me.IsVirtual(ds) Then
+                    ds = Nothing
                 End If
-            Catch ex As Exception
-                ' Plop
-            End Try
-
-            If (xnRoot Is Nothing) Then
-                ' Build new base doc
-                doc = cSpatialDataSetManager.NewDoc(xnRoot)
-            End If
-
-            ' Remove all deleted or current datasets
-            Dim lDelete As New List(Of XmlNode)
-            For Each xnDataset In xnRoot.ChildNodes
-                Dim guid As Guid
-                Dim xa As XmlAttribute = xnDataset.Attributes("GUID")
-                Dim bDelete As Boolean = False
-                If (xa IsNot Nothing) Then
-                    Try
-                        guid = Guid.Parse(xa.InnerText)
-                    Catch ex As Exception
-                        guid = Guid.Empty
-                    End Try
-                End If
-                For Each gTest As Guid In Me.m_lDeleted : bDelete = bDelete Or gTest.Equals(gTest) : Next
-                For Each ds As ISpatialDataSet In Me.m_lAvailable : bDelete = bDelete Or guid.Equals(ds.GUID) : Next
-                If bDelete Then lDelete.Add(xnDataset)
-            Next
-            For Each xnDataset In lDelete
-                xnRoot.RemoveChild(xnDataset)
-                bMustSave = True
-            Next
-            lDelete.Clear()
-
-            ' Gather dataset configuration nodes, but do not add to the doc until all done
-            For Each ds As ISpatialDataSet In datasets
-
-                If (bExport) Then ds = ds.ExportTo(Path.GetDirectoryName(strFile))
                 If (ds IsNot Nothing) Then
 
                     xnDataset = doc.CreateElement("Dataset")
 
                     xaDataset = doc.CreateAttribute("Type")
-                    xaDataset.Value = cTypeUtils.TypeToString(ds.GetType)
+                    If (TypeOf ds Is cSpatialDatasetPlaceholder) Then
+                        xaDataset.Value = DirectCast(ds, cSpatialDatasetPlaceholder).PreservedType
+                    Else
+                        xaDataset.Value = cTypeUtils.TypeToString(ds.GetType)
+                    End If
                     xnDataset.Attributes.Append(xaDataset)
 
                     xaDataset = doc.CreateAttribute("GUID")

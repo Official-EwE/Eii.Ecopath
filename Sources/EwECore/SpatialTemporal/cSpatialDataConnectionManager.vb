@@ -21,6 +21,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Reflection
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
@@ -115,14 +116,11 @@ Namespace SpatialData
 
             Me.CreateAdapters()
 
-            AddHandler Me.m_datasetManager.OnConfigurationChanged, AddressOf OnDatasetConfigurationChanged
-
         End Sub
 
         Public Sub Dispose() Implements IDisposable.Dispose
             If (Me.m_core IsNot Nothing) Then
                 Me.Clear()
-                RemoveHandler Me.m_datasetManager.OnConfigurationChanged, AddressOf OnDatasetConfigurationChanged
                 Me.m_datasetManager.Dispose()
                 Me.m_datasetManager = Nothing
                 Me.m_core = Nothing
@@ -269,7 +267,6 @@ Namespace SpatialData
 
         End Function
 
-
 #End Region ' Generic information
 
 #Region " Adapters "
@@ -309,13 +306,24 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns an array of dataset templates.
+        ''' Returns an array of dataset templates from the core assemly and 
+        ''' from loaded plug-ins.
         ''' </summary>
         ''' <param name="vn">The varname to filter by, if any.</param>
         ''' -------------------------------------------------------------------
         Public Function DatasetTemplates(Optional vn As eVarNameFlags = eVarNameFlags.NotSet) As ISpatialDataSet()
 
             Dim lDatasets As New List(Of ISpatialDataSet)
+
+            For Each t As Type In Assembly.GetAssembly(GetType(cCore)).GetTypes()
+                If t.IsAssignableFrom(GetType(ISpatialDataSet)) And t.IsPublic Then
+                    Dim ds As ISpatialDataSet = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
+                    If (ds.VarName = vn Or ds.VarName = eVarNameFlags.NotSet Or vn = eVarNameFlags.NotSet) Then
+                        lDatasets.Add(ds)
+                    End If
+                End If
+            Next
+
             Dim pm As cPluginManager = Me.m_core.PluginManager
 
             If (pm IsNot Nothing) Then
@@ -347,8 +355,10 @@ Namespace SpatialData
         Public Sub Update(ByVal ds As ISpatialDataSet)
             Me.m_datasetManager.Compatibility(ds).Invalidate()
             Me.Update()
-            ' ToDo: Only send out event if this dataset is used in a spat/temp configuration
-            Me.Update(eMessageType.DataModified)
+            ' Only send out event if this dataset is used in a spat/temp configuration
+            If (Me.IsApplied(ds)) Then
+                Me.Update(eMessageType.DataModified)
+            End If
         End Sub
 
         Public Sub Update(ByVal cv As ISpatialDataConverter)
@@ -358,11 +368,11 @@ Namespace SpatialData
             Me.Update(eMessageType.DataModified)
         End Sub
 
-        Public Sub Update(importance As eMessageType)
+        Public Sub Update(importance As eMessageType, Optional forceupdate As Boolean = False)
             Try
                 ' Assume that this has affected currently configured adapters, because 
                 ' this is very likely. This check can be improved.
-                If (Me.NumConnectedAdapters > 0) Then
+                If (Me.NumConnectedAdapters > 0) Or (forceupdate = True) Then
                     Me.m_core.onChanged(Me, importance)
                 End If
             Catch ex As Exception
@@ -440,15 +450,56 @@ Namespace SpatialData
 
 #End Region ' Converters
 
-#Region " Event handlers "
+#Region " Dataset manager callback "
 
-        Private Sub OnDatasetConfigurationChanged(ByVal sender As cSpatialDataSetManager)
-            If Me.m_core.StateMonitor.HasEcospaceLoaded Then
-                Me.Load()
+        Friend Sub OnDatasetRemoved(ds As ISpatialDataSet)
+
+            If (ds Is Nothing) Then Return
+
+            Dim bConnectionsRemoved As Boolean = False
+
+            For Each adt As cSpatialDataAdapter In Me.Adapters
+                For i As Integer = 1 To adt.MaxLength
+                    Dim connections As cSpatialDataConnection() = adt.Connections(i)
+                    For j As Integer = 1 To cSpatialDataStructures.cMAX_CONN
+
+                        ' Get connection
+                        Dim conn As cSpatialDataConnection = Nothing
+                        Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
+
+                        If (j <= connections.Length) Then
+                            conn = connections(j - 1)
+                        Else
+                            conn = Nothing
+                        End If
+
+                        ' Get configuration
+                        cfg = Me.m_data.Item(adt.VarName, i, j)
+
+                        Debug.Assert(cfg IsNot Nothing)
+
+                        If (conn IsNot Nothing) Then
+                            If (conn.Dataset IsNot Nothing) Then
+                                If (conn.Dataset.GUID.Equals(ds.GUID)) Then
+                                    ' ToDo: this can probably be done more elegantly
+                                    adt.RemoveConnection(i, conn)
+                                    cfg.Clear()
+                                    ' Remember to inform the world
+                                    bConnectionsRemoved = True
+                                End If
+                            End If
+                        End If
+                    Next j
+                Next i
+            Next adt
+
+            If bConnectionsRemoved Then
+                Me.Update(eMessageType.DataAddedOrRemoved, True)
             End If
+
         End Sub
 
-#End Region ' Event handlers
+#End Region ' Dataset manager callback
 
 #Region " ICoreInterface implementation "
 
