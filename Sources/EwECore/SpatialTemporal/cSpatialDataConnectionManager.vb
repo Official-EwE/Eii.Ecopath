@@ -160,7 +160,7 @@ Namespace SpatialData
                 Next i
             Next adt
 
-            Me.Update(eMessageType.DataAddedOrRemoved)
+            Me.NotifyCore(eMessageType.DataAddedOrRemoved)
 
         End Sub
 
@@ -168,7 +168,7 @@ Namespace SpatialData
         ''' Apply spatial configration details to the underlying spatial data structures.
         ''' </summary>
         ''' <param name="adt">The adapter to update. If left empty, all adapters will be updated.</param>
-        Public Sub Update(Optional adt As cSpatialDataAdapter = Nothing)
+        Public Sub Update(Optional adt As cSpatialDataAdapter = Nothing, Optional ForceUpdate As Boolean = False)
 
             'If Not Me.m_core.StateMonitor.HasEcospaceLoaded Then Return
 
@@ -213,7 +213,7 @@ Namespace SpatialData
                 Next i
             Next adt
 
-            Me.Update(eMessageType.DataAddedOrRemoved)
+            Me.NotifyCore(eMessageType.DataAddedOrRemoved, ForceUpdate)
 
         End Sub
 
@@ -352,27 +352,34 @@ Namespace SpatialData
             Return Me.m_datasetManager
         End Function
 
-        Public Sub Update(ByVal ds As ISpatialDataSet)
+        Public Sub Update(ByVal ds As ISpatialDataSet, Optional ForceUpdate As Boolean = False)
             Me.m_datasetManager.Compatibility(ds).Invalidate()
             Me.Update()
             ' Only send out event if this dataset is used in a spat/temp configuration
             If (Me.IsApplied(ds)) Then
-                Me.Update(eMessageType.DataModified)
+                Me.NotifyCore(eMessageType.DataModified, ForceUpdate)
             End If
         End Sub
 
-        Public Sub Update(ByVal cv As ISpatialDataConverter)
+        Public Sub Update(ByVal cv As ISpatialDataConverter, Optional ForceUpdate As Boolean = False)
             ' ToDo: implement selective update
             Me.Update()
             ' ToDo: Only send out event this converter is used in a spat/temp configuration
-            Me.Update(eMessageType.DataModified)
+            Me.NotifyCore(eMessageType.DataModified, ForceUpdate)
         End Sub
 
-        Public Sub Update(importance As eMessageType, Optional forceupdate As Boolean = False)
+        ''' <summary>
+        ''' Notify the core that data has changed. If there are no configured external data connections
+        ''' this notification will be cancelled. To bypass this check and force the notification, set
+        ''' <paramref name="ForceUpdate"/> to True.
+        ''' </summary>
+        ''' <param name="importance"></param>
+        ''' <param name="ForceUpdate">True to force the notification</param>
+        Public Sub NotifyCore(importance As eMessageType, Optional ForceUpdate As Boolean = False)
             Try
                 ' Assume that this has affected currently configured adapters, because 
                 ' this is very likely. This check can be improved.
-                If (Me.NumConnectedAdapters > 0) Or (forceupdate = True) Then
+                If (Me.NumConnectedAdapters > 0) Or (ForceUpdate = True) Then
                     Me.m_core.onChanged(Me, importance)
                 End If
             Catch ex As Exception
@@ -465,7 +472,6 @@ Namespace SpatialData
 
                         ' Get connection
                         Dim conn As cSpatialDataConnection = Nothing
-                        Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
 
                         If (j <= connections.Length) Then
                             conn = connections(j - 1)
@@ -473,17 +479,11 @@ Namespace SpatialData
                             conn = Nothing
                         End If
 
-                        ' Get configuration
-                        cfg = Me.m_data.Item(adt.VarName, i, j)
-
-                        Debug.Assert(cfg IsNot Nothing)
-
                         If (conn IsNot Nothing) Then
                             If (conn.Dataset IsNot Nothing) Then
                                 If (conn.Dataset.GUID.Equals(ds.GUID)) Then
                                     ' ToDo: this can probably be done more elegantly
                                     adt.RemoveConnection(i, conn)
-                                    cfg.Clear()
                                     ' Remember to inform the world
                                     bConnectionsRemoved = True
                                 End If
@@ -494,7 +494,10 @@ Namespace SpatialData
             Next adt
 
             If bConnectionsRemoved Then
-                Me.Update(eMessageType.DataAddedOrRemoved, True)
+                ' Commit changes to underlying data structures
+                Me.Update()
+                ' Explicitly let the core know that data has changed and that the datasource is now dirty
+                Me.NotifyCore(eMessageType.DataModified, True)
             End If
 
         End Sub

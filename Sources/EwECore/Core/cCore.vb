@@ -14314,7 +14314,6 @@ Public Class cCore
 
                 Case eDataTypes.EcospaceSpatialDataConnection
                     Me.m_publisher.AddMessage(New cMessage("Spatial data configuration changed.", TypeOfChange, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceSpatialDataConnection))
-                    Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.True)
 
                 Case eDataTypes.EcospaceLayerExclusion
                     'Update the Depth map based on the Exlusion layer
