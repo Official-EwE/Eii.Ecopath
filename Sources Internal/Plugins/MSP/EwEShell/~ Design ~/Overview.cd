@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EwEShell.cShellData" Collapsed="true">
+    <Position X="3.25" Y="2.25" Width="1.5" />
+    <AssociationLine Name="Games" Type="EwEShell.cGame" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.938" Y="2.812" />
+        <Point X="3.938" Y="3.156" />
+        <Point X="3.938" Y="3.156" />
+        <Point X="3.938" Y="3.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.112" Y="0.248" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QIIAAAAAAAAAAAAAAAAABAAAAAgAAAAAAAAAAAAgCAQ=</HashCode>
+      <FileName>Data\cShellData.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Games" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="EwEShell.cGame" Collapsed="true">
+    <Position X="3.25" Y="3.5" Width="1.5" />
+    <AssociationLine Name="Pressures" Type="EwEShell.cPressure" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.75" Y="3.812" />
+        <Point X="5.5" Y="3.812" />
+        <Point X="5.5" Y="3.812" />
+        <Point X="6.25" Y="3.812" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>BIIAgABAAgTAAEAEAoAIBAQAAgAAgkAAKAAAAgAgAAQ=</HashCode>
+      <FileName>Data\cGame.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Pressures" />
+      <Property Name="Outputs" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EwEShell.cDriver" Collapsed="true">
+    <Position X="6.25" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EIAAAAAAABIAAAAGAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Drivers\cDriver.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EwEShell.cOutput" Collapsed="true">
+    <Position X="6.25" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CIIAAAAQAAggAAAEAAAAAAQgAAAAAAAAIAAAAAAAIAA=</HashCode>
+      <FileName>Data\Outputs\cOutput.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EwEShell.cPressure" Collapsed="true">
+    <Position X="6.25" Y="3.5" Width="1.75" />
+    <AssociationLine Name="m_scalar" Type="EwEShell.cScalar" ManuallyRouted="true">
+      <Path>
+        <Point X="8" Y="3.938" />
+        <Point X="8.641" Y="3.938" />
+        <Point X="8.641" Y="4.302" />
+        <Point X="9.5" Y="4.302" />
+        <Point X="9.5" Y="4.438" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.029" Y="0.194" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="m_grid" Type="EwEShell.cGrid" ManuallyRouted="true">
+      <Path>
+        <Point X="8" Y="3.688" />
+        <Point X="8.635" Y="3.688" />
+        <Point X="8.635" Y="3.281" />
+        <Point X="9.5" Y="3.281" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.058" Y="0.07" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>CAAAAgAAAAIAAgACAAAAAgQAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Pressures\cPressure.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_scalar" />
+      <Field Name="m_grid" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EwEShell.cEwEShell" Collapsed="true">
+    <Position X="3.25" Y="1" Width="1.5" />
+    <AssociationLine Name="Core" Type="EwECore.cCore" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.375" Y="1" />
+        <Point X="4.375" Y="0.75" />
+        <Point X="6.25" Y="0.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Data" Type="EwEShell.cShellData" FixedFromPoint="true">
+      <Path>
+        <Point X="3.938" Y="1.562" />
+        <Point X="3.938" Y="2.25" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="CurrentGame" Type="EwEShell.cGame" ManuallyRouted="true">
+      <Path>
+        <Point X="3.25" Y="1.281" />
+        <Point X="1.928" Y="1.281" />
+        <Point X="1.928" Y="3.846" />
+        <Point X="3.25" Y="3.846" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EQAAACAAAQQAAAQAAABgEAAAAAAAIBAAgAAkAAAAQAI=</HashCode>
+      <FileName>cEwEShell.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Core" />
+      <Property Name="Data" />
+      <Property Name="Controller" />
+      <Property Name="CurrentGame" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EwECore.cCore" Collapsed="true">
+    <Position X="6.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EwEShell.cEcospaceController" Collapsed="true">
+    <Position X="6.25" Y="1.5" Width="1.75" />
+    <AssociationLine Name="m_core" Type="EwECore.cCore">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.786" Y="0.123" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="m_spaceDS" Type="EwECore.cEcospaceDataStructures">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.141" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EoICAAAAACQgAQAAiBAAQQQAREAEAAAAAgACAAhAgwA=</HashCode>
+      <FileName>Ecospace\cEcospaceController.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_core" />
+      <Field Name="m_spaceDS" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EwECore.cEcospaceDataStructures" Collapsed="true">
+    <Position X="9.5" Y="1.5" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="EwEShell.cGrid" Collapsed="true">
+    <Position X="9.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAABAAAAAAAAIhAAEQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Data\Elementals\cGrid.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EwEShell.cScalar" Collapsed="true">
+    <Position X="9.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Data\Elementals\cScalar.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
