@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="CopyHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CopyHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NODE_CONFIG" xml:space="preserve">
+    <value>MSP tools</value>
+  </data>
+  <data name="logo_json" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo-json.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CHECK_SIM_TS_FAILED" xml:space="preserve">
+    <value>Remove Ecosim time series!</value>
+  </data>
+  <data name="HEADER_DRIVER" xml:space="preserve">
+    <value>EwE driver</value>
+  </data>
+  <data name="block" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\block.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="CHECK_SIM_FF_FAILED" xml:space="preserve">
+    <value>Remove Ecosim forcing patterns!</value>
+  </data>
+  <data name="HEADER_PRESSURE" xml:space="preserve">
+    <value>MSP pressure</value>
+  </data>
+  <data name="CHECK_GAME_OK" xml:space="preserve">
+    <value>Game name unique</value>
+  </data>
+  <data name="CHECK_SIM_FF_OK" xml:space="preserve">
+    <value>No Ecosim forcing patterns</value>
+  </data>
+  <data name="NHTV" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NHTV.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HEADER_DENOMINATOR" xml:space="preserve">
+    <value>Denominator (weight)</value>
+  </data>
+  <data name="CHECK_SIM_FISH_OK" xml:space="preserve">
+    <value>No Ecosim fishing patterns</value>
+  </data>
+  <data name="VERSION" xml:space="preserve">
+    <value>MSP tools for EwE desktop v 1.7.2 - 21 February 2018</value>
+  </data>
+  <data name="rijkswaterstaat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rijkswaterstaat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CHECK_SPACE_TS_FAILED" xml:space="preserve">
+    <value>Remove Ecospace time series!</value>
+  </data>
+  <data name="EII" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EII.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\add.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HEADER_NUMERATOR" xml:space="preserve">
+    <value>Numerator (weight)</value>
+  </data>
+  <data name="CHECK_GAME_FAILED" xml:space="preserve">
+    <value>Game name is not unique!</value>
+  </data>
+  <data name="delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CHECK_SIM_TS_OK" xml:space="preserve">
+    <value>No Ecosim time series loaded</value>
+  </data>
+  <data name="CHECK_SPACE_TS_OK" xml:space="preserve">
+    <value>No Ecospace time series loaded</value>
+  </data>
+  <data name="MSPChallenge2050" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MSPChallenge2050.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HEADER_TESTDATA" xml:space="preserve">
+    <value>Test data</value>
+  </data>
+  <data name="change" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\change.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CHECK_SIM_FISH_FAILED" xml:space="preserve">
+    <value>Remove Ecosim fishing patterns!</value>
+  </data>
+  <data name="defaults" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\defaults.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HEADER_MULTIPLIER" xml:space="preserve">
+    <value>Max. effort multiplier</value>
+  </data>
+  <data name="STATUS_GAME_EXPORT_FAILED" xml:space="preserve">
+    <value>MSP game configuration failed to save to {0}</value>
+    <comment>{0}: file name</comment>
+  </data>
+  <data name="STATUS_GAME_EXPORT_SUCCESS" xml:space="preserve">
+    <value>MSP game configuration saved to {0}</value>
+    <comment>{0}: file name</comment>
+  </data>
+  <data name="FILEFILTER_TESTSET_MAP" xml:space="preserve">
+    <value>Map files|*.asc;*.tif;*.tiff</value>
+  </data>
+  <data name="PROMPT_SELECT_MAP" xml:space="preserve">
+    <value>Select test map for {0}</value>
+    <comment>{0}: pressure name</comment>
+  </data>
+  <data name="STATUS_TESTDATA_MAP_REJECTED" xml:space="preserve">
+    <value>Pressure '{0}' rejected map '{1}'</value>
+    <comment>{0}: pressure name, {1}: test map file path</comment>
+  </data>
+  <data name="STATUS_TESTSET_LOAD_FAILED" xml:space="preserve">
+    <value>Testset '{0}' did not load correctly</value>
+    <comment>{0}: testset name</comment>
+  </data>
+  <data name="STATUS_TESTSET_LOAD_SUCCESS" xml:space="preserve">
+    <value>Testset '{0}' loaded correctly</value>
+    <comment>{0}: testset name</comment>
+  </data>
+</root>
