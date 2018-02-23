@@ -4285,7 +4285,7 @@ Public Class frmEwE6
             Dim dlg As New dlgApplyConnection(Me.UIContext, adt, Me.m_cmdEcospaceConfigureConnection.Layer, Me.m_cmdEcospaceConfigureConnection.Connection)
 
             If dlg.ShowDialog() = DialogResult.OK Then
-                Me.Core.SpatialDataConnectionManager.Update(eMessageType.DataModified)
+                Me.Core.SpatialDataConnectionManager.NotifyCore(eMessageType.DataModified)
             End If
         Catch ex As Exception
             cLog.Write(ex, "frmEwE6:OnEcospaceConfigureConnection")
