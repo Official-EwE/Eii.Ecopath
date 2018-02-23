@@ -565,12 +565,12 @@ Namespace SpatialData
 
                 If (Not File.Exists(strFileName)) Then
                     Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FILENOTFOUND, strFileName), eStatusFlags.MissingParameter)
-                    Me.StoreExtent(Nothing)
                     Return False
                 End If
 
                 Me.m_dsSourceData = cDotSpatialUtils.OpenFile(strFileName)
                 If (Me.m_dsSourceData IsNot Nothing) Then
+                    ' ToDo: project extent to Ecospace
                     Me.StoreExtent(Me.m_dsSourceData.Extent)
                     Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOADED, strFileName), eStatusFlags.OK)
                     Return True
@@ -580,11 +580,8 @@ Namespace SpatialData
                 End If
 
             Catch ex As Exception
-                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.MissingParameter)
-                ' Log an error
-                Me.StoreExtent(Nothing)
-                ' Failed
                 Me.m_dsSourceData = Nothing
+                Me.LogMessage(cStringUtils.Localize(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.MissingParameter)
             End Try
 
             Return False
