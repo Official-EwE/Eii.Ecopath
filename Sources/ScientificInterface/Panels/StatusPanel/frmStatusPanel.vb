@@ -143,7 +143,7 @@ Public Class frmStatusPanel
     ''' <param name="hist"></param>
     ''' <param name="item"></param>
     ''' -------------------------------------------------------------------
-    Private Sub OnHistoryItemAdded(ByVal hist As cMessageHistory, _
+    Private Sub OnHistoryItemAdded(ByVal hist As cMessageHistory,
                                    ByVal item As cMessageHistory.cHistoryItem)
         If Me.InvokeRequired Then
             Me.Invoke(New AddHistoryItemDelegate(AddressOf Me.AddHistoryItem), New Object() {item})
@@ -307,7 +307,7 @@ Public Class frmStatusPanel
     ''' <param name="item">The item to add.</param>
     ''' <param name="tnParent">The tree node to add this item to.</param>
     ''' -------------------------------------------------------------------
-    Private Sub AddHistoryItemRecursive(ByVal item As cMessageHistory.cHistoryItem, _
+    Private Sub AddHistoryItemRecursive(ByVal item As cMessageHistory.cHistoryItem,
                                         ByVal tnParent As TreeNode)
 
         ' Sanity checks
@@ -359,13 +359,14 @@ Public Class frmStatusPanel
             End Try
 
             ' When the core sends out critical or warning message, status panel will slide open temporarily
-            If (item.Importance = eMessageImportance.Critical) Or _
-               (item.Importance = eMessageImportance.Warning) Then
+            ' JS 22Feb18: Auto-opening is now an option
+            If ((item.Importance = eMessageImportance.Critical) Or (item.Importance = eMessageImportance.Warning)) And (My.Settings.StatusAutoPopop) Then
+
                 ' Is dockable AND is in auto-hiding state?
-                If (Me.DockPanel IsNot Nothing) And _
-                   ((Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockBottomAutoHide) Or _
-                    (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockLeftAutoHide) Or _
-                    (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide) Or _
+                If (Me.DockPanel IsNot Nothing) And
+                   ((Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockBottomAutoHide) Or
+                    (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockLeftAutoHide) Or
+                    (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide) Or
                     (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockTopAutoHide)) Then
                     Try
                         Me.DockPanel.ActiveAutoHideContent = Me
