@@ -356,9 +356,7 @@ Namespace SpatialData
                 Next
 
                 ' Set initial index status
-                If Not File.Exists(Me.Source) Then
-                    Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Failed
-                End If
+                Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Failed
 
             Catch ex As Exception
                 Return False
