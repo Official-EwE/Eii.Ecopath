@@ -314,24 +314,27 @@ Namespace SpatialData
             ' Get cache file name
             Dim strFileName As String = Me.CacheFileName(strLayerName)
             ' Does file exist in cache AND allowed to use it?
-            If (File.Exists(strFileName)) And (Me.ReadFromCache = True) Then
-                ' #Yes: grab file from cache
-                Dim ds As IDataSet = cDotSpatialUtils.OpenFile(strFileName)
-                ' Is loaded?
-                If (ds IsNot Nothing) Then
-                    ds.Close()
-                    ' Is a raster?
-                    If (TypeOf ds Is IRaster) Then
-                        ' Is really valid?
-                        Dim rs As IRaster = DirectCast(ds, IRaster)
+            If (Me.ReadFromCache = True) Then
+                ' Optimization
+                If (File.Exists(strFileName)) Then
+                    ' #Yes: grab file from cache
+                    Dim ds As IDataSet = cDotSpatialUtils.OpenFile(strFileName)
+                    ' Is loaded?
+                    If (ds IsNot Nothing) Then
+                        ds.Close()
+                        ' Is a raster?
+                        If (TypeOf ds Is IRaster) Then
+                            ' Is really valid?
+                            Dim rs As IRaster = DirectCast(ds, IRaster)
 
-                        ' Sanity checks
-                        Debug.Assert(cNumberUtils.Approximates(Me.m_dModelCellSize, rs.CellWidth, Me.m_dModelCellSize * cDotSpatialUtils.EQUALS_FACTOR))
-                        Debug.Assert(cNumberUtils.Approximates(Me.m_dModelCellSize, rs.CellHeight, Me.m_dModelCellSize * cDotSpatialUtils.EQUALS_FACTOR))
+                            ' Sanity checks
+                            Debug.Assert(cNumberUtils.Approximates(Me.m_dModelCellSize, rs.CellWidth, Me.m_dModelCellSize * cDotSpatialUtils.EQUALS_FACTOR))
+                            Debug.Assert(cNumberUtils.Approximates(Me.m_dModelCellSize, rs.CellHeight, Me.m_dModelCellSize * cDotSpatialUtils.EQUALS_FACTOR))
 
-                        Dim rsOut As New cSpatialRaster(rs)
-                        Me.LogMessage(My.Resources.STATUS_LOADED_FROM_CACHE, eStatusFlags.OK)
-                        Return rsOut
+                            Dim rsOut As New cSpatialRaster(rs)
+                            Me.LogMessage(My.Resources.STATUS_LOADED_FROM_CACHE, eStatusFlags.OK)
+                            Return rsOut
+                        End If
                     End If
                 End If
             End If
@@ -343,11 +346,11 @@ Namespace SpatialData
                 Return Nothing
             End If
 
-            Return converter.Convert(Me.m_dsSourceData, _
-                                     cDotSpatialUtils.TopLeft(Me.m_extModelArea), _
-                                     cDotSpatialUtils.BottomRight(Me.m_extModelArea), _
-                                     Me.m_dModelCellSize, _
-                                     Me.m_strProjectionString, _
+            Return converter.Convert(Me.m_dsSourceData,
+                                     cDotSpatialUtils.TopLeft(Me.m_extModelArea),
+                                     cDotSpatialUtils.BottomRight(Me.m_extModelArea),
+                                     Me.m_dModelCellSize,
+                                     Me.m_strProjectionString,
                                      strFileName)
 
         End Function
@@ -361,8 +364,8 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.GetExtentAtT"/>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function GetExtentAtT(ByVal datetime As DateTime, _
-                                                  ByRef ptfTL As PointF, _
+        Public MustOverride Function GetExtentAtT(ByVal datetime As DateTime,
+                                                  ByRef ptfTL As PointF,
                                                   ByRef ptfBR As PointF) As Boolean _
             Implements ISpatialDataSet.GetExtentAtT
 
@@ -389,10 +392,10 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.LockDataAtT"/>
         ''' -------------------------------------------------------------------
-        Public Overridable Function LockDataAtT(ByVal datetime As Date, _
-                                                ByVal dCellSize As Double, _
-                                                ByVal ptfTL As System.Drawing.PointF, _
-                                                ByVal ptfBR As System.Drawing.PointF, _
+        Public Overridable Function LockDataAtT(ByVal datetime As Date,
+                                                ByVal dCellSize As Double,
+                                                ByVal ptfTL As System.Drawing.PointF,
+                                                ByVal ptfBR As System.Drawing.PointF,
                                                 ByVal strProjectionString As String) As Boolean _
             Implements EwEUtils.SpatialData.ISpatialDataSet.LockDataAtT
 
