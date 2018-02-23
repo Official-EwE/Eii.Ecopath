@@ -36,7 +36,7 @@ Namespace Other
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsGeneral))
             Me.m_btnClearMRU = New System.Windows.Forms.Button()
             Me.m_lblMRU = New System.Windows.Forms.Label()
-            Me.m_cbShowTime = New System.Windows.Forms.CheckBox()
+            Me.m_cbStatusShowTime = New System.Windows.Forms.CheckBox()
             Me.m_lblMaxNumMessages = New System.Windows.Forms.Label()
             Me.m_cbShowHost = New System.Windows.Forms.CheckBox()
             Me.Label1 = New System.Windows.Forms.Label()
@@ -51,9 +51,10 @@ Namespace Other
             Me.m_nudMRU = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnViewLogFileDir = New System.Windows.Forms.Button()
-            Me.m_cbShowVariableValidations = New System.Windows.Forms.CheckBox()
+            Me.m_cbStatusShowVariableValidations = New System.Windows.Forms.CheckBox()
             Me.m_cbUseExternalBrowser = New System.Windows.Forms.CheckBox()
-            Me.m_cbShowNewestFirst = New System.Windows.Forms.CheckBox()
+            Me.m_cbStatusShowNewestFirst = New System.Windows.Forms.CheckBox()
+            Me.m_cbStatusAutoPopup = New System.Windows.Forms.CheckBox()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -69,11 +70,11 @@ Namespace Other
             resources.ApplyResources(Me.m_lblMRU, "m_lblMRU")
             Me.m_lblMRU.Name = "m_lblMRU"
             '
-            'm_cbShowTime
+            'm_cbStatusShowTime
             '
-            resources.ApplyResources(Me.m_cbShowTime, "m_cbShowTime")
-            Me.m_cbShowTime.Name = "m_cbShowTime"
-            Me.m_cbShowTime.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbStatusShowTime, "m_cbStatusShowTime")
+            Me.m_cbStatusShowTime.Name = "m_cbStatusShowTime"
+            Me.m_cbStatusShowTime.UseVisualStyleBackColor = True
             '
             'm_lblMaxNumMessages
             '
@@ -164,11 +165,11 @@ Namespace Other
             Me.m_btnViewLogFileDir.Name = "m_btnViewLogFileDir"
             Me.m_btnViewLogFileDir.UseVisualStyleBackColor = True
             '
-            'm_cbShowVariableValidations
+            'm_cbStatusShowVariableValidations
             '
-            resources.ApplyResources(Me.m_cbShowVariableValidations, "m_cbShowVariableValidations")
-            Me.m_cbShowVariableValidations.Name = "m_cbShowVariableValidations"
-            Me.m_cbShowVariableValidations.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbStatusShowVariableValidations, "m_cbStatusShowVariableValidations")
+            Me.m_cbStatusShowVariableValidations.Name = "m_cbStatusShowVariableValidations"
+            Me.m_cbStatusShowVariableValidations.UseVisualStyleBackColor = True
             '
             'm_cbUseExternalBrowser
             '
@@ -176,11 +177,17 @@ Namespace Other
             Me.m_cbUseExternalBrowser.Name = "m_cbUseExternalBrowser"
             Me.m_cbUseExternalBrowser.UseVisualStyleBackColor = True
             '
-            'm_cbShowNewestFirst
+            'm_cbStatusShowNewestFirst
             '
-            resources.ApplyResources(Me.m_cbShowNewestFirst, "m_cbShowNewestFirst")
-            Me.m_cbShowNewestFirst.Name = "m_cbShowNewestFirst"
-            Me.m_cbShowNewestFirst.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbStatusShowNewestFirst, "m_cbStatusShowNewestFirst")
+            Me.m_cbStatusShowNewestFirst.Name = "m_cbStatusShowNewestFirst"
+            Me.m_cbStatusShowNewestFirst.UseVisualStyleBackColor = True
+            '
+            'm_cbStatusAutoPopup
+            '
+            resources.ApplyResources(Me.m_cbStatusAutoPopup, "m_cbStatusAutoPopup")
+            Me.m_cbStatusAutoPopup.Name = "m_cbStatusAutoPopup"
+            Me.m_cbStatusAutoPopup.UseVisualStyleBackColor = True
             '
             'ucOptionsGeneral
             '
@@ -190,9 +197,10 @@ Namespace Other
             Me.Controls.Add(Me.m_tbxAuthor)
             Me.Controls.Add(Me.m_cmbLogLevel)
             Me.Controls.Add(Me.m_nudMaxNumMessages)
-            Me.Controls.Add(Me.m_cbShowVariableValidations)
-            Me.Controls.Add(Me.m_cbShowNewestFirst)
-            Me.Controls.Add(Me.m_cbShowTime)
+            Me.Controls.Add(Me.m_cbStatusShowVariableValidations)
+            Me.Controls.Add(Me.m_cbStatusShowNewestFirst)
+            Me.Controls.Add(Me.m_cbStatusAutoPopup)
+            Me.Controls.Add(Me.m_cbStatusShowTime)
             Me.Controls.Add(Me.m_lblMaxNumMessages)
             Me.Controls.Add(Me.m_hdrAuthor)
             Me.Controls.Add(Me.m_hdrStatusPanel)
@@ -217,7 +225,7 @@ Namespace Other
         Private WithEvents m_lblMaxNumMessages As System.Windows.Forms.Label
         Private WithEvents m_btnClearMRU As System.Windows.Forms.Button
         Private WithEvents m_hdrCaption As cEwEHeaderLabel
-        Private WithEvents m_cbShowTime As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbStatusShowTime As System.Windows.Forms.CheckBox
         Private WithEvents m_nudMaxNumMessages As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudMRU As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_cbShowHost As System.Windows.Forms.CheckBox
@@ -230,9 +238,10 @@ Namespace Other
         Private WithEvents m_tbxContact As System.Windows.Forms.TextBox
         Private WithEvents m_tbxAuthor As System.Windows.Forms.TextBox
         Private WithEvents m_btnViewLogFileDir As System.Windows.Forms.Button
-        Private WithEvents m_cbShowVariableValidations As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbStatusShowVariableValidations As System.Windows.Forms.CheckBox
         Private WithEvents m_cbUseExternalBrowser As CheckBox
-        Private WithEvents m_cbShowNewestFirst As CheckBox
+        Private WithEvents m_cbStatusShowNewestFirst As CheckBox
+        Private WithEvents m_cbStatusAutoPopup As CheckBox
     End Class
 
 End Namespace
