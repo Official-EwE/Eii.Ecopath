@@ -45,6 +45,10 @@ Imports EwEUtils.Utilities
 '   3) The dataset manager is the repository of defined datasets. This is yet a different list than maintained in the connections. 
 '      The dataset manager also keeps track which dataset are defined system-wide, and which are defined in the model
 
+' JS 23Feb18: Spatial indexing and caching needs reviewing
+'   1) Spatial extents and index status should no longer be serialized between machines. Better to assess on the fly
+'   2) The reported extent has no explicit extent, and neither have cached files. In the initial carnations of the STFD projection was assumed to be WGS84 but this could/should change
+'   3) As a result, extent reported by datasets should be expressed in Ecospace projection units. The cache should include this projection in directory name - as a checksum on Proj4string?
 
 Namespace SpatialData
 
@@ -336,9 +340,11 @@ Namespace SpatialData
         End Sub
 
         Private Sub UpdateIndexer()
-            Me.m_indexer.Enabled = Me.IsIndexingEnabled And
-                                   (Me.m_iIndexingSuspendCount <= 0) And
-                                   (Not Me.m_core.StateMonitor.IsBusy())
+            Dim sm As cCoreStateMonitor = Me.m_core.StateMonitor
+            Me.m_indexer.Enabled = (Not sm.IsBusy()) And (sm.HasEcospaceLoaded = True) And
+                                   (Me.IsIndexingEnabled = True) And
+                                   (Me.m_iIndexingSuspendCount <= 0)
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -803,10 +809,12 @@ Namespace SpatialData
                             If Guid.Equals(Guid.Empty, guidDS) Then guidDS = Guid.NewGuid
                             ds.GUID = guidDS
                             Me.m_lAvailable.Add(ds)
+
+                            ' This dataset is obtained from the model, not from a properly defined dataset
+                            Me.IsVirtual(ds) = True
+
                         End If
 
-                        ' This dataset is obtained from the model, not from a properly defined dataset
-                        Me.IsVirtual(ds) = True
                     End If
 
                 Catch ex As Exception
