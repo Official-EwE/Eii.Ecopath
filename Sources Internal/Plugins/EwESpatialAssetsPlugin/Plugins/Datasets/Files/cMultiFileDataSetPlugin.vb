@@ -158,8 +158,8 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.DialogReadFilter"/>"
         ''' -------------------------------------------------------------------
-        Public Overrides ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean, _
-                                                            ByVal bImage As Boolean, _
+        Public Overrides ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean,
+                                                            ByVal bImage As Boolean,
                                                             ByVal bVector As Boolean) As String
             Get
                 Return cDotSpatialUtils.DialogFilter(True, bRaster, bImage, bVector)
@@ -271,10 +271,10 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.LockDataAtT"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Function LockDataAtT(ByVal datetime As Date, _
-                                              ByVal dCellSize As Double, _
-                                              ByVal ptfTL As PointF, _
-                                              ByVal ptfBR As PointF, _
+        Public Overrides Function LockDataAtT(ByVal datetime As Date,
+                                              ByVal dCellSize As Double,
+                                              ByVal ptfTL As PointF,
+                                              ByVal ptfBR As PointF,
                                               ByVal strProjectionString As String) As Boolean
 
             Me.m_iFileIndex = Me.FileIndex(datetime)
@@ -308,8 +308,8 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.GetExtentAtT"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetExtentAtT(ByVal dt As Date, _
-                                               ByRef ptfTL As System.Drawing.PointF, _
+        Public Overrides Function GetExtentAtT(ByVal dt As Date,
+                                               ByRef ptfTL As System.Drawing.PointF,
                                                ByRef ptfBR As System.Drawing.PointF) As Boolean
 
             Dim iFile As Integer = Me.FileIndex(dt)
@@ -335,7 +335,7 @@ Namespace SpatialData
         ''' An XML node that contains the content of the dataset.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function ToXML(ByVal doc As XmlDocument, _
+        Protected Overrides Function ToXML(ByVal doc As XmlDocument,
                                            ByVal strFolderRoot As String) As XmlNode
 
             Dim xnMaster As XmlNode = Nothing
@@ -393,30 +393,6 @@ Namespace SpatialData
                 xa.Value = cStringUtils.FormatDate(tf.Date)
                 xnChild.Attributes.Append(xa)
 
-                xa = doc.CreateAttribute("Indexed")
-                xa.Value = Convert.ToString(tf.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed)
-                xnChild.Attributes.Append(xa)
-
-                If (tf.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed) Then
-
-                    xa = doc.CreateAttribute("LonMin")
-                    xa.Value = cStringUtils.FormatSingle(tf.TopLeft.X)
-                    xnChild.Attributes.Append(xa)
-
-                    xa = doc.CreateAttribute("LonMax")
-                    xa.Value = cStringUtils.FormatSingle(tf.BottomRight.X)
-                    xnChild.Attributes.Append(xa)
-
-                    xa = doc.CreateAttribute("LatMin")
-                    xa.Value = cStringUtils.FormatSingle(tf.BottomRight.Y)
-                    xnChild.Attributes.Append(xa)
-
-                    xa = doc.CreateAttribute("LatMax")
-                    xa.Value = cStringUtils.FormatSingle(tf.TopLeft.Y)
-                    xnChild.Attributes.Append(xa)
-
-                End If
-
                 xn.AppendChild(xnChild)
 
             Next
@@ -436,8 +412,8 @@ Namespace SpatialData
         ''' True if successful.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Protected Overrides Function FromXML(ByVal doc As XmlDocument, _
-                                             ByVal node As XmlNode, _
+        Protected Overrides Function FromXML(ByVal doc As XmlDocument,
+                                             ByVal node As XmlNode,
                                              ByVal strFolderRoot As String) As Boolean
 
             Dim xn As XmlNode = Nothing
@@ -510,23 +486,7 @@ Namespace SpatialData
                                 End If
 
                                 Dim f As New cTemporalFile(dt, Path.Combine(Me.Source, strName))
-
                                 f.IndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
-                                ' JS 24Nov14: Fixed file exist check when loading dataset meta-data
-                                ' JS 16Jan17: File.exists is expensive because of internal exception trapping (http://stackoverflow.com/questions/2225415/why-is-file-exists-much-slower-when-the-file-does-not-exist)
-                                '             This should really be done via background indexing 
-                                'If Not IO.File.Exists(f.FileName) Then
-                                '    f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
-                                'Else
-                                If (xnChild.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
-                                    If (Boolean.Parse(xnChild.Attributes("Indexed").InnerText)) Then
-                                        f.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed
-                                        f.TopLeft = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LonMin").InnerText, GetType(Single))),
-                                                            CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LatMax").InnerText, GetType(Single))))
-                                        f.BottomRight = New PointF(CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LonMax").InnerText, GetType(Single))),
-                                                            CSng(cStringUtils.ConvertToNumber(xnChild.Attributes("LatMin").InnerText, GetType(Single))))
-                                    End If
-                                End If
 
                                 Me.m_lFiles.Add(f)
                             Next

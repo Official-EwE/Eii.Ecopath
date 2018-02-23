@@ -233,30 +233,6 @@ Namespace SpatialData
             xaFile.Value = cStringUtils.FormatDate(Me.m_dtStart, "d")
             xnFile.Attributes.Append(xaFile)
 
-            xaFile = doc.CreateAttribute("Indexed")
-            xaFile.Value = Convert.ToString(Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Indexed)
-            xnFile.Attributes.Append(xaFile)
-
-            If (Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Indexed) Then
-
-                xaFile = doc.CreateAttribute("LonMin")
-                xaFile.Value = cStringUtils.FormatSingle(Me.m_ptTL.X)
-                xnFile.Attributes.Append(xaFile)
-
-                xaFile = doc.CreateAttribute("LonMax")
-                xaFile.Value = cStringUtils.FormatSingle(Me.m_ptBR.X)
-                xnFile.Attributes.Append(xaFile)
-
-                xaFile = doc.CreateAttribute("LatMin")
-                xaFile.Value = cStringUtils.FormatSingle(Me.m_ptBR.Y)
-                xnFile.Attributes.Append(xaFile)
-
-                xaFile = doc.CreateAttribute("LatMax")
-                xaFile.Value = cStringUtils.FormatSingle(Me.m_ptTL.Y)
-                xnFile.Attributes.Append(xaFile)
-
-            End If
-
             xnMaster.AppendChild(xnFile)
 
             Return xnMaster
@@ -339,18 +315,6 @@ Namespace SpatialData
 
                             ' -- Index status --
                             Me.m_indexstatus = ISpatialDataSet.eIndexStatus.NotIndexed
-                            If (xn.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
-                                ' JS 06Nov13: added file exist check when loading dataset meta-data
-                                ' JS 15Feb18: File.exists is expensive because of internal exception trapping (http://stackoverflow.com/questions/2225415/why-is-file-exists-much-slower-when-the-file-does-not-exist)
-                                '             This should really be done via background indexing 
-                                If Boolean.Parse(xn.Attributes("Indexed").InnerText) Then
-                                    Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Indexed
-                                    Me.m_ptTL = New PointF(CSng(cStringUtils.ConvertToNumber(xn.Attributes("LonMin").InnerText, GetType(Single))),
-                                                           CSng(cStringUtils.ConvertToNumber(xn.Attributes("LatMax").InnerText, GetType(Single))))
-                                    Me.m_ptBR = New PointF(CSng(cStringUtils.ConvertToNumber(xn.Attributes("LonMax").InnerText, GetType(Single))),
-                                                           CSng(cStringUtils.ConvertToNumber(xn.Attributes("LatMin").InnerText, GetType(Single))))
-                                End If
-                            End If
 
                     End Select
                 Next
@@ -393,7 +357,7 @@ Namespace SpatialData
             ' Return cached extent
             ptfTL = Me.m_ptTL
             ptfBR = Me.m_ptBR
-            Return (Me.m_indexstatus = ISpatialDataSet.eIndexStatus.Indexed)
+            Return (ptfTL <> ptfBR)
 
         End Function
 
