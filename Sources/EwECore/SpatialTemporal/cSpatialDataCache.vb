@@ -30,6 +30,8 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+' ToDo: add support for different geospatial projections
+
 Namespace SpatialData
 
     ''' <summary>
@@ -271,12 +273,12 @@ Namespace SpatialData
         ''' <param name="bCreateIfMissing">Flag, indicating whether the path should be created if missing.</param>
         ''' <returns>A cache path.</returns>
         ''' -------------------------------------------------------------------
-        Private Function GetCacheFileName(ds As ISpatialDataSet, _
-                                          ptfTL As PointF, ptfBR As PointF, _
-                                          dCellSize As Double, _
-                                          dt As DateTime, _
-                                          strFilter As String, _
-                                          strExt As String, _
+        Private Function GetCacheFileName(ds As ISpatialDataSet,
+                                          ptfTL As PointF, ptfBR As PointF,
+                                          dCellSize As Double,
+                                          dt As DateTime,
+                                          strFilter As String,
+                                          strExt As String,
                                           bCreateIfMissing As Boolean) As String
 
             Dim strPath As String = GetCacheFolder(ds, ptfTL, ptfBR, dCellSize, True)
