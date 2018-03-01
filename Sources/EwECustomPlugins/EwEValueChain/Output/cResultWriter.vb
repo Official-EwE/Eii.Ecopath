@@ -59,13 +59,10 @@ Public Class cResultWriter
     ''' Write results to CSV file.
     ''' </summary>
     ''' <param name="agg">Data aggregation method in use during the run.</param>
-    ''' <param name="bNotifyUser">Flag, stating whether the user should be notified
-    ''' explicitly about the save operation result.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function WriteResults(ByVal agg As cParameters.eAggregationModeType, _
-                                 ByVal bNotifyUser As Boolean) As Boolean
-        Return Me.WriteResults(agg, 0, "", bNotifyUser)
+    Public Function WriteResults(ByVal agg As cParameters.eAggregationModeType) As Boolean
+        Return Me.WriteResults(agg, 0, "")
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -79,8 +76,7 @@ Public Class cResultWriter
     ''' -----------------------------------------------------------------------
     Public Function WriteResults(ByVal agg As cParameters.eAggregationModeType, _
                                  ByVal iItem As Integer, _
-                                 ByVal strItem As String,
-                                 ByVal bNotifyUser As Boolean) As Boolean
+                                 ByVal strItem As String) As Boolean
 
         Dim strFile As String = Me.GetFileName(agg, strItem)
         Dim sw As StreamWriter = Nothing
@@ -94,8 +90,8 @@ Public Class cResultWriter
             sw = New StreamWriter(strFile, False)
         Catch ex As Exception
             ' Waah!
-            Me.m_msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_FAILED, Path.GetDirectoryName(strFile), ex.Message), _
-                                    eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+            Me.m_msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_FAILED, Path.GetDirectoryName(strFile), ex.Message),
+                                    eMessageType.DataExport, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
             Return False
         End Try
 
@@ -130,21 +126,15 @@ Public Class cResultWriter
         ' Already has save result message?
         If (Me.m_msg Is Nothing) Then
             ' #No: create one
-            If bNotifyUser Then
-                Me.m_msg = New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)), _
-                                                EwEUtils.Core.eCoreComponentType.External, eMessageType.DataExport, _
-                                                eMessageImportance.Information, eMessageReplyStyle.OK)
-            Else
-                Me.m_msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)), _
-                                        eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
-            End If
+            Me.m_msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)),
+                                        eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             ' Set hyperlink
             Me.m_msg.Hyperlink = Path.GetDirectoryName(strFile)
         End If
 
         ' Add status to message
-        vs = New cVariableStatus(eStatusFlags.OK, cStringUtils.Localize(My.Resources.PROMPT_SAVERESULT_DETAIL, strFile), _
-                                 EwEUtils.Core.eVarNameFlags.NotSet, EwEUtils.Core.eDataTypes.NotSet, EwEUtils.Core.eCoreComponentType.External, 0)
+        vs = New cVariableStatus(eStatusFlags.OK, cStringUtils.Localize(My.Resources.PROMPT_SAVERESULT_DETAIL, strFile),
+                                 eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
         Me.m_msg.AddVariable(vs)
 
         ' We're done, Jim
@@ -160,7 +150,7 @@ Public Class cResultWriter
     ''' <param name="strItem"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function GetFileName(ByVal agg As cParameters.eAggregationModeType, _
+    Private Function GetFileName(ByVal agg As cParameters.eAggregationModeType,
                                  ByVal strItem As String) As String
 
         Dim strPath As String = ""
@@ -168,12 +158,12 @@ Public Class cResultWriter
 
         Select Case m_results.RunType
             Case cModel.eRunTypes.Ecopath
-                strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecopath), "ValueChain")
+                strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(eAutosaveTypes.Ecopath), "ValueChain")
             Case cModel.eRunTypes.Ecosim
-                strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim), "ValueChain")
+                strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(eAutosaveTypes.Ecosim), "ValueChain")
             Case cModel.eRunTypes.Equilibrium
                 Return ""
-                'strPath = Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecopath, strPrefix:="ValueChain_")
+                'strPath = Me.m_data.Core.DefaultOutputPath(eAutosaveTypes.Ecopath, strPrefix:="ValueChain_")
         End Select
 
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return ""
@@ -211,9 +201,9 @@ Public Class cResultWriter
 
         ' Append header
         If (Me.m_results.RunType = cModel.eRunTypes.Ecopath) Then
-            sb.AppendLine(core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecopath))
+            sb.AppendLine(core.DefaultFileHeader(eAutosaveTypes.Ecopath))
         Else
-            sb.AppendLine(core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecosim))
+            sb.AppendLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
         End If
         ' Append value chain run type
         sb.AppendLine("RunType," & cStringUtils.ToCSVField(Me.m_results.RunType.ToString()))

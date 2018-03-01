@@ -343,7 +343,7 @@ Public Class cValueChainPlugin
         Me.BroadcastResults(1)
 
         If Me.AutoSave Then
-            Me.m_model.SaveResults(Me.m_data, Me.m_result, False)
+            Me.m_model.SaveResults(Me.m_data, Me.m_result)
         End If
 
     End Sub
@@ -426,7 +426,7 @@ Public Class cValueChainPlugin
         End If
 
         If Me.AutoSave Then
-            Me.m_model.SaveResults(Me.m_data, Me.m_result, False)
+            Me.m_model.SaveResults(Me.m_data, Me.m_result)
         End If
 
     End Sub
