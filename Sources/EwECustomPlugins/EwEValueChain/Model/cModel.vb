@@ -527,9 +527,8 @@ Public Class cModel
 
     End Function
 
-    Friend Sub SaveResults(ByVal data As cData, _
-                           ByVal result As cResults, _
-                           ByVal bNotifyUser As Boolean)
+    Friend Sub SaveResults(ByVal data As cData,
+                           ByVal result As cResults)
 
         Try
 
@@ -539,19 +538,19 @@ Public Class cModel
             Select Case agg
 
                 Case cParameters.eAggregationModeType.FullModel
-                    w.WriteResults(agg, bNotifyUser)
+                    w.WriteResults(agg)
 
                 Case cParameters.eAggregationModeType.ByFleet
                     For iFleet As Integer = 1 To data.Core.nFleets
                         Dim flt As cEcopathFleetInput = data.Core.EcopathFleetInputs(iFleet)
-                        w.WriteResults(agg, iFleet, flt.Name, bNotifyUser)
+                        w.WriteResults(agg, iFleet, flt.Name)
                     Next
 
                 Case cParameters.eAggregationModeType.ByGroup
                     For iGroup As Integer = 1 To data.Core.nGroups
                         Dim grp As cEcoPathGroupInput = data.Core.EcoPathGroupInputs(iGroup)
                         If grp.IsFished Then
-                            w.WriteResults(agg, iGroup, grp.Name, bNotifyUser)
+                            w.WriteResults(agg, iGroup, grp.Name)
                         End If
                     Next
 
