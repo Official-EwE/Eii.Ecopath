@@ -1039,7 +1039,11 @@ Public Class plFlow
     ''' -----------------------------------------------------------------------
     Public Function AddLink(ByVal link As cLink, Optional ByVal bRefresh As Boolean = True) As LinkWrapper
 
-        If link Is Nothing Then Return Nothing
+        ' Sanity checks
+        If (link Is Nothing) Then Return Nothing
+        If (Not Me.m_dtControls.ContainsKey(link.Source)) Then Return Nothing
+        If (Not Me.m_dtControls.ContainsKey(link.Target)) Then Return Nothing
+
         AddHandler link.OnChanged, AddressOf OnElementChanged
 
         Dim w As LinkWrapper = Me.FindLinkWrapper(link)
@@ -1171,6 +1175,9 @@ Public Class plFlow
     Public Sub OnUnitMouseHover(ByVal uc As plUnitControl, ByVal bHover As Boolean)
 
         Select Case Me.EditMode
+
+            Case eEditMode.ReadOnly
+                ' Do not change the cursor
 
             Case eEditMode.Move
                 uc.Cursor = Me.m_crsMoveItem
