@@ -35,32 +35,33 @@ Public Class ucUnitDefault
         End If
     End Sub
 
+    Public Property UnitType As cUnitFactory.eUnitType
+
     Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
         MyBase.OnPaint(e)
 
         Dim fmt As New StringFormat()
         Dim rc As New Rectangle(Me.ClientRectangle.X, Me.ClientRectangle.Y, Me.ClientRectangle.Width, Me.ClientRectangle.Height)
-        Dim clr As Color = Color.Black
+        Dim clr As Color = Color.White
+
+        If (Me.UIContext IsNot Nothing) Then
+            If Me.Selected Then clr = Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+        End If
 
         rc.Width -= 1
         rc.Height -= 1
 
         fmt.Alignment = StringAlignment.Center
+        fmt.LineAlignment = StringAlignment.Near
 
-        e.Graphics.FillRectangle(Brushes.White, rc)
-        e.Graphics.DrawString(Me.Text, SystemFonts.DefaultFont, Brushes.Black, rc, fmt)
+        Using br As New SolidBrush(clr) : e.Graphics.FillRectangle(br, rc) : End Using
 
-        If (Me.UIContext IsNot Nothing) Then
-            If Me.Selected Then
-                clr = Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
-            Else
-                clr = Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
-            End If
-        End If
+        Dim img As Image = cUnitImageFactory.GetImage(Me.UnitType)
+        e.Graphics.DrawImage(img, rc.Width / 2.0! - 8, rc.Height - 18, 16, 16)
+        img = Nothing
 
-        Using p As New Pen(clr)
-            e.Graphics.DrawRectangle(p, rc)
-        End Using
+        e.Graphics.DrawString(Me.Text, SystemFonts.DefaultFont, SystemBrushes.ControlText, rc, fmt)
+        e.Graphics.DrawRectangle(Pens.Black, rc)
 
     End Sub
 

@@ -95,27 +95,27 @@ Public Class frmMain
             Case eValueChainPageTypes.Parameters
                 Me.ShowForm(New ucParameters(Me.m_plugin.Data, Me.m_plugin.Context), My.Resources.NAVTREE_INPUT_PARAMETERS)
             Case eValueChainPageTypes.TableProducers
-                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.cUnitFormatter.Producer)
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Producer)
                 Dim view As New ucGridView(grid)
                 Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_PRODUCERS)
             Case eValueChainPageTypes.TableProcessors
-                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.cUnitFormatter.Processing)
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Processing)
                 Dim view As New ucGridView(grid)
                 Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_PROCESSORS)
             Case eValueChainPageTypes.TableDistributors
-                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.cUnitFormatter.Distribution)
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Distribution)
                 Dim view As New ucGridView(grid)
                 Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_DISTRIBUTORS)
             Case eValueChainPageTypes.TableWholesellers
-                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.cUnitFormatter.Wholesaler)
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Wholesaler)
                 Dim view As New ucGridView(grid)
                 Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_WHOLESALERS)
             Case eValueChainPageTypes.TableRetailer
-                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.cUnitFormatter.Retailer)
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Retailer)
                 Dim view As New ucGridView(grid)
                 Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_RETAILERS)
             Case eValueChainPageTypes.TableConsumers
-                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.cUnitFormatter.Consumer)
+                Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Consumer)
                 Dim view As New ucGridView(grid)
                 Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_CONSUMERS)
             Case eValueChainPageTypes.Flow

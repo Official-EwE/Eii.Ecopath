@@ -169,37 +169,37 @@ Public Class ucEditFlow
 
     Private Sub OnCreateProducer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbCreateProducer.Click
-        Me.m_plFlow.CreateUnit(cUnitFactory.cUnitFormatter.Producer)
+        Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Producer)
         Me.UpdateControls()
     End Sub
 
     Private Sub OnCreateProcessing(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbCreateProcessing.Click
-        Me.m_plFlow.CreateUnit(cUnitFactory.cUnitFormatter.Processing)
+        Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Processing)
         Me.UpdateControls()
     End Sub
 
     Private Sub OnCreateDistribution(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbCreateDistribution.Click
-        Me.m_plFlow.CreateUnit(cUnitFactory.cUnitFormatter.Distribution)
+        Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Distribution)
         Me.UpdateControls()
     End Sub
 
     Private Sub OnCreateWholesaler(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbCreateWholesaler.Click
-        Me.m_plFlow.CreateUnit(cUnitFactory.cUnitFormatter.Wholesaler)
+        Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Wholesaler)
         Me.UpdateControls()
     End Sub
 
     Private Sub OnCreateRetailer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbCreateRetailer.Click
-        Me.m_plFlow.CreateUnit(cUnitFactory.cUnitFormatter.Retailer)
+        Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Retailer)
         Me.UpdateControls()
     End Sub
 
     Private Sub OnCreateConsumer(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbCreateConsumer.Click
-        Me.m_plFlow.CreateUnit(cUnitFactory.cUnitFormatter.Consumer)
+        Me.m_plFlow.CreateUnit(cUnitFactory.eUnitType.Consumer)
         Me.UpdateControls()
     End Sub
 
@@ -209,7 +209,7 @@ Public Class ucEditFlow
         Dim item As ToolStripItem = DirectCast(sender, ToolStripItem)
 
         If (item.Tag Is Nothing) Then Return
-        Me.m_plFlow.ConvertUnit(Me.m_selector.SelectedUnit, DirectCast(item.Tag, cUnitFactory.cUnitFormatter))
+        Me.m_plFlow.ConvertUnit(Me.m_selector.SelectedUnit, DirectCast(item.Tag, cUnitFactory.eUnitType))
         Me.UpdateControls()
 
     End Sub
@@ -318,11 +318,11 @@ Public Class ucEditFlow
         Me.m_tssbConvert.DropDownItems.Clear()
         ' Has a selected unit?
         If (unit IsNot Nothing) Then
-            img = cUnitImageFactory.GetImage(unit.UnitType, False)
+            img = cUnitImageFactory.GetImage(unit.UnitType)
             If (Not TypeOf unit Is cProducerUnit) Then
-                For ut As cUnitFactory.cUnitFormatter = cUnitFactory.cUnitFormatter.Processing To cUnitFactory.cUnitFormatter.Consumer
+                For ut As cUnitFactory.eUnitType = cUnitFactory.eUnitType.Processing To cUnitFactory.eUnitType.Consumer
                     If (unit.UnitType <> ut) Then
-                        Dim item As New ToolStripMenuItem(fmt.GetDescriptor(ut), cUnitImageFactory.GetImage(ut, False), AddressOf OnConvertSelection)
+                        Dim item As New ToolStripMenuItem(fmt.GetDescriptor(ut), cUnitImageFactory.GetImage(ut), AddressOf OnConvertSelection)
                         item.Tag = ut
                         Me.m_tssbConvert.DropDownItems.Add(item)
                         bCanConvert = True

@@ -71,19 +71,20 @@ Public Class ucDefaults
         Me.m_data = data
 
         Try
+            ' ToDo: globalize this
 
             ' Init defaults
-            Me.AddControl(Me.m_lbProducer, Me.m_data.GetUnitDefault(cUnitFactory.cUnitFormatter.Producer), "Producer")
+            Me.AddControl(Me.m_lbProducer, Me.m_data.GetUnitDefault(Me.m_lbProducer.UnitType), "Producer")
             Me.AddControl(Me.m_lnkProd2Proc, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.ProducerToProcessing), "Producer to Processing")
-            Me.AddControl(Me.m_lbProcessing, Me.m_data.GetUnitDefault(cUnitFactory.cUnitFormatter.Processing), "Processing")
+            Me.AddControl(Me.m_lbProcessing, Me.m_data.GetUnitDefault(m_lbProcessing.UnitType), "Processing")
             Me.AddControl(Me.m_lnkProc2Dist, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.ProcessingToDistribution), "Processing to Distribution")
-            Me.AddControl(Me.m_lbDistribution, Me.m_data.GetUnitDefault(cUnitFactory.cUnitFormatter.Distribution), "Distribution")
+            Me.AddControl(Me.m_lbDistribution, Me.m_data.GetUnitDefault(m_lbDistribution.UnitType), "Distribution")
             Me.AddControl(Me.m_lnkDist2Whole, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.DistributionToWholeseller), "Distribution to Wholeseller")
-            Me.AddControl(Me.m_lbWholeseller, Me.m_data.GetUnitDefault(cUnitFactory.cUnitFormatter.Wholesaler), "Wholeseller")
+            Me.AddControl(Me.m_lbWholesaler, Me.m_data.GetUnitDefault(m_lbWholesaler.UnitType), "Wholeseller")
             Me.AddControl(Me.m_lnkWhole2Ret, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.WholesellerToRetailer), "Wholeseller to Retailer")
-            Me.AddControl(Me.m_lbRetailer, Me.m_data.GetUnitDefault(cUnitFactory.cUnitFormatter.Retailer), "Retailer")
+            Me.AddControl(Me.m_lbRetailer, Me.m_data.GetUnitDefault(m_lbRetailer.UnitType), "Retailer")
             Me.AddControl(Me.m_lnkRet2Cons, Me.m_data.GetLinkDefault(cLinkFactory.eLinkType.RetailerToConsumer), "Retailer to Consumer")
-            Me.AddControl(Me.m_lbConsumer, Me.m_data.GetUnitDefault(cUnitFactory.cUnitFormatter.Consumer), "Consumer")
+            Me.AddControl(Me.m_lbConsumer, Me.m_data.GetUnitDefault(m_lbConsumer.UnitType), "Consumer")
 
         Catch ex As Exception
 
@@ -98,7 +99,7 @@ Public Class ucDefaults
         Me.RemoveControl(Me.m_lnkProc2Dist)
         Me.RemoveControl(Me.m_lbDistribution)
         Me.RemoveControl(Me.m_lnkDist2Whole)
-        Me.RemoveControl(Me.m_lbWholeseller)
+        Me.RemoveControl(Me.m_lbWholesaler)
         Me.RemoveControl(Me.m_lnkWhole2Ret)
         Me.RemoveControl(Me.m_lbRetailer)
         Me.RemoveControl(Me.m_lnkRet2Cons)

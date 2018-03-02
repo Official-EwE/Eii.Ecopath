@@ -27,6 +27,7 @@ Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Database.cEwEDatabase
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -54,7 +55,7 @@ Public Class plUnitControl
 
         Debug.Assert(fp IsNot Nothing)
 
-        Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+        Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.OptimizedDoubleBuffer, True)
         Me.AllowDrop = True
 
         Me.m_fp = fp
@@ -176,6 +177,7 @@ Public Class plUnitControl
     Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
         MyBase.OnPaint(e)
 
+        Dim sg As cStyleGuide = Me.m_uic.StyleGuide
         Dim rc As Rectangle = Me.ClientRectangle
         Dim clrBackground As Color = Color.Black
         Dim clrBorder As Color = Color.Black
@@ -187,12 +189,14 @@ Public Class plUnitControl
         rc.Height -= 1
 
         ' Get style colors
-        Me.m_uic.StyleGuide.GetStyleColors(Me.Unit.Style, clrText, clrBackground)
+        sg.GetStyleColors(Me.Unit.Style, clrText, clrBackground)
 
-        If Not Me.Unit.CanCompute Then
-            clrBackground = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
-        Else
+        If Me.Selected Then
+            clrBackground = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+        ElseIf Not Me.Unit.CanCompute Then
+            clrBackground = sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
 #If DEBUG Then
+        Else
             If Me.Unit.IsRunError Then
                 clrBackground = Color.Red
             End If
@@ -200,30 +204,15 @@ Public Class plUnitControl
         End If
 
 
-        ' Paint background
+        ' Clear background
         Using br As New SolidBrush(clrBackground)
             e.Graphics.FillRectangle(br, rc)
         End Using
 
-        'Determine border color
-        If Me.Selected Then
-            ' Paint border
-            Using p As New Pen(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT))
-                e.Graphics.DrawRectangle(p, rc)
-                rc.Inflate(-1, -1)
-                e.Graphics.DrawRectangle(p, rc)
-            End Using
-        Else
-            Using p As New Pen(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
-                e.Graphics.DrawRectangle(p, rc)
-            End Using
-        End If
-
-        ' Get unit image
-        img = cUnitImageFactory.GetImage(Me.Unit.UnitType, True)
-
+        ' Draw unit image
+        img = cUnitImageFactory.GetImage(Me.Unit.UnitType)
         If (img IsNot Nothing) Then
-            Dim rcImage As Rectangle = New Rectangle(0, 0, CInt(24 * Me.ZoomFactor), CInt(24 * Me.ZoomFactor))
+            Dim rcImage As Rectangle = New Rectangle(0, 0, CInt(16 * Me.ZoomFactor), CInt(16 * Me.ZoomFactor))
             If cSystemUtils.IsRightToLeft Then
                 rcImage.Offset(2, Me.Height - rcImage.Height - 2)
             Else
@@ -231,16 +220,28 @@ Public Class plUnitControl
             End If
             e.Graphics.DrawImage(img, rcImage, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel)
         End If
+        ' Color background with slight transparency to keep image visible
+        clrBackground = Color.FromArgb(200, clrBackground.R, clrBackground.G, clrBackground.B)
+        Using br As New SolidBrush(clrBackground)
+            e.Graphics.FillRectangle(br, rc)
+        End Using
 
         ' Paint unit name or alternate name
-        Using br As New SolidBrush(clrText)
-            Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
-                Dim strName As String = ""
-                If My.Settings.ShowAltNames Then strName = Me.Unit.NameLocal
-                If String.IsNullOrWhiteSpace(strName) Then strName = Me.Unit.Name
+        Using ft As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
+            Dim strName As String = ""
+            If My.Settings.ShowAltNames Then strName = Me.Unit.NameLocal
+            If String.IsNullOrWhiteSpace(strName) Then strName = Me.Unit.Name
+
+            If cColorUtils.IsDark(clrText) And cColorUtils.IsDark(clrBackground) Then
+                clrText = cColorUtils.Inverse(clrText)
+            End If
+
+            Using br As New SolidBrush(clrText)
                 e.Graphics.DrawString(strName, ft, br, rc)
             End Using
         End Using
+
+        e.Graphics.DrawRectangle(Pens.Black, rc)
 
     End Sub
 

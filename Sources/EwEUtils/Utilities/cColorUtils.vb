@@ -112,6 +112,19 @@ Namespace Utilities
 
         End Function
 
+        Public Shared Function IsDark(clr As Color) As Boolean
+            Dim soften As Single = clr.A / 255.0!
+            Return ((soften * clr.R + soften * clr.G + soften * clr.B) / 3) < 127
+        End Function
+
+        Public Shared Function IsLight(clr As Color) As Boolean
+            Return Not IsDark(clr)
+        End Function
+
+        Public Shared Function Inverse(clr As Color) As Color
+            Return Color.FromArgb(clr.A, 255 - clr.R, 255 - clr.G, 255 - clr.B)
+        End Function
+
     End Class
 
 End Namespace
