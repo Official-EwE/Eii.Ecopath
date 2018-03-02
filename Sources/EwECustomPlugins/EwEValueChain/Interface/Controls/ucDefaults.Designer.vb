@@ -47,7 +47,7 @@ Partial Class ucDefaults
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.m_lbProducer = New EwEValueChainPlugin.ucUnitDefault()
         Me.m_lbProcessing = New EwEValueChainPlugin.ucUnitDefault()
-        Me.m_lbWholeseller = New EwEValueChainPlugin.ucUnitDefault()
+        Me.m_lbWholesaler = New EwEValueChainPlugin.ucUnitDefault()
         Me.m_lbRetailer = New EwEValueChainPlugin.ucUnitDefault()
         Me.m_lbConsumer = New EwEValueChainPlugin.ucUnitDefault()
         Me.m_lnkProd2Proc = New EwEValueChainPlugin.ucLinkDefault()
@@ -102,7 +102,7 @@ Partial Class ucDefaults
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.m_lbProducer, 1, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.m_lbProcessing, 1, 3)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_lbWholeseller, 1, 7)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_lbWholesaler, 1, 7)
         Me.TableLayoutPanel1.Controls.Add(Me.m_lbRetailer, 1, 9)
         Me.TableLayoutPanel1.Controls.Add(Me.m_lbConsumer, 1, 11)
         Me.TableLayoutPanel1.Controls.Add(Me.m_lnkProd2Proc, 1, 2)
@@ -133,6 +133,7 @@ Partial Class ucDefaults
         '
         'm_lbProducer
         '
+        Me.m_lbProducer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_lbProducer.BackColor = System.Drawing.SystemColors.Window
         Me.m_lbProducer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lbProducer.Location = New System.Drawing.Point(38, 51)
@@ -142,9 +143,12 @@ Partial Class ucDefaults
         Me.m_lbProducer.Selected = False
         Me.m_lbProducer.Size = New System.Drawing.Size(100, 34)
         Me.m_lbProducer.TabIndex = 0
+        Me.m_lbProducer.UIContext = Nothing
+        Me.m_lbProducer.UnitType = EwEValueChainPlugin.cUnitFactory.eUnitType.Producer
         '
         'm_lbProcessing
         '
+        Me.m_lbProcessing.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_lbProcessing.BackColor = System.Drawing.SystemColors.Window
         Me.m_lbProcessing.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lbProcessing.Location = New System.Drawing.Point(38, 119)
@@ -154,21 +158,27 @@ Partial Class ucDefaults
         Me.m_lbProcessing.Selected = False
         Me.m_lbProcessing.Size = New System.Drawing.Size(100, 34)
         Me.m_lbProcessing.TabIndex = 0
+        Me.m_lbProcessing.UIContext = Nothing
+        Me.m_lbProcessing.UnitType = EwEValueChainPlugin.cUnitFactory.eUnitType.Processing
         '
-        'm_lbWholeseller
+        'm_lbWholesaler
         '
-        Me.m_lbWholeseller.BackColor = System.Drawing.SystemColors.Window
-        Me.m_lbWholeseller.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lbWholeseller.Location = New System.Drawing.Point(38, 255)
-        Me.m_lbWholeseller.Margin = New System.Windows.Forms.Padding(0)
-        Me.m_lbWholeseller.Name = "m_lbWholeseller"
-        Me.m_lbWholeseller.ObjDefault = Nothing
-        Me.m_lbWholeseller.Selected = False
-        Me.m_lbWholeseller.Size = New System.Drawing.Size(100, 34)
-        Me.m_lbWholeseller.TabIndex = 0
+        Me.m_lbWholesaler.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.m_lbWholesaler.BackColor = System.Drawing.SystemColors.Window
+        Me.m_lbWholesaler.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_lbWholesaler.Location = New System.Drawing.Point(38, 255)
+        Me.m_lbWholesaler.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_lbWholesaler.Name = "m_lbWholesaler"
+        Me.m_lbWholesaler.ObjDefault = Nothing
+        Me.m_lbWholesaler.Selected = False
+        Me.m_lbWholesaler.Size = New System.Drawing.Size(100, 34)
+        Me.m_lbWholesaler.TabIndex = 0
+        Me.m_lbWholesaler.UIContext = Nothing
+        Me.m_lbWholesaler.UnitType = EwEValueChainPlugin.cUnitFactory.eUnitType.Wholesaler
         '
         'm_lbRetailer
         '
+        Me.m_lbRetailer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_lbRetailer.BackColor = System.Drawing.SystemColors.Window
         Me.m_lbRetailer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lbRetailer.Location = New System.Drawing.Point(38, 323)
@@ -178,9 +188,12 @@ Partial Class ucDefaults
         Me.m_lbRetailer.Selected = False
         Me.m_lbRetailer.Size = New System.Drawing.Size(100, 34)
         Me.m_lbRetailer.TabIndex = 0
+        Me.m_lbRetailer.UIContext = Nothing
+        Me.m_lbRetailer.UnitType = EwEValueChainPlugin.cUnitFactory.eUnitType.Retailer
         '
         'm_lbConsumer
         '
+        Me.m_lbConsumer.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_lbConsumer.BackColor = System.Drawing.SystemColors.Window
         Me.m_lbConsumer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lbConsumer.Location = New System.Drawing.Point(38, 391)
@@ -190,9 +203,12 @@ Partial Class ucDefaults
         Me.m_lbConsumer.Selected = False
         Me.m_lbConsumer.Size = New System.Drawing.Size(100, 34)
         Me.m_lbConsumer.TabIndex = 0
+        Me.m_lbConsumer.UIContext = Nothing
+        Me.m_lbConsumer.UnitType = EwEValueChainPlugin.cUnitFactory.eUnitType.Consumer
         '
         'm_lnkProd2Proc
         '
+        Me.m_lnkProd2Proc.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_lnkProd2Proc.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lnkProd2Proc.Location = New System.Drawing.Point(41, 88)
         Me.m_lnkProd2Proc.Name = "m_lnkProd2Proc"
@@ -200,9 +216,11 @@ Partial Class ucDefaults
         Me.m_lnkProd2Proc.Selected = False
         Me.m_lnkProd2Proc.Size = New System.Drawing.Size(94, 28)
         Me.m_lnkProd2Proc.TabIndex = 1
+        Me.m_lnkProd2Proc.UIContext = Nothing
         '
         'm_lnkProc2Dist
         '
+        Me.m_lnkProc2Dist.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_lnkProc2Dist.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lnkProc2Dist.Location = New System.Drawing.Point(41, 156)
         Me.m_lnkProc2Dist.Name = "m_lnkProc2Dist"
@@ -210,9 +228,11 @@ Partial Class ucDefaults
         Me.m_lnkProc2Dist.Selected = False
         Me.m_lnkProc2Dist.Size = New System.Drawing.Size(94, 28)
         Me.m_lnkProc2Dist.TabIndex = 1
+        Me.m_lnkProc2Dist.UIContext = Nothing
         '
         'm_lnkWhole2Ret
         '
+        Me.m_lnkWhole2Ret.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_lnkWhole2Ret.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lnkWhole2Ret.Location = New System.Drawing.Point(41, 292)
         Me.m_lnkWhole2Ret.Name = "m_lnkWhole2Ret"
@@ -220,9 +240,11 @@ Partial Class ucDefaults
         Me.m_lnkWhole2Ret.Selected = False
         Me.m_lnkWhole2Ret.Size = New System.Drawing.Size(94, 28)
         Me.m_lnkWhole2Ret.TabIndex = 1
+        Me.m_lnkWhole2Ret.UIContext = Nothing
         '
         'm_lnkRet2Cons
         '
+        Me.m_lnkRet2Cons.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_lnkRet2Cons.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lnkRet2Cons.Location = New System.Drawing.Point(41, 360)
         Me.m_lnkRet2Cons.Name = "m_lnkRet2Cons"
@@ -230,9 +252,11 @@ Partial Class ucDefaults
         Me.m_lnkRet2Cons.Selected = False
         Me.m_lnkRet2Cons.Size = New System.Drawing.Size(94, 28)
         Me.m_lnkRet2Cons.TabIndex = 1
+        Me.m_lnkRet2Cons.UIContext = Nothing
         '
         'm_lbDistribution
         '
+        Me.m_lbDistribution.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_lbDistribution.BackColor = System.Drawing.SystemColors.Window
         Me.m_lbDistribution.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lbDistribution.Location = New System.Drawing.Point(38, 187)
@@ -242,9 +266,12 @@ Partial Class ucDefaults
         Me.m_lbDistribution.Selected = False
         Me.m_lbDistribution.Size = New System.Drawing.Size(100, 34)
         Me.m_lbDistribution.TabIndex = 0
+        Me.m_lbDistribution.UIContext = Nothing
+        Me.m_lbDistribution.UnitType = EwEValueChainPlugin.cUnitFactory.eUnitType.Distribution
         '
         'm_lnkDist2Whole
         '
+        Me.m_lnkDist2Whole.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_lnkDist2Whole.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_lnkDist2Whole.Location = New System.Drawing.Point(41, 224)
         Me.m_lnkDist2Whole.Name = "m_lnkDist2Whole"
@@ -252,6 +279,7 @@ Partial Class ucDefaults
         Me.m_lnkDist2Whole.Selected = False
         Me.m_lnkDist2Whole.Size = New System.Drawing.Size(94, 28)
         Me.m_lnkDist2Whole.TabIndex = 1
+        Me.m_lnkDist2Whole.UIContext = Nothing
         '
         'm_cbDefault
         '
@@ -286,7 +314,7 @@ Partial Class ucDefaults
     Private WithEvents m_lbProducer As ucUnitDefault
     Private WithEvents m_cbDefault As System.Windows.Forms.ComboBox
     Private WithEvents m_lbProcessing As ucUnitDefault
-    Private WithEvents m_lbWholeseller As ucUnitDefault
+    Private WithEvents m_lbWholesaler As ucUnitDefault
     Private WithEvents m_lbRetailer As ucUnitDefault
     Private WithEvents m_lbConsumer As ucUnitDefault
     Private WithEvents m_lnkProd2Proc As ucLinkDefault

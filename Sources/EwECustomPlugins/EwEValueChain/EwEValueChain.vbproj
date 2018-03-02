@@ -371,15 +371,6 @@
     <None Include="Resources\ZoomHS.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\consumer.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\distribution.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\factory.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\FormulaEvaluatorHS.png" />
   </ItemGroup>
   <ItemGroup>
@@ -421,17 +412,17 @@
     <None Include="~Design~\Plugin.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\consumer_small.png" />
-    <Content Include="Resources\distribution_small.png" />
     <None Include="Resources\ecost_256x256.png" />
-    <Content Include="Resources\factory_small.png" />
-    <Content Include="Resources\producer.png" />
-    <Content Include="Resources\producer_small.png" />
-    <Content Include="Resources\retailer_small.png" />
+    <Content Include="Resources\icons8-depot-32.png" />
+    <Content Include="Resources\icons8-factory-32.png" />
+    <Content Include="Resources\icons8-fishing-32.png" />
+    <Content Include="Resources\icons8-meal-32.png" />
+    <Content Include="Resources\icons8-money-bag-32.png" />
+    <Content Include="Resources\icons8-shipped-32.png" />
+    <Content Include="Resources\icons8-shopping-cart-32.png" />
     <Content Include="Resources\translate.png" />
     <Content Include="Resources\wholesaler_small.png" />
     <None Include="Resources\ValueChain.ico" />
-    <None Include="Resources\retailer.png" />
     <None Include="Resources\wholesaler.png" />
   </ItemGroup>
   <ItemGroup>

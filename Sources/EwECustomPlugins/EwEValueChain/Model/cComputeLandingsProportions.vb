@@ -55,7 +55,7 @@ Public Class cComputeLandingPortions
             'not sure if this number can be read so instead summing up below
 
             ' For each Metier unit
-            For Each unit As cUnit In data.GetUnits(cUnitFactory.cUnitFormatter.Producer)
+            For Each unit As cUnit In data.GetUnits(cUnitFactory.eUnitType.Producer)
                 'sum up the number of producers:  
                 NoProducers += 1  'or get the unit number for the current unit?
 

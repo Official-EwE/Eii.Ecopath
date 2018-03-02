@@ -305,7 +305,6 @@ Partial Class ucEditFlow
         'm_plFlow
         '
         Me.m_plFlow.AutoScroll = True
-        Me.m_plFlow.BackColor = System.Drawing.SystemColors.Window
         Me.m_plFlow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.m_plFlow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_plFlow.EditMode = EwEValueChainPlugin.plFlow.eEditMode.Move
@@ -358,6 +357,7 @@ Partial Class ucEditFlow
         '
         'm_selector
         '
+        Me.m_selector.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.m_selector.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_selector.Location = New System.Drawing.Point(0, 0)
         Me.m_selector.Margin = New System.Windows.Forms.Padding(0)

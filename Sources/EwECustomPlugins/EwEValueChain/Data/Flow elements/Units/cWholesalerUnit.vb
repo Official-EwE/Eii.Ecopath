@@ -58,9 +58,9 @@ Public Class cWholesalerUnit
     End Property
 
     <Browsable(False)> _
-    Public Overrides ReadOnly Property UnitType() As cUnitFactory.cUnitFormatter
+    Public Overrides ReadOnly Property UnitType() As cUnitFactory.eUnitType
         Get
-            Return cUnitFactory.cUnitFormatter.Wholesaler
+            Return cUnitFactory.eUnitType.Wholesaler
         End Get
     End Property
 

@@ -255,15 +255,15 @@ Public Class gridEcopathResult
         ' Create subset lists
         For Each unit As cUnit In lUnits
             Select Case unit.UnitType
-                Case cUnitFactory.cUnitFormatter.Producer
+                Case cUnitFactory.eUnitType.Producer
                     alUnits(0).Add(unit)
-                Case cUnitFactory.cUnitFormatter.Processing
+                Case cUnitFactory.eUnitType.Processing
                     alUnits(1).Add(unit)
-                Case cUnitFactory.cUnitFormatter.Distribution
+                Case cUnitFactory.eUnitType.Distribution
                     alUnits(2).Add(unit)
-                Case cUnitFactory.cUnitFormatter.Wholesaler
+                Case cUnitFactory.eUnitType.Wholesaler
                     alUnits(3).Add(unit)
-                Case cUnitFactory.cUnitFormatter.Retailer
+                Case cUnitFactory.eUnitType.Retailer
                     alUnits(4).Add(unit)
             End Select
         Next

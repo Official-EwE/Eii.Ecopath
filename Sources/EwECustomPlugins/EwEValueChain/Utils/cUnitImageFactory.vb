@@ -27,27 +27,21 @@ Imports System.Drawing
 
 Public Class cUnitImageFactory
 
-    Public Shared Function GetImage(ByVal unitType As cUnitFactory.cUnitFormatter, _
-                                    ByVal bLarge As Boolean) As Image
+    Public Shared Function GetImage(ByVal unitType As cUnitFactory.eUnitType) As Image
+
         Select Case unitType
-            Case cUnitFactory.cUnitFormatter.Producer
-                If bLarge Then Return My.Resources.producer
-                Return My.Resources.producer_small
-            Case cUnitFactory.cUnitFormatter.Processing
-                If bLarge Then Return My.Resources.processing
-                Return My.Resources.processing_small
-            Case cUnitFactory.cUnitFormatter.Distribution
-                If bLarge Then Return My.Resources.distribution
-                Return My.Resources.distribution_small
-            Case cUnitFactory.cUnitFormatter.Wholesaler
-                If bLarge Then Return My.Resources.wholesaler
-                Return My.Resources.wholesaler_small
-            Case cUnitFactory.cUnitFormatter.Retailer
-                If bLarge Then Return My.Resources.retailer
-                Return My.Resources.retailer_small
-            Case cUnitFactory.cUnitFormatter.Consumer
-                If bLarge Then Return My.Resources.consumer
-                Return My.Resources.consumer_small
+            Case cUnitFactory.eUnitType.Producer
+                Return My.Resources.icons8_fishing_32
+            Case cUnitFactory.eUnitType.Processing
+                Return My.Resources.icons8_factory_32
+            Case cUnitFactory.eUnitType.Distribution
+                Return My.Resources.icons8_shipped_32
+            Case cUnitFactory.eUnitType.Wholesaler
+                Return My.Resources.icons8_depot_32
+            Case cUnitFactory.eUnitType.Retailer
+                Return My.Resources.icons8_shopping_cart_32
+            Case cUnitFactory.eUnitType.Consumer
+                Return My.Resources.icons8_meal_32
         End Select
         Return Nothing
     End Function

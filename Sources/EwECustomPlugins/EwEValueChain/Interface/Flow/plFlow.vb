@@ -467,7 +467,7 @@ Public Class plFlow
             lUnits.AddRange(Me.m_data.GetUnits(Me.ItemFilter))
         Else
             ' #No: grab all units
-            lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.All))
+            lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.All))
         End If
 
         Me.ClearFlow()
@@ -773,7 +773,7 @@ Public Class plFlow
 
         ' For all Ecopath fleets:
 
-        Dim lUnits As cUnit() = Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.Producer)
+        Dim lUnits As cUnit() = Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer)
         Dim core As cCore = Me.m_data.Core
         Dim fleet As cEcopathFleetInput = Nothing
         Dim pu As cProducerUnit = Nothing
@@ -793,7 +793,7 @@ Public Class plFlow
             ' Not found?
             If Not bProducerExists Then
                 ' #Yes: create it
-                pu = DirectCast(Me.CreateUnit(cUnitFactory.cUnitFormatter.Producer), cProducerUnit)
+                pu = DirectCast(Me.CreateUnit(cUnitFactory.eUnitType.Producer), cProducerUnit)
                 pu.AllowEvents = False
                 pu.Fleet = fleet
                 pu.AllowEvents = True
@@ -807,7 +807,7 @@ Public Class plFlow
     ''' </summary>
     ''' <param name="unitType"></param>
     ''' -----------------------------------------------------------------------
-    Public Function CreateUnit(ByVal unitType As cUnitFactory.cUnitFormatter) As cUnit
+    Public Function CreateUnit(ByVal unitType As cUnitFactory.eUnitType) As cUnit
 
         Dim unit As cUnit = Nothing
         Dim lstrNames As New List(Of String)
@@ -821,17 +821,17 @@ Public Class plFlow
 
         ' Determine mask name
         Select Case unitType
-            Case cUnitFactory.cUnitFormatter.Wholesaler
+            Case cUnitFactory.eUnitType.Wholesaler
                 strMask = My.Resources.CORE_DEFAULT_WHOLESALER
-            Case cUnitFactory.cUnitFormatter.Retailer
+            Case cUnitFactory.eUnitType.Retailer
                 strMask = My.Resources.CORE_DEFAULT_RETAILER
-            Case cUnitFactory.cUnitFormatter.Processing
+            Case cUnitFactory.eUnitType.Processing
                 strMask = My.Resources.CORE_DEFAULT_PROCESSING
-            Case cUnitFactory.cUnitFormatter.Producer
+            Case cUnitFactory.eUnitType.Producer
                 strMask = ""
-            Case cUnitFactory.cUnitFormatter.Distribution
+            Case cUnitFactory.eUnitType.Distribution
                 strMask = My.Resources.CORE_DEFAULT_DISTRIBUTION
-            Case cUnitFactory.cUnitFormatter.Consumer
+            Case cUnitFactory.eUnitType.Consumer
                 strMask = My.Resources.CORE_DEFAULT_CONSUMER
         End Select
 
@@ -973,7 +973,7 @@ Public Class plFlow
 
     End Function
 
-    Public Function ConvertUnit(ByVal unit As cUnit, ByVal convertTo As cUnitFactory.cUnitFormatter) As Boolean
+    Public Function ConvertUnit(ByVal unit As cUnit, ByVal convertTo As cUnitFactory.eUnitType) As Boolean
 
         Dim fmt As New cUnitTypeFormatter()
         Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_CONVERT_UNIT, unit.Name, fmt.GetDescriptor(unit.UnitType), fmt.GetDescriptor(convertTo)), _

@@ -106,7 +106,7 @@ Public Class cResultWriter
 
         ' Write data header
         sw.Write("Variable")
-        For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.All)
+        For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
             sw.Write(",")
             sw.Write(cStringUtils.ToCSVField(u.Name))
         Next
@@ -115,7 +115,7 @@ Public Class cResultWriter
         ' Write data
         For Each v As cResults.eVariableType In [Enum].GetValues(GetType(cResults.eVariableType))
             sw.Write(cStringUtils.ToCSVField(v.ToString))
-            For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.cUnitFormatter.All)
+            For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
                 sw.Write(",")
                 sw.Write(cStringUtils.FormatNumber(Me.m_results.GetTotal(v, New cUnit() {u}, iItem, cResults.GetVariableContributionType(v))))
             Next

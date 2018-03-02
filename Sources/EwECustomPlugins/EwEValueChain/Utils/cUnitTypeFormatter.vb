@@ -34,7 +34,7 @@ Public Class cUnitTypeFormatter
 
     Public Function GetDescribedType() As System.Type _
         Implements ITypeFormatter.GetDescribedType
-        Return GetType(cUnitFactory.cUnitFormatter)
+        Return GetType(cUnitFactory.eUnitType)
     End Function
 
     Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements _
