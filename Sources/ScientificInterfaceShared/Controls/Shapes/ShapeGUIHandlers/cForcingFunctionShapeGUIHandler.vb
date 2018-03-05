@@ -244,7 +244,14 @@ Namespace Controls
 
             Dim bHasSelection As Boolean = (Me.SelectedShapes IsNot Nothing)
             Dim bHasSingleSelection As Boolean = (Me.SelectedShape IsNot Nothing)
+            Dim bIsSeasonal As Boolean = False
             Dim cmdX As cCommand = Me.UIContext.CommandHandler.GetCommand("TrimUnusedShapeData")
+
+            If bHasSelection Then
+                For Each shape As cShapeData In Me.SelectedShapes
+                    bIsSeasonal = bIsSeasonal Or Me.SelectedShape.IsSeasonal
+                Next
+            End If
 
             Select Case cmd
 
@@ -265,8 +272,11 @@ Namespace Controls
                      eShapeCommandTypes.SetMaxValue
                     Return bHasSingleSelection
 
-                Case eShapeCommandTypes.ShowExtraData, _
-                    eShapeCommandTypes.DiscardExtraData
+                Case eShapeCommandTypes.ShowExtraData
+                    If Not bIsSeasonal Then Return False
+                    If (cmdX IsNot Nothing) Then Return cmdX.Enabled
+
+                Case eShapeCommandTypes.DiscardExtraData
                     If (cmdX IsNot Nothing) Then Return cmdX.Enabled
 
                 Case eShapeCommandTypes.FilterName
