@@ -139,8 +139,8 @@ Namespace Controls.Map
                 Next ispTmp
 
                 Try
-                    If isp > -1 Then
-
+                    ' JS 06Mar18: Made robust to abuse. Toggling to IBM mode after a run messed up the map drawers, who want to draw IBM data that is not there
+                    If isp > -1 And StanzaDS.MaxAgeSpecies IsNot Nothing Then
                         For iaa As Integer = 0 To StanzaDS.MaxAgeSpecies(isp)
                             Dim ia As Integer = StanzaDS.AgeIndex1(isp) + iaa : If ia > StanzaDS.MaxAgeSpecies(isp) Then ia = ia - StanzaDS.MaxAgeSpecies(isp) - 1
                             Dim ist As Integer = StanzaDS.StanzaNo(isp, ia)
@@ -153,7 +153,7 @@ Namespace Controls.Map
                                     Dim sx As Single = StanzaDS.jPacket(isp, iaa, ipkt)
 
                                     If CBool(excl.Cell(CInt(Math.Floor(sy)), CInt(Math.Floor(sx)))) = False Then
-                                        Dim ptfCell As New PointF(CSng(rcPos.Left + (sx - 1) * rcPos.Width() / Me.InCol), _
+                                        Dim ptfCell As New PointF(CSng(rcPos.Left + (sx - 1) * rcPos.Width() / Me.InCol),
                                                                       CSng(rcPos.Top + (sy - 1) * rcPos.Height() / Me.InRow))
                                         Dim rcF As New RectangleF(ptfCell.X, ptfCell.Y, 1, 1)
 
