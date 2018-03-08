@@ -38,6 +38,8 @@ Public Class cEcospaceLayerSingle
     Private m_sMaxValue As Single = 0.0!
     ''' <summary>Layer min value.</summary>
     Private m_sMinValue As Single = 0.0!
+    ''' <summary>Layer mean value.</summary>
+    Private m_sMeanValue As Single = 0.0!
     ''' <summary>Layer num of cells with a value.</summary>
     Private m_iNumValueCells As Integer = 0
 
@@ -127,6 +129,13 @@ Public Class cEcospaceLayerSingle
         End Get
     End Property
 
+    Public Overridable ReadOnly Property MeanValue As Single
+        Get
+            If Me.m_bInvalidateStats Then Me.RecalcStats()
+            Return Me.m_sMeanValue
+        End Get
+    End Property
+
     Public Overrides Sub Invalidate()
         Me.m_bInvalidateStats = True
     End Sub
@@ -155,6 +164,7 @@ Public Class cEcospaceLayerSingle
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim s As Single = 0.0!
+        Dim sTot As Single = 0
         Dim iRows As Integer = bm.InRow
         Dim iCols As Integer = bm.InCol
 
@@ -168,6 +178,7 @@ Public Class cEcospaceLayerSingle
                         Me.m_sMaxValue = Math.Max(s, Me.m_sMaxValue)
                         Me.m_sMinValue = Math.Min(s, Me.m_sMinValue)
                         Me.m_iNumValueCells += 1
+                        sTot += s
                     End If
                 End If
             Next iCol
@@ -175,6 +186,12 @@ Public Class cEcospaceLayerSingle
 
         If (Me.m_sMaxValue = Me.m_sMinValue) Then
             Me.m_sMinValue = 0
+        End If
+
+        If (m_iNumValueCells > 0) Then
+            Me.m_sMeanValue = sTot / Me.m_iNumValueCells
+        Else
+            Me.m_sMeanValue = cCore.NULL_VALUE
         End If
 
         Me.m_bInvalidateStats = False
