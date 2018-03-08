@@ -46,6 +46,7 @@ Namespace Ecospace
         Private Enum eColumnTypes As Integer
             Index
             Name
+            InputCapacity
             Habitat
             EnvResponses
         End Enum
@@ -72,8 +73,36 @@ Namespace Ecospace
 
 #Region " Overrides "
 
+        Private m_mhLayers As cMessageHandler = Nothing
+
+        Public Overrides Property UIContext As cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(value As cUIContext)
+                If (MyBase.UIContext IsNot Nothing) Then
+                    ' Clear handler to listen to layer changes
+                    Me.Core.Messages.RemoveMessageHandler(Me.m_mhLayers)
+                    Me.m_mhLayers = Nothing
+                End If
+
+                MyBase.UIContext = value
+
+                If (MyBase.UIContext IsNot Nothing) Then
+                    ' Set handler to listen to layer changes
+                    m_mhLayers = New cMessageHandler(AddressOf Me.MessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.UIContext.SyncObject)
+#If DEBUG Then
+                    m_mhLayers.Name = "gridCapacityCalcType::Ecospace"
+#End If
+                    Me.Core.Messages.AddMessageHandler(Me.m_mhLayers)
+                End If
+            End Set
+        End Property
+
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
+
+            ' ToDo: globalize this
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -86,6 +115,7 @@ Namespace Ecospace
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
+            Me(0, eColumnTypes.InputCapacity) = New EwEColumnHeaderCell("Input capacity")
             Me(0, eColumnTypes.Habitat) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_HABITAT)
             Me(0, eColumnTypes.EnvResponses) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_ENVRESPONSES)
 
@@ -100,6 +130,8 @@ Namespace Ecospace
                 ' # Group name row header cells
                 Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
+                Me(iGroup, eColumnTypes.InputCapacity) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+
                 Me(iGroup, eColumnTypes.Habitat) = New EwECheckboxCell((group.CapacityCalculationType And eEcospaceCapacityCalType.Habitat) = eEcospaceCapacityCalType.Habitat)
                 Me(iGroup, eColumnTypes.Habitat).Behaviors.Add(EwEEditHandler)
 
@@ -113,6 +145,8 @@ Namespace Ecospace
             Next
 
             Me.m_bInUpdate = False
+            Me.m_bIsCapacityStatusDirty = True
+            Me.UpdateRowCapacityInputStatus()
 
         End Sub
 
@@ -168,11 +202,46 @@ Namespace Ecospace
 
 #Region " Internals "
 
-        Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
-            Me.UpdateRow(DirectCast(prop.Source, cEcospaceGroupInput))
+        Private m_bIsCapacityStatusDirty As Boolean = False
+
+        Private Sub MessageHandler(ByRef message As cMessage)
+            If (message.DataType = eDataTypes.EcospaceLayerHabitatCapacityInput) Then
+                Me.m_bIsCapacityStatusDirty = True
+                BeginInvoke(New MethodInvoker(AddressOf UpdateRowCapacityInputStatus))
+            End If
         End Sub
 
-        Private Sub UpdateRow(grp As cEcospaceGroupInput)
+        Private Sub UpdateRowCapacityInputStatus()
+
+            If (Me.m_bIsCapacityStatusDirty = False) Then Return
+
+            If (Me.m_bInUpdate) Then Return
+            Me.m_bInUpdate = True
+
+            For iGroup As Integer = 1 To Me.Core.nGroups
+                Dim strLabel As String = ""
+                Dim layer As cEcospaceLayerHabitatCapacity = Me.Core.EcospaceBasemap.LayerHabitatCapacityInput(iGroup)
+                Select Case layer.MeanValue
+                    Case cCore.NULL_VALUE, 0
+                        strLabel = SharedResources.GENERIC_VALUE_ERROR
+                    Case 1
+                        ' No need to mention if data is in default shape
+                        'strLabel = SharedResources.GENERIC_VALUE_DEFAULT
+                    Case Else
+                        strLabel = SharedResources.GENERIC_VALUE_CUSTOM
+                End Select
+                Me(iGroup, eColumnTypes.InputCapacity).Value = strLabel
+            Next
+            Me.m_bInUpdate = False
+            Me.m_bIsCapacityStatusDirty = False
+
+        End Sub
+
+        Private Sub OnPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
+            Me.UpdateRowCapCalcType(DirectCast(prop.Source, cEcospaceGroupInput))
+        End Sub
+
+        Private Sub UpdateRowCapCalcType(grp As cEcospaceGroupInput)
 
             If (Me.m_bInUpdate) Then Return
             Me.m_bInUpdate = True
