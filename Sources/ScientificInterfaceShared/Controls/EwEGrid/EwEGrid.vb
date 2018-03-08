@@ -344,7 +344,7 @@ Namespace Controls.EwEGrid
         Private m_lpropertySelected As New List(Of cProperty)
 
         ''' <summary>Flag stating to use fixed col widths and heights.</summary>
-        Private m_bFixedColumnWidths As Boolean = True
+        Private m_bFixedColumnWidths As Boolean = False
 
         ''' <summary>Generic edit behaviour.</summary>
         Private m_bm As cEwEGridBacklinkModel = Nothing
