@@ -117,6 +117,9 @@ Namespace Style
                     Case "false"
                         Return False.ToString()
 
+                    Case "year"
+                        Return My.Resources.CoreDefaults.UNIT_TIME_YEAR
+
                 End Select
 
                 Dim strResource As String = cResourceUtils.LoadString("UNIT_" & str.ToUpper(), My.Resources.CoreDefaults.ResourceManager)
@@ -150,6 +153,7 @@ Namespace Style
         Public Shared ReadOnly Property PresenceAbsence As String = "[presence]/[absence]"
         Public Shared ReadOnly Property Velocity As String = "[cm]/[sec]"
         Public Shared ReadOnly Property Number As String = "[number]"
+        Public Shared ReadOnly Property Year As String = "[year]"
 
     End Class
 
