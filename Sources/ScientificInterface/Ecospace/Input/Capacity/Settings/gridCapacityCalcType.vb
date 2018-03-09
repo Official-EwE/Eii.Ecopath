@@ -115,7 +115,7 @@ Namespace Ecospace
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.InputCapacity) = New EwEColumnHeaderCell("Input capacity")
+            Me(0, eColumnTypes.InputCapacity) = New EwEColumnHeaderCell(eVarNameFlags.LayerHabitatCapacityInput)
             Me(0, eColumnTypes.Habitat) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_HABITAT)
             Me(0, eColumnTypes.EnvResponses) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_ENVRESPONSES)
 
@@ -219,18 +219,25 @@ Namespace Ecospace
             Me.m_bInUpdate = True
 
             For iGroup As Integer = 1 To Me.Core.nGroups
-                Dim strLabel As String = ""
+
+                Dim img As Image = Nothing
                 Dim layer As cEcospaceLayerHabitatCapacity = Me.Core.EcospaceBasemap.LayerHabitatCapacityInput(iGroup)
+
                 Select Case layer.MeanValue
                     Case cCore.NULL_VALUE, 0
-                        strLabel = SharedResources.GENERIC_VALUE_ERROR
+                        img = SharedResources.Critical
                     Case 1
-                        ' No need to mention if data is in default shape
-                        'strLabel = SharedResources.GENERIC_VALUE_DEFAULT
+                        ' No need to mention if data is default 1 across the map
+                        img = Nothing
                     Case Else
-                        strLabel = SharedResources.GENERIC_VALUE_CUSTOM
+                        img = SharedResources.Editable
                 End Select
-                Me(iGroup, eColumnTypes.InputCapacity).Value = strLabel
+
+                If (layer.IsExternalData) Then
+                    img = SharedResources.Database
+                End If
+
+                DirectCast(Me(iGroup, eColumnTypes.InputCapacity), EwECell).Image = img
             Next
             Me.m_bInUpdate = False
             Me.m_bIsCapacityStatusDirty = False

@@ -140,13 +140,13 @@
     <value>Magenta</value>
   </data>
   <data name="m_tsbnClear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 22</value>
+    <value>128, 22</value>
   </data>
   <data name="m_tsbnClear.Text" xml:space="preserve">
-    <value>Clear</value>
+    <value>Input capacity only</value>
   </data>
   <data name="m_tsbnClear.ToolTipText" xml:space="preserve">
-    <value>Do not calculate capacity. Use habitat capacity input maps only</value>
+    <value>Use habitat capacity input maps only</value>
   </data>
   <data name="m_tsbnHabitats.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -210,7 +210,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.14801.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -235,7 +235,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.gridCapacityCalcType, EwE6, Version=6.5.14801.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.gridCapacityCalcType, EwE6, Version=6.6.15222.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -283,6 +283,6 @@
     <value>frmCapacityCalcType</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.5.14801.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEGrid, ScientificInterfaceShared, Version=6.6.15222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
