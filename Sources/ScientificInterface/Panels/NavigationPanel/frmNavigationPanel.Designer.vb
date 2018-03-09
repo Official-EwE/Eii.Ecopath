@@ -48,6 +48,7 @@ Partial Class frmNavigationPanel
         Me.m_tvNavigation.ImageList = Me.m_ilTreeIcons
         Me.m_tvNavigation.Name = "m_tvNavigation"
         Me.m_tvNavigation.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvNavigation.Nodes"), System.Windows.Forms.TreeNode)})
+        Me.m_tvNavigation.ShowImages = True
         Me.m_tvNavigation.ShowLines = False
         '
         'frmNavigationPanel

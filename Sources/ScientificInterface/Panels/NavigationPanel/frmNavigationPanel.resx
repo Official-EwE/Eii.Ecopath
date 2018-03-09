@@ -141,8 +141,8 @@
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQkAAAAEVGV4dAtUb29sVGlwVGV4dAROYW1lCUlzQ2hlY2tl
         ZApJbWFnZUluZGV4CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNo
-        aWxkQ291bnQBAQEAAAEAAQABCAgIAgAAAAYDAAAAKzx0aGlzIG5hdmlnYXRvciBpcyBkZWxpYmVyYXRl
-        bHkgbGVmdCBlbXB0eT4GBAAAAAAGBQAAAAVOb2RlMAD/////CQQAAAD/////CQQAAAAAAAAACw==
+        aWxkQ291bnQBAQEAAAEAAQABCAgIAgAAAAYDAAAAHjx0cmVlIGRlbGliZXJhdGVseSBsZWZ0IGVtcHR5
+        PgYEAAAAAAYFAAAABU5vZGUwAP////8JBAAAAP////8JBAAAAAAAAAAL
 </value>
   </data>
   <data name="m_tvNavigation.SelectedImageIndex" type="System.Int32, mscorlib">
@@ -158,7 +158,7 @@
     <value>m_tvNavigation</value>
   </data>
   <data name="&gt;&gt;m_tvNavigation.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.6.15222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tvNavigation.Parent" xml:space="preserve">
     <value>$this</value>
@@ -197,6 +197,6 @@
     <value>frmNavigationPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwEDockContent, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwEDockContent, ScientificInterfaceShared, Version=6.6.15222.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
