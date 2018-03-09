@@ -13,79 +13,98 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
 
+#Region " Imports "
+
+Option Explicit On
+Option Strict On
+
+Imports EwECore
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.EwEGrid
-Imports SourceGrid2.Cells.Real
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-<CLSCompliant(False)> _
+#End Region
+
+<CLSCompliant(False)>
 Public Class gridSpinupDiff
+    Inherits EwEGrid
 
-    Private m_nRowHeaders As Integer
-
+    Private Const cRowHeaders As Integer = 2
     Private m_Plugin As cEcospaceSpinupPlugin
 
-    Public Sub Init(SpinUpPlugin As cEcospaceSpinupPlugin)
-        m_Plugin = SpinUpPlugin
-    End Sub
+    Private Enum eColumnTypes As Integer
+        Index = 0
+        Name
+        B0
+        Bt
+        BtRel
+        BtDiff
+    End Enum
 
     Public Sub New()
-        MyBase.new()
+        MyBase.New()
+    End Sub
+
+    Public Sub Init(SpinUpPlugin As cEcospaceSpinupPlugin)
+        Me.m_Plugin = SpinUpPlugin
     End Sub
 
     Protected Overrides Sub InitStyle()
+
         MyBase.InitStyle()
 
-        Try
+        ' ToDo: globalize this
+        If (Me.UIContext Is Nothing) Then Return
 
-            If (Me.UIContext Is Nothing) Then Return
+        Me.Redim(Me.Core.nGroups + cRowHeaders, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-            m_nRowHeaders = 2
-            'Define grid dimensions
-            ' Me.Redim(1, Me.Core.nGroups + m_nFixed)
-            Me.Redim(Me.Core.nGroups + m_nRowHeaders, 5)
+        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
 
-            Me.FixedColumns = 1
-            Me.FixedRows = m_nRowHeaders
+        'Column headers
+        Dim headercell As EwEColumnHeaderCell
 
-            'Define row headers
-            Me(0, 0) = New EwERowHeaderCell("Groups")
+        headercell = New EwEColumnHeaderCell("B(0)")
+        Me(0, eColumnTypes.B0) = headercell
+        ' headercell.ToolTipText = "=sumof(log(B(t)/B(0))^2)"
 
-            'Column headers
-            Dim headercell As EwEColumnHeaderCell
+        headercell = New EwEColumnHeaderCell("B(t)")
+        Me(0, eColumnTypes.Bt) = headercell
+        ' headercell.ToolTipText = "=(B(t)-B(0))/B(0)"
 
-            headercell = New EwEColumnHeaderCell("B(0)")
-            ' headercell.ToolTipText = "=sumof(log(B(t)/B(0))^2)"
-            Me(0, 1) = headercell
+        Me(0, eColumnTypes.BtRel) = New EwEColumnHeaderCell("B(t)/B(0)")
+        Me(0, eColumnTypes.BtDiff) = New EwEColumnHeaderCell("B(t)/B(t-1)")
 
-            headercell = New EwEColumnHeaderCell("B(t)")
-            ' headercell.ToolTipText = "=(B(t)-B(0))/B(0)"
-            Me(0, 2) = headercell
+        For iGroup As Integer = 0 To Me.Core.nGroups
+            Dim iRow As Integer = iGroup + cRowHeaders - 1
+            If (iGroup = 0) Then
+                Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell("")
+                Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(SharedResources.GENERIC_VALUE_ALLGROUPS)
+            Else
+                Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
+                Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
+                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, grp, eVarNameFlags.Name)
+            End If
 
-            Me(0, 3) = New EwEColumnHeaderCell("B(t)/B(0)")
-            Me(0, 4) = New EwEColumnHeaderCell("B(t)/B(t-1)")
+            Me(iRow, eColumnTypes.B0) = New EwECell(0.0, GetType(Single))
+            Me(iRow, eColumnTypes.Bt) = New EwECell(0.0, GetType(Single))
+            Me(iRow, eColumnTypes.BtRel) = New EwECell(0.0, GetType(Single))
+            Me(iRow, eColumnTypes.BtDiff) = New EwECell(0.0, GetType(Single))
+        Next
 
-            For igrp As Integer = 0 To Me.Core.nGroups
-                Dim irow As Integer = igrp + m_nRowHeaders - 1
-                If igrp = 0 Then
-                    Me(irow, 0) = New EwERowHeaderCell("All Groups")
-                Else
-                    Me(irow, 0) = New EwERowHeaderCell(Me.Core.EcoPathGroupInputs(igrp).Name)
-                End If
+        Me.FixedColumns = 1
+        Me.FixedRows = cRowHeaders
 
-                Me(irow, 1) = New EwECell(0.0, GetType(Double))
-                Me(irow, 2) = New EwECell(0.0, GetType(Double))
-                Me(irow, 3) = New EwECell(0.0, GetType(Double))
-                Me(irow, 4) = New EwECell(0.0, GetType(Double))
-            Next
+    End Sub
 
-        Catch ex As Exception
-
-        End Try
-
+    Protected Overrides Sub FinishStyle()
+        MyBase.FinishStyle()
+        'Me.FixedColumnWidths = False
     End Sub
 
     Public Sub OnTimeStep()
@@ -96,21 +115,19 @@ Public Class gridSpinupDiff
         End Try
     End Sub
 
-
     Protected Overrides Sub FillData()
 
-        If Me.m_Plugin Is Nothing Then Return
+        If (Me.m_Plugin Is Nothing) Then Return
         If (Me.UIContext Is Nothing) Then Return
+        Return
 
-        'DirectCast(Me(Me.m_nRowHeaders - 1, 1), EwECell).Value = Me.m_Plugin.SS
+        For iGroup As Integer = 0 To Me.Core.nGroups
+            Dim iRow As Integer = iGroup + cRowHeaders - 1
+            DirectCast(Me(iRow, eColumnTypes.B0), EwECell).Value = Me.m_Plugin.BioAtBase(iGroup)
 
-        For igrp As Integer = 0 To Me.Core.nGroups
-            Dim irow As Integer = igrp + Me.m_nRowHeaders - 1
-            DirectCast(Me(irow, 1), EwECell).Value = Me.m_Plugin.BioAtBase(igrp)
-
-            DirectCast(Me(irow, 2), EwECell).Value = Me.m_Plugin.BioAtTime(igrp)
-            DirectCast(Me(irow, 3), EwECell).Value = Me.m_Plugin.BtB0(igrp)
-            DirectCast(Me(irow, 4), EwECell).Value = Me.m_Plugin.BtBtMinus1(igrp)
+            DirectCast(Me(iRow, eColumnTypes.Bt), EwECell).Value = Me.m_Plugin.BioAtTime(iGroup)
+            DirectCast(Me(iRow, eColumnTypes.BtRel), EwECell).Value = Me.m_Plugin.BtB0(iGroup)
+            DirectCast(Me(iRow, eColumnTypes.BtDiff), EwECell).Value = Me.m_Plugin.BtBtMinus1(iGroup)
         Next
 
     End Sub

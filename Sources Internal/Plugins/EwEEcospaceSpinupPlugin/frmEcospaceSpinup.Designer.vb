@@ -18,14 +18,11 @@
 ' ===============================================================================
 '
 
-Imports ScientificInterfaceShared
-
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmEcospaceSpinup
-    Inherits ScientificInterfaceShared.Forms.frmEwE
+    Inherits ScientificInterfaceShared.Forms.frmEwEGrid
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing AndAlso components IsNot Nothing Then
             components.Dispose()
@@ -39,86 +36,49 @@ Partial Class frmEcospaceSpinup
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcospaceSpinup))
         Me.m_chkUseSpinup = New System.Windows.Forms.CheckBox()
-        Me.m_txSpinUpYears = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_tbxSpinUpYears = New System.Windows.Forms.TextBox()
+        Me.m_lblSpinUpYears = New System.Windows.Forms.Label()
         Me.m_chkUseBaseBio = New System.Windows.Forms.CheckBox()
-        Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.m_gridSpinUpDif = New EwEEcospaceSpinupPlugin.gridSpinupDiff(Me.components)
+        Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plControls = New System.Windows.Forms.Panel()
-        Me.Panel1.SuspendLayout()
+        Me.m_hdr = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_tlpContent.SuspendLayout()
         Me.m_plControls.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_chkUseSpinup
         '
-        Me.m_chkUseSpinup.AutoSize = True
-        Me.m_chkUseSpinup.Location = New System.Drawing.Point(6, 3)
+        resources.ApplyResources(Me.m_chkUseSpinup, "m_chkUseSpinup")
         Me.m_chkUseSpinup.Name = "m_chkUseSpinup"
-        Me.m_chkUseSpinup.Size = New System.Drawing.Size(114, 17)
-        Me.m_chkUseSpinup.TabIndex = 0
-        Me.m_chkUseSpinup.Text = "Use spin-up period"
         Me.m_chkUseSpinup.UseVisualStyleBackColor = True
         '
-        'm_txSpinUpYears
+        'm_tbxSpinUpYears
         '
-        Me.m_txSpinUpYears.Location = New System.Drawing.Point(123, 47)
-        Me.m_txSpinUpYears.Name = "m_txSpinUpYears"
-        Me.m_txSpinUpYears.Size = New System.Drawing.Size(83, 20)
-        Me.m_txSpinUpYears.TabIndex = 1
+        resources.ApplyResources(Me.m_tbxSpinUpYears, "m_tbxSpinUpYears")
+        Me.m_tbxSpinUpYears.Name = "m_tbxSpinUpYears"
         '
-        'Label1
+        'm_lblSpinUpYears
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(3, 50)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(114, 13)
-        Me.Label1.TabIndex = 2
-        Me.Label1.Text = "Spin-up length in years"
+        resources.ApplyResources(Me.m_lblSpinUpYears, "m_lblSpinUpYears")
+        Me.m_lblSpinUpYears.Name = "m_lblSpinUpYears"
         '
         'm_chkUseBaseBio
         '
-        Me.m_chkUseBaseBio.AutoSize = True
-        Me.m_chkUseBaseBio.Location = New System.Drawing.Point(6, 26)
+        resources.ApplyResources(Me.m_chkUseBaseBio, "m_chkUseBaseBio")
         Me.m_chkUseBaseBio.Name = "m_chkUseBaseBio"
-        Me.m_chkUseBaseBio.Size = New System.Drawing.Size(162, 17)
-        Me.m_chkUseBaseBio.TabIndex = 3
         Me.m_chkUseBaseBio.TabStop = False
-        Me.m_chkUseBaseBio.Text = "Plot relative to Ecopath base"
         Me.m_chkUseBaseBio.UseVisualStyleBackColor = True
-        '
-        'CEwEHeaderLabel1
-        '
-        Me.CEwEHeaderLabel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.CEwEHeaderLabel1.CanCollapseParent = False
-        Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
-        Me.CEwEHeaderLabel1.IsCollapsed = False
-        Me.CEwEHeaderLabel1.Location = New System.Drawing.Point(12, 9)
-        Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
-        Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(588, 18)
-        Me.CEwEHeaderLabel1.TabIndex = 4
-        Me.CEwEHeaderLabel1.Text = "Ecospace spin-up configuartion"
-        Me.CEwEHeaderLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'Panel1
-        '
-        Me.Panel1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Panel1.Controls.Add(Me.m_gridSpinUpDif)
-        Me.Panel1.Location = New System.Drawing.Point(15, 115)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(585, 285)
-        Me.Panel1.TabIndex = 5
         '
         'm_gridSpinUpDif
         '
         Me.m_gridSpinUpDif.AllowBlockSelect = True
+        resources.ApplyResources(Me.m_gridSpinUpDif, "m_gridSpinUpDif")
         Me.m_gridSpinUpDif.AutoSizeMinHeight = 10
         Me.m_gridSpinUpDif.AutoSizeMinWidth = 10
         Me.m_gridSpinUpDif.AutoStretchColumnsToFitWidth = False
@@ -129,15 +89,13 @@ Partial Class frmEcospaceSpinup
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridSpinUpDif.CustomSort = False
-        Me.m_gridSpinUpDif.DataName = "grid content"
-        Me.m_gridSpinUpDif.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_gridSpinUpDif.FixedColumnWidths = True
+        Me.m_gridSpinUpDif.DataName = "EcospaceSpinUp"
+        Me.m_gridSpinUpDif.FixedColumnWidths = False
         Me.m_gridSpinUpDif.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridSpinUpDif.GridToolTipActive = True
         Me.m_gridSpinUpDif.IsLayoutSuspended = False
-        Me.m_gridSpinUpDif.Location = New System.Drawing.Point(0, 0)
+        Me.m_gridSpinUpDif.IsOutputGrid = True
         Me.m_gridSpinUpDif.Name = "m_gridSpinUpDif"
-        Me.m_gridSpinUpDif.Size = New System.Drawing.Size(585, 285)
         Me.m_gridSpinUpDif.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -147,46 +105,56 @@ Partial Class frmEcospaceSpinup
             Or SourceGrid2.GridSpecialKeys.Enter) _
             Or SourceGrid2.GridSpecialKeys.Escape) _
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_gridSpinUpDif.TabIndex = 0
+        Me.m_gridSpinUpDif.TrackPropertySelection = False
         Me.m_gridSpinUpDif.UIContext = Nothing
+        '
+        'm_tlpContent
+        '
+        resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
+        Me.m_tlpContent.Controls.Add(Me.m_gridSpinUpDif, 0, 1)
+        Me.m_tlpContent.Controls.Add(Me.m_plControls, 0, 0)
+        Me.m_tlpContent.Name = "m_tlpContent"
         '
         'm_plControls
         '
+        Me.m_plControls.Controls.Add(Me.m_hdr)
         Me.m_plControls.Controls.Add(Me.m_chkUseSpinup)
-        Me.m_plControls.Controls.Add(Me.m_txSpinUpYears)
-        Me.m_plControls.Controls.Add(Me.Label1)
+        Me.m_plControls.Controls.Add(Me.m_tbxSpinUpYears)
         Me.m_plControls.Controls.Add(Me.m_chkUseBaseBio)
-        Me.m_plControls.Location = New System.Drawing.Point(15, 30)
+        Me.m_plControls.Controls.Add(Me.m_lblSpinUpYears)
+        resources.ApplyResources(Me.m_plControls, "m_plControls")
         Me.m_plControls.Name = "m_plControls"
-        Me.m_plControls.Size = New System.Drawing.Size(315, 79)
-        Me.m_plControls.TabIndex = 6
+        '
+        'm_hdr
+        '
+        Me.m_hdr.CanCollapseParent = False
+        Me.m_hdr.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdr, "m_hdr")
+        Me.m_hdr.IsCollapsed = False
+        Me.m_hdr.Name = "m_hdr"
         '
         'frmEcospaceSpinup
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(612, 412)
+        resources.ApplyResources(Me, "$this")
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ControlBox = False
-        Me.Controls.Add(Me.m_plControls)
-        Me.Controls.Add(Me.Panel1)
-        Me.Controls.Add(Me.CEwEHeaderLabel1)
-        Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Controls.Add(Me.m_tlpContent)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmEcospaceSpinup"
         Me.ShowInTaskbar = False
         Me.TabText = "Ecospace spin-up"
-        Me.Text = "Ecospace spin-up"
-        Me.Panel1.ResumeLayout(False)
+        Me.m_tlpContent.ResumeLayout(False)
         Me.m_plControls.ResumeLayout(False)
         Me.m_plControls.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents m_chkUseSpinup As System.Windows.Forms.CheckBox
-    Friend WithEvents m_txSpinUpYears As System.Windows.Forms.TextBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents m_chkUseBaseBio As System.Windows.Forms.CheckBox
-    Friend WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
-    Friend WithEvents m_gridSpinUpDif As EwEEcospaceSpinupPlugin.gridSpinupDiff
-    Friend WithEvents m_plControls As System.Windows.Forms.Panel
+    Private WithEvents m_chkUseSpinup As System.Windows.Forms.CheckBox
+    Private WithEvents m_tbxSpinUpYears As Windows.Forms.TextBox
+    Private WithEvents m_lblSpinUpYears As Windows.Forms.Label
+    Private WithEvents m_gridSpinUpDif As gridSpinupDiff
+    Private WithEvents m_tlpContent As Windows.Forms.TableLayoutPanel
+    Private WithEvents m_plControls As Windows.Forms.Panel
+    Private WithEvents m_chkUseBaseBio As Windows.Forms.CheckBox
+    Friend WithEvents m_hdr As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 End Class

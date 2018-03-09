@@ -18,182 +18,172 @@
 ' ===============================================================================
 '
 
+#Region " Imports "
+
 Option Explicit On
 Option Strict On
 
 Imports EwECore
+Imports EwECore.Style
+Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls
 Imports System.Windows.Forms
 
+#End Region ' Imports
+
 ''' <summary>
-''' A very, very basic plug-in form.
+''' Main user interface for Ecospace spin-up logic
 ''' </summary>
 Public Class frmEcospaceSpinup
-    'ToDo 8-May-2014
-    'Grid columns B(0), B(t), B(t)/B(0), B(t)/B(t-1)
 
-    Private m_plugin As cEcospaceSpinupPlugin
-    Private m_bInitializing As Boolean
+#Region " Private vars "
+
+    Private m_plugin As cEcospaceSpinupPlugin = Nothing
+    Private m_bInitializing As Boolean = False
+    Private m_fpSpinupYears As cEwEFormatProvider = Nothing
+
+#End Region ' Private vars
 
     Public Sub New()
-
-        ' This call is required by the designer.
+        MyBase.New()
         Me.InitializeComponent()
-
-
+        Me.Grid = Me.m_gridSpinUpDif
+        Me.m_gridSpinUpDif.Init(Me.m_plugin)
     End Sub
 
-    ''' <summary>
-    ''' OnLoad is called when a form is about to go 'live'. It is the perfect place to
-    ''' perform last moment configurations before the form is made visible to the user.
-    ''' </summary>
+#Region " Overrides "
+
     Protected Overrides Sub OnLoad(e As System.EventArgs)
+
         MyBase.OnLoad(e)
-        m_bInitializing = True
 
-        Try
+        Me.m_bInitializing = True
 
-            Me.m_gridSpinUpDif.UIContext = Me.UIContext
-            Me.m_gridSpinUpDif.Init(Me.m_plugin)
+        Dim mdYears As New cVariableMetaData(0, 100, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 0, cUnits.Year)
+        Me.m_fpSpinupYears = New cEwEFormatProvider(Me.UIContext, Me.m_tbxSpinUpYears, GetType(Single), mdYears)
 
-            Me.UpdateControls()
+        AddHandler Me.m_plugin.OnEcospaceTimeStep, AddressOf Me.OnTimeStep
+        AddHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
+        AddHandler Me.m_plugin.OnEcospaceRunCompleted, AddressOf Me.OnRunCompleted
 
-            AddHandler Me.m_plugin.OnEcospaceTimeStep, AddressOf Me.OnTimeStep
-            AddHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
-            AddHandler Me.m_plugin.OnEcospaceRunCompleted, AddressOf Me.OnRunCompleted
-        Catch ex As Exception
+        Me.m_bInitializing = False
 
-        End Try
+        Me.UpdateControls()
 
-        m_bInitializing = False
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
         RemoveHandler Me.m_plugin.OnEcospaceTimeStep, AddressOf Me.OnTimeStep
         RemoveHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
         RemoveHandler Me.m_plugin.OnEcospaceRunCompleted, AddressOf Me.OnRunCompleted
+        Me.m_fpSpinupYears.Release()
     End Sub
-
-
 
     Public Overrides ReadOnly Property IsRunForm() As Boolean
         Get
-            Return True
+            Return False
         End Get
     End Property
 
+    Protected Overrides Sub UpdateControls()
+
+        MyBase.UpdateControls()
+
+        If (Me.m_plugin Is Nothing) Then Return
+        If (Me.m_bInitializing) Then Return
+
+        Me.m_bInitializing = True
+        Try
+            Me.m_chkUseSpinup.Checked = Me.m_plugin.UseSpinUp
+            Me.m_fpSpinupYears.Value = Me.m_plugin.SpinUpYears
+            Me.m_chkUseBaseBio.Checked = Me.m_plugin.UseSpinUpBaseBio
+        Catch ex As Exception
+            cLog.Write(ex, "frmEwESpinupPlugin.UpdateControls")
+        End Try
+        Me.m_bInitializing = False
+
+    End Sub
+
+#End Region ' Overrides
+
+#Region " Public access "
+
+    Friend Sub Init(ByVal plugin As cEcospaceSpinupPlugin)
+        Me.m_plugin = plugin
+    End Sub
+
+#End Region ' Public access
+
+#Region " Events "
+
+    Private Sub OnRunStarted()
+        Me.UpdateCore()
+    End Sub
 
     Private Sub OnTimeStep()
         Try
             Me.m_gridSpinUpDif.OnTimeStep()
         Catch ex As Exception
-
-        End Try
-    End Sub
-
-    Private Sub OnRunStarted()
-        Try
-            Me.UpdateCore()
-            Me.setEnabledState(False)
-        Catch ex As Exception
-
+            cLog.Write(ex, "frmEwESpinupPlugin.UpdateControls")
         End Try
     End Sub
 
     Private Sub OnRunCompleted()
-        Try
-            Me.setEnabledState(True)
-        Catch ex As Exception
-
-        End Try
+        ' NOP
     End Sub
 
+    Private Sub OnUseSpinupChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_chkUseSpinup.CheckedChanged
 
-    Public Sub Init(ByVal PluginPoint As cEcospaceSpinupPlugin)
-        m_plugin = PluginPoint
-    End Sub
-
-
-    Private Sub m_chkUseSpinup_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles m_chkUseSpinup.CheckedChanged
+        If (Me.m_bInitializing) Then Return
         Try
-            If Not Me.m_bInitializing Then
-                Me.m_plugin.UseSpinUp = Me.m_chkUseSpinup.Checked
-            End If
+            Me.m_plugin.UseSpinUp = Me.m_chkUseSpinup.Checked
         Catch ex As Exception
-
+            cLog.Write(ex, "frmEwESpinupPlugin.UpdateControls")
         End Try
 
     End Sub
 
+    Private Sub OnUseBaseBiohanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_chkUseBaseBio.CheckedChanged
 
-    Private Sub m_chkUseBaseBio_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles m_chkUseBaseBio.CheckedChanged
+        If (Me.m_bInitializing) Then Return
         Try
-            If Not Me.m_bInitializing Then
-                Me.m_plugin.UseSpinUpBaseBio = Me.m_chkUseBaseBio.Checked
-            End If
+            Me.m_plugin.UseSpinUpBaseBio = Me.m_chkUseBaseBio.Checked
         Catch ex As Exception
-
+            cLog.Write(ex, "frmEwESpinupPlugin.UpdateControls")
         End Try
 
     End Sub
 
+    Private Sub OnSpinupYearsChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_tbxSpinUpYears.TextChanged
 
-    Private Sub m_txSpinUpYears_TextChanged(sender As System.Object, e As System.EventArgs) Handles m_txSpinUpYears.TextChanged
+        If (Me.m_bInitializing) Then Return
         Try
-            If Not Me.m_bInitializing Then
-                Dim value As Single
-                If Single.TryParse(Me.m_txSpinUpYears.Text, value) Then
-                    Me.m_plugin.SpinUpYears = value
-                End If
-            End If
+            Me.m_plugin.SpinUpYears = CSng(Me.m_fpSpinupYears.Value)
         Catch ex As Exception
-
+            cLog.Write(ex, "frmEwESpinupPlugin.UpdateControls")
         End Try
+
     End Sub
+
+#End Region ' Events
+
+#Region " Internals "
 
     Private Sub UpdateCore()
+        If (Me.m_plugin Is Nothing) Then Return
         Try
-
-            If Me.m_plugin IsNot Nothing Then
-                'Update the Plugin State
-                Me.m_plugin.UseSpinUp = Me.m_chkUseSpinup.Checked
-                Single.TryParse(Me.m_txSpinUpYears.Text, Me.m_plugin.SpinUpYears)
-                Me.m_plugin.UseSpinUpBaseBio = Me.m_chkUseBaseBio.Checked
-
-            End If
-
+            'Update the Plugin State
+            Me.m_plugin.UseSpinUp = Me.m_chkUseSpinup.Checked
+            Single.TryParse(Me.m_tbxSpinUpYears.Text, Me.m_plugin.SpinUpYears)
+            Me.m_plugin.UseSpinUpBaseBio = Me.m_chkUseBaseBio.Checked
         Catch ex As Exception
-
-        End Try
-
-    End Sub
-
-    Private Sub setEnabledState(ControlsEnabled As Boolean)
-        Try
-            Me.m_plControls.Enabled = ControlsEnabled
-            Me.m_plControls.Refresh()
-        Catch ex As Exception
-
+            cLog.Write(ex, "frmEwESpinupPlugin.UpdateCore")
         End Try
     End Sub
 
-
-    Protected Overrides Sub UpdateControls()
-        MyBase.UpdateControls()
-
-        Try
-
-            If Me.m_plugin IsNot Nothing Then
-                'Update the controls to the Plugin State
-                Me.m_chkUseSpinup.Checked = Me.m_plugin.UseSpinUp
-                Me.m_txSpinUpYears.Text = Me.m_plugin.SpinUpYears.ToString
-                Me.m_chkUseBaseBio.Checked = Me.m_plugin.UseSpinUpBaseBio
-            End If
-
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
+#End Region ' Internals
 
 End Class

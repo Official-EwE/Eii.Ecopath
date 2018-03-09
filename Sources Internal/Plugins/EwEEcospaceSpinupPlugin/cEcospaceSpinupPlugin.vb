@@ -33,26 +33,6 @@ Imports ScientificInterfaceShared.Controls
 
 #End Region
 
-''' <summary>
-''' Base code that can be used as a template to create a new plug-in.
-''' </summary>
-''' <remarks>
-''' <para>This plugin responds to:</para>
-''' <list type="bullet">
-''' <item><description>loading a model,</description>></item>
-''' <item><description>saving a model,</description>></item>
-''' <item><description>closing a model,</description>></item>
-''' <item><description>initialization of the Core,</description>></item>
-''' <item><description>initialization of Ecopath,</description>></item>
-''' <item><description>initialization of Ecosim,</description>></item>
-''' <item><description>initialization of Ecospace.</description>></item>
-''' </list>
-''' <para>In order to run and test this plugin it must be integrated within the EwE6 scientific interface. 
-''' To achieve this, add this project to the EwE6 solution, and reference this project from within the 
-''' ScientificInterface. This ensures that your plug-in will be built with EwE6, and will be loaded by the 
-''' EwE6 plug-in manager when you run EwE6.</para>
-''' </remarks>
-''' 
 Public Class cEcospaceSpinupPlugin
     Implements EwEPlugin.IPlugin
     Implements EwEPlugin.ICorePlugin
@@ -143,13 +123,12 @@ Public Class cEcospaceSpinupPlugin
         End Set
     End Property
 
-    Public BtBtMinus1() As Double
-    ' Public SS As Double
     Public nTimeSteps As Integer
-    Public BtB0() As Double
-
-    Public BioAtTime() As Double
-    Public BioAtBase() As Double
+    Public BtBtMinus1() As Single
+    ' Public SS As Double
+    Public BtB0() As Single
+    Public BioAtTime() As Single
+    Public BioAtBase() As Single
 
 #End Region
 
@@ -203,16 +182,15 @@ Public Class cEcospaceSpinupPlugin
 
 #Region "Ecopath, Ecosim and Ecospace events"
 
-
     Public Sub OnEcospaceInitRunCompleted(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
 
         Try
             'Me.SS = 0
             If BtBtMinus1 Is Nothing Then
-                Me.BtBtMinus1 = New Double(Me.EcoSpaceData.NGroups) {}
-                Me.BtB0 = New Double(Me.EcoSpaceData.NGroups) {}
-                Me.BioAtTime = New Double(Me.EcoSpaceData.NGroups) {}
-                Me.BioAtBase = New Double(Me.EcoSpaceData.NGroups) {}
+                Me.BtBtMinus1 = New Single(Me.EcoSpaceData.NGroups) {}
+                Me.BtB0 = New Single(Me.EcoSpaceData.NGroups) {}
+                Me.BioAtTime = New Single(Me.EcoSpaceData.NGroups) {}
+                Me.BioAtBase = New Single(Me.EcoSpaceData.NGroups) {}
             Else
                 Array.Clear(Me.BtBtMinus1, 0, Me.BtBtMinus1.Length)
                 Array.Clear(Me.BtB0, 0, Me.BtB0.Length)
@@ -243,7 +221,7 @@ Public Class cEcospaceSpinupPlugin
                 Array.Clear(Me.BtB0, 0, Me.BtB0.Length)
 
                 'Squared log relative error
-                Dim BtBt1 As Double
+                Dim BtBt1 As Single
                 'Biomass at the current timestep
                 Dim Bt As Single
                 Dim BtMinus1 As Single = 1
@@ -331,7 +309,7 @@ Public Class cEcospaceSpinupPlugin
             m_EcoSim = TryCast(EcoSimAsObject, cEcoSimModel)
             m_EcoSpace = TryCast(EcoSpaceAsObject, cEcoSpace)
 
-            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing), _
+            Debug.Assert((m_EcoPath IsNot Nothing) And (m_EcoSim IsNot Nothing) And (m_EcoSpace IsNot Nothing),
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")
 
         Catch ex As Exception
@@ -546,17 +524,6 @@ Public Class cEcospaceSpinupPlugin
 
     End Function
 
-    ' ''' -----------------------------------------------------------------------
-    ' ''' <summary>
-    ' ''' Tell EwE6 where to place an item in its main menu.
-    ' ''' </summary>
-    ' ''' -----------------------------------------------------------------------
-    'Public ReadOnly Property MenuItemLocation() As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
-    '    Get
-    '        Return ""
-    '    End Get
-    'End Property
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Tell EwE6 when during application execution this plug-in should be accessible 
@@ -576,8 +543,7 @@ Public Class cEcospaceSpinupPlugin
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property NavigationTreeItemLocation() As String Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
-            ' As an example, place a navigation tree item under the main 'tools' node.
-            Return "ndSpatialDynamic\ndEcospaceTools"
+            Return "ndSpatialDynamic\ndEcospaceOutput"
         End Get
     End Property
 
@@ -587,7 +553,7 @@ Public Class cEcospaceSpinupPlugin
 
     Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
         Get
-            Return "GOM"
+            Return "Global Ocean Modeling unit, UBC Institute of the Oceans and Fisheries"
         End Get
     End Property
 
@@ -611,7 +577,6 @@ Public Class cEcospaceSpinupPlugin
     End Property
 
 #End Region
-
 
 End Class
 
