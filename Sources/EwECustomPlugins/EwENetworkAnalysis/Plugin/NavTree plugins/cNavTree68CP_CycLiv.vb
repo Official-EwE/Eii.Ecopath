@@ -30,7 +30,7 @@ Public Class cNavTree68CP_CycLiv
 
     Public Overrides ReadOnly Property ControlImage() As System.Drawing.Image
         Get
-            Return SharedResources.nav_output_folder
+            Return SharedResources.nav_output
         End Get
     End Property
 
