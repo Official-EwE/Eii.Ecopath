@@ -131,34 +131,17 @@ Namespace Other
         Public Function Apply() As IOptionsPage.eApplyResultType _
             Implements IOptionsPage.Apply
 
-            Dim alDisabledPlugins As New ArrayList()
-            Dim bChanged As Boolean = False
             Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
+            If (Me.m_pm Is Nothing) Then Return result
+
+            Dim bChanged As Boolean = False
 
             ' Build list of plugins to disable
             For Each info As cPluginAssemblyInfo In Me.m_dictPluginAssemblyInfo.Values
-                If (info.Enabled = False) Then
-                    alDisabledPlugins.Add(info.PluginAssembly.Filename)
-                End If
+                Dim key As String = info.PluginAssembly.Filename
+                If (Me.m_pm.IsPluginEnabled(key) <> info.Enabled) Then result = IOptionsPage.eApplyResultType.Success_restart
+                Me.m_pm.IsPluginEnabled(key) = info.Enabled
             Next
-
-            ' Detect changes that may require a restart
-            If (My.Settings.DisabledPlugins IsNot Nothing) Then
-                For Each strFN As String In alDisabledPlugins
-                    bChanged = bChanged Or Not My.Settings.DisabledPlugins.Contains(strFN)
-                Next
-                For Each strFN As String In My.Settings.DisabledPlugins
-                    bChanged = bChanged Or Not alDisabledPlugins.Contains(strFN)
-                Next
-            Else
-                bChanged = (alDisabledPlugins.Count > 0)
-            End If
-
-            ' Update settings
-            My.Settings.DisabledPlugins = alDisabledPlugins
-
-            ' Convey result
-            If bChanged Then result = DirectCast(Math.Max(result, IOptionsPage.eApplyResultType.Success_restart), IOptionsPage.eApplyResultType)
 
             Return result
 
@@ -283,6 +266,18 @@ Namespace Other
 
         End Sub
 
+        Private Sub OnEnableDisableAll(sender As Object, e As EventArgs) _
+            Handles m_cbEnableDisableAll.CheckedChanged
+
+            Me.SuspendLayout()
+            For Each info As cPluginAssemblyInfo In Me.m_dictPluginAssemblyInfo.Values
+                info.Enabled = Me.m_cbEnableDisableAll.Checked
+                Me.UpdatePluginImage(info)
+            Next
+            Me.ResumeLayout()
+
+        End Sub
+
 #End Region ' Events
 
 #Region " Private implementations "
@@ -340,8 +335,8 @@ Namespace Other
                 ctrl = New ucOptionsPluginAssemblyDetails(DirectCast(tn.Tag, cPluginAssembly))
             ElseIf (TypeOf tn.Tag Is IPlugin) Then
                 ' Hackerdihack
-                ctrl = New ucOptionsPluginDetails(Me.UIContext, _
-                                              DirectCast(tn.Tag, IPlugin), _
+                ctrl = New ucOptionsPluginDetails(Me.UIContext,
+                                              DirectCast(tn.Tag, IPlugin),
                                               DirectCast(tn.Parent.Tag, cPluginAssembly))
             End If
 

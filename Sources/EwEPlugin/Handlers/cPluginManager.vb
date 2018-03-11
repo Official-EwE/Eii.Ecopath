@@ -282,14 +282,26 @@ Public Class cPluginManager
     Public ReadOnly Property DisabledPlugins() As ArrayList
         Get
             Dim alNew As New ArrayList()
-            Dim pa As cPluginAssembly = Nothing
-            For Each strName As String In Me.m_dictAssemblies.Keys
-                If (Me.m_dictAssemblies(strName).Enabled) = False Then
-                    alNew.Add(strName)
+            For Each key As String In Me.m_dictAssemblies.Keys
+                If (Me.m_dictAssemblies(key).Enabled) = False Then
+                    alNew.Add(key)
                 End If
             Next
             Return alNew
         End Get
+    End Property
+
+    Public Property IsPluginEnabled(filename As String) As Boolean
+        Get
+            Dim key As String = filename.ToLower()
+            If (Not Me.m_dictAssemblies.ContainsKey(key)) Then Return False
+            Return Me.m_dictAssemblies(key).Enabled
+        End Get
+        Set(value As Boolean)
+            Dim key As String = filename.ToLower()
+            If (Not Me.m_dictAssemblies.ContainsKey(key)) Then Return
+            Me.m_dictAssemblies(key).Enabled = value
+        End Set
     End Property
 
 #End Region ' Initialization 
@@ -466,6 +478,7 @@ Public Class cPluginManager
         Dim di As DirectoryInfo = Nothing
         Dim afi() As FileInfo = Nothing
         Dim bLoadPlugin As Boolean = True
+        Dim key As String = ""
 
         If Not String.IsNullOrWhiteSpace(strSubfolder) Then
             strPluginPath = Path.Combine(strPluginPath, strSubfolder)
@@ -482,19 +495,14 @@ Public Class cPluginManager
             afi = di.GetFiles("*.dll", [option])
 
             For Each fi As FileInfo In afi
+                key = fi.FullName.ToLower()
                 Try
                     If (alDisabledPlugins Is Nothing) Then
                         bLoadPlugin = True
                     Else
-                        bLoadPlugin = (alDisabledPlugins.IndexOf(fi.FullName) = -1)
+                        bLoadPlugin = (alDisabledPlugins.IndexOf(key) = -1)
                     End If
-
-                    If bLoadPlugin Then
-                        Me.LoadPluginAssembly(fi.FullName)
-                    Else
-                        cLog.Write("Plug-in " & fi.FullName & " is disabled from loading via user settings", eVerboseLevel.Standard)
-                        RaiseEvent AssemblyUserDisabled(fi.FullName)
-                    End If
+                    Me.LoadPluginAssembly(fi.FullName, bLoadPlugin)
                 Catch ex As Exception
                     ' Ignore this
                     cLog.Write(ex, eVerboseLevel.Detailed, "cPluginManager.LoadPlugins " & fi.FullName)
@@ -514,7 +522,7 @@ Public Class cPluginManager
     ''' <param name="strFileName">The file name to load plugins from.</param>
     ''' <returns>True if this assembly was loaded and contained plugins.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function LoadPluginAssembly(ByVal strFileName As String) As Boolean
+    Private Function LoadPluginAssembly(ByVal strFileName As String, bEnabled As Boolean) As Boolean
 
         Dim clsType As Type = Nothing
         Dim clsInterface As Type = Nothing
@@ -523,11 +531,10 @@ Public Class cPluginManager
         Dim bHasPlugins As Boolean = False
         Dim plugAssem As cPluginAssembly = Nothing
         Dim strSandbox As String = ""
+        Dim key As String = strFileName.ToLower()
 
         ' Sanity check
-        If (Me.m_dictAssemblies.ContainsKey(strFileName)) Then
-            Return False
-        End If
+        If (Me.m_dictAssemblies.ContainsKey(key)) Then Return False
 
         Try
             Try
@@ -549,86 +556,92 @@ Public Class cPluginManager
 
             ' Set compatible flag for EwE assemblies
             plugAssem.Compatibility = Me.GetCompatibility(clsAssembly)
+            plugAssem.Enabled = bEnabled
 
             ' Look for appropriate types
             For Each clsType In clsAssembly.GetTypes()
                 ' Only look at types we can create
                 If (clsType.IsPublic = True) Then
                     ' Ignore abstract classes
-                    If Not ((clsType.Attributes And TypeAttributes.Abstract) = _
-                     TypeAttributes.Abstract) Then
+                    If Not ((clsType.Attributes And TypeAttributes.Abstract) =
+                         TypeAttributes.Abstract) Then
                         ' Check for the implementation of the specified interface
                         clsInterface = clsType.GetInterface("EwEPlugin.IPlugin", True)
                         If Not (clsInterface Is Nothing) Then
 
-                            ' Store plugin assembly (but not more than once)
-                            If (Not Me.m_dictAssemblies.ContainsKey(strFileName)) Then
-                                Me.m_dictAssemblies.Add(strFileName, plugAssem)
-                            End If
+                            If (plugAssem.Enabled) Then
 
-                            ' Try to get the plugin
-                            ip = LoadPlugin(plugAssem, strFileName, clsType.FullName)
+                                ' Try to get the plugin
+                                ip = LoadPlugin(plugAssem, strFileName, clsType.FullName)
 
-                            ' Sanity check
-                            If (ip Is Nothing) Then
-                                cLog.Write("Unable to load plugin assembly" & strFileName, eVerboseLevel.Standard)
-                                Return False
-                            End If
-
-                            Try
-                                ' Stick it up
-                                plugAssem.Plugin(ip.Name) = ip
-                            Catch ex As cPluginException
-#If DEBUG Then
-                                Console.WriteLine("PluginManager: assembly '{0}' contained a plug-in with invalid or duplicate name {1}. {2}", strFileName, ip.Name, ex.Message)
-                                Debug.Assert(False)
-#End If
-                                cLog.Write(ex, eVerboseLevel.Standard, "LoadPluginAssembly " & strFileName)
-                            End Try
-
-                            ' Is assembly compatible to run?
-                            If (plugAssem.CanRun) Then
-
-                                ' Is core assigned?
-                                If (Me.m_core IsNot Nothing) Then
-                                    Try
-                                        ' Initialize plugin
-                                        ip.Initialize(Me.m_core)
-                                    Catch ex As Exception
-                                        ' Disable the plugin entirely
-                                        plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
-#If DEBUG Then
-                                        Console.WriteLine("PluginManager: file '{0}' failed to initialize, {1}", strFileName, ex.Message)
-                                        Debug.Assert(False)
-#End If
-                                        cLog.Write(ex, eVerboseLevel.Standard, "Initialize plugin " & strFileName)
-                                    End Try
+                                ' Sanity check
+                                If (ip Is Nothing) Then
+                                    cLog.Write("Unable to load plugin assembly" & strFileName, eVerboseLevel.Standard)
+                                    Return False
                                 End If
 
-                                ' Is UI Context assigned?
-                                If (Me.m_uic IsNot Nothing) Then
-                                    If (TypeOf (ip) Is IUIContextPlugin) Then
+                                Try
+                                    ' Stick it up
+                                    plugAssem.Plugin(ip.Name) = ip
+                                Catch ex As cPluginException
+#If DEBUG Then
+                                    Console.WriteLine("PluginManager: assembly '{0}' contained a plug-in with invalid or duplicate name {1}. {2}", strFileName, ip.Name, ex.Message)
+                                    Debug.Assert(False)
+#End If
+                                    cLog.Write(ex, eVerboseLevel.Standard, "LoadPluginAssembly " & strFileName)
+                                End Try
+
+                                ' Is assembly compatible to run?
+                                If (plugAssem.CanRun) Then
+
+                                    ' Is core assigned?
+                                    If (Me.m_core IsNot Nothing) Then
                                         Try
-                                            DirectCast(ip, IUIContextPlugin).UIContext(Me.m_uic)
+                                            ' Initialize plugin
+                                            ip.Initialize(Me.m_core)
                                         Catch ex As Exception
                                             ' Disable the plugin entirely
                                             plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
 #If DEBUG Then
-                                            Console.WriteLine("PluginManager: file '{0}' failed to accept UI context, {1}", strFileName, ex.Message)
+                                            Console.WriteLine("PluginManager: file '{0}' failed to initialize, {1}", strFileName, ex.Message)
                                             Debug.Assert(False)
 #End If
-                                            cLog.Write(ex, eVerboseLevel.Standard, "UIContext plugin " & strFileName)
+                                            cLog.Write(ex, eVerboseLevel.Standard, "Initialize plugin " & strFileName)
                                         End Try
-                                    End If
-                                End If
+                                    End If ' IsCore
+
+                                    ' Is UI Context assigned?
+                                    If (Me.m_uic IsNot Nothing) Then
+                                        If (TypeOf (ip) Is IUIContextPlugin) Then
+                                            Try
+                                                DirectCast(ip, IUIContextPlugin).UIContext(Me.m_uic)
+                                            Catch ex As Exception
+                                                ' Disable the plugin entirely
+                                                plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
+#If DEBUG Then
+                                                Console.WriteLine("PluginManager: file '{0}' failed to accept UI context, {1}", strFileName, ex.Message)
+                                                Debug.Assert(False)
+#End If
+                                                cLog.Write(ex, eVerboseLevel.Standard, "UIContext plugin " & strFileName)
+                                            End Try
+                                        End If
+                                    End If ' Is UIC
+                                End If ' Can run
+
+                                ' Yeah, got info allright
+                                bHasPlugins = True
+
+                            End If ' Is enabled
+
+                            If Not Me.m_dictAssemblies.ContainsKey(key) Then
+                                ' Add to admin, even if disabled
+                                Me.m_dictAssemblies.Add(key, plugAssem)
                             End If
 
-                            ' Yeah, got info allright
-                            bHasPlugins = True
-                        End If
-                    End If
-                End If
-            Next
+                        End If ' Is IPlugin
+                    End If ' Is not abstract
+                End If ' Is public
+            Next clsType
 
             If (bHasPlugins) Then
 
@@ -688,6 +701,7 @@ Public Class cPluginManager
         End Try
 
         Return bHasPlugins
+
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -701,14 +715,13 @@ Public Class cPluginManager
 
         Dim collPlugins As ICollection(Of cPluginContext) = Nothing
         Dim pa As cPluginAssembly = Nothing
+        Dim key As String = strFileName.ToLower()
 
         ' Sanity check
-        If (Not Me.m_dictAssemblies.ContainsKey(strFileName)) Then
-            Return False
-        End If
+        If (Not Me.m_dictAssemblies.ContainsKey(key)) Then Return False
 
         ' Get plugin assembly
-        pa = Me.m_dictAssemblies(strFileName)
+        pa = Me.m_dictAssemblies(key)
         ' Inform the world
         RaiseEvent AssemblyRemoved(pa)
 
@@ -730,7 +743,7 @@ Public Class cPluginManager
         End Try
 
         ' Remove from internal admin
-        Me.m_dictAssemblies.Remove(strFileName)
+        Me.m_dictAssemblies.Remove(key)
 
         Return True
 
