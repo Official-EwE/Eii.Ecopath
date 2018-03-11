@@ -204,12 +204,12 @@ Public Class cPluginAssembly
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get whether this assembly should always be enabled (for core plug-ins)
+    ''' Get whether this assembly canot be disabled.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property AlwaysEnabled() As Boolean
         Get
-            ' Core plugins always enabled
+            ' Core plugins are always enabled
             Return cStringUtils.EndsWith(Me.Filename, "ewecore.dll", True)
         End Get
     End Property
@@ -343,5 +343,13 @@ Public Class cPluginAssembly
     End Property
 
 #End Region ' Assembly metadata
+
+#Region " Overrides "
+
+    Public Overrides Function ToString() As String
+        Return System.IO.Path.GetFileNameWithoutExtension(Me.Filename) & " " & If(Me.Enabled, "", "(disabled)")
+    End Function
+
+#End Region ' Overrides
 
 End Class

@@ -1314,10 +1314,6 @@ Public Class frmEwE6
         Catch ex As Exception
             ' Ouch!
         End Try
-        alDisabledPlugins = Me.m_pluginManager.DisabledPlugins
-
-        ' Store (possibly updated) list of disabled plug-ins
-        My.Settings.DisabledPlugins = alDisabledPlugins
 
     End Sub
 
@@ -1665,6 +1661,12 @@ Public Class frmEwE6
             My.Settings.SpatialTempConfigurations = man.ConfigFiles
             My.Settings.SpatialTemporalConfigFile = man.CurrentConfigFile
         End If
+
+        Dim pm As cPluginManager = Me.Core.PluginManager
+        If (pm IsNot Nothing) Then
+            My.Settings.DisabledPlugins = pm.DisabledPlugins
+        End If
+
         My.Settings.Save()
 
     End Sub
