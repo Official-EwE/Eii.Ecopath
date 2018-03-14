@@ -13133,7 +13133,7 @@ Location: {1}</value>
     <value>Ecotracer output</value>
   </data>
   <data name="LABEL_NAV_ECOSIM_OUTPUT_SRPLOT" xml:space="preserve">
-    <value>Stock reduction plot</value>
+    <value>Stock recruitment plot</value>
   </data>
   <data name="ECOSIM_CAPTION_APPLYOTHERMORT" xml:space="preserve">
     <value>Apply other mortality forcing</value>
