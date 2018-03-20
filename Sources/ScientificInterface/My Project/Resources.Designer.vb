@@ -2832,7 +2832,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Stock reduction plot.
+        '''  Looks up a localized string similar to Stock recruitment plot.
         '''</summary>
         Public ReadOnly Property LABEL_NAV_ECOSIM_OUTPUT_SRPLOT() As String
             Get
