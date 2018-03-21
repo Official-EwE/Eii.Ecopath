@@ -144,6 +144,7 @@ Namespace Controls.Map.Layers
                     map.Cell(ir, ic) = 1.0
                 Next
             Next
+            map.Invalidate()
         End Sub
 
         Private Sub UpdateCore()
