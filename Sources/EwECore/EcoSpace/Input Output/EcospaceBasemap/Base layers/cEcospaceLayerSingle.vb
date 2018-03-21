@@ -170,6 +170,8 @@ Public Class cEcospaceLayerSingle
 
         Me.m_sMaxValue = Single.MinValue
         Me.m_sMinValue = Single.MaxValue
+        Me.m_iNumValueCells = 0
+
         For iRow As Integer = 1 To iRows
             For iCol As Integer = 1 To iCols
                 If (bm.IsModelledCell(iRow, iCol)) Then
