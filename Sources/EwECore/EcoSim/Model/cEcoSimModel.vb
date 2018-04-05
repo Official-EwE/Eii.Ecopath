@@ -382,10 +382,8 @@ Namespace Ecosim
                      eTimeSeriesType.CatchesRel,
                      eTimeSeriesType.CatchesForcing
                     Return True
-#If DISCARDS Then
                 Case eTimeSeriesType.Discards
                     Return True
-#End If
             End Select
             Return False
         End Function
@@ -2438,7 +2436,6 @@ Namespace Ecosim
                                         End If
 
                                     End If
-#If DISCARDS Then
                                 Case eTimeSeriesType.Discards
 
                                     ' PoolForceDiscardMort(DatPool(iDType), DatPoolSec(iDType), iDatPt) = value
@@ -2455,8 +2452,6 @@ Namespace Ecosim
                                     Zstat = CSng(Math.Log(obsDiscard / predDiscard))
                                     m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(obsDiscard))
                                     '  End If
-#End If
-
                             End Select
 
                             'increment counters

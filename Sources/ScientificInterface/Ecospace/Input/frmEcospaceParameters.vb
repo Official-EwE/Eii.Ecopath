@@ -284,12 +284,8 @@ Namespace Ecospace
 
             ' Ecosim forcing
             Me.m_fpUseBiomassForcing.Enabled = Core.EcospaceModelParameters.IsEcosimBiomassForcingLoaded
-#If DISCARDS Then
             Me.m_cbUseEcosimDiscardForcing.Visible = True
             Me.m_fpUseDiscardForcing.Enabled = Core.EcospaceModelParameters.IsEcosimDiscardForcingLoaded
-#Else
-            Me.m_cbUseEcosimDiscardForcing.Visible = false
-#End If
 
             Me.m_bInUpdate = False
 

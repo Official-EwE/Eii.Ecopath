@@ -59,12 +59,10 @@ Namespace Style
                 Case eTimeSeriesType.TimeForcing : strType = My.Resources.TS_TYPE_TIMEFORCING
                 Case eTimeSeriesType.TotalMortality : strType = My.Resources.TS_TYPE_TOTALMORT
                 Case eTimeSeriesType.FishingMortalityRef : strType = My.Resources.TS_TYPE_FISHMORTREL
-#If DISCARDS Then
                 Case eTimeSeriesType.DiscardMortality : strType = My.Resources.TS_TYPE_DISCARDMORT
                 Case eTimeSeriesType.DiscardProportion : strType = My.Resources.TS_TYPE_DISCARDPROP
                 Case eTimeSeriesType.Landings : strType = My.Resources.TS_TYPE_LANDINGS
                 Case eTimeSeriesType.Discards : strType = My.Resources.TS_TYPE_DISCARDS
-#End If
 
             End Select
 

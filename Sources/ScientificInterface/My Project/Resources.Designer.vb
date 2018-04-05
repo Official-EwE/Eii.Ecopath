@@ -2292,15 +2292,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Landings.
-        '''</summary>
-        Public ReadOnly Property LABEL_NAV_ECOPATH_INPUT_LANDINGS() As String
-            Get
-                Return ResourceManager.GetString("LABEL_NAV_ECOPATH_INPUT_LANDINGS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Non-market price.
         '''</summary>
         Public ReadOnly Property LABEL_NAV_ECOPATH_INPUT_NONMARKTEPRICE() As String
@@ -2441,6 +2432,15 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_NAV_ECOPATH_OUTPUT_KEYINDICES() As String
             Get
                 Return ResourceManager.GetString("LABEL_NAV_ECOPATH_OUTPUT_KEYINDICES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Computed landings.
+        '''</summary>
+        Public ReadOnly Property LABEL_NAV_ECOPATH_OUTPUT_LANDINGS() As String
+            Get
+                Return ResourceManager.GetString("LABEL_NAV_ECOPATH_OUTPUT_LANDINGS", resourceCulture)
             End Get
         End Property
         

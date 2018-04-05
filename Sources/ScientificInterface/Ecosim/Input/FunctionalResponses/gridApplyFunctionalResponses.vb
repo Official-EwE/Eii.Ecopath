@@ -178,24 +178,14 @@ Namespace Ecosim
 
         Private Sub ShowSelectionDialog(ByVal SelectionType As eEnvironmentalResponseSelectionType, ByVal iGrp As Integer, ByVal iDriver As Integer)
             Try
-
-                If ((Control.ModifierKeys And Keys.Shift) <> 0) Then
-                    Dim dlg As New dlgSelectEnvironmentalResponse(Me.UIContext, Me.m_shapeManager, Me.m_driverManager, iDriver, iGrp, SelectionType)
-                    dlg.ShowDialog()
-                    If dlg.DialogResult = DialogResult.OK Then
-                        'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
-                        'update the interface from the CapacitMapInteractionManager data
-                        Me.FillData()
-                    End If
-                Else
-                    Dim dlg As New dlgSelectResponse(Me.UIContext, Me.m_shapeManager, Me.m_driverManager, iDriver, iGrp, SelectionType)
-                    dlg.ShowDialog()
-                    If dlg.DialogResult = DialogResult.OK Then
-                        'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
-                        'update the interface from the CapacitMapInteractionManager data
-                        Me.FillData()
-                    End If
+                Dim dlg As New dlgSelectEnvironmentalResponse(Me.UIContext, Me.m_shapeManager, Me.m_driverManager, iDriver, iGrp, SelectionType)
+                dlg.ShowDialog()
+                If dlg.DialogResult = DialogResult.OK Then
+                    'the dialogue will update the CapacitMapInteractionManager with the selected Shapes
+                    'update the interface from the CapacitMapInteractionManager data
+                    Me.FillData()
                 End If
+
             Catch ex As Exception
 
             End Try
