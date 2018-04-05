@@ -201,7 +201,7 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_OUTPUT_VALUE, "ndEcopathValue", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputValue), eNodeImages.Output, nodeFolder, "Fishery (Ecopath parameterization).htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_OUTPUT_DISCARDMORT, "ndEcopathDiscardMortality", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputDiscardMort), eNodeImages.Output, nodeFolder)
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_OUTPUT_DISCARSURV, "ndEcopathDiscardSurvival", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputDiscardSurvival), eNodeImages.Output, nodeFolder)
-        ' m_cn.Add(My.Resources.LABEL_NAV_LANDINGS, "ndEcopathLandings", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputLandings), eNodeImages.Output, nodeFolder)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_OUTPUT_LANDINGS, "ndEcopathLandings", eCoreExecutionState.EcopathCompleted, GetType(gridFisheryOutputLandings), eNodeImages.Output, nodeFolder)
 
         nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PSD, "ndParticleSizeDistribution", eCoreExecutionState.EcopathCompleted, Nothing, eNodeImages.Output, nodeOutput)
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_PSD_OUTPUT_RUN, "ndRunPSD", eCoreExecutionState.EcopathLoaded, GetType(RunPSD), eNodeImages.Output, nodeFolder) ' ToDo: connect to help

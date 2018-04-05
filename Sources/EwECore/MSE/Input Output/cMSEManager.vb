@@ -406,12 +406,9 @@ Namespace MSE
 
         End Function
 
-
-
         Public Function ValidateRun() As Boolean
             Dim bOK As Boolean = True
 
-#If DISCARDS Then
             For iTimeSeries As Integer = 1 To m_core.nTimeSeries
                 If m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardProportion Or m_core.EcosimTimeSeries(iTimeSeries).TimeSeriesType = eTimeSeriesType.DiscardMortality Then
                     If m_core.EcosimTimeSeries(iTimeSeries).Enabled Then
@@ -426,7 +423,6 @@ Namespace MSE
                     End If
                 End If
             Next
-#End If
 
             If Me.ModelParameters.UseLPSolution Then
                 'When running the LP solution
@@ -453,8 +449,8 @@ Namespace MSE
                     'no control type has been set for any fleet(s)
                     'ask the user what to do
                     Dim response As eMessageReply
-                    Dim fbMess As New cFeedbackMessage(My.Resources.CoreMessages.MSE_VALIDATION_QUOTAS, _
-                                                       eCoreComponentType.MSE, eMessageType.DataValidation, _
+                    Dim fbMess As New cFeedbackMessage(My.Resources.CoreMessages.MSE_VALIDATION_QUOTAS,
+                                                       eCoreComponentType.MSE, eMessageType.DataValidation,
                                                        eMessageImportance.Warning, eMessageReplyStyle.YES_NO)
                     Me.m_core.Messages.SendMessage(fbMess)
                     response = fbMess.Reply

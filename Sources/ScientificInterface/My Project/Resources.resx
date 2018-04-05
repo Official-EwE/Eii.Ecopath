@@ -1964,8 +1964,8 @@ Description: {1}</value>
   <data name="ECOBASE_SUBMIT_ACCEPTED" xml:space="preserve">
     <value>Your model was successfully added to EcoBase</value>
   </data>
-  <data name="LABEL_NAV_ECOPATH_INPUT_LANDINGS" xml:space="preserve">
-    <value>Landings</value>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_LANDINGS" xml:space="preserve">
+    <value>Computed landings</value>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_REMARKS" xml:space="preserve">
     <value>Values with remarks|Values that have a remark attached. Remarks can be edited via the Remark panel.</value>

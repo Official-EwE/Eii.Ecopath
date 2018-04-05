@@ -224,14 +224,10 @@ Public MustInherit Class cTimeSeries
 
     <Obsolete("Remove when time series properly use cCore.NULL_VALUE")>
     Public Function SupportsNull() As Boolean
-#If DISCARDS Then
         Return Me.m_timeSeriesType = eTimeSeriesType.DiscardMortality Or
                Me.m_timeSeriesType = eTimeSeriesType.DiscardProportion Or
                Me.m_timeSeriesType = eTimeSeriesType.Landings Or
                Me.m_timeSeriesType = eTimeSeriesType.Discards
-#Else
-        Return False
-#End If
     End Function
 
     ''' -----------------------------------------------------------------------

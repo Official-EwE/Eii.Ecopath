@@ -69,6 +69,11 @@ Namespace Ecopath.Output
             Me.FixedColumns = 2
         End Sub
 
+        Protected Overrides Sub FinishStyle()
+            MyBase.FinishStyle()
+            Me.FixedColumnWidths = True
+        End Sub
+
         Protected Overrides Sub FillData()
 
             Dim source As cCoreInputOutputBase = Nothing

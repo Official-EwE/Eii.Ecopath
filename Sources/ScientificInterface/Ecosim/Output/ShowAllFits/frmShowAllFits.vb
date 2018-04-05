@@ -347,7 +347,6 @@ Namespace Ecosim
                             Dim iGroup As Integer = fts.GroupIndex
                             Dim iFleet As Integer = fts.FleetIndex
 
-#If DISCARDS Then
                             If (iFleet > 0 And iGroup > 0) Then
 
                                 Dim grpOutput As cEcosimGroupOutput = Me.Core.EcoSimGroupOutputs(iGroup)
@@ -369,7 +368,6 @@ Namespace Ecosim
                                     End Select
                                 Next
                             End If
-#End If
 
                     End Select
                 End If
@@ -434,7 +432,6 @@ Namespace Ecosim
                 m_lShownPlotsType.Add(eTimeSeriesType.CatchesRel)
             End If
 
-#If DISCARDS Then
             If Me.m_chkShowDiscards.Checked Then
                 m_lShownPlotsType.Add(eTimeSeriesType.Discards)
             End If
@@ -442,7 +439,6 @@ Namespace Ecosim
             If Me.m_chkShowLandings.Checked Then
                 m_lShownPlotsType.Add(eTimeSeriesType.Landings)
             End If
-#End If
 
             Me.m_lShownPlotsType.Add(eTimeSeriesType.AverageWeight)
 
@@ -551,10 +547,8 @@ Namespace Ecosim
             Biomass
             Mortality
             [Catch]
-#If DISCARDS Then
             Landings
             Discards
-#End If
         End Enum
 
         Private Sub SaveToCSV(ByVal strPath As String)
@@ -589,12 +583,10 @@ Namespace Ecosim
                         strFileName &= "_allfit_mortality.csv"
                     Case eAllFitFile.Catch
                         strFileName &= "_allfit_catches.csv"
-#If DISCARDS Then
                     Case eAllFitFile.Landings
                         strFileName &= "_allfit_landings.csv"
                     Case eAllFitFile.Discards
                         strFileName &= "_allfit_discards.csv"
-#End If
                 End Select
                 strTargetPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False))
 
@@ -646,7 +638,6 @@ Namespace Ecosim
                                         sw.Write(cStringUtils.ToCSVField("catch (observed) " & ts.Name))
                                         sw.Write(",")
                                     End If
-#If DISCARDS Then
                                 Case eAllFitFile.Landings
                                     If ts.TimeSeriesType = eTimeSeriesType.Landings Then
                                         sw.Write(cStringUtils.ToCSVField("landings (predicted)" & ts.Name))
@@ -662,7 +653,6 @@ Namespace Ecosim
                                         sw.Write(cStringUtils.ToCSVField("discards (observed)" & ts.Name))
                                         sw.Write(",")
                                     End If
-#End If
                             End Select
                         Next
                         sw.WriteLine()
@@ -716,7 +706,6 @@ Namespace Ecosim
                                             End If
                                             sw.Write(",")
                                         End If
-#If DISCARDS Then
                                     Case eAllFitFile.Landings
                                         If ts.TimeSeriesType = eTimeSeriesType.Landings Then
                                             sw.Write(plot.SimData(k))
@@ -739,7 +728,6 @@ Namespace Ecosim
                                             End If
                                             sw.Write(",")
                                         End If
-#End If
                                 End Select
 
                             Next
