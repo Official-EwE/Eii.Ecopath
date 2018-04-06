@@ -197,7 +197,8 @@ Namespace Controls
                     Case IFlowDiagramRenderer.eFDHighlightType.GrayedOut
                         bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.GrayedOut)
                     Case IFlowDiagramRenderer.eFDHighlightType.None
-                        bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.None)
+                        ' JS 06Apr18: draw nodes on top of lines, even when grayed-out
+                        bDraw = bDraw And ((hl = IFlowDiagramRenderer.eFDHighlightType.None) Or (hl = IFlowDiagramRenderer.eFDHighlightType.GrayedOut))
                     Case IFlowDiagramRenderer.eFDHighlightType.Selected
                         bDraw = bDraw And (hl = IFlowDiagramRenderer.eFDHighlightType.LinkIn) Or _
                                           (hl = IFlowDiagramRenderer.eFDHighlightType.LinkOut) Or _
