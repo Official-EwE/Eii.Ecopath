@@ -189,7 +189,7 @@
 &lt;/ArrayOfAnyType&gt;</Value>
     </Setting>
     <Setting Name="ShowSplash" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ShowExtraVariableInfo" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

@@ -1008,15 +1008,6 @@ Public Class frmEwE6
         Me.m_formstatemanager = New cEwEFormStateManager(Me.Core.StateMonitor, Me.m_coreController, Me.m_DockPanel)
         Me.Help.HelpTopic(Me.Panel(cPANEL_START)) = "Ecopath with Ecosim 6 Getting started.htm"
 
-        Try
-            ' Dismiss splash screen to make room for UI interactivity
-            If (frmSplash.GetInstance() IsNot Nothing) Then
-                frmSplash.GetInstance().Close()
-            End If
-        Catch ex As Exception
-
-        End Try
-
         ' Load plugins once GUI has been created.
         Me.LoadPlugins()
         ' Auto-launch plugins
@@ -1032,6 +1023,16 @@ Public Class frmEwE6
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
         Me.ResumeLayout()
+
+        Try
+            ' Dismiss splash screen, if any
+            Dim splash As frmSplash = frmSplash.GetInstance()
+            If (splash IsNot Nothing) Then
+                splash.Close()
+            End If
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 

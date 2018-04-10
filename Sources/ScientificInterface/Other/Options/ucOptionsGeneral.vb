@@ -86,6 +86,7 @@ Namespace Other
             Me.m_fpVerboseLevel = New cEwEFormatProvider(Me.m_uic, Me.m_cmbLogLevel, New cVerboseLevelTypeFormatter(), Nothing)
             Me.m_fpVerboseLevel.Value = cLog.VerboseLevel
 
+            Me.m_cbShowSplashScreen.Checked = My.Settings.ShowSplash
             Me.m_cbShowHost.Checked = My.Settings.ShowHostInfo
             Me.m_cbUseExternalBrowser.Checked = My.Settings.UseExternalBrowser
 
@@ -130,6 +131,7 @@ Namespace Other
 
                 My.Settings.MdbRecentlyUsedCount = CInt(Me.m_nudMRU.Value)
                 My.Settings.StatusMaxMessages = CInt(Me.m_nudMaxNumMessages.Value)
+                My.Settings.ShowSplash = Me.m_cbShowSplashScreen.Checked
                 My.Settings.StatusShowTime = Me.m_cbStatusShowTime.Checked
                 My.Settings.StatusSortNewestFirst = Me.m_cbStatusShowNewestFirst.Checked
                 My.Settings.StatusShowVariableValidations = Me.m_cbStatusShowVariableValidations.Checked
@@ -158,6 +160,7 @@ Namespace Other
                 Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
                 Me.m_nudMaxNumMessages.Value = CInt(My.Settings.GetDefaultValue("StatusMaxMessages"))
                 Me.m_cbShowHost.Checked = CBool(My.Settings.GetDefaultValue("ShowHostInfo"))
+                Me.m_cbShowSplashScreen.Checked = CBool(My.Settings.GetDefaultValue("ShowSplash"))
                 Me.m_cbStatusShowTime.Checked = CBool(My.Settings.GetDefaultValue("StatusShowTime"))
                 Me.m_cbStatusShowNewestFirst.Checked = CBool(My.Settings.GetDefaultValue("StatusSortNewestFirst"))
                 Me.m_cbStatusShowVariableValidations.Checked = CBool(My.Settings.GetDefaultValue("StatusShowVariableValidations"))
