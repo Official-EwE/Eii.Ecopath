@@ -17,6 +17,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
+
+Option Strict On
+Imports EwEUtils.Core
+Imports Microsoft.VisualBasic.ApplicationServices
+
+#End Region ' Imports
 
 Namespace My
 
@@ -30,15 +37,15 @@ Namespace My
 
     Class MyApplication
 
-        Private m_splash As frmSplash = Nothing
-
-        Protected Overrides Sub OnCreateSplashScreen()
-            ' Only allow in release mode to prevent splash screen when debugging EwE start-up stuff ;)
-            If My.Settings.ShowSplash Then
-                Me.m_splash = New frmSplash()
-                Me.m_splash.Show()
-            End If
-        End Sub
+        ''' <summary>
+        ''' Safety catch
+        ''' </summary>
+        ''' <param name="e"></param>
+        Protected Overrides Function OnUnhandledException(e As UnhandledExceptionEventArgs) As Boolean
+            cLog.Write(e.Exception, "ScientificInterface.OnUnhandledException")
+            e.ExitApplication = False
+            Return MyBase.OnUnhandledException(e)
+        End Function
 
     End Class
 
