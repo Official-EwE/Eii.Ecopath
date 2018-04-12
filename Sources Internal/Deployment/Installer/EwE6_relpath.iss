@@ -369,15 +369,15 @@ end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
-  case CurStep of
-    ssPostInstall:
-      begin
-        if not IsDotNetDetected() then
+    case CurStep of
+        ssPostInstall:
         begin
-          InstallFramework();
+            if not IsDotNetDetected() then
+            begin
+                InstallFramework();
+            end;
         end;
-      end;
-  end;
+    end;
 end;
 
 [Registry]
@@ -396,4 +396,5 @@ Root: "HKCR"; Subkey: "ewe-ecobase\URL Protocol"; Flags: uninsdeletekeyifempty; 
 Root: "HKCR"; Subkey: "ewe-ecobase\DefaultIcon\"; ValueType: string; ValueData: "{app}\EwE6.exe,0"; Flags: uninsdeletekey; Tasks: associatefiles
 Root: "HKCR"; Subkey: "ewe-ecobase\Shell\Open\Command\"; ValueType: string; ValueData: """{app}\EwE6.exe"" ""%1"""; Flags: uninsdeletekey; Tasks: associatefiles
 ; Iexplore rendering mode for start page
-Root: "HKLM"; Subkey: "Software\Wow6432node\Microsoft\Internet Explorer\Main\Feature Control\FEATURE_BROWSER_EMULATION"; ValueType: dword; ValueName: "{#MyAppExeName}"; ValueData: "10000"; Flags: createvalueifdoesntexist uninsdeletekey
+; Inno setup automatically redirects to wow6432node where needed
+Root: "HKLM"; Subkey: "Software\Microsoft\Internet Explorer\Main\Feature Control\FEATURE_BROWSER_EMULATION"; ValueType: dword; ValueName: "{#MyAppExeName}"; ValueData: "10000"; Flags: createvalueifdoesntexist uninsdeletekey
