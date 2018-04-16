@@ -1937,6 +1937,7 @@
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <None Include="ScientificInterface.snk" />
     <None Include="UserGuide\EwE6_userguide.chm">
