@@ -50,18 +50,18 @@ Partial Class frmSamples
         Me.m_btnLoad = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_grid = New gridSamples()
+        Me.m_grid = New EwEEcosamplerPlugin.gridSamples()
         Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnRecord = New System.Windows.Forms.ToolStripButton()
         Me.m_tsddImport = New System.Windows.Forms.ToolStripDropDownButton()
         Me.m_tsmiImportModel = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiImportCefas = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_plBatchRun = New System.Windows.Forms.Panel()
+        Me.m_cbBatchRandomize = New System.Windows.Forms.CheckBox()
         Me.m_btnRun = New System.Windows.Forms.Button()
         Me.m_nudNumSamples = New System.Windows.Forms.NumericUpDown()
         Me.m_lblNumSamples = New System.Windows.Forms.Label()
         Me.m_hdrRun = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_cbBatchRandomize = New System.Windows.Forms.CheckBox()
         Me.m_tlpOptions.SuspendLayout()
         Me.m_tlpMain.SuspendLayout()
         Me.m_tsMain.SuspendLayout()
@@ -176,6 +176,12 @@ Partial Class frmSamples
         resources.ApplyResources(Me.m_plBatchRun, "m_plBatchRun")
         Me.m_plBatchRun.Name = "m_plBatchRun"
         '
+        'm_cbBatchRandomize
+        '
+        resources.ApplyResources(Me.m_cbBatchRandomize, "m_cbBatchRandomize")
+        Me.m_cbBatchRandomize.Name = "m_cbBatchRandomize"
+        Me.m_cbBatchRandomize.UseVisualStyleBackColor = True
+        '
         'm_btnRun
         '
         resources.ApplyResources(Me.m_btnRun, "m_btnRun")
@@ -199,12 +205,6 @@ Partial Class frmSamples
         resources.ApplyResources(Me.m_hdrRun, "m_hdrRun")
         Me.m_hdrRun.IsCollapsed = False
         Me.m_hdrRun.Name = "m_hdrRun"
-        '
-        'm_cbBatchRandomize
-        '
-        resources.ApplyResources(Me.m_cbBatchRandomize, "m_cbBatchRandomize")
-        Me.m_cbBatchRandomize.Name = "m_cbBatchRandomize"
-        Me.m_cbBatchRandomize.UseVisualStyleBackColor = True
         '
         'frmSamples
         '
