@@ -183,7 +183,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="cFileDataSetPlugin.IsDataAvailable"/>
         ''' -------------------------------------------------------------------
         Public Overrides Function IsDataAvailable(ByVal runtype As IRunType) As Boolean
-            Return File.Exists(Me.Source)
+            Return Me.IsConfigured And Me.EnableData(runtype)
         End Function
 
         ''' -------------------------------------------------------------------

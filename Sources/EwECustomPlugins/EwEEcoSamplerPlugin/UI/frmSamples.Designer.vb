@@ -50,7 +50,7 @@ Partial Class frmSamples
         Me.m_btnLoad = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_grid = New EwEEcosamplerPlugin.gridSamples()
+        Me.m_grid = New gridSamples()
         Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnRecord = New System.Windows.Forms.ToolStripButton()
         Me.m_tsddImport = New System.Windows.Forms.ToolStripDropDownButton()
