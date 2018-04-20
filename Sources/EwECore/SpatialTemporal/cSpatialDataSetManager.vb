@@ -611,9 +611,7 @@ Namespace SpatialData
             Get
                 Dim al As New ArrayList()
                 For Each cfg As cSpatialDataConfigFile In Me.ConfigFileDefinitions
-                    If File.Exists(cfg.FileName) Then
-                        al.Add(cfg.FileName)
-                    End If
+                    al.Add(cfg.FileName)
                 Next
                 Return al
             End Get
@@ -674,16 +672,21 @@ Namespace SpatialData
 
         Public Function AddConfigFile(ByVal strFile As String) As cSpatialDataConfigFile
 
+            ' Abort on missing info
             If (String.IsNullOrWhiteSpace(strFile)) Then Return Nothing
 
             Dim cfg As cSpatialDataConfigFile = Nothing
 
-            ' Check if file name does not exist
+            ' Abort on duplicate entry
             For Each cfg In Me.m_lConfigFiles
                 ' Do something smart here
                 If String.Compare(cfg.FileName, strFile, True) = 0 Then Return Nothing
             Next
 
+            ' Abort on missing file
+            If (Not File.Exists(strFile)) Then Return Nothing
+
+            ' Ok, go for it
             cfg = New cSpatialDataConfigFile()
             If (Not cfg.Initialize(strFile)) Then Return Nothing
             Me.m_lConfigFiles.Add(cfg)
