@@ -90,9 +90,12 @@ Namespace SpatialData
             'This is an optimization so only the groups that have changed will be recomputed
             For iGroup As Integer = 1 To Me.m_spaceData.NGroups
                 'Ok Turn on the groups that were changed
-                If Me.m_spaceData.CapMapFunctions(layer.Index, iGroup) > 0 Then
-                    Me.m_spaceData.isGroupHabCapChanged(iGroup) = True
-                End If
+
+                ' XXXXXXXXXXXXXXXXXXXX Why does this explode?!
+
+                'If Me.m_spaceData.CapMapFunctions(layer.Index, iGroup) > 0 Then
+                Me.m_spaceData.isGroupHabCapChanged(iGroup) = breturnVal
+                'End If
             Next
 
             Return breturnVal

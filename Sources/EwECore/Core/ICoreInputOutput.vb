@@ -131,7 +131,7 @@ Public Interface ICoreGroup
     ''' <summary>
     ''' Get/set whether the group is part of a multi-stanza configuration.
     ''' </summary>
-    ReadOnly Property isMultiStanza() As Boolean
+    ReadOnly Property IsMultiStanza() As Boolean
 
     ''' <summary>
     ''' Get/set the zero-based index of the <see cref="cStanzaGroup">Stanza configuration</see> 
@@ -828,8 +828,8 @@ Public Class cCoreGroupBase
     ''' Get whether this group is part of a multi-stanza configuration.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property isMultiStanza() As Boolean _
-        Implements ICoreGroup.isMultiStanza
+    Public ReadOnly Property IsMultiStanza() As Boolean _
+        Implements ICoreGroup.IsMultiStanza
         Get
             Return Me.iStanza <> cCore.NULL_VALUE
         End Get

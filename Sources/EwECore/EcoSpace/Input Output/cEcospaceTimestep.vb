@@ -264,7 +264,6 @@ Public Class cEcospaceTimestep
         End Get
     End Property
 
-
     ''' <summary>
     ''' Discard mortality dimensioned by Row, Col and Group
     ''' </summary>

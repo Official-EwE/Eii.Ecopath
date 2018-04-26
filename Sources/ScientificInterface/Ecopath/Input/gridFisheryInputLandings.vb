@@ -122,7 +122,7 @@ Namespace Ecopath.Input
                 group = groups(i)
 
                 'If group is non-stanza Then display group info
-                If Not group.isMultiStanza Then
+                If Not group.IsMultiStanza Then
                     iRow = Me.AddRow
                     FillInRows(iRow, group, alSumRow, alSumAll)
                     iStanzaPrev = -1

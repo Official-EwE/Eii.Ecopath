@@ -125,7 +125,7 @@ Namespace Ecopath.Input
             For iGroup As Integer = 1 To Me.Core.nGroups
 
                 group = Me.Core.EcoPathGroupInputs(iGroup)
-                If group.isMultiStanza Then
+                If group.IsMultiStanza Then
 
                     If Not abStanzaHandled(group.iStanza) Then
                         stanza = Me.Core.StanzaGroups(group.iStanza)

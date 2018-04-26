@@ -112,7 +112,7 @@ Namespace Ecopath.Input
                 group = groups(i)
                 alProp.Clear()
 
-                If (Not group.isMultiStanza) Then
+                If (Not group.IsMultiStanza) Then
                     iRow = Me.AddRow
                     For iCol As Integer = 1 To Core.nDetritusGroups
 

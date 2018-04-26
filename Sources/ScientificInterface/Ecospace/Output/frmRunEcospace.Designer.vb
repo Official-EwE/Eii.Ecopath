@@ -76,6 +76,7 @@ Namespace Ecospace
             Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton()
             Me.m_hdrDist = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_rbDisplayDiscards = New System.Windows.Forms.RadioButton()
+            Me.m_rbDisplayComputedHabitatCapacity = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayEnvDriver = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton()
             Me.m_plDisplayOptions = New System.Windows.Forms.Panel()
@@ -287,6 +288,7 @@ Namespace Ecospace
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayContaminantC)
             Me.m_plMapData.Controls.Add(Me.m_hdrDist)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayDiscards)
+            Me.m_plMapData.Controls.Add(Me.m_rbDisplayComputedHabitatCapacity)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayEnvDriver)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayCoverB)
             resources.ApplyResources(Me.m_plMapData, "m_plMapData")
@@ -347,6 +349,12 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_rbDisplayDiscards, "m_rbDisplayDiscards")
             Me.m_rbDisplayDiscards.Name = "m_rbDisplayDiscards"
             Me.m_rbDisplayDiscards.UseVisualStyleBackColor = True
+            '
+            'm_rbDisplayComputedHabitatCapacity
+            '
+            resources.ApplyResources(Me.m_rbDisplayComputedHabitatCapacity, "m_rbDisplayComputedHabitatCapacity")
+            Me.m_rbDisplayComputedHabitatCapacity.Name = "m_rbDisplayComputedHabitatCapacity"
+            Me.m_rbDisplayComputedHabitatCapacity.UseVisualStyleBackColor = True
             '
             'm_rbDisplayEnvDriver
             '
@@ -617,7 +625,6 @@ Namespace Ecospace
         Private WithEvents m_legend As ScientificInterfaceShared.Controls.ucLegendBar
         Friend WithEvents m_rbConsumpGraph As System.Windows.Forms.RadioButton
         Friend WithEvents m_rbPredMortGraph As System.Windows.Forms.RadioButton
-        Friend WithEvents m_rbFishMortGraph As System.Windows.Forms.RadioButton
         Friend WithEvents m_rbRelBiomassGraph As System.Windows.Forms.RadioButton
         Friend WithEvents m_rbCatchGraph As System.Windows.Forms.RadioButton
         Private WithEvents m_hdrGraphTypes As ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -630,6 +637,8 @@ Namespace Ecospace
         Private WithEvents m_lblAutosaveTimeSteps As System.Windows.Forms.Label
         Private WithEvents m_rbDisplayEnvDriver As RadioButton
         Private WithEvents m_rbDisplayDiscards As RadioButton
+        Private WithEvents m_rbDisplayComputedHabitatCapacity As RadioButton
+        Private WithEvents m_rbFishMortGraph As RadioButton
     End Class
 
 End Namespace

@@ -498,7 +498,7 @@ Public Class gridDefineTaxonomy
         For iGroup As Integer = 1 To Me.Core.nGroups
 
             grp = Me.Core.EcoPathGroupInputs(iGroup)
-            If grp.isMultiStanza Then
+            If grp.IsMultiStanza Then
 
                 If Not abStanzaHandled(grp.iStanza) Then
                     ' Create row for multi-stanza group

@@ -54,12 +54,6 @@ Public Class cEcospaceLayerHabitatCapacity
         End Set
     End Property
 
-    Public Overrides ReadOnly Property MaxValue() As Single
-        Get
-            Return 1.0!
-        End Get
-    End Property
-
 #End Region ' Cell interaction
 
     Protected Overrides Function DefaultName() As String

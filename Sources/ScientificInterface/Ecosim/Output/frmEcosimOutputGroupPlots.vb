@@ -465,7 +465,7 @@ Namespace Ecosim
                 End If
 
                 ' Special case: is multi-stanza?
-                If groupSimOut.isMultiStanza() Then
+                If groupSimOut.IsMultiStanza() Then
                     pplAvgWorProdCons.Add(dXValue, groupSimOut.AvgWeight(i))
                 Else
                     pplAvgWorProdCons.Add(dXValue, groupSimOut.ProdConsump(i))
@@ -530,7 +530,7 @@ Namespace Ecosim
                 Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
             Next li
 
-            If groupSimOut.isMultiStanza() Then
+            If groupSimOut.IsMultiStanza() Then
 
                 Me.UpdateGraphPaneTitle(ePlot.AvgWeightOrProdCons, SharedResources.HEADER_AVGERAGEWEIGHT)
 
@@ -856,7 +856,7 @@ Namespace Ecosim
             Select Case data
 
                 Case ePlot.AvgWeightOrProdCons
-                    If group.isMultiStanza() Then
+                    If group.IsMultiStanza() Then
                         Return StyleGuide.FormatUnitString(cUnits.Currency)
                     Else
                         Return ""

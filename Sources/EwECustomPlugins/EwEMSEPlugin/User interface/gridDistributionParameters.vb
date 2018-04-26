@@ -197,7 +197,7 @@ Public Class gridDistributionParameters
                     Dim sg As cStanzaGroup = Nothing
                     Dim bUse As Boolean = True
 
-                    If group.isMultiStanza Then
+                    If group.IsMultiStanza Then
                         sg = Me.Core.StanzaGroups(group.iStanza)
                         bUse = (sg.iGroups(sg.LeadingB) = data.GroupNo)
                     End If

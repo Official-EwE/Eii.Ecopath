@@ -328,7 +328,7 @@ Namespace Ecosim
                                             asSimData(iTime) = grpOutput.TotalMort(iTime)
 
                                         Case eTimeSeriesType.AverageWeight
-                                            If grpOutput.isMultiStanza Then
+                                            If grpOutput.IsMultiStanza Then
                                                 asSimData(iTime) = grpOutput.AvgWeight(iTime)
                                             End If
 

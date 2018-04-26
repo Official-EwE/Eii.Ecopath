@@ -460,7 +460,7 @@
     <value>m_hdrAutosave</value>
   </data>
   <data name="&gt;&gt;m_hdrAutosave.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15292.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAutosave.Parent" xml:space="preserve">
     <value>m_plMapSaveImages</value>
@@ -472,7 +472,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plMapSaveImages.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 533</value>
+    <value>3, 563</value>
   </data>
   <data name="m_plMapSaveImages.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 66</value>
@@ -655,7 +655,7 @@
     <value>m_hdrLabelOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15292.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Parent" xml:space="preserve">
     <value>m_plMapLabels</value>
@@ -667,7 +667,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plMapLabels.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 407</value>
+    <value>3, 437</value>
   </data>
   <data name="m_plMapLabels.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 120</value>
@@ -910,7 +910,7 @@
     <value>m_hdrDist</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15292.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Parent" xml:space="preserve">
     <value>m_plMapData</value>
@@ -948,6 +948,36 @@
   <data name="&gt;&gt;m_rbDisplayDiscards.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
+  <data name="m_rbDisplayComputedHabitatCapacity.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbDisplayComputedHabitatCapacity.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbDisplayComputedHabitatCapacity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 208</value>
+  </data>
+  <data name="m_rbDisplayComputedHabitatCapacity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>151, 17</value>
+  </data>
+  <data name="m_rbDisplayComputedHabitatCapacity.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="m_rbDisplayComputedHabitatCapacity.Text" xml:space="preserve">
+    <value>Computed &amp;habitat capacity</value>
+  </data>
+  <data name="&gt;&gt;m_rbDisplayComputedHabitatCapacity.Name" xml:space="preserve">
+    <value>m_rbDisplayComputedHabitatCapacity</value>
+  </data>
+  <data name="&gt;&gt;m_rbDisplayComputedHabitatCapacity.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbDisplayComputedHabitatCapacity.Parent" xml:space="preserve">
+    <value>m_plMapData</value>
+  </data>
+  <data name="&gt;&gt;m_rbDisplayComputedHabitatCapacity.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
   <data name="m_rbDisplayEnvDriver.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -976,7 +1006,7 @@
     <value>m_plMapData</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayEnvDriver.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_rbDisplayCoverB.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1006,7 +1036,7 @@
     <value>m_plMapData</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayCoverB.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_plMapData.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1015,7 +1045,7 @@
     <value>3, 195</value>
   </data>
   <data name="m_plMapData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 206</value>
+    <value>204, 236</value>
   </data>
   <data name="m_plMapData.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1117,7 +1147,7 @@
     <value>m_hdrDispOpt</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15292.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Parent" xml:space="preserve">
     <value>m_plDisplayOptions</value>
@@ -1210,7 +1240,7 @@
     <value>m_hdrRunning</value>
   </data>
   <data name="&gt;&gt;m_hdrRunning.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15292.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRunning.Parent" xml:space="preserve">
     <value>m_plRun</value>
@@ -1504,7 +1534,7 @@
     <value>m_hdrGraphTypes</value>
   </data>
   <data name="&gt;&gt;m_hdrGraphTypes.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15292.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGraphTypes.Parent" xml:space="preserve">
     <value>m_plGraphData</value>
@@ -1516,7 +1546,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plGraphData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 605</value>
+    <value>3, 635</value>
   </data>
   <data name="m_plGraphData.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 130</value>
@@ -1618,7 +1648,7 @@
     <value>m_legend</value>
   </data>
   <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.6.15292.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
     <value>m_tabMap</value>
@@ -1777,6 +1807,6 @@
     <value>frmRunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15292.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

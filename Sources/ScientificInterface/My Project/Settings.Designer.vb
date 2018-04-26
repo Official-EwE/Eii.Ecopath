@@ -689,12 +689,12 @@ Partial Friend NotInheritable Class Settings
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
-    Public Property LinkVisibleGroupsFleets() As Boolean
+    Public Property SelectionLinkThroughFishing() As Boolean
         Get
-            Return CType(Me("LinkVisibleGroupsFleets"),Boolean)
+            Return CType(Me("SelectionLinkThroughFishing"),Boolean)
         End Get
         Set
-            Me("LinkVisibleGroupsFleets") = value
+            Me("SelectionLinkThroughFishing") = value
         End Set
     End Property
     
@@ -1004,6 +1004,30 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("StatusAutoPopop") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+    Public Property UseEcospaceSpinup() As Boolean
+        Get
+            Return CType(Me("UseEcospaceSpinup"),Boolean)
+        End Get
+        Set
+            Me("UseEcospaceSpinup") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+    Public Property SelectionLinkThroughPredation() As Boolean
+        Get
+            Return CType(Me("SelectionLinkThroughPredation"),Boolean)
+        End Get
+        Set
+            Me("SelectionLinkThroughPredation") = value
         End Set
     End Property
 End Class
