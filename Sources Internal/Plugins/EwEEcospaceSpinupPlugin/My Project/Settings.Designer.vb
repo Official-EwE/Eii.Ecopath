@@ -53,6 +53,30 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property UseSpinup() As Boolean
+            Get
+                Return CType(Me("UseSpinup"),Boolean)
+            End Get
+            Set
+                Me("UseSpinup") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("10")>  _
+        Public Property SpinupYears() As Single
+            Get
+                Return CType(Me("SpinupYears"),Single)
+            End Get
+            Set
+                Me("SpinupYears") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

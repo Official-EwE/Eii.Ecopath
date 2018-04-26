@@ -130,7 +130,7 @@ Public Class dlgSplitGroup
             Me.m_biomass = grpOut.Biomass
 
             ' Set biomass source type
-            If grp.isMultiStanza Then
+            If grp.IsMultiStanza Then
                 Me.m_biomasssource = eBiomassSource.Stanza
                 Dim stanza As cStanzaGroup = Me.SelectedStanza()
                 Debug.Assert(stanza IsNot Nothing)
@@ -299,7 +299,7 @@ Public Class dlgSplitGroup
 
         Dim grp As cEcoPathGroupInput = Me.SelectedSource()
         If (grp Is Nothing) Then Return Nothing
-        If (Not grp.isMultiStanza) Then Return Nothing
+        If (Not grp.IsMultiStanza) Then Return Nothing
 
         Return Me.m_uic.Core.StanzaGroups(grp.iStanza)
 

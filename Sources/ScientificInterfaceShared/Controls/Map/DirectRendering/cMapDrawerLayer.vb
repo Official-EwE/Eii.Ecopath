@@ -40,8 +40,11 @@ Namespace Controls.Map
     Public Class cMapDrawerLayer
         Inherits cMapDrawerBase
 
-        Public Sub New(core As cCore, sg As cStyleGuide)
+        Private m_vn As eVarNameFlags = eVarNameFlags.NotSet
+
+        Public Sub New(core As cCore, sg As cStyleGuide, vn As eVarNameFlags)
             MyBase.New(core, sg)
+            Me.m_vn = vn
         End Sub
 
         Overloads Property Map As eVarNameFlags
@@ -125,7 +128,7 @@ Namespace Controls.Map
 
                 Dim strLabel As String = ""
                 If Me.m_sg.ShowMapsDateInLabels Then
-                    strLabel = String.Format(SharedResources.Resources.GENERIC_LABEL_DOUBLE, bm.LayerDriver(iItem).Name, Me.Date)
+                    strLabel = String.Format(SharedResources.Resources.GENERIC_LABEL_DOUBLE, bm.Layer(Me.m_vn, iItem).Name, Me.Date)
                 Else
                     strLabel = Me.m_core.EcospaceGroupInputs(iItem).Name
                 End If

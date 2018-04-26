@@ -89,6 +89,8 @@ Public Class gridEcopath
         Me(0, eColumnTypes.Units) = New EwEColumnHeaderCell("Units")
         Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell("Description")
 
+        Me.FixedColumnWidths = True
+
     End Sub
 
     Protected Overrides Sub FillData()
@@ -150,8 +152,9 @@ Public Class gridEcopath
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
 
-        Me.Columns(eColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
         Me.Columns(eColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+        Me.Columns(eColumnTypes.Value).AutoSizeMode = SourceGrid2.AutoSizeMode.None
         Me.Columns(eColumnTypes.Units).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
         Me.Columns(eColumnTypes.Description).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch Or SourceGrid2.AutoSizeMode.EnableAutoSize
 

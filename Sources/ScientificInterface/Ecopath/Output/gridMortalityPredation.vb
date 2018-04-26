@@ -168,6 +168,7 @@ Namespace Ecopath.Output
             Next
 
             Me.FixedColumns = 2
+            Me.FixedColumnWidths = False
 
         End Sub
 

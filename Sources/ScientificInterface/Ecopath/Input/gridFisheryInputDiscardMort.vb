@@ -81,7 +81,7 @@ Namespace Ecopath.Input
             For i As Integer = 0 To groups.Count - 1
 
                 group = groups(i)
-                If group.isMultiStanza Then
+                If group.IsMultiStanza Then
                     sg = Core.StanzaGroups(group.iStanza)
                     If (group.iStanza <> iStanzaPrev) Then
                         ' Create stanza header row

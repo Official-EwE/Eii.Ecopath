@@ -58,12 +58,14 @@ Namespace Ecosim
             Me.m_clbFleets = New System.Windows.Forms.CheckedListBox()
             Me.m_btnAllFleets = New System.Windows.Forms.Button()
             Me.m_btnNoneFleets = New System.Windows.Forms.Button()
-            Me.m_cbSyncGroupsAndFleets = New System.Windows.Forms.CheckBox()
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plGroups = New System.Windows.Forms.Panel()
             Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plFleets = New System.Windows.Forms.Panel()
             Me.m_hdrFleets = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_cbSyncViaFishing = New System.Windows.Forms.CheckBox()
+            Me.m_cbSyncViaPredation = New System.Windows.Forms.CheckBox()
+            Me.m_lblSyncSelections = New System.Windows.Forms.Label()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plGroups.SuspendLayout()
             Me.m_plFleets.SuspendLayout()
@@ -162,12 +164,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_btnNoneFleets, "m_btnNoneFleets")
             Me.m_btnNoneFleets.Name = "m_btnNoneFleets"
             '
-            'm_cbSyncGroupsAndFleets
-            '
-            resources.ApplyResources(Me.m_cbSyncGroupsAndFleets, "m_cbSyncGroupsAndFleets")
-            Me.m_cbSyncGroupsAndFleets.Name = "m_cbSyncGroupsAndFleets"
-            Me.m_cbSyncGroupsAndFleets.UseVisualStyleBackColor = True
-            '
             'm_tlpContent
             '
             resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
@@ -218,6 +214,23 @@ Namespace Ecosim
             Me.m_hdrFleets.IsCollapsed = False
             Me.m_hdrFleets.Name = "m_hdrFleets"
             '
+            'm_cbSyncViaFishing
+            '
+            resources.ApplyResources(Me.m_cbSyncViaFishing, "m_cbSyncViaFishing")
+            Me.m_cbSyncViaFishing.Name = "m_cbSyncViaFishing"
+            Me.m_cbSyncViaFishing.UseVisualStyleBackColor = True
+            '
+            'm_cbSyncViaPredation
+            '
+            resources.ApplyResources(Me.m_cbSyncViaPredation, "m_cbSyncViaPredation")
+            Me.m_cbSyncViaPredation.Name = "m_cbSyncViaPredation"
+            Me.m_cbSyncViaPredation.UseVisualStyleBackColor = True
+            '
+            'm_lblSyncSelections
+            '
+            resources.ApplyResources(Me.m_lblSyncSelections, "m_lblSyncSelections")
+            Me.m_lblSyncSelections.Name = "m_lblSyncSelections"
+            '
             'dlgShowHideItems
             '
             Me.AcceptButton = Me.OK_Button
@@ -225,8 +238,10 @@ Namespace Ecosim
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.Cancel_Button
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_lblSyncSelections)
             Me.Controls.Add(Me.m_tlpContent)
-            Me.Controls.Add(Me.m_cbSyncGroupsAndFleets)
+            Me.Controls.Add(Me.m_cbSyncViaPredation)
+            Me.Controls.Add(Me.m_cbSyncViaFishing)
             Me.Controls.Add(Me.OK_Button)
             Me.Controls.Add(Me.Cancel_Button)
             Me.DoubleBuffered = True
@@ -257,7 +272,6 @@ Namespace Ecosim
         Private WithEvents m_btnLiving As System.Windows.Forms.Button
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
-        Private WithEvents m_cbSyncGroupsAndFleets As System.Windows.Forms.CheckBox
         Private WithEvents m_btnStanza As System.Windows.Forms.Button
         Private WithEvents m_btnNonStanza As System.Windows.Forms.Button
         Private WithEvents m_btnNonFished As System.Windows.Forms.Button
@@ -266,6 +280,9 @@ Namespace Ecosim
         Private WithEvents m_plFleets As System.Windows.Forms.Panel
         Private WithEvents m_hdrFleets As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_cbSyncViaFishing As CheckBox
+        Private WithEvents m_cbSyncViaPredation As CheckBox
+        Private WithEvents m_lblSyncSelections As Label
     End Class
 
 End Namespace

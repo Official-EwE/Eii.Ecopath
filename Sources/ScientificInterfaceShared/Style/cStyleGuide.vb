@@ -1865,7 +1865,7 @@ Namespace Style
                         ' #Yes: add group
                         lGroups.Add(grp)
                         ' Is multi-stanza?
-                        If (grp.isMultiStanza) Then
+                        If (grp.IsMultiStanza) Then
                             ' #Yes: Add all related stanza for this group:
                             For j As Integer = i + 1 To core.nGroups
                                 ' Get remaining group

@@ -74,7 +74,7 @@ Namespace Ecopath.Input
             'Create rows for all groups
             For i As Integer = 0 To groups.Count - 1
                 group = groups(i)
-                If Not group.isMultiStanza Then
+                If Not group.IsMultiStanza Then
                     iRow = Me.AddRow
                     FillInRows(iRow, group)
                 Else

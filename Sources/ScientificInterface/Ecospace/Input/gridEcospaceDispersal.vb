@@ -80,6 +80,7 @@ Namespace Ecospace
             Me(0, eColumnTypes.BarrierAvoidance) = New EwEColumnHeaderCell(eVarNameFlags.BarrierAvoidanceWeight)
             Me(0, eColumnTypes.InMigMovement) = New EwEColumnHeaderCell(eVarNameFlags.InMigAreaMoveWeight)
 
+            Me.FixedColumnWidths = True
 
         End Sub
 

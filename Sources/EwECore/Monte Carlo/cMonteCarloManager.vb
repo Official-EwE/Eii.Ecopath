@@ -1058,7 +1058,7 @@ Public Class cMonteCarloManager
         Dim status As eStatusFlags = grp.GetStatus(var)
 
         ' Stanza groups should only allow B and QB edits in MCMC when configured as leading
-        If grp.isMultiStanza Then
+        If grp.IsMultiStanza Then
 
             Dim sg As cStanzaGroup = Me.m_core.StanzaGroups(grp.iStanza)
             Select Case var

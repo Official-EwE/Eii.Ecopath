@@ -158,7 +158,7 @@
     <Setting Name="ColorPedigree" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Orange</Value>
     </Setting>
-    <Setting Name="LinkVisibleGroupsFleets" Type="System.Boolean" Scope="User">
+    <Setting Name="SelectionLinkThroughFishing" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="AutosaveHeaders" Type="System.Boolean" Scope="User">
@@ -240,6 +240,12 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="StatusAutoPopop" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="UseEcospaceSpinup" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SelectionLinkThroughPredation" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

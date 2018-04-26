@@ -101,7 +101,7 @@ Namespace Ecopath.Input
 
                 group = groups(i)
 
-                If Not group.isMultiStanza Then 'If group is non-stanza Then display group info
+                If Not group.IsMultiStanza Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow()
                     Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
                     Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)

@@ -5498,7 +5498,7 @@ Public Class cCore
         Dim bClearBA As Boolean = False
         Dim bClearBARate As Boolean = False
 
-        Dim bIsPartOfStanza As Boolean = obj.isMultiStanza()
+        Dim bIsPartOfStanza As Boolean = obj.IsMultiStanza()
         Dim bIsDetritus As Boolean = (obj.PP > 1.1)
         Dim bIsProducer As Boolean = (obj.PP = 1.0)
 
@@ -5741,7 +5741,7 @@ Public Class cCore
         obj.AllowValidation = False
 
         ' JS061214: All Migration/Other production related variables are read-only for stanza groups
-        If (obj.isMultiStanza) Then
+        If (obj.IsMultiStanza) Then
             obj.SetStatusFlags(eVarNameFlags.Immig, eStatusFlags.NotEditable)
             obj.SetStatusFlags(eVarNameFlags.Emig, eStatusFlags.NotEditable)
             obj.SetStatusFlags(eVarNameFlags.EmigRate, eStatusFlags.NotEditable)
@@ -5865,7 +5865,7 @@ Public Class cCore
         group.AllowValidation = False
 
         ' Is a multi-stanza group?
-        If group.isMultiStanza Then
+        If group.IsMultiStanza Then
             ' #Yes: configure VBK editable mode
             sg = Me.StanzaGroups(group.iStanza)
 
@@ -5903,7 +5903,7 @@ Public Class cCore
         group.AllowValidation = False
 
         ' Is multi-stanza?
-        If group.isMultiStanza Then
+        If group.IsMultiStanza Then
             ' #Yes: determine if this is the first stanza group that is being fished (ouch)
             Dim sg As cStanzaGroup = Me.StanzaGroups(group.iStanza)
             Dim iAgeYoungest As Integer = 0
@@ -5966,7 +5966,7 @@ Public Class cCore
         group.AllowValidation = False
 
         ' Is a multi-stanza group?
-        If group.isMultiStanza Then
+        If group.IsMultiStanza Then
             ' #Yes: Make Tmax non-editable to the user
             group.SetStatusFlags(eVarNameFlags.TmaxInput, eStatusFlags.NotEditable)
         Else
@@ -6340,7 +6340,7 @@ Public Class cCore
 
         For iGroup As Integer = 1 To Me.nGroups
             group = Me.EcoPathGroupInputs(iGroup)
-            If (group.isMultiStanza) Then
+            If (group.IsMultiStanza) Then
                 Me.Set_Tcatch_Flags(group, True)
             End If
         Next
@@ -8730,7 +8730,7 @@ Public Class cCore
 
 #End Region ' Variables
 
-#Region "Ecospace Public Methods"
+#Region " Ecospace Public Methods "
 
     Public ReadOnly Property SpatialDataConnectionManager As SpatialData.cSpatialDataConnectionManager
         Get

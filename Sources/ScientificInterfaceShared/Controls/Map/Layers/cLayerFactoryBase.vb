@@ -129,28 +129,6 @@ Namespace Controls.Map
                         lLayers.Add(layer)
                     End If
 
-                Case eVarNameFlags.LayerHabitatCapacity
-
-                    If (core.nGroups > 0) Then
-
-                        key = New cValueID(eDataTypes.EcospaceLayerHabitatCapacity, bmd.DBID, eVarNameFlags.Name)
-                        ad = core.AuxillaryData(key)
-
-                        vs = ad.VisualStyle
-                        If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                        renderer = New cLayerRendererValue(vs)
-                        renderer.ScaleMin = 0
-                        renderer.RenderMode = Definitions.eLayerRenderType.Selected
-
-                        editor = New cLayerEditorGroup(GetType(ucLayerEditorGroup))
-                        editor.IsReadOnly = True
-
-                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacity),
-                                                renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerHabitatCapacity)
-
-                        lLayers.Add(layer)
-                    End If
-
                 Case eVarNameFlags.LayerRegion
 
                     key = New cValueID(eDataTypes.EcospaceLayerRegion, bmd.DBID, eVarNameFlags.Name)

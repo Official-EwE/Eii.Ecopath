@@ -235,7 +235,7 @@ Namespace Ecosim
                                 Case eResultTypes.FeedingTime
                                     data(i, j) = m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FeedingTime, i, j)
                                 Case eResultTypes.AvgWeightOrProdCons
-                                    If group.isMultiStanza Then
+                                    If group.IsMultiStanza Then
                                         data(i, j) = m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, i, j)
                                     Else
                                         data(i, j) = m_core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.ProdConsump, i, j)

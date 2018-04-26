@@ -72,6 +72,7 @@ Namespace Ecopath.Output
             Me(0, eColumnTypes.MortNat) = New EwEColumnHeaderCell(My.Resources.HEADER_MORTALITIES_PROP_NAT_MORT)
 
             Me.FixedColumns = 2
+            Me.FixedColumnWidths = True
 
         End Sub
 
@@ -96,7 +97,7 @@ Namespace Ecopath.Output
 
                 If (group.IsLiving) Then
 
-                    If Not group.isMultiStanza Then
+                    If Not group.IsMultiStanza Then
 
                         iRow = Me.AddRow
                         FillInRows(iRow, group)

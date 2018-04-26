@@ -117,7 +117,7 @@ Namespace Ecopath.Input
                 ' Get the Ecopath input for this specific group
                 group = groups(i)
 
-                If Not group.isMultiStanza Then
+                If Not group.IsMultiStanza Then
 
                     iRow = Me.AddRow()
                     FillInRows(iRow, group, alSumRow, alSumAll)

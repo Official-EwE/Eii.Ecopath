@@ -58,6 +58,7 @@ Namespace Other
             Me.m_hdrIndexing = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrCache = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnViewConfig = New System.Windows.Forms.Button()
             Me.SuspendLayout()
             '
             'm_btnAdd
@@ -194,10 +195,17 @@ Namespace Other
             Me.m_hdrCaption.IsCollapsed = False
             Me.m_hdrCaption.Name = "m_hdrCaption"
             '
+            'm_btnViewConfig
+            '
+            resources.ApplyResources(Me.m_btnViewConfig, "m_btnViewConfig")
+            Me.m_btnViewConfig.Name = "m_btnViewConfig"
+            Me.m_btnViewConfig.UseVisualStyleBackColor = True
+            '
             'ucOptionsSpatialTemporal
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.Controls.Add(Me.m_btnViewConfig)
             Me.Controls.Add(Me.m_lblAvailable)
             Me.Controls.Add(Me.m_lvDatasets)
             Me.Controls.Add(Me.m_cbAllowIndexing)
@@ -215,7 +223,6 @@ Namespace Other
             Me.Controls.Add(Me.m_btnAdd)
             Me.Controls.Add(Me.m_btnViewCache)
             Me.Controls.Add(Me.m_hdrCaption)
-            Me.MinimumSize = New System.Drawing.Size(400, 307)
             Me.Name = "ucOptionsSpatialTemporal"
             Me.ResumeLayout(False)
             Me.PerformLayout()
@@ -244,7 +251,7 @@ Namespace Other
         Private WithEvents m_ilLoaded As System.Windows.Forms.ImageList
         Private WithEvents m_btnExport As System.Windows.Forms.Button
         Private WithEvents m_lblAvailable As System.Windows.Forms.Label
-
+        Private WithEvents m_btnViewConfig As Button
     End Class
 End Namespace
 

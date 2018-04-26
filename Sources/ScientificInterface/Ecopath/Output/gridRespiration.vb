@@ -77,7 +77,7 @@ Namespace Ecopath.Output
                 ' Get corresponding Ecopath output group 
                 group = Me.Core.EcoPathGroupOutputs(groups(i).Index)
 
-                If Not group.isMultiStanza Then
+                If Not group.IsMultiStanza Then
 
                     iRow = Me.AddRow
                     FillInRows(iRow, group)

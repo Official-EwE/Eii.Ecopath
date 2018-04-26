@@ -29,10 +29,8 @@ Imports System.Threading
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -78,6 +76,7 @@ Namespace Ecospace
             PredMortRateGraph
             ConsumpRateGraph
             Driver
+            ComputedCapacity
         End Enum
 
 #Region " Variables "
@@ -262,7 +261,9 @@ Namespace Ecospace
             For i As Integer = 1 To nThreads
                 Select Case Me.m_mapPlotType
                     Case ePlotTypes.Driver
-                        drawer = New cMapDrawerLayer(Me.Core, Me.StyleGuide)
+                        drawer = New cMapDrawerLayer(Me.Core, Me.StyleGuide, eVarNameFlags.LayerDriver)
+                    Case ePlotTypes.ComputedCapacity
+                        drawer = New cMapDrawerLayer(Me.Core, Me.StyleGuide, eVarNameFlags.LayerHabitatCapacity)
                     Case Else
                         drawer = New cMapDrawerGroup(Me.Core, Me.StyleGuide)
                 End Select
@@ -498,7 +499,9 @@ Namespace Ecospace
                     Case ePlotTypes.Effort
                         PlotFleetMap(g)
                     Case ePlotTypes.Driver
-                        PlotDriverMap(g, eVarNameFlags.LayerDriver)
+                        PlotLayerMap(g, eVarNameFlags.LayerDriver)
+                    Case ePlotTypes.ComputedCapacity
+                        PlotLayerMap(g, eVarNameFlags.LayerHabitatCapacity)
                     Case Else
                         PlotGroupMap(g)
                 End Select
@@ -618,6 +621,9 @@ Namespace Ecospace
                                 drawer.Map = Nothing ' The drawer will pick up what it needs
                                 RelScaler = Nothing
 
+                            Case ePlotTypes.ComputedCapacity
+                                Debug.Assert(False)
+
                         End Select
 
                         Dim mapArgs As New cMapDrawerArgs(maptype, RelScaler, Me.m_FishingMortMax)
@@ -659,7 +665,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="g"></param>
         ''' -------------------------------------------------------------------
-        Private Sub PlotDriverMap(ByVal g As Graphics, varname As eVarNameFlags)
+        Private Sub PlotLayerMap(ByVal g As Graphics, varname As eVarNameFlags)
 
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
@@ -848,10 +854,11 @@ Namespace Ecospace
 
                             'Boundary check
                             icc = Math.Max(Math.Min(cColourBins, icc), 0)
-                            tmpBrush = New SolidBrush(lColors(CInt(icc)))
-
-                            g.FillRectangle(tmpBrush, tmpRect)
-                            tmpBrush.Dispose()
+                            If (Not Single.IsNaN(icc)) Then
+                                tmpBrush = New SolidBrush(lColors(CInt(icc)))
+                                g.FillRectangle(tmpBrush, tmpRect)
+                                tmpBrush.Dispose()
+                            End If
 
                             ' Draw MPA
                             If Me.StyleGuide.ShowMapsMPAs Then
@@ -961,7 +968,9 @@ Namespace Ecospace
                     m_rbDisplayFishingEffort.CheckedChanged,
                     m_rbDisplayCoverB.CheckedChanged,
                     m_rbDisplayContaminantC.CheckedChanged,
-                    m_rbDisplayF.CheckedChanged, m_rbDisplayFOverB.CheckedChanged, m_rbDisplayEnvDriver.CheckedChanged, m_rbDisplayDiscards.CheckedChanged
+                    m_rbDisplayF.CheckedChanged, m_rbDisplayFOverB.CheckedChanged, m_rbDisplayEnvDriver.CheckedChanged,
+                    m_rbDisplayDiscards.CheckedChanged, m_rbDisplayComputedHabitatCapacity.CheckedChanged,
+                    m_rbDisplayComputedHabitatCapacity.CheckedChanged
 
             ' To catch premature events
             If (Me.UIContext Is Nothing) Then Return
@@ -983,6 +992,8 @@ Namespace Ecospace
                 Me.m_mapPlotType = ePlotTypes.Driver
             ElseIf m_rbDisplayDiscards.Checked Then
                 Me.m_mapPlotType = ePlotTypes.Discards
+            ElseIf Me.m_rbDisplayComputedHabitatCapacity.Checked Then
+                Me.m_mapPlotType = ePlotTypes.ComputedCapacity
             End If
 
             Me.InitDrawingThreads()

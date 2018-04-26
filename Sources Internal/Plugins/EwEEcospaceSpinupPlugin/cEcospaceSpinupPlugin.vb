@@ -73,37 +73,29 @@ Public Class cEcospaceSpinupPlugin
 
 #End Region
 
-#Region "Public Methods and properties"
+#Region " Public Methods and properties "
 
     Public Property SpinUpYears As Single
         Get
-            Return Me.m_EcoSpaceData.SpinUpYears
+            Return My.Settings.SpinupYears
         End Get
         Set(value As Single)
             If value >= 0 Then
-                Me.m_EcoSpaceData.SpinUpYears = value
+                My.Settings.SpinupYears = value
+                My.Settings.Save()
             End If
         End Set
     End Property
 
     Public Property UseSpinUp As Boolean
         Get
-            Try
-                Return Me.m_EcoSpaceData.UseSpinUp
-            Catch ex As Exception
-                Me.LogMessage(ex)
-            End Try
-            Return False
+            Return My.Settings.UseSpinup
         End Get
         Set(value As Boolean)
-            Try
-                Me.m_EcoSpaceData.UseSpinUp = value
-            Catch ex As Exception
-                Me.LogMessage(ex)
-            End Try
+            My.Settings.UseSpinup = value
+            My.Settings.Save()
         End Set
     End Property
-
 
     Public Property UseSpinUpBaseBio As Boolean
         Get
@@ -130,9 +122,9 @@ Public Class cEcospaceSpinupPlugin
     Public BioAtTime() As Single
     Public BioAtBase() As Single
 
-#End Region
+#End Region ' Public Methods and properties
 
-#Region "Private methods"
+#Region " Private methods "
 
     Public Sub LogMessage(ex As Exception, Optional msg As String = "")
         Try
@@ -178,13 +170,16 @@ Public Class cEcospaceSpinupPlugin
         End Try
     End Sub
 
-#End Region
+#End Region ' Private methods
 
 #Region "Ecopath, Ecosim and Ecospace events"
 
     Public Sub OnEcospaceInitRunCompleted(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
 
         Try
+            Me.EcoSpaceData.UseSpinUp = Me.UseSpinUp
+            Me.EcoSpaceData.SpinUpYears = Me.SpinUpYears
+
             'Me.SS = 0
             If BtBtMinus1 Is Nothing Then
                 Me.BtBtMinus1 = New Single(Me.EcoSpaceData.NGroups) {}

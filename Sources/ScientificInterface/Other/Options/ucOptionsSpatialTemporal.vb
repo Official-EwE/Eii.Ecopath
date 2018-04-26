@@ -175,6 +175,27 @@ Namespace Other
 
         End Sub
 
+        Private Sub OnViewConfigFile(sender As Object, e As EventArgs) _
+            Handles m_btnViewConfig.Click
+            Try
+                If (Me.UIContext Is Nothing) Then Return
+                If (Me.m_lvDatasets.SelectedItems.Count <> 1) Then Return
+
+                Dim strFile As String = cSpatialDataSetManager.DefaultConfigFile
+                Dim cfg As cSpatialDataConfigFile = CType(Me.m_lvDatasets.SelectedItems(0).Tag, cSpatialDataConfigFile)
+                If (cfg IsNot Nothing) Then
+                    strFile = cfg.FileName
+                End If
+
+                Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+                Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+                cmd.Invoke(Path.GetDirectoryName(cfg.FileName))
+
+            Catch ex As Exception
+                'ToDo: log this
+            End Try
+        End Sub
+
         Private Sub OnExportFile(sender As System.Object, e As System.EventArgs) _
             Handles m_btnExport.Click
             Try
@@ -457,6 +478,7 @@ Namespace Other
             Me.m_btnSelect.Enabled = bHasSelection And Not bIsCurrent
             Me.m_btnRemove.Enabled = bHasCustomSelection
             Me.m_btnExport.Enabled = (man.Datasets.Count > 0)
+            Me.m_btnViewConfig.Enabled = bHasSelection
 
             Me.m_lblCacheLocationValue.Text = cStringUtils.CompactString(cache.RootFolder, Me.m_lblCacheLocationValue.ClientSize.Width, Me.Font)
             Me.m_lblCacheSizeValue.Text = cStringUtils.Localize(My.Resources.GENERIC_VALUE_CACHEMEMORY, _
