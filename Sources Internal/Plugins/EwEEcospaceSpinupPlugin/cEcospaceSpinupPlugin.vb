@@ -71,6 +71,8 @@ Public Class cEcospaceSpinupPlugin
     Private m_uic As cUIContext = Nothing
     Private m_form As frmEcospaceSpinup = Nothing
 
+    Private m_bUseSpinupOld As Boolean = False
+
 #End Region
 
 #Region " Public Methods and properties "
@@ -100,7 +102,7 @@ Public Class cEcospaceSpinupPlugin
     Public Property UseSpinUpBaseBio As Boolean
         Get
             Try
-                Return Me.m_EcoSpaceData.UseSpinUpBase
+                Return My.Settings.UseSpinUpBaseBio
             Catch ex As Exception
                 Me.LogMessage(ex)
             End Try
@@ -108,7 +110,8 @@ Public Class cEcospaceSpinupPlugin
         End Get
         Set(value As Boolean)
             Try
-                Me.m_EcoSpaceData.UseSpinUpBase = value
+                My.Settings.UseSpinUpBaseBio = value
+                My.Settings.Save()
             Catch ex As Exception
                 Me.LogMessage(ex)
             End Try
@@ -143,7 +146,6 @@ Public Class cEcospaceSpinupPlugin
         End Try
     End Sub
 
-
     Private Sub fireOnTimeStep()
         Try
             RaiseEvent OnEcospaceTimeStep()
@@ -153,9 +155,11 @@ Public Class cEcospaceSpinupPlugin
     End Sub
 
 
-
     Private Sub fireOnRunCompleted()
         Try
+            ' Restore old spin-up state
+            Me.EcoSpaceData.UseSpinUp = Me.m_bUseSpinupOld
+            ' Done
             RaiseEvent OnEcospaceRunCompleted()
         Catch ex As Exception
             LogMessage(ex, "Failed to send OnEcospaceTimeStep() Event to interface.")
@@ -177,8 +181,13 @@ Public Class cEcospaceSpinupPlugin
     Public Sub OnEcospaceInitRunCompleted(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
 
         Try
+            ' Cache last value
+            Me.m_bUseSpinupOld = Me.EcoSpaceData.UseSpinUp
+
+            ' This is the correct moment to tell Ecospace to start using the SpinUp period
             Me.EcoSpaceData.UseSpinUp = Me.UseSpinUp
             Me.EcoSpaceData.SpinUpYears = Me.SpinUpYears
+            Me.EcoSpaceData.UseSpinUpBase = Me.UseSpinUpBaseBio
 
             'Me.SS = 0
             If BtBtMinus1 Is Nothing Then

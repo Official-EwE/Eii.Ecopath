@@ -40,7 +40,7 @@ Public Class frmEcospaceSpinup
 
     Private m_plugin As cEcospaceSpinupPlugin = Nothing
     Private m_bInitializing As Boolean = False
-    Private m_fpSpinupYears As cEwEFormatProvider = Nothing
+    Private WithEvents m_fpSpinupYears As cEwEFormatProvider = Nothing
 
 #End Region ' Private vars
 
@@ -73,10 +73,13 @@ Public Class frmEcospaceSpinup
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
+
         RemoveHandler Me.m_plugin.OnEcospaceTimeStep, AddressOf Me.OnTimeStep
         RemoveHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
         RemoveHandler Me.m_plugin.OnEcospaceRunCompleted, AddressOf Me.OnRunCompleted
+
         Me.m_fpSpinupYears.Release()
+
     End Sub
 
     Public Overrides ReadOnly Property IsRunForm() As Boolean
@@ -157,7 +160,7 @@ Public Class frmEcospaceSpinup
     End Sub
 
     Private Sub OnSpinupYearsChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_tbxSpinUpYears.TextChanged
+        Handles m_fpSpinupYears.OnValueChanged
 
         If (Me.m_bInitializing) Then Return
         Try
