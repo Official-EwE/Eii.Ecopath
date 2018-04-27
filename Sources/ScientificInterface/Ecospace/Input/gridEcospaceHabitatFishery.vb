@@ -45,7 +45,7 @@ Namespace Ecospace
         Private Enum eColumnTypes As Integer
             Index = 0
             Name
-            FirstHabitat
+            All
         End Enum
 
         Private m_bInUpdate As Boolean = False
@@ -87,14 +87,16 @@ Namespace Ecospace
 
             Dim source As cCoreInputOutputBase = Nothing
 
-            Me.Redim(1, 1 + Me.Core.nHabitats)
+            Me.Redim(1, 3 + Me.Core.nHabitats)
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_FLEETNAME)
+            Me(0, eColumnTypes.All) = New EwEColumnHeaderCell(My.Resources.HEADER_FISH_EVERYWHERE)
 
             For j As Integer = 1 To Me.Core.nHabitats - 1
                 source = Me.Core.EcospaceHabitats(j)
-                Me(0, eColumnTypes.FirstHabitat + j - 1) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(0, eColumnTypes.All + j) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
             Next
+            Me.FixedColumnWidths = True
 
         End Sub
 
@@ -110,17 +112,19 @@ Namespace Ecospace
 
                 Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Index)
                 Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, fleet, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.All) = New Cells.Real.CheckBox(False)
+                Me(iRow, eColumnTypes.All).Behaviors.Add(Me.EwEEditHandler)
 
                 If (bEnable) Then
 
                     For iHabitat As Integer = 1 To Me.Core.nHabitats - 1
-                        Me(iRow, eColumnTypes.FirstHabitat + iHabitat - 1) = New Cells.Real.CheckBox(fleet.HabitatFishery(iHabitat))
-                        Me(iRow, eColumnTypes.FirstHabitat + iHabitat - 1).Behaviors.Add(Me.EwEEditHandler)
+                        Me(iRow, eColumnTypes.All + iHabitat) = New Cells.Real.CheckBox(fleet.HabitatFishery(iHabitat))
+                        Me(iRow, eColumnTypes.All + iHabitat).Behaviors.Add(Me.EwEEditHandler)
                     Next
 
                 Else
                     For iHabitat As Integer = 1 To Me.Core.nHabitats - 1
-                        Me(iRow, eColumnTypes.FirstHabitat + iHabitat - 1) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
+                        Me(iRow, eColumnTypes.All + iHabitat) = New EwECell("", GetType(String), eStyleFlags.NotEditable Or eStyleFlags.Null)
                     Next
 
                 End If
@@ -143,23 +147,24 @@ Namespace Ecospace
 
             If (Me.m_bInUpdate) Then Return True
 
-            Try
+            Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleetInputs(p.Row)
 
-                Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleetInputs(p.Row)
-                Dim bChecked As Boolean = CBool(cell.GetValue(p))
-                Dim iHabitat As Integer = p.Column - eColumnTypes.FirstHabitat + 1
+            Select Case p.Column
 
-                fleet.HabitatFishery(iHabitat) = bChecked
+                Case eColumnTypes.All
+                    For iHabitat As Integer = 1 To Me.Core.nHabitats - 1
+                        fleet.HabitatFishery(iHabitat) = CBool(cell.GetValue(p))
+                    Next
 
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
+                Case Else
+                    Dim iHabitat As Integer = p.Column - eColumnTypes.All
+                    fleet.HabitatFishery(iHabitat) = CBool(cell.GetValue(p))
+
+            End Select
+
+            Me.UpdateRow(p.Row)
 
         End Function
-
-#End Region ' Events
-
-#Region " Event handlers "
 
         Private Sub m_bpEffort_PropertyChanged(prop As cProperty, changeFlags As cProperty.eChangeFlags) _
             Handles m_bpEffort.PropertyChanged
@@ -172,7 +177,31 @@ Namespace Ecospace
 
         End Sub
 
-#End Region ' Event handlers
+#End Region ' Event 
+
+#Region " Internals "
+
+        Private Sub UpdateRow(iRow As Integer)
+
+            If (Me.m_bInUpdate) Then Return
+            Me.m_bInUpdate = True
+
+            Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleetInputs(iRow)
+            Dim bFishEverywhere As Boolean = True
+
+            For iHabitat As Integer = 1 To Me.Core.nHabitats - 1
+                Dim bIsAllowed As Boolean = (fleet.HabitatFishery(iHabitat) = True)
+                Me(iRow, eColumnTypes.All + iHabitat).Value = bIsAllowed
+                bFishEverywhere = bFishEverywhere And bIsAllowed
+            Next
+
+            Me(iRow, eColumnTypes.All).Value = bFishEverywhere
+
+            Me.m_bInUpdate = False
+
+        End Sub
+
+#End Region ' Internals
 
     End Class
 
