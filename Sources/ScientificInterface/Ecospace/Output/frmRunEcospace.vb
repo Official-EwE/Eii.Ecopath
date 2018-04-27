@@ -59,7 +59,7 @@ Namespace Ecospace
 
         Public Enum eShowItemType
             ShowAll = 0
-            ShowNonHidden
+            ShowCustom
             ShowSingle
         End Enum
 
@@ -465,7 +465,7 @@ Namespace Ecospace
         ''' <param name="cmd"></param>
         ''' -------------------------------------------------------------------
         Private Sub OnDisplayGroupsInvoked(ByVal cmd As cCommand)
-            Me.m_showitemMode = eShowItemType.ShowNonHidden
+            Me.m_showitemMode = eShowItemType.ShowCustom
             Me.UpdateControls()
             Me.RefreshMap()
         End Sub
@@ -537,7 +537,7 @@ Namespace Ecospace
                         bShowItem = True
                     Case eShowItemType.ShowSingle
                         bShowItem = (iGroup = Me.ItemToShow)
-                    Case eShowItemType.ShowNonHidden
+                    Case eShowItemType.ShowCustom
                         bShowItem = Me.StyleGuide.GroupVisible(iGroup)
                 End Select
 
@@ -1045,7 +1045,7 @@ Namespace Ecospace
             If (Me.m_bInUpdate) Then Return
 
             If Me.m_rbShowAll.Checked Then Me.ShowItemMode = eShowItemType.ShowAll
-            If Me.m_rbShowNonHidden.Checked Then Me.ShowItemMode = eShowItemType.ShowNonHidden
+            If Me.m_rbShowNonHidden.Checked Then Me.ShowItemMode = eShowItemType.ShowCustom
             If Me.m_rbShowSingle.Checked Then Me.ShowItemMode = eShowItemType.ShowSingle
             Me.UpdateControls()
 
@@ -1574,7 +1574,7 @@ Namespace Ecospace
             Select Case Me.ShowItemMode
                 Case eShowItemType.ShowAll
                     Me.m_rbShowAll.Checked = True
-                Case eShowItemType.ShowNonHidden
+                Case eShowItemType.ShowCustom
                     Me.m_rbShowNonHidden.Checked = True
                 Case eShowItemType.ShowSingle
                     Me.m_rbShowSingle.Checked = True
@@ -1629,27 +1629,47 @@ Namespace Ecospace
             ' No need to refresh if nothing changes
             If (Me.m_mapPlotTypeLast = Me.m_mapPlotType) Then Return
 
+            Dim bNeedRebuilding As Boolean = False
+            Select Case Me.m_mapPlotTypeLast
+                Case ePlotTypes.Effort
+                    bNeedRebuilding = Me.m_mapPlotType <> ePlotTypes.Effort
+                Case ePlotTypes.Driver
+                    bNeedRebuilding = Me.m_mapPlotType <> ePlotTypes.Driver
+                Case Else
+                    bNeedRebuilding = (Me.m_mapPlotType = ePlotTypes.Effort) Or (Me.m_mapPlotType = ePlotTypes.Driver)
+            End Select
             Me.m_mapPlotTypeLast = Me.m_mapPlotType
 
-            Dim desc As New cCoreInterfaceFormatter()
-            Me.m_cmbDisplayItem.Items.Clear()
+            If (bNeedRebuilding) Then
 
-            Select Case Me.m_mapPlotType
-                Case ePlotTypes.Effort
-                    For i As Integer = 1 To Me.Core.nFleets
-                        Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceFleetInputs(i), eDescriptorTypes.Name))
-                    Next i
-                Case ePlotTypes.Driver
-                    Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
-                    For i As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
-                        Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(bm.LayerDriver(i), eDescriptorTypes.Name))
-                    Next
-                Case Else
-                    For i As Integer = 1 To Me.Core.nGroups
-                        Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceGroupInputs(i), eDescriptorTypes.Name))
-                    Next i
-            End Select
-            Me.m_cmbDisplayItem.SelectedIndex = Math.Min(Me.m_cmbDisplayItem.Items.Count - 1, 0)
+                Dim desc As New cCoreInterfaceFormatter()
+                Me.m_cmbDisplayItem.Items.Clear()
+
+                Select Case Me.m_mapPlotType
+                    Case ePlotTypes.Effort
+                        For i As Integer = 1 To Me.Core.nFleets
+                            Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceFleetInputs(i), eDescriptorTypes.Name))
+                        Next i
+                    Case ePlotTypes.Driver
+                        Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+                        For i As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
+                            Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(bm.LayerDriver(i), eDescriptorTypes.Name))
+                        Next
+                    Case Else
+                        For i As Integer = 1 To Me.Core.nGroups
+                            Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceGroupInputs(i), eDescriptorTypes.Name))
+                        Next i
+                End Select
+
+                ' This is a confusing bit: bInUpdate flag prohibits a item selection from flipping view mode to single view
+                ' However, we want to always select an item when this combo box has been (re)populated
+                ' We certainly do not want the Ecospace form to flip back to single mode as it used to to (bug #1570)
+                ' As a solution, the item selection does not affect display but is only cosmetic if we're not currently in single item mode. There.
+                Me.m_bInUpdate = (Me.ShowItemMode <> eShowItemType.ShowSingle)
+                Me.m_cmbDisplayItem.SelectedIndex = Math.Min(Me.m_cmbDisplayItem.Items.Count - 1, 0)
+                Me.m_bInUpdate = False
+
+            End If
 
         End Sub
 
@@ -1908,7 +1928,7 @@ Namespace Ecospace
                             bShowGroup = True
                         Case eShowItemType.ShowSingle
                             bShowGroup = (iGroup = Me.ItemToShow)
-                        Case eShowItemType.ShowNonHidden
+                        Case eShowItemType.ShowCustom
                             bShowGroup = Me.StyleGuide.GroupVisible(iGroup)
                     End Select
 

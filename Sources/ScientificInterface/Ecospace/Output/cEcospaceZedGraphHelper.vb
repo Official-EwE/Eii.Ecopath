@@ -178,7 +178,7 @@ Namespace Ecospace
             Select Case Me.ItemShowMode
                 Case frmRunEcospace.eShowItemType.ShowAll
                     Return True
-                Case frmRunEcospace.eShowItemType.ShowNonHidden
+                Case frmRunEcospace.eShowItemType.ShowCustom
                     Return MyBase.IsCurveVisible(ci)
                 Case frmRunEcospace.eShowItemType.ShowSingle
                     Return (info.Index = Me.m_iItemToShow)
