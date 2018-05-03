@@ -89,7 +89,6 @@ Namespace Ecospace
                 ' Set
                 MyBase.UIContext = value
                 Me.m_toolbox.UIContext = value
-                Me.m_map.UIContext = value
                 Me.m_gridApply.UIContext = value
 
                 ' Config
@@ -123,8 +122,6 @@ Namespace Ecospace
             Next
             Me.m_tscmbLayerVariable.SelectedIndex = 0
 
-            Me.m_tsbnShowRefMap.Checked = Me.m_map.ShowReferenceMap
-            Me.m_tsbnShowGrid.Checked = Me.m_map.ShowGrid
             Me.m_toolbox.SelectedTimeStep = 0
 
             Me.m_tsbnOnlyShowConnectedLayers.Checked = Me.m_gridApply.OnlyShowConnected
@@ -155,17 +152,9 @@ Namespace Ecospace
             MyBase.OnStyleGuideChanged(ct)
 
             If ((ct And cStyleGuide.eChangeType.Colours) > 0) Then
-                Me.m_map.Invalidate()
                 Me.m_toolbox.Invalidate()
             End If
 
-        End Sub
-
-        Protected Overrides Sub UpdateControls()
-            MyBase.UpdateControls()
-            Me.m_tsbnZoomData.Checked = (Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.ExternalData)
-            Me.m_tsbnZoomMap.Checked = (Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Basemap)
-            Me.m_tsbnZoomBoth.Checked = (Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Both)
         End Sub
 
 #End Region ' Form overrides
@@ -182,7 +171,6 @@ Namespace Ecospace
             End If
 
             Me.m_ds = ds
-            Me.m_map.SelectedDataset = ds
             Me.m_manDS.IndexDataset = ds
 
         End Sub
@@ -206,28 +194,6 @@ Namespace Ecospace
 
         Private Sub OnSelectedTimestepChanged(owner As Object, iTimeStep As Integer, dt As Date) _
             Handles m_toolbox.OnSelectedTimestepChanged
-            Me.m_map.SelectedTimeStep = iTimeStep
-        End Sub
-
-        Private Sub OnZoom(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnZoomMap.Click, m_tsbnZoomData.Click, m_tsbnZoomBoth.Click
-            If (sender Is Me.m_tsbnZoomData) Then
-                Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.ExternalData
-            ElseIf (sender Is Me.m_tsbnZoomMap) Then
-                Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Basemap
-            Else
-                Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Both
-            End If
-            Me.UpdateControls()
-        End Sub
-
-        Private Sub OnToggleShowRefMap(sender As System.Object, e As System.EventArgs) Handles m_tsbnShowRefMap.Click
-            Me.m_map.ShowReferenceMap = Me.m_tsbnShowRefMap.Checked
-        End Sub
-
-        Private Sub OnToggleShowGrid(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnShowGrid.Click
-            Me.m_map.ShowGrid = Me.m_tsbnShowGrid.Checked
         End Sub
 
         Private Sub OnToggleOnlyShowConnectedLayers(sender As System.Object, e As System.EventArgs) _
@@ -246,14 +212,13 @@ Namespace Ecospace
             Select Case msg.DataType
 
                 Case eDataTypes.EcospaceBasemap
-                    Me.m_map.RefreshContent()
+                    ' NOP
 
                 Case eDataTypes.EcospaceSpatialDataConnection, eDataTypes.EcospaceSpatialDataSource
 
                     ' Optimization
                     If (msg.Type <> eMessageType.Progress) Then
                         Me.m_gridApply.RefreshContent()
-                        Me.m_map.RefreshContent()
                     End If
 
                     ' Toolbox takes care of itself

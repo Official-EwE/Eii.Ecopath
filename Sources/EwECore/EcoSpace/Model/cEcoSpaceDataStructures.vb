@@ -205,7 +205,9 @@ Public Class cEcospaceDataStructures
     Public der() As Single
     Public EatEffBad() As Single
     Public MPABiomass() As Single
+    ''' <summary>Movement rate?!</summary>
     Public Mrate() As Single
+    ''' <summary>Base dispersal rate as entered by the user</summary>
     Public Mvel() As Single
     Public RelMoveBad() As Single
     Public RelVulBad() As Single

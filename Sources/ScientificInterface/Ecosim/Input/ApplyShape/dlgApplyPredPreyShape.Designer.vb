@@ -137,7 +137,7 @@ Namespace Ecosim
             Me.m_lvAllShapes.HideSelection = False
             Me.m_lvAllShapes.Name = "m_lvAllShapes"
             Me.m_lvAllShapes.UseCompatibleStateImageBehavior = False
-            Me.m_lvAllShapes.View = System.Windows.Forms.View.Details
+            Me.m_lvAllShapes.View = System.Windows.Forms.View.List
             '
             'm_btnRemove
             '

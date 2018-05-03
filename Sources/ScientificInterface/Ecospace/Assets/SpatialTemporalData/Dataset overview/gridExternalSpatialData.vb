@@ -21,22 +21,20 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore.SpatialData
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore
-Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports EwECore.SpatialData
 Imports EwEUtils.Core
-Imports SourceGrid2
-Imports ScientificInterface.Ecospace.Controls
 Imports EwEUtils.SpatialData
-Imports EwEUtils.SystemUtilities
-Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Utilities
+Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports SourceGrid2
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
 Namespace Ecospace
 
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class gridExternalSpatialData
         Inherits EwEGrid
 
@@ -107,7 +105,7 @@ Namespace Ecospace
             Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell(My.Resources.HEADER_DRIVER_ENABLED)
 
             For i As Integer = 1 To cSpatialDataStructures.cMAX_CONN
-                Me(0, Me.m_nBaseCols + i - 1) = New EwEColumnHeaderCell(CStr(i))
+                Me(0, Me.m_nBaseCols + i - 1) = New EwEColumnHeaderCell(cStringUtils.Localize(SharedResources.HEADER_SLOT, i))
             Next
 
             Me.FixedColumns = Me.m_nBaseCols

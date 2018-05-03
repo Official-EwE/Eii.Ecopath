@@ -72,6 +72,10 @@ Public Class cEcospaceFleetInput
 
 #Region " Properties by dot (.) operator "
 
+    ''' <summary>
+    ''' Get/set the effort concentration factor for this fleet.
+    ''' </summary>
+    ''' <returns></returns>
     Public Property EffectivePower() As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.EffectivePower))
@@ -82,6 +86,10 @@ Public Class cEcospaceFleetInput
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set whether this fleet is allowed to fish in a given habitat
+    ''' </summary>
+    ''' <param name="iHabitat"></param>
     Public Property HabitatFishery(ByVal iHabitat As Integer) As Boolean
         Get
             Return CBool(GetVariable(eVarNameFlags.HabitatFishery, iHabitat))
