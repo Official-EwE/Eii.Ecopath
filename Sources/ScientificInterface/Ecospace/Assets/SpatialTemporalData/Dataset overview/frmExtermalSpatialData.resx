@@ -142,13 +142,13 @@
     <value>Fill</value>
   </data>
   <data name="m_gridApply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>0, 25</value>
   </data>
   <data name="m_gridApply.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_gridApply.Size" type="System.Drawing.Size, System.Drawing">
-    <value>928, 240</value>
+    <value>936, 266</value>
   </data>
   <data name="m_gridApply.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -157,294 +157,12 @@
     <value>m_gridApply</value>
   </data>
   <data name="&gt;&gt;m_gridApply.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.gridExternalSpatialData, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.gridExternalSpatialData, EwE6, Version=6.6.15299.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridApply.Parent" xml:space="preserve">
-    <value>m_tpConnections</value>
-  </data>
-  <data name="&gt;&gt;m_gridApply.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tpConnections.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tpConnections.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_tpConnections.Size" type="System.Drawing.Size, System.Drawing">
-    <value>928, 240</value>
-  </data>
-  <data name="m_tpConnections.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_tpConnections.Text" xml:space="preserve">
-    <value>Apply connections</value>
-  </data>
-  <data name="&gt;&gt;m_tpConnections.Name" xml:space="preserve">
-    <value>m_tpConnections</value>
-  </data>
-  <data name="&gt;&gt;m_tpConnections.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tpConnections.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tpConnections.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <metadata name="m_tsMap.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>140, 17</value>
-  </metadata>
-  <data name="m_tslZoom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>42, 22</value>
-  </data>
-  <data name="m_tslZoom.Text" xml:space="preserve">
-    <value>Zoom:</value>
-  </data>
-  <data name="m_tsbnZoomMap.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAImSURBVDhPnY3ta1JRHMfP31kREfaAps51waZjQg6kWbnN
-        uOVSnNMxvTIXRZE6tfDZiRNx0RatRowxdep29frQ4ts9Bxy+6EX44sPv/L7nfL6H5HI5eDyeichmsyBu
-        txvD4XAiqEucTidbNME2lKt1PPA1cONZAeqNJtT+JjSBFrRCC6qXaTz5cAQ+eoDnkZ/MoS5xOBxs0b25
-        YJIm2MLN5SK0m+eYCslsXcCb3IMrFES0lEdsN4doucAc6hKe5zEYDMCFJUy/E/HwfRe3nWVwHyWWGbZF
-        5A8yCEU3UDpMofwjhcpRkjnUJXa7nS13vFUoVitQrFXZmeHbw8LbBCJpH6IysawXiZxMwcsc6hKbzYZ+
-        v4+ZzCVmUr/ZvO//AkP2D0yFIb410jg5TyBdWsOpGEetE0ddhjrUJVarFb1eD3y1CXulhbniJZSbXzFf
-        GqJcL+FMiiFz+ApPg3exnn8E/44BWXmnDnWJxWKRlw7Kx158b4SYEN4JotZNyD+GEd9fZOKogBIozrIC
-        6hKz2Yy22Li63Np9jPXIHBL7S+zhKB8voEiSBOoSk8mE1kUN1oACC/+DXyGX3UO32wV1idFoxFn7BK7k
-        NFY+TeH1Zx3mfbfYHGeUrci4khwroC7R6/WoNX+Bj2mwFFFhOarCrPs6m+OMZy+21eh0OqAu4TgOp81j
-        Fi6GlQyj69rV+V8Z/YgWUJfodDqIojgR1CWCIECr1U6EIAj4C8V+EmmDzqGpAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="m_tsbnZoomMap.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnZoomMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="m_tsbnZoomMap.Text" xml:space="preserve">
-    <value>Zoom to map</value>
-  </data>
-  <data name="m_tsbnZoomMap.ToolTipText" xml:space="preserve">
-    <value>Zoom to Ecospace map</value>
-  </data>
-  <data name="m_tsbnZoomData.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHzSURBVDhPjZPLSxtRFMbzV7gyoAm+UGt04Upw6QtELJWg
-        4qPFgln4QlF8Y1ttQTGVJFqolhK0Is5GfBsFRaKC75hETKUYiYXWMVTBuPs692aScbyz8MDZDHN+5/vO
-        OVcVCu7wd8SSi0cD56GZ2rsdzkzjAc2qcTfmTq5B/hXLpKjnzpBlPsLOxS1+8ffw8gH4/MG8uAng/G8A
-        9vN/0H2wo/S7C2KZFLqeDVz5H56VsW9HWEBK9xryho9xcHkHr9Ax1D2s4M89Nn/6kdJpQ8wbkwKgaxW6
-        3i1kW44wsOrFvJPHjIPHl00fzDYPTIsnMIyswGBZhqbSyAJedCxTQK4AqLC6UDvtQbHgNb1/D4mNHGKq
-        hqF9PQRNxSBNsUyK5LZ5pPVtI8d8SAGjdp8MQHxrhc6kOLrkIwtIap6hgJCCpwCqoPIzlR9V0scCEps4
-        GcDmvkHxN+cjgCWogAD071lAQsOUzAIFyBQQgKigqJsFxNdN0iHKADIFkgX1y3YFQO04vbIsk2RB/xQg
-        bkFd2KoAqLFSALkDZQtEQXAL6oIWFhBnGIOuZz2sQHkLRmjLBxCZ38gCqidPQeaQ3LaAjMF9+mCKxpxI
-        +7QrfJ8ITz9K/w6vvjpYAIlF4TmXW93UCrFEDoYUacr6BcgPOuBZx/WjYpXqP1W+/2rUsizEAAAAAElF
-        TkSuQmCC
-</value>
-  </data>
-  <data name="m_tsbnZoomData.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnZoomData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="m_tsbnZoomData.Text" xml:space="preserve">
-    <value>Zoom to data</value>
-  </data>
-  <data name="m_tsbnZoomData.ToolTipText" xml:space="preserve">
-    <value>Zoom to external data</value>
-  </data>
-  <data name="m_tsbnZoomBoth.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAI1SURBVDhPpY/dT5JhGIep9Sd01HFnrYNaH1trq+FGmwqv
-        EKZubW2NmFlLxMy2Vi+wisqYlp/VJAWtZZkM0a0okWFmYmCKicxwxoRCPgReXgJsv8C9HbBcrry253m2
-        Z/f1u++blYUkTdvm5j0Fg8PWhy1ag+VWS8+c5Hrb0pU6zVCHzsFbK/obr8x2WXOHbrKvbyxhtH6G0eFG
-        m96CSw3dEIjIQPF55Umm9E9Kz93e0aDWfXhrMv30UzS8dBLuKA2bn4LesQSZegCcwtoUR1i1k1FyMVps
-        6sc6Q8yzvAIqlUYkmYY/nsJsMA7TQgRdVi/Kb6hxWFCpYJRcmjr0M4Mj9oyURCy1Ciq9ihCdhitIw+xe
-        wTN7AFc1wzjIl4QZJZcqeStGXB64Iwks0ymEfqThjSUx/Z3C0HwY3eM+KJ5M4IhQCkbJRVbf+aXrzUdM
-        fKMwG6LhCicwldn/3dco+mcCaLd4IG0awIGCChuj5EKqtJrK+t7E64UozIuxzInCmBld7wxCa/VB2TuN
-        kur74J8SU4ySi5h8sJ0vUkTqnpvR8ymAl1MhPM3srX7vwx29E6flnWCfkKK7UbT+ClmOn73J4ZbJ42fk
-        7bimMWW6TqK62YCymkYcFV7APRmBsFO5QUi5cs9l1YtH7OKasf35klheaS1KKu4u5hceq2Hv243R1l0b
-        h6zDluzFLeIKiCLuf4essakQkmRtzb6/Q/pVe3FRnPfvU2QhCOIQQXDHebwCPvO1GVisX/KidBP66aty
-        AAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="m_tsbnZoomBoth.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnZoomBoth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>25, 22</value>
-  </data>
-  <data name="m_tsbnZoomBoth.Text" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="m_tsbnZoomBoth.ToolTipText" xml:space="preserve">
-    <value>Show Ecospace map and external data</value>
-  </data>
-  <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="m_tsbnShowGrid.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIcSURBVDhPxZPdT1JhHMfPP9UfUVttddFNN7amm6M2vMit
-        F1tFI1ba0pwIp8iwIAiFQOSACAgWakpjktZhYvRGvmTOJiQc+Pa8wLO69aaz/bbn4ny+L7/nHOn/P4ml
-        ddCJL64hupBHJP0BodkVBGZy8MWy8EQycCtv4JhIw/7yFR6PJ/HwRQIW1zTMzilI8cUCGo0Gmzu2qDj/
-        PTWtgcpBHXsVDT9+aSj9rKG4VcWRo+cgRefXxIuGYeUfkA6DqwQu1wlcQ2lHw8fNGvLfmgJKWmXOPQMB
-        WD0pmF1JPHAkcN8ew13bFIzWMG4MTeJKvx/dvV503R6DzuBCe4+DC0ykVoTbMIFbZ1UtwCiHufOehkTm
-        C4E9UIlz7tMBRqKbXMAbWxbQoCMu4Nz7Aq4PBVlnCofmv0J304V3nzlsCW9xgeehJSEgYssKiR3E1f4A
-        uvu80BNnncGN9msOtF0exZmLT3Bab+MCz4ILQoDCfNt1pJeLrDPdtlqqwjWzgbOXRjGnVpBcraDXv8MF
-        7P45BtNtG60K65zOFllsvWkMeQqnNlhs6pxcLeMegU2+psCId5bAdXZVLPYA2XafD10mHruDxX4qYp+8
-        IONEpwXHOsxc4JEnyWOXNXZVrY/E9/o76exEZv03iz04uY1T52VEsvsIvd3HrfFdLiC74wymV9XqTGHa
-        uY12znOYdj5OnFuwELA4p9nhsNP8pQ77SNIfDM6I3r6czD0AAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="m_tsbnShowGrid.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnShowGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="m_tsbnShowGrid.Text" xml:space="preserve">
-    <value>Show grid</value>
-  </data>
-  <data name="m_tsbnShowRefMap.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIWSURBVDhPrdHtT9JhFIBh/zY3PzRTpzkVTARrNjFLq9Wy
-        Wu8oLDSdms6UlTKmxksLmczGRJAgUSoNRaUXkyk4jAI1xXZn5Jf6sdWqs90fz/U828n4LxOLRfmbDtZ/
-        AJoXMoZmqnEs1eNfVjO+pKPJP0+FN0GBc4fskWSqLNMemYNfhUD381Is4dNMbFzG8+YaG0ktjpgbVQTE
-        7m3qfKSSOyHTkAZocxZjXKliJHIGi/8s4WQ7q9tGzB8DVHujXJgl1alJyHq8KwSax/JpnyihZ1KKfq4G
-        W+A8M0EV9kAfrQsLyDyxVPljCQ5ZtojH4z8DKmseDwMSHr2vROOV4Yhe4t22muhuP/pXeu5E9lJdnIec
-        0YQQUJpy0cyK6V+U0ukqZThchyd2ndWdNjyBDgY2lrnxAa4GodAeFwJqXQH3p0Vo5sS0jBVhCFUzun6O
-        mcRtvAEFvk9PaV7bRBECqXNdCLR0l6AcyKPxSQ53x4/Qai+myyVB663CFbyCd06F0adB5ZtC7ggJgc6W
-        MvqtMno8YhrMh+lbKGdo+QTmtVoGp0+y8qV1/0pW6v2fOW5L84M/AayrRmpnk0htm0KgS1mO3ijngU3C
-        LUM2vX4R2iXZ/qtyet3HeBm/ifrtayqegcia5oxdDRI6lBKaOoto1OWgMGXTYMmlyVbIvfGjaNyV1Nin
-        yBveoswSFQK/6/vCrx2s/8tkZHwDvL11siTmtrAAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="m_tsbnShowRefMap.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnShowRefMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="m_tsbnShowRefMap.Text" xml:space="preserve">
-    <value>&amp;Show reference map</value>
-  </data>
-  <data name="m_tsMap.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>928, 25</value>
-  </data>
-  <data name="m_tsMap.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsMap.Name" xml:space="preserve">
-    <value>m_tsMap</value>
-  </data>
-  <data name="&gt;&gt;m_tsMap.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMap.Parent" xml:space="preserve">
-    <value>m_tpMap</value>
-  </data>
-  <data name="&gt;&gt;m_tsMap.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_map.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_map.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="m_map.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-3, 25</value>
-  </data>
-  <data name="m_map.MapExtent" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBDdWx0
-        dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABlTeXN0ZW0uRHJh
-        d2luZy5SZWN0YW5nbGVGBAAAAAF4AXkFd2lkdGgGaGVpZ2h0AAAAAAsLCwsCAAAAAAAAAAAAAAAAAAAA
-        AAAAAAs=
-</value>
-  </data>
-  <data name="m_map.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_map.Size" type="System.Drawing.Size, System.Drawing">
-    <value>830, 215</value>
-  </data>
-  <data name="m_map.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_map.Name" xml:space="preserve">
-    <value>m_map</value>
-  </data>
-  <data name="&gt;&gt;m_map.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.ucSpatialTimeSeriesMap, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
-  </data>
-  <data name="&gt;&gt;m_map.Parent" xml:space="preserve">
-    <value>m_tpMap</value>
-  </data>
-  <data name="&gt;&gt;m_map.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tpMap.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tpMap.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_tpMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>928, 240</value>
-  </data>
-  <data name="m_tpMap.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_tpMap.Text" xml:space="preserve">
-    <value>Map</value>
-  </data>
-  <data name="&gt;&gt;m_tpMap.Name" xml:space="preserve">
-    <value>m_tpMap</value>
-  </data>
-  <data name="&gt;&gt;m_tpMap.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tpMap.Parent" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tpMap.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tcMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_tcMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
-  </data>
-  <data name="m_tcMain.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_tcMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>936, 266</value>
-  </data>
-  <data name="m_tcMain.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.Name" xml:space="preserve">
-    <value>m_tcMain</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tcMain.Parent" xml:space="preserve">
     <value>TableLayoutPanel1</value>
   </data>
-  <data name="&gt;&gt;m_tcMain.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_gridApply.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="m_tsDatasets.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -526,7 +244,7 @@
     <value>m_tsDatasets</value>
   </data>
   <data name="&gt;&gt;m_tsDatasets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15299.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsDatasets.Parent" xml:space="preserve">
     <value>TableLayoutPanel1</value>
@@ -565,7 +283,7 @@
     <value>0</value>
   </data>
   <data name="TableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tcMain" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tsDatasets" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_gridApply" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tsDatasets" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -578,6 +296,9 @@
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_toolbox.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
   <data name="m_toolbox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -595,7 +316,7 @@
     <value>m_toolbox</value>
   </data>
   <data name="&gt;&gt;m_toolbox.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox, EwE6, Version=6.6.15299.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_toolbox.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -663,48 +384,6 @@
   <data name="&gt;&gt;sep1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tslZoom.Name" xml:space="preserve">
-    <value>m_tslZoom</value>
-  </data>
-  <data name="&gt;&gt;m_tslZoom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnZoomMap.Name" xml:space="preserve">
-    <value>m_tsbnZoomMap</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnZoomMap.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnZoomData.Name" xml:space="preserve">
-    <value>m_tsbnZoomData</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnZoomData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnZoomBoth.Name" xml:space="preserve">
-    <value>m_tsbnZoomBoth</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnZoomBoth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
-    <value>ToolStripSeparator1</value>
-  </data>
-  <data name="&gt;&gt;ToolStripSeparator1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnShowGrid.Name" xml:space="preserve">
-    <value>m_tsbnShowGrid</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnShowGrid.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnShowRefMap.Name" xml:space="preserve">
-    <value>m_tsbnShowRefMap</value>
-  </data>
-  <data name="&gt;&gt;m_tsbnShowRefMap.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_tsbnConnections.Name" xml:space="preserve">
     <value>m_tsbnConnections</value>
   </data>
@@ -733,6 +412,6 @@
     <value>frmSpatialTimeSeries</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15299.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
