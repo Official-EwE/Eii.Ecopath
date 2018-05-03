@@ -23,6 +23,7 @@
 Option Strict On
 Imports System.Collections.Generic
 Imports System.Drawing
+Imports System.Globalization
 Imports System.IO
 Imports System.Text
 Imports System.Windows.Forms
@@ -124,6 +125,8 @@ Namespace SpatialData
             Me.m_cbSeasonal.Checked = Me.m_dataset.IsSeasonal
             Me.m_mtbSeasonalEnd.ValidatingType = GetType(Date)
             Me.m_mtbSeasonalEnd.Text = Me.m_dataset.SeasonsEnd.ToString("yyyy") & Me.m_dataset.SeasonsEnd.ToString("MM")
+
+            Me.m_cmbFormat.SelectedIndex = 0
 
             ' Allow all supported varnames
             Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
@@ -517,9 +520,46 @@ Namespace SpatialData
         End Function
 
         Private Function GetDateFromFileName(ByVal strFile As String) As Date
+
             Dim dt As Date = Date.MinValue
-            DateTime.TryParse(strFile.Substring(Me.m_tbxDatePart.SelectionStart, Me.m_tbxDatePart.SelectionLength), dt)
-            Return dt
+            Dim formats As String() = Nothing
+
+            Select Case Me.m_cmbFormat.SelectedIndex
+                Case 0 : formats = {"yyyy-MM", "yyyy-M"}
+                Case 1 : formats = {"MM-yyyy", "M-yyyy"}
+                Case 2 : formats = {"yyyy"}
+            End Select
+
+            Dim str As String = Path.GetFileName(strFile)
+            Return Me.ToDate(str.Substring(Me.m_tbxDatePart.SelectionStart, Me.m_tbxDatePart.SelectionLength), formats)
+
+        End Function
+
+        Private Function ToDate(str As String, formats As String()) As Date
+
+            ' Manually enter hyphen
+            Dim sb As New StringBuilder()
+
+            If Not String.IsNullOrWhiteSpace(str) Then
+                Dim b As Boolean = False
+                For i As Integer = 0 To str.Length - 1
+                    Dim c As Char = str(i)
+                    If Char.IsLetterOrDigit(c) Then
+                        sb.Append(c)
+                        b = False
+                    Else
+                        sb.Append("-"c)
+                        b = True
+                    End If
+                Next
+            End If
+
+            Dim dt As Date
+            If DateTime.TryParseExact(sb.ToString, formats, New CultureInfo("en-US"), Globalization.DateTimeStyles.None, dt) Then
+                Return dt
+            End If
+            Return DateTime.MinValue
+
         End Function
 
 #End Region ' Date helpers
