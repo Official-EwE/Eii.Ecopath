@@ -36,6 +36,9 @@ Imports ScientificInterfaceShared.Controls
 
 Namespace SpatialData
 
+    ' ToDo: sort files by date if set
+    ' ToDo: add mask to select file date from file name
+
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Configuration interface for <see cref="cMultiFileDataSetPlugin"/>s.
@@ -139,9 +142,9 @@ Namespace SpatialData
             Me.m_hdrDescription.CollapsedParentHeight = Me.m_tbxDescription.Location.Y + (Me.m_plDescription.Height - Me.m_cmbVarName.Location.Y)
             Me.m_hdrDescription.IsCollapsed = False
 
-            ' Set dynamic properties
-            Me.m_hdrTime.CollapsedParentHeight = Me.m_rbFromDate.Location.Y
-            Me.m_hdrTime.IsCollapsed = True
+            '' Set dynamic properties
+            'Me.m_hdrTime.CollapsedParentHeight = Me.m_rbFromDate.Location.Y
+            'Me.m_hdrTime.IsCollapsed = True
 
         End Sub
 
@@ -259,8 +262,22 @@ Namespace SpatialData
         Private Sub OnSetTime(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_btnSetTime.Click
 
-            For i As Integer = 0 To Me.m_lFiles.Count - 1
-                Dim fe As cFileEntry = Me.m_lFiles(i)
+            Dim files As New List(Of cFileEntry)
+
+            For i As Integer = 0 To Me.m_dgvFiles.Rows.Count - 1
+                Dim drow As DataGridViewRow = Me.m_dgvFiles.Rows(i)
+                If (drow.Selected) Then
+                    files.Add(DirectCast(drow.Tag, cFileEntry))
+                End If
+            Next
+
+            If (files.Count <= 1) Then
+                files.Clear()
+                files.AddRange(Me.m_lFiles)
+            End If
+
+            For i As Integer = 0 To files.Count - 1
+                Dim fe As cFileEntry = files(i)
                 fe.FileDate = Me.ToFileDate(i, fe.FileName)
             Next
             Me.UpdateGrid()
@@ -486,8 +503,6 @@ Namespace SpatialData
                 dt = Me.GetDateFromInterval(dtStart.Year, dtStart.Month, iFile)
             ElseIf Me.m_rbFromName.Checked Then
                 dt = Me.GetDateFromFileName(Path.Combine(Me.m_strSource, strFile))
-            ElseIf Me.m_rbFromDate.Checked Then
-                dt = Me.GetDateFromFile(Path.Combine(Me.m_strSource, strFile))
             End If
             Return dt
 
@@ -499,10 +514,6 @@ Namespace SpatialData
             Dim iSpacing As Integer = CInt(Me.m_nudSpacing.Value)
             Return dt.AddMonths(iFile * iSpacing)
 
-        End Function
-
-        Private Function GetDateFromFile(ByVal strFile As String) As Date
-            Return File.GetCreationTime(strFile)
         End Function
 
         Private Function GetDateFromFileName(ByVal strFile As String) As Date

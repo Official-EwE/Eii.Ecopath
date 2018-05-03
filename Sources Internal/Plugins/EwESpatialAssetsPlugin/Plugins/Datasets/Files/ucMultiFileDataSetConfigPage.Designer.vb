@@ -51,7 +51,6 @@ Namespace SpatialData
             Me.m_lblSpace1 = New System.Windows.Forms.Label()
             Me.m_mtbIntervalStart = New System.Windows.Forms.MaskedTextBox()
             Me.m_rbFromName = New System.Windows.Forms.RadioButton()
-            Me.m_rbFromDate = New System.Windows.Forms.RadioButton()
             Me.m_rbInterval = New System.Windows.Forms.RadioButton()
             Me.m_tbxDatePart = New System.Windows.Forms.TextBox()
             Me.m_hdrTime = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -97,7 +96,6 @@ Namespace SpatialData
             Me.m_dgvFiles.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.m_colError, Me.m_colFileName, Me.m_colTime})
             Me.m_dgvFiles.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter
             Me.m_dgvFiles.Location = New System.Drawing.Point(3, 47)
-            Me.m_dgvFiles.MultiSelect = False
             Me.m_dgvFiles.Name = "m_dgvFiles"
             Me.m_dgvFiles.RowHeadersVisible = False
             Me.m_dgvFiles.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
@@ -106,7 +104,7 @@ Namespace SpatialData
             Me.m_dgvFiles.ShowCellToolTips = False
             Me.m_dgvFiles.ShowEditingIcon = False
             Me.m_dgvFiles.ShowRowErrors = False
-            Me.m_dgvFiles.Size = New System.Drawing.Size(438, 191)
+            Me.m_dgvFiles.Size = New System.Drawing.Size(438, 209)
             Me.m_dgvFiles.TabIndex = 9
             '
             'm_colError
@@ -234,20 +232,19 @@ Namespace SpatialData
             Me.m_plTime.Controls.Add(Me.m_lblSpace1)
             Me.m_plTime.Controls.Add(Me.m_mtbIntervalStart)
             Me.m_plTime.Controls.Add(Me.m_rbFromName)
-            Me.m_plTime.Controls.Add(Me.m_rbFromDate)
             Me.m_plTime.Controls.Add(Me.m_rbInterval)
             Me.m_plTime.Controls.Add(Me.m_tbxDatePart)
             Me.m_plTime.Controls.Add(Me.m_hdrTime)
             Me.m_plTime.Controls.Add(Me.m_btnSetTime)
             Me.m_plTime.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plTime.Location = New System.Drawing.Point(3, 427)
+            Me.m_plTime.Location = New System.Drawing.Point(3, 445)
             Me.m_plTime.Name = "m_plTime"
-            Me.m_plTime.Size = New System.Drawing.Size(444, 90)
+            Me.m_plTime.Size = New System.Drawing.Size(444, 72)
             Me.m_plTime.TabIndex = 0
             '
             'm_nudSpacing
             '
-            Me.m_nudSpacing.Location = New System.Drawing.Point(193, 21)
+            Me.m_nudSpacing.Location = New System.Drawing.Point(197, 21)
             Me.m_nudSpacing.Maximum = New Decimal(New Integer() {120, 0, 0, 0})
             Me.m_nudSpacing.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
             Me.m_nudSpacing.Name = "m_nudSpacing"
@@ -285,24 +282,13 @@ Namespace SpatialData
             'm_rbFromName
             '
             Me.m_rbFromName.AutoSize = True
-            Me.m_rbFromName.Location = New System.Drawing.Point(6, 67)
+            Me.m_rbFromName.Location = New System.Drawing.Point(6, 47)
             Me.m_rbFromName.Name = "m_rbFromName"
             Me.m_rbFromName.Size = New System.Drawing.Size(185, 17)
             Me.m_rbFromName.TabIndex = 7
             Me.m_rbFromName.TabStop = True
             Me.m_rbFromName.Text = "From file &name (select which part):"
             Me.m_rbFromName.UseVisualStyleBackColor = True
-            '
-            'm_rbFromDate
-            '
-            Me.m_rbFromDate.AutoSize = True
-            Me.m_rbFromDate.Location = New System.Drawing.Point(6, 44)
-            Me.m_rbFromDate.Name = "m_rbFromDate"
-            Me.m_rbFromDate.Size = New System.Drawing.Size(88, 17)
-            Me.m_rbFromDate.TabIndex = 6
-            Me.m_rbFromDate.TabStop = True
-            Me.m_rbFromDate.Text = "From file &date"
-            Me.m_rbFromDate.UseVisualStyleBackColor = True
             '
             'm_rbInterval
             '
@@ -321,7 +307,7 @@ Namespace SpatialData
             Me.m_tbxDatePart.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tbxDatePart.HideSelection = False
-            Me.m_tbxDatePart.Location = New System.Drawing.Point(197, 67)
+            Me.m_tbxDatePart.Location = New System.Drawing.Point(197, 47)
             Me.m_tbxDatePart.Name = "m_tbxDatePart"
             Me.m_tbxDatePart.ReadOnly = True
             Me.m_tbxDatePart.Size = New System.Drawing.Size(128, 20)
@@ -331,7 +317,7 @@ Namespace SpatialData
             '
             Me.m_hdrTime.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_hdrTime.CanCollapseParent = True
+            Me.m_hdrTime.CanCollapseParent = False
             Me.m_hdrTime.CollapsedParentHeight = 76
             Me.m_hdrTime.IsCollapsed = False
             Me.m_hdrTime.Location = New System.Drawing.Point(0, 0)
@@ -363,13 +349,13 @@ Namespace SpatialData
             Me.m_plFiles.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_plFiles.Location = New System.Drawing.Point(3, 155)
             Me.m_plFiles.Name = "m_plFiles"
-            Me.m_plFiles.Size = New System.Drawing.Size(444, 266)
+            Me.m_plFiles.Size = New System.Drawing.Size(444, 284)
             Me.m_plFiles.TabIndex = 1
             '
             'm_mtbSeasonalEnd
             '
             Me.m_mtbSeasonalEnd.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_mtbSeasonalEnd.Location = New System.Drawing.Point(139, 244)
+            Me.m_mtbSeasonalEnd.Location = New System.Drawing.Point(139, 262)
             Me.m_mtbSeasonalEnd.Mask = "0000/00"
             Me.m_mtbSeasonalEnd.Name = "m_mtbSeasonalEnd"
             Me.m_mtbSeasonalEnd.Size = New System.Drawing.Size(52, 20)
@@ -380,7 +366,7 @@ Namespace SpatialData
             '
             Me.m_cbSeasonal.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
             Me.m_cbSeasonal.AutoSize = True
-            Me.m_cbSeasonal.Location = New System.Drawing.Point(7, 246)
+            Me.m_cbSeasonal.Location = New System.Drawing.Point(7, 264)
             Me.m_cbSeasonal.Name = "m_cbSeasonal"
             Me.m_cbSeasonal.Size = New System.Drawing.Size(126, 17)
             Me.m_cbSeasonal.TabIndex = 11
@@ -498,7 +484,6 @@ Namespace SpatialData
         Private WithEvents m_mtbIntervalStart As System.Windows.Forms.MaskedTextBox
         Private WithEvents m_rbInterval As System.Windows.Forms.RadioButton
         Private WithEvents m_btnSetTime As System.Windows.Forms.Button
-        Private WithEvents m_rbFromDate As System.Windows.Forms.RadioButton
         Private WithEvents m_rbFromName As System.Windows.Forms.RadioButton
         Private WithEvents m_lblSpace1 As System.Windows.Forms.Label
         Private WithEvents m_cmbVarName As System.Windows.Forms.ComboBox
