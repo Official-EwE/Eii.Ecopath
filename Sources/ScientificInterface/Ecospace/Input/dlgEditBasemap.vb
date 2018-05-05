@@ -142,9 +142,10 @@ Public Class dlgEditBasemap
     End Sub
 
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnOk.Click
-        Me.Apply()
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        If Me.Apply() Then
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.Close()
+        End If
     End Sub
 
     Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
@@ -212,7 +213,9 @@ Public Class dlgEditBasemap
 
     End Sub
 
-    Private Sub Apply()
+    Private Function Apply() As Boolean
+
+        If Not Me.m_uic.Core.SaveChanges() Then Return False
 
         Dim iColCount As Integer = CInt(Me.m_fpInCol.Value)
         Dim iRowCount As Integer = CInt(Me.m_fpInRow.Value)
@@ -224,8 +227,8 @@ Public Class dlgEditBasemap
             bResizeMap = True
             If ((iRowCount < Me.m_basemap.InRow) Or (iColCount < Me.m_basemap.InCol)) Then
                 ' Prompt user
-                fmsg = New cFeedbackMessage(My.Resources.ECOSPACE_BASEMAP_SHRINK_PROMPT, _
-                                            eCoreComponentType.External, eMessageType.Any, _
+                fmsg = New cFeedbackMessage(My.Resources.ECOSPACE_BASEMAP_SHRINK_PROMPT,
+                                            eCoreComponentType.External, eMessageType.Any,
                                             eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                 fmsg.Reply = eMessageReply.NO
                 core.Messages.SendMessage(fmsg)
@@ -241,6 +244,7 @@ Public Class dlgEditBasemap
         Me.m_basemap.CellSize = CSng(Me.m_fpCellSize.Value)
         Me.m_basemap.Latitude = CSng(Me.m_fpLat.Value)
         Me.m_basemap.Longitude = CSng(Me.m_fpLon.Value)
+        Me.m_uic.Core.SaveChanges(True)
 
         If (bResizeMap = True) Then
             cApplicationStatusNotifier.StartProgress(core, My.Resources.STATUS_RESIZING_MAP, -1)
@@ -270,8 +274,9 @@ Public Class dlgEditBasemap
             End Try
             cApplicationStatusNotifier.EndProgress(core)
         End If
+        Return True
 
-    End Sub
+    End Function
 
 #End Region ' Implementation
 
