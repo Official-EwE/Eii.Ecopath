@@ -312,6 +312,16 @@ Namespace SpatialData
             End Try
         End Sub
 
+        Private Sub OnSetTimeSourceChanged(sender As Object, e As EventArgs) _
+            Handles m_rbFromName.CheckedChanged, m_rbInterval.CheckedChanged
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub OnPossiblyDatePartSelected(sender As Object, e As EventArgs) _
+            Handles m_tbxDatePart.MouseUp, m_tbxDatePart.KeyUp
+            Me.UpdateControls()
+        End Sub
+
 #End Region ' Control events
 
 #Region " Internals "
@@ -388,9 +398,10 @@ Namespace SpatialData
             ' Prevent intialization errors
             If (Me.m_dataset Is Nothing) Then Return
 
-            Dim bHasPattern As Boolean = (Not String.IsNullOrEmpty(Me.m_tbxDatePart.SelectedText))
             Dim strPath As String = Me.AbsolutePath()
             Dim bHasFolder As Boolean = False
+            Dim bHasPattern As Boolean = (Not String.IsNullOrEmpty(Me.m_tbxDatePart.SelectedText))
+            Dim bCanSetTimes As Boolean = False
 
             Me.m_mtbSeasonalEnd.Enabled = Me.m_cbSeasonal.Checked
             Me.m_lblDescription.Visible = (Not Me.m_hdrDescription.IsCollapsed)
@@ -400,6 +411,14 @@ Namespace SpatialData
             If (String.IsNullOrWhiteSpace(Me.m_lblLocationSample.Text)) Then
                 Me.m_lblLocationSample.Text = ScientificInterfaceShared.My.Resources.GENERIC_VALUE_NOTSET
             End If
+
+            If (Me.m_rbInterval.Checked) Then
+                bCanSetTimes = True
+            Else
+                bCanSetTimes = bHasPattern
+            End If
+            Me.m_btnSetTime.Enabled = bCanSetTimes
+
             cToolTipShared.GetInstance().SetToolTip(Me.m_lblLocationSample, strPath)
 
             Try
@@ -472,7 +491,9 @@ Namespace SpatialData
                 Me.m_dgvFiles.Rows(iRow).Tag = entry
             Next
 
+            'Me.m_dgvFiles.Sort(Me.m_colTime, System.ComponentModel.ListSortDirection.Ascending)
             Me.m_dgvFiles.ResumeLayout()
+
             Me.Cursor = Cursors.Default
 
         End Sub

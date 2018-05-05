@@ -126,7 +126,6 @@ Namespace SpatialData
             Me.m_colFileName.Name = "m_colFileName"
             Me.m_colFileName.ReadOnly = True
             Me.m_colFileName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-            Me.m_colFileName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
             Me.m_colFileName.Width = 317
             '
             'm_colTime
@@ -337,7 +336,7 @@ Namespace SpatialData
             Me.m_hdrTime.Name = "m_hdrTime"
             Me.m_hdrTime.Size = New System.Drawing.Size(441, 18)
             Me.m_hdrTime.TabIndex = 0
-            Me.m_hdrTime.Text = "Time utility"
+            Me.m_hdrTime.Text = "Set file times"
             Me.m_hdrTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_btnSetTime
@@ -347,7 +346,7 @@ Namespace SpatialData
             Me.m_btnSetTime.Name = "m_btnSetTime"
             Me.m_btnSetTime.Size = New System.Drawing.Size(90, 23)
             Me.m_btnSetTime.TabIndex = 10
-            Me.m_btnSetTime.Text = "Set file &times"
+            Me.m_btnSetTime.Text = "&Apply"
             Me.m_btnSetTime.UseVisualStyleBackColor = True
             '
             'm_plFiles
@@ -505,12 +504,12 @@ Namespace SpatialData
         Private WithEvents m_mtbSeasonalEnd As System.Windows.Forms.MaskedTextBox
         Private WithEvents m_lblLocation As System.Windows.Forms.Label
         Private WithEvents m_lblLocationSample As System.Windows.Forms.Label
-        Private WithEvents m_colError As System.Windows.Forms.DataGridViewImageColumn
-        Private WithEvents m_colFileName As System.Windows.Forms.DataGridViewTextBoxColumn
-        Private WithEvents m_colTime As EwESpatialAssetsPlugin.cCalendarColumn
         Friend WithEvents m_nudSpacing As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblSpace2 As System.Windows.Forms.Label
         Private WithEvents m_cmbFormat As Windows.Forms.ComboBox
+        Friend WithEvents m_colError As Windows.Forms.DataGridViewImageColumn
+        Friend WithEvents m_colFileName As Windows.Forms.DataGridViewTextBoxColumn
+        Friend WithEvents m_colTime As cCalendarColumn
     End Class
 
 End Namespace
