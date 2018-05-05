@@ -233,7 +233,7 @@ Public Class dlgEditBasemap
                 fmsg.Reply = eMessageReply.NO
                 core.Messages.SendMessage(fmsg)
                 If (fmsg.Reply = eMessageReply.NO) Then
-                    Return
+                    Return False
                 End If
             End If
         End If
