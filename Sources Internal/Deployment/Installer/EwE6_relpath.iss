@@ -2,17 +2,17 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 #include <idp.iss>
 #define Compile64Bit 0
-#define Spinup 1
-#define SpatTemp 1
+#define Spinup 0
+#define SpatTemp 0
 #define MSPTools 0
 #define MPAdynamics 0
 
 #if Compile64Bit == 0
-  #define MyAppName "Ecopath with Ecosim 6.6 preview"
+  #define MyAppName "Ecopath with Ecosim"
   #define MyAppVersion "6.6_preview"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
-  #define MyAppName "Ecopath with Ecosim 6.6 preview 64-bit"
+  #define MyAppName "Ecopath with Ecosim"
   #define MyAppVersion "6.6_preview 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
