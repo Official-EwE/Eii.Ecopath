@@ -22,33 +22,32 @@ Option Strict On
 Imports EwEUtils.Core
 
 ''' <summary>
-''' Manager class used to bring the core execution state uptodate
+''' Manager class used to bring the core execution state up to date.
 ''' </summary>
 ''' <remarks></remarks>
 Public Class cCoreStateManager
 
-#Region "Private data"
+#Region " Private data "
 
     Private m_core As cCore
 
-#End Region
+#End Region ' Private data
 
-#Region "Construction"
+#Region " Construction "
 
     Friend Sub New(ByRef theCore As cCore)
         m_core = theCore
     End Sub
 
-#End Region
+#End Region ' Construction
 
-#Region "Public methods"
+#Region " Public methods "
 
     ''' <summary>
     ''' Bring the core state up to the requested execution state
     ''' </summary>
     ''' <param name="ExecutionState">State to bring the core up to</param>
     ''' <returns>True if successful. False otherwise.</returns>
-    ''' <remarks></remarks>
     Public Function LoadState(ByVal ExecutionState As eCoreExecutionState) As Boolean
         Try
             Dim sm As cCoreStateMonitor = Me.m_core.StateMonitor
@@ -88,10 +87,9 @@ Public Class cCoreStateManager
 
     End Function
 
-#End Region
+#End Region ' Public methods
 
-#Region "Friend methods: used by the core"
-
+#Region " Core methods "
 
     ''' <summary>
     ''' Copy the Ecopath dietcomp matrix (DC(ngroup,ngroups)) into the Ecosim dietcomp matrix (SimDC(ngroups,ngroups))
@@ -120,6 +118,6 @@ Public Class cCoreStateManager
 
     End Function
 
-#End Region
+#End Region ' Core methods
 
 End Class

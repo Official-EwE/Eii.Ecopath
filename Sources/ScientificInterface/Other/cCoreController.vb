@@ -77,7 +77,7 @@ Public Class cCoreController
     ''' results.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function LoadState(ByVal iState As eCoreExecutionState, _
+    Public Function LoadState(ByVal iState As eCoreExecutionState,
             Optional ByVal bForceState As Boolean = False) As Boolean
 
         Dim bSucces As Boolean = True
@@ -94,7 +94,7 @@ Public Class cCoreController
 
         Select Case iState
 
-            Case eCoreExecutionState.EcopathLoaded, _
+            Case eCoreExecutionState.EcopathLoaded,
                  eCoreExecutionState.EcopathInitialized
                 bSucces = TryLoadEcopathModel()
 
@@ -113,7 +113,7 @@ Public Class cCoreController
             Case eCoreExecutionState.EcotracerLoaded
                 bSucces = TryLoadEcotracerScenario()
 
-            Case eCoreExecutionState.EcospaceLoaded, _
+            Case eCoreExecutionState.EcospaceLoaded,
                  eCoreExecutionState.EcospaceInitialized
                 bSucces = TryLoadEcospaceScenario()
 
@@ -241,7 +241,9 @@ Public Class cCoreController
         Dim bSuccess As Boolean = False
 
         ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecospace model to load.
-        If LoadState(eCoreExecutionState.EcosimLoaded) Then
+        ' JS 07may18: (11 years on) Ecosim should run, otherwise the core will misinform the world
+        '             This fixes issue #1572
+        If LoadState(eCoreExecutionState.EcosimCompleted) Then
             ' Let AppLauncher perform the load as it sees fit
             bSuccess = Me.m_ui.LoadEcospaceScenario()
         End If
@@ -261,7 +263,9 @@ Public Class cCoreController
         Dim bSuccess As Boolean = False
 
         ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecotracer model to load.
-        If Me.LoadState(eCoreExecutionState.EcosimLoaded) Then
+        ' JS 07may18: (11 years on) Ecosim should run, otherwise the core will misinform the world
+        '             This fixes issue #1572
+        If Me.LoadState(eCoreExecutionState.EcosimCompleted) Then
             ' Let AppLauncher perform the load as it sees fit
             bSuccess = Me.m_ui.LoadEcotracerScenario()
         End If
