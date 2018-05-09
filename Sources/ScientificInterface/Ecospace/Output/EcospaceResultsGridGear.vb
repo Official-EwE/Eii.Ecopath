@@ -67,6 +67,8 @@ Namespace Ecospace
             ' Effort (E/S)
             Me(0, 11) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFORTES)
 
+            Me.FixedColumnWidths = True
+
         End Sub
 
         'This method init the cells, its visual and data models. 

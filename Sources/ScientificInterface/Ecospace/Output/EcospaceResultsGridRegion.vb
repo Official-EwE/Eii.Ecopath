@@ -69,6 +69,7 @@ Namespace Ecospace
             'Catch (E/S)
             Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_CATCH_E_OVER_S)
 
+            Me.FixedColumnWidths = True
 
         End Sub
 
