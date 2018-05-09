@@ -245,6 +245,11 @@ Namespace Ecospace
             ' Fix index column only; Habitat name column cannot be fixed because it must be editable
             Me.FixedColumns = 1
 
+            Me.Columns(eColumnTypes.HabitatIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+            Me.Columns(eColumnTypes.HabitatName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+            Me.Columns(eColumnTypes.HabitatStatus).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+            Me.AutoStretchColumnsToFitWidth = True
+
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -315,6 +320,9 @@ Namespace Ecospace
             For iRow As Integer = 1 To Me.m_alHabitats.Count
                 UpdateRow(iRow)
             Next iRow
+
+            'Me.AutoSizeColumn(eColumnTypes.HabitatName, 200)
+            Me.StretchColumnsToFitWidth()
 
         End Sub
 

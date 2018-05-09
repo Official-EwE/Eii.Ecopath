@@ -242,6 +242,11 @@ Namespace Ecospace
             ' Fix index column only; MPA name column cannot be fixed because it must be editable
             Me.FixedColumns = 1
 
+            Me.Columns(eColumnTypes.MPAIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+            Me.Columns(eColumnTypes.MPAName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+            Me.Columns(eColumnTypes.MPAStatus).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+            Me.AutoStretchColumnsToFitWidth = True
+
         End Sub
 
         ''' -----------------------------------------------------------------------
