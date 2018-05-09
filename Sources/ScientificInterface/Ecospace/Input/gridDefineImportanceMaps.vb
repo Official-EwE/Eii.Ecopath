@@ -301,6 +301,13 @@ Namespace Ecospace
             ' Fix index column only; Layer name column cannot be fixed because it must be editable
             Me.FixedColumns = 1
 
+            Me.Columns(eColumnTypes.LayerIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+            Me.Columns(eColumnTypes.LayerWeight).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+            Me.Columns(eColumnTypes.LayerName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+            Me.Columns(eColumnTypes.LayerDescription).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+            Me.Columns(eColumnTypes.LayerStatus).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+            Me.AutoStretchColumnsToFitWidth = True
+
         End Sub
 
         ''' -----------------------------------------------------------------------

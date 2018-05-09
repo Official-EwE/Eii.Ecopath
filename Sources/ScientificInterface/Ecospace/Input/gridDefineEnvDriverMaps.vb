@@ -54,7 +54,7 @@ Namespace Ecospace
         Private Enum eColumnTypes As Integer
             LayerIndex = 0
             LayerName
-            LayerIsCApacityEnabled
+            LayerIsCapacityEnabled
             LayerUnits
             LayerDescription
             LayerStatus
@@ -283,7 +283,7 @@ Namespace Ecospace
             Me(0, eColumnTypes.LayerName) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
             Me(0, eColumnTypes.LayerUnits) = New EwEColumnHeaderCell(SharedResources.HEADER_UNITS)
             Me(0, eColumnTypes.LayerDescription) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
-            Me(0, eColumnTypes.LayerIsCApacityEnabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLED_CAPACITY)
+            Me(0, eColumnTypes.LayerIsCapacityEnabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLED_CAPACITY)
 
             ' Layer index cell
             Me(0, eColumnTypes.LayerStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
@@ -291,6 +291,14 @@ Namespace Ecospace
             ' Fix index column only; Layer name column cannot be fixed because it must be editable
             Me.FixedColumns = 1
             Me.FixedColumnWidths = False
+
+            Me.Columns(eColumnTypes.LayerIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+            Me.Columns(eColumnTypes.LayerName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+            Me.Columns(eColumnTypes.LayerUnits).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+            Me.Columns(eColumnTypes.LayerDescription).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+            Me.Columns(eColumnTypes.LayerIsCapacityEnabled).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+            Me.Columns(eColumnTypes.LayerStatus).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+            Me.AutoStretchColumnsToFitWidth = True
 
         End Sub
 
@@ -379,8 +387,8 @@ Namespace Ecospace
                 Me(iRow, eColumnTypes.LayerDescription) = New EwECell("", GetType(String), style)
                 If li.IsEditable Then Me(iRow, eColumnTypes.LayerDescription).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iRow, eColumnTypes.LayerIsCApacityEnabled) = New Cells.Real.CheckBox(False)
-                Me(iRow, eColumnTypes.LayerIsCApacityEnabled).Behaviors.Add(Me.EwEEditHandler)
+                Me(iRow, eColumnTypes.LayerIsCapacityEnabled) = New Cells.Real.CheckBox(False)
+                Me(iRow, eColumnTypes.LayerIsCapacityEnabled).Behaviors.Add(Me.EwEEditHandler)
 
                 Me(iRow, eColumnTypes.LayerStatus) = New EwEStatusCell(eItemStatusTypes.Original)
             Next
@@ -438,8 +446,8 @@ Namespace Ecospace
             pos = New Position(iRow, eColumnTypes.LayerDescription)
             aCells(eColumnTypes.LayerDescription).SetValue(pos, li.Description)
 
-            pos = New Position(iRow, eColumnTypes.LayerIsCApacityEnabled)
-            aCells(eColumnTypes.LayerIsCApacityEnabled).SetValue(pos, li.IsCapacityEnabled)
+            pos = New Position(iRow, eColumnTypes.LayerIsCapacityEnabled)
+            aCells(eColumnTypes.LayerIsCapacityEnabled).SetValue(pos, li.IsCapacityEnabled)
 
             pos = New Position(iRow, eColumnTypes.LayerStatus)
             aCells(eColumnTypes.LayerStatus).SetValue(pos, li.Status)
@@ -522,7 +530,7 @@ Namespace Ecospace
             Try
                 Dim li As cLayerInfo = DirectCast(Me.m_alLayers(p.Row - 1), cLayerInfo)
                 Select Case DirectCast(p.Column, eColumnTypes)
-                    Case eColumnTypes.LayerIsCApacityEnabled
+                    Case eColumnTypes.LayerIsCapacityEnabled
                         li.IsCapacityEnabled = CBool(cell.GetValue(p))
                     Case Else
                         ' NOP
