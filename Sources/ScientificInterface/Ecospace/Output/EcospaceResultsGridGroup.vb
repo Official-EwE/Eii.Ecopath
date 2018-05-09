@@ -93,6 +93,8 @@ Namespace Ecospace
             'Value (E/S)
             Me(0, 10) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUEES)
 
+            Me.FixedColumnWidths = True
+
         End Sub
 
         Protected Overrides Sub FillData()
