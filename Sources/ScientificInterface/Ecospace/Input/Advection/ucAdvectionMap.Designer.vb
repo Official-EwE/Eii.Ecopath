@@ -59,7 +59,6 @@ Namespace Ecospace.Advection
             Me.m_zoomctrl.Location = New System.Drawing.Point(0, 18)
             Me.m_zoomctrl.Margin = New System.Windows.Forms.Padding(0)
             Me.m_zoomctrl.Name = "m_zoomctrl"
-            Me.m_zoomctrl.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
             Me.m_zoomctrl.Size = New System.Drawing.Size(360, 383)
             Me.m_zoomctrl.TabIndex = 0
             '

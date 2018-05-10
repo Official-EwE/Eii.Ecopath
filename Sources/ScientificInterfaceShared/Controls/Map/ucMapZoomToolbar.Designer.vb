@@ -36,9 +36,6 @@ Namespace Controls.Map
             Me.m_tsZoom = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbSaveImage = New System.Windows.Forms.ToolStripButton()
             Me.m_ts1 = New System.Windows.Forms.ToolStripSeparator()
-            Me.m_tsddbPosition = New System.Windows.Forms.ToolStripDropDownButton()
-            Me.m_tsmiViewCenter1 = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_tsmiViewStretch1 = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_ts2 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbZoomIn = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbZoomOut = New System.Windows.Forms.ToolStripButton()
@@ -57,7 +54,7 @@ Namespace Controls.Map
             'm_tsZoom
             '
             Me.m_tsZoom.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSaveImage, Me.m_ts1, Me.m_tsddbPosition, Me.m_ts2, Me.m_tsbZoomIn, Me.m_tsbZoomOut, Me.m_tsbZoomReset})
+            Me.m_tsZoom.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSaveImage, Me.m_ts1, Me.m_ts2, Me.m_tsbZoomIn, Me.m_tsbZoomOut, Me.m_tsbZoomReset})
             Me.m_tsZoom.Location = New System.Drawing.Point(0, 0)
             Me.m_tsZoom.Name = "m_tsZoom"
             Me.m_tsZoom.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -77,28 +74,6 @@ Namespace Controls.Map
             '
             Me.m_ts1.Name = "m_ts1"
             Me.m_ts1.Size = New System.Drawing.Size(6, 25)
-            '
-            'm_tsddbPosition
-            '
-            Me.m_tsddbPosition.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsddbPosition.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiViewCenter1, Me.m_tsmiViewStretch1})
-            Me.m_tsddbPosition.Image = CType(resources.GetObject("m_tsddbPosition.Image"), System.Drawing.Image)
-            Me.m_tsddbPosition.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsddbPosition.Name = "m_tsddbPosition"
-            Me.m_tsddbPosition.Size = New System.Drawing.Size(63, 19)
-            Me.m_tsddbPosition.Text = "Position"
-            '
-            'm_tsmiViewCenter1
-            '
-            Me.m_tsmiViewCenter1.Name = "m_tsmiViewCenter1"
-            Me.m_tsmiViewCenter1.Size = New System.Drawing.Size(111, 22)
-            Me.m_tsmiViewCenter1.Text = "Center"
-            '
-            'm_tsmiViewStretch1
-            '
-            Me.m_tsmiViewStretch1.Name = "m_tsmiViewStretch1"
-            Me.m_tsmiViewStretch1.Size = New System.Drawing.Size(111, 22)
-            Me.m_tsmiViewStretch1.Text = "Stretch"
             '
             'm_ts2
             '
@@ -202,9 +177,6 @@ Namespace Controls.Map
         Private WithEvents m_ts1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_ts2 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_ts3 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents m_tsddbPosition As System.Windows.Forms.ToolStripDropDownButton
-        Private WithEvents m_tsmiViewCenter1 As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents m_tsmiViewStretch1 As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsbZoomIn As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbZoomOut As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbZoomReset As System.Windows.Forms.ToolStripButton

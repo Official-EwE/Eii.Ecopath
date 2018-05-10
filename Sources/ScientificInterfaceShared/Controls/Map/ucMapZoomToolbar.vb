@@ -44,8 +44,6 @@ Namespace Controls.Map
 
 #Region " Private vars "
 
-        ''' <summary>Current <see cref="ucMapZoom.ePositionModeTypes">mode</see> to position the map.</summary>
-        Private m_positionMode As ucMapZoom.ePositionModeTypes = ucMapZoom.ePositionModeTypes.Center
         ''' <summary>Flag to prevent looped updates.</summary>
         Private m_bInUpdate As Boolean = False
 
@@ -143,25 +141,6 @@ Namespace Controls.Map
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the <see cref="ucMapZoom.ePositionModeTypes">Position mode</see> 
-        ''' for all attached <see cref="ucMapZoom">maps</see>.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Property PositionMode() As ucMapZoom.ePositionModeTypes
-            Get
-                Return Me.m_positionMode
-            End Get
-            Set(ByVal value As ucMapZoom.ePositionModeTypes)
-                Me.m_positionMode = value
-                For Each map As ucMapZoom In Me.m_lZoomContainers
-                    map.PositionMode = value
-                Next
-                Me.Zoom(ucMapZoom.eZoomTypes.ZoomReset)
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' Get all <see cref="ucMapZoom">zoom containers</see> that are
         ''' <see cref="AddZoomContainer">added</see> to this control.
         ''' </summary>
@@ -199,9 +178,7 @@ Namespace Controls.Map
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
-
-            ' Kick off
-            Me.PositionMode = Me.PositionMode
+            ' NOP
 
         End Sub
 
@@ -213,42 +190,27 @@ Namespace Controls.Map
 
         Private Sub OnZoomIn(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbZoomIn.Click, m_tsmiZoomIn.Click
-            Me.Zoom(ucMapZoom.eZoomTypes.ZoomIn)
+            Me.Zoom(ucMapZoom.eZoomTypes.ZoomIn, False)
             Me.UpdateControls()
         End Sub
 
         Private Sub OnZoomOut(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbZoomOut.Click, m_tsmiZoomOut.Click
-            Me.Zoom(ucMapZoom.eZoomTypes.ZoomOut)
+            Me.Zoom(ucMapZoom.eZoomTypes.ZoomOut, False)
             Me.UpdateControls()
         End Sub
 
         Private Sub OnZoomReset(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbZoomReset.Click, m_tsmiZoomReset.Click
-            Me.Zoom(ucMapZoom.eZoomTypes.ZoomReset)
+            Me.Zoom(ucMapZoom.eZoomTypes.ZoomReset, False)
             Me.UpdateControls()
         End Sub
 
         Private Sub OnMapMousewheel(ByVal sender As Object, ByVal e As MouseEventArgs)
-            If (Math.Abs(e.Delta) > 20) Then
-                Dim ctrl As Control = Nothing
-                Dim x As Single = cCore.NULL_VALUE
-                Dim y As Single = cCore.NULL_VALUE
-
-                ' Find zoom panel under cursor
-                For Each map As ucMapZoom In Me.m_lZoomContainers
-                    If map.ClientRectangle.Contains(e.Location) Then
-                        Dim rc As Rectangle = map.ClientRectangle
-                        x = CSng(e.Location.X / rc.Width)
-                        y = CSng(e.Location.Y / rc.Height)
-                    End If
-                Next
-
-                If (e.Delta > 0) Then
-                    Me.Zoom(ucMapZoom.eZoomTypes.ZoomIn, x, y)
-                Else
-                    Me.Zoom(ucMapZoom.eZoomTypes.ZoomOut, x, y)
-                End If
+            If (e.Delta > 0) Then
+                Me.Zoom(ucMapZoom.eZoomTypes.ZoomIn, True)
+            Else
+                Me.Zoom(ucMapZoom.eZoomTypes.ZoomOut, True)
             End If
             Me.UpdateControls()
         End Sub
@@ -265,22 +227,6 @@ Namespace Controls.Map
         End Sub
 
 #End Region ' Zoom controls
-
-#Region " Postion mode "
-
-        Private Sub OnViewStretch(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiViewStretch1.Click
-            Me.PositionMode = ucMapZoom.ePositionModeTypes.Stretch
-            Me.UpdateControls()
-        End Sub
-
-        Private Sub OnViewCenter(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiViewCenter1.Click
-            Me.PositionMode = ucMapZoom.ePositionModeTypes.Center
-            Me.UpdateControls()
-        End Sub
-
-#End Region ' Postion mode
 
 #Region " Save "
 
@@ -357,23 +303,21 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="zoomType">The <see cref="ucMapZoom.eZoomTypes">Zoom level</see> to use.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub Zoom(ByVal zoomType As ucMapZoom.eZoomTypes,
-                         Optional sZoomCenterX As Single = cCore.NULL_VALUE,
-                         Optional sZoomCenterY As Single = cCore.NULL_VALUE)
+        Private Sub Zoom(ByVal zoomType As ucMapZoom.eZoomTypes, bZoomToCursor As Boolean)
 
             ' Apply
             For Each ctrlZoom As ucMapZoom In Me.m_lZoomContainers
-                If (sZoomCenterX >= 0 And sZoomCenterY >= 0) Then
-                    ctrlZoom.ZoomLocation = New PointF(sZoomCenterX, sZoomCenterY)
-                End If
+                'If (sZoomCenterX >= 0 And sZoomCenterY >= 0) Then
+                '    ctrlZoom.ZoomLocation = New PointF(sZoomCenterX, sZoomCenterY)
+                'End If
 
                 Select Case zoomType
                     Case ucMapZoom.eZoomTypes.ZoomIn
                         ' Increase zoom rate to next increment
-                        ctrlZoom.ZoomScale *= 1.5!
+                        ctrlZoom.ZoomScale(bZoomToCursor) *= 1.5!
                     Case ucMapZoom.eZoomTypes.ZoomOut
                         ' Decrease zoom rate to prev increment
-                        ctrlZoom.ZoomScale = Math.Max(1.0!, ctrlZoom.ZoomScale / 1.5!)
+                        ctrlZoom.ZoomScale(bZoomToCursor) /= 1.5!
                     Case ucMapZoom.eZoomTypes.ZoomReset
                         ' Zoom to 100%
                         ctrlZoom.ZoomScale = 1.0!
@@ -386,20 +330,7 @@ Namespace Controls.Map
 
             If (Me.IsDisposed) Then Return
 
-            Me.m_tsbZoomIn.Enabled = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
-            Me.m_tsmiZoomIn.Enabled = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
-
-            Me.m_tsbZoomOut.Enabled = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
-            Me.m_tsmiZoomOut.Enabled = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
-
-            Me.m_tsbZoomReset.Enabled = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
-            Me.m_tsmiZoomReset.Enabled = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
-
-            Me.m_tsmiViewCenter1.Checked = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
-            Me.m_tsmiViewCenter2.Checked = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Center)
-
-            Me.m_tsmiViewStretch1.Checked = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Stretch)
-            Me.m_tsmiViewStretch2.Checked = (Me.PositionMode = ucMapZoom.ePositionModeTypes.Stretch)
+            ' NOP
 
         End Sub
 

@@ -76,14 +76,12 @@ Partial Class frmDefineTransects
         '
         resources.ApplyResources(Me.m_mapzoom, "m_mapzoom")
         Me.m_mapzoom.Name = "m_mapzoom"
-        Me.m_mapzoom.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
         Me.m_mapzoom.UIContext = Nothing
         '
         'm_toolstrip
         '
         resources.ApplyResources(Me.m_toolstrip, "m_toolstrip")
         Me.m_toolstrip.Name = "m_toolstrip"
-        Me.m_toolstrip.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
         Me.m_toolstrip.UIContext = Nothing
         '
         'm_btnDeleteTransect

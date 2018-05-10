@@ -328,7 +328,6 @@ Namespace Ecospace.Advection
             Me.m_ucZoomToolbar.Location = New System.Drawing.Point(3, 3)
             Me.m_ucZoomToolbar.MinimumSize = New System.Drawing.Size(100, 25)
             Me.m_ucZoomToolbar.Name = "m_ucZoomToolbar"
-            Me.m_ucZoomToolbar.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
             Me.m_ucZoomToolbar.Size = New System.Drawing.Size(716, 25)
             Me.m_ucZoomToolbar.TabIndex = 0
             Me.m_ucZoomToolbar.UIContext = Nothing

@@ -75,7 +75,6 @@ Namespace Ecospace.Advection
             For Each uc As ucAdvectionMap In Me.Maps
                 Me.m_ucZoomToolbar.AddZoomContainer(uc.ZoomCtrl)
             Next
-            Me.m_ucZoomToolbar.PositionMode = ucMapZoom.ePositionModeTypes.Center
 
             ' Initialize editors
             Me.m_edtWind = DirectCast(Me.m_ucWind.DataLayer.Editor, cLayerEditorVelocity)
