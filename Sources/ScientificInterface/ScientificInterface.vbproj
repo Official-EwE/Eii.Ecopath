@@ -443,12 +443,6 @@
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\frmExtermalSpatialData.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesMap.Designer.vb">
-      <DependentUpon>ucSpatialTimeSeriesMap.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesMap.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesToolbox.Designer.vb">
       <DependentUpon>ucSpatialTimeSeriesToolbox.vb</DependentUpon>
     </Compile>
@@ -1072,9 +1066,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset management\dlgDefineExternalSpatialData.resx">
       <DependentUpon>dlgDefineExternalSpatialData.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesMap.resx">
-      <DependentUpon>ucSpatialTimeSeriesMap.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\Dataset overview\ucSpatialTimeSeriesToolbox.resx">
       <DependentUpon>ucSpatialTimeSeriesToolbox.vb</DependentUpon>

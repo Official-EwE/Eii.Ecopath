@@ -12,9 +12,7 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
-'    Ecopath International Initiative, Barcelona, Spain
+' Copyright 1991- UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
 
@@ -24,7 +22,7 @@ Namespace Controls.Map
         Inherits System.Windows.Forms.UserControl
 
         'UserControl overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()>
+        <System.Diagnostics.DebuggerNonUserCode()> _
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Try
                 If disposing AndAlso components IsNot Nothing Then
@@ -44,7 +42,6 @@ Namespace Controls.Map
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Me.m_plZoom = New System.Windows.Forms.Panel()
             Me.m_map = New ScientificInterfaceShared.Controls.Map.ucMap()
             Me.m_cmsZoom = New System.Windows.Forms.ContextMenuStrip(Me.components)
             Me.PositionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -54,37 +51,21 @@ Namespace Controls.Map
             Me.m_tsmiZoomIn = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiZoomOut = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiZoomReset = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_sbHorz = New System.Windows.Forms.HScrollBar()
-            Me.m_sbVert = New System.Windows.Forms.VScrollBar()
-            Me.m_plZoom.SuspendLayout()
             Me.m_cmsZoom.SuspendLayout()
             Me.SuspendLayout()
             '
-            'm_plZoom
-            '
-            Me.m_plZoom.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_plZoom.BackColor = System.Drawing.SystemColors.ControlDark
-            Me.m_plZoom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_plZoom.Controls.Add(Me.m_map)
-            Me.m_plZoom.Location = New System.Drawing.Point(0, 0)
-            Me.m_plZoom.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_plZoom.Name = "m_plZoom"
-            Me.m_plZoom.Size = New System.Drawing.Size(427, 345)
-            Me.m_plZoom.TabIndex = 0
-            '
             'm_map
             '
+            Me.m_map.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.m_map.BackColor = System.Drawing.SystemColors.Window
             Me.m_map.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_map.Editable = False
-            Me.m_map.Location = New System.Drawing.Point(0, 0)
+            Me.m_map.Location = New System.Drawing.Point(123, 79)
             Me.m_map.Margin = New System.Windows.Forms.Padding(0)
             Me.m_map.Name = "m_map"
             Me.m_map.Size = New System.Drawing.Size(200, 200)
             Me.m_map.TabIndex = 0
-            Me.m_map.Title = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_CORESTATUSFLAGSMASK
+            Me.m_map.Title = ""
             Me.m_map.UIContext = Nothing
             '
             'm_cmsZoom
@@ -142,41 +123,19 @@ Namespace Controls.Map
             Me.m_tsmiZoomReset.Size = New System.Drawing.Size(176, 22)
             Me.m_tsmiZoomReset.Text = "Reset zoom"
             '
-            'm_sbHorz
-            '
-            Me.m_sbHorz.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_sbHorz.Location = New System.Drawing.Point(1, 345)
-            Me.m_sbHorz.Name = "m_sbHorz"
-            Me.m_sbHorz.Size = New System.Drawing.Size(426, 19)
-            Me.m_sbHorz.TabIndex = 1
-            '
-            'm_sbVert
-            '
-            Me.m_sbVert.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_sbVert.Location = New System.Drawing.Point(427, 1)
-            Me.m_sbVert.Name = "m_sbVert"
-            Me.m_sbVert.Size = New System.Drawing.Size(16, 344)
-            Me.m_sbVert.TabIndex = 2
-            '
             'ucMapZoom
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.AutoScroll = True
             Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-            Me.Controls.Add(Me.m_sbVert)
-            Me.Controls.Add(Me.m_sbHorz)
-            Me.Controls.Add(Me.m_plZoom)
+            Me.Controls.Add(Me.m_map)
             Me.Name = "ucMapZoom"
             Me.Size = New System.Drawing.Size(443, 364)
-            Me.m_plZoom.ResumeLayout(False)
             Me.m_cmsZoom.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents m_sbHorz As System.Windows.Forms.HScrollBar
-        Private WithEvents m_sbVert As System.Windows.Forms.VScrollBar
         Private WithEvents PositionToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiViewCenter2 As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiViewStretch2 As System.Windows.Forms.ToolStripMenuItem
@@ -185,9 +144,7 @@ Namespace Controls.Map
         Private WithEvents m_tsmiZoomOut As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiZoomReset As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_cmsZoom As System.Windows.Forms.ContextMenuStrip
-        Private WithEvents m_plZoom As System.Windows.Forms.Panel
         Private WithEvents m_map As ucMap
-
     End Class
 
 End Namespace
