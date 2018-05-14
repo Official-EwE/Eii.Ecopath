@@ -73,11 +73,11 @@ Namespace Controls.Map
 
             Me.InitializeComponent()
 
-            ' Enable double buffering
-            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
-            Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
-            Me.SetStyle(ControlStyles.ResizeRedraw, True)
-            Me.SetStyle(ControlStyles.UserPaint, True)
+            '' Enable double buffering
+            'Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+            'Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+            'Me.SetStyle(ControlStyles.ResizeRedraw, True)
+            'Me.SetStyle(ControlStyles.UserPaint, True)
 
             Me.BackColor = Color.White
             Me.BorderStyle = Windows.Forms.BorderStyle.FixedSingle
