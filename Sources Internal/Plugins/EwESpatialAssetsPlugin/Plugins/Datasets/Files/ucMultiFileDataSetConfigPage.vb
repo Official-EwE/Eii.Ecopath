@@ -546,8 +546,8 @@ Namespace SpatialData
             Dim formats As String() = Nothing
 
             Select Case Me.m_cmbFormat.SelectedIndex
-                Case 0 : formats = {"yyyy-MM", "yyyy-M"}
-                Case 1 : formats = {"MM-yyyy", "M-yyyy"}
+                Case 0 : formats = {"yyyy-MM", "yyyyMM"}
+                Case 1 : formats = {"MM-yyyy", "MMyyyy"}
                 Case 2 : formats = {"yyyy"}
             End Select
 
