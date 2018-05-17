@@ -41,6 +41,7 @@ Namespace Controls.Map.Layers
     Public Class ucLayerEditorDefault
 
         Protected m_fpName As cEwEFormatProvider = Nothing
+        Protected m_bInUpdate As Boolean = False
 
         Public Sub New()
             MyBase.New()
@@ -101,7 +102,7 @@ Namespace Controls.Map.Layers
         Private Sub OnSliderValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_ucSlider.ValueChanged
 
-            If Me.Editor Is Nothing Then Return
+            If (Me.Editor Is Nothing) Then Return
 
             Me.Editor.CursorSize = CInt(Me.m_ucSlider.Value)
             Me.RaiseChangedEvent()
@@ -126,7 +127,14 @@ Namespace Controls.Map.Layers
         End Sub
 
         Private Sub OnNameChanged(sender As Object, args As EventArgs)
-            Me.Layer.Name = CStr(Me.m_fpName.Value)
+            If (Me.m_bInUpdate) Then Return
+            Me.m_bInUpdate = True
+            Try
+                Me.Layer.Name = CStr(Me.m_fpName.Value)
+            Catch ex As Exception
+
+            End Try
+            Me.m_bInUpdate = False
         End Sub
 
         ''' -------------------------------------------------------------------

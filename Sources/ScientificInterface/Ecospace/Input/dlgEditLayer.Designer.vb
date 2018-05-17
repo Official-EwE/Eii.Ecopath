@@ -254,10 +254,10 @@ Namespace Ecospace.Basemap.Layers
             '
             'm_tpAppearance
             '
+            Me.m_tpAppearance.BackColor = System.Drawing.Color.Transparent
             Me.m_tpAppearance.Controls.Add(Me.m_scAppearance)
             resources.ApplyResources(Me.m_tpAppearance, "m_tpAppearance")
             Me.m_tpAppearance.Name = "m_tpAppearance"
-            Me.m_tpAppearance.UseVisualStyleBackColor = True
             '
             'm_scAppearance
             '
@@ -276,6 +276,7 @@ Namespace Ecospace.Basemap.Layers
             '
             resources.ApplyResources(Me.m_zoommap, "m_zoommap")
             Me.m_zoommap.Name = "m_zoommap"
+            Me.m_zoommap.UIContext = Nothing
             '
             'm_tlpBits
             '

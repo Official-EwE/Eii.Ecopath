@@ -83,9 +83,11 @@ Namespace Controls
         ''' Default constructor for Visual Studio designer only.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Obsolete("Do not use this constructor, it's for the VS editor only")> _
+        <Obsolete("Do not use this constructor, it's for the VS editor only")>
         Public Sub New()
-            Debug.Assert(Me.DesignMode = True, "Please do not use this constructor!")
+            If Not Me.DesignMode Then
+                Debug.Assert(False, "Please do not use this constructor!")
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------

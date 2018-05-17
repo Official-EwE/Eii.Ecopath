@@ -63,6 +63,8 @@ Namespace Controls.Map
         Private m_sZoom As Single = 1.0!
         Private m_sZoomMax As Single = 1.0!
 
+        Private m_bInit As Boolean = False
+
 #End Region ' Private vars
 
 #Region " Constructor "
@@ -120,10 +122,15 @@ Namespace Controls.Map
 
                 Dim x, y As Single
 
-                ' JS 10May18: this does not work 100% yet. Code does not seem to get the map positin right?
+                ' JS 10May18: the 'zoom to cursor' logic attempts to keep the map location under the
+                ' mouse position fixed in place while zooming. AutoScrollPosition has to be 'in view', and does not work.
+                ' Best solution is probably to calculate the top-left map corner to show after zooming,
+                ' and move the scroll position to that location
+
+                Me.SuspendLayout()
 
                 If (bZoomToCursor) Then
-                    ' Grab the map focus point under the cursor
+                    ' A: Grab the map focus point under the cursor
                     Dim ptScreen As Point = Control.MousePosition
                     Dim ptMap As Point = Me.m_map.PointToClient(ptScreen)
                     x = CSng(ptMap.X / Me.m_map.Width)
@@ -134,13 +141,24 @@ Namespace Controls.Map
                 Me.ScaleMap()
 
                 If (bZoomToCursor) Then
-                    ' Convert back up
+
+                    ' B: Convert back up
                     Dim ptMap As New Point(CInt(x * Me.m_map.Width), CInt(y * Me.m_map.Height))
                     Dim ptScreen As Point = Me.m_map.PointToScreen(ptMap)
-                    ' Scroll to this point
-                    Me.AutoScrollPosition = Me.PointToClient(ptScreen)
+                    ' Calculate how much the location under the cursor has moved
+                    Dim ptDisplaced As Point = Me.PointToClient(ptScreen)
+                    ' Find the new point under the cursor
+                    ptScreen = Me.PointToClient(Control.MousePosition)
+                    Dim dx As Integer = ptScreen.X - ptDisplaced.X
+                    Dim dy As Integer = ptScreen.Y - ptDisplaced.Y
+
+                    ' Offset scroll
+                    Me.VerticalScroll.Value = Math.Max(0, Math.Min(Me.VerticalScroll.Maximum, Me.VerticalScroll.Value - dy))
+                    Me.HorizontalScroll.Value = Math.Max(0, Math.Min(Me.HorizontalScroll.Maximum, Me.HorizontalScroll.Value - dx))
 
                 End If
+
+                Me.ResumeLayout()
 
                 Me.m_bInUpdate = False
             End Set
@@ -173,20 +191,26 @@ Namespace Controls.Map
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            If (Me.UIContext Is Nothing) Then Return
+            If (Me.UIContext IsNot Nothing) Then
 
-            ' Max zoom scale displays 10 cells width or height in the map
-            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
-            Me.m_sZoomMax = Math.Max(1, Math.Max(bm.InCol / 10.0!, bm.InRow / 10.0!))
+                ' Max zoom scale displays 10 cells width or height in the map
+                Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+                Me.m_sZoomMax = Math.Max(1, Math.Max(bm.InCol / 10.0!, bm.InRow / 10.0!))
 
-            ' Kick off
+            End If
+
             Me.CenterMap()
+            Me.m_bInit = False
 
         End Sub
 
         Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
             MyBase.OnResize(e)
             Me.ScaleMap()
+            If Not Me.m_bInit Then
+                Me.CenterMap()
+                Me.m_bInit = True
+            End If
         End Sub
 
         Protected Overrides Sub OnScroll(se As ScrollEventArgs)

@@ -225,6 +225,7 @@ Namespace Controls
                     Me.m_tb = DirectCast(ctrl, TextBoxBase)
                     AddHandler Me.m_tb.Enter, AddressOf OnControlEntered
                     AddHandler Me.m_tb.Leave, AddressOf OnControlLeft
+                    AddHandler Me.m_tb.KeyDown, AddressOf OnControlKeyDown
 
                     Me.m_provider = provider
                     Me.m_md = metadata
@@ -251,6 +252,7 @@ Namespace Controls
                 If (Me.m_tb IsNot Nothing) Then
                     RemoveHandler Me.m_tb.Enter, AddressOf OnControlEntered
                     RemoveHandler Me.m_tb.LostFocus, AddressOf OnControlLeft
+                    RemoveHandler Me.m_tb.KeyDown, AddressOf OnControlKeyDown
                     Me.m_tb = Nothing
                 End If
 
@@ -350,6 +352,27 @@ Namespace Controls
                 End Get
             End Property
 
+            Private Sub ProcessChanges()
+                If (Me.m_tb Is Nothing) Then Return
+
+                Try
+                    ' Did anything change?
+                    Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
+                    Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
+                    'Dim bVisible As Boolean = ((style And cStyleGuide.eStyleFlags.Null) = 0)
+
+                    If Me.m_tb.Modified And bEditable Then
+                        ' Update internal value
+                        Me.m_provider.Value = Me.m_tb.Text
+                    End If
+                    ' Clear modified flag
+                    Me.m_tb.Modified = False
+                    Me.UpdateContent(cProperty.eChangeFlags.Value)
+                Catch ex As Exception
+
+                End Try
+            End Sub
+
 #End Region ' Implementation
 
 #Region " TextBox events "
@@ -377,24 +400,14 @@ Namespace Controls
             '''' -----------------------------------------------------------------------
             Private Sub OnControlLeft(ByVal sender As Object, ByVal e As System.EventArgs)
 
-                If (Me.m_tb Is Nothing) Then Return
+                ProcessChanges()
 
-                Try
-                    ' Did anything change?
-                    Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
-                    Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
-                    'Dim bVisible As Boolean = ((style And cStyleGuide.eStyleFlags.Null) = 0)
+            End Sub
 
-                    If Me.m_tb.Modified And bEditable Then
-                        ' Update internal value
-                        Me.m_provider.Value = Me.m_tb.Text
-                    End If
-                    ' Clear modified flag
-                    Me.m_tb.Modified = False
-                    Me.UpdateContent(ScientificInterfaceShared.Properties.cProperty.eChangeFlags.Value)
-                Catch ex As Exception
-
-                End Try
+            Private Sub OnControlKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
+                If (e.KeyCode = Keys.Enter And Not Me.m_tb.Multiline) Then
+                    Me.ProcessChanges()
+                End If
             End Sub
 
 #End Region ' TextBox events

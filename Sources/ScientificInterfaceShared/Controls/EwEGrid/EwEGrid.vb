@@ -1351,7 +1351,7 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Seclection change event handler; implemented to fire a 
+        ''' Selection change event handler; implemented to fire a 
         ''' <see cref="cPropertySelectionCommand">property select command</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
