@@ -298,26 +298,32 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public Overrides Property Name() As String
             Get
-                ' No overriding name defined?
-                If String.IsNullOrWhiteSpace(Me.m_strName) Then
-                    ' #Yes: is a backlink property provided?
-                    If (Me.m_propName IsNot Nothing) Then
-                        ' #Yes: and is this property linked to a true name?
-                        If (Me.m_propName.VarName = eVarNameFlags.Name) Then
-                            ' #Yes: return name property value
-                            Return CStr(Me.m_propName.GetValue())
-                        End If
-                    End If
-                    ' Alternative: is data attached?
-                    If (Me.Data IsNot Nothing) Then
-                        ' #Yes: return data name)
-                        Return Me.Data.Name
+                ' #Yes: is a backlink property provided?
+                If (Me.m_propName IsNot Nothing) Then
+                    ' #Yes: and is this property linked to a true name?
+                    If (Me.m_propName.VarName = eVarNameFlags.Name) Then
+                        ' #Yes: return name property value
+                        Return CStr(Me.m_propName.GetValue())
                     End If
                 End If
-                ' Return overriding name
-                Return Me.m_strName
+                ' Alternative: is data attached?
+                If (Me.Data IsNot Nothing) Then
+                    ' #Yes: return data name)
+                    Return Me.Data.Name
+                End If
+                ' Return base name
+                Return MyBase.Name
             End Get
             Set(ByVal value As String)
+                ' #Yes: is a backlink property provided?
+                If (Me.m_propName IsNot Nothing) Then
+                    ' #Yes: and is this property linked to a true name?
+                    If (Me.m_propName.VarName = eVarNameFlags.Name) Then
+                        ' #Yes: return name property value
+                        Me.m_propName.SetValue(value)
+                        Return
+                    End If
+                End If
                 MyBase.Name = value
             End Set
         End Property

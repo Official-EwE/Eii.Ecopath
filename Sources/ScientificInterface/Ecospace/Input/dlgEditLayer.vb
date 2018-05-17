@@ -140,7 +140,7 @@ Namespace Ecospace.Basemap.Layers
             ' Set up format providers
             Me.m_fpName = New cEwEFormatProvider(Me.m_uic, Me.m_tbNameValue, GetType(String))
             Me.m_fpWeight = New cEwEFormatProvider(Me.m_uic, Me.m_nudWeight, GetType(Single))
-            Me.m_fpDescription = New cEwEFormatProvider(Me.m_uic, Me.m_tbNameValue, GetType(String))
+            Me.m_fpDescription = New cEwEFormatProvider(Me.m_uic, Me.m_tbDescription, GetType(String))
 
             Me.LoadLayer()
             Me.UpdateControls()
@@ -149,6 +149,7 @@ Namespace Ecospace.Basemap.Layers
             If (Me.m_ucEditVisualStyle IsNot Nothing) Then
                 AddHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
             End If
+            AddHandler Me.m_fpName.OnValueChanged, AddressOf OnNameChanged
 
         End Sub
 
@@ -161,6 +162,8 @@ Namespace Ecospace.Basemap.Layers
             Me.m_qehGrid.Detach()
             Me.m_qehGrid = Nothing
             Me.m_grid.UIContext = Nothing
+
+            RemoveHandler Me.m_fpName.OnValueChanged, AddressOf OnNameChanged
 
             Me.m_fpName.Release()
             Me.m_fpWeight.Release()
@@ -307,8 +310,7 @@ Namespace Ecospace.Basemap.Layers
 
 #End Region ' Export
 
-        Private Sub OnNameChanged(sender As Object, e As System.EventArgs) _
-            Handles m_tbNameValue.TextChanged
+        Private Sub OnNameChanged(sender As Object, e As System.EventArgs)
             Try
                 Me.UpdateControls()
             Catch ex As Exception
@@ -418,12 +420,14 @@ Namespace Ecospace.Basemap.Layers
             Dim cf As cDisplayLayer.eChangeFlags = 0
             Dim src As cCoreInputOutputBase = Me.m_layerOriginal.Source
 
+            If Me.m_tbNameValue.Enabled Then
+                Me.m_layerOriginal.Name = CStr(Me.m_fpName.Value)
+            End If
+
             If (HasUniqueSource()) Then
 
-                Dim p As cProperty = Me.m_layerOriginal.GetNameProperty()
-                If (p IsNot Nothing) Then
-                    p.SetRemark(Me.m_tbRemarks.Text)
-                    p.SetValue(CStr(Me.m_fpName.Value))
+                If Me.m_tbRemarks.Enabled Then
+                    src.Remark = Me.m_tbRemarks.Text
                 End If
 
                 If TypeOf Me.m_layerOriginal.Source Is cEcospaceLayerImportance Then

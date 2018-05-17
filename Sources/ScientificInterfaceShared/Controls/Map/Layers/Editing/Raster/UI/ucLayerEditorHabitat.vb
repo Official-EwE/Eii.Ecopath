@@ -38,6 +38,8 @@ Namespace Controls.Map.Layers
 
         Protected Overrides Sub OnLoad(e As EventArgs)
             MyBase.OnLoad(e)
+            Me.m_cbUseHabitatAreaCorrection.Checked = Me.UIContext.StyleGuide.UseHabitatAreaCorrection
+            Me.UpdateEditor()
         End Sub
 
         Protected Overloads Property Editor() As cLayerEditorHabitat

@@ -23,7 +23,6 @@
 Option Strict On
 Imports System.Drawing.Drawing2D
 Imports EwECore.Auxiliary
-Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region ' Imports
 
@@ -170,8 +169,18 @@ Namespace Controls
             SelectCustomControl(eSelectionType.ForeColor)
         End Sub
 
+        Private Sub pbForeColor_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles plForeColor.DoubleClick
+            SelectCustomControl(eSelectionType.ForeColor)
+            DisplayDropdown()
+        End Sub
+
         Private Sub pbBackColor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles plBackColor.Click
             SelectCustomControl(eSelectionType.BackColor)
+        End Sub
+
+        Private Sub pbBackColor_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles plBackColor.Click
+            SelectCustomControl(eSelectionType.BackColor)
+            DisplayDropdown()
         End Sub
 
         Private Sub nud_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles nudRed.ValueChanged, nudGreen.ValueChanged, nudBlue.ValueChanged, nudAlpha.ValueChanged

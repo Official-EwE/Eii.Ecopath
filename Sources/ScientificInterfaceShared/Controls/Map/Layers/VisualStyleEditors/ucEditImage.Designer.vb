@@ -50,9 +50,9 @@ Namespace Controls
             'm_glyphSelect
             '
             Me.m_glyphSelect.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_glyphSelect.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_glyphSelect.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.m_glyphSelect.GlyphSize = New System.Drawing.Size(40, 25)
             Me.m_glyphSelect.Location = New System.Drawing.Point(0, 0)
             Me.m_glyphSelect.MaxImageSize = New System.Drawing.Size(100, 100)
@@ -66,7 +66,6 @@ Namespace Controls
             'btnImport
             '
             Me.btnImport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.btnImport.FlatStyle = System.Windows.Forms.FlatStyle.Flat
             Me.btnImport.ImeMode = System.Windows.Forms.ImeMode.NoControl
             Me.btnImport.Location = New System.Drawing.Point(247, 141)
             Me.btnImport.Name = "btnImport"

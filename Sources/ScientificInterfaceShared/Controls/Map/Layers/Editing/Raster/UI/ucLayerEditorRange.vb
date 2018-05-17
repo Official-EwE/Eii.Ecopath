@@ -194,7 +194,11 @@ Namespace Controls.Map.Layers
 
             If (Me.UIContext Is Nothing) Then Return
 
+            Me.m_bInUpdate = True
+
             Me.UpdateContent(Me.Editor)
+
+            Me.m_bInUpdate = False
 
         End Sub
 
