@@ -78,6 +78,7 @@ Namespace Ecopath.Output
             Me(0, eColumnTypes.BArate) = New EwEColumnHeaderCell(eVarNameFlags.BioAccumRate, eDescriptorTypes.Abbreviation)
 
             Me.FixedColumns = 2
+            Me.FixedColumnWidths = True
 
         End Sub
 

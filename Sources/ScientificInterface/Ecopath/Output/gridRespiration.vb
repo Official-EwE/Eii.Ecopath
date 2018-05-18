@@ -55,6 +55,7 @@ Namespace Ecopath.Output
             Me(0, 6) = New EwEColumnHeaderCell(eVarNameFlags.RespBiom)
 
             Me.FixedColumns = 2
+            Me.FixedColumnWidths = True
 
         End Sub
 
