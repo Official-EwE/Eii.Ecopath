@@ -192,7 +192,7 @@ Public Class frmSamples
 
     End Sub
 
-    Private Sub OnGridSelectionChanged(selection As SourceGrid2.CellVirtualCollection) _
+    Private Sub OnGridSelectionChanged() _
         Handles m_grid.OnSelectionChanged
 
         Try

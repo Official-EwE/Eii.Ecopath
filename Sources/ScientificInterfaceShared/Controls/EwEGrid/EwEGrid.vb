@@ -547,9 +547,8 @@ Namespace Controls.EwEGrid
         ''' Event that is raised whenever the selection in the grid is modified,
         ''' either via code of by user interaction.
         ''' </summary>
-        ''' <param name="selection">The newly selected cells.</param>
         ''' -------------------------------------------------------------------
-        Public Event OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)
+        Public Event OnSelectionChanged()
 
         Public Property IsLayoutSuspended As Boolean
 
@@ -566,7 +565,7 @@ Namespace Controls.EwEGrid
         Protected Sub RaiseSelectionChangeEvent()
             If (Me.UIContext IsNot Nothing) And (Not Me.IsLayoutSuspended) Then
                 Try
-                    RaiseEvent OnSelectionChanged(Me.Selection.GetCells())
+                    RaiseEvent OnSelectionChanged()
                 Catch ex As Exception
                     cLog.Write(ex, "EwEGrid::RaiseSelectionChangeEvent(" & Me.ToString & ")")
                 End Try
@@ -1357,45 +1356,37 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Private Sub OnSelectionChange(ByVal sender As Object, ByVal e As SourceGrid2.SelectionChangeEventArgs)
 
-            Dim cmdh As cCommandHandler = Me.CommandHandler
+            If Me.TrackPropertySelection Then
 
-            If (cmdh IsNot Nothing) Then
+                Dim cmdh As cCommandHandler = Me.CommandHandler
+                If (cmdh IsNot Nothing) Then
 
-                Dim cmd As cCommand = cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME)
-                Dim sc As cPropertySelectionCommand = Nothing
-                Dim c As SourceGrid2.Cells.ICell = Nothing
-
-                If Me.TrackPropertySelection Then
-
-                    '' Clean up
-                    'If (e.EventType = SelectionChangeEventType.Add) Then
-
-                    ' Get properties from selected cells
-                    Me.m_lpropertySelected.Clear()
-                    For Each p As Position In Me.Selection.GetCellsPositions
-                        Try
-                            c = Me(p.Row, p.Column)
-                            If c IsNot Nothing Then
-                                ' Is property cell, but is not header?
-                                If (TypeOf c Is IPropertyCell) And Not (TypeOf c Is PropertyHeaderCell) Then
-                                    ' #Yes: add to list of selected cells
-                                    Me.m_lpropertySelected.Add(DirectCast(c, IPropertyCell).GetProperty())
-                                End If
-                            End If
-                        Catch ex As Exception
-
-                        End Try
-                    Next
-
-                    'End If
+                    Dim cmd As cCommand = cmdh.GetCommand(cPropertySelectionCommand.COMMAND_NAME)
+                    Dim sc As cPropertySelectionCommand = Nothing
 
                     If cmd IsNot Nothing Then
+                        ' Get properties from selected cells
+                        Me.m_lpropertySelected.Clear()
+                        For Each p As Position In Me.Selection.GetCellsPositions
+                            Try
+                                Dim c As SourceGrid2.Cells.ICell = Me(p.Row, p.Column)
+                                If (c IsNot Nothing) Then
+                                    ' Is property cell, but is not header?
+                                    If (TypeOf c Is IPropertyCell) And Not (TypeOf c Is PropertyHeaderCell) Then
+                                        ' #Yes: add to list of selected cells
+                                        Me.m_lpropertySelected.Add(DirectCast(c, IPropertyCell).GetProperty())
+                                    End If
+                                End If
+                            Catch ex As Exception
+
+                            End Try
+                        Next
+
                         If (TypeOf cmd Is cPropertySelectionCommand) Then
                             sc = DirectCast(cmd, cPropertySelectionCommand)
                             sc.Invoke(Me.m_lpropertySelected, e.EventType)
                         End If
                     End If
-
                 End If
             End If
 

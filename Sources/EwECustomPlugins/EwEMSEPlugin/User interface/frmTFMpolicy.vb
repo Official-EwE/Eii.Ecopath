@@ -312,7 +312,7 @@ Public Class frmTFMpolicy
     ''' <summary>
     ''' Update group selection according to user actions in the grid.
     ''' </summary>
-    Private Sub OnGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)
+    Private Sub OnGridSelectionChanged()
         Me.HCRGroup = Me.m_grid.HarvestControlRule
         Me.UpdateControls()
     End Sub

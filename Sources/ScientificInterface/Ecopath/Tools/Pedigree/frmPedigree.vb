@@ -270,7 +270,7 @@ Namespace Ecopath.Tools
             End If
         End Sub
 
-        Protected Sub OnGridSelectionChanged(ByVal sel As Object)
+        Protected Sub OnGridSelectionChanged()
             Dim level As cPedigreeLevel = Nothing
             Dim iValueSel As Integer = Me.m_grid.SelectedValue
             If iValueSel <= 0 Then

@@ -118,7 +118,7 @@ Namespace Ecopath
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnGroupSelected(ByVal selection As SourceGrid2.CellVirtualCollection) _
+        Private Sub OnGroupSelected() _
             Handles m_grid.OnSelectionChanged
             Me.UpdateControls()
         End Sub

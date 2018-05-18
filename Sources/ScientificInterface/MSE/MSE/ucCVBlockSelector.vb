@@ -255,7 +255,7 @@ Public Class ucCVBlockSelector
         End Try
     End Sub
 
-    Private Sub OnGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
+    Private Sub OnGridSelectionChanged() _
         Handles m_gridSelector.OnSelectionChanged
         Try
             '

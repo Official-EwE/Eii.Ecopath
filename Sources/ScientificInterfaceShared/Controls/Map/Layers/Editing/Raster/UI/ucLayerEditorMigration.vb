@@ -57,8 +57,6 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Private m_bInUpdate As Boolean = False
-
         Public Overrides Sub UpdateContent(ByVal editor As cLayerEditorRaster)
             MyBase.UpdateContent(editor)
 
