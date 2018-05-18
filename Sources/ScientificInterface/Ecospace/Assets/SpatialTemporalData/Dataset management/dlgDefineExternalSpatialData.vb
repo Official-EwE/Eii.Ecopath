@@ -201,7 +201,7 @@ Namespace Ecospace.Controls
 
         End Sub
 
-        Private Sub OnGridSelectionChanged(sender As Object)
+        Private Sub OnGridSelectionChanged()
             Try
                 Me.m_manSets.IndexDataset = Me.SelectedDataset
                 Me.UpdateControls()

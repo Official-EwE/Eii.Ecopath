@@ -109,7 +109,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub m_grid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
+        Private Sub m_grid_OnSelectionChanged() _
             Handles m_grid.OnSelectionChanged
             Me.UpdateSetControls()
         End Sub

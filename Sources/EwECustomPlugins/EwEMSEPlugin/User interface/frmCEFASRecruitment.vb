@@ -161,7 +161,7 @@ Public Class frmCEFASRecruitment
 
 #Region " Events "
 
-    Private Sub HandleGridSelectionChanged(ByVal selection As CellVirtualCollection) _
+    Private Sub HandleGridSelectionChanged() _
         Handles m_grid.OnSelectionChanged
         ' Update group selection according to user actions in the grid
         Me.Group = Me.m_grid.Group

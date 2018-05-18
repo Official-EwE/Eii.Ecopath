@@ -93,7 +93,7 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_grid_OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) Handles m_grid.OnSelectionChanged
+        Private Sub m_grid_OnSelectionChanged() Handles m_grid.OnSelectionChanged
             Me.UpdateControls()
         End Sub
 

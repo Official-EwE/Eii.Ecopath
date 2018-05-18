@@ -236,7 +236,7 @@ Namespace Import
             Me.m_wizard.PageChanged(Me)
         End Sub
 
-        Private Sub OnModelSelectionChanged(ByVal sel As SourceGrid2.CellVirtualCollection)
+        Private Sub OnModelSelectionChanged()
             Dim inf As cExternalModelInfo = Me.m_grid.SelectedModelInfo
             If inf Is Nothing Then
                 Me.m_lblComments.Text = ""

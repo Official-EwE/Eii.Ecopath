@@ -133,7 +133,7 @@ Namespace Ecosim
             If (Me.m_rbPredMort.Checked) Then Me.EstimationMethod = eEstimationTypes.FMaxBoBu
         End Sub
 
-        Private Sub OnGroupSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
+        Private Sub OnGroupSelectionChanged() _
             Handles m_grid.OnSelectionChanged
             Me.UpdatePlot()
         End Sub

@@ -96,7 +96,7 @@ Namespace Ecosim
             MyBase.OnFormClosed(e)
         End Sub
 
-        Private Sub HandleGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
+        Private Sub HandleGridSelectionChanged() _
             Handles m_grid.OnSelectionChanged
             ' Update group selection according to user actions in the grid
             Me.Group = Me.m_grid.Group

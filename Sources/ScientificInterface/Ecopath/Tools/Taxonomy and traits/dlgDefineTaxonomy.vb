@@ -196,7 +196,7 @@ Public Class dlgDefineTaxonomy
         Me.Cursor = Cursors.Default
     End Sub
 
-    Private Sub OnRowSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)
+    Private Sub OnRowSelectionChanged()
         Me.UpdateControls()
     End Sub
 
@@ -295,7 +295,7 @@ Public Class dlgDefineTaxonomy
         End Try
     End Sub
 
-    Private Sub OnResultSelected(selection As SourceGrid2.CellVirtualCollection) _
+    Private Sub OnResultSelected() _
         Handles m_gridResults.OnSelectionChanged
         Try
             Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))

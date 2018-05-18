@@ -527,7 +527,7 @@ Public Class frmRun
         Me.m_grid.UpdateContent()
     End Sub
 
-    Private Sub OnIterationSelected(ByVal selection As SourceGrid2.CellVirtualCollection) _
+    Private Sub OnIterationSelected() _
         Handles m_grid.OnSelectionChanged
 
         Try

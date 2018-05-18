@@ -336,7 +336,7 @@ Namespace Ecospace.Controls
         ''' <summary>
         ''' User has selected a dataset for the current adapter and layer.
         ''' </summary>
-        Private Sub OnSelectDS(selection As SourceGrid2.CellVirtualCollection)
+        Private Sub OnSelectDS()
 
             If Me.m_bInUpdate Then Return
             Try

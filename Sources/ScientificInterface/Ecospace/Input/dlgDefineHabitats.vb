@@ -105,7 +105,7 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
-        Private Sub OnHabitatSelected(ByVal selection As SourceGrid2.CellVirtualCollection) Handles m_grid.OnSelectionChanged
+        Private Sub OnHabitatSelected() Handles m_grid.OnSelectionChanged
             Me.UpdateControls()
         End Sub
 
