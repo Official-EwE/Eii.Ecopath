@@ -66,6 +66,7 @@ Namespace Ecopath.Output
             Me(0, eColumnTypes.OI) = New EwEColumnHeaderCell(eVarNameFlags.OmnivoryIndex)
 
             Me.FixedColumns = 2
+            Me.FixedColumnWidths = True
 
         End Sub
 
