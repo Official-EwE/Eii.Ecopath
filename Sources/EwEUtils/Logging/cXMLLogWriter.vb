@@ -157,10 +157,10 @@ Namespace Core
                     m_XMLwriter.WriteElementString("Platform", cSystemUtils.OSVersion())
                     m_XMLwriter.WriteElementString("Is64BitOS", If(cSystemUtils.Is64BitOS(), "True", "False"))
                     m_XMLwriter.WriteElementString("Is64BitEwE", If(cSystemUtils.Is64BitProcess(), "True", "False"))
-                    m_XMLwriter.WriteElementString("OS_culture", Threading.Thread.CurrentThread.CurrentCulture.DisplayName)
-                    m_XMLwriter.WriteElementString("UI_culture", Threading.Thread.CurrentThread.CurrentUICulture.DisplayName)
+                    m_XMLwriter.WriteElementString("CultureOS", Threading.Thread.CurrentThread.CurrentCulture.DisplayName)
+                    m_XMLwriter.WriteElementString("CultureUI", Threading.Thread.CurrentThread.CurrentUICulture.DisplayName)
                     m_XMLwriter.WriteElementString("DecimalSeparator", Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator)
-                    m_XMLwriter.WriteElementString("Model_Name", m_strModelName)
+                    m_XMLwriter.WriteElementString("ModelName", m_strModelName)
 
                     m_XMLwriter.WriteElementString("Created", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
                     m_XMLwriter.WriteEndElement()
