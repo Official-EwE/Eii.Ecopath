@@ -511,51 +511,60 @@ Namespace Controls.EwEGrid
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_APPLYVALUES)
             Me.m_grid.BeginBatchEdit()
 
-            For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
-                If TypeOf cell Is PropertyCell Then
-                    Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
-                    If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
-                        pcell.GetProperty().SetValue(newval)
-                    End If
-                Else
-                    If cell.DataModel.EnableEdit Then
-                        If (cell.DataModel.ValueType Is GetType(String)) Then
-                            objValue = newval
-                        ElseIf ((cell.DataModel.ValueType Is GetType(Single)) Or (cell.DataModel.ValueType Is GetType(Double))) Then
-                            Try
-                                If (TypeOf newval Is String) Then
-                                    objValue = cStringUtils.ConvertToSingle(CStr(newval))
-                                Else
-                                    objValue = newval
-                                End If
-                            Catch ex As Exception
-                            End Try
-                        ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
-                            Try
-                                If (TypeOf newval Is String) Then
-                                    objValue = cStringUtils.ConvertToInteger(CStr(newval))
-                                Else
-                                    objValue = newval
-                                End If
-                            Catch ex As Exception
-                            End Try
-                        ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
-                            If (TypeOf newval Is String) Then
-                                objValue = (CStr(newval) = "1")
-                            Else
-                                objValue = newval
+            ' Iterate through cells
+            ' JS 18May18: Greatly optimized logic to iterate over cells in the selection
+            Dim r As SourceGrid2.Range = sel.GetRange
+            ' Math.max construction prevens from looping into empty regions
+            For row As Integer = Math.Max(0, r.Start.Row) To r.End.Row
+                For col As Integer = Math.Max(0, r.Start.Column) To r.End.Column
+                    If r.Contains(New SourceGrid2.Position(row, col)) Then
+                        Dim cell As SourceGrid2.Cells.ICell = CType(Me.m_grid.GetCell(row, col), SourceGrid2.Cells.ICell)
+                        If TypeOf cell Is PropertyCell Then
+                            Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                            If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
+                                pcell.GetProperty().SetValue(newval)
                             End If
                         Else
-                            objValue = newval
-                        End If
+                            If cell.DataModel.EnableEdit Then
+                                If (cell.DataModel.ValueType Is GetType(String)) Then
+                                    objValue = newval
+                                ElseIf ((cell.DataModel.ValueType Is GetType(Single)) Or (cell.DataModel.ValueType Is GetType(Double))) Then
+                                    Try
+                                        If (TypeOf newval Is String) Then
+                                            objValue = cStringUtils.ConvertToSingle(CStr(newval))
+                                        Else
+                                            objValue = newval
+                                        End If
+                                    Catch ex As Exception
+                                    End Try
+                                ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
+                                    Try
+                                        If (TypeOf newval Is String) Then
+                                            objValue = cStringUtils.ConvertToInteger(CStr(newval))
+                                        Else
+                                            objValue = newval
+                                        End If
+                                    Catch ex As Exception
+                                    End Try
+                                ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
+                                    If (TypeOf newval Is String) Then
+                                        objValue = (CStr(newval) = "1")
+                                    Else
+                                        objValue = newval
+                                    End If
+                                Else
+                                    objValue = newval
+                                End If
 
-                        Try
-                            cell.SetValue(New SourceGrid2.Position(cell.Row, cell.Column), objValue)
-                        Catch ex As Exception
-                            ' Whoah!
-                        End Try
+                                Try
+                                    cell.SetValue(New SourceGrid2.Position(cell.Row, cell.Column), objValue)
+                                Catch ex As Exception
+                                    ' Whoah!
+                                End Try
+                            End If
+                        End If
                     End If
-                End If
+                Next
             Next
 
             Me.m_grid.EndBatchEdit()
