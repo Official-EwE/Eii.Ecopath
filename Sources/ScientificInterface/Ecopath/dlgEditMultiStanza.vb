@@ -294,7 +294,9 @@ Namespace Ecopath
                     End If
                 Next
             End If
-            Me.m_cmbFF.SelectedIndex = iSel
+            If (Me.m_cmbFF.Items.Count > 0) Then
+                Me.m_cmbFF.SelectedIndex = iSel
+            End If
 
             Me.m_cbFFecun.Checked = stanza.FixedFecundity
             Me.m_cbEggAtSpawn.Checked = stanza.EggAtSpawn
