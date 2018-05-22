@@ -50,6 +50,7 @@ Namespace Controls
             Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_controlpanel = New ScientificInterfaceShared.Controls.ucChangeShapeType()
+            Me.m_cbShowExtraData = New System.Windows.Forms.CheckBox()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -114,12 +115,19 @@ Namespace Controls
             Me.m_controlpanel.Shape = Nothing
             Me.m_controlpanel.UIContext = Nothing
             '
+            'm_cbShowExtraData
+            '
+            resources.ApplyResources(Me.m_cbShowExtraData, "m_cbShowExtraData")
+            Me.m_cbShowExtraData.Name = "m_cbShowExtraData"
+            Me.m_cbShowExtraData.UseVisualStyleBackColor = True
+            '
             'dlgChangeShape
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_cbShowExtraData)
             Me.Controls.Add(Me.m_scMain)
             Me.Controls.Add(Me.m_btDefaults)
             Me.Controls.Add(Me.m_btnOk)
@@ -132,6 +140,7 @@ Namespace Controls
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
 
@@ -143,6 +152,7 @@ Namespace Controls
         Private WithEvents m_lblName As System.Windows.Forms.Label
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_controlpanel As ucChangeShapeType
+        Private WithEvents m_cbShowExtraData As CheckBox
     End Class
 
 End Namespace

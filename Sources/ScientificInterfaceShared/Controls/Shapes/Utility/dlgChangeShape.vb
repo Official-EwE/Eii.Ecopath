@@ -87,11 +87,16 @@ Namespace Controls
 
             ' Add shape name 
             Me.m_tbxName.Text = Me.m_shape.Name
-
+            Me.m_cbShowExtraData.Checked = False ' Me.m_uic.StyleGuide.ShowExtraShapeData
             Me.UpdatePreview()
             Me.UpdateControls()
             Me.CenterToScreen()
 
+        End Sub
+
+        Private Sub OnToggleShowExtraData(sender As Object, e As EventArgs) _
+            Handles m_cbShowExtraData.CheckedChanged
+            Me.UpdatePreview()
         End Sub
 
         Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -195,6 +200,7 @@ Namespace Controls
         End Sub
 
         Private Function nDisplayPoints() As Integer
+            If (Not Me.m_cbShowExtraData.Checked) Then Return Me.nDataPoints
             If Me.m_shape.IsSeasonal Then Return cCore.N_MONTHS
             Return Me.m_shape.ShapeData.Length - 1
         End Function
