@@ -6018,58 +6018,64 @@ Public Class cCore
 
         t.AllowValidation = False
 
-        If bIsStanza Then
-            bIsFished = Me.StanzaGroups(t.iStanza - 1).IsFished
-        Else
-            bIsFished = Me.EcoPathGroupInputs(t.iGroup).IsFished
-        End If
+        Try
 
-        If bIshigherOrganism Then
-            t.ClearStatusFlags(eVarNameFlags.IUCNConservationStatus, eStatusFlags.NotEditable)
-            t.ClearStatusFlags(eVarNameFlags.TaxonMaxLength, eStatusFlags.NotEditable)
-            t.ClearStatusFlags(eVarNameFlags.TaxonMeanLength, eStatusFlags.NotEditable)
-            t.ClearStatusFlags(eVarNameFlags.TaxonMeanLifespan, eStatusFlags.NotEditable)
-            t.ClearStatusFlags(eVarNameFlags.TaxonMeanWeight, eStatusFlags.NotEditable)
-        Else
-            t.SetStatusFlags(eVarNameFlags.IUCNConservationStatus, eStatusFlags.NotEditable)
-            t.SetStatusFlags(eVarNameFlags.TaxonMaxLength, eStatusFlags.NotEditable)
-            t.SetStatusFlags(eVarNameFlags.TaxonMeanLength, eStatusFlags.NotEditable)
-            t.SetStatusFlags(eVarNameFlags.TaxonMeanLifespan, eStatusFlags.NotEditable)
-            t.SetStatusFlags(eVarNameFlags.TaxonMeanWeight, eStatusFlags.NotEditable)
-        End If
+            If bIsStanza Then
+                bIsFished = Me.StanzaGroups(t.iStanza - 1).IsFished
+            Else
+                bIsFished = Me.EcoPathGroupInputs(t.iGroup).IsFished
+            End If
 
-        ' == Prop of biomass
-        If bIsStanza Then
-            t.SetStatusFlags(eVarNameFlags.TaxonPropBiomass, eStatusFlags.NotEditable)
-        Else
-            t.ClearStatusFlags(eVarNameFlags.TaxonPropBiomass, eStatusFlags.NotEditable)
-        End If
+            If bIshigherOrganism Then
+                t.ClearStatusFlags(eVarNameFlags.IUCNConservationStatus, eStatusFlags.NotEditable)
+                t.ClearStatusFlags(eVarNameFlags.TaxonMaxLength, eStatusFlags.NotEditable)
+                t.ClearStatusFlags(eVarNameFlags.TaxonMeanLength, eStatusFlags.NotEditable)
+                t.ClearStatusFlags(eVarNameFlags.TaxonMeanLifespan, eStatusFlags.NotEditable)
+                t.ClearStatusFlags(eVarNameFlags.TaxonMeanWeight, eStatusFlags.NotEditable)
+            Else
+                t.SetStatusFlags(eVarNameFlags.IUCNConservationStatus, eStatusFlags.NotEditable)
+                t.SetStatusFlags(eVarNameFlags.TaxonMaxLength, eStatusFlags.NotEditable)
+                t.SetStatusFlags(eVarNameFlags.TaxonMeanLength, eStatusFlags.NotEditable)
+                t.SetStatusFlags(eVarNameFlags.TaxonMeanLifespan, eStatusFlags.NotEditable)
+                t.SetStatusFlags(eVarNameFlags.TaxonMeanWeight, eStatusFlags.NotEditable)
+            End If
 
-        ' == Prop of catch (not editable when not fished or a stanza taxon)
-        If bIsFished And Not bIsStanza Then
-            t.ClearStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.NotEditable)
-        Else
-            t.SetStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.NotEditable)
-        End If
+            ' == Prop of biomass
+            If bIsStanza Then
+                t.SetStatusFlags(eVarNameFlags.TaxonPropBiomass, eStatusFlags.NotEditable)
+            Else
+                t.ClearStatusFlags(eVarNameFlags.TaxonPropBiomass, eStatusFlags.NotEditable)
+            End If
 
-        If (Not bIsFished) Or (t.ProportionCatch <= 0) Then
-            t.SetStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.Null)
-        Else
-            t.ClearStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.Null)
-        End If
+            ' == Prop of catch (not editable when not fished or a stanza taxon)
+            If bIsFished And Not bIsStanza Then
+                t.ClearStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.NotEditable)
+            Else
+                t.SetStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.NotEditable)
+            End If
 
-        ' == VI ==
-        If bIsNotFish Then
-            t.SetStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.NotEditable)
-        Else
-            t.ClearStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.NotEditable)
-        End If
+            If (Not bIsFished) Or (t.ProportionCatch <= 0) Then
+                t.SetStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.Null)
+            Else
+                t.ClearStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.Null)
+            End If
 
-        If (bIsNotFish Or (t.VulnerabilityIndex < 0)) Then
-            t.SetStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.Null)
-        Else
-            t.ClearStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.Null)
-        End If
+            ' == VI ==
+            If bIsNotFish Then
+                t.SetStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.NotEditable)
+            Else
+                t.ClearStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.NotEditable)
+            End If
+
+            If (bIsNotFish Or (t.VulnerabilityIndex < 0)) Then
+                t.SetStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.Null)
+            Else
+                t.ClearStatusFlags(eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.Null)
+            End If
+
+        Catch ex As Exception
+            cLog.Write(ex, "cCore.Set_Taxon_Flags")
+        End Try
 
         t.AllowValidation = True
 
