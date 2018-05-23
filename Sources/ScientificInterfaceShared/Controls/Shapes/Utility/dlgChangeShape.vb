@@ -30,7 +30,10 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
-' To consider: replace preview panel with a sketchpad? The GUI handler is already there, could be hooked up with the benefit of extra functionality
+' To consider (after VC comment 21 May 18): 
+'   Draw shapes With axis information. This logic Is now stored In SketchPad, And can perhaps be moved To the shape handlers
+'   using a shetchpad is not an option, as this only operates on live shapes with core connections. For this we'd need to
+'   rework the shapes so we can use them detached from the core. A lot of work for little gain.
 
 Namespace Controls
 

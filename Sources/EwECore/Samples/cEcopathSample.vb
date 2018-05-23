@@ -22,8 +22,8 @@
 
 Option Strict On
 
-Imports EwEUtils.Core
 Imports EwECore.ValueWrapper
+Imports EwEUtils.Core
 Imports EwEUtils.Extensions
 
 #End Region ' Imports
@@ -50,6 +50,9 @@ Namespace Samples
         Private m_dc As Single(,)
         Private m_landing As Single(,)
         Private m_discard As Single(,)
+
+        Private m_bStatsCalculated As Boolean = False
+        Private m_dtPerturbed As New Dictionary(Of eVarNameFlags, Boolean)
 
         Public Sub New(core As cCore, ByVal DBID As Integer, ByVal iIndex As Integer)
 
@@ -118,43 +121,78 @@ Namespace Samples
             Return iTot
         End Function
 
+        Public Function PerturbedValues() As eVarNameFlags()
+            ' Only do this when needed
+            If (Not Me.m_bStatsCalculated) Then
+                Me.CalculateStats()
+            End If
+            Return Me.m_dtPerturbed.Keys().ToArray()
+        End Function
+
         ''' <summary>
         ''' Get/set the date that a sample was generated.
         ''' </summary>
         Public Property Generated As Date
 
+        ''' <summary>
+        ''' Sampled biomass rate (x group)
+        ''' </summary>
         Public Function B() As Single()
             Return Me.m_b
         End Function
 
+        ''' <summary>
+        ''' Sampled production rate (x group)
+        ''' </summary>
         Public Function PB() As Single()
             Return Me.m_pb
         End Function
 
+        ''' <summary>
+        ''' Sampled consumption rate (x group)
+        ''' </summary>
         Public Function QB() As Single()
             Return Me.m_qb
         End Function
 
+        ''' <summary>
+        ''' Sampled biomass accummulation (x group)
+        ''' </summary>
         Public Function BA() As Single()
             Return Me.m_ba
         End Function
 
+        ''' <summary>
+        ''' Sampled biomass accummulation rate (x group)
+        ''' </summary>
         Public Function BaBi() As Single()
             Return Me.m_babi
         End Function
 
+        ''' <summary>
+        ''' Sampled EE (x group)
+        ''' </summary>
         Public Function EE() As Single()
             Return Me.m_ee
         End Function
 
+        ''' <summary>
+        ''' Sampled diets (pred x prey)
+        ''' </summary>
         Public Function DC() As Single(,)
             Return Me.m_dc
         End Function
 
+        ''' <summary>
+        ''' Sampled landings (fleet x group)
+        ''' </summary>
         Public Function Landing() As Single(,)
             Return Me.m_landing
         End Function
 
+        ''' <summary>
+        ''' Sampled discards (fleet x group)
+        ''' </summary>
         Public Function Discard() As Single(,)
             Return Me.m_discard
         End Function
@@ -186,6 +224,33 @@ Namespace Samples
         End Property
 
 #End Region ' Variable access 
+
+#Region " Summary "
+
+        Friend Sub CalculateStats()
+
+            Me.m_dtPerturbed.Clear()
+
+            For iGroup As Integer = 1 To Me.m_core.nGroups
+                For iFleet As Integer = 1 To Me.m_core.nFleets
+                    If Me.m_landing(iFleet, iGroup) <> cCore.NULL_VALUE Then Me.m_dtPerturbed(eVarNameFlags.Discards) = True
+                    If Me.m_discard(iFleet, iGroup) <> cCore.NULL_VALUE Then Me.m_dtPerturbed(eVarNameFlags.Discards) = True
+                Next
+                For iPred As Integer = 1 To Me.m_core.nLivingGroups
+                    If Me.m_dc(iPred, iGroup) <> cCore.NULL_VALUE Then Me.m_dtPerturbed(eVarNameFlags.DietComp) = True
+                Next
+                If (Me.B(iGroup) <> cCore.NULL_VALUE) Then Me.m_dtPerturbed(eVarNameFlags.Biomass) = True
+                If (Me.PB(iGroup) <> cCore.NULL_VALUE) Then Me.m_dtPerturbed(eVarNameFlags.PBInput) = True
+                If (Me.QB(iGroup) <> cCore.NULL_VALUE) Then Me.m_dtPerturbed(eVarNameFlags.QBInput) = True
+                If (Me.BA(iGroup) <> cCore.NULL_VALUE) Then Me.m_dtPerturbed(eVarNameFlags.BioAccumInput) = True
+                If (Me.BaBi(iGroup) <> cCore.NULL_VALUE) Then Me.m_dtPerturbed(eVarNameFlags.BioAccumRate) = True
+                If (Me.EE(iGroup) <> cCore.NULL_VALUE) Then Me.m_dtPerturbed(eVarNameFlags.EEInput) = True
+            Next
+            Me.m_bStatsCalculated = True
+
+        End Sub
+
+#End Region ' Summary
 
     End Class
 

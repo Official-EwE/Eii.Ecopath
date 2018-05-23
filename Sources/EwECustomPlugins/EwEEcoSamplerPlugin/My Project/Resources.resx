@@ -172,4 +172,7 @@ Do you wish to start the batch run?</value>
   <data name="PROMPT_IMPORT_MODEL" xml:space="preserve">
     <value>Select EwE model file to import samples from</value>
   </data>
+  <data name="HEADER_PERTURBED" xml:space="preserve">
+    <value>Perturbed</value>
+  </data>
 </root>

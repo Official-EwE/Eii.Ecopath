@@ -21,9 +21,12 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Text
 Imports EwECore.Samples
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -31,6 +34,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 #End Region ' Imports
 
 #Const ShowRatings = 0
+#Const ShowPerturbations = 0
 
 Public Class gridSamples
     Inherits EwEGrid
@@ -39,6 +43,9 @@ Public Class gridSamples
         Index
         Loaded
         NumInvalidEE
+#If ShowPerturbations Then
+        Perturbed
+#End If
 #If ShowRatings Then
         Rating
 #End If
@@ -61,6 +68,9 @@ Public Class gridSamples
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
         Me(0, eColumnTypes.Loaded) = New EwEColumnHeaderCell(My.Resources.HEADER_LOADED)
         Me(0, eColumnTypes.NumInvalidEE) = New EwEColumnHeaderCell(My.Resources.HEADER_NUM_INVALID_EE)
+#If ShowPerturbations Then
+        Me(0, eColumnTypes.Perturbed) = New EwEColumnHeaderCell(My.Resources.HEADER_PERTURBED)
+#End If
 #If ShowRatings Then
         Me(0, eColumnTypes.Rating) = New EwEColumnHeaderCell(My.Resources.HEADER_RATING)
 #End If
@@ -82,6 +92,7 @@ Public Class gridSamples
         Dim strLastSource As String = ""
         Dim bMixedSources As Boolean = False
         Dim strSource As String = ""
+        Dim fmt As New cVarnameTypeFormatter()
 
         For i As Integer = 1 To man.nSamples
             Dim iRow As Integer = Me.AddRow()
@@ -95,6 +106,14 @@ Public Class gridSamples
             cell.SuppressZero(0) = True
             Me(iRow, eColumnTypes.NumInvalidEE) = cell
 
+#If ShowRatings Then
+            Dim sb As New StringBuilder()
+            For Each vn As eVarNameFlags In s.PerturbedValues
+                If sb.Length > 0 Then sb.Append(" ")
+                sb.Append(fmt.GetDescriptor(vn, eDescriptorTypes.Symbol))
+            Next
+            Me(iRow, eColumnTypes.Perturbed) = New EwECell(sb.ToString, cStyleGuide.eStyleFlags.NotEditable)
+#End If
 #If ShowRatings Then
             Me(iRow, eColumnTypes.Rating) = New PropertyCell(Me.PropertyManager, s, eVarNameFlags.SampleRating)
 #End If
