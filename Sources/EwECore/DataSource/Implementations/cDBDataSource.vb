@@ -1831,13 +1831,28 @@ Namespace DataSources
         Friend Function RemoveStanza(ByVal iStanzaID As Integer) As Boolean _
                 Implements IEcopathDataSource.RemoveStanza
             Try
-                Me.m_db.Execute(String.Format("DELETE FROM EcopathStanzaTaxon WHERE (StanzaID={0})", iStanzaID))
-                Me.m_db.Execute(String.Format("DELETE FROM Stanza WHERE (StanzaID={0})", iStanzaID))
-                Return True
+                Dim bSuccess As Boolean = True
+
+                ' Cannot have orphaned taxa
+                Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT TaxonID FROM EcopathStanzaTaxon WHERE (StanzaID={0})", iStanzaID))
+                Dim ids As New List(Of Integer)
+
+                While reader.Read
+                    ids.Add(CInt(reader("TaxonID")))
+                End While
+                Me.m_db.ReleaseReader(reader)
+
+                ' Delete these taxa
+                For Each id As Integer In ids
+                    bSuccess = bSuccess And Me.RemoveTaxon(id)
+                Next
+
+                Return bSuccess And Me.m_db.Execute(String.Format("DELETE FROM Stanza WHERE (StanzaID={0})", iStanzaID))
             Catch ex As Exception
                 ' Kaboom
             End Try
             Return False
+
         End Function
 
 
@@ -8574,10 +8589,16 @@ Namespace DataSources
         Private Function RemoveEcospaceGroup(ByVal iEcospaceGroupID As Integer, ByVal iEcopathGroupID As Integer) As Boolean
             Dim bSucces As Boolean = True
             Try
-                Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-                Dim spaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-                Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
-                Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+                ' Cannot have orphaned taxa
+                Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT TaxonID FROM EcopathGroupTaxon WHERE (GroupID={0})", iEcopathGroupID))
+                Dim ids As New List(Of Integer)
+                While reader.Read
+                    ids.Add(CInt(reader("TaxonID")))
+                End While
+                Me.m_db.ReleaseReader(reader)
+                For Each id As Integer In ids
+                    bSucces = bSucces And Me.RemoveTaxon(id)
+                Next
 
                 ' Delete habitat assignments
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupHabitat WHERE GroupID={0}", iEcospaceGroupID))
