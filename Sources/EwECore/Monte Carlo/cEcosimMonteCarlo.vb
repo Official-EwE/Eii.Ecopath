@@ -383,7 +383,7 @@ Public Class cEcosimMonteCarlo
         For iGrp As Integer = 1 To m_core.nGroups
 
             Me.m_isVariableItem(iGrp, eMCParams.Biomass) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.Biomass)
-            Me.m_isVariableItem(iGrp, eMCParams.BA) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.BA) And (Me.m_epdata.BAInput(iGrp) <> 0)
+            Me.m_isVariableItem(iGrp, eMCParams.BA) = (Me.m_epdata.BAInput(iGrp) <> 0) ' Can vary BA on estimated biomasses!
             Me.m_isVariableItem(iGrp, eMCParams.BaBi) = (Me.m_epdata.BaBi(iGrp) <> 0)
             Me.m_isVariableItem(iGrp, eMCParams.PB) = (Not Me.m_ecopath.missing(iGrp, 2))
             Me.m_isVariableItem(iGrp, eMCParams.QB) = ((Not Me.m_ecopath.missing(iGrp, 3)) And Me.isStanzaGroupVariable(iGrp, eMCParams.QB)) And (Me.m_epdata.QBinput(iGrp) > 0)
@@ -1059,7 +1059,7 @@ Public Class cEcosimMonteCarlo
                     End If
 
                     If Me.IsVariable(igrp, eMCParams.BA) Then
-                        m_epdata.BA(igrp) = ChooseFeasibleBA(Me.m_epdata.B(igrp), ' Use of 'B' here is probably not a bug
+                        m_epdata.BA(igrp) = ChooseFeasibleBA(Pmean(eMCParams.Biomass, igrp), ' Must operate on original estimated biomass, not input (may be missing)
                                                              Me.Pmean(eMCParams.BA, igrp),
                                                              Me.CVpar(eMCParams.BA, igrp),
                                                              Me.ParLimit(0, eMCParams.BA, igrp),
