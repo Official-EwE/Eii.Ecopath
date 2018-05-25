@@ -506,7 +506,7 @@ Public Class cQuotaShares
                     Next
 
                     For iFleet As Integer = 1 To m_core.nFleets
-                        If m_core.EcopathFleetInputs(iFleet).Landings(iGrp) > 0 Then
+                        If m_core.EcopathFleetInputs(iFleet).Landings(iGrp) + m_core.EcopathFleetInputs(iFleet).Discards(iGrp) > 0 Then
                             Share = m_MSE.EcosimData.relQ(iFleet, iGrp) * RelQModifier(iFleet, iGrp) * m_MSE.EcosimData.FishRateGear(iFleet, TimeStep) * m_MSE.EcopathData.PropLanded(iFleet, iGrp) / TotalLandingsF
                             Me.AddQuotaShare(iGrp, iFleet, Share)
                         End If
