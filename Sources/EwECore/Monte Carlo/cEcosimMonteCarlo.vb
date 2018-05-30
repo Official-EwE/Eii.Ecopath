@@ -218,6 +218,12 @@ Public Class cEcosimMonteCarlo
     ''' <summary>
     ''' Flag (x group, eMCParam) stating if a given group value can be perturbed by Monte Carlo.
     ''' </summary>
+    ''' <remarks>
+    ''' The logic populating this array is a duplication of cMonteCarloManager.ToMCStatus. At the time of 
+    ''' writing (end of May 2018) the Monte Carlo Manager is more thorough. This duplication needs to be 
+    ''' resolved. Ideally, the better logic of cMonteCarloManager should be implemented in cEcosimMonteCarlo,
+    ''' and make cMonteCarlo read this information to populate the user interface classes.
+    ''' </remarks>
     Private m_isVariableItem(,) As Boolean
 
     Public Sub New(ByRef theCore As cCore)
@@ -382,11 +388,11 @@ Public Class cEcosimMonteCarlo
 
         For iGrp As Integer = 1 To m_core.nGroups
 
-            Me.m_isVariableItem(iGrp, eMCParams.Biomass) = (Not Me.m_ecopath.missing(iGrp, 1)) And Me.isStanzaGroupVariable(iGrp, eMCParams.Biomass)
+            Me.m_isVariableItem(iGrp, eMCParams.Biomass) = Not (Me.m_ecopath.missing(iGrp, 1) Or Me.isStanzaGroupVariable(iGrp, eMCParams.Biomass))
             Me.m_isVariableItem(iGrp, eMCParams.BA) = (Me.m_epdata.BAInput(iGrp) <> 0) ' Can vary BA on estimated biomasses!
             Me.m_isVariableItem(iGrp, eMCParams.BaBi) = (Me.m_epdata.BaBi(iGrp) <> 0)
-            Me.m_isVariableItem(iGrp, eMCParams.PB) = (Not Me.m_ecopath.missing(iGrp, 2))
-            Me.m_isVariableItem(iGrp, eMCParams.QB) = ((Not Me.m_ecopath.missing(iGrp, 3)) And Me.isStanzaGroupVariable(iGrp, eMCParams.QB)) And (Me.m_epdata.QBinput(iGrp) > 0)
+            Me.m_isVariableItem(iGrp, eMCParams.PB) = Not Me.m_ecopath.missing(iGrp, 2)
+            Me.m_isVariableItem(iGrp, eMCParams.QB) = Not (Me.m_ecopath.missing(iGrp, 3) Or Me.isStanzaGroupVariable(iGrp, eMCParams.QB))
             Me.m_isVariableItem(iGrp, eMCParams.EE) = (Not Me.m_ecopath.missing(iGrp, 4)) And (iGrp <= Me.m_epdata.NumLiving)
 
         Next
