@@ -160,10 +160,8 @@ Namespace Ecospace
                 For iCol As Integer = 1 To bm.InCol
                     regions.Cell(iRow, iCol) = 0
                     For Each l As cEcospaceLayer In ll
-                        ' Take into account that we may have MPA fraction of cells in the future. 
-                        ' Perhaps the largest fraction should be allocated? Now the last MPA wins
                         Dim iMPA As Single = CSng(l.Cell(iRow, iCol))
-                        If iMPA > 0 Then
+                        If iMPA <> 0 Then
                             regions.Cell(iRow, iCol) = l.Index
                         End If
                     Next l
