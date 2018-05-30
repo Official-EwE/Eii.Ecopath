@@ -4913,6 +4913,15 @@ Public Class frmEwE6
                 Case "AutosaveResults"
                     Me.m_autosavemanager.ApplySettingsAndEnsureDefaults()
 
+                Case "AutosaveHeaders"
+                    Me.Core.SaveWithFileHeader = My.Settings.AutosaveHeaders
+
+                Case "Author"
+                    Me.Core.DefaultAuthor = My.Settings.Author
+
+                Case "Contact"
+                    Me.Core.DefaultContact = My.Settings.Contact
+
             End Select
 
             Me.m_ssMain.UpdateModelPanes()

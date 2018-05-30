@@ -45,16 +45,25 @@ Namespace Controls
             Me.AllowDrop = True
         End Sub
 
+        Public Class EwEFileDropArgs
+            Public Sub New(afiles As String())
+                Me.Files = afiles
+            End Sub
+            Public Property Files As String()
+            Public Property Accept As Boolean = True
+        End Class
+
+        Public Event OnAcceptFiles(sender As Object, e As EwEFileDropArgs)
         Public Event OnFilesDropped(sender As Object, astrFiles As String())
 
-        <Browsable(True)> _
-        <Description("Maximum number of files that can be dropped simultaenously. Set this value to 0 if there are no restrictions.")> _
-        <Category("Drag and drop")> _
+        <Browsable(True)>
+        <Description("Maximum number of files that can be dropped simultaenously. Set this value to 0 if there are no restrictions.")>
+        <Category("Drag and drop")>
         Public Property MaxFiles As Integer = 0
 
-        <Browsable(True)> _
-        <Description("File extensions that can be dropped (semi-colon separated)")> _
-        <Category("Drag and drop")> _
+        <Browsable(True)>
+        <Description("File extensions that can be dropped (semi-colon separated)")>
+        <Category("Drag and drop")>
         Public Property FileExtensions As String = ""
 
         Protected Overrides Sub InitLayout()
@@ -108,6 +117,8 @@ Namespace Controls
 
         Private Function AcceptFiles(astrFiles As String()) As Boolean
 
+            Dim bAccept As Boolean = True
+
             If (astrFiles Is Nothing) Then Return False
             If (astrFiles.Length = 0) Then Return False
             If (Me.MaxFiles > 0) Then
@@ -125,7 +136,15 @@ Namespace Controls
                     Return False
                 End If
             Next
-            Return True
+
+            Try
+                Dim hmpf As New EwEFileDropArgs(astrFiles)
+                RaiseEvent OnAcceptFiles(Me, hmpf)
+                bAccept = hmpf.Accept
+            Catch ex As Exception
+
+            End Try
+            Return bAccept
 
         End Function
 

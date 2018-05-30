@@ -154,7 +154,6 @@
     <Compile Include="Database\cQueryBuilder.vb" />
     <Compile Include="Database\IModelImporter.vb" />
     <Compile Include="Interop\cRBridge.vb" />
-    <Compile Include="Interop\cExcelBridge.vb" />
     <Compile Include="Logging\cXMLLogWriter.vb" />
     <Compile Include="Net\cFlexibleEncodingStringWriter.vb" />
     <Compile Include="System\cXMLSettings.vb" />
