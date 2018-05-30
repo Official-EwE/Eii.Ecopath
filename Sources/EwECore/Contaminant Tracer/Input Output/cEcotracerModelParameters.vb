@@ -89,6 +89,7 @@ Public Class cEcotracerModelParameters
             m_values.Add(val.varName, val)
 
             'ConForceNumber
+            val = New cValue(New Integer, eVarNameFlags.ConForceNumber, eStatusFlags.Null, eValueTypes.Int)
             m_values.Add(val.varName, val)
 
             'Max number of time steps
