@@ -2,10 +2,11 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 #include <idp.iss>
 #define Compile64Bit 0
-#define Spinup 0
+#define Spinup 1
 #define SpatTemp 0
 #define MSPTools 0
 #define MPAdynamics 0
+#define BiomassEmitters 0
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
@@ -133,6 +134,9 @@ Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\
 #endif
 #if Spinup == 1
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\spinup
+#endif
+#if BiomassEmitters == 1
+Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\emissions
 #endif
 #if SpatTemp == 1
 Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
@@ -288,6 +292,9 @@ Name: "plugin\automation\spinup"; Description: "Ecospace spin-up"; Types: full
 #endif
 #if MSPTools == 1
 Name: "plugin\ui\msptools"; Description: "MSP tools"; Types: full
+#endif
+#if BiomassEmitters == 1
+Name: "plugin\automation\emissions"; Description: "Ecospace biomass emissions"; Types: full
 #endif
 
 [Tasks]
