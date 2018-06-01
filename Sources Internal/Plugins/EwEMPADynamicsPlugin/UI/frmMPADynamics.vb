@@ -82,6 +82,8 @@ Public Class frmMPADynamics
 
         Me.m_tsbnShowMonths.Image = SharedResources.CalendarHS
         Me.m_tsbnShowFleets.Image = SharedResources.fishing_gear
+        Me.m_tsbnExport.Image = SharedResources.ExportHS
+
         For i As Integer = 0 To Me.Core.nFleets
             If (i = 0) Then
                 Me.m_tscmbFleets.Items.Add(SharedResources.GENERIC_VALUE_ALLFLEETS)
@@ -127,10 +129,17 @@ Public Class frmMPADynamics
     End Sub
 
     Private Sub OnLoadCSV(sender As Object, e As EventArgs) Handles m_tsbnLoadCSV.Click
-        Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_SELECT_FILE, "", SharedResources.FILEFILTER_CSV)
+        Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_SELECT_FILE_LOAD, "", SharedResources.FILEFILTER_CSV)
         If (ofd.ShowDialog() = DialogResult.OK) Then
             Me.m_engine.LoadCSV(ofd.FileName)
             Me.UpdateGrid()
+        End If
+    End Sub
+
+    Private Sub OnExportFile(sender As Object, e As EventArgs) Handles m_tsbnExport.Click
+        Dim sfd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog(My.Resources.PROMPT_SELECT_FILE_SAVE, "", SharedResources.FILEFILTER_CSV)
+        If (sfd.ShowDialog() = DialogResult.OK) Then
+            Me.m_engine.SaveCSV(sfd.FileName)
         End If
     End Sub
 

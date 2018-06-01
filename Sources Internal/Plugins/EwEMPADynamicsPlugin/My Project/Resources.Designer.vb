@@ -99,11 +99,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Select MPA closed state file to load.
+        '''  Looks up a localized string similar to Select MPA dynamics file to load.
         '''</summary>
-        Friend ReadOnly Property PROMPT_SELECT_FILE() As String
+        Friend ReadOnly Property PROMPT_SELECT_FILE_LOAD() As String
             Get
-                Return ResourceManager.GetString("PROMPT_SELECT_FILE", resourceCulture)
+                Return ResourceManager.GetString("PROMPT_SELECT_FILE_LOAD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Select where to save the MPA dynamics file.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_SELECT_FILE_SAVE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SELECT_FILE_SAVE", resourceCulture)
             End Get
         End Property
         
@@ -135,11 +144,38 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to MPA Dynamics CSV file &apos;{0}&apos; failed to save. {1}.
+        '''</summary>
+        Friend ReadOnly Property STATUS_CONFIG_SAVE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_CONFIG_SAVE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MPA Dynamics CSV file saved to &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property STATUS_CONFIG_SAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("STATUS_CONFIG_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to MPA &apos;{1}&apos; changed at {0}. Temporal closure: {2}. Fleet closure: {3}.
         '''</summary>
         Friend ReadOnly Property STATUS_MPA_CHANGED() As String
             Get
                 Return ResourceManager.GetString("STATUS_MPA_CHANGED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to .
+        '''</summary>
+        Friend ReadOnly Property String1() As String
+            Get
+                Return ResourceManager.GetString("String1", resourceCulture)
             End Get
         End Property
         

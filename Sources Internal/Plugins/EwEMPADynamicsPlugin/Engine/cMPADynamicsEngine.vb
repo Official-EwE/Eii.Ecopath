@@ -88,7 +88,12 @@ Public Class cMPADynamicsEngine
     Private Shared sFORMATS As String() = New String() {"yyyy/MM", "yyyy-MM", "MM/yyyy", "MM-yyyy", "yyyy/M", "yyyy-M", "M/yyyy", "M-yyyy"}
     Private Shared sLOCALE As New CultureInfo("en-US")
 
-    ' Hack 'n slash
+    ''' <summary>
+    ''' Hack 'n slash
+    ''' </summary>
+    ''' <param name="strCSV"></param>
+    ''' <param name="bAppend"></param>
+    ''' <returns></returns>
     Public Function LoadCSV(strCSV As String, Optional bAppend As Boolean = False) As Boolean
 
         Dim bSucces As Boolean = True
@@ -153,6 +158,40 @@ Public Class cMPADynamicsEngine
             bSucces = False
         End Try
 
+        Return bSucces
+
+    End Function
+
+    Public Function SaveCSV(strFile As String) As Boolean
+
+        Dim bSucces As Boolean = True
+        Dim bTimestepMode As Boolean = (Me.m_core.EcosimFirstYear < 100)
+
+        Try
+            Using sw As New StreamWriter(strFile)
+                sw.Write(If(bTimestepMode, "Timestep", "Date"))
+                sw.Write(",mpa")
+                For i As Integer = 1 To cCore.N_MONTHS : sw.Write(",m{0}", i) : Next
+                For i As Integer = 1 To Me.m_core.nFleets : sw.Write(",fleet{0}", i) : Next
+                sw.WriteLine()
+
+                For Each state As cMPAState In Me.MPAStates(True)
+                    sw.Write(If(bTimestepMode, 1, Me.m_core.EcosimFirstYear))
+                    sw.Write("," & state.MPA)
+                    For i As Integer = 1 To cCore.N_MONTHS : sw.Write(",{0}", Me.ToString(state.IsClosed(i))) : Next
+                    For i As Integer = 1 To Me.m_core.nFleets : sw.Write(",{0}", Me.ToString(state.IsEnforced(i))) : Next
+                    sw.WriteLine()
+                Next
+
+                sw.Flush()
+                sw.Close()
+            End Using
+            SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_SAVE_SUCCESS, strFile), eMessageImportance.Information, hyperlink:=strFile)
+
+        Catch ex As Exception
+            SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strFile, ex.Message), eMessageImportance.Critical)
+            bSucces = False
+        End Try
         Return bSucces
 
     End Function
@@ -345,7 +384,13 @@ Public Class cMPADynamicsEngine
 
     End Function
 
-    Private Sub SendStatusMessage(strMessage As String, importance As eMessageImportance, Optional lDetails As ICollection(Of String) = Nothing)
+    Private Overloads Function ToString(ts As TriState) As String
+        If (ts = TriState.True) Then Return s_TRUE(0)
+        If (ts = TriState.False) Then Return s_FALSE(0)
+        Return ""
+    End Function
+
+    Private Sub SendStatusMessage(strMessage As String, importance As eMessageImportance, Optional lDetails As ICollection(Of String) = Nothing, Optional hyperlink As String = "")
         Dim msg As New cMessage(strMessage, eMessageType.DataImport, eCoreComponentType.External, importance)
         If (lDetails IsNot Nothing) Then
             For Each strDetail As String In lDetails
@@ -353,6 +398,7 @@ Public Class cMPADynamicsEngine
                 msg.Variables.Add(vs)
             Next
         End If
+        If (Not String.IsNullOrWhiteSpace(hyperlink)) Then msg.Hyperlink = hyperlink
         Me.m_core.Messages.SendMessage(msg)
     End Sub
 
