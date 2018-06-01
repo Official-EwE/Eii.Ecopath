@@ -262,9 +262,10 @@ Namespace Controls
                 For iRunTest As Integer = 0 To m_lRuns.Count - 1
 
                     run = Me.m_lRuns.Item(iRunTest)
-                    crv = run.Lines(iGroup - 1)
-
-                    Me.SetCurveAppearance(crv, True, Me.IsPaneCumulative = False)
+                    If (run.Lines.Count > iGroup) Then
+                        crv = run.Lines(iGroup - 1)
+                        Me.SetCurveAppearance(crv, True, Me.IsPaneCumulative = False)
+                    End If
 
                 Next iRunTest
 
