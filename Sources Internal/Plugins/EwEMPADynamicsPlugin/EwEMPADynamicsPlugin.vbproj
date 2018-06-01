@@ -91,7 +91,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EPPlus">
-      <HintPath>..\..\..\..\Personal\Sources\Safenet\DietCalculator\Includes\EPPlus.dll</HintPath>
+      <HintPath>..\..\..\Sources\ScientificInterfaceShared\Includes\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
