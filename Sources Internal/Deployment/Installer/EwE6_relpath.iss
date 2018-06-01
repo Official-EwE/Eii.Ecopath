@@ -3,18 +3,18 @@
 #include <idp.iss>
 #define Compile64Bit 0
 #define Spinup 1
-#define SpatTemp 0
+#define SpatTemp 1
 #define MSPTools 0
-#define MPAdynamics 0
-#define BiomassEmitters 0
+#define MPAdynamics 1
+#define BiomassEmitters 1
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6_preview"
+  #define MyAppVersion "6.6 preview"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6_preview 64-bit"
+  #define MyAppVersion "6.6 preview 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -87,6 +87,7 @@ Source: "{#DefRoot}{#DefSrc}\EwEPlugin.dll"; DestDir: "{app}"; Flags: ignorevers
 Source: "{#DefRoot}{#DefSrc}\EwECore.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\ZedGraph.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\WeifenLuo.WinFormsUI.Docking.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\EPPlus.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\SourceLibrary.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\SourceGrid2.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\ScientificInterfaceShared.dll"; DestDir: "{app}"; Flags: ignoreversion
