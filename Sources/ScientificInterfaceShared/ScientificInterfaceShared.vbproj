@@ -99,6 +99,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus">
+      <HintPath>Includes\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.GLEE, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f84f738e1fc245c, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.Interop.Excel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -1040,6 +1043,7 @@
     <None Include="ScientificInterfaceShared.snk" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Includes\EPPlus.dll" />
     <Content Include="Includes\Ionic.Zip.dll" />
     <Content Include="Includes\Microsoft.GLEE.dll" />
     <Content Include="Includes\Microsoft.Office.Interop.Excel.dll" />
