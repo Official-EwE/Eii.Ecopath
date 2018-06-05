@@ -45,7 +45,6 @@ Public Class dlgSensitivityOfSStoV
     Private m_iNumBlocks As Integer
     Private m_F2TSManager As cF2TSManager = Nothing
     Private m_SSbase As Single = 0.0
-    Private m_runType As eRunType = eRunType.Idle
     Private m_bRunning As Boolean = False
     Private m_bInUpdate As Boolean = False
 
@@ -228,7 +227,7 @@ Public Class dlgSensitivityOfSStoV
 
     Private Sub OnRunStarted(ByVal runType As eRunType, ByVal nSteps As Integer)
         ' Sanity check
-        Debug.Assert(runType = Me.m_runType)
+        Debug.Assert(runType = Me.RunType)
 
         'Console.WriteLine("Dlg: run started " & runType)
 
@@ -250,7 +249,7 @@ Public Class dlgSensitivityOfSStoV
         Dim runType As eRunType = results.RunType
 
         ' Sanity check
-        Debug.Assert(runType = Me.m_runType)
+        Debug.Assert(runType = Me.RunType)
 
         Dim iPred As Integer = results.iPred
         Dim iPrey As Integer = results.iPrey
@@ -284,7 +283,7 @@ Public Class dlgSensitivityOfSStoV
     Private Sub OnRunStopped(ByVal runType As eRunType)
 
         ' Sanity check
-        Debug.Assert(runType = Me.m_runType)
+        Debug.Assert(runType = Me.RunType)
 
         Me.m_bRunning = False
 
@@ -309,13 +308,6 @@ Public Class dlgSensitivityOfSStoV
 #Region " Internal implementation "
 
     Private Property RunType() As eRunType
-        Get
-            Return Me.m_runType
-        End Get
-        Set(ByVal value As eRunType)
-            Me.m_runType = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -331,15 +323,15 @@ Public Class dlgSensitivityOfSStoV
 
         Me.m_bInUpdate = True
 
-        ' Create some purdy working colours
         Dim lColors As List(Of Color) = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.m_iNumBlocks)
         lColors.Insert(0, Color.Black)
-
-        ' Set colors
         Me.m_legend.Colors = lColors
 
-        Me.m_ucVulBlocks.RefreshContent()
+        lColors = Me.m_uic.StyleGuide.GetEwE5ColorRamp(Me.m_iNumBlocks)
+        lColors.Reverse()
+        lColors.Insert(0, Color.Black)
         Me.m_ucVulBlocks.BlockColors = lColors.ToArray
+        Me.m_ucVulBlocks.RefreshContent()
 
         Me.m_nudNumBlocks.Value = Me.m_iNumBlocks
 
@@ -375,12 +367,12 @@ Public Class dlgSensitivityOfSStoV
             If (Me.m_F2TSManager.RunSensitivitySS2VByPredPrey(False, TriState.False) = False) Then
                 Return False
             End If
-            Me.m_runType = eRunType.SensitivitySS2VByPredPrey
+            Me.RunType = eRunType.SensitivitySS2VByPredPrey
         Else
             If (Me.m_F2TSManager.RunSensitivitySS2VByPredator(False, TriState.False) = False) Then
                 Return False
             End If
-            Me.m_runType = eRunType.SensitivitySS2VByPredator
+            Me.RunType = eRunType.SensitivitySS2VByPredator
         End If
         Me.m_F2TSManager.Disconnect()
 

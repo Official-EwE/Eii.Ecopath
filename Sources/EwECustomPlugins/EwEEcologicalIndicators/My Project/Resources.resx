@@ -172,7 +172,7 @@
     <value>Trophic level (TL) of the community</value>
   </data>
   <data name="IND_TLC_DESC" xml:space="preserve">
-    <value>Tropic level (TL) of the catch</value>
+    <value>Trophic level (TL) of the catch</value>
   </data>
   <data name="IND_TOTALB" xml:space="preserve">
     <value>Total B</value>

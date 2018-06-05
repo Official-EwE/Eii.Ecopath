@@ -135,6 +135,9 @@ Namespace Ecosim
             AddHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
             AddHandler Me.m_graph.GraphPane.AxisChangeEvent, AddressOf OnAxisChanged
 
+            Me.m_tsmiShowEffortAndMortalities.Checked = My.Settings.ShowEffortMortalityInRunSim
+            Me.m_scPlots.Panel2Collapsed = (Not My.Settings.ShowEffortMortalityInRunSim)
+
             Me.UpdateControls()
 
             ' Display Groups
@@ -253,7 +256,6 @@ Namespace Ecosim
         Private Sub OnShowMultipleRuns(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbnShowMultipleRuns.Click
 
-            Me.m_tsbnShowMultipleRuns.Checked = Not Me.m_tsbnShowMultipleRuns.Checked
             Me.m_zgp.ShowMultipleRuns = Me.m_tsbnShowMultipleRuns.Checked
 
             ' Multiple runs cannot show cumulative data (#992)
@@ -270,16 +272,17 @@ Namespace Ecosim
 
             If Me.m_bInUpdate Then Return
 
-            Me.m_tsmiShowAnnualOutput.Checked = Not Me.m_tsmiShowAnnualOutput.Checked
             Me.IsAnnualPlot = Me.m_tsmiShowAnnualOutput.Checked
         End Sub
 
-        Private Sub OnShowLegend(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiShowLegend.Click
+        Private Sub OnShowEffortAndMortalities(sender As Object, e As EventArgs) _
+            Handles m_tsmiShowEffortAndMortalities.Click
 
-            Me.m_tsmiShowLegend.Checked = Not Me.m_tsmiShowLegend.Checked
-            Me.m_zgp.IsLegendVisible = Me.m_tsmiShowLegend.Checked
-            Me.m_zgp.RescaleAndRedraw()
+            If (Me.m_bInUpdate) Then Return
+
+            Me.m_scPlots.Panel2Collapsed = Not Me.m_tsmiShowEffortAndMortalities.Checked
+            My.Settings.ShowEffortMortalityInRunSim = Me.m_tsmiShowEffortAndMortalities.Checked
+            My.Settings.Save()
 
         End Sub
 
