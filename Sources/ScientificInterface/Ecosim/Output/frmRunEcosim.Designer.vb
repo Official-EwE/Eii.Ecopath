@@ -60,13 +60,25 @@ Namespace Ecosim
             Me.m_tsbnSetTo0 = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnSetToValue = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnResetFs = New System.Windows.Forms.ToolStripButton()
-            Me.m_spContainer = New System.Windows.Forms.SplitContainer()
+            Me.m_scPlots = New System.Windows.Forms.SplitContainer()
             Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad()
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
             Me.m_tslblSSValue = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsblbSS = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tsddGraphOptions = New System.Windows.Forms.ToolStripDropDownButton()
+            Me.m_tsmiAutoscale = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiCustomScaleLabel = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiMax = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tstbMax = New System.Windows.Forms.ToolStripTextBox()
+            Me.m_tsmiMin = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tstbMin = New System.Windows.Forms.ToolStripTextBox()
+            Me.m_tsmiShowEffortAndMortalities = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiShowAnnualOutput = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiSort = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tslChangeAmount = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tstbChangeAmount = New System.Windows.Forms.ToolStripTextBox()
             Me.m_tsdrpdnbtnContent = New System.Windows.Forms.ToolStripDropDownButton()
             Me.m_tsmiBiomassAbs = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiBiomassRel = New System.Windows.Forms.ToolStripMenuItem()
@@ -77,22 +89,9 @@ Namespace Ecosim
             Me.m_tsmiValueAbs = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiValueRel = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsbnShowMultipleRuns = New System.Windows.Forms.ToolStripButton()
-            Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbnExplore = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsddGraphOptions = New System.Windows.Forms.ToolStripDropDownButton()
-            Me.m_tsmiAutoscale = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_tsmiCustomScaleLabel = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_tsmiMax = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_tstbMax = New System.Windows.Forms.ToolStripTextBox()
-            Me.m_tsmiMin = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_tstbMin = New System.Windows.Forms.ToolStripTextBox()
-            Me.m_tsmiShowAnnualOutput = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_tsmiShowLegend = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_tsmiSort = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_tslChangeAmount = New System.Windows.Forms.ToolStripMenuItem()
-            Me.m_tstbChangeAmount = New System.Windows.Forms.ToolStripTextBox()
             Me.m_tsbnSaveOutput = New System.Windows.Forms.ToolStripButton()
-            Me.m_scGraph = New System.Windows.Forms.SplitContainer()
+            Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_tlpControls = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
             Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -106,15 +105,15 @@ Namespace Ecosim
             sep5 = New System.Windows.Forms.ToolStripSeparator()
             sep3 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsMain.SuspendLayout()
-            CType(Me.m_spContainer, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_spContainer.Panel1.SuspendLayout()
-            Me.m_spContainer.Panel2.SuspendLayout()
-            Me.m_spContainer.SuspendLayout()
+            CType(Me.m_scPlots, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_scPlots.Panel1.SuspendLayout()
+            Me.m_scPlots.Panel2.SuspendLayout()
+            Me.m_scPlots.SuspendLayout()
             Me.m_ts.SuspendLayout()
-            CType(Me.m_scGraph, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_scGraph.Panel1.SuspendLayout()
-            Me.m_scGraph.Panel2.SuspendLayout()
-            Me.m_scGraph.SuspendLayout()
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_scMain.Panel1.SuspendLayout()
+            Me.m_scMain.Panel2.SuspendLayout()
+            Me.m_scMain.SuspendLayout()
             Me.m_tlpControls.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -202,43 +201,43 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tsbnResetFs, "m_tsbnResetFs")
             Me.m_tsbnResetFs.Name = "m_tsbnResetFs"
             '
-            'm_spContainer
+            'm_scPlots
             '
-            resources.ApplyResources(Me.m_spContainer, "m_spContainer")
-            Me.m_spContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
-            Me.m_spContainer.Name = "m_spContainer"
+            resources.ApplyResources(Me.m_scPlots, "m_scPlots")
+            Me.m_scPlots.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
+            Me.m_scPlots.Name = "m_scPlots"
             '
-            'm_spContainer.Panel1
+            'm_scPlots.Panel1
             '
-            Me.m_spContainer.Panel1.Controls.Add(Me.m_graph)
+            Me.m_scPlots.Panel1.Controls.Add(Me.m_graph)
             '
-            'm_spContainer.Panel2
+            'm_scPlots.Panel2
             '
-            Me.m_spContainer.Panel2.Controls.Add(Me.m_sketchPad)
-            Me.m_spContainer.Panel2.Controls.Add(Me.m_tsMain)
+            Me.m_scPlots.Panel2.Controls.Add(Me.m_sketchPad)
+            Me.m_scPlots.Panel2.Controls.Add(Me.m_tsMain)
             '
             'm_graph
             '
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0.0R
-            Me.m_graph.ScrollMaxX = 0.0R
-            Me.m_graph.ScrollMaxY = 0.0R
-            Me.m_graph.ScrollMaxY2 = 0.0R
-            Me.m_graph.ScrollMinX = 0.0R
-            Me.m_graph.ScrollMinY = 0.0R
-            Me.m_graph.ScrollMinY2 = 0.0R
+            Me.m_graph.ScrollGrace = 0R
+            Me.m_graph.ScrollMaxX = 0R
+            Me.m_graph.ScrollMaxY = 0R
+            Me.m_graph.ScrollMaxY2 = 0R
+            Me.m_graph.ScrollMinX = 0R
+            Me.m_graph.ScrollMinY = 0R
+            Me.m_graph.ScrollMinY2 = 0R
             '
             'm_sketchPad
             '
             Me.m_sketchPad.AllowDragXMark = False
+            resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
             Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
             Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_sketchPad.CanEditPoints = True
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Hand
             Me.m_sketchPad.DisplayAxis = True
-            resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.Editable = True
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
@@ -254,7 +253,7 @@ Namespace Ecosim
             Me.m_sketchPad.XAxisMaxValue = -9999
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
-            Me.m_sketchPad.YAxisMaxValue = 0.0!
+            Me.m_sketchPad.YAxisMaxValue = 0!
             Me.m_sketchPad.YAxisMinValue = 1.0!
             Me.m_sketchPad.YMarkLabel = ""
             Me.m_sketchPad.YMarkValue = -9999.0!
@@ -262,7 +261,7 @@ Namespace Ecosim
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tslblSSValue, Me.m_tsblbSS, sep1, Me.m_tsdrpdnbtnContent, Me.m_tsbnShowMultipleRuns, sep2, Me.ToolStripSeparator3, Me.m_tsbnExplore, Me.m_tsddGraphOptions, sep3, Me.m_tsbnSaveOutput})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tslblSSValue, Me.m_tsblbSS, Me.m_tsddGraphOptions, sep1, Me.m_tsdrpdnbtnContent, Me.m_tsbnShowMultipleRuns, sep2, Me.m_tsbnExplore, sep3, Me.m_tsbnSaveOutput})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -284,6 +283,83 @@ Namespace Ecosim
             Me.m_tsblbSS.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             Me.m_tsblbSS.Name = "m_tsblbSS"
             resources.ApplyResources(Me.m_tsblbSS, "m_tsblbSS")
+            '
+            'm_tsddGraphOptions
+            '
+            Me.m_tsddGraphOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsddGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiAutoscale, Me.m_tsmiCustomScaleLabel, Me.m_tsmiMax, Me.m_tstbMax, Me.m_tsmiMin, Me.m_tstbMin, sep4, Me.m_tsmiShowEffortAndMortalities, Me.m_tsmiShowAnnualOutput, sep5, Me.m_tsmiSort, Me.m_tslChangeAmount, Me.m_tstbChangeAmount})
+            resources.ApplyResources(Me.m_tsddGraphOptions, "m_tsddGraphOptions")
+            Me.m_tsddGraphOptions.Name = "m_tsddGraphOptions"
+            '
+            'm_tsmiAutoscale
+            '
+            Me.m_tsmiAutoscale.Checked = True
+            Me.m_tsmiAutoscale.CheckOnClick = True
+            Me.m_tsmiAutoscale.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_tsmiAutoscale.Name = "m_tsmiAutoscale"
+            resources.ApplyResources(Me.m_tsmiAutoscale, "m_tsmiAutoscale")
+            '
+            'm_tsmiCustomScaleLabel
+            '
+            Me.m_tsmiCustomScaleLabel.CheckOnClick = True
+            Me.m_tsmiCustomScaleLabel.Name = "m_tsmiCustomScaleLabel"
+            resources.ApplyResources(Me.m_tsmiCustomScaleLabel, "m_tsmiCustomScaleLabel")
+            '
+            'm_tsmiMax
+            '
+            Me.m_tsmiMax.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
+            Me.m_tsmiMax.Name = "m_tsmiMax"
+            resources.ApplyResources(Me.m_tsmiMax, "m_tsmiMax")
+            '
+            'm_tstbMax
+            '
+            Me.m_tstbMax.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_tstbMax.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
+            resources.ApplyResources(Me.m_tstbMax, "m_tstbMax")
+            Me.m_tstbMax.Name = "m_tstbMax"
+            '
+            'm_tsmiMin
+            '
+            Me.m_tsmiMin.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
+            Me.m_tsmiMin.Name = "m_tsmiMin"
+            resources.ApplyResources(Me.m_tsmiMin, "m_tsmiMin")
+            '
+            'm_tstbMin
+            '
+            Me.m_tstbMin.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_tstbMin.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
+            resources.ApplyResources(Me.m_tstbMin, "m_tstbMin")
+            Me.m_tstbMin.Name = "m_tstbMin"
+            '
+            'm_tsmiShowEffortAndMortalities
+            '
+            Me.m_tsmiShowEffortAndMortalities.CheckOnClick = True
+            Me.m_tsmiShowEffortAndMortalities.Name = "m_tsmiShowEffortAndMortalities"
+            resources.ApplyResources(Me.m_tsmiShowEffortAndMortalities, "m_tsmiShowEffortAndMortalities")
+            '
+            'm_tsmiShowAnnualOutput
+            '
+            Me.m_tsmiShowAnnualOutput.CheckOnClick = True
+            Me.m_tsmiShowAnnualOutput.Name = "m_tsmiShowAnnualOutput"
+            resources.ApplyResources(Me.m_tsmiShowAnnualOutput, "m_tsmiShowAnnualOutput")
+            '
+            'm_tsmiSort
+            '
+            Me.m_tsmiSort.Name = "m_tsmiSort"
+            resources.ApplyResources(Me.m_tsmiSort, "m_tsmiSort")
+            '
+            'm_tslChangeAmount
+            '
+            Me.m_tslChangeAmount.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
+            Me.m_tslChangeAmount.Name = "m_tslChangeAmount"
+            resources.ApplyResources(Me.m_tslChangeAmount, "m_tslChangeAmount")
+            '
+            'm_tstbChangeAmount
+            '
+            Me.m_tstbChangeAmount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_tstbChangeAmount.Margin = New System.Windows.Forms.Padding(110, -21, 1, 1)
+            resources.ApplyResources(Me.m_tstbChangeAmount, "m_tstbChangeAmount")
+            Me.m_tstbChangeAmount.Name = "m_tstbChangeAmount"
             '
             'm_tsdrpdnbtnContent
             '
@@ -342,90 +418,10 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tsbnShowMultipleRuns, "m_tsbnShowMultipleRuns")
             Me.m_tsbnShowMultipleRuns.Name = "m_tsbnShowMultipleRuns"
             '
-            'ToolStripSeparator3
-            '
-            Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-            resources.ApplyResources(Me.ToolStripSeparator3, "ToolStripSeparator3")
-            '
             'm_tsbnExplore
             '
             resources.ApplyResources(Me.m_tsbnExplore, "m_tsbnExplore")
             Me.m_tsbnExplore.Name = "m_tsbnExplore"
-            '
-            'm_tsddGraphOptions
-            '
-            Me.m_tsddGraphOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsddGraphOptions.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiAutoscale, Me.m_tsmiCustomScaleLabel, Me.m_tsmiMax, Me.m_tstbMax, Me.m_tsmiMin, Me.m_tstbMin, sep4, Me.m_tsmiShowAnnualOutput, Me.m_tsmiShowLegend, sep5, Me.m_tsmiSort, Me.m_tslChangeAmount, Me.m_tstbChangeAmount})
-            resources.ApplyResources(Me.m_tsddGraphOptions, "m_tsddGraphOptions")
-            Me.m_tsddGraphOptions.Name = "m_tsddGraphOptions"
-            '
-            'm_tsmiAutoscale
-            '
-            Me.m_tsmiAutoscale.Checked = True
-            Me.m_tsmiAutoscale.CheckOnClick = True
-            Me.m_tsmiAutoscale.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_tsmiAutoscale.Name = "m_tsmiAutoscale"
-            resources.ApplyResources(Me.m_tsmiAutoscale, "m_tsmiAutoscale")
-            '
-            'm_tsmiCustomScaleLabel
-            '
-            Me.m_tsmiCustomScaleLabel.CheckOnClick = True
-            Me.m_tsmiCustomScaleLabel.Name = "m_tsmiCustomScaleLabel"
-            resources.ApplyResources(Me.m_tsmiCustomScaleLabel, "m_tsmiCustomScaleLabel")
-            '
-            'm_tsmiMax
-            '
-            Me.m_tsmiMax.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
-            Me.m_tsmiMax.Name = "m_tsmiMax"
-            resources.ApplyResources(Me.m_tsmiMax, "m_tsmiMax")
-            '
-            'm_tstbMax
-            '
-            Me.m_tstbMax.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_tstbMax.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
-            resources.ApplyResources(Me.m_tstbMax, "m_tstbMax")
-            Me.m_tstbMax.Name = "m_tstbMax"
-            '
-            'm_tsmiMin
-            '
-            Me.m_tsmiMin.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
-            Me.m_tsmiMin.Name = "m_tsmiMin"
-            resources.ApplyResources(Me.m_tsmiMin, "m_tsmiMin")
-            '
-            'm_tstbMin
-            '
-            Me.m_tstbMin.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_tstbMin.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
-            resources.ApplyResources(Me.m_tstbMin, "m_tstbMin")
-            Me.m_tstbMin.Name = "m_tstbMin"
-            '
-            'm_tsmiShowAnnualOutput
-            '
-            Me.m_tsmiShowAnnualOutput.Name = "m_tsmiShowAnnualOutput"
-            resources.ApplyResources(Me.m_tsmiShowAnnualOutput, "m_tsmiShowAnnualOutput")
-            '
-            'm_tsmiShowLegend
-            '
-            Me.m_tsmiShowLegend.Name = "m_tsmiShowLegend"
-            resources.ApplyResources(Me.m_tsmiShowLegend, "m_tsmiShowLegend")
-            '
-            'm_tsmiSort
-            '
-            Me.m_tsmiSort.Name = "m_tsmiSort"
-            resources.ApplyResources(Me.m_tsmiSort, "m_tsmiSort")
-            '
-            'm_tslChangeAmount
-            '
-            Me.m_tslChangeAmount.Margin = New System.Windows.Forms.Padding(15, 0, 0, 0)
-            Me.m_tslChangeAmount.Name = "m_tslChangeAmount"
-            resources.ApplyResources(Me.m_tslChangeAmount, "m_tslChangeAmount")
-            '
-            'm_tstbChangeAmount
-            '
-            Me.m_tstbChangeAmount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_tstbChangeAmount.Margin = New System.Windows.Forms.Padding(110, -21, 1, 1)
-            resources.ApplyResources(Me.m_tstbChangeAmount, "m_tstbChangeAmount")
-            Me.m_tstbChangeAmount.Name = "m_tstbChangeAmount"
             '
             'm_tsbnSaveOutput
             '
@@ -434,19 +430,19 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tsbnSaveOutput, "m_tsbnSaveOutput")
             Me.m_tsbnSaveOutput.Name = "m_tsbnSaveOutput"
             '
-            'm_scGraph
+            'm_scMain
             '
-            resources.ApplyResources(Me.m_scGraph, "m_scGraph")
-            Me.m_scGraph.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
-            Me.m_scGraph.Name = "m_scGraph"
+            resources.ApplyResources(Me.m_scMain, "m_scMain")
+            Me.m_scMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
+            Me.m_scMain.Name = "m_scMain"
             '
-            'm_scGraph.Panel1
+            'm_scMain.Panel1
             '
-            Me.m_scGraph.Panel1.Controls.Add(Me.m_spContainer)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_scPlots)
             '
-            'm_scGraph.Panel2
+            'm_scMain.Panel2
             '
-            Me.m_scGraph.Panel2.Controls.Add(Me.m_tlpControls)
+            Me.m_scMain.Panel2.Controls.Add(Me.m_tlpControls)
             '
             'm_tlpControls
             '
@@ -511,23 +507,23 @@ Namespace Ecosim
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnStop
-            Me.Controls.Add(Me.m_scGraph)
+            Me.Controls.Add(Me.m_scMain)
             Me.Controls.Add(Me.m_ts)
             Me.Name = "frmRunEcosim"
             Me.TabText = ""
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
-            Me.m_spContainer.Panel1.ResumeLayout(False)
-            Me.m_spContainer.Panel2.ResumeLayout(False)
-            Me.m_spContainer.Panel2.PerformLayout()
-            CType(Me.m_spContainer, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_spContainer.ResumeLayout(False)
+            Me.m_scPlots.Panel1.ResumeLayout(False)
+            Me.m_scPlots.Panel2.ResumeLayout(False)
+            Me.m_scPlots.Panel2.PerformLayout()
+            CType(Me.m_scPlots, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_scPlots.ResumeLayout(False)
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
-            Me.m_scGraph.Panel1.ResumeLayout(False)
-            Me.m_scGraph.Panel2.ResumeLayout(False)
-            CType(Me.m_scGraph, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_scGraph.ResumeLayout(False)
+            Me.m_scMain.Panel1.ResumeLayout(False)
+            Me.m_scMain.Panel2.ResumeLayout(False)
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_scMain.ResumeLayout(False)
             Me.m_tlpControls.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
@@ -540,7 +536,7 @@ Namespace Ecosim
         Private WithEvents m_tsbnResetFs As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnSetTo0 As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnSetToValue As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_spContainer As System.Windows.Forms.SplitContainer
+        Private WithEvents m_scPlots As System.Windows.Forms.SplitContainer
         Private WithEvents m_ts As cEwEToolstrip
         Private WithEvents m_tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tslblSSValue As System.Windows.Forms.ToolStripLabel
@@ -553,12 +549,10 @@ Namespace Ecosim
         Private WithEvents m_tsmiMin As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tstbMin As System.Windows.Forms.ToolStripTextBox
         Private WithEvents m_tsmiShowAnnualOutput As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents m_tsmiShowLegend As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
         Private WithEvents m_lbRuns As System.Windows.Forms.ListBox
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
-        Private WithEvents m_scGraph As System.Windows.Forms.SplitContainer
-        Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_hdrGroups As cEwEHeaderLabel
         Private WithEvents m_hdrRuns As cEwEHeaderLabel
         Private WithEvents m_tsdrpdnbtnContent As System.Windows.Forms.ToolStripDropDownButton
@@ -581,7 +575,7 @@ Namespace Ecosim
         Private WithEvents m_tsbnSaveOutput As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tlpControls As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_btnStop As System.Windows.Forms.Button
-
+        Private WithEvents m_tsmiShowEffortAndMortalities As ToolStripMenuItem
     End Class
 End Namespace
 
