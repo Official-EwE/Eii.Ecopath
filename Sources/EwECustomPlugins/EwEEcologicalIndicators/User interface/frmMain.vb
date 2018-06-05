@@ -270,6 +270,8 @@ Public Class frmMain
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub UpdateControls()
 
+        If (Me.UIContext Is Nothing) Then Return
+
         Dim csm As cCoreStateMonitor = Me.UIContext.Core.StateMonitor
         Dim bCanSave As Boolean = False
         Dim bHasTaxa As Boolean = (Me.UIContext.Core.nTaxon > 0)
