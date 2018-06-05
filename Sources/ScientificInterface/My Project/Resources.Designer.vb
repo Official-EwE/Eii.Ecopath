@@ -370,16 +370,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property ecopath_256x256() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ecopath_256x256", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Failed to add stanza configuration &apos;{0}&apos;.
         '''</summary>
         Public ReadOnly Property ECOPATH_ADDSTANZA_ERROR() As String
