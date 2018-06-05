@@ -22,10 +22,7 @@
 Option Strict On
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Text
-Imports EwECore
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -44,6 +41,7 @@ Friend Class frmSplash
         MyBase.OnLoad(e)
 
         Me.m_img = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current(), Me.ClientRectangle.Size)
+        Me.TransparencyKey = Me.BackColor
 
         Me.CenterToScreen()
         Me.TopMost = True
