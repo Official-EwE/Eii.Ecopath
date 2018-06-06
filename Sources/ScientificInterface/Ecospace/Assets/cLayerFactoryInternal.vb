@@ -161,8 +161,8 @@ Namespace Ecospace.Basemap.Layers
             Dim strGroup As String = ""
             Select Case varName
 
-                Case eVarNameFlags.LayerMPASeed, _
-                    eVarNameFlags.LayerMPASeedBest, _
+                Case eVarNameFlags.LayerMPASeed,
+                    eVarNameFlags.LayerMPASeedBest,
                     eVarNameFlags.LayerMPASeedCurrent
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_ECOSEED
 
