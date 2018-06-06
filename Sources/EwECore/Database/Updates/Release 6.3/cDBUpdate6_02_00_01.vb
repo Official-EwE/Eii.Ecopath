@@ -263,17 +263,19 @@ Friend Class cDBUpdate6_02_00_01
         ' Read fleet data
         For i = 0 To lFleetID.Count - 1
             reader = db.GetReader("SELECT * FROM EcospaceScenarioFleetMap WHERE ScenarioID=" & iScenarioID & " AND FleetID=" & lFleetID(i))
-            While reader.Read
+            Try
+                While reader.Read
+                    iRow = CInt(reader("InRow"))
+                    iCol = CInt(reader("InCol"))
+                    If (iRow <= InRow) And (iCol <= InCol) Then
+                        dataPort(i)(iRow, iCol) = CInt(If(CInt(reader("PortID")) > 0, 1, 0))
+                        dataSailingCost(i)(iRow, iCol) = CSng(db.ReadSafe(reader, "SailCost", 0.0!))
+                    End If
 
-                iRow = CInt(reader("InRow"))
-                iCol = CInt(reader("InCol"))
+                End While
+            Catch ex As Exception
 
-                If (iRow <= InRow) And (iCol <= InCol) Then
-                    dataPort(i)(iRow, iCol) = CInt(if(CInt(reader("PortID")) > 0, 1, 0))
-                    dataSailingCost(i)(iRow, iCol) = CSng(db.ReadSafe(reader, "SailCost", 0.0!))
-                End If
-
-            End While
+            End Try
             db.ReleaseReader(reader)
             reader = Nothing
         Next
