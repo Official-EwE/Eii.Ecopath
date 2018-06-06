@@ -3370,9 +3370,10 @@ Namespace Database
                         If (sValue = 0.0!) Then sValue = 2.0!
                         drow("RelVulBad") = sValue
 
-                        sValue = CSng(Me.FixValue(reader, "EatEffBad", 0.0!))
-                        If (sValue = 0.0!) Then sValue = 0.5!
-                        drow("EatEffBad") = sValue
+                        ' JS 070618: Discontinued EatEffBad
+                        'sValue = CSng(Me.FixValue(reader, "EatEffBad", 0.0!))
+                        'If (sValue = 0.0!) Then sValue = 0.5!
+                        'drow("EatEffBad") = sValue
 
                         ' JS 070116: Discontinued. Field 'RiskSens' is imported in EwE5, but never used
                         ' drow("RiskSens") = Me.FixValue(reader, "RiskSens")
