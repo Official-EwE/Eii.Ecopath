@@ -22,7 +22,10 @@
 Option Strict On
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Text
+Imports EwECore
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -79,9 +82,7 @@ Friend Class frmSplash
         g.DrawImage(Me.m_img, Me.ClientRectangle)
 
         'Using p As New GraphicsPath()
-
         '    Dim strBitApp As String = If(cSystemUtils.Is64BitProcess, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
-
         '    p.AddString(cStringUtils.Localize(My.Resources.ABOUT_VERSION, cCore.Version(True), strBitApp), FontFamily.GenericSansSerif, FontStyle.Regular, g.DpiY * 12 / 72, New Point(0, 0), New StringFormat())
         '    g.DrawPath(Pens.Black, p)
         '    g.FillPath(Brushes.White, p)
