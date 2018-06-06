@@ -28,13 +28,13 @@ Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.60.0.07:</para>
+''' <para>Database update 6.60.0.09:</para>
 ''' <para>
-''' Validated MPA assignments against the wrong fleet IDs.
+''' Discontinued Ecospace feeding rate in bad habitat.
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Friend Class cDBUpdate6_60_00_07
+Friend Class cDBUpdate6_60_00_09
     Inherits cDBUpdate
 
     Private m_strAction As String = ""
@@ -44,7 +44,7 @@ Friend Class cDBUpdate6_60_00_07
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.600007!
+            Return 6.600009!
         End Get
     End Property
 
@@ -53,48 +53,14 @@ Friend Class cDBUpdate6_60_00_07
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Validated Ecospace MPAs"
+            Return "Removed inactive Ecospace feeding rate in bad habitat"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        ' ToDo: globalize this method
-
-        ' Abort if no possible issues
-        If (CInt(db.Execute("SELECT COUNT(*) FROM EcospaceScenarioMPAFishery")) = 0) Then Return True
-
-        ' Find all scenario IDs where the MPA fishery refers to fleet IDs that differ between Ecopath and Ecospace
-        Dim rd As IDataReader = db.GetReader("SELECT DISTINCT(ScenarioID) FROM EcospaceScenarioMPAFishery AS M WHERE EXISTS (SELECT FleetID FROM EcospaceScenarioFleet WHERE ScenarioID = M.ScenarioID AND M.FleetID = FleetID AND M.FleetID <> EcopathFleetID)")
-        Dim lID As New List(Of Integer)
-        While rd.Read
-            lID.Add(CInt(rd("ScenarioID")))
-        End While
-        db.ReleaseReader(rd)
-
-        ' Abort if no possible issues
-        If (lID.Count = 0) Then Return True
-
-        Dim strScenarios As String = ""
-        lID.Sort()
-        For i As Integer = 0 To lID.Count - 1
-            Dim strScenario As String = "'" & CStr(db.GetValue("SELECT ScenarioName FROM EcospaceScenario WHERE ScenarioID=" & lID(i))) & "'"
-            If Not String.IsNullOrWhiteSpace(strScenario) Then
-                strScenarios = strScenario & ", "
-            Else
-                strScenarios = strScenario
-            End If
-        Next
-
-        Me.m_strAction = cStringUtils.Localize(My.Resources.CoreMessages.UPDATE_600007_ERROR, strScenarios)
-        Return True
+        Return db.Execute("ALTER TABLE EcospaceScenarioGroup DROP COLUMN EatEffBad")
 
     End Function
-
-    Public Overrides ReadOnly Property UserAction As String
-        Get
-            Return Me.m_strAction
-        End Get
-    End Property
 
 End Class

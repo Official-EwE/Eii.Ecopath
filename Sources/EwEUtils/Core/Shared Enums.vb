@@ -455,8 +455,6 @@ Namespace Core
         RelMoveBad
         ''' <summary>Relative vulnerability in bad habitat</summary>
         RelVulBad
-        ''' <summary>Relative feeding in bad habitat</summary>
-        EatEffBad
         ''' <summary>To document</summary>
         IsAdvected
         ''' <summary>To document</summary>
