@@ -1050,15 +1050,15 @@ Namespace Ecospace
         Private Function AddBaseLayers(ByVal varName As eVarNameFlags, bEditable As Boolean) As cDisplayLayerRaster()
 
             Dim factory As New cLayerFactoryInternal()
-            Dim strGroup As String = ""
-            Dim strCommand As String = factory.GetLayerEditCommand(varName)
+            Dim strGroup As String = factory.GetLayerGroup(varName)
             Dim alayers As cDisplayLayerRaster() = factory.GetLayers(Me.UIContext, varName)
             Dim l As cDisplayLayer = Nothing
+            Dim strCommand As String = ""
 
-            If (bEditable) Then strCommand = factory.GetLayerGroup(varName)
+            If (bEditable) Then strCommand = factory.GetLayerEditCommand(varName)
 
             ' Add group, and collapse and hide habitat layers
-            Me.m_ucLayers.AddGroup(strGroup, strCommand, varName <> eVarNameFlags.LayerHabitat)
+            Me.m_ucLayers.AddGroup(strGroup, strCommand, True, False)
 
             ' Add individual layers
             For iLayer As Integer = 0 To alayers.Length - 1
