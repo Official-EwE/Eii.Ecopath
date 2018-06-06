@@ -2940,6 +2940,20 @@ Public Class cEcoSpace
 
             Me.m_TimeSeriesManager.InitForRun()
 
+            ' Me.m_Data.bENA = True
+            If Me.m_Data.bENA Then
+                Me.m_Data.dctENACells = New Dictionary(Of String, cENACellData)
+                For irow As Integer = 1 To Me.m_Data.InRow
+                    For icol As Integer = 1 To Me.m_Data.InCol
+                        If Me.m_Data.Depth(irow, icol) > 0 Then
+                            Dim ENACell As New cENACellData(irow, icol)
+                            ENACell.Init(Me.m_Data, Me.m_EPdata)
+                            Me.m_Data.dctENACells.Add(ENACell.Key, ENACell)
+                        End If
+                    Next
+                Next
+            End If
+
             'Advection 
             'Clear out the time step Advection and Upwelling vectors
             'It the Advection model been run these may be populated 

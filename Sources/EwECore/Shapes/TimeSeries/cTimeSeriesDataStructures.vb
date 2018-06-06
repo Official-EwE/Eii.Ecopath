@@ -229,7 +229,7 @@ Public Class cTimeSeriesDataStructures
 
 
     Public Function isTimeStepValid(iModelTimeStep As Integer) As Boolean
-
+        ' System.Console.WriteLine(iModelTimeStep.ToString)
         If Me.DataSetInterval = eTSDataSetInterval.Annual Then
             If (iModelTimeStep / cCore.N_MONTHS) <= Me.nYears Then Return True
         ElseIf Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
