@@ -73,9 +73,9 @@ Friend Class cDBUpdate6_01_01_010
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return Me.CreateGenericTaxonTable(db) And _
-               Me.CreateTaxonStanzaAssignmentTable(db) And _
-               Me.CopyTaxonData(db) And _
+        Return Me.CreateGenericTaxonTable(db) And
+               Me.CreateTaxonStanzaAssignmentTable(db) And
+               Me.CopyTaxonData(db) And
                Me.CleanupEcopathGroupTaxon(db)
 
     End Function
@@ -125,15 +125,19 @@ Friend Class cDBUpdate6_01_01_010
         Dim bSucces As Boolean = True
 
         ' Precaution
-        db.Execute("DELETE FROM EcopathGroupTaxon WHERE (EcopathGroupID<1)")
         db.Execute("ALTER TABLE EcopathGroupTaxon ADD CONSTRAINT FkTaxon FOREIGN KEY (TaxonID) REFERENCES EcopathTaxon(TaxonID)")
 
         ' Thrash obsolete columns
-        For Each strColumn As String In astrColumns
-            db.Execute("ALTER TABLE EcopathGroupTaxon DROP COLUMN " & strColumn)
-        Next
-        db.Execute("ALTER TABLE EcopathGroupTaxon ADD COLUMN PropCatch SINGLE")
-        Return bSucces
+        Try
+            db.Execute("DELETE FROM EcopathGroupTaxon WHERE (EcopathGroupID<1)")
+            For Each strColumn As String In astrColumns
+                db.Execute("ALTER TABLE EcopathGroupTaxon DROP COLUMN " & strColumn)
+            Next
+        Catch ex As Exception
+            ' Ignore this
+        End Try
+
+        Return db.Execute("ALTER TABLE EcopathGroupTaxon ADD COLUMN PropCatch SINGLE")
 
     End Function
 
