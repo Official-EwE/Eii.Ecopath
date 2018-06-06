@@ -912,7 +912,7 @@ Namespace Ecosim
 
                     Me.setEffortFromPlugin(QYear, itime, iyr)
                     'Set FishTime() (fishing mort at timestep)
-                    Me.setFishTime(itime, iyr)
+                    Me.setFishTime(itime, iyr, QYear)
 
                     If Me.m_search.SearchMode = eSearchModes.MSE Then
                         'MSE Quota regulations
@@ -1253,7 +1253,7 @@ Namespace Ecosim
         '''  If in a FP search use FishYear() to set FishRateNo(ngroups,ntime)  and FishTime(ngroups). 
         '''  MSE sets FishRateNo(ngroups,ntime) in <see cref="cMSE.DoRegulations">DoRegulations()</see>
         ''' </remarks>
-        Private Sub setFishTime(ByVal iTime As Integer, ByVal iYear As Integer)
+        Private Sub setFishTime(ByVal iTime As Integer, ByVal iYear As Integer, QYear() As Single)
 
             If m_search.SearchMode = eSearchModes.FishingPolicy Then
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1270,6 +1270,8 @@ Namespace Ecosim
 
             Else
 
+
+
                 'Get the correct forcing data timestep for this model time step
                 Dim iForcing As Integer = Me.m_RefData.toForcingTimeStep(iTime, iYear)
                 'is this group timestep forced
@@ -1283,6 +1285,17 @@ Namespace Ecosim
 
                     'Is this group forced in some way
                     isForced = (Me.m_RefData.isTimeStepValid(iForcing)) And ((Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0) Or Me.m_Data.FisForced(iGrp))
+
+                    'If (Not Me.m_RefData.isTimeStepValid(iTime)) And Me.m_Data.FisForced(iGrp) Then
+                    '    ' 
+                    '    'boo uaaa
+                    '    Me.m_Data.FisForced(iGrp) = False
+                    '    isForced = False
+                    '    Me.SetFtimeFromGear(BB, iTime, QYear, False)
+                    '    Me.m_Data.FisForced(iGrp) = True
+
+                    'End If
+
 
                     If isForced Then
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
