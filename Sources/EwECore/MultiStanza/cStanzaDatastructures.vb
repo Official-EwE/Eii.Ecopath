@@ -187,8 +187,6 @@ Public Class cStanzaDatastructures
         'variables by nGroups
         ReDim SpeciesCode(nGroups, 2) '0: Ecopath group no for this stanza, 1: Ecopath no for leading B stanza, 2: Ecopath no for leading QB stanza
 
-        ReDim WmatWinf(Nsplit)
-
     End Sub
 
     Public Sub Clear()
@@ -218,7 +216,6 @@ Public Class cStanzaDatastructures
         Me.SplitNo = Nothing ' (Nsplit, MaxAgeSplit)
         Me.SplitWage = Nothing ' (Nsplit, MaxAgeSplit)
         Me.HatchCode = Nothing ' (Nsplit)
-        Me.WmatWinf = Nothing ' (Nsplit)
         Me.EggsStanza = Nothing ' (Nsplit)
         Me.FixedFecundity = Nothing ' (Nsplit)
         Me.BaseEggsStanza = Nothing ' (Nsplit)
