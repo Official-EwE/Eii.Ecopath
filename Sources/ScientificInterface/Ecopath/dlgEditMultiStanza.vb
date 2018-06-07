@@ -130,7 +130,7 @@ Namespace Ecopath
 
         End Sub
 
-#Region "Event handlers "
+#Region " Event handlers "
 
         Private Sub OnFormatFFItem(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbFF.Format
             If (TypeOf e.ListItem Is cForcingFunction) Then
