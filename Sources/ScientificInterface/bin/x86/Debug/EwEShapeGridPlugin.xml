@@ -1,0 +1,299 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+EwEShapeGridPlugin
+</name>
+</assembly>
+<members>
+<member name="T:EwEShapeGridPlugin.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.DESC_EGGPROD">
+<summary>
+  Looks up a localized string similar to Display of all egg produciton functions in a grid format.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.DESC_FISHING_EFFORT">
+<summary>
+  Looks up a localized string similar to Display of all fishing effort functions in a grid format.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.DESC_FISHMORT">
+<summary>
+  Looks up a localized string similar to Display of all fishing mortality functions in a grid format.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.DESC_FORCING">
+<summary>
+  Looks up a localized string similar to Display of all forcing functions in a grid format.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.DESC_HABCAP">
+<summary>
+  Looks up a localized string similar to Display of all functional response functions in a grid format.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.DESC_MED_LANDINGS">
+<summary>
+  Looks up a localized string similar to Display of all price elasticity functions in a grid format.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.DESC_MED_PREDPREY">
+<summary>
+  Looks up a localized string similar to Display of all mediation functions in a grid format.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.DESC_TIMESERIES">
+<summary>
+  Looks up a localized string similar to Display of all loaded time series in a grid format.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.GRID_EGGPROD">
+<summary>
+  Looks up a localized string similar to Egg production functions grid.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.GRID_FISHING_EFFORT">
+<summary>
+  Looks up a localized string similar to Fishing effort functions grid.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.GRID_FISHMORT">
+<summary>
+  Looks up a localized string similar to Fishing mortality functions grid.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.GRID_FNRESPONSES">
+<summary>
+  Looks up a localized string similar to Functional responses grid.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.GRID_FORCING">
+<summary>
+  Looks up a localized string similar to Forcing functions grid.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.GRID_MED_LANDINGS">
+<summary>
+  Looks up a localized string similar to Price elasticity functions grid.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.GRID_MED_PREDPREY">
+<summary>
+  Looks up a localized string similar to Mediation functions grid.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.GRID_TIMESERIES">
+<summary>
+  Looks up a localized string similar to Time series grid.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.HEADER_INTERVAL">
+<summary>
+  Looks up a localized string similar to Interval.
+</summary>
+</member>
+<member name="P:EwEShapeGridPlugin.My.Resources.Resources.HEADER_TARGET_SECOND">
+<summary>
+  Looks up a localized string similar to 2nd target.
+</summary>
+</member>
+<member name="T:EwEShapeGridPlugin.frmShapes">
+ <summary>
+ Form to implement shape grids.
+ </summary>
+</member>
+<member name="T:EwEShapeGridPlugin.gridFunctionalResponses">
+ ---------------------------------------------------------------------------
+ <summary>
+ Grid for showing mediation shapes that interact on habitat capacity.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEShapeGridPlugin.gridFunctionalResponses.eRowType">
+ <summary>Rows in the grid</summary>
+</member>
+<member name="T:EwEShapeGridPlugin.cVisualModelThumbnail">
+ ---------------------------------------------------------------------------
+ <summary>
+ <see cref="T:SourceGrid2.VisualModels.Common">visual model</see> to show a
+ <see cref="T:EwECore.cShapeData">shape</see> as a thumbnail.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEShapeGridPlugin.gridEggProduction">
+ ---------------------------------------------------------------------------
+ <summary>
+ Grid for showing Egg Production shapes.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEShapeGridPlugin.gridFishingEffort">
+ ---------------------------------------------------------------------------
+ <summary>
+ Grid for showing fishing effort shapes.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEShapeGridPlugin.gridFishingMortality">
+ ---------------------------------------------------------------------------
+ <summary>
+ Grid for showing fishing mortality shapes.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEShapeGridPlugin.gridForcing">
+ ---------------------------------------------------------------------------
+ <summary>
+ Grid for showing regular Forcing Functions.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEShapeGridPlugin.gridForcingBase">
+ ---------------------------------------------------------------------------
+ <summary>
+ Base grid class for showing <see cref="T:EwECore.cForcingFunction">forcing function</see>-derived
+ shapes.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEShapeGridPlugin.gridForcingBase.eRowType">
+ <summary>Rows in the grid</summary>
+</member>
+<member name="T:EwEShapeGridPlugin.gridLandingsMediation">
+ ---------------------------------------------------------------------------
+ <summary>
+ Grid for showing mediation shapes that interact on landings.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEShapeGridPlugin.gridMediation">
+ ---------------------------------------------------------------------------
+ <summary>
+ Base class grid for showing <see cref="T:EwECore.cMediationBaseFunction">mediation</see>-derived
+ functions.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEShapeGridPlugin.gridPredPreyMediation">
+ ---------------------------------------------------------------------------
+ <summary>
+ Grid for showing mediation shapes that interact on predator/prey pairs.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEShapeGridPlugin.gridShapeBase">
+ ---------------------------------------------------------------------------
+ <summary>
+ Foundation class for showing <see cref="T:EwECore.cShapeData"/> in a grid.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="M:EwEShapeGridPlugin.gridShapeBase.Label(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Return a formatted X-axis label for a data point.
+ </summary>
+ <param name="iPoint">The zero-based point index to return the label for.</param>
+ <returns>A formatted X-axis label for a data point.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEShapeGridPlugin.gridTimeSeries">
+ ---------------------------------------------------------------------------
+ <summary>
+ Grid displaying <see cref="T:EwECore.cTimeSeries"/>.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEShapeGridPlugin.gridTimeSeries.eRowType">
+ <summary>Rows in the grid</summary>
+</member>
+<member name="F:EwEShapeGridPlugin.gridTimeSeries.m_handler">
+ <summary>Time series UI display handler thingy</summary>
+</member>
+<member name="M:EwEShapeGridPlugin.cShapeGridPlugin.Initialize(System.Object)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEPlugin.IPlugin.Initialize(System.Object)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEShapeGridPlugin.cShapeGridPlugin.UIContext(System.Object)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEPlugin.IUIContextPlugin.UIContext(System.Object)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEShapeGridPlugin.cShapeGridPlugin.Dispose">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEPlugin.IDisposedPlugin.Dispose"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEShapeGridPlugin.cShapeGridPlugin.ControlImage">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.IGUIPlugin.ControlImage"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEShapeGridPlugin.cShapeGridPlugin.EnabledState">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.IGUIPlugin.EnabledState"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEShapeGridPlugin.cShapeGridPlugin.OnControlClick(System.Object,System.EventArgs,System.Windows.Forms.Form@)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEPlugin.IGUIPlugin.OnControlClick(System.Object,System.EventArgs,System.Windows.Forms.Form@)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEShapeGridPlugin.cShapeGridPlugin.Author">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.IPlugin.Author"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEShapeGridPlugin.cShapeGridPlugin.Contact">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.IPlugin.Contact"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEShapeGridPlugin.cShapeGridPlugin.Description">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.IPlugin.Description"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEShapeGridPlugin.cShapeGridPlugin.Name">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.IPlugin.Name"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEShapeGridPlugin.cShapeGridPlugin.ControlText">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.IGUIPlugin.ControlText"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEShapeGridPlugin.cShapeGridPlugin.ControlTooltipText">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.IGUIPlugin.ControlTooltipText"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEShapeGridPlugin.cShapeGridPlugin.NavigationTreeItemLocation">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEShapeGridPlugin.cShapeGridPlugin.HasForm">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEPlugin.IPlugin.Initialize(System.Object)"/>
+ -----------------------------------------------------------------------
+</member>
+</members>
+</doc>

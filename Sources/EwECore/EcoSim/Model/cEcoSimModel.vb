@@ -68,6 +68,18 @@ Namespace Ecosim
     ''' </summary>
     Public Class cEcoSimModel
 
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'ToDo Forced F Time Series changed
+        'jb 20-Feb-2018 something looks wrong with the Landings and Value plots 
+        '   when an f time series is applied and the run time is extented.
+        '   Values plots for the extention but not landings?? This may be OK...
+        '   Intuitively I would have thought either both or neither
+
+
+        'xxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+
 
         'ToDo's Discards 1-Nov-2016 Check that discards to detritus are accounted for correctly when driving discard mortality rates
         'ToDo's Discards 1-Nov-2016 Are the discards survivals being account for when there is no landing and all discards survive. See PopulateResults()
@@ -657,11 +669,16 @@ Namespace Ecosim
             'value of 1.0 so that F for the gear (F=qE=C/B) is 1.0xq where q is relative catchability
             'this avoids measuring effort in some unnecessary data units
 
-            For i = 1 To m_Data.nGear
+            For i = 1 To Me.m_Data.nGear
                 For j = 1 To nGroups
                     'total catch rate 
                     'Includes discards that survive
                     m_Data.relQ(i, j) = (m_EPData.Landing(i, j) + m_EPData.Discard(i, j)) / m_Data.StartBiomass(j)
+
+                    'For it As Integer = 1 To Me.m_Data.NTimes
+                    '    m_Data.relQt(i, j, it) = m_Data.relQ(i, j)
+                    'Next
+
                 Next
             Next
 
@@ -905,6 +922,8 @@ Namespace Ecosim
                     'set QMult() multiplier (density dependent catchability) as a function of the current biomass for this timestep
                     Me.setDenDepCatchMult(BB)
 
+                    Me.m_Data.setRelQToT(itime)
+
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimBeginTimeStep(BB, m_Data, itime)
 
                     Me.AccumulateDataInfo(ipct, itime, iyf, BB, m_Data.loss)
@@ -929,7 +948,7 @@ Namespace Ecosim
                             Me.m_MSE.RegulateEffort(BB, Qmult, QYear, itime, ipct)
                         End If
                         'set the F using the Predicted and Regulated (if MSE is running) effort
-                        SetFtimeFromGear(BB, itime, QYear, True)
+                        SetFtimeFromGear(itime, QYear, True)
 
                         FindCurrentProfit(BB, itime)
                         PredictCapacityChange()
@@ -1283,8 +1302,11 @@ Namespace Ecosim
                 'Qmult(group) density dependent catchability at the current biomass set in setDenDepCatchMult()
                 For iGrp As Integer = 1 To nvar
 
+                    ''Is this group forced in some way
+                    'isForced = (Me.m_RefData.isTimeStepValid(iForcing)) And ((Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0) Or Me.m_Data.FisForced(iGrp))
+
                     'Is this group forced in some way
-                    isForced = (Me.m_RefData.isTimeStepValid(iForcing)) And ((Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0) Or Me.m_Data.FisForced(iGrp))
+                    isForced = (Me.m_RefData.isTimeStepValid(iForcing)) And ((Me.m_RefData.PoolForceCatch(iGrp, iForcing) > 0) Or Me.m_RefData.ForcedFs(iGrp, iTime) >= 0)
 
                     'If (Not Me.m_RefData.isTimeStepValid(iTime)) And Me.m_Data.FisForced(iGrp) Then
                     '    ' 
@@ -1304,9 +1326,11 @@ Namespace Ecosim
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                         'YES Forced don't included Density Dependant Catchability on any type of forced F
-                        If Me.m_Data.FisForced(iGrp) Then
+                        ' If Me.m_Data.FisForced(iGrp) Then
+                        If Me.m_RefData.ForcedFs(iGrp, iTime) >= 0 Then
                             'Forced F
-                            m_Data.FishTime(iGrp) = m_Data.FishRateNo(iGrp, iTime)
+                            m_Data.FishTime(iGrp) = Me.m_RefData.ForcedFs(iGrp, iTime)
+                            m_Data.FishRateNo(iGrp, iTime) = Me.m_RefData.ForcedFs(iGrp, iTime)
                         End If
 
                         'If Forced Catches are loaded for this time step overwrite Forced F's
@@ -1332,6 +1356,8 @@ Namespace Ecosim
                         'NOT Forced
                         'Include density dependant catchability
                         'FishRateNo() is fishing mortality at the current effort by group,time
+
+                        'Debug.Assert(iGrp <> 17 And iTime < 601)
                         m_Data.FishTime(iGrp) = m_Data.FishRateNo(iGrp, iTime) * Qmult(iGrp)
                     End If
 
@@ -1399,7 +1425,7 @@ Namespace Ecosim
             Next igrp
 
             If bForced Then
-                Me.SetFtimeFromGear(m_Data.StartBiomass, iModelTimeStep, QYear, False)
+                Me.SetFtimeFromGear(iModelTimeStep, QYear, False)
                 'Debugging check that FishMGear and relQ are still in sync
                 'Me.debugTestRelQFishMGear()
             End If
@@ -1426,7 +1452,7 @@ Namespace Ecosim
                     Next
 
                     'And update F from Effort
-                    Me.SetFtimeFromGear(BB, iTime, QYear, Me.m_Data.PredictSimEffort)
+                    Me.SetFtimeFromGear(iTime, QYear, Me.m_Data.PredictSimEffort)
 
                 End If
 
@@ -1785,7 +1811,7 @@ Namespace Ecosim
                             'Fishing Mortality "F" computed from base catch rate "q"
                             Dim FfromQ0 As Single = Me.m_Data.relQ(iFlt, iGrp) * (Me.m_Data.PropLandedTime(iFlt, iGrp) + Me.m_Data.Propdiscardtime(iFlt, iGrp))
                             Dim dif As Double = Math.Round(FfromQ0 - Me.m_Data.FishMGear(iFlt, iGrp), 3)
-                            Debug.Assert(dif = 0.0, "relQ and FishMGear are not equal. Something is wrong!")
+                            'Debug.Assert(dif = 0.0, "relQ and FishMGear are not equal. Something is wrong!")
                         End If
                     Next iFlt
 
@@ -2093,8 +2119,8 @@ Namespace Ecosim
                 calcFunctionalResponse(iTime)
 
                 For igrp = 1 To m_Results.nGroups
-                    'output biomass is relative to its initial state  
-                    'StartBiomass() is the input to EcoSim which is the output from EcoPath
+                    'output biomass is relative to the Ecopath baseline biomass
+                    'StartBiomass() is set at initialization to Ecopath baseline values
                     m_Results.Biomass(igrp) = BB(igrp) / m_Data.StartBiomass(igrp)
 
                     startCatch = m_Data.StartBiomass(igrp) * m_Data.Fish1(igrp)
@@ -2152,59 +2178,82 @@ Namespace Ecosim
                     Dim TotCatchScalar As Single
                     Dim TotCatch As Single
 
-                    For iflt = 1 To m_Data.nGear
-                        If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
+                    'Debug.Assert(iTime < 601)
 
-                            'FishTime() and FishMGear() only contain mortality. Discards that survived are not included.
-                            PropFleet = m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp) / SumEf
+                    If Me.m_RefData.ForcedFs(igrp, iTime) < 0 Then
+                        For iflt = 1 To m_Data.nGear
+                            If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
 
-                            'multiplier to scale F [fishing mort rate] up to Q [total catch rate]
-                            TotCatchScalar = 1 / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp) + 1.0E-20F)
+                                'FishTime() and FishMGear() only contain mortality. Discards that survived are not included.
+                                PropFleet = m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp) / SumEf
 
-                            CatchMort = BB(igrp) * m_Data.FishTime(igrp) * PropFleet
-                            TotCatch = CatchMort * TotCatchScalar
+                                'multiplier to scale F [fishing mort rate] to Catch [total catch rate]
+                                TotCatchScalar = 1 / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp) + 1.0E-20F)
 
-                            'proportion of total catch that was landed
-                            Me.m_Data.ResultsLandings(igrp, iflt) = TotCatch * Me.m_Data.PropLandedTime(iflt, igrp)
+                                CatchMort = BB(igrp) * m_Data.FishTime(igrp) * PropFleet
+                                TotCatch = CatchMort * TotCatchScalar
 
-                            'Proportion of the catch mortality that is discards
-                            Me.m_Data.ResultsDiscardsMort(igrp, iflt) = CatchMort * Me.m_Data.Propdiscardtime(iflt, igrp) / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp) + 1.0E-20F)
+                                'proportion of total catch that was landed
+                                Me.m_Data.ResultsLandings(igrp, iflt) = TotCatch * Me.m_Data.PropLandedTime(iflt, igrp)
 
-                            'Proportion of the total catch that survived = [total catch] - [total catch mortality] 
-                            If Me.m_Data.FishTime(igrp) > 0 Or Me.m_Data.FisForced(igrp) Then
-                                Me.m_Data.ResultsDiscardsSurvived(igrp, iflt) = TotCatch - (Me.m_Data.ResultsLandings(igrp, iflt) + Me.m_Data.ResultsDiscardsMort(igrp, iflt))
-                            Else
-                                'F = 0 all catch was discarded and survived
-                                'Ok in this case calculate discards that survived from the base values
-                                'this only works if the f has not been forced
-                                Me.m_Data.ResultsDiscardsSurvived(igrp, iflt) = m_Data.relQ(iflt, igrp) * m_Data.FishRateGear(iflt, iTime) * BB(igrp) * (1 - Me.m_Data.PropDiscardMortTime(iflt, igrp))
-                            End If
+                                'Proportion of the catch mortality that is discards
+                                Me.m_Data.ResultsDiscardsMort(igrp, iflt) = CatchMort * Me.m_Data.Propdiscardtime(iflt, igrp) / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp) + 1.0E-20F)
 
-                            Me.m_Data.ResultsTimeLandingsGroupGear(igrp, iflt, iTime) = Me.m_Data.ResultsLandings(igrp, iflt)
-                            Me.m_Data.ResultsTimeDiscardsSurvivedGroupGear(igrp, iflt, iTime) = Me.m_Data.ResultsDiscardsSurvived(igrp, iflt)
-                            Me.m_Data.ResultsTimeDiscardsMortGroupGear(igrp, iflt, iTime) = Me.m_Data.ResultsDiscardsMort(igrp, iflt)
-                            ' This is rocket science
-                            Me.m_Data.ResultsTimeDiscardsGroupGear(igrp, iflt, iTime) = Me.m_Data.ResultsDiscardsMort(igrp, iflt) + Me.m_Data.ResultsDiscardsSurvived(igrp, iflt)
+                                'Proportion of the total catch that survived = [total catch] - [total catch mortality] 
+                                If Me.m_Data.FishTime(igrp) > 0 Or Me.m_Data.FisForced(igrp) Then
+                                    Me.m_Data.ResultsDiscardsSurvived(igrp, iflt) = TotCatch - (Me.m_Data.ResultsLandings(igrp, iflt) + Me.m_Data.ResultsDiscardsMort(igrp, iflt))
+                                Else
+                                    'F = 0 all catch was discarded and survived
+                                    'Ok in this case calculate discards that survived from the base values
+                                    'this only works if the f has not been forced
+                                    Me.m_Data.ResultsDiscardsSurvived(igrp, iflt) = m_Data.relQ(iflt, igrp) * m_Data.FishRateGear(iflt, iTime) * BB(igrp) * (1 - Me.m_Data.PropDiscardMortTime(iflt, igrp))
+                                End If
 
-                            'sum catch across all the groups into this fleet
-                            'Does not contain the discards that survived
-                            m_Data.ResultsSumCatchByGear(iflt, iTime) += CatchMort
+                                Me.m_Data.ResultsTimeLandingsGroupGear(igrp, iflt, iTime) = Me.m_Data.ResultsLandings(igrp, iflt)
+                                Me.m_Data.ResultsTimeDiscardsSurvivedGroupGear(igrp, iflt, iTime) = Me.m_Data.ResultsDiscardsSurvived(igrp, iflt)
+                                Me.m_Data.ResultsTimeDiscardsMortGroupGear(igrp, iflt, iTime) = Me.m_Data.ResultsDiscardsMort(igrp, iflt)
+                                ' This is rocket science
+                                Me.m_Data.ResultsTimeDiscardsGroupGear(igrp, iflt, iTime) = Me.m_Data.ResultsDiscardsMort(igrp, iflt) + Me.m_Data.ResultsDiscardsSurvived(igrp, iflt)
 
-                            'By group gear
-                            m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = CatchMort
-                            m_Data.ResultsSumFMortByGroupGear(igrp, iflt, iTime) = CatchMort / BB(igrp)
+                                'sum catch across all the groups into this fleet
+                                'Does not contain the discards that survived
+                                m_Data.ResultsSumCatchByGear(iflt, iTime) += CatchMort
 
-                            'sum all fleets into zero index
-                            m_Data.ResultsSumCatchByGear(0, iTime) += m_Data.ResultsSumCatchByGear(iflt, iTime)
-                            m_Data.ResultsSumFMortByGroupGear(igrp, 0, iTime) += m_Data.ResultsSumFMortByGroupGear(igrp, iflt, iTime)
-                            m_Data.ResultsSumCatchByGroupGear(igrp, 0, iTime) += m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime)
+                                'By group gear
+                                m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime) = CatchMort
+                                m_Data.ResultsSumFMortByGroupGear(igrp, iflt, iTime) = CatchMort / BB(igrp)
 
-                            'Results for this time step by group gear
-                            m_Results.BCatch(igrp, iflt) = CatchMort
-                            m_Results.Landings(igrp, iflt) = Me.m_Data.ResultsLandings(igrp, iflt)
+                                'sum all fleets into zero index
+                                m_Data.ResultsSumCatchByGear(0, iTime) += m_Data.ResultsSumCatchByGear(iflt, iTime)
+                                m_Data.ResultsSumFMortByGroupGear(igrp, 0, iTime) += m_Data.ResultsSumFMortByGroupGear(igrp, iflt, iTime)
+                                m_Data.ResultsSumCatchByGroupGear(igrp, 0, iTime) += m_Data.ResultsSumCatchByGroupGear(igrp, iflt, iTime)
 
-                        End If ' If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
-                    Next iflt
+                                'Results for this time step by group, gear
+                                m_Results.BCatch(igrp, iflt) = CatchMort
+                                m_Results.Landings(igrp, iflt) = Me.m_Data.ResultsLandings(igrp, iflt)
+
+                            End If ' If m_EPData.Landing(iflt, igrp) + m_EPData.Discard(iflt, igrp) > 0 Then
+                        Next iflt
+
+                    Else
+                        ' Dim fleetProp As Single
+                        Dim CatchByFleet As Single
+
+                        CatchByFleet = BB(igrp) * m_Data.FishTime(igrp)
+
+                        Me.m_Data.ResultsLandings(igrp, 0) = CatchByFleet ' * Me.m_Data.PropLandedTime(0, igrp)
+
+                        m_Results.BCatch(igrp, 0) = CatchByFleet
+                        m_Results.Landings(igrp, 0) = Me.m_Data.ResultsLandings(igrp, 0)
+
+                        m_Data.ResultsSumCatchByGroupGear(igrp, 0, iTime) = CatchByFleet
+                        m_Data.ResultsSumFMortByGroupGear(igrp, 0, iTime) = CatchByFleet / BB(igrp)
+
+                        Me.m_Data.ResultsTimeLandingsGroupGear(igrp, 0, iTime) = Me.m_Data.ResultsLandings(igrp, 0)
+
+
+
+                    End If
 
                     'Else
                     '    'FishTime(igrp) <= 0
@@ -4135,7 +4184,7 @@ Namespace Ecosim
                 Else    'for detriuts
                     m_Data.Fish1(i) = 0
                     m_Data.FishRateMax(i) = 1
-                    m_Data.Emig(i) = if(m_EPData.Emig(i) > 0 And m_EPData.Emigration(i) = 0, m_EPData.Emig(i), m_EPData.Emigration(i) / m_Data.StartBiomass(i))
+                    m_Data.Emig(i) = If(m_EPData.Emig(i) > 0 And m_EPData.Emigration(i) = 0, m_EPData.Emig(i), m_EPData.Emigration(i) / m_Data.StartBiomass(i))
                     'jb Don't overwrite Immigration with Imported Detritus
                     ' m_EPData.Immig(i) = m_EPData.DtImp(i)
                 End If
@@ -4308,6 +4357,7 @@ Namespace Ecosim
             Next
 
         End Sub
+
 
 
         Friend Sub InitAssessment()
@@ -4627,7 +4677,7 @@ Namespace Ecosim
             Me.setDenDepCatchMult(m_Data.StartBiomass)
 
             For t = 1 To m_Data.NTimes
-                SetFtimeFromGear(m_Data.StartBiomass, t, QYear, False)
+                SetFtimeFromGear(t, QYear, True)
             Next
 
         End Sub
@@ -4656,7 +4706,24 @@ Namespace Ecosim
         ''' <remarks>
         ''' FishTime() is the total fishing mortality used by Ecosim in Deritt
         ''' </remarks>
-        Public Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean)
+        <Obsolete("Replaced by SetFtimeFromGear(t, q(), PredEffort) still in place to support legacy code.")>
+        Friend Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean)
+
+            Me.SetFtimeFromGear(t, QYear, PredEffort)
+
+        End Sub
+
+
+
+        ''' <summary>
+        ''' Populates FishTime(ngroups) and FishRateNo(group,time) with fishing mortality rates for a timestep from the current Biomass, Effort
+        ''' </summary>
+        ''' <param name="t">Timestep.</param>
+        ''' <param name="PredEffort">Boolean flag True if effort being predicted, False otherwise.</param>
+        ''' <remarks>
+        ''' FishTime() is the total fishing mortality used by Ecosim in Deritt
+        ''' </remarks>
+        Friend Sub SetFtimeFromGear(ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean)
             Dim i As Integer, ig As Integer, Ft As Single
 
             'ToDo FishMGear() Aug 2015 Bug Fix
@@ -4669,9 +4736,13 @@ Namespace Ecosim
 
             'Check SimDetritus to make sure it uses discards correctly
 
+            Me.m_Data.setRelQToT(t)
+
             'fishing mortality at the current effort
             For i = 1 To m_Data.nGroups
-                If (m_Data.FisForced(i) = False Or PredEffort) Then
+                ' Debug.Assert(i <> 17)
+                If ((Me.m_RefData.ForcedFs(i, t) < 0) And PredEffort) Then
+                    'If (m_Data.FisForced(i) = False Or PredEffort) Then
 
                     Ft = 0
                     For ig = 1 To m_Data.nGear
@@ -4679,6 +4750,7 @@ Namespace Ecosim
                                     Me.ToString & ".SetFtimeFromGear() PropLanded + PropDiscarded should not be greater than 1!")
                         'jb 27-June-2014  Propdiscardtime(fleet,group) does not include fish that survived discarding
                         'Debug.Assert(m_Data.relQ(ig, i) = 0)
+                        ' Ft = Ft + QYear(ig) * m_Data.relQt(ig, i, t) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
                         Ft = Ft + QYear(ig) * m_Data.relQ(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
                         'Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
                     Next
@@ -5451,6 +5523,44 @@ Namespace Ecosim
             Return -1
 
         End Function
+
+        Public Sub setDefaultCatchabilities(iFlt As Integer, iGrp As Integer)
+
+            Dim q As Single
+            If (Me.m_EPData.Landing(iFlt, iGrp) + Me.m_EPData.Discard(iFlt, iGrp)) > 0 Then
+                q = (Me.m_EPData.Landing(iFlt, iGrp) + Me.m_EPData.Discard(iFlt, iGrp)) / Me.m_EPData.B(iGrp)
+            Else
+                q = cCore.NULL_VALUE
+            End If
+
+            For it As Integer = 1 To Me.m_Data.NTimes
+                Me.m_Data.relQt(iFlt, iGrp, it) = q
+            Next
+
+        End Sub
+
+
+        Public Sub setDefaultCatchabilities()
+            Dim iflt As Integer
+            Dim iGrp As Integer
+            'set relative catchabilities by gear type, treating effort for each gear as starting at base
+            'value of 1.0 so that F for the gear (F=qE=C/B) is 1.0xq where q is relative catchability
+            'this avoids measuring effort in some unnecessary data units
+
+            Me.m_Data.relQt = New Single(Me.m_Data.nGear, Me.m_Data.nGroups, Me.m_Data.NTimes) {}
+
+            For iflt = 1 To Me.m_Data.nGear
+                For iGrp = 1 To Me.m_Data.nGroups
+                    'total catch rate 
+                    'Includes discards that survive
+                    'relQ(i, j) = (m_EPData.Landing(i, j) + m_EPData.Discard(i, j)) / m_Data.StartBiomass(j)
+                    Me.setDefaultCatchabilities(iflt, iGrp)
+
+                Next iGrp
+            Next iflt
+
+        End Sub
+
 
 #End Region
 

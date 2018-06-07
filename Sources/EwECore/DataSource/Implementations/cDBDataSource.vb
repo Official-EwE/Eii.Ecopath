@@ -28,8 +28,6 @@ Imports EwECore.MSE
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.Database
-Imports EwEUtils.SystemUtilities
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -42,7 +40,7 @@ Namespace DataSources
     ''' and writing Ecopath, Ecosim and Ecospace data from a database.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class cDBDataSource
         Implements IEwEDataSource
         Implements IEcopathDataSource
@@ -124,9 +122,9 @@ Namespace DataSources
         ''' opened as read-only.</param>
         ''' <returns>True if opened successfully.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Open(ByVal strName As String, _
-                             ByVal core As cCore, _
-                             Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+        Public Function Open(ByVal strName As String,
+                             ByVal core As cCore,
+                             Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet,
                              Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType _
                              Implements DataSources.IEwEDataSource.Open
 
@@ -2872,6 +2870,8 @@ Namespace DataSources
             bSucces = bSucces And Me.AddCatchDataForFleet(iFleetID)
             ' Create ecosim fleet forcing bits
 
+            ' bSucces = bSucces And Me.AddCatchabilityFleet(iFleetID)
+
             ' Create fleet objects though
             bSucces = bSucces And Me.AddEcosimFleetToAllScenarios(iFleetID)
             bSucces = bSucces And Me.AddEcospaceFleetToAllScenarios(iFleetID)
@@ -3684,6 +3684,15 @@ Namespace DataSources
 
             Me.m_core.m_MSEData.redimTime()
 
+
+            For iflt As Integer = 1 To ecopathDS.NumFleet
+                For igrp As Integer = 1 To ecopathDS.NumGroups
+                    If ecopathDS.Landing(iflt, igrp) + ecopathDS.Discard(iflt, igrp) > 0 Then
+                        Me.m_core.setDefaultCatchabilities(iflt, igrp)
+                    End If
+                Next
+            Next
+
             ' Set active scenario
             ecopathDS.ActiveEcosimScenario = Array.IndexOf(ecopathDS.EcosimScenarioDBID, iScenarioID)
 
@@ -3692,6 +3701,7 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadEcosimVulnerabilities()
             bSucces = bSucces And Me.LoadShapes()
             bSucces = bSucces And Me.LoadEcosimMSE(iScenarioID)
+            bSucces = bSucces And Me.LoadEcosimCatchabilities(iScenarioID)
             bSucces = bSucces And Me.LoadAuxillaryData()
 
             Me.ClearChanged(s_EcosimComponents)
@@ -3826,7 +3836,9 @@ Namespace DataSources
                 bSucces = bSucces And Me.SaveEcosimMSE(idm)
             End If
 
+            ' ToDo: only save these when modified or duplicating
             bSucces = bSucces And Me.SaveEcosimCapacityDrivers(idm)
+            bSucces = bSucces And SaveEcosimCatchabilities(idm)
 
             If bSucces Then
                 ' Commit save
@@ -4207,24 +4219,18 @@ Namespace DataSources
             reader = Nothing
 
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE FleetID={0}", iEcopathFleetID))
-            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesFleet WHERE (FleetID={0})", iEcopathFleetID))
-
-            ' ToDo: cascadingly delete all time series for this fleet
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleetGroupCatchability WHERE FleetID={0}", iFleetID))
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
 
             Return bSucces
         End Function
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' <para>
-        ''' *Sigh*
-        ''' </para>
-        ''' <para>
         ''' Due to the limited capabilities of Microzork Access SQL, database 
         ''' update-generated foreign keys to fleets and groups cannot cascading 
         ''' delete. Hence, we need to eradicate linked groups and fleets via code.
-        ''' </para> 
         ''' </summary>
         ''' <param name="iGroupID">DBID of the Ecosim group to remove.</param>
         ''' <returns>True if successful.</returns>
@@ -4232,14 +4238,12 @@ Namespace DataSources
         Private Function RemoveEcosimGroup(ByVal iGroupID As Integer) As Boolean
             Dim bSucces As Boolean = True
             Try
-
-                ' Big sigh, it's even worse...
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE EcosimGroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroupYear WHERE GroupID={0}", iGroupID))
-                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioCapacityDrivers WHERE GroupID={0}", iGroupID))
-
-                ' ToDo: cascadingly delete all time series for this group
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleetGroupCatchability WHERE GroupID={0}", iGroupID))
+                ' Last
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iGroupID))
 
             Catch ex As Exception
                 bSucces = False
@@ -4407,45 +4411,38 @@ Namespace DataSources
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
             Dim reader As IDataReader = Nothing
+            Dim iEcopathFleetID As Integer = -1
             Dim iFleetID As Integer = -1
             Dim iShapeID As Integer = -1
             Dim bSucces As Boolean = True
-            Dim asDummy(ecosimDS.NTimes) As Single
+            Dim effort(ecosimDS.NTimes) As Single
 
             Dim dtNewFleetShapes As New Dictionary(Of Integer, Integer)
 
-            For iPt As Integer = 0 To ecosimDS.NTimes : asDummy(iPt) = 1.0 : Next
+            For t As Integer = 0 To ecosimDS.NTimes : effort(t) = 1.0 : Next
 
             ' For each fleet
             For iFleet As Integer = 1 To ecosimDS.nGear
                 Try
                     ' Read shape for this fleet
-                    iFleetID = ecopathDS.FleetDBID(iFleet)
-                    reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcoSimScenarioFleet WHERE (ScenarioID={0}) AND (EcopathFleetID={1})", iScenarioID, iFleetID))
+                    iEcopathFleetID = ecopathDS.FleetDBID(iFleet)
+                    reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcoSimScenarioFleet WHERE (ScenarioID={0}) AND (EcopathFleetID={1})", iScenarioID, iEcopathFleetID))
                     reader.Read()
                     iShapeID = CInt(Me.m_db.ReadSafe(reader, "FishRateShapeID", -1))
+                    iFleetID = CInt(reader("FleetID"))
                 Catch ex As Exception
                     ' A different error occurred: abort!
                     bSucces = False
                 End Try
 
                 If iShapeID <= 0 Then
-                    ' Define a new shape for this fleet
-                    Me.AppendShapeImpl(ecopathDS.FleetName(iFleet), eDataTypes.FishingEffort, iShapeID, asDummy, eShapeFunctionType.NotSet, Nothing)
-                    dtNewFleetShapes.Add(iFleetID, iShapeID)
-                    iShapeID += 1
-                End If
-
-                If iShapeID > -1 Then
-                    ' JS 10Aug07: Don't fail in case FishRateShape is missing. Only those present are loaded, only those loaded are saved.
-                    '             Since these shapes do not need to be present we can be somewhat forgiving in this particular case.
-                    If Not LoadFishingRateShape(iShapeID, iFleet) Then
-                        Me.LogMessage(String.Format("Warning: Fishing rate shape {0} is referenced but not present in database for EcoSim fleet {1} (ID {2})", iShapeID, iFleet, iFleetID))
-                    End If
+                    ' Define a new effort shape for this fleet
+                    Me.AppendShapeImpl(ecopathDS.FleetName(iFleet), eDataTypes.FishingEffort, iShapeID, effort, eShapeFunctionType.NotSet, Nothing)
+                    dtNewFleetShapes.Add(iEcopathFleetID, iShapeID)
                 End If
 
                 Try
-                    ecosimDS.FleetDBID(iFleet) = CInt(reader("FleetID"))
+                    ecosimDS.FleetDBID(iFleet) = iFleetID
                     ecosimDS.Epower(iFleet) = CSng(Me.m_db.ReadSafe(reader, "Epower", 3))
                     ecosimDS.PcapBase(iFleet) = CSng(Me.m_db.ReadSafe(reader, "PCapBase", 0.5))
                     ecosimDS.CapDepreciate(iFleet) = CSng(Me.m_db.ReadSafe(reader, "CapDepreciate", 0.06))
@@ -4464,6 +4461,8 @@ Namespace DataSources
                     mseDS.EffortFleetBounds(iFleet).Upper = CSng(Me.m_db.ReadSafe(reader, "EffortRefUpper", mseDS.EffortFleetBounds(iFleet).Upper))
                     'mseDS.MSYEvaluateFleet(iFleet) = (CInt(Me.m_db.ReadSafe(reader, "MSYEvaluateFleet", True)) = 1)
 
+                    LoadFishingRateShape(iShapeID, iFleet)
+
                 Catch ex As Exception
                     bSucces = False
                 End Try
@@ -4478,9 +4477,9 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
 
             ' Store new IDs
-            For Each iFleetID In dtNewFleetShapes.Keys
-                iShapeID = dtNewFleetShapes(iFleetID)
-                objKeys(1) = iFleetID
+            For Each iEcopathFleetID In dtNewFleetShapes.Keys
+                iShapeID = dtNewFleetShapes(iEcopathFleetID)
+                objKeys(1) = iEcopathFleetID
                 drow = dt.Rows.Find(objKeys)
                 ' Check wheter a new row or an existing row
                 Debug.Assert(drow IsNot Nothing)
@@ -5062,13 +5061,12 @@ Namespace DataSources
 
                         Case eDataTypes.FishingEffort
                             ' Shape type loaded from LoadEcosimFleets(); do not handle here
-                            'iFishRateShape += 1
-                            'bSucces = bSucces And Me.LoadFishingRateShape(iShapeID, iFishRateShape)
 
                         Case eDataTypes.FishMort
                             ' Shape type loaded from LoadEcosimGroups(); do not handle here
-                            'iFishingMortShape += 1
-                            'bSucces = bSucces And Me.LoadFishMortShape(iShapeID, iFishingMortShape)
+
+                        Case eDataTypes.FleetGroupCatchability
+                            ' Shape type loaded elsewhere
 
                         Case Else
                             Debug.Assert(False, String.Format("Cannot load invalid shapetype {0} for shape ID {1}", shapeDataType, iShapeID))
@@ -5598,7 +5596,6 @@ Namespace DataSources
                 dt = writer.GetDataTable()
 
                 For iShape = 1 To ecosimDS.NumForcingShapes
-                    ' JS 10aug07: this should be an assert
                     If (ecosimDS.ForcingDBIDs(iShape) > 0) Then
                         drow = dt.Rows.Find(ecosimDS.ForcingDBIDs(iShape))
                         bNewRow = (drow Is Nothing)
@@ -5666,7 +5663,6 @@ Namespace DataSources
                     Next iShape
                 Next
 
-                ' JS 01Jan10: duplicate effort shapes if duplicating a scenario
                 For iShape = 1 To ecosimDS.FishRateGearDBID.Length - 1
                     iShapeID = idm.GetID(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(iShape))
                     If (iShapeID > 0) Then
@@ -5686,7 +5682,6 @@ Namespace DataSources
                     End If
                 Next iShape
 
-                ' JS 01Jan10: duplicate mortality shapes if duplicating a scenario
                 For iShape = 1 To ecosimDS.FishRateNoDBID.Length - 1
                     iShapeID = idm.GetID(eDataTypes.FishMort, ecosimDS.FishRateNoDBID(iShape))
                     If (iShapeID > 0) Then
@@ -5736,7 +5731,7 @@ Namespace DataSources
             Dim shapeParms As cEcosimDatastructures.ShapeParameters = ecosimDS.ForcingShapeParams(iShape)
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
-            Dim sbZScale As New Text.StringBuilder()
+            Dim sbZScale As New StringBuilder()
             Dim drow As DataRow = Nothing
             Dim bNewRow As Boolean = False
             Dim bSucces As Boolean = True
@@ -5791,7 +5786,7 @@ Namespace DataSources
             Dim shapeParms As cEcosimDatastructures.ShapeParameters = ecosimDS.ForcingShapeParams(iShape)
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
-            Dim sbZScale As New Text.StringBuilder()
+            Dim sbZScale As New StringBuilder()
             Dim adrows() As DataRow = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
@@ -5850,7 +5845,7 @@ Namespace DataSources
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
-            Dim sbZScale As New Text.StringBuilder()
+            Dim sbZScale As New StringBuilder()
             Dim adrows() As DataRow = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
@@ -6152,7 +6147,7 @@ Namespace DataSources
             Dim iShapeID As Integer = idm.GetID(eDataTypes.FishingEffort, ecosimDS.FishRateGearDBID(iShape))
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim dt As DataTable = Nothing
-            Dim sbZScale As New Text.StringBuilder()
+            Dim sbZScale As New StringBuilder()
             Dim adrows() As DataRow = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
@@ -6200,7 +6195,7 @@ Namespace DataSources
         '    Dim iDBID As Integer = idm.GetID(eDataTypes.FishMort, ecosimDS.FishRateNoDBID(iShape))
         '    Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
         '    Dim dt As DataTable = Nothing
-        '    Dim sbZScale As New Text.StringBuilder()
+        '    Dim sbZScale As New StringBuilder()
         '    Dim adrows() As DataRow = Nothing
         '    Dim drow As DataRow = Nothing
         '    Dim bSucces As Boolean = True
@@ -6279,7 +6274,7 @@ Namespace DataSources
         ''' <param name="strShapeName"></param>
         ''' <param name="shapeType"></param>
         ''' <param name="iShapeID"></param>
-        ''' <param name="asData"></param>
+        ''' <param name="points"></param>
         ''' <param name="functionType"></param>
         ''' <param name="params"></param>
         ''' <returns></returns>
@@ -6287,7 +6282,7 @@ Namespace DataSources
         Private Function AppendShapeImpl(ByVal strShapeName As String,
                                          ByVal shapeType As eDataTypes,
                                          ByRef iShapeID As Integer,
-                                         ByVal asData As Single(),
+                                         ByVal points As Single(),
                                          ByVal functionType As Long,
                                          ByVal params As Single()) As Boolean
 
@@ -6340,14 +6335,14 @@ Namespace DataSources
                 drow("ShapeID") = iShapeID
                 drow("Title") = strShapeName.Substring(0, Math.Min(strShapeName.Length, 50))
 
-                If asData Is Nothing Then
+                If points Is Nothing Then
                     drow("zScale") = ""
                 Else
-                    Dim sbZScale As New Text.StringBuilder()
+                    Dim sbZScale As New StringBuilder()
                     ' Assemble Zscale
-                    For ipt As Integer = 1 To Math.Min(ecosimDS.ForcePoints, asData.Length - 1)
+                    For ipt As Integer = 1 To Math.Min(ecosimDS.ForcePoints, points.Length - 1)
                         If (ipt > 1) Then sbZScale.Append(" ")
-                        sbZScale.Append(cStringUtils.FormatSingle(asData(ipt)))
+                        sbZScale.Append(cStringUtils.FormatSingle(points(ipt)))
                     Next
                     drow("zScale") = sbZScale.ToString()
                 End If
@@ -6421,6 +6416,10 @@ Namespace DataSources
                 ' Delete Ecosim pred/prey interactions
                 Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioPredPreyShape WHERE (ShapeID={0})", iShapeID))
 
+                ' Delete catchability shapes
+                Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleetGroupCatchability WHERE (ShapeID={0})", iShapeID))
+                Me.m_db.Execute(String.Format("DELETE FROM EcosimShapeCatchability WHERE (ShapeID={0})", iShapeID))
+
                 ' Destroy the given shape
                 Me.m_db.Execute(String.Format("DELETE FROM EcoSimShape WHERE (ShapeID={0})", iShapeID))
                 ' Reload shapes data
@@ -6485,7 +6484,7 @@ Namespace DataSources
             Dim bNewShape As Boolean = True
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
-            Dim sbZScale As New Text.StringBuilder()
+            Dim sbZScale As New StringBuilder()
             Dim iRepetitions As Integer = 1
             Dim iShapeID As Integer = 0
 
@@ -6594,7 +6593,7 @@ Namespace DataSources
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim iTimeSeriesID As Integer = 0
-            Dim sbValues As New Text.StringBuilder()
+            Dim sbValues As New StringBuilder()
             Dim bSucces As Boolean = True
 
             iTimeSeriesID = CInt(Me.m_db.GetValue("SELECT MAX(TimeSeriesID) FROM EcosimTimeSeries", 0)) + 1
@@ -6861,7 +6860,7 @@ Namespace DataSources
             Dim dtGroups As DataTable = Nothing
             Dim drow As DataRow = Nothing
             Dim bHasRow As Boolean = False
-            Dim sbValues As New Text.StringBuilder()
+            Dim sbValues As New StringBuilder()
             Dim iPoolID As Integer = 0
             Dim bSucces As Boolean = True
 
@@ -7234,6 +7233,112 @@ Namespace DataSources
 #End Region ' Save
 
 #End Region ' MSE
+
+#Region " Catchabilities "
+
+        Private Function LoadEcosimCatchabilities(iScenarioID As Integer) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim reader As IDataReader = Nothing
+            Dim iFleetID, iFleet As Integer
+            Dim iGroupID, iGroup As Integer
+            Dim zScale As String = ""
+            Dim astrMemoBits() As String
+            Dim bSucces As Boolean = True
+
+            reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioFleetGroupCatchability WHERE (ScenarioID={0})", iScenarioID))
+            While reader.Read
+                iFleetID = CInt(Me.m_db.ReadSafe(reader, "FleetID", -1))
+                iFleet = Array.IndexOf(ecosimDS.FleetDBID, iFleetID)
+
+                iGroupID = CInt(Me.m_db.ReadSafe(reader, "GroupID", -1))
+                iGroup = Array.IndexOf(ecosimDS.GroupDBID, iGroupID)
+
+                If (iFleet > 0 And iGroup > 0) Then
+                    zScale = CStr(Me.m_db.ReadSafe(reader, "zScale", ""))
+                    ' Store points
+                    If Not String.IsNullOrWhiteSpace(zScale) Then
+                        ' #Yes: split and process
+                        astrMemoBits = zScale.Trim.Split(CChar(" "))
+                        For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
+                            ecosimDS.relQt(iFleet, iGroup, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 0)
+                        Next
+
+                        If (ecopathDS.Landing(iFleet, iGroup) + ecopathDS.Discard(iFleet, iGroup)) > 0 Then
+                            If ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE Then
+                                Me.m_core.setDefaultCatchabilities(iFleet, iGroup)
+                            End If 'ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE
+                        End If 'ecopathDS.Landing(iFleet, iGroup) + ecopathDS.Discard(iFleet, iGroup)) > 0
+                    End If ' Not String.IsNullOrWhiteSpace(zScale)
+                End If '(iFleet > 0 And iGroup > 0)
+
+            End While
+            Me.m_db.ReleaseReader(reader)
+
+            Return bSucces
+
+        End Function
+
+        Private Function SaveEcosimCatchabilities(idm As cIDMappings) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
+
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim dt As DataTable = Nothing
+            Dim sbZScale As StringBuilder
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            Me.m_db.Execute("DELETE * FROM EcosimScenarioFleetGroupCatchability WHERE ScenarioID=" & iScenarioID)
+
+            writer = Me.m_db.GetWriter("EcosimScenarioFleetGroupCatchability")
+            dt = writer.GetDataTable()
+            Try
+                For iFleet As Integer = 1 To ecopathDS.NumFleet
+                    For iGroup As Integer = 1 To ecopathDS.NumGroups
+
+                        If (ecopathDS.Landing(iFleet, iGroup) + ecopathDS.Discard(iFleet, iGroup) > 0) Then
+
+                            drow = writer.NewRow()
+
+                            drow("ScenarioID") = iScenarioID
+                            ' Generic fleet DBID mapped to Ecopath fleet ID, see SaveEcosimFleets
+                            drow("FleetID") = idm.GetID(eDataTypes.FleetInput, ecopathDS.FleetDBID(iFleet))
+                            ' Ecosim fleet ID mapped to Ecopath fleet ID, see SaveEcosimGroups
+                            drow("GroupID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iGroup))
+
+                            'This fleet/group has catch but the catchabilities have not been set
+                            'Set the default catchability before saving
+                            If ecosimDS.relQt(iFleet, iGroup, 1) = cCore.NULL_VALUE Then
+                                Me.m_core.setDefaultCatchabilities(iFleet, iGroup)
+                            End If
+
+                            sbZScale = New StringBuilder()
+                            ' Todo: Check upper limit
+                            For ipt As Integer = 1 To ecosimDS.NTimes
+                                If (ipt > 1) Then sbZScale.Append(" ")
+                                sbZScale.Append(cStringUtils.FormatSingle(ecosimDS.relQt(iFleet, iGroup, ipt)))
+                            Next
+                            drow("Zscale") = sbZScale.ToString()
+
+                            writer.AddRow(drow)
+
+                        End If
+                    Next
+                Next
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            Me.m_db.ReleaseWriter(writer, True)
+            Return bSucces
+
+        End Function
+
+#End Region ' Catchabilities
 
 #End Region ' EcoSim
 
@@ -9071,7 +9176,7 @@ Namespace DataSources
             Dim iID As Integer = 0
             Dim drow As DataRow = Nothing
             Dim bNewRow As Boolean = True
-            Dim sbMPAMonth As New Text.StringBuilder
+            Dim sbMPAMonth As New StringBuilder
             Dim objKeys() As Object = {Nothing, Nothing} ' Composite key to find MPA per scenario
             Dim bSucces As Boolean = True
 
@@ -9179,7 +9284,7 @@ Namespace DataSources
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
-            Dim sbMPAMonth As New Text.StringBuilder
+            Dim sbMPAMonth As New StringBuilder
 
             iMPAID = CInt(Me.m_db.GetValue("SELECT MAX(MPAID) FROM EcospaceScenarioMPA", 0)) + 1
             writer = Me.m_db.GetWriter("EcospaceScenarioMPA")

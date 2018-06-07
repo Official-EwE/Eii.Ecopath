@@ -1,0 +1,252 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+EwEModelFromEcosimPlugin
+</name>
+</assembly>
+<members>
+<member name="T:EwEModelFromEcosimPlugin.My.MySettings">
+ <summary>
+ Settings class that uses a custom <see cref="T:System.Configuration.SettingsProvider"/>.
+ </summary>
+ <remarks>
+ For details about the overridden settings behaviour refer to <see cref="T:EwEUtils.cEwESettingsProvider"/>.
+ </remarks>
+</member>
+<member name="F:EwEModelFromEcosimPlugin.My.MySettings.m_provider">
+ <summary>Custom <see cref="T:EwEUtils.cEwESettingsProvider">settings provider</see>.</summary>
+</member>
+<member name="M:EwEModelFromEcosimPlugin.My.MySettings.#ctor">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEModelFromEcosimPlugin.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.CONTROL_TEXT">
+<summary>
+  Looks up a localized string similar to Ecopath model from Ecosim.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.HEADER_CREATE_MODEL">
+<summary>
+  Looks up a localized string similar to Create model.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.HEADER_ECOSIM_YEAR">
+<summary>
+  Looks up a localized string similar to Ecosim year.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.HEADER_MODEL_NAME">
+<summary>
+  Looks up a localized string similar to Model name.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.PROMPT_OUTPUT_FOLDER">
+<summary>
+  Looks up a localized string similar to Select output folder for new model(s).
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.STATUS_GENERATING_MODEL">
+<summary>
+  Looks up a localized string similar to Generating Ecopath model &apos;{0}&apos;....
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.STATUS_MODEL_FAILED">
+<summary>
+  Looks up a localized string similar to Failed to generate Ecopath model {0} for {1}.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.STATUS_MODEL_GENERATED">
+<summary>
+  Looks up a localized string similar to Generated Ecopath model {0}.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.STATUS_MODELS_GENERATED">
+<summary>
+  Looks up a localized string similar to Generated Ecopath models from Ecosim run.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.STATUS_SAVE_ERROR_NOACCESS">
+<summary>
+  Looks up a localized string similar to Unable or not allowed to save {0}.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.STATUS_SAVE_ERROR_NODRIVERS">
+<summary>
+  Looks up a localized string similar to Your system does not have the correct drivers installed to use model {0}.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.STATUS_SAVE_ERROR_SEELOG">
+<summary>
+  Looks up a localized string similar to Failed to save model {0}. See the EwE log file for details.
+</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.My.Resources.Resources.STATUS_SAVE_SUCCESS">
+<summary>
+  Looks up a localized string similar to Ecosim timestep {0} saved to {1}.
+</summary>
+</member>
+<member name="F:EwEModelFromEcosimPlugin.cData.m_core">
+ <summary>Included to be able to make corrections to invalid parameters</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.cData.Enabled">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set whether model generation should be enabled.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEModelFromEcosimPlugin.cData.BACalcMode">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the <see cref="T:EwECore.cEcopathModelFromEcosim.eBACalcTypes">methodology to
+ calculate Biomass Accumulation</see>.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEModelFromEcosimPlugin.cData.CreateModel(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set whether a model should be created for the given Ecosim year.
+ </summary>
+ <param name="iYear">The one-based year index.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEModelFromEcosimPlugin.cData.ModelName(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the name of the model to generate for a given year. To use the
+ default name, this value should be set to an empty string.
+ </summary>
+ <param name="iYear">The one-based year index to use.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEModelFromEcosimPlugin.cData.NumYears">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the number of Ecosim years.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEModelFromEcosimPlugin.cData.EwEModelName">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the name of the EwE model that is currently loaded.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEModelFromEcosimPlugin.cData.CustomOutputPath">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the model output directory.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEModelFromEcosimPlugin.cData.FirstLabelYear">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the base year to display.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEModelFromEcosimPlugin.cData.YearLabel(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get a year index in a label for this year, corrected by the <see cref="P:EwEModelFromEcosimPlugin.cData.FirstLabelYear"/>.
+ </summary>
+ <param name="iYear">The one-based year index to get the label for.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEModelFromEcosimPlugin.cData.DefaultModelName(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the default name for a model at a given year.
+ </summary>
+ <param name="iYear">The one-based year index to get the default model name for.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEModelFromEcosimPlugin.cData.Clear">
+ -----------------------------------------------------------------------
+ <summary>
+ Vipe zhe sheet. Leef no trace, Heinrich.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEModelFromEcosimPlugin.cModelFromEcosimPluginPoint">
+ ---------------------------------------------------------------------------
+ <summary>
+ Plug-in point for the 'Ecopath model from Ecosim' plug-in.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="M:EwEModelFromEcosimPlugin.cModelFromEcosimPluginPoint.EcosimRunInitialized(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Ecosim is about to run. Generate the 
+ </summary>
+ <param name="EcosimDatastructures"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEModelFromEcosimPlugin.cModelFromEcosimPluginPoint.EcosimRunCompleted(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Ecosim has finished running: send generation message, if any
+ </summary>
+ <param name="EcosimDatastructures"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEModelFromEcosimPlugin.frmUI">
+ ---------------------------------------------------------------------------
+ <summary>
+ Main form for the plug-in
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="P:EwEModelFromEcosimPlugin.frmUI.UIContext">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IUIElement.UIContext"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEModelFromEcosimPlugin.frmUI.Apply">
+ <summary>
+ Write UI control contents to the engine.
+ </summary>
+</member>
+<member name="T:EwEModelFromEcosimPlugin.gridUI">
+ ---------------------------------------------------------------------------
+ <summary>
+ Grid to configure 'Ecopath model from Ecosim' generation.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEModelFromEcosimPlugin.gridUI.eColumnTypes">
+ <summary>Grid columns.</summary>
+</member>
+<member name="P:EwEModelFromEcosimPlugin.gridUI.Data">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the data to use for configuring model generation.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+</members>
+</doc>

@@ -1,0 +1,10 @@
+D:\Sources\Ecopath6\Sources\EwEUtils\bin\x86\Debug\EwEUtils.dll
+D:\Sources\Ecopath6\Sources\EwEUtils\bin\x86\Debug\EwEUtils.pdb
+D:\Sources\Ecopath6\Sources\EwEUtils\bin\x86\Debug\EwEUtils.xml
+D:\Sources\Ecopath6\Sources\EwEUtils\obj\x86\Debug\EwEUtils.vbprojAssemblyReference.cache
+D:\Sources\Ecopath6\Sources\EwEUtils\obj\x86\Debug\EwEUtils.Resources.resources
+D:\Sources\Ecopath6\Sources\EwEUtils\obj\x86\Debug\EwEUtils.vbproj.GenerateResource.cache
+D:\Sources\Ecopath6\Sources\EwEUtils\obj\x86\Debug\EwEUtils.vbproj.CoreCompileInputs.cache
+D:\Sources\Ecopath6\Sources\EwEUtils\obj\x86\Debug\EwEUtils.dll
+D:\Sources\Ecopath6\Sources\EwEUtils\obj\x86\Debug\EwEUtils.xml
+D:\Sources\Ecopath6\Sources\EwEUtils\obj\x86\Debug\EwEUtils.pdb

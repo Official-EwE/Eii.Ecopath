@@ -1,0 +1,2150 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+EwEEcologicalIndicatorsPlugin
+</name>
+</assembly>
+<members>
+<member name="T:EwEEcologicalIndicatorsPlugin.My.MySettings">
+ <summary>
+ Settings class that uses a custom <see cref="T:System.Configuration.SettingsProvider"/>.
+ </summary>
+ <remarks>
+ For details about the overridden settings behaviour refer to <see cref="T:EwEUtils.cEwESettingsProvider"/>.
+ </remarks>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.My.MySettings.m_provider">
+ <summary>Custom <see cref="T:EwEUtils.cEwESettingsProvider">settings provider</see>.</summary>
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.My.MySettings.#ctor">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.BioDiversityPlugin">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.BioDiversityPluginIcon">
+<summary>
+  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.CAPTION">
+<summary>
+  Looks up a localized string similar to Ecological indicators.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.CAPTION_INFO">
+<summary>
+  Looks up a localized string similar to Computes ecological indicators for Ecopath, Ecosim, Ecospace and Monte Carlo.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.csic">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.eii">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.GROUP_BIOMASS">
+<summary>
+  Looks up a localized string similar to Biomass-based.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.GROUP_BIOMASS_DESC">
+<summary>
+  Looks up a localized string similar to Biomass-based indicators.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.GROUP_CATCH">
+<summary>
+  Looks up a localized string similar to Catch-based.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.GROUP_CATCH_DESC">
+<summary>
+  Looks up a localized string similar to Indicators based on catch.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.GROUP_MSDF">
+<summary>
+  Looks up a localized string similar to MSDF.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.GROUP_MSDF_DESC">
+<summary>
+  Looks up a localized string similar to Marine Strategy Framework Directive.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.GROUP_SIZE">
+<summary>
+  Looks up a localized string similar to Size-based.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.GROUP_SIZE_DESC">
+<summary>
+  Looks up a localized string similar to Indicators based on size.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.GROUP_SPECIES">
+<summary>
+  Looks up a localized string similar to Species-based.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.GROUP_SPECIES_DESC">
+<summary>
+  Looks up a localized string similar to Indicators per species.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.GROUP_TROPHIC">
+<summary>
+  Looks up a localized string similar to Trophic-based.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.GROUP_TROPHIC_DESC">
+<summary>
+  Looks up a localized string similar to Indicators filtered by trophic level.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.HEADER_OCCURRENCE">
+<summary>
+  Looks up a localized string similar to Occurence.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.HEADER_TRIAL">
+<summary>
+  Looks up a localized string similar to Trial.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.HEADER_TRIAL_N">
+<summary>
+  Looks up a localized string similar to Trial {0}: {1}.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_COMMB">
+<summary>
+  Looks up a localized string similar to Commercial B.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_COMMB_DESC">
+<summary>
+  Looks up a localized string similar to Biomass (B) of commercial species.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_DEMB">
+<summary>
+  Looks up a localized string similar to Demersal B.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_DEMB_DESC">
+<summary>
+  Looks up a localized string similar to Biomass (B) of demersal species.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_DEMC">
+<summary>
+  Looks up a localized string similar to Demersal C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_DEMC_DESC">
+<summary>
+  Looks up a localized string similar to Catch (C) of demersal species.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_DEMPELB_RATIO">
+<summary>
+  Looks up a localized string similar to Demersal / Pelagic B.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_DEMPELB_RATIO_DESC">
+<summary>
+  Looks up a localized string similar to Biomass (B) of demersal over pelagic species.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_DEMPELC_RATIO">
+<summary>
+  Looks up a localized string similar to Demersal / pelagic C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_DEMPELC_RATIO_DESC">
+<summary>
+  Looks up a localized string similar to Catch (C) of demersal over pelagic species.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_DIS">
+<summary>
+  Looks up a localized string similar to Discards.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_DIS_DESC">
+<summary>
+  Looks up a localized string similar to Total discarded catch.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_ENDB">
+<summary>
+  Looks up a localized string similar to Endemics B.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_ENDB_DESC">
+<summary>
+  Looks up a localized string similar to Biomass (B) of endemic species in the community.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_ENDC">
+<summary>
+  Looks up a localized string similar to Endemics C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_ENDC_DESC">
+<summary>
+  Looks up a localized string similar to Endemic species in the catch (C).
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_FISHB">
+<summary>
+  Looks up a localized string similar to Fish B.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_FISHB_DESC">
+<summary>
+  Looks up a localized string similar to Biomass (B) of fish species.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_FISHC">
+<summary>
+  Looks up a localized string similar to Fish C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_FISHC_DESC">
+<summary>
+  Looks up a localized string similar to Catch (C) of all fish species.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_INVC">
+<summary>
+  Looks up a localized string similar to Invertebrate C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_INVC_DESC">
+<summary>
+  Looks up a localized string similar to Catch (C) of all invertebrate species.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_INVEB">
+<summary>
+  Looks up a localized string similar to Invertebrates B.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_INVEB_DESC">
+<summary>
+  Looks up a localized string similar to Biomass (B) of invertebrate species.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_INVFISHB_RATIO">
+<summary>
+  Looks up a localized string similar to Invertebrates / Fish B.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_INVFISHB_RATIO_DESC">
+<summary>
+  Looks up a localized string similar to Biomass (B) of invertebrates over fish.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_INVFISHC">
+<summary>
+  Looks up a localized string similar to Invertebrates / Fish C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_INVFISHC_DESC">
+<summary>
+  Looks up a localized string similar to Catch (C) of invertebrates over fish.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_IUCNB">
+<summary>
+  Looks up a localized string similar to IUCN species B.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_IUCNB_DESC">
+<summary>
+  Looks up a localized string similar to Biomass (B) of IUCN-endangered species in the community.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_IUCNC">
+<summary>
+  Looks up a localized string similar to IUCN species C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_IUCNC_DESC">
+<summary>
+  Looks up a localized string similar to Proportion of IUCN-endangered species in the catch (C).
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_IVIC">
+<summary>
+  Looks up a localized string similar to Intrinsic Vul. Index.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_IVIC_DESC">
+<summary>
+  Looks up a localized string similar to Intrinsic Vulnerabiltiy Index of the catch.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_KEMPTONQ_DESC">
+<summary>
+  Looks up a localized string similar to Kempton&apos;s diversity index (Q).
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_KEMPTONSQ">
+<summary>
+  Looks up a localized string similar to Kempton&apos;s Q.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MLB">
+<summary>
+  Looks up a localized string similar to ML of fish community.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MLB_DESC">
+<summary>
+  Looks up a localized string similar to Mean lengh (ML) of fish in the community.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MLC">
+<summary>
+  Looks up a localized string similar to ML of fish C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MLC_DESC">
+<summary>
+  Looks up a localized string similar to Mean lengh (ML) of fish in the catch (C).
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MLSB">
+<summary>
+  Looks up a localized string similar to MLS of fish C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MLSB_DESC">
+<summary>
+  Looks up a localized string similar to Mean life span (MLS) of fish the catch (C).
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MLSC">
+<summary>
+  Looks up a localized string similar to MLS of fish community.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MLSC_DESC">
+<summary>
+  Looks up a localized string similar to Mean life span (MLS) of fish in the community.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MSRB">
+<summary>
+  Looks up a localized string similar to Mammals, birds &amp; reptiles B.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MSRB_DESC">
+<summary>
+  Looks up a localized string similar to Biomass (B) of marine mammals, seabirds and reptiles.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MSRC">
+<summary>
+  Looks up a localized string similar to Mammals, birds &amp; reptiles C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MSRC_DESC">
+<summary>
+  Looks up a localized string similar to Catch (C) of marine mammals, seabirds and reptiles.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MTI">
+<summary>
+  Looks up a localized string similar to MTI.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MTIX_DESC">
+<summary>
+  Looks up a localized string similar to Marine trophic index or trophic level (TL) of the catch including organisms with TL ≥ {0}.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MWB">
+<summary>
+  Looks up a localized string similar to MW of fish community.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MWB_DESC">
+<summary>
+  Looks up a localized string similar to Mean weight (MW) of the fish in the community.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MWC">
+<summary>
+  Looks up a localized string similar to MW of fish C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_MWC_DESC">
+<summary>
+  Looks up a localized string similar to Mean weight (MW) of fish in the catch (C).
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_PELB">
+<summary>
+  Looks up a localized string similar to Pelagic B.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_PELB_DESC">
+<summary>
+  Looks up a localized string similar to Biomass (B) of pelagic species.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_PELC">
+<summary>
+  Looks up a localized string similar to Pelagic C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_PELC_DESC">
+<summary>
+  Looks up a localized string similar to Catch (C) of pelagic species.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_PREDB">
+<summary>
+  Looks up a localized string similar to Predatory B.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_PREDB_DESC">
+<summary>
+  Looks up a localized string similar to Biomass (B) of predatory organisms with trophic level ≥ 4.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_PREDC">
+<summary>
+  Looks up a localized string similar to Predatory C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_PREDC_DESC">
+<summary>
+  Looks up a localized string similar to Catch (C) of predatory organisms with trophic level ≥ 4.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_SHANNON">
+<summary>
+  Looks up a localized string similar to Shannon diversity.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_SHANNON_DESC">
+<summary>
+  Looks up a localized string similar to Shannon diversity index.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_TLC">
+<summary>
+  Looks up a localized string similar to TL catch.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_TLC_DESC">
+<summary>
+  Looks up a localized string similar to Trophic level (TL) of the catch.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_TLCo">
+<summary>
+  Looks up a localized string similar to TL community.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_TLCo_DESC">
+<summary>
+  Looks up a localized string similar to Trophic level (TL) of the community.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_TLCoX">
+<summary>
+  Looks up a localized string similar to TL community {0}.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_TLCoX_DESC">
+<summary>
+  Looks up a localized string similar to Trophic level (TL) of the community including organisms with TL ≥ {0}.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_TOTALB">
+<summary>
+  Looks up a localized string similar to Total B.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_TOTALB_DESC">
+<summary>
+  Looks up a localized string similar to Total biomass (B).
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_TOTALC">
+<summary>
+  Looks up a localized string similar to Total C.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_TOTALC_DESC">
+<summary>
+  Looks up a localized string similar to Total catch (C).
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_VALUE">
+<summary>
+  Looks up a localized string similar to Value.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_VALUE_AGE">
+<summary>
+  Looks up a localized string similar to Age.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_VALUE_B">
+<summary>
+  Looks up a localized string similar to Biomass.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_VALUE_B_RATIO">
+<summary>
+  Looks up a localized string similar to Biomass ratio.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_VALUE_C">
+<summary>
+  Looks up a localized string similar to Catch.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_VALUE_C_RATIO">
+<summary>
+  Looks up a localized string similar to Catch ratio.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_VALUE_DISCARDS">
+<summary>
+  Looks up a localized string similar to Discards.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_VALUE_INTR_VUL_INDEX">
+<summary>
+  Looks up a localized string similar to Intrisic vulnerability.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_VALUE_ML">
+<summary>
+  Looks up a localized string similar to Mean length.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_VALUE_MW">
+<summary>
+  Looks up a localized string similar to Mean weight.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.IND_VALUE_TL">
+<summary>
+  Looks up a localized string similar to Tropic level.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.logo_ird">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.PROMPT_OUTPUTFOLDER">
+<summary>
+  Looks up a localized string similar to Select location for storing CSV output .
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.STATUS_INVALID_FOLDER">
+<summary>
+  Looks up a localized string similar to Ecological indicators plugin cannot write to folder &apos;{0}&apos;.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.STATUS_SAVE_FAILED">
+<summary>
+  Looks up a localized string similar to Failed to save {0} ecological indicators. {1}.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.STATUS_SAVE_SUCCESS">
+<summary>
+  Looks up a localized string similar to {0} ecological indicators saved to &apos;{1}&apos;.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.UNIT_LENGTH_CM">
+<summary>
+  Looks up a localized string similar to cm.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.UNIT_TIME_YEAR">
+<summary>
+  Looks up a localized string similar to y.
+</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.My.Resources.Resources.UNIT_WEIGHT_G">
+<summary>
+  Looks up a localized string similar to g.
+</summary>
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cEcosimIndicators">
+ ---------------------------------------------------------------------------
+ <summary>
+ Class that computes all Ecosim-based indicators.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcosimIndicators.#ctor(EwECore.cCore,EwECore.cEcopathDataStructures,EwECore.cEcosimDatastructures,System.Int32,EwECore.cStanzaDatastructures,EwECore.cTaxonDataStructures,EwECore.cTaxonAnalysis)">
+ -----------------------------------------------------------------------
+ <summary>
+ Create a new instance of this class.
+ </summary>
+ <param name="core">The <see cref="T:EwECore.cCore">Core</see> to operate onto.</param>
+ <param name="ecopathDS">The <see cref="T:EwECore.cEcopathDataStructures">Ecopath data structures</see> to operate onto.</param>
+ <param name="stanzaDS">The <see cref="T:EwECore.cStanzaDatastructures">Stanza data structures</see> to operate onto.</param>
+ <param name="taxonDS">The <see cref="T:EwECore.cTaxonDataStructures">Taxonomy data structures</see> to operate onto.</param>
+ <param name="ecosimDS">The <see cref="T:EwECore.cEcosimDatastructures">Ecosim data structures</see> to operate onto.</param>
+ <param name="iTime">The Ecosim time to calculate the indicators for.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcosimIndicators.EcosimDS">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper function to access the associated <see cref="T:EwECore.cEcosimDatastructures">Ecosim data structures</see>.
+ </summary>
+ <returns>The associated <see cref="T:EwECore.cEcosimDatastructures">Ecosim data structures</see>.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcosimIndicators.Time">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper function to access the Ecosim time that this indicator represents.
+ </summary>
+ <returns>The Ecosim time that these indicators represent.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcosimIndicators.ModelBiomass(System.Int32)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelBiomass(System.Int32)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcosimIndicators.ModelCatch(System.Int32)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelCatch(System.Int32)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcosimIndicators.ModelTL(System.Int32)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelTL(System.Int32)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcosimIndicators.ModelTLCatch">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelTLCatch"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcosimIndicators.ModelDiscards(System.Int32)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelDiscards(System.Int32)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcosimIndicators.ModelKemptionsQ">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.KemptonsQ"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcosimIndicators.ModelShannonDiversity">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ShannonDiversity"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cIndicators">
+ ---------------------------------------------------------------------------
+ <summary>
+ Base class for computing biodiversity indicators.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_core">
+ <summary>Zhe core</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_ecopathDS">
+ <summary>Ecopath data structures</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_taxonDS">
+ <summary>Taxonomy data structures</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_stanzaDS">
+ <summary>Stanza data structures</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sTLC">
+ <summary>Tropic level of the catch indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sTLCo">
+ <summary>Tropic level of the community indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sTLCo2">
+ <summary>Tropic level of the community >= TL2 indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sTLCo325">
+ <summary>Tropic level of the community > TL3.25 indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sMTI">
+ <summary>MTI indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sTLCo4">
+ <summary>Tropic level of the community > TL4 indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sTotalB">
+ <summary>Total biomass indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sCommB">
+ <summary>Total commercial biomass indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sFishB">
+ <summary>Total fish biomass indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sInveB">
+ <summary>Total invertebrate biomass indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sInveFishB">
+ <summary>Total invertebrate over fish biomass indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sTotalB4">
+ <summary>Total predatory biomass > TL4 in the community indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sMSRB">
+ <summary>mammals, seabirds and reptiles biomass indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sDemB">
+ <summary>demersal biomass indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sPelB">
+ <summary>pelagic biomass indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sDemPelB">
+ <summary>demersal over pelagic biomass indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sKemptonsQ">
+ <summary>Kempton's Q</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sShannonDiversity">
+ <summary>Shannon Diversity</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sCT">
+ <summary>Total Catch indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sFishC">
+ <summary>Fish Catch indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sInveC">
+ <summary>Invertebrate Catch indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sInveFishC">
+ <summary>Invertebrate over fish catch indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sC4">
+ <summary>Total cach of predatory organisms > TL4</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sMSRC">
+ <summary>mammals, seabirds and reptiles catch indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sDT">
+ <summary>Total Discards indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sDemC">
+ <summary>demersal catch indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sPelC">
+ <summary>pelagic catch indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sDemPelC">
+ <summary>demersal over pelagic catch indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sEndemicC">
+ <summary>Endemic species in the catch</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sEndemicB">
+ <summary>Biomass of endemic species in the community</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sIUCNC">
+ <summary>IUCN species in the catch</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sIUCNB">
+ <summary>IUCN species biomass in the community</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sIVIc">
+ <summary>Intrinsic vulnerability Index of the catch</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sMLifeSc">
+ <summary>Mean life span of fish in the catch </summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sMLifeSb">
+ <summary>Mean life span of fish in the community </summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sMLengthc">
+ <summary>Mean lengh of fish the catch </summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sMLengthb">
+ <summary>Mean lengh of fish on the community </summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sMWeightc">
+ <summary>Mean weight of fish the catch </summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicators.m_sMWeightb">
+ <summary>Mean weight of fish in the community </summary>
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.#ctor(EwECore.cCore,EwECore.cEcopathDataStructures,EwECore.cStanzaDatastructures,EwECore.cTaxonDataStructures,EwECore.cTaxonAnalysis)">
+ -----------------------------------------------------------------------
+ <summary>
+ Create a new instance of this class.
+ </summary>
+ <param name="core">The <see cref="T:EwECore.cCore">Core</see> to operate onto.</param>
+ <param name="ecopathDS">The <see cref="T:EwECore.cEcopathDataStructures">Ecopath data structures</see> to operate onto.</param>
+ <param name="stanzaDS">The <see cref="T:EwECore.cStanzaDatastructures">Stanza data structures</see> to operate onto.</param>
+ <param name="taxonDS">The <see cref="T:EwECore.cTaxonDataStructures">Taxonomy data structures</see> to operate onto.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.Core">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper function to access the associated <see cref="T:EwECore.cCore">Core</see>.
+ </summary>
+ <returns>The associated <see cref="T:EwECore.cCore">Core</see>.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.EcopathDS">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper function to access the associated <see cref="T:EwECore.cEcopathDataStructures">Ecopath data structures</see>.
+ </summary>
+ <returns>The associated <see cref="T:EwECore.cEcopathDataStructures">Ecopath data structures</see>.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.TaxonDS">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper function to access the associated <see cref="T:EwECore.cTaxonDataStructures">Taxonomy data structures</see>.
+ </summary>
+ <returns>The associated <see cref="T:EwECore.cTaxonDataStructures">Taxonomy data structures</see>.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.StanzaDS">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper function to access the associated <see cref="T:EwECore.cStanzaDatastructures">Stanza data structures</see>.
+ </summary>
+ <returns>The associated <see cref="T:EwECore.cStanzaDatastructures">Stanza data structures</see>.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelBiomass(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Override to obtain the biomass for a given group, as computed by the 
+ underlying model.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelTL(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Override to return the Trophic Level for a given group, as computed by 
+ the underlying model.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelTLCatch">
+ -----------------------------------------------------------------------
+ <summary>
+ Override to return the Trophic Level of the Catch, a computed by the 
+ underlying model.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelCatch(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Override to return the Catch of a given group, as computed by the 
+ underlying model.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelDiscards(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Override to return the Discards of a given group, as computed by the 
+ underlying model.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelKemptionsQ">
+ -----------------------------------------------------------------------
+ <summary>
+ Override to return the Kemptons' Q of a given group, as computed by the 
+ underlying model.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelShannonDiversity">
+ -----------------------------------------------------------------------
+ <summary>
+ Override to return the Shannon Diversity as computed by the 
+ underlying model.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.Compute">
+ -----------------------------------------------------------------------
+ <summary>
+ Computations
+ </summary>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.Clear">
+ -----------------------------------------------------------------------
+ <summary>
+ Reset calculated variables
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.TLC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'tropic level of the catch' indicator.
+ </summary>
+ <returns>The 'tropic level of the catch' indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.MTI">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'MTI' indicator.
+ </summary>
+ <returns>The 'MTI' indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.TLco">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'tropic level of the community' indicator.
+ </summary>
+ <returns>The 'tropic level of the community' indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.TLco2">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'tropic level of the community where tropic level >= 2' indicator.
+ </summary>
+ <returns>The 'tropic level of the community where tropic level >= 2' indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.TLco325">
+ -----------------------------------------------------------------------
+ <summary>
+ returns the 'tropic level of the community where tropic level > 3.25' indicator.
+ </summary>
+ <returns>the 'tropic level of the community where tropic level > 3.25' indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.TLco4">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'Trophic level of the community where trophic level > 4 indicator.
+ </summary>
+ <returns>The 'Trophic level of the community where trophic level > 4 indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.TotalB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'total biomass' indicator.
+ </summary>
+ <returns>The 'total biomass' indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.CommercialB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'total commercial biomass' indicator.
+ </summary>
+ <returns>The 'total commercial biomass' indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.FishB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'total fish biomass' indicator.
+ </summary>
+ <returns>The 'total fish biomass' indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.InveB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'total invertebrate biomass' indicator.
+ </summary>
+ <returns>The 'total invertebrate biomass' indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.InveFishB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'biomass of invertebrates over fish' indicator.
+ </summary>
+ <returns>The 'biomass of invertebrates over fish' indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.PredB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'total fish of predaotry organisms >TL4' indicator.
+ </summary>
+ <returns>The 'total fish of predaotry organisms >TL4' indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.MSRB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'total biomass of marine mammals, seabirds and turtles' indicator.
+ </summary>
+ <returns>The 'total biomass of marine mammals, seabirds and turtles.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.DemB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'demersal biomass' indicator.
+ </summary>
+ <returns>The 'demersal biomass.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.DemPelB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'demersal over pelagic biomass' indicator.
+ </summary>
+ <returns>The 'demersal over pelagic biomass.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.PelB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'demersal biomass' indicator.
+ </summary>
+ <returns>The 'demersal biomass.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.KemptonsQ">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'modified kemptons Q diversity index.
+ </summary>
+ <returns>The 'demersal biomass.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.ShannonDiversity">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the Shannon diversity index.
+ </summary>
+ <returns>The Shannon Diversity Index.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.Ctotal">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'total catch' indicator.
+ </summary>
+ <returns>The 'total catch' indicator.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.FishC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'fish catch' indicator.
+ </summary>
+ <returns>The 'fish catch' indicator.</returns>
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.InveC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'Invertebrate catch' indicator.
+ </summary>
+ <returns>The 'Invertebrate catch' indicator.</returns>
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.InveFishC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'Invertebrate over fish catch' indicator.
+ </summary>
+ <returns>The 'Invertebrate over fish catch' indicator.</returns>
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.sC4">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'Catch of predatory organisms with TL >= 4.
+ </summary>
+ <returns>The 'Catch of predatory organisms with TL >= 4.</returns>
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.MSRC">
+ <summary>
+ Returns the 'total catch of marine mammals, seabirds and turtles.
+ </summary>
+ <returns>The 'total catch of marine mammals, seabirds and turtles.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.DT">
+ <summary>
+ Returns the 'total discards.
+ </summary>
+ <returns>The 'total discards.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.DemC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'demersal catch.
+ </summary>
+ <returns>The 'demersal catch.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.DemPelC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'demersal over pelagic catch.
+ </summary>
+ <returns>The 'demersal over pelagic catch.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.PelC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'demersal catch.
+ </summary>
+ <returns>The 'demersal catch.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.EndemicC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'Endemic species in the catch.
+ </summary>
+ <returns>The 'Endemic species in the catch.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.EndemicB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'Biomass of endemic species in the community.
+ </summary>
+ <returns>The 'Biomass of endemic species in the community.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.IUCNC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'IUCN species in the catch'.
+ </summary>
+ <returns>The 'IUCN species in the catch.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.IUCNB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'IUCN species biomass in the community'.
+ </summary>
+ <returns>The 'IUCN species biomass in the community.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.IVIC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'Intrinsic Vulnerability Index of the catch'.
+ </summary>
+ <returns>The 'Intrinsic Vulnerability Index of the catch.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.MLifeSpanC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'Mean life span of fish in the catch.
+ </summary>
+ <returns>The 'Mean life span of the catch.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.MLifeSpanB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'Mean life span of fish in the community.
+ </summary>
+ <returns>The 'Mean life span of the community.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.MLengthC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'Mean lenght of fish in the catch.
+ </summary>
+ <returns>The 'Mean lenght span of the catch.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.MLengthB">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'Mean lenght of fish in the community.
+ </summary>
+ <returns>The 'Mean lenght span of the community.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.MWeightC">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the 'Mean Weight of fish in the catch.
+ </summary>
+ <returns>The 'Mean Weight of fish in the catch.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicators.MWeightB">
+ <summary>
+ Returns the 'Mean Weight of fish in the community.
+ </summary>
+ <returns>The 'Mean Weight of fish in the community.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cIndicators.IsComputed">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set whether these indicators have been computed.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators">
+ ---------------------------------------------------------------------------
+ <summary>
+ Class that computes all Ecospace-based indicators.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.m_ptLocation">
+ <summary>The map location (col, row) that this indicator represents.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.m_ecopathDS">
+ <summary>The <see cref="T:EwECore.cEcopathDataStructures">Ecopath data structures</see> to operate onto.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.m_ecosimDS">
+ <summary>The <see cref="T:EwECore.cEcosimDatastructures">Ecosim data structures</see> to operate onto.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.m_ecospaceDS">
+ <summary>The <see cref="T:EwECore.cEcospaceDataStructures">Ecospace data structures</see> to operate onto.</summary>
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.#ctor(EwECore.cCore,EwECore.cEcopathDataStructures,EwECore.cEcospaceDataStructures,System.Drawing.Point,EwECore.cStanzaDatastructures,EwECore.cTaxonDataStructures,EwECore.cTaxonAnalysis)">
+ -----------------------------------------------------------------------
+ <summary>
+ Create a new instance of this class.
+ </summary>
+ <param name="core">The <see cref="T:EwECore.cCore">Core</see> to operate onto.</param>
+ <param name="ecopathDS">The <see cref="T:EwECore.cEcopathDataStructures">Ecopath data structures</see> to operate onto.</param>
+ <param name="ecospaceDS">The <see cref="T:EwECore.cEcospaceDataStructures">Ecospace data structures</see> to operate onto.</param>
+ <param name="ptLocation">The map location (col, row) that this indicator represents.</param>
+ <param name="stanzaDS">The <see cref="T:EwECore.cStanzaDatastructures">Stanza data structures</see> to operate onto.</param>
+ <param name="taxonDS">The <see cref="T:EwECore.cTaxonDataStructures">Taxonomy data structures</see> to operate onto.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.EcospaceDS">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper function to access the associated <see cref="T:EwECore.cEcospaceDataStructures">Ecospace data structures</see>.
+ </summary>
+ <returns>The associated <see cref="T:EwECore.cEcospaceDataStructures">Ecospace data structures</see>.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.Location">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper function to access the map location (col, row) that this indicator represents.
+ </summary>
+ <returns>The Ecosim time that these indicators represent.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.ModelBiomass(System.Int32)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelBiomass(System.Int32)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.ModelCatch(System.Int32)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelCatch(System.Int32)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.ModelTL(System.Int32)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelTL(System.Int32)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.ModelTLCatch">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelTLCatch"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.ModelDiscards(System.Int32)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelDiscards(System.Int32)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.ModelKemptionsQ">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelKemptionsQ"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcospaceIndicators.ModelShannonDiversity">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelShannonDiversity"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cMCIndicators">
+ ---------------------------------------------------------------------------
+ <summary>
+ Class that computes all MonteCarlo-based indicators.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cMCIndicators.#ctor(EwECore.cCore,EwECore.cEcopathDataStructures,EwECore.cEcosimDatastructures,System.Int32,System.Int32,EwECore.cStanzaDatastructures,EwECore.cTaxonDataStructures,EwECore.cTaxonAnalysis)">
+ -----------------------------------------------------------------------
+ <summary>
+ Create a new instance of this class.
+ </summary>
+ <param name="core">The <see cref="T:EwECore.cCore">Core</see> to operate onto.</param>
+ <param name="ecopathDS">The <see cref="T:EwECore.cEcopathDataStructures">Ecopath data structures</see> to operate onto.</param>
+ <param name="stanzaDS">The <see cref="T:EwECore.cStanzaDatastructures">Stanza data structures</see> to operate onto.</param>
+ <param name="taxonDS">The <see cref="T:EwECore.cTaxonDataStructures">Taxonomy data structures</see> to operate onto.</param>
+ <param name="ecosimDS">The <see cref="T:EwECore.cEcosimDatastructures">Ecosim data structures</see> to operate onto.</param>
+ <param name="iTime">The Ecosim time to calculate the indicators for.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cMCIndicators.Iteration">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper function to access the Ecosim time that this indicator represents.
+ </summary>
+ <returns>The Ecosim time that these indicators represent.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cMCIndicators.ModelTLCatch">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelTLCatch"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin">
+ ---------------------------------------------------------------------------
+ <summary>
+ Class that connects to the core plug-in points. All indicator computations
+ are triggered from within this class.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.m_indEcopath">
+ <summary>Indicators for Ecopath.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.m_lIndEcosim">
+ <summary>Indicators for each Ecosim time step.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.m_lIndMCsim">
+ <summary>Indicators for each MC trial and time step.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.m_dtIndEcospace">
+ <summary>Indicators for each Ecospace cell.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.m_settings">
+ <summary>Indicators grouping.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.m_frm">
+ <summary>The UI.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.m_msgStatus">
+ <summary>File save status message.</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.Author">
+ -----------------------------------------------------------------------
+ <summary>
+ Return the author(s) of this plug-in.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.Contact">
+ -----------------------------------------------------------------------
+ <summary>
+ Return the contact information for this plug-in.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.Description">
+ -----------------------------------------------------------------------
+ <summary>
+ Return the assembly description for this plug-in.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.Name">
+ -----------------------------------------------------------------------
+ <summary>
+ Return the internal name for this plug-in.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.Initialize(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point that is called when the core has initialized and is
+ ready to be used by plug-ins.
+ </summary>
+ <param name="core">The <see cref="T:EwECore.cCore">core</see> that this plug-in
+ can connect to.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.CoreInitialized(System.Object@,System.Object@,System.Object@)">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point that delivers ecopath, ecosim and ecospace models!
+ </summary>
+ <param name="objEcoPath"></param>
+ <param name="objEcoSim"></param>
+ <param name="objEcoSpace"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.Dispose">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEPlugin.IDisposedPlugin.Dispose"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.LoadModel(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Not used.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.SaveModel(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Not used.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.Closemodel">
+ -----------------------------------------------------------------------
+ <summary>
+ Clean up neatly.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.EcopathRunCompleted(System.Object@,System.Object@,System.Object@)">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point that delivers ecopath, taxon and stanza data structures when
+ Ecopath has finished a run.
+ </summary>
+ <param name="EcopathDataStructures">The <see cref="T:EwECore.cEcopathDataStructures">ecopath data</see> with results.</param>
+ <param name="TaxonDataStructures">The <see cref="T:EwECore.cTaxonDataStructures">taxonomy data</see> with supporting information for Ecopath.</param>
+ <param name="StanzaDataStructures">The <see cref="T:EwECore.cStanzaDatastructures">stanza data</see> with supporting information for Ecopath.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.LoadEcosimScenario(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Ecosim has loaded
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.EcosimRunInitialized(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Ecosim about to start time stepping
+ </summary>
+ <param name="EcosimDatastructures"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.EcosimRunCompletedPost(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Ecosim finished running. Now compute indicators.
+ </summary>
+ <param name="EcosimDatastructures">The <see cref="T:EwECore.cEcosimDatastructures">Ecosim data</see> with results.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.EcosimRunInvalidated">
+ -----------------------------------------------------------------------
+ <summary>
+ Ecosim data has changed. Discard any results.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.CloseEcosimScenario">
+ -----------------------------------------------------------------------
+ <summary>
+ Ecosim is closing. Forget Sim and MC indicators.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.SaveEcosimScenario(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Ecosim scenario is saved. Take no action.
+ </summary>
+ <param name="dataSource"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.MonteCarloCompleted">
+ -----------------------------------------------------------------------
+ <summary>
+ Search is finished. Restore Sim CalcTL flag
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.DefaultFolder">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the default output folder.
+ </summary>
+ <returns>The default output folder, as specified in the EwE application options.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.OutputFolder(EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the output folder that the user selected.
+ </summary>
+ <returns>The output folder that the user selected.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.SaveToCSVManual(EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Central point to manually save computed indicators to a CSV file.
+ </summary>
+ <param name="component">The <see cref="T:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType"/> to save indicators for.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.HasUI">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns whether the plug-in has an active user interface.
+ </summary>
+ <returns>True if the plug-in has an active user interface.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.ReportStatus(System.String,EwEUtils.Core.eStatusFlags)">
+ -----------------------------------------------------------------------
+ <summary>
+ Append a status to the status message.
+ </summary>
+ <param name="strMessage">The message to send.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.BeginSave(EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Begin the (auto)save progress by ensuring that destination directories
+ are available and that the save progress message is ready for gathering
+ save details.
+ </summary>
+ <param name="component">The <see cref="T:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType"/> that is starting 
+ the save process.</param>
+ <returns>True if successful.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.PerformSave(EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Perform an (auto)save step.
+ </summary>
+ <param name="component">The <see cref="T:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType"/> that is saving.</param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.EndSave">
+ -----------------------------------------------------------------------
+ <summary>
+ Ends the (auto)save progress by sending the save progress message.
+ </summary>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.FileName(EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType,System.String)">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the full file name (not file path!) to save computed indicators 
+ to.
+ </summary>
+ <param name="component">The <see cref="T:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType"/> to save indicators for.</param>
+ <param name="strStep">The time step, if any, to save indicators for. This
+ value can be left empty.</param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.ComponentName(EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the localized file name part that indicates the <see cref="T:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType"/>
+ to save for.
+ </summary>
+ <param name="component">The <see cref="T:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType"/> to save for.</param>
+ <returns>A localized file name part.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.SaveEcopathCSV">
+ -----------------------------------------------------------------------
+ <summary>
+ Save calculated Ecopath indicators to a CSV file.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.SaveEcosimCSV">
+ -----------------------------------------------------------------------
+ <summary>
+ Save calculated Ecosim indicators to a CSV file.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.SaveMCCSV">
+ -----------------------------------------------------------------------
+ <summary>
+ Save calculated MCMC indicators to a CSV file, both for path and sim.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.SaveEcospaceCSV">
+ -----------------------------------------------------------------------
+ <summary>
+ Save calculated Ecospace indicators to a CSV file.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.AutoSave">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.IAutoSavePlugin.AutoSave"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.AutoSaveName">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEPlugin.IAutoSavePlugin.AutoSaveName"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.AutoSaveSubPath">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.AutoSaveType">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEPlugin.IAutoSavePlugin.AutoSaveType"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cEcopathIndicators">
+ ---------------------------------------------------------------------------
+ <summary>
+ Class that computes all Ecopath-based indicators.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcopathIndicators.#ctor(EwECore.cCore,EwECore.cEcopathDataStructures,EwECore.cStanzaDatastructures,EwECore.cTaxonDataStructures,EwECore.cTaxonAnalysis)">
+ -----------------------------------------------------------------------
+ <summary>
+ Create a new instance of this class.
+ </summary>
+ <param name="core">The <see cref="T:EwECore.cCore">Core</see> to operate onto.</param>
+ <param name="ecopathDS">The <see cref="T:EwECore.cEcopathDataStructures">Ecopath data structures</see> to operate onto.</param>
+ <param name="stanzaDS">The <see cref="T:EwECore.cStanzaDatastructures">Stanza data structures</see> to operate onto.</param>
+ <param name="taxonDS">The <see cref="T:EwECore.cTaxonDataStructures">Taxonomy data structures</see> to operate onto.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcopathIndicators.ModelBiomass(System.Int32)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelBiomass(System.Int32)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcopathIndicators.ModelCatch(System.Int32)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelCatch(System.Int32)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcopathIndicators.ModelTL(System.Int32)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelTL(System.Int32)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcopathIndicators.ModelTLCatch">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelTLCatch"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcopathIndicators.ModelDiscards(System.Int32)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelDiscards(System.Int32)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcopathIndicators.ModelKemptionsQ">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelKemptionsQ"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcopathIndicators.ModelShannonDiversity">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.cIndicators.ModelShannonDiversity"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup">
+ -----------------------------------------------------------------------
+ <summary>
+ Class providing name, description, and indicator info for a group of indicators.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup.m_strName">
+ <summary>The name of the indicator group</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup.m_strDescription">
+ <summary>The description of the indicator group</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup.m_lIndicators">
+ <summary>List of indicator info objects that belong to this group</summary>
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup.#ctor(System.String,System.String)">
+ -------------------------------------------------------------------
+ <summary>
+ Create a new instance.
+ </summary>
+ <param name="strName">Name to assign to the indicator group.</param>
+ <param name="strDescription">Description to assign to the indicator group.</param>
+ -------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup.Name">
+ -------------------------------------------------------------------
+ <summary>
+ Get the name of the indicator group.
+ </summary>
+ -------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup.Description">
+ -------------------------------------------------------------------
+ <summary>
+ Get the description of the indicator group.
+ </summary>
+ -------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup.Add(System.String,System.String,System.String,System.String,System.String)">
+ -------------------------------------------------------------------
+ <summary>
+ Add an indicator that has a sinlge-dimensioned, dynamic unit.
+ </summary>
+ <param name="strName">The name to assign to the indicator.</param>
+ <param name="strPropertyName">The property name of the indicator as 
+ exposed by the computed <see cref="T:EwEEcologicalIndicatorsPlugin.cIndicators">indicator</see>.
+ This GUI uses reflection to dynamically the correct computed indicator.</param>
+ <param name="strDescription">Description to assign to the indicator.</param>
+ <returns>The new indicator info object.</returns>
+ -------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup.NumIndicators">
+ -------------------------------------------------------------------
+ <summary>
+ Get the number of <see cref="T:EwEEcologicalIndicatorsPlugin.cIndicatorInfo">indicators</see> in the group.
+ </summary>
+ -------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup.Indicator(System.Int32)">
+ -------------------------------------------------------------------
+ <summary>
+ Get <see cref="T:EwEEcologicalIndicatorsPlugin.cIndicatorInfo">indicator info</see> for a given indicator.
+ </summary>
+ <param name="index">The index of the indicator [0, <see cref="P:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup.NumIndicators"/>-1].</param>
+ -------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cIndicatorInfo">
+ -----------------------------------------------------------------------
+ <summary>
+ Class providing name, description and access to computed values for a single indicator.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicatorInfo.m_strName">
+ <summary>The name of the indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicatorInfo.m_strDescription">
+ <summary>The description of the indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicatorInfo.m_strValueDescription">
+ <summary>The description of the unit of the indicator (for display on axis)</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicatorInfo.m_strUnit">
+ <summary>The units of the indicator</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cIndicatorInfo.m_strFunctionName">
+ <summary>The function name of the indicator in the <see cref="T:EwEEcologicalIndicatorsPlugin.cIndicators">indicator</see></summary>
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicatorInfo.#ctor(System.String,System.String,System.String,System.String,System.String)">
+ -------------------------------------------------------------------
+ <summary>
+ Create a new instance.
+ </summary>
+ <param name="strName">Name to assign to the indicator.</param>
+ <param name="strFunctionName">The name of function for the indicator as exposed by the computed <see cref="T:EwEEcologicalIndicatorsPlugin.cIndicators">indicator</see>.</param>
+ <param name="strDescription">Description to assign to the indicator.</param>
+ <param name="strValueDescription">Description of the value of indicator (biomass, catch, etc).</param>
+ <param name="strUnits">EwE <see cref="T:EwECore.Style.cUnits">units</see> to show for the indicator.</param>
+ -------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cIndicatorInfo.Name">
+ -------------------------------------------------------------------
+ <summary>
+ Get the name of the indicator.
+ </summary>
+ -------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cIndicatorInfo.Description">
+ -------------------------------------------------------------------
+ <summary>
+ Get the description of the indicator.
+ </summary>
+ -------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cIndicatorInfo.Units">
+ -------------------------------------------------------------------
+ <summary>
+ Get the units of the indicator.
+ </summary>
+ -------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicatorInfo.GetValue(EwEEcologicalIndicatorsPlugin.cIndicators)">
+ -------------------------------------------------------------------
+ <summary>
+ Get the value for the indicator from a computed <see cref="T:EwEEcologicalIndicatorsPlugin.cIndicators">indicator</see>.
+ </summary>
+ <param name="indicators">The computed <see cref="T:EwEEcologicalIndicatorsPlugin.cIndicators">indicator</see> to extract information from.</param>
+ <returns>A value, or <see cref="F:EwECore.cCore.NULL_VALUE"/> if the property was not found.</returns>
+ -------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cEcosimGraphWrapper">
+ ---------------------------------------------------------------------------
+ <summary>
+ Helper class to to update the graph that reflects Ecospace biodiversity indicators.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcosimGraphWrapper.m_settings">
+ <summary>Indicator grouping etc as centrally defined in the plug-in.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcosimGraphWrapper.m_lind">
+ <summary>List of Ecosim indicators.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcosimGraphWrapper.m_groupCurrent">
+ <summary>Current indicator group to display in the graph.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcosimGraphWrapper.m_indCurrent">
+ <summary>Current indicator to display in the graph.</summary>
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcosimGraphWrapper.Attach(ScientificInterfaceShared.Controls.cUIContext,ZedGraph.ZedGraphControl,EwEEcologicalIndicatorsPlugin.cIndicatorSettings,System.Collections.Generic.List{EwEEcologicalIndicatorsPlugin.cEcosimIndicators})">
+ -------------------------------------------------------------------
+ <summary>
+ Attach this class to a zedgraph control.
+ </summary>
+ <param name="uic"><see cref="T:ScientificInterfaceShared.Controls.cUIContext"/> providing UI contextual information.</param>
+ <param name="zgc"><see cref="T:ZedGraph.ZedGraphControl"/> to style and interact with.</param>
+ <param name="settings"><see cref="T:EwEEcologicalIndicatorsPlugin.cIndicatorSettings"/> defined centrally in the plug-in.</param>
+ -------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cEcosimGraphWrapper.Detach">
+ -------------------------------------------------------------------
+ <inheritdocs cref="M:ScientificInterfaceShared.Controls.cZedGraphHelper.Detach"/>
+ -------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cEcospaceMapDrawer">
+ <summary>
+ Renderer for Ecospace-derived indicators
+ </summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cEcospaceMapDrawer.Labels">
+ <summary>The labels to use for each plot.</summary>
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cEcospaceMapDrawer.Descriptions">
+ <summary>Descriptions to use for each plot.</summary>
+ <remarks>Can be used in tooltips.</remarks>
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cEcospaceMapWrapper">
+ ---------------------------------------------------------------------------
+ <summary>
+ Helper class to update the map that reflects Ecospace biodiversity indicators.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcospaceMapWrapper.m_uic">
+ <summary>UIContext to operate onto.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcospaceMapWrapper.m_settings">
+ <summary>Settings to use in the map.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcospaceMapWrapper.m_dtIndicators">
+ <summary>Computed Ecospace indicators, organized by point (col, row).</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcospaceMapWrapper.m_layerDepth">
+ <summary>Ecospace depth layer for finding water cells and for showing context.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcospaceMapWrapper.m_layerData">
+ <summary>Indicator layer data.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcospaceMapWrapper.m_groupCurrent">
+ <summary>Current indicator group to display in the graph.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cEcospaceMapWrapper.m_indCurrent">
+ <summary>Current indicator to display in the graph.</summary>
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cIndicatorSettings">
+ ---------------------------------------------------------------------------
+ <summary>
+ Central indicator definitions.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cIndicatorSettings.AddGroup(System.String,System.String)">
+ -----------------------------------------------------------------------
+ <summary>
+ Add a new group to the settings.
+ </summary>
+ <param name="strName">Name to assign to the group.</param>
+ <param name="strDescription">Optional description to assign to the group.</param>
+ <returns>The new group.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cIndicatorSettings.NumIndicatorGroups">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the number of <see cref="T:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup"/>s in the settings.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.cIndicatorSettings.IndicatorGroup(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the <see cref="T:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup"/>s at a given index in the settings.
+ </summary>
+ <param name="index">The index to obtain the <see cref="T:EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup"/> for.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cMCGraphWrapper">
+ ---------------------------------------------------------------------------
+ <summary>
+ Helper class to to update the graph that reflects MC sim biodiversity indicators.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cMCGraphWrapper.m_settings">
+ <summary>Indicator grouping etc as centrally defined in the plug-in.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cMCGraphWrapper.m_lind">
+ <summary>List of Ecosim indicators.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cMCGraphWrapper.m_groupCurrent">
+ <summary>Current indicator group to display in the graph.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cMCGraphWrapper.m_indCurrent">
+ <summary>Current indicator to display in the graph.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cMCGraphWrapper.m_man">
+ <summary>The MC manager.</summary>
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cMCGraphWrapper.Attach(ScientificInterfaceShared.Controls.cUIContext,ZedGraph.ZedGraphControl,EwEEcologicalIndicatorsPlugin.cIndicatorSettings,System.Collections.Generic.List{System.Collections.Generic.List{EwEEcologicalIndicatorsPlugin.cMCIndicators}})">
+ -------------------------------------------------------------------
+ <summary>
+ Attach this class to a zedgraph control.
+ </summary>
+ <param name="uic"><see cref="T:ScientificInterfaceShared.Controls.cUIContext"/> providing UI contextual information.</param>
+ <param name="zgc"><see cref="T:ZedGraph.ZedGraphControl"/> to style and interact with.</param>
+ <param name="settings"><see cref="T:EwEEcologicalIndicatorsPlugin.cIndicatorSettings"/> defined centrally in the plug-in.</param>
+ <param name="indicators">List of (hopefully computed) MC indicators.</param>
+ -------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cMCGraphWrapper.Detach">
+ -------------------------------------------------------------------
+ <inheritdocs cref="M:ScientificInterfaceShared.Controls.cZedGraphHelper.Detach"/>
+ -------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cMCGraphWrapper.RefreshContent(EwEEcologicalIndicatorsPlugin.cIndicatorInfo,EwEEcologicalIndicatorsPlugin.cIndicatorInfoGroup)">
+ -------------------------------------------------------------------
+ <summary>
+ Refresh the graph to show a <see cref="P:EwEEcologicalIndicatorsPlugin.cIndicatorSettings.IndicatorGroup(System.Int32)">group of indicators</see>.
+ </summary>
+ -------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.cMCHistogramGraphWrapper">
+ ---------------------------------------------------------------------------
+ <summary>
+ Helper class to to update the graph that reflects Ecospace biodiversity indicators.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cMCHistogramGraphWrapper.m_settings">
+ <summary>Indicator grouping etc as centrally defined in the plug-in.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cMCHistogramGraphWrapper.m_lind">
+ <summary>List of Ecopath indicators to show histograms for.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cMCHistogramGraphWrapper.m_groupCurrent">
+ <summary>Current indicator group to display in the graph.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.cMCHistogramGraphWrapper.m_indCurrent">
+ <summary>Current indicator to display in the graph.</summary>
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cMCHistogramGraphWrapper.Attach(ScientificInterfaceShared.Controls.cUIContext,ZedGraph.ZedGraphControl,EwEEcologicalIndicatorsPlugin.cIndicatorSettings,System.Collections.Generic.List{EwEEcologicalIndicatorsPlugin.cEcopathIndicators})">
+ -------------------------------------------------------------------
+ <summary>
+ Attach this class to a zedgraph control.
+ </summary>
+ <param name="uic"><see cref="T:ScientificInterfaceShared.Controls.cUIContext"/> providing UI contextual information.</param>
+ <param name="zgc"><see cref="T:ZedGraph.ZedGraphControl"/> to style and interact with.</param>
+ <param name="settings"><see cref="T:EwEEcologicalIndicatorsPlugin.cIndicatorSettings"/> defined centrally in the plug-in.</param>
+ -------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.cMCHistogramGraphWrapper.Detach">
+ -------------------------------------------------------------------
+ <inheritdocs cref="M:ScientificInterfaceShared.Controls.cZedGraphHelper.Detach"/>
+ -------------------------------------------------------------------
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.frmMain">
+ ---------------------------------------------------------------------------
+ <summary>
+ Main interface for the biodiversity indicators plug-in.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.frmMain.OnLoad(System.EventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ Form is first loaded; content to the underlying framework and intialize
+ the form content.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.frmMain.OnFormClosed(System.Windows.Forms.FormClosedEventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ Form is officially closed; preserve what needs preserving and clean up.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.frmMain.OnCoreMessage(EwECore.cMessage)">
+ -----------------------------------------------------------------------
+ <summary>
+ A message of one of the subscribed types has arrived. Respond accordingly.
+ </summary>
+ <param name="msg">The <see cref="T:EwECore.cMessage"/> that arrived.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEEcologicalIndicatorsPlugin.frmMain.IsRunForm">
+ -----------------------------------------------------------------------
+ <summary>
+ Overridden to prevent the form from locking up while running.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.frmMain.UpdateControls">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEEcologicalIndicatorsPlugin.frmMain.UpdateControls"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.frmMain.UpdateIndicators(EwEEcologicalIndicatorsPlugin.cEwEEcologicalIndicatorsPlugin.eComponentType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Refresh the content of controls that display indicators.
+ </summary>
+ <param name="component">The component that needs updating.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.frmMain.GetSelectedIndicatorGroup">
+ -----------------------------------------------------------------------
+ <summary>
+ Return the indicator group selected in the indicator navigation tree.
+ </summary>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.frmMain.GetSelectedIndicator">
+ -----------------------------------------------------------------------
+ <summary>
+ Return the indicator selected in the indicator navigation tree.
+ </summary>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.frmMain.SelectedTabComponent">
+ -----------------------------------------------------------------------
+ <summary>
+ Return the indicator selected in the indicator navigation tree.
+ </summary>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.frmMain.OpenLink(System.String)">
+ -----------------------------------------------------------------------
+ <summary>
+ Open an external link.
+ </summary>
+ <param name="strURL">The link to navigate to.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEEcologicalIndicatorsPlugin.frmMain.PickOutputFolder">
+ -----------------------------------------------------------------------
+ <summary>
+ Allow the user to pick an output folder
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.gridEcopath.m_settings">
+ <summary>Settings to use in the grid.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.gridEcopath.m_indicators">
+ <summary>Computed indicators.</summary>
+</member>
+<member name="T:EwEEcologicalIndicatorsPlugin.gridEcopath.eColumnTypes">
+ <summary>The columns shown in the grid</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.gridEcopath.eColumnTypes.Index">
+ <summary>Column containing hierachy cells (+/-).</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.gridEcopath.eColumnTypes.Name">
+ <summary>Column containing names.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.gridEcopath.eColumnTypes.Value">
+ <summary>Column containing values.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.gridEcopath.eColumnTypes.Units">
+ <summary>Column containing units.</summary>
+</member>
+<member name="F:EwEEcologicalIndicatorsPlugin.gridEcopath.eColumnTypes.Description">
+ <summary>Column containing descriptions</summary>
+</member>
+</members>
+</doc>
