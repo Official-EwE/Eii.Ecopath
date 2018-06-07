@@ -1,0 +1,760 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+EwEResultsExtractorPlugin
+</name>
+</assembly>
+<members>
+<member name="T:EwEResultsExtractor.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.ALL_OPTIONS">
+<summary>
+  Looks up a localized string similar to All options.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.ASSIMILATION_UNITS">
+<summary>
+  Looks up a localized string similar to Assimilation(t/hm^2/year).
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.ATTACH_ALL">
+<summary>
+  Looks up a localized string similar to Attach All.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.BASIC_ESTIMATES">
+<summary>
+  Looks up a localized string similar to Basic estimates.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.BIOMASS">
+<summary>
+  Looks up a localized string similar to Biomass.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.BIOMASS_ACCUM">
+<summary>
+  Looks up a localized string similar to Biom. Accumul.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.BIOMASS_ACCUM_RATE">
+<summary>
+  Looks up a localized string similar to Biom. Acc. Rate.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.BIOMASS_AREA_UNITS">
+<summary>
+  Looks up a localized string similar to Biomass in habitat area ({0}/{1}).
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.BIOMASS_UNITS">
+<summary>
+  Looks up a localized string similar to Biomass(t/km^2).
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.BIOMASSINTEG">
+<summary>
+  Looks up a localized string similar to BiomassInteg.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.BIOMASSINTEGRATED">
+<summary>
+  Looks up a localized string similar to Biomass integrated.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.CANCEL">
+<summary>
+  Looks up a localized string similar to Cancel.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.CATCH_">
+<summary>
+  Looks up a localized string similar to Catch.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.CATCH_PER_FLEET">
+<summary>
+  Looks up a localized string similar to Catch per fleet.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.CATCH_PER_FLEETGROUP">
+<summary>
+  Looks up a localized string similar to CatchPerFleetPerPrey.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.CATCH_VALUE">
+<summary>
+  Looks up a localized string similar to Catch Value.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.CHANGE_SELECTION">
+<summary>
+  Looks up a localized string similar to Change Selection.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.CONSUMPT">
+<summary>
+  Looks up a localized string similar to Consumpt.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.CONSUMPTION">
+<summary>
+  Looks up a localized string similar to Consumption.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.CONSUMPTION_BIOMASS_UNITS">
+<summary>
+  Looks up a localized string similar to Consumption/biomass(/yr).
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.DATA_RETRIEVAL">
+<summary>
+  Looks up a localized string similar to Data retrieval in progress....
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.DETACH_ALL">
+<summary>
+  Looks up a localized string similar to Detach All.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.DIAGNOSTICS">
+<summary>
+  Looks up a localized string similar to Diagnostics.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.DIET_PROPS">
+<summary>
+  Looks up a localized string similar to Diet Proportions.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.DIETOF">
+<summary>
+  Looks up a localized string similar to DietOf.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.DISCARDS_PER_FLEETPREY">
+<summary>
+  Looks up a localized string similar to DiscardsPerFleetPerPrey.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.DOTCSV">
+<summary>
+  Looks up a localized string similar to .CSV.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.ECOTROPHIC_EFFICIENCY">
+<summary>
+  Looks up a localized string similar to Ecotrophic efficiency.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.EFFORT">
+<summary>
+  Looks up a localized string similar to Effort.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.ELECTIVITY">
+<summary>
+  Looks up a localized string similar to Electivity.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.EXCEL">
+<summary>
+  Looks up a localized string similar to Excel.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FISH_MORT_RATE">
+<summary>
+  Looks up a localized string similar to Fishing mort. rate.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FISH_MORT_TOTAL_MORT">
+<summary>
+  Looks up a localized string similar to Fishing mort./Total mort.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FISHERIES">
+<summary>
+  Looks up a localized string similar to Fisheries.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FISHERIESGROUPS">
+<summary>
+  Looks up a localized string similar to FisheriesGroups.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FISHING_EFFORT">
+<summary>
+  Looks up a localized string similar to FishingEffort.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FISHING_QUANT">
+<summary>
+  Looks up a localized string similar to Fishing quantities.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FISHING_VALUES">
+<summary>
+  Looks up a localized string similar to Fishing values.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FISHMORT">
+<summary>
+  Looks up a localized string similar to Fishing mortality.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FISHMORT_ALLFLEET">
+<summary>
+  Looks up a localized string similar to FishMortAllFleet.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FISHMORT_FLEET2PREY">
+<summary>
+  Looks up a localized string similar to Fishing mortality (Fleet to Prey).
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FISHMORT_PER_FLEET">
+<summary>
+  Looks up a localized string similar to FishMortPerFleet.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FITTING_STATS">
+<summary>
+  Looks up a localized string similar to Fitting statistics.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FLEET">
+<summary>
+  Looks up a localized string similar to Fleet.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FLEET_ONLY">
+<summary>
+  Looks up a localized string similar to Fleet only.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FLEET_SELECTION">
+<summary>
+  Looks up a localized string similar to Fleet selection.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FLEET2_MANYPREY">
+<summary>
+  Looks up a localized string similar to Fleet to many prey.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FLEET2PREY_SELECTION">
+<summary>
+  Looks up a localized string similar to Fleet to prey selection.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FLEETS_ATTACHED_PREY">
+<summary>
+  Looks up a localized string similar to Fleets with attached prey.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FLEETS_ONLY">
+<summary>
+  Looks up a localized string similar to Fleets only.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FLOW_DETRITUS">
+<summary>
+  Looks up a localized string similar to Flow to det..
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FORMNAME_SELECTGROUPS">
+<summary>
+  Looks up a localized string similar to Select which groups for which you would like to extract results.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FUNC_GROUP">
+<summary>
+  Looks up a localized string similar to FunctGroup.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FUNCT_GROUP_SELECTION">
+<summary>
+  Looks up a localized string similar to Functional group selection.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FUNCT_GROUPS_ONLY">
+<summary>
+  Looks up a localized string similar to Functional groups only.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.FUNCTIONALGROUPS">
+<summary>
+  Looks up a localized string similar to FunctionalGroups.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.GENERIC_CSV_FILE">
+<summary>
+  Looks up a localized string similar to {0} {1}.csv.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.GENERIC_SAVE">
+<summary>
+  Looks up a localized string similar to Result Extractor has saved the following file(s) to &apos;{0}&apos;:.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.GENERIC_SAVE_CSV">
+<summary>
+  Looks up a localized string similar to {0} results saved to &apos;{1}&apos;.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.GENERIC_SAVE_EXCEL">
+<summary>
+  Looks up a localized string similar to {0} results added to workbook &apos;{1}&apos;.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.GENERIC_SAVE_EXCEPTION">
+<summary>
+  Looks up a localized string similar to Result Extractor failed to save results to {0}. A system error occurred. {1}.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.GROUP">
+<summary>
+  Looks up a localized string similar to Group.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.GROUP_NAME">
+<summary>
+  Looks up a localized string similar to Group Name.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.HABITAT_AREA_UNITS">
+<summary>
+  Looks up a localized string similar to Habitat area(fraction).
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.IMPORT">
+<summary>
+  Looks up a localized string similar to Import.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.INDEX">
+<summary>
+  Looks up a localized string similar to Index.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.INDICATORS">
+<summary>
+  Looks up a localized string similar to Indicators.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.INIT_CONSUMPTION">
+<summary>
+  Looks up a localized string similar to Initial consumption.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.INIT_FISH_MORT">
+<summary>
+  Looks up a localized string similar to Initial fishing mortality.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.INIT_MORT_COEFFS">
+<summary>
+  Looks up a localized string similar to InitMortCoeffs.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.INIT_PRED_MORT">
+<summary>
+  Looks up a localized string similar to Initial predation mortality.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.INITCONSUMPTION">
+<summary>
+  Looks up a localized string similar to InitConsumption.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.INITFISHMORT">
+<summary>
+  Looks up a localized string similar to InitFishingMortality.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.INITFISHQUANTS">
+<summary>
+  Looks up a localized string similar to InitFishingQuantities.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.INITFISHVALUES">
+<summary>
+  Looks up a localized string similar to InitFishingValues.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.INITPREDMORT">
+<summary>
+  Looks up a localized string similar to InitPredMort.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.INVALID_SELECTION">
+<summary>
+  Looks up a localized string similar to Invalid Selection.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.KEY_INDICES">
+<summary>
+  Looks up a localized string similar to Key indices.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.LANDINGS_PER_FLEETPREY">
+<summary>
+  Looks up a localized string similar to LandingsPerFleetPerPrey.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.MORT_COEFFS">
+<summary>
+  Looks up a localized string similar to Mortality coefficients.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.MSG_PREV_FORM_INVALID">
+<summary>
+  Looks up a localized string similar to Your entry on the previous form was invalid.
+Would you like to retry your entry or cancel the
+process?.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.NET_EFFICIENCY">
+<summary>
+  Looks up a localized string similar to Net Efficiency.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.NET_MIGRATION">
+<summary>
+  Looks up a localized string similar to Net Migration.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.NET_MIGRATION_RATE">
+<summary>
+  Looks up a localized string similar to Net Migration Rate.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.NONMARKET_VALUE">
+<summary>
+  Looks up a localized string similar to Non-market value.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.OK">
+<summary>
+  Looks up a localized string similar to OK.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.OMNIVORY_INDEX">
+<summary>
+  Looks up a localized string similar to Omnivory Index.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.OTHER_MORT_RATE">
+<summary>
+  Looks up a localized string similar to Other mort. rate.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.OVERLAPPRED">
+<summary>
+  Looks up a localized string similar to OverlapPred.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.OVERLAPPREY">
+<summary>
+  Looks up a localized string similar to OverlapPrey.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PARENT_ONLY">
+<summary>
+  Looks up a localized string similar to Parent only.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PLUGIN_DESCRIPTION">
+<summary>
+  Looks up a localized string similar to Plug-in to aid in extracting results, parameter values and data from EwE.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PLUGIN_NAME">
+<summary>
+  Looks up a localized string similar to Results Extractor.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PRED_MORT_RATE">
+<summary>
+  Looks up a localized string similar to Predat. mort. rate.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PRED_OVERLAP">
+<summary>
+  Looks up a localized string similar to Pedator overlap.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PRED2_MANYPREY">
+<summary>
+  Looks up a localized string similar to Predator to many prey.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PRED2PREY_SELECTION">
+<summary>
+  Looks up a localized string similar to Predator to prey selection.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PREDATION_PER_PRED">
+<summary>
+  Looks up a localized string similar to Predation mortality
+ per predator.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PREDATIONMORT">
+<summary>
+  Looks up a localized string similar to Predation mortality.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PREDATOR">
+<summary>
+  Looks up a localized string similar to Predator.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PREDMORT">
+<summary>
+  Looks up a localized string similar to PredMort.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PREDMORT_EACH_PRED">
+<summary>
+  Looks up a localized string similar to PredMortEachPred.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PREDS_ATTACHED_PREY">
+<summary>
+  Looks up a localized string similar to Predators with attached prey.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PREY">
+<summary>
+  Looks up a localized string similar to Prey.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PREY_OVERLAP">
+<summary>
+  Looks up a localized string similar to Prey overlap.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PREY2_MANYPRED">
+<summary>
+  Looks up a localized string similar to Prey to many predators.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PREY2PRED_SELECTION">
+<summary>
+  Looks up a localized string similar to Prey to predator selection.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PREYS_ATTACHED_PRED">
+<summary>
+  Looks up a localized string similar to Prey with attached predators.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PROD_BIOMASS_Z">
+<summary>
+  Looks up a localized string similar to Prod/Biom or Z.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PRODUCTION_BIOMASS_UNITS">
+<summary>
+  Looks up a localized string similar to Production/biomass(/yr).
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PRODUCTION_CONSUMPTION">
+<summary>
+  Looks up a localized string similar to Production/Consumption.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PRODUCTION_RESPIRATION">
+<summary>
+  Looks up a localized string similar to Production/respiration.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PROMPT_FOLDER">
+<summary>
+  Looks up a localized string similar to Select folder for saving results.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PROMPT_INPUTS">
+<summary>
+  Looks up a localized string similar to You have not provided all input values to export selected value(s). Please check your selections before trying to save results again..
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.PROP_NAT_MORT">
+<summary>
+  Looks up a localized string similar to Proportion nat. mort..
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.RESIDUALS">
+<summary>
+  Looks up a localized string similar to Residuals.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.RESPIRATION">
+<summary>
+  Looks up a localized string similar to Respiration.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.RESPIRATION_ASSIMILATION">
+<summary>
+  Looks up a localized string similar to Respiration/assimilation.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.RESPIRATION_BIOMASS_UNITS">
+<summary>
+  Looks up a localized string similar to Respiration/biomass(/year).
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.RESPIRATION_UNITS">
+<summary>
+  Looks up a localized string similar to Respiration(t/km^2/year).
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.SAVE_RESULTS">
+<summary>
+  Looks up a localized string similar to Save Results.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.SEARCH_RATES">
+<summary>
+  Looks up a localized string similar to Search rates.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.SEARCHRATES">
+<summary>
+  Looks up a localized string similar to SearchRates.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.SS">
+<summary>
+  Looks up a localized string similar to SS.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.String1">
+<summary>
+  Looks up a localized string similar to .
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.SUM">
+<summary>
+  Looks up a localized string similar to Sum.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.SUM_OF_SQUARES">
+<summary>
+  Looks up a localized string similar to Sum of squares.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.TEXT_CATCH">
+<summary>
+  Looks up a localized string similar to Catch.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.TOTAL_CATCH">
+<summary>
+  Looks up a localized string similar to Total catch.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.TOTAL_COST">
+<summary>
+  Looks up a localized string similar to Total Cost.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.TOTAL_PROFIT">
+<summary>
+  Looks up a localized string similar to Total Profit.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.TOTAL_VALUE">
+<summary>
+  Looks up a localized string similar to Total Value.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.TOTALSS">
+<summary>
+  Looks up a localized string similar to TotalSS.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.TROPHIC_LEVEL">
+<summary>
+  Looks up a localized string similar to Trophic Level.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.TYPE">
+<summary>
+  Looks up a localized string similar to Type.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.VALUE_PER_FLEET">
+<summary>
+  Looks up a localized string similar to Value per fleet.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.VALUES">
+<summary>
+  Looks up a localized string similar to Values.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.My.Resources.Resources.YEARLY">
+<summary>
+  Looks up a localized string similar to Yearly.
+</summary>
+</member>
+<member name="P:EwEResultsExtractor.cDataOutputer.ExcelInteropEnabled">
+ <summary>
+ Returns whether Excel interop is enabled on a computer
+ </summary>
+</member>
+<member name="P:EwEResultsExtractor.cDataOutputer.PPath">
+ <summary>
+ Sets and returns the directory path that the user wants to save data files to
+ </summary>
+</member>
+<member name="P:EwEResultsExtractor.cDataOutputer.GetNumDataItems">
+ <summary>
+ Returns the number of data items that are held by the dataoutputer
+ </summary>
+</member>
+<member name="M:EwEResultsExtractor.cDataOutputer.OutputData">
+ <summary>
+ This is the subroutine that the client calls to output the data
+ </summary>
+ <returns>
+ An informational message with a summary of output results
+ </returns>
+</member>
+<member name="M:EwEResultsExtractor.cDataOutputer.LogExport(System.String,System.String,EwEUtils.Core.eStatusFlags)">
+ <summary>
+ Record the export of a given CSV file.
+ </summary>
+ <param name="strName">The data was exported for.</param>
+ <param name="strFile">The file the data was exported to.</param>
+ <param name="status">Export succes status.</param>
+</member>
+<member name="M:EwEResultsExtractor.cPredatorPreySelection.#ctor(System.String@,EwECore.cCore)">
+ <summary>
+ 
+ </summary>
+ <param name="Predator"></param>
+ <param name="Core"></param>
+ <remarks>
+ JS 01Mar11: Core must be provided as a parameter.
+ </remarks>
+</member>
+</members>
+</doc>

@@ -1,0 +1,1764 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+EwEMSEPlugin
+</name>
+</assembly>
+<members>
+<member name="T:EwEMSEPlugin.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.CAPTION">
+<summary>
+  Looks up a localized string similar to Cefas MSE.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.CAPTION_TOOLTIP">
+<summary>
+  Looks up a localized string similar to Launch the Cefas MSE plug-in.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.Cefas_logo">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.COSTFUNCTION_CONSERVATION">
+<summary>
+  Looks up a localized string similar to Conservation.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.COSTFUNCTION_TARGET">
+<summary>
+  Looks up a localized string similar to Target.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.DISTR_TYPE_TRIANGULAR">
+<summary>
+  Looks up a localized string similar to Triangular.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.DISTR_TYPE_UNIFORM">
+<summary>
+  Looks up a localized string similar to Uniform.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.EII">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_CSV_MALFORMED">
+<summary>
+  Looks up a localized string similar to The file {0} contains unexpected entires.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_DISTRFILE_GROUPS_HASNONLIVING">
+<summary>
+  Looks up a localized string similar to The distribution file {0} has non-living groups in it..
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_DISTRFILE_GROUPS_INVALID_PRODUCER">
+<summary>
+  Looks up a localized string similar to Your distribution file for {0} contains the group &apos;{1}&apos; in it.{2}This is invalid because this group is a primary producer!.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_DISTRFILE_GROUPS_LIVING_MISSING">
+<summary>
+  Looks up a localized string similar to The distribution file {0} does not have all the living groups in it..
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_DISTRFILE_GROUPS_REPLICATED">
+<summary>
+  Looks up a localized string similar to The distribution file {0} has replicate groups in it..
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_DISTRPAR_LOAD_ECOPATH">
+<summary>
+  Looks up a localized string similar to There was a problem loading the Ecopath parameters from csv.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_DISTRPAR_LOAD_ECOSIM">
+<summary>
+  Looks up a localized string similar to There was a problem loading the Ecosim parameters from csv.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_DISTRPARAM_GROUPS_REPLICATED">
+<summary>
+  Looks up a localized string similar to The distribution file for {0} has replicate groups in it..
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_DISTRPARAM_GROUPS_TOOFEW">
+<summary>
+  Looks up a localized string similar to The distribution file for {0} does not have all the living groups that are not primary producers in it..
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_DISTRPARAM_GROUPS_TOOMANY">
+<summary>
+  Looks up a localized string similar to The distribution file for {0} has too many groups in it..
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_ENTERNAME">
+<summary>
+  Looks up a localized string similar to A strategy with this name already exists. Please select another name.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_HARVESTRUILE_DUPLICATE_F">
+<summary>
+  Looks up a localized string similar to There is more than one hcr that specifies the target F for group {0}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_HARVESTRULE_DUPLICATE">
+<summary>
+  Looks up a localized string similar to This harvest control rule already exists in the current Strategy.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_HARVESTRULE_INVALID">
+<summary>
+  Looks up a localized string similar to This harvest control rule is invalid. {0}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.ERROR_LPSOLVE">
+<summary>
+  Looks up a localized string similar to Linear Programming solution not optimal. LP Solve code {0}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.FORMNAME_STRATEGIES_OVERVIEW">
+<summary>
+  Looks up a localized string similar to Strategies Overview.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.GRID_DISTRPARM_DATANAME">
+<summary>
+  Looks up a localized string similar to {0} distrparm {1}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HCR_GROUP_BIOMASS">
+<summary>
+  Looks up a localized string similar to Biomass Group = {0}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HCR_GROUP_FISHMORT">
+<summary>
+  Looks up a localized string similar to Fishing Mort. Group = {0}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HCR_GROUP_FUNCTION">
+<summary>
+  Looks up a localized string similar to Cost function: {0}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HCRTYPE_MULTILEVEL">
+<summary>
+  Looks up a localized string similar to Multi-level.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HCRTYPE_TRADITIONAL">
+<summary>
+  Looks up a localized string similar to Traditional.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_ALPHA">
+<summary>
+  Looks up a localized string similar to Alpha.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_BETA">
+<summary>
+  Looks up a localized string similar to Beta.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_BIOMASS_LIMITS">
+<summary>
+  Looks up a localized string similar to Biomass limits.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_BOUND_LOWER">
+<summary>
+  Looks up a localized string similar to Lower boundary.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_BOUND_UPPER">
+<summary>
+  Looks up a localized string similar to Upper boundary.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_DISTRIBUTIONTYPE">
+<summary>
+  Looks up a localized string similar to Distribution type.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_F_MORT_MAX">
+<summary>
+  Looks up a localized string similar to Fmax (Fishing mortality).
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_F_MORT_MIN">
+<summary>
+  Looks up a localized string similar to Fmin (Fishing mortality).
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_FEEDTIMEADJUSTRATE">
+<summary>
+  Looks up a localized string similar to Feeding time adjust. rate.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_FLEETNO">
+<summary>
+  Looks up a localized string similar to Fleet Number.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_FLEETNUMBER">
+<summary>
+  Looks up a localized string similar to Fleet Number.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_FMORT_GROUP">
+<summary>
+  Looks up a localized string similar to Fishing Mort. Group.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_GROUP_INDEX">
+<summary>
+  Looks up a localized string similar to Group index.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_GROUP_NAME">
+<summary>
+  Looks up a localized string similar to Group name.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_HCR_TARG_OR_CONS">
+<summary>
+  Looks up a localized string similar to Target or Conservation?.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_HCR_TYPE">
+<summary>
+  Looks up a localized string similar to HCR Type.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_LIMIT_LOWER_B_KT">
+<summary>
+  Looks up a localized string similar to Lower biomass limit (kt).
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_LIMIT_LOWER_B_T_KM2">
+<summary>
+  Looks up a localized string similar to Lower biomass limit (t/km2).
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_LIMIT_UPPER_B_KT">
+<summary>
+  Looks up a localized string similar to Upper biomass limit (kt).
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_LIMIT_UPPER_B_T_KM2">
+<summary>
+  Looks up a localized string similar to Upper biomass limit (t/km2).
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_LOWER_LIMIT_VALID">
+<summary>
+  Looks up a localized string similar to Lower limit.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_MAX_CHANGE_F">
+<summary>
+  Looks up a localized string similar to Max Increase in Effort.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_MAXRELFEEDTIME">
+<summary>
+  Looks up a localized string similar to Max. rel. feeding time.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_MIDPOINT">
+<summary>
+  Looks up a localized string similar to Mid-point.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_NAME">
+<summary>
+  Looks up a localized string similar to Name.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_OTHERMORTFEEDTIME">
+<summary>
+  Looks up a localized string similar to Other mort. feeding time.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_PREDEFFECTFEEDINGTIME">
+<summary>
+  Looks up a localized string similar to Pred. effect feeding time.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_QBMAX_X_PBMAX">
+<summary>
+  Looks up a localized string similar to Q/B max x P/B max.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_QUOTASHARE">
+<summary>
+  Looks up a localized string similar to Quota Share.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_RUN_YES_NO">
+<summary>
+  Looks up a localized string similar to Run (Yes/No).
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_STEP_BIOMASS_KT">
+<summary>
+  Looks up a localized string similar to Step Biomass (kt).
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_STEP_BIOMASS_T_KM2">
+<summary>
+  Looks up a localized string similar to Step Biomass (t/km2).
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_SURVIVABILITIES">
+<summary>
+  Looks up a localized string similar to Survivabilities.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_TIMEFRAMERULES">
+<summary>
+  Looks up a localized string similar to N Years for Time Frame Rule.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.HEADER_UPPER_LIMIT_VALID">
+<summary>
+  Looks up a localized string similar to Upper limit.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.LABEL_BIOMASS_UNIT">
+<summary>
+  Looks up a localized string similar to Biomass ({0}).
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.PROMPT_DATAPATH">
+<summary>
+  Looks up a localized string similar to Select the directory to retrieve data from and output results to.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.PROMPT_DATAPATH_INACCESSIBLE">
+<summary>
+  Looks up a localized string similar to Cefas MSE cannot use path &apos;{0}&apos;. You must select another folder..
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.PROMPT_DATAPATH_INCOMPATIBLE">
+<summary>
+  Looks up a localized string similar to Cefas MSE cannot use path &apos;{0}&apos;, it was used for a different model. You must select another folder..
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.PROMPT_DATAPATH_MISSING">
+<summary>
+  Looks up a localized string similar to The path &apos;{0}&apos; does not contain the MSE file structure. Do you wish to create this?.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.PROMPT_DELETE_RESULTS">
+<summary>
+  Looks up a localized string similar to Are you sure you want to delete all results?.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.PROMPT_ENTERNAME">
+<summary>
+  Looks up a localized string similar to Select a name for the new Strategy.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.PROMPT_ENTERNAME_CAPTION">
+<summary>
+  Looks up a localized string similar to New Strategy.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.PROMPT_QUOTAS_NOT_SUM_TO_ONE">
+<summary>
+  Looks up a localized string similar to .
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.PROMPT_TRIAL_REPORT">
+<summary>
+  Looks up a localized string similar to {0} out of {1} ({2}%) parameterisations produced reasonable dynamics and were used to generate results..
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.PROMPT_UNSAVED_CHANGES">
+<summary>
+  Looks up a localized string similar to You have made changes that have not been saved. Are you sure that you want to close this form?.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.REGMETHOD_HIGHESTVALUE">
+<summary>
+  Looks up a localized string similar to Highest value.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.REGMETHOD_NOFISHING">
+<summary>
+  Looks up a localized string similar to No fishing.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.REGMETHOD_NONE">
+<summary>
+  Looks up a localized string similar to (none).
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.REGMETHOD_NOQUOTA">
+<summary>
+  Looks up a localized string similar to No quota.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.REGMETHOD_SELECTIVEFISHING">
+<summary>
+  Looks up a localized string similar to Selective fishing.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.REGMETHOD_WEAKESTSTOCK">
+<summary>
+  Looks up a localized string similar to Weakest stock.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.StartHS">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.STATUS_AVAILABLE">
+<summary>
+  Looks up a localized string similar to Available.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.STATUS_FINDMODELS_SUMMARY">
+<summary>
+  Looks up a localized string similar to {0} found {1} out of {2} models.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.STATUS_FOUND_MODEL">
+<summary>
+  Looks up a localized string similar to {0} found a new balanced model at trial {1}. {2}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.STATUS_LOADING">
+<summary>
+  Looks up a localized string similar to Loading Cefas MSE....
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.STATUS_NOTAVAILABLE">
+<summary>
+  Looks up a localized string similar to Not available.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.STATUS_RUN_PROGRESS">
+<summary>
+  Looks up a localized string similar to {0} running trial {1}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.STATUS_SAVED_BIOMASSLIMITS">
+<summary>
+  Looks up a localized string similar to {0} saved biomass limits to {1}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.STATUS_SAVED_DETAIL">
+<summary>
+  Looks up a localized string similar to Saved {0}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.STATUS_SAVED_DISTPARMS">
+<summary>
+  Looks up a localized string similar to {0} saved distribution parameters files to {1}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.STATUS_SAVED_QUOTASHARES">
+<summary>
+  Looks up a localized string similar to {0} saved quotashare parameters to {1}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.STATUS_SAVED_STRATEGIES">
+<summary>
+  Looks up a localized string similar to {0} saved strategies data to {1}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.STATUS_TRIAL_PROGRESS">
+<summary>
+  Looks up a localized string similar to {0} finding models, trial {1}, iteration {2}.
+</summary>
+</member>
+<member name="P:EwEMSEPlugin.My.Resources.Resources.StopHS">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="T:EwEMSEPlugin.My.MySettings">
+ <summary>
+ Settings class that uses a custom <see cref="T:System.Configuration.SettingsProvider"/>.
+ </summary>
+ <remarks>
+ For details about the overridden settings behaviour refer to <see cref="T:EwEUtils.cEwESettingsProvider"/>.
+ </remarks>
+</member>
+<member name="F:EwEMSEPlugin.My.MySettings.m_provider">
+ <summary>Custom <see cref="T:EwEUtils.cEwESettingsProvider">settings provider</see>.</summary>
+</member>
+<member name="M:EwEMSEPlugin.My.MySettings.#ctor">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEMSEPlugin.IDistributionParamsData">
+ ---------------------------------------------------------------------------
+ <summary>
+ Interface for maintaining distribution parameters for a single functional group.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEMSEPlugin.cDistributionParams">
+ ---------------------------------------------------------------------------
+ <summary>
+ Base class for organizing, loading, and saving distribution parameters.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEMSEPlugin.cDistributionParams.eDistrParamName">
+ <summary>
+ Enumerated type, providing all available distribution parameters.
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.cDistributionParams.Defaults">
+ <summary>
+ Generate default values
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.cDistributionParams.Load(EwECore.cMessage)">
+ <summary>
+ Generate entire parameter set from CSV.
+ </summary>
+ <param name="msg">Panic message, if any.</param>
+</member>
+<member name="M:EwEMSEPlugin.cDistributionParams.Save">
+ <summary>
+ Save entire parameter set to CSV.
+ </summary>
+</member>
+<member name="T:EwEMSEPlugin.cEcopathDistributionParamsData">
+ ---------------------------------------------------------------------------
+ <summary>
+ Container for Ecopath distribution parameters for a single functional group.
+ <seealso cref="T:EwEMSEPlugin.IDistributionParamsData"/>.
+ <seealso cref="T:EwEMSEPlugin.cEcosimDistributionParamsData"/>.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEMSEPlugin.cEcopathDistributionParams">
+ ---------------------------------------------------------------------------
+ <summary>
+ Manager for all <see cref="T:EwEMSEPlugin.cEcopathDistributionParamsData"/> for the 
+ currently loaded model.
+ <seealso cref="T:EwEMSEPlugin.cDistributionParams"/>
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="P:EwEMSEPlugin.cEcopathDistributionParams.B">
+ <summary>
+ Get Ecopath <see cref="F:EwEMSEPlugin.cDistributionParams.eDistrParamName.B">biomass</see> distribution parameters
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.cEcopathDistributionParams.Load(EwECore.cMessage)">
+ <inheritdocs cref="M:EwEMSEPlugin.cDistributionParams.Load(EwECore.cMessage)"/>
+</member>
+<member name="M:EwEMSEPlugin.cEcopathDistributionParams.Save">
+ <inheritdocs cref="M:EwEMSEPlugin.cDistributionParams.Save"/>
+</member>
+<member name="M:EwEMSEPlugin.cEcopathDistributionParams.ExtractEcopathParam(LumenWorks.Framework.IO.Csv.CsvReader,EwEMSEPlugin.cDistributionParams.eDistrParamName)">
+ <summary>
+ Extracts distribution parameters for one group from csv and Ecopath
+ </summary>
+ <param name="csv"></param>
+ <param name="ParameterType"></param>
+ <returns></returns>
+</member>
+<member name="T:EwEMSEPlugin.cEcosimDistributionParamsData">
+ ---------------------------------------------------------------------------
+ <summary>
+ Container for Ecosim distribution parameters for a single functional group.
+ <seealso cref="T:EwEMSEPlugin.IDistributionParamsData"/>.
+ <seealso cref="T:EwEMSEPlugin.cEcopathDistributionParamsData"/>.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEMSEPlugin.cEcosimDistributionParams">
+ ---------------------------------------------------------------------------
+ <summary>
+ Manager for all <see cref="T:EwEMSEPlugin.cEcosimDistributionParamsData"/> for the 
+ currently loaded model.
+ <seealso cref="T:EwEMSEPlugin.cDistributionParams"/>
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cEcosimDistributionParams.ExtractEcosimParam(LumenWorks.Framework.IO.Csv.CsvReader)">
+ <summary>
+ Given a Ecosim csv object this extracts the data from the current line and uses it to return an EcosimParam structure object
+ </summary>
+ <param name="csv"></param>
+ <returns></returns>
+</member>
+<member name="M:EwEMSEPlugin.cEffortLimits.Defaults">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEMSEPlugin.IMSEData.Defaults"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cEffortLimits.IsChanged">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEMSEPlugin.IMSEData.IsChanged"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cEffortLimits.Load(EwECore.cMessage,System.String)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEMSEPlugin.IMSEData.Load(EwECore.cMessage,System.String)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cEffortLimits.Save(System.String)">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEMSEPlugin.IMSEData.Save(System.String)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEMSEPlugin.cEffortLimits.nFleets">
+ <summary>Cheat!</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSE.LandingsDiscards">
+ <summary>
+ Landings and discards by Fleet, Group and eCatchTypes
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.ResolveMSEPathConflicts(System.Boolean)">
+ <summary>
+ Interactively resolve MSE folder conflicts.
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.InvalidateConfigurationState(System.Boolean)">
+ <summary>
+ Invalidate the known state of the MSE engine. Data may have been changed, directories
+ may have been swapped: MSE simply does not know its state any longer and will need to
+ reassess this at a next opportunity.
+ </summary>
+ <param name="bReloadData"></param>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.IsInputStructureAvailable">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns whether the MSE plug-in has all directories that it needs in the
+ <see cref="P:EwEMSEPlugin.cMSE.DataPath"></see>.
+ </summary>
+ <returns>True if the directory structure exists in its entirety.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSE.IsInputDataCompatible">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns whether all base data is available for building models
+ </summary>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSE.NumModelsAvailable">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the number of pre-generated models found in the current <see cref="P:EwEMSEPlugin.cMSE.DataPath"/>.
+ </summary>
+ <returns>
+ The number of pre-generated models found in the current <see cref="P:EwEMSEPlugin.cMSE.DataPath"/>.
+ </returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSE.NumStrategiesAvailable">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the number of fishing strategies found in the current <see cref="P:EwEMSEPlugin.cMSE.DataPath"/>.
+ </summary>
+ <returns>
+ The number of fishing strategies found in the current <see cref="P:EwEMSEPlugin.cMSE.DataPath"/>.
+ </returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSE.HasResults">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns whether there are results in the <see cref="P:EwEMSEPlugin.cMSE.DataPath"/>.
+ </summary>
+ <returns>True if there are results in the <see cref="P:EwEMSEPlugin.cMSE.DataPath"/>.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEMSEPlugin.cMSE.ModelCompatibilityInfo">
+ -----------------------------------------------------------------------
+ <summary>
+ Get any recent compatibility assessment.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSE.WriteEcopathParms(System.String,System.Single[])">
+ <summary>
+ Append an Ecopath variable to a CSV out file.
+ </summary>
+ <param name="strFile"></param>
+ <param name="data"></param>
+ <returns>True if successful.</returns>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.CreateVulnerabilities">
+ <summary>
+ Generate csv with vulnerabilities.
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.SaveOriginalState">
+ <summary>
+ Save any variable that will be changed so the model can be restore to it's original state 
+ </summary>
+ <remarks>This just stores a sub set of variable as an example</remarks>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.RestoreOriginalState">
+ <summary>
+ Restore the currently loaded model back to its original state so that it can be run in the interface.
+ </summary>
+ <remarks>In some cases you may want to save changes you made to the model.</remarks>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.ResetEffortToMax(System.Int32,System.Int32)">
+ <summary>
+ Resets the effort to the maximum specifed effort for the project time steps
+ </summary>
+ <remarks>The effort is used is the effort determined through regulation unless greater than this maximum effort</remarks>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.updateDietMatrixFromCSVFile(System.Int32)">
+ <summary>
+ Read the DietMatrix file for this trial and populate the Ecopath diet matrix
+ </summary>
+ <param name="iTrial"></param>
+ <returns></returns>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.dumpDietMatrix">
+ <summary>
+ Used for debugging to test the diet matrix created here against the Ecopath diet matrix 
+ </summary>
+ <remarks>
+ There is a equivalent method in Ecopath that dumps the diet matrix use for the current iteration out to file. 
+ These file can then be compared.
+ </remarks>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.updateParametersFromMemory(System.Int32)">
+ <summary>
+ Populte the Ecopath and Ecosim parameter with values read into memory by Me.readEcopathEcosimParameters()
+ </summary>
+ <param name="itrial"></param>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.initResultFiles(EwECore.cMessage,System.IO.StreamWriter@,System.IO.StreamWriter@)">
+ <summary>
+ Initialize the biomass and fleet results files
+ </summary>
+ <param name="msgReport"></param>
+ <param name="strmGroup"></param>
+ <param name="strmFleet"></param>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.Calc_Total_Catch_If_Quota_Didnt_Affect_It(System.Single,System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Calculate the total catch including discards that survived
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.calcCatchRate(System.Single,System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Calculate the total catch rate at the current effort, including discards that survived and the density dependant catchability.
+ </summary>
+ <remarks>
+ This is not really F because it includes survivals
+ </remarks>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.readEcopathEcosimParameters">
+ <summary>
+ Load all the parameters from the [parameter name]_out.csv files
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.SetFtimeFromGear(System.Int32)">
+ <summary>
+ Populates FishRateNo(group,time) with fishing mortality rates for a timestep from the base catch rates, current Effort and Proportions Landed and Discarded.
+ FishRateNo(group,time) is then used by Ecosim to set FishTime() in SetFishTime()
+ </summary>
+ <param name="t">Timestep.</param>
+ <remarks>
+ Calculates F from the BaseCatchRate(fleet,group) which it the total catch rate including discards that survived.
+ The propotion of discards that survives was removed from  Propdiscardtime(fleet,group) in the regulatory code.
+ </remarks>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.ResolveFleet(System.String,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Resolve a name and index to a <see cref="T:EwECore.cEcopathFleetInput"/> instance.
+ </summary>
+ <param name="strName">The name to resolve.</param>
+ <param name="iIndex">The index to resolve.</param>
+ <returns>A <see cref="T:EwECore.cEcopathFleetInput"/> instance, or Nothing if
+ the index or name did not match any of the present fleets.</returns>
+ <remarks>Note that name comparison is not case sensitive.</remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSE.InformUser(System.String,EwEUtils.Core.eMessageImportance,System.String,System.String[])">
+ -----------------------------------------------------------------------
+ <summary>
+ Notify the user of an event.
+ </summary>
+ <param name="strMessage"></param>
+ <param name="importance"></param>
+ <param name="strHyperlink"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSE.AskUser(System.String,EwEUtils.Core.eMessageReplyStyle,EwEUtils.Core.eMessageImportance,EwEUtils.Core.eMessageReply)">
+ -----------------------------------------------------------------------
+ <summary>
+ Ask the user a question.
+ </summary>
+ <param name="strMessage"></param>
+ <param name="style"></param>
+ <param name="importance"></param>
+ <param name="replyDefault"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEMSEPlugin.cMSE.NMaxAttempts">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the max # of trials for finding a balanced model
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEMSEPlugin.cMSE.NMaxTime">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the max time for finding a balanced model (in fractions of hours)
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSE.initQModifier">
+ <summary>
+ Start of run initializer for Q modifiers (Ecopath base fishing mortality)
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:EwEMSEPlugin.cMSE.PropTotCatchFleet(System.Int32,System.Int32,System.Int32)">
+ <summary>
+ Get the proportion of the fishing mortality caused by a fleet on a group at a time step.
+ </summary>
+ <param name="iTime"></param>
+ <param name="iFleet"></param>
+ <param name="iGroup"></param>
+ <returns>Proportion of fishing mortality cause by a fleet</returns>
+ <remarks></remarks>
+</member>
+<member name="F:EwEMSEPlugin.cMSEPluginPoint.m_bSessionActive">
+ <summary>
+ Flag, stating that an MSE session has been explicitly activated by the user.
+ </summary>
+ <remarks>
+ This prevents needless messages and processing if the MSE plug-in is loaded, 
+ but has not been activated by the user.
+ </remarks>
+</member>
+<member name="P:EwEMSEPlugin.cMSEPluginPoint.Monitor">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the <see cref="T:EwEMSEPlugin.cMSEStateMonitor">MSE state monitor</see>.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEPluginPoint.ResolveGroup(System.String,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Resolve a name and index to a <see cref="T:EwECore.cEcoPathGroupInput"/> instance.
+ </summary>
+ <param name="strName">The name to resolve.</param>
+ <param name="iIndex">The index to resolve.</param>
+ <returns>A <see cref="T:EwECore.cEcoPathGroupInput"/> instance, or Nothing if
+ the index or name did not match any of the present groups.</returns>
+ <remarks>Note that name comparison is not case sensitive.</remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEPluginPoint.ResolveFleet(System.String,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Resolve a name and index to a <see cref="T:EwECore.cEcopathFleetInput"/> instance.
+ </summary>
+ <param name="strName">The name to resolve.</param>
+ <param name="iIndex">The index to resolve.</param>
+ <returns>A <see cref="T:EwECore.cEcopathFleetInput"/> instance, or Nothing if
+ the index or name did not match any of the present fleets.</returns>
+ <remarks>Note that name comparison is not case sensitive.</remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEPluginPoint.InformUser(System.String,EwEUtils.Core.eMessageImportance,System.String,System.String[])">
+ -----------------------------------------------------------------------
+ <summary>
+ Notify the user of an event.
+ </summary>
+ <param name="strMessage"></param>
+ <param name="importance"></param>
+ <param name="strHyperlink"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEPluginPoint.AskUser(System.String,EwEUtils.Core.eMessageReplyStyle,EwEUtils.Core.eMessageImportance,EwEUtils.Core.eMessageReply)">
+ -----------------------------------------------------------------------
+ <summary>
+ Ask the user a question.
+ </summary>
+ <param name="strMessage"></param>
+ <param name="style"></param>
+ <param name="importance"></param>
+ <param name="replyDefault"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEMSEPlugin.cDiets.MeanProportions">
+ <summary>
+ Mean diet proportions (by predator x prey). Note that predator and prey indices are ZERO-based!
+ </summary>
+</member>
+<member name="P:EwEMSEPlugin.cDiets.Interacts">
+ <summary>
+ Number of diet interactions (by predator x prey). Note that predator and prey indices are ZERO-based!
+ </summary>
+</member>
+<member name="P:EwEMSEPlugin.cDiets.DietPropMultipliers">
+ <summary>
+ Diet proportion multipliers (by predator). Note that predator indices are ZERO-based!
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.cQuotaShares.QuotaFileValid">
+ <summary>
+ Checks whether the quota file is valid
+ </summary>
+</member>
+<member name="P:EwEMSEPlugin.cQuotaShares.QuotaFileExists">
+ <summary>
+ Returns whether the Quota share file exists
+ </summary>
+</member>
+<member name="P:EwEMSEPlugin.cQuotaShares.CountDist">
+ <summary>
+ Returns the number of elements in the quota share list
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.cQuotaShares.Check_QuotaShares_File_Okay">
+ <summary>
+ Checks whether the quota share file is valid
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.cQuotaShares.AddQuotaShare(System.Int32,System.Int32,System.Single)">
+ <summary>
+ Adds a quota share value to the list of quota shares
+ and if it can't returns FALSE
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.cQuotaShares.ReadRowDist(System.Int32)">
+ <summary>
+ Reads the iRow_th from the list of quotas
+ </summary>
+ <param name="iRow"></param>
+ <returns></returns>
+ <remarks>iRow is zero-based</remarks>
+</member>
+<member name="M:EwEMSEPlugin.cQuotaShares.ReadiFleetiGroupQuotaShare(System.Int32,System.Int32,System.Boolean)">
+ <summary>
+ Reads the quota share that iFleet has of iGroup
+ </summary>
+ <param name="iFleet"></param>
+ <param name="iGroup"></param>
+ <returns></returns>
+ <remarks>iFleet and iGroup are zero-based</remarks>
+</member>
+<member name="M:EwEMSEPlugin.cQuotaShares.ExtractQuotaShare(LumenWorks.Framework.IO.Csv.CsvReader)">
+ <summary>
+ Extracts a single quota share from the csv file
+ </summary>
+ <param name="csv">The CSV object linking to the quota share file</param>
+ <returns></returns>
+</member>
+<member name="M:EwEMSEPlugin.cQuotaShares.RemoveUnnecessaryShares(EwEMSEPlugin.Strategies)">
+ <summary>
+ Delete the shares if there is no longer a hcr associated with it
+ </summary>
+ <param name="strategies"></param>
+</member>
+<member name="F:EwEMSEPlugin.cStockAssessmentModel.CVbiomEst">
+ <summary>
+ CV of observation error by group
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:EwEMSEPlugin.cStockAssessmentModel.RHalfB0Ratio">
+ <summary>
+ Input Ratio of Bt to B0 needed for 50% of max recruitment 
+ </summary>
+</member>
+<member name="F:EwEMSEPlugin.cStockAssessmentModel.CVImpError">
+ <summary>
+ CV of implementation error by fleet
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:EwEMSEPlugin.cStockAssessmentParameters">
+ <summary>
+ Wrapper class to hold Stock Assessment parameters
+ </summary>
+ <remarks>Used by the interface to access Stock Assessment parameters</remarks>
+</member>
+<member name="T:EwEMSEPlugin.IMSEData">
+ <summary>
+ Foundation interface for user-supplied data in the MSE plug-in.
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.IMSEData.Load(EwECore.cMessage,System.String)">
+ <summary>
+ Load data from a file.
+ </summary>
+ <param name="strFilename">Optional file name to load data from.</param>
+ <returns>True if successful.</returns>
+</member>
+<member name="M:EwEMSEPlugin.IMSEData.Save(System.String)">
+ <summary>
+ Load data to a file.
+ </summary>
+ <param name="strFilename">Optional file name to save data to.</param>
+ <returns>True if successful.</returns>
+</member>
+<member name="M:EwEMSEPlugin.IMSEData.IsChanged">
+ <summary>
+ Returns whether the data has been changed since the last time it was loaded.
+ </summary>
+ <returns>True if the data has been changed since the last time it was loaded.</returns>
+</member>
+<member name="M:EwEMSEPlugin.IMSEData.Defaults">
+ <summary>
+ Set the data to default values.
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.IMSEData.FileExists(System.String)">
+ <summary>
+ Returns whether the file(s) for the data exist
+ </summary>
+ <param name="strFilename"></param>
+ <returns></returns>
+</member>
+<member name="T:EwEMSEPlugin.gridStrategiesOverview">
+ ===========================================================================
+ <summary>
+ Grid to allow biomass limits to be specified for credible results.
+ </summary>
+ ===========================================================================
+</member>
+<member name="M:EwEMSEPlugin.gridStrategiesOverview.OnCellValueChanged(SourceGrid2.Position,SourceGrid2.Cells.ICellVirtual)">
+ -----------------------------------------------------------------------
+ <summary>
+ Called Update local admin based on cell value changes.
+ </summary>
+ <returns>
+ True if the value change is allowed, False to block the value change.
+ </returns>
+ <remarks>
+ This method differs from OnCellValueEdited; during a cell value 
+ change notification (at the end of an edit operation) it is unsafe
+ to modify the value of the cell being edited. However, the end edit 
+ event will not be triggered for particular specialized cells which
+ makes this method mandatory.
+ </remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEMSEPlugin.gridStrategiesOverview.AllowUpdates">
+ -----------------------------------------------------------------------
+ <summary>
+ Update lock, should be set when modifying cell values from the code
+ to prevent recursive update/notification loops.
+ </summary>
+ <returns>True when no update lock is active.</returns>
+ <remarks>
+ Update locks are cumulative: setting this lock twice will require 
+ clearing it twice to allow updates to happen.
+ </remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEMSEPlugin.gridBiomassLimits">
+ ===========================================================================
+ <summary>
+ Grid to allow biomass limits to be specified for credible results.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEMSEPlugin.gridQuotaShares">
+ ===========================================================================
+ <summary>
+ Grid to allow species quota interaction.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEMSEPlugin.gridErrorCVs">
+ ===========================================================================
+ <summary>
+ Grid to allow species quota interaction.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEMSEPlugin.gridDiets">
+ ===========================================================================
+ <summary>
+ Grid to change diet multipliers.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEMSEPlugin.frmCEFASRecruitment">
+ =======================================================================
+ <summary>
+ Form, implementing the Ecosim Recruitment interface.
+ </summary>
+ =======================================================================
+</member>
+<member name="F:EwEMSEPlugin.frmCEFASRecruitment.m_zgh">
+ <summary><see cref="T:ScientificInterfaceShared.Controls.cZedGraphHelper">Helper</see> to manipulate the graph.</summary>
+</member>
+<member name="F:EwEMSEPlugin.frmCEFASRecruitment.m_group">
+ <summary>Group selected in the form.</summary>
+</member>
+<member name="P:EwEMSEPlugin.frmCEFASRecruitment.Group">
+ -------------------------------------------------------------------
+ <summary>
+ Get/set the group to select in the form.
+ </summary>
+ -------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.frmCEFASRecruitment.GetGraphValues">
+ -------------------------------------------------------------------
+ <summary>
+ Return the data to render in the graph.
+ </summary>
+ <returns>A <see cref="T:EwEMSEPlugin.frmCEFASRecruitment.sGraphData">graph data</see> instance with data
+ to render in the graph.</returns>
+ -------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.frmCEFASRecruitment.RedrawGraph">
+ -------------------------------------------------------------------
+ <summary>
+ Redraw the recruitment curve graph.
+ </summary>
+ -------------------------------------------------------------------
+</member>
+<member name="T:EwEMSEPlugin.frmTFMpolicy">
+ =======================================================================
+ <summary>
+ Form, implementing the Cefas MSE Fishing policy mortality (a.k.a hockey stick) 
+ interface.
+ </summary>
+ =======================================================================
+</member>
+<member name="F:EwEMSEPlugin.frmTFMpolicy.m_zgh">
+ <summary><see cref="T:ScientificInterfaceShared.Controls.cZedGraphHelper">Helper</see> to manipulate the graph.</summary>
+</member>
+<member name="F:EwEMSEPlugin.frmTFMpolicy.m_dragtype">
+ <summary>Graph drag mode.</summary>
+</member>
+<member name="F:EwEMSEPlugin.frmTFMpolicy.m_MSE">
+ <summary>MSE Plugin initialized in me.Init(cUIContext,cMSE)</summary>
+ <remarks>Provides access to data.</remarks>
+</member>
+<member name="M:EwEMSEPlugin.frmTFMpolicy.OnGridSelectionChanged">
+ <summary>
+ Update group selection according to user actions in the grid.
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.frmTFMpolicy.OnGridEdited">
+ <summary>
+ Update to changed grid contents.
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.frmTFMpolicy.UpdatePlot">
+ -------------------------------------------------------------------
+ <summary>
+ Redraw the quota curve.
+ </summary>
+ -------------------------------------------------------------------
+</member>
+<member name="T:EwEMSEPlugin.gridMaxDecreaseEffort">
+ ===========================================================================
+ <summary>
+ Grid to allow species quota interaction.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEMSEPlugin.gridCEFASRecruitment">
+ ===========================================================================
+ <summary>
+ Grid to allow species quota interaction.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEMSEPlugin.gridRegulations">
+ ===========================================================================
+ <summary>
+ Grid to allow species quota interaction.
+ </summary>
+ ===========================================================================
+</member>
+<member name="F:EwEMSEPlugin.gridRegulations.m_strategy">
+ <summary>Selected strategy</summary>
+</member>
+<member name="T:EwEMSEPlugin.gridSurviveDistParameters">
+ ===========================================================================
+ <summary>
+ Grid to allow species quota interaction.
+ </summary>
+ ===========================================================================
+</member>
+<member name="F:EwEMSEPlugin.gridSurviveDistParameters.mMSEPlugin">
+ <summary>The cMSE Plugin that contains the data.</summary>
+</member>
+<member name="T:EwEMSEPlugin.cMSEStateMonitor">
+ ---------------------------------------------------------------------------
+ <summary>
+ Helper class that monitors the run and data state of the MSE engine, and its
+ compatibility with the model loaded in EwE.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="F:EwEMSEPlugin.cMSEStateMonitor.m_plugin">
+ <summary>The <see cref="T:EwEMSEPlugin.cMSEPluginPoint"/> this monitor keeps an eye on.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEStateMonitor.m_statecache">
+ <summary>Cache of pre-determined states.</summary>
+</member>
+<member name="M:EwEMSEPlugin.cMSEStateMonitor.#ctor(EwEMSEPlugin.cMSEPluginPoint)">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor.
+ </summary>
+ <param name="plugin">The <see cref="T:EwEMSEPlugin.cMSEPluginPoint"/> this monitor
+ will keep an eye on.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEMSEPlugin.cMSEStateMonitor.eState">
+ -----------------------------------------------------------------------
+ <summary>
+ Possible states for the MSE plug-in.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="F:EwEMSEPlugin.cMSEStateMonitor.eState.Idle">
+ <summary>MSE is ready to operate. The default state, and always true.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEStateMonitor.eState.HasParams">
+ <summary>MSE has input parameters and a number of strategies.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEStateMonitor.eState.HasModels">
+ <summary>MSE has generated models.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEStateMonitor.eState.HasResults">
+ <summary>MSE has run.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEStateMonitor.eState.IsRunning">
+ <summary>MSE is running.</summary>
+</member>
+<member name="E:EwEMSEPlugin.cMSEStateMonitor.OnInvalidated">
+ -----------------------------------------------------------------------
+ <summary>
+ Event that will be thrown when the state monitor is invalidated.
+ In response, user interfaces may want to re-assess their content.
+ </summary>
+ <param name="mon">The <see cref="T:EwEMSEPlugin.cMSEStateMonitor">monitor</see>
+ that sent the event.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEStateMonitor.IsStateAvailable(EwEMSEPlugin.cMSEStateMonitor.eState)">
+ -----------------------------------------------------------------------
+ <summary>
+ Checks whether a <see cref="T:EwEMSEPlugin.cMSEStateMonitor.eState">state</see> is met.
+ </summary>
+ <param name="state"></param>
+ <returns>True if the requested state has been met.</returns>
+ <remarks>
+ <para>Checks cascade recursively, starting at the foundation state.
+ A state can only be met if its preceeding states are met. Each
+ state may involve a combination of MSE configuration checks, 
+ core data validations, and MSE - core compatibility checks.</para>
+ <para>For performance reasons the states are cached once determined.
+ This will lead to bugs if the state monitor is not explicitly 
+ cleared by outside managing code when needed by calling
+ <see cref="M:EwEMSEPlugin.cMSEStateMonitor.Invalidate"/>.</para>
+ </remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEStateMonitor.Invalidate">
+ -----------------------------------------------------------------------
+ <summary>
+ Forget the cached states in the monitor, requiring new state assessments.
+ </summary>
+ <remarks>
+ In response, the monitor may broadcast an <see cref="E:EwEMSEPlugin.cMSEStateMonitor.OnInvalidated"/> event.
+ </remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="F:EwEMSEPlugin.cSurvivability.mListofSuriveDistParams">
+ <summary>
+ Stores a list of all the information for each survivability distribution
+ </summary>
+</member>
+<member name="F:EwEMSEPlugin.cSurvivability.m_ListOfSampledSurvivabilities">
+ <summary>
+ Stores a list of all the sampled survivabilities
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:EwEMSEPlugin.cSurvivability.mcore">
+ <summary>
+ Reference to the EwE core
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:EwEMSEPlugin.cSurvivability.mMSE">
+ <summary>
+ Reference to the MSE plugin
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:EwEMSEPlugin.cSurvivability.mSurvDistFileExists">
+ <summary>
+ Equals True if the survivability distribution parameters file exists
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:EwEMSEPlugin.cSurvivability.mSurvDistFileValid">
+ <summary>
+ Equals TRUE if the survivability distribution parameters file is formatted correctly
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:EwEMSEPlugin.cSurvivability.mSurvParamFileExists">
+ <summary>
+ Equals True if the sampled survivability parameters file exists
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="F:EwEMSEPlugin.cSurvivability.mSurvParamFileValid">
+ <summary>
+ Equals TRUE if the sampled survivability parameters file is formatted correctly
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:EwEMSEPlugin.cSurvivability.cSurvivabilityDistributonParam">
+ <summary>
+ Stores a single survivability probabability distribution
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:EwEMSEPlugin.cSurvivability.cSampledSurvivability">
+ <summary>
+ Stores a single sampled survivability parameter
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:EwEMSEPlugin.cSurvivability.ListofSurvDistParams">
+ <summary>
+ Returns the list of all the survivability distribution parameters
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:EwEMSEPlugin.cSurvivability.CountDist">
+ <summary>
+ Returns the number of elements in the survivability distribution list
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:EwEMSEPlugin.cSurvivability.AddDist(EwEMSEPlugin.cSurvivability.cSurvivabilityDistributonParam)">
+ <summary>
+ Adds a distribution parameter to the list of survivability distribution parameters
+ and if it can't returns FALSE
+ </summary>
+ <param name="param"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:EwEMSEPlugin.cSurvivability.ReadRowDist(System.Int32)">
+ <summary>
+ Reads the iRow_th from the list of survivability distribution parameters
+ </summary>
+ <param name="iRow"></param>
+ <returns></returns>
+ <remarks>iRow is zero-based</remarks>
+</member>
+<member name="M:EwEMSEPlugin.cSurvivability.ReadiFleetiGroupDist(System.Int32,System.Int32)">
+ <summary>
+ Reads the survivability distribution parameters for iGroup as discarded by iFleet
+ </summary>
+ <param name="iFleet"></param>
+ <param name="iGroup"></param>
+ <returns></returns>
+ <remarks>iFleet and iGroup are zero-based</remarks>
+</member>
+<member name="M:EwEMSEPlugin.cSurvivability.ParamFileValid">
+ <summary>
+ Checks whether the Sampled Parameters file is valid
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:EwEMSEPlugin.cSurvivability.SurvParamFileValid">
+ <summary>
+ Returns whether the sampled param file is valid
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:EwEMSEPlugin.cSurvivability.SurvivabilityParamFileExists">
+ <summary>
+ Returns whether the Sampled survivability file exists
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:EwEMSEPlugin.cSurvivability.SampleParams(System.Int32)">
+ <summary>
+ Samples the survivability parameters
+ </summary>
+ <param name="nParams">The number of models to generate</param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:EwEMSEPlugin.cSurvivability.LoadSampledParamsFromCSV">
+ <summary>
+ Load the sampled parameters from CSV
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:EwEMSEPlugin.cSurvivability.ExtractSampledParam(LumenWorks.Framework.IO.Csv.CsvReader)">
+ <summary>
+ Extract a single line from the sampled survivability parameter file
+ </summary>
+ <param name="csv">The csv object that links to the file</param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:EwEMSEPlugin.cSurvivability.SaveSampledToCSV">
+ <summary>
+ Saves the sampled survivabilities to CSV
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:EwEMSEPlugin.cSurvivability.ExtractSurvivabilityDist(EwECore.cMessage,LumenWorks.Framework.IO.Csv.CsvReader,EwEMSEPlugin.cSurvivability.cSurvivabilityDistributonParam@)">
+ <summary>
+ Extracts a survivability distribution parameter + information from csv
+ </summary>
+ <param name="csv">The CSV object linking to the survivability distribution parameter file</param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:EwEMSEPlugin.cMSEUtils.GetReader(System.String)">
+ -----------------------------------------------------------------------
+ <summary>
+ Fail-safe method to obtain a stream reader to a file.
+ </summary>
+ <param name="strFile">The path to the file to obtain.</param>
+ <returns>A stream reader if successful, or Nothing if an error occurred.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEUtils.ReleaseReader(System.IO.StreamReader@)">
+ -----------------------------------------------------------------------
+ <summary>
+ Fail-safe method to release stream reader previously obtained via
+ <see cref="M:EwEMSEPlugin.cMSEUtils.GetReader(System.String)"/>.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEUtils.GetWriter(System.String,System.Boolean)">
+ -----------------------------------------------------------------------
+ <summary>
+ Fail-safe method to obtain a stream writer to a file.
+ </summary>
+ <param name="strFile">The path to the file to obtain.</param>
+ <param name="bAppend">Append to the content if True, or overwrite content
+ if false.</param>
+ <returns>A stream writer if successful, or Nothing if an error occurred.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEUtils.ReleaseWriter(System.IO.StreamWriter@)">
+ -----------------------------------------------------------------------
+ <summary>
+ Fail-safe method to release stream writer previously obtained via
+ <see cref="M:EwEMSEPlugin.cMSEUtils.GetReader(System.String)"/>.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEUtils.FromCSVField(System.String)">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns a stripped and trimmed value obtained from a CSV file.
+ </summary>
+ <param name="strValue"></param>
+ <returns></returns>
+ <remarks>Removes quotes, and trims whitespace.</remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEMSEPlugin.cMSEUtils.eMSEPaths">
+ <summary>
+ Data path categories for the MSE plug-in.
+ </summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.Root">
+ <summary>The root folder that the plug-in is configured to use.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.Fleet">
+ <summary>The Fleet subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.DistrParams">
+ <summary>The Distributions subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.ParamsOut">
+ <summary>The ParametersOut subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.Results">
+ <summary>The Results subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.HCRF_Targ">
+ <summary>The Results\HCRF_Targ subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.HCRF_Cons">
+ <summary>The Results\HCRF_Cons subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.HCRQuota_Targ">
+ <summary>The Results\HCRQuota_Targ subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.HCRQuota_Cons">
+ <summary>The Results\HCRQuota_Cons subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.Biomass">
+ <summary>The Results\Biomass subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.Effort">
+ <summary>The Results\Effort subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.HighestValueGroup">
+ <summary>The Results\HighestValueGroup subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.ChokeGroup">
+ <summary>The Results\ChokeGroup subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.RealisedF">
+ <summary>The Results\RealisedF subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.RealisedLandedF">
+ <summary>The Results\RealisedF subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.RealisedDiscardF">
+ <summary>The Results\RealisedF subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.LandingsTrajectories">
+ <summary>The Results\LandingsTrajectories subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.DiscardsTrajectories">
+ <summary>The Results\DiscardsTrajectories subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.CatchTrajectories">
+ <summary>The Results\CatchTrajectories subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.ValueTrajectories">
+ <summary>The Results\ValueTrajectories subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.PredationMortality">
+ <summary>The Results\PredationMortalityTrajectories subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.PredationMortalityPreyOnly">
+ <summary>The Results\PredationMortalityPreyOnlyTrajectories subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.Strategies">
+ <summary>The Strategies subfolder under 'Root'.</summary>
+</member>
+<member name="F:EwEMSEPlugin.cMSEUtils.eMSEPaths.Regulations">
+ <summary>The regulations subfolder under 'Root'.</summary>
+</member>
+<member name="M:EwEMSEPlugin.cMSEUtils.MSEFile(System.String,EwEMSEPlugin.cMSEUtils.eMSEPaths,System.String)">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the full path to a MSE file.
+ </summary>
+ <param name="strPath">The MSE datapath</param>
+ <param name="category">The <see cref="T:EwEMSEPlugin.cMSEUtils.eMSEPaths">category</see> subfolder for the file.</param>
+ <param name="strFile">The name of the file.</param>
+ <returns>A path to a file, or an empty string if an error occurred.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEUtils.MSEFolder(System.String,EwEMSEPlugin.cMSEUtils.eMSEPaths)">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the full path to an MSE folder.
+ </summary>
+ <param name="strPath">The MSE datapath</param>
+ <param name="category">The <see cref="T:EwEMSEPlugin.cMSEUtils.eMSEPaths">category</see> subfolder.</param>
+ <returns>A path to a folder.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEUtils.Subfolder(EwEMSEPlugin.cMSEUtils.eMSEPaths)">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the subfolder path for a folder category.
+ </summary>
+ <param name="category">The <see cref="T:EwEMSEPlugin.cMSEUtils.eMSEPaths">category</see> subfolder.</param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.cMSEUtils.LogError(EwECore.cMessage,System.String,EwEUtils.Core.eStatusFlags)">
+ <summary>
+ Generate a <see cref="T:EwECore.cVariableStatus">error flag</see> for use in MSE error messages.
+ </summary>
+ <param name="strMsg"></param>
+ <param name="status"></param>
+ <remarks></remarks>
+</member>
+<member name="T:EwEMSEPlugin.HCR_GroupNS.HCR_Group">
+ <summary>
+ Harvest Control Rules and Strategies all need to be public so they can be accessed in the frmTFMpolicy interface.
+ </summary>
+</member>
+<member name="P:EwEMSEPlugin.HCR_GroupNS.HCR_Group.GroupB">
+ <summary>
+ Biomass group.
+ </summary>
+</member>
+<member name="P:EwEMSEPlugin.HCR_GroupNS.HCR_Group.GroupF">
+ <summary>
+ Fishing mortality group.
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.HCR_GroupNS.HCR_Group.isValid(System.String@)">
+ <summary>
+ Validate the Harvest Control Rule against the core group indexes
+ </summary>
+ <returns>True if this rule is valid. False otherwise.</returns>
+ <remarks></remarks>
+</member>
+<member name="T:EwEMSEPlugin.Strategies">
+ <summary>
+ Class to wrap a list of Strategies into an object
+ </summary>
+ <remarks>Strategies "Is A" list of <see cref="T:EwEMSEPlugin.Strategy">Strategy objects</see></remarks>
+</member>
+<member name="M:EwEMSEPlugin.Strategies.RemoveAt(System.Int32)">
+ <summary>
+ Overwrite default behaviour to delete the Strategy file when removing a Strategy from the list
+ </summary>
+ <param name="ZeroBasedIndex">Zero based index of the Strategy to remove</param>
+</member>
+<member name="M:EwEMSEPlugin.Strategies.ResolveGroup(System.String,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Resolve a name and index to a <see cref="T:EwECore.cEcoPathGroupInput"/> instance.
+ </summary>
+ <param name="strName">The name to resolve.</param>
+ <param name="iIndex">The index to resolve.</param>
+ <returns>A <see cref="T:EwECore.cEcoPathGroupInput"/> instance, or Nothing if
+ the index or name did not match any of the present groups.</returns>
+ <remarks>Note that name comparison is not case sensitive.</remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEMSEPlugin.Strategy">
+ <summary>
+ Class to group a list of Harvest Control Rules into an object
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.Strategy.ResolveGroup(System.String,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Resolve a name and index to a <see cref="T:EwECore.cEcoPathGroupInput"/> instance.
+ </summary>
+ <param name="strName">The name to resolve.</param>
+ <param name="iIndex">The index to resolve.</param>
+ <returns>A <see cref="T:EwECore.cEcoPathGroupInput"/> instance, or Nothing if
+ the index or name did not match any of the present groups.</returns>
+ <remarks>Note that name comparison is not case sensitive.</remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="F:EwEMSEPlugin.eConvertTypes.None">
+ <summary>Do not convert values</summary>
+</member>
+<member name="F:EwEMSEPlugin.eConvertTypes.ToEcopathBio">
+ <summary>Convert Biomass from interface Tonnes^3 (kt) to t/km2</summary>
+</member>
+<member name="F:EwEMSEPlugin.eConvertTypes.ToDisplayBio">
+ <summary>Convert Biomass from Ecopath t/km2 to Tonnes^3 (kt)</summary>
+</member>
+<member name="M:EwEMSEPlugin.frmDistributionParameters.OnModelSelectionChanged(System.Object,System.EventArgs)">
+ <summary>
+ Everytime the user changes the parameter type combobox from Ecopath 
+ Parameters to Ecosim Parameters and vice versa. This gets called to 
+ change all the options in the combobox used to specify the parameter 
+ name.
+ </summary>
+</member>
+<member name="M:EwEMSEPlugin.frmMSE.#ctor(EwEMSEPlugin.cMSEPluginPoint,ScientificInterfaceShared.Controls.cUIContext)">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor.
+ </summary>
+ <param name="MSEPluginPoint">The <see cref="T:EwEMSEPlugin.cMSEPluginPoint"/> this form 
+ is created for.</param>
+ <param name="uic">The <see cref="T:ScientificInterfaceShared.Controls.cUIContext"/> of the current EwE instance.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEMSEPlugin.frmMSE.OnMSEStateChanged(EwEMSEPlugin.cMSEStateMonitor)">
+ -----------------------------------------------------------------------
+ <summary>
+ Handle a (remote) request to update the form state. The request is handled
+ in idle time.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEMSEPlugin.frmMSE.Plugin">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the <see cref="T:EwEMSEPlugin.cMSEPluginPoint"/> connected to this form.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEMSEPlugin.frmMSE.MSE">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the <see cref="T:EwEMSEPlugin.cMSE"/> connected to this form.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEMSEPlugin.gridDistributionParameters">
+ ===========================================================================
+ <summary>
+ Grid to allow species quota interaction.
+ </summary>
+ ===========================================================================
+</member>
+<member name="F:EwEMSEPlugin.gridDistributionParameters.MSEPlugin">
+ <summary>The cMSE Plugin that contains the data.</summary>
+</member>
+<member name="T:EwEMSEPlugin.gridTargetFishingMortalityPolicy">
+ ===========================================================================
+ <summary>
+ Grid to allow species quota interaction.
+ </summary>
+ ===========================================================================
+</member>
+</members>
+</doc>

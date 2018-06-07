@@ -1,0 +1,326 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+EwEWoRMSPlugin
+</name>
+</assembly>
+<members>
+<member name="T:EwEWoRMSPlugin.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:EwEWoRMSPlugin.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:EwEWoRMSPlugin.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:EwEWoRMSPlugin.My.Resources.Resources.BlueBridge_xparent">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEWoRMSPlugin.My.Resources.Resources.ENGINE_NAME">
+<summary>
+  Looks up a localized string similar to WoRMS (World Register of Marine Species) data connection.
+</summary>
+</member>
+<member name="P:EwEWoRMSPlugin.My.Resources.Resources.WoRMS_logo">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="T:EwEWoRMSPlugin.My.MySettings">
+ <summary>
+ Settings class that uses a custom <see cref="T:System.Configuration.SettingsProvider"/>.
+ </summary>
+ <remarks>
+ For details about the overridden settings behaviour refer to <see cref="T:EwEUtils.cEwESettingsProvider"/>.
+ </remarks>
+</member>
+<member name="F:EwEWoRMSPlugin.My.MySettings.m_provider">
+ <summary>Custom <see cref="T:EwEUtils.cEwESettingsProvider">settings provider</see>.</summary>
+</member>
+<member name="M:EwEWoRMSPlugin.My.MySettings.#ctor">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="F:EwEWoRMSPlugin.cWoRMSPluginPoint.m_broadcaster">
+ <summary>Broadcaster for distributing data.</summary>
+</member>
+<member name="F:EwEWoRMSPlugin.cWoRMSPluginPoint.m_term">
+ <summary>Search term.</summary>
+</member>
+<member name="F:EwEWoRMSPlugin.cWoRMSPluginPoint.m_results">
+ <summary>Search results.</summary>
+</member>
+<member name="F:EwEWoRMSPlugin.cWoRMSPluginPoint.m_bEnabled">
+ <summary>Data provider enabled state.</summary>
+</member>
+<member name="F:EwEWoRMSPlugin.cWoRMSPluginPoint.m_bSearching">
+ <summary>Flag stating whether a search is in progress.</summary>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.Initialize(System.Object)">
+ <inheritdocs cref="M:EwEPlugin.IPlugin.Initialize(System.Object)"/>
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSPluginPoint.Author">
+ <inheritdocs cref="P:EwEPlugin.IPlugin.Author"/>
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSPluginPoint.Contact">
+ <inheritdocs cref="P:EwEPlugin.IPlugin.Contact"/>
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSPluginPoint.Description">
+ <inheritdocs cref="P:EwEPlugin.IPlugin.Description"/>
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSPluginPoint.Name">
+ <inheritdocs cref="P:EwEPlugin.IPlugin.Name"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.Broadcaster(EwEPlugin.Data.IDataBroadcaster)">
+ <inheritdocs cref="M:EwEPlugin.Data.IDataProducerPlugin.Broadcaster(EwEPlugin.Data.IDataBroadcaster)"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.GetDataByType(System.Type,EwEPlugin.Data.IPluginData@)">
+ <inheritdocs cref="M:EwEPlugin.Data.IDataProducerPlugin.GetDataByType(System.Type,EwEPlugin.Data.IPluginData@)"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.IsDataAvailable(System.Type,EwEUtils.Core.IRunType)">
+ <inheritdocs cref="M:EwEPlugin.Data.IDataProducerPlugin.IsDataAvailable(System.Type,EwEUtils.Core.IRunType)"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.IsEnabled">
+ <inheritdocs cref="M:EwEPlugin.Data.IDataProducerPlugin.IsEnabled"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.IsEnabled(System.Type,EwEUtils.Core.IRunType)">
+ <inheritdocs cref="M:EwEPlugin.Data.IDataProducerPlugin.IsEnabled"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.SetEnabled(System.Boolean)">
+ <inheritdocs cref="M:EwEPlugin.Data.IDataProducerPlugin.SetEnabled(System.Boolean)"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.SetEnabled(System.Type,EwEUtils.Core.IRunType,System.Boolean)">
+ <inheritdocs cref="M:EwEPlugin.Data.IDataProducerPlugin.SetEnabled(System.Boolean)"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.StartSearch(System.Object,System.Int32)">
+ <inheritdocs cref="M:EwEPlugin.Data.IDataSearchProducerPlugin.StartSearch(System.Object,System.Int32)"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.StopSearch">
+ <inheritdocs cref="M:EwEPlugin.Data.IDataSearchProducerPlugin.StartSearch(System.Object,System.Int32)"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.IsSeaching">
+ <inheritdocs cref="M:EwEPlugin.Data.IDataSearchProducerPlugin.IsSeaching"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.SearchResults(System.Object,EwEPlugin.Data.IDataSearchResults@)">
+ <inheritdocs cref="M:EwEPlugin.Data.IDataSearchProducerPlugin.SearchResults(System.Object,EwEPlugin.Data.IDataSearchResults@)"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.CreateSearchTerm">
+ <inheritdocs cref="M:EwEPlugin.Data.IDataSearchProducerPlugin.CreateSearchTerm"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.Dispose">
+ <inheritdocs cref="M:EwEPlugin.IDisposedPlugin.Dispose"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.GetConfigUI">
+ <inheritdocs cref="M:EwEUtils.Core.IConfigurable.GetConfigUI"/>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.IsConfigured">
+ <inheritdocs cref="M:EwEUtils.Core.IConfigurable.IsConfigured"/>
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSPluginPoint.ConnectionTimeOut">
+ <summary>
+ Get/set the number of seconds to wait for the webservice to connect.
+ </summary>
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSPluginPoint.ResponseTimeOut">
+ <summary>
+ Get/set the number of seconds to wait for the webservice to reply.
+ </summary>
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.Search(EwEUtils.Core.ITaxonSearchData)">
+ -----------------------------------------------------------------------
+ <summary>
+ Execute a database search.
+ </summary>
+ <param name="taxon">The term to search for.</param>
+ <returns>True if successful.</returns>
+ <remarks>
+ If successful, the local results will be populated.
+ </remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEWoRMSPlugin.cWoRMSPluginPoint.ReadTaxon(EwEWoRMSPlugin.WoRMSWebService.AphiaRecord)">
+ -----------------------------------------------------------------------
+ <summary>
+ Read a web service record.
+ </summary>
+ <param name="record"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEWoRMSPlugin.cWoRMSTaxonSearchResults">
+ ---------------------------------------------------------------------------
+ <summary>
+ Implementation of the SAUP Taxon search results class.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="F:EwEWoRMSPlugin.cWoRMSTaxonSearchResults.m_term">
+ <summary>Term used to start the search.</summary>
+</member>
+<member name="F:EwEWoRMSPlugin.cWoRMSTaxonSearchResults.m_taxa">
+ <summary>
+ Taxa returned in response to the search.
+ </summary>
+</member>
+<member name="F:EwEWoRMSPlugin.cWoRMSTaxonSearchResults.m_strPluginName">
+ <summary>Mandatory bit: plug-in name that returned the search results.</summary>
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSTaxonSearchResults.SearchResults">
+ <inheritdoc cref="P:EwEPlugin.Data.IDataSearchResults.SearchResults"/>
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSTaxonSearchResults.SearchScores">
+ <inheritdoc cref="P:EwEPlugin.Data.IDataSearchResults.SearchScores"/>
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSTaxonSearchResults.SearchTerm">
+ <inheritdoc cref="P:EwEPlugin.Data.IDataSearchResults.SearchTerm"/>
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSTaxonSearchResults.PluginName">
+ <inheritdoc cref="P:EwEPlugin.Data.IPluginData.PluginName"/>
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSTaxonSearchResults.RunType">
+ <inheritdoc cref="P:EwEPlugin.Data.IPluginData.RunType"/>
+</member>
+<member name="T:EwEWoRMSPlugin.cWoRMSTaxonData">
+ ---------------------------------------------------------------------------
+ <summary>
+ Helper class to distribute search results
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSTaxonData.PluginName">
+ <inheritdocs cref="P:EwEPlugin.Data.IPluginData.PluginName"/>
+</member>
+<member name="P:EwEWoRMSPlugin.cWoRMSTaxonData.RunType">
+ <inheritdocs cref="P:EwEPlugin.Data.IPluginData.RunType"/>
+</member>
+<member name="T:EwEWoRMSPlugin.ucConfig">
+ ---------------------------------------------------------------------------
+ <summary>
+ Interface for configuring a WoRMS web service connection.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="F:EwEWoRMSPlugin.ucConfig.m_plugin">
+ <summary>Plug-in to configure.</summary>
+</member>
+<member name="T:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.AphiaID">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.url">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.scientificname">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.authority">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.rank">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.status">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.valid_AphiaID">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.valid_name">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.valid_authority">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.kingdom">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.phylum">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.class">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.order">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.family">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.genus">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.citation">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.AphiaRecord.lsid">
+<remarks/>
+</member>
+<member name="T:EwEWoRMSPlugin.WoRMSWebService.Vernacular">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Vernacular.vernacular">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Vernacular.language_code">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Vernacular.language">
+<remarks/>
+</member>
+<member name="T:EwEWoRMSPlugin.WoRMSWebService.Source">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Source.source_id">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Source.use">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Source.reference">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Source.page">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Source.url">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Source.link">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Source.fulltext">
+<remarks/>
+</member>
+<member name="T:EwEWoRMSPlugin.WoRMSWebService.Classification">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Classification.AphiaID">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Classification.rank">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Classification.scientificname">
+<remarks/>
+</member>
+<member name="P:EwEWoRMSPlugin.WoRMSWebService.Classification.child">
+<remarks/>
+</member>
+</members>
+</doc>

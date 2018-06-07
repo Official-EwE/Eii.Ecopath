@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwECore.ValueWrapper
 
 Public Class cValidatorEnum
     Inherits cValidatorDefault
@@ -31,7 +32,9 @@ Public Class cValidatorEnum
         Me.m_type = t
     End Sub
 
-    Public Overrides Function Validate(ByVal ValueObject As ValueWrapper.cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = -9999) As Boolean
+    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData,
+                                         Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE,
+                                         Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         ' ToDo: add support for FlagsAttribute enums
 

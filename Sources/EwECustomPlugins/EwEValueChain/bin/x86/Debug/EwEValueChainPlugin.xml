@@ -1,0 +1,2531 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+EwEValueChainPlugin
+</name>
+</assembly>
+<members>
+<member name="T:EwEValueChainPlugin.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.AGGREGATION_MODE_BYFLEET">
+<summary>
+  Looks up a localized string similar to Results by fleet.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.AGGREGATION_MODE_BYGROUP">
+<summary>
+  Looks up a localized string similar to Results by group.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.AGGREGATION_MODE_FULLMODEL">
+<summary>
+  Looks up a localized string similar to Unaggregated.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.CORE_DEFAULT_CONSUMER">
+<summary>
+  Looks up a localized string similar to Consumer {0}.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.CORE_DEFAULT_DISTRIBUTION">
+<summary>
+  Looks up a localized string similar to Distribution {0}.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.CORE_DEFAULT_PROCESSING">
+<summary>
+  Looks up a localized string similar to Processing {0}.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.CORE_DEFAULT_PRODUCER">
+<summary>
+  Looks up a localized string similar to .
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.CORE_DEFAULT_RETAILER">
+<summary>
+  Looks up a localized string similar to Retailer {0}.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.CORE_DEFAULT_WHOLESALER">
+<summary>
+  Looks up a localized string similar to Wholesaler {0}.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.ecost_256x256">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.ERROR_LINK_DUPLICATE">
+<summary>
+  Looks up a localized string similar to Link already present for group &apos;{0}&apos;.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.ERROR_LINK_LOOP">
+<summary>
+  Looks up a localized string similar to This will create a loop which is not allowed.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.ERROR_LINK_NEEDFLEET">
+<summary>
+  Looks up a localized string similar to Please connect this producer to an Ecopath fleet first.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.ERROR_LINK_NEEDUNITS">
+<summary>
+  Looks up a localized string similar to A link needs a source and a target.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.ERROR_LINK_NOTALLOWED">
+<summary>
+  Looks up a localized string similar to This type of link is not allowed.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.FormulaEvaluatorHS">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.GENERIC_CAPTION">
+<summary>
+  Looks up a localized string similar to Value chain.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.GENERIC_TOOLTIP">
+<summary>
+  Looks up a localized string similar to Value chain plug-in.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.GRAPHDATA_TYPE_COST">
+<summary>
+  Looks up a localized string similar to Cost.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.GRAPHDATA_TYPE_COSTREVENUE">
+<summary>
+  Looks up a localized string similar to Cost and Revenue.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.GRAPHDATA_TYPE_DEPENDENTS">
+<summary>
+  Looks up a localized string similar to Dependents.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.GRAPHDATA_TYPE_JOBS">
+<summary>
+  Looks up a localized string similar to Jobs.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.GRAPHDATA_TYPE_REVENUE">
+<summary>
+  Looks up a localized string similar to Revenue.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.HEADER_CATEGORIES">
+<summary>
+  Looks up a localized string similar to Categories.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.HEADER_COST">
+<summary>
+  Looks up a localized string similar to Cost.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.HEADER_DEPENDENTS">
+<summary>
+  Looks up a localized string similar to Dependents.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.HEADER_JOBS">
+<summary>
+  Looks up a localized string similar to Jobs.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.HEADER_REV_COST">
+<summary>
+  Looks up a localized string similar to Revenue and cost.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.HEADER_REVENUE">
+<summary>
+  Looks up a localized string similar to Revenue.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.icons8_depot_32">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.icons8_factory_32">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.icons8_fishing_32">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.icons8_meal_32">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.icons8_money_bag_32">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.icons8_shipped_32">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.icons8_shopping_cart_32">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.Lenfest_Logo_50px">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_INPUT_DEFAULTS">
+<summary>
+  Looks up a localized string similar to Defaults.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_INPUT_FLOW">
+<summary>
+  Looks up a localized string similar to Flow.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_INPUT_PARAMETERS">
+<summary>
+  Looks up a localized string similar to Parameters.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_INPUT_TABLE_CONSUMERS">
+<summary>
+  Looks up a localized string similar to Consumers.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_INPUT_TABLE_DISTRIBUTORS">
+<summary>
+  Looks up a localized string similar to Distributors.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_INPUT_TABLE_LANDINGLINKS">
+<summary>
+  Looks up a localized string similar to Landings.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_INPUT_TABLE_LINKS">
+<summary>
+  Looks up a localized string similar to Links.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_INPUT_TABLE_PROCESSORS">
+<summary>
+  Looks up a localized string similar to Processors.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_INPUT_TABLE_PRODUCERS">
+<summary>
+  Looks up a localized string similar to Producers.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_INPUT_TABLE_RETAILERS">
+<summary>
+  Looks up a localized string similar to Retailers.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_INPUT_TABLE_WHOLESALERS">
+<summary>
+  Looks up a localized string similar to Wholesalers.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_INPUT_TABLES">
+<summary>
+  Looks up a localized string similar to Components.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_OUTPUT_FLOWDIAGRAM">
+<summary>
+  Looks up a localized string similar to Flow diagram.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.NAVTREE_OUTPUT_RUN">
+<summary>
+  Looks up a localized string similar to Run value chain.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.PROMPT_AUTOLAYOUT">
+<summary>
+  Looks up a localized string similar to Are you sure you want to arrange the diagram layout?.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.PROMPT_CONVERT_UNIT">
+<summary>
+  Looks up a localized string similar to Are you sure you want to convert {0} from type &apos;{1}&apos; to type &apos;{2}&apos;?.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.PROMPT_DELETELINK">
+<summary>
+  Looks up a localized string similar to Do you wish to delete link &apos;{0}&apos;? This action cannot be undone..
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.PROMPT_DELETEUNIT">
+<summary>
+  Looks up a localized string similar to Do you wish to delete unit &apos;{0}&apos;? This action cannot be undone..
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.PROMPT_SAVERESULT_DETAIL">
+<summary>
+  Looks up a localized string similar to Saved &apos;{0}&apos;.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.PROMPT_SAVERESULTS_FAILED">
+<summary>
+  Looks up a localized string similar to Value chain results failed to save to &apos;{0}&apos;. {1}.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.PROMPT_SAVERESULTS_SUCCESS">
+<summary>
+  Looks up a localized string similar to Value chain results save to &apos;{0}&apos;.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.sautxt_50px">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.STATUS_LOADING">
+<summary>
+  Looks up a localized string similar to Loading value chain model, please wait....
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.STATUS_MERGED">
+<summary>
+  Looks up a localized string similar to Value chain data file &apos;{0}&apos; merged into Ecopath model &apos;{1}&apos;.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.STATUS_PROGRESS_EQUILIBIRUM">
+<summary>
+  Looks up a localized string similar to Running value chain equilibrium fleet {0}, effort {1}.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.STATUS_RUNNING_ECOPATH">
+<summary>
+  Looks up a localized string similar to Running value chain for Ecopath, please wait....
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.STATUS_RUNNING_ECOSIM">
+<summary>
+  Looks up a localized string similar to Running value chain for Ecosim, please wait....
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.STATUS_RUNNING_EQUILIBRIUM">
+<summary>
+  Looks up a localized string similar to Running value chain Equilibrium search, please wait....
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.STATUS_SAVING">
+<summary>
+  Looks up a localized string similar to Saving value chain model, please wait....
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.translate">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.UNIT_TYPE_CONSUMER">
+<summary>
+  Looks up a localized string similar to Consumer.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.UNIT_TYPE_DISTRIBUTION">
+<summary>
+  Looks up a localized string similar to Distribution.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.UNIT_TYPE_PROCESSING">
+<summary>
+  Looks up a localized string similar to Processing.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.UNIT_TYPE_PRODUCER">
+<summary>
+  Looks up a localized string similar to Producer.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.UNIT_TYPE_RETAILER">
+<summary>
+  Looks up a localized string similar to Retailer.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.UNIT_TYPE_WHOLESALER">
+<summary>
+  Looks up a localized string similar to Wholesaler.
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.ValueChain">
+<summary>
+  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+</summary>
+</member>
+<member name="P:EwEValueChainPlugin.My.Resources.Resources.ValueChain_32x32">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="T:EwEValueChainPlugin.My.MySettings">
+ <summary>
+ Settings class that uses a custom <see cref="T:System.Configuration.SettingsProvider"/>.
+ </summary>
+ <remarks>
+ For details about the overridden settings behaviour refer to <see cref="T:EwEUtils.cEwESettingsProvider"/>.
+ </remarks>
+</member>
+<member name="F:EwEValueChainPlugin.My.MySettings.m_provider">
+ <summary>Custom <see cref="T:EwEUtils.cEwESettingsProvider">settings provider</see>.</summary>
+</member>
+<member name="M:EwEValueChainPlugin.My.MySettings.#ctor">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.cDatabase">
+ ===========================================================================
+ <summary>
+ 
+ </summary>
+ ===========================================================================
+</member>
+<member name="M:EwEValueChainPlugin.cDatabase.Open(System.String,EwEUtils.Core.eDataSourceTypes,System.Boolean)">
+ -----------------------------------------------------------------------
+ <summary>
+ Overridden to update the database when opened
+ </summary>
+ <param name="strDatabase"></param>
+ <param name="databaseType">Type to use to open the database. Set this
+ to 'NotSet' to auto-detect the database type.</param>
+ <returns>True if connected succesfully.</returns>
+ -------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cDatabase.LoadModel(EwEValueChainPlugin.cData)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ <param name="data"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cDatabase.UpdateDatabase">
+ -----------------------------------------------------------------------
+ <summary>
+ Run consecutive updates to bring the database schema up to date.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.cData">
+ ===========================================================================
+ <summary>
+ Value chain central data storage.
+ </summary>
+ <remarks>
+ Inherited from cCoreInputOutputBase to be able to use cCore.OnChanged.
+ </remarks>
+ ===========================================================================
+</member>
+<member name="M:EwEValueChainPlugin.cData.InitRun">
+ -----------------------------------------------------------------------
+ <summary>
+ Init the data for a new run by resetting all units.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cData.InitTimeStep">
+ -----------------------------------------------------------------------
+ <summary>
+ Init the data for a new run by resetting all units.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cData.HasCompletedRun">
+ -----------------------------------------------------------------------
+ <summary>
+ Diagnostics to determine whether the entire chain computed correctly.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cData.Parameters">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the parameters that dictate how this monster will run.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cData.Unit(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get a unit from the lit of units
+ </summary>
+ <param name="iIndex">Zero-based unit index.</param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cData.CreateUnit(EwEValueChainPlugin.cUnitFactory.eUnitType,System.String)">
+ <summary>
+ Create a unit in the database
+ </summary>
+ <param name="unitType"></param>
+ <param name="strName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:EwEValueChainPlugin.cData.DeleteUnit(EwEValueChainPlugin.cUnit)">
+ <summary>
+ Delete a unit from the database
+ </summary>
+ <param name="unit"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:EwEValueChainPlugin.cData.AddUnit(EwEValueChainPlugin.cUnit)">
+ <summary>
+ Add a unit to the local administration
+ </summary>
+ <param name="unit"></param>
+ <remarks></remarks>
+</member>
+<member name="M:EwEValueChainPlugin.cData.RemoveUnit(EwEValueChainPlugin.cUnit)">
+ <summary>
+ Remove a unit from the local administration
+ </summary>
+ <param name="unit"></param>
+ <remarks></remarks>
+</member>
+<member name="M:EwEValueChainPlugin.cData.OnChanged(EwEUtils.Database.cEwEDatabase.cOOPStorable)">
+ <summary>
+ Helper: connect producer unit fleet from DBID
+ </summary>
+ <param name="obj"></param>
+</member>
+<member name="M:EwEValueChainPlugin.cData.GetLinks(System.Type,System.Boolean)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get all visible links of a given type.
+ </summary>
+ <param name="t"></param>
+ <param name="bIncludeInvisible">Flag stating that also links that are not
+ <see cref="M:EwEValueChainPlugin.cLinkDefault.IsVisible">visible</see> may be included.</param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cData.CreateLink(EwEValueChainPlugin.cUnit,EwEValueChainPlugin.cUnit)">
+ <summary>
+ Create a link in the database 
+ </summary>
+ <param name="unitSource"></param>
+ <param name="unitTarget"></param>
+ <returns></returns>
+</member>
+<member name="M:EwEValueChainPlugin.cData.DeleteLink(EwEValueChainPlugin.cLink)">
+ <summary>
+ Remove a link from the database 
+ </summary>
+ <param name="link"></param>
+ <returns></returns>
+</member>
+<member name="M:EwEValueChainPlugin.cData.AddLink(EwEValueChainPlugin.cLink)">
+ <summary>
+ Add an output link to the local administration
+ </summary>
+ <param name="link"></param>
+</member>
+<member name="M:EwEValueChainPlugin.cData.RemoveLink(EwEValueChainPlugin.cLink)">
+ <summary>
+ Remove an output link from the local administration
+ </summary>
+ <param name="link"></param>
+</member>
+<member name="P:EwEValueChainPlugin.cData.Core">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the EwE core.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cData.GetConnectedUnits(EwEValueChainPlugin.cUnit)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get all units in the flow that are linked to this unit,
+ either serving as source units or as target units.
+ </summary>
+ <param name="unit"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cData.GetUnits(EwECore.cCoreInputOutputBase)">
+ -----------------------------------------------------------------------
+ <summary>
+ Return all units that operate (directly or indirectly) onto a given 
+ fleet and/or group.
+ </summary>
+ <param name="item"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cData.GetSourceUnits(EwEValueChainPlugin.cUnit,System.Collections.Generic.List{EwEValueChainPlugin.cUnit})">
+ -----------------------------------------------------------------------
+ <summary>
+ Get all units that serve as source units to a given unit.
+ </summary>
+ <param name="unit">The unit to test incoming links for.</param>
+ <param name="lUnits">The list that will receive the linked units.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cData.GetTargetUnits(EwEValueChainPlugin.cUnit,System.Collections.Generic.List{EwEValueChainPlugin.cUnit})">
+ -----------------------------------------------------------------------
+ <summary>
+ Get all units that link out of a given unit
+ </summary>
+ <param name="unit">The unit to test outgoing links for.</param>
+ <param name="lUnits">The list that will receive the linked units.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="F:EwEValueChainPlugin.cFlowDiagramData.m_diets">
+ <summary>DC pred x pred</summary>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.DisplayValue">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the <see cref="T:EwEValueChainPlugin.cResults.eGraphDataType">graph data type</see> 
+ to display.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.ItemColor(System.Int32)">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.ItemColor(System.Int32)"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.ItemName(System.Int32)">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.ItemName(System.Int32)"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.IsItemVisible(System.Int32)">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.IsItemVisible(System.Int32)"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.LinkValue(System.Int32,System.Int32)">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.LinkValue(System.Int32,System.Int32)"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.LinkValueMax">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.LinkValueMax"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.LinkValueMin">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.LinkValueMin"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.NumItems">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.NumItems"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.NumLivingitems">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.NumLivingItems"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.TrophicLevel(System.Int32)">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.TrophicLevel(System.Int32)"/>
+</member>
+<member name="M:EwEValueChainPlugin.cFlowDiagramData.Refresh">
+ <inheritdocs cref="M:ScientificInterfaceShared.Controls.IFlowDiagramData.Refresh"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.Value(System.Int32)">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.Value(System.Int32)"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.ValueLabel(System.Single)">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.ValueLabel(System.Single)"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.ValueMax">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.ValueMax"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.ValueMin">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.ValueMin"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.UIContext">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IUIElement.UIContext"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.Title">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.Title"/>
+</member>
+<member name="P:EwEValueChainPlugin.cFlowDiagramData.DataTitle">
+ <inheritdocs cref="P:ScientificInterfaceShared.Controls.IFlowDiagramData.DataTitle"/>
+</member>
+<member name="M:EwEValueChainPlugin.cFlowDiagramData.GetUnitValue(EwEValueChainPlugin.cUnit)">
+ <summary>
+ Get the value for a unit for the current <see cref="F:EwEValueChainPlugin.cFlowDiagramData.m_displayvalue"/>.
+ </summary>
+ <param name="unit"></param>
+ <returns></returns>
+</member>
+<member name="F:EwEValueChainPlugin.ucFlowDiagram.m_model">
+ <summary>Instance of the Ecost model to poke and prod.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucFlowDiagram.m_result">
+ <summary>Instance of model results to reflect.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucFlowDiagram.m_uic">
+ <summary>UI context to operate on.</summary>
+</member>
+<member name="M:EwEValueChainPlugin.ucFlowDiagram.OnPaintBackground(System.Windows.Forms.PaintEventArgs)">
+ <summary>
+ Overridden to elimate flickering.
+ </summary>
+</member>
+<member name="T:EwEValueChainPlugin.cResultWriter">
+ <summary>
+ CSV writer for Value Chain results.
+ </summary>
+</member>
+<member name="M:EwEValueChainPlugin.cResultWriter.#ctor(EwEValueChainPlugin.cData,EwEValueChainPlugin.cResults)">
+ -----------------------------------------------------------------------
+ <summary>
+ Shazaam!
+ </summary>
+ <param name="data"><see cref="T:EwEValueChainPlugin.cData">Value chain data</see> to plunder.</param>
+ <param name="results"><see cref="T:EwEValueChainPlugin.cResults">Value chain results</see> to write.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResultWriter.WriteResults(EwEValueChainPlugin.cParameters.eAggregationModeType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Write results to CSV file.
+ </summary>
+ <param name="agg">Data aggregation method in use during the run.</param>
+ <returns>True if successful.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResultWriter.WriteResults(EwEValueChainPlugin.cParameters.eAggregationModeType,System.Int32,System.String)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ <param name="agg"></param>
+ <param name="iItem"></param>
+ <param name="strItem"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResultWriter.GetFileName(EwEValueChainPlugin.cParameters.eAggregationModeType,System.String)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ <param name="agg"></param>
+ <param name="strItem"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cResultWriter.Message">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the save results message.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResultWriter.GetModelDetails">
+ -----------------------------------------------------------------------
+ <summary>
+ Get default model details to report in output file.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.cAggregationModeTypeFormatter">
+ <summary>
+ 
+ </summary>
+</member>
+<member name="T:EwEValueChainPlugin.cGraphDataTypeFormatter">
+ <summary>
+ 
+ </summary>
+</member>
+<member name="T:EwEValueChainPlugin.cFlowDiagram">
+ ===========================================================================
+ <summary>
+ One single flow diagram.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.cFlowPosition">
+ ===========================================================================
+ <summary>
+ Position of a single unit in a flow diagram.
+ </summary>
+ ===========================================================================
+</member>
+<member name="P:EwEValueChainPlugin.cFlowPosition.Diagram">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the diagram this flow position belongs to.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cFlowPosition.Unit">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the unit that this position belongs to.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cFlowPosition.Xpos">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the X position.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cFlowPosition.Ypos">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the Y position.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cFlowPosition.Width">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the width.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cFlowPosition.Height">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the height.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.cInput">
+ ===========================================================================
+ <summary>
+ A value that entered a cUnit during processing.
+ </summary>
+ ===========================================================================
+</member>
+<member name="M:EwEValueChainPlugin.cInput.#ctor(EwEValueChainPlugin.cUnit,System.Single,System.Single)">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor.
+ </summary>
+ <param name="sTons">Weight of the product, in tons</param>
+ <param name="sValue">Total value of the product.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cInput.Tons">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the weight of input in tons of this input.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cInput.Value">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the total value of this input.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cInput.Source">
+ -----------------------------------------------------------------------
+ <summary>
+ The <see cref="T:EwEValueChainPlugin.cUnit">source</see> of this unit.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.cLink">
+ ===========================================================================
+ <summary>
+ Base class for holding link information in the flow.
+ </summary>
+ <remarks>
+ Note that this class does not hold the actual references to flow units.
+ This class is a mere holder of shared behaviour between cUnitLinks and
+ cLinkDefaults
+ </remarks>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.cLink.cStaticUnitConverter">
+ =======================================================================
+ <summary>
+ Helper class; allows the property grid to show a read-only unit name.
+ </summary>
+ =======================================================================
+</member>
+<member name="M:EwEValueChainPlugin.cLink.cStaticUnitConverter.GetStandardValues(System.ComponentModel.ITypeDescriptorContext)">
+ <summary>
+ Override the GetStandardValues method and return a 
+ StandardValuesCollection filled with your standard values
+ </summary>
+</member>
+<member name="M:EwEValueChainPlugin.cLink.cStaticUnitConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+ <summary>
+ Convert unit to unit
+ </summary>
+</member>
+<member name="M:EwEValueChainPlugin.cLink.cStaticUnitConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+ <summary>
+ Convert unit to unit name
+ </summary>
+</member>
+<member name="F:EwEValueChainPlugin.cLink.m_strName">
+ <summary>Link name.</summary>
+</member>
+<member name="P:EwEValueChainPlugin.cLink.Style">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the Style for this link
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.cLinkDefault">
+ ===========================================================================
+ <summary>
+ Class for holding default link properties, used when forging new links 
+ between units in the flow.
+ </summary>
+ ===========================================================================
+</member>
+<member name="F:EwEValueChainPlugin.cLinkDefault.m_sBiomassRatio">
+ <summary>Link output biomass ratio.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cLinkDefault.m_sValuePerTon">
+ <summary>Link output value per ton.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cLinkDefault.m_sValueRatio">
+ <summary>Link output value ratio.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cLinkDefault.m_bAllowEvents">
+ <summary>Flag stating whether this unit is allowed to broadcast change events.</summary>
+</member>
+<member name="M:EwEValueChainPlugin.cLinkDefault.IsVisible">
+ -----------------------------------------------------------------------
+ <summary>
+ States whether a link is visible in the interface.
+ </summary>
+ <returns>True by default.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cLinkDefault.ToString">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.cLinkLandings">
+ ===========================================================================
+ <summary>
+ Species-dependent link.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.cLinkLandings.cGroupConverter">
+ =======================================================================
+ <summary>
+ Helper class; allows the property grid to pick a group DBID from a list 
+ of group names
+ </summary>
+ =======================================================================
+</member>
+<member name="M:EwEValueChainPlugin.cLinkLandings.cGroupConverter.GetStandardValues(System.ComponentModel.ITypeDescriptorContext)">
+ <summary>
+ Override the GetStandardValues method and return a 
+ StandardValuesCollection filled with your standard values
+ </summary>
+</member>
+<member name="M:EwEValueChainPlugin.cLinkLandings.cGroupConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+ <summary>
+ Convert group name to DBID
+ </summary>
+</member>
+<member name="M:EwEValueChainPlugin.cLinkLandings.cGroupConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+ <summary>
+ Convert DBID to group name
+ </summary>
+</member>
+<member name="F:EwEValueChainPlugin.cLinkLandings.m_iEcopathGroupID">
+ <summary>Link species.</summary>
+</member>
+<member name="T:EwEValueChainPlugin.cConsumerUnit">
+ ===========================================================================
+ <summary>
+ This class represents a group of Consumers in the Ecost economic model.
+ Consumers form the end of economic flow chains.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.cConsumerUnitDefault">
+ ===========================================================================
+ <summary>
+ This class holds defaults for <see cref="T:EwEValueChainPlugin.cConsumerUnit">consumer units</see>
+ in the Ecost model. Defaults are used as blueprints for spawning their base 
+ class objects.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.cDistributionUnit">
+ ===========================================================================
+ <summary>
+ This class represents a group of distribution units in the Ecost economic model.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.cDistributionUnitDefault">
+ ===========================================================================
+ <summary>
+ This class holds defaults for <see cref="T:EwEValueChainPlugin.cDistributionUnit">distribution units</see>
+ in the Ecost model. Defaults are used as blueprints for spawning their base 
+ class objects.
+ </summary>
+ ===========================================================================
+</member>
+<member name="M:EwEValueChainPlugin.cEconomicUnit.#ctor">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.cRetailerUnitDefault">
+ ===========================================================================
+ <summary>
+ This class holds defaults for <see cref="T:EwEValueChainPlugin.cRetailerUnit">retailer units</see>
+ in the Ecost model. Defaults are used as blueprints for spawning their base 
+ class objects.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.cWholesalerUnitDefault">
+ ===========================================================================
+ <summary>
+ This class holds defaults for <see cref="T:EwEValueChainPlugin.cWholesalerUnit">wholeseller units</see>
+ in the Ecost model. Defaults are used as blueprints for spawning their base 
+ class objects.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.cProcessingUnitDefault">
+ ===========================================================================
+ <summary>
+ This class holds defaults for <see cref="T:EwEValueChainPlugin.cProcessingUnit">processing units</see>
+ in the Ecost model. Defaults are used as blueprints for spawning their base 
+ class objects.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.cProducerUnit">
+ <summary>
+ 
+ </summary>
+</member>
+<member name="T:EwEValueChainPlugin.cProducerUnit.cFleetConverter">
+ =======================================================================
+ <summary>
+ Helper class; allows the property grid to pick a fleet DBID from a list 
+ of group names
+ </summary>
+ =======================================================================
+</member>
+<member name="M:EwEValueChainPlugin.cProducerUnit.cFleetConverter.GetStandardValues(System.ComponentModel.ITypeDescriptorContext)">
+ <summary>
+ Override the GetStandardValues method and return a 
+ StandardValuesCollection filled with your standard values
+ </summary>
+</member>
+<member name="M:EwEValueChainPlugin.cProducerUnit.cFleetConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)">
+ <summary>
+ Convert fleet name to DBID
+ </summary>
+</member>
+<member name="M:EwEValueChainPlugin.cProducerUnit.cFleetConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)">
+ <summary>
+ Convert DBID to fleet name
+ </summary>
+</member>
+<member name="F:EwEValueChainPlugin.cProducerUnit.m_iEcopathGroupID">
+ <summary>Ecopath group that this metier catches.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cProducerUnit.m_iEcopathFleetID">
+ <summary>Ecopath fleet that this metier fishes with.</summary>
+</member>
+<member name="M:EwEValueChainPlugin.cProducerUnit.InitRun(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Initialize the unit for a new run.
+ </summary>
+ <param name="iSequence"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cProducerUnit.Clear">
+ -----------------------------------------------------------------------
+ <summary>
+ Initialize the unit for a new time step.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cProducerUnit.CalcWorkerFemales(EwEValueChainPlugin.cResults,System.Single,System.Single,System.Single,System.Single,System.Int32)">
+ <summary>
+ The number of jobs for producers is a function of effort, while their salary isn't
+ </summary>
+ <param name="results"></param>
+ <param name="sInputBiomass"></param>
+ <param name="sInputValue"></param>
+ <param name="sOutputBiomass"></param>
+ <param name="sOutputValue"></param>
+ <param name="iTimeStep"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:EwEValueChainPlugin.cProducerUnit.SetLandings(System.Int32,System.Single,System.Single)">
+ <summary>
+ 
+ </summary>
+ <param name="iGroup"></param>
+ <param name="sBiomass">Total biomass landed in area</param>
+ <param name="sValue">Total value landed in area</param>
+</member>
+<member name="T:EwEValueChainPlugin.cProducerUnitDefault">
+ ===========================================================================
+ <summary>
+ This class holds defaults for <see cref="T:EwEValueChainPlugin.cProducerUnit">producer units</see>
+ in the Ecost model. Defaults are used as blueprints for spawning their base 
+ class objects.
+ </summary>
+ ===========================================================================
+</member>
+<member name="F:EwEValueChainPlugin.cUnit.m_iSequence">
+ <summary>Index of the unit, which this unit needs to store its values in the Results object</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cUnit.m_lReceivedInputs">
+ <summary>List of input variables that this unit needs in order to perform its calculations.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cUnit.m_strName">
+ <summary>Name of the unit</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cUnit.m_strNameLocal">
+ <summary>Local name of the unit.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cUnit.m_iNationality">
+ <summary>Nationality of a unit.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cUnit.m_core">
+ <summary>Zhe ceur</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cUnit.m_llinkOutput">
+ <summary>Units that receive outputs from this unit.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cUnit.m_llinkInput">
+ <summary>Units that provide inputs for this unit.</summary>
+</member>
+<member name="M:EwEValueChainPlugin.cUnit.#ctor">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cUnit.Links(EwEValueChainPlugin.cUnit)">
+ <summary>
+ Get all links directly linking to a target.
+ </summary>
+ <param name="unitTarget"></param>
+ <returns></returns>
+</member>
+<member name="M:EwEValueChainPlugin.cUnit.InitRun(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Initialize the unit for a new Ecosim or Ecospace run.
+ </summary>
+ <param name="iSequence">The sequence number to assign to this unit for the run.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cUnit.Clear">
+ -----------------------------------------------------------------------
+ <summary>
+ Initialize the unit for running a chain.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cUnit.Process(EwEValueChainPlugin.cResults,EwEValueChainPlugin.cInput,System.Int32,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Calculate the economics for this unit.
+ </summary>
+ <param name="results"></param>
+ <param name="input"></param>
+ <param name="iTimeStep"></param>
+ <param name="iUnit">The unit to aggregate by.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cUnit.Calculate(EwEValueChainPlugin.cResults,System.Single,System.Single,System.Single,System.Single,System.Int32)">
+ <summary>
+ Make all calculations.
+ </summary>
+ <param name="results">The results object to store calculation results in.</param>
+</member>
+<member name="M:EwEValueChainPlugin.cUnit.UpdateComputeStatus">
+ <summary>
+ Assess whether a unit is ready to compute, e.g. when all its
+ inputs are (in)directly connected to EwE model data.
+ </summary>
+</member>
+<member name="T:EwEValueChainPlugin.cParameters">
+ ===========================================================================
+ <summary>
+ Parameters that dictate the behaviour of the Value Chain plug-in.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.cResults">
+ ===========================================================================
+ <summary>
+ Value Chain results holder.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.cResults.cTimeStepResults">
+ =======================================================================
+ <summary>
+ Results for a single time step.
+ </summary>
+ =======================================================================
+</member>
+<member name="F:EwEValueChainPlugin.cResults.cTimeStepResults.m_data">
+ <summary>Ecost data that these results relate to.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.cTimeStepResults.m_iTimeStep">
+ <summary>Redundant: time step index</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.cTimeStepResults.m_results">
+ <summary>Results(# variable types, # units)</summary>
+</member>
+<member name="M:EwEValueChainPlugin.cResults.cTimeStepResults.CalculateDerivedValues">
+ -------------------------------------------------------------------
+ <summary>
+ Helper method, calculates derived values for a timestep result.
+ Derived variables are totals and sub-totals of result categories.
+ </summary>
+ -------------------------------------------------------------------
+</member>
+<member name="F:EwEValueChainPlugin.cResults.m_data">
+ <summary>The data to aggregate results for.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.m_dtResultTimeStep">
+ <summary>Dictionary[timestep, result] of results per time step.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.m_dtSnapshots">
+ <summary>Dictionary[key, result] of results for an equilbrium run.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.m_asItemValueContribution">
+ <summary>Contributions of an item (fleet, group, ..) to a unit per timestep to the total value.</summary>
+ <remarks>Indexed as (item, time step, unit sequence).</remarks>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.m_asItemBiomassContribution">
+ <summary>Contributions of an item (fleet, group, ..) to a unit per timestep to the total biomass.</summary>
+ <remarks>Indexed as (item, time step, unit sequence).</remarks>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.m_iMaxTimeStep">
+ <summary>Max no of time steps.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.m_iMaxItem">
+ <summary>Max no of items values are aggregated over.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.m_runType">
+ <summary>Run type that results were computed for.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.m_BiomassFlows">
+ <summary>The biomass flows from one unit to another (source x target)</summary>
+</member>
+<member name="T:EwEValueChainPlugin.cResults.eVariableType">
+ <summary>
+ Types of calculated results.
+ </summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.eVariableType.Production">
+ <summary> Production of fish products in tonnes </summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.eVariableType.ProductionLive">
+ <summary> Production of fish products in corresponding live weight </summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.eVariableType.CostObserver">
+ <summary>Cost of observers</summary>
+ <remarks>over tonnes</remarks>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.eVariableType.RevenueProductsMain">
+ <summary> The value of the fish products  </summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.eVariableType.RevenueAgriculture">
+ <summary> Revenue from Agricultural products, should they be making any such as a byproduct </summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.eVariableType.RevenueTickets">
+ <summary> Revenue from ticket sale, which will be a function of effort </summary>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.eVariableType.RevenueProductsOther">
+ <summary> The value of other products than the actual fish </summary>
+ <remarks>over tonnes</remarks>
+</member>
+<member name="F:EwEValueChainPlugin.cResults.eVariableType.RevenueSubsidies">
+ <remarks>over tonnes</remarks>
+</member>
+<member name="M:EwEValueChainPlugin.cResults.GetVariables(EwEValueChainPlugin.cResults.eGraphDataType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Return the collection of <see cref="T:EwEValueChainPlugin.cResults.eVariableType">variables</see> to
+ populate a given <see cref="T:EwEValueChainPlugin.cResults.eGraphDataType">graph</see>.
+ </summary>
+ <param name="graph">The graph type to obtain variables for.</param>
+ <returns>The collection of <see cref="T:EwEValueChainPlugin.cResults.eVariableType">variables</see> to
+ populate a given <see cref="T:EwEValueChainPlugin.cResults.eGraphDataType">graph</see>.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResults.Reset(EwEValueChainPlugin.cModel.eRunTypes)">
+ -----------------------------------------------------------------------
+ <summary>
+ Reset results by destroying all cached computated data in preparation
+ for a new search.
+ </summary>
+ <remarks>Call this method before starting a new search.</remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResults.Store(EwEValueChainPlugin.cUnit,EwEValueChainPlugin.cResults.eVariableType,System.Single,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Store a value of a particular variable type for a particular unit
+ </summary>
+ <param name="unit">Unit to save variable for</param>
+ <param name="var">Type of the variable to save</param>
+ <param name="sValue">Value to save</param>
+ <returns>True if successful.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResults.StoreSnapshot(System.Object,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Make a snapshot of a given time step, and store it under a given key.
+ </summary>
+ <param name="objKey">The key to store the snapshot for.</param>
+ <param name="iTimeStep">The time step to store a snapshot for.</param>
+ <returns>True if successful.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cResults.Snapshots">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns list of all snapshot keys.
+ </summary>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResults.Result(EwEValueChainPlugin.cUnit,EwEValueChainPlugin.cResults.eVariableType,System.Int32,System.Int32,EwEValueChainPlugin.cResults.eContributionType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get result for a given unit and variable at a given time step, optionally
+ filtered by item (fleet, group, ..).
+ </summary>
+ <param name="var"></param>
+ <param name="iTimeStep"></param>
+ <param name="unit"></param>
+ <param name="iItem"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResults.SnapshotValue(EwEValueChainPlugin.cUnit,EwEValueChainPlugin.cResults.eVariableType,System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get result for a given unit and variable at a given snapshot.
+ </summary>
+ <param name="var"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResults.RunType">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the run type that the results were populated for.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cResults.FlowsBiomass(System.Int32,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the amount of a flow between a source and target unit. Dimensioned
+ as (source x target).
+ </summary>
+ <param name="iSource"><see cref="P:EwEValueChainPlugin.cUnit.Sequence"/> of source unit (donor).</param>
+ <param name="iTarget"><see cref="P:EwEValueChainPlugin.cUnit.Sequence"/> of target unit (recipient).</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResults.GetTimeStepTotal(EwEValueChainPlugin.cResults.eVariableType,System.Int32,EwEValueChainPlugin.cUnit[],System.Int32,EwEValueChainPlugin.cResults.eContributionType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the total sum of a given variabe for a single time step.
+ </summary>
+ <param name="vartype"></param>
+ <param name="iTimeStep"></param>
+ <param name="lUnits"></param>
+ <param name="iItem">Aggreagation item index, if any.</param>
+ <param name="contr"><see cref="T:EwEValueChainPlugin.cResults.eContributionType"/> to extract contribution for.</param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResults.GetTotal(EwEValueChainPlugin.cResults.eVariableType,EwEValueChainPlugin.cUnit[],System.Int32,EwEValueChainPlugin.cResults.eContributionType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the total sum of a given variabe across all time steps.
+ </summary>
+ <param name="vartype">Variable to extract.</param>
+ <param name="lUnits">Units to extract total for.</param>
+ <param name="contr"><see cref="T:EwEValueChainPlugin.cResults.eContributionType">Contribution type</see>.</param>
+ <param name="iItem">Item to filter by.</param>
+ <returns>A total value.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResults.StoreContribution(System.Int32,EwEValueChainPlugin.cUnit,System.Int32,System.Single,System.Single)">
+ -----------------------------------------------------------------------
+ <summary>
+ Store the contribution of a single item to a unit at a given time step.
+ </summary>
+ <param name="iItem">The item to store the contribution for.</param>
+ <param name="unit">The unit to store the contribution for.</param>
+ <param name="iTimeStep">The time step to store the contribution for.</param>
+ <param name="sValueContribution">The value contribution to store.</param>
+ <param name="sBiomassContribution">The biomass contribution to store.</param>
+ <remarks>
+ The sum of contributions of all items should equal (or very,
+ very closely approximate) the value for the unit for the default chain.
+ </remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cResults.GetContributionRatios(System.Int32,EwEValueChainPlugin.cUnit,System.Int32,System.Single@,System.Single@)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the value ratio that a single item contributed for a given unit and 
+ time step, relative to the total value contribution for all items.
+ </summary>
+ <param name="iItem">Item to explore, 0 for all items.</param>
+ <param name="unit"></param>
+ <param name="iTimestep"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.ucLinkDefault">
+ ===========================================================================
+ <summary>
+ User control that reflects a default link.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.ucLinkGrid">
+ ===========================================================================
+ <summary>
+ Grid for showing a whack of links.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.ucLinkGrid.cLinkSorter">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper class for sorting links by name
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucLinkGrid.#ctor(ScientificInterfaceShared.Controls.cUIContext,EwEValueChainPlugin.cData,System.Type)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ <param name="data"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucLinkGrid.FillData">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucLinkGrid.AddLink(EwEValueChainPlugin.cLink,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ <param name="link"></param>
+ <param name="iRow"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.ucUnitGrid">
+ ===========================================================================
+ <summary>
+ 
+ </summary>
+ ===========================================================================
+</member>
+<member name="M:EwEValueChainPlugin.ucUnitGrid.#ctor(ScientificInterfaceShared.Controls.cUIContext,EwEValueChainPlugin.cData,EwEValueChainPlugin.cUnitFactory.eUnitType)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ <param name="data"></param>
+ <param name="unitType"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucUnitGrid.FillData">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucUnitGrid.AddUnit(EwEValueChainPlugin.cUnit,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ <param name="unit"></param>
+ <param name="iCol"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.dlgAddUnits">
+ ===========================================================================
+ <summary>
+ Dialog for adding existing units to a flow diagram.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.dlgAddUnits.cUnitListBoxItem">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper class to list a single unit in the unit list box
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="F:EwEValueChainPlugin.dlgAddUnits.m_data">
+ <summary>Main data.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.dlgAddUnits.m_diagram">
+ <summary>The diagram to add units to.</summary>
+</member>
+<member name="T:EwEValueChainPlugin.plFlow">
+ ===========================================================================
+ <summary>
+ Flow editor control, including flow area, relevant toolbar(s) and 
+ property grid(s).
+ </summary>
+ <remarks>
+ JS: this diagram is so 'hack' it's not even funny. This code should be replaced
+ by a proper diagramming tool that uses less resources, has straight lines,
+ etc. How about itegrating with Diagram.Net?
+ </remarks>
+ ===========================================================================
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_data">
+ <summary>The one reference to underlying data for manipulating objects.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_diagram">
+ <summary>The one reference to underlying diagram data.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_bmpClickDetection">
+ <summary>Bitmap to test for click hits.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_dtControls">
+ <summary>List of cUnit representations.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_lDiagramLinks">
+ <summary>List of link wrappers.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_editMode">
+ <summary>Current interaction mode.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_uic">
+ <summary>UI Context</summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_selector">
+ <summary>Data selector</summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_itemFilter">
+ <summary>Item to filter for in the flow, if any.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_unitFilter">
+ <summary>Unit to filter for in the flow, if any.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_selection">
+ <summary>Selected flow element.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_ptMouseOffset">
+ <summary>Drag/drop mouse offset.</summary>
+ <remarks>The (x,y) distance from a control's origin during a drag/drop operation.</remarks>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_ucDrag">
+ <summary>Unit control being dragged.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.m_sScale">
+ <summary>Zoom factor</summary>
+</member>
+<member name="T:EwEValueChainPlugin.plFlow.eEditMode">
+ -----------------------------------------------------------------------
+ <summary>
+ Enumerated type stating the current edit mode.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.eEditMode.Move">
+ <summary>
+ Units are moved when clicked.
+ </summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.eEditMode.Link">
+ <summary>
+ Units are linked when clicked.
+ </summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.eEditMode.Delete">
+ <summary>
+ Units are deleted when clicked.
+ </summary>
+</member>
+<member name="F:EwEValueChainPlugin.plFlow.eEditMode.ReadOnly">
+ <summary>
+ The flow is not editable.
+ </summary>
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.#ctor">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.plFlow.ItemFilter">
+ <summary>
+ Get/set the fleet to filter flow layout by.
+ </summary>
+</member>
+<member name="P:EwEValueChainPlugin.plFlow.UnitFilter">
+ <summary>
+ Get/set the unit to filter flow layout by.
+ </summary>
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.Init(ScientificInterfaceShared.Controls.cUIContext,EwEValueChainPlugin.cData,EwEValueChainPlugin.cFlowDiagram,EwEValueChainPlugin.ucSelector2)">
+ -----------------------------------------------------------------------
+ <summary>
+ Initialize the flow diagram with existing data.
+ </summary>
+ <param name="fd">The <see cref="T:EwEValueChainPlugin.cFlowDiagram">data</see> to connect the flow to.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.plFlow.EditMode">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the <see cref="T:EwEValueChainPlugin.plFlow.eEditMode">edit mode</see> of the panel.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.ArrangeGLEE">
+ -----------------------------------------------------------------------
+ <summary>
+ Auto-arrange the units in the flow panel using the GLEE library.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.RebuildFlow">
+ -----------------------------------------------------------------------
+ <summary>
+ Rebuild a flow with all units that match present filter settings.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.GetFlowUnits">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper method, get all the units currently in the flow.
+ </summary>
+ <returns>A list with all units currently in the flow.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.ClearFlow">
+ -----------------------------------------------------------------------
+ <summary>
+ Clear the flow
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.OnMouseClick(System.Windows.Forms.MouseEventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ Event handler, processes mouse clicks to operate on UnitConnectors.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.OnMouseMove(System.Windows.Forms.MouseEventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ Event handler, processes mouse movement to provide cursor feedback.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.OnPaint(System.Windows.Forms.PaintEventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ Paint the panel and all unit connectors
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="E:EwEValueChainPlugin.plFlow.SelectionChanged">
+ <summary>
+ Panel selection change event.
+ </summary>
+ <param name="sender"></param>
+ <param name="obj"></param>
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.CreateProducersForFleets">
+ -----------------------------------------------------------------------
+ <summary>
+ Create a producer for every Ecopath fleet.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.CreateUnit(EwEValueChainPlugin.cUnitFactory.eUnitType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Create a new unit
+ </summary>
+ <param name="unitType"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.AddUnit(EwEValueChainPlugin.cUnit,System.Boolean)">
+ -----------------------------------------------------------------------
+ <summary>
+ Add an existing unit to the flow.
+ </summary>
+ <param name="unit">The unit to add.</param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.RemoveUnit(EwEValueChainPlugin.cUnit)">
+ -----------------------------------------------------------------------
+ <summary>
+ Remove a flow element from this control.
+ </summary>
+ <param name="unit"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.DeleteUnit(EwEValueChainPlugin.cUnit,EwEValueChainPlugin.cFlowPosition)">
+ -----------------------------------------------------------------------
+ <summary>
+ Remove an existing unit from the flow, and remove it from the underlying data
+ </summary>
+ <param name="unit"></param>
+ <returns>True if successful.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.AddLink(EwEValueChainPlugin.cLink,System.Boolean)">
+ -----------------------------------------------------------------------
+ <summary>
+ Add an existing link to the flow
+ </summary>
+ <param name="link"></param>
+ <param name="bRefresh"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.RemoveLink(EwEValueChainPlugin.cLink)">
+ -----------------------------------------------------------------------
+ <summary>
+ Remove a link from the flow
+ </summary>
+ <param name="link"></param>
+ <remarks></remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.DeleteLink(EwEValueChainPlugin.cLink)">
+ -----------------------------------------------------------------------
+ <summary>
+ Remove a link from the flow, and delete it in the underlying data.
+ </summary>
+ <param name="link"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.CreateClickDetectionBitmap">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper method, creates the bitmap for detecting line clicks
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.ColorAtPoint(System.Drawing.Point)">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper method, returns the color of a pixel in the click detection bitmap.
+ </summary>
+ <param name="pt">The location of the pixel to return the color for.</param>
+ <returns>The color of the indicated pixel in the detection bitmap.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.IsLineColor(System.Drawing.Color)">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper method, states whether a color value is a valid line color in the click detection bitmap.
+ </summary>
+ <param name="clr">The color to test.</param>
+ <returns>True if the color could be used for a line</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.ConnectorFromColor(System.Drawing.Color)">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper method, attempts to return the unit connector for a given color value.
+ </summary>
+ <param name="clr">The color to find the unit connector for.</param>
+ <returns>A unit connector instance, or nothing if this connector could not be found.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.ConnectorFromPoint(System.Drawing.Point)">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper method, attempts to return the unit connector for a given color value.
+ </summary>
+ <param name="pt">The location to test.</param>
+ <returns>A unit connector instance, or nothing if this connector could not be found.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.HasConnectorUnderCursor(System.Drawing.Point)">
+ -----------------------------------------------------------------------
+ <summary>
+ States whether the point under the mouse cursor belongs to a connector.
+ </summary>
+ <param name="pt">The location to test.</param>
+ <returns>True if there is a unit connector at (or very near to) this location.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.ProcessConnectorClick(System.Drawing.Point)">
+ -----------------------------------------------------------------------
+ <summary>
+ Process a mouse click to find and operate on a UnitConnector.
+ </summary>
+ <param name="pt">The location that was clicked.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.OnElementChanged(EwEUtils.Database.cEwEDatabase.cOOPStorable)">
+ -----------------------------------------------------------------------
+ <summary>
+ Event handler; trapped to redraw live data changes.
+ </summary>
+ <param name="obj">The item that changed.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.FindIntersect(System.Drawing.Point,System.Drawing.Point,EwEValueChainPlugin.plUnitControl)">
+ -----------------------------------------------------------------------
+ <summary>
+ Find the point where the line (<paramref name="ptFrom"/>-<paramref name="ptTo"/>)
+ intersects with unit <paramref name="unitTo"/>.
+ </summary>
+ <param name="ptFrom"></param>
+ <param name="ptTo"></param>
+ <param name="unitTo"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.PaintLink(System.Drawing.Graphics,System.Drawing.Point,System.Drawing.Point,System.Drawing.Color,System.Single,System.Boolean)">
+ -----------------------------------------------------------------------
+ <summary>
+ Paint a link between two units.
+ </summary>
+ <param name="g">Graphics to draw onto.</param>
+ <param name="ptStart">Start point to draw from.</param>
+ <param name="ptEnd">End point to draw to.</param>
+ <param name="clr">Colour to use for the link.</param>
+ <param name="sWeight">Weight of the link [0, 1]. 
+ If 0, the link is rendered in gray.</param>
+ <param name="bExternal">Flag stating whether this link represents an 
+ 'External' connection.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.PaintUnit(System.Drawing.Graphics,System.Drawing.Point,EwEValueChainPlugin.cUnit,System.Boolean,System.Boolean)">
+ -----------------------------------------------------------------------
+ <summary>
+ Paint a unit
+ </summary>
+ <param name="g"></param>
+ <param name="pt"></param>
+ <param name="unit"></param>
+ <param name="bSelected"></param>
+ <remarks>
+ JS 11mar09: method not used, painting still handled by cUnitControl
+ </remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plFlow.Angle(System.Int32,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the angle between two points in radians. 0 degrees is straigt up,
+ angle rotates clockwise.
+ </summary>
+ <param name="dx"></param>
+ <param name="dy"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.plUnitControl">
+ ===========================================================================
+ <summary>
+ Panel to interact with a single unit in a flow.
+ </summary>
+ ===========================================================================
+</member>
+<member name="M:EwEValueChainPlugin.plUnitControl.OnMouseDown(System.Windows.Forms.MouseEventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ Event handler to process a mouse click.
+ </summary>
+ <remarks>
+ Handling is outsourced to the master panel which will process the click 
+ based on the current interaction mode.
+ </remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plUnitControl.OnMouseEnter(System.EventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ Event handler to start a mouse hover event.
+ </summary>
+ <remarks>
+ Handling is outsourced to the master panel which will process the hover
+ based on the current interaction mode.
+ </remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plUnitControl.OnMouseLeave(System.EventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ Event handler to start a mouse hover event.
+ </summary>
+ <remarks>
+ Handling is outsourced to the master panel which will process the hover
+ based on the current interaction mode.
+ </remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plUnitControl.OnLocationChanged(System.EventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ Event handler to update the underlying flow position instance whenever 
+ this control has been repositioned.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plUnitControl.tsmCopy_Click(System.Object,System.EventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ Copy/paste handling.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plUnitControl.tsmPaste_Click(System.Object,System.EventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ Copy/paste handling.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.plUnitControl.OnStyleguideChanged(ScientificInterfaceShared.Style.cStyleGuide.eChangeType)">
+ -----------------------------------------------------------------------
+ <summary>
+ cStyleGuide changed handler, caught to redraw whenever sg colours have
+ been modified.
+ </summary>
+ <param name="changeFlags"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.ucEditFlow">
+ ===========================================================================
+ <summary>
+ 
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.LinkWrapper">
+ ===========================================================================
+ <summary>
+ Diagram element to wrap and reflect all existing links between two units in
+ the value chain.
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.frmMain.eValueChainPageTypes">
+ <summary>
+ The pages supported by the value chain.
+ </summary>
+</member>
+<member name="M:EwEValueChainPlugin.frmMain.ShowForm(EwEValueChainPlugin.frmMain.eValueChainPageTypes)">
+ -----------------------------------------------------------------------
+ <summary>
+ Switch to a form within the value chain plug-in with a given name.
+ </summary>
+ <param name="page">Indicator of the page to show.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.frmMain.ResolveFormName(System.String)">
+ -----------------------------------------------------------------------
+ <summary>
+ Translate pageless node names to valid pages.
+ </summary>
+ <param name="strFormName"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.ucParameters">
+ ===========================================================================
+ <summary>
+ Plug-in credits/parameters/info form
+ </summary>
+ ===========================================================================
+</member>
+<member name="F:EwEValueChainPlugin.ucParameters.m_uic">
+ <summary>The core currently linked to.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucParameters.m_params">
+ <summary>The value chain parameters that this page operates on.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucParameters.m_fpBaseYear">
+ <summary>Smartibits</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucParameters.m_mhCore">
+ <summary>Core event monitor</summary>
+</member>
+<member name="M:EwEValueChainPlugin.ucParameters.#ctor(EwEValueChainPlugin.cData,ScientificInterfaceShared.Controls.cUIContext)">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor.
+ </summary>
+ <param name="data">The data to paramterize.</param>
+ <param name="uic">UI context of EwE GUI.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucParameters.OnLoad(System.EventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ Load me!
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucParameters.OnCoreStateChanged(EwECore.cCoreStateMonitor)">
+ -----------------------------------------------------------------------
+ <summary>
+ Event handler; responds to core execution state changes.
+ </summary>
+ <param name="csm">Core state monitor that changes.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucParameters.OnRunWithEcopathCheckedChanged(System.Object,System.EventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucParameters.OnRunWithEcosimCheckedChanged(System.Object,System.EventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucParameters.OnRunWithFishingPolicySearchCheckedChanged(System.Object,System.EventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucParameters.OnAggregationModeChanged(System.Object,System.EventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucParameters.OnAutoSaveChanged(System.Object,System.EventArgs)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucParameters.ConfigureEcosimControls(System.Boolean)">
+ -----------------------------------------------------------------------
+ <summary>
+ Configure Ecosim-dependent parameter controls.
+ </summary>
+ <param name="bConnect">
+ True to connect to Ecosim, False to disconnect.
+ </param>
+ -----------------------------------------------------------------------
+</member>
+<member name="F:EwEValueChainPlugin.ucResults.m_data">
+ <summary>Value chain data that provides, units, links etc.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucResults.m_model">
+ <summary>Instance of the Ecost model to poke and prod.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucResults.m_result">
+ <summary>Instance of model results to reflect.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucResults.m_uic">
+ <summary>UI context to operate on.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucResults.m_viewMode">
+ <summary>Viewmode dictates what type of result screen the user sees.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucResults.m_graphmode">
+ <summary>Graphmode dictates what data is viewed in result graphs.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucResults.m_view">
+ <summary>Current view to update when triggers arrive.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucResults.m_bInUpdate">
+ <summary>Update feedback prevention flaggibit.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucResults.m_cmdRunEcopath">
+ <summary>Local command to for running Ecopath.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucResults.m_cmdRunEcosim">
+ <summary>Local command to for running Ecosim.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.ucResults.m_cmdRunEqulibrium">
+ <summary>Local command to for running Equilibrium.</summary>
+</member>
+<member name="M:EwEValueChainPlugin.ucResults.GetCoreComboItem(EwECore.cCoreInputOutputBase,System.Windows.Forms.ToolStripComboBox)">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper method, returns a cCoreComboItem for a given cCoreInputOutputBase
+ instance from a given combo box.
+ </summary>
+ <param name="source">The source to locate.</param>
+ <param name="cmb">The combo box to plunder.</param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.ucResults.GetUnitComboItem(EwEValueChainPlugin.cUnit,System.Windows.Forms.ToolStripComboBox)">
+ -----------------------------------------------------------------------
+ <summary>
+ Helper method, returns a cUnitComboItem for a given cUnit.
+ instance from a given combo box.
+ </summary>
+ <param name="source">The source to locate.</param>
+ <param name="cmb">The combo box to plunder.</param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.gridEcopathResult.ShowResults(System.Int32,EwEValueChainPlugin.cUnit[],EwEValueChainPlugin.cResults,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.IResultView.ShowResults(System.Int32,EwEValueChainPlugin.cUnit[],EwEValueChainPlugin.cResults,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Show results for all fleets or for an inidividual fleet.
+ </summary>
+ <param name="iFleet"></param>
+ <param name="lUnits"></param>
+ <param name="iYear">Year to show.</param>
+ <param name="result"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.ucEquilibriumGraph">
+ ===========================================================================
+ <summary>
+ 
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.ucEcosimGraph">
+ ===========================================================================
+ <summary>
+ 
+ </summary>
+ ===========================================================================
+</member>
+<member name="T:EwEValueChainPlugin.cModel">
+ ---------------------------------------------------------------------------
+ <summary>
+ Interface between Ecopath and the Ecost flow.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.cModel.eRunTypes">
+ <summary>
+ Enumerated type used to describe for what model Value Chain produced results.
+ </summary>
+</member>
+<member name="F:EwEValueChainPlugin.cModel.eRunTypes.Ecopath">
+ <summary>Value chain results computed for Ecopath.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cModel.eRunTypes.Ecosim">
+ <summary>Value chain results computed for Ecosim.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cModel.eRunTypes.Equilibrium">
+ <summary>Value chain results computed for the Equilibrium search.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cModel.m_lPreservedEffort">
+ <summary>Preserved effort during equilibrium search.</summary>
+</member>
+<member name="F:EwEValueChainPlugin.cModel.m_bManualRunMode">
+ <summary>States whether running manual (from Value Chain UI) or automatically with core.</summary>
+</member>
+<member name="M:EwEValueChainPlugin.cModel.RunEquilibrium(EwEValueChainPlugin.cData,EwEValueChainPlugin.cResults)">
+ -----------------------------------------------------------------------
+ <summary>
+ VC 090910: beginning of equilibrium analysis in value chain
+ </summary>
+ <param name="data">Data to operate on.</param>
+ <param name="results">Results to plunder.</param>
+ <returns>True if successful</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cModel.PreserveFishingEffort(EwEValueChainPlugin.cData)">
+ -----------------------------------------------------------------------
+ <summary>
+ Preserve the fishing effort shapes prior to running an Equilibrium search.
+ </summary>
+ <param name="data">The data to preserve effort shapes from.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cModel.RestoreFishingEffort(EwEValueChainPlugin.cData)">
+ -----------------------------------------------------------------------
+ <summary>
+ Restore previously preserved fishing effort shapes in the EwE core.
+ </summary>
+ <param name="data">The data to restore fishing effort to.</param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cModel.SetFishingEffort(EwEValueChainPlugin.cData,System.Int32,System.Single)">
+ -----------------------------------------------------------------------
+ <summary>
+ Set the fishing effort for a given fleet to a given value.
+ </summary>
+ <param name="data">The data to set effort into.</param>
+ <param name="Fleet">The fleet index to set effort for.</param>
+ <param name="Val">The value to set effort to.</param>
+ <returns>True if successful.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cModel.RunTimeStep(EwEValueChainPlugin.cData,EwEValueChainPlugin.cResults,System.Int32,EwECore.cEcoSimResults,EwECore.cEcosimDatastructures)">
+ <summary>
+ Run a time step.
+ </summary>
+ <param name="data"></param>
+ <param name="result"></param>
+ <param name="iTimeStep">1 when running Ecopath.</param>
+ <param name="ecosimResults"></param>
+ <param name="ecosimDS"></param>
+</member>
+<member name="M:EwEValueChainPlugin.cModel.RunFullModel(EwEValueChainPlugin.cData,EwEValueChainPlugin.cResults,System.Int32,EwECore.cEcoSimResults,EwECore.cEcosimDatastructures)">
+ <summary>
+ Run a time step for the entire chain, unfiltered.
+ </summary>
+ <param name="data"></param>
+ <param name="result"></param>
+ <param name="iTimeStep">1 when running Ecopath.</param>
+ <param name="ecosimResults"></param>
+ <param name="ecosimDS"></param>
+</member>
+<member name="M:EwEValueChainPlugin.cModel.RunTimeStepByFleet(EwEValueChainPlugin.cData,EwEValueChainPlugin.cResults,System.Int32,EwECore.cEcoSimResults,EwECore.cEcosimDatastructures)">
+ <summary>
+ Run a time step, aggregated values by fleet.
+ </summary>
+ <param name="data"></param>
+ <param name="result"></param>
+ <param name="iTimeStep">1 when running Ecopath.</param>
+ <param name="ecosimResults"></param>
+ <param name="ecosimDS"></param>
+ <returns></returns>
+</member>
+<member name="M:EwEValueChainPlugin.cModel.RunTimeStepByLanding(EwEValueChainPlugin.cData,EwEValueChainPlugin.cResults,System.Int32,EwECore.cEcoSimResults,EwECore.cEcosimDatastructures)">
+ <summary>
+ Run a time step, aggregated values by fleet.
+ </summary>
+ <param name="data"></param>
+ <param name="result"></param>
+ <param name="iTimeStep">1 when running Ecopath.</param>
+ <param name="ecosimResults"></param>
+ <param name="ecosimDS"></param>
+ <returns></returns>
+</member>
+<member name="P:EwEValueChainPlugin.cNavTreeControlPlugin.Name">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="P:EwEPlugin.IPlugin.Name"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cNavTreeControlPlugin.ControlImage">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="P:EwEPlugin.IGUIPlugin.ControlImage"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cNavTreeControlPlugin.ControlText">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="P:EwEPlugin.IGUIPlugin.ControlText"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cNavTreeControlPlugin.ControlTooltipText">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="P:EwEPlugin.IGUIPlugin.ControlTooltipText"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cNavTreeControlPlugin.EnabledState">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="P:EwEPlugin.IGUIPlugin.EnabledState"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cNavTreeControlPlugin.OnControlClick(System.Object,System.EventArgs,System.Windows.Forms.Form@)">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="M:EwEPlugin.IGUIPlugin.OnControlClick(System.Object,System.EventArgs,System.Windows.Forms.Form@)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cNavTreeControlPlugin.NavigationTreeItemLocation">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="P:EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cNavTreeControlPlugin.Author">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="P:EwEPlugin.IPlugin.Author"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cNavTreeControlPlugin.Contact">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="P:EwEPlugin.IPlugin.Contact"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cNavTreeControlPlugin.Description">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="P:EwEPlugin.IPlugin.Description"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cNavTreeControlPlugin.Initialize(System.Object)">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="M:EwEPlugin.IPlugin.Initialize(System.Object)"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cNavTreeControlPlugin.FormPage">
+ -----------------------------------------------------------------------
+ <summary>
+ Must override to define the name of the <see cref="M:EwEValueChainPlugin.frmMain.ShowForm(EwEValueChainPlugin.frmMain.eValueChainPageTypes)"></see>value chain page that a 
+ navigation item opens.
+ </summary>
+ <returns>The page to navigate to when this plug-in point is activated.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cNavTreeControlPlugin.HelpTopic">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="P:EwEPlugin.IHelpPlugin.HelpTopic"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cNavTreeControlPlugin.HelpURL">
+ -----------------------------------------------------------------------
+ <inheritdoc cref="P:EwEPlugin.IHelpPlugin.HelpURL"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.cPluginData">
+ ---------------------------------------------------------------------------
+ <summary>
+ Data exposed by the Ecost plug-in for consumption by the outside world.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cPluginData.TimeStep">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the time step that this data represents.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cPluginData.Subtotal(System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get a subtotal block.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cPluginData.NumSubtotals">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the number of subtotal blocks.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cPluginData.Total">
+ -----------------------------------------------------------------------
+ <summary>
+ Get total economic values.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cPluginData.SubtotalCounter">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the core counter that represents the grouping of subtotals.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="F:EwEValueChainPlugin.cValueChainPlugin.m_ddx">
+ <summary>Ooooh, that was long ago...</summary>
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.Initialize(System.Object)">
+ <summary>
+ Initialize the Plugin. This is called when the core loads the Plugin. It will only be called once.
+ </summary>
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.Open(System.String)">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point implementation, no longer called but kept for compliancy.
+ </summary>
+ <param name="strName">The name of the datasource.</param>
+ <returns>True if successful.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.Close">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point implementation, called when an EwE6 model is closed. 
+ Handled to terminate the Value Chain model corresponding to an EwE model.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.IsModified">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point implementation, called when an EwE6 model is polled for
+ unsaved changes. Handled to inform the EwE6 engine that the Value Chain 
+ model has unsaved changes.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.LoadModel(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point implementation, called when an EwE6 model is loaded. 
+ Handled toload the Value Chain model corresponding to an EwE model.
+ </summary>
+ <param name="dataSource">The loaded datasource.</param>
+ <returns>True if successful.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.SaveModel(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point implementation, called when an EwE6 model is saved. 
+ Handled to save the Value Chain model corresponding to an EwE model.
+ </summary>
+ <param name="dataSource">The loaded datasource.</param>
+ <returns>True if successful.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.EcopathRunCompleted(System.Object@)">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point implementation, called when Ecopath has ran.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.EcosimRunInitialized(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point implementation, called just before Ecosim will run.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.EcosimEndTimeStep(System.Single[]@,System.Object,System.Int32,System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point implementation, called at end of every Ecosim timestep.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.EcosimRunCompleted(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point implementation, called when Ecosim has finished running.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.SearchInitialized(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point implementation, called when a search is initialized.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.SearchIterationsStarting">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point implementation, called when a search is starting.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.PostRunSearchResults(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Plug-in point implementation, called when a search step has been 
+ performed. Implemented to provide economic search results.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEValueChainPlugin.cValueChainPlugin.AutoSave">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.IAutoSavePlugin.AutoSave"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.AutoSaveName">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEPlugin.IAutoSavePlugin.AutoSaveName"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.AutoSaveSubPath">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwEValueChainPlugin.cValueChainPlugin.AutoSaveType">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="M:EwEPlugin.IAutoSavePlugin.AutoSaveType"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEValueChainPlugin.cUnitTypeFormatter">
+ <summary>
+ 
+ </summary>
+</member>
+</members>
+</doc>

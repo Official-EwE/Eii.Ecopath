@@ -1,0 +1,211 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+EwEAquamapsEnvDataImporterPlugin
+</name>
+</assembly>
+<members>
+<member name="T:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.aquamaps_jpg">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.CAPTION_LOAD_HSPEN">
+<summary>
+  Looks up a localized string similar to Select Aquamaps HSPEN files to load.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.HSPEN_example_csv">
+<summary>
+  Looks up a localized string similar to Mapping parameters for Sardina pilchardus (European pilchard),,,,,
+,,,,,
+Map type: Expert-reviewed,,,,,
+Map Option: In FAO and Bounding Box,,,,,
+FAOAreas:  1 |  4 |  5 |  27 |  34 |  37  |  37 ,,,,,
+Bounding Box (NSWE): ,68,14,-32,43,
+,,,,,
+Pelagic: False,,,,,
+Layer used to generate probabilities: Surface,,,,,
+,,,,,
+Species Envelope (HSPEN):,,,,,
+ ,Used,Min,Pref Min (10th),Pref Max (90th),Max
+Depth (m),1,10,25,100,100
+Temperature (°C),1,2.53,12,26.92,27.62
+Salinity (psu),1,18.1,34.72,37.99,39. [rest of string was truncated]&quot;;.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.jrc_logo">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.PROMPT_FILE_INVALID">
+<summary>
+  Looks up a localized string similar to Aquamaps CSV file {0} is malformed, cannot continue.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.PROMPT_FILE_NOCONTENT">
+<summary>
+  Looks up a localized string similar to AquaMaps CSV file {0} did not contain any valid distribution envelopes.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.PROMPT_FILE_NOT_FOUND">
+<summary>
+  Looks up a localized string similar to Unable to load Aquamaps distribution envelopes. {0}.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.PROMPT_IMPORT_DETAIL_FAILED">
+<summary>
+  Looks up a localized string similar to Failed to add response function &apos;{0}&apos;.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.PROMPT_IMPORT_DETAIL_LINEERROR">
+<summary>
+  Looks up a localized string similar to Cannot interpret &apos;{0}&apos;.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.PROMPT_IMPORT_DETAIL_SUCCESS">
+<summary>
+  Looks up a localized string similar to Added response function &apos;{0}&apos;.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.PROMPT_IMPORT_GENERIC">
+<summary>
+  Looks up a localized string similar to Imported Aquamaps species distribution envelopes.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.STATUS_CONFIGURING">
+<summary>
+  Looks up a localized string similar to Configuring functions.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.STATUS_CREATING">
+<summary>
+  Looks up a localized string similar to Creating response functions.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.STATUS_CREATING_DETAIL">
+<summary>
+  Looks up a localized string similar to Creating response function &apos;{0}&apos;.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.STATUS_EXAMPLE_SAVE_FAILED">
+<summary>
+  Looks up a localized string similar to Example Aquamaps HSPEN file failed to save {0}.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.STATUS_EXAMPLE_SAVE_SUCCESS">
+<summary>
+  Looks up a localized string similar to Example Aquamaps HSPEN file saved to {0}.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.STATUS_IMPORTING">
+<summary>
+  Looks up a localized string similar to Importing aquamaps species envelopes.
+</summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.My.Resources.Resources.STATUS_SAVING">
+<summary>
+  Looks up a localized string similar to Saving changes.
+</summary>
+</member>
+<member name="T:EwEAquamapsEnvDataImporterPlugin.cFileReader">
+ <summary>
+ Aquamaps file reader.
+ </summary>
+</member>
+<member name="T:EwEAquamapsEnvDataImporterPlugin.cImportData">
+ <summary>
+ Data for the Aquamaps distribution envelope import process.
+ </summary>
+</member>
+<member name="T:EwEAquamapsEnvDataImporterPlugin.cImportData.cFileData">
+ <summary>
+ Data that holds information from a single Aquamaps envelope file.
+ </summary>
+</member>
+<member name="F:EwEAquamapsEnvDataImporterPlugin.cImportData.cFileData.m_strSpecies">
+ <summary>The species that the file was read for.</summary>
+</member>
+<member name="F:EwEAquamapsEnvDataImporterPlugin.cImportData.cFileData.m_lEnvelopes">
+ <summary>Envelopes contained in the file</summary>
+</member>
+<member name="T:EwEAquamapsEnvDataImporterPlugin.cImportData.cEnvelopeData">
+ <summary>
+ Data that holds information from a single envelope.
+ </summary>
+</member>
+<member name="M:EwEAquamapsEnvDataImporterPlugin.cImportData.Clear">
+ <summary>
+ Clear the data.
+ </summary>
+</member>
+<member name="M:EwEAquamapsEnvDataImporterPlugin.cImportData.AddFile(System.String)">
+ -----------------------------------------------------------------------
+ <summary>
+ Add a file to the data.
+ </summary>
+ <param name="strSpecies">The species for the file that was read.</param>
+ <returns>A <see cref="T:EwEAquamapsEnvDataImporterPlugin.cImportData.cFileData">file data block</see> to populate further.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.cImportData.Species">
+ -----------------------------------------------------------------------
+ <summary>
+ Get an array of all unique species names that have been read.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.cImportData.Envelopes">
+ -----------------------------------------------------------------------
+ <summary>
+ Get an array of all unique envelope names that have been read.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.cImportData.Files">
+ -----------------------------------------------------------------------
+ <summary>
+ Get an array of the <see cref="T:EwEAquamapsEnvDataImporterPlugin.cImportData.cFileData">files</see> that have been read.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEAquamapsEnvDataImporterPlugin.cImporter">
+ <summary>
+ Performs the actual import from <see cref="T:EwEAquamapsEnvDataImporterPlugin.cImportData"/> to <see cref="T:EwECore.cEnviroResponseFunction"/>.
+ </summary>
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.cPluginPoint.HelpTopic">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.IHelpPlugin.HelpTopic"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwEAquamapsEnvDataImporterPlugin.cPluginPoint.HelpURL">
+ -----------------------------------------------------------------------
+ <inheritdocs cref="P:EwEPlugin.IHelpPlugin.HelpURL"/>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwEAquamapsEnvDataImporterPlugin.frmImport">
+ <summary>
+ Main UI for the Aquamaps distribution envelope import plug-in
+ </summary>
+</member>
+</members>
+</doc>

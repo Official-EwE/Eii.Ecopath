@@ -239,6 +239,15 @@
     <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFOtherMort.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecosim\Input\Catchability\frmCatchability.Designer.vb">
+      <DependentUpon>frmCatchability.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\Catchability\frmCatchability.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\Catchability\gridCatchability.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\EggProduction\frmApplyEP.Designer.vb">
       <DependentUpon>frmApplyEP.vb</DependentUpon>
     </Compile>
@@ -1005,6 +1014,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFOtherMort.resx">
       <DependentUpon>frmApplyFFOtherMort.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\Catchability\frmCatchability.resx">
+      <DependentUpon>frmCatchability.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\EggProduction\frmApplyEP.resx">
       <DependentUpon>frmApplyEP.vb</DependentUpon>

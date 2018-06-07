@@ -146,6 +146,7 @@
     <Compile Include="Core\cCoreSettings.vb" />
     <Compile Include="Core\cValueArray.vb" />
     <Compile Include="Core\cValueArrayIndexed.vb" />
+    <Compile Include="Core\cValueArrayTripleIndex.vb" />
     <Compile Include="Database\Updates\Release 6.5\6.5.1\cDBUpdate6_50_10_02.vb" />
     <Compile Include="Database\Updates\Release 6.5\6.5.1\cDBUpdate6_50_10_01.vb" />
     <Compile Include="Database\Updates\Release 6.5\cDBUpdate6_50_00_19.vb" />

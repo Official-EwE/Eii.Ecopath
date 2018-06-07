@@ -289,7 +289,7 @@ Public Class cStanzaGroup
     ''' <param name="newValue"></param>
     ''' <param name="iSecondaryIndex"></param>
     ''' <returns></returns>
-    Public Overrides Function SetVariable(ByVal VarName As eVarNameFlags, ByVal newValue As Object, Optional ByVal iSecondaryIndex As Integer = -9999) As Boolean
+    Public Overrides Function SetVariable(ByVal VarName As eVarNameFlags, ByVal newValue As Object, Optional ByVal iSecondaryIndex As Integer = -9999, Optional ByVal iThirdIndex As Integer = -9999) As Boolean
         Dim bSucces As Boolean = MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
         isDirty = isDirty Or bSucces
         Return bSucces

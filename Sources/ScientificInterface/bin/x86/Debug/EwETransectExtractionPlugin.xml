@@ -1,0 +1,282 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+EwETransectExtractionPlugin
+</name>
+</assembly>
+<members>
+<member name="T:EwETransectExtractionPlugin.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.CAPTION_BIOMASS">
+<summary>
+  Looks up a localized string similar to Biomass along transect.
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.CAPTION_CATCH">
+<summary>
+  Looks up a localized string similar to Catch along transect.
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.CAPTION_DEPTH">
+<summary>
+  Looks up a localized string similar to Depth along transect.
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.CAPTION_IN">
+<summary>
+  Looks up a localized string similar to Transects.
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.CAPTION_MPA">
+<summary>
+  Looks up a localized string similar to MPAs along transect.
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.CAPTION_OUT">
+<summary>
+  Looks up a localized string similar to Transect summary.
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.GENERIC_LABEL_POINT">
+<summary>
+  Looks up a localized string similar to ({0}, {1}).
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.LABEL_CELL">
+<summary>
+  Looks up a localized string similar to Cell.
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.LABEL_NODATA">
+<summary>
+  Looks up a localized string similar to (no summary yet).
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.LABEL_TIMESTEP">
+<summary>
+  Looks up a localized string similar to Timestep {0}/{1}.
+</summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.My.Resources.Resources.UNIT_MPACOUNT">
+<summary>
+  Looks up a localized string similar to Num. intersecting MPAs.
+</summary>
+</member>
+<member name="T:EwETransectExtractionPlugin.cTransectDatastructures">
+ ---------------------------------------------------------------------------
+ <summary>
+ Datastructures for holding <see cref="T:EwETransectExtractionPlugin.cTransect">transects</see>.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="E:EwETransectExtractionPlugin.cTransectDatastructures.OnTransectSelected">
+ <summary>
+ Event to notify that the selected transect has changed.
+ </summary>
+ <param name="sender"></param>
+ <param name="transect">The newly selected transect.</param>
+</member>
+<member name="E:EwETransectExtractionPlugin.cTransectDatastructures.OnTransectAdded">
+ <summary>
+ Event to notify that a transect was added.
+ </summary>
+ <param name="sender"></param>
+ <param name="transect">The selected that was added.</param>
+</member>
+<member name="E:EwETransectExtractionPlugin.cTransectDatastructures.OnTransectRemoved">
+ <summary>
+ Event to notify that a transect was removed.
+ </summary>
+ <param name="sender"></param>
+ <param name="transect">The selected that was removed.</param>
+</member>
+<member name="E:EwETransectExtractionPlugin.cTransectDatastructures.OnTransectChanged">
+ <summary>
+ Event to notify that a transect has been modified.
+ </summary>
+ <param name="sender"></param>
+ <param name="transect">The selected that was modified.</param>
+</member>
+<member name="M:EwETransectExtractionPlugin.cTransectDatastructures.Clear">
+ <summary>
+ Erase all transects.
+ </summary>
+</member>
+<member name="P:EwETransectExtractionPlugin.cTransectDatastructures.Autosaving">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set whether transect summaries are automatically saved.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwETransectExtractionPlugin.cTransectStoragePlugin">
+ ---------------------------------------------------------------------------
+ <summary>
+ Plug-in point to manage transect persistence
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwETransectExtractionPlugin.cTransectRecorderPlugin">
+ ---------------------------------------------------------------------------
+ <summary>
+ Plug-in point that records transect summaries from Ecospace time step data.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwETransectExtractionPlugin.cTransectSummaryPlugin">
+ ---------------------------------------------------------------------------
+ <summary>
+ Plug-in point to invoke the UI to view transect summaries.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwETransectExtractionPlugin.cTransectDefinePlugin">
+ ---------------------------------------------------------------------------
+ <summary>
+ Plug-in point to invoke the UI to define transects.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwETransectExtractionPlugin.cTransect">
+ ---------------------------------------------------------------------------
+ <summary>
+ Container for a single transect.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="P:EwETransectExtractionPlugin.cTransect.Name">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the name of the transect.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwETransectExtractionPlugin.cTransect.Start">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the start location (expressed in map units lon, lat) of the transect.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwETransectExtractionPlugin.cTransect.End">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the end location (expressed in map units lon, lat) of the transect.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="P:EwETransectExtractionPlugin.cTransect.NumCells">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns the number of cells in the transect, or -1 if this number is not determined yet.
+ </summary>
+ <returns>The number of cells in the transect, or -1 if this number is 
+ not determined yet.</returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwETransectExtractionPlugin.cTransect.Cells(EwECore.cEcospaceBasemap)">
+ <summary>
+ Returns all modelled cells that the transect passes through. The cells
+ are given as col, row.
+ </summary>
+ <param name="bm">The basemap to determine the cells from.</param>
+ <returns>The cells.</returns>
+ <remarks>
+ Once determined, the cells are cached until the transect is modified.
+ </remarks>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwETransectExtractionPlugin.cTransect.ToString">
+ -----------------------------------------------------------------------
+ <summary>
+ Your friendly helpful neighbourhood identifier.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwETransectExtractionPlugin.cTransect.Invalidate">
+ -----------------------------------------------------------------------
+ <summary>
+ Remove all cached cells, to be determined again when needed next.
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwETransectExtractionPlugin.cTransect.Summary(System.Int32,System.Int32,EwETransectExtractionPlugin.cTransect.eSummaryType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get a transect summary for a given time step, group, and variable.
+ </summary>
+ <param name="iTimestep"></param>
+ <param name="iGroup"></param>
+ <param name="variable"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwETransectExtractionPlugin.cTransect.Summary(EwECore.cEcospaceBasemap,EwECore.cEcospaceLayer,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get a transect summary for a specific input layer.
+ </summary>
+ <param name="l"></param>
+ <param name="iIndex"></param>
+ <returns></returns>
+ -----------------------------------------------------------------------
+</member>
+<member name="T:EwETransectExtractionPlugin.cTransectResultWriterPlugin">
+ ---------------------------------------------------------------------------
+ <summary>
+ Plug-in point that implements a transect summary Ecospace result writer.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="T:EwETransectExtractionPlugin.cTransectSummary">
+ ---------------------------------------------------------------------------
+ <summary>
+ Cell summaryt for a single transect.
+ </summary>
+ ---------------------------------------------------------------------------
+</member>
+<member name="P:EwETransectExtractionPlugin.cTransectSummary.Value(System.Int32)">
+ <summary>
+ 
+ </summary>
+ <param name="i">Zero-based index</param>
+ <returns></returns>
+</member>
+<member name="T:EwETransectExtractionPlugin.cTransectLayer">
+ <summary>
+ Core data layer wrapper for transect raster data.
+ </summary>
+</member>
+<member name="M:EwETransectExtractionPlugin.cTransectLayer.#ctor(EwECore.cCore,EwETransectExtractionPlugin.cTransectDatastructures)">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor for an NxN layer of Single values, that derives its data and 
+ identity from a manager.
+ </summary>
+ <param name="core"></param>
+ -----------------------------------------------------------------------
+</member>
+<member name="M:EwETransectExtractionPlugin.cTransectVectorRenderer.#ctor(ScientificInterfaceShared.Style.cStyleGuide)">
+ -----------------------------------------------------------------------
+ <summary>
+ 
+ </summary>
+ -----------------------------------------------------------------------
+</member>
+</members>
+</doc>
