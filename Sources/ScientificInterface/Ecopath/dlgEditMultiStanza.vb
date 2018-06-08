@@ -262,7 +262,7 @@ Namespace Ecopath
                 pplSep = New PointPairList
                 pplSep.Add(iSpawnMonth, 0)
                 pplSep.Add(iSpawnMonth, 1)
-                li = pane.AddCurve("Spawning age", pplSep, Color.Orange, SymbolType.None)
+                li = pane.AddCurve(My.Resources.HEADER_SPAWNING_AGE, pplSep, Color.Orange, SymbolType.None)
                 li.Line.Style = Drawing2D.DashStyle.Dash
             End If
 
