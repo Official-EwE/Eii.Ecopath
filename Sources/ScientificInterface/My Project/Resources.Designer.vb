@@ -2066,6 +2066,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Spawning age.
+        '''</summary>
+        Public ReadOnly Property HEADER_SPAWNING_AGE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SPAWNING_AGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Stationary system.
         '''</summary>
         Public ReadOnly Property HEADER_STATIONARY() As String

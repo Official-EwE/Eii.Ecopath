@@ -43,7 +43,9 @@ Friend Class frmSplash
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_img = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current(), Me.ClientRectangle.Size)
+        Using ico As New Icon(cEwEIcon.Current(), Me.ClientRectangle.Size)
+            Me.m_img = cDrawingUtils.BitmapFromIcon(ico)
+        End Using
         Me.TransparencyKey = Me.BackColor
 
         Me.CenterToScreen()
