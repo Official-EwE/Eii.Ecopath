@@ -3053,6 +3053,17 @@ Namespace Core
 
 #End Region ' Forcing function application targets
 
+#Region " Mediation drivers "
+
+    Public Enum eMediationDriverTypes As Integer
+        NotSet = 0
+        Group = 1
+        Fleet = 2
+        ForcingFunction = 3
+    End Enum
+
+#End Region ' Mediation drivers
+
 #Region " IUCN threat classifications "
 
     ''' -----------------------------------------------------------------------
