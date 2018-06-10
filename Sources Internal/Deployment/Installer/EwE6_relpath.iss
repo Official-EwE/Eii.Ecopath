@@ -2,11 +2,11 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 #include <idp.iss>
 #define Compile64Bit 0
-#define Spinup 1
-#define SpatTemp 1
+#define Spinup 0
+#define SpatTemp 0
 #define MSPTools 0
-#define MPAdynamics 1
-#define BiomassEmitters 1
+#define MPAdynamics 0#define MergeSplit 0
+#define BiomassEmitters 0
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
@@ -42,7 +42,7 @@ AllowNoIcons=True
 AppPublisher={#MyAppPublisher}
 AppPublisherURL=http://ecopathinternational.org
 AppSupportURL=mailto:support@ecopath.org
-MinVersion=0,6.0sp2
+MinVersion=0,5.01sp3
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AlwaysShowGroupOnReadyPage=True
@@ -128,17 +128,25 @@ Source: "{#DefRoot}{#DefDB}\Tampa_Bay.EwEmdb"; DestDir: "{userdocs}\EwE sample d
 Source: "{#DefRoot}{#DefDB}\Georgia_Strait.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 Source: "{#DefRoot}{#DefSrc}\EwEEcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\sampler
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\sampler
-Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\mergegroups
 Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\transects
+
+; Optional components under development
+#if MergeSplit == 1
+Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\mergegroups
+#endif
+
 #if MPAdynamics == 1
 Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\mpadynamics
 #endif
+
 #if Spinup == 1
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\spinup
 #endif
+
 #if BiomassEmitters == 1
 Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\emissions
 #endif
+
 #if SpatTemp == 1
 Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Controls.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
@@ -251,6 +259,7 @@ Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_HDF5Image.dll"
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_MrSID.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_netCDF.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 #endif
+
 #if MSPTools == 1
 Source: "{#DefRoot}{#DefSrc}\EwEShell.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
 Source: "{#DefRoot}{#DefSrc}\EwEMSPPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
@@ -280,7 +289,11 @@ Name: "plugin\automation\sampler"; Description: "Ecosampler"; Types: full
 Name: "plugin\ui"; Description: "Usability"; Types: full custom
 Name: "plugin\ui\remarks"; Description: "Remarks collector"; Types: full custom
 Name: "plugin\ui\shapegrid"; Description: "Shape grids"; Types: full custom
+
+; Optional components under development
+#if MergeSplit == 1
 Name: "plugin\automation\mergegroups"; Description: "Merge groups"; Types: full
+#endif
 #if MPAdynamics == 1
 Name: "plugin\automation\mpadynamics"; Description: "MPA dynamics"; Types: full
 #endif
@@ -348,7 +361,8 @@ begin
     // versionRelease := 394254; // v4.6.1; or 394271
     // versionRelease := 394802; // v4.6.2; or 394806
     // versionRelease := 460798; // v4.7;   or 460805
-    versionRelease := 461308; // v4.7.1; or 461310 
+    // versionRelease := 461308; // v4.7.1; or 461310 
+    versionRelease := 378389; // To facilitate wine bottler
 
     bSuccess := RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', regVersion);
 
@@ -379,7 +393,7 @@ begin
     begin
         try
             StatusText := WizardForm.StatusLabel.Caption;
-            WizardForm.StatusLabel.Caption := 'Installing .NET Framework. This might take a few minutes...';
+            WizardForm.StatusLabel.Caption := 'Installing .NET Framework...';
             WizardForm.ProgressGauge.Style := npbstMarquee;
             if not Exec(ExpandConstant('{tmp}\NetFrameworkInstaller.exe'), '/passive /norestart', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
             begin

@@ -185,7 +185,7 @@
   </data>
   <data name="ECOPATH_INVALIDMODEL_EE_GENERIC" xml:space="preserve">
     <value>Your model is NOT mass-balanced!
-Computed Ecotrophic Efficiencies (EE) invalid for one or more group(s).</value>
+Computed Ecotrophic Efficiencies (EE) invalid for one or more groups.</value>
     <comment>Ecopath EE values computed incorrectly</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_PB0" xml:space="preserve">
@@ -700,7 +700,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=gear/fleet name</comment>
   </data>
   <data name="ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP" xml:space="preserve">
-    <value>Respiration exceeds input to detritus for one or more group(s).</value>
+    <value>Respiration exceeds input to detritus for one or more groups.</value>
   </data>
   <data name="ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP_GROUP" xml:space="preserve">
     <value>Group '{0}' has a respiration value exceeding input to detritus.</value>
@@ -785,7 +785,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>{0}=fleet names</comment>
   </data>
   <data name="MSE_VALIDATION_FIXEDESCAPEMENT" xml:space="preserve">
-    <value>Fixed escapement, fixed fishing mortalities and  have all been set for group(s) '{0}' only the Fixed Escapement regulations will be used.</value>
+    <value>Fixed escapement and fixed fishing mortalities have all been set for group(s) '{0}'; only the Fixed Escapement regulations will be used.</value>
     <comment>{0}=group names</comment>
   </data>
   <data name="MSE_VALIDATION_QUOTAS" xml:space="preserve">
@@ -1404,5 +1404,14 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="PROMPT_SAVE_CHANGES_DETAILED" xml:space="preserve">
     <value>Unsaved changes in {0} will be lost if you proceed. Do you wish to save these changes?</value>
     <comment>{0}=list of EwE modules</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_PB_QB" xml:space="preserve">
+    <value>QB &lt; PB for group '{0}'</value>
+    <comment>{0}=group name, {1}=invalid EE value</comment>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_PB_QB_GENERIC" xml:space="preserve">
+    <value>Your model is NOT mass-balanced!
+QB &lt; PB for one or more groups</value>
+    <comment>Ecopath EE values computed incorrectly</comment>
   </data>
 </root>
