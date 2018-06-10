@@ -2926,6 +2926,7 @@ Namespace Core
         InvalidModel_PB0_Generic
         InvalidModel_QB0_Generic
         InvalidModel_B_Detritus
+        PBExceedsQB
 
         ''' <summary>MSE has completed a model run of some sort</summary>
         MSERunCompleted

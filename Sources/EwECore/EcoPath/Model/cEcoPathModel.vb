@@ -331,7 +331,8 @@ Namespace Ecopath
 
                         m_Data.onPostEcopathRun(Me.m_Ecofunctions)
 
-                        CheckIfEEsAreOK(bSendMessage:=True)
+                        CheckIfEEsAreOK(True)
+                        CheckIfProductionOk()
 
                     Else
 
@@ -732,7 +733,7 @@ Namespace Ecopath
                         End If
 
                         str = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP_GROUP, Me.m_Data.GroupName(i))
-                        vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
+                        vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.Name, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i)
                         msg.AddVariable(vs)
                     End If
 
@@ -841,7 +842,34 @@ Namespace Ecopath
 
         End Function
 
+        Friend Function CheckIfProductionOk() As Boolean
 
+            Dim i As Integer
+            Dim msg As cMessage = Nothing
+            Dim vs As cVariableStatus = Nothing
+            Dim str As String = ""
+
+            For i = 1 To m_Data.NumGroups
+                If (Me.m_Data.PP(i) < 1) And (Me.m_Data.QB(i) < Me.m_Data.PB(i)) Then 'only for consumers
+                    If (msg Is Nothing) Then
+                        msg = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_PB_QB_GENERIC,
+                                            eMessageType.PBExceedsQB, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                        msg.Suppressable = True
+                    End If
+                    str = cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_PB_QB_GENERIC, Me.m_Data.GroupName(i))
+                    vs = New cVariableStatus(eStatusFlags.ErrorEncountered, str, eVarNameFlags.QBOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i)
+                    msg.AddVariable(vs)
+                End If
+            Next
+
+            If (Not msg Is Nothing) Then
+                NotifyCore(msg)
+                Return False
+            End If
+
+            Return True
+
+        End Function
 
         Private Sub CalcTotalPrimProd()
             Dim i As Integer
