@@ -403,9 +403,7 @@ Public Class cEcospaceSpinupPlugin
         System.Console.WriteLine(Me.ToString + ".EcospaceInitialized()")
 
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
-        'If the Spinup plugin is loaded then assume the user wants to use a spinup period
-        Me.EcoSpaceData.UseSpinUp = True
-        Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcospaceInitialized() Failed to get EcosimDataStructures.")
+
     End Sub
 
 #End Region
