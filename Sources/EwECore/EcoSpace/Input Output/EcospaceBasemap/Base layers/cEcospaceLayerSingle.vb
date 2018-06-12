@@ -35,13 +35,13 @@ Public Class cEcospaceLayerSingle
 #Region " Private variables "
 
     ''' <summary>Layer max value.</summary>
-    Private m_sMaxValue As Single = 0.0!
+    Protected m_sMaxValue As Single = 0.0!
     ''' <summary>Layer min value.</summary>
-    Private m_sMinValue As Single = 0.0!
+    Protected m_sMinValue As Single = 0.0!
     ''' <summary>Layer mean value.</summary>
-    Private m_sMeanValue As Single = 0.0!
+    Protected m_sMeanValue As Single = 0.0!
     ''' <summary>Layer num of cells with a value.</summary>
-    Private m_iNumValueCells As Integer = 0
+    Protected m_iNumValueCells As Integer = 0
 
 #End Region ' Private variables
 
