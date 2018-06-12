@@ -65,7 +65,10 @@ Friend Class frmSplash
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
         MyBase.OnFormClosed(e)
         frmSplash.g_instance = Nothing
-        Me.m_img.Dispose()
+        If (Me.m_img IsNot Nothing) Then
+            Me.m_img.Dispose()
+            Me.m_img = Nothing
+        End If
     End Sub
 
     Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
@@ -81,7 +84,11 @@ Friend Class frmSplash
         g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit
         g.CompositingQuality = CompositingQuality.HighQuality
 
-        g.DrawImage(Me.m_img, Me.ClientRectangle)
+        Try
+            g.DrawImage(Me.m_img, Me.ClientRectangle)
+        Catch ex As Exception
+
+        End Try
 
         'Using p As New GraphicsPath()
         '    Dim strBitApp As String = If(cSystemUtils.Is64BitProcess, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
