@@ -341,7 +341,7 @@ Public Class cEcospaceBasemap
 
     Public Overrides Function SetVariable(VarName As eVarNameFlags,
                                           newValue As Object,
-                                          Optional iSecondaryIndex As Integer = -9999, Optional ByVal iThirdIndex As Integer = -9999) As Boolean
+                                          Optional iSecondaryIndex As Integer = -9999) As Boolean
 
         ' JS 07Jul14: cell size is now a derived value
         If (VarName = eVarNameFlags.CellSize) Then

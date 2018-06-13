@@ -157,7 +157,7 @@ Public Class cEcosimOutput
 
     End Function
 
-    Public Overrides Function GetStatus(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex As Integer = -9999, Optional ByVal iThirdIndex As Integer = -9999) As eStatusFlags
+    Public Overrides Function GetStatus(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex As Integer = -9999) As eStatusFlags
         Return eStatusFlags.NotEditable And eStatusFlags.ValueComputed
     End Function
 

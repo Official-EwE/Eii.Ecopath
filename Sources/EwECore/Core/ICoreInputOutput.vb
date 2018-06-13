@@ -78,25 +78,23 @@ Public Interface ICoreInputOutput
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> type to access.</param>
     ''' <param name="iIndex">Optional index of the value to set when accessing an array-type variable.</param>
     ''' <returns>True if successful.</returns>
-    Function SetVariable(ByVal VarName As eVarNameFlags, ByVal newValue As Object, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, Optional ByVal iThirdIndex As Integer = -9999) As Boolean
+    Function SetVariable(ByVal VarName As eVarNameFlags, ByVal newValue As Object, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As Boolean
 
     ''' <summary>
     ''' Returns the <see cref="eStatusFlags">Status</see> of a value exposed by a Core input or output object.
     ''' </summary>
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> type to access.</param>
-    ''' <param name="iSecondaryIndex">Optional index of the value status to query when accessing an array-type variable.</param>
+    ''' <param name="iIndex">Optional index of the value status to query when accessing an array-type variable.</param>
     ''' <returns>Any loose-typed value, or Nothing if an error occurred.</returns>
-    Function GetStatus(ByVal VarName As eVarNameFlags, Optional ByVal iSecondaryIndex As Integer = -9999,
-                                            Optional ByVal iThirdIndex As Integer = -9999) As eStatusFlags
+    Function GetStatus(ByVal VarName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
 
     ''' <summary>
     ''' Sets the <see cref="eStatusFlags">Status</see> of a value exposed by a Core input or output object.
     ''' </summary>
     ''' <param name="VarName"><see cref="eVarNameFlags">Variable</see> type to access.</param>
-    ''' <param name="iSecondaryIndex">Optional index of the value status to set when accessing an array-type variable.</param>
+    ''' <param name="iIndex">Optional index of the value status to set when accessing an array-type variable.</param>
     ''' <returns>Any loose-typed value, or Nothing if an error occurred.</returns>
-    Function SetStatus(ByVal VarName As eVarNameFlags, ByVal newStatus As eStatusFlags, Optional ByVal iSecondaryIndex As Integer = -9999,
-                                            Optional ByVal iThirdIndex As Integer = -9999) As Boolean
+    Function SetStatus(ByVal VarName As eVarNameFlags, ByVal newStatus As eStatusFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As Boolean
 
     ''' <summary>
     ''' Returns the <see cref="cVariableStatus">result</see> of the most recent 
@@ -474,11 +472,10 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <param name="iIndex">Optional index within <paramref name="VarName">VarName</paramref>.</param>
     ''' -----------------------------------------------------------------------
     Public Overridable Function GetStatus(ByVal VarName As eVarNameFlags,
-                                           Optional ByVal iSecondaryIndex As Integer = -9999,
-                                            Optional ByVal iThirdIndex As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
+                                          Optional ByVal iIndex As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
         Try
             Dim val As cValue = m_values.Item(VarName)
-            Return val.Status(iSecondaryIndex, iThirdIndex) Or CType(If(val.Stored, eStatusFlags.Stored, 0), eStatusFlags)
+            Return val.Status(iIndex) Or CType(If(val.Stored, eStatusFlags.Stored, 0), eStatusFlags)
         Catch ex As Exception
             Debug.Assert(False, "GetStatus() Error " & ex.Message)
             Return Nothing
@@ -496,10 +493,9 @@ Public MustInherit Class cCoreInputOutputBase
     ''' -----------------------------------------------------------------------
     Friend Function SetStatus(ByVal VarName As eVarNameFlags,
                               ByVal newStatus As eStatusFlags,
-                              Optional ByVal iIndex As Integer = -9999,
-                              Optional ByVal iThirdIndex As Integer = -9999) As Boolean Implements ICoreInputOutput.SetStatus
+                              Optional ByVal iIndex As Integer = -9999) As Boolean Implements ICoreInputOutput.SetStatus
         Try
-            m_values.Item(VarName).Status(iIndex, iThirdIndex) = newStatus
+            m_values.Item(VarName).Status(iIndex) = newStatus
             Return True
         Catch ex As Exception
             Debug.Assert(False, "SetStatus(...) Failed to set Status " & VarName.ToString)
@@ -564,8 +560,8 @@ Public MustInherit Class cCoreInputOutputBase
     Public Overridable Function GetVariable(ByVal VarName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE, Optional ByVal iIndex2 As Integer = cCore.NULL_VALUE, Optional ByVal iIndex3 As Integer = cCore.NULL_VALUE) As Object Implements ICoreInputOutput.GetVariable
 
         Try
-            ' Debug.Assert(iIndex2 = cCore.NULL_VALUE, "GetVariable(eVarNameFlags,Option Integer, Optional Integer) Called with optional argument iIndex2 this behavior must be implemented in a derived class.")
-            Return m_values.Item(VarName).Value(iIndex, iIndex2)
+            Debug.Assert(iIndex2 = cCore.NULL_VALUE, "GetVariable(eVarNameFlags,Option Integer, Optional Integer) Called with optional argument iIndex2 this behavior must be implemented in a derived class.")
+            Return m_values.Item(VarName).Value(iIndex)
         Catch ex As Exception
             Debug.Assert(False, "GetVariable() Error: " & VarName.ToString & " " & ex.Message)
             Return Nothing
@@ -586,8 +582,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' -----------------------------------------------------------------------
     Public Overridable Function SetVariable(ByVal VarName As eVarNameFlags,
             ByVal newValue As Object,
-            Optional ByVal iSecondaryIndex As Integer = -9999,
-            Optional ByVal iThirdIndex As Integer = -9999) As Boolean _
+            Optional ByVal iSecondaryIndex As Integer = -9999) As Boolean _
             Implements ICoreInputOutput.SetVariable
 
         Dim bSucces As Boolean = True
@@ -600,13 +595,13 @@ Public MustInherit Class cCoreInputOutputBase
             ' Optimization: abort when the set operation will not change the variable value, and when
             '               a value does not need re-validating.
             ' JS 10oct09: if the valueobject holds an ENUMERATED value the Equals logic fails.
-            If Object.Equals(newValue, valueobject.Value(iSecondaryIndex, iThirdIndex)) Then
+            If Object.Equals(newValue, valueobject.Value(iSecondaryIndex)) Then
                 ' Report that variable has NOT been set.
                 Return False
             End If
 
             'validate the variable by setting its value
-            valueobject.Value(iSecondaryIndex, iThirdIndex) = newValue
+            valueobject.Value(iSecondaryIndex) = newValue
             If valueobject.ValidationStatus = eStatusFlags.FailedValidation Then bSucces = False
 
             If AllowValidation Then

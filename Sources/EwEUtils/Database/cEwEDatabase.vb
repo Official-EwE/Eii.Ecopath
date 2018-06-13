@@ -3448,6 +3448,9 @@ Namespace Database
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Class cHistoryItem
+            Private m_strVersion As String
+            Private m_strComments As String
+            Private m_date As DateTime
 
             ''' <summary>
             ''' 
@@ -3457,9 +3460,9 @@ Namespace Database
             ''' <param name="strDate"></param>
             ''' <remarks></remarks>
             Friend Sub New(ByVal strVersion As String, ByVal strComments As String, ByVal strDate As String)
-                Me.Version = strVersion
-                Me.Comments = strComments
-                Me.[Date] = Date.Parse(strDate)
+                Me.m_strVersion = strVersion
+                Me.m_strComments = strComments
+                Me.m_date = Date.Parse(strDate)
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -3468,6 +3471,10 @@ Namespace Database
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public ReadOnly Property Version() As String
+                Get
+                    Return Me.m_strVersion
+                End Get
+            End Property
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -3475,6 +3482,10 @@ Namespace Database
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public ReadOnly Property Comments() As String
+                Get
+                    Return Me.m_strComments
+                End Get
+            End Property
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -3482,6 +3493,10 @@ Namespace Database
             ''' </summary>
             ''' -------------------------------------------------------------------
             Public ReadOnly Property [Date]() As DateTime
+                Get
+                    Return Me.m_date
+                End Get
+            End Property
 
         End Class
 
@@ -3497,7 +3512,7 @@ Namespace Database
             Dim r As IDataReader = Me.GetReader("SELECT * FROM UpdateLog ORDER BY Date ASC, Version ASC")
             While r.Read
                 Try
-                    item = New cHistoryItem(CSng(r("Version")).ToString("N6"), CStr(r("Remark")), CStr(r("Date")))
+                    item = New cHistoryItem(CStr(r("Version")), CStr(r("Remark")), CStr(r("Date")))
                     lHistory.Add(item)
                 Catch ex As Exception
                     ' Whoah! Unable to parse the date?!

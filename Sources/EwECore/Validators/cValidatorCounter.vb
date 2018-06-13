@@ -39,15 +39,13 @@ Public Class cValidatorCounter
     End Sub
 
 
-    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData,
-                                         Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE,
-                                         Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         Try
             Dim fmt As New Style.cVarnameTypeFormatter()
             Dim n As Integer = m_core.GetCoreCounter(m_counter)
 
-            If MetaData.MinOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), 0) And
+            If MetaData.MinOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), 0) And _
              MetaData.MaxOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), n) Then
                 'passed validation
                 ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)

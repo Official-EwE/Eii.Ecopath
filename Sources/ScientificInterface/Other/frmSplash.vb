@@ -43,9 +43,7 @@ Friend Class frmSplash
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Using ico As New Icon(cEwEIcon.Current(), Me.ClientRectangle.Size)
-            Me.m_img = cDrawingUtils.BitmapFromIcon(ico)
-        End Using
+        Me.m_img = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current(), Me.ClientRectangle.Size)
         Me.TransparencyKey = Me.BackColor
 
         Me.CenterToScreen()
@@ -65,10 +63,7 @@ Friend Class frmSplash
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
         MyBase.OnFormClosed(e)
         frmSplash.g_instance = Nothing
-        If (Me.m_img IsNot Nothing) Then
-            Me.m_img.Dispose()
-            Me.m_img = Nothing
-        End If
+        Me.m_img.Dispose()
     End Sub
 
     Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
@@ -84,11 +79,7 @@ Friend Class frmSplash
         g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit
         g.CompositingQuality = CompositingQuality.HighQuality
 
-        Try
-            g.DrawImage(Me.m_img, Me.ClientRectangle)
-        Catch ex As Exception
-
-        End Try
+        g.DrawImage(Me.m_img, Me.ClientRectangle)
 
         'Using p As New GraphicsPath()
         '    Dim strBitApp As String = If(cSystemUtils.Is64BitProcess, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)

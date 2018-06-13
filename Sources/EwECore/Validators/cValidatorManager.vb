@@ -105,14 +105,10 @@ Public Class cValidatorManager
         'Pedigree
         validator = New cValidatorCore(theCore)
         m_validators.Add(eVarNameFlags.Pedigree, validator)
-        m_validators.Add(eVarNameFlags.RelQt, validator)
-
         m_validators.Add(eVarNameFlags.VariableName, New cValidatorEnum(GetType(eVarNameFlags)))
 
         validator = New cValidatorCounter(theCore, eCoreCounterTypes.nEcospaceTimeSteps)
         m_validators.Add(eVarNameFlags.EcospaceFirstOutputTimeStep, validator)
-
-
 
         ' Ecospace layers - special cases
         Me.m_validators.Add(eVarNameFlags.LayerRegion, New cValidatorCounter(theCore, eCoreCounterTypes.nRegions))

@@ -455,6 +455,8 @@ Namespace Core
         RelMoveBad
         ''' <summary>Relative vulnerability in bad habitat</summary>
         RelVulBad
+        ''' <summary>Relative feeding in bad habitat</summary>
+        EatEffBad
         ''' <summary>To document</summary>
         IsAdvected
         ''' <summary>To document</summary>
@@ -1874,9 +1876,6 @@ Namespace Core
 
         ''' <summary>Ecosim SOR Weight for groups with fast production.</summary>
         EcosimSORWt
-
-        ''' <summary>Ecosim base catchability at time.</summary>
-        RelQt
     End Enum
 
 #End Region ' Variable names
@@ -2432,8 +2431,6 @@ Namespace Core
 
         EcoPathFleetOutput = 117
 
-        FleetGroupCatchability = 118
-
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
         '''</summary>
@@ -2926,7 +2923,6 @@ Namespace Core
         InvalidModel_PB0_Generic
         InvalidModel_QB0_Generic
         InvalidModel_B_Detritus
-        PBExceedsQB
 
         ''' <summary>MSE has completed a model run of some sort</summary>
         MSERunCompleted
@@ -3053,17 +3049,6 @@ Namespace Core
     End Enum
 
 #End Region ' Forcing function application targets
-
-#Region " Mediation drivers "
-
-    Public Enum eMediationDriverTypes As Integer
-        NotSet = 0
-        Group = 1
-        Fleet = 2
-        ForcingFunction = 3
-    End Enum
-
-#End Region ' Mediation drivers
 
 #Region " IUCN threat classifications "
 

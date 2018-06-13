@@ -21,7 +21,6 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.Extensions
-Imports System.IO
 
 #Region "Public Class definitions"
 
@@ -204,6 +203,7 @@ Public Class cEcospaceDataStructures
     Public Basebiomass() As Single
     Public Bnew() As Single
     Public der() As Single
+    Public EatEffBad() As Single
     Public MPABiomass() As Single
     ''' <summary>Movement rate?!</summary>
     Public Mrate() As Single
@@ -779,9 +779,6 @@ Public Class cEcospaceDataStructures
     Public IsEcosimDiscardForcingGroup() As Boolean
     Public UseEcosimDiscardForcing As Boolean = False
 
-    Public dctENACells As Dictionary(Of String, cENACellData)
-
-    Public bENA As Boolean
 
 #End Region
 
@@ -972,6 +969,7 @@ Public Class cEcospaceDataStructures
             Basebiomass = Nothing
             Bnew = Nothing
             der = Nothing
+            EatEffBad = Nothing
             MPABiomass = Nothing
             Mrate = Nothing
             Mvel = Nothing
@@ -1011,9 +1009,6 @@ Public Class cEcospaceDataStructures
             FleetSailCells = Nothing
 
             MigMaps = Nothing
-
-            If dctENACells IsNot Nothing Then dctENACells.Clear()
-            dctENACells = Nothing
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Clear() Exception: " & ex.Message)
@@ -1292,6 +1287,7 @@ Public Class cEcospaceDataStructures
             ReDim Bnew(nvartot)
             ReDim der(nvartot)
             'ReDim EatEff(nvartot)
+            ReDim EatEffBad(nvartot)
             'ReDim Flowin(nvartot)
             'ReDim FlowoutRate(nvartot)
             ReDim MPABiomass(nvartot)

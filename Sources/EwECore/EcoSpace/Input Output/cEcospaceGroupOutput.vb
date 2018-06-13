@@ -140,7 +140,7 @@ Public Class cEcospaceGroupOutput
     End Function
 
 
-    Public Overrides Function GetStatus(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex As Integer = -9999, Optional ByVal iThirdIndex As Integer = -9999) As eStatusFlags
+    Public Overrides Function GetStatus(ByVal VarName As EwEUtils.Core.eVarNameFlags, Optional ByVal iIndex As Integer = -9999) As eStatusFlags
 
         If Not m_CoreData.ContainsKey(VarName) Then
             'NOT in list of sim vars so get the value from the base class GetStatus(...)

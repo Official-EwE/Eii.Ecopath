@@ -6480,7 +6480,7 @@ Public Class cCore
     Friend m_EcoSimGroups As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupInput, 1)
     Friend m_EcoSimGroupOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupOutput, 1)
     Friend m_EcoSimScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimScenario, 1)
-    Friend m_EcosimFleetInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFleetInput, 1)
+    Friend m_EcosimEcopathFleetInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFleetInput, 1)
     Friend m_EcosimFleetOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Private m_MediatedInteractionManager As cMediatedInteractionManager
 
@@ -6496,15 +6496,6 @@ Public Class cCore
     Friend m_MSEData As cMSEDataStructures
 
 #End Region ' Variables
-
-
-
-    Public Sub setDefaultCatchabilities(iFlt As Integer, iGrp As Integer)
-
-        Me.m_EcoSim.setDefaultCatchabilities(iFlt, iGrp)
-
-    End Sub
-
 
     ''' <summary>
     ''' Start biomass of each group
@@ -7056,12 +7047,12 @@ Public Class cCore
 
         Me.ClearIOList(Me.m_EcoSimGroups)
         Me.ClearIOList(Me.m_EcoSimGroupOutputs)
-        Me.ClearIOList(Me.m_EcosimFleetInputs)
+        Me.ClearIOList(Me.m_EcosimEcopathFleetInputs)
         Me.ClearIOList(Me.m_EcosimFleetOutputs)
 
         Me.m_EcoSimGroups.Clear()
         Me.m_EcoSimGroupOutputs.Clear()
-        Me.m_EcosimFleetInputs.Clear()
+        Me.m_EcosimEcopathFleetInputs.Clear()
         Me.m_EcosimFleetOutputs.Clear()
 
         'Need to change m_timeSeriesFleet from (Of cTimeSeries) to (Of cCoreInputOutputBase)
@@ -7390,17 +7381,17 @@ Public Class cCore
     Private Sub InitEcosimFleetInput()
         Try
 
-            Me.m_EcosimFleetInputs.Clear()
+            Me.m_EcosimEcopathFleetInputs.Clear()
 
             For iflt As Integer = 1 To nFleets
-                Me.m_EcosimFleetInputs.Add(New cEcosimFleetInput(Me, iflt))
+                Me.m_EcosimEcopathFleetInputs.Add(New cEcosimFleetInput(Me, iflt))
             Next
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".InitEcosimFleetInput() Error: " & ex.Message)
         End Try
 
-        LoadEcosimFleetInputs()
+        LoadEcosimEcopathFleetInputs()
 
     End Sub
 
@@ -7813,16 +7804,6 @@ Public Class cCore
             Me.m_EcoSimData.CapDepreciate(iFleet) = fleet.CapDepreciateRate
             Me.m_EcoSimData.EffortConversionFactor(iFleet) = fleet.EffortConversionFactor
 
-
-            For igrp As Integer = 1 To nGroups
-                If (Me.m_EcoPathData.Landing(iFleet, igrp) + Me.m_EcoPathData.Discard(iFleet, igrp)) > 0 Then
-
-                    For it As Integer = 1 To nEcosimTimeSteps
-                        Me.m_EcoSimData.relQt(iFleet, igrp, it) = fleet.RelQt(igrp, it)
-                    Next
-                End If
-            Next
-
         Catch ex As Exception
             cLog.Write(Me.ToString & ".updateEcoSimGroupInfo() Error: " & ex.Message)
             Return False
@@ -7832,13 +7813,13 @@ Public Class cCore
 
     End Function
 
-    Private Function LoadEcosimFleetInputs() As Boolean
+    Private Function LoadEcosimEcopathFleetInputs() As Boolean
 
         Dim iFleet As Integer
 
         Try
 
-            For Each fleet As cEcosimFleetInput In m_EcosimFleetInputs
+            For Each fleet As cEcosimFleetInput In m_EcosimEcopathFleetInputs
 
                 fleet.AllowValidation = False
 
@@ -7853,11 +7834,6 @@ Public Class cCore
 
                 fleet.EffortConversionFactor = m_EcoSimData.EffortConversionFactor(iFleet)
 
-                For igrp As Integer = 1 To nGroups
-                    For it As Integer = 1 To nEcosimTimeSteps
-                        fleet.RelQt(igrp, it) = Me.m_EcoSimData.relQt(iFleet, igrp, it)
-                    Next
-                Next
 
                 fleet.ResetStatusFlags()
                 fleet.AllowValidation = True
@@ -7926,9 +7902,6 @@ Public Class cCore
             Me.m_FitToTimeSeriesData.LastYear = Math.Max(1, Math.Min(Me.m_FitToTimeSeriesData.LastYear, m_EcoSimData.NumYears))
 
             'Now Update the interface objects
-
-            Me.m_EcoSim.setDefaultCatchabilities()
-            Me.InitEcosimFleetInput()
 
             'tell the affected shape managers that there data has changed
             Dim manager As cBaseShapeManager
@@ -8724,16 +8697,6 @@ Public Class cCore
         Return Me.m_EcoSim.EstimateVulnerabilities(iGroup, PotGrowth, FWMax, estimates)
     End Function
 
-
-    Public Sub SetFtimeFromGear(ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean)
-        Try
-            Me.m_EcoSim.SetFtimeFromGear(t, QYear, PredEffort)
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
 #End Region 'EcoSim
 
 #Region " Ecospace "
@@ -9389,9 +9352,7 @@ Public Class cCore
                 For irgn As Integer = 1 To nRegions
                     m_spaceresults.BiomassByRegion(igrp, irgn) = m_EcoSpaceData.ResultsRegionGroup(irgn, igrp, iTime)
                 Next
-            Next igrp
-
-            Me.SaveEcospaceENA(m_spaceresults)
+            Next
 
             'Save to the current writer always (saveannual = false) or once per year (saveannual=true)
             'Default is to save every time step
@@ -9412,29 +9373,10 @@ Public Class cCore
         End Try
     End Sub
 
-    Private Sub SaveEcospaceENA(ByVal SpaceResults As cEcospaceTimestep)
-        Try
-
-            If Me.m_EcoSpaceData.bENA Then
-
-                Dim SCORFileWriter As New cSCORFileWriter(Me.m_EcoPathData)
-                For Each enaData As cENACellData In Me.m_EcoSpaceData.dctENACells.Values
-                    'System.Console.WriteLine(enaData.Key)
-                    SCORFileWriter.Write(enaData.toFileName(Me), enaData.ENARData)
-                Next enaData
-
-            End If 'Me.m_EcoSpaceData.bENA
-
-        Catch ex As Exception
-            cLog.Write(ex, "enaR Failed to save SCOR file.")
-        End Try
-    End Sub
-
     Private Sub SaveEcospaceResults(ByVal SpaceResults As cEcospaceTimestep)
 
         Dim st As Double = Me.m_stpwSpaceTimer.Elapsed.TotalSeconds
         Try
-
             For n As Integer = 1 To Me.m_EcospaceModelParams.nResultWriters
                 Dim writer As IEcospaceResultsWriter = Me.m_EcospaceModelParams.ResultWriter(n)
                 Try
@@ -9449,7 +9391,6 @@ Public Class cCore
         Catch ex As Exception
             cLog.Write(ex)
         End Try
-
     End Sub
 
     ''' <summary>
@@ -9657,7 +9598,7 @@ Public Class cCore
     Public ReadOnly Property EcosimFleetInputs(ByVal iFleet As Integer) As cEcosimFleetInput
         Get
             ' JS 05Nov09: list will handle fleet index / item index offsets
-            Return DirectCast(Me.m_EcosimFleetInputs(iFleet), cEcosimFleetInput)
+            Return DirectCast(Me.m_EcosimEcopathFleetInputs(iFleet), cEcosimFleetInput)
         End Get
     End Property
 
@@ -10718,6 +10659,7 @@ Public Class cCore
 
                 grp.RelMoveBad = m_EcoSpaceData.RelMoveBad(iGroup)
                 grp.RelVulBad = m_EcoSpaceData.RelVulBad(iGroup)
+                grp.EatEffBad = m_EcoSpaceData.EatEffBad(iGroup)
                 grp.IsMigratory = m_EcoSpaceData.IsMigratory(iGroup)
                 grp.IsAdvected = m_EcoSpaceData.IsAdvected(iGroup)
                 grp.BarrierAvoidanceWeight = m_EcoSpaceData.barrierAvoidanceWeight(iGroup)
@@ -10761,6 +10703,7 @@ Public Class cCore
 
             m_EcoSpaceData.RelMoveBad(iGroup) = grp.RelMoveBad
             m_EcoSpaceData.RelVulBad(iGroup) = grp.RelVulBad
+            m_EcoSpaceData.EatEffBad(iGroup) = grp.EatEffBad
             m_EcoSpaceData.IsAdvected(iGroup) = grp.IsAdvected
             m_EcoSpaceData.IsMigratory(iGroup) = grp.IsMigratory
             m_EcoSpaceData.barrierAvoidanceWeight(iGroup) = grp.BarrierAvoidanceWeight
@@ -13279,7 +13222,7 @@ Public Class cCore
     ''' <param name="iSecondaryIndex"></param>
     ''' <returns>True if the validation was run. False if the validation routine failed to run</returns>
     ''' <remarks>Ther results of the validation are in the cValue Object</remarks>
-    Friend Function Validate(ByRef ValueObject As cValue, ByRef MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE, Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Friend Function Validate(ByRef ValueObject As cValue, ByRef MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         Dim fmt As New Style.cVarnameTypeFormatter()
 
@@ -13447,23 +13390,6 @@ Public Class cCore
                     End If
                 End If
 
-
-            Case eVarNameFlags.RelQt
-                Dim iflt As Integer = ValueObject.Index
-                If iflt > 0 Then
-                    'Is this fleet exploited
-                    If (Me.m_EcoPathData.Landing(iflt, iSecondaryIndex) + Me.m_EcoPathData.Discard(iflt, iSecondaryIndex)) > 0 Then
-                        'Yep set the status flag to OK
-                        ValueObject.ValidationStatus = eStatusFlags.OK
-                        ValueObject.Status(iSecondaryIndex, iThirdIndex) = eStatusFlags.OK
-                    Else
-                        'Nope this fleet is not editable
-                        ValueObject.ValidationStatus = eStatusFlags.Null
-                        ValueObject.Status(iSecondaryIndex, iThirdIndex) = eStatusFlags.NotEditable
-                    End If
-                End If
-
-
         End Select
 
         Return True
@@ -13583,12 +13509,38 @@ Public Class cCore
                 End Select
 
             Case eDataTypes.FleetInput
-                'all Fleet stuff is handled in PostVariableUpdated()
-                'The Case statement was just left here for reference
+                'Dim flt As cEcopathFleetInput = DirectCast(obj, cEcopathFleetInput)
+                ''has the MSE Quota share changed
+                'Dim bShareChanged As Boolean = False
 
+                'Select Case value.varName
+                '    Case eVarNameFlags.Landings
+                '        Me.Set_DiscardMort_Flags(flt, True)
+                '        bShareChanged = True
+
+                '    Case eVarNameFlags.Discards
+                '        Me.Set_DiscardMort_Flags(flt, True)
+                '        bShareChanged = True
+
+                '    Case eVarNameFlags.OffVesselPrice
+                '        Me.Set_MarketPrice_Flags(flt, True)
+
+                'End Select
+
+                'If bShareChanged Then
+                '    'Landing and/or discards has changed so Quota share has changed
+                '    If Me.m_StateMonitor.HasEcosimLoaded Then
+                '        'Ecosim is loaded so update the MSE Quota share
+                '        Me.SetDefaultQuotaShare()
+                '        Me.Set_Quota_Flags(Me.MSEManager.EcopathFleetInputs(flt.Index), True)
+                '        Dim qsMsg As New cMessage("QuotaShare has changed.", eMessageType.DataModified,
+                '                                    eCoreComponentType.EcoSim, eMessageImportance.Maintenance, eDataTypes.MSEFleetInput)
+                '        Me.m_publisher.AddMessage(qsMsg)
+                '    End If
+                'End If
 
             Case eDataTypes.EcoSimModelParameter
-                        Debug.Assert(TypeOf obj Is cEcoSimModelParameters)
+                Debug.Assert(TypeOf obj Is cEcoSimModelParameters)
                 Dim params As cEcoSimModelParameters = DirectCast(obj, cEcoSimModelParameters)
 
                 Select Case value.varName
@@ -13630,26 +13582,6 @@ Public Class cCore
 
 
                 End Select
-
-            'Case eDataTypes.EcosimFleetInput
-
-            '    If value.varName = eVarNameFlags.RelQt Then
-            '        Try
-            '            Dim arrayValue As cValueArrayTripleIndex = DirectCast(value, cValueArrayTripleIndex)
-            '            Dim QYear() As Single = New Single(Me.nFleets) {}
-            '            For i As Integer = 1 To Me.m_EcoPathData.NumFleet
-            '                QYear(i) = 1
-            '            Next
-            '            'For it As Integer = 1 To Me.nEcosimTimeSteps
-            '            Me.m_EcoSim.SetFtimeFromGear(arrayValue.iThirdIndex, QYear, True)
-            '            'Next
-
-
-            '        Catch ex As Exception
-
-            '        End Try
-            '    End If
-
 
             Case eDataTypes.EcospaceGroup
 
@@ -13978,17 +13910,10 @@ Public Class cCore
                             Me.m_publisher.AddMessage(qsMsg)
                         End If
 
-                        Dim iflt As Integer = value.Index
-                        Dim igrp As Integer = obj.ValidationStatus.iArrayIndex
-                        If Me.m_StateMonitor.HasEcosimLoaded Then
-                            Me.setDefaultCatchabilities(iflt, igrp)
-                        End If
-
                     Case eVarNameFlags.OffVesselPrice
                         Me.Set_OffVesselValue_Flags(flt, True)
 
                 End Select
-
 
 
             Case eDataTypes.Taxon
@@ -14144,24 +14069,6 @@ Public Class cCore
                     Me.m_EcoSpaceData.CalculateCellWidth()
                 End If
 
-            Case eDataTypes.EcosimFleetInput
-
-                If value.varName = eVarNameFlags.RelQt Then
-                    Try
-                        Dim arrayValue As cValueArrayTripleIndex = DirectCast(value, cValueArrayTripleIndex)
-                        Dim QYear() As Single = New Single(Me.nFleets) {}
-                        For i As Integer = 1 To Me.m_EcoPathData.NumFleet
-                            QYear(i) = 1
-                        Next
-                        'For it As Integer = 1 To Me.nEcosimTimeSteps
-                        Me.m_EcoSim.SetFtimeFromGear(arrayValue.iThirdIndex, QYear, True)
-                        'Next
-
-                    Catch ex As Exception
-
-                    End Try
-                End If
-
 
 
         End Select
@@ -14246,22 +14153,6 @@ Public Class cCore
                     End If
 
                 Case eDataTypes.FishMort
-                    'Debug.Assert(False, "Core.OnChange() Fishing Mort Shape need to update Forced F")
-
-                    Dim bForced As Boolean = False
-                    For igrp As Integer = 1 To nGroups
-                        For it As Integer = 1 To Me.m_EcoSimData.NTimes
-                            If Me.m_TSData.ForcedFs(igrp, it) >= 0 Then
-                                Me.m_EcoSimData.FishRateNo(igrp, it) = Me.m_TSData.ForcedFs(igrp, it)
-                                bForced = True
-                            End If
-                        Next
-                    Next
-
-                    If bForced Then
-                        manager = m_ShapeManagers.Item(eDataTypes.FishMort)
-                        manager.Load()
-                    End If
 
                     Me.m_publisher.AddMessage(New cMessage("Fish mort shape modified", TypeOfChange, eCoreComponentType.ShapesManager, eMessageImportance.Maintenance, eDataTypes.FishMort))
 
@@ -14269,12 +14160,6 @@ Public Class cCore
                     'Dim qyear() As Single
                     'ReDim qyear(Me.nGroups)
                     'For i As Integer = 1 To Me.nFleets : qyear(i) = 1 : Next
-
-                    '25-Jan-2017 Back again???
-                    'this will only update F if there is no F time series loaded
-                    If obj.DataType = eDataTypes.FishingEffort Then
-                        Me.m_EcoSim.SetBaseFFromGear()
-                    End If
 
                     'JB 21-Feb-2011 No longer set F to base if Effort has been edited
                     'this allows the user the edit effort when F timeseries is loaded

@@ -28,9 +28,11 @@ Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.60.0.07:</para>
+''' <para>Database update 6.60.0.06:</para>
 ''' <para>
-''' Validated MPA assignments against the wrong fleet IDs.
+''' An error was identified in the database loading logic. This update cannot 
+''' apply any fixes as the bug obscures the users intentions. The update thus 
+''' merely checks wich scenarios may have been affected and warns the user.
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
