@@ -5,7 +5,8 @@
 #define Spinup 1
 #define SpatTemp 1
 #define MSPTools 0
-#define MPAdynamics 1
+#define MPAdynamics 0
+#define MergeGroups 0
 #define BiomassEmitters 1
 
 #if Compile64Bit == 0
@@ -42,7 +43,7 @@ AllowNoIcons=True
 AppPublisher={#MyAppPublisher}
 AppPublisherURL=http://ecopathinternational.org
 AppSupportURL=mailto:support@ecopath.org
-MinVersion=0,6.0sp2
+MinVersion=0,5.01sp3
 DefaultDirName={pf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 AlwaysShowGroupOnReadyPage=True
@@ -127,17 +128,20 @@ Source: "{#DefRoot}{#DefDB}\Anchovy Bay Spatial.ewemdb"; DestDir: "{userdocs}\Ew
 Source: "{#DefRoot}{#DefDB}\Tampa_Bay.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 Source: "{#DefRoot}{#DefDB}\Georgia_Strait.EwEmdb"; DestDir: "{userdocs}\EwE sample databases"; Flags: ignoreversion; Components: databases
 Source: "{#DefRoot}{#DefSrc}\EwEEcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\sampler
-Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\sampler
-Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\mergegroups
+Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler-user-manual.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\sampler
 Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\transects
+; -- Stuff under development --
+#if MergeGroups == 1 
+Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mergegroups
+#endif
 #if MPAdynamics == 1
-Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\mpadynamics
+Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mpadynamics
 #endif
 #if Spinup == 1
-Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\spinup
+Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
 #endif
 #if BiomassEmitters == 1
-Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\emissions
+Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\emissions
 #endif
 #if SpatTemp == 1
 Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
@@ -280,22 +284,24 @@ Name: "plugin\automation\sampler"; Description: "Ecosampler"; Types: full
 Name: "plugin\ui"; Description: "Usability"; Types: full custom
 Name: "plugin\ui\remarks"; Description: "Remarks collector"; Types: full custom
 Name: "plugin\ui\shapegrid"; Description: "Shape grids"; Types: full custom
-Name: "plugin\automation\mergegroups"; Description: "Merge groups"; Types: full
+#if MergeGroups == 1
+Name: "plugin\input\mergegroups"; Description: "Merge groups"; Types: full
+#endif
 #if MPAdynamics == 1
-Name: "plugin\automation\mpadynamics"; Description: "MPA dynamics"; Types: full
+Name: "plugin\input\mpadynamics"; Description: "MPA dynamics"; Types: full
 #endif
 #if SpatTemp == 1
 Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange framework"; Types: full
 #endif
 Name: "plugin\output\transects"; Description: "Transects extraction"; Types: full
 #if Spinup == 1
-Name: "plugin\automation\spinup"; Description: "Ecospace spin-up"; Types: full
+Name: "plugin\output\spinup"; Description: "Ecospace spin-up"; Types: full
 #endif
 #if MSPTools == 1
 Name: "plugin\ui\msptools"; Description: "MSP tools"; Types: full
 #endif
 #if BiomassEmitters == 1
-Name: "plugin\automation\emissions"; Description: "Ecospace biomass emissions"; Types: full
+Name: "plugin\input\emissions"; Description: "Ecospace biomass emissions"; Types: full
 #endif
 
 [Tasks]
@@ -348,7 +354,8 @@ begin
     // versionRelease := 394254; // v4.6.1; or 394271
     // versionRelease := 394802; // v4.6.2; or 394806
     // versionRelease := 460798; // v4.7;   or 460805
-    versionRelease := 461308; // v4.7.1; or 461310 
+    // versionRelease := 461308; // v4.7.1; or 461310 
+    versionRelease := 378389;
 
     bSuccess := RegQueryDWordValue(HKLM, 'Software\Microsoft\NET Framework Setup\NDP\v4\Full', 'Release', regVersion);
 
