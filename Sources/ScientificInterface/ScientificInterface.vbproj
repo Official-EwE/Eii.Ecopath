@@ -28,7 +28,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetZone>LocalIntranet</TargetZone>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ScientificInterface.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkProfile />
@@ -238,15 +238,6 @@
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFOtherMort.vb">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\Catchability\frmCatchability.Designer.vb">
-      <DependentUpon>frmCatchability.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Input\Catchability\frmCatchability.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Input\Catchability\gridCatchability.vb">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\EggProduction\frmApplyEP.Designer.vb">
       <DependentUpon>frmApplyEP.vb</DependentUpon>
@@ -1014,9 +1005,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFOtherMort.resx">
       <DependentUpon>frmApplyFFOtherMort.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\Catchability\frmCatchability.resx">
-      <DependentUpon>frmCatchability.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\EggProduction\frmApplyEP.resx">
       <DependentUpon>frmApplyEP.vb</DependentUpon>
@@ -1922,6 +1910,7 @@
     <None Include="Resources\Regions.png" />
     <None Include="Resources\Habitat.png" />
     <None Include="Resources\MPA.png" />
+    <None Include="Resources\ecopath 256x256.bmp" />
     <None Include="Resources\Ecotracer.ico" />
     <None Include="Resources\ewe_home.url.txt" />
     <None Include="Resources\certificate.png" />

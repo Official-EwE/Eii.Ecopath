@@ -191,8 +191,6 @@ Public Class cSpaceSolver
 
     Private BBRatio() As Single
 
-    Private TotFisheriesDiscards As Single
-
     Public Sub Init()
         'local spatial variables
         ReDim loss(m_Data.NGroups)
@@ -324,8 +322,6 @@ Public Class cSpaceSolver
             Array.Clear(Me.TotPredThread, 0, m_Data.NGroups)
             Array.Clear(Me.TotIFDweightThread, 0, m_Data.NGroups)
 
-            TotFisheriesDiscards = 0
-
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
             cLog.Write(ex)
@@ -441,8 +437,6 @@ Public Class cSpaceSolver
             ' System.Console.WriteLine("Thread ID, " & Me.ThreadID & ", " & i.ToString & ", " & j.ToString)
             'this changes the timestep for higher order numerical sceme.  the timestep isn't actually different, it's a multiplier
             TimeStep2 = CSng(m_Data.TimeStep * 0.66667)
-
-            Me.TotFisheriesDiscards = 0
 
             'Cell area in KM2 at the equator * relative width of the cell
             CellAreaKM2 = CSng(Me.m_Data.CellLength ^ 2.0) * Me.m_Data.Width(i)
@@ -891,7 +885,7 @@ Public Class cSpaceSolver
                     m_Data.MPred(iRow, iCol, ii) = eat / (Bprey + 1.0E-20F)
                 End If
 
-                If Me.m_Data.bCalTrophicLevel Or Me.m_Data.bENA Then Consumpt(i, j) = Consumpt(i, j) + eat
+                If Me.m_Data.bCalTrophicLevel Then Consumpt(i, j) = Consumpt(i, j) + eat
 
                 'jb 
                 If m_TracerData.EcoSpaceConSimOn = True Then
@@ -904,9 +898,6 @@ Public Class cSpaceSolver
 
             Me.CalcTrophicLevel(iRow, iCol, Consumpt, Eatenby)
 
-            'If iRow = 5 And iCol = 92 Then
-            '    Debug.Assert(False)
-            'End If
             'Make the detritus calculations here:
             Me.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, ToDetritus, GroupDetritus)
 
@@ -976,10 +967,6 @@ Public Class cSpaceSolver
                     End If
                 End If
             Next
-            System.Console.WriteLine()
-            If Me.m_Data.bENA Then
-                Me.ENAData(iRow, iCol, Biomass, Flowin, Consumpt, FishTime, ToDetritus, GroupDetritus)
-            End If
 
         Catch ex As Exception
             Throw New ApplicationException(Me.ToString & ".derivtRed() Error: " & ex.Message)
@@ -1313,6 +1300,7 @@ Public Class cSpaceSolver
                 'Add dying organisms
                 ToDet = ToDet + m_SimData.mo(i) * Biomass(i) * m_PathData.DF(i, j - m_PathData.NumLiving)
 
+                'If m_PathData.NumFleet > 0 Then     'Only if there is fishery
                 For K = 1 To m_PathData.NumFleet
                     Dim PropDiscMort As Single = m_SimData.Propdiscardtime(K, i) / (m_SimData.PropLandedTime(K, i) + m_SimData.Propdiscardtime(K, i) + 1.0E-20F)
                     'jb 07-Jan-2010 Changed to use Propdiscardtime(fleets,groups) (% discarded for this time step) initialized to ecopath PropDiscard() or set in MSE.RegulateEffort() 
@@ -1324,9 +1312,8 @@ Public Class cSpaceSolver
                         m_ConTracer.ConKdet(i, j, K) = DetFlowN / Biomass(i)
                     End If
 
-                    TotFisheriesDiscards += DetFlowN
-
                 Next K
+                'End If 'If m_PathData.NumFleet > 0 Then    
 
                 ToDetritus(j - m_PathData.NumLiving) = ToDetritus(j - m_PathData.NumLiving) + ToDet
 
@@ -1354,13 +1341,6 @@ Public Class cSpaceSolver
 
     End Sub
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-    Private Sub ENAData(Ir As Integer, ic As Integer, ByVal Biomass() As Single, Production() As Single, consumpt(,) As Single, FishingMort() As Single, FlowToDertitus() As Single, DetritusFlowByGroup() As Single)
-        'Lookup this cell in the dictionary of cells by its Row,Col haskey
-        Dim endData As cENACellData = Me.m_Data.dctENACells(cENACellData.getHash(Ir, ic))
-        'Populate its data with values from this cell at this time  step
-        endData.Populate(Me.itt, Me.m_Data, Biomass, Production, consumpt, FishingMort, Me.Eatenof, FlowToDertitus, DetritusFlowByGroup, TotFisheriesDiscards)
-    End Sub
 
 
 End Class

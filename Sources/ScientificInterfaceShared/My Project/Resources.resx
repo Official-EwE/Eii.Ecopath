@@ -2583,7 +2583,7 @@
     <value>Annual</value>
   </data>
   <data name="TSDATASETINTERVAL_TIMESTEP" xml:space="preserve">
-    <value>Timestep</value>
+    <value>Time step</value>
   </data>
   <data name="GENERIC_VALUE_NO" xml:space="preserve">
     <value>No</value>

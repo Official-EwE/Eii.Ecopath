@@ -119,8 +119,7 @@ Namespace ValueWrapper
 
         End Function
 
-        Public Overrides Property Status(Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE,
-                                         Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
+        Public Overrides Property Status(Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
             Get
                 If iSecondaryIndex <> cCore.NULL_VALUE Then
                     Return m_statusarray(iSecondaryIndex)
@@ -142,7 +141,7 @@ Namespace ValueWrapper
             End Set
         End Property
 
-        Public Overrides Property Value(Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE, Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Object
+        Public Overrides Property Value(Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Object
 
             Get
                 Try
@@ -206,12 +205,10 @@ Namespace ValueWrapper
         ''' Validate an array value object
         ''' </summary>
         ''' <param name="NewValue"></param>
-        ''' <param name="iSecondIndex"></param>
+        ''' <param name="iSecondaryIndex"></param>
         ''' <returns></returns>
         ''' <remarks>This can not be handled by the cValue base class because the underlying data is handled differently. Array values are stored in an array (duh...)</remarks>
-        Protected Overrides Function Validate(ByRef NewValue As Object,
-                                                Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE,
-                                                Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+        Protected Overrides Function Validate(ByRef NewValue As Object, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
 
             'convert null or empty inputs into something that can be used
             NewValue = Me.convertEmptyInputs(NewValue)
@@ -226,8 +223,8 @@ Namespace ValueWrapper
 
             'set the value to the newvalue 
             'keep the old value in case the newvalue fails validation
-            Me.m_orgvalue = arr.GetValue(iSecondIndex)
-            arr.SetValue(Convert.ChangeType(NewValue, tArr), iSecondIndex)
+            Me.m_orgvalue = arr.GetValue(iSecondaryIndex)
+            arr.SetValue(Convert.ChangeType(NewValue, tArr), iSecondaryIndex)
 
             ' Unable to validate? Boot out of here
             If (Not Me.AllowValidation) Or (Me.m_validator Is Nothing) Then
@@ -236,21 +233,21 @@ Namespace ValueWrapper
             End If
 
             'Ok run the validator
-            If m_validator.Validate(Me, m_metadata, iSecondIndex) Then
+            If m_validator.Validate(Me, m_metadata, iSecondaryIndex) Then
 
                 If m_validationstatus = eStatusFlags.FailedValidation Then
                     'if the new value failed validation then set the value back to it's original value
                     Try
-                        arr.SetValue(Me.m_orgvalue, iSecondIndex)
+                        arr.SetValue(Me.m_orgvalue, iSecondaryIndex)
                     Catch ex As Exception
                         Debug.Assert(False, "Failed to reset value")
                     End Try
                 End If
 
-                If m_statusarray(iSecondIndex) = eStatusFlags.Null Then
+                If m_statusarray(iSecondaryIndex) = eStatusFlags.Null Then
                     ' m_values(iSecondaryIndex) = m_metadata.NullValue
                     Try
-                        arr.SetValue(Convert.ChangeType(m_metadata.NullValue, tArr), iSecondIndex)
+                        arr.SetValue(Convert.ChangeType(m_metadata.NullValue, tArr), iSecondaryIndex)
                     Catch ex As Exception
                         Debug.Assert(False, "Failed to set default value")
                     End Try

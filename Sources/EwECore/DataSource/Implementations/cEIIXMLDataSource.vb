@@ -2394,6 +2394,7 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.Mvel(iGroup) = CSng(drow("Mvel"))
                 ecospaceDS.RelMoveBad(iGroup) = CSng(drow("RelMoveBad"))
                 ecospaceDS.RelVulBad(iGroup) = CSng(drow("RelVulBad"))
+                ecospaceDS.EatEffBad(iGroup) = 1 'CSng(drow("EatEffBad"))
                 ' VERIFY_JS: RiskSens imported but not used in EwE5
                 ' ecospaceDS.RiskSens(i) = CSng(drow("RiskSens"))
                 ecospaceDS.IsAdvected(iGroup) = (CInt(drow("IsAdvected")) <> 0)

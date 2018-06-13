@@ -37,7 +37,7 @@ Namespace Forms
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class frmEwEGrid
-        Inherits frmEwE
+        : Inherits frmEwE
 
 #Region " Variables "
 

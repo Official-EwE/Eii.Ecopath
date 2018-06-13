@@ -130,7 +130,7 @@ Namespace Ecopath
 
         End Sub
 
-#Region " Event handlers "
+#Region "Event handlers "
 
         Private Sub OnFormatFFItem(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbFF.Format
             If (TypeOf e.ListItem Is cForcingFunction) Then
@@ -139,7 +139,6 @@ Namespace Ecopath
             End If
 
         End Sub
-
         Private Sub OnCalculate(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnCalculate.Click
 
@@ -191,7 +190,6 @@ Namespace Ecopath
         Private Sub UpdateGraph(ByVal zgc As ZedGraphControl)
 
             Dim sg As cStanzaGroup = Me.m_grid.StanzaGroup
-            Dim li As LineItem = Nothing
 
             ' Sanity check
             If (sg Is Nothing) Then Return
@@ -209,7 +207,6 @@ Namespace Ecopath
             Dim sMaxNumber As Single = 0.0
             Dim sMaxWeight As Single = 0.0
             Dim sMaxBiomass As Single = 0.0
-            Dim iSpawnMonth As Integer = cCore.NULL_VALUE
 
             'don't show the last value
             'For i As Integer = 1 To sg.MaxAge - 1
@@ -225,14 +222,11 @@ Namespace Ecopath
 
             ' NB: All curves are scaled to 1
             zgc.GraphPane.CurveList.Clear()
+            ' For i As Integer = 1 To sg.MaxAge - 1
             For i As Integer = 0 To sg.MaxAge - 1
-                pplNumber.Add(i, sg.NumberAtAge(i) / sMaxNumber)
-                pplWeight.Add(i, sg.WeightAtAge(i) / sMaxWeight)
-                pplB.Add(i, sg.BiomassAtAge(i) / sMaxBiomass)
-
-                If (iSpawnMonth = cCore.NULL_VALUE) And (sg.WeightAtAge(i) > sg.WmatWinf) Then
-                    iSpawnMonth = i
-                End If
+                pplNumber.Add(i - 1, sg.NumberAtAge(i) / sMaxNumber)
+                pplWeight.Add(i - 1, sg.WeightAtAge(i) / sMaxWeight)
+                pplB.Add(i - 1, sg.BiomassAtAge(i) / sMaxBiomass)
             Next i
 
             ' Generate curves
@@ -253,18 +247,10 @@ Namespace Ecopath
                 End If
 
                 pplSep = New PointPairList
-                pplSep.Add(sg.StartAge(i), 0)
-                pplSep.Add(sg.StartAge(i), 1)
+                pplSep.Add(sg.StartAge(i) - 1, 0)
+                pplSep.Add(sg.StartAge(i) - 1, 1)
                 pane.AddCurve(strLabel, pplSep, Color.Green, SymbolType.None)
             Next
-
-            If (Not sg.FixedFecundity) Then
-                pplSep = New PointPairList
-                pplSep.Add(iSpawnMonth, 0)
-                pplSep.Add(iSpawnMonth, 1)
-                li = pane.AddCurve(My.Resources.HEADER_SPAWNING_AGE, pplSep, Color.Orange, SymbolType.None)
-                li.Line.Style = Drawing2D.DashStyle.Dash
-            End If
 
             ' Calculate the Axis Scale Ranges
             zgc.AxisChange()
@@ -356,6 +342,7 @@ Namespace Ecopath
             Me.m_grid.SetStanzaGroupValues(bApplyToCore)
 
         End Sub
+
 
 #End Region ' Internals
 

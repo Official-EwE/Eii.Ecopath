@@ -24,7 +24,6 @@ Option Strict On
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
-Imports System.Windows.Forms
 
 #End Region ' Imports
 
@@ -61,7 +60,7 @@ Public Class cPluginGUICommand
     ''' Get(/set) the form created by the plug-in recently invoked.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property Form() As Form
+    Public Property Form() As Windows.Forms.Form
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

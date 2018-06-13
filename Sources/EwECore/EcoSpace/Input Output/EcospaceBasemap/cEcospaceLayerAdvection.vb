@@ -74,47 +74,6 @@ Public Class cEcospaceLayerAdvection
                                      If(Me.Index = 1, My.Resources.CoreDefaults.CORE_DEFAULT_X_VELOCITY, My.Resources.CoreDefaults.CORE_DEFAULT_Y_VELOCITY))
     End Function
 
-    Protected Overrides Sub RecalcStats()
-
-        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-        Dim s As Single = 0.0!
-        Dim sTot As Single = 0
-        Dim iRows As Integer = bm.InRow
-        Dim iCols As Integer = bm.InCol
-
-        Me.m_sMaxValue = Single.MinValue
-        Me.m_sMinValue = Single.MaxValue
-        Me.m_iNumValueCells = 0
-
-        For iRow As Integer = 1 To iRows
-            For iCol As Integer = 1 To iCols
-                If (bm.IsModelledCell(iRow, iCol)) Then
-                    Dim dx As Single = CSng(Me.Cell(iRow, iCol, 0))
-                    Dim dy As Single = CSng(Me.Cell(iRow, iCol, 1))
-                    If (dx <> cCore.NULL_VALUE And dy <> cCore.NULL_VALUE) Then
-                        s = CSng(Math.Sqrt(dx * dx + dy * dy))
-                        Me.m_sMaxValue = Math.Max(s, Me.m_sMaxValue)
-                        Me.m_sMinValue = Math.Min(s, Me.m_sMinValue)
-                        Me.m_iNumValueCells += 1
-                        sTot += s
-                    End If
-                End If
-            Next iCol
-        Next iRow
-
-        If (Me.m_sMaxValue = Me.m_sMinValue) Then
-            Me.m_sMinValue = 0
-        End If
-
-        If (m_iNumValueCells > 0) Then
-            Me.m_sMeanValue = sTot / Me.m_iNumValueCells
-        Else
-            Me.m_sMeanValue = cCore.NULL_VALUE
-        End If
-
-        Me.m_bInvalidateStats = False
-
-    End Sub
 #End Region ' Overrides
 
 End Class

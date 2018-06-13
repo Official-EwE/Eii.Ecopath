@@ -362,7 +362,7 @@ Public MustInherit Class cEcospaceLayer
     End Function
 
     Public Overrides Function SetVariable(VarName As eVarNameFlags,
-                                          newValue As Object, Optional iSecondaryIndex As Integer = -9999, Optional ByVal iThirdIndex As Integer = -9999) As Boolean
+                                          newValue As Object, Optional iSecondaryIndex As Integer = -9999) As Boolean
         If (VarName = eVarNameFlags.Name) Then
             If (Me.Index > 0) Then
                 Try

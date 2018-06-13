@@ -25,14 +25,10 @@ Imports EwEUtils.Core
 Public Class cEcosimFleetInput
     Inherits cCoreInputOutputBase
 
-
-    ' Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
-
     Public Sub New(ByRef TheCore As cCore, ByVal iFleet As Integer)
         MyBase.New(TheCore)
 
         Dim val As cValue
-        Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
         AllowValidation = False
 
@@ -64,18 +60,6 @@ Public Class cEcosimFleetInput
         ' FleetEffortConversion
         val = New cValue(New Single, eVarNameFlags.FleetEffortConversion, eStatusFlags.Null, eValueTypes.Sng)
         m_values.Add(val.varName, val)
-
-
-        val = New cValueArrayTripleIndex(eValueTypes.SingleArray, eVarNameFlags.RelQt, eStatusFlags.Null,
-                                         eCoreCounterTypes.nGroups, eCoreCounterTypes.nEcosimTimeSteps, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.EcosimFleetInput)
-        m_values.Add(val.varName, val)
-
-
-
-        ''arrayed values
-        ''RelQ at T
-        'val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.RelQ, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        'm_values.Add(val.varName, val)
 
         AllowValidation = True
 
@@ -159,30 +143,9 @@ Public Class cEcosimFleetInput
         End Set
     End Property
 
-
-    Public Property RelQt(ByVal iGroup As Integer, iTimestep As Integer) As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.RelQt, iGroup, iTimestep))
-        End Get
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.RelQt, value, iGroup, iTimestep)
-        End Set
-    End Property
-
 #End Region ' Variable via dot '.' operator
 
 #Region " Status via dot '.' operator "
-
-
-    Public Property RelQtStatus(ByVal iGroup As Integer, iTimestep As Integer) As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.RelQt, iGroup, iTimestep)
-        End Get
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.RelQt, value, iGroup, iTimestep)
-        End Set
-    End Property
-
 
     Public Property CapBaseGrowthStatus() As eStatusFlags
 
@@ -240,12 +203,5 @@ Public Class cEcosimFleetInput
     End Property
 
 #End Region ' Status via dot '.' operator
-
-
-#Region "Overridden base class methods"
-
-
-
-#End Region
 
 End Class

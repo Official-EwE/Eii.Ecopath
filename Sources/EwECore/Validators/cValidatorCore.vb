@@ -36,11 +36,9 @@ Public Class cValidatorCore
         m_core = theCore
     End Sub
 
-    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData,
-                                         Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE,
-                                         Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
         'Call Validate in the core to do the validation
-        Return m_core.Validate(ValueObject, MetaData, iSecondaryIndex, iThirdIndex)
+        Return m_core.Validate(ValueObject, MetaData, iSecondaryIndex)
 
     End Function
 

@@ -8632,7 +8632,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Timestep.
+        '''  Looks up a localized string similar to Time step.
         '''</summary>
         Public ReadOnly Property TSDATASETINTERVAL_TIMESTEP() As String
             Get

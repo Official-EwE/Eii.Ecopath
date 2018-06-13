@@ -144,7 +144,6 @@ Public Class cTimeSeriesDataStructures
     Public PoolForceBB(,) As Single
     Public PoolForceZ(,) As Single
     Public PoolForceCatch(,) As Single
-    Public ForcedFs(,) As Single
 
     ''' <summary>
     ''' Proportion of total catch that is discarded. By Fleet,Group,Time
@@ -230,7 +229,7 @@ Public Class cTimeSeriesDataStructures
 
 
     Public Function isTimeStepValid(iModelTimeStep As Integer) As Boolean
-        ' System.Console.WriteLine(iModelTimeStep.ToString)
+
         If Me.DataSetInterval = eTSDataSetInterval.Annual Then
             If (iModelTimeStep / cCore.N_MONTHS) <= Me.nYears Then Return True
         ElseIf Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
@@ -502,14 +501,6 @@ Public Class cTimeSeriesDataStructures
                 ReDim PoolForceZ(nGroups, npoints)
                 ReDim PoolForceCatch(nGroups, npoints)
 
-                ReDim ForcedFs(nGroups, RunLengthYears * cCore.N_MONTHS)
-
-                For igrp As Integer = 0 To nGroups
-                    For ipt As Integer = 0 To RunLengthYears * cCore.N_MONTHS
-                        ForcedFs(igrp, ipt) = cCore.NULL_VALUE
-                    Next
-                Next
-
                 ReDim PoolForceDiscardMort(nFleets, nGroups, npoints)
                 ReDim PoolForceDiscardProp(nFleets, nGroups, npoints)
 
@@ -523,18 +514,9 @@ Public Class cTimeSeriesDataStructures
                 ReDim Preserve PoolForceBB(nGroups, npoints)
                 ReDim Preserve PoolForceZ(nGroups, npoints)
                 ReDim Preserve PoolForceCatch(nGroups, npoints)
-                '   ReDim Preserve ForcedFs(nGroups, npoints)
 
                 ReDim Preserve PoolForceDiscardMort(nFleets, nGroups, npoints)
                 ReDim Preserve PoolForceDiscardProp(nFleets, nGroups, npoints)
-
-                ReDim Preserve ForcedFs(nGroups, RunLengthYears * cCore.N_MONTHS)
-
-                For igrp As Integer = 0 To nGroups
-                    For ipt As Integer = nDatPoints * cCore.N_MONTHS + 1 To RunLengthYears * cCore.N_MONTHS
-                        ForcedFs(igrp, ipt) = cCore.NULL_VALUE
-                    Next
-                Next
 
             End If
 
@@ -814,15 +796,12 @@ Public Class cTimeSeriesDataStructures
 
                         Case eTimeSeriesType.FishingMortality 'F by pool
 
-                            If DatPool(iDType) >= 0 And DatPool(iDType) <= nGroups Then
+                            If DatPool(iDType) > 0 And DatPool(iDType) <= nGroups Then
                                 Me.m_SimData.FisForced(DatPool(iDType)) = True
 
                                 If Me.DataSetInterval = eTSDataSetInterval.Annual Then
                                     For K = 1 To 12
                                         Tim = 12 * (DatYear(iDatPt) - DatYear(1)) + K
-
-                                        Me.ForcedFs(DatPool(iDType), Tim) = DatVal(iDatPt, iDType)
-
                                         Me.m_SimData.FishRateNo(DatPool(iDType), Tim) = DatVal(iDatPt, iDType)
                                         If Me.m_SimData.FishRateMax(DatPool(iDType)) < Me.m_SimData.FishRateNo(DatPool(iDType), Tim) Then
                                             Me.m_SimData.FishRateMax(DatPool(iDType)) = CSng(Me.m_SimData.FishRateNo(DatPool(iDType), Tim) * 1.01)
@@ -830,8 +809,6 @@ Public Class cTimeSeriesDataStructures
                                     Next
 
                                 ElseIf Me.DataSetInterval = eTSDataSetInterval.TimeStep Then
-
-                                    Me.ForcedFs(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
 
                                     Me.m_SimData.FishRateNo(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)
                                     If Me.m_SimData.FishRateMax(DatPool(iDType)) < Me.m_SimData.FishRateNo(DatPool(iDType), iDatPt) Then

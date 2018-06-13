@@ -32,9 +32,9 @@ Public Class cValidatorOddEven
         Me.m_bOdd = bOdd
     End Sub
 
-    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData,
-                                         Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE,
-                                         Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overrides Function Validate(ByVal ValueObject As ValueWrapper.cValue, _
+                                       ByVal MetaData As cVariableMetaData, _
+                                       Optional ByVal iSecondaryIndex As Integer = -9999) As Boolean
 
         ' Perform 'normal' validation
         If Not MyBase.Validate(ValueObject, MetaData, iSecondaryIndex) Then Return False

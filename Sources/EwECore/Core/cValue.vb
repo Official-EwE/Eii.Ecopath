@@ -181,8 +181,8 @@ Namespace ValueWrapper
         ''' <summary>
         ''' Get/set the status flag for a Value.
         ''' </summary>
-        ''' <param name="iSecondIndex">Optional value index.</param>
-        Public Overridable Property Status(Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE, Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
+        ''' <param name="iIndex">Optional value index.</param>
+        Public Overridable Property Status(Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As eStatusFlags
             Get
                 Return m_status
             End Get
@@ -208,7 +208,7 @@ Namespace ValueWrapper
         ''' Get/set the actual value of a Value.
         ''' </summary>
         ''' <param name="iIndex">Optional value index.</param>
-        Public Overridable Property Value(Optional ByVal iIndex As Integer = cCore.NULL_VALUE, Optional ByVal iIndex2 As Integer = cCore.NULL_VALUE) As Object
+        Public Overridable Property Value(Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As Object
             Get
                 Return m_value
             End Get
@@ -286,9 +286,7 @@ Namespace ValueWrapper
             End Get
         End Property
 
-        Protected Overridable Function Validate(ByRef NewValue As Object,
-                                                Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE,
-                                                Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+        Protected Overridable Function Validate(ByRef NewValue As Object, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
 
             'set the value of this object to the new value passed in 
             'this allows the validator the access the new value via the public interface
@@ -312,7 +310,7 @@ Namespace ValueWrapper
                 Return False 'validation was not run???
             End If
 
-            If m_validator.Validate(Me, m_metadata, iSecondIndex, iThirdIndex) Then
+            If m_validator.Validate(Me, m_metadata, iSecondaryIndex) Then
                 If m_validationstatus = eStatusFlags.FailedValidation Then
                     'if the new value failed validation then set the value back to its original value
                     m_value = m_orgvalue
@@ -340,13 +338,12 @@ Namespace ValueWrapper
         ''' <summary>
         ''' Run the validator to set the status flag without setting the value
         ''' </summary>
-        ''' <param name="iSecondIndex"></param>
+        ''' <param name="iSecondaryIndex"></param>
         ''' <remarks>This is use be the cCoreInputOutputBase to set the status flags of all its values </remarks>
-        Public Overridable Sub setStatusFlag(Optional ByVal iSecondIndex As Integer = cCore.NULL_VALUE,
-                                                Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE)
+        Public Overridable Sub setStatusFlag(Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE)
 
             If m_validator IsNot Nothing Then
-                m_validator.Validate(Me, m_metadata, iSecondIndex, iThirdIndex)
+                m_validator.Validate(Me, m_metadata, iSecondaryIndex)
             Else
                 ' System.Console.WriteLine("No validator definded for " & m_varType.ToString)
             End If
