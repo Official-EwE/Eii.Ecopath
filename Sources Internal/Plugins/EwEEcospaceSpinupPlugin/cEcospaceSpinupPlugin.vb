@@ -71,8 +71,6 @@ Public Class cEcospaceSpinupPlugin
     Private m_uic As cUIContext = Nothing
     Private m_form As frmEcospaceSpinup = Nothing
 
-    Private m_bUseSpinupOld As Boolean = False
-
 #End Region
 
 #Region " Public Methods and properties "
@@ -157,8 +155,6 @@ Public Class cEcospaceSpinupPlugin
 
     Private Sub fireOnRunCompleted()
         Try
-            ' Restore old spin-up state
-            Me.EcoSpaceData.UseSpinUp = Me.m_bUseSpinupOld
             ' Done
             RaiseEvent OnEcospaceRunCompleted()
         Catch ex As Exception
@@ -181,11 +177,7 @@ Public Class cEcospaceSpinupPlugin
     Public Sub OnEcospaceInitRunCompleted(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
 
         Try
-            ' Cache last value
-            Me.m_bUseSpinupOld = Me.EcoSpaceData.UseSpinUp
-
             ' This is the correct moment to tell Ecospace to start using the SpinUp period
-            Me.EcoSpaceData.UseSpinUp = Me.UseSpinUp
             Me.EcoSpaceData.SpinUpYears = Me.SpinUpYears
             Me.EcoSpaceData.UseSpinUpBase = Me.UseSpinUpBaseBio
 
@@ -403,8 +395,6 @@ Public Class cEcospaceSpinupPlugin
         System.Console.WriteLine(Me.ToString + ".EcospaceInitialized()")
 
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
-        'If the Spinup plugin is loaded then assume the user wants to use a spinup period
-        Me.EcoSpaceData.UseSpinUp = True
         Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcospaceInitialized() Failed to get EcosimDataStructures.")
     End Sub
 

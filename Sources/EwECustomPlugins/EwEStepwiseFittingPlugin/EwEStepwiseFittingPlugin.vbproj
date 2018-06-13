@@ -23,7 +23,7 @@
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
     <ProjectGuid>{DFBA19D6-8E39-48F9-A503-CBC2519130B5}</ProjectGuid>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
