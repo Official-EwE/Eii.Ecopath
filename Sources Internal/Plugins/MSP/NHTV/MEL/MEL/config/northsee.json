@@ -1,0 +1,532 @@
+{
+	"region" : "northsee",
+	"modelfile" : "North Sea model for MSP.eiixml",
+	"mode" : "",
+	"rows" : 114,
+	"columns": 85,
+	"cellsize" : 0.1,
+	"pressures" : [
+		{
+			"name" : "Artificial Substrate",
+			"layers" : [
+				{
+					"name" : "NS_Anchorages",
+					"influence" : 0.1
+				},
+				{
+					"name" : "NS_Electricity_Cables",
+					"influence" : 0.01
+				},
+				{
+					"name" : "NS_Oil_Gas_Offshore_Instalations",
+					"influence" : 0.5
+				},
+				{
+					"name" : "NS_Ports",
+					"influence" : 0.8
+				},
+				{
+					"name" : "NS_Pipelines",
+					"influence" : 0.1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Pipelines",
+					"influence" : 0.1
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 0.1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 0.2
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 0.1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 0.2
+				},
+				{
+					"name" : "NS_Wind_Farms",
+					"influence" : 0.5,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Wind_Farms",
+					"influence" : 0.5
+				}			
+			]
+		},
+		{
+			"name" : "Noise", 
+			"layers" : [
+				{
+					"name" : "NS_Anchorages",
+					"influence" : 0.1
+				},
+				{
+					"name" : "NS_Sand_Gravel_Extraction",
+					"influence" : 0.3
+				},
+				{
+					"name" : "NS_Oil_Gas_Offshore_Instalations",
+					"influence" : 0.3
+				},
+				{
+					"name" : "NS_Ports",
+					"influence" : 0.8
+				},
+				{
+					"name" : "NS_Pipelines",
+					"influence" : 0.5,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Recreational_Areas",
+					"influence" : 0.1
+				},
+				{
+					"name" : "NS_Shipping_Intensity",
+					"influence" : 0.5
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 0.5,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 0.1
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 0.5,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 0.1
+				},
+				{
+					"name" : "NS_Wind_Farms",
+					"influence" : 0.8,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Wind_Farms",
+					"influence" : 0.1
+				},
+				{
+					"name" : "NS_Military_Areas ",
+					"influence" : 0.02
+				}
+			]
+		},
+		{
+			"name" : "Surface Disturbance", 
+			"layers" : [
+				{
+					"name" : "NS_Anchorages",
+					"influence" : 0.1
+				},
+				{
+					"name" : "NS_Oil_Gas_Offshore_Instalations",
+					"influence" : 0.4
+				},
+				{
+					"name" : "NS_Ports",
+					"influence" : 0.8
+				},
+				{
+					"name" : "NS_Pipelines",
+					"influence" : 0.3,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Recreational_Areas",
+					"influence" : 0.2
+				},
+				{
+					"name" : "NS_Shipping_Intensity",
+					"influence" : 0.5
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 0.5,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 0.1
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 0.5,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 0.1
+				},
+				{
+					"name" : "NS_Wind_Farms",
+					"influence" : 0.5,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Military_Areas ",
+					"influence" : 0.042
+				}	
+			]
+		},
+		{
+			"name" : "Bottom Disturbance", 
+			"layers" : [
+				{
+					"name" : "NS_Anchorages",
+					"influence" : 0.1
+				},
+				{
+					"name" : "NS_Sand_Gravel_Extraction",
+					"influence" : 1.0
+				},
+				{
+					"name" : "NS_Electricity_Cables",
+					"influence" : 0.01
+				},
+				{
+					"name" : "NS_Oil_Gas_Offshore_Instalations",
+					"influence" : 0.3
+				},
+				{
+					"name" : "NS_Ports",
+					"influence" : 0.8
+				},
+				{
+					"name" : "NS_Pipelines",
+					"influence" : 0.3,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Dredging_Deposit_Areas",
+					"influence" : 0.8
+				},
+				{
+					"name" : "NS_Shipping_Intensity",
+					"influence" : 0.05
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 0.5,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 0.2
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 0.5,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 0.2
+				},
+				{
+					"name" : "NS_Wind_Farms",
+					"influence" : 0.6,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Military_Areas ",
+					"influence" : 0.024
+				}
+			]
+		},
+		{
+			"name" : "Protection bottom trawl", 
+			"layers" : [
+				{
+					"name" : "NS_Electricity_Cables",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Oil_Gas_Offshore_Instalations",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Ports",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Pipelines",
+					"influence" : 1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Pipelines",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Shipping_Intensity",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Wind_Farms",
+					"influence" : 1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Wind_Farms",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Military_Areas ",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Natura_2000|1",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Marine_Protected_Areas|1",
+					"influence" : 1
+				}	
+			]
+		},
+		{
+			"name" : "Protection industrial trawl", 
+			"layers" : [
+				{
+					"name" : "NS_Oil_Gas_Offshore_Instalations",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Ports",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Pipelines",
+					"influence" : 1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Shipping_Intensity",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Wind_Farms",
+					"influence" : 1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Wind_Farms",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Military_Areas ",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Natura_2000|2",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Marine_Protected_Areas|2",
+					"influence" : 1
+				}
+			]
+		},
+		{
+			"name" : "Protection nets", 
+			"layers" : [
+				{
+					"name" : "NS_Sand_Gravel_Extraction",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Electricity_Cables",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Ports",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Pipelines",
+					"influence" : 1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Shipping_Intensity",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Tidal_Farms",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Wave_Farms",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Wind_Farms",
+					"influence" : 1,
+					"construction" : true
+				},
+				{
+					"name" : "NS_Military_Areas ",
+					"influence" : 1
+				},	
+				{
+					"name" : "NS_Natura_2000|3",
+					"influence" : 1
+				},
+				{
+					"name" : "NS_Marine_Protected_Areas|3",
+					"influence" : 1
+				}	
+			]
+		}		
+	],
+	"fishing" : [
+		{
+			"name" : "Bottom Trawl",
+			"scalar" : 1.0
+		},
+		{
+			"name" : "Industrial and Pelagic Trawl",
+			"scalar" : 1.0
+		},
+		{
+			"name" : "Drift and fixed Nets",
+			"scalar" : 1.0
+		}
+	],
+	"outcomes" : [
+		{
+			"name" : "Flatfish Biomass",
+			"subcategory" : "Fish",
+			"protectedby" : [
+				"Protection nets",
+				"Protection industrial trawl"
+			]
+		},
+		{
+			"name" : "Cod Biomass",
+			"subcategory" : "Fish",
+			"protectedby" : [
+				"Protection nets"
+			]
+		},
+		{
+			"name" : "Demersal Biomass",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Sandeel Biomass",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Herring Biomass",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Mackerel Biomass",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Benthic Biomass",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Cetacean Biomass",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Seal Biomass",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Migrating Bird Biomass",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Resident Bird Biomass",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Drift and fixed Nets",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Industrial and Pelagic Trawl Catch",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Bottom trawl Catch",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Shannon Diversity Indicator",
+			"subcategory" : "Fish"
+		},
+		{
+			"name" : "Large Fish Indicator",
+			"subcategory" : "Fish"
+		}
+	]
+}

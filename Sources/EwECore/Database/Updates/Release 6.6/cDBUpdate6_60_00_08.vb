@@ -60,11 +60,13 @@ Friend Class cDBUpdate6_60_00_08
 
         Dim bSuccess As Boolean = True
 
-        bSuccess = bSuccess And db.Execute("CREATE TABLE EcosimScenarioFleetGroupCatchability (ScenarioID LONG, FleetID LONG, GroupID LONG, zScale MEMO)")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupCatchability ADD PRIMARY KEY (ScenarioID, GroupID, FleetID)")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupCatchability ADD FOREIGN KEY (ScenarioID) REFERENCES EcosimScenario(ScenarioID)")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupCatchability ADD FOREIGN KEY (GroupID) REFERENCES EcosimScenarioGroup(GroupID)")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupCatchability ADD FOREIGN KEY (FleetID) REFERENCES EcosimScenarioFleet(FleetID)")
+        ' Add Ecosim fleet x group shape table
+        bSuccess = bSuccess And db.Execute("CREATE TABLE EcosimScenarioFleetGroupShape (ScenarioID LONG, GroupID LONG, FleetID LONG, ShapeID LONG)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupShape ADD PRIMARY KEY (ScenarioID, GroupID, FleetID, ShapeID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupShape ADD FOREIGN KEY (ScenarioID) REFERENCES EcosimScenario(ScenarioID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupShape ADD FOREIGN KEY (GroupID) REFERENCES EcosimScenarioGroup(GroupID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupShape ADD FOREIGN KEY (FleetID) REFERENCES EcosimScenarioFleet(FleetID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupShape ADD FOREIGN KEY (ShapeID) REFERENCES EcosimShape(ShapeID)")
 
         Return bSuccess
 
