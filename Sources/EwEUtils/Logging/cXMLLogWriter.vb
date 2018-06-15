@@ -336,6 +336,8 @@ Namespace Core
             Try
                 If Me.Open() Then
 
+                    Dim trace As StackTrace = New StackTrace(ex, True)
+
                     'now the message
                     Me.WriteStartElement("Exception_Messages")
                     Me.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
@@ -348,11 +350,22 @@ Namespace Core
                         Me.WriteElementString("Type", thisEx.GetType().ToString)
                         Me.WriteElementString("Source", thisEx.Source)
                         Me.WriteElementString("Message", thisEx.Message)
-                        Me.WriteElementString("StackTrace", thisEx.StackTrace)
                         Me.WriteEndElement() 'Exception
-
                         thisEx = thisEx.InnerException
                     Loop
+
+                    ' Stack trace
+                    Me.WriteStartElement("StackTrace")
+                    For Each frame As StackFrame In trace.GetFrames
+                        Me.WriteStartElement("Method")
+                        Me.WriteElementString("Name", frame.GetMethod.Name)
+                        Me.WriteElementString("Line", CStr(frame.GetFileLineNumber))
+                        If Not String.IsNullOrWhiteSpace(frame.GetFileName) Then
+                            Me.WriteElementString("FileName", frame.GetFileName)
+                        End If
+                        Me.WriteEndElement() 'Method"
+                    Next
+                    Me.WriteEndElement() 'StackTrace
 
                     Me.WriteEndElement() 'Msg
                     Me.WriteEndDocument()
