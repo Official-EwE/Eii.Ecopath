@@ -1227,12 +1227,23 @@ Namespace Utilities
         Public Shared Function UnravelException(ByVal ex As Exception) As String
 
             Dim sb As New StringBuilder()
+            Dim trace As StackTrace = New StackTrace(ex, True)
 
             Try
+                sb.AppendLine(ex.Message)
                 Do While ex IsNot Nothing
                     sb.AppendLine(ex.Message)
                     ex = ex.InnerException
                 Loop
+
+                ' Stack trace
+                For Each frame As StackFrame In trace.GetFrames
+                    Dim strTrace As String = "At " & frame.GetMethod.Name & " (" & frame.GetFileLineNumber & ")"
+                    Dim strName As String = System.IO.Path.GetFileName(frame.GetFileName)
+                    If Not String.IsNullOrWhiteSpace(strName) Then strTrace &= " in " & strName
+                    sb.AppendLine(strTrace)
+                Next
+
             Catch exKaboom As Exception
                 'oooppps
                 Debug.Assert(False, exKaboom.Message)

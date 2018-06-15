@@ -22,10 +22,7 @@
 Option Strict On
 Imports System.Drawing.Drawing2D
 Imports System.Drawing.Text
-Imports EwECore
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
