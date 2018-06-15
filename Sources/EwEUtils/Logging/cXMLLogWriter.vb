@@ -336,7 +336,7 @@ Namespace Core
             Try
                 If Me.Open() Then
 
-                    Dim trace As StackTrace = New StackTrace(ex, True)
+                    Dim trace As StackTrace = New StackTrace(theException, True)
 
                     'now the message
                     Me.WriteStartElement("Exception_Messages")
