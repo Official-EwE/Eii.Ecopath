@@ -168,6 +168,7 @@ Namespace Style
         Public Function Load(file As String) As Boolean
 
             ' ToDo: add a whack of error handling
+            ' ToDo: serialize as XML
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim doc As New XmlDocument()
@@ -195,6 +196,7 @@ Namespace Style
         Public Function Save(file As String) As Boolean
 
             ' ToDo: add a whack of error handling
+            ' ToDo: serialize as XML
 
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim xnRoot As XmlNode = Nothing

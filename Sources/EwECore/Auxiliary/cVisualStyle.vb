@@ -323,7 +323,7 @@ Namespace Auxiliary
     ''' Helper class for serializing a visual style to text.
     ''' </summary>
     ''' ===========================================================================
-    Friend Class cVisualStyleReader
+    Public Class cVisualStyleReader
 
         Public Shared Function StyleToString(ByVal vs As cVisualStyle) As String
 
