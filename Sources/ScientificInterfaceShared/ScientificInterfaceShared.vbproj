@@ -748,6 +748,7 @@
     <Compile Include="Style\ColorRamps\cEwEColorRamp.vb" />
     <Compile Include="Style\cStyleGuide.vb" />
     <Compile Include="Definitions\Shared UIEnums.vb" />
+    <Compile Include="Style\ImportExport\cImportExportStyle.vb" />
     <Compile Include="Style\Localization\cLocalizedCategoryAttribute.vb" />
     <Compile Include="Style\Localization\cLocalizedDisplayNameAttribute.vb" />
     <Compile Include="Style\Localization\cLocalizedDescriptionAttribute.vb" />
