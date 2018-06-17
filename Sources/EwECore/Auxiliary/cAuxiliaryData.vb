@@ -21,11 +21,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
-Imports EwECore.ValueWrapper
-Imports System.Xml
-Imports EwEUtils.SystemUtilities
 Imports System.Text
+Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -55,16 +53,10 @@ Namespace Auxiliary
 
         Private m_core As cCore = Nothing
 
-        Private m_settings As cXMLSettings = Nothing
-
-        ''' <summary>Unique database ID</summary>
-        Private m_iDBID As Integer = 0
         ''' <summary>Remark text for this data.</summary>
         Private m_strRemark As String = ""
         ''' <summary>Visual style for this data.</summary>
         Private m_visualstyle As cVisualStyle = Nothing
-        ''' <summary>Key to identify core variable this data refers to.</summary>
-        Private m_key As cValueID = Nothing
 
 #End Region ' Private vars
 
@@ -96,11 +88,11 @@ Namespace Auxiliary
         Sub New(ByVal core As cCore, ByVal key As cValueID)
             MyBase.New()
 
-            Me.m_key = key
+            Me.Key = key
             Me.m_core = core
-            Me.m_settings = New cXMLSettings()
+            Me.Settings = New cXMLSettings()
 
-            AddHandler Me.m_settings.OnSettingsChanged, AddressOf OnSettingsChanged
+            AddHandler Me.Settings.OnSettingsChanged, AddressOf OnSettingsChanged
 
             Me.AllowValidation = False
             ' NOP
@@ -124,11 +116,7 @@ Namespace Auxiliary
         ''' Get the key for this data.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Key() As cValueID
-            Get
-                Return Me.m_key
-            End Get
-        End Property
+        Public ReadOnly Property Key() As cValueID = Nothing
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -137,7 +125,7 @@ Namespace Auxiliary
         ''' -------------------------------------------------------------------
         Public ReadOnly Property ID() As String
             Get
-                Return Me.m_key.ToString
+                Return Me.Key.ToString
             End Get
         End Property
 
@@ -191,11 +179,7 @@ Namespace Auxiliary
         ''' Get or set settings for this data.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Settings() As cXMLSettings
-            Get
-                Return Me.m_settings
-            End Get
-        End Property
+        Public ReadOnly Property Settings() As cXMLSettings = Nothing
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -254,13 +238,6 @@ Namespace Auxiliary
         ''' <inheritdoc cref="ICoreInterface.CoreComponent" />
         ''' -----------------------------------------------------------------------
         Public Property DBID() As Integer Implements ICoreInterface.DBID
-            Get
-                Return Me.m_iDBID
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iDBID = value
-            End Set
-        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdoc cref="ICoreInterface.CoreComponent" />
