@@ -28,6 +28,7 @@ Imports EwECore.Core
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Controls.Map
 
 #End Region ' Imports
 
@@ -40,15 +41,17 @@ Namespace Style
 
 #Region " Internal admin "
 
-        Private Class cData
-            Public Sub New(style As cVisualStyle, varname As eVarNameFlags, index As Integer)
-                Me.Style = style
+        Public Class cLayerEntry
+            Public Sub New(name As String, style As cVisualStyle, varname As eVarNameFlags, index As Integer)
+                Me.Name = name
+                Me.VisualStyle = style
                 Me.VarName = varname
                 Me.Index = index
             End Sub
-            Public Property Style As cVisualStyle = Nothing
-            Public Property VarName As eVarNameFlags = eVarNameFlags.NotSet
-            Public Property Index As Integer = 0
+            Public ReadOnly Property Name As String = ""
+            Public ReadOnly Property VisualStyle As cVisualStyle = Nothing
+            Public ReadOnly Property VarName As eVarNameFlags = eVarNameFlags.NotSet
+            Public ReadOnly Property Index As Integer = 0
         End Class
 
 #End Region ' Internal admin
@@ -56,7 +59,7 @@ Namespace Style
 #Region " Private vars "
 
         Private m_uic As cUIContext = Nothing
-        Private m_dtStyles As New Dictionary(Of String, cData)
+        Private m_dtEntries As New Dictionary(Of String, cLayerEntry)
 
 #End Region ' Private vars
 
@@ -69,6 +72,19 @@ Namespace Style
 #End Region ' Constructor
 
 #Region " Public access "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <vent>pfff</vent>
+        ''' -------------------------------------------------------------------
+        Public Function Entries() As cLayerEntry()
+            Dim lEntries As New List(Of cLayerEntry)
+            lEntries.AddRange(Me.m_dtEntries.Values)
+            Return lEntries.ToArray()
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -93,18 +109,22 @@ Namespace Style
 
             If (l Is Nothing) Then Return
 
-            Dim key As New cValueID(l.DataType, l.DBID, l.Name)
+            Dim DBID As Integer = 0
+            Select Case l.VarName
+                Case eVarNameFlags.LayerHabitat
+                    DBID = Me.m_uic.Core.EcospaceHabitats(l.Index).DBID
+                Case eVarNameFlags.LayerMPA
+                    DBID = Me.m_uic.Core.EcospaceMPAs(l.Index).DBID
+            End Select
+
+            Dim key As New cValueID(l.DataType, DBID, eVarNameFlags.Name)
             Dim ad As cAuxiliaryData = Me.m_uic.Core.AuxillaryData(key)
             If (ad Is Nothing) Then Return
 
             Dim vs As cVisualStyle = ad.VisualStyle
             If (vs Is Nothing) Then Return
 
-            Dim name As String = l.Name
-            If l.Index > 0 Then
-                name &= "_" & l.Index
-            End If
-            Add(name, vs, l.VarName, l.Index)
+            Add(l.Name, vs, l.VarName, l.Index)
 
         End Sub
 
@@ -118,7 +138,7 @@ Namespace Style
         ''' <param name="index"></param>
         ''' -------------------------------------------------------------------
         Public Sub Add(name As String, vs As cVisualStyle, vn As eVarNameFlags, index As Integer)
-            Me.m_dtStyles(name) = New cData(vs, eVarNameFlags.VariableName, index)
+            Me.m_dtEntries(name) = New cLayerEntry(name, vs, eVarNameFlags.VariableName, index)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -127,7 +147,7 @@ Namespace Style
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub RemoveAll()
-            Me.m_dtStyles.Clear()
+            Me.m_dtEntries.Clear()
         End Sub
 
 
@@ -140,11 +160,7 @@ Namespace Style
         Public Sub Remove(l As cEcospaceLayer)
 
             If (l Is Nothing) Then Return
-            Dim name As String = l.Name
-            If l.Index > 0 Then
-                name &= "_" & l.Index
-            End If
-            Remove(name)
+            Remove(l.Name)
 
         End Sub
 
@@ -155,7 +171,7 @@ Namespace Style
         ''' <param name="name"></param>
         ''' -------------------------------------------------------------------
         Public Sub Remove(name As String)
-            If Me.m_dtStyles.ContainsKey(name) Then Me.m_dtStyles.Remove(name)
+            If Me.m_dtEntries.ContainsKey(name) Then Me.m_dtEntries.Remove(name)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -204,9 +220,9 @@ Namespace Style
             Dim xa As XmlAttribute = Nothing
             Dim doc As XmlDocument = cXMLUtils.NewDoc("LayerStyles", xnRoot)
 
-            For Each name As String In Me.m_dtStyles.Keys
+            For Each name As String In Me.m_dtEntries.Keys
 
-                Dim data As cData = Me.m_dtStyles(name)
+                Dim data As cLayerEntry = Me.m_dtEntries(name)
 
                 xn = doc.CreateElement("LayerStyle")
 
@@ -223,7 +239,7 @@ Namespace Style
                 xn.Attributes.Append(xa)
 
                 xa = doc.CreateAttribute("style")
-                xa.InnerText = cVisualStyleReader.StyleToString(data.Style)
+                xa.InnerText = cVisualStyleReader.StyleToString(data.VisualStyle)
                 xn.Attributes.Append(xa)
 
                 xnRoot.AppendChild(xn)
@@ -232,6 +248,7 @@ Namespace Style
             Return True
 
         End Function
+
 
 #End Region ' Public access
 
