@@ -3058,4 +3058,12 @@
   <data name="FILEFILTER_STYLE" xml:space="preserve">
     <value>EwE visual style|*.ewestyle</value>
   </data>
+  <data name="PROMPT_STYLE_SAVE_FAILED" xml:space="preserve">
+    <value>Styles failed to save to {0}. {1}</value>
+    <comment>{0}=File name, {1}=exception text</comment>
+  </data>
+  <data name="PROMPT_STYLE_SAVE_SUCCESS" xml:space="preserve">
+    <value>Styles saved to {0}</value>
+    <comment>{0}=File name</comment>
+  </data>
 </root>

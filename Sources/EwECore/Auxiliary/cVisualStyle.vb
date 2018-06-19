@@ -109,6 +109,22 @@ Namespace Auxiliary
 
         End Function
 
+        Public Sub Read(vs As cVisualStyle)
+            If (vs Is Nothing) Then Return
+            Me.ForeColour = vs.ForeColour
+            Me.BackColour = vs.BackColour
+            Me.HatchStyle = vs.HatchStyle
+            Me.FontName = vs.FontName
+            Me.FontStyle = vs.FontStyle
+            If vs.Image IsNot Nothing Then
+                Me.Image = DirectCast(vs.Image.Clone(), Image)
+            Else
+                Me.Image = Nothing
+            End If
+            Me.GradientBreaks = vs.GradientBreaks
+            Me.GradientColors = vs.GradientColors
+        End Sub
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the <see cref="Color">foreground colour</see> for a visual style, if any.
