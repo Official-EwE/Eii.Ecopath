@@ -7787,6 +7787,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Styles failed to save to {0}. {1}.
+        '''</summary>
+        Public ReadOnly Property PROMPT_STYLE_SAVE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_STYLE_SAVE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Styles saved to {0}.
+        '''</summary>
+        Public ReadOnly Property PROMPT_STYLE_SAVE_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_STYLE_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to You are about to delete time series &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
         Public ReadOnly Property PROMPT_TIMESERIES_DELETE() As String

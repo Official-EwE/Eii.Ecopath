@@ -206,11 +206,16 @@ Namespace Style
             ' ToDo: add a whack of error handling
             ' ToDo: serialize as XML
 
+            If (Me.m_uic Is Nothing) Then Return False
+
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim xnRoot As XmlNode = Nothing
             Dim xn As XmlElement = Nothing
             Dim xa As XmlAttribute = Nothing
             Dim doc As XmlDocument = cXMLUtils.NewDoc("styles", xnRoot)
+
+            Dim msg As cMessage = Nothing
+            Dim bSuccess As Boolean = True
 
             For Each name As String In Me.m_dtEntries.Keys
 
@@ -236,8 +241,18 @@ Namespace Style
 
                 xnRoot.AppendChild(xn)
             Next
-            doc.Save(file)
-            Return True
+
+            Try
+                doc.Save(file)
+                msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_STYLE_SAVE_SUCCESS, file), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                msg.Hyperlink = System.IO.Path.GetDirectoryName(file)
+            Catch ex As Exception
+                msg = New cMessage(cStringUtils.Localize(My.Resources.PROMPT_STYLE_SAVE_FAILED, file, ex.Message), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
+                bSuccess = False
+            End Try
+
+            Me.m_uic.Core.Messages.SendMessage(msg)
+            Return bSuccess
 
         End Function
 
@@ -262,11 +277,19 @@ Namespace Style
             For Each entry As cImportExportStyle.cStyleEntry In Me.Entries
                 Dim layers As cEcospaceLayer() = Me.m_uic.Core.EcospaceBasemap.Layers(entry.VarName)
                 For Each l As cEcospaceLayer In layers
-                    If (String.Compare(l.Name, entry.Name, True) = 0) Then
-                        ' ToDo: Throw alert if indexes do not match
-                        Dim key As cValueID = New cValueID(l.DataType, l.DBID, eVarNameFlags.Name)
+                    If (String.Compare(l.Name, entry.Name, True) = 0) And (entry.VisualStyle IsNot Nothing) Then
+
+                        ' ToDo: Throw warning if indexes do not match?
+
                         Dim ad As cAuxiliaryData = Me.m_fact.GetAuxillaryData(Me.m_uic.Core, l)
-                        ad.VisualStyle = entry.VisualStyle
+                        If (ad.VisualStyle Is Nothing) Then
+                            ad.VisualStyle = entry.VisualStyle.Clone()
+                        Else
+                            ad.AllowValidation = False
+                            ad.VisualStyle.Read(entry.VisualStyle)
+                            ad.AllowValidation = True
+                            ad.Update()
+                        End If
                         bIsChanged = True
                     End If
                 Next
