@@ -57,7 +57,6 @@ Namespace Controls.Map
             Dim core As cCore = uic.Core
             Dim bmd As cEcospaceBasemap = core.EcospaceBasemap
             Dim layer As cDisplayLayerRaster = Nothing
-            Dim key As cValueID = Nothing
             Dim ad As cAuxiliaryData = Nothing
             Dim avs As cVisualStyle() = Nothing
             Dim renderer As cLayerRenderer = Nothing
@@ -69,9 +68,7 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerDepth
 
-                    ' Depth layer identified by basemap
-                    key = New cValueID(eDataTypes.EcospaceLayerDepth, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
+                    ad = Me.GetAuxillaryData(core, varName)
 
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
@@ -85,12 +82,11 @@ Namespace Controls.Map
                     avs = uic.StyleGuide.GetVisualStyles(core.nHabitats, cStyleGuide.eBrushType.Glyphs)
 
                     For iHabitat As Integer = 1 To core.nHabitats - 1
+
                         Dim hab As cEcospaceHabitat = core.EcospaceHabitats(iHabitat)
 
-                        key = New cValueID(eDataTypes.EcospaceLayerHabitat, hab.DBID, eVarNameFlags.Name)
-                        ad = core.AuxillaryData(key)
-
                         ' Get or create Visual Style
+                        ad = GetAuxillaryData(core, varName, iHabitat)
                         vs = ad.VisualStyle
                         If (vs Is Nothing) Then
                             vs = avs(iHabitat - 1)
@@ -113,11 +109,10 @@ Namespace Controls.Map
 
                     If (core.nGroups > 0) Then
 
-                        key = New cValueID(eDataTypes.EcospaceLayerHabitatCapacityInput, bmd.DBID, eVarNameFlags.Name)
-                        ad = core.AuxillaryData(key)
-
+                        ad = GetAuxillaryData(core, varName)
                         vs = ad.VisualStyle
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+
                         renderer = New cLayerRendererValue(vs)
                         renderer.ScaleMin = 0
                         renderer.RenderMode = Definitions.eLayerRenderType.Selected
@@ -131,9 +126,7 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerRegion
 
-                    key = New cValueID(eDataTypes.EcospaceLayerRegion, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
-
+                    ad = GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
@@ -152,8 +145,7 @@ Namespace Controls.Map
                     For iMPA As Integer = 1 To core.nMPAs
 
                         Dim mpa As cEcospaceMPA = core.EcospaceMPAs(iMPA)
-                        key = New cValueID(eDataTypes.EcospaceLayerMPA, mpa.DBID, eVarNameFlags.Name)
-                        ad = core.AuxillaryData(key)
+                        ad = GetAuxillaryData(core, varName, iMPA)
 
                         ' Get or create Visual Style
                         vs = ad.VisualStyle
@@ -177,10 +169,9 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerRelPP
 
-                    key = New cValueID(eDataTypes.EcospaceLayerRelPP, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
-
+                    ad = GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
+
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     'renderer.ScaleMin = 0
@@ -193,10 +184,9 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerRelCin
 
-                    key = New cValueID(eDataTypes.EcospaceLayerRelCin, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
-
+                    ad = GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
+
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     renderer.ScaleMin = 0
@@ -213,9 +203,7 @@ Namespace Controls.Map
                         Dim grp As cEcospaceGroupInput = core.EcospaceGroupInputs(iLayer)
                         If grp.IsMigratory Then
                             Dim src As cEcospaceLayerMigration = core.EcospaceBasemap.LayerMigration(iLayer)
-                            key = New cValueID(eDataTypes.EcospaceLayerMigration, src.DBID, eVarNameFlags.Name)
-                            ad = core.AuxillaryData(key)
-
+                            ad = Me.GetAuxillaryData(core, varName, iLayer)
                             vs = ad.VisualStyle
                             If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                             renderer = New cLayerRendererValue(vs)
@@ -223,18 +211,15 @@ Namespace Controls.Map
                             DirectCast(renderer, cLayerRendererValue).SuppressZero = True
                             editor = New cLayerEditorMigration()
                             layer = New cDisplayLayerRaster(uic, src, renderer, editor, src, eVarNameFlags.Name)
-
                             lLayers.Add(layer)
-
                         End If
                     Next
 
                 Case eVarNameFlags.LayerAdvection
 
-                    key = New cValueID(eDataTypes.EcospaceLayerAdvection, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
-
+                    ad = GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
+
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererWindEwE5(vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
@@ -247,10 +232,9 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerWind
 
-                    key = New cValueID(eDataTypes.EcospaceLayerWind, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
-
+                    ad = GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
+
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererWindEwE5(vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
@@ -265,10 +249,9 @@ Namespace Controls.Map
 
                     ' ToDo: globalize this
 
-                    key = New cValueID(eDataTypes.EcospaceLayerFlow, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
-
+                    ad = GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
+
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererUpwelling(vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
@@ -278,30 +261,12 @@ Namespace Controls.Map
 
                     lLayers.Add(layer)
 
-                'Case eVarNameFlags.LayerMLD
-
-                '    ' ToDo: globalize this
-
-                '    key = New cValueID(eDataTypes.EcospaceLayerMLD, bmd.DBID, eVarNameFlags.Name)
-                '    ad = core.AuxillaryData(key)
-
-                '    vs = ad.VisualStyle
-                '    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                '    renderer = New cLayerRendererValue(vs)
-                '    renderer.RenderMode = Definitions.eLayerRenderType.Selected
-                '    editor = New cLayerEditorMLD()
-                '    layer = New cDisplayLayerRaster(uic, bmd.LayerMixedLayerDepths, renderer, editor, bmd, varName)
-                '    layer.Name = "Mixed layer depths"
-
-                '    lLayers.Add(layer)
-
                 Case eVarNameFlags.LayerPort
 
                     If (core.nFleets > 0) Then
-                        key = New cValueID(eDataTypes.EcospaceLayerPort, bmd.DBID, eVarNameFlags.Name)
-                        ad = core.AuxillaryData(key)
-
+                        ad = GetAuxillaryData(core, varName)
                         vs = ad.VisualStyle
+
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                         renderer = New cLayerRendererSymbol(vs)
                         renderer.RenderMode = Definitions.eLayerRenderType.Always
@@ -314,10 +279,9 @@ Namespace Controls.Map
 
                     If (core.nFleets > 0) Then
 
-                        key = New cValueID(eDataTypes.EcospaceLayerSail, bmd.DBID, eVarNameFlags.Name)
-                        ad = core.AuxillaryData(key)
-
+                        ad = GetAuxillaryData(core, varName)
                         vs = ad.VisualStyle
+
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                         renderer = New cLayerRendererValue(vs)
                         renderer.ScaleMin = 0
@@ -333,8 +297,7 @@ Namespace Controls.Map
                     For iLayer As Integer = 1 To core.nImportanceLayers
 
                         Dim src As cEcospaceLayerImportance = core.EcospaceBasemap.LayerImportance(iLayer)
-                        key = New cValueID(src.DataType, src.DBID, eVarNameFlags.Name)
-                        ad = core.AuxillaryData(key)
+                        ad = GetAuxillaryData(core, varName, iLayer)
 
                         vs = ad.VisualStyle
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
@@ -353,10 +316,9 @@ Namespace Controls.Map
                     For iLayer As Integer = 1 To core.nEnvironmentalDriverLayers
 
                         Dim src As cEcospaceLayerDriver = core.EcospaceBasemap.LayerDriver(iLayer)
-                        key = New cValueID(src.DataType, src.DBID, eVarNameFlags.Name)
-                        ad = core.AuxillaryData(key)
-
+                        ad = GetAuxillaryData(core, varName, iLayer)
                         vs = ad.VisualStyle
+
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                         renderer = New cLayerRendererValue(vs)
                         'renderer.ScaleMin = 0
@@ -371,10 +333,10 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerExclusion
 
                     Dim src As cEcospaceLayerExclusion = core.EcospaceBasemap.LayerExclusion
-                    key = New cValueID(src.DataType, src.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
 
+                    ad = GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
+
                     If (vs Is Nothing) Then
                         vs = New cVisualStyle()
                         vs.ForeColour = Color.Red
@@ -485,6 +447,40 @@ Namespace Controls.Map
 
             End Select
             Return strCommand
+
+        End Function
+
+        Public Overridable Function GetAuxillaryData(core As cCore, l As cEcospaceLayer) As cAuxiliaryData
+
+            If (l Is Nothing) Then Return Nothing
+            Return GetAuxillaryData(core, l.VarName, l.Index)
+
+        End Function
+
+        Public Overridable Function GetAuxillaryData(core As cCore, vn As eVarNameFlags, Optional iIndex As Integer = 0) As cAuxiliaryData
+
+            If (core Is Nothing) Then Return Nothing
+
+            Dim iScenario As Integer = core.ActiveEcospaceScenarioIndex
+            If (iScenario <= 0) Then Return Nothing
+
+            Dim DBID As Integer = core.EcospaceScenarios(iScenario).DBID
+            Dim dt As eDataTypes = eDataTypes.NotSet
+
+            Dim layers As cEcospaceLayer() = core.EcospaceBasemap.Layers(vn)
+            Dim layer As cEcospaceLayer = layers(Math.Max(iIndex - 1, 0))
+
+            dt = layer.DataType
+
+            Select Case vn
+                Case eVarNameFlags.LayerHabitat
+                    DBID = core.EcospaceHabitats(iIndex).DBID
+                Case eVarNameFlags.LayerMPA
+                    DBID = core.EcospaceMPAs(iIndex).DBID
+            End Select
+
+            Dim key As New cValueID(dt, DBID, eVarNameFlags.Name)
+            Return core.AuxillaryData(key)
 
         End Function
 
