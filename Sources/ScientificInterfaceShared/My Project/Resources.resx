@@ -3055,4 +3055,7 @@
     <value>Slot {0}</value>
     <comment>{0}=slot number</comment>
   </data>
+  <data name="FILEFILTER_STYLE" xml:space="preserve">
+    <value>EwE visual style|*.ewestyle</value>
+  </data>
 </root>

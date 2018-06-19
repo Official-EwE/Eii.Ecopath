@@ -1858,6 +1858,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to EwE visual style|*.ewestyle.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_STYLE() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_STYLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Text files|*.txt.
         '''</summary>
         Public ReadOnly Property FILEFILTER_TEXT() As String

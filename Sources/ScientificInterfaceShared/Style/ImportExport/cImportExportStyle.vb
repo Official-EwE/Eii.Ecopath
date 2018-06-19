@@ -41,7 +41,7 @@ Namespace Style
 
 #Region " Internal admin "
 
-        Public Class cLayerEntry
+        Public Class cStyleEntry
             Public Sub New(name As String, style As cVisualStyle, varname As eVarNameFlags, index As Integer)
                 Me.Name = name
                 Me.VisualStyle = style
@@ -59,7 +59,7 @@ Namespace Style
 #Region " Private vars "
 
         Private m_uic As cUIContext = Nothing
-        Private m_dtEntries As New Dictionary(Of String, cLayerEntry)
+        Private m_dtEntries As New Dictionary(Of String, cStyleEntry)
         Private m_fact As New cLayerFactoryBase()
 
 #End Region ' Private vars
@@ -81,8 +81,8 @@ Namespace Style
         ''' <returns></returns>
         ''' <vent>pfff</vent>
         ''' -------------------------------------------------------------------
-        Public Function Entries() As cLayerEntry()
-            Dim lEntries As New List(Of cLayerEntry)
+        Public Function Entries() As cStyleEntry()
+            Dim lEntries As New List(Of cStyleEntry)
             lEntries.AddRange(Me.m_dtEntries.Values)
             Return lEntries.ToArray()
         End Function
@@ -122,7 +122,7 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Manually add a layer definition.
+        ''' Manually add a style definition.
         ''' </summary>
         ''' <param name="name"></param>
         ''' <param name="vs"></param>
@@ -130,12 +130,12 @@ Namespace Style
         ''' <param name="index"></param>
         ''' -------------------------------------------------------------------
         Public Sub Add(name As String, vs As cVisualStyle, vn As eVarNameFlags, index As Integer)
-            Me.m_dtEntries(name) = New cLayerEntry(name, vs, vn, index)
+            Me.m_dtEntries(name) = New cStyleEntry(name, vs, vn, index)
         End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Bulk remove all layers.
+        ''' Bulk remove all styles.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub RemoveAll()
@@ -145,7 +145,7 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Remove a single layer.
+        ''' Remove a single layer style.
         ''' </summary>
         ''' <param name="l"></param>
         ''' -------------------------------------------------------------------
@@ -158,7 +158,7 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Remove a single layer with a given name.
+        ''' Remove a single style with a given name.
         ''' </summary>
         ''' <param name="name"></param>
         ''' -------------------------------------------------------------------
@@ -168,7 +168,7 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Load layers from file.
+        ''' Load styles from file.
         ''' </summary>
         ''' <param name="file"></param>
         ''' <returns></returns>
@@ -183,11 +183,11 @@ Namespace Style
 
             doc.Load(file)
 
-            For Each cn As XmlElement In doc.GetElementsByTagName("LayerStyle")
+            For Each cn As XmlElement In doc.GetElementsByTagName("style")
                 Dim name As String = cn.GetAttribute("name")
                 Dim vn As eVarNameFlags = cin.GetVarName(cn.GetAttribute("varname"))
                 Dim index As Integer = CInt(cn.GetAttribute("index"))
-                Dim value As String = cn.GetAttribute("style")
+                Dim value As String = cn.GetAttribute("data")
                 Me.Add(name, cVisualStyleReader.StringToStyle(value), vn, index)
             Next
             Return True
@@ -210,13 +210,13 @@ Namespace Style
             Dim xnRoot As XmlNode = Nothing
             Dim xn As XmlElement = Nothing
             Dim xa As XmlAttribute = Nothing
-            Dim doc As XmlDocument = cXMLUtils.NewDoc("LayerStyles", xnRoot)
+            Dim doc As XmlDocument = cXMLUtils.NewDoc("styles", xnRoot)
 
             For Each name As String In Me.m_dtEntries.Keys
 
-                Dim data As cLayerEntry = Me.m_dtEntries(name)
+                Dim data As cStyleEntry = Me.m_dtEntries(name)
 
-                xn = doc.CreateElement("LayerStyle")
+                xn = doc.CreateElement("style")
 
                 xa = doc.CreateAttribute("name")
                 xa.InnerText = name
@@ -230,7 +230,7 @@ Namespace Style
                 xa.InnerText = CStr(data.Index)
                 xn.Attributes.Append(xa)
 
-                xa = doc.CreateAttribute("style")
+                xa = doc.CreateAttribute("data")
                 xa.InnerText = cVisualStyleReader.StyleToString(data.VisualStyle)
                 xn.Attributes.Append(xa)
 
@@ -241,7 +241,7 @@ Namespace Style
 
         End Function
 
-        Public Function Merge() As Boolean
+        Public Function MergeToLayers() As Boolean
 
             Dim bIsChanged As Boolean = False
 
@@ -259,7 +259,7 @@ Namespace Style
             'Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bIsChanged)
 
             ' Restyle existing layers
-            For Each entry As cImportExportStyle.cLayerEntry In Me.Entries
+            For Each entry As cImportExportStyle.cStyleEntry In Me.Entries
                 Dim layers As cEcospaceLayer() = Me.m_uic.Core.EcospaceBasemap.Layers(entry.VarName)
                 For Each l As cEcospaceLayer In layers
                     If (String.Compare(l.Name, entry.Name, True) = 0) Then
@@ -267,11 +267,13 @@ Namespace Style
                         Dim key As cValueID = New cValueID(l.DataType, l.DBID, eVarNameFlags.Name)
                         Dim ad As cAuxiliaryData = Me.m_fact.GetAuxillaryData(Me.m_uic.Core, l)
                         ad.VisualStyle = entry.VisualStyle
+                        bIsChanged = True
                     End If
                 Next
             Next
 
-            Return True
+            Return bIsChanged
+
         End Function
 
 #End Region ' Public access
