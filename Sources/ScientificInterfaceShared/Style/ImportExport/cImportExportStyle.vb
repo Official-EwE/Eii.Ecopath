@@ -60,6 +60,7 @@ Namespace Style
 
         Private m_uic As cUIContext = Nothing
         Private m_dtEntries As New Dictionary(Of String, cLayerEntry)
+        Private m_fact As New cLayerFactoryBase()
 
 #End Region ' Private vars
 
@@ -109,16 +110,7 @@ Namespace Style
 
             If (l Is Nothing) Then Return
 
-            Dim DBID As Integer = 0
-            Select Case l.VarName
-                Case eVarNameFlags.LayerHabitat
-                    DBID = Me.m_uic.Core.EcospaceHabitats(l.Index).DBID
-                Case eVarNameFlags.LayerMPA
-                    DBID = Me.m_uic.Core.EcospaceMPAs(l.Index).DBID
-            End Select
-
-            Dim key As New cValueID(l.DataType, DBID, eVarNameFlags.Name)
-            Dim ad As cAuxiliaryData = Me.m_uic.Core.AuxillaryData(key)
+            Dim ad As cAuxiliaryData = Me.m_fact.GetAuxillaryData(Me.m_uic.Core, l)
             If (ad Is Nothing) Then Return
 
             Dim vs As cVisualStyle = ad.VisualStyle
@@ -138,7 +130,7 @@ Namespace Style
         ''' <param name="index"></param>
         ''' -------------------------------------------------------------------
         Public Sub Add(name As String, vs As cVisualStyle, vn As eVarNameFlags, index As Integer)
-            Me.m_dtEntries(name) = New cLayerEntry(name, vs, eVarNameFlags.VariableName, index)
+            Me.m_dtEntries(name) = New cLayerEntry(name, vs, vn, index)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -249,6 +241,38 @@ Namespace Style
 
         End Function
 
+        Public Function Merge() As Boolean
+
+            Dim bIsChanged As Boolean = False
+
+            '' First create missing layers
+            'Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
+            'For Each entry As cImportExportStyle.cLayerEntry In io.Entries
+            '    Select Case entry.VarName
+            '        Case eVarNameFlags.LayerHabitat
+            '        Case eVarNameFlags.LayerMPA
+            '        Case eVarNameFlags.LayerDriver
+            '    End Select
+            'Next
+
+            '' This may obliterate me?!
+            'Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bIsChanged)
+
+            ' Restyle existing layers
+            For Each entry As cImportExportStyle.cLayerEntry In Me.Entries
+                Dim layers As cEcospaceLayer() = Me.m_uic.Core.EcospaceBasemap.Layers(entry.VarName)
+                For Each l As cEcospaceLayer In layers
+                    If (String.Compare(l.Name, entry.Name, True) = 0) Then
+                        ' ToDo: Throw alert if indexes do not match
+                        Dim key As cValueID = New cValueID(l.DataType, l.DBID, eVarNameFlags.Name)
+                        Dim ad As cAuxiliaryData = Me.m_fact.GetAuxillaryData(Me.m_uic.Core, l)
+                        ad.VisualStyle = entry.VisualStyle
+                    End If
+                Next
+            Next
+
+            Return True
+        End Function
 
 #End Region ' Public access
 
