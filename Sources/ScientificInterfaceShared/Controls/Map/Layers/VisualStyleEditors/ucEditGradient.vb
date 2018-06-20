@@ -21,9 +21,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports EwECore.Auxiliary
-Imports System.Drawing.Drawing2D
+Imports EwEUtils
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -79,12 +78,24 @@ Namespace Controls
 
             If (Me.UIContext Is Nothing) Then Return
 
+            Me.m_bInUpdate = True
+
             Dim aGrads() As cVisualStyle = Me.UIContext.StyleGuide.GetVisualStyles(-1, cStyleGuide.eBrushType.Gradient)
-            For Each vs As cVisualStyle In aGrads
+            For i As Integer = 0 To aGrads.Length - 1
+                Dim vs As cVisualStyle = aGrads(i)
                 Me.m_cmbGradient.Items.Add(New cARGBColorRamp(vs.GradientColors, vs.GradientBreaks))
-            Next
+
+                If (Me.VisualStyle IsNot Nothing) Then
+                    If vs.GradientBreaks.EqualsArray(Me.VisualStyle.GradientBreaks) And
+                       vs.GradientColors.EqualsArray(Me.VisualStyle.GradientColors) Then
+                        Me.m_cmbGradient.SelectedIndex = i
+                    End If
+                End If
+            Next i
 
             Me.UpdateControls()
+
+            Me.m_bInUpdate = False
         End Sub
 
         ''' <summary>
@@ -262,6 +273,8 @@ Namespace Controls
         Private Sub OnGradientSelected(ByVal sender As Object, ByVal e As System.EventArgs) _
             Handles m_cmbGradient.SelectedIndexChanged
 
+            If (Me.m_bInUpdate) Then Return
+
             Try
 
                 Dim grad As cARGBColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cARGBColorRamp)
@@ -357,7 +370,7 @@ Namespace Controls
             Me.m_slGradient.Enabled = bEnabled
             Me.m_pbCurrentColor.Enabled = bEnabled
 
-            Me.m_btnAdd.Enabled = (iNumKnobs < 6) And bEnabled
+            Me.m_btnAdd.Enabled = (iNumKnobs < 8) And bEnabled
             Me.m_btnRemove.Enabled = (iNumKnobs > 2) And bEnabled
             Me.m_btnFlip.Enabled = bEnabled
 

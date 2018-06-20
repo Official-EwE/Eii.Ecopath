@@ -291,6 +291,8 @@ Namespace Style
                             ad.Update()
                         End If
                         bIsChanged = True
+                        ' Trigger refresh
+                        l.Invalidate()
                     End If
                 Next
             Next

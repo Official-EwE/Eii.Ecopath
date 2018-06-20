@@ -29,6 +29,7 @@ Imports System.Runtime.Serialization.Formatters
 Imports System.Runtime.Serialization.Formatters.Binary
 Imports System.Runtime.Serialization
 Imports System.Reflection
+Imports EwEUtils
 
 #End Region ' Imports 
 
@@ -303,8 +304,13 @@ Namespace Auxiliary
                 If vs.Image Is Nothing Then Return False
                 Return Me.Image.Equals(vs.Image)
             End If
+            If Me.GradientColors IsNot Nothing Then
+                If Not Me.GradientColors.EqualsArray(vs.GradientColors) Then Return False
+            End If
+            If Me.GradientBreaks IsNot Nothing Then
+                If Not Me.GradientBreaks.EqualsArray(vs.GradientBreaks) Then Return False
+            End If
             Return True
-
         End Function
 
         ''' -----------------------------------------------------------------------
