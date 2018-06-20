@@ -181,7 +181,7 @@
     <value>75, 24</value>
   </data>
   <data name="m_btnViewCache.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="&gt;&gt;m_btnViewCache.Name" xml:space="preserve">
     <value>m_btnViewCache</value>
@@ -208,7 +208,7 @@
     <value>75, 23</value>
   </data>
   <data name="m_btnClearCache.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="m_btnClearCache.Text" xml:space="preserve">
     <value>C&amp;lear</value>
@@ -241,7 +241,7 @@
     <value>62, 13</value>
   </data>
   <data name="m_lblCacheSize.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="m_lblCacheSize.Text" xml:space="preserve">
     <value>Cache &amp;size:</value>
@@ -271,7 +271,7 @@
     <value>323, 18</value>
   </data>
   <data name="m_lblCacheSizeValue.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="m_lblCacheSizeValue.Text" xml:space="preserve">
     <value>&lt;value&gt;</value>
@@ -304,7 +304,7 @@
     <value>51, 13</value>
   </data>
   <data name="m_lblCacheLocation.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_lblCacheLocation.Text" xml:space="preserve">
     <value>&amp;Location:</value>
@@ -337,7 +337,7 @@
     <value>323, 23</value>
   </data>
   <data name="m_lblCacheLocationValue.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_lblCacheLocationValue.Text" xml:space="preserve">
     <value>&lt;cache path&gt;</value>
@@ -373,7 +373,7 @@
     <value>290, 17</value>
   </data>
   <data name="m_cbAllowIndexing.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="m_cbAllowIndexing.Text" xml:space="preserve">
     <value>&amp;Allow background indexing of external data connections</value>
@@ -423,27 +423,6 @@
   <data name="m_lvDatasets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="m_lvDatasets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 44</value>
-  </data>
-  <data name="m_lvDatasets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>403, 167</value>
-  </data>
-  <data name="m_lvDatasets.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_lvDatasets.Name" xml:space="preserve">
-    <value>m_lvDatasets</value>
-  </data>
-  <data name="&gt;&gt;m_lvDatasets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lvDatasets.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lvDatasets.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="m_chdrName.Text" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -470,6 +449,27 @@
   </data>
   <data name="m_chdrLOcation.Width" type="System.Int32, mscorlib">
     <value>400</value>
+  </data>
+  <data name="m_lvDatasets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 44</value>
+  </data>
+  <data name="m_lvDatasets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>403, 167</value>
+  </data>
+  <data name="m_lvDatasets.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_lvDatasets.Name" xml:space="preserve">
+    <value>m_lvDatasets</value>
+  </data>
+  <data name="&gt;&gt;m_lvDatasets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lvDatasets.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lvDatasets.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="m_btnNew.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -583,7 +583,7 @@
     <value>75, 23</value>
   </data>
   <data name="m_btnExport.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_btnExport.Text" xml:space="preserve">
     <value>&amp;Export</value>
@@ -613,7 +613,7 @@
     <value>500, 18</value>
   </data>
   <data name="m_hdrIndexing.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="m_hdrIndexing.Text" xml:space="preserve">
     <value>Indexing</value>
@@ -625,7 +625,7 @@
     <value>m_hdrIndexing</value>
   </data>
   <data name="&gt;&gt;m_hdrIndexing.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15292.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15359.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrIndexing.Parent" xml:space="preserve">
     <value>$this</value>
@@ -646,7 +646,7 @@
     <value>503, 18</value>
   </data>
   <data name="m_hdrCache.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_hdrCache.Text" xml:space="preserve">
     <value>Cache</value>
@@ -658,7 +658,7 @@
     <value>m_hdrCache</value>
   </data>
   <data name="&gt;&gt;m_hdrCache.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15292.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15359.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCache.Parent" xml:space="preserve">
     <value>$this</value>
@@ -679,7 +679,7 @@
     <value>506, 18</value>
   </data>
   <data name="m_hdrCaption.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="m_hdrCaption.Text" xml:space="preserve">
     <value>Spatial-temporal data options</value>
@@ -691,7 +691,7 @@
     <value>m_hdrCaption</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15292.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15359.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>
@@ -730,7 +730,7 @@
     <value>75, 24</value>
   </data>
   <data name="m_btnViewConfig.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;m_btnViewConfig.Name" xml:space="preserve">
     <value>m_btnViewConfig</value>
