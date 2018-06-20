@@ -430,7 +430,7 @@ Namespace Other
                 lvi.Tag = cfg
             Next
 
-            Me.m_lvDatasets.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent)
+            Me.m_lvDatasets.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize Or ColumnHeaderAutoResizeStyle.ColumnContent)
 
             Me.UpdateControls()
 
