@@ -622,6 +622,8 @@ Namespace Utilities
                 Return FormatSingle(CSng(value), strDecimalSeparator, strThousandsSeparator, iNumDigits)
             ElseIf TypeOf value Is Double Then
                 Return FormatDouble(CDbl(value), strDecimalSeparator, strThousandsSeparator, iNumDigits)
+            ElseIf TypeOf value Is Decimal Then
+                Return FormatDecimal(CDec(value), strDecimalSeparator, strThousandsSeparator, iNumDigits)
             End If
             Return FormatInteger(CInt(value), strDecimalSeparator, strThousandsSeparator)
 
