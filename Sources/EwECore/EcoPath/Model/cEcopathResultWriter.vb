@@ -86,7 +86,7 @@ Public Class cEcopathResultWriter
                 sw.WriteLine()
             End If
 
-            sw.WriteLine("Group,Biomass(B),Prod/Biomass(PB),Cons/Biomass(QB),Ecotrophic eff.(EE),Prod/Consum(GE)")
+            sw.WriteLine("Group,""Biomass(B)"",""Prod/Biomass(PB)"",""Cons/Biomass(QB)"",""Ecotrophic eff.(EE)"",""Prod/Consum(GE)""")
             For i As Integer = 1 To Me.m_data.NumGroups
                 sw.Write(cStringUtils.ToCSVField(Me.m_data.GroupName(i)))
                 sw.Write(",")
