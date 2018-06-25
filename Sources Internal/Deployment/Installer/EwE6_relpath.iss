@@ -4,10 +4,11 @@
 #define Compile64Bit 0
 #define Spinup 0
 #define SpatTemp 0
-#define MSPTools 0
 #define MPAdynamics 0
 #define MergeGroups 0
 #define BiomassEmitters 0
+#define FISHMIP 0
+#define MSPTools 0
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
@@ -137,13 +138,13 @@ Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plu
 #if MPAdynamics == 1
 Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mpadynamics
 #endif
-#if Spinup == 1
+#if Spinup == 1 
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
 #endif
 #if BiomassEmitters == 1
 Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\emissions
 #endif
-#if SpatTemp == 1
+#if SpatTemp == 1 
 Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Controls.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
@@ -258,6 +259,10 @@ Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_netCDF.dll"; D
 #if MSPTools == 1
 Source: "{#DefRoot}{#DefSrc}\EwEShell.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
 Source: "{#DefRoot}{#DefSrc}\EwEMSPPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
+#endif
+#if FISHMIP == 1
+Source: "{#DefRoot}{#DefSrc}\GOMplugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\FishMIP2Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 #endif
 
 [Components]
