@@ -47,6 +47,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
     Private m_core As cCore
     Private m_msgStatus As cMessage = Nothing
     Private m_bSaveError As Boolean = False
+    Private m_bCalcExtrasOld As Boolean = False
 
 #End Region ' Private vars
 
@@ -67,9 +68,11 @@ Public Class cMonteCarloResultsWriterMultipleFiles
         Me.m_msgStatus = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MONTECARLO_RESULTS_SAVED_SUCCESS, Me.DataDir),
                                           eMessageType.DataExport, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Information)
         Me.m_msgStatus.Hyperlink = Me.DataDir
+        Me.m_bCalcExtrasOld = Me.m_core.m_EcoSimData.bAlwaysCalcTLc
 
         If cFileUtils.IsDirectoryAvailable(Me.DataDir, True) Then
             Me.Save(cCore.NULL_VALUE)
+            Me.m_core.m_EcoSimData.bAlwaysCalcTLc = True
         Else
             Me.ReportSaveError("Directory unavailable")
         End If
@@ -154,6 +157,8 @@ Public Class cMonteCarloResultsWriterMultipleFiles
             Me.m_msgStatus = Nothing
         End If
         Me.m_bSaveError = False
+
+        Me.m_core.m_EcoSimData.bAlwaysCalcTLc = Me.m_bCalcExtrasOld
 
     End Sub
 
