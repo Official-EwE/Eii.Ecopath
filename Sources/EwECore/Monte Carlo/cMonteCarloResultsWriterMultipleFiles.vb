@@ -113,7 +113,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                         Dim sw As StreamWriter = Nothing
                         Try
                             cFileUtils.IsDirectoryAvailable(strPathInput, True)
-                            sw = New StreamWriter(Path.Combine(strPathInput, String.Format("mc_trial{0:D4}_{1}.csv", iTrial, par.ToString())))
+                            sw = New StreamWriter(Path.Combine(strPathInput, String.Format("mc_trial{0:D5}_{1}.csv", iTrial, par.ToString())))
                             Me.WriteHeader(sw, iTrial)
                             Me.WriteTrialBody(sw, par)
 
