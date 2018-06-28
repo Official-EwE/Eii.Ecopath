@@ -290,7 +290,7 @@ Partial Class frmUI
     Private WithEvents m_ts As cEwEToolstrip
     Private WithEvents m_tsbnAll As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnNone As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_nudTimeStep As Windows.Forms.NumericUpDown
-    Friend WithEvents m_lblTimeStep As Windows.Forms.Label
-    Friend WithEvents m_tslQuickSelect As Windows.Forms.ToolStripLabel
+    Private WithEvents m_nudTimeStep As System.Windows.Forms.NumericUpDown
+    Friend WithEvents m_lblTimeStep As System.Windows.Forms.Label
+    Friend WithEvents m_tslQuickSelect As System.Windows.Forms.ToolStripLabel
 End Class

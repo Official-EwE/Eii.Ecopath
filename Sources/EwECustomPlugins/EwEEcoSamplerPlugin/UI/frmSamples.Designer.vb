@@ -243,5 +243,5 @@ Partial Class frmSamples
     Private WithEvents m_tsmiImportModel As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiImportCefas As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsddImport As System.Windows.Forms.ToolStripDropDownButton
-    Private WithEvents m_cbBatchRandomize As Windows.Forms.CheckBox
+    Private WithEvents m_cbBatchRandomize As System.Windows.Forms.CheckBox
 End Class

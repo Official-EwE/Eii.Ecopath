@@ -127,12 +127,12 @@ Partial Class dlgEditTransect
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents m_tbxName As Windows.Forms.TextBox
-    Private WithEvents m_lblName As Windows.Forms.Label
-    Private WithEvents m_dgvPos As Windows.Forms.DataGridView
-    Friend WithEvents m_btnOK As Windows.Forms.Button
-    Friend WithEvents m_btnCancel As Windows.Forms.Button
-    Friend WithEvents m_colName As Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents m_colCellIndex As Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents m_colCoordinate As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents m_tbxName As System.Windows.Forms.TextBox
+    Private WithEvents m_lblName As System.Windows.Forms.Label
+    Private WithEvents m_dgvPos As System.Windows.Forms.DataGridView
+    Friend WithEvents m_btnOK As System.Windows.Forms.Button
+    Friend WithEvents m_btnCancel As System.Windows.Forms.Button
+    Friend WithEvents m_colName As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents m_colCellIndex As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents m_colCoordinate As System.Windows.Forms.DataGridViewTextBoxColumn
 End Class

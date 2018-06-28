@@ -184,7 +184,7 @@ Namespace Ecosim
 
             If (Me.m_uic Is Nothing) Then Return
 
-            If (e.Button And Windows.Forms.MouseButtons.Right) > 0 Then
+            If (e.Button And System.Windows.Forms.MouseButtons.Right) > 0 Then
                 Dim ptClick As Point = Me.PointToPredPrey(e.Location)
                 Dim manager As cMediatedInteractionManager = Me.m_uic.Core.MediatedInteractionManager
 

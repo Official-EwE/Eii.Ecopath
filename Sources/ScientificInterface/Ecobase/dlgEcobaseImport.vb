@@ -121,7 +121,7 @@ Public Class dlgEcobaseImport
     Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
 
         ' See if form can apply on OK
-        If (Me.DialogResult = Windows.Forms.DialogResult.OK) Then
+        If (Me.DialogResult = System.Windows.Forms.DialogResult.OK) Then
             If (Me.m_model Is Nothing) Then
                 e.Cancel = True
             Else
@@ -383,7 +383,7 @@ Public Class dlgEcobaseImport
 
             'If Not My.Settings.UseExternalBrowser Then
             '    ' Close this dialog to reveal start screen
-            '    Me.DialogResult = Windows.Forms.DialogResult.Cancel
+            '    Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             '    Me.Close()
             'End If
         Catch ex As Exception
@@ -394,7 +394,7 @@ Public Class dlgEcobaseImport
     Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles m_btnCancel.Click
 
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
 
     End Sub
@@ -402,7 +402,7 @@ Public Class dlgEcobaseImport
     Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
         Handles m_btnOK.Click, m_lbxModels.DoubleClick
 
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
 
     End Sub

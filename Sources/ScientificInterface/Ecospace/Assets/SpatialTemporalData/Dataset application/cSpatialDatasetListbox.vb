@@ -50,7 +50,7 @@ Namespace Ecospace.Controls
 
         Public Sub New()
             MyBase.New()
-            Me.DrawMode = Windows.Forms.DrawMode.OwnerDrawFixed
+            Me.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.ItemHeight = SharedResources.Database.Height + 4
         End Sub
 

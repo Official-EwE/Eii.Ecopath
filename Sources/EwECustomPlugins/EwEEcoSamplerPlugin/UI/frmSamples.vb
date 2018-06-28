@@ -264,7 +264,7 @@ Public Class frmSamples
             Dim man As cEcopathSampleManager = Me.Core.SampleManager
             Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_IMPORT_MODEL, "", SharedResources.FILEFILTER_MODEL_OPEN)
 
-            If (ofd.ShowDialog(Me.UIContext.FormMain) = Windows.Forms.DialogResult.OK) Then
+            If (ofd.ShowDialog(Me.UIContext.FormMain) = System.Windows.Forms.DialogResult.OK) Then
                 man.ImportFromModel(ofd.FileName)
             End If
         Catch ex As Exception

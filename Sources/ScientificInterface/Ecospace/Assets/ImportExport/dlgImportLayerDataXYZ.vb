@@ -154,7 +154,7 @@ Namespace Ecospace.Basemap
 
             foc.Invoke(Me.m_tbInput.Text, SharedResources.FILEFILTER_CSV, 0, Me.Text)
 
-            If (foc.Result = Windows.Forms.DialogResult.OK) Then
+            If (foc.Result = System.Windows.Forms.DialogResult.OK) Then
                 Me.m_tbInput.Text = foc.FileName
                 Me.ReadCSVFields()
             End If
@@ -168,7 +168,7 @@ Namespace Ecospace.Basemap
                 If Not Me.LoadMappedLayers() Then Return
             End If
 
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
 
         End Sub

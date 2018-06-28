@@ -322,7 +322,7 @@ Namespace Ecosim
             m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
             m_F2TSManager.nBlockCodes = m_vulnerabilityBlockCodeSelector.NumBlocks
 
-            If dlgSensOfSS.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If dlgSensOfSS.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
 
                 ' Transfer values from the Sensitivity form to this form
                 ' Number of blocks, colors on the main form should match those set by the user on the Sensitivity form

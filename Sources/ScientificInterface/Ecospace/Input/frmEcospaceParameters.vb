@@ -425,7 +425,7 @@ Namespace Ecospace
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
             cmdFO.Invoke(SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT)
-            If cmdFO.Result = Windows.Forms.DialogResult.OK Then
+            If cmdFO.Result = System.Windows.Forms.DialogResult.OK Then
                 Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
                 Dim InputFile As String = cmdFO.FileNames(0)
                 manager.Load(InputFile, "", eVarNameFlags.EcospaceMapBiomass)
@@ -439,7 +439,7 @@ Namespace Ecospace
             dlgSave.Filter = SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT
             dlgSave.InitialDirectory = IO.Path.GetDirectoryName(manager.OutputFileName)
             dlgSave.FileName = IO.Path.GetFileName(manager.OutputFileName)
-            If dlgSave.ShowDialog = Windows.Forms.DialogResult.OK Then
+            If dlgSave.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                 manager.OutputFileName = dlgSave.FileName
             End If
 

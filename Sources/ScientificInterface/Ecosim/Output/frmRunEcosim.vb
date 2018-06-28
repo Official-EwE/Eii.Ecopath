@@ -551,7 +551,7 @@ Namespace Ecosim
             If (Me.m_sketchPad.Shape Is Nothing) Then Return
 
             Dim box As New frmInputBox()
-            If (box.Show(strMessage, strCaption, strDefault) = Windows.Forms.DialogResult.OK) Then
+            If (box.Show(strMessage, strCaption, strDefault) = System.Windows.Forms.DialogResult.OK) Then
                 strValue = box.Value
             End If
 

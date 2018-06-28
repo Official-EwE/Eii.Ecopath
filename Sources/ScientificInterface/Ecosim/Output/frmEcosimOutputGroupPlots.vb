@@ -271,7 +271,7 @@ Namespace Ecosim
                 If (Me.m_plotVisible(plot)) Then lSelected.Add(plot)
             Next
 
-            If dlg.ShowDialog(Me, lSelected.ToArray) = Windows.Forms.DialogResult.OK Then
+            If dlg.ShowDialog(Me, lSelected.ToArray) = System.Windows.Forms.DialogResult.OK Then
                 For Each plot As ePlot In [Enum].GetValues(GetType(ePlot))
                     Try
                         Me.m_plotVisible(CInt(plot)) = (Array.IndexOf(dlg.Selection, CInt(plot)) >= 0)

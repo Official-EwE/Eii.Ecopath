@@ -153,7 +153,7 @@ Namespace Ecopath
             Handles m_btnOK.Click
 
             Me.SaveChanges(True)
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
 
         End Sub
@@ -162,7 +162,7 @@ Namespace Ecopath
             Handles m_btnCancel.Click
 
             Me.m_grid.ResetStanzaGroupValues()
-            Me.DialogResult = Windows.Forms.DialogResult.Cancel
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
 
         End Sub

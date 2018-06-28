@@ -222,7 +222,7 @@ Namespace Ecospace.Controls
 
         Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles m_btnOK.Click
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.m_manSets.Save()
             Me.Close()
         End Sub
@@ -332,7 +332,7 @@ Namespace Ecospace.Controls
             If (ctrl Is Nothing) Then Return dsConf.IsConfigured
 
             Dim dlg As New dlgConfig(Me.UIContext)
-            If (dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl) = Windows.Forms.DialogResult.OK) Then
+            If (dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl) = System.Windows.Forms.DialogResult.OK) Then
                 Me.m_man.Update(ds)
             End If
             Return (dsConf.IsConfigured)

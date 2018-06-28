@@ -142,7 +142,7 @@ Namespace Ecospace.Basemap
                 fsc.Invoke(Me.m_tbTarget.Text, strFileFilter)
             End If
 
-            If (fsc.Result = Windows.Forms.DialogResult.OK) Then
+            If (fsc.Result = System.Windows.Forms.DialogResult.OK) Then
                 Me.m_tbTarget.Text = fsc.FileName
             End If
 
@@ -153,7 +153,7 @@ Namespace Ecospace.Basemap
 
             If Not Me.SaveMappedLayers() Then Return
 
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
 
         End Sub

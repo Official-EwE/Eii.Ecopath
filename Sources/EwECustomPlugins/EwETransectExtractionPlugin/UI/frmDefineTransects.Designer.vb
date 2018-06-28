@@ -112,9 +112,9 @@ Partial Class frmDefineTransects
 
     End Sub
 
-    Private WithEvents m_scMain As Windows.Forms.SplitContainer
+    Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
     Private WithEvents m_mapzoom As ScientificInterfaceShared.Controls.Map.ucMapZoom
     Private WithEvents m_toolstrip As ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar
-    Friend WithEvents m_lbxTransects As Windows.Forms.ListBox
-    Private WithEvents m_btnDeleteTransect As Windows.Forms.Button
+    Friend WithEvents m_lbxTransects As System.Windows.Forms.ListBox
+    Private WithEvents m_btnDeleteTransect As System.Windows.Forms.Button
 End Class

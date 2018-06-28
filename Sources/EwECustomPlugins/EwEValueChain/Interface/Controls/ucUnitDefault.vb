@@ -26,7 +26,7 @@ Public Class ucUnitDefault
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
-        Me.BorderStyle = Windows.Forms.BorderStyle.None
+        Me.BorderStyle = System.Windows.Forms.BorderStyle.None
     End Sub
 
     Protected Overrides Sub OnStyleguideChanged(ByVal changeFlags As cStyleGuide.eChangeType)

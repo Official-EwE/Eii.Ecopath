@@ -32,7 +32,7 @@ Friend Class ucGridView
         MyBase.New()
         Me.InitializeComponent()
         Me.m_grid = grid
-        Me.m_grid.Dock = Windows.Forms.DockStyle.Fill
+        Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_plGrid.Controls.Add(Me.m_grid)
     End Sub
 

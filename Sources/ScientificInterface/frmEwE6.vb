@@ -173,7 +173,7 @@ Public Class frmEwE6
                     ' - TopMost is not needed anymore
                     ' - Do not change the order of the next three statements!
                     Me.m_bFormState = Me.m_frm.WindowState : Me.m_frm.WindowState = FormWindowState.Normal
-                    Me.m_bBorderStyle = Me.m_frm.FormBorderStyle : Me.m_frm.FormBorderStyle = Windows.Forms.FormBorderStyle.None
+                    Me.m_bBorderStyle = Me.m_frm.FormBorderStyle : Me.m_frm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
                     Me.m_bBounds = Me.m_frm.Bounds : Me.m_frm.Bounds = Screen.GetBounds(Me.m_frm)
                     Me.m_bControlBox = Me.m_frm.ControlBox : Me.m_frm.ControlBox = False
                     '.TopMost = Me.TopMost : Me.TopMost = True
@@ -857,7 +857,7 @@ Public Class frmEwE6
 
     Private Sub OnPumpCoreMessages()
         Try
-            Windows.Forms.Application.DoEvents()
+            System.Windows.Forms.Application.DoEvents()
         Catch ex As Exception
 
         End Try
@@ -2359,7 +2359,7 @@ Public Class frmEwE6
         If (es Is Nothing) Then
             ' #No scenario: invoke ecosim scenario selection dialog
             dlg = New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.LoadScenario)
-            If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+            If (dlg.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
 
                 Select Case dlg.Mode
                     Case EcosimScenarioDlg.eDialogModeType.CreateScenario
@@ -2473,7 +2473,7 @@ Public Class frmEwE6
         If (es Is Nothing) Then
             ' #No scenario: invoke ecospace scenario selection dialog
             dlg = New dlgEcospaceScenario(Me.UIContext, dlgEcospaceScenario.eDialogModeType.LoadScenario)
-            If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+            If (dlg.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
 
                 Select Case dlg.Mode
                     Case dlgEcospaceScenario.eDialogModeType.CreateScenario
@@ -2579,7 +2579,7 @@ Public Class frmEwE6
         If (es Is Nothing) Then
             ' #No scenario: invoke ecotracer scenario selection dialog
             dlg = New dlgEcotracerScenario(Me.UIContext, dlgEcotracerScenario.eDialogModeType.LoadScenario)
-            If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+            If (dlg.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
 
                 Select Case dlg.Mode
                     Case dlgEcotracerScenario.eDialogModeType.CreateScenario
@@ -2656,7 +2656,7 @@ Public Class frmEwE6
 
         foc.Result = dlgLoad.ShowDialog()
 
-        If (foc.Result = Windows.Forms.DialogResult.OK) Then
+        If (foc.Result = System.Windows.Forms.DialogResult.OK) Then
             foc.FileName = dlgLoad.FileName
             foc.FileNames = dlgLoad.FileNames
             foc.FilterIndex = dlgLoad.FilterIndex
@@ -2678,7 +2678,7 @@ Public Class frmEwE6
 
         fsc.Result = dlgSave.ShowDialog()
 
-        If (fsc.Result = Windows.Forms.DialogResult.OK) Then
+        If (fsc.Result = System.Windows.Forms.DialogResult.OK) Then
             fsc.FileName = dlgSave.FileName
             fsc.FilterIndex = dlgSave.FilterIndex
             fsc.Directory = Path.GetDirectoryName(fsc.FileName)
@@ -2701,7 +2701,7 @@ Public Class frmEwE6
             cLog.Write(ex, "OnDirectoryOpen")
         End Try
 
-        If (doc.Result = Windows.Forms.DialogResult.OK) Then
+        If (doc.Result = System.Windows.Forms.DialogResult.OK) Then
             doc.Directory = strPath
         End If
 
@@ -2721,7 +2721,7 @@ Public Class frmEwE6
 
             Me.m_cmdPickColor.Result = dlg.ShowDialog(Me)
 
-            If (Me.m_cmdPickColor.Result = Windows.Forms.DialogResult.OK) Then
+            If (Me.m_cmdPickColor.Result = System.Windows.Forms.DialogResult.OK) Then
                 Me.m_cmdPickColor.Color = dlg.Color
                 Dim al As New ArrayList()
                 al.AddRange(dlg.CustomColors)
@@ -2890,7 +2890,7 @@ Public Class frmEwE6
 
         cmdFS.Invoke(SharedResources.DEFAULT_NEWMODELNAME, SharedResources.FILEFILTER_MODEL_SAVE, 1)
 
-        If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
+        If (cmdFS.Result = System.Windows.Forms.DialogResult.OK) Then
             ' #Yes: able to create model at selected location?
             db = Me.CreateEcopathModel(cmdFS.FileName, Path.GetFileNameWithoutExtension(cmdFS.FileName))
             If db IsNot Nothing Then
@@ -2996,7 +2996,7 @@ Public Class frmEwE6
         End If
         cmdFS.Invoke(SharedResources.DEFAULT_NEWMODELNAME, strFileFilter)
 
-        If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
+        If (cmdFS.Result = System.Windows.Forms.DialogResult.OK) Then
 
             ' Save the model
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_MODEL_SAVING)
@@ -3419,7 +3419,7 @@ Public Class frmEwE6
     Private Sub OnShowOptions(ByVal cmd As cCommand) Handles m_cmdShowOptions.OnInvoke
         Try
             Dim dlgOptions As New dlgOptions(Me.UIContext, Me.m_cmdShowOptions.Option)
-            cmd.UserHandled = (dlgOptions.ShowDialog(Me) = Windows.Forms.DialogResult.OK)
+            cmd.UserHandled = (dlgOptions.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK)
             Me.SaveSettings()
         Catch ex As Exception
 
@@ -3636,7 +3636,7 @@ Public Class frmEwE6
 
         Dim dlg As New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.CreateScenario)
 
-        If dlg.ShowDialog = Windows.Forms.DialogResult.OK Then
+        If dlg.ShowDialog = System.Windows.Forms.DialogResult.OK Then
 
             Select Case dlg.Mode
                 Case EcosimScenarioDlg.eDialogModeType.CreateScenario
@@ -3701,7 +3701,7 @@ Public Class frmEwE6
         Dim dlg As New EcosimScenarioDlg(Me.UIContext, EcosimScenarioDlg.eDialogModeType.SaveScenario,
                 Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex))
 
-        If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If dlg.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             ' Overwriting?
             If dlg.Scenario IsNot Nothing Then
                 ' #Yes: prompt for overwrite confirmation
@@ -3795,7 +3795,7 @@ Public Class frmEwE6
         sfd.CheckPathExists = True
         sfd.OverwritePrompt = True
 
-        If (sfd.ShowDialog(Me) = Windows.Forms.DialogResult.OK) Then
+        If (sfd.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK) Then
             tsw.Write(sfd.FileName, ",", ".")
         End If
 
@@ -3864,7 +3864,7 @@ Public Class frmEwE6
         Dim strPath As String = ""
 
         Me.m_cmdDirectoryOpen.Invoke(Me.Core.DefaultOutputPath(eAutosaveTypes.Ecosim))
-        If (Me.m_cmdDirectoryOpen.Result <> Windows.Forms.DialogResult.OK) Then Return
+        If (Me.m_cmdDirectoryOpen.Result <> System.Windows.Forms.DialogResult.OK) Then Return
         strPath = Me.m_cmdDirectoryOpen.Directory
 
         writer = New EwECore.Ecosim.cEcosimResultWriter(Me.UIContext.Core)
@@ -3935,7 +3935,7 @@ Public Class frmEwE6
 
         Dim dlg As New dlgEcospaceScenario(Me.UIContext, dlgEcospaceScenario.eDialogModeType.CreateScenario)
 
-        If dlg.ShowDialog = Windows.Forms.DialogResult.OK Then
+        If dlg.ShowDialog = System.Windows.Forms.DialogResult.OK Then
 
             Select Case dlg.Mode
                 Case dlgEcospaceScenario.eDialogModeType.CreateScenario
@@ -3994,7 +3994,7 @@ Public Class frmEwE6
                                            Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex))
         Dim scenarioTarget As cEcospaceScenario = Nothing
 
-        If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If dlg.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             ' Has valid name?
             If Not String.IsNullOrEmpty(dlg.ScenarioName) Then
                 ' #Cool. Now check if this will overwrite a scenario with the same name (case insensitive)
@@ -4256,7 +4256,7 @@ Public Class frmEwE6
             If (ctrl Is Nothing) Then Return
 
             Dim dlg As New dlgConfig(Me.UIContext)
-            If dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl) = Windows.Forms.DialogResult.OK Then
+            If dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl) = System.Windows.Forms.DialogResult.OK Then
                 Me.Core.SpatialDataConnectionManager.Update(ds)
             End If
         Catch ex As Exception
@@ -4334,7 +4334,7 @@ Public Class frmEwE6
                     Dim ofd As New OpenFileDialog()
                     ofd.Title = SharedResources.CAPTION_SELECT_FILE
                     ofd.Filter = SharedResources.FILEFILTER_ASC
-                    If (ofd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                    If (ofd.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
                         Dim imp As New cEcospaceImportExportASCIIData(Me.Core)
                         If imp.Read(ofd.FileName) Then
                             Dim rs As EwEUtils.SpatialData.ISpatialRaster = imp.ToRaster
@@ -4384,7 +4384,7 @@ Public Class frmEwE6
                     dlg.ShowDialog(Me)
                 Case eNativeLayerFileFormatTypes.ASCII
                     Dim sfd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog(SharedResources.CAPTION_SELECT_FILE, "", SharedResources.FILEFILTER_ASC)
-                    If (sfd.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                    If (sfd.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
                         Dim imp As New cEcospaceImportExportASCIIData(Me.Core)
                         If imp.Read(Me.m_cmdExportLayerData.Layers(0)) Then
                             Dim bSuccess As Boolean = imp.Save(sfd.FileName)
@@ -4459,7 +4459,7 @@ Public Class frmEwE6
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
         cmdFO.Invoke(SharedResources.FILEFILTER_CSV & "|" & SharedResources.FILEFILTER_XYZ & "|" & SharedResources.FILEFILTER_TEXT)
-        If cmdFO.Result = Windows.Forms.DialogResult.OK Then
+        If cmdFO.Result = System.Windows.Forms.DialogResult.OK Then
             Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
             Dim InputFile As String = cmdFO.FileNames(0)
             manager.Load(InputFile, "", eVarNameFlags.EcospaceMapBiomass) ' Load with default output file name
@@ -4484,7 +4484,7 @@ Public Class frmEwE6
 
         Dim dlg As New dlgEcotracerScenario(Me.UIContext, dlgEcotracerScenario.eDialogModeType.CreateScenario)
 
-        If dlg.ShowDialog = Windows.Forms.DialogResult.OK Then
+        If dlg.ShowDialog = System.Windows.Forms.DialogResult.OK Then
 
             Select Case dlg.Mode
                 Case dlgEcotracerScenario.eDialogModeType.CreateScenario
@@ -4553,7 +4553,7 @@ Public Class frmEwE6
                                             dlgEcotracerScenario.eDialogModeType.SaveScenario,
                                             Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex))
 
-        If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If dlg.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             ' Overwriting?
             If (dlg.Scenario IsNot Nothing) Then
                 ' #Yes: prompt for overwrite confirmation

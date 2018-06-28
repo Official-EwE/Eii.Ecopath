@@ -179,14 +179,14 @@ Public Class frmCEFASRecruitment
     Private Sub OnSave(sender As System.Object, e As System.EventArgs) _
         Handles m_btnSave.Click
         If (Me.m_Assessment.Save) Then
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
         End If
     End Sub
 
     Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles m_btnCancel.Click
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
 

@@ -674,7 +674,7 @@ Public Class ucResults
         Me.m_view = DirectCast(ctrl, IResultView)
 
         Debug.Assert(TypeOf ctrl Is Control)
-        ctrl.Dock = Windows.Forms.DockStyle.Fill
+        ctrl.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_scResults.Panel2.Controls.Add(ctrl)
 
         Me.m_scResults.Panel2.ResumeLayout()

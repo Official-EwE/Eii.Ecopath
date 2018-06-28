@@ -237,13 +237,13 @@ Public Class dlgSelectItems
 
     Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnOK.Click
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
     Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnCancel.Click
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
         Me.m_aobjSelection = New Integer() {}
     End Sub

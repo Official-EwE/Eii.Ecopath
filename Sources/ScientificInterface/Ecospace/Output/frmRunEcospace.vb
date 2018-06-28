@@ -446,7 +446,7 @@ Namespace Ecospace
 
         Private Sub OnMapMouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) _
             Handles m_pbMap.MouseClick
-            If e.Button = Windows.Forms.MouseButtons.Right Then
+            If e.Button = System.Windows.Forms.MouseButtons.Right Then
                 Me.OnHoverMenuCommand(eHoverCommands.SaveImage)
             End If
         End Sub
@@ -1760,7 +1760,7 @@ Namespace Ecospace
 
             cmdFS.Invoke(cFileUtils.ToValidFileName(scenario.Name & " results", False), SharedResources.FILEFILTER_IMAGE)
 
-            If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
+            If (cmdFS.Result = System.Windows.Forms.DialogResult.OK) Then
                 imgFormat = cFileUtils.ImageFormat(cmdFS.FileName)
                 Return cmdFS.FileName
             End If

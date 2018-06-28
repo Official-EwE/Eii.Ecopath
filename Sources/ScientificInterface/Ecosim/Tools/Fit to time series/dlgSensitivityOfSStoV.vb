@@ -174,7 +174,7 @@ Public Class dlgSensitivityOfSStoV
         Handles m_btnOk.Click
 
         If (Me.StopRun() = False) Then Return
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
 
     End Sub
@@ -198,7 +198,7 @@ Public Class dlgSensitivityOfSStoV
             Handles m_btnCancel.Click
 
         If (Me.StopRun() = False) Then Return
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
 
     End Sub
