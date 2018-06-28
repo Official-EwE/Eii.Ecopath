@@ -33,7 +33,7 @@ Friend Class frmShapes
         Me.InitializeComponent()
 
         Me.m_grid = DirectCast(Activator.CreateInstance(typeGrid), gridShapeBase)
-        Me.m_grid.Dock = Windows.Forms.DockStyle.Fill
+        Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_plGrid.Controls.Add(Me.m_grid)
         Me.Grid = Me.m_grid
 

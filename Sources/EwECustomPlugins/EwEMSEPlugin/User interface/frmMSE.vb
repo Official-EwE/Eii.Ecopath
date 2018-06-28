@@ -391,7 +391,7 @@ Public Class frmMSE
         Try
             Dim frmSurvivabilities As New frmEditSurvivabilities(MSE)
             frmSurvivabilities.Init(Me.UIContext)
-            If frmSurvivabilities.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If frmSurvivabilities.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
                 Me.MSE.Survivability.Load()
                 Me.UpdateControls()
             End If
@@ -408,7 +408,7 @@ Public Class frmMSE
         Try
             Dim frmDiets As New frmEditDiets(MSE)
             frmDiets.Init(Me.UIContext)
-            If frmDiets.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If frmDiets.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
                 Me.MSE.Diets.Load()
                 Me.UpdateControls()
             End If
@@ -426,7 +426,7 @@ Public Class frmMSE
         Try
             Dim frmQuotaShares As New frmEditQuotaShares(Me.MSE)
             frmQuotaShares.Init(Me.UIContext)
-            If frmQuotaShares.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If frmQuotaShares.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
                 'Me.MSE.InvalidateConfigurationState(True)
                 Me.MSE.QuotaShares.Load()
                 Me.UpdateControls()
@@ -441,7 +441,7 @@ Public Class frmMSE
 
         Try
             Dim frm As New frmTFMpolicy(Me.UIContext, Me.MSE)
-            If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If frm.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
                 'Me.MSE.InvalidateConfigurationState(True)
                 Me.MSE.Strategies.Load()
                 Me.UpdateControls()
@@ -518,7 +518,7 @@ Public Class frmMSE
 
             Dim frmMaxDecreaseEfforts As New frmEditDecreaseEffort()
             frmMaxDecreaseEfforts.Init(Me.UIContext, Me.MSE)
-            If frmMaxDecreaseEfforts.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If frmMaxDecreaseEfforts.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
                 'Me.MSE.InvalidateConfigurationState(True)
                 Me.MSE.EffortLimits.Load()
                 Me.UpdateControls()
@@ -566,7 +566,7 @@ Public Class frmMSE
 
         Try
             Dim frm As New frmCEFASRecruitment(Me.UIContext, Me.MSE)
-            If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If frm.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
                 'Me.MSE.InvalidateConfigurationState(True)
                 Me.MSE.StockAssessment.Load()
                 Me.UpdateControls()
@@ -581,7 +581,7 @@ Public Class frmMSE
 
         Try
             Dim frm As New frmEditAssessmentError(Me.UIContext, Me.MSE)
-            If frm.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If frm.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
                 'Me.MSE.InvalidateConfigurationState(True)
                 Me.MSE.StockAssessment.Load()
                 Me.UpdateControls()
@@ -652,7 +652,7 @@ Public Class frmMSE
         Dim frmDisParams As New frmDistributionParameters()
         frmDisParams.Init(Me.UIContext, Me.Plugin)
 
-        If (frmDisParams.ShowDialog(Me) = Windows.Forms.DialogResult.OK) Then
+        If (frmDisParams.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK) Then
             Me.MSE.InvalidateConfigurationState(False)
             ' Nothing to reload
             Me.UpdateControls()
@@ -669,7 +669,7 @@ Public Class frmMSE
         Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
         cmd.Invoke(Me.MSE.CustomPath, My.Resources.PROMPT_DATAPATH)
 
-        If (cmd.Result = Windows.Forms.DialogResult.OK) Then
+        If (cmd.Result = System.Windows.Forms.DialogResult.OK) Then
             Me.MSE.CustomPath = cmd.Directory
             Me.MSE.UseEwEPath = False
             Return True
@@ -694,7 +694,7 @@ Public Class frmMSE
         Try
             Dim frmBiomassLimits As New frmBiomassLimits(Me.MSE)
             frmBiomassLimits.Init(Me.UIContext)
-            If frmBiomassLimits.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If frmBiomassLimits.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
                 'Me.MSE.InvalidateConfigurationState(True)
                 Me.MSE.BiomassLimits.Load()
                 Me.UpdateControls()
@@ -710,7 +710,7 @@ Public Class frmMSE
         Try
             Dim frmStrategiesOverview As New frmStrategiesOverview()
             frmStrategiesOverview.Init(Me.UIContext, Me.MSE)
-            If frmStrategiesOverview.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+            If frmStrategiesOverview.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK Then
                 Me.MSE.Strategies.Load()
                 Me.UpdateControls()
             End If

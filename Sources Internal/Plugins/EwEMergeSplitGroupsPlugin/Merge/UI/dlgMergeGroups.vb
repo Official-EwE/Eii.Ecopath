@@ -148,7 +148,7 @@ Public Class dlgMergeGroups
         Handles m_btnOK.Click
 
         If (Me.m_engine.Merge()) Then
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
         Else
             ' Throw some kind of error...
@@ -159,7 +159,7 @@ Public Class dlgMergeGroups
     Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles m_btnCancel.Click
 
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
 
     End Sub

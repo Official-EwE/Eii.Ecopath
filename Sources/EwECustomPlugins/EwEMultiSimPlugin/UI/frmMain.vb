@@ -457,7 +457,7 @@ Public Class frmMain
         Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
         Dim cmdFO As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
         cmdFO.Invoke(tbx.Text, strPrompt)
-        If cmdFO.Result = Windows.Forms.DialogResult.OK Then
+        If cmdFO.Result = System.Windows.Forms.DialogResult.OK Then
             tbx.Text = cmdFO.Directory
         End If
     End Sub

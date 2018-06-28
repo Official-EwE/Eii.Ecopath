@@ -118,7 +118,7 @@ Public Class dlgEditBasemap
 
         Dim cmd As cFileOpenCommand = CType(Me.m_uic.CommandHandler.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
         cmd.Invoke(SharedResources.FILEFILTER_ASC)
-        If (cmd.Result = Windows.Forms.DialogResult.OK) Then
+        If (cmd.Result = System.Windows.Forms.DialogResult.OK) Then
             Dim imp As New cEcospaceImportExportASCIIData()
             If imp.Read(cmd.FileName) Then
 

@@ -566,7 +566,7 @@ Public Class frmRun
                     Dim dlg As New FolderBrowserDialog()
                     dlg.SelectedPath = Me.m_engine.Parameters.CustomOutputFolder
                     dlg.ShowNewFolderButton = True
-                    If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+                    If (dlg.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
                         Me.m_engine.Parameters.CustomOutputFolder = dlg.SelectedPath
                         Me.UpdateControls()
                     End If

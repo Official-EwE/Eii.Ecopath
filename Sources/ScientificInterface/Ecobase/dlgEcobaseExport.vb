@@ -235,7 +235,7 @@ Public Class dlgEcobaseExport
             If Not Me.UpdateModelParameters() Then Return
             If Not Me.SubmitToEcobase() Then Return
 
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
 
         Catch ex As Exception
@@ -247,7 +247,7 @@ Public Class dlgEcobaseExport
     Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
         Handles m_btnCancel.Click
 
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
 
     End Sub

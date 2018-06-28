@@ -579,7 +579,7 @@ Namespace Ecospace.Controls
                 End Try
             End If
 
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
 
         End Sub
@@ -766,7 +766,7 @@ Namespace Ecospace.Controls
 
             Dim dlg As New dlgConfig(Me.UIContext)
 
-            If (dlg.ShowDialog(Me.FindForm, "Configure conversion", ctrl) = Windows.Forms.DialogResult.OK) Then
+            If (dlg.ShowDialog(Me.FindForm, "Configure conversion", ctrl) = System.Windows.Forms.DialogResult.OK) Then
                 Me.m_manConn.Update(cv)
             End If
             Return (cvConf.IsConfigured)

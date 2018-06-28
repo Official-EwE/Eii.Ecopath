@@ -121,7 +121,7 @@ Namespace Ecospace.Controls
             cmd.Directory = Me.m_strPath
             cmd.Invoke()
 
-            If (cmd.Result <> Windows.Forms.DialogResult.OK) Then Return
+            If (cmd.Result <> System.Windows.Forms.DialogResult.OK) Then Return
 
             'If Not cFileUtils.IsDirectoryEmpty(cmd.Directory) Then
             '    Dim msg As New cFeedbackMessage("The selected folder is not empty. Are you sure you want to use it?", _
@@ -175,7 +175,7 @@ Namespace Ecospace.Controls
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
             If (bSuccess) Then
-                Me.DialogResult = Windows.Forms.DialogResult.OK
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
 
                 ' ToDo: globalize this
@@ -187,7 +187,7 @@ Namespace Ecospace.Controls
         End Sub
 
         Private Sub OnCancel(sender As System.Object, e As System.EventArgs) Handles m_btnCancel.Click
-            Me.DialogResult = Windows.Forms.DialogResult.Cancel
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 

@@ -638,7 +638,7 @@ Public Class frmMain
             ' #Yes: invoke command, providing the currently selected path
             cmd.Invoke(Me.m_tbxOutputFolder.Text, My.Resources.PROMPT_OUTPUTFOLDER)
             ' Did user complete command successfully?
-            If (cmd.Result = Windows.Forms.DialogResult.OK) Then
+            If (cmd.Result = System.Windows.Forms.DialogResult.OK) Then
                 ' #Yes: Update local output folder
                 Me.m_tbxOutputFolder.Text = cmd.Directory
                 ' Update settings

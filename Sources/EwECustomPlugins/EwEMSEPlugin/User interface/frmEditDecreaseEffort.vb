@@ -76,7 +76,7 @@ Public Class frmEditDecreaseEffort
         Handles m_btnCancel.Click
 
         Try
-            Me.DialogResult = Windows.Forms.DialogResult.Cancel
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         Catch ex As Exception
 
@@ -90,7 +90,7 @@ Public Class frmEditDecreaseEffort
         Try
             ' Save to default location
             If Me.m_data.Save("") Then
-                Me.DialogResult = Windows.Forms.DialogResult.OK
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             End If
         Catch ex As Exception

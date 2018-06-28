@@ -708,10 +708,10 @@ Namespace Ecosim
         ''' </summary>
         Private Class cControlEnabler
 
-            Private m_ct As Windows.Forms.Control
+            Private m_ct As System.Windows.Forms.Control
             Private m_EnabledState As eOptimizeApproachTypes
 
-            Public Sub New(ByVal Control As Windows.Forms.Control, ByVal EnabledState As eOptimizeApproachTypes)
+            Public Sub New(ByVal Control As System.Windows.Forms.Control, ByVal EnabledState As eOptimizeApproachTypes)
                 m_ct = Control
                 m_EnabledState = EnabledState
             End Sub

@@ -261,13 +261,13 @@ Public MustInherit Class CreateCollectionForData
 
         Dim temp As cCreatedObjects
 
-        If e.NewValue = Windows.Forms.CheckState.Checked Then
+        If e.NewValue = System.Windows.Forms.CheckState.Checked Then
             'Attach checked item to currently selected parent
             temp = m_SelectionData.GetFocus
             temp.Add(chklstAttached.Items(e.Index))
         End If
 
-        If e.NewValue = Windows.Forms.CheckState.Unchecked Then
+        If e.NewValue = System.Windows.Forms.CheckState.Unchecked Then
             'Attach checked item to currently selected parent
             temp = m_SelectionData.GetFocus
             temp.Remove(chklstAttached.Items(e.Index))

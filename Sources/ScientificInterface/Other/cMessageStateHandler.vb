@@ -68,7 +68,7 @@ Public Class cMessageStateHandler
                 If Me.m_dictAutoReplies.ContainsKey(mt) Then
                     Return Me.m_dictAutoReplies(mt)
                 End If
-                Return Windows.Forms.DialogResult.None
+                Return System.Windows.Forms.DialogResult.None
             End Get
             Set(ByVal value As DialogResult)
                 If Me.m_dictAutoReplies.ContainsKey(mt) Then

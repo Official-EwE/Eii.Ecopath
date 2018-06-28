@@ -157,7 +157,7 @@ Public Class dlgSplitGroup
 
     End Sub
 
-    Private Sub OnFormatGroupItem(sender As Object, e As Windows.Forms.ListControlConvertEventArgs) _
+    Private Sub OnFormatGroupItem(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
         Handles m_cmbSource.Format
 
         Try
@@ -173,7 +173,7 @@ Public Class dlgSplitGroup
 
     End Sub
 
-    Private Sub OnFormatTaxonItem(sender As Object, e As Windows.Forms.ListControlConvertEventArgs) _
+    Private Sub OnFormatTaxonItem(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
         Handles m_lbxTaxa1.Format, m_lbxTaxa2.Format
 
         Try
@@ -267,7 +267,7 @@ Public Class dlgSplitGroup
         End If
 
         If bSucces Then
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
         End If
 
@@ -276,7 +276,7 @@ Public Class dlgSplitGroup
     Private Sub OnCancel(sender As Object, e As EventArgs) _
         Handles m_btnCancel.Click
 
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
 
     End Sub

@@ -113,7 +113,7 @@ Public Class ucUnitGrid
         Me.FixedRows = 1
         Me.FixedColumns = 1
         Me.AutoSize = True
-        Me.AutoSizeMode = Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
     End Sub
 
     ''' -----------------------------------------------------------------------

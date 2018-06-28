@@ -345,11 +345,11 @@ Namespace Ecosim
         Private Sub OnMouseDownBlocks(ByVal sender As System.Object, ByVal e As MouseEventArgs) _
             Handles m_pbFishingBlocks.MouseDown
 
-            If (e.Button And Windows.Forms.MouseButtons.Right) > 0 Then
+            If (e.Button And System.Windows.Forms.MouseButtons.Right) > 0 Then
                 Me.ProcessMousePickup(e.Location)
             End If
 
-            If (e.Button And Windows.Forms.MouseButtons.Left) > 0 Then
+            If (e.Button And System.Windows.Forms.MouseButtons.Left) > 0 Then
                 Me.m_bIsSketching = True
                 Me.m_DataSource.BatchEdit = True
                 Me.m_ptLast = e.Location

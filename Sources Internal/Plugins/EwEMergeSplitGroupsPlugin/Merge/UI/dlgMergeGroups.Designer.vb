@@ -334,19 +334,19 @@ Partial Class dlgMergeGroups
     Private WithEvents m_tbxNewName As System.Windows.Forms.TextBox
     Private WithEvents m_btnOK As System.Windows.Forms.Button
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
-    Private WithEvents m_tlpLogo As Windows.Forms.TableLayoutPanel
-    Private WithEvents m_pbLogo As Windows.Forms.PictureBox
-    Private WithEvents m_rbEE As Windows.Forms.RadioButton
-    Private WithEvents m_rbQB As Windows.Forms.RadioButton
-    Private WithEvents m_rbPB As Windows.Forms.RadioButton
-    Private WithEvents m_rbB As Windows.Forms.RadioButton
-    Private WithEvents Label1 As Windows.Forms.Label
-    Private WithEvents m_cmbMerge As Windows.Forms.ComboBox
+    Private WithEvents m_tlpLogo As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_pbLogo As System.Windows.Forms.PictureBox
+    Private WithEvents m_rbEE As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbQB As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbPB As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbB As System.Windows.Forms.RadioButton
+    Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_cmbMerge As System.Windows.Forms.ComboBox
     Private WithEvents m_grid As gridGroupInput
-    Private WithEvents m_tcInputs As Windows.Forms.TabControl
-    Private WithEvents m_tabBasicInput As Windows.Forms.TabPage
-    Private WithEvents m_tabDiets As Windows.Forms.TabPage
+    Private WithEvents m_tcInputs As System.Windows.Forms.TabControl
+    Private WithEvents m_tabBasicInput As System.Windows.Forms.TabPage
+    Private WithEvents m_tabDiets As System.Windows.Forms.TabPage
     Private WithEvents m_gridDietComp As gridDietComposition
-    Private WithEvents m_tabTaxonomy As Windows.Forms.TabPage
+    Private WithEvents m_tabTaxonomy As System.Windows.Forms.TabPage
     Private WithEvents m_gridTaxa As gridTaxonomy
 End Class

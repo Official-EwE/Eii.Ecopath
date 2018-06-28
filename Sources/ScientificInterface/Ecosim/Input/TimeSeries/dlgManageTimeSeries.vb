@@ -172,7 +172,7 @@ Public Class dlgManageTimeSeries
     End Sub
 
     Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnCancel.Click
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
     End Sub
 
@@ -729,7 +729,7 @@ Public Class dlgManageTimeSeries
         End If
 
         ' Close dialog
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
 
     End Sub

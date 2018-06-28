@@ -161,15 +161,15 @@ Partial Class frmTransectSummary
 
     Private WithEvents m_ts As cEwEToolstrip
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
-    Private WithEvents m_tscmbTransect As Windows.Forms.ToolStripComboBox
-    Private WithEvents m_tsbnPlay As Windows.Forms.ToolStripButton
-    Private WithEvents m_tsbnStop As Windows.Forms.ToolStripButton
-    Private WithEvents m_timerPlay As Windows.Forms.Timer
-    Private WithEvents m_sep2 As Windows.Forms.ToolStripSeparator
-    Private WithEvents m_tsbnSaveToCSV As Windows.Forms.ToolStripButton
-    Private WithEvents m_tslblTransect As Windows.Forms.ToolStripLabel
-    Private WithEvents m_sep1 As Windows.Forms.ToolStripSeparator
-    Private WithEvents m_sep3 As Windows.Forms.ToolStripSeparator
-    Private WithEvents m_tsbtnShowHideGroups As Windows.Forms.ToolStripButton
-    Private WithEvents m_tsbnAutosave As Windows.Forms.ToolStripButton
+    Private WithEvents m_tscmbTransect As System.Windows.Forms.ToolStripComboBox
+    Private WithEvents m_tsbnPlay As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnStop As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_timerPlay As System.Windows.Forms.Timer
+    Private WithEvents m_sep2 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsbnSaveToCSV As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tslblTransect As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_sep3 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnAutosave As System.Windows.Forms.ToolStripButton
 End Class

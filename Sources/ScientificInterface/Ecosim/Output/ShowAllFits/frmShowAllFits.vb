@@ -773,7 +773,7 @@ Namespace Ecosim
             cmd.Directory = Me.UIContext.Core.DefaultOutputPath(eAutosaveTypes.Ecosim)
             cmd.Invoke()
 
-            If cmd.Result = Windows.Forms.DialogResult.OK Then
+            If cmd.Result = System.Windows.Forms.DialogResult.OK Then
                 Me.SaveToCSV(cmd.Directory)
             End If
 
@@ -788,7 +788,7 @@ Namespace Ecosim
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
             cmdFS.Invoke(SharedResources.FILEFILTER_IMAGE)
-            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
+            If cmdFS.Result = System.Windows.Forms.DialogResult.OK Then
 
                 Select Case cmdFS.FilterIndex
                     Case 1
@@ -816,7 +816,7 @@ Namespace Ecosim
             dlgPrint.UseEXDialog = True
 
             dlgPrint.Document = Me.m_printdocAllFits
-            If dlgPrint.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If dlgPrint.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                 m_printdocAllFits.DocumentName = Me.Text
                 m_printdocAllFits.Print()
             End If
@@ -909,7 +909,7 @@ Namespace Ecosim
             Handles m_tsmiChoosePlots.Click
 
             Dim dlg As New dlgSelectAllFitsPlots(Me.m_lPlots.ToArray())
-            If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+            If (dlg.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
                 Me.CalcPlotParams()
                 Me.m_pbPlots.Invalidate()
             End If
@@ -927,7 +927,7 @@ Namespace Ecosim
             Handles m_tsbnScale.Click
 
             Dim dlgChYScale As New dlgChangeYScale(Me.m_lPlots)
-            If (dlgChYScale.ShowDialog = Windows.Forms.DialogResult.OK) Then
+            If (dlgChYScale.ShowDialog = System.Windows.Forms.DialogResult.OK) Then
                 m_pbPlots.Invalidate()
             End If
 

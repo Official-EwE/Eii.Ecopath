@@ -105,7 +105,7 @@ Public Class frmImport
             cmd.Filters = ScientificInterfaceShared.My.Resources.FILEFILTER_CSV
             cmd.Invoke()
 
-            If (cmd.Result = Windows.Forms.DialogResult.OK) Then
+            If (cmd.Result = System.Windows.Forms.DialogResult.OK) Then
                 Me.ReadFiles(cmd.FileNames)
             End If
         Catch ex As Exception

@@ -600,7 +600,7 @@ Public Class frmResults
         ' JS 18Nov12: Start browsing at default Sim output dir
         cmdDir.Invoke(strPath, My.Resources.PROMPT_FOLDER)
 
-        If (cmdDir.Result = Windows.Forms.DialogResult.OK) Or (cmdDir.Result = Windows.Forms.DialogResult.Yes) Then
+        If (cmdDir.Result = System.Windows.Forms.DialogResult.OK) Or (cmdDir.Result = System.Windows.Forms.DialogResult.Yes) Then
 
             DataOutputter.PPath = cmdDir.Directory
 

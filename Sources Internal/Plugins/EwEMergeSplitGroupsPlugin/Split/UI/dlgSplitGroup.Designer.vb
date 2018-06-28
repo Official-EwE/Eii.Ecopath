@@ -267,29 +267,29 @@ Partial Class dlgSplitGroup
 
     End Sub
 
-    Private WithEvents m_btnOK As Windows.Forms.Button
-    Private WithEvents m_btnCancel As Windows.Forms.Button
-    Private WithEvents m_lblTarget As Windows.Forms.Label
-    Private WithEvents m_cmbSource As Windows.Forms.ComboBox
-    Friend WithEvents m_tbxSplit1 As Windows.Forms.TextBox
-    Private WithEvents m_tbxB1 As Windows.Forms.TextBox
-    Friend WithEvents m_tbxSplit2 As Windows.Forms.TextBox
-    Private WithEvents m_tbxB2 As Windows.Forms.TextBox
+    Private WithEvents m_btnOK As System.Windows.Forms.Button
+    Private WithEvents m_btnCancel As System.Windows.Forms.Button
+    Private WithEvents m_lblTarget As System.Windows.Forms.Label
+    Private WithEvents m_cmbSource As System.Windows.Forms.ComboBox
+    Friend WithEvents m_tbxSplit1 As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxB1 As System.Windows.Forms.TextBox
+    Friend WithEvents m_tbxSplit2 As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxB2 As System.Windows.Forms.TextBox
     Private WithEvents m_sliderB As ScientificInterfaceShared.Controls.ucSlider
-    Private WithEvents m_lblBiomass As Windows.Forms.Label
-    Friend WithEvents TableLayoutPanel1 As Windows.Forms.TableLayoutPanel
-    Private WithEvents m_lblName As Windows.Forms.Label
+    Private WithEvents m_lblBiomass As System.Windows.Forms.Label
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_lblName As System.Windows.Forms.Label
     Friend WithEvents m_hdrSplit1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrSplit2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Friend WithEvents Label1 As Windows.Forms.Label
-    Friend WithEvents m_lbxTaxa1 As Windows.Forms.ListBox
-    Friend WithEvents m_lbxTaxa2 As Windows.Forms.ListBox
-    Private WithEvents m_plMoveTaxa As Windows.Forms.Panel
-    Private WithEvents m_btn2to1 As Windows.Forms.Button
-    Private WithEvents m_btn1to2 As Windows.Forms.Button
-    Private WithEvents m_lblStartAge As Windows.Forms.Label
-    Friend WithEvents m_tbxAge1 As Windows.Forms.TextBox
-    Private WithEvents m_tbxAge2 As Windows.Forms.TextBox
-    Private WithEvents m_tlpLogo As Windows.Forms.TableLayoutPanel
-    Private WithEvents m_pbLogo As Windows.Forms.PictureBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents m_lbxTaxa1 As System.Windows.Forms.ListBox
+    Friend WithEvents m_lbxTaxa2 As System.Windows.Forms.ListBox
+    Private WithEvents m_plMoveTaxa As System.Windows.Forms.Panel
+    Private WithEvents m_btn2to1 As System.Windows.Forms.Button
+    Private WithEvents m_btn1to2 As System.Windows.Forms.Button
+    Private WithEvents m_lblStartAge As System.Windows.Forms.Label
+    Friend WithEvents m_tbxAge1 As System.Windows.Forms.TextBox
+    Private WithEvents m_tbxAge2 As System.Windows.Forms.TextBox
+    Private WithEvents m_tlpLogo As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_pbLogo As System.Windows.Forms.PictureBox
 End Class

@@ -201,7 +201,7 @@ Public Class frmTFMpolicy
             Dim StratName As String = ""
             Dim box As New frmInputBox()
 
-            If box.Show(Me, My.Resources.PROMPT_ENTERNAME, My.Resources.PROMPT_ENTERNAME_CAPTION) = Windows.Forms.DialogResult.OK Then
+            If box.Show(Me, My.Resources.PROMPT_ENTERNAME, My.Resources.PROMPT_ENTERNAME_CAPTION) = System.Windows.Forms.DialogResult.OK Then
                 StratName = box.Value
             End If
 
@@ -288,7 +288,7 @@ Public Class frmTFMpolicy
             Me.m_shares.Save()
 
             Me.m_bStrategiesSaved = True
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
 
         Catch ex As Exception
@@ -300,7 +300,7 @@ Public Class frmTFMpolicy
     Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnCancel.Click
 
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
 
     End Sub
@@ -350,7 +350,7 @@ Public Class frmTFMpolicy
         HRCDialogue.Init(Me.m_MSE, Me.m_SelectedStrategy)
         HRCDialogue.ShowDialog()
 
-        If HRCDialogue.DialogResult = Windows.Forms.DialogResult.OK Then
+        If HRCDialogue.DialogResult = System.Windows.Forms.DialogResult.OK Then
             'add the newly created harvest control rule to the current strategy
             Me.m_SelectedStrategy.Add(HRCDialogue.HarvestControlRule)
             Me.m_grid.RefreshContent()

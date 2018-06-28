@@ -148,7 +148,7 @@ Public Class frmEditQuotaShares
         Me.m_mse.InformUser(String.Format(My.Resources.STATUS_SAVED_QUOTASHARES, My.Resources.CAPTION, strFolder),
                                  eMessageImportance.Information, strFolder, lstrSubMessages.ToArray())
 
-        Me.DialogResult = Windows.Forms.DialogResult.OK
+        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
@@ -184,7 +184,7 @@ Public Class frmEditQuotaShares
     Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
     Handles m_btnCancel.Click
 
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Close()
 
     End Sub

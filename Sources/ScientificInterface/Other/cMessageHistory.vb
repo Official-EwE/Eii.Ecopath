@@ -528,7 +528,7 @@ Public Class cMessageHistory
 
         Dim mbb As MessageBoxButtons = MessageBoxButtons.YesNo
         Dim mbi As MessageBoxIcon = MessageBoxIcon.Question
-        Dim dlr As DialogResult = Windows.Forms.DialogResult.No
+        Dim dlr As DialogResult = System.Windows.Forms.DialogResult.No
         Dim strMessage As String = ""
 
         ' Early bail-out
@@ -572,7 +572,7 @@ Public Class cMessageHistory
             ' Get reply, if any
             dlr = Me.m_msh.AutoReply(msg.Source, msg.Type)
             ' Is 'none'?
-            If (dlr = Windows.Forms.DialogResult.None) Then
+            If (dlr = System.Windows.Forms.DialogResult.None) Then
                 ' #Yes: prompt needed
 
                 ' Assume to repeat the question
