@@ -300,5 +300,5 @@ Partial Class frmNetworkAnalysis
     Friend WithEvents m_tlpOptions As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents m_pbSponsors As System.Windows.Forms.PictureBox
     Private WithEvents m_lblSponsors As System.Windows.Forms.Label
-    Private WithEvents tsbnFonts As Windows.Forms.ToolStripButton
+    Private WithEvents tsbnFonts As System.Windows.Forms.ToolStripButton
 End Class

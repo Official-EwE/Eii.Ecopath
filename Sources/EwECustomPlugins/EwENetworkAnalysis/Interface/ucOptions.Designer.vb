@@ -134,8 +134,8 @@ Partial Class ucOptions
     Private WithEvents m_nudTimeOut As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblTimeOutUnit As System.Windows.Forms.Label
     Private WithEvents m_hdrAutosave As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_cbAutosaveRoot As Windows.Forms.CheckBox
-    Private WithEvents m_cbAutosaveEcopath As Windows.Forms.CheckBox
-    Private WithEvents m_cbAutosaveEcosimWoPPR As Windows.Forms.CheckBox
-    Private WithEvents m_cbAutosaveEcosimWithPPR As Windows.Forms.CheckBox
+    Private WithEvents m_cbAutosaveRoot As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbAutosaveEcopath As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbAutosaveEcosimWoPPR As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbAutosaveEcosimWithPPR As System.Windows.Forms.CheckBox
 End Class
