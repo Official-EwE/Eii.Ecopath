@@ -80,7 +80,7 @@ Namespace Controls.Map
             'Me.SetStyle(ControlStyles.UserPaint, True)
 
             Me.BackColor = Color.White
-            Me.BorderStyle = Windows.Forms.BorderStyle.FixedSingle
+            Me.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 
         End Sub
 

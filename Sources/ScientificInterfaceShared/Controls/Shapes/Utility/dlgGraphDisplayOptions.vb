@@ -24,7 +24,6 @@ Option Explicit On
 Option Strict On
 
 Imports ScientificInterfaceShared.Definitions
-Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -166,7 +165,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
             Me.Apply()
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = DialogResult.OK
             Me.Close()
         End Sub
 
@@ -176,7 +175,7 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-            Me.DialogResult = Windows.Forms.DialogResult.Cancel
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 

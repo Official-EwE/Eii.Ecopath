@@ -53,8 +53,8 @@ Namespace Controls
             Me.Cursor = System.Windows.Forms.Cursors.Hand
             Me.Name = "ucHatch"
             Me.Size = New System.Drawing.Size(34, 34)
-            Me.Margin = New Windows.Forms.Padding(2)
-            Me.BorderStyle = Windows.Forms.BorderStyle.None
+            Me.Margin = New System.Windows.Forms.Padding(2)
+            Me.BorderStyle = System.Windows.Forms.BorderStyle.None
             Me.ResumeLayout(False)
 
         End Sub

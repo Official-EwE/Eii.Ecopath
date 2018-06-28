@@ -38,7 +38,7 @@ Namespace Controls
         Private m_bDragOver As Boolean = False
 
         Public Sub New()
-            Me.BorderStyle = Windows.Forms.BorderStyle.FixedSingle
+            Me.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.AutoSize = False
             Me.Font = New Font(Me.Font.Name, 14.25, FontStyle.Bold)
             Me.TextAlign = ContentAlignment.MiddleCenter

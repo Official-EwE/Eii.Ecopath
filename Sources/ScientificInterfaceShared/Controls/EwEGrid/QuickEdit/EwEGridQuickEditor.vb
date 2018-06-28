@@ -612,7 +612,7 @@ Namespace Controls.EwEGrid
             Dim bSuccess As Boolean = True
 
             cmdOF.Invoke(Me.GetCSVFileName(), My.Resources.FILEFILTER_CSV)
-            If (cmdOF.Result <> Windows.Forms.DialogResult.OK) Then Return bSuccess
+            If (cmdOF.Result <> System.Windows.Forms.DialogResult.OK) Then Return bSuccess
 
             Try
                 fs = New FileStream(cmdOF.FileName, _
@@ -655,7 +655,7 @@ Namespace Controls.EwEGrid
             Dim sw As StreamWriter = Nothing
 
             cmdSF.Invoke(Me.GetCSVFileName(), My.Resources.FILEFILTER_CSV)
-            If (cmdSF.Result <> Windows.Forms.DialogResult.OK) Then Return
+            If (cmdSF.Result <> System.Windows.Forms.DialogResult.OK) Then Return
 
             Try
                 'Create the file

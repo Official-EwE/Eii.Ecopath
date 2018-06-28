@@ -119,14 +119,14 @@ Namespace Controls
             Me.m_shape.Name = Me.m_tbxName.Text
             fs.Apply(Me.m_shape)
 
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
 
         End Sub
 
         Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnCancel.Click
-            Me.DialogResult = Windows.Forms.DialogResult.Cancel
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 

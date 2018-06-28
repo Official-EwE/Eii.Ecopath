@@ -84,7 +84,7 @@ Namespace Controls
 
             cmdFO.Invoke(SharedResources.FILEFILTER_IMAGE)
 
-            If (cmdFO.Result = Windows.Forms.DialogResult.OK) Then
+            If (cmdFO.Result = System.Windows.Forms.DialogResult.OK) Then
                 Try
                     ' Create image
                     img = Image.FromFile(cmdFO.FileName)
