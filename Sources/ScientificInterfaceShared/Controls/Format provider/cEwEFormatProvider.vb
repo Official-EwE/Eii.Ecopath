@@ -74,7 +74,7 @@ Namespace Controls
                 Dim wrapper As IControlWrapper = Nothing
 
                 ' Wrapper supported Windows controls
-                If TypeOf (ctrl) Is Windows.Forms.TextBox Or TypeOf (ctrl) Is Windows.Forms.RichTextBox Then
+                If TypeOf (ctrl) Is System.Windows.Forms.TextBox Or TypeOf (ctrl) Is System.Windows.Forms.RichTextBox Then
                     wrapper = New cTextBoxWrapper()
                 ElseIf TypeOf (ctrl) Is Label Then
                     wrapper = New cLabelWrapper()

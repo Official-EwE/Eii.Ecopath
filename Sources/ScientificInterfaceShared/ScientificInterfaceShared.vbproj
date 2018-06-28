@@ -126,7 +126,6 @@
     <Import Include="System.Collections.Generic" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Drawing" />
-    <Import Include="System.Windows" />
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -173,7 +172,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Map\cMapSettings.vb" />
-    <Compile Include="Controls\Map\Core wrapper\cEcospaceLayerVelocity.vb"/>
+    <Compile Include="Controls\Map\Core wrapper\cEcospaceLayerVelocity.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerArgs.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerBase.vb" />
     <Compile Include="Controls\Map\DirectRendering\cMapDrawerLayer.vb" />

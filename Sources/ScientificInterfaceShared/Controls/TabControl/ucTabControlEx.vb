@@ -144,7 +144,7 @@ Namespace Controls
                 fmt.FormatFlags = fmt.FormatFlags Or StringFormatFlags.DirectionVertical
             End If
 
-            If Me.RightToLeft = Windows.Forms.RightToLeft.Yes Then
+            If Me.RightToLeft = System.Windows.Forms.RightToLeft.Yes Then
                 fmt.Alignment = StringAlignment.Far
             Else
                 fmt.Alignment = StringAlignment.Near

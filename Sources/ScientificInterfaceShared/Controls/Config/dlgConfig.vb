@@ -112,7 +112,7 @@ Namespace Controls
                 If (TypeOf Me.m_ctrl Is IOptionsPage) Then
                     DirectCast(Me.m_ctrl, IOptionsPage).Apply()
                 End If
-                Me.DialogResult = Windows.Forms.DialogResult.OK
+                Me.DialogResult = System.Windows.Forms.DialogResult.OK
                 Me.Close()
             Catch ex As Exception
                 cLog.Write(ex, "dlgConfig::OnOK")
@@ -129,7 +129,7 @@ Namespace Controls
          Handles m_btnCancel.Click
 
             Try
-                Me.DialogResult = Windows.Forms.DialogResult.Cancel
+                Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
                 Me.Close()
             Catch ex As Exception
                 cLog.Write(ex, "dlgConfig::OnOK")

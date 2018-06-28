@@ -78,14 +78,14 @@ Namespace Controls
         Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
             Handles m_btnOk.Click
             Me.m_strValue = Me.m_tbxValue.Text
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
         End Sub
 
         Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCancel.Click
             Me.m_strValue = ""
-            Me.DialogResult = Windows.Forms.DialogResult.Cancel
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.Close()
         End Sub
 

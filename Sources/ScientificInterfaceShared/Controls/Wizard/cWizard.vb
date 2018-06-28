@@ -117,7 +117,7 @@ Namespace Controls.Wizard
         ''' Add a page to the wizard.
         ''' </summary>
         ''' <param name="tpage">Type of page class to add to the wizard. Note
-        ''' that a page must inherit from <see cref="Control">Windows.Forms.Control</see>,
+        ''' that a page must inherit from <see cref="Control">System.Windows.Forms.Control</see>,
         ''' and must implement the <see cref="IWizardPage">IWizardPage</see>
         ''' interface.</param>
         ''' -------------------------------------------------------------------

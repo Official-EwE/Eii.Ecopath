@@ -244,7 +244,7 @@ Namespace Controls.Map
             Dim strFileName As String = ""
 
             cmdFS.Invoke(cFileUtils.ToValidFileName(cStringUtils.Localize("{0}_{1}", model.Name, scenario.Name), False), SharedResources.FILEFILTER_IMAGE)
-            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
+            If cmdFS.Result = System.Windows.Forms.DialogResult.OK Then
 
                 Select Case cmdFS.FilterIndex
                     Case 0, 1
