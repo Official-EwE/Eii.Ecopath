@@ -436,7 +436,7 @@ Namespace Controls
 
             cmdFS.Invoke(My.Resources.FILEFILTER_IMAGE)
 
-            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
+            If cmdFS.Result = System.Windows.Forms.DialogResult.OK Then
 
                 Dim imgFormat As System.Drawing.Imaging.ImageFormat = System.Drawing.Imaging.ImageFormat.Bmp
                 Select Case cmdFS.FilterIndex
