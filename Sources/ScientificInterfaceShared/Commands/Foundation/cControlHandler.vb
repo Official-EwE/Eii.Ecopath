@@ -376,7 +376,7 @@ Namespace Commands
             End Try
         End Sub
 
-        Private Sub OnLinkClicked(sender As Object, e As System.Windows.Forms.LinkClickedEventArgs) Handles m_ctrl.LinkClicked
+        Private Sub OnLinkClicked(sender As Object, e As LinkClickedEventArgs) Handles m_ctrl.LinkClicked
             Try
                 Me.Invoke(New Object() {e.LinkText})
             Catch ex As Exception

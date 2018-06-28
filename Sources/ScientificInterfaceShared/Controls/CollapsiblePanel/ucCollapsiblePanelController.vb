@@ -64,7 +64,7 @@ Namespace Controls
 
         End Sub
 
-        Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+        Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
             MyBase.OnPaint(e)
 
             Dim xImg As Integer = Me.Padding.Left
@@ -85,7 +85,7 @@ Namespace Controls
             e.Graphics.DrawImageUnscaledAndClipped(img, New Rectangle(xImg, yImg, img.Width, Math.Min(Me.Height - Me.Padding.Bottom - yImg, img.Height)))
 
             Using br As New SolidBrush(Me.ForeColor)
-                e.Graphics.DrawString(Me.Text, Me.Font, br, _
+                e.Graphics.DrawString(Me.Text, Me.Font, br,
                     New Rectangle(xText, Me.Padding.Top, Me.Width - xText - Me.Padding.Right, Me.Height - Me.Padding.Vertical), sft)
             End Using
 
@@ -139,12 +139,12 @@ Namespace Controls
             End Set
         End Property
 
-        <Browsable(False)> _
-        Public Overrides Property Dock() As System.Windows.Forms.DockStyle
+        <Browsable(False)>
+        Public Overrides Property Dock() As DockStyle
             Get
                 Return MyBase.Dock
             End Get
-            Set(ByVal value As System.Windows.Forms.DockStyle)
+            Set(ByVal value As DockStyle)
                 MyBase.Dock = value
             End Set
         End Property
@@ -161,7 +161,7 @@ Namespace Controls
                 Dim iHeightOffset As Integer = Me.Parent.Height - Me.Parent.ClientRectangle.Height
 
                 While Me.Parent.Height > Me.Height + iHeightOffset
-                    System.Windows.Forms.Application.DoEvents()
+                    Application.DoEvents()
                     Me.Parent.Height -= AnimationRate
                 End While
                 Me.Parent.Height = Me.Height + iHeightOffset
@@ -169,7 +169,7 @@ Namespace Controls
             Else
 
                 While Me.Parent.Height < Me.m_iExpandedHeight
-                    System.Windows.Forms.Application.DoEvents()
+                    Application.DoEvents()
                     Me.Parent.Height += AnimationRate
                 End While
                 Me.Parent.Height = Me.m_iExpandedHeight

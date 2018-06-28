@@ -246,9 +246,9 @@ Namespace Controls
 
             ' Consider buttons total width
             iButtonsWidth = Me.Spacer
-            If (CInt(m_btnOne.Tag) > Windows.Forms.DialogResult.None) Then iButtonsWidth += m_btnOne.Width + Me.Spacer
-            If (CInt(m_btnTwo.Tag) > Windows.Forms.DialogResult.None) Then iButtonsWidth += m_btnTwo.Width + Me.Spacer
-            If (CInt(m_btnThree.Tag) > Windows.Forms.DialogResult.None) Then iButtonsWidth += m_btnThree.Width + Me.Spacer
+            If (CInt(m_btnOne.Tag) > DialogResult.None) Then iButtonsWidth += m_btnOne.Width + Me.Spacer
+            If (CInt(m_btnTwo.Tag) > DialogResult.None) Then iButtonsWidth += m_btnTwo.Width + Me.Spacer
+            If (CInt(m_btnThree.Tag) > DialogResult.None) Then iButtonsWidth += m_btnThree.Width + Me.Spacer
 
             ' Calc final form width
             iFormWidth = Math.Max(iFormWidth, iButtonsWidth)
@@ -301,14 +301,14 @@ Namespace Controls
 
             ' Set text
             Select Case result
-                Case Windows.Forms.DialogResult.Abort : btn.Text = My.Resources.BUTTON_ABORT
-                Case Windows.Forms.DialogResult.Cancel : btn.Text = My.Resources.BUTTON_CANCEL
-                Case Windows.Forms.DialogResult.Ignore : btn.Text = My.Resources.BUTTON_IGNORE
-                Case Windows.Forms.DialogResult.No : btn.Text = My.Resources.BUTTON_NO
-                Case Windows.Forms.DialogResult.None : btn.Text = ""
-                Case Windows.Forms.DialogResult.OK : btn.Text = My.Resources.BUTTON_OK
-                Case Windows.Forms.DialogResult.Retry : btn.Text = My.Resources.BUTTON_RETRY
-                Case Windows.Forms.DialogResult.Yes : btn.Text = My.Resources.BUTTON_YES
+                Case DialogResult.Abort : btn.Text = My.Resources.BUTTON_ABORT
+                Case DialogResult.Cancel : btn.Text = My.Resources.BUTTON_CANCEL
+                Case DialogResult.Ignore : btn.Text = My.Resources.BUTTON_IGNORE
+                Case DialogResult.No : btn.Text = My.Resources.BUTTON_NO
+                Case DialogResult.None : btn.Text = ""
+                Case DialogResult.OK : btn.Text = My.Resources.BUTTON_OK
+                Case DialogResult.Retry : btn.Text = My.Resources.BUTTON_RETRY
+                Case DialogResult.Yes : btn.Text = My.Resources.BUTTON_YES
             End Select
 
             ' Store tag
@@ -351,20 +351,20 @@ Namespace Controls
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        Private WithEvents m_btnOne As System.Windows.Forms.Button
-        Private WithEvents m_btnTwo As System.Windows.Forms.Button
-        Private WithEvents m_btnThree As System.Windows.Forms.Button
-        Private WithEvents m_pbIcon As System.Windows.Forms.PictureBox
-        Private WithEvents m_chkOption As System.Windows.Forms.CheckBox
+        Private WithEvents m_btnOne As Button
+        Private WithEvents m_btnTwo As Button
+        Private WithEvents m_btnThree As Button
+        Private WithEvents m_pbIcon As PictureBox
+        Private WithEvents m_chkOption As CheckBox
         Private WithEvents m_lblPrompt As ucLinkLabel
 
         <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCustomMessageBox))
-            Me.m_btnOne = New System.Windows.Forms.Button()
-            Me.m_btnTwo = New System.Windows.Forms.Button()
-            Me.m_btnThree = New System.Windows.Forms.Button()
-            Me.m_pbIcon = New System.Windows.Forms.PictureBox()
-            Me.m_chkOption = New System.Windows.Forms.CheckBox()
+            Me.m_btnOne = New Button()
+            Me.m_btnTwo = New Button()
+            Me.m_btnThree = New Button()
+            Me.m_pbIcon = New PictureBox()
+            Me.m_chkOption = New CheckBox()
             Me.m_lblPrompt = New ScientificInterfaceShared.Controls.ucLinkLabel()
             CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -405,7 +405,7 @@ Namespace Controls
             '
             Me.AcceptButton = Me.m_btnOne
             resources.ApplyResources(Me, "$this")
-            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+            Me.AutoScaleMode = AutoScaleMode.Dpi
             Me.ControlBox = False
             Me.Controls.Add(Me.m_chkOption)
             Me.Controls.Add(Me.m_pbIcon)
@@ -413,7 +413,7 @@ Namespace Controls
             Me.Controls.Add(Me.m_btnThree)
             Me.Controls.Add(Me.m_btnTwo)
             Me.Controls.Add(Me.m_btnOne)
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
+            Me.FormBorderStyle = FormBorderStyle.FixedToolWindow
             Me.MaximizeBox = False
             Me.MinimizeBox = False
             Me.Name = "frmCustomMessageBox"
