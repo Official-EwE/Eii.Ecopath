@@ -298,7 +298,7 @@ Namespace Controls
 
                     Case eShapeCommandTypes.DefineMediation
                         Dim dlgDefBP As New dlgDefineMediationAssignments(Me.UIContext, DirectCast(Me.SelectedShape, cMediationBaseFunction))
-                        If dlgDefBP.ShowDialog() = Windows.Forms.DialogResult.OK Then
+                        If dlgDefBP.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                             Me.MediationAssignments.RefreshContent()
                         End If
 
