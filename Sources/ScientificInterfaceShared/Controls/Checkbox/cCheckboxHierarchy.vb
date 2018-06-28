@@ -23,6 +23,7 @@
 Option Strict On
 
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports System.Windows.Forms
 
 #End Region ' Imports
 
@@ -140,7 +141,7 @@ Namespace Controls
 
             End Sub
 
-            Public MustOverride Property Checkstate() As Windows.Forms.CheckState
+            Public MustOverride Property Checkstate() As CheckState
 
 #End Region ' Public access
 
@@ -175,11 +176,11 @@ Namespace Controls
                 MyBase.Dispose()
             End Sub
 
-            Public Overrides Property Checkstate As System.Windows.Forms.CheckState
+            Public Overrides Property Checkstate As CheckState
                 Get
                     Return Me.m_cb.CheckState
                 End Get
-                Set(value As System.Windows.Forms.CheckState)
+                Set(value As CheckState)
                     Me.m_cb.CheckState = value
                 End Set
             End Property
@@ -242,20 +243,20 @@ Namespace Controls
                 MyBase.Dispose()
             End Sub
 
-            Public Overrides Property Checkstate As System.Windows.Forms.CheckState
+            Public Overrides Property Checkstate As CheckState
                 Get
                     Dim pos As New SourceGrid2.Position(Me.m_cb.Row, Me.m_cb.Column)
                     Select Case Me.m_cb.GetCheckedValue(pos)
                         Case True
-                            Return Windows.Forms.CheckState.Checked
+                            Return CheckState.Checked
                         Case False
-                            Return Windows.Forms.CheckState.Unchecked
+                            Return CheckState.Unchecked
                     End Select
-                    Return Windows.Forms.CheckState.Indeterminate
+                    Return CheckState.Indeterminate
                 End Get
-                Set(value As System.Windows.Forms.CheckState)
+                Set(value As CheckState)
                     Dim pos As New SourceGrid2.Position(Me.m_cb.Row, Me.m_cb.Column)
-                    Me.m_cb.SetCheckedValue(pos, (value <> Windows.Forms.CheckState.Unchecked))
+                    Me.m_cb.SetCheckedValue(pos, (value <> CheckState.Unchecked))
                 End Set
             End Property
 
