@@ -436,8 +436,7 @@ Namespace Controls
                 ' custom management
 
                 ' change position if RTL
-                Dim fixPos As Boolean = Me.RightToLeft = Windows.Forms.RightToLeft.Yes _
-                                    Xor Me.UpDownAlign = LeftRightAlignment.Left
+                Dim fixPos As Boolean = Me.RightToLeft = RightToLeft.Yes Xor Me.UpDownAlign = LeftRightAlignment.Left
 
                 If m_bMouseOver Then
                     m_tbx.Width = Me.ClientSize.Width - m_tbx.Left - m_updown.Width - 2
