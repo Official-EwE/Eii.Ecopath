@@ -42,15 +42,15 @@ Public Module modUtility
     Public Const GRP_NAME_COL_WIDTH As Integer = 110
     Public Const FIRST_ROW_HEIGHT As Integer = 45
 
-    Public Sub SetGridColumnPropertyDefault(ByVal DataGrid As Windows.Forms.DataGridView)
+    Public Sub SetGridColumnPropertyDefault(ByVal DataGrid As System.Windows.Forms.DataGridView)
         DataGrid.ColumnHeadersVisible = False
         For intColIndex As Integer = 0 To DataGrid.ColumnCount - 1
-            'DataGrid.Columns(intColIndex).HeaderCell.Style.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-            DataGrid.Columns(intColIndex).DefaultCellStyle.Alignment = Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+            'DataGrid.Columns(intColIndex).HeaderCell.Style.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+            DataGrid.Columns(intColIndex).DefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
             DataGrid.Columns(intColIndex).DefaultCellStyle.BackColor = Drawing.Color.White
             DataGrid.Columns(intColIndex).Width = DEFAULT_COL_WIDTH '110
             DataGrid.Columns(intColIndex).Frozen = False
-            DataGrid.Columns(intColIndex).SortMode = Windows.Forms.DataGridViewColumnSortMode.NotSortable
+            DataGrid.Columns(intColIndex).SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Next
     End Sub
 
