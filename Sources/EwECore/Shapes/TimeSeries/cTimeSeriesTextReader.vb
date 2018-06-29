@@ -489,16 +489,16 @@ Public MustInherit Class cTimeSeriesTextReader
         Dim iNumSeries As Integer = m_tsPreview.ColumnCount - 1
         Dim strLine As String = ""
         Dim iLineNumber As Integer = 0
-        Dim astrCols() As String
+        Dim cols() As String
         Dim sValue As Single = 0.0
 
         ' Temp buffers for creating Time Series objects
         Dim asWeight(iNumSeries) As Single
         Dim asCV(iNumSeries) As Single
         Dim astrNames(iNumSeries) As String
-        Dim aiDatPool(iNumSeries) As Integer
-        Dim aiDatPoolSec(iNumSeries) As Integer
-        Dim aiType(iNumSeries) As eTimeSeriesType
+        Dim datpool(iNumSeries) As Integer
+        Dim datpool2(iNumSeries) As Integer
+        Dim tstype(iNumSeries) As eTimeSeriesType
 
         Me.m_ts.Clear()
 
@@ -509,54 +509,52 @@ Public MustInherit Class cTimeSeriesTextReader
         For i As Integer = 0 To iNumSeries : asWeight(i) = 1.0! : Next i
 
         ' Read names from columns
-        astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
-        For i As Integer = 1 To iNumSeries : astrNames(i - 1) = astrCols(i) : Next i
+        cols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
+        For i As Integer = 1 To iNumSeries : astrNames(i - 1) = cols(i) : Next i
 
         ' Read weight from columns
-        astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
-        If (String.Compare(astrCols(0), "weight", True) = 0) Then
+        cols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
+        If (String.Compare(cols(0), "weight", True) = 0) Then
             Try
-                For i As Integer = 1 To iNumSeries : asWeight(i - 1) = cStringUtils.ConvertToSingle(astrCols(i), 0, Me.m_strDecimalSeparator) : Next i
+                For i As Integer = 1 To iNumSeries : asWeight(i - 1) = cStringUtils.ConvertToSingle(cols(i), 0, Me.m_strDecimalSeparator) : Next i
             Catch ex As Exception
                 Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_WEIGHTFORMAT, iLineNumber)
             End Try
-            astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
-        ElseIf (String.Compare(astrCols(0), "cv", True) = 0) Then
+            cols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
+        ElseIf (String.Compare(cols(0), "cv", True) = 0) Then
             Try
-                For i As Integer = 1 To iNumSeries : asCV(i - 1) = cStringUtils.ConvertToSingle(astrCols(i), 0, Me.m_strDecimalSeparator) : Next i
+                For i As Integer = 1 To iNumSeries : asCV(i - 1) = cStringUtils.ConvertToSingle(cols(i), 0, Me.m_strDecimalSeparator) : Next i
             Catch ex As Exception
                 Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_WEIGHTFORMAT, iLineNumber)
             End Try
-            astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
+            cols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
         End If
 
         ' Read pool code from columns
         Try
-            For i As Integer = 1 To iNumSeries
-                aiDatPool(i - 1) = cStringUtils.ConvertToInteger(astrCols(i))
-                If (aiDatPool(i - 1) < 1) Then
-                    Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLFORMAT, iLineNumber)
+            For i As Integer = 1 To Math.Min(iNumSeries, cols.Length - 1)
+                If Not String.IsNullOrWhiteSpace(cols(i)) Then
+                    datpool(i - 1) = cStringUtils.ConvertToInteger(cols(i))
                 End If
             Next i
         Catch ex As Exception
             Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLFORMAT, iLineNumber)
         End Try
-        astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
+        cols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
 
         ' Read secundary pool code from columns
-        If (astrCols.Length > 0) Then
-            If (astrCols(0).ToLower().Contains("sec")) Or (astrCols(0).ToLower().Contains("2")) Then
+        If (cols.Length > 0) Then
+            If (cols(0).ToLower().Contains("sec")) Or (cols(0).ToLower().Contains("2")) Then
                 Try
-                    For i As Integer = 1 To iNumSeries
-                        aiDatPoolSec(i - 1) = cStringUtils.ConvertToInteger(astrCols(i))
-                        'If (aiDatPool(i - 1) < 1) Then
-                        '    Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLFORMAT, iLineNumber)
-                        'End If
+                    For i As Integer = 1 To Math.Min(iNumSeries, cols.Length - 1)
+                        If Not String.IsNullOrWhiteSpace(cols(i)) Then
+                            datpool2(i - 1) = cStringUtils.ConvertToInteger(cols(i))
+                        End If
                     Next i
                 Catch ex As Exception
                     Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_POOLFORMAT, iLineNumber)
                 End Try
-                astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
+                cols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
             End If
         End If
 
@@ -566,28 +564,40 @@ Public MustInherit Class cTimeSeriesTextReader
 
                 ' Extract time series type
                 ' JS28oct09 allow strings as time series types too
-                aiType(i - 1) = Me.ToTimeSeriesType(astrCols(i))
-                If (aiType(i - 1) = eTimeSeriesType.NotSet) Then
-                    aiType(i - 1) = DirectCast(cStringUtils.ConvertToInteger(astrCols(i)), eTimeSeriesType)
-                    If (aiType(i - 1) = cCore.NULL_VALUE) Then
+                tstype(i - 1) = Me.ToTimeSeriesType(cols(i))
+                If (tstype(i - 1) = eTimeSeriesType.NotSet) Then
+                    tstype(i - 1) = DirectCast(cStringUtils.ConvertToInteger(cols(i)), eTimeSeriesType)
+                    If (tstype(i - 1) = cCore.NULL_VALUE) Then
                         Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPEFORMAT, iLineNumber)
                     End If
                 End If
 
-                ' Validate if encountered pool code fits the corresponding core counter
-                Select Case cTimeSeriesFactory.TimeSeriesCategory(aiType(i - 1))
+                ' Validate pool code(s) fits the corresponding core counter
+                Select Case cTimeSeriesFactory.TimeSeriesCategory(tstype(i - 1))
 
                     Case eTimeSeriesCategoryType.Group
-                        ' Group index cannot exceed core nGroups
-                        If aiDatPool(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups) Then
-                            Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, aiDatPool(i - 1)), iLineNumber - 1)
+                        ' Leniency: if dp2 is entered instead of dp, use dp2
+                        If (datpool(i - 1) = 0 And datpool2(i - 1) > 0) Then
+                            datpool(i - 1) = datpool2(i - 1)
+                            datpool2(i - 1) = 0
                         End If
+
+                        ' Group index cannot exceed core nGroups
+                        If (datpool(i - 1) < 1) Or (datpool(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)) Then
+                                Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, datpool(i - 1)), iLineNumber - 1)
+                            End If
 
                     Case eTimeSeriesCategoryType.Fleet,
                          eTimeSeriesCategoryType.FleetGroup
+
                         'Fleet index cannot exceed core nFleets
-                        If aiDatPool(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nFleets) Then
-                            Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, aiDatPool(i - 1)), iLineNumber - 1)
+                        If ((datpool(i - 1) < 1) Or (datpool(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nFleets))) Then
+                            Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, datpool(i - 1)), iLineNumber - 1)
+                        End If
+
+                        ' Group index cannot exceed core nGroups
+                        If (datpool2(i - 1) < 1) Or (datpool2(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)) Then
+                            Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, datpool2(i - 1)), iLineNumber - 1)
                         End If
 
                     Case eTimeSeriesCategoryType.Forcing
@@ -599,20 +609,20 @@ Public MustInherit Class cTimeSeriesTextReader
         Catch ex As Exception
             Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_TYPEFORMAT, iLineNumber)
         End Try
-        astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
+        cols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
 
         ' Initialize time series objects
         For i As Integer = 0 To iNumSeries - 1
 
-            ts = New cTimeSeriesImport(Me.m_iNumPoints, aiType(i))
+            ts = New cTimeSeriesImport(Me.m_iNumPoints, tstype(i))
 
             ' Configure time series
             With ts
                 .Name = astrNames(i)
                 .WtType = asWeight(i)
                 .CV = asCV(i)
-                .DatPool = aiDatPool(i)
-                .DatPoolSec = aiDatPoolSec(i)
+                .DatPool = datpool(i)
+                .DatPoolSec = datpool2(i)
                 .ResizeData(Me.m_iNumPoints)
             End With
 
@@ -634,13 +644,13 @@ Public MustInherit Class cTimeSeriesTextReader
                 Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = ""
 
                 ' Has a column value?
-                If (iColumn < astrCols.Length) Then
+                If (iColumn < cols.Length) Then
                     ' #Yes: get the value  
                     Try
                         ' Big change 16Nov16: read empty cells as NULL values for supporting time series. 
-                        If (Not String.IsNullOrWhiteSpace(astrCols(iColumn))) Then
+                        If (Not String.IsNullOrWhiteSpace(cols(iColumn))) Then
                             ' Try to parse the value
-                            sValue = cStringUtils.ConvertToSingle(astrCols(iColumn), 0, Me.m_strDecimalSeparator)
+                            sValue = cStringUtils.ConvertToSingle(cols(iColumn), 0, Me.m_strDecimalSeparator)
                             ' Add parsed value to preview
                             If (sValue <> 0) Or bAllowCoreNull Then
                                 ' Write preview value
@@ -651,7 +661,7 @@ Public MustInherit Class cTimeSeriesTextReader
                         ' JS04feb08: error parsing value
                         Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_VALUEFORMAT, iLineNumber)
                         ' Add original string to preview
-                        Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = astrCols(iColumn)
+                        Me.m_tsPreview.Value(iColumn + 1, iLineNumber) = cols(iColumn)
                     End Try
                 End If
 
@@ -661,7 +671,7 @@ Public MustInherit Class cTimeSeriesTextReader
             Next iColumn
 
             ' Next line
-            astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
+            cols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
 
         Next iRow
 
