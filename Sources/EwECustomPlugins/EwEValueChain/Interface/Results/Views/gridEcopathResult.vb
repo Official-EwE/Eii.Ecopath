@@ -92,7 +92,7 @@ Public Class gridEcopathResult
 
         Dim cell As SourceGrid2.Cells.Real.Cell = Nothing
 
-        Me.AutoSizeMode = Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.GridToolTipActive = True
         Me.Selection.SelectionMode = GridSelectionMode.Cell
         Me.Selection.AutoCopyPaste = True

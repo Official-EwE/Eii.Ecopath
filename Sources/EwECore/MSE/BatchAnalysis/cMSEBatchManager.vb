@@ -1247,7 +1247,7 @@ Namespace MSEBatchManager
                 Me.m_BatchData.StopRun = True
 
                 'Do Until Me.Wait(10)
-                '    Windows.Forms.Application.DoEvents()
+                '    System.Windows.Forms.Application.DoEvents()
                 'Loop
 
             Catch ex As Exception

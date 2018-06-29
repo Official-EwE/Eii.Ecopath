@@ -657,7 +657,7 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Set the <see cref="System.ComponentModel.ISynchronizeInvoke">Synchronization object</see>, which can be
-    ''' a Windows.Forms.Control, used for calling all the delegates across threads
+    ''' a System.Windows.Forms.Control, used for calling all the delegates across threads
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public WriteOnly Property SyncObject() As System.ComponentModel.ISynchronizeInvoke
