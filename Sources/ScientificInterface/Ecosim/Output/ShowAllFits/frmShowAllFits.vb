@@ -82,11 +82,6 @@ Namespace Ecosim
             Me.CalcPlotParams()
             Me.SetPlotTypes()
 
-#If Not m_chkShowDiscards Then
-            Me.m_chkShowDiscards.Enabled = False
-            Me.m_chkShowLandings.Enabled = False
-#End If
-
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
 
         End Sub
