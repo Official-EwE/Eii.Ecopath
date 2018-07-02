@@ -584,11 +584,22 @@ Public MustInherit Class cTimeSeriesTextReader
 
                         ' Group index cannot exceed core nGroups
                         If (datpool(i - 1) < 1) Or (datpool(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)) Then
-                                Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, datpool(i - 1)), iLineNumber - 1)
-                            End If
+                            Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDGROUP, datpool(i - 1)), iLineNumber - 1)
+                        End If
 
-                    Case eTimeSeriesCategoryType.Fleet,
-                         eTimeSeriesCategoryType.FleetGroup
+                    Case eTimeSeriesCategoryType.Fleet
+                        ' Leniency: if dp2 is entered instead of dp, use dp2
+                        If (datpool(i - 1) = 0 And datpool2(i - 1) > 0) Then
+                            datpool(i - 1) = datpool2(i - 1)
+                            datpool2(i - 1) = 0
+                        End If
+
+                        'Fleet index cannot exceed core nFleets
+                        If ((datpool(i - 1) < 1) Or (datpool(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nFleets))) Then
+                            Me.ReportError(cStringUtils.Localize(My.Resources.CoreMessages.TIMESERIES_ERROR_INVALIDFLEET, datpool(i - 1)), iLineNumber - 1)
+                        End If
+
+                    Case eTimeSeriesCategoryType.FleetGroup
 
                         'Fleet index cannot exceed core nFleets
                         If ((datpool(i - 1) < 1) Or (datpool(i - 1) > Me.m_core.GetCoreCounter(eCoreCounterTypes.nFleets))) Then
