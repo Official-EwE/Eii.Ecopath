@@ -3579,10 +3579,8 @@ NextPivot:
                 If m_esdata.Eatenby(j) > 0 Then SDiet(j, i) = m_esdata.Consumpt(i, j) / m_esdata.Eatenby(j)
             Next
 
-            'ToDo_jb PrepareUlanowForCallFromEcosim m_esdata.Consumpt can not be used instead of DCMean for some reason it does not contain the same values
             Ulanow(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, SimEx, SimResp)
             Lindeman(SimB, SimPB, SimQB, SimEE, SDiet, SimIm, SimEx, SimResp)
-
 
             If PPRon Then
                 ' DoWhat = "Ecosim PPR"
