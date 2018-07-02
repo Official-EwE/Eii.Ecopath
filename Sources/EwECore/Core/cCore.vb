@@ -9352,7 +9352,9 @@ Public Class cCore
                 For irgn As Integer = 1 To nRegions
                     m_spaceresults.BiomassByRegion(igrp, irgn) = m_EcoSpaceData.ResultsRegionGroup(irgn, igrp, iTime)
                 Next
-            Next
+            Next igrp
+
+            Me.SaveEcospaceENA(m_spaceresults)
 
             'Save to the current writer always (saveannual = false) or once per year (saveannual=true)
             'Default is to save every time step
@@ -9373,10 +9375,29 @@ Public Class cCore
         End Try
     End Sub
 
+    Private Sub SaveEcospaceENA(ByVal SpaceResults As cEcospaceTimestep)
+        Try
+
+            If Me.m_EcoSpaceData.bENA Then
+
+                Dim SCORFileWriter As New cSCORFileWriter(Me.m_EcoPathData)
+                For Each enaData As cENACellData In Me.m_EcoSpaceData.dctENACells.Values
+                    'System.Console.WriteLine(enaData.Key)
+                    SCORFileWriter.Write(enaData.toFileName(Me), enaData.ENARData)
+                Next enaData
+
+            End If 'Me.m_EcoSpaceData.bENA
+
+        Catch ex As Exception
+            cLog.Write(ex, "enaR Failed to save SCOR file.")
+        End Try
+    End Sub
+
     Private Sub SaveEcospaceResults(ByVal SpaceResults As cEcospaceTimestep)
 
         Dim st As Double = Me.m_stpwSpaceTimer.Elapsed.TotalSeconds
         Try
+
             For n As Integer = 1 To Me.m_EcospaceModelParams.nResultWriters
                 Dim writer As IEcospaceResultsWriter = Me.m_EcospaceModelParams.ResultWriter(n)
                 Try
@@ -9391,6 +9412,7 @@ Public Class cCore
         Catch ex As Exception
             cLog.Write(ex)
         End Try
+
     End Sub
 
     ''' <summary>

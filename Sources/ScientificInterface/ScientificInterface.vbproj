@@ -2089,6 +2089,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\enaRPlugin\enaRPlugin\enaRPlugin.vbproj">
+      <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
+      <Name>enaRPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
