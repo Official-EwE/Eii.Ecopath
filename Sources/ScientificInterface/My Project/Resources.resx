@@ -13526,4 +13526,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="LABEL_NAV_ECOPATH_OUTPUT_FISHERY" xml:space="preserve">
     <value>Fishery</value>
   </data>
+  <data name="HEADER_SPAWNING_AGE" xml:space="preserve">
+    <value>Spawning age</value>
+  </data>
 </root>

@@ -190,6 +190,7 @@ Namespace Ecopath
         Private Sub UpdateGraph(ByVal zgc As ZedGraphControl)
 
             Dim sg As cStanzaGroup = Me.m_grid.StanzaGroup
+            Dim li As LineItem = Nothing
 
             ' Sanity check
             If (sg Is Nothing) Then Return
@@ -207,6 +208,8 @@ Namespace Ecopath
             Dim sMaxNumber As Single = 0.0
             Dim sMaxWeight As Single = 0.0
             Dim sMaxBiomass As Single = 0.0
+            Dim iSpawnMonth As Integer = cCore.NULL_VALUE
+
 
             'don't show the last value
             'For i As Integer = 1 To sg.MaxAge - 1
@@ -227,6 +230,10 @@ Namespace Ecopath
                 pplNumber.Add(i - 1, sg.NumberAtAge(i) / sMaxNumber)
                 pplWeight.Add(i - 1, sg.WeightAtAge(i) / sMaxWeight)
                 pplB.Add(i - 1, sg.BiomassAtAge(i) / sMaxBiomass)
+
+                If (iSpawnMonth = cCore.NULL_VALUE) And (sg.WeightAtAge(i) > sg.WmatWinf) Then
+                    iSpawnMonth = i
+                End If
             Next i
 
             ' Generate curves
@@ -251,6 +258,14 @@ Namespace Ecopath
                 pplSep.Add(sg.StartAge(i) - 1, 1)
                 pane.AddCurve(strLabel, pplSep, Color.Green, SymbolType.None)
             Next
+
+            If (Not sg.FixedFecundity) Then
+                pplSep = New PointPairList
+                pplSep.Add(iSpawnMonth, 0)
+                pplSep.Add(iSpawnMonth, 1)
+                li = pane.AddCurve(My.Resources.HEADER_SPAWNING_AGE, pplSep, Color.Orange, SymbolType.None)
+                li.Line.Style = Drawing2D.DashStyle.Dash
+            End If
 
             ' Calculate the Axis Scale Ranges
             zgc.AxisChange()
