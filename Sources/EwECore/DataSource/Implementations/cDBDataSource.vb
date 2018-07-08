@@ -28,8 +28,6 @@ Imports EwECore.MSE
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.Database
-Imports EwEUtils.SystemUtilities
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
