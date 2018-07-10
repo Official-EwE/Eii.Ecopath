@@ -42,23 +42,22 @@ Namespace Controls
         ''' <param name="sg">Style guide to paint with.</param>
         ''' <param name="rcClip">Clip boundary to fit the remarks indicator in</param>
         ''' <param name="g">The canvas to render onto</param>
-        ''' <param name="sPedigreeLevel">Pedigree level to render [0, 1]. A value of
-        ''' 0 will not render a pedigree indicator.</param>
+        ''' <param name="confidence">Confidence interval [0, 100] to draw.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub Paint(ByVal sg As cStyleGuide, _
-                                ByVal rcClip As Rectangle, _
-                                ByVal g As Graphics, _
-                                ByVal sPedigreeLevel As Single)
+        Public Shared Sub Paint(ByVal sg As cStyleGuide,
+                                ByVal rcClip As Rectangle,
+                                ByVal g As Graphics,
+                                ByVal confidence As Single)
 
-            If (sPedigreeLevel > 0) Then
+            If (confidence > 0) Then
 
                 Dim rcPedigree As Rectangle = GetPedigreeArea(sg, rcClip)
                 Dim clrFill As Color = sg.ApplicationColor(cStyleGuide.eApplicationColorType.PEDIGREE)
-                Dim sBarHeight As Single = (rcPedigree.Height - 4) / 4.0!
+                Dim sBarHeight As Single = (rcPedigree.Height - 4) / 5.0!
                 Dim rcBar As New RectangleF(rcPedigree.X, rcPedigree.Y + rcClip.Height - sBarHeight - 4, rcPedigree.Width, sBarHeight)
 
                 Using br As New SolidBrush(clrFill)
-                    For i As Integer = 0 To CInt(Math.Round(sPedigreeLevel * 3))
+                    For i As Integer = 0 To CInt(Math.Round(confidence / 20))
                         g.FillRectangle(br, rcBar)
                         rcBar.Y = rcBar.Y - 1 - sBarHeight
                     Next

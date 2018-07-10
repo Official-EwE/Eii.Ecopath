@@ -5046,6 +5046,8 @@ Public Class cCore
 
 #End Region ' Stats
 
+#Region " Stanza "
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Return a <see cref="cStanzaGroup">stanza group</see> from the core.
@@ -5083,6 +5085,8 @@ Public Class cCore
         Return NULL_VALUE
 
     End Function
+
+#End Region ' Stanza
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -13388,28 +13392,6 @@ Public Class cCore
                 Else
                     ValueObject.ValidationMessage = My.Resources.CoreMessages.MSE_FIXF_FIXESC_FAILEDVALIDATION
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
-                End If
-
-            Case eVarNameFlags.Pedigree
-
-                Dim iVar As Integer = ValueObject.Index
-                Dim igrp As Integer = iSecondaryIndex
-                Dim value As Integer = CInt(ValueObject.Value(igrp))
-                Dim man As cPedigreeManager = Me.GetPedigreeManager(Me.PedigreeVariable(iVar))
-
-                If (man IsNot Nothing) Then
-                    If value <= 0 Then
-                        ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
-                        ValueObject.ValidationStatus = eStatusFlags.OK
-                        ValueObject.ValidationStatus = eStatusFlags.Null
-                    ElseIf value > man.NumLevels Then
-                        ValueObject.ValidationMessage = My.Resources.CoreMessages.PEDIGREE_OUTOFRANGE
-                        ValueObject.ValidationStatus = eStatusFlags.FailedValidation
-                    Else
-                        ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
-                        ValueObject.ValidationStatus = eStatusFlags.OK
-                        ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
-                    End If
                 End If
 
         End Select

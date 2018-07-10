@@ -697,16 +697,16 @@ Namespace Properties
 #Region " Pedigree "
 
         ''' <summary>
-        ''' Get the pedigree value [0, 1] set for the related variable, if any.
+        ''' Get the pedigree CV [0, 100] set for the related variable, if any.
         ''' </summary>
-        Public ReadOnly Property Pedigree As Single
+        Public ReadOnly Property Pedigree As Integer
             Get
                 If (Me.m_pm Is Nothing) Then Return 0
                 If (Me.m_Source Is Nothing) Then Return 0
 
                 Dim pedman As cPedigreeManager = Me.m_pm.Core.GetPedigreeManager(Me.m_VarName)
                 If (pedman Is Nothing) Then Return 0
-                Return CSng(pedman.Pedigree(Me.m_Source.Index) / pedman.NumLevels)
+                Return pedman.Pedigree(Me.m_Source.Index)
             End Get
         End Property
 

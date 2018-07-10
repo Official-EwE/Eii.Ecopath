@@ -78,23 +78,16 @@ Namespace Ecopath.Tools
                     ' Need an integer value representing a level index
                     If Not (TypeOf value Is Integer) Then Return Nothing
 
-                    Dim iLevel As Integer = CInt(value)
-                    ' Need a one-based index
-                    If (iLevel <= 0) Then Return Nothing
-
-                    Dim clr As Color = Nothing
                     Dim core As cCore = Me.Core(cell)
-                    If (core Is Nothing) Then Return Nothing
-
-                    ' Ok, this is downright nasty code. The visualizer assumes that the
-                    ' columns represent pedigree variable indices starting at column 2.
                     Dim var As eVarNameFlags = core.PedigreeVariable(pos.Column - 1)
-
-                    ' Get manager
                     Dim man As cPedigreeManager = core.GetPedigreeManager(var)
-                    If (man Is Nothing) Then Return Nothing
+                    Dim iCV As Integer = CInt(value)
 
-                    Return man.Level(iLevel)
+                    For i As Integer = 1 To man.NumLevels
+                        Dim l As cPedigreeLevel = man.Level(i)
+                        If l.ConfidenceInterval = iCV Then Return l
+                    Next
+                    Return Nothing
 
                 Catch ex As Exception
                     ' Whoah
@@ -140,7 +133,6 @@ Namespace Ecopath.Tools
                     ByVal status As SourceGrid2.DrawCellStatus)
 
                 Dim level As cPedigreeLevel = Me.GetLevel(cell, pos)
-                If (level Is Nothing) Then Return
 
                 Dim style As cStyleGuide.eStyleFlags = 0
                 Dim clrFore As Color = Me.ForeColor
@@ -148,8 +140,17 @@ Namespace Ecopath.Tools
                 Dim rcBorder As RectangleBorder = Me.Border
                 Dim fontCell As Font = Me.GetCellFont()
                 Dim sg As cStyleGuide = Me.StyleGuide(cell)
-                Dim strText As String = Me.m_psg.DisplayText(level)
                 Dim fmt As StringFormat = Me.StringFormat
+                Dim iValueAlt As Integer = cCore.NULL_VALUE
+                Dim strText As String = ""
+
+                Dim val As Object = cell.GetValue(pos)
+                If (val IsNot Nothing) Then
+                    If (TypeOf val Is Integer) Then
+                        iValueAlt = CInt(val)
+                    End If
+                End If
+                strText = Me.m_psg.DisplayText(level, iValueAlt)
 
                 ' Rendering a cell with an associated property?
                 If (TypeOf cell Is EwECellBase) Then
@@ -283,7 +284,6 @@ Namespace Ecopath.Tools
             ' while we're at it.
             If Not core.SetBatchLock(cCore.eBatchLockType.Update) Then Return
 
-            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_APPLYVALUES)
             For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
                 If TypeOf cell Is PropertyCell Then
                     Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
@@ -292,7 +292,6 @@ Namespace Ecopath.Tools
                     End If
                 End If
             Next
-            cApplicationStatusNotifier.EndProgress(Me.Core)
 
             core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
 
@@ -397,22 +396,17 @@ Namespace Ecopath.Tools
                     group = Me.Core.EcoPathGroupInputs(iGroup)
 
                     ' Get property
-                    prop = Me.PropertyManager.GetProperty(man, eVarNameFlags.Pedigree, group)
+                    prop = Me.PropertyManager.GetProperty(man, eVarNameFlags.ConfidenceInterval, group)
                     ' Prepare cell
                     cell = New PropertyCell(prop)
                     ' Add EditHandler to track column selection changes
                     cell.Behaviors.Add(Me.EwEEditHandler)
                     ' Connect special pedigree cell visualizer that handles different display styles
                     cell.VisualModel = Me.m_pcv
-                    ' Can edit cells, but not via normal UI methods. This will allow pasting content,
-                    ' will allow the quick-edit bar to work, but will not allow click-and-type interaction.
-                    cell.DataModel.EnableEdit = True
-                    cell.DataModel.EditableMode = EditableMode.None
                     ' Merge cell and property styles
                     cell.JoinStyles = True
 
-                    ' Apply selected variable to show only specific cells as editable (even though the
-                    ' individual cells cannot be edited)
+                    ' Apply selected variable to show only specific cells as editable
                     If iSelectedVar <> iVariable Then
                         cell.Style = cell.Style Or cStyleGuide.eStyleFlags.NotEditable
                     End If

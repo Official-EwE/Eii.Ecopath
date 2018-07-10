@@ -98,18 +98,21 @@ Namespace Ecopath.Tools
         ''' <see cref="RenderStyle">default</see> <see cref="eRenderStyleTypes">render styles</see>.
         ''' </summary>
         ''' <param name="level">The <see cref="cPedigreeLevel">level</see> to render.</param>
+        ''' <param name="iValueAlt">ALternate value to display if the level does not exist.</param>
         ''' <param name="style">The <see cref="eRenderStyleTypes">render style</see> to
         ''' use, or <see cref="eRenderStyleTypes.NotSet">NotSet</see> to use the
         ''' <see cref="RenderStyle">present render style</see>.</param>
         ''' <returns>A text that represents the given level, considering the
         ''' <paramref name="style">provided</paramref> and <see cref="RenderStyle">selected</see> render styles.</returns>
         ''' -------------------------------------------------------------------
-        Public Function DisplayText(ByVal level As cPedigreeLevel, _
+        Public Function DisplayText(ByVal level As cPedigreeLevel, ByVal iValueAlt As Integer,
                                     Optional ByVal style As eRenderStyleTypes = eRenderStyleTypes.NotSet) As String
 
             ' Fix up render style
             If (style = eRenderStyleTypes.NotSet) Then style = Me.m_renderstyle
-            If (level Is Nothing) Then Return ""
+            If (level Is Nothing) Then
+                Return Me.m_uic.StyleGuide.FormatNumber(iValueAlt, cStyleGuide.eStyleFlags.OK)
+            End If
 
             ' Decide on string to display
             Select Case style

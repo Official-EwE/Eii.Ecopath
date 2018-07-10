@@ -2508,9 +2508,6 @@
   <data name="VARIABLE_PACKETSMULTIPLIER" xml:space="preserve">
     <value>PacketsMultiplier</value>
   </data>
-  <data name="VARIABLE_PEDIGREE" xml:space="preserve">
-    <value>Pedigree</value>
-  </data>
   <data name="VARIABLE_PLAP" xml:space="preserve">
     <value>Plap</value>
   </data>

@@ -1088,6 +1088,7 @@ Namespace Database
                         If (String.Compare(CStr(drow("TABLE_NAME")), strTable) = 0) And
                            (String.Compare(CStr(drow("COLUMN_NAME")), strColumn) = 0) Then
                             strIndex = CStr(drow("INDEX_NAME"))
+                            Exit For
                         End If
                     Next
                 Catch ex As Exception
