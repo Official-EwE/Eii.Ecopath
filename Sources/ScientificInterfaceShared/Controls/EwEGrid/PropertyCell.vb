@@ -245,11 +245,11 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="EwECellBase.Pedigree"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Property Pedigree As Single
+        Public Overrides Property Pedigree As Integer
             Get
                 Return Me.GetProperty().Pedigree
             End Get
-            Set(value As Single)
+            Set(value As Integer)
                 ' NOP
             End Set
         End Property

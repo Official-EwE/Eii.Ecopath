@@ -252,7 +252,7 @@ Namespace Ecopath.Tools
                 If (TypeOf item Is cPedigreeLevelListboxItem) Then
                     level = DirectCast(item, cPedigreeLevelListboxItem).Level
                     If (level IsNot Nothing) Then
-                        iValue = level.Sequence
+                        iValue = level.ConfidenceInterval
                     End If
                 End If
             End If

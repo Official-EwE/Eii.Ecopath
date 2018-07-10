@@ -19,6 +19,7 @@
 '
 
 Option Strict Off ' OUCH
+Imports EwEUtils.Extensions
 Imports EwEUtils.Core
 
 ''' <summary>
@@ -332,8 +333,9 @@ Public Class cEcopathDataStructures
     ''' <summary>Confidence interval expressed in rounded percentages</summary>
     Public PedigreeLevelConfidence() As Integer
     Public PedigreeLevelEstimated() As Boolean
-    ''' <summary>Array [#groups, #supported vars] = pedigree index.</summary>
-    Public Pedigree(,) As Integer
+
+    ''' <summary>Array [#groups, #supported vars] = CV.</summary>
+    Public PedigreeEcopathGroup(,) As Integer
     ''' <summary>One-based array of variables supported by the pedigree system.</summary>
     Public PedigreeVariables As eVarNameFlags() = {eVarNameFlags.NotSet, eVarNameFlags.BiomassAreaInput, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp, eVarNameFlags.TCatchInput}
     ''' <summary>Number of <see cref="PedigreeVariables"/></summary>
@@ -628,7 +630,9 @@ Public Class cEcopathDataStructures
         ReDim Me.PedigreeLevelIndexValue(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelConfidence(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelEstimated(Me.NumPedigreeLevels)
-        ReDim Me.Pedigree(Me.NumGroups, Me.NumPedigreeVariables)
+        ReDim Me.PedigreeEcopathGroup(Me.NumGroups, Me.NumPedigreeVariables)
+
+        Me.PedigreeEcopathGroup.Fill(cCore.NULL_VALUE)
 
     End Sub
 
@@ -973,10 +977,10 @@ Public Class cEcopathDataStructures
                     'do nothing
                 Else
                     Try
-                        iLevel = Me.Pedigree(iGroup, iVariable)
+                        iLevel = Me.PedigreeEcopathGroup(iGroup, iVariable)
                         iTotal += Me.PedigreeLevelIndexValue(iLevel)
                         iNumLevels += 1
-                        If (Me.Pedigree(iGroup, iVariable) < 0) Then
+                        If (Me.PedigreeEcopathGroup(iGroup, iVariable) < 0) Then
                             bPedigreeComplete = False
                         End If
                     Catch ex As Exception

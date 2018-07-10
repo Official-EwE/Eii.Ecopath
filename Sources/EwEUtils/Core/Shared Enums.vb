@@ -1484,8 +1484,6 @@ Namespace Core
         IndexValue
         ''' <summary>To document</summary>
         ConfidenceInterval
-        ''' <summary>To document</summary>
-        Pedigree
 
         'Varnames added for Game Server
 

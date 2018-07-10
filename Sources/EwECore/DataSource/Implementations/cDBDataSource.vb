@@ -1181,7 +1181,7 @@ Namespace DataSources
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupPedigree")
             Dim iGroup As Integer
             Dim iVariable As Integer
-            Dim iLevel As Integer = 1
+            Dim iConfidence As Integer = 1
             Dim bSucces As Boolean = True
 
             While reader.Read()
@@ -1189,10 +1189,10 @@ Namespace DataSources
                 Try
                     iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
                     iVariable = Array.IndexOf(ecopathDS.PedigreeVariables, cin.GetVarName(CStr(reader("VarName"))))
-                    iLevel = Array.IndexOf(ecopathDS.PedigreeLevelDBID, CInt(reader("LevelID")))
+                    iConfidence = CInt(Me.m_db.ReadSafe(reader, "Confidence", cCore.NULL_VALUE))
 
-                    If (iGroup >= 1) And (iVariable >= 1) And (iLevel >= 1) Then
-                        ecopathDS.Pedigree(iGroup, iVariable) = iLevel
+                    If (iGroup >= 1) And (iVariable >= 1) And (iConfidence >= 0) Then
+                        ecopathDS.PedigreeEcopathGroup(iGroup, iVariable) = iConfidence
                     Else
                         ' NOP... log message?
                     End If
@@ -1271,7 +1271,7 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim iGroup As Integer = 0
             Dim iVariable As Integer = 0
-            Dim iLevel As Integer = 0
+            Dim iConfidence As Integer = 0
             Dim bSucces As Boolean = True
 
             Try
@@ -1280,12 +1280,12 @@ Namespace DataSources
 
                 For iGroup = 1 To ecopathDS.NumGroups
                     For iVariable = 1 To ecopathDS.NumPedigreeVariables
-                        iLevel = ecopathDS.Pedigree(iGroup, iVariable)
-                        If (iLevel > 0) Then
+                        iConfidence = ecopathDS.PedigreeEcopathGroup(iGroup, iVariable)
+                        If (iConfidence > 0) Then
                             drow = writer.NewRow()
                             drow("GroupID") = ecopathDS.GroupDBID(iGroup)
                             drow("VarName") = cin.GetVarName(ecopathDS.PedigreeVariables(iVariable))
-                            drow("LevelID") = ecopathDS.PedigreeLevelDBID(iLevel)
+                            drow("Confidence") = iConfidence
                             writer.AddRow(drow)
                         End If
                     Next

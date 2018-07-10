@@ -102,9 +102,7 @@ Public Class cValidatorManager
         validator = New cValidatorOddEven(True)
         m_validators.Add(eVarNameFlags.NumPtsMovAvg, validator)
 
-        'Pedigree
         validator = New cValidatorCore(theCore)
-        m_validators.Add(eVarNameFlags.Pedigree, validator)
         m_validators.Add(eVarNameFlags.VariableName, New cValidatorEnum(GetType(eVarNameFlags)))
 
         validator = New cValidatorCounter(theCore, eCoreCounterTypes.nEcospaceTimeSteps)

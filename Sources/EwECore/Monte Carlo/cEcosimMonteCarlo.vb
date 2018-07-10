@@ -443,7 +443,7 @@ Public Class cEcosimMonteCarlo
     ''' <param name="varname"></param>
     Friend Function LoadFromPedigree(varname As eVarNameFlags) As Boolean
 
-        Dim opt As Integer ' Opt = pedigree level
+        Dim opt As Integer ' Opt = CV
         Dim man As cPedigreeManager = Nothing
         Dim parm As eMCParams = eMCParams.NotSet
         Dim iVar As Integer = Me.m_core.PedigreeVariableIndex(varname)
@@ -453,7 +453,7 @@ Public Class cEcosimMonteCarlo
         ' For all groups
         For i As Integer = 1 To Me.m_epdata.NumGroups
             ' Read assigned pedigree level for a group (was 'Opt = ReadPedigreeFromDatabase(Par)')
-            opt = Me.m_epdata.Pedigree(i, iVar)
+            opt = Me.m_epdata.PedigreeEcopathGroup(i, iVar)
             If opt > 0 Then ' Non-estimated level
                 Try
 
@@ -464,13 +464,13 @@ Public Class cEcosimMonteCarlo
                              eVarNameFlags.QBInput,
                              eVarNameFlags.DietComp
                             parm = Me.PedigreeVarToMCIndex(varname)
-                            CVpar(parm, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
+                            CVpar(parm, i) = opt / 100.0! / 2.0!
                             Me.CalculateUpperLowerLimits(False, parm)
 
                         Case eVarNameFlags.TCatchInput
                             For iFleet As Integer = 1 To Me.m_core.nFleets
-                                CVparLanding(iFleet, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
-                                CVparDiscard(iFleet, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
+                                CVparLanding(iFleet, i) = opt / 100.0! / 2.0!
+                                CVparDiscard(iFleet, i) = opt / 100.0! / 2.0!
                             Next
 
                             Me.CalculateUpperLowerLimits(False, eMCParams.Landings)

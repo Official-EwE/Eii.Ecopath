@@ -26,13 +26,19 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 
+#If 0 Then
+
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.60.0.09:</para>
 ''' <para>
-''' Allow pedigree values outside predefined levels.
+''' Adds new shape data to Ecosim, indexed by fleet x group.
 ''' </para>
 ''' </summary>
+''' <remarks>
+''' VC + JB + JS decided this was needed in June 2018, Vancouver. JS can't really 
+''' recall what it was for. Candidate update has been disabled until it is needed again.
+''' </remarks>
 ''' --------------------------------------------------------------------------
 Friend Class cDBUpdate6_60_00_09
     Inherits cDBUpdate
@@ -51,38 +57,26 @@ Friend Class cDBUpdate6_60_00_09
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Allow pedigree values outside predefined levels"
+            Return "Added fleet x group shape support"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        ' Add field and populate it
-        Dim bSuccess As Boolean = db.Execute("ALTER TABLE EcopathGroupPedigree ADD COLUMN Confidence INTEGER")
-        Dim s As String = "UPDATE EcopathGroupPedigree INNER JOIN Pedigree ON EcopathGroupPedigree.LevelID = Pedigree.LevelID SET EcopathGroupPedigree.Confidence = Pedigree.Confidence"
-        bSuccess = bSuccess And db.Execute(s)
+        Dim bSuccess As Boolean = True
 
-        ' Drop FKs - pffff
-        db.Execute("ALTER TABLE EcopathGroupPedigree DROP CONSTRAINT " & db.GetFkKeyName("EcopathGroup", "EcopathGroupPedigree", "GroupID"))
-        db.Execute("ALTER TABLE EcopathGroupPedigree DROP CONSTRAINT " & db.GetFkKeyName("EcopathGroupPedigree", "EcopathGroup", "GroupID"))
-        db.Execute("ALTER TABLE EcopathGroupPedigree DROP CONSTRAINT " & db.GetFkKeyName("Pedigree", "EcopathGroupPedigree", "LevelID"))
-        db.Execute("ALTER TABLE EcopathGroupPedigree DROP CONSTRAINT " & db.GetFkKeyName("EcopathGroupPedigree", "Pedigree", "LevelID"))
-        ' Drop PK
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcopathGroupPedigree DROP CONSTRAINT " & db.GetPkKeyName("EcopathGroupPedigree"))
-        ' Rebuild PK
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcopathGroupPedigree ADD PRIMARY KEY (GroupID, VarName)")
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcopathGroupPedigree ADD FOREIGN KEY (GroupID) REFERENCES EcopathGroup(GroupID)")
-
-        ' Once LevelID is no longer used in any ey, remove it
-        s = db.GetIndexName("EcopathGroupPedigree", "LevelID")
-        If Not String.IsNullOrWhiteSpace(s) Then
-            bSuccess = bSuccess And db.Execute("DROP INDEX " & db.GetIndexName("EcopathGroupPedigree", "LevelID") & " ON EcopathGroupPedigree")
-        End If
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcopathGroupPedigree DROP COLUMN LevelID")
+        ' Add Ecosim fleet x group shape table
+        bSuccess = bSuccess And db.Execute("CREATE TABLE EcosimScenarioFleetGroupShape (ScenarioID LONG, GroupID LONG, FleetID LONG, ShapeID LONG)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupShape ADD PRIMARY KEY (ScenarioID, GroupID, FleetID, ShapeID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupShape ADD FOREIGN KEY (ScenarioID) REFERENCES EcosimScenario(ScenarioID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupShape ADD FOREIGN KEY (GroupID) REFERENCES EcosimScenarioGroup(GroupID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupShape ADD FOREIGN KEY (FleetID) REFERENCES EcosimScenarioFleet(FleetID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioFleetGroupShape ADD FOREIGN KEY (ShapeID) REFERENCES EcosimShape(ShapeID)")
 
         Return bSuccess
 
     End Function
 
-
 End Class
+
+#End If
