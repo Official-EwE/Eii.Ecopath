@@ -249,7 +249,7 @@ Namespace Controls
 
             If bHasSelection Then
                 For Each shape As cShapeData In Me.SelectedShapes
-                    bIsSeasonal = bIsSeasonal Or Me.SelectedShape.IsSeasonal
+                    bIsSeasonal = bIsSeasonal Or shape.IsSeasonal
                 Next
             End If
 
