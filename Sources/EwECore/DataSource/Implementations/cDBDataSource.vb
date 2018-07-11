@@ -1391,10 +1391,9 @@ Namespace DataSources
                   Implements IEcopathDataSource.RemovePedigreeLevel
 
             Dim bSucces As Boolean = True
+
             Try
-                ' Destroy related pedigree records
-                Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupPedigree WHERE (LevelID={0})", iPedigreeLevelID))
-                ' Destroy zhe master
+                ' Per Jul 2018, Pedigree levels are only no longer stored in other tables
                 Me.m_db.Execute(String.Format("DELETE FROM Pedigree WHERE (LevelID={0})", iPedigreeLevelID))
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while removing PedigreeLevel {1}", ex.Message, iPedigreeLevelID))
