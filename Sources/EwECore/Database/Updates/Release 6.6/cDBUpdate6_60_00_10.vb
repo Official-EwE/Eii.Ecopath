@@ -28,7 +28,7 @@ Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.60.0.09:</para>
+''' <para>Database update 6.60.0.10:</para>
 ''' <para>
 ''' Allow pedigree values outside predefined levels.
 ''' </para>
