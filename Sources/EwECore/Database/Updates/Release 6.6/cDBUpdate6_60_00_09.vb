@@ -78,7 +78,8 @@ Friend Class cDBUpdate6_60_00_09
         If Not String.IsNullOrWhiteSpace(s) Then
             bSuccess = bSuccess And db.Execute("DROP INDEX " & db.GetIndexName("EcopathGroupPedigree", "LevelID") & " ON EcopathGroupPedigree")
         End If
-        bSuccess = bSuccess And db.Execute("ALTER TABLE EcopathGroupPedigree DROP COLUMN LevelID")
+        ' Access still thinks this field is part of indexes. Perhaps the transaction needs to be committed first?
+        db.Execute("ALTER TABLE EcopathGroupPedigree DROP COLUMN LevelID")
 
         Return bSuccess
 
