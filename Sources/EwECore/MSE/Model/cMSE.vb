@@ -1228,7 +1228,7 @@ Namespace MSE
                         '    End If
                         'Next
 
-                        Me.m_Ecosim.SetFtimeFromGear(Biomass, iTimeStep, QYear, Me.m_esData.PredictSimEffort)
+                        Me.m_Ecosim.SetFtimeFromGear(iTimeStep, QYear, Me.m_esData.PredictSimEffort)
 
                     Else 'Me.isTStepRegulated(iTimeStep)
                         'xxxxxxxxxxxxxxx
