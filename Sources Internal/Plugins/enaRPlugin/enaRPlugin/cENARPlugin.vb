@@ -29,6 +29,7 @@ Imports EwEPlugin
 'Imports EwEUtils.Core
 'Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
+Imports System.Windows.Forms
 
 #End Region
 
@@ -326,11 +327,11 @@ Public Class cENARPlugin
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Try
 
-            MenuItem = DirectCast(sender, System.Windows.Forms.ToolStripDropDownItem)
+            MenuItem = DirectCast(sender, ToolStripDropDownItem)
             Dim bSave As Boolean = DirectCast(MenuItem.Tag, cENARPlugin).bSave
 
             If bSave = False Then
