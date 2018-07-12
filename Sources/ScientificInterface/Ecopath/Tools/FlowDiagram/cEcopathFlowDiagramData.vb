@@ -49,7 +49,6 @@ Namespace Ecopath.Controls.FlowDiagram
         Private m_datatype As eFDNodeValueType = eFDNodeValueType.Biomass
 
         Private m_TTLX_all() As Single
-        Private m_totcatch() As Single
 
 #End Region ' Internals
 
@@ -184,9 +183,6 @@ Namespace Ecopath.Controls.FlowDiagram
         Public ReadOnly Property LinkValue(ByVal iPred As Integer, ByVal iPrey As Integer) As Single _
                Implements IFlowDiagramData.LinkValue
             Get
-                ' To prevent problems
-                If Me.m_bInvalid Then Return 0
-
                 Dim c As cCore = Me.UIContext.Core
                 If (iPred <= c.nGroups) And (iPrey <= c.nGroups) Then
                     Dim group As cEcoPathGroupInput = c.EcoPathGroupInputs(iPred)
@@ -195,9 +191,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 iPred -= c.nGroups
                 If (iPrey <= c.nGroups) Then
                     Dim fleet As cEcopathFleetInput = c.EcopathFleetInputs(iPred)
-                    Dim dTotCatch As Single = m_totcatch(iPred)
-                    If dTotCatch = 0 Then dTotCatch = 1
-                    Return (fleet.Landings(iPrey) + fleet.Discards(iPrey)) / dTotCatch
+                    Return fleet.Landings(iPrey) + fleet.Discards(iPrey)
                 End If
                 Return 0
             End Get
@@ -300,14 +294,6 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim val_all(c.nGroups + c.nFleets) As Single
             Dim PP_all(c.nGroups + c.nFleets) As Single
             ReDim Me.m_TTLX_all(c.nGroups + c.nFleets)
-            ReDim Me.m_totcatch(c.nFleets)
-
-            For i As Integer = 1 To c.nFleets
-                Dim fleet As cEcopathFleetInput = c.EcopathFleetInputs(i)
-                For j As Integer = 1 To c.nGroups
-                    Me.m_totcatch(i) += (fleet.Landings(j) + fleet.Discards(j))
-                Next
-            Next
 
             Me.m_sValueMax = 0
             Me.m_sValueMin = Single.MaxValue
