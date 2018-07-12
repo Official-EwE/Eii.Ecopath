@@ -395,11 +395,11 @@ Namespace Controls
 
                 Case IFlowDiagramRenderer.eFDHighlightType.LinkIn
                     clrLine = Me.InLinkColor
-                    sLineWidth = 2.0!
+                    sLineWidth = Me.CustomLineWidth * sLineWidth
 
                 Case IFlowDiagramRenderer.eFDHighlightType.LinkOut
                     clrLine = Me.OutLinkColor
-                    sLineWidth = 2.0!
+                    sLineWidth = Me.CustomLineWidth * sLineWidth
 
                 Case IFlowDiagramRenderer.eFDHighlightType.Invisible
                     Return
