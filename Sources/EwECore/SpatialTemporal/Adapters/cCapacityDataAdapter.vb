@@ -88,14 +88,20 @@ Namespace SpatialData
             'isGroupHabCapChanged(group) tells the habitat capacity model 
             'that the capacity inputs for a group have changed.
             'This is an optimization so only the groups that have changed will be recomputed
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'jb 3-July-2018
+            'We could set isGroupHabCapChanged() = breturnVal
+            'based on the group = layer.index 
+            'this has to be correct because that's how other parts of the UI and core get the group index
+            'xxxxxxxxxxxxxxxxxxxxxxxx
+            'Me.m_spaceData.isGroupHabCapChanged(layer.Index) = breturnVal
+            'xxxxxxxxxxxxxxxxxxxxxxxx
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
             For iGroup As Integer = 1 To Me.m_spaceData.NGroups
                 'Ok Turn on the groups that were changed
-
-                ' XXXXXXXXXXXXXXXXXXXX Why does this explode?!
-
-                'If Me.m_spaceData.CapMapFunctions(layer.Index, iGroup) > 0 Then
                 Me.m_spaceData.isGroupHabCapChanged(iGroup) = breturnVal
-                'End If
             Next
 
             Return breturnVal
