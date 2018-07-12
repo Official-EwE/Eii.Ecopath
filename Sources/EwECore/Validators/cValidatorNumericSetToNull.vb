@@ -26,7 +26,9 @@ Imports EwEUtils.Core
 Public Class cValidatorNumericSetToNull
     Inherits cValidatorDefault
 
-    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Public Overrides Function Validate(ByVal ValueObject As cValue, ByVal MetaData As cVariableMetaData,
+                                         Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE,
+                                         Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         Dim fmt As New Style.cVarnameTypeFormatter()
 
@@ -46,7 +48,7 @@ Public Class cValidatorNumericSetToNull
         End If
 
         ' Check whether value fits the allowed metadata range
-        If MetaData.MinOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), MetaData.Min) And _
+        If MetaData.MinOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), MetaData.Min) And
                 MetaData.MaxOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), MetaData.Max) Then
             'passed validation
             ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)

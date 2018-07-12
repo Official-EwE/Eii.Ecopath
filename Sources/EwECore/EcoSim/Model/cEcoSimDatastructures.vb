@@ -356,6 +356,8 @@ Public Class cEcosimDatastructures
     ''' <remarks>EcopathCatch / StartBiomass</remarks>
     Public relQ(,) As Single
 
+    Public relQt(,,) As Single ' ToDo: Init to cCore.NULL when redimensioning
+
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Forcing & Mediation Functions
     'Added or Changed Varaibles
@@ -745,6 +747,7 @@ Public Class cEcosimDatastructures
         ReDim Kemptons(nTimesteps)
         ReDim ShannonDiversity(nTimesteps)
         ReDim CatchSim(nTimesteps)
+
     End Sub
 
     ''' <summary>
@@ -1217,6 +1220,16 @@ Public Class cEcosimDatastructures
 
     End Sub
 
+    Public Sub setRelQToT(iTimestep As Integer)
+        ' Debug.Assert(iTimestep <> 25)
+        For iflt As Integer = 1 To nGear
+            For igrp As Integer = 1 To nGroups
+                Me.relQ(iflt, igrp) = relQt(iflt, igrp, iTimestep)
+            Next
+        Next
+
+    End Sub
+
 
     ''' <summary>
     ''' Set the summary time periods to using the Ecoism run length (NTime)
@@ -1247,6 +1260,8 @@ Public Class cEcosimDatastructures
         'this worked differently in EwE5
         DefaultFishMortalityRates()
         DefaultFishingRates()
+
+        ' DefaultCatchabilities()
 
     End Sub
 
@@ -1382,6 +1397,31 @@ Public Class cEcosimDatastructures
 
     End Sub
 
+    'Public Sub DefaultCatchabilities()
+    '    Dim i As Integer
+    '    Dim j As Integer
+    '    'set relative catchabilities by gear type, treating effort for each gear as starting at base
+    '    'value of 1.0 so that F for the gear (F=qE=C/B) is 1.0xq where q is relative catchability
+    '    'this avoids measuring effort in some unnecessary data units
+
+    '    For i = 1 To nGear
+    '        For j = 1 To nGroups
+    '            'total catch rate 
+    '            'Includes discards that survive
+    '            'relQ(i, j) = (m_EPData.Landing(i, j) + m_EPData.Discard(i, j)) / m_Data.StartBiomass(j)
+
+    '            For it As Integer = 1 To NTimes
+    '                relQt(i, j, it) = (PropLandedTime(i, j) + Propdiscardtime(i, j)) / StartBiomass(j)
+    '            Next
+
+    '        Next
+    '    Next
+
+    'End Sub
+
+
+
+
     ''' <summary>
     ''' Set effort to default value for all the fleets in list
     ''' </summary>
@@ -1413,9 +1453,17 @@ Public Class cEcosimDatastructures
         Dim i As Integer
         Dim j As Integer
 
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'ToDo JB Forced F'
+        'Check if this is correct once we changed to F forced for partial run 
+        'and 
+        'relQ() has a time component
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
         For i = 1 To nGroups
             For j = 1 To NTimes
-                'set FishRateNO to CatchRate
+                'set FishRateNo(group,time) to CatchRate
+                'for the full run time
                 FishRateNo(i, j) = Fish1(i)
             Next
         Next

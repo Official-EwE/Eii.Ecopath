@@ -1874,6 +1874,9 @@ Namespace Core
 
         ''' <summary>Ecosim SOR Weight for groups with fast production.</summary>
         EcosimSORWt
+
+        ''' <summary>Ecosim base catchability at time.</summary>
+        RelQt
     End Enum
 
 #End Region ' Variable names
@@ -2428,6 +2431,8 @@ Namespace Core
         EcopathSample = 116
 
         EcoPathFleetOutput = 117
+
+        FleetGroupCatchability = 118
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

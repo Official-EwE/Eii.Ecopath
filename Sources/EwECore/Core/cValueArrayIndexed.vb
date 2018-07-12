@@ -30,6 +30,9 @@ Namespace ValueWrapper
         Protected m_iArrayIndex As Integer
         Shadows m_CounterDelegate As CoreIndexedCounterDelegate
 
+        Public Property iSecondIndex As Integer
+
+
         ''' <summary>
         ''' Constructor with no validation object
         ''' </summary>
@@ -55,8 +58,8 @@ Namespace ValueWrapper
                 For i As Integer = 0 To m_nObjects
                     m_statusarray(i) = Status
                 Next
-            Else
-                Debug.Assert(False, "Something is wrong in " & Me.ToString & ".New()")
+                'Else
+                '    Debug.Assert(False, "Something is wrong in " & Me.ToString & ".New()")
             End If
 
         End Sub
@@ -113,5 +116,7 @@ Namespace ValueWrapper
         End Sub
 
     End Class
+
+
 
 End Namespace
