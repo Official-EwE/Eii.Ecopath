@@ -49,6 +49,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Private m_datatype As eFDNodeValueType = eFDNodeValueType.Biomass
 
         Private m_TTLX_all() As Single
+        Private m_catch_all() As Single
 
 #End Region ' Internals
 
@@ -191,7 +192,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 iPred -= c.nGroups
                 If (iPrey <= c.nGroups) Then
                     Dim fleet As cEcopathFleetInput = c.EcopathFleetInputs(iPred)
-                    Return fleet.Landings(iPrey) + fleet.Discards(iPrey)
+                    Return (fleet.Landings(iPrey) + fleet.Discards(iPrey)) / m_catch_all(iPred)
                 End If
                 Return 0
             End Get
@@ -294,6 +295,14 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim val_all(c.nGroups + c.nFleets) As Single
             Dim PP_all(c.nGroups + c.nFleets) As Single
             ReDim Me.m_TTLX_all(c.nGroups + c.nFleets)
+            ReDim Me.m_catch_all(c.nFleets)
+
+            For i As Integer = 1 To c.nFleets
+                Dim flt As cEcopathFleetInput = c.EcopathFleetInputs(i)
+                For j As Integer = 1 To c.nGroups
+                    Me.m_catch_all(i) = Me.m_catch_all(i) + flt.Landings(j) + flt.Discards(j)
+                Next
+            Next
 
             Me.m_sValueMax = 0
             Me.m_sValueMin = Single.MaxValue
@@ -336,7 +345,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Next i
 
             Dim fn As cEcoFunctions = c.EcoFunction
-            fn.EstimateTrophicLevels(c.nFleets + c.nGroups, c.nFleets + c.nLivingGroups, PP_all, link_all, m_TTLX_all)
+            fn.EstimateTrophicLevels(c.nFleets + c.nGroups, c.nFleets + c.nLivingGroups, PP_all, link_all, Me.m_TTLX_all)
             Me.m_bInvalid = False
 
         End Sub
