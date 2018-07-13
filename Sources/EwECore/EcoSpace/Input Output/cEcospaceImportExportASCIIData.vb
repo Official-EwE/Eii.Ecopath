@@ -466,7 +466,7 @@ Public Class cEcospaceImportExportASCIIData
     Public ReadOnly Property TopLeft As PointF _
         Implements IEcospaceImportExport.PosTopLeft
         Get
-            Return New PointF(CSng(Me.m_dXLLpos), CSng(Me.m_dYLLpos + Me.m_nCols * Me.m_dCellSize))
+            Return New PointF(CSng(Me.m_dXLLpos), CSng(Me.m_dYLLpos + Me.m_nRows * Me.m_dCellSize))
         End Get
     End Property
 
