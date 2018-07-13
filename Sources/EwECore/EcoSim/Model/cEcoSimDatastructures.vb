@@ -1220,11 +1220,20 @@ Public Class cEcosimDatastructures
 
     End Sub
 
-    Public Sub setRelQToT(iTimestep As Integer)
+    Public Sub setRelQToT(iTimestep As Integer, Optional bUseNullValues As Integer = True)
         ' Debug.Assert(iTimestep <> 25)
         For iflt As Integer = 1 To nGear
             For igrp As Integer = 1 To nGroups
-                Me.relQ(iflt, igrp) = relQt(iflt, igrp, iTimestep)
+                If bUseNullValues Then
+                    Me.relQ(iflt, igrp) = relQt(iflt, igrp, iTimestep)
+                Else
+                    If relQt(iflt, igrp, iTimestep) <> cCore.NULL_VALUE Then
+                        Me.relQ(iflt, igrp) = relQt(iflt, igrp, iTimestep)
+                    Else
+                        Me.relQ(iflt, igrp) = 0
+                    End If
+
+                End If
             Next
         Next
 
