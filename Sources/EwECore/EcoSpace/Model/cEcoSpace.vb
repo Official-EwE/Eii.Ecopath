@@ -941,6 +941,7 @@ Public Class cEcoSpace
                 'setTimeStepCounters() also deals with the SpinUp period
                 Me.setTimeStepCounters(itt, its)
 
+                Me.m_SimData.setRelQToT(its, False)
 
                 If itt > nEcospaceTimeSteps Then
                     'We have exceeded the number of time step bump out of the time loop.
@@ -1038,6 +1039,8 @@ Public Class cEcoSpace
                         RelRepStanza(i) = m_SimData.tval(m_Stanza.EggProdShapeSplit(i)) * m_Stanza.RscaleSplit(i) / m_SimData.StartBiomass(m_Stanza.EcopathCode(i, m_Stanza.Nstanza(i)))
                     End If
                 Next
+
+
 
                 If m_Data.PredictEffort Then
 
@@ -2452,6 +2455,8 @@ Public Class cEcoSpace
                 'so the Space run length must be less then Ecosim run length
                 Me.m_Data.TotalTime = Me.m_SimData.NumYears
             End If
+
+            Me.m_SimData.setRelQToT(1, False)
 
             '*******************
             'readAdvectFile()
@@ -5177,9 +5182,7 @@ exitline:
                             'Fishing Mort Rate in a cell by group
                             Dim f As Single = m_SimData.relQ(iflt, igrp) * (m_SimData.PropLandedTime(iflt, igrp) + m_SimData.Propdiscardtime(iflt, igrp))
                             m_Data.Ftot(igrp, irow, jcol) += m_Data.EffortSpace(iflt, irow, jcol) * f / Me.m_Data.PAreaFished(iflt)(irow, jcol)
-                            '  m_Data.Ftot(igrp, irow, jcol) += m_Data.EffortSpace(iflt, irow, jcol) * m_SimData.relQ(iflt, igrp) / Me.m_Data.PAreaFished(iflt)(irow, jcol)
 
-                            ' Debug.Assert(m_Data.Ftot(igrp, irow, jcol) = 0)
                         Next igrp
                     End If ' m_Data.Depth(i, j) > 0
 
