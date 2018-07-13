@@ -8,11 +8,11 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("enaRPlugin")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("enaRPlugin")> 
-<Assembly: AssemblyCopyright("Copyright ©  2018")> 
+<Assembly: AssemblyTitle("enaRPlugin")>
+<Assembly: AssemblyDescription("Plug-in for Ecopath with Ecosim 6 to extract SCOR dat files for enaR")>
+<Assembly: AssemblyCompany("Ecopath International Initiative")>
+<Assembly: AssemblyProduct("enaRPlugin")>
+<Assembly: AssemblyCopyright("Copyright © 2018")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

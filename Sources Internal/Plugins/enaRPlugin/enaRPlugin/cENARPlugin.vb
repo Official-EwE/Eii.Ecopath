@@ -30,6 +30,7 @@ Imports EwEPlugin
 'Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports System.Windows.Forms
+Imports EwEUtils.Core
 
 #End Region
 
@@ -61,7 +62,8 @@ Public Class cENARPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcospaceInitializedPlugin
     Implements EwEPlugin.IUIContextPlugin
-    Implements EwEPlugin.IMenuItemPlugin
+    Implements EwEPlugin.IMenuItemTogglePlugin
+    Implements EwEPlugin.IAutoSavePlugin
     Implements EwEPlugin.IEcospacePlugin
 
 #Region " Local variables"
@@ -77,13 +79,6 @@ Public Class cENARPlugin
     Private m_EcoSpaceData As cEcospaceDataStructures
 
     Private m_uic As cUIContext = Nothing
-    'Private m_form As frmEwEPlugin = Nothing
-
-    Private Const MENUTEXT_WRITE_SAVE_ON As String = "Save enaR files = ON"
-    Private Const MENUTEXT_WRITE_SAVE_OFF As String = "Save enaR files = OFF"
-
-
-    Dim MenuItem As System.Windows.Forms.ToolStripDropDownItem
 
 #End Region
 
@@ -216,7 +211,7 @@ Public Class cENARPlugin
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
         Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcospaceInitialized() Failed to get EcosimDataStructures.")
 
-        Me.setUIOff()
+        Me.DisableEnaR()
 
     End Sub
 
@@ -282,7 +277,7 @@ Public Class cENARPlugin
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return MENUTEXT_WRITE_SAVE_OFF
+            Return My.Resources.MENU_SAVE_ENAR
         End Get
     End Property
 
@@ -293,9 +288,7 @@ Public Class cENARPlugin
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
-            ' Use an image from the pool of shared resources
-            Return ScientificInterfaceShared.My.Resources.Cancel
-            ' Return Nothing
+            Return Nothing
         End Get
     End Property
 
@@ -312,15 +305,6 @@ Public Class cENARPlugin
         End Get
     End Property
 
-
-    Public ReadOnly Property bSave As Boolean
-
-        Get
-            Return Me.m_EcoSpaceData.bENA
-        End Get
-
-    End Property
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Provide EwE6 with a method to execute when a user interface control for 
@@ -330,65 +314,41 @@ Public Class cENARPlugin
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Try
-
-            MenuItem = DirectCast(sender, ToolStripDropDownItem)
-            Dim bSave As Boolean = DirectCast(MenuItem.Tag, cENARPlugin).bSave
-
-            If bSave = False Then
-                'Toggle to True and Save
-                MenuItem.Text = MENUTEXT_WRITE_SAVE_ON
-                Me.m_EcoSpaceData.bENA = True
-                MenuItem.Image = ScientificInterfaceShared.My.Resources.OK
-
-            Else
-                'Toggle OFF
-                MenuItem.Text = MENUTEXT_WRITE_SAVE_OFF
-                Me.m_EcoSpaceData.bENA = False
-                MenuItem.Image = ScientificInterfaceShared.My.Resources.Cancel
-
+            If (Me.m_EcoSpaceData IsNot Nothing) Then
+                Me.m_EcoSpaceData.bENA = Not Me.m_EcoSpaceData.bENA
             End If
-
         Catch ex As Exception
 
         End Try
-
     End Sub
 
-    Private Sub setUIOff()
+    Public ReadOnly Property IsChecked As Boolean Implements IMenuItemTogglePlugin.IsChecked
+        Get
+            Return Me.AutoSave
+        End Get
+    End Property
+
+    Private Sub DisableEnaR()
         Try
-
-            If Me.MenuItem IsNot Nothing Then
-                If Me.m_EcoSpaceData IsNot Nothing Then
-                    'OFF in the core
-                    Me.m_EcoSpaceData.bENA = False
-
-                    'Toggle OFF UI
-                    MenuItem.Text = MENUTEXT_WRITE_SAVE_OFF
-                    MenuItem.Image = ScientificInterfaceShared.My.Resources.Cancel
-
-                End If
-
-                MenuItem.GetCurrentParent.Refresh()
-
+            If (Me.m_EcoSpaceData IsNot Nothing) Then
+                Me.m_EcoSpaceData.bENA = False
             End If
-
         Catch ex As Exception
             'just in case it all goes sideways
-            Debug.Assert(False, Me.ToString + ".setUIOff() Exception: " + ex.Message)
+            Debug.Assert(False, Me.ToString + ".DisableEnaR() Exception: " + ex.Message)
         End Try
-
     End Sub
 
     Public Sub LoadEcospaceScenario(dataSource As Object) Implements IEcospacePlugin.LoadEcospaceScenario
-        Me.setUIOff()
+        Me.DisableEnaR()
     End Sub
 
     Public Sub SaveEcospaceScenario(dataSource As Object) Implements IEcospacePlugin.SaveEcospaceScenario
-        '  Throw New NotImplementedException()
+        ' NOP
     End Sub
 
     Public Sub CloseEcospaceScenario() Implements IEcospacePlugin.CloseEcospaceScenario
-        '   Throw New NotImplementedException()
+        ' NOP
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -416,19 +376,34 @@ Public Class cENARPlugin
         End Get
     End Property
 
-    '''' -----------------------------------------------------------------------
-    '''' <summary>
-    '''' Tell EwE6 where to place an item in its navigation tree.
-    '''' </summary>
-    '''' -----------------------------------------------------------------------
-    'Public ReadOnly Property NavigationTreeItemLocation() As String Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
-    '    Get
-    '        ' As an example, place a navigation tree item under the main 'tools' node.
-    '        Return "ndTools"
-    '    End Get
-    'End Property
-
 #End Region ' User Interface plug-in implementation
+
+#Region " Auto-save plug-in implementation "
+
+    Public Function AutoSaveName() As String Implements IAutoSavePlugin.AutoSaveName
+        Return My.Resources.AUTOSAVE_NAME
+    End Function
+
+    Public Function AutoSaveType() As eAutosaveTypes Implements IAutoSavePlugin.AutoSaveType
+        Return eAutosaveTypes.EcospaceResults
+    End Function
+
+    Public Function AutoSaveOutputPath() As String Implements IAutoSavePlugin.AutoSaveOutputPath
+        Return Path.Combine(Me.m_core.DefaultOutputPath(Me.AutoSaveType), "ena_data")
+    End Function
+
+    Public Property AutoSave As Boolean Implements IAutoSavePlugin.AutoSave
+        Get
+            If (Me.m_EcoSpaceData Is Nothing) Then Return False
+            Return Me.m_EcoSpaceData.bENA
+        End Get
+        Set(value As Boolean)
+            If (Me.m_EcoSpaceData Is Nothing) Then Return
+            Me.m_EcoSpaceData.bENA = value
+        End Set
+    End Property
+
+#End Region ' Auto-save plug-in implementation
 
 #Region "IPlugin implementation"
 
