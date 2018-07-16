@@ -104,7 +104,7 @@ Namespace Controls
                                     Optional ByVal bFilledArrow As Boolean = True)
 
             ' Leave a margin
-            rc.Inflate(-2, -2)
+            'rc.Inflate(-2, -2)
             ' Calc center
             Dim ptfCenter As New PointF(CSng(rc.X + rc.Width / 2), CSng(rc.Y + rc.Height / 2))
             ' Calc arrow size
