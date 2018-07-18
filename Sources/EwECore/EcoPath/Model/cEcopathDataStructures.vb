@@ -956,6 +956,8 @@ Public Class cEcopathDataStructures
 
     Private Sub ComputePedigree()
 
+        ' ToDo: include custom confidence intervals, not related to a pre-defined level
+
         Dim iLevel As Integer = 0
         Dim iTotal As Integer = 0
         Dim iNumLevels As Integer = 0
@@ -971,17 +973,17 @@ Public Class cEcopathDataStructures
 
                 If Me.PP(iGroup) = 1 And (var = eVarNameFlags.PBInput Or var = eVarNameFlags.QBInput) Then
                     'Skip qb for producers
-                ElseIf Me.fCatch(iGroup) = 0 And (var = eVarNameFlags.TCatchInput) Then
-                    'do nothing continue to next par
                 ElseIf Me.PP(iGroup) = 2 Then
                     'do nothing
                 Else
                     Try
                         iLevel = Me.PedigreeEcopathGroup(iGroup, iVariable)
-                        iTotal += Me.PedigreeLevelIndexValue(iLevel)
-                        iNumLevels += 1
-                        If (Me.PedigreeEcopathGroup(iGroup, iVariable) < 0) Then
-                            bPedigreeComplete = False
+                        If (iLevel <> cCore.NULL_VALUE) Then
+                            iTotal += Me.PedigreeLevelIndexValue(iLevel)
+                            iNumLevels += 1
+                            If (Me.PedigreeEcopathGroup(iGroup, iVariable) < 0) Then
+                                bPedigreeComplete = False
+                            End If
                         End If
                     Catch ex As Exception
 
