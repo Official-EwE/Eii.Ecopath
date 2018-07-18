@@ -5032,7 +5032,8 @@ Public Class cCore
             Me.m_EcopathStats.TotalVarCost = Me.m_EcoPathData.Variab
             Me.m_EcopathStats.TotalCost = Me.m_EcoPathData.Fixed + Me.m_EcoPathData.Variab
             Me.m_EcopathStats.Profit = Me.m_EcoPathData.LandingValue + Me.m_EcoPathData.ShadowValue - (Me.m_EcoPathData.Fixed + Me.m_EcoPathData.Variab)
-            Me.m_EcopathStats.Pedigree = Me.m_EcoPathData.PedigreeStatsModelIndex
+            Me.m_EcopathStats.PedigreeIndex = Me.m_EcoPathData.PedigreeStatsModelIndex
+            Me.m_EcopathStats.PedigreeCV = Me.m_EcoPathData.PedigreeStatsModelCV
             Me.m_EcopathStats.MeasureOfFit = Me.m_EcoPathData.PedigreeStatsTStar
             Me.m_EcopathStats.DiveristyIndex = Me.m_EcoPathData.DiversityIndex
 

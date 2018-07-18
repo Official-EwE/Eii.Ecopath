@@ -271,13 +271,28 @@ Namespace Ecopath.Tools
         End Sub
 
         Protected Sub OnGridSelectionChanged()
-            Dim level As cPedigreeLevel = Nothing
             Dim iValueSel As Integer = Me.m_grid.SelectedValue
-            If iValueSel <= 0 Then
-                Me.m_lbLevels.SelectedIndex = -1
-            Else
-                Me.m_lbLevels.SelectedIndex = iValueSel
+            Dim iSelection As Integer = -1
+
+            ' Translate selected CV to a level, if any
+            If iValueSel > 0 Then
+                For i As Integer = 0 To Me.m_lbLevels.Items.Count - 1
+                    Dim item As Object = Me.m_lbLevels.Items(i)
+                    If (TypeOf item Is cPedigreeLevelListboxItem) Then
+                        Dim level As cPedigreeLevel = DirectCast(item, cPedigreeLevelListboxItem).Level
+                        If (level IsNot Nothing) Then
+                            If iValueSel = level.ConfidenceInterval Then
+                                ' ToDo: if multiple levels have the same CV, as the defaults do, the first level will be selected. Bot the initial level that was used!
+                                ' A proper solution would be to add a 'custom CV' value, cCore.NULL_VALUE by default, and to leave Pedigree selections to levels
+                                iSelection = i
+                                Exit For
+                            End If
+                        End If
+                    End If
+                Next
             End If
+            Me.m_lbLevels.SelectedIndex = iSelection
+
         End Sub
 
 #End Region ' Events

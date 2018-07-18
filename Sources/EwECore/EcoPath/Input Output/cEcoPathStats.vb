@@ -110,8 +110,11 @@ Public Class cEcoPathStats
             'Profit
             val = New cValue(New Single, eVarNameFlags.EcopathStatsProfit, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
-            'Ecopath pedigree
-            val = New cValue(New Single, eVarNameFlags.EcopathStatsPedigree, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
+            'Ecopath pedigree index
+            val = New cValue(New Single, eVarNameFlags.EcopathStatsPedigreeIndex, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
+            'Ecopath pedigree CV
+            val = New cValue(New Single, eVarNameFlags.EcopathStatsPedigreeCV, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
             Me.m_values.Add(val.varName, val)
             'Ecopath pedigree measure of fit
             val = New cValue(New Single, eVarNameFlags.EcopathStatsMeasureOfFit, eStatusFlags.NotEditable Or eStatusFlags.ValueComputed, eValueTypes.Sng)
@@ -645,21 +648,39 @@ Public Class cEcoPathStats
 
     ' --
 
-    Public Property Pedigree() As Single
+    Public Property PedigreeIndex() As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcopathStatsPedigree))
+            Return CSng(GetVariable(eVarNameFlags.EcopathStatsPedigreeIndex))
         End Get
         Friend Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EcopathStatsPedigree, value)
+            SetVariable(eVarNameFlags.EcopathStatsPedigreeIndex, value)
         End Set
     End Property
 
-    Public Property PedigreeStatus() As eStatusFlags
+    Public Property PedigreeIndexsStatus() As eStatusFlags
         Get
-            Return GetStatus(eVarNameFlags.EcopathStatsPedigree)
+            Return GetStatus(eVarNameFlags.EcopathStatsPedigreeIndex)
         End Get
         Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EcopathStatsPedigree, value)
+            SetStatus(eVarNameFlags.EcopathStatsPedigreeIndex, value)
+        End Set
+    End Property
+
+    Public Property PedigreeCV() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcopathStatsPedigreeCV))
+        End Get
+        Friend Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.EcopathStatsPedigreeCV, value)
+        End Set
+    End Property
+
+    Public Property PedigreeCVStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.EcopathStatsPedigreeIndex)
+        End Get
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.EcopathStatsPedigreeIndex, value)
         End Set
     End Property
 
@@ -703,4 +724,27 @@ Public Class cEcoPathStats
         End Set
     End Property
 
+#Region " Deprecated "
+
+    <Obsolete("Use PedigreeIndex instead")>
+    Public Property Pedigree() As Single
+        Get
+            Return Me.PedigreeIndex
+        End Get
+        Friend Set(ByVal value As Single)
+            Me.PedigreeIndex = value
+        End Set
+    End Property
+
+    <Obsolete("Use PedigreeIndexStatus instead")>
+    Public Property PedigreeStatus() As eStatusFlags
+        Get
+            Return Me.PedigreeIndexsStatus
+        End Get
+        Friend Set(ByVal value As eStatusFlags)
+            Me.PedigreeIndexsStatus = value
+        End Set
+    End Property
+
+#End Region ' Deprecated
 End Class
