@@ -684,7 +684,7 @@
   <data name="HEADER_ECOPATH_AREA" xml:space="preserve">
     <value>Ecopath area</value>
   </data>
-  <data name="HEADER_ECOPATH_PEDIGREE" xml:space="preserve">
+  <data name="HEADER_ECOPATH_PEDIGREE_INDEX" xml:space="preserve">
     <value>Ecopath pedigree index</value>
   </data>
   <data name="HEADER_ECOSIM_YEARS" xml:space="preserve">
@@ -3065,5 +3065,8 @@
   <data name="PROMPT_STYLE_SAVE_SUCCESS" xml:space="preserve">
     <value>Styles saved to {0}</value>
     <comment>{0}=File name</comment>
+  </data>
+  <data name="HEADER_ECOPATH_PEDIGREE_CV" xml:space="preserve">
+    <value>Ecopath pedigree CV</value>
   </data>
 </root>

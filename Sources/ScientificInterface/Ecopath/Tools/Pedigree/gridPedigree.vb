@@ -405,6 +405,7 @@ Namespace Ecopath.Tools
                     cell.VisualModel = Me.m_pcv
                     ' Merge cell and property styles
                     cell.JoinStyles = True
+                    cell.SuppressZero(0) = True
 
                     ' Apply selected variable to show only specific cells as editable
                     If iSelectedVar <> iVariable Then

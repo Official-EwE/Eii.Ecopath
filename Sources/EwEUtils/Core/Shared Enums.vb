@@ -251,8 +251,10 @@ Namespace Core
         EcopathStatsTotalCost
         ''' <summary>Profit</summary>
         EcopathStatsProfit
-        ''' <summary>Pedigree</summary>
-        EcopathStatsPedigree
+        ''' <summary>Pedigree index</summary>
+        EcopathStatsPedigreeIndex
+        ''' <summary>Pedigree CV</summary>
+        EcopathStatsPedigreeCV
         ''' <summary>Measure of pedigree fit</summary>
         EcopathStatsMeasureOfFit
         ''' <summary>Selected diversity indicator</summary>

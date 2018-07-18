@@ -250,7 +250,8 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.EcopathStatsTotalVarCost) = [Default](eValueTypes.Sng, cUnits.Monetary)
         Me.Metadata(eVarNameFlags.EcopathStatsTotalCost) = [Default](eValueTypes.Sng, cUnits.Monetary)
         Me.Metadata(eVarNameFlags.EcopathStatsProfit) = [Default](eValueTypes.Sng, cUnits.Monetary)
-        Me.Metadata(eVarNameFlags.EcopathStatsPedigree) = [Default](eValueTypes.Sng)
+        Me.Metadata(eVarNameFlags.EcopathStatsPedigreeIndex) = [Default](eValueTypes.Sng)
+        Me.Metadata(eVarNameFlags.EcopathStatsPedigreeCV) = [Default](eValueTypes.Sng)
         Me.Metadata(eVarNameFlags.EcopathStatsMeasureOfFit) = [Default](eValueTypes.Sng)
         Me.Metadata(eVarNameFlags.EcopathStatsDiversity) = [Default](eValueTypes.Sng)
 
@@ -289,7 +290,7 @@ Public Class cVariableMetaData
         ' -- Pedigree
         Me.Metadata(eVarNameFlags.VariableName) = New cVariableMetaData(0, [Enum].GetValues(GetType(eVarNameFlags)).Length, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         Me.Metadata(eVarNameFlags.IndexValue) = New cVariableMetaData(0, 1, gt, le)
-        Me.Metadata(eVarNameFlags.ConfidenceInterval) = New cVariableMetaData(0, 100, gt, lt, cCore.NULL_VALUE)
+        Me.Metadata(eVarNameFlags.ConfidenceInterval) = New cVariableMetaData(0, 100, ge, le, cCore.NULL_VALUE)
 
         ' -- PSD --
         Me.Metadata(eVarNameFlags.PSDEnabled) = New cVariableMetaData()

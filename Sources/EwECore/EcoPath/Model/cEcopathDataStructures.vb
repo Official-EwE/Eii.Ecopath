@@ -342,6 +342,7 @@ Public Class cEcopathDataStructures
     Public NumPedigreeVariables As Integer = Me.PedigreeVariables.Length - 1
 
     Public PedigreeStatsModelIndex As Single
+    Public PedigreeStatsModelCV As Single
     Public PedigreeStatsTStar As Single
 
     ''' <summary>
@@ -956,11 +957,11 @@ Public Class cEcopathDataStructures
 
     Private Sub ComputePedigree()
 
-        ' ToDo: include custom confidence intervals, not related to a pre-defined level
-
         Dim iLevel As Integer = 0
-        Dim iTotal As Integer = 0
-        Dim iNumLevels As Integer = 0
+        Dim sTotalIndex As Single = 0
+        Dim sTotalCV As Single = 0
+        Dim iNumIndex As Integer = 0
+        Dim iNumCV As Integer = 0
         Dim group As cEcoPathGroupInput = Nothing
         Dim var As eVarNameFlags = eVarNameFlags.NotSet
         Dim bPedigreeComplete As Boolean = (Me.NumPedigreeLevels > 0)
@@ -977,14 +978,35 @@ Public Class cEcopathDataStructures
                     'do nothing
                 Else
                     Try
-                        iLevel = Me.PedigreeEcopathGroup(iGroup, iVariable)
-                        If (iLevel <> cCore.NULL_VALUE) Then
-                            iTotal += Me.PedigreeLevelIndexValue(iLevel)
-                            iNumLevels += 1
-                            If (Me.PedigreeEcopathGroup(iGroup, iVariable) < 0) Then
+                        Dim cv As Integer = Me.PedigreeEcopathGroup(iGroup, iVariable)
+                        Dim iBestLevel As Integer = -1
+                        Dim iBestCV As Integer = 100
+
+                        If (cv > 0) Then
+
+                            For iLevel = 1 To Me.NumPedigreeLevels
+                                If Me.PedigreeLevelVarName(iLevel) = var Then
+                                    If Me.PedigreeLevelConfidence(iLevel) >= cv Then
+                                        If (Me.PedigreeLevelConfidence(iLevel) < iBestCV) Then
+                                            iBestCV = Me.PedigreeLevelConfidence(iLevel)
+                                            iBestLevel = iLevel
+                                        End If
+                                    End If
+                                End If
+                            Next iLevel
+
+                            If iBestLevel < 0 Then
                                 bPedigreeComplete = False
+                            Else
+                                sTotalIndex += Me.PedigreeLevelIndexValue(iBestLevel)
+                                iNumIndex += 1
                             End If
+
+                            sTotalCV += cv
+                            iNumCV += 1
+
                         End If
+
                     Catch ex As Exception
 
                     End Try
@@ -993,13 +1015,19 @@ Public Class cEcopathDataStructures
             Next iVariable
         Next iGroup
 
-        If (iNumLevels = 0 Or Not bPedigreeComplete) Then
+        If (iNumIndex = 0 Or Not bPedigreeComplete) Then
             Me.PedigreeStatsModelIndex = cCore.NULL_VALUE
             Me.PedigreeStatsTStar = cCore.NULL_VALUE
         Else
-            Dim sVar As Single = CSng(iTotal / iNumLevels)
+            Dim sVar As Single = sTotalIndex / iNumIndex
             Me.PedigreeStatsModelIndex = sVar
             Me.PedigreeStatsTStar = CSng(sVar * Math.Sqrt(Me.NumLiving - 2) / Math.Sqrt(1 - sVar ^ 2))
+        End If
+
+        If (iNumCV = 0 Or sTotalCV = 0) Then
+            Me.PedigreeStatsModelCV = cCore.NULL_VALUE
+        Else
+            Me.PedigreeStatsModelCV = sTotalCV / iNumCV
         End If
 
     End Sub

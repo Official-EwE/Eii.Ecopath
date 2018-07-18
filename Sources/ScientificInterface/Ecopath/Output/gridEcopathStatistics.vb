@@ -92,7 +92,8 @@ Namespace Ecopath.Output
             Me.AddRow(SharedResources.HEADER_SUM_COST_VARIABLE, source, eVarNameFlags.EcopathStatsTotalVarCost)
             Me.AddRow(SharedResources.HEADER_SUM_COST, source, eVarNameFlags.EcopathStatsTotalCost)
             Me.AddRow(SharedResources.HEADER_SUM_PROFIT, source, eVarNameFlags.EcopathStatsProfit)
-            Me.AddRow(SharedResources.HEADER_ECOPATH_PEDIGREE, source, eVarNameFlags.EcopathStatsPedigree)
+            Me.AddRow(SharedResources.HEADER_ECOPATH_PEDIGREE_INDEX, source, eVarNameFlags.EcopathStatsPedigreeIndex)
+            Me.AddRow(SharedResources.HEADER_ECOPATH_PEDIGREE_CV, source, eVarNameFlags.EcopathStatsPedigreeCV)
             Me.AddRow(SharedResources.HEADER_MEASUREOFFIT, source, eVarNameFlags.EcopathStatsMeasureOfFit)
 
             Dim model As cEwEModel = Me.Core.EwEModel
