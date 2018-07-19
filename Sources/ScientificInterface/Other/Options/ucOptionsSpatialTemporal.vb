@@ -189,7 +189,7 @@ Namespace Other
 
                 Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
                 Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
-                cmd.Invoke(Path.GetDirectoryName(cfg.FileName))
+                cmd.Invoke(Path.GetDirectoryName(strFile))
 
             Catch ex As Exception
                 'ToDo: log this
