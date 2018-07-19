@@ -72,6 +72,7 @@ Namespace SpatialData
         Private m_dataset As cMultiFileDataSetPlugin = Nothing
         Private m_lFiles As New List(Of cFileEntry)
         Private m_strSource As String = ""
+        Private m_bInUpdate As Boolean = False
 
 #End Region ' Private vars
 
@@ -95,6 +96,8 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+
+            Me.m_bInUpdate = True
 
             If (Me.m_dataset Is Nothing) Then
                 Me.m_dataset = New cMultiFileDataSetPlugin()
@@ -148,6 +151,9 @@ Namespace SpatialData
             '' Set dynamic properties
             'Me.m_hdrTime.CollapsedParentHeight = Me.m_rbFromDate.Location.Y
             'Me.m_hdrTime.IsCollapsed = True
+
+            Me.m_bInUpdate = False
+            Me.UpdateControls()
 
         End Sub
 
@@ -319,7 +325,19 @@ Namespace SpatialData
 
         Private Sub OnPossiblyDatePartSelected(sender As Object, e As EventArgs) _
             Handles m_tbxDatePart.MouseUp, m_tbxDatePart.KeyUp
+
+            Me.m_rbFromName.Checked = True
             Me.UpdateControls()
+
+        End Sub
+
+        Private Sub OnDataPartFilterChanged(sender As Object, e As EventArgs) _
+            Handles m_cmbFormat.SelectedIndexChanged
+
+            If (Me.m_bInUpdate) Then Return
+            Me.m_rbFromName.Checked = True
+            Me.UpdateControls()
+
         End Sub
 
 #End Region ' Control events
@@ -397,6 +415,7 @@ Namespace SpatialData
 
             ' Prevent intialization errors
             If (Me.m_dataset Is Nothing) Then Return
+            If (Me.m_bInUpdate) Then Return
 
             Dim strPath As String = Me.AbsolutePath()
             Dim bHasFolder As Boolean = False
