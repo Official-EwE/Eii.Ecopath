@@ -248,7 +248,7 @@ Namespace SpatialData
             Me.m_cmbFormat.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cmbFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbFormat.FormattingEnabled = True
-            Me.m_cmbFormat.Items.AddRange(New Object() {"year-month", "month-year", "year only"})
+            Me.m_cmbFormat.Items.AddRange(New Object() {"year-month", "month-year", "year"})
             Me.m_cmbFormat.Location = New System.Drawing.Point(351, 47)
             Me.m_cmbFormat.Name = "m_cmbFormat"
             Me.m_cmbFormat.Size = New System.Drawing.Size(89, 21)
