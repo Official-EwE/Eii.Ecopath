@@ -102,7 +102,6 @@ Public Class cSFPParameters
 
         Dim ts As cTimeSeries
         Dim tsType As eTimeSeriesType
-        ' Dim tsname As String
         Dim count As Integer = 0
 
         For i As Integer = 1 To m_ts.nTimeSeries
@@ -110,11 +109,13 @@ Public Class cSFPParameters
             tsType = ts.TimeSeriesType
 
             Select Case tsType
-                Case eTimeSeriesType.BiomassRel, _
-                     eTimeSeriesType.TotalMortality, _
-                     eTimeSeriesType.Catches, _
-                     eTimeSeriesType.CatchesRel, _
-                     eTimeSeriesType.AverageWeight
+                Case eTimeSeriesType.BiomassRel,
+                     eTimeSeriesType.TotalMortality,
+                     eTimeSeriesType.Catches,
+                     eTimeSeriesType.CatchesRel,
+                     eTimeSeriesType.AverageWeight,
+                     eTimeSeriesType.Discards,
+                     eTimeSeriesType.Landings
                     count += 1
 
                 Case eTimeSeriesType.BiomassAbs
@@ -178,11 +179,13 @@ Public Class cSFPParameters
             tsType = ts.TimeSeriesType
             'If the time series type is 0,1,5,6 or 7 add its datapoints to the total number of observations
             Select Case tsType
-                Case eTimeSeriesType.BiomassRel, _
-                    eTimeSeriesType.TotalMortality, _
-                    eTimeSeriesType.Catches, _
-                    eTimeSeriesType.CatchesRel, _
-                    eTimeSeriesType.AverageWeight
+                Case eTimeSeriesType.BiomassRel,
+                    eTimeSeriesType.TotalMortality,
+                    eTimeSeriesType.Catches,
+                    eTimeSeriesType.CatchesRel,
+                    eTimeSeriesType.AverageWeight,
+                    eTimeSeriesType.Discards,
+                    eTimeSeriesType.Landings
                     'If the weight type is not 0 add datapoints of time series to the total number of observations
                     If ts.WtType > 0 Then
                         AddToObservations(ts)
