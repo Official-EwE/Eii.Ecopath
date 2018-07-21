@@ -392,9 +392,9 @@ Namespace Ecosim
                      eTimeSeriesType.AverageWeight,
                      eTimeSeriesType.Catches,
                      eTimeSeriesType.CatchesRel,
-                     eTimeSeriesType.CatchesForcing
-                    Return True
-                Case eTimeSeriesType.Discards
+                     eTimeSeriesType.CatchesForcing,
+                     eTimeSeriesType.DiscardMortality,
+                     eTimeSeriesType.DiscardProportion
                     Return True
             End Select
             Return False
@@ -2448,7 +2448,14 @@ Namespace Ecosim
                     If Me.m_RefData.setRefDataIndex(iDYear, iTimeStep, iMonth, iYear) Then
 
                         Debug.Assert(iDYear <> cCore.NULL_VALUE, "Warning: Ecosim.AccumulateDataInfo() failed to find a valid reference data index.")
-                        If m_RefData.DatVal(iDYear, iDType) > 0 And IsDatTypeDriver(m_RefData.DatType(iDType)) Then
+                        If m_RefData.DatVal(iDYear, iDType) > 0 And (m_RefData.DatType(iDType) = eTimeSeriesType.BiomassRel Or
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.BiomassAbs Or
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.TotalMortality Or
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight Or
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing Or
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.Discards Or
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.Landings) Then
 
                             Zstat = 0
                             m_RefData.Iobs += 1
@@ -2498,6 +2505,7 @@ Namespace Ecosim
                                         End If
 
                                     End If
+
                                 Case eTimeSeriesType.Discards
 
                                     ' PoolForceDiscardMort(DatPool(iDType), DatPoolSec(iDType), iDatPt) = value
@@ -2514,6 +2522,21 @@ Namespace Ecosim
                                     Zstat = CSng(Math.Log(obsDiscard / predDiscard))
                                     m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(obsDiscard))
                                     '  End If
+
+                                Case eTimeSeriesType.Landings
+
+                                    Dim iflt As Integer, igrp As Integer
+                                    Dim predLanded As Single
+                                    Dim obsLanded As Single = m_RefData.DatVal(iDYear, iDType)
+                                    If obsLanded = 0.0 Then obsLanded = 1.0E-20
+                                    iflt = m_RefData.DatPool(iDType)
+                                    igrp = m_RefData.DatPoolSec(iDType)
+                                    predLanded = Me.m_Data.ResultsLandings(igrp, iflt)
+                                    If predLanded = 0 Then predLanded = 1.0E-20
+
+                                    Zstat = CSng(Math.Log(obsLanded / predLanded))
+                                    m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(obsLanded))
+
                             End Select
 
                             'increment counters
@@ -3598,8 +3621,15 @@ Namespace Ecosim
             For iDatPt = 1 To m_RefData.nDatPoints
                 iYear = m_RefData.DatYear(iDatPt) - m_RefData.DatYear(1)
                 For iDType = 1 To m_RefData.NdatType
-                    If (m_RefData.DatVal(iDatPt, iDType) > 0 And iYear < m_Data.NumYears + 1 And
-                       IsDatTypeDriver(m_RefData.DatType(iDType))) Then
+                    If m_RefData.DatVal(iDatPt, iDType) > 0 And iYear < m_Data.NumYears + 1 And
+                       (m_RefData.DatType(iDType) = eTimeSeriesType.BiomassRel Or
+                        m_RefData.DatType(iDType) = eTimeSeriesType.BiomassAbs Or
+                        m_RefData.DatType(iDType) = eTimeSeriesType.TotalMortality Or
+                        m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or
+                        m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing Or
+                        m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight Or
+                        m_RefData.DatType(iDType) = eTimeSeriesType.Discards Or
+                        m_RefData.DatType(iDType) = eTimeSeriesType.Landings) Then
 
                         m_RefData.Iobs = m_RefData.Iobs + 1
                         'following debug.print checks to insure m_refdata.Iobs data alignment has been

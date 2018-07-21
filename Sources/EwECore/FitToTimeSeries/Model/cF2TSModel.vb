@@ -22,8 +22,6 @@ Option Strict On
 
 Imports EwECore.Ecosim
 Imports EwEUtils.Core
-
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 
 
