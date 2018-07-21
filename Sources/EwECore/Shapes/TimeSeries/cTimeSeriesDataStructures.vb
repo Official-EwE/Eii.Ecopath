@@ -883,7 +883,7 @@ Public Class cTimeSeriesDataStructures
                             End If
                             PoolForceDiscardProp(DatPool(iDType), DatPoolSec(iDType), iDatPt) = value
 
-                        Case eTimeSeriesType.Discards
+                        Case eTimeSeriesType.Discards, eTimeSeriesType.Landings
                             Iobs = Iobs + 1
 
                     End Select
