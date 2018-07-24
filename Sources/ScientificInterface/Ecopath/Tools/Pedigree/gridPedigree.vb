@@ -66,8 +66,8 @@ Namespace Ecopath.Tools
             ''' <param name="pos">The position to obtain pedigree info for.</param>
             ''' <returns>A <see cref="cPedigreeLevel">pedigree level</see>, or
             ''' Nothing if something went wrong.</returns>
-            Private Function GetLevel(ByVal cell As SourceGrid2.Cells.ICellVirtual, _
-                    ByVal pos As SourceGrid2.Position) As cPedigreeLevel
+            Private Function GetLevel(ByVal cell As SourceGrid2.Cells.ICellVirtual,
+                                      ByVal pos As SourceGrid2.Position) As cPedigreeLevel
 
                 Try
 
@@ -82,11 +82,10 @@ Namespace Ecopath.Tools
                     Dim var As eVarNameFlags = core.PedigreeVariable(pos.Column - 1)
                     Dim man As cPedigreeManager = core.GetPedigreeManager(var)
                     Dim iCV As Integer = CInt(value)
+                    Dim iLevel As Integer = man.PedigreeGroupLevel(pos.Row)
 
-                    For i As Integer = 1 To man.NumLevels
-                        Dim l As cPedigreeLevel = man.Level(i)
-                        If l.ConfidenceInterval = iCV Then Return l
-                    Next
+                    If (iCV > 0) Then Return Nothing
+                    If (iLevel > 0) Then Return man.Level(iLevel)
                     Return Nothing
 
                 Catch ex As Exception
@@ -274,7 +273,7 @@ Namespace Ecopath.Tools
         ''' </summary>
         ''' <param name="iLevel"></param>
         ''' -------------------------------------------------------------------
-        Public Sub SetValue(ByVal iLevel As Integer)
+        Public Sub SetLevel(ByVal iLevel As Integer)
 
             ' Get grid selection
             Dim sel As SourceGrid2.Selection = Me.Selection
@@ -284,38 +283,95 @@ Namespace Ecopath.Tools
             ' while we're at it.
             If Not core.SetBatchLock(cCore.eBatchLockType.Update) Then Return
 
-            For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
-                If TypeOf cell Is PropertyCell Then
-                    Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
-                    If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
-                        pcell.GetProperty().SetValue(iLevel)
+            ' ToDo: can limit column iterations to selected variable
+            For iCol As Integer = 2 To Me.ColumnsCount - 1
+                Dim var As eVarNameFlags = Me.Core.PedigreeVariable(iCol - 1)
+                Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(var)
+                For iRow As Integer = 1 To Me.RowsCount - 1
+                    Dim pos As New SourceGrid2.Position(iRow, iCol)
+                    Dim cell As SourceGrid2.Cells.ICell = Me(iRow, iCol)
+                    If (cell IsNot Nothing) And Me.Selection.Contains(pos) Then
+                        If TypeOf cell Is PropertyCell Then
+                            Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                            If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
+                                Dim prop As cProperty = pcell.GetProperty()
+                                Dim bChanged As Boolean = (CInt(prop.GetValue()) <> 0) Or (man.PedigreeGroupLevel(iRow) <> iLevel)
+                                man.PedigreeGroupLevel(iRow) = iLevel
+                                ' Force update
+                                prop.SetValue(0, If(bChanged, TriState.True, TriState.UseDefault))
+                            End If
+                        End If
+
                     End If
-                End If
+                Next
             Next
 
             core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
 
         End Sub
 
-        Public ReadOnly Property SelectedValue As Integer
+
+        Public ReadOnly Property SelectedLevel As Integer
             Get
                 Dim sel As SourceGrid2.Selection = Me.Selection
                 Dim iValueSel As Integer = 0
                 Dim iValue As Integer
                 Dim bValid As Boolean = True
 
-                For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
-                    If TypeOf cell Is PropertyCell Then
-                        Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
-                        If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
-                            iValue = CInt(pcell.GetProperty().GetValue)
-                            If (iValue > 0) Then
-                                bValid = bValid And ((iValueSel = 0) Or (iValueSel = iValue))
-                                iValueSel = iValue
+                ' ToDo: can limit column iterations to selected variable
+                For iCol As Integer = 2 To Me.ColumnsCount - 1
+                    Dim var As eVarNameFlags = Me.Core.PedigreeVariable(iCol - 1)
+                    Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(var)
+                    For iRow As Integer = 1 To Me.RowsCount - 1
+                        Dim pos As New SourceGrid2.Position(iRow, iCol)
+                        Dim cell As SourceGrid2.Cells.ICell = Me(iRow, iCol)
+                        If (cell IsNot Nothing) And Me.Selection.Contains(pos) Then
+                            If TypeOf cell Is PropertyCell Then
+                                Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                                If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
+                                    iValue = man.PedigreeGroupLevel(iRow)
+                                    If (iValue > 0) Then
+                                        bValid = bValid And ((iValueSel = 0) Or (iValueSel = iValue))
+                                        iValueSel = iValue
+                                    End If
+                                End If
                             End If
                         End If
-                    End If
-                Next cell
+                    Next
+                Next
+                If bValid Then Return iValueSel Else Return 0
+            End Get
+        End Property
+
+        Public ReadOnly Property SelectedCV As Integer
+            Get
+                Dim sel As SourceGrid2.Selection = Me.Selection
+                Dim iValueSel As Integer = 0
+                Dim iValue As Integer
+                Dim bValid As Boolean = True
+
+                ' ToDo: can limit column iterations to selected variable
+                For iCol As Integer = 2 To Me.ColumnsCount - 1
+                    Dim var As eVarNameFlags = Me.Core.PedigreeVariable(iCol - 1)
+                    Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(var)
+                    For iRow As Integer = 1 To Me.RowsCount - 1
+                        Dim pos As New SourceGrid2.Position(iRow, iCol)
+                        Dim cell As SourceGrid2.Cells.ICell = Me(iRow, iCol)
+                        If (cell IsNot Nothing) And Me.Selection.Contains(pos) Then
+                            If TypeOf cell Is PropertyCell Then
+                                Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                                If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
+                                    iValue = CInt(pcell.GetProperty().GetValue)
+                                    If (iValue > 0) Then
+                                        bValid = bValid And ((iValueSel = 0) Or (iValueSel = iValue))
+                                        iValueSel = iValue
+                                    End If
+                                End If
+                            End If
+                        End If
+                    Next
+                Next
+
                 If bValid Then Return iValueSel Else Return 0
             End Get
         End Property

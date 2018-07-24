@@ -110,9 +110,9 @@ Namespace Ecopath.Tools
 
             ' Fix up render style
             If (style = eRenderStyleTypes.NotSet) Then style = Me.m_renderstyle
-            If (level Is Nothing) Then
-                Return Me.m_uic.StyleGuide.FormatNumber(iValueAlt, cStyleGuide.eStyleFlags.OK)
-            End If
+
+            If (iValueAlt > 0) Then Return Me.m_uic.StyleGuide.FormatNumber(iValueAlt)
+            If (level Is Nothing) Then Return ""
 
             ' Decide on string to display
             Select Case style
@@ -133,7 +133,7 @@ Namespace Ecopath.Tools
                 Case eRenderStyleTypes.ConfidenceInterval
                     ' Represent level by its ConfidenceInterval
                     Dim iValue As Integer = level.ConfidenceInterval
-                    If (iValue < 0) Then Return ""
+                    If (iValue <= 0) Then Return ""
                     Return Me.m_uic.StyleGuide.FormatNumber(iValue, cStyleGuide.eStyleFlags.OK)
 
             End Select

@@ -1181,6 +1181,7 @@ Namespace DataSources
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroupPedigree")
             Dim iGroup As Integer
             Dim iVariable As Integer
+            Dim iLevel As Integer
             Dim iConfidence As Integer = 1
             Dim bSucces As Boolean = True
 
@@ -1189,10 +1190,12 @@ Namespace DataSources
                 Try
                     iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
                     iVariable = Array.IndexOf(ecopathDS.PedigreeVariables, cin.GetVarName(CStr(reader("VarName"))))
-                    iConfidence = CInt(Me.m_db.ReadSafe(reader, "Confidence", cCore.NULL_VALUE))
+                    iLevel = Array.IndexOf(ecopathDS.PedigreeLevelDBID, CInt(Me.m_db.ReadSafe(reader, "LevelID", 0)))
+                    iConfidence = CInt(Me.m_db.ReadSafe(reader, "Confidence", 0))
 
-                    If (iGroup >= 1) And (iVariable >= 1) And (iConfidence >= 0) Then
-                        ecopathDS.PedigreeEcopathGroup(iGroup, iVariable) = iConfidence
+                    If (iGroup >= 1) And (iVariable >= 1) And ((iConfidence >= 0) Or (iLevel > 0)) Then
+                        ecopathDS.PedigreeEcopathGroupLevel(iGroup, iVariable) = iLevel
+                        ecopathDS.PedigreeEcopathGroupCV(iGroup, iVariable) = iConfidence
                     Else
                         ' NOP... log message?
                     End If
@@ -1258,9 +1261,8 @@ Namespace DataSources
             End Try
 
             ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
+            Return bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
 
-            Return bSucces
         End Function
 
         Public Function SavePedigreeAssignments() As Boolean
@@ -1271,6 +1273,7 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim iGroup As Integer = 0
             Dim iVariable As Integer = 0
+            Dim iLevel As Integer = 0
             Dim iConfidence As Integer = 0
             Dim bSucces As Boolean = True
 
@@ -1280,11 +1283,13 @@ Namespace DataSources
 
                 For iGroup = 1 To ecopathDS.NumGroups
                     For iVariable = 1 To ecopathDS.NumPedigreeVariables
-                        iConfidence = ecopathDS.PedigreeEcopathGroup(iGroup, iVariable)
-                        If (iConfidence > 0) Then
+                        iLevel = ecopathDS.PedigreeEcopathGroupLevel(iGroup, iVariable)
+                        iConfidence = ecopathDS.PedigreeEcopathGroupCV(iGroup, iVariable)
+                        If (iConfidence > 0) Or (iLevel > 0) Then
                             drow = writer.NewRow()
                             drow("GroupID") = ecopathDS.GroupDBID(iGroup)
                             drow("VarName") = cin.GetVarName(ecopathDS.PedigreeVariables(iVariable))
+                            drow("LevelID") = ecopathDS.PedigreeLevelDBID(iLevel)
                             drow("Confidence") = iConfidence
                             writer.AddRow(drow)
                         End If
@@ -1297,9 +1302,7 @@ Namespace DataSources
             End Try
 
             ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
-
-            Return bSucces
+            Return bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
 
         End Function
 
