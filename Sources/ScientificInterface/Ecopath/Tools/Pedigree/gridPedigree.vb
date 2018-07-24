@@ -203,6 +203,7 @@ Namespace Ecopath.Tools
         Private m_pcv As cPedigreeCellVisualizer = Nothing
         ''' <summary>Varname currently selected in the pedigree interface.</summary>
         Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
+        Private m_varCol As Integer = -1
 
 #End Region ' Private vars
 
@@ -310,67 +311,63 @@ Namespace Ecopath.Tools
 
         End Sub
 
-
         Public ReadOnly Property SelectedLevel As Integer
             Get
+                If (Me.m_varCol <= 0) Then Return 0
+
                 Dim sel As SourceGrid2.Selection = Me.Selection
                 Dim iValueSel As Integer = 0
                 Dim iValue As Integer
                 Dim bValid As Boolean = True
+                Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(Me.m_varName)
 
-                ' ToDo: can limit column iterations to selected variable
-                For iCol As Integer = 2 To Me.ColumnsCount - 1
-                    Dim var As eVarNameFlags = Me.Core.PedigreeVariable(iCol - 1)
-                    Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(var)
-                    For iRow As Integer = 1 To Me.RowsCount - 1
-                        Dim pos As New SourceGrid2.Position(iRow, iCol)
-                        Dim cell As SourceGrid2.Cells.ICell = Me(iRow, iCol)
-                        If (cell IsNot Nothing) And Me.Selection.Contains(pos) Then
-                            If TypeOf cell Is PropertyCell Then
-                                Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
-                                If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
-                                    iValue = man.PedigreeGroupLevel(iRow)
-                                    If (iValue > 0) Then
-                                        bValid = bValid And ((iValueSel = 0) Or (iValueSel = iValue))
-                                        iValueSel = iValue
-                                    End If
+                For iRow As Integer = 1 To Me.RowsCount - 1
+                    Dim pos As New SourceGrid2.Position(iRow, Me.m_varCol)
+                    Dim cell As SourceGrid2.Cells.ICell = Me(iRow, Me.m_varCol)
+                    If (cell IsNot Nothing) And Me.Selection.Contains(pos) Then
+                        If TypeOf cell Is PropertyCell Then
+                            Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                            If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
+                                iValue = man.PedigreeGroupLevel(iRow)
+                                If (iValue > 0) Then
+                                    bValid = bValid And ((iValueSel = 0) Or (iValueSel = iValue))
+                                    iValueSel = iValue
                                 End If
                             End If
                         End If
-                    Next
-                Next
+                    End If
+                Next iRow
+
                 If bValid Then Return iValueSel Else Return 0
             End Get
         End Property
 
         Public ReadOnly Property SelectedCV As Integer
             Get
+                If (Me.m_varCol <= 0) Then Return 0
+
                 Dim sel As SourceGrid2.Selection = Me.Selection
                 Dim iValueSel As Integer = 0
                 Dim iValue As Integer
                 Dim bValid As Boolean = True
+                Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(Me.m_varName)
 
-                ' ToDo: can limit column iterations to selected variable
-                For iCol As Integer = 2 To Me.ColumnsCount - 1
-                    Dim var As eVarNameFlags = Me.Core.PedigreeVariable(iCol - 1)
-                    Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(var)
-                    For iRow As Integer = 1 To Me.RowsCount - 1
-                        Dim pos As New SourceGrid2.Position(iRow, iCol)
-                        Dim cell As SourceGrid2.Cells.ICell = Me(iRow, iCol)
-                        If (cell IsNot Nothing) And Me.Selection.Contains(pos) Then
-                            If TypeOf cell Is PropertyCell Then
-                                Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
-                                If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
-                                    iValue = CInt(pcell.GetProperty().GetValue)
-                                    If (iValue > 0) Then
-                                        bValid = bValid And ((iValueSel = 0) Or (iValueSel = iValue))
-                                        iValueSel = iValue
-                                    End If
+                For iRow As Integer = 1 To Me.RowsCount - 1
+                    Dim pos As New SourceGrid2.Position(iRow, Me.m_varCol)
+                    Dim cell As SourceGrid2.Cells.ICell = Me(iRow, Me.m_varCol)
+                    If (cell IsNot Nothing) And Me.Selection.Contains(pos) Then
+                        If TypeOf cell Is PropertyCell Then
+                            Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                            If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
+                                iValue = CInt(pcell.GetProperty().GetValue)
+                                If (iValue > 0) Then
+                                    bValid = bValid And ((iValueSel = 0) Or (iValueSel = iValue))
+                                    iValueSel = iValue
                                 End If
                             End If
                         End If
-                    Next
-                Next
+                    End If
+                Next iRow
 
                 If bValid Then Return iValueSel Else Return 0
             End Get
@@ -439,6 +436,8 @@ Namespace Ecopath.Tools
             Dim iSelectedVar As Integer = Me.Core.PedigreeVariableIndex(Me.SelectedVariable)
             Dim varname As eVarNameFlags = eVarNameFlags.NotSet
 
+            Me.m_varCol = -1
+
             ' For all pedigree variables
             For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
 
@@ -466,6 +465,8 @@ Namespace Ecopath.Tools
                     ' Apply selected variable to show only specific cells as editable
                     If iSelectedVar <> iVariable Then
                         cell.Style = cell.Style Or cStyleGuide.eStyleFlags.NotEditable
+                    Else
+                        Me.m_varCol = 1 + iVariable
                     End If
 
                     ' Store cell
