@@ -1484,7 +1484,9 @@ Namespace Core
         VariableName
         ''' <summary>To document</summary>
         IndexValue
-        ''' <summary>To document</summary>
+        ''' <summary>Assigned pedigree level</summary>
+        PedigreeLevel
+        ''' <summary>Custom confidence interval for pedigree</summary>
         ConfidenceInterval
 
         'Varnames added for Game Server

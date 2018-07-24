@@ -290,7 +290,8 @@ Public Class cVariableMetaData
         ' -- Pedigree
         Me.Metadata(eVarNameFlags.VariableName) = New cVariableMetaData(0, [Enum].GetValues(GetType(eVarNameFlags)).Length, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
         Me.Metadata(eVarNameFlags.IndexValue) = New cVariableMetaData(0, 1, gt, le)
-        Me.Metadata(eVarNameFlags.ConfidenceInterval) = New cVariableMetaData(0, 100, ge, le, cCore.NULL_VALUE)
+        Me.Metadata(eVarNameFlags.PedigreeLevel) = New cVariableMetaData(0, Integer.MaxValue, ge, le, 0)
+        Me.Metadata(eVarNameFlags.ConfidenceInterval) = New cVariableMetaData(0, 100, gt, le, 0)
 
         ' -- PSD --
         Me.Metadata(eVarNameFlags.PSDEnabled) = New cVariableMetaData()

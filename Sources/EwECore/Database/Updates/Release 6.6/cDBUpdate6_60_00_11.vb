@@ -28,13 +28,13 @@ Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.60.0.10:</para>
+''' <para>Database update 6.60.0.11:</para>
 ''' <para>
 ''' Allow pedigree values outside predefined levels.
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Friend Class cDBUpdate6_60_00_10
+Friend Class cDBUpdate6_60_00_11
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -42,7 +42,7 @@ Friend Class cDBUpdate6_60_00_10
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.60001!
+            Return 6.600011!
         End Get
     End Property
 
@@ -51,13 +51,20 @@ Friend Class cDBUpdate6_60_00_10
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Allow pedigree values outside predefined levels"
+            Return "Make sure pedigree original level is retained"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return db.Execute("ALTER TABLE EcopathGroupPedigree ADD COLUMN Confidence INTEGER")
+        Try
+            ' Allowed to fail, which means that column is already there
+            db.Execute("ALTER TABLE EcopathGroupPedigree ADD COLUMN LevelID INTEGER")
+        Catch ex As Exception
+
+        End Try
+
+        Return True
 
     End Function
 

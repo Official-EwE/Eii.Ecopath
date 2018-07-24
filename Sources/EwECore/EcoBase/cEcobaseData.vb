@@ -505,8 +505,8 @@ Namespace WebServices.Ecobase
 
             Me.PedigreeAssignments.Clear()
             For iVar As Integer = 1 To ecopathDS.NumPedigreeVariables
-                If (ecopathDS.PedigreeEcopathGroup(iGroup, iVar) > 0) Then
-                    Me.PedigreeAssignments.Add(New cPedigreeAssignmentData(ecopathDS.PedigreeVariables(iVar), ecopathDS.PedigreeEcopathGroup(iGroup, iVar)))
+                If (ecopathDS.PedigreeEcopathGroupCV(iGroup, iVar) > 0) Then
+                    Me.PedigreeAssignments.Add(New cPedigreeAssignmentData(ecopathDS.PedigreeVariables(iVar), ecopathDS.PedigreeEcopathGroupCV(iGroup, iVar)))
                 End If
             Next
 

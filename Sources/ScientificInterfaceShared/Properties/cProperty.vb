@@ -706,7 +706,7 @@ Namespace Properties
 
                 Dim pedman As cPedigreeManager = Me.m_pm.Core.GetPedigreeManager(Me.m_VarName)
                 If (pedman Is Nothing) Then Return 0
-                Return pedman.Pedigree(Me.m_Source.Index)
+                Return pedman.PedigreeGroupCV(Me.m_Source.Index)
             End Get
         End Property
 

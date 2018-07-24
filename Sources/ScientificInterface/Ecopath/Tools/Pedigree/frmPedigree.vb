@@ -244,19 +244,7 @@ Namespace Ecopath.Tools
         Private Sub OnLevelClick(ByVal sender As Object, ByVal e As MouseEventArgs) _
             Handles m_lbLevels.MouseClick
 
-            Dim item As Object = Me.m_lbLevels.SelectedItem
-            Dim level As cPedigreeLevel = Nothing
-            Dim iValue As Integer = 0 ' No level
-
-            If (item IsNot Nothing) Then
-                If (TypeOf item Is cPedigreeLevelListboxItem) Then
-                    level = DirectCast(item, cPedigreeLevelListboxItem).Level
-                    If (level IsNot Nothing) Then
-                        iValue = level.ConfidenceInterval
-                    End If
-                End If
-            End If
-            Me.m_grid.SetValue(iValue)
+            Me.m_grid.SetLevel(Me.m_lbLevels.SelectedIndex)
 
         End Sub
 
@@ -271,25 +259,13 @@ Namespace Ecopath.Tools
         End Sub
 
         Protected Sub OnGridSelectionChanged()
-            Dim iValueSel As Integer = Me.m_grid.SelectedValue
+
+            Dim iSelectedCV As Integer = Me.m_grid.SelectedCV
+            Dim iSelectedLevel As Integer = Me.m_grid.SelectedLevel
             Dim iSelection As Integer = -1
 
-            ' Translate selected CV to a level, if any
-            If iValueSel > 0 Then
-                For i As Integer = 0 To Me.m_lbLevels.Items.Count - 1
-                    Dim item As Object = Me.m_lbLevels.Items(i)
-                    If (TypeOf item Is cPedigreeLevelListboxItem) Then
-                        Dim level As cPedigreeLevel = DirectCast(item, cPedigreeLevelListboxItem).Level
-                        If (level IsNot Nothing) Then
-                            If iValueSel = level.ConfidenceInterval Then
-                                ' ToDo: if multiple levels have the same CV, as the defaults do, the first level will be selected. Bot the initial level that was used!
-                                ' A proper solution would be to add a 'custom CV' value, cCore.NULL_VALUE by default, and to leave Pedigree selections to levels
-                                iSelection = i
-                                Exit For
-                            End If
-                        End If
-                    End If
-                Next
+            If iSelectedCV = 0 Then
+                iSelection = iSelectedLevel
             End If
             Me.m_lbLevels.SelectedIndex = iSelection
 

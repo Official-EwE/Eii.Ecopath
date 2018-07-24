@@ -335,7 +335,9 @@ Public Class cEcopathDataStructures
     Public PedigreeLevelEstimated() As Boolean
 
     ''' <summary>Array [#groups, #supported vars] = CV.</summary>
-    Public PedigreeEcopathGroup(,) As Integer
+    Public PedigreeEcopathGroupCV(,) As Integer
+    ''' <summary>Array [#groups, #supported vars] = Level index.</summary>
+    Public PedigreeEcopathGroupLevel(,) As Integer
     ''' <summary>One-based array of variables supported by the pedigree system.</summary>
     Public PedigreeVariables As eVarNameFlags() = {eVarNameFlags.NotSet, eVarNameFlags.BiomassAreaInput, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp, eVarNameFlags.TCatchInput}
     ''' <summary>Number of <see cref="PedigreeVariables"/></summary>
@@ -631,9 +633,8 @@ Public Class cEcopathDataStructures
         ReDim Me.PedigreeLevelIndexValue(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelConfidence(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelEstimated(Me.NumPedigreeLevels)
-        ReDim Me.PedigreeEcopathGroup(Me.NumGroups, Me.NumPedigreeVariables)
-
-        Me.PedigreeEcopathGroup.Fill(cCore.NULL_VALUE)
+        ReDim Me.PedigreeEcopathGroupLevel(Me.NumGroups, Me.NumPedigreeVariables)
+        ReDim Me.PedigreeEcopathGroupCV(Me.NumGroups, Me.NumPedigreeVariables)
 
     End Sub
 
@@ -978,11 +979,15 @@ Public Class cEcopathDataStructures
                     'do nothing
                 Else
                     Try
-                        Dim cv As Integer = Me.PedigreeEcopathGroup(iGroup, iVariable)
-                        Dim iBestLevel As Integer = -1
-                        Dim iBestCV As Integer = 100
+                        Dim cv As Integer = Me.PedigreeEcopathGroupCV(iGroup, iVariable)
 
-                        If (cv > 0) Then
+                        If (cv = 0) Then
+                            iLevel = Me.PedigreeEcopathGroupLevel(iGroup, iVariable)
+                            sTotalIndex += Me.PedigreeLevelIndexValue(iLevel)
+                            iNumIndex += 1
+                        Else
+                            Dim iBestLevel As Integer = -1
+                            Dim iBestCV As Integer = 100
 
                             For iLevel = 1 To Me.NumPedigreeLevels
                                 If Me.PedigreeLevelVarName(iLevel) = var Then
