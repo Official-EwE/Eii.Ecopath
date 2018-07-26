@@ -92,7 +92,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0}: {1}.
+        '''  Looks up a localized string similar to B forcing {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_BIOMASSFORCING() As String
             Get
@@ -101,7 +101,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0}: {1}.
+        '''  Looks up a localized string similar to B forcing rel. {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_BIOMASSRELFORCING() As String
             Get
@@ -182,7 +182,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Cap. computed ({0}: {1}).
+        '''  Looks up a localized string similar to Cap. computed {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_HABCAP() As String
             Get
@@ -191,7 +191,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Cap. ({0}: {1}).
+        '''  Looks up a localized string similar to Cap. {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_HABCAP_INPUT() As String
             Get
@@ -200,7 +200,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0}: {1}.
+        '''  Looks up a localized string similar to Hab. {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_HABITAT() As String
             Get
@@ -236,7 +236,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Migration ({0}: {1}).
+        '''  Looks up a localized string similar to Migration {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_MIGRATION() As String
             Get
@@ -254,7 +254,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0}: {1}.
+        '''  Looks up a localized string similar to MPA {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_MPA() As String
             Get
@@ -272,7 +272,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Port ({0}: {1}).
+        '''  Looks up a localized string similar to Port {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_PORT() As String
             Get
@@ -326,7 +326,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Sailing cost ({0}: {1}).
+        '''  Looks up a localized string similar to Sailing cost {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_SAILCOST() As String
             Get
@@ -3773,7 +3773,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to HabitatFishery.
+        '''  Looks up a localized string similar to Habitat fishery.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_HABITATFISHERY() As String
             Get
@@ -3782,7 +3782,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to HatchCode.
+        '''  Looks up a localized string similar to Hatch code.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_HATCHCODE() As String
             Get
@@ -3818,7 +3818,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to iMPAOptToUse.
+        '''  Looks up a localized string similar to MPA to use.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_IMPAOPTTOUSE() As String
             Get
@@ -3845,7 +3845,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to ImportedConsumption.
+        '''  Looks up a localized string similar to Imported consumption.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_IMPORTEDCONSUMPTION() As String
             Get
@@ -3872,7 +3872,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to IndexValue.
+        '''  Looks up a localized string similar to Index value.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_INDEXVALUE() As String
             Get
@@ -3917,7 +3917,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to IsFished.
+        '''  Looks up a localized string similar to Is fished.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ISFISHED() As String
             Get
@@ -3935,7 +3935,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to IsPred.
+        '''  Looks up a localized string similar to Is predator.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ISPRED() As String
             Get
@@ -3944,7 +3944,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to IsPrey.
+        '''  Looks up a localized string similar to Is preyey.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ISPREY() As String
             Get
@@ -3967,15 +3967,6 @@ Namespace My.Resources
         Public Shared ReadOnly Property VARIABLE_KEMPTONSQ() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_KEMPTONSQ", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to KemptonsQPM.
-        '''</summary>
-        Public Shared ReadOnly Property VARIABLE_KEMPTONSQPM() As String
-            Get
-                Return ResourceManager.GetString("VARIABLE_KEMPTONSQPM", resourceCulture)
             End Get
         End Property
         
@@ -4016,7 +4007,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Advection||Advection map.
+        '''  Looks up a localized string similar to Advection.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERADVECTION() As String
             Get
@@ -4133,15 +4124,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to LayerMPAPM.
-        '''</summary>
-        Public Shared ReadOnly Property VARIABLE_LAYERMPAPM() As String
-            Get
-                Return ResourceManager.GetString("VARIABLE_LAYERMPAPM", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to LayerMPARandom.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERMPARANDOM() As String
@@ -4160,7 +4142,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to LayerMPASeedBest.
+        '''  Looks up a localized string similar to Best cells.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERMPASEEDBEST() As String
             Get
@@ -4169,7 +4151,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to LayerMPASeedCurrent.
+        '''  Looks up a localized string similar to Current seed cells.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERMPASEEDCURRENT() As String
             Get
@@ -4295,7 +4277,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MaxEffort.
+        '''  Looks up a localized string similar to Max. effort.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MAXEFFORT() As String
             Get
@@ -4331,7 +4313,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcB.
+        '''  Looks up a localized string similar to B.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCB() As String
             Get
@@ -4340,7 +4322,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcBA.
+        '''  Looks up a localized string similar to BA.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCBA() As String
             Get
@@ -4349,7 +4331,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcBAbf.
+        '''  Looks up a localized string similar to BA (best fit).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCBABF() As String
             Get
@@ -4358,7 +4340,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcBAcv.
+        '''  Looks up a localized string similar to BA (cv).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCBACV() As String
             Get
@@ -4367,7 +4349,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcBALower.
+        '''  Looks up a localized string similar to BA (lower).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCBALOWER() As String
             Get
@@ -4376,7 +4358,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcBAUpper.
+        '''  Looks up a localized string similar to BA (upper).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCBAUPPER() As String
             Get
@@ -4385,7 +4367,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcBbf.
+        '''  Looks up a localized string similar to B (best fit).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCBBF() As String
             Get
@@ -4394,7 +4376,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcBcv.
+        '''  Looks up a localized string similar to B (cv).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCBCV() As String
             Get
@@ -4403,7 +4385,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcBLower.
+        '''  Looks up a localized string similar to B (lower).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCBLOWER() As String
             Get
@@ -4412,7 +4394,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcBUpper.
+        '''  Looks up a localized string similar to B (upper).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCBUPPER() As String
             Get
@@ -4421,7 +4403,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcDietComp.
+        '''  Looks up a localized string similar to DC.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCDIETCOMP() As String
             Get
@@ -4430,7 +4412,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcDietMult.
+        '''  Looks up a localized string similar to Diet multiplier.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCDIETMULT() As String
             Get
@@ -4439,7 +4421,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcDietsbf.
+        '''  Looks up a localized string similar to DC (best fit).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCDIETSBF() As String
             Get
@@ -4448,7 +4430,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcDiscards.
+        '''  Looks up a localized string similar to Discards.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCDISCARDS() As String
             Get
@@ -4457,7 +4439,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcDiscardsbf.
+        '''  Looks up a localized string similar to Discards (best fit).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCDISCARDSBF() As String
             Get
@@ -4466,7 +4448,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcDiscardscv.
+        '''  Looks up a localized string similar to Discards (cv).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCDISCARDSCV() As String
             Get
@@ -4475,7 +4457,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcDiscardsLower.
+        '''  Looks up a localized string similar to Discards (lower).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCDISCARDSLOWER() As String
             Get
@@ -4484,7 +4466,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcDiscardsUpper.
+        '''  Looks up a localized string similar to Discards (upper).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCDISCARDSUPPER() As String
             Get
@@ -4493,7 +4475,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcEE.
+        '''  Looks up a localized string similar to EE.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCEE() As String
             Get
@@ -4502,7 +4484,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcEEbf.
+        '''  Looks up a localized string similar to EE (best fit).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCEEBF() As String
             Get
@@ -4511,7 +4493,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcEEcv.
+        '''  Looks up a localized string similar to EE (cv).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCEECV() As String
             Get
@@ -4520,7 +4502,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcEELower.
+        '''  Looks up a localized string similar to EE (lower).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCEELOWER() As String
             Get
@@ -4529,7 +4511,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcEEUpper.
+        '''  Looks up a localized string similar to EE (upper).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCEEUPPER() As String
             Get
@@ -4538,7 +4520,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcLandings.
+        '''  Looks up a localized string similar to Landings.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCLANDINGS() As String
             Get
@@ -4547,7 +4529,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcLandingsbf.
+        '''  Looks up a localized string similar to Landings (best fit).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCLANDINGSBF() As String
             Get
@@ -4556,7 +4538,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcLandingscv.
+        '''  Looks up a localized string similar to Landings (cv).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCLANDINGSCV() As String
             Get
@@ -4565,7 +4547,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcLandingsLower.
+        '''  Looks up a localized string similar to Landings (lower).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCLANDINGSLOWER() As String
             Get
@@ -4574,7 +4556,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcLandingsUpper.
+        '''  Looks up a localized string similar to Landings (upper).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCLANDINGSUPPER() As String
             Get
@@ -4583,7 +4565,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcPB.
+        '''  Looks up a localized string similar to PB.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCPB() As String
             Get
@@ -4592,7 +4574,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcPBbf.
+        '''  Looks up a localized string similar to PB (best fit).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCPBBF() As String
             Get
@@ -4601,7 +4583,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcPBcv.
+        '''  Looks up a localized string similar to PB (cv).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCPBCV() As String
             Get
@@ -4610,7 +4592,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcPBLower.
+        '''  Looks up a localized string similar to PB (lower).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCPBLOWER() As String
             Get
@@ -4619,7 +4601,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcPBUpper.
+        '''  Looks up a localized string similar to PB (upper).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCPBUPPER() As String
             Get
@@ -4628,7 +4610,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcQB.
+        '''  Looks up a localized string similar to QB.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCQB() As String
             Get
@@ -4637,7 +4619,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcQBbf.
+        '''  Looks up a localized string similar to QB (best fit).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCQBBF() As String
             Get
@@ -4646,7 +4628,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcQBcv.
+        '''  Looks up a localized string similar to QB (cv).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCQBCV() As String
             Get
@@ -4655,7 +4637,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcQBLower.
+        '''  Looks up a localized string similar to QB (lower).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCQBLOWER() As String
             Get
@@ -4664,7 +4646,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcQBUpper.
+        '''  Looks up a localized string similar to QB (upper).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCQBUPPER() As String
             Get
@@ -4673,7 +4655,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcVU.
+        '''  Looks up a localized string similar to v.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCVU() As String
             Get
@@ -4682,7 +4664,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcVUbf.
+        '''  Looks up a localized string similar to v (best fit).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCVUBF() As String
             Get
@@ -4691,7 +4673,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcVUcv.
+        '''  Looks up a localized string similar to v (cv).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCVUCV() As String
             Get
@@ -4700,7 +4682,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcVULower.
+        '''  Looks up a localized string similar to v (lower).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCVULOWER() As String
             Get
@@ -4709,7 +4691,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to mcVUUpper.
+        '''  Looks up a localized string similar to v (upper).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MCVUUPPER() As String
             Get
@@ -4754,7 +4736,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to ModelFileName.
+        '''  Looks up a localized string similar to File name.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_MODELFILENAME() As String
             Get

@@ -62,7 +62,7 @@ Public Class cEcospaceLayerBiomassRelativeForcing
     End Property
 
     Protected Overrides Function DefaultName() As String
-        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_BIOMASSRELFORCING, Me.Index, Me.m_core.EcoPathGroupInputs(Me.Index).Name)
+        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_BIOMASSRELFORCING, Me.m_core.EcoPathGroupInputs(Me.Index).Name)
     End Function
 
 End Class

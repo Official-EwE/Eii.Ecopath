@@ -128,12 +128,12 @@
     <comment>{0} velocity field name</comment>
   </data>
   <data name="CORE_DEFAULT_BIOMASSFORCING" xml:space="preserve">
-    <value>{0}: {1}</value>
-    <comment>{0} group index, {1} group name</comment>
+    <value>B forcing {0}</value>
+    <comment>{0} group name</comment>
   </data>
   <data name="CORE_DEFAULT_BIOMASSRELFORCING" xml:space="preserve">
-    <value>{0}: {1}</value>
-    <comment>{0} group index, {1} group name</comment>
+    <value>B forcing rel. {0}</value>
+    <comment>{0} group name</comment>
   </data>
   <data name="CORE_DEFAULT_COMBINEDFLEETS" xml:space="preserve">
     <value>Combined fleets</value>
@@ -163,16 +163,16 @@
     <value>Group1</value>
   </data>
   <data name="CORE_DEFAULT_HABCAP" xml:space="preserve">
-    <value>Cap. computed ({0}: {1})</value>
-    <comment>{0} group index, {1} group name</comment>
+    <value>Cap. computed {0}</value>
+    <comment>{0}  group name</comment>
   </data>
   <data name="CORE_DEFAULT_HABCAP_INPUT" xml:space="preserve">
-    <value>Cap. ({0}: {1})</value>
-    <comment>{0} group index, {1} group name</comment>
+    <value>Cap. {0}</value>
+    <comment>{0} group name</comment>
   </data>
   <data name="CORE_DEFAULT_HABITAT" xml:space="preserve">
-    <value>{0}: {1}</value>
-    <comment>{0} habitat index, {1} habitat name</comment>
+    <value>Hab. {0}</value>
+    <comment>{0} habitat name</comment>
   </data>
   <data name="CORE_DEFAULT_HABITAT_ALL" xml:space="preserve">
     <value>All</value>
@@ -186,22 +186,22 @@
     <comment>{0} sequential number</comment>
   </data>
   <data name="CORE_DEFAULT_MIGRATION" xml:space="preserve">
-    <value>Migration ({0}: {1})</value>
-    <comment>{0} group index, {1} group name</comment>
+    <value>Migration {0}</value>
+    <comment>{0} group name</comment>
   </data>
   <data name="CORE_DEFAULT_MIXEDLAYERDEPTH" xml:space="preserve">
     <value>Mixed layer depth</value>
   </data>
   <data name="CORE_DEFAULT_MPA" xml:space="preserve">
-    <value>{0}: {1}</value>
-    <comment>{0} MPA index, {1} MPA name</comment>
+    <value>MPA {0}</value>
+    <comment>{0} MPA name</comment>
   </data>
   <data name="CORE_DEFAULT_MPASEED" xml:space="preserve">
     <value>Seed cells</value>
   </data>
   <data name="CORE_DEFAULT_PORT" xml:space="preserve">
-    <value>Port ({0}: {1})</value>
-    <comment>{0} fleet index, {1} fleet name</comment>
+    <value>Port {0}</value>
+    <comment>{0} fleet name</comment>
   </data>
   <data name="CORE_DEFAULT_PORT_ALL" xml:space="preserve">
     <value>Port (all fleets)</value>
@@ -216,8 +216,8 @@
     <value>Relative PP</value>
   </data>
   <data name="CORE_DEFAULT_SAILCOST" xml:space="preserve">
-    <value>Sailing cost ({0}: {1})</value>
-    <comment>{0} fleet index, {1} fleet name</comment>
+    <value>Sailing cost {0}</value>
+    <comment>{0} fleet name</comment>
   </data>
   <data name="CORE_DEFAULT_SAIL_ALL" xml:space="preserve">
     <value>Sailing cost (all fleets)</value>
@@ -571,7 +571,7 @@
     <value>Landings</value>
   </data>
   <data name="VARIABLE_LAYERADVECTION" xml:space="preserve">
-    <value>Advection||Advection map</value>
+    <value>Advection</value>
   </data>
   <data name="VARIABLE_LAYERBIOMASSFORCING" xml:space="preserve">
     <value>Biomass forcing</value>
@@ -1597,10 +1597,10 @@
     <value>Hab area prop.||Habitat area proportion</value>
   </data>
   <data name="VARIABLE_HABITATFISHERY" xml:space="preserve">
-    <value>HabitatFishery</value>
+    <value>Habitat fishery</value>
   </data>
   <data name="VARIABLE_HATCHCODE" xml:space="preserve">
-    <value>HatchCode</value>
+    <value>Hatch code</value>
   </data>
   <data name="VARIABLE_HLAP" xml:space="preserve">
     <value>Hlap</value>
@@ -1609,19 +1609,19 @@
     <value>IFDPower</value>
   </data>
   <data name="VARIABLE_IMPAOPTTOUSE" xml:space="preserve">
-    <value>iMPAOptToUse</value>
+    <value>MPA to use</value>
   </data>
   <data name="VARIABLE_IMPORTANCEWEIGHT" xml:space="preserve">
     <value>ImportanceWeight</value>
   </data>
   <data name="VARIABLE_IMPORTEDCONSUMPTION" xml:space="preserve">
-    <value>ImportedConsumption</value>
+    <value>Imported consumption</value>
   </data>
   <data name="VARIABLE_INCOL" xml:space="preserve">
     <value>#cols||No. of columns</value>
   </data>
   <data name="VARIABLE_INDEXVALUE" xml:space="preserve">
-    <value>IndexValue</value>
+    <value>Index value</value>
   </data>
   <data name="VARIABLE_INROW" xml:space="preserve">
     <value>#rows||No. of rows</value>
@@ -1630,19 +1630,16 @@
     <value>IsEcospaceModelCoupled</value>
   </data>
   <data name="VARIABLE_ISFISHED" xml:space="preserve">
-    <value>IsFished</value>
+    <value>Is fished</value>
   </data>
   <data name="VARIABLE_ISPRED" xml:space="preserve">
-    <value>IsPred</value>
+    <value>Is predator</value>
   </data>
   <data name="VARIABLE_ISPREY" xml:space="preserve">
-    <value>IsPrey</value>
+    <value>Is preyey</value>
   </data>
   <data name="VARIABLE_KEMPTONSQ" xml:space="preserve">
     <value>KemptonsQ</value>
-  </data>
-  <data name="VARIABLE_KEMPTONSQPM" xml:space="preserve">
-    <value>KemptonsQPM</value>
   </data>
   <data name="VARIABLE_LASTSAVED" xml:space="preserve">
     <value>Last saved</value>
@@ -1656,9 +1653,6 @@
   <data name="VARIABLE_LAYERIMPORTANCE" xml:space="preserve">
     <value>Importance layer</value>
   </data>
-  <data name="VARIABLE_LAYERMPAPM" xml:space="preserve">
-    <value>LayerMPAPM</value>
-  </data>
   <data name="VARIABLE_LAYERMPARANDOM" xml:space="preserve">
     <value>LayerMPARandom</value>
   </data>
@@ -1666,10 +1660,10 @@
     <value>LayerMPASeed</value>
   </data>
   <data name="VARIABLE_LAYERMPASEEDBEST" xml:space="preserve">
-    <value>LayerMPASeedBest</value>
+    <value>Best cells</value>
   </data>
   <data name="VARIABLE_LAYERMPASEEDCURRENT" xml:space="preserve">
-    <value>LayerMPASeedCurrent</value>
+    <value>Current seed cells</value>
   </data>
   <data name="VARIABLE_LONGITUDE" xml:space="preserve">
     <value>Longitude</value>
@@ -1684,7 +1678,7 @@
     <value>LorenzenMortality</value>
   </data>
   <data name="VARIABLE_MAXEFFORT" xml:space="preserve">
-    <value>MaxEffort</value>
+    <value>Max. effort</value>
   </data>
   <data name="VARIABLE_MAXITERATIONS" xml:space="preserve">
     <value>MaxIterations</value>
@@ -1696,133 +1690,133 @@
     <value>MaxRelPB</value>
   </data>
   <data name="VARIABLE_MCB" xml:space="preserve">
-    <value>mcB</value>
+    <value>B</value>
   </data>
   <data name="VARIABLE_MCBA" xml:space="preserve">
-    <value>mcBA</value>
+    <value>BA</value>
   </data>
   <data name="VARIABLE_MCBABF" xml:space="preserve">
-    <value>mcBAbf</value>
+    <value>BA (best fit)</value>
   </data>
   <data name="VARIABLE_MCBACV" xml:space="preserve">
-    <value>mcBAcv</value>
+    <value>BA (cv)</value>
   </data>
   <data name="VARIABLE_MCBALOWER" xml:space="preserve">
-    <value>mcBALower</value>
+    <value>BA (lower)</value>
   </data>
   <data name="VARIABLE_MCBAUPPER" xml:space="preserve">
-    <value>mcBAUpper</value>
+    <value>BA (upper)</value>
   </data>
   <data name="VARIABLE_MCBBF" xml:space="preserve">
-    <value>mcBbf</value>
+    <value>B (best fit)</value>
   </data>
   <data name="VARIABLE_MCBCV" xml:space="preserve">
-    <value>mcBcv</value>
+    <value>B (cv)</value>
   </data>
   <data name="VARIABLE_MCBLOWER" xml:space="preserve">
-    <value>mcBLower</value>
+    <value>B (lower)</value>
   </data>
   <data name="VARIABLE_MCBUPPER" xml:space="preserve">
-    <value>mcBUpper</value>
+    <value>B (upper)</value>
   </data>
   <data name="VARIABLE_MCDIETCOMP" xml:space="preserve">
-    <value>mcDietComp</value>
+    <value>DC</value>
   </data>
   <data name="VARIABLE_MCDIETMULT" xml:space="preserve">
-    <value>mcDietMult</value>
+    <value>Diet multiplier</value>
   </data>
   <data name="VARIABLE_MCDIETSBF" xml:space="preserve">
-    <value>mcDietsbf</value>
+    <value>DC (best fit)</value>
   </data>
   <data name="VARIABLE_MCDISCARDS" xml:space="preserve">
-    <value>mcDiscards</value>
+    <value>Discards</value>
   </data>
   <data name="VARIABLE_MCDISCARDSBF" xml:space="preserve">
-    <value>mcDiscardsbf</value>
+    <value>Discards (best fit)</value>
   </data>
   <data name="VARIABLE_MCDISCARDSCV" xml:space="preserve">
-    <value>mcDiscardscv</value>
+    <value>Discards (cv)</value>
   </data>
   <data name="VARIABLE_MCDISCARDSLOWER" xml:space="preserve">
-    <value>mcDiscardsLower</value>
+    <value>Discards (lower)</value>
   </data>
   <data name="VARIABLE_MCDISCARDSUPPER" xml:space="preserve">
-    <value>mcDiscardsUpper</value>
+    <value>Discards (upper)</value>
   </data>
   <data name="VARIABLE_MCEE" xml:space="preserve">
-    <value>mcEE</value>
+    <value>EE</value>
   </data>
   <data name="VARIABLE_MCEEBF" xml:space="preserve">
-    <value>mcEEbf</value>
+    <value>EE (best fit)</value>
   </data>
   <data name="VARIABLE_MCEECV" xml:space="preserve">
-    <value>mcEEcv</value>
+    <value>EE (cv)</value>
   </data>
   <data name="VARIABLE_MCEELOWER" xml:space="preserve">
-    <value>mcEELower</value>
+    <value>EE (lower)</value>
   </data>
   <data name="VARIABLE_MCEEUPPER" xml:space="preserve">
-    <value>mcEEUpper</value>
+    <value>EE (upper)</value>
   </data>
   <data name="VARIABLE_MCLANDINGS" xml:space="preserve">
-    <value>mcLandings</value>
+    <value>Landings</value>
   </data>
   <data name="VARIABLE_MCLANDINGSBF" xml:space="preserve">
-    <value>mcLandingsbf</value>
+    <value>Landings (best fit)</value>
   </data>
   <data name="VARIABLE_MCLANDINGSCV" xml:space="preserve">
-    <value>mcLandingscv</value>
+    <value>Landings (cv)</value>
   </data>
   <data name="VARIABLE_MCLANDINGSLOWER" xml:space="preserve">
-    <value>mcLandingsLower</value>
+    <value>Landings (lower)</value>
   </data>
   <data name="VARIABLE_MCLANDINGSUPPER" xml:space="preserve">
-    <value>mcLandingsUpper</value>
+    <value>Landings (upper)</value>
   </data>
   <data name="VARIABLE_MCPB" xml:space="preserve">
-    <value>mcPB</value>
+    <value>PB</value>
   </data>
   <data name="VARIABLE_MCPBBF" xml:space="preserve">
-    <value>mcPBbf</value>
+    <value>PB (best fit)</value>
   </data>
   <data name="VARIABLE_MCPBCV" xml:space="preserve">
-    <value>mcPBcv</value>
+    <value>PB (cv)</value>
   </data>
   <data name="VARIABLE_MCPBLOWER" xml:space="preserve">
-    <value>mcPBLower</value>
+    <value>PB (lower)</value>
   </data>
   <data name="VARIABLE_MCPBUPPER" xml:space="preserve">
-    <value>mcPBUpper</value>
+    <value>PB (upper)</value>
   </data>
   <data name="VARIABLE_MCQB" xml:space="preserve">
-    <value>mcQB</value>
+    <value>QB</value>
   </data>
   <data name="VARIABLE_MCQBBF" xml:space="preserve">
-    <value>mcQBbf</value>
+    <value>QB (best fit)</value>
   </data>
   <data name="VARIABLE_MCQBCV" xml:space="preserve">
-    <value>mcQBcv</value>
+    <value>QB (cv)</value>
   </data>
   <data name="VARIABLE_MCQBLOWER" xml:space="preserve">
-    <value>mcQBLower</value>
+    <value>QB (lower)</value>
   </data>
   <data name="VARIABLE_MCQBUPPER" xml:space="preserve">
-    <value>mcQBUpper</value>
+    <value>QB (upper)</value>
   </data>
   <data name="VARIABLE_MCVU" xml:space="preserve">
-    <value>mcVU</value>
+    <value>v</value>
   </data>
   <data name="VARIABLE_MCVUBF" xml:space="preserve">
-    <value>mcVUbf</value>
+    <value>v (best fit)</value>
   </data>
   <data name="VARIABLE_MCVUCV" xml:space="preserve">
-    <value>mcVUcv</value>
+    <value>v (cv)</value>
   </data>
   <data name="VARIABLE_MCVULOWER" xml:space="preserve">
-    <value>mcVULower</value>
+    <value>v (lower)</value>
   </data>
   <data name="VARIABLE_MCVUUPPER" xml:space="preserve">
-    <value>mcVUUpper</value>
+    <value>v (upper)</value>
   </data>
   <data name="VARIABLE_MEDFUNCTNUMBER" xml:space="preserve">
     <value>MedFunctNumber</value>
@@ -1831,7 +1825,7 @@
     <value>MixedTrophicImpact</value>
   </data>
   <data name="VARIABLE_MODELFILENAME" xml:space="preserve">
-    <value>ModelFileName</value>
+    <value>File name</value>
   </data>
   <data name="VARIABLE_MORTCOBIOACUMRATE" xml:space="preserve">
     <value>Bio accum. rate||Biomass accumulation rate</value>
