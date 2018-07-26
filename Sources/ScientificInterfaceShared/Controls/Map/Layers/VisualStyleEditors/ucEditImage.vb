@@ -76,7 +76,7 @@ Namespace Controls
             Me.btnImport.Enabled = True
         End Sub
 
-        Private Sub btnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImport.Click
+        Private Sub btnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImport.Click, m_btnImport.Click
 
             Dim img As Image = Nothing
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
