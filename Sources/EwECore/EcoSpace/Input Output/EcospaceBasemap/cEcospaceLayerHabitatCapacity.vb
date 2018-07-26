@@ -25,6 +25,7 @@ Imports EwEUtils.Core
 Imports DefaultRes = EwECore.My.Resources.CoreDefaults
 
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 
 
 #End Region ' Imports
@@ -63,7 +64,7 @@ Public Class cEcospaceLayerHabitatCapacity
         Else
             strMask = My.Resources.CoreDefaults.CORE_DEFAULT_HABCAP
         End If
-        Return String.Format(strMask, Me.Index, Me.m_core.EcoPathGroupInputs(Me.Index).Name)
+        Return cStringUtils.Localize(strMask, Me.m_core.EcoPathGroupInputs(Me.Index).Name)
     End Function
 
 End Class
