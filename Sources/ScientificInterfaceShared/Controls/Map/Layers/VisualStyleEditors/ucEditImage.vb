@@ -73,10 +73,10 @@ Namespace Controls
             Me.m_glyphSelect.AddImage(Me.VisualStyle.Image)
             Me.m_glyphSelect.SelectedImage = Me.VisualStyle.Image
             Me.m_glyphSelect.Enabled = True
-            Me.btnImport.Enabled = True
+            Me.m_btnImport.Enabled = True
         End Sub
 
-        Private Sub btnImport_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImport.Click, m_btnImport.Click
+        Private Sub OnAddImage(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnImport.Click
 
             Dim img As Image = Nothing
             Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
