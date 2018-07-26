@@ -44,7 +44,7 @@ Namespace Controls
         <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Me.m_glyphSelect = New ScientificInterfaceShared.Controls.ucGlyphSelect()
-            Me.btnImport = New System.Windows.Forms.Button()
+            Me.m_btnImport = New System.Windows.Forms.Button()
             Me.SuspendLayout()
             '
             'm_glyphSelect
@@ -63,16 +63,16 @@ Namespace Controls
             Me.m_glyphSelect.TabIndex = 2
             Me.m_glyphSelect.TabStop = False
             '
-            'btnImport
+            'm_btnImport
             '
-            Me.btnImport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.btnImport.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.btnImport.Location = New System.Drawing.Point(247, 141)
-            Me.btnImport.Name = "btnImport"
-            Me.btnImport.Size = New System.Drawing.Size(60, 23)
-            Me.btnImport.TabIndex = 1
-            Me.btnImport.Text = "&Import..."
-            Me.btnImport.UseVisualStyleBackColor = True
+            Me.m_btnImport.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnImport.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_btnImport.Location = New System.Drawing.Point(177, 141)
+            Me.m_btnImport.Name = "m_btnImport"
+            Me.m_btnImport.Size = New System.Drawing.Size(130, 23)
+            Me.m_btnImport.TabIndex = 1
+            Me.m_btnImport.Text = "&Add custom image..."
+            Me.m_btnImport.UseVisualStyleBackColor = True
             '
             'ucEditImage
             '
@@ -80,15 +80,14 @@ Namespace Controls
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.Controls.Add(Me.m_glyphSelect)
-            Me.Controls.Add(Me.btnImport)
+            Me.Controls.Add(Me.m_btnImport)
             Me.Name = "ucEditImage"
             Me.Size = New System.Drawing.Size(307, 164)
             Me.ResumeLayout(False)
 
         End Sub
-        Friend WithEvents m_glyphSelect As ucGlyphSelect
-        Friend WithEvents btnImport As System.Windows.Forms.Button
-
+        Private WithEvents m_btnImport As Button
+        Private WithEvents m_glyphSelect As ucGlyphSelect
     End Class
 
 End Namespace
