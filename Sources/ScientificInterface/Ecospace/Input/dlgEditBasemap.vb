@@ -263,7 +263,9 @@ Public Class dlgEditBasemap
                 Dim l As cEcospaceLayerDepth = Me.m_uic.Core.EcospaceBasemap.LayerDepth
                 For ir As Integer = 1 To Me.m_rs.NumRows
                     For ic As Integer = 1 To Me.m_rs.NumCols
-                        l.Cell(ir, ic) = Me.m_rs.Cell(ir, ic)
+                        Dim val As Single = CSng(Me.m_rs.Cell(ir, ic))
+                        If (val = Me.m_rs.NoData) Then val = 0
+                        l.Cell(ir, ic) = val
                     Next
                 Next
                 l.Invalidate()
