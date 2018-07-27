@@ -143,11 +143,12 @@ Namespace Controls.Map.Layers
             Get
                 Dim fmtV As New cVarnameTypeFormatter()
                 Dim l As cEcospaceLayer = Me.m_layers(Me.m_iLayer)
-                Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, fmtV.GetDescriptor(l.VarName, eDescriptorTypes.Abbreviation), l.Name)
+                Dim n As String = If(l.Index >= 1, cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, l.Index, l.Name), l.Name)
+                Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, fmtV.GetDescriptor(l.VarName, eDescriptorTypes.Abbreviation), n)
             End Get
             Set(value As String)
-                Debug.Assert(False)
                 ' Can't do this
+                Debug.Assert(False)
             End Set
         End Property
 
