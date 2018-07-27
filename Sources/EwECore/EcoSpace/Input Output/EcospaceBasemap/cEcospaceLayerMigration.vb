@@ -18,13 +18,12 @@
 ' ===============================================================================
 '
 
-#Region " Imports directive "
+#Region " Imports  "
 
 Option Strict On
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
-#End Region ' Imports directive
+#End Region ' Imports 
 
 ''' <summary>
 ''' Layer providing access to Ecospace migration data.
@@ -69,7 +68,7 @@ Public Class cEcospaceLayerMigration
 #Region " Overrides "
 
     Protected Overrides Function DefaultName() As String
-        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_MIGRATION, Me.m_core.EcoPathGroupInputs(Me.Index).Name)
+        Return Me.m_core.EcoPathGroupInputs(Me.Index).Name
     End Function
 
 #End Region ' Overrides

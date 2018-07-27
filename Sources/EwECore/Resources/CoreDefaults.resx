@@ -127,14 +127,6 @@
     <value>Advection {0}</value>
     <comment>{0} velocity field name</comment>
   </data>
-  <data name="CORE_DEFAULT_BIOMASSFORCING" xml:space="preserve">
-    <value>B forcing {0}</value>
-    <comment>{0} group name</comment>
-  </data>
-  <data name="CORE_DEFAULT_BIOMASSRELFORCING" xml:space="preserve">
-    <value>B forcing rel. {0}</value>
-    <comment>{0} group name</comment>
-  </data>
   <data name="CORE_DEFAULT_COMBINEDFLEETS" xml:space="preserve">
     <value>Combined fleets</value>
   </data>
@@ -149,11 +141,11 @@
     <value>Excluded cells</value>
   </data>
   <data name="CORE_DEFAULT_FISHMORTSHAPE" xml:space="preserve">
-    <value>Fish Mortality Shape {0}</value>
+    <value>Fish mortality shape {0}</value>
     <comment>{0} sequential number</comment>
   </data>
   <data name="CORE_DEFAULT_FISHRATESHAPE" xml:space="preserve">
-    <value>Fishing Rate Shape {0}</value>
+    <value>Fishing rate shape {0}</value>
     <comment>{0} sequential number</comment>
   </data>
   <data name="CORE_DEFAULT_FLEET" xml:space="preserve">
@@ -162,17 +154,9 @@
   <data name="CORE_DEFAULT_GROUP" xml:space="preserve">
     <value>Group1</value>
   </data>
-  <data name="CORE_DEFAULT_HABCAP" xml:space="preserve">
-    <value>Cap. computed {0}</value>
-    <comment>{0}  group name</comment>
-  </data>
-  <data name="CORE_DEFAULT_HABCAP_INPUT" xml:space="preserve">
-    <value>Cap. {0}</value>
-    <comment>{0} group name</comment>
-  </data>
   <data name="CORE_DEFAULT_HABITAT" xml:space="preserve">
-    <value>Hab. {0}</value>
-    <comment>{0} habitat name</comment>
+    <value>Habitat {0}</value>
+    <comment>{0} sequential number</comment>
   </data>
   <data name="CORE_DEFAULT_HABITAT_ALL" xml:space="preserve">
     <value>All</value>
@@ -182,7 +166,7 @@
     <comment>{0} sequential number</comment>
   </data>
   <data name="CORE_DEFAULT_MEDIATIONSHAPE" xml:space="preserve">
-    <value>Mediation Shape {0}</value>
+    <value>Mediation function {0}</value>
     <comment>{0} sequential number</comment>
   </data>
   <data name="CORE_DEFAULT_MIGRATION" xml:space="preserve">
@@ -199,13 +183,6 @@
   <data name="CORE_DEFAULT_MPASEED" xml:space="preserve">
     <value>Seed cells</value>
   </data>
-  <data name="CORE_DEFAULT_PORT" xml:space="preserve">
-    <value>Port {0}</value>
-    <comment>{0} fleet name</comment>
-  </data>
-  <data name="CORE_DEFAULT_PORT_ALL" xml:space="preserve">
-    <value>Port (all fleets)</value>
-  </data>
   <data name="CORE_DEFAULT_REGION" xml:space="preserve">
     <value>Regions</value>
   </data>
@@ -214,13 +191,6 @@
   </data>
   <data name="CORE_DEFAULT_RELPP" xml:space="preserve">
     <value>Relative PP</value>
-  </data>
-  <data name="CORE_DEFAULT_SAILCOST" xml:space="preserve">
-    <value>Sailing cost {0}</value>
-    <comment>{0} fleet name</comment>
-  </data>
-  <data name="CORE_DEFAULT_SAIL_ALL" xml:space="preserve">
-    <value>Sailing cost (all fleets)</value>
   </data>
   <data name="CORE_DEFAULT_SCENARIO" xml:space="preserve">
     <value>New Scenario</value>

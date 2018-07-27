@@ -130,7 +130,7 @@ Namespace Controls.Map.Layers
             If (Me.m_bInUpdate) Then Return
             Me.m_bInUpdate = True
             Try
-                Me.Layer.Name = CStr(Me.m_fpName.Value)
+                If Me.m_fpName.Enabled Then Me.Layer.Name = CStr(Me.m_fpName.Value)
             Catch ex As Exception
 
             End Try

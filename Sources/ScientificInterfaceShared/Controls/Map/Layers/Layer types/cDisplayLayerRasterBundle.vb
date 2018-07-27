@@ -22,7 +22,9 @@
 
 Option Strict On
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -139,10 +141,13 @@ Namespace Controls.Map.Layers
 
         Public Overrides Property Name As String
             Get
-                Return Me.m_layers(Me.m_iLayer).Name
+                Dim fmtV As New cVarnameTypeFormatter()
+                Dim l As cEcospaceLayer = Me.m_layers(Me.m_iLayer)
+                Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, fmtV.GetDescriptor(l.VarName, eDescriptorTypes.Abbreviation), l.Name)
             End Get
             Set(value As String)
-                Me.m_layers(Me.m_iLayer).Name = value
+                Debug.Assert(False)
+                ' Can't do this
             End Set
         End Property
 

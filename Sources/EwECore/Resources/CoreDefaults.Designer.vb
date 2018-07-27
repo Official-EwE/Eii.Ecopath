@@ -92,24 +92,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to B forcing {0}.
-        '''</summary>
-        Public Shared ReadOnly Property CORE_DEFAULT_BIOMASSFORCING() As String
-            Get
-                Return ResourceManager.GetString("CORE_DEFAULT_BIOMASSFORCING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to B forcing rel. {0}.
-        '''</summary>
-        Public Shared ReadOnly Property CORE_DEFAULT_BIOMASSRELFORCING() As String
-            Get
-                Return ResourceManager.GetString("CORE_DEFAULT_BIOMASSRELFORCING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Combined fleets.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_COMBINEDFLEETS() As String
@@ -146,7 +128,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Fish Mortality Shape {0}.
+        '''  Looks up a localized string similar to Fish mortality shape {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_FISHMORTSHAPE() As String
             Get
@@ -155,7 +137,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Fishing Rate Shape {0}.
+        '''  Looks up a localized string similar to Fishing rate shape {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_FISHRATESHAPE() As String
             Get
@@ -182,25 +164,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Cap. computed {0}.
-        '''</summary>
-        Public Shared ReadOnly Property CORE_DEFAULT_HABCAP() As String
-            Get
-                Return ResourceManager.GetString("CORE_DEFAULT_HABCAP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Cap. {0}.
-        '''</summary>
-        Public Shared ReadOnly Property CORE_DEFAULT_HABCAP_INPUT() As String
-            Get
-                Return ResourceManager.GetString("CORE_DEFAULT_HABCAP_INPUT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Hab. {0}.
+        '''  Looks up a localized string similar to Habitat {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_HABITAT() As String
             Get
@@ -227,7 +191,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Mediation Shape {0}.
+        '''  Looks up a localized string similar to Mediation function {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_MEDIATIONSHAPE() As String
             Get
@@ -272,24 +236,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Port {0}.
-        '''</summary>
-        Public Shared ReadOnly Property CORE_DEFAULT_PORT() As String
-            Get
-                Return ResourceManager.GetString("CORE_DEFAULT_PORT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Port (all fleets).
-        '''</summary>
-        Public Shared ReadOnly Property CORE_DEFAULT_PORT_ALL() As String
-            Get
-                Return ResourceManager.GetString("CORE_DEFAULT_PORT_ALL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Regions.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_REGION() As String
@@ -313,24 +259,6 @@ Namespace My.Resources
         Public Shared ReadOnly Property CORE_DEFAULT_RELPP() As String
             Get
                 Return ResourceManager.GetString("CORE_DEFAULT_RELPP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Sailing cost (all fleets).
-        '''</summary>
-        Public Shared ReadOnly Property CORE_DEFAULT_SAIL_ALL() As String
-            Get
-                Return ResourceManager.GetString("CORE_DEFAULT_SAIL_ALL", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Sailing cost {0}.
-        '''</summary>
-        Public Shared ReadOnly Property CORE_DEFAULT_SAILCOST() As String
-            Get
-                Return ResourceManager.GetString("CORE_DEFAULT_SAILCOST", resourceCulture)
             End Get
         End Property
         
