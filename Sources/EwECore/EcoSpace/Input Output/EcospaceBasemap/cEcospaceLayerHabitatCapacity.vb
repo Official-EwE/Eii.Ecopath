@@ -58,13 +58,7 @@ Public Class cEcospaceLayerHabitatCapacity
 #End Region ' Cell interaction
 
     Protected Overrides Function DefaultName() As String
-        Dim strMask As String = ""
-        If (Me.VarName = eVarNameFlags.LayerHabitatCapacityInput) Then
-            strMask = My.Resources.CoreDefaults.CORE_DEFAULT_HABCAP_INPUT
-        Else
-            strMask = My.Resources.CoreDefaults.CORE_DEFAULT_HABCAP
-        End If
-        Return cStringUtils.Localize(strMask, Me.m_core.EcoPathGroupInputs(Me.Index).Name)
+        Return Me.m_core.EcoPathGroupInputs(Me.Index).Name
     End Function
 
 End Class

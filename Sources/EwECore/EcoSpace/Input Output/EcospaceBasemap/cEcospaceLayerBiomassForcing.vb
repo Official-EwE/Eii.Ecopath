@@ -67,7 +67,7 @@ Public Class cEcospaceLayerBiomassForcing
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Protected Overrides Function DefaultName() As String
-        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_BIOMASSFORCING, Me.m_core.EcoPathGroupInputs(Me.Index).Name)
+        Return Me.m_core.EcoPathGroupInputs(Me.Index).Name
     End Function
 
 End Class
