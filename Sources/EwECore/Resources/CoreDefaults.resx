@@ -514,7 +514,7 @@
     <value>GS||Unassim. consumption|Unassimilated consumption</value>
   </data>
   <data name="VARIABLE_HABITATAREA" xml:space="preserve">
-    <value>Hab. area|||Fraction of area used as habitat</value>
+    <value>Hab area|||Fraction of area used as habitat</value>
   </data>
   <data name="VARIABLE_IMMIG" xml:space="preserve">
     <value>Immigration</value>
@@ -547,25 +547,25 @@
     <value>Biomass forcing</value>
   </data>
   <data name="VARIABLE_LAYERBIOMASSRELATIVEFORCING" xml:space="preserve">
-    <value>Biomass(rel) map||Relative Biomass forcing|Relative Biomass forcing map</value>
+    <value>Biomass (rel)||Relative Biomass forcing|Relative Biomass forcing map</value>
   </data>
   <data name="VARIABLE_LAYERDEPTH" xml:space="preserve">
     <value>Depth|||Depth map (bathymetry)</value>
   </data>
   <data name="VARIABLE_LAYERDRIVER" xml:space="preserve">
-    <value>Drivers||Environmental drivers|Environmental driver map</value>
+    <value>Driver||Environmental driver|Environmental driver map</value>
   </data>
   <data name="VARIABLE_LAYEREXCLUSION" xml:space="preserve">
     <value>Exclusion||Exclusion map|Map with cells to exclude from computations</value>
   </data>
   <data name="VARIABLE_LAYERHABITAT" xml:space="preserve">
-    <value>Habitats||Habitat map</value>
+    <value>Habitat||Habitat map</value>
   </data>
   <data name="VARIABLE_LAYERHABITATCAPACITY" xml:space="preserve">
-    <value>HabCap (out)||Habitat capacity map (computed)</value>
+    <value>Hab cap (out)||Habitat capacity map (computed)</value>
   </data>
   <data name="VARIABLE_LAYERHABITATCAPACITYINPUT" xml:space="preserve">
-    <value>HabCap map||Habitat capacity map</value>
+    <value>Hab cap||Habitat capacity map (entered)</value>
   </data>
   <data name="VARIABLE_LAYERMIGRATION" xml:space="preserve">
     <value>Migration||Migration map</value>
@@ -574,19 +574,19 @@
     <value>MLD||Mixed layer depth map</value>
   </data>
   <data name="VARIABLE_LAYERMPA" xml:space="preserve">
-    <value>MPA map||Marine Protected Area map</value>
+    <value>MPA||Marine Protected Area map</value>
   </data>
   <data name="VARIABLE_LAYERPORT" xml:space="preserve">
     <value>Ports||Ports map</value>
   </data>
   <data name="VARIABLE_LAYERREGION" xml:space="preserve">
-    <value>Region||Map with statistical regions</value>
+    <value>Regions||Map of statistical regions</value>
   </data>
   <data name="VARIABLE_LAYERRELCIN" xml:space="preserve">
-    <value>C(rel) map||Relative C map|Relative contaminants map</value>
+    <value>C (rel)||Relative C map|Relative contaminants map</value>
   </data>
   <data name="VARIABLE_LAYERRELPP" xml:space="preserve">
-    <value>PP(rel) map||Relative PP map|Relative Primary Production map</value>
+    <value>PP (rel)||Relative PP map|Relative Primary Production map</value>
   </data>
   <data name="VARIABLE_LAYERSAIL" xml:space="preserve">
     <value>Sailing cost||Sailing cost map</value>
@@ -1621,13 +1621,13 @@
     <value>Latitude</value>
   </data>
   <data name="VARIABLE_LAYERIMPORTANCE" xml:space="preserve">
-    <value>Importance layer</value>
+    <value>Importance||Importance map for spatial optimizations</value>
   </data>
   <data name="VARIABLE_LAYERMPARANDOM" xml:space="preserve">
-    <value>LayerMPARandom</value>
+    <value>Random MPA||Random MPA map</value>
   </data>
   <data name="VARIABLE_LAYERMPASEED" xml:space="preserve">
-    <value>LayerMPASeed</value>
+    <value>Seed cells</value>
   </data>
   <data name="VARIABLE_LAYERMPASEEDBEST" xml:space="preserve">
     <value>Best cells</value>
