@@ -187,6 +187,7 @@
     <Compile Include="NetworkAnalysis\cEcoNetwork.vb" />
     <Compile Include="NetworkAnalysis\cKeystone3.vb" />
     <Compile Include="NetworkAnalysis\cNetworkManager.vb" />
+    <Compile Include="Plugin\cEwENetworkAnalysisOptionsPlugin.vb" />
     <Compile Include="Result writers\cNetworkAnalysisResultWriter.vb" />
     <Compile Include="Result writers\cNetworkAnalysisEcopathResultWriter.vb" />
     <Compile Include="Result writers\cNetworkAnalysisEcosimResultWriter.vb" />

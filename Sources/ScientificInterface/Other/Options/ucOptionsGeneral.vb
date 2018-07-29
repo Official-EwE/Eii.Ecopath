@@ -41,13 +41,14 @@ Namespace Other
     Public Class ucOptionsGeneral
         Implements IOptionsPage
 
-        Private m_uic As cUIContext = Nothing
         Private m_fpVerboseLevel As cEwEFormatProvider = Nothing
+
+        Public Property UIContext As cUIContext Implements IUIElement.UIContext
 
 #Region " Constructors "
 
         Public Sub New(ByVal uic As cUIContext)
-            Me.m_uic = uic
+            Me.UIContext = uic
             Me.InitializeComponent()
         End Sub
 
@@ -83,7 +84,7 @@ Namespace Other
 
             Me.m_nudMaxNumMessages.Value = CInt(Math.Min(Me.m_nudMaxNumMessages.Maximum, _
                                                 Math.Max(Me.m_nudMaxNumMessages.Minimum, My.Settings.StatusMaxMessages)))
-            Me.m_fpVerboseLevel = New cEwEFormatProvider(Me.m_uic, Me.m_cmbLogLevel, New cVerboseLevelTypeFormatter(), Nothing)
+            Me.m_fpVerboseLevel = New cEwEFormatProvider(Me.UIContext, Me.m_cmbLogLevel, New cVerboseLevelTypeFormatter(), Nothing)
             Me.m_fpVerboseLevel.Value = cLog.VerboseLevel
 
             Me.m_cbShowSplashScreen.Checked = My.Settings.ShowSplash
@@ -201,7 +202,7 @@ Namespace Other
         Private Sub OnViewLogFileDir(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnViewLogFileDir.Click
 
-            Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            Dim cmd As cBrowserCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
             If (cmd Is Nothing) Then Return
 
             Try
@@ -222,7 +223,7 @@ Namespace Other
             If (fileList Is Nothing) Then Return
 
             Dim fmsg As New cFeedbackMessage(My.Resources.GENERIC_PROMPT_CLEAR_MRU, EwEUtils.Core.eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
-            Me.m_uic.Core.Messages.SendMessage(fmsg)
+            Me.UIContext.Core.Messages.SendMessage(fmsg)
 
             If (fmsg.Reply = eMessageReply.YES) Then
                 ' Clear confirmed

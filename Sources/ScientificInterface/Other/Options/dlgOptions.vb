@@ -49,21 +49,23 @@ Namespace Other
         Private m_lPages As New List(Of IOptionsPage)
         ''' <summary>Current page.</summary>
         Private m_pageCurrent As IOptionsPage = Nothing
-        ''' <summary></summary>
-        Private m_optStartup As eApplicationOptionTypes = eApplicationOptionTypes.General
+        ''' <summary>Page to show upon startup</summary>
+        Private m_strVerb As String = ""
 
         ' ToDo: track changes in pages, and only show prompts after changes occurred. Not very important right now.
         Private m_bHasFiredPrompt As Boolean = False
+
+        Private m_dtNodes As New Dictionary(Of String, Type)
 
 #End Region ' Private variables
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext, Optional opt As eApplicationOptionTypes = eApplicationOptionTypes.General)
+        Public Sub New(ByVal uic As cUIContext, Optional verb As String = "")
 
             Me.m_uic = uic
             Me.InitializeComponent()
-            Me.m_optStartup = opt
+            Me.m_strVerb = verb
 
         End Sub
 
@@ -73,19 +75,16 @@ Namespace Other
             ' Create nodes
             Me.m_tvOptions.Nodes.Clear()
 
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("General", GetType(ucOptionsGeneral)))
-
-            Dim tnDisplay As TreeNode = Me.CreateNode("Display", GetType(ucOptionsStatusColors))
-            tnDisplay.Nodes.Add(Me.CreateNode("Colors", GetType(ucOptionsStatusColors)))
-            tnDisplay.Nodes.Add(Me.CreateNode("Fonts", GetType(ucOptionsGraphs)))
-            tnDisplay.Nodes.Add(Me.CreateNode("Maps", GetType(ucOptionsMap)))
-            tnDisplay.Nodes.Add(Me.CreateNode("Pedigree", GetType(ucOptionsPedigree)))
-            tnDisplay.Nodes.Add(Me.CreateNode("Main window", GetType(ucOptionsPresentation)))
-            Me.m_tvOptions.Nodes.Add(tnDisplay)
-
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("File management", GetType(ucOptionsFileManagement)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Plug-ins", GetType(ucOptionsPlugins)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("External data", GetType(ucOptionsSpatialTemporal)))
+            ' ToDo: globalize this
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("General", eApplicationOptionTypes.General.ToString(), GetType(ucOptionsGeneral)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Colors", eApplicationOptionTypes.Colours.ToString(), GetType(ucOptionsStatusColors)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Fonts", eApplicationOptionTypes.Fonts.ToString(), GetType(ucOptionsGraphs)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Maps", eApplicationOptionTypes.ReferenceMaps.ToString(), GetType(ucOptionsMap)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Pedigree", eApplicationOptionTypes.Pedigree.ToString(), GetType(ucOptionsPedigree)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Main window", eApplicationOptionTypes.Window.ToString(), GetType(ucOptionsPresentation)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("File management", eApplicationOptionTypes.FileLocations.ToString(), GetType(ucOptionsFileManagement)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Plug-ins", eApplicationOptionTypes.Plugins.ToString(), GetType(ucOptionsPlugins)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("External data", eApplicationOptionTypes.SpatialTemporal.ToString(), GetType(ucOptionsSpatialTemporal)))
 
             ' Add plug-ins
             Dim pm As cPluginManager = Me.m_uic.Core.PluginManager
@@ -94,15 +93,15 @@ Namespace Other
                 For Each pi As IPlugin In pm.GetPlugins(GetType(IEwEOptionsPlugin))
                     Dim opt As IEwEOptionsPlugin = DirectCast(pi, IEwEOptionsPlugin)
                     Dim page As Control = opt.GetConfigUI()
-                    Debug.Assert(TypeOf page Is IOptionsPage)
                     Me.m_lPages.Add(DirectCast(page, IOptionsPage))
-                    Me.m_tvOptions.Nodes.Add(Me.CreateNode(opt.Label, page.GetType()))
+                    Me.m_tvOptions.Nodes.Add(Me.CreateNode(opt.Label, pi.Name, page.GetType()))
                 Next
             End If
 
             Me.m_tvOptions.ExpandAll()
 
-            Me.SelectPage(Me.GetPage(ToPageType(Me.m_optStartup)))
+            'Me.SelectPage(Me.GetPage(Me.m_strVerb))
+            Me.SelectNode(Me.m_strVerb)
 
         End Sub
 
@@ -173,16 +172,11 @@ Namespace Other
             Handles m_tvOptions.AfterSelect
 
             If (e.Node Is Nothing) Then Return
-            ' Suppress auto-select event when dialog initializes (indicated by unknown action), 
-            ' because this will switch away from the page that was selected at launch.
-            If (e.Action = TreeViewAction.Unknown) Then Return
 
             Try
-                Dim tag As Object = e.Node.Tag
-                If (tag IsNot Nothing) Then
-                    Dim page As IOptionsPage = Me.GetPage(DirectCast(tag, Type))
-                    Me.SelectPage(page)
-                End If
+                Dim strVerb As String = CStr(e.Node.Tag)
+                Dim page As IOptionsPage = Me.GetPage(strVerb)
+                Me.SelectPage(page)
 
             Catch ex As Exception
                 cLog.Write(ex, "dlgOptions::OnSelectedNode(" & e.Node.Name & ")")
@@ -194,60 +188,24 @@ Namespace Other
 
 #Region " Internals "
 
-        Private Function CreateNode(strLabel As String, type As Type) As TreeNode
-            Return New TreeNode(strLabel) With {.Tag = type}
+        Private Function CreateNode(strLabel As String, strVerb As String, type As Type) As TreeNode
+            Dim tn As New TreeNode(strLabel) With {.Tag = strVerb}
+            Me.m_dtNodes(strVerb) = type
+            Return tn
         End Function
 
-        Private Function CreateNode(strLabel As String, plugin As IEwEOptionsPlugin) As TreeNode
-            Return New TreeNode(strLabel) With {.Tag = plugin}
-        End Function
-
-        Private Function ToPageType(opt As eApplicationOptionTypes) As Type
-
-            Dim t As Type = GetType(ucOptionsGeneral)
-
-            Select Case opt
-                Case eApplicationOptionTypes.General,
-                     eApplicationOptionTypes.Messages
-
-                Case eApplicationOptionTypes.PresentationMode
-                    t = GetType(ucOptionsPresentation)
-
-                Case eApplicationOptionTypes.Colours
-                    t = GetType(ucOptionsStatusColors)
-
-                Case eApplicationOptionTypes.Graphs,
-                     eApplicationOptionTypes.Fonts
-                    t = GetType(ucOptionsGraphs)
-
-                Case eApplicationOptionTypes.ReferenceMaps
-                    t = GetType(ucOptionsMap)
-
-                Case eApplicationOptionTypes.Autosave, eApplicationOptionTypes.FileLocations
-                    t = GetType(ucOptionsFileManagement)
-
-                Case eApplicationOptionTypes.Plugins
-                    t = GetType(ucOptionsPlugins)
-
-                Case eApplicationOptionTypes.SpatialTemporal
-                    t = GetType(ucOptionsSpatialTemporal)
-
-                Case Else
-                    Debug.Assert(False, "Option not recognized")
-            End Select
-            Return t
-
-        End Function
-
-        Private Sub SelectNode(t As Type, nodes As TreeNodeCollection)
-            For Each n As TreeNode In nodes
-                If ReferenceEquals(n.Tag, t) Then
-                    Me.m_tvOptions.SelectedNode = n
-                    Return
-                Else
-                    SelectNode(t, n.Nodes)
+        Private Sub SelectNode(strVerb As String)
+            Dim nDefault As TreeNode = Nothing
+            For Each n As TreeNode In Me.m_tvOptions.Nodes
+                If (TypeOf n.Tag Is String) Then
+                    If nDefault Is Nothing Then nDefault = n
+                    If (CStr(n.Tag) = strVerb) Then
+                        Me.m_tvOptions.SelectedNode = n
+                        Return
+                    End If
                 End If
             Next
+            Me.m_tvOptions.SelectedNode = nDefault
 
         End Sub
 
@@ -273,7 +231,12 @@ Namespace Other
 
         End Function
 
-        Private Function GetPage(ByVal t As Type) As IOptionsPage
+        Private Function GetPage(strVerb As String) As IOptionsPage
+
+            Dim t As Type = GetType(ucOptionsGeneral)
+            If (Me.m_dtNodes.ContainsKey(strVerb)) Then
+                t = Me.m_dtNodes(strVerb)
+            End If
 
             ' Sanity check - if this fails something is really wrong
             Debug.Assert(t IsNot Nothing, "Page type not know, cannot continue")

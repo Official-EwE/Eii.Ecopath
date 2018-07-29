@@ -22,32 +22,32 @@
 
 Option Strict On
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Core
-Imports System.ComponentModel
 
 #End Region ' Imports
 
 Public Class ucOptions
+    Implements IOptionsPage
+
+#Region " Private vars "
 
     Private m_uic As cUIContext = Nothing
     Private m_man As cNetworkManager = Nothing
-    Private m_bInUpdate As Boolean = False
     Private m_cbh As cCheckboxHierarchy = Nothing
+    Private m_bInUpdate As Boolean = False
 
-    Public Sub New(ByVal uic As cUIContext,
-                   ByVal man As cNetworkManager)
+#End Region ' Private vars
 
-        Me.m_uic = uic
-        Me.m_man = man
-
+    Public Sub New(uic As cUIContext)
+        Me.UIContext = uic
         Me.InitializeComponent()
-
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
         Me.m_bInUpdate = True
+
+        Me.m_man = cEwENetworkAnalysisPlugin.thePlugin.Manager
         Me.m_cbUseTimeout.Checked = Me.m_man.UseAbortTimer
         Me.m_nudTimeOut.Value = CInt(Me.m_man.TimeOutMilSecs / (1000 * 60))
 
@@ -57,7 +57,9 @@ Public Class ucOptions
         Me.m_cbh.Add(Me.m_cbAutosaveEcosimWithPPR, Me.m_cbAutosaveRoot)
         Me.m_cbh.ManageCheckedStates = True
 
-        AddHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
+        Me.m_cbAutosaveEcopath.Checked = My.Settings.AutosaveEcopath
+        Me.m_cbAutosaveEcosimWoPPR.Checked = My.Settings.AutosaveEcosimWoPPR
+        Me.m_cbAutosaveEcosimWithPPR.Checked = My.Settings.AutosaveEcosimWithPPR
 
         Me.m_bInUpdate = False
 
@@ -70,96 +72,82 @@ Public Class ucOptions
             If disposing And Me.components IsNot Nothing Then
                 Me.m_cbh.Dispose()
                 Me.components.Dispose()
-                RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
             End If
         Finally
             MyBase.Dispose(disposing)
         End Try
     End Sub
 
-    Private Sub OnTimeOutCheckChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbUseTimeout.CheckedChanged
-
-        If Me.m_bInUpdate Then Return
-
-        Try
-            Me.m_man.UseAbortTimer = m_cbUseTimeout.Checked
-            My.Settings.UseAbortTimer = m_cbUseTimeout.Checked
-            My.Settings.Save()
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
-        Me.UpdateControls()
-
-    End Sub
-
-    Private Sub OnTimeOutChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_nudTimeOut.Validated
-
-        If Me.m_bInUpdate Then Return
-
-        Try
-            Me.m_man.TimeOutMilSecs = CInt(Me.m_nudTimeOut.Value * 1000 * 60)
-            My.Settings.AbortTimoutMins = CInt(Me.m_nudTimeOut.Value)
-            My.Settings.Save()
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
-        Me.UpdateControls()
-
-    End Sub
-
     Private Sub UpdateControls()
 
-        Me.m_bInUpdate = True
-
-        Me.m_nudTimeOut.Enabled = Me.m_man.UseAbortTimer
-        Me.m_lblTimeout.Enabled = Me.m_man.UseAbortTimer
-        Me.m_lblTimeOutUnit.Enabled = Me.m_man.UseAbortTimer
-
-        Me.m_cbAutosaveEcopath.Checked = My.Settings.AutosaveEcopath
-        Me.m_cbAutosaveEcosimWoPPR.Checked = My.Settings.AutosaveEcosimWoPPR
-        Me.m_cbAutosaveEcosimWithPPR.Checked = My.Settings.AutosaveEcosimWithPPR
-
-        Me.m_bInUpdate = False
+        Me.m_nudTimeOut.Enabled = Me.m_cbUseTimeout.Checked
 
     End Sub
 
 #Region " Event handlers "
 
-    Private Sub OnSaveEcopathChecked(sender As Object, e As EventArgs) Handles m_cbAutosaveEcopath.CheckedChanged
+    Private Sub OnUseTimeoutCheckChanged(sender As Object, e As EventArgs) Handles m_cbUseTimeout.CheckedChanged
 
         If Me.m_bInUpdate Then Return
-
-        My.Settings.AutosaveEcopath = Me.m_cbAutosaveEcopath.Checked
-        My.Settings.Save()
+        Me.UpdateControls()
 
     End Sub
+
 
     Private Sub OnSaveEcosimWoPPRChecked(sender As Object, e As EventArgs) Handles m_cbAutosaveEcosimWoPPR.CheckedChanged
 
         If Me.m_bInUpdate Then Return
-
-        My.Settings.AutosaveEcosimWoPPR = Me.m_cbAutosaveEcosimWoPPR.Checked
-        If (My.Settings.AutosaveEcosimWoPPR) Then My.Settings.AutosaveEcosimWithPPR = False
-        My.Settings.Save()
+        If (Me.m_cbAutosaveEcosimWoPPR.Checked) Then
+            Me.m_cbAutosaveEcosimWithPPR.Checked = False
+        End If
+        Me.UpdateControls()
 
     End Sub
 
     Private Sub OnSaveEcosimWithPPRChecked(sender As Object, e As EventArgs) Handles m_cbAutosaveEcosimWithPPR.CheckedChanged
 
         If Me.m_bInUpdate Then Return
-
-        My.Settings.AutosaveEcosimWithPPR = Me.m_cbAutosaveEcosimWithPPR.Checked
-        If (My.Settings.AutosaveEcosimWithPPR) Then My.Settings.AutosaveEcosimWoPPR = False
-        My.Settings.Save()
-
-    End Sub
-
-    Private Sub OnSettingsChanged(sender As Object, e As PropertyChangedEventArgs)
+        If (Me.m_cbAutosaveEcosimWithPPR.Checked) Then
+            Me.m_cbAutosaveEcosimWoPPR.Checked = False
+        End If
         Me.UpdateControls()
+
     End Sub
 
 #End Region ' Event handlers
+
+#Region " Options page implementation "
+
+    Public Property UIContext As cUIContext Implements IUIElement.UIContext
+
+    Public Event OnChanged As IOptionsPage.OnChangedEventHandler Implements IOptionsPage.OnChanged
+
+    Public Function CanApply() As Boolean Implements IOptionsPage.CanApply
+        Return True
+    End Function
+
+    Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
+
+        Me.m_man.TimeOutMilSecs = CInt(Me.m_nudTimeOut.Value * 1000 * 60)
+        Me.m_man.UseAbortTimer = m_cbUseTimeout.Checked
+
+        My.Settings.AutosaveEcosimWoPPR = Me.m_cbAutosaveEcosimWoPPR.Checked
+        My.Settings.AutosaveEcosimWithPPR = Me.m_cbAutosaveEcosimWithPPR.Checked
+        My.Settings.AbortTimoutMins = CInt(Me.m_nudTimeOut.Value)
+        My.Settings.Save()
+
+    End Function
+
+    Public Function CanSetDefaults() As Boolean Implements IOptionsPage.CanSetDefaults
+        Return True
+    End Function
+
+    Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
+        Me.m_cbUseTimeout.Checked = True
+        Me.m_nudTimeOut.Value = 30
+        Me.m_cbAutosaveRoot.Checked = False
+    End Sub
+
+#End Region ' Options page implementation 
 
 End Class
