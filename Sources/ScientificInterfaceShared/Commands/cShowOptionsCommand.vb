@@ -38,7 +38,7 @@ Namespace Commands
 
 #Region " Private vars "
 
-        Private m_option As eApplicationOptionTypes = eApplicationOptionTypes.General
+        Private m_strVerb As String = ""
 
 #End Region ' Private vars
 
@@ -65,11 +65,15 @@ Namespace Commands
             MyBase.New(cmdh, cCOMMAND_NAME)
         End Sub
 
-        Public Overloads Sub Invoke(Optional ByVal [option] As eApplicationOptionTypes = eApplicationOptionTypes.General)
+        Public Overloads Sub Invoke(opt As eApplicationOptionTypes)
+            Me.Invoke(opt.ToString())
+        End Sub
+
+        Public Overloads Sub Invoke(Optional ByVal strVerb As String = "")
             ' Set option
-            Me.m_option = [option]
+            Me.m_strVerb = strVerb
             MyBase.Invoke()
-            Me.m_option = eApplicationOptionTypes.General
+            Me.m_strVerb = ""
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -78,9 +82,9 @@ Namespace Commands
         ''' that this command was invoked for.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property [Option] As eApplicationOptionTypes
+        Public ReadOnly Property Verb As String
             Get
-                Return Me.m_option
+                Return Me.m_strVerb
             End Get
         End Property
 

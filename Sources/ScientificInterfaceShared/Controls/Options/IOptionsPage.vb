@@ -18,15 +18,18 @@
 ' ===============================================================================
 '
 
+Imports EwEUtils.Core
+
 Namespace Controls
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Interface for implementing an configuration page for integration in a 
-    ''' settings dialog
+    ''' Interface for implementing an configuration page for integration in the 
+    ''' EwE system-wide options
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Interface IOptionsPage
+        Inherits IUIElement
 
         Event OnChanged(ByVal sender As IOptionsPage, ByVal args As EventArgs)
 

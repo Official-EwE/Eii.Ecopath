@@ -119,9 +119,6 @@ Public Class frmNetworkAnalysis
         'Me.m_toolstrip.Visible = False
         Me.m_toolstrip.Dock = DockStyle.Top
 
-        Me.m_tlpInfo.Visible = True
-        Me.m_tlpInfo.Dock = DockStyle.Fill
-
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Me.m_cmdDisplayGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
@@ -324,7 +321,7 @@ Public Class frmNetworkAnalysis
 
     Private Sub tsbtnOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles tsbtnOptions.Click
-        Me.ShowOptions(tsbtnOptions.Checked)
+        Me.ShowOptions()
     End Sub
 
     Private Sub OnFontsClicked(sender As Object, e As EventArgs) Handles tsbnFonts.Click
@@ -384,7 +381,6 @@ Public Class frmNetworkAnalysis
         Me.SuspendLayout()
 
         If (Me.m_contentmanager IsNot Nothing) Then
-            Me.ShowOptions(False)
             Try
                 Me.m_contentmanager.Detach()
             Catch ex As Exception
@@ -561,9 +557,7 @@ Public Class frmNetworkAnalysis
             ' Hide info panel
             Me.m_tlpInfo.Visible = False
         Else
-            ' Only show options
             Me.m_toolstrip.Visible = False
-            Me.ShowOptions(True)
             ' Show credits
             Me.m_tlpInfo.Visible = True
             Me.m_hdrPage.Text = My.Resources.PAGE_CREDITS
@@ -586,34 +580,14 @@ Public Class frmNetworkAnalysis
         Me.ShowPage(Me.m_pageCurrent)
     End Sub
 
-    Private Sub ShowOptions(ByVal bShow As Boolean)
+    Private Sub ShowOptions()
 
-        Dim ctrlOptions As Control = Nothing
-        Dim iWidth As Integer = 0
+        Try
+            Dim cmd As cShowOptionsCommand = CType(Me.m_uic.CommandHandler.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
+            cmd.Invoke("ndENAOptions")
+        Catch ex As Exception
 
-        Me.m_tlpOptions.Controls.Clear()
-
-        If (bShow = True) Then
-
-            If (Me.m_contentmanager IsNot Nothing) Then
-                ctrlOptions = Me.m_contentmanager.OptionsControl
-            End If
-
-            If (ctrlOptions Is Nothing) Then
-                ctrlOptions = New ucOptions(Me.m_uic, Me.m_networkmanager)
-            End If
-
-            iWidth = ctrlOptions.Width
-            ctrlOptions.Dock = DockStyle.Fill
-            Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 1)
-
-            Me.m_scMain.Panel2Collapsed = False
-            Me.m_scMain.SplitterDistance = Me.m_scMain.Width - Me.m_scMain.SplitterWidth - iWidth
-            Me.tsbtnOptions.Checked = True
-        Else
-            Me.m_scMain.Panel2Collapsed = True
-            Me.tsbtnOptions.Checked = False
-        End If
+        End Try
 
     End Sub
 

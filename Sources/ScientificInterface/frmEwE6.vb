@@ -3418,7 +3418,7 @@ Public Class frmEwE6
 
     Private Sub OnShowOptions(ByVal cmd As cCommand) Handles m_cmdShowOptions.OnInvoke
         Try
-            Dim dlgOptions As New dlgOptions(Me.UIContext, Me.m_cmdShowOptions.Option)
+            Dim dlgOptions As New dlgOptions(Me.UIContext, Me.m_cmdShowOptions.Verb)
             cmd.UserHandled = (dlgOptions.ShowDialog(Me) = System.Windows.Forms.DialogResult.OK)
             Me.SaveSettings()
         Catch ex As Exception

@@ -178,6 +178,7 @@ Namespace Definitions
         Window
         ''' <summary>Spatial-temporal options.</summary>
         SpatialTemporal
+        Pedigree
     End Enum
 
     Public Enum eGroupFilter As Integer

@@ -21,7 +21,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 
@@ -34,7 +33,6 @@ Imports ScientificInterfaceShared.Controls
 ''' ---------------------------------------------------------------------------
 Public Class ucConfig
     Implements IOptionsPage
-    Implements IUIElement
 
     ''' <summary>Plug-in to configure.</summary>
     Private m_plugin As cWoRMSPluginPoint = Nothing
