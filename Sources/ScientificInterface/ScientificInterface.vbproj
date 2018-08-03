@@ -2121,10 +2121,6 @@
       <Project>{fef1031b-9933-4364-ad29-c4f8b2e68382}</Project>
       <Name>EwEEcotroph</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin.vbproj">
-      <Project>{206b8c0c-bc5a-40c3-822b-f17b638704fd}</Project>
-      <Name>EwEFlowDiagramPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEModelFromEcosimPlugin\EwEModelFromEcosimPlugin.vbproj">
       <Project>{243cbcb0-4fd7-43b8-a6d1-27e26e866a99}</Project>
       <Name>EwEModelFromEcosimPlugin</Name>
@@ -2172,10 +2168,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEWoRMSPlugin\EwEWoRMSPlugin.vbproj">
       <Project>{4b88bf52-04a7-476b-b2f5-153758a62935}</Project>
       <Name>EwEWoRMSPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\FLEMFileReaderPlugin\FLEMFileReaderPlugin.vbproj">
-      <Project>{d17cdc33-0294-4f82-bd0a-026b192448bb}</Project>
-      <Name>FLEMFileReaderPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
