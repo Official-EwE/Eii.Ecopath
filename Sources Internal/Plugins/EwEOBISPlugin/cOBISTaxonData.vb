@@ -38,7 +38,6 @@ Public Class cOBISTaxonData
 #Region " Privates "
 
     ' -- Plugin connection --
-    Private m_strAssemblyName As String = ""
     Private m_strPluginName As String = ""
 
 #End Region ' Privates
@@ -48,21 +47,12 @@ Public Class cOBISTaxonData
     Public Sub New(ByVal strAssemblyName As String, _
                    ByVal strPluginName As String)
         MyBase.New(strPluginName)
-        Me.m_strAssemblyName = strAssemblyName
         Me.m_strPluginName = strPluginName
     End Sub
 
 #End Region ' Constructor
 
 #Region " Properties "
-
-    ''' <inheritdocs cref="IPluginData.AssemblyName"/>
-    Public ReadOnly Property AssemblyName() As String _
-        Implements EwEPlugin.Data.IPluginData.AssemblyName
-        Get
-            Return Me.m_strAssemblyName
-        End Get
-    End Property
 
     ''' <inheritdocs cref="IPluginData.PluginName"/>
     Public ReadOnly Property PluginName() As String _

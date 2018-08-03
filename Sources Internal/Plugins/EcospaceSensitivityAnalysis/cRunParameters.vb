@@ -26,10 +26,10 @@ Imports System.Threading
 
 
 Public Class cLayerFilePair
-    Public MapLayer As IEnviroInputMap
+    Public MapLayer As cEnviroInputMap
     Public File As String
 
-    Public Sub New(layer As IEnviroInputMap, FileName As String)
+    Public Sub New(layer As cEnviroInputMap, FileName As String)
         MapLayer = layer
         File = FileName
     End Sub
@@ -41,7 +41,7 @@ Public Class cRunParameters
 
     Public BoundsOutput As String
     Public RemovalOutput As String
-    Public lstRemovalLayers As List(Of IEnviroInputMap)
+    Public lstRemovalLayers As List(Of cEnviroInputMap)
     Public lstBoundsFiles As List(Of cLayerFilePair)
     Public Delta As Single
 
@@ -88,14 +88,14 @@ Public Class cRunParameters
     End Sub
 
     Private Sub setDefaultMapLayers()
-        Dim mapManager As cMapResponseInteractionManager = Me.m_core.CapacityMapInteractionManager
-        Dim map As IEnviroInputMap = Nothing
+        Dim mapManager As cEcospaceEnviroResponseManager = Me.m_core.CapacityMapInteractionManager
+        Dim map As IEnviroInputData = Nothing
 
-        Me.lstRemovalLayers = New List(Of IEnviroInputMap)
-        For iMap As Integer = 1 To mapManager.nMaps
+        Me.lstRemovalLayers = New List(Of cEnviroInputMap)
+        For iMap As Integer = 1 To mapManager.nEnviroData
             'Not Depth or Hard sediment
-            If Not mapManager.Map(iMap).Layer.Name.Trim.ToLower.Contains("hard sediment") Then
-                Me.lstRemovalLayers.Add(mapManager.Map(iMap))
+            If Not mapManager.EnviroData(iMap).Name.Trim.ToLower.Contains("hard sediment") Then
+                Me.lstRemovalLayers.Add(CType(mapManager.EnviroData(iMap), cEnviroInputMap))
             End If
 
         Next iMap
@@ -106,8 +106,8 @@ Public Class cRunParameters
     Private Sub setDefaultLayerFiles()
 
         Me.lstBoundsFiles = New List(Of cLayerFilePair)
-        For Each layer As IEnviroInputMap In Me.lstRemovalLayers
-            Me.lstBoundsFiles.Add(New cLayerFilePair(layer, Nothing))
+        For Each layer As IEnviroInputData In Me.lstRemovalLayers
+            Me.lstBoundsFiles.Add(New cLayerFilePair(CType(layer, cEnviroInputMap), Nothing))
         Next
 
     End Sub

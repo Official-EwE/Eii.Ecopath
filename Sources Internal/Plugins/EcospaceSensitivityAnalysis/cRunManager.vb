@@ -64,14 +64,14 @@ Public Class cRunManager
         End Sub
 
 
-        Public Sub removeResponse(map As IEnviroInputMap)
+        Public Sub removeResponse(map As cEnviroInputMap)
 
             Debug.Assert(map.ResponseIndexForGroup(Me.iGroup) = Me.orgResponseFunct.Index)
             map.ResponseIndexForGroup(Me.iGroup) = 0
 
         End Sub
 
-        Public Sub RestoreResponse(map As IEnviroInputMap)
+        Public Sub RestoreResponse(map As cEnviroInputMap)
 
             map.ResponseIndexForGroup(Me.iGroup) = Me.orgResponseFunct.Index
 
@@ -81,12 +81,12 @@ Public Class cRunManager
 
 
     Private Class cMapLayer
-        Public MapLayer As IEnviroInputMap
+        Public MapLayer As cEnviroInputMap
 
         Private m_orgLayerData(,) As Single
         Private manager As cRunManager
 
-        Public Sub New(RunManager As cRunManager, map As IEnviroInputMap)
+        Public Sub New(RunManager As cRunManager, map As cEnviroInputMap)
             Me.manager = RunManager
             Me.MapLayer = map
             Me.storeOrgData()
@@ -100,11 +100,11 @@ Public Class cRunManager
 
         Private Sub storeLayerData(iLayer As Integer)
 
-            Dim data(,,) As Single = Me.manager.SpaceData.EnvironmentalLayerMap
+            Dim data()(,) As Single = Me.manager.SpaceData.EnvironmentalLayerMap
             m_orgLayerData = New Single(Me.manager.SpaceData.InRow, Me.manager.SpaceData.InCol) {}
             For ir As Integer = 1 To Me.manager.SpaceData.InRow
                 For ic As Integer = 1 To Me.manager.SpaceData.InCol
-                    m_orgLayerData(ir, ic) = data(iLayer, ir, ic)
+                    m_orgLayerData(ir, ic) = data(iLayer)(ir, ic)
                 Next ic
             Next ir
 
@@ -250,7 +250,7 @@ Public Class cRunManager
 
         For Each pair In Me.RunParameters.lstBoundsFiles
             If Not File.Exists(pair.File) Then
-                lstMsgs.Add("Invalid input file for Drive Layer '" + pair.MapLayer.Layer.Name + "'.")
+                lstMsgs.Add("Invalid input file for Drive Layer '" + pair.MapLayer.Name + "'.")
             End If
         Next
 
@@ -348,12 +348,12 @@ Public Class cRunManager
 
                     Me.m_RunSpace.Run()
                     If Me.m_bStop Then Exit For
-                    Me.IterationCompleted(pair.MapLayer.Layer.Name, Me.RunParameters.LowerBound)
+                    Me.IterationCompleted(pair.MapLayer.Name, Me.RunParameters.LowerBound)
 
                     Me.SwapFiles(pair.MapLayer.Layer, Me.m_upperFile, pair.File)
                     Me.m_RunSpace.Run()
                     If Me.m_bStop Then Exit For
-                    Me.IterationCompleted(pair.MapLayer.Layer.Name, Me.RunParameters.UpperBound)
+                    Me.IterationCompleted(pair.MapLayer.Name, Me.RunParameters.UpperBound)
 
                     Me.SwapFiles(pair.MapLayer.Layer, pair.File, "")
 
@@ -418,7 +418,7 @@ Public Class cRunManager
         End If
         Me.m_RunTimeSteps = Me.core.nEcospaceTimeSteps + nSpinUpSteps
 
-        For Each map As IEnviroInputMap In Me.RunParameters.lstRemovalLayers
+        For Each map As IEnviroInputData In Me.RunParameters.lstRemovalLayers
             For igrp As Integer = 1 To Me.core.nGroups
                 If map.ResponseIndexForGroup(igrp) > 0 Then
                     nRuns += 1
@@ -464,20 +464,20 @@ Public Class cRunManager
             Me.IterationCompleted(Me.m_curMapName, 0)
             'Me.SaveRun(Me.m_curMapName, 0.0)
 
-            For Each map As IEnviroInputMap In Me.RunParameters.lstRemovalLayers
+            For Each map As IEnviroInputData In Me.RunParameters.lstRemovalLayers
                 If Me.m_bStop Then Exit For
 
                 Me.StoreResponseGroup(map)
 
                 For Each resFunction As cResponseFunctionValuePair In Me.m_lstResponseFunctions
                     If Me.m_bStop Then Exit For
-                    resFunction.removeResponse(map)
+                    resFunction.removeResponse(CType(map, cEnviroInputMap))
 
                     Me.m_RunSpace.Run()
                     If Me.m_bStop Then Exit For
-                    Me.IterationCompleted(map.Layer.Name, resFunction.iGroup)
+                    Me.IterationCompleted(map.Name, resFunction.iGroup)
 
-                    resFunction.RestoreResponse(map)
+                    resFunction.RestoreResponse(CType(map, cEnviroInputMap))
                 Next
 
             Next map
@@ -695,13 +695,13 @@ Public Class cRunManager
     End Sub
 
 
-    Private Sub StoreResponseGroup(map As IEnviroInputMap)
+    Private Sub StoreResponseGroup(map As IEnviroInputData)
 
         m_lstResponseFunctions = New List(Of cResponseFunctionValuePair)
         For igrp As Integer = 1 To Me.core.nGroups
             Dim iResponseIndex As Integer = map.ResponseIndexForGroup(igrp)
             If iResponseIndex > 0 Then
-                Dim ResponFunct As cEnviroResponseFunction = DirectCast(Me.core.CapacityShapeManager.Item(iResponseIndex - 1), cEnviroResponseFunction)
+                Dim ResponFunct As cEnviroResponseFunction = DirectCast(Me.core.EnviroResponseShapeManager.Item(iResponseIndex - 1), cEnviroResponseFunction)
                 m_lstResponseFunctions.Add(New cResponseFunctionValuePair(ResponFunct, igrp))
             End If
         Next
@@ -760,11 +760,11 @@ Public Class cRunManager
         ElseIf Layer.VarName = EwEUtils.Core.eVarNameFlags.LayerDriver Then
 
 
-            Dim CoreData(,,) As Single = Me.SpaceData.EnvironmentalLayerMap
+            Dim CoreData()(,) As Single = Me.SpaceData.EnvironmentalLayerMap
             temp = New Single(Me.SpaceData.InRow, Me.SpaceData.InCol) {}
             For ir As Integer = 1 To Me.SpaceData.InRow
                 For ic As Integer = 1 To Me.SpaceData.InCol
-                    temp(ir, ic) = CoreData(Layer.Index, ir, ic)
+                    temp(ir, ic) = CoreData(Layer.Index)(ir, ic)
                 Next ic
             Next ir
 

@@ -391,7 +391,7 @@ Public Class cOBISPluginPoint
         'End If
 
         ' Create new results
-        Me.m_results = New cOBISTaxonSearchResults(Me.m_term, lResults.ToArray(), Assembly.GetExecutingAssembly().GetName().Name, Me.Name)
+        Me.m_results = New cOBISTaxonSearchResults(Me.m_term, lResults.ToArray(), Me.Name)
         ' Broadcast results
         Me.m_broadcaster.BroadcastData(Me.Name, Me.m_results)
 

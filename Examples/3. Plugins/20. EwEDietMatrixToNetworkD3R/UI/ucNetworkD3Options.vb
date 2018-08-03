@@ -30,6 +30,8 @@ Public Class ucNetworkD3Options
 
     Private m_plugin As cNetworkD3RWriterPlugin = Nothing
 
+    Public Property UIContext As cUIContext Implements IUIElement.UIContext
+
     Public Sub New()
         Me.InitializeComponent()
     End Sub

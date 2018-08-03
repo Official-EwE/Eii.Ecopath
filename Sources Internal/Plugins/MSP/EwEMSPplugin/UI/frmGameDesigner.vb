@@ -820,7 +820,7 @@ Namespace UI
         ''' </summary>
         ''' <param name="selection">Ignored.</param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnPressureSelected(selection As CellVirtualCollection) _
+        Private Sub OnPressureSelected() _
             Handles m_gridPressureMappings.OnSelectionChanged
 
             Dim p As cPressure = Me.m_gridPressureMappings.SelectedPressure

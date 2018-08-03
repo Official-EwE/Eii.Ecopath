@@ -24,6 +24,7 @@ Imports DotSpatial.Data
 Imports EwECore
 Imports EwESpatialAssetsPlugin
 Imports EwESpatialAssetsPlugin.SpatialData
+Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 
 #End Region ' Imports
@@ -68,7 +69,8 @@ Public Class cNonSpatialCSVGridDataset
 
             Dim rs As IRaster = New DotSpatial.Data.Raster(Of Single)
             rs = New Raster(Of Single)(bm.InRow, bm.InCol)
-            rs.Bounds = cDotSpatialUtils.EcospaceToBounds(bm.PosTopLeft, bm.PosBottomRight, bm.CellSize)
+            ' JS 03Aug18: Projection empty; this needs testing!
+            rs.Bounds = cDotSpatialUtils.EcospaceToBounds(bm.PosTopLeft, bm.PosBottomRight, bm.CellSize, Nothing)
             rs.NoDataValue = cCore.NULL_VALUE
 
             Me.ReadBody(reader, rs)

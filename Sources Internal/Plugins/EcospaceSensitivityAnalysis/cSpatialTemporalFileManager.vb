@@ -18,7 +18,7 @@
 
 #Const VER_OLD = 1
 #Const VER_NEW = 2
-#Const SpatialTemp_Framework_Version = VER_OLD
+#Const SpatialTemp_Framework_Version = VER_NEW
 
 Option Explicit On
 Option Strict On
@@ -41,18 +41,16 @@ Public Class cSpatialTemporalFileManager
     Public Sub SwapFiles(Layer As cEcospaceLayer, sourceFile As String)
         'WARNING HARDWIRED FOR THE RBT FILES
 
-        Dim ds As EwEUtils.SpatialData.ISpatialDataSet
         Dim mfds As EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin
 
         'Get the data set for this Layer and VarName
         'This will have to be different in the old and new version of the spatial temporal framework
         'which can/could be hidden behind preprocessor directives
-        ds = Me.getDataSet(Layer)
-        If ds IsNot Nothing Then
-            mfds = DirectCast(ds, EwESpatialAssetsPlugin.SpatialData.cMultiFileDataSetPlugin)
+        mfds = Me.getDataSet(Layer)
+        If mfds IsNot Nothing Then
             'Hardwire to the first file in the list
             'it will be only file
-            mfds.File(ds.TimeSteps(0)) = sourceFile
+            mfds.File(mfds.TimeStart) = sourceFile
         End If
 
     End Sub

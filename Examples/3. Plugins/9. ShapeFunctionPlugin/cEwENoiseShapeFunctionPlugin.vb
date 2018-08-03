@@ -32,7 +32,7 @@ Imports EwEUtils.Core
 ''' Example plug-in point to add noise to an existing shape.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Public Class cEwENoseShapeFunctionPlugin
+Public Class cEwENoiseShapeFunctionPlugin
     Inherits cShapeFunction
     Implements EwEPlugin.IEcosimShapeFunctionPlugin
 
@@ -206,6 +206,12 @@ Public Class cEwENoseShapeFunctionPlugin
         Get
             ' This is quite a random number
             Return -421300666
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property IsDistribution As Boolean
+        Get
+            Return False
         End Get
     End Property
 
