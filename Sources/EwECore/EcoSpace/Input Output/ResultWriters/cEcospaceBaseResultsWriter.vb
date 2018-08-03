@@ -168,7 +168,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' not supplied then no time stamp will appear in the filename.</param>
     ''' <returns>A file name.</returns>
     ''' -----------------------------------------------------------------------
-    Protected Overridable Function GetGroupFileName(ByVal varname As eVarNameFlags,
+    Public Overridable Function GetGroupFileName(ByVal varname As eVarNameFlags,
                                                     ByVal iGrp As Integer,
                                                     ByVal strExt As String,
                                                     Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
@@ -237,7 +237,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' not supplied then no time stamp will appear in the filename.</param>
     ''' <returns>A file name.</returns>
     ''' -----------------------------------------------------------------------
-    Protected Overridable Function GetFleetFileName(ByVal varname As eVarNameFlags,
+    Public Overridable Function GetFleetFileName(ByVal varname As eVarNameFlags,
                                                     ByVal iFlt As Integer,
                                                     ByVal strExt As String,
                                                     Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String

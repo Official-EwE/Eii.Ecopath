@@ -55,7 +55,7 @@ Public Class cEcospaceASCMapContaminants
     End Function
 
 
-    Protected Overrides Function GetGroupFileName(ByVal varname As eVarNameFlags,
+    Public Overrides Function GetGroupFileName(ByVal varname As eVarNameFlags,
                                                     ByVal iGrp As Integer,
                                                     ByVal strExt As String,
                                                     Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String

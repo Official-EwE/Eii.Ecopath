@@ -2101,24 +2101,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\enaRPlugin\enaRPlugin\enaRPlugin.vbproj">
-      <Project>{c15ae557-8fa4-4d8a-9820-46bab5c085aa}</Project>
-      <Name>enaRPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEMergeSplitGroupsPlugin\EwEMergeSplitGroupsPlugin.vbproj">
-      <Project>{88137892-3068-42b7-bcca-b811d7264b4a}</Project>
-      <Name>EwEMergeSplitGroupsPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEAquamapsEnvDataImporterPlugin\EwEAquamapsEnvDataImporterPlugin.vbproj">
-      <Project>{317F27E7-08D2-4EB6-ABC8-DEA7D78951C9}</Project>
+      <Project>{317f27e7-08d2-4eb6-abc8-dea7d78951c9}</Project>
       <Name>EwEAquamapsEnvDataImporterPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEEcologicalIndicators\EwEEcologicalIndicatorsPlugin.vbproj">
-      <Project>{ADA9F604-2A16-4816-9FE5-31487778902D}</Project>
+      <Project>{ada9f604-2a16-4816-9fe5-31487778902d}</Project>
       <Name>EwEEcologicalIndicatorsPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEEcoSamplerPlugin\EwEEcoSamplerPlugin.vbproj">
@@ -2126,11 +2118,15 @@
       <Name>EwEEcoSamplerPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEEcotroph\EwEEcotroph.vbproj">
-      <Project>{FEF1031B-9933-4364-AD29-C4F8B2E68382}</Project>
+      <Project>{fef1031b-9933-4364-ad29-c4f8b2e68382}</Project>
       <Name>EwEEcotroph</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin.vbproj">
+      <Project>{206b8c0c-bc5a-40c3-822b-f17b638704fd}</Project>
+      <Name>EwEFlowDiagramPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEModelFromEcosimPlugin\EwEModelFromEcosimPlugin.vbproj">
-      <Project>{243CBCB0-4FD7-43B8-A6D1-27E26E866A99}</Project>
+      <Project>{243cbcb0-4fd7-43b8-a6d1-27e26e866a99}</Project>
       <Name>EwEModelFromEcosimPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEMSEPlugin\EwEMSEPlugin.vbproj">
@@ -2138,31 +2134,31 @@
       <Name>EwEMSEPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEMultiSimPlugin\EwEMultiSimPlugin.vbproj">
-      <Project>{C73CF657-456C-4397-B6A1-5DC8FA68AD48}</Project>
+      <Project>{c73cf657-456c-4397-b6a1-5dc8fa68ad48}</Project>
       <Name>EwEMultiSimPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj">
-      <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>
+      <Project>{6385c388-96f0-40f5-90a6-2b4838e0610e}</Project>
       <Name>EwENetworkAnalysisPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEPrebalPlugin\EwEPrebalPlugin.vbproj">
-      <Project>{095FF758-1CA2-4949-8815-CB46055539FD}</Project>
+      <Project>{095ff758-1ca2-4949-8815-cb46055539fd}</Project>
       <Name>EwEPrebalPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwERemarksPlugin\EwERemarksPlugin.vbproj">
-      <Project>{804DA432-10C6-418C-B323-99C4FDB5CB67}</Project>
+      <Project>{804da432-10c6-418c-b323-99c4fdb5cb67}</Project>
       <Name>EwERemarksPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEResultsExtractorPlugin\EwEResultsExtractorPlugin.vbproj">
-      <Project>{0913D0AE-BDEC-4C3E-9551-D0A314BE9DE6}</Project>
+      <Project>{0913d0ae-bdec-4c3e-9551-d0a314be9de6}</Project>
       <Name>EwEResultsExtractorPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj">
-      <Project>{5E7BEAC5-84D8-4BC5-9B53-8C7888FC9786}</Project>
+      <Project>{5e7beac5-84d8-4bc5-9b53-8c7888fc9786}</Project>
       <Name>EwEShapeGridPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEStepwiseFittingPlugin\EwEStepwiseFittingPlugin.vbproj">
-      <Project>{DFBA19D6-8E39-48F9-A503-CBC2519130B5}</Project>
+      <Project>{dfba19d6-8e39-48f9-a503-cbc2519130b5}</Project>
       <Name>EwEStepwiseFittingPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwETransectExtractionPlugin\EwETransectExtractionPlugin.vbproj">
@@ -2170,12 +2166,16 @@
       <Name>EwETransectExtractionPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
-      <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>
+      <Project>{e87e552b-c82f-4984-9249-631dac727633}</Project>
       <Name>EwEValueChain</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEWoRMSPlugin\EwEWoRMSPlugin.vbproj">
-      <Project>{4B88BF52-04A7-476B-B2F5-153758A62935}</Project>
+      <Project>{4b88bf52-04a7-476b-b2f5-153758a62935}</Project>
       <Name>EwEWoRMSPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\FLEMFileReaderPlugin\FLEMFileReaderPlugin.vbproj">
+      <Project>{d17cdc33-0294-4f82-bd0a-026b192448bb}</Project>
+      <Name>FLEMFileReaderPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>

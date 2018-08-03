@@ -246,4 +246,10 @@ Public Class cEwESinoidShapeFunctionPlugin
         End Get
     End Property
 
+    Public Overrides ReadOnly Property IsDistribution As Boolean
+        Get
+            Return False
+        End Get
+    End Property
+
 End Class
