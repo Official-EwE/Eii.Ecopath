@@ -66,6 +66,8 @@ Namespace Controls
         End Sub
 
         Private Const WM_ERASEBKGND As Integer = &H14
+        Private Const WM_LBUTTONDOWN As Integer = &H201
+        Private Const WM_LBUTTONDBLCLK As Integer = &H203
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -77,11 +79,24 @@ Namespace Controls
         ''' </remarks>
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub WndProc(ByRef msg As System.Windows.Forms.Message)
+
             If (msg.Msg = WM_ERASEBKGND) Then
+                ' reduce flicker when redrawing.
                 msg.Result = IntPtr.Zero
                 Return
             End If
+
+            If (msg.Msg = WM_LBUTTONDBLCLK And Me.CheckBoxes) Then
+                ' Fix double-click on checkbox issue
+                ' https://stackoverflow.com/questions/14647216/c-sharp-treeview-ignore-double-click-only-at-checkbox
+                Dim localPos As Point = Me.PointToClient(Cursor.Position)
+                Dim info As TreeViewHitTestInfo = Me.HitTest(localPos)
+                If (info.Location = TreeViewHitTestLocations.StateImage) Then
+                    msg.Msg = WM_LBUTTONDOWN
+                End If
+            End If
             MyBase.WndProc(msg)
+
         End Sub
 
         <Category("Appearance")>
