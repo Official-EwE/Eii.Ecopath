@@ -56,7 +56,7 @@ Public Class cEcospaceLayerHabitat
 
     Protected Overrides Function DefaultName() As String
         If (Me.Index = 0) Then Return My.Resources.CoreDefaults.CORE_DEFAULT_HABITAT_ALL
-        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_HABITAT, Me.m_core.EcospaceHabitats(Me.Index).Name)
+        Return Me.m_core.EcospaceHabitats(Me.Index).Name
     End Function
 
 End Class
