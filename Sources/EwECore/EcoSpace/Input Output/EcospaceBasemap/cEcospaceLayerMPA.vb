@@ -55,7 +55,7 @@ Public Class cEcospaceLayerMPA
     End Property
 
     Protected Overrides Function DefaultName() As String
-        Return cStringUtils.Localize(My.Resources.CoreDefaults.CORE_DEFAULT_MPA, Me.m_core.EcospaceMPAs(Me.Index).Name)
+        Return Me.m_core.EcospaceMPAs(Me.Index).Name
     End Function
 
 End Class
