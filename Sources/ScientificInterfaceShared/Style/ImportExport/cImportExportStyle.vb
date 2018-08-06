@@ -52,6 +52,7 @@ Namespace Style
             Public ReadOnly Property VisualStyle As cVisualStyle = Nothing
             Public ReadOnly Property VarName As eVarNameFlags = eVarNameFlags.NotSet
             Public ReadOnly Property Index As Integer = 0
+            Public Property Enabled As Boolean = True
         End Class
 
 #End Region ' Internal admin
@@ -256,31 +257,49 @@ Namespace Style
 
         End Function
 
-        Public Function MergeToLayers() As Boolean
+        Public Function MergeToLayers(bCreateLayers As Boolean) As Boolean
 
+            Dim core As cCore = Me.m_uic.Core
             Dim bIsChanged As Boolean = False
+            Dim bSuccess As Boolean = True
 
-            '' First create missing layers
-            'Me.m_core.SetBatchLock(cCore.eBatchLockType.Restructure)
-            'For Each entry As cImportExportStyle.cLayerEntry In io.Entries
-            '    Select Case entry.VarName
-            '        Case eVarNameFlags.LayerHabitat
-            '        Case eVarNameFlags.LayerMPA
-            '        Case eVarNameFlags.LayerDriver
-            '    End Select
-            'Next
+            If (bCreateLayers) Then
 
-            '' This may obliterate me?!
-            'Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bIsChanged)
+                ' Make inventory of missing layers
+                Dim missing As New List(Of cImportExportStyle.cStyleEntry)
+                For Each entry As cImportExportStyle.cStyleEntry In Me.Entries
+                    If (CanCreate(entry) And (entry.Enabled)) Then
+                        Dim l As cEcospaceLayer = Me.FindMatchingLayer(entry)
+                        If (l Is Nothing) Then missing.Add(entry)
+                    End If
+                Next
+
+                ' First create missing layers
+                core.SetBatchLock(cCore.eBatchLockType.Restructure)
+                For Each entry As cImportExportStyle.cStyleEntry In missing
+                    Dim iDBID As Integer = -1
+                    Select Case entry.VarName
+                        Case eVarNameFlags.LayerHabitat
+                            bSuccess = bSuccess And core.AddEcospaceHabitat(entry.Name, iDBID)
+                        Case eVarNameFlags.LayerMPA
+                            Dim months(11) As Boolean
+                            bSuccess = bSuccess And core.AddEcospaceMPA(entry.Name, months, iDBID)
+                        Case eVarNameFlags.LayerDriver
+                            bSuccess = bSuccess And core.AddEcospaceDriverLayer(entry.Name, "Imported from layer definitions", "", iDBID)
+                    End Select
+                Next
+
+                ' this may obliterate me?!
+                core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bSuccess)
+            End If
+
+            ' ToDo: change layer order?
 
             ' Restyle existing layers
             For Each entry As cImportExportStyle.cStyleEntry In Me.Entries
-                Dim layers As cEcospaceLayer() = Me.m_uic.Core.EcospaceBasemap.Layers(entry.VarName)
-                For Each l As cEcospaceLayer In layers
-                    If (String.Compare(l.Name, entry.Name, True) = 0) And (entry.VisualStyle IsNot Nothing) Then
-
-                        ' ToDo: Throw warning if indexes do not match?
-
+                If (entry.VisualStyle IsNot Nothing) And (entry.Enabled) Then
+                    Dim l As cEcospaceLayer = FindMatchingLayer(entry)
+                    If (l IsNot Nothing) Then
                         Dim ad As cAuxiliaryData = Me.m_fact.GetAuxillaryData(Me.m_uic.Core, l)
                         If (ad.VisualStyle Is Nothing) Then
                             ad.VisualStyle = entry.VisualStyle.Clone()
@@ -294,11 +313,29 @@ Namespace Style
                         ' Trigger refresh
                         l.Invalidate()
                     End If
-                Next
+                End If
             Next
+            core.SaveChanges(True)
 
-            Return bIsChanged
+            Return bSuccess And bIsChanged
 
+        End Function
+
+        Public Function CanCreate(entry As cStyleEntry) As Boolean
+            Return (entry.VarName = eVarNameFlags.LayerHabitat) Or
+                   (entry.VarName = eVarNameFlags.LayerMPA) Or
+                   (entry.VarName = eVarNameFlags.LayerDriver)
+        End Function
+
+        Public Function FindMatchingLayer(entry As cStyleEntry) As cEcospaceLayer
+            Dim core As cCore = Me.m_uic.Core
+            Dim layers As cEcospaceLayer() = core.EcospaceBasemap.Layers(entry.VarName)
+            For Each l As cEcospaceLayer In layers
+                If (String.Compare(l.Name, entry.Name, True) = 0) Then
+                    Return l
+                End If
+            Next
+            Return Nothing
         End Function
 
 #End Region ' Public access

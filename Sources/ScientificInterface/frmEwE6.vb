@@ -4332,13 +4332,14 @@ Public Class frmEwE6
                     dlg.ShowDialog(Me)
                 Case eNativeLayerFileFormatTypes.ASCII
                     Dim ofd As New OpenFileDialog()
-                    ofd.Title = SharedResources.CAPTION_SELECT_FILE
+                    Dim l As cEcospaceLayer = Me.m_cmdImportLayerData.Layers(0)
+                    ' ToDo: localize this
+                    ofd.Title = "Select data for layer " & l.Name
                     ofd.Filter = SharedResources.FILEFILTER_ASC
                     If (ofd.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
                         Dim imp As New cEcospaceImportExportASCIIData(Me.Core)
                         If imp.Read(ofd.FileName) Then
                             Dim rs As EwEUtils.SpatialData.ISpatialRaster = imp.ToRaster
-                            Dim l As cEcospaceLayer = Me.m_cmdImportLayerData.Layers(0)
                             For ir As Integer = 1 To rs.NumRows
                                 For ic As Integer = 1 To rs.NumCols
                                     l.Cell(ir, ic) = rs.Cell(ir, ic)
