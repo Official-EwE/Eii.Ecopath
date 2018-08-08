@@ -77,6 +77,9 @@ Namespace Ecospace.Basemap.Layers
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_nudWeight = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpImportStyle = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_lblCopyFrom = New System.Windows.Forms.Label()
+            Me.m_cmbCopyStyleFrom = New System.Windows.Forms.ComboBox()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tcLayerView.SuspendLayout()
             Me.m_tpData.SuspendLayout()
@@ -89,6 +92,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_tlpBits.SuspendLayout()
             Me.m_tlpDetails.SuspendLayout()
             CType(Me.m_nudWeight, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tlpImportStyle.SuspendLayout()
             Me.SuspendLayout()
             '
             'TableLayoutPanel1
@@ -283,8 +287,9 @@ Namespace Ecospace.Basemap.Layers
             resources.ApplyResources(Me.m_tlpBits, "m_tlpBits")
             Me.m_tlpBits.Controls.Add(Me.m_hdrDescription, 0, 0)
             Me.m_tlpBits.Controls.Add(Me.m_tlpDetails, 0, 1)
-            Me.m_tlpBits.Controls.Add(Me.m_plAppearance, 0, 3)
+            Me.m_tlpBits.Controls.Add(Me.m_plAppearance, 0, 4)
             Me.m_tlpBits.Controls.Add(Me.m_hdrAppearance, 0, 2)
+            Me.m_tlpBits.Controls.Add(Me.m_tlpImportStyle, 0, 3)
             Me.m_tlpBits.Name = "m_tlpBits"
             '
             'm_hdrDescription
@@ -337,6 +342,25 @@ Namespace Ecospace.Basemap.Layers
             Me.m_hdrAppearance.IsCollapsed = False
             Me.m_hdrAppearance.Name = "m_hdrAppearance"
             '
+            'm_tlpImportStyle
+            '
+            resources.ApplyResources(Me.m_tlpImportStyle, "m_tlpImportStyle")
+            Me.m_tlpImportStyle.Controls.Add(Me.m_lblCopyFrom, 0, 0)
+            Me.m_tlpImportStyle.Controls.Add(Me.m_cmbCopyStyleFrom, 1, 0)
+            Me.m_tlpImportStyle.Name = "m_tlpImportStyle"
+            '
+            'm_lblCopyFrom
+            '
+            resources.ApplyResources(Me.m_lblCopyFrom, "m_lblCopyFrom")
+            Me.m_lblCopyFrom.Name = "m_lblCopyFrom"
+            '
+            'm_cmbCopyStyleFrom
+            '
+            resources.ApplyResources(Me.m_cmbCopyStyleFrom, "m_cmbCopyStyleFrom")
+            Me.m_cmbCopyStyleFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbCopyStyleFrom.FormattingEnabled = True
+            Me.m_cmbCopyStyleFrom.Name = "m_cmbCopyStyleFrom"
+            '
             'dlgEditLayer
             '
             resources.ApplyResources(Me, "$this")
@@ -365,6 +389,8 @@ Namespace Ecospace.Basemap.Layers
             Me.m_tlpDetails.ResumeLayout(False)
             Me.m_tlpDetails.PerformLayout()
             CType(Me.m_nudWeight, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_tlpImportStyle.ResumeLayout(False)
+            Me.m_tlpImportStyle.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -402,6 +428,8 @@ Namespace Ecospace.Basemap.Layers
         Private WithEvents m_tsmiExportAsc As System.Windows.Forms.ToolStripMenuItem
         Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tscmbVectorData As System.Windows.Forms.ToolStripComboBox
-
+        Private WithEvents m_tlpImportStyle As TableLayoutPanel
+        Private WithEvents m_lblCopyFrom As Label
+        Private WithEvents m_cmbCopyStyleFrom As ComboBox
     End Class
 End Namespace

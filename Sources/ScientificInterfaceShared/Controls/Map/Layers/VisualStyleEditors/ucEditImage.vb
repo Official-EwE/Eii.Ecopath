@@ -71,9 +71,11 @@ Namespace Controls
                 Me.m_glyphSelect.AddImage(vs.Image)
             Next
             Me.m_glyphSelect.AddImage(Me.VisualStyle.Image)
-            Me.m_glyphSelect.SelectedImage = Me.VisualStyle.Image
             Me.m_glyphSelect.Enabled = True
             Me.m_btnImport.Enabled = True
+
+            Me.VisualStyle = Me.VisualStyle
+
         End Sub
 
         Private Sub OnAddImage(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnImport.Click
@@ -111,6 +113,20 @@ Namespace Controls
 #End Region ' Events
 
 #Region " Overridables "
+
+        Public Overrides Property VisualStyle As cVisualStyle
+            Get
+                Return MyBase.VisualStyle
+            End Get
+            Set(value As cVisualStyle)
+                MyBase.VisualStyle = value
+                If (MyBase.VisualStyle IsNot Nothing) Then
+                    Me.m_glyphSelect.SelectedImage = Me.VisualStyle.Image
+                Else
+                    Me.m_glyphSelect.SelectedImage = Nothing
+                End If
+            End Set
+        End Property
 
         Public Overrides Function Apply(ByVal vs As cVisualStyle) As Boolean
             Dim img As Image = Me.m_glyphSelect.SelectedImage
