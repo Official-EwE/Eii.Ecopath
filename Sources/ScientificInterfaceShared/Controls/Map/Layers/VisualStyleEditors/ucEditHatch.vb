@@ -101,6 +101,20 @@ Namespace Controls
 
 #Region " Overrides "
 
+        Public Overrides Property VisualStyle As cVisualStyle
+            Get
+                Return MyBase.VisualStyle
+            End Get
+            Set(value As cVisualStyle)
+                MyBase.VisualStyle = value
+                If (MyBase.VisualStyle IsNot Nothing) And (Me.m_control IsNot Nothing) Then
+                    Me.SelectedForeColor = MyBase.VisualStyle.ForeColour
+                    Me.SelectedBackColor = MyBase.VisualStyle.BackColour
+                    Me.SelectedHatchStyle = MyBase.VisualStyle.HatchStyle
+                End If
+            End Set
+        End Property
+
         Public Overrides Function Apply(ByVal vs As cVisualStyle) As Boolean
             vs.ForeColour = Me.SelectedForeColor
             vs.BackColour = Me.SelectedBackColor

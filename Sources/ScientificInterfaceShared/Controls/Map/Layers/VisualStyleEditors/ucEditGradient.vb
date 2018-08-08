@@ -39,6 +39,7 @@ Namespace Controls
 #Region " Private parts "
 
         Private m_lColors As New List(Of Color)
+        Private m_bReady As Boolean = False
 
 #End Region ' Private parts
 
@@ -80,18 +81,8 @@ Namespace Controls
 
             Me.m_bInUpdate = True
 
-            Dim aGrads() As cVisualStyle = Me.UIContext.StyleGuide.GetVisualStyles(-1, cStyleGuide.eBrushType.Gradient)
-            For i As Integer = 0 To aGrads.Length - 1
-                Dim vs As cVisualStyle = aGrads(i)
-                Me.m_cmbGradient.Items.Add(New cARGBColorRamp(vs.GradientColors, vs.GradientBreaks))
-
-                If (Me.VisualStyle IsNot Nothing) Then
-                    If vs.GradientBreaks.EqualsArray(Me.VisualStyle.GradientBreaks) And
-                       vs.GradientColors.EqualsArray(Me.VisualStyle.GradientColors) Then
-                        Me.m_cmbGradient.SelectedIndex = i
-                    End If
-                End If
-            Next i
+            Me.m_bReady = True
+            Me.VisualStyle = Me.VisualStyle
 
             Me.UpdateControls()
 
@@ -136,6 +127,30 @@ Namespace Controls
             Return True
 
         End Function
+
+        Public Overrides Property VisualStyle As cVisualStyle
+            Get
+                Return MyBase.VisualStyle
+            End Get
+            Set(value As cVisualStyle)
+                MyBase.VisualStyle = value
+                If Not Me.m_bReady Then Return
+
+                Dim aGrads() As cVisualStyle = Me.UIContext.StyleGuide.GetVisualStyles(-1, cStyleGuide.eBrushType.Gradient)
+                For i As Integer = 0 To aGrads.Length - 1
+                    Dim vs As cVisualStyle = aGrads(i)
+                    Me.m_cmbGradient.Items.Add(New cARGBColorRamp(vs.GradientColors, vs.GradientBreaks))
+
+                    If (Me.VisualStyle IsNot Nothing) Then
+                        If vs.GradientBreaks.EqualsArray(Me.VisualStyle.GradientBreaks) And
+                           vs.GradientColors.EqualsArray(Me.VisualStyle.GradientColors) Then
+                            Me.m_cmbGradient.SelectedIndex = i
+                        End If
+                    End If
+                Next i
+
+            End Set
+        End Property
 
 #End Region ' Overrides
 
@@ -350,22 +365,23 @@ Namespace Controls
 
             Dim iNumKnobs As Integer = Me.m_slGradient.NumKnobs
             Dim bEnabled As Boolean = (Me.RepresentationStyles And cVisualStyle.eVisualStyleTypes.Gradient) > 0
+            Dim bHasContent As Boolean = (iNumKnobs > 0)
 
             If Me.m_rbDefaultGradient.Checked Then
                 bEnabled = False
             End If
 
-            Me.m_slRed.Enabled = bEnabled
-            Me.m_nudRed.Enabled = bEnabled
+            Me.m_slRed.Enabled = bEnabled And bHasContent
+            Me.m_nudRed.Enabled = bEnabled And bHasContent
 
-            Me.m_slGreen.Enabled = bEnabled
-            Me.m_nudGreen.Enabled = bEnabled
+            Me.m_slGreen.Enabled = bEnabled And bHasContent
+            Me.m_nudGreen.Enabled = bEnabled And bHasContent
 
-            Me.m_slBlue.Enabled = bEnabled
-            Me.m_nudBlue.Enabled = bEnabled
+            Me.m_slBlue.Enabled = bEnabled And bHasContent
+            Me.m_nudBlue.Enabled = bEnabled And bHasContent
 
-            Me.m_slAlpha.Enabled = bEnabled
-            Me.m_nudAlpha.Enabled = bEnabled
+            Me.m_slAlpha.Enabled = bEnabled And bHasContent
+            Me.m_nudAlpha.Enabled = bEnabled And bHasContent
 
             Me.m_slGradient.Enabled = bEnabled
             Me.m_pbCurrentColor.Enabled = bEnabled

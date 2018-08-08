@@ -235,7 +235,7 @@
     <value>223, 29</value>
   </data>
   <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
     <value>TableLayoutPanel1</value>
@@ -427,7 +427,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.gridLayerData, EwE6, Version=6.6.15314.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridLayerData, EwE6, Version=6.6.15513.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tpData</value>
@@ -547,7 +547,7 @@
     <value>m_tsGrid</value>
   </data>
   <data name="&gt;&gt;m_tsGrid.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15314.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsGrid.Parent" xml:space="preserve">
     <value>m_tpData</value>
@@ -613,7 +613,7 @@
     <value>m_zoommap</value>
   </data>
   <data name="&gt;&gt;m_zoommap.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.6.15314.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.6.15513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_zoommap.Parent" xml:space="preserve">
     <value>m_scAppearance.Panel1</value>
@@ -661,7 +661,7 @@
     <value>m_hdrDescription</value>
   </data>
   <data name="&gt;&gt;m_hdrDescription.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15314.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDescription.Parent" xml:space="preserve">
     <value>m_tlpBits</value>
@@ -790,7 +790,7 @@
     <value>m_nudWeight</value>
   </data>
   <data name="&gt;&gt;m_nudWeight.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15314.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudWeight.Parent" xml:space="preserve">
     <value>m_tlpDetails</value>
@@ -811,7 +811,7 @@
     <value>4</value>
   </data>
   <data name="m_tlpDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>354, 462</value>
+    <value>354, 439</value>
   </data>
   <data name="m_tlpDetails.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -838,7 +838,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrAppearance.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 480</value>
+    <value>3, 457</value>
   </data>
   <data name="m_hdrAppearance.Size" type="System.Drawing.Size, System.Drawing">
     <value>348, 18</value>
@@ -856,13 +856,115 @@
     <value>m_hdrAppearance</value>
   </data>
   <data name="&gt;&gt;m_hdrAppearance.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15314.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAppearance.Parent" xml:space="preserve">
     <value>m_tlpBits</value>
   </data>
   <data name="&gt;&gt;m_hdrAppearance.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="m_tlpImportStyle.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_lblCopyFrom.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblCopyFrom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_lblCopyFrom.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblCopyFrom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="m_lblCopyFrom.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 10, 0</value>
+  </data>
+  <data name="m_lblCopyFrom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 23</value>
+  </data>
+  <data name="m_lblCopyFrom.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lblCopyFrom.Text" xml:space="preserve">
+    <value>&amp;Copy from:</value>
+  </data>
+  <data name="m_lblCopyFrom.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblCopyFrom.Name" xml:space="preserve">
+    <value>m_lblCopyFrom</value>
+  </data>
+  <data name="&gt;&gt;m_lblCopyFrom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblCopyFrom.Parent" xml:space="preserve">
+    <value>m_tlpImportStyle</value>
+  </data>
+  <data name="&gt;&gt;m_lblCopyFrom.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_cmbCopyStyleFrom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_cmbCopyStyleFrom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>70, 0</value>
+  </data>
+  <data name="m_cmbCopyStyleFrom.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_cmbCopyStyleFrom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>284, 21</value>
+  </data>
+  <data name="m_cmbCopyStyleFrom.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_cmbCopyStyleFrom.Name" xml:space="preserve">
+    <value>m_cmbCopyStyleFrom</value>
+  </data>
+  <data name="&gt;&gt;m_cmbCopyStyleFrom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cmbCopyStyleFrom.Parent" xml:space="preserve">
+    <value>m_tlpImportStyle</value>
+  </data>
+  <data name="&gt;&gt;m_cmbCopyStyleFrom.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpImportStyle.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlpImportStyle.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 475</value>
+  </data>
+  <data name="m_tlpImportStyle.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpImportStyle.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tlpImportStyle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>354, 23</value>
+  </data>
+  <data name="m_tlpImportStyle.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_tlpImportStyle.Name" xml:space="preserve">
+    <value>m_tlpImportStyle</value>
+  </data>
+  <data name="&gt;&gt;m_tlpImportStyle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpImportStyle.Parent" xml:space="preserve">
+    <value>m_tlpBits</value>
+  </data>
+  <data name="&gt;&gt;m_tlpImportStyle.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_tlpImportStyle.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblCopyFrom" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbCopyStyleFrom" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tlpBits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -871,7 +973,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tlpBits.RowCount" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_tlpBits.Size" type="System.Drawing.Size, System.Drawing">
     <value>354, 521</value>
@@ -892,7 +994,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpBits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_hdrDescription" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpDetails" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plAppearance" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrAppearance" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_hdrDescription" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpDetails" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plAppearance" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrAppearance" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpImportStyle" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,AutoSize,0,Absolute,23,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;m_scAppearance.Panel2.Name" xml:space="preserve">
     <value>m_scAppearance.Panel2</value>
@@ -913,7 +1015,7 @@
     <value>472</value>
   </data>
   <data name="m_scAppearance.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_scAppearance.Name" xml:space="preserve">
     <value>m_scAppearance</value>

@@ -27,6 +27,7 @@ Imports EwECore.Auxiliary
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -141,6 +142,19 @@ Namespace Ecospace.Basemap.Layers
             Me.m_fpName = New cEwEFormatProvider(Me.m_uic, Me.m_tbNameValue, GetType(String))
             Me.m_fpWeight = New cEwEFormatProvider(Me.m_uic, Me.m_nudWeight, GetType(Single))
             Me.m_fpDescription = New cEwEFormatProvider(Me.m_uic, Me.m_tbDescription, GetType(String))
+
+            ' Set up other layers to copy style from
+            Dim fact As New cLayerFactoryInternal()
+            Dim others As cDisplayLayerRaster() = fact.GetLayers(Me.m_uic, Me.m_layerOriginal.Data.VarName)
+            For Each dl As cDisplayLayerRaster In others
+                If (TypeOf dl Is cDisplayLayerRasterBundle) Then
+                    Me.m_tlpImportStyle.Enabled = False
+                Else
+                    If dl.Data.Index <> Me.m_layerOriginal.Data.Index Then
+                        Me.m_cmbCopyStyleFrom.Items.Add(dl)
+                    End If
+                End If
+            Next
 
             Me.LoadLayer()
             Me.UpdateControls()
@@ -452,6 +466,29 @@ Namespace Ecospace.Basemap.Layers
             Return True
 
         End Function
+
+        Private Sub m_cmbCopyStyleFrom_Format(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbCopyStyleFrom.Format
+            Dim item As cDisplayLayerRaster = CType(e.ListItem, cDisplayLayerRaster)
+            If (item Is Nothing) Then
+                e.Value = SharedResources.GENERIC_VALUE_NONE
+            Else
+                Dim layer As cEcospaceLayer = item.Data
+                If (layer.Index < 1) Then
+                    e.Value = layer.Name
+                Else
+                    e.Value = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, layer.Index, layer.Name)
+                End If
+            End If
+        End Sub
+
+        Private Sub m_cmbCopyStyleFrom_SelectedIndexChanged(sender As Object, e As EventArgs) Handles m_cmbCopyStyleFrom.SelectedIndexChanged
+
+            If (Me.m_ucEditVisualStyle Is Nothing) Then Return
+            Dim item As cDisplayLayerRaster = CType(Me.m_cmbCopyStyleFrom.SelectedItem, cDisplayLayerRaster)
+            If (item Is Nothing) Then Return
+
+            Me.m_ucEditVisualStyle.VisualStyle = item.Renderer.VisualStyle
+        End Sub
 
 #End Region ' Internal implementation
 

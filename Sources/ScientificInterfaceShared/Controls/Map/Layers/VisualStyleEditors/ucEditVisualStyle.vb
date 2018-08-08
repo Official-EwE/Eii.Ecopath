@@ -33,7 +33,7 @@ Namespace Controls
     ''' Base class for implementing a <see cref="cVisualStyle"/> editor.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class ucEditVisualStyle
+    Public MustInherit Class ucEditVisualStyle
         Inherits UserControl
         Implements IUIElement
 
@@ -48,8 +48,8 @@ Namespace Controls
         ''' <param name="style">Aspect of the style that needs editing.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetEditor(ByVal uic As cUIContext, _
-                                         ByVal vs As cVisualStyle, _
+        Public Shared Function GetEditor(ByVal uic As cUIContext,
+                                         ByVal vs As cVisualStyle,
                                          ByVal style As cVisualStyle.eVisualStyleTypes) As ucEditVisualStyle
             ' Sanity checks
             Debug.Assert(vs IsNot Nothing)
@@ -70,9 +70,7 @@ Namespace Controls
 
 #Region " Private vars "
 
-        Private m_uic As cUIContext = Nothing
         Private m_visualStyle As cVisualStyle = Nothing
-        Private m_style As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet
 
 #End Region ' Private vars
 
@@ -105,9 +103,9 @@ Namespace Controls
             Debug.Assert(vs IsNot Nothing)
             Debug.Assert(style <> cVisualStyle.eVisualStyleTypes.NotSet)
 
-            Me.m_uic = uic
+            Me.UIContext = uic
             Me.m_visualStyle = vs
-            Me.m_style = style
+            Me.RepresentationStyles = style
 
         End Sub
 
@@ -137,7 +135,7 @@ Namespace Controls
         ''' Get/set the <see cref="cVisualStyle"/> that is being edited.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property VisualStyle() As cVisualStyle
+        Public Overridable Property VisualStyle() As cVisualStyle
             Get
                 Return Me.m_visualStyle
             End Get
@@ -152,23 +150,12 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property RepresentationStyles() As cVisualStyle.eVisualStyleTypes
-            Get
-                Return Me.m_style
-            End Get
-        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="IUIElement.UIContext"/>
         ''' -----------------------------------------------------------------------
         Public Property UIContext As cUIContext _
             Implements IUIElement.UIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Set(ByVal value As cUIContext)
-                Me.m_uic = value
-            End Set
-        End Property
 
 #End Region ' Properties
 
