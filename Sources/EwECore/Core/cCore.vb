@@ -10215,7 +10215,7 @@ Public Class cCore
                 iScenarioID)) Then
 
             ' #Yes: invoke plugin point
-            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcospaceScenario(Me)
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.SaveEcospaceScenario(ds)
             ' Update data state
             Me.m_StateMonitor.UpdateDataState(DataSource)
 
