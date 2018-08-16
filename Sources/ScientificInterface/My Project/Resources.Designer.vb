@@ -88,6 +88,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Version {0} Beta - {1}.
+        '''</summary>
+        Public ReadOnly Property ABOUT_VERSION_BETA() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_VERSION_BETA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang2057\deflangfe2057\themelang3082\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
         '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\f40\fbidi \fswiss\fcharset134\fprq2{\*\panose 020b0503020204020204}Microsoft YaHei;}{\f41 [rest of string was truncated]&quot;;.
         '''</summary>
