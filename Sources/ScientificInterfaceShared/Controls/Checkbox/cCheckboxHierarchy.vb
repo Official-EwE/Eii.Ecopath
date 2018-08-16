@@ -46,6 +46,8 @@ Namespace Controls
 
 #Region " Checkbox links "
 
+#Region " Foundation "
+
         ''' <summary>
         ''' Link in a checkbox hierarchy chain. Each link has a checkbox, an
         ''' optional parent link, and zero or more child links.
@@ -147,6 +149,10 @@ Namespace Controls
 
         End Class
 
+#End Region ' Foundation
+
+#Region " Checkbox support "
+
         Private Class cCheckboxLink
             Inherits cLink
 
@@ -163,7 +169,7 @@ Namespace Controls
             ''' <param name="parent">An optional parent link.</param>
             ''' -------------------------------------------------------------------
             Public Sub New(cb As CheckBox, hr As cCheckboxHierarchy, parent As cLink)
-                MyBase.new(hr, parent)
+                MyBase.New(hr, parent)
                 Me.m_cb = cb
                 AddHandler Me.m_cb.CheckedChanged, AddressOf OnCheckChanged
             End Sub
@@ -212,6 +218,10 @@ Namespace Controls
 
         End Class
 
+#End Region ' Checkbox support
+
+#Region " Sourcegrid support "
+
         Private Class cCheckboxCellLink
             Inherits cLink
             Implements SourceGrid2.BehaviorModels.IBehaviorModel
@@ -230,7 +240,7 @@ Namespace Controls
             ''' <param name="parent">An optional parent link.</param>
             ''' -------------------------------------------------------------------
             Public Sub New(cb As EwECheckboxCell, hr As cCheckboxHierarchy, parent As cLink)
-                MyBase.new(hr, parent)
+                MyBase.New(hr, parent)
                 Me.m_cb = cb
                 Me.m_cb.Behaviors.Add(Me)
             End Sub
@@ -354,6 +364,79 @@ Namespace Controls
 
         End Class
 
+#End Region ' Sourcegrid support
+
+#Region " DataGridView support "
+
+        Private Class cDataGridViewCheckboxLink
+            Inherits cLink
+
+            Private m_cb As DataGridViewCheckBoxCell = Nothing
+
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Constructor
+            ''' </summary>
+            ''' <param name="hr">The <see cref="cCheckboxHierarchy"/> this link is 
+            ''' created for.</param>
+            ''' <param name="cb">The <see cref="EwECheckboxCell"/> to define this link for.</param>
+            ''' <param name="parent">An optional parent link.</param>
+            ''' -------------------------------------------------------------------
+            Public Sub New(cb As DataGridViewCheckBoxCell, hr As cCheckboxHierarchy, parent As cLink)
+                MyBase.New(hr, parent)
+                Me.m_cb = cb
+                AddHandler Me.m_cb.DataGridView.CellContentClick, AddressOf OnCellValueChanged
+            End Sub
+
+            Public Overrides Sub Dispose()
+                If (Me.m_cb IsNot Nothing) Then
+                    RemoveHandler Me.m_cb.DataGridView.CellContentClick, AddressOf OnCellValueChanged
+                    Me.m_cb = Nothing
+                End If
+                MyBase.Dispose()
+            End Sub
+
+            Public Overrides Property Checkstate As CheckState
+                Get
+                    Return CType(Me.m_cb.Value, CheckState)
+                End Get
+                Set(value As CheckState)
+                    Me.m_cb.Value = value
+                End Set
+            End Property
+
+#Region " Event handling "
+
+            Private Sub OnCellValueChanged(sender As Object, e As DataGridViewCellEventArgs)
+
+                If (Not Me.m_hr.ManageCheckedStates) Then Return
+                If (e.ColumnIndex <> Me.m_cb.ColumnIndex) Then Return
+                If (e.RowIndex <> Me.m_cb.RowIndex) Then Return
+
+                ' https://stackoverflow.com/questions/11843488/how-to-detect-datagridview-checkbox-event-change#15011844
+
+                If (Me.m_cb.IsInEditMode) And (Me.m_cb.DataGridView.IsCurrentCellDirty) Then
+                    Me.m_cb.DataGridView.EndEdit()
+                End If
+
+                ' If allowed to dispatch checks
+                ' Engage check lock
+                Me.m_hr.BeginCheckChange()
+                ' Apply check state to all children
+                For Each linkChild As cLink In Me.m_children
+                    linkChild.Checkstate = Me.Checkstate
+                Next
+                ' Release check lock
+                Me.m_hr.EndCheckChange()
+            End Sub
+
+#End Region ' Event handling
+
+        End Class
+
+#End Region ' DataGridView support
+
 #End Region ' Checkbox links
 
 #Region " Public methods "
@@ -393,6 +476,8 @@ Namespace Controls
         Public Function Add(checkbox As Object, checkboxParent As Object) As Boolean
 
             Dim linkParent As cLink = Nothing
+
+            If (checkbox Is Nothing) Then Return True
 
             ' Checkbox already defined?
             If Me.m_dtLinks.ContainsKey(checkbox) Then Return False
@@ -498,6 +583,10 @@ Namespace Controls
                     Return New cCheckboxLink(DirectCast(cb, CheckBox), Me, parent)
                 Case GetType(EwECheckboxCell)
                     Return New cCheckboxCellLink(DirectCast(cb, EwECheckboxCell), Me, parent)
+                Case GetType(DataGridViewCheckBoxCell)
+                    Return New cDataGridViewCheckboxLink(DirectCast(cb, DataGridViewCheckBoxCell), Me, parent)
+                Case Else
+                    Debug.Assert(False, "Type not supported")
             End Select
             Return Nothing
 
