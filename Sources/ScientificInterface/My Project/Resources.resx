@@ -13529,4 +13529,8 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="HEADER_SPAWNING_AGE" xml:space="preserve">
     <value>Spawning age</value>
   </data>
+  <data name="ABOUT_VERSION_BETA" xml:space="preserve">
+    <value>Version {0} Beta - {1}</value>
+    <comment>{0}=core version, {1}=32 / 64 bit indicator</comment>
+  </data>
 </root>
