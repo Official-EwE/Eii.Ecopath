@@ -17,10 +17,13 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
 
+Option Strict On
 Imports WeifenLuo.WinFormsUI.Docking
-Imports ScientificInterfaceShared
 Imports ScientificInterfaceShared.Controls
+
+#End Region ' Imports
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmNetworkAnalysis
@@ -47,11 +50,14 @@ Partial Class frmNetworkAnalysis
         Dim ts1 As System.Windows.Forms.ToolStripSeparator
         Dim ts2 As System.Windows.Forms.ToolStripSeparator
         Me.m_scNetworkAnalysis = New System.Windows.Forms.SplitContainer()
+        Me.m_scMain = New System.Windows.Forms.SplitContainer()
         Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbSponsors = New System.Windows.Forms.PictureBox()
         Me.m_lblSponsors = New System.Windows.Forms.Label()
+        Me.m_plot = New EwENetworkAnalysis.ucPlot()
         Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_datagrid = New System.Windows.Forms.DataGridView()
+        Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
         Me.m_toolstrip = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.tsmiRun = New System.Windows.Forms.ToolStripButton()
         Me.tsbtnOptions = New System.Windows.Forms.ToolStripButton()
@@ -64,13 +70,16 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnOutputGraphEMF = New System.Windows.Forms.ToolStripButton()
         Me.tsbnFonts = New System.Windows.Forms.ToolStripButton()
         Me.m_hdrPage = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_plot = New EwENetworkAnalysis.ucPlot()
         ts3 = New System.Windows.Forms.ToolStripSeparator()
         ts1 = New System.Windows.Forms.ToolStripSeparator()
         ts2 = New System.Windows.Forms.ToolStripSeparator()
         CType(Me.m_scNetworkAnalysis, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scNetworkAnalysis.Panel2.SuspendLayout()
         Me.m_scNetworkAnalysis.SuspendLayout()
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_scMain.Panel1.SuspendLayout()
+        Me.m_scMain.Panel2.SuspendLayout()
+        Me.m_scMain.SuspendLayout()
         Me.m_tlpInfo.SuspendLayout()
         CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_datagrid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -101,11 +110,28 @@ Partial Class frmNetworkAnalysis
         'm_scNetworkAnalysis.Panel2
         '
         Me.m_scNetworkAnalysis.Panel2.BackColor = System.Drawing.Color.White
-        Me.m_scNetworkAnalysis.Panel2.Controls.Add(Me.m_plot)
-        Me.m_scNetworkAnalysis.Panel2.Controls.Add(Me.m_tlpInfo)
+        Me.m_scNetworkAnalysis.Panel2.Controls.Add(Me.m_scMain)
         Me.m_scNetworkAnalysis.Panel2.Controls.Add(Me.m_toolstrip)
-        Me.m_scNetworkAnalysis.Panel2.Controls.Add(Me.m_graph)
-        Me.m_scNetworkAnalysis.Panel2.Controls.Add(Me.m_datagrid)
+        '
+        'm_scMain
+        '
+        Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        resources.ApplyResources(Me.m_scMain, "m_scMain")
+        Me.m_scMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
+        Me.m_scMain.Name = "m_scMain"
+        '
+        'm_scMain.Panel1
+        '
+        Me.m_scMain.Panel1.Controls.Add(Me.m_tlpInfo)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_plot)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_graph)
+        Me.m_scMain.Panel1.Controls.Add(Me.m_datagrid)
+        '
+        'm_scMain.Panel2
+        '
+        Me.m_scMain.Panel2.BackColor = System.Drawing.SystemColors.Control
+        Me.m_scMain.Panel2.Controls.Add(Me.m_tlpOptions)
+        Me.m_scMain.Panel2Collapsed = True
         '
         'm_tlpInfo
         '
@@ -124,6 +150,11 @@ Partial Class frmNetworkAnalysis
         '
         resources.ApplyResources(Me.m_lblSponsors, "m_lblSponsors")
         Me.m_lblSponsors.Name = "m_lblSponsors"
+        '
+        'm_plot
+        '
+        resources.ApplyResources(Me.m_plot, "m_plot")
+        Me.m_plot.Name = "m_plot"
         '
         'm_graph
         '
@@ -146,6 +177,11 @@ Partial Class frmNetworkAnalysis
         Me.m_datagrid.Name = "m_datagrid"
         Me.m_datagrid.ReadOnly = True
         '
+        'm_tlpOptions
+        '
+        resources.ApplyResources(Me.m_tlpOptions, "m_tlpOptions")
+        Me.m_tlpOptions.Name = "m_tlpOptions"
+        '
         'm_toolstrip
         '
         Me.m_toolstrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
@@ -162,7 +198,6 @@ Partial Class frmNetworkAnalysis
         '
         'tsbtnOptions
         '
-        Me.tsbtnOptions.CheckOnClick = True
         Me.tsbtnOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.tsbtnOptions, "tsbtnOptions")
         Me.tsbtnOptions.Name = "tsbtnOptions"
@@ -222,11 +257,6 @@ Partial Class frmNetworkAnalysis
         Me.m_hdrPage.IsCollapsed = False
         Me.m_hdrPage.Name = "m_hdrPage"
         '
-        'm_plot
-        '
-        resources.ApplyResources(Me.m_plot, "m_plot")
-        Me.m_plot.Name = "m_plot"
-        '
         'frmNetworkAnalysis
         '
         resources.ApplyResources(Me, "$this")
@@ -241,6 +271,10 @@ Partial Class frmNetworkAnalysis
         Me.m_scNetworkAnalysis.Panel2.PerformLayout()
         CType(Me.m_scNetworkAnalysis, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_scNetworkAnalysis.ResumeLayout(False)
+        Me.m_scMain.Panel1.ResumeLayout(False)
+        Me.m_scMain.Panel2.ResumeLayout(False)
+        CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_scMain.ResumeLayout(False)
         Me.m_tlpInfo.ResumeLayout(False)
         Me.m_tlpInfo.PerformLayout()
         CType(Me.m_pbSponsors, System.ComponentModel.ISupportInitialize).EndInit()
@@ -261,12 +295,14 @@ Partial Class frmNetworkAnalysis
     Private WithEvents m_datagrid As System.Windows.Forms.DataGridView
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tlpInfo As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_plot As ucPlot
     Private WithEvents tsmiDisplayGroups As System.Windows.Forms.ToolStripButton
     Private WithEvents tsmiRun As System.Windows.Forms.ToolStripButton
     Private WithEvents m_hdrPage As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents tsbtnOptions As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
+    Friend WithEvents m_tlpOptions As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents m_pbSponsors As System.Windows.Forms.PictureBox
     Private WithEvents m_lblSponsors As System.Windows.Forms.Label
     Private WithEvents tsbnFonts As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_plot As ucPlot
 End Class

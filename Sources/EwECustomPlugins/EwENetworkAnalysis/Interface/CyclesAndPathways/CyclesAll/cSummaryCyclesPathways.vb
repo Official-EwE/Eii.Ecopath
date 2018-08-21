@@ -40,17 +40,19 @@ Namespace CyclesAll
         End Sub
 
         Public Overrides Function PageTitle() As String
+            ' ToDo: globalize this
             Return "Summary of all cycles and pathways"
         End Function
 
-        Public Overrides Function Attach(ByVal manager As cNetworkManager, _
-                                         ByVal datagrid As DataGridView, _
-                                         ByVal graph As ZedGraphControl, _
-                                         ByVal plot As ucPlot, _
-                                         ByVal toolstrip As ToolStrip, _
+        Public Overrides Function Attach(ByVal manager As cNetworkManager,
+                                         ByVal datagrid As DataGridView,
+                                         ByVal graph As ZedGraphControl,
+                                         ByVal plot As ucPlot,
+                                         ByVal toolstrip As ToolStrip,
+                                         ByVal info As Control,
                                          ByVal uic As cUIContext) As Boolean
 
-            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
+            Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
 
             If Me.NetworkManager.AskUserConfirmation(My.Resources.PROMPT_COMPUTE_ALL_CYCLES) Then
                 bSucces = Me.NetworkManager.FindPathwaysCyclesAll()
