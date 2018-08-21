@@ -2463,7 +2463,6 @@ Namespace Ecosim
                             'data type 0,1,5,6,-6,7
                             Select Case m_RefData.DatType(iDType)
 
-                                '0, 1 
                                 Case eTimeSeriesType.BiomassRel, eTimeSeriesType.BiomassAbs '0, 1 Abundance Data
                                     If MakeTestData Then m_RefData.DatVal(iDYear, iDType) = CSng(BB(m_RefData.DatPool(iDType)) * Math.Exp(SDtest * RandomNormal())) ' to test with random error data
                                     Zstat = CSng(Math.Log(m_RefData.DatVal(iDYear, iDType) / BB(m_RefData.DatPool(iDType))))

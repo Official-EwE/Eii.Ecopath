@@ -190,29 +190,31 @@ Namespace Controls.Map
 
             Dim rcfCell As RectangleF = Nothing
             Dim brCell As Brush = Nothing
-            Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
 
             Try
                 If Me.m_sg.ShowMapsMPAs Then
                     For i As Integer = 1 To Me.InRow
                         For j As Integer = 1 To Me.InCol
-                            For k As Integer = 1 To Me.m_core.nMPAs
-                                Dim mpa As cEcospaceLayerMPA = m_core.EcospaceBasemap.LayerMPA(k)
-                                If (CBool(mpa.Cell(i, j))) Then
-                                    rcfCell = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol),
-                                                                 CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow),
-                                                                 CSng(rcPos.Width() / Me.InCol),
-                                                                 CSng(rcPos.Height() / Me.InRow))
-                                    If Me.m_core.EcospaceMPAs(k).MPAMonth(Me.Month) Then
-                                        brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
-                                    Else
-                                        brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
+                            If bm.IsModelledCell(i, j) Then
+                                For k As Integer = 1 To Me.m_core.nMPAs
+                                    Dim mpa As cEcospaceLayerMPA = m_core.EcospaceBasemap.LayerMPA(k)
+                                    If (CBool(mpa.Cell(i, j))) Then
+                                        rcfCell = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol),
+                                                                     CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow),
+                                                                     CSng(rcPos.Width() / Me.InCol),
+                                                                     CSng(rcPos.Height() / Me.InRow))
+                                        If Me.m_core.EcospaceMPAs(k).MPAMonth(Me.Month) Then
+                                            brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
+                                        Else
+                                            brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
+                                        End If
+                                        Me.Graphics.FillRectangle(brCell, rcfCell)
+                                        brCell.Dispose()
+                                        'End If
                                     End If
-                                    Me.Graphics.FillRectangle(brCell, rcfCell)
-                                    brCell.Dispose()
-                                    'End If
-                                End If
-                            Next k
+                                Next k
+                            End If
                         Next
                     Next
                 End If

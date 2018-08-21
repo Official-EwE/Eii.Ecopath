@@ -1609,15 +1609,15 @@ Namespace Ecospace
 
             Me.m_tbxAutosaveTimeSteps.Enabled = (Me.m_cbAutoSavePNG.Checked = True)
 
-            Dim bShowMap As Boolean = (Me.m_tcOutputs.SelectedIndex = 0)
+            Dim bShowMap As Boolean = Object.ReferenceEquals(Me.m_tcOutputs.SelectedTab, Me.m_tabMap)
             Me.m_plMapData.Visible = bShowMap
             Me.m_plMapLabels.Visible = bShowMap
             Me.m_plDisplayOptions.Visible = True
             Me.m_plMapSaveImages.Visible = bShowMap
             Me.m_plGraphData.Visible = Not bShowMap
 
-            Me.m_cbMPA.Enabled = bShowMap And (Me.Core.nMPAs > 0)
-            Me.m_cbShowIBMPackets.Enabled = bShowMap And (CBool(Me.m_bpUseIBM.GetValue()) = True)
+            Me.m_cbMPA.Enabled = (Me.Core.nMPAs > 0)
+            Me.m_cbShowIBMPackets.Enabled = (CBool(Me.m_bpUseIBM.GetValue()) = True)
             Me.m_cbOverlay.Enabled = Not bShowMap
 
             Me.m_bInUpdate = False

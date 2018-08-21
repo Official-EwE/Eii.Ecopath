@@ -128,6 +128,9 @@ Public Class ucOptions
 
     Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
 
+        ' If not initialized
+        If (Me.m_man Is Nothing) Then Return IOptionsPage.eApplyResultType.Success
+
         Me.m_man.TimeOutMilSecs = CInt(Me.m_nudTimeOut.Value * 1000 * 60)
         Me.m_man.UseAbortTimer = m_cbUseTimeout.Checked
 
@@ -135,6 +138,8 @@ Public Class ucOptions
         My.Settings.AutosaveEcosimWithPPR = Me.m_cbAutosaveEcosimWithPPR.Checked
         My.Settings.AbortTimoutMins = CInt(Me.m_nudTimeOut.Value)
         My.Settings.Save()
+
+        Return IOptionsPage.eApplyResultType.Success
 
     End Function
 

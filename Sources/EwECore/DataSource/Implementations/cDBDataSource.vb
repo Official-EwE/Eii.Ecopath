@@ -6689,7 +6689,7 @@ Namespace DataSources
                 drow = writerFleet.NewRow()
                 drow("TimeSeriesID") = iTimeSeriesID
                 drow("FleetID") = ecopathDS.FleetDBID(ts.DatPool)
-                If (ts.DatPoolSec >= 1) And (ts.DatPool < ecopathDS.GroupDBID.Length) Then
+                If (ts.DatPoolSec >= 1) And (ts.DatPoolSec < ecopathDS.GroupDBID.Length) Then
                     drow("GroupID") = ecopathDS.GroupDBID(ts.DatPoolSec)
                 Else
                     drow("GroupID") = 0
@@ -9221,6 +9221,7 @@ Namespace DataSources
                     End If
 
                     bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceMPA, ecospaceDS.MPADBID(iMPA))
+                    bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerMPA, ecospaceDS.MPADBID(iMPA))
 
                 Next iMPA
 
