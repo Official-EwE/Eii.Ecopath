@@ -34,7 +34,7 @@ Public Class ucOptionsPluginDetails
     Implements IUIElement
 
     Private m_pa As cPluginAssembly = Nothing
-    Private m_uic As cUIContext = Nothing
+    Private m_pi As IPlugin = Nothing
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -42,8 +42,8 @@ Public Class ucOptionsPluginDetails
     ''' showing details on a plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext, _
-                   ByVal pi As IPlugin, _
+    Public Sub New(ByVal uic As cUIContext,
+                   ByVal pi As IPlugin,
                    ByVal pa As cPluginAssembly)
 
         Me.InitializeComponent()
@@ -55,7 +55,8 @@ Public Class ucOptionsPluginDetails
 
         ' Name plug-ins by rich text if possible
         If (TypeOf pi Is IGUIPlugin) Then
-            Me.m_tbName.Text = DirectCast(pi, IGUIPlugin).ControlText
+            Dim str As String = DirectCast(pi, IGUIPlugin).ControlText
+            Me.m_tbName.Text = cStringUtils.ControlTextToSentence(str)
         Else
             Me.m_tbName.Text = pi.Name
         End If
@@ -64,19 +65,13 @@ Public Class ucOptionsPluginDetails
         Me.m_llContact.Links(0).LinkData = pi.Contact
         Me.m_tbDescription.Text = pi.Description
 
+        Me.m_pi = pi
         Me.m_pa = pa
 
     End Sub
 
     Public Property UIContext() As cUIContext _
         Implements IUIElement.UIContext
-        Get
-            Return Me.m_uic
-        End Get
-        Protected Set(ByVal uic As cUIContext)
-            Me.m_uic = uic
-        End Set
-    End Property
 
     Private Sub m_llContact_LinkClicked(ByVal sender As System.Object, ByVal e As LinkLabelLinkClickedEventArgs) _
         Handles m_llContact.LinkClicked
@@ -87,6 +82,9 @@ Public Class ucOptionsPluginDetails
             If cStringUtils.IsEmail(strLink) Then
                 If Not cStringUtils.BeginsWith(strLink, "mailto:") Then
                     strLink = "mailto:" & strLink
+                End If
+                If Not strLink.ToLower.Contains("?subject=") Then
+                    strLink = strLink & "?subject=Question about " & Path.GetFileNameWithoutExtension(Me.m_pa.Filename)
                 End If
             End If
 
