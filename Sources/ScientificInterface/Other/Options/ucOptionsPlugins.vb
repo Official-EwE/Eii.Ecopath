@@ -30,6 +30,7 @@ Imports EwECore
 Imports EwEPlugin
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Reflection
+Imports EwEUtils.Utilities
 
 #End Region
 
@@ -203,7 +204,8 @@ Namespace Other
 
                         ' Name plug-ins by rich text if possible
                         If (TypeOf p Is IGUIPlugin) Then
-                            tnP = New TreeNode(DirectCast(p, IGUIPlugin).ControlText)
+                            Dim str As String = DirectCast(p, IGUIPlugin).ControlText
+                            tnP = New TreeNode(cStringUtils.ControlTextToSentence(str))
                         Else
                             tnP = New TreeNode(p.Name)
                         End If
