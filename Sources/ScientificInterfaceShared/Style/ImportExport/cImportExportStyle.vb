@@ -53,6 +53,8 @@ Namespace Style
             Public ReadOnly Property VarName As eVarNameFlags = eVarNameFlags.NotSet
             Public ReadOnly Property Index As Integer = 0
             Public Property Enabled As Boolean = True
+            Public Property HasLayer As Boolean = False
+            Public Property CanCreate As Boolean = False
         End Class
 
 #End Region ' Internal admin

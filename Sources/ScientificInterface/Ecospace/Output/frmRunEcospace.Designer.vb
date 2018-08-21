@@ -69,8 +69,10 @@ Namespace Ecospace
             Me.m_plMapData = New System.Windows.Forms.Panel()
             Me.Label1 = New System.Windows.Forms.Label()
             Me.m_txFMax = New System.Windows.Forms.TextBox()
+            Me.m_cbShowIBMPackets = New System.Windows.Forms.CheckBox()
             Me.m_rbDisplayF = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton()
+            Me.m_cbMPA = New System.Windows.Forms.CheckBox()
             Me.m_rbDisplayFOverB = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton()
@@ -81,9 +83,7 @@ Namespace Ecospace
             Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton()
             Me.m_plDisplayOptions = New System.Windows.Forms.Panel()
             Me.m_btnDisplayGroups1 = New System.Windows.Forms.Button()
-            Me.m_cbShowIBMPackets = New System.Windows.Forms.CheckBox()
             Me.m_hdrDispOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_cbMPA = New System.Windows.Forms.CheckBox()
             Me.m_plRun = New System.Windows.Forms.Panel()
             Me.m_hdrRunning = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel()
@@ -97,10 +97,10 @@ Namespace Ecospace
             Me.m_rbRelBiomassGraph = New System.Windows.Forms.RadioButton()
             Me.m_hdrGraphTypes = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tcOutputs = New System.Windows.Forms.TabControl()
-            Me.m_tabMap = New System.Windows.Forms.TabPage()
-            Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
             Me.m_tabGraph = New System.Windows.Forms.TabPage()
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
+            Me.m_tabMap = New System.Windows.Forms.TabPage()
+            Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
@@ -115,8 +115,8 @@ Namespace Ecospace
             Me.m_tlpRun.SuspendLayout()
             Me.m_plGraphData.SuspendLayout()
             Me.m_tcOutputs.SuspendLayout()
-            Me.m_tabMap.SuspendLayout()
             Me.m_tabGraph.SuspendLayout()
+            Me.m_tabMap.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnRun
@@ -281,8 +281,11 @@ Namespace Ecospace
             '
             Me.m_plMapData.Controls.Add(Me.Label1)
             Me.m_plMapData.Controls.Add(Me.m_txFMax)
+            Me.m_plMapData.Controls.Add(Me.m_cbShowIBMPackets)
+            Me.m_plMapData.Controls.Add(Me.m_cbOverlay)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayF)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayRelBiomass)
+            Me.m_plMapData.Controls.Add(Me.m_cbMPA)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayFOverB)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayFishingEffort)
             Me.m_plMapData.Controls.Add(Me.m_rbDisplayContaminantC)
@@ -304,6 +307,14 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_txFMax, "m_txFMax")
             Me.m_txFMax.Name = "m_txFMax"
             '
+            'm_cbShowIBMPackets
+            '
+            resources.ApplyResources(Me.m_cbShowIBMPackets, "m_cbShowIBMPackets")
+            Me.m_cbShowIBMPackets.Checked = True
+            Me.m_cbShowIBMPackets.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbShowIBMPackets.Name = "m_cbShowIBMPackets"
+            Me.m_cbShowIBMPackets.UseVisualStyleBackColor = True
+            '
             'm_rbDisplayF
             '
             resources.ApplyResources(Me.m_rbDisplayF, "m_rbDisplayF")
@@ -317,6 +328,14 @@ Namespace Ecospace
             Me.m_rbDisplayRelBiomass.Name = "m_rbDisplayRelBiomass"
             Me.m_rbDisplayRelBiomass.TabStop = True
             Me.m_rbDisplayRelBiomass.UseVisualStyleBackColor = True
+            '
+            'm_cbMPA
+            '
+            resources.ApplyResources(Me.m_cbMPA, "m_cbMPA")
+            Me.m_cbMPA.Checked = True
+            Me.m_cbMPA.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbMPA.Name = "m_cbMPA"
+            Me.m_cbMPA.UseVisualStyleBackColor = True
             '
             'm_rbDisplayFOverB
             '
@@ -372,10 +391,7 @@ Namespace Ecospace
             '
             Me.m_plDisplayOptions.Controls.Add(Me.m_btnDisplayGroups1)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowAll)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_cbShowIBMPackets)
             Me.m_plDisplayOptions.Controls.Add(Me.m_hdrDispOpt)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_cbMPA)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_cbOverlay)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowNonHidden)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowSingle)
             Me.m_plDisplayOptions.Controls.Add(Me.m_cmbDisplayItem)
@@ -388,14 +404,6 @@ Namespace Ecospace
             Me.m_btnDisplayGroups1.Name = "m_btnDisplayGroups1"
             Me.m_btnDisplayGroups1.UseVisualStyleBackColor = True
             '
-            'm_cbShowIBMPackets
-            '
-            resources.ApplyResources(Me.m_cbShowIBMPackets, "m_cbShowIBMPackets")
-            Me.m_cbShowIBMPackets.Checked = True
-            Me.m_cbShowIBMPackets.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_cbShowIBMPackets.Name = "m_cbShowIBMPackets"
-            Me.m_cbShowIBMPackets.UseVisualStyleBackColor = True
-            '
             'm_hdrDispOpt
             '
             resources.ApplyResources(Me.m_hdrDispOpt, "m_hdrDispOpt")
@@ -403,14 +411,6 @@ Namespace Ecospace
             Me.m_hdrDispOpt.CollapsedParentHeight = 0
             Me.m_hdrDispOpt.IsCollapsed = False
             Me.m_hdrDispOpt.Name = "m_hdrDispOpt"
-            '
-            'm_cbMPA
-            '
-            resources.ApplyResources(Me.m_cbMPA, "m_cbMPA")
-            Me.m_cbMPA.Checked = True
-            Me.m_cbMPA.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_cbMPA.Name = "m_cbMPA"
-            Me.m_cbMPA.UseVisualStyleBackColor = True
             '
             'm_plRun
             '
@@ -508,10 +508,29 @@ Namespace Ecospace
             'm_tcOutputs
             '
             resources.ApplyResources(Me.m_tcOutputs, "m_tcOutputs")
-            Me.m_tcOutputs.Controls.Add(Me.m_tabMap)
             Me.m_tcOutputs.Controls.Add(Me.m_tabGraph)
+            Me.m_tcOutputs.Controls.Add(Me.m_tabMap)
             Me.m_tcOutputs.Name = "m_tcOutputs"
             Me.m_tcOutputs.SelectedIndex = 0
+            '
+            'm_tabGraph
+            '
+            Me.m_tabGraph.Controls.Add(Me.m_zgPlotLarge)
+            resources.ApplyResources(Me.m_tabGraph, "m_tabGraph")
+            Me.m_tabGraph.Name = "m_tabGraph"
+            Me.m_tabGraph.UseVisualStyleBackColor = True
+            '
+            'm_zgPlotLarge
+            '
+            resources.ApplyResources(Me.m_zgPlotLarge, "m_zgPlotLarge")
+            Me.m_zgPlotLarge.Name = "m_zgPlotLarge"
+            Me.m_zgPlotLarge.ScrollGrace = 0R
+            Me.m_zgPlotLarge.ScrollMaxX = 0R
+            Me.m_zgPlotLarge.ScrollMaxY = 0R
+            Me.m_zgPlotLarge.ScrollMaxY2 = 0R
+            Me.m_zgPlotLarge.ScrollMinX = 0R
+            Me.m_zgPlotLarge.ScrollMinY = 0R
+            Me.m_zgPlotLarge.ScrollMinY2 = 0R
             '
             'm_tabMap
             '
@@ -532,25 +551,6 @@ Namespace Ecospace
             Me.m_legend.LabelLow = "Low"
             Me.m_legend.Name = "m_legend"
             Me.m_legend.UIContext = Nothing
-            '
-            'm_tabGraph
-            '
-            Me.m_tabGraph.Controls.Add(Me.m_zgPlotLarge)
-            resources.ApplyResources(Me.m_tabGraph, "m_tabGraph")
-            Me.m_tabGraph.Name = "m_tabGraph"
-            Me.m_tabGraph.UseVisualStyleBackColor = True
-            '
-            'm_zgPlotLarge
-            '
-            resources.ApplyResources(Me.m_zgPlotLarge, "m_zgPlotLarge")
-            Me.m_zgPlotLarge.Name = "m_zgPlotLarge"
-            Me.m_zgPlotLarge.ScrollGrace = 0R
-            Me.m_zgPlotLarge.ScrollMaxX = 0R
-            Me.m_zgPlotLarge.ScrollMaxY = 0R
-            Me.m_zgPlotLarge.ScrollMaxY2 = 0R
-            Me.m_zgPlotLarge.ScrollMinX = 0R
-            Me.m_zgPlotLarge.ScrollMinY = 0R
-            Me.m_zgPlotLarge.ScrollMinY2 = 0R
             '
             'frmRunEcospace
             '
@@ -578,8 +578,8 @@ Namespace Ecospace
             Me.m_plGraphData.ResumeLayout(False)
             Me.m_plGraphData.PerformLayout()
             Me.m_tcOutputs.ResumeLayout(False)
-            Me.m_tabMap.ResumeLayout(False)
             Me.m_tabGraph.ResumeLayout(False)
+            Me.m_tabMap.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
