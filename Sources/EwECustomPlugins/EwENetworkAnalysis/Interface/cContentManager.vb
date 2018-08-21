@@ -40,17 +40,12 @@ Public MustInherit Class cContentManager
 
 #Region " Private variables "
 
-    ''' <summary></summary>
     Private m_manager As cNetworkManager = Nothing
-    ''' <summary></summary>
     Private m_graph As ZedGraphControl = Nothing
-    ''' <summary></summary>
     Private m_plot As ucPlot = Nothing
-    ''' <summary></summary>
     Private m_datagrid As DataGridView = Nothing
-    ''' <summary></summary>
     Private m_toolstrip As ToolStrip = Nothing
-    ''' <summary></summary>
+    Private m_info As Control = Nothing
     Private m_uic As cUIContext = Nothing
 
     Private m_groupfilter1 As eGroupFilterTypes = eGroupFilterTypes.Living
@@ -72,11 +67,12 @@ Public MustInherit Class cContentManager
     ''' The default implementation stores all controls and hides them.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Overridable Function Attach(ByVal manager As cNetworkManager, _
-                                       ByVal datagrid As DataGridView, _
-                                       ByVal graph As ZedGraphControl, _
-                                       ByVal plot As ucPlot, _
-                                       ByVal toolstrip As ToolStrip, _
+    Public Overridable Function Attach(ByVal manager As cNetworkManager,
+                                       ByVal datagrid As DataGridView,
+                                       ByVal graph As ZedGraphControl,
+                                       ByVal plot As ucPlot,
+                                       ByVal toolstrip As ToolStrip,
+                                       ByVal info As Control,
                                        ByVal uic As cUIContext) As Boolean
 
         ' Sanity checks
@@ -88,6 +84,7 @@ Public MustInherit Class cContentManager
         Me.m_graph = graph
         Me.m_plot = plot
         Me.m_toolstrip = toolstrip
+        Me.m_info = info
         Me.m_uic = uic
 
         ' Hide all managed controls
@@ -213,6 +210,12 @@ Public MustInherit Class cContentManager
 
 #Region " Properties "
 
+    Protected ReadOnly Property InfoPanel As Control
+        Get
+            Return Me.m_info
+        End Get
+    End Property
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Return the one and only network manager.
@@ -317,6 +320,7 @@ Public MustInherit Class cContentManager
         Me.Graph.Visible = False
         Me.Plot.Visible = False
         Me.Grid.Visible = False
+        Me.InfoPanel.Visible = False
         Me.Toolstrip.Visible = True ' False
 
         ' Clear grid

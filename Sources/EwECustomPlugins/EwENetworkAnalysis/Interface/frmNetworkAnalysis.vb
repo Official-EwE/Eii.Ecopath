@@ -119,6 +119,9 @@ Public Class frmNetworkAnalysis
         'Me.m_toolstrip.Visible = False
         Me.m_toolstrip.Dock = DockStyle.Top
 
+        Me.m_tlpInfo.Visible = True
+        Me.m_tlpInfo.Dock = DockStyle.Fill
+
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Me.m_cmdDisplayGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
@@ -223,8 +226,8 @@ Public Class frmNetworkAnalysis
             If (Me.m_contentmanager Is Nothing) Then Return
             If (cmdFS Is Nothing) Then Return
 
-            cmdFS.Invoke(Me.m_contentmanager.Filename(""), _
-                         My.Resources.FILEFILTER_EMF, _
+            cmdFS.Invoke(Me.m_contentmanager.Filename(""),
+                         My.Resources.FILEFILTER_EMF,
                          1)
 
             If (cmdFS.Result = DialogResult.OK) Then
@@ -321,7 +324,7 @@ Public Class frmNetworkAnalysis
 
     Private Sub tsbtnOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles tsbtnOptions.Click
-        Me.ShowOptions()
+        Me.ShowOptions(tsbtnOptions.Checked = False)
     End Sub
 
     Private Sub OnFontsClicked(sender As Object, e As EventArgs) Handles tsbnFonts.Click
@@ -355,7 +358,7 @@ Public Class frmNetworkAnalysis
         If (Me.m_contentmanager Is Nothing) Then Return
         If (Me.m_networkmanager Is Nothing) Then Return
 
-        Me.tsmiRun.Enabled = (Me.m_networkmanager.IsMainNetworkRun = False) Or _
+        Me.tsmiRun.Enabled = (Me.m_networkmanager.IsMainNetworkRun = False) Or
                              ((Me.m_networkmanager.IsEcosimNetworkRun = False) And (Me.m_contentmanager.UsesEcosim = True))
 
         Dim bClosePage As Boolean = False
@@ -381,6 +384,7 @@ Public Class frmNetworkAnalysis
         Me.SuspendLayout()
 
         If (Me.m_contentmanager IsNot Nothing) Then
+            Me.ShowOptions(False)
             Try
                 Me.m_contentmanager.Detach()
             Catch ex As Exception
@@ -391,176 +395,169 @@ Public Class frmNetworkAnalysis
 
         ' Make sure main network has ran
         ' Fixes bug 937
-        If Me.m_networkmanager.RunMainNetwork() Then
+        If (page <> eNetworkAnalysisPageTypes.Credits) Then
+            Me.m_networkmanager.RunMainNetwork()
+        End If
 
-            Select Case page
+        Select Case page
 
-                Case eNetworkAnalysisPageTypes.Credits
-                    Me.m_contentmanager = Nothing
+            Case eNetworkAnalysisPageTypes.Credits,
+                 eNetworkAnalysisPageTypes.NotSet
+                Me.m_contentmanager = New cCredits()
 
-                Case eNetworkAnalysisPageTypes.RelativeFlows
-                    Me.m_contentmanager = New cRelativeFlows()
+            Case eNetworkAnalysisPageTypes.RelativeFlows
+                Me.m_contentmanager = New cRelativeFlows()
 
-                Case eNetworkAnalysisPageTypes.AbsoluteFlows
-                    Me.m_contentmanager = New cAbsoluteFlows()
+            Case eNetworkAnalysisPageTypes.AbsoluteFlows
+                Me.m_contentmanager = New cAbsoluteFlows()
 
-                Case eNetworkAnalysisPageTypes.TransferEfficiency
-                    Me.m_contentmanager = New cTransferEfficiency()
+            Case eNetworkAnalysisPageTypes.TransferEfficiency
+                Me.m_contentmanager = New cTransferEfficiency()
 
                     'Case eNetworkAnalysisPageTypes.FlowPyramid
                     '    Me.m_contentmanager = New cFlowPyramid()
 
-                Case eNetworkAnalysisPageTypes.BiomassByTrophicLevel
-                    Me.m_contentmanager = New cBiomassByTrophicLevel()
+            Case eNetworkAnalysisPageTypes.BiomassByTrophicLevel
+                Me.m_contentmanager = New cBiomassByTrophicLevel()
 
                     'Case eNetworkAnalysisPageTypes.BiomassPyramid
                     '    Me.m_contentmanager = New cBiomassPyramid()
 
-                Case eNetworkAnalysisPageTypes.CatchByTrophicLevel
-                    Me.m_contentmanager = New cCatchByTrophicLevel()
+            Case eNetworkAnalysisPageTypes.CatchByTrophicLevel
+                Me.m_contentmanager = New cCatchByTrophicLevel()
 
                     'Case eNetworkAnalysisPageTypes.CatchPyramid
                     '    Me.m_contentmanager = New cCatchPyramid()
 
-                Case eNetworkAnalysisPageTypes.FromPrimaryProducers
-                    Me.m_contentmanager = New cFromPrimaryProd()
+            Case eNetworkAnalysisPageTypes.FromPrimaryProducers
+                Me.m_contentmanager = New cFromPrimaryProd()
 
-                Case eNetworkAnalysisPageTypes.FromDetritus
-                    Me.m_contentmanager = New cFromDetritus()
+            Case eNetworkAnalysisPageTypes.FromDetritus
+                Me.m_contentmanager = New cFromDetritus()
 
-                Case eNetworkAnalysisPageTypes.FromAllCombined
-                    Me.m_contentmanager = New cFromAllCombined()
+            Case eNetworkAnalysisPageTypes.FromAllCombined
+                Me.m_contentmanager = New cFromAllCombined()
 
-                Case eNetworkAnalysisPageTypes.ForHarvestOfAllGroups
-                    Me.m_contentmanager = New cForHarvestOfAllGp()
+            Case eNetworkAnalysisPageTypes.ForHarvestOfAllGroups
+                Me.m_contentmanager = New cForHarvestOfAllGp()
 
-                Case eNetworkAnalysisPageTypes.ForConsumptionOfAllGroups
-                    Me.m_contentmanager = New cForConsumpOfAllGp()
+            Case eNetworkAnalysisPageTypes.ForConsumptionOfAllGroups
+                Me.m_contentmanager = New cForConsumpOfAllGp()
 
-                Case eNetworkAnalysisPageTypes.ImpactData
-                    Me.m_contentmanager = New cImpactData()
+            Case eNetworkAnalysisPageTypes.ImpactData
+                Me.m_contentmanager = New cImpactData()
 
-                Case eNetworkAnalysisPageTypes.GraphOfMixedTrophicImpact
-                    Me.m_contentmanager = New cPlotOfMixedTrophicImpact()
+            Case eNetworkAnalysisPageTypes.GraphOfMixedTrophicImpact
+                Me.m_contentmanager = New cPlotOfMixedTrophicImpact()
 
                     'Case eNetworkAnalysisPageTypes.GraphOfMixedTrophicImpactEwE5
                     '    Me.m_contentmanager = New cGraphOfMixedTrophicImpact()
 
-                Case eNetworkAnalysisPageTypes.KeystonenessTable
-                    Me.m_contentmanager = New cKeystonenessTable()
+            Case eNetworkAnalysisPageTypes.KeystonenessTable
+                Me.m_contentmanager = New cKeystonenessTable()
 
-                Case eNetworkAnalysisPageTypes.KeystonenessGraph
-                    Me.m_contentmanager = New cKeystonenessGraph()
+            Case eNetworkAnalysisPageTypes.KeystonenessGraph
+                Me.m_contentmanager = New cKeystonenessGraph()
 
-                Case eNetworkAnalysisPageTypes.Total
-                    Me.m_contentmanager = New cTotal()
+            Case eNetworkAnalysisPageTypes.Total
+                Me.m_contentmanager = New cTotal()
 
-                Case eNetworkAnalysisPageTypes.ByGroup
-                    Me.m_contentmanager = New cByGroup()
+            Case eNetworkAnalysisPageTypes.ByGroup
+                Me.m_contentmanager = New cByGroup()
 
-                Case eNetworkAnalysisPageTypes.FlowFromDetritus
-                    Me.m_contentmanager = New cFlowFromDetritus()
+            Case eNetworkAnalysisPageTypes.FlowFromDetritus
+                Me.m_contentmanager = New cFlowFromDetritus()
 
-                Case eNetworkAnalysisPageTypes.Pathway_cons_tl1
-                    Me.m_contentmanager = New TL1ToConsumer.cCyclesPathways()
+            Case eNetworkAnalysisPageTypes.Pathway_cons_tl1
+                Me.m_contentmanager = New TL1ToConsumer.cCyclesPathways()
 
-                Case eNetworkAnalysisPageTypes.SummaryOfPathways_cons_tl1
-                    Me.m_contentmanager = New TL1ToConsumer.cCyclesPathwaysSummary()
+            Case eNetworkAnalysisPageTypes.SummaryOfPathways_cons_tl1
+                Me.m_contentmanager = New TL1ToConsumer.cCyclesPathwaysSummary()
 
-                Case eNetworkAnalysisPageTypes.Pathway_cons_prey_tl1
-                    Me.m_contentmanager = New TL1ToPreyToConsumer.cCyclesPathways()
+            Case eNetworkAnalysisPageTypes.Pathway_cons_prey_tl1
+                Me.m_contentmanager = New TL1ToPreyToConsumer.cCyclesPathways()
 
-                Case eNetworkAnalysisPageTypes.SummaryOfPathways_cons_prey_tl1
-                    Me.m_contentmanager = New TL1ToConsumer.cCyclesPathwaysSummary()
+            Case eNetworkAnalysisPageTypes.SummaryOfPathways_cons_prey_tl1
+                Me.m_contentmanager = New TL1ToConsumer.cCyclesPathwaysSummary()
 
-                Case eNetworkAnalysisPageTypes.Pathway_pred_prey
-                    Me.m_contentmanager = New PreyToPredator.cCyclesPathways()
+            Case eNetworkAnalysisPageTypes.Pathway_pred_prey
+                Me.m_contentmanager = New PreyToPredator.cCyclesPathways()
 
-                Case eNetworkAnalysisPageTypes.SummaryOfPathways_pred_prey
-                    Me.m_contentmanager = New PreyToPredator.cSummaryCyclesPathways()
+            Case eNetworkAnalysisPageTypes.SummaryOfPathways_pred_prey
+                Me.m_contentmanager = New PreyToPredator.cSummaryCyclesPathways()
 
-                Case eNetworkAnalysisPageTypes.Pathway_living
-                    Me.m_contentmanager = New CyclesLiving.cCyclesPathways()
+            Case eNetworkAnalysisPageTypes.Pathway_living
+                Me.m_contentmanager = New CyclesLiving.cCyclesPathways()
 
-                Case eNetworkAnalysisPageTypes.SummaryOfPathways_living
-                    Me.m_contentmanager = New CyclesLiving.cSummaryPathways()
+            Case eNetworkAnalysisPageTypes.SummaryOfPathways_living
+                Me.m_contentmanager = New CyclesLiving.cSummaryPathways()
 
-                Case eNetworkAnalysisPageTypes.Pathway_all
-                    Me.m_contentmanager = New CyclesAll.cCyclesPathways()
+            Case eNetworkAnalysisPageTypes.Pathway_all
+                Me.m_contentmanager = New CyclesAll.cCyclesPathways()
 
-                Case eNetworkAnalysisPageTypes.SummaryOfPathways_all
-                    Me.m_contentmanager = New CyclesAll.cSummaryCyclesPathways()
+            Case eNetworkAnalysisPageTypes.SummaryOfPathways_all
+                Me.m_contentmanager = New CyclesAll.cSummaryCyclesPathways()
 
-                Case eNetworkAnalysisPageTypes.CyclingAndPathLength
-                    Me.m_contentmanager = New cCyclingAndPathLen()
+            Case eNetworkAnalysisPageTypes.CyclingAndPathLength
+                Me.m_contentmanager = New cCyclingAndPathLen()
 
-                Case eNetworkAnalysisPageTypes.LindemanSpine
-                    Me.m_contentmanager = New cLindemanSpine()
+            Case eNetworkAnalysisPageTypes.LindemanSpine
+                Me.m_contentmanager = New cLindemanSpine()
 
-                Case eNetworkAnalysisPageTypes.Lindex
-                    Me.m_contentmanager = New cLossinProductionIndex()
+            Case eNetworkAnalysisPageTypes.Lindex
+                Me.m_contentmanager = New cLossinProductionIndex()
 
-                Case eNetworkAnalysisPageTypes.WithoutPrimaryProductionRequiredEstimate
-                    Me.m_contentmanager = New cIndicesWithoutPPREst()
+            Case eNetworkAnalysisPageTypes.WithoutPrimaryProductionRequiredEstimate
+                Me.m_contentmanager = New cIndicesWithoutPPREst()
 
-                Case eNetworkAnalysisPageTypes.WithPrimaryProductionRequiredEstimate
-                    Me.m_contentmanager = New cIndicesWithPPREst()
+            Case eNetworkAnalysisPageTypes.WithPrimaryProductionRequiredEstimate
+                Me.m_contentmanager = New cIndicesWithPPREst()
 
-                Case Else
-            End Select
-        End If
+            Case Else
+                Debug.Assert(False)
+
+        End Select
 
         cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_UPDATING_UI)
 
         ' Put content manager to work
-        If (Me.m_contentmanager IsNot Nothing) Then
+        Debug.Assert(Me.m_contentmanager IsNot Nothing)
 
-            ' Try to attach content manager
-            If Me.m_contentmanager.Attach(Me.m_networkmanager, _
-                                          Me.m_datagrid, Me.m_graph, Me.m_plot, Me.m_toolstrip, _
+        ' Try to attach content manager
+        If Me.m_contentmanager.Attach(Me.m_networkmanager,
+                                          Me.m_datagrid, Me.m_graph, Me.m_plot, Me.m_toolstrip, Me.m_tlpInfo,
                                           Me.m_uic) Then
 
-                Try
-                    ' Display data if successful
-                    Me.m_contentmanager.DisplayData()
-                    Me.Invalidate(True)
-                Catch ex As Exception
+            Try
+                ' Display data if successful
+                Me.m_contentmanager.DisplayData()
+                Me.Invalidate(True)
+            Catch ex As Exception
 
-                End Try
+            End Try
 
-                Me.m_toolstrip.Visible = True
+            Me.m_toolstrip.Visible = True
 
-                Me.tscmbSelection1.Items.Clear()
-                Me.tscmbSelection2.Items.Clear()
-                For iGroup As Integer = 1 To Me.m_networkmanager.nGroups
-                    If (Me.m_contentmanager.GroupFilter1 = eGroupFilterTypes.Living) Or _
-                       (iGroup < Me.m_networkmanager.nLivingGroups) Then
-                        Me.tscmbSelection1.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
-                    End If
-                    If (Me.m_contentmanager.GroupFilter2 = eGroupFilterTypes.Living) Or _
-                       (iGroup < Me.m_networkmanager.nLivingGroups) Then
-                        Me.tscmbSelection2.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
-                    End If
-                Next
-                Me.m_toolstrip.Refresh()
+            Me.tscmbSelection1.Items.Clear()
+            Me.tscmbSelection2.Items.Clear()
+            For iGroup As Integer = 1 To Me.m_networkmanager.nGroups
+                If (Me.m_contentmanager.GroupFilter1 = eGroupFilterTypes.Living) Or
+                   (iGroup < Me.m_networkmanager.nLivingGroups) Then
+                    Me.tscmbSelection1.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
+                End If
+                If (Me.m_contentmanager.GroupFilter2 = eGroupFilterTypes.Living) Or
+                   (iGroup < Me.m_networkmanager.nLivingGroups) Then
+                    Me.tscmbSelection2.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
+                End If
+            Next
+            Me.m_toolstrip.Refresh()
 
-                Me.tscmbSelection1.SelectedIndex = 0
-                Me.tscmbSelection2.SelectedIndex = 0
+            Me.tscmbSelection1.SelectedIndex = 0
+            Me.tscmbSelection2.SelectedIndex = 0
 
-                Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
+            Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
 
-                'End If
-
-                Me.m_hdrPage.Text = Me.m_contentmanager.PageTitle
-            End If
-
-            ' Hide info panel
-            Me.m_tlpInfo.Visible = False
-        Else
-            Me.m_toolstrip.Visible = False
-            ' Show credits
-            Me.m_tlpInfo.Visible = True
-            Me.m_hdrPage.Text = My.Resources.PAGE_CREDITS
+            Me.m_hdrPage.Text = Me.m_contentmanager.PageTitle
         End If
 
         ' Position content
@@ -580,14 +577,36 @@ Public Class frmNetworkAnalysis
         Me.ShowPage(Me.m_pageCurrent)
     End Sub
 
-    Private Sub ShowOptions()
+    Private Sub ShowOptions(ByVal bShow As Boolean)
 
-        Try
-            Dim cmd As cShowOptionsCommand = CType(Me.m_uic.CommandHandler.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
-            cmd.Invoke("ndENAOptions")
-        Catch ex As Exception
+        Dim ctrlOptions As Control = Nothing
+        Dim iWidth As Integer = 0
 
-        End Try
+        Me.m_tlpOptions.Controls.Clear()
+
+        If (bShow = True) Then
+
+            If (Me.m_contentmanager IsNot Nothing) Then
+                ctrlOptions = Me.m_contentmanager.OptionsControl
+            End If
+
+            If (ctrlOptions Is Nothing) Then
+                Dim cmd As cShowOptionsCommand = CType(Me.m_uic.CommandHandler.GetCommand(cShowOptionsCommand.cCOMMAND_NAME), cShowOptionsCommand)
+                cmd.Invoke("ndENAOptions")
+                Return
+            End If
+
+            iWidth = ctrlOptions.Width
+            ctrlOptions.Dock = DockStyle.Fill
+            Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 1)
+
+            Me.m_scMain.Panel2Collapsed = False
+            Me.m_scMain.SplitterDistance = Me.m_scMain.Width - Me.m_scMain.SplitterWidth - iWidth
+            Me.tsbtnOptions.Checked = True
+        Else
+            Me.m_scMain.Panel2Collapsed = True
+            Me.tsbtnOptions.Checked = False
+        End If
 
     End Sub
 

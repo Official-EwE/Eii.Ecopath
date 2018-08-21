@@ -43,6 +43,7 @@ Public Class cIndicesWithoutPPREst
     End Sub
 
     Public Overrides Function PageTitle() As String
+        ' Todo: globalize this
         Return "Ecosim indices without PPR estimated"
     End Function
 
@@ -51,9 +52,10 @@ Public Class cIndicesWithoutPPREst
                                      ByVal graph As ZedGraphControl,
                                      ByVal plot As ucPlot,
                                      ByVal toolstrip As ToolStrip,
+                                     ByVal info As Control,
                                      ByVal uic As cUIContext) As Boolean
 
-        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
+        Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, info, uic)
 
         Me.NetworkManager.UseEcosimNetwork = True
         Me.NetworkManager.EcosimPPROn = False
