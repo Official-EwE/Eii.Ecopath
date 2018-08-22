@@ -1513,6 +1513,26 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Converts a Windows forms string to proper sentence case.
+        ''' </summary>
+        ''' <param name="strExpression">The string to convert.</param>
+        ''' <returns>A string in proper sentence case.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ControlTextToSentence(ByVal strExpression As String) As String
+
+            If (String.IsNullOrWhiteSpace(strExpression)) Then Return ""
+
+            strExpression = strExpression.Replace("&", "")
+            While strExpression.Contains("..")
+                strExpression = strExpression.Replace("..", ".")
+            End While
+            Return ToSentenceCase(strExpression)
+
+        End Function
+
+
 #Region " Date parsing "
 
         ''' -------------------------------------------------------------------
