@@ -152,6 +152,17 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
+        Public Overrides Function EcospaceLayers() As cEcospaceLayer()
+
+            Dim tmp As New List(Of cEcospaceLayer)
+            For i As Integer = 0 To Me.nLayers
+                Dim l As cEcospaceLayer = Me.Data(i)
+                If (l IsNot Nothing) Then tmp.Add(l)
+            Next
+            Return tmp.ToArray
+
+        End Function
+
     End Class ' Layer
 
 End Namespace

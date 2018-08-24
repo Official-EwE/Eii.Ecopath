@@ -21,6 +21,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
@@ -28,6 +29,8 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
+Imports System.IO
+
 
 #End Region ' Imports
 
@@ -43,7 +46,7 @@ Namespace Controls.Map
         Private m_uic As cUIContext = Nothing
         ''' <summary>Layer</summary>
         Private m_layer As cDisplayLayer = Nothing
-          ''' <summary>States whether the mouse is hovering over the control.</summary>
+        ''' <summary>States whether the mouse is hovering over the control.</summary>
         Private m_bHovering As Boolean = False
 
         ' Images cache for faster rendering
@@ -68,6 +71,8 @@ Namespace Controls.Map
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
             Me.SetStyle(ControlStyles.ResizeRedraw, True)
             Me.SetStyle(ControlStyles.UserPaint, True)
+
+            Me.AllowDrop = True
 
             Me.m_uic = uic
             Me.m_layer = l
@@ -119,143 +124,6 @@ Namespace Controls.Map
         Public Property LayerGroup() As ucLayerGroup
 
 #End Region ' Properties
-
-#Region " Internal implementation "
-
-        Private Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal updateType As cDisplayLayer.eChangeFlags)
-
-            If (updateType = cDisplayLayer.eChangeFlags.Map) Then
-                Me.Invalidate()
-                Return
-            End If
-
-            If ((updateType And cDisplayLayer.eChangeFlags.Selected) = cDisplayLayer.eChangeFlags.Selected) Then
-                ' Provide instant feedback
-                Me.Refresh()
-            Else
-                ' Just redraw whenever there is time
-                Me.Invalidate()
-            End If
-
-        End Sub
-
-        Private Sub OnLayerPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
-            Me.Invalidate()
-            cToolTipShared.GetInstance().SetToolTip(Me, prop.GetRemark)
-        End Sub
-
-        Public Sub EditLayer(ByVal edittype As eLayerEditTypes)
-            If (TypeOf Me.Layer Is cDisplayLayerRaster) Then
-                Try
-                    Dim rl As cDisplayLayerRaster = DirectCast(Me.Layer, cDisplayLayerRaster)
-                    Dim cmd As cEditLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
-                    cmd.Invoke(rl, Nothing, edittype)
-                Catch ex As Exception
-                    cLog.Write(ex, eVerboseLevel.Detailed, "ucLayer::EditLayer " & Me.Layer.Name & "(" & edittype.ToString & ")")
-                End Try
-            End If
-        End Sub
-
-        Public Sub EditLayerConnection()
-            If (TypeOf Me.Layer Is cDisplayLayerRaster) Then
-                Try
-                    Dim rl As cDisplayLayerRaster = DirectCast(Me.Layer, cDisplayLayerRaster)
-                    Dim cmd As cEcospaceConfigureConnectionCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEcospaceConfigureConnectionCommand.cCOMMAND_NAME), cEcospaceConfigureConnectionCommand)
-                    cmd.Invoke(rl.Data)
-                Catch ex As Exception
-                    cLog.Write(ex, eVerboseLevel.Detailed, "ucLayer::EditLayerConnection " & Me.Layer.Name)
-                End Try
-            End If
-        End Sub
-
-        ''' <summary>
-        ''' Enum to identify areas in the control
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private Enum eAreaTypes As Byte
-            ''' <summary>Area not in this control.</summary>
-            None
-            ''' <summary>Background area of this control.</summary>
-            Background
-            ''' <summary>Editable area of this control.</summary>
-            Editable
-            ''' <summary>Visible area of this control.</summary>
-            Visible
-            ''' <summary>Label area of this control.</summary>
-            Label
-            ''' <summary>Preview area of this control.</summary>
-            Preview
-        End Enum
-
-        Private Sub GetRectangles(ByVal rcControl As Rectangle, ByRef rcEditable As Rectangle, ByRef rcVisible As Rectangle, ByRef rcLabel As Rectangle, ByRef rcPreview As Rectangle)
-
-            Dim iAvgPad As Integer = 3
-
-            If (cSystemUtils.IsRightToLeft) Then
-                ' [ [prev][label    ][vis][edt] ]
-                rcEditable.X = rcControl.Width - iAvgPad - 16
-                rcEditable.Y = CInt((rcControl.Height - 16) / 2)
-                rcEditable.Width = 16
-                rcEditable.Height = 16
-
-                rcVisible.X = rcEditable.X - rcEditable.Width - iAvgPad
-                rcVisible.Y = rcEditable.Y
-                rcVisible.Width = 16
-                rcVisible.Height = 16
-
-                rcPreview.X = 2
-                rcPreview.Y = 2
-                rcPreview.Width = 24
-                rcPreview.Height = rcControl.Height - 4
-
-                rcLabel.X = rcPreview.X + rcPreview.Width + iAvgPad
-                rcLabel.Y = 0
-                rcLabel.Width = rcVisible.X - rcLabel.X - iAvgPad
-                rcLabel.Height = rcControl.Height
-            Else
-                ' [ [edt][vis][label    ][prev] ]
-                rcEditable.X = iAvgPad
-                rcEditable.Y = CInt((rcControl.Height - 16) / 2)
-                rcEditable.Width = 16
-                rcEditable.Height = 16
-
-                rcVisible.X = rcEditable.X + rcEditable.Width + iAvgPad
-                rcVisible.Y = rcEditable.Y
-                rcVisible.Width = 16
-                rcVisible.Height = 16
-
-                rcPreview.X = rcControl.Width - 2 - 24
-                rcPreview.Y = 2
-                rcPreview.Width = 24
-                rcPreview.Height = rcControl.Height - 4
-
-                rcLabel.X = rcVisible.X + rcVisible.Width + iAvgPad
-                rcLabel.Y = 0
-                rcLabel.Width = rcPreview.X - rcLabel.X - iAvgPad
-                rcLabel.Height = rcControl.Height
-            End If
-
-        End Sub
-
-        Private Function GetArea(ByVal pt As Point) As eAreaTypes
-            Dim rcControl As Rectangle = New Rectangle(0, 0, Me.Width, Me.Height)
-            Dim rcEditable As Rectangle = Nothing
-            Dim rcVisible As Rectangle = Nothing
-            Dim rcLabel As Rectangle = Nothing
-            Dim rcPreview As Rectangle = Nothing
-
-            Me.GetRectangles(rcControl, rcEditable, rcVisible, rcLabel, rcPreview)
-
-            If rcEditable.Contains(pt) Then Return eAreaTypes.Editable
-            If rcVisible.Contains(pt) Then Return eAreaTypes.Visible
-            If rcLabel.Contains(pt) Then Return eAreaTypes.Label
-            If rcPreview.Contains(pt) Then Return eAreaTypes.Preview
-            If rcControl.Contains(pt) Then Return eAreaTypes.Background
-            Return eAreaTypes.None
-
-        End Function
-
-#End Region ' Internal implementation
 
 #Region " Events "
 
@@ -434,7 +302,181 @@ Namespace Controls.Map
             Me.Invalidate()
         End Sub
 
+        ' -- Drag & drop
+
+        Protected Overrides Sub OnDragEnter(e As DragEventArgs)
+            If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+                Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+                If (files.Length = 1) Then
+                    e.Effect = DragDropEffects.Copy
+                End If
+            End If
+        End Sub
+
+        Protected Overrides Sub OnDragDrop(e As DragEventArgs)
+            Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            If (files.Length = 1) Then
+                Dim file As String = files(0)
+                Dim cmd As cImportLayerCommand = CType(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
+                Dim layers As New List(Of cEcospaceLayer)
+                If TypeOf Me.Layer Is cDisplayLayerRasterBundle Then
+                    Dim dlb As cDisplayLayerRasterBundle = DirectCast(Me.Layer, cDisplayLayerRasterBundle)
+                    If Path.GetExtension(file).ToLower = ".asc" Then
+                        ' Only accept a dropped file for the selected ASCII layer
+                        layers.Add(dlb.Data)
+                    Else
+                        layers.AddRange(dlb.EcospaceLayers)
+                    End If
+                Else
+                    For Each l As cEcospaceLayer In Me.Layer.EcospaceLayers
+                        If (l IsNot Nothing) Then layers.Add(l)
+                    Next
+                End If
+                If (cmd IsNot Nothing) And (layers.Count > 0) Then
+                    cmd.Invoke(layers.ToArray, files(0))
+                End If
+            End If
+        End Sub
+
+
 #End Region ' All events 
+
+#Region " Internal implementation "
+
+        Private Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal updateType As cDisplayLayer.eChangeFlags)
+
+            If (updateType = cDisplayLayer.eChangeFlags.Map) Then
+                Me.Invalidate()
+                Return
+            End If
+
+            If ((updateType And cDisplayLayer.eChangeFlags.Selected) = cDisplayLayer.eChangeFlags.Selected) Then
+                ' Provide instant feedback
+                Me.Refresh()
+            Else
+                ' Just redraw whenever there is time
+                Me.Invalidate()
+            End If
+
+        End Sub
+
+        Private Sub OnLayerPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
+            Me.Invalidate()
+            cToolTipShared.GetInstance().SetToolTip(Me, prop.GetRemark)
+        End Sub
+
+        Public Sub EditLayer(ByVal edittype As eLayerEditTypes)
+            If (TypeOf Me.Layer Is cDisplayLayerRaster) Then
+                Try
+                    Dim rl As cDisplayLayerRaster = DirectCast(Me.Layer, cDisplayLayerRaster)
+                    Dim cmd As cEditLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
+                    cmd.Invoke(rl, Nothing, edittype)
+                Catch ex As Exception
+                    cLog.Write(ex, eVerboseLevel.Detailed, "ucLayer::EditLayer " & Me.Layer.Name & "(" & edittype.ToString & ")")
+                End Try
+            End If
+        End Sub
+
+        Public Sub EditLayerConnection()
+            If (TypeOf Me.Layer Is cDisplayLayerRaster) Then
+                Try
+                    Dim rl As cDisplayLayerRaster = DirectCast(Me.Layer, cDisplayLayerRaster)
+                    Dim cmd As cEcospaceConfigureConnectionCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEcospaceConfigureConnectionCommand.cCOMMAND_NAME), cEcospaceConfigureConnectionCommand)
+                    cmd.Invoke(rl.Data)
+                Catch ex As Exception
+                    cLog.Write(ex, eVerboseLevel.Detailed, "ucLayer::EditLayerConnection " & Me.Layer.Name)
+                End Try
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' Enum to identify areas in the control
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Enum eAreaTypes As Byte
+            ''' <summary>Area not in this control.</summary>
+            None
+            ''' <summary>Background area of this control.</summary>
+            Background
+            ''' <summary>Editable area of this control.</summary>
+            Editable
+            ''' <summary>Visible area of this control.</summary>
+            Visible
+            ''' <summary>Label area of this control.</summary>
+            Label
+            ''' <summary>Preview area of this control.</summary>
+            Preview
+        End Enum
+
+        Private Sub GetRectangles(ByVal rcControl As Rectangle, ByRef rcEditable As Rectangle, ByRef rcVisible As Rectangle, ByRef rcLabel As Rectangle, ByRef rcPreview As Rectangle)
+
+            Dim iAvgPad As Integer = 3
+
+            If (cSystemUtils.IsRightToLeft) Then
+                ' [ [prev][label    ][vis][edt] ]
+                rcEditable.X = rcControl.Width - iAvgPad - 16
+                rcEditable.Y = CInt((rcControl.Height - 16) / 2)
+                rcEditable.Width = 16
+                rcEditable.Height = 16
+
+                rcVisible.X = rcEditable.X - rcEditable.Width - iAvgPad
+                rcVisible.Y = rcEditable.Y
+                rcVisible.Width = 16
+                rcVisible.Height = 16
+
+                rcPreview.X = 2
+                rcPreview.Y = 2
+                rcPreview.Width = 24
+                rcPreview.Height = rcControl.Height - 4
+
+                rcLabel.X = rcPreview.X + rcPreview.Width + iAvgPad
+                rcLabel.Y = 0
+                rcLabel.Width = rcVisible.X - rcLabel.X - iAvgPad
+                rcLabel.Height = rcControl.Height
+            Else
+                ' [ [edt][vis][label    ][prev] ]
+                rcEditable.X = iAvgPad
+                rcEditable.Y = CInt((rcControl.Height - 16) / 2)
+                rcEditable.Width = 16
+                rcEditable.Height = 16
+
+                rcVisible.X = rcEditable.X + rcEditable.Width + iAvgPad
+                rcVisible.Y = rcEditable.Y
+                rcVisible.Width = 16
+                rcVisible.Height = 16
+
+                rcPreview.X = rcControl.Width - 2 - 24
+                rcPreview.Y = 2
+                rcPreview.Width = 24
+                rcPreview.Height = rcControl.Height - 4
+
+                rcLabel.X = rcVisible.X + rcVisible.Width + iAvgPad
+                rcLabel.Y = 0
+                rcLabel.Width = rcPreview.X - rcLabel.X - iAvgPad
+                rcLabel.Height = rcControl.Height
+            End If
+
+        End Sub
+
+        Private Function GetArea(ByVal pt As Point) As eAreaTypes
+            Dim rcControl As Rectangle = New Rectangle(0, 0, Me.Width, Me.Height)
+            Dim rcEditable As Rectangle = Nothing
+            Dim rcVisible As Rectangle = Nothing
+            Dim rcLabel As Rectangle = Nothing
+            Dim rcPreview As Rectangle = Nothing
+
+            Me.GetRectangles(rcControl, rcEditable, rcVisible, rcLabel, rcPreview)
+
+            If rcEditable.Contains(pt) Then Return eAreaTypes.Editable
+            If rcVisible.Contains(pt) Then Return eAreaTypes.Visible
+            If rcLabel.Contains(pt) Then Return eAreaTypes.Label
+            If rcPreview.Contains(pt) Then Return eAreaTypes.Preview
+            If rcControl.Contains(pt) Then Return eAreaTypes.Background
+            Return eAreaTypes.None
+
+        End Function
+
+#End Region ' Internal implementation
 
     End Class
 

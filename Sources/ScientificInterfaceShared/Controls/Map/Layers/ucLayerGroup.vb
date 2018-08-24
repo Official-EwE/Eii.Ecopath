@@ -27,6 +27,8 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.SystemUtilities
+Imports System.IO
+Imports EwECore
 
 #End Region ' Imports
 
@@ -68,6 +70,8 @@ Namespace Controls.Map
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
             Me.SetStyle(ControlStyles.ResizeRedraw, True)
             Me.SetStyle(ControlStyles.UserPaint, True)
+
+            Me.AllowDrop = True
 
             Me.m_uic = uic
             Me.Text = strText
@@ -363,6 +367,35 @@ Namespace Controls.Map
             If ((updateFlag And cDisplayLayer.eChangeFlags.Visibility) = cDisplayLayer.eChangeFlags.Visibility) Then
                 ' Redraw at some point
                 Me.Invalidate(False)
+            End If
+        End Sub
+
+        ' -- Drag & drop
+
+        Protected Overrides Sub OnDragEnter(e As DragEventArgs)
+            If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+                Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+                If (files.Length = 1) Then
+                    e.Effect = DragDropEffects.Copy
+                End If
+            End If
+        End Sub
+
+        Protected Overrides Sub OnDragDrop(e As DragEventArgs)
+            Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            If (files.Length = 1) Then
+                Dim cmd As cImportLayerCommand = CType(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
+                Dim layers As New List(Of cEcospaceLayer)
+                For Each dl As cDisplayLayer In Me.Layers
+                    For Each l As cEcospaceLayer In dl.EcospaceLayers
+                        If (l IsNot Nothing) Then
+                            layers.Add(l)
+                        End If
+                    Next
+                Next
+                If (cmd IsNot Nothing) And (layers.Count > 0) Then
+                    cmd.Invoke(layers.ToArray, files(0))
+                End If
             End If
         End Sub
 

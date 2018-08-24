@@ -13533,4 +13533,12 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Version {0} Beta - {1}</value>
     <comment>{0}=core version, {1}=32 / 64 bit indicator</comment>
   </data>
+  <data name="IMPORT_LAYERDATA_FAILED" xml:space="preserve">
+    <value>File {0} could not be read into layer {1}</value>
+    <comment>{0}=file name, {1}=layer name</comment>
+  </data>
+  <data name="IMPORT_LAYERDATA_SUCCESS" xml:space="preserve">
+    <value>File {0} read successfully into layer {1}</value>
+    <comment>{0}=file name, {1}=layer name</comment>
+  </data>
 </root>

@@ -61,6 +61,8 @@ Namespace Ecospace.Basemap
 
 #Region " Public properties "
 
+        Public Property File As String = ""
+
         Public Property Layers() As cEcospaceLayer()
             Get
                 Return Me.m_lLayers.ToArray()
@@ -98,6 +100,13 @@ Namespace Ecospace.Basemap
             End If
             Me.m_grid.Layers = Me.m_lLayers.ToArray
             Me.m_grid.UIContext = Me.m_uic
+
+            If (Not String.IsNullOrWhiteSpace(Me.File)) Then
+                If (System.IO.File.Exists(Me.File)) Then
+                    Me.m_tbInput.Text = Me.File
+                    Me.ReadCSVFile()
+                End If
+            End If
 
             AddHandler Me.m_grid.MappingChanged, AddressOf UpdateControls
 
@@ -318,7 +327,7 @@ Namespace Ecospace.Basemap
 
         Private Sub UpdateControls()
 
-            Dim bHasFile As Boolean = File.Exists(Me.m_tbInput.Text)
+            Dim bHasFile As Boolean = System.IO.File.Exists(Me.m_tbInput.Text)
             Dim bHasRowCol As Boolean = (Me.m_cmbCol.SelectedIndex >= 0) And (Me.m_cmbRow.SelectedIndex >= 0)
             Dim bHasMappings As Boolean = (Me.m_grid.HasMappings())
 

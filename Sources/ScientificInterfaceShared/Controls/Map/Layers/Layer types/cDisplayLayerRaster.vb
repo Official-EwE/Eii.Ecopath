@@ -287,6 +287,10 @@ Namespace Controls.Map.Layers
 
         End Sub
 
+        Public Overrides Function EcospaceLayers() As cEcospaceLayer()
+            Return New cEcospaceLayer() {Me.Data}
+        End Function
+
 #End Region ' Public access
 
 #Region " Public properties "
