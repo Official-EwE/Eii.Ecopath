@@ -4329,16 +4329,28 @@ Public Class frmEwE6
                      eNativeLayerFileFormatTypes.XYZ
                     Dim dlg As New dlgImportLayerDataXYZ(Me.UIContext)
                     dlg.Layers = Me.m_cmdImportLayerData.Layers
+                    dlg.File = Me.m_cmdImportLayerData.File
                     dlg.ShowDialog(Me)
+
                 Case eNativeLayerFileFormatTypes.ASCII
-                    Dim ofd As New OpenFileDialog()
                     Dim l As cEcospaceLayer = Me.m_cmdImportLayerData.Layers(0)
-                    ' ToDo: localize this
-                    ofd.Title = "Select data for layer " & l.Name
-                    ofd.Filter = SharedResources.FILEFILTER_ASC
-                    If (ofd.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
+                    Dim file As String = Me.m_cmdImportLayerData.File
+
+                    If (String.IsNullOrWhiteSpace(file)) Then
+                        Dim ofd As New OpenFileDialog()
+                        ' ToDo: localize this
+                        ofd.Title = "Select data for layer " & l.Name
+                        ofd.Filter = SharedResources.FILEFILTER_ASC
+                        If (ofd.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
+                            file = ofd.FileName
+                        End If
+                    Else
+                        ' Todo: ask for confirmation?
+                    End If
+
+                    If (Not String.IsNullOrWhiteSpace(file)) Then
                         Dim imp As New cEcospaceImportExportASCIIData(Me.Core)
-                        If imp.Read(ofd.FileName) Then
+                        If imp.Read(file) Then
                             Dim rs As EwEUtils.SpatialData.ISpatialRaster = imp.ToRaster
                             For ir As Integer = 1 To rs.NumRows
                                 For ic As Integer = 1 To rs.NumCols
@@ -4346,9 +4358,9 @@ Public Class frmEwE6
                                 Next
                             Next
                             l.Invalidate()
-                            msg = New cMessage(cStringUtils.Localize(My.Resources.IMPORT_FILE_SUCCESS, ofd.FileName), eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
+                            msg = New cMessage(cStringUtils.Localize(My.Resources.IMPORT_LAYERDATA_SUCCESS, file, l.Name), eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
                         Else
-                            msg = New cMessage(cStringUtils.Localize(My.Resources.IMPORT_FILE_FAILED, ofd.FileName), eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+                            msg = New cMessage(cStringUtils.Localize(My.Resources.IMPORT_LAYERDATA_FAILED, file, l.Name), eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                         End If
                     End If
             End Select

@@ -22,7 +22,7 @@
 
 Option Strict On
 Imports EwECore
-Imports ScientificInterfaceShared.Commands
+Imports System.IO
 
 #End Region ' Imports
 
@@ -31,6 +31,7 @@ Namespace Commands
 
     Public Enum eNativeLayerFileFormatTypes As Byte
         [Default] = 0
+        CSV = [Default]
         XYZ
         ASCII
     End Enum
@@ -45,6 +46,7 @@ Namespace Commands
 
         Private m_alayers() As cEcospaceLayer = Nothing
         Private m_format As eNativeLayerFileFormatTypes = eNativeLayerFileFormatTypes.Default
+        Private m_file As String = ""
 
         ''' <summary>Static name for this command.</summary>
         Public Shared cCOMMAND_NAME As String = "~importLayer"
@@ -56,18 +58,31 @@ Namespace Commands
         ''' ---------------------------------------------------------------------------
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(Optional format As eNativeLayerFileFormatTypes = eNativeLayerFileFormatTypes.Default)
-            Me.Invoke(Nothing, format)
+        Public Overloads Sub Invoke(ByVal alayers() As cEcospaceLayer, strFile As String)
+
+            Dim fmt As eNativeLayerFileFormatTypes = eNativeLayerFileFormatTypes.Default
+            Select Case Path.GetExtension(strFile).ToLower
+                Case ".asc" : fmt = eNativeLayerFileFormatTypes.ASCII
+                Case ".csv" : fmt = eNativeLayerFileFormatTypes.CSV
+                Case ".txt" : fmt = eNativeLayerFileFormatTypes.XYZ
+                Case Else : fmt = eNativeLayerFileFormatTypes.Default
+            End Select
+            Me.m_alayers = alayers
+            Me.m_format = fmt
+            Me.m_file = strFile
+            MyBase.Invoke()
+            Me.m_alayers = Nothing
+            Me.m_format = eNativeLayerFileFormatTypes.Default
+            Me.m_file = ""
         End Sub
 
         ''' ---------------------------------------------------------------------------
         ''' <inheritdocs cref="cCommand.Invoke"/>
-        ''' <param name="alayers">The layers to import data into.</param>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal alayers() As cEcospaceLayer, _
-                                    Optional format As eNativeLayerFileFormatTypes = eNativeLayerFileFormatTypes.Default)
+        Public Overloads Sub Invoke(ByVal alayers() As cEcospaceLayer, format As eNativeLayerFileFormatTypes)
             Me.m_alayers = alayers
             Me.m_format = format
+            Me.m_file = ""
             MyBase.Invoke()
             Me.m_alayers = Nothing
             Me.m_format = eNativeLayerFileFormatTypes.Default
@@ -93,6 +108,18 @@ Namespace Commands
         Public ReadOnly Property Format As eNativeLayerFileFormatTypes
             Get
                 Return Me.m_format
+            End Get
+        End Property
+
+        ''' ---------------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the file name that the command was launched for.
+        ''' THe user will be prompted to select a file if no file was specified.
+        ''' </summary>
+        ''' ---------------------------------------------------------------------------
+        Public ReadOnly Property File As String
+            Get
+                Return Me.m_file
             End Get
         End Property
 
