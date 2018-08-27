@@ -46,6 +46,7 @@ Imports ScientificInterface.Ecotracer
 Imports ScientificInterface.Other
 Imports ScientificInterface.Wizard
 Imports ScientificInterfaceShared
+Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Integration
 Imports WeifenLuo.WinFormsUI.Docking
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -4335,6 +4336,12 @@ Public Class frmEwE6
                 Case eNativeLayerFileFormatTypes.ASCII
                     Dim l As cEcospaceLayer = Me.m_cmdImportLayerData.Layers(0)
                     Dim file As String = Me.m_cmdImportLayerData.File
+
+                    If (TypeOf l Is cEcospaceLayerVelocity) Then
+                        ' ToDo: localize this
+                        Me.SendMessage("ASCII files cannot be directy imported in velocity layers with separate U and V components", eMessageImportance.Warning)
+                        Return
+                    End If
 
                     If (String.IsNullOrWhiteSpace(file)) Then
                         Dim ofd As New OpenFileDialog()
