@@ -2187,21 +2187,23 @@ Namespace Ecosim
                                 'FishTime() and FishMGear() only contain mortality. Discards that survived are not included.
                                 PropFleet = m_Data.FishRateGear(iflt, iTime) * m_Data.FishMGear(iflt, igrp) / SumEf
 
-                                'multiplier to scale F [fishing mort rate] to Catch [total catch rate]
+                                'multiplier to scale F [fishing mort rate] to Total Catch [total catch including discards that survived]
                                 TotCatchScalar = 1 / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp) + 1.0E-20F)
 
                                 CatchMort = BB(igrp) * m_Data.FishTime(igrp) * PropFleet
                                 TotCatch = CatchMort * TotCatchScalar
 
-                                'proportion of total catch that was landed
+                                'Total catch that was landed
                                 Me.m_Data.ResultsLandings(igrp, iflt) = TotCatch * Me.m_Data.PropLandedTime(iflt, igrp)
 
-                                'Proportion of the catch mortality that is discards
+                                'Catch mortality that is discards
                                 Me.m_Data.ResultsDiscardsMort(igrp, iflt) = CatchMort * Me.m_Data.Propdiscardtime(iflt, igrp) / (Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp) + 1.0E-20F)
 
-                                'Proportion of the total catch that survived = [total catch] - [total catch mortality] 
+                                'Total catch that survived = [total catch] - [total catch mortality] 
                                 If Me.m_Data.FishTime(igrp) > 0 Or Me.m_Data.FisForced(igrp) Then
-                                    Me.m_Data.ResultsDiscardsSurvived(igrp, iflt) = TotCatch - (Me.m_Data.ResultsLandings(igrp, iflt) + Me.m_Data.ResultsDiscardsMort(igrp, iflt))
+                                    'WARNING ResultsDiscardsSurvived() can contain rounding error if the catch and discard numbers are small enough 
+                                    'just stripping off the rounding error will not work for all cases...
+                                    Me.m_Data.ResultsDiscardsSurvived(igrp, iflt) = CSng(TotCatch * (1 - Me.m_Data.PropLandedTime(iflt, igrp)) * (1 - Me.m_Data.PropDiscardMortTime(iflt, igrp)))
                                 Else
                                     'F = 0 all catch was discarded and survived
                                     'Ok in this case calculate discards that survived from the base values
