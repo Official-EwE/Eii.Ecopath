@@ -88,6 +88,7 @@ Namespace Controls
                     If (Me.AcceptFiles(astrFiles)) Then
                         e.Effect = DragDropEffects.All
                         Me.m_bDragOver = True
+                        Me.Invalidate()
                     End If
                 End If
             Catch ex As Exception
@@ -99,10 +100,18 @@ Namespace Controls
         Protected Overrides Sub OnDragLeave(e As System.EventArgs)
             Try
                 Me.m_bDragOver = False
+                Me.Invalidate()
             Catch ex As Exception
 
             End Try
             Me.UpdateControls()
+        End Sub
+
+        Protected Overrides Sub OnPaintBackground(e As PaintEventArgs)
+            MyBase.OnPaintBackground(e)
+            If Me.m_bDragOver Then
+                e.Graphics.DrawRectangle(SystemPens.HotTrack, e.ClipRectangle)
+            End If
         End Sub
 
         Protected Overridable Sub UpdateControls()
