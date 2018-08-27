@@ -51,6 +51,8 @@ Namespace Controls.Map
         Private m_bLocked As Boolean = True
         ''' <summary>States whether the mouse is hovering over the control.</summary>
         Private m_bHovering As Boolean = False
+        ''' <summary>States whether the mouse is drag/dropping over the control.</summary>
+        Private m_bDragDrop As Boolean = False
 
         Private m_strCommand As String = ""
 
@@ -257,7 +259,7 @@ Namespace Controls.Map
         Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
             MyBase.OnPaint(e)
 
-            Dim rcControl As Rectangle = New Rectangle(0, 0, Me.Width, Me.m_fpItems.Location.Y)
+            Dim rcControl As Rectangle = New Rectangle(0, 0, Me.Width - 1, Me.m_fpItems.Location.Y - 1)
             Dim rcCollapse As Rectangle = Nothing
             Dim rcVisible As Rectangle = Nothing
             Dim rcLabel As Rectangle = Nothing
@@ -316,6 +318,11 @@ Namespace Controls.Map
             e.Graphics.DrawLine(SystemPens.ButtonHighlight, 0, 0, rcControl.Width, 0)
             ' Shadow line at the bottom
             e.Graphics.DrawLine(SystemPens.ButtonShadow, 0, rcControl.Height - 1, rcControl.Width, rcControl.Height - 1)
+
+            If Me.m_bDragDrop Then
+                ' Draw hot track border when dragging
+                e.Graphics.DrawRectangle(SystemPens.HotTrack, rcControl)
+            End If
 
         End Sub
 
@@ -377,6 +384,8 @@ Namespace Controls.Map
                 Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
                 If (files.Length = 1) Then
                     e.Effect = DragDropEffects.Copy
+                    Me.m_bDragDrop = True
+                    Me.Invalidate()
                 End If
             End If
         End Sub
@@ -397,6 +406,11 @@ Namespace Controls.Map
                     cmd.Invoke(layers.ToArray, files(0))
                 End If
             End If
+        End Sub
+
+        Protected Overrides Sub OnDragLeave(e As EventArgs)
+            Me.m_bDragDrop = False
+            Me.Invalidate()
         End Sub
 
 #End Region ' Events
