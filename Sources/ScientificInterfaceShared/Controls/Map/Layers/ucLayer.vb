@@ -31,7 +31,6 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports System.IO
 
-
 #End Region ' Imports
 
 Namespace Controls.Map
@@ -48,6 +47,8 @@ Namespace Controls.Map
         Private m_layer As cDisplayLayer = Nothing
         ''' <summary>States whether the mouse is hovering over the control.</summary>
         Private m_bHovering As Boolean = False
+        ''' <summary>States whether the mouse is drag/dropping over the control.</summary>
+        Private m_bDragDrop As Boolean = False
 
         ' Images cache for faster rendering
         Protected Shared g_imgEye0 As Image = My.Resources.Eye_open
@@ -132,7 +133,7 @@ Namespace Controls.Map
 
             If Me.m_uic Is Nothing Then Return
 
-            Dim rcControl As Rectangle = New Rectangle(0, 0, Me.Width, Me.Height)
+            Dim rcControl As Rectangle = New Rectangle(0, 0, Me.Width - 1, Me.Height - 1)
             Dim rcEditable As Rectangle = Nothing
             Dim rcVisible As Rectangle = Nothing
             Dim rcLabel As Rectangle = Nothing
@@ -144,7 +145,7 @@ Namespace Controls.Map
             Me.GetRectangles(rcControl, rcEditable, rcVisible, rcLabel, rcPreview)
 
             ' Paint background
-            If m_layer.IsSelected Then
+            If Me.m_layer.IsSelected Then
                 e.Graphics.FillRectangle(SystemBrushes.Highlight, rcControl)
             Else
                 e.Graphics.FillRectangle(SystemBrushes.Control, rcControl)
@@ -214,8 +215,11 @@ Namespace Controls.Map
             ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Sunken,
                 Border3DSide.Bottom Or Border3DSide.Left Or Border3DSide.Top Or Border3DSide.Right)
 
-            ' Draw button borders only when hovering
-            If Me.m_bHovering Then
+            If Me.m_bDragDrop Then
+                ' Draw hot track border when dragging
+                e.Graphics.DrawRectangle(SystemPens.HotTrack, rcControl)
+            ElseIf Me.m_bHovering Then
+                ' Draw button borders when hovering and not dragging
                 ControlPaint.DrawBorder(e.Graphics, rcEditable, SystemColors.ControlDark, ButtonBorderStyle.Solid)
                 ControlPaint.DrawBorder(e.Graphics, rcVisible, SystemColors.ControlDark, ButtonBorderStyle.Solid)
             End If
@@ -309,6 +313,8 @@ Namespace Controls.Map
                 Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
                 If (files.Length = 1) Then
                     e.Effect = DragDropEffects.Copy
+                    Me.m_bDragDrop = True
+                    Me.Invalidate()
                 End If
             End If
         End Sub
@@ -338,6 +344,10 @@ Namespace Controls.Map
             End If
         End Sub
 
+        Protected Overrides Sub OnDragLeave(e As EventArgs)
+            Me.m_bDragDrop = False
+            Me.Invalidate()
+        End Sub
 
 #End Region ' All events 
 
