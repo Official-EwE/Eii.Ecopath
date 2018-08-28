@@ -27,7 +27,14 @@
 #define DefDB "Database"
 
 [Setup]
-VersionInfoVersion=6.6.15534.0
+; Automated build will provide file version as a command line parameter
+; /DFileVersion=6.6.15541.0
+#ifdef FileVersion
+  VersionInfoVersion={#FileVersion}
+#else
+  VersionInfoVersion=6.6.15541.0
+#endif
+
 ; In Inno Setup UI, define Sign tool 'codesign' as:
 ;   <full path to signtool.exe> /f <cert file> /p <password> /t <path to timestamp server> $f
 ;   "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /a /f "D:\Dropbox\EII_cert.p12" /p <muahaha> /t http://timestamp.comodoca.com/authenticode $f
