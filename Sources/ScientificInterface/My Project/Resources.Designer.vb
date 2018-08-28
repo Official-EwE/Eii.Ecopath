@@ -4949,6 +4949,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Running Ecospace spin-up....
+        '''</summary>
+        Public ReadOnly Property STATUS_ECOSPACE_RUNNING_SPINUP() As String
+            Get
+                Return ResourceManager.GetString("STATUS_ECOSPACE_RUNNING_SPINUP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Saving Ecospace scenario &apos;{0}&apos;....
         '''</summary>
         Public ReadOnly Property STATUS_ECOSPACE_SAVING() As String

@@ -404,6 +404,7 @@ Namespace Controls.Map
                 Next
                 If (cmd IsNot Nothing) And (layers.Count > 0) Then
                     cmd.Invoke(layers.ToArray, files(0))
+                    Me.Layers(0).Update(cDisplayLayer.eChangeFlags.Map, True)
                 End If
             End If
         End Sub

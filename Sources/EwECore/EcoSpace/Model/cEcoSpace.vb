@@ -288,19 +288,16 @@ Public Class cEcoSpace
     Private bEffortAdjusted As Boolean
 
     ''' <summary>Number of timesteps in the total Spin-Up period</summary>   
-    Private nSpinUp As Integer
+    Friend nSpinUp As Integer
 
     ''' <summary>Number of timesteps in one year used by Spin-Up.</summary>   
     Private nSpinUpYear As Integer
 
     ''' <summary>Cumulative Spin-Up counter</summary>   
-    Private iSpinUp As Integer
+    Friend iSpinUp As Integer
 
     ''' <summary>Yearly Spin-Up counter</summary>   
     Private iSpinUpYear As Integer
-
-    '''' <summary>Are we in a Spin-Up period </summary>   
-    'Private bInSpinUp As Boolean
 
     ''' <summary>Does the Spin-Up base biomass need initialization</summary>
     Private bInitSpinUpBase As Boolean
@@ -2903,13 +2900,13 @@ Public Class cEcoSpace
                 If m_tracerData.Czero(0) > 0 Then 'there is an initial environmental concentration, distribute over map
                     Dim TinP As Single, Tcell As Single
                     For i = 1 To m_Data.InRow
-                            For j = 1 To m_Data.InCol
-                                If m_Data.Depth(i, j) > 0 Then
-                                    Tcell = Tcell + 1
-                                    TinP = TinP + m_Data.RelCin(i, j)
-                                End If
-                            Next
+                        For j = 1 To m_Data.InCol
+                            If m_Data.Depth(i, j) > 0 Then
+                                Tcell = Tcell + 1
+                                TinP = TinP + m_Data.RelCin(i, j)
+                            End If
                         Next
+                    Next
                     If TinP > 0 Then 'there is contaminant input at at least one cell
                         For i = 1 To m_Data.InRow
                             For j = 1 To m_Data.InCol
@@ -3111,7 +3108,7 @@ Public Class cEcoSpace
             success = success And m_Data.redimTimeStepResults(nEcospaceTimeSteps)
 
         Catch ex As Exception
-            message = New cMessage(ex.Message, _
+            message = New cMessage(ex.Message,
                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
         End Try
 
@@ -6491,10 +6488,7 @@ exitline:
 
     Private Sub marshallOnTimeStep(ByVal iTime As Integer)
         Try
-            'No timesteps if in the Spinup period
-            If Not Me.m_Data.bInSpinUp Then
-                m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnTimeStep), iTime)
-            End If
+            m_SyncObj.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireOnTimeStep), iTime)
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -6628,8 +6622,8 @@ exitline:
                     solver = New cGridSolver(i)
                     'solver.bUseLocalMemory = True 'Me.m_Data.bUseLocalMemory
 
-                    solver.Init(AMm, F, m_Data.Bcell, m_Data.InRow, m_Data.InCol, m_Data.Tol, m_Data.jord, m_Data.W, Bcw, C, d, e, m_Data.Depth, _
-                                m_Data.ByPassIntegrate, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, m_Data.jEndCol, _
+                    solver.Init(AMm, F, m_Data.Bcell, m_Data.InRow, m_Data.InCol, m_Data.Tol, m_Data.jord, m_Data.W, Bcw, C, d, e, m_Data.Depth,
+                                m_Data.ByPassIntegrate, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, m_Data.jEndCol,
                                 m_Data.IsMigratory, threadGroups, m_Data.UseExact)
                     m_gridSolvers.Add(solver)
                 End If
@@ -8178,17 +8172,17 @@ exitline:
     Public Function UpdateMaps(ByVal MapDataType As eDataTypes) As Boolean
         Try
 
-            If MapDataType = eDataTypes.EcospaceLayerHabitat Or _
-                MapDataType = eDataTypes.EcospaceHabitat Or _
-                MapDataType = eDataTypes.EcospaceLayerDepth Or _
-                MapDataType = eDataTypes.EcospaceLayerHabitatCapacityInput Or _
-                MapDataType = eDataTypes.EcospaceLayerHabitatCapacity Or _
-                MapDataType = eDataTypes.EcospaceLayerRelPP Or _
-                MapDataType = eDataTypes.CapacityMediation Or _
-                MapDataType = eDataTypes.EcospaceMapResponse Or _
-                MapDataType = eDataTypes.EcospaceModelParameter Or _
+            If MapDataType = eDataTypes.EcospaceLayerHabitat Or
+                MapDataType = eDataTypes.EcospaceHabitat Or
+                MapDataType = eDataTypes.EcospaceLayerDepth Or
+                MapDataType = eDataTypes.EcospaceLayerHabitatCapacityInput Or
+                MapDataType = eDataTypes.EcospaceLayerHabitatCapacity Or
+                MapDataType = eDataTypes.EcospaceLayerRelPP Or
+                MapDataType = eDataTypes.CapacityMediation Or
+                MapDataType = eDataTypes.EcospaceMapResponse Or
+                MapDataType = eDataTypes.EcospaceModelParameter Or
                 MapDataType = eDataTypes.EcospaceGroup Or
-                MapDataType = eDataTypes.EcospaceLayerDriver Or _
+                MapDataType = eDataTypes.EcospaceLayerDriver Or
                 MapDataType = eDataTypes.EcospaceLayerExclusion Then
 
                 'This will force the capacity model to update
@@ -8200,7 +8194,7 @@ exitline:
             End If
 
         Catch ex As Exception
-            Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_HABCAP_COMPUTE_ERROR, ex.Message), _
+            Me.m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOSPACE_HABCAP_COMPUTE_ERROR, ex.Message),
                                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
         End Try
 
