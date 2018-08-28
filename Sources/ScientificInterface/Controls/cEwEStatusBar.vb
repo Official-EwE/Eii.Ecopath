@@ -379,7 +379,7 @@ Public Class cEwEStatusBar
 
         ' Redraw status bar immediately
         '   This is a known performace killer (issue #937)
-        Me.Refresh()
+        Me.Invalidate()
 
     End Sub
 

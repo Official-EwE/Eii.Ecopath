@@ -9392,38 +9392,49 @@ Public Class cCore
     Private Sub onEcospaceTimeStep(ByVal iTime As Integer)
         Try
 
-            m_spaceresults.iTimeStep = iTime
-            m_spaceresults.TimeStepinYears = CSng(m_EcoSpaceData.TimeNow + m_EcoSpaceData.TimeStep)
-
-            m_spaceresults.ComputeSumEffortMap()
-
-            'the group time-step data was populated by Ecospace
-            For igrp As Integer = 1 To nGroups
-                m_spaceresults.Biomass(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime)
-                m_spaceresults.RelativeBiomass(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTime)
-
-                'Make these relative to base values
-                m_spaceresults.FishingMort(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, iTime) / Me.m_EcoSpaceData.BaseFishMort(igrp)
-                m_spaceresults.ConsumptRate(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, iTime) / Me.m_EcoSpaceData.BaseConsump(igrp)
-                m_spaceresults.PredMortRate(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, iTime) / Me.m_EcoSpaceData.BasePredMort(igrp)
-                m_spaceresults.Catch(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iTime) / Me.m_EcoSpaceData.BaseCatch(igrp)
-
-                If m_Ecospace.ContaiminantTracerData.EcoSpaceConSimOn Then
-                    m_spaceresults.ConcMax(igrp) = m_Ecospace.ContaiminantTracerData.ConcMax(igrp)
+            m_spaceresults.InSpinUp = Me.m_EcoSpaceData.bInSpinUp
+            If Me.m_EcoSpaceData.bInSpinUp Then
+                m_spaceresults.RunProgress = CSng(Me.m_Ecospace.iSpinUp / Me.m_Ecospace.nSpinUp)
+            Else
+                m_spaceresults.RunProgress = CSng(Me.m_EcoSpaceData.TimeNow * Me.m_EcoSpaceData.nTimeStepsPerYear / Me.m_EcoSpaceData.nTimeSteps
                 End If
 
-                For irgn As Integer = 1 To nRegions
-                    m_spaceresults.BiomassByRegion(igrp, irgn) = m_EcoSpaceData.ResultsRegionGroup(irgn, igrp, iTime)
-                Next
-            Next igrp
+            If Not Me.m_EcoSpaceData.bInSpinUp Then
 
-            Me.SaveEcospaceENA(m_spaceresults)
+                m_spaceresults.iTimeStep = iTime
+                m_spaceresults.TimeStepinYears = CSng(m_EcoSpaceData.TimeNow + m_EcoSpaceData.TimeStep)
 
-            'Save to the current writer always (saveannual = false) or once per year (saveannual=true)
-            'Default is to save every time step
-            If (iTime Mod CInt(EcospaceModelParameters.NumberOfTimeStepsPerYear) = 0) Or (Me.m_EcoSpaceData.SaveAnnual = False) Then
-                Me.SaveEcospaceResults(Me.m_spaceresults)
+                m_spaceresults.ComputeSumEffortMap()
+
+                'the group time-step data was populated by Ecospace
+                For igrp As Integer = 1 To nGroups
+                    m_spaceresults.Biomass(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTime)
+                    m_spaceresults.RelativeBiomass(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTime)
+
+                    'Make these relative to base values
+                    m_spaceresults.FishingMort(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.FishingMort, igrp, iTime) / Me.m_EcoSpaceData.BaseFishMort(igrp)
+                    m_spaceresults.ConsumptRate(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, igrp, iTime) / Me.m_EcoSpaceData.BaseConsump(igrp)
+                    m_spaceresults.PredMortRate(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.PredMortRate, igrp, iTime) / Me.m_EcoSpaceData.BasePredMort(igrp)
+                    m_spaceresults.Catch(igrp) = m_EcoSpaceData.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iTime) / Me.m_EcoSpaceData.BaseCatch(igrp)
+
+                    If m_Ecospace.ContaiminantTracerData.EcoSpaceConSimOn Then
+                        m_spaceresults.ConcMax(igrp) = m_Ecospace.ContaiminantTracerData.ConcMax(igrp)
+                    End If
+
+                    For irgn As Integer = 1 To nRegions
+                        m_spaceresults.BiomassByRegion(igrp, irgn) = m_EcoSpaceData.ResultsRegionGroup(irgn, igrp, iTime)
+                    Next
+                Next igrp
+
+                Me.SaveEcospaceENA(m_spaceresults)
+
+                'Save to the current writer always (saveannual = false) or once per year (saveannual=true)
+                'Default is to save every time step
+                If (iTime Mod CInt(EcospaceModelParameters.NumberOfTimeStepsPerYear) = 0) Or (Me.m_EcoSpaceData.SaveAnnual = False) Then
+                    Me.SaveEcospaceResults(Me.m_spaceresults)
+                End If
             End If
+
             'Call the interface delegate
             For Each callback As EcoSpaceInterfaceDelegate In m_SpaceInterfaceCallBacks
                 Try

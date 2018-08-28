@@ -67,17 +67,17 @@ Namespace My
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("10")>  _
-        Public Property SpinupYears() As Single
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.DefaultSettingValueAttribute("10")>
+        Public Property SpinupYears() As Integer
             Get
-                Return CType(Me("SpinupYears"),Single)
+                Return CType(Me("SpinupYears"), Integer)
             End Get
             Set
-                Me("SpinupYears") = value
+                Me("SpinupYears") = Value
             End Set
         End Property
-        
+
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("False")>  _

@@ -165,6 +165,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="My Project\Settings.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmEcospaceSpinup.resx">
@@ -190,6 +191,7 @@
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings1.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

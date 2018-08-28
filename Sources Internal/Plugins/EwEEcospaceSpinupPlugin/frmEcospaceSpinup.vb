@@ -59,8 +59,8 @@ Public Class frmEcospaceSpinup
 
         Me.m_bInitializing = True
 
-        Dim mdYears As New cVariableMetaData(0, 100, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 0, cUnits.Year)
-        Me.m_fpSpinupYears = New cEwEFormatProvider(Me.UIContext, Me.m_tbxSpinUpYears, GetType(Single), mdYears)
+        Dim mdYears As New cVariableMetaData(1, 999, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), 0, cUnits.Year)
+        Me.m_fpSpinupYears = New cEwEFormatProvider(Me.UIContext, Me.m_tbxSpinUpYears, GetType(Integer), mdYears)
 
         AddHandler Me.m_plugin.OnEcospaceTimeStep, AddressOf Me.OnTimeStep
         AddHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
@@ -164,7 +164,7 @@ Public Class frmEcospaceSpinup
 
         If (Me.m_bInitializing) Then Return
         Try
-            Me.m_plugin.SpinUpYears = CSng(Me.m_fpSpinupYears.Value)
+            Me.m_plugin.SpinUpYears = CInt(Me.m_fpSpinupYears.Value)
         Catch ex As Exception
             cLog.Write(ex, "frmEwESpinupPlugin.UpdateControls")
         End Try
@@ -180,7 +180,7 @@ Public Class frmEcospaceSpinup
         Try
             'Update the Plugin State
             Me.m_plugin.UseSpinUp = Me.m_chkUseSpinup.Checked
-            Single.TryParse(Me.m_tbxSpinUpYears.Text, Me.m_plugin.SpinUpYears)
+            Integer.TryParse(Me.m_tbxSpinUpYears.Text, Me.m_plugin.SpinUpYears)
             Me.m_plugin.UseSpinUpBaseBio = Me.m_chkUseBaseBio.Checked
         Catch ex As Exception
             cLog.Write(ex, "frmEwESpinupPlugin.UpdateCore")

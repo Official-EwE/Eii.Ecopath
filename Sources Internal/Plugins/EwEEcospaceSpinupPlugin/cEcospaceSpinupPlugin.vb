@@ -75,11 +75,11 @@ Public Class cEcospaceSpinupPlugin
 
 #Region " Public Methods and properties "
 
-    Public Property SpinUpYears As Single
+    Public Property SpinUpYears As Integer
         Get
             Return My.Settings.SpinupYears
         End Get
-        Set(value As Single)
+        Set(value As Integer)
             If value >= 0 Then
                 My.Settings.SpinupYears = value
                 My.Settings.Save()
@@ -178,6 +178,7 @@ Public Class cEcospaceSpinupPlugin
 
         Try
             ' This is the correct moment to tell Ecospace to start using the SpinUp period
+            Me.EcoSpaceData.UseSpinUp = Me.UseSpinUp
             Me.EcoSpaceData.SpinUpYears = Me.SpinUpYears
             Me.EcoSpaceData.UseSpinUpBase = Me.UseSpinUpBaseBio
 

@@ -204,12 +204,19 @@ Public Class cEcospaceTimestep
     ''' This is the number of timesteps computed. It is not necessarily the number of months completed. 
     ''' See <see cref="TimeStepinYears">TimeStepinYears</see> for the length of the run.
     ''' </remarks>
-    Public Property iTimeStep() As Integer
+    Public Property iTimeStep As Integer
 
     ''' <summary>
     ''' Lenght of the run in Years
     ''' </summary>
-    Public Property TimeStepinYears() As Single
+    Public Property TimeStepinYears As Single
+
+    Public Property RunProgress As Single
+
+    ''' <summary>
+    ''' Returns whether Ecospace is running in spin-up mode.
+    ''' </summary>
+    Public Property InSpinUp As Boolean
 
     ''' <summary>
     ''' Biomass map dimensioned by Row, Col, Group

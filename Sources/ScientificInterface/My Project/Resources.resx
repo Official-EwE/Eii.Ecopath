@@ -13541,4 +13541,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>File {0} read successfully into layer {1}</value>
     <comment>{0}=file name, {1}=layer name</comment>
   </data>
+  <data name="STATUS_ECOSPACE_RUNNING_SPINUP" xml:space="preserve">
+    <value>Running Ecospace spin-up...</value>
+  </data>
 </root>

@@ -1268,6 +1268,11 @@ Namespace Ecospace
 
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
+            If (TimeStepData.InSpinUp) Then
+                cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING_SPINUP, TimeStepData.RunProgress)
+                Return
+            End If
+
             'Init memory for C/B, F/B
             Me.InitLocalMemory(TimeStepData)
 
@@ -1300,8 +1305,8 @@ Namespace Ecospace
             m_iTimeStepPrev = m_iTimeStepCur
             m_iTimeStepCur = TimeStepData.iTimeStep
 
-            'Update the running simulation years progress label.
-            cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING, CSng(Me.m_iTimeStepCur / Me.Core.nEcospaceTimeSteps))
+            'Update the running simulation years progress label
+            cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING, TimeStepData.RunProgress)
             Me.m_dataTimeStep = TimeStepData
 
             For iRow As Integer = 1 To TimeStepData.inRows
