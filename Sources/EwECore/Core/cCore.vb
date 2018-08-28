@@ -9396,8 +9396,8 @@ Public Class cCore
             If Me.m_EcoSpaceData.bInSpinUp Then
                 m_spaceresults.RunProgress = CSng(Me.m_Ecospace.iSpinUp / Me.m_Ecospace.nSpinUp)
             Else
-                m_spaceresults.RunProgress = CSng(Me.m_EcoSpaceData.TimeNow * Me.m_EcoSpaceData.nTimeStepsPerYear / Me.m_EcoSpaceData.nTimeSteps
-                End If
+                m_spaceresults.RunProgress = CSng(Me.m_EcoSpaceData.TimeNow * Me.m_EcoSpaceData.nTimeStepsPerYear / Me.m_EcoSpaceData.nTimeSteps)
+            End If
 
             If Not Me.m_EcoSpaceData.bInSpinUp Then
 
