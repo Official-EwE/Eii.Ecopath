@@ -559,6 +559,8 @@ Public Class frmEcotracerOutput
 
     Private Sub EcospaceCallback(ByRef EcospaceResults As cEcospaceTimestep)
         Try
+            If EcospaceResults.InSpinUp Then Return
+
             ' Me.UpdateProgess(CSng(EcospaceResults.TimeStepinYears / Me.m_DisplayHelper.nYears))
             Me.UpdateProgess(CSng(EcospaceResults.iTimeStep / Me.Core.nEcospaceTimeSteps))
             Me.m_CurTimeStep = EcospaceResults.iTimeStep
