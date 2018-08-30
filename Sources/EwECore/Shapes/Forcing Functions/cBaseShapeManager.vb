@@ -254,7 +254,7 @@ Public MustInherit Class cBaseShapeManager
     ''' Populate the underlying EcoSim data structures with the forcing function data
     ''' </summary>
     ''' <returns></returns>
-    ''' <remarks>This is dumb it will clear all the existing data and repopulte all the data. It has no idea what has changed </remarks>
+    ''' <remarks>This is dumb it will clear all the existing data and repopulate all the data. It has no idea what has changed </remarks>
     Public Overridable Function Update(Optional bUpdateAll As Boolean = True) As Boolean
 
         Try
