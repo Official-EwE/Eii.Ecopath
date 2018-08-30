@@ -43,10 +43,9 @@ Namespace Controls
 
 #Region " Private vars "
 
-        ''' <summary></summary>
         Private m_uic As cUIContext = Nothing
-        ''' <summary></summary>
         Private m_shape As cForcingFunction = Nothing
+        Private m_bInUpdate As Boolean = False
 
 #End Region ' Private vars 
 
@@ -133,6 +132,9 @@ Namespace Controls
 
         Private Sub OnShapeFunctionTypeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_lbShapeFunctionTypes.SelectedIndexChanged
+
+            If (Me.m_bInUpdate) Then Return
+
             Me.SelectedShapeFunction = DirectCast(Me.m_lbShapeFunctionTypes.SelectedItem, IShapeFunction)
             Try
                 RaiseEvent OnShapeFunctionChanged()
@@ -155,6 +157,8 @@ Namespace Controls
 
         Private Sub Init()
 
+            Me.m_bInUpdate = True
+
             Me.m_lbShapeFunctionTypes.Items.Clear()
 
             If (Me.m_shape IsNot Nothing) Then
@@ -170,6 +174,7 @@ Namespace Controls
                 Me.SelectedShapeFunction = selection
             End If
 
+            Me.m_bInUpdate = False
             Me.UpdateControls()
 
         End Sub

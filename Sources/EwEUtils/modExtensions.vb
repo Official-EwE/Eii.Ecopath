@@ -49,6 +49,27 @@ Public Module Extensions
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Extension method; check if two arrays are the same.
+    ''' </summary>
+    ''' <typeparam name="T">Value type.</typeparam>
+    ''' <param name="a">The first array to check.</param>
+    ''' <param name="b">The second array to check.</param>
+    ''' -----------------------------------------------------------------------
+    <Extension()>
+    Public Function IsIdenticalTo(Of T)(ByVal a As T(), ByVal b() As T) As Boolean
+
+        If (a Is Nothing) And (b Is Nothing) Then Return True
+        If (a Is Nothing) Or (b Is Nothing) Then Return False
+        If (a.Length <> b.Length) Then Return False
+
+        For i As Integer = 0 To a.GetUpperBound(0)
+            If Not Object.Equals(a(i), b(i)) Then Return False
+        Next
+        Return True
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Extension method; fill an array with a given value.
     ''' </summary>
     ''' <typeparam name="T">Value type.</typeparam>

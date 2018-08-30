@@ -21,6 +21,7 @@
 Option Strict On
 
 Imports EwEUtils.Core
+Imports EwEUtils
 
 ''' <summary>
 ''' Class to handle the data that makes up the shape of a forcing or mediation shape
@@ -114,15 +115,25 @@ Public MustInherit Class cShapeData
         Me.setDefaultEditBlocks()
     End Sub
 
-    Protected Sub Init(ByVal ArrayOfData() As Single)
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="ArrayOfData"></param>
+    ''' <returns>True if the internal point array changed.</returns>
+    Protected Function Init(ByVal ArrayOfData() As Single) As Boolean
+
+        If ArrayOfData.IsIdenticalTo(Me.m_xdata) Then
+            Return False
+        End If
 
         Me.m_nPoints = ArrayOfData.GetUpperBound(0)
         Debug.Assert(m_nPoints > 0, "You can not initialize cForcingData with zero points.")
 
         Me.m_xdata = ArrayOfData
         Me.setDefaultEditBlocks()
+        Return True
 
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Update the underlying EcoSim data by calling update on the CForcingFunction object that owns this data
@@ -159,8 +170,7 @@ Public MustInherit Class cShapeData
             Return DirectCast(Me.m_xdata.Clone(), Single())
         End Get
         Set(ByVal value() As Single)
-            Me.Init(value)
-            If Not Me.IsLockedUpdates Then
+            If Me.Init(value) And Not Me.IsLockedUpdates Then
                 Me.Update()
             End If
         End Set

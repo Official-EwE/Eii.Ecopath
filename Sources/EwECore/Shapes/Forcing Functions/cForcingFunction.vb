@@ -334,7 +334,7 @@ Public Class cForcingFunction
     ''' </summary>
     Friend Sub ShapeChanged()
 
-        'tell the manager that a shape has changed it's data
+        'tell the manager that a shape has changed its data
         If Not Me.IsLockedUpdates Then Me.m_manager.ShapeChanged(Me)
 
     End Sub
