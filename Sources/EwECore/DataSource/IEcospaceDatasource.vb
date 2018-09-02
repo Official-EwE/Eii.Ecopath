@@ -175,6 +175,16 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Function MoveHabitat(ByVal iHabitatID As Integer, ByVal iPosition As Integer) As Boolean
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Move an Ecospace MPA to a different position in the MPA sequence.
+        ''' </summary>
+        ''' <param name="iMPAID">Database ID of the MPA to move.</param>
+        ''' <param name="iPosition">The new position of the MPA in the MPA sequence.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Function MoveMPA(ByVal iMPAID As Integer, ByVal iPosition As Integer) As Boolean
+
 #End Region ' Habitats
 
 #Region " MPAs "
