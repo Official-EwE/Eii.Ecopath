@@ -303,6 +303,7 @@ Namespace Controls.Map
         ''' </summary>
         Private Sub ucLayer_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.MouseLeave
             Me.m_bHovering = False
+            Me.m_bDragDrop = False
             Me.Invalidate()
         End Sub
 

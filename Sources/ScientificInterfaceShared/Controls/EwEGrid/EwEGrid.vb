@@ -93,7 +93,7 @@ Namespace Controls.EwEGrid
     ''' </code>
     ''' </example>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public MustInherit Class EwEGrid
         Inherits SourceGrid2.Grid
         Implements IUIElement
@@ -430,7 +430,7 @@ Namespace Controls.EwEGrid
         ''' Get/set the <see cref="cUIContext">UI Context</see> for this grid.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Overridable Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -944,14 +944,14 @@ Namespace Controls.EwEGrid
         ''' Constant; returns the default text for 'value not available'.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Protected ReadOnly Property DataNotAvailable() As String
             Get
                 Return My.Resources.GENERIC_VALUE_NOTAVAILABLE
             End Get
         End Property
 
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Overridable ReadOnly Property MessageSource() As eCoreComponentType
             Get
                 Return eCoreComponentType.NotSet
@@ -962,7 +962,7 @@ Namespace Controls.EwEGrid
         ''' Core components that grids can use to connect to the message flow
         ''' of encapsulating EwEForms.
         ''' </summary>
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Overridable ReadOnly Property CoreComponents() As eCoreComponentType()
             Get
                 Return New eCoreComponentType() {Me.MessageSource}
@@ -984,7 +984,7 @@ Namespace Controls.EwEGrid
         ''' Returns a new local formula propery.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Protected Function Formula(ByVal exp As cExpression) As cFormulaProperty
             Dim fp As New cFormulaProperty(exp)
             Me.RegisterLocalProperty(fp)
@@ -998,7 +998,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="prop">The property to register.</param>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Protected Sub RegisterLocalProperty(ByVal prop As cProperty)
             If Me.m_lpropLocal Is Nothing Then
                 Me.m_lpropLocal = New List(Of cProperty)
@@ -1045,8 +1045,8 @@ Namespace Controls.EwEGrid
         ''' the entire grid.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("States whether the grid allows row, column and entire content selections.")> _
+        <Browsable(True),
+         Description("States whether the grid allows row, column and entire content selections.")>
         Public Property AllowBlockSelect() As Boolean = True
 
         ' ToDo_JS 05aug07: fix [SHIFT]+key nav selection logic to select a range, not just select a cell
@@ -1298,32 +1298,33 @@ Namespace Controls.EwEGrid
                                         If (cell.DataModel.EnableEdit) Then
                                             ' #Yes: attempt to set value
                                             strValue = astrCols(iColData).Trim
-                                            ' Is empty value?
-                                            If (String.IsNullOrWhiteSpace(strValue)) And
+                                            If Not Me.InterceptNewValue(strValue, New Position(iRow, iCol), cell) Then
+                                                ' Is empty value?
+                                                If (String.IsNullOrWhiteSpace(strValue)) And
                                                 ((cell.DataModel.ValueType Is GetType(Single)) Or (cell.DataModel.ValueType Is GetType(Double)) Or (cell.DataModel.ValueType Is GetType(Integer))) Then
-                                                ' #Yes: Convert to cell default value
-                                                strValue = Convert.ToString(cell.DataModel.DefaultValue)
-                                            End If
-
-                                            ' Try to convert
-                                            Dim objValue As Object = strValue
-                                            Try
-                                                If (cell.DataModel.ValueType Is GetType(Single)) Then
-                                                    objValue = Single.Parse(strValue)
-                                                ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
-                                                    objValue = Double.Parse(strValue)
-                                                ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
-                                                    objValue = Integer.Parse(strValue)
+                                                    ' #Yes: Convert to cell default value
+                                                    strValue = Convert.ToString(cell.DataModel.DefaultValue)
                                                 End If
-                                            Catch ex As Exception
-                                                ' Whoah
-                                                cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste failed on data type " & cell.DataModel.ValueType.ToString,
-                                                           eVerboseLevel.Detailed)
-                                            End Try
-                                            If cell.DataModel.IsValidValue(objValue) Then
-                                                cell.SetValue(pos, objValue)
-                                            End If
 
+                                                ' Try to convert
+                                                Dim objValue As Object = strValue
+                                                Try
+                                                    If (cell.DataModel.ValueType Is GetType(Single)) Then
+                                                        objValue = Single.Parse(strValue)
+                                                    ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
+                                                        objValue = Double.Parse(strValue)
+                                                    ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
+                                                        objValue = Integer.Parse(strValue)
+                                                    End If
+                                                Catch ex As Exception
+                                                    ' Whoah
+                                                    cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste failed on data type " & cell.DataModel.ValueType.ToString,
+                                                           eVerboseLevel.Detailed)
+                                                End Try
+                                                If cell.DataModel.IsValidValue(objValue) Then
+                                                    cell.SetValue(pos, objValue)
+                                                End If
+                                            End If
                                         End If
                                     End If
                                 End If
@@ -1511,7 +1512,7 @@ Namespace Controls.EwEGrid
         Public Function ReadContent(ByVal sr As StreamReader) As Boolean
 
             Dim strLine As String = ""
-            Dim astrCells As String()
+            Dim values As String()
             Dim cell As ICell = Nothing
             Dim cellValue As Object = Nothing
             Dim iRow As Integer = 0
@@ -1528,37 +1529,39 @@ Namespace Controls.EwEGrid
                     If (iRow = 0) Then
                         cSplit = cStringUtils.FindStringDelimiter(strLine)
                     End If
-                    astrCells = strLine.Split(cSplit)
-                    For iCol = 0 To Math.Min(Me.ColumnsCount, astrCells.Length) - 1
+                    values = strLine.Split(cSplit)
+                    For iCol = 0 To Math.Min(Me.ColumnsCount, values.Length) - 1
                         cell = Me(iRow, iCol)
                         If cell IsNot Nothing Then
-                            If (cell.DataModel.EnableEdit = True) And _
+                            If (cell.DataModel.EnableEdit = True) And
                                (cell.DataModel.EditableMode <> SourceGrid2.EditableMode.None) Then
                                 If (cell.DataModel.ValueType Is GetType(String)) Then
-                                    cell.Value = astrCells(iCol)
+                                    cell.Value = values(iCol)
                                 Else
-                                    astrCells(iCol) = astrCells(iCol).Trim()
-                                    If String.IsNullOrEmpty(astrCells(iCol)) Then
-                                        astrCells(iCol) = CStr(cCore.NULL_VALUE)
-                                    End If
-                                    If (cell.DataModel.ValueType Is GetType(Single)) Then
-                                        ' Parse using UI default number formatting
-                                        cell.Value = Single.Parse(astrCells(iCol), nfi)
-                                    ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
-                                        ' Parse using UI default number formatting
-                                        cell.Value = Double.Parse(astrCells(iCol), nfi)
-                                    ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
-                                        ' Parse using UI default number formatting
-                                        cell.Value = Integer.Parse(astrCells(iCol), nfi)
-                                    ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
-                                        ' Booleans can occur as string or integer representations, 
-                                        ' which both require separate conversion strategies
-                                        Dim strVal As String = astrCells(iCol).Trim
-                                        Dim iValTest As Integer
-                                        If Integer.TryParse(strVal, iValTest) Then
-                                            cell.Value = Convert.ToBoolean(iValTest)
-                                        Else
-                                            cell.Value = Boolean.Parse(strVal)
+                                    values(iCol) = values(iCol).Trim()
+                                    If Not Me.InterceptNewValue(values(iCol), New Position(iRow, iCol), cell) Then
+                                        If String.IsNullOrEmpty(values(iCol)) Then
+                                            values(iCol) = CStr(cCore.NULL_VALUE)
+                                        End If
+                                        If (cell.DataModel.ValueType Is GetType(Single)) Then
+                                            ' Parse using UI default number formatting
+                                            cell.Value = Single.Parse(values(iCol), nfi)
+                                        ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
+                                            ' Parse using UI default number formatting
+                                            cell.Value = Double.Parse(values(iCol), nfi)
+                                        ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
+                                            ' Parse using UI default number formatting
+                                            cell.Value = Integer.Parse(values(iCol), nfi)
+                                        ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
+                                            ' Booleans can occur as string or integer representations, 
+                                            ' which both require separate conversion strategies
+                                            Dim strVal As String = values(iCol).Trim
+                                            Dim iValTest As Integer
+                                            If Integer.TryParse(strVal, iValTest) Then
+                                                cell.Value = Convert.ToBoolean(iValTest)
+                                            Else
+                                                cell.Value = Boolean.Parse(strVal)
+                                            End If
                                         End If
                                     End If
                                 End If
@@ -1689,6 +1692,17 @@ Namespace Controls.EwEGrid
 
             Return bOK
 
+        End Function
+
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="strValue"></param>
+        ''' <param name="pos"></param>
+        ''' <param name="cell"></param>
+        ''' <returns>True if the value has been received, and no further processing is needed</returns>
+        Protected Overridable Function InterceptNewValue(strValue As String, pos As Position, cell As ICell) As Boolean
+            Return False
         End Function
 
 #End Region ' Experimental

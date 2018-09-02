@@ -81,6 +81,13 @@ Public Class cTrapezoidShapeFunction
                     xpt += dx
                 Next j
             Next i
+
+            ' Special fixes to make sure the trapezoid starts and ends at 0. This is necessary for
+            ' trapezoids where leftbottom = lefttop, or rightbottom = righttop. EwE may extend
+            ' righttop values to the end instead of rightbottom!
+            Me.m_points(0) = 0
+            Me.m_points(nPoints) = 0
+
         End If
 
         Return MyBase.Shape(nPoints)
