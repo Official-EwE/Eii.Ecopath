@@ -8255,7 +8255,7 @@ Namespace DataSources
             Try
                 Me.m_db.Execute(String.Format("UPDATE EcospaceScenarioHabitat SET Sequence={1} WHERE (HabitatID={0})", iHabitatID, iPosition))
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while moving fleet {1}", ex.Message, iHabitatID))
+                Me.LogMessage(String.Format("Error {0} occurred while moving habitat {1}", ex.Message, iHabitatID))
                 bSucces = False
             End Try
             Return bSucces
@@ -9328,10 +9328,32 @@ Namespace DataSources
                 '' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
                 'bSucces = Me.LoadEcospaceScenario(iScenarioID)
             Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace MPAID {1}", ex.Message, iMPAID))
+                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace MPA {1}", ex.Message, iMPAID))
                 bSucces = False
             End Try
             Return bSucces
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Move an Ecospace MPA to a different position in the MPA sequence.
+        ''' </summary>
+        ''' <param name="iMPAID">Database ID of the MPA to move.</param>
+        ''' <param name="iPosition">The new position of the MPA in the MPA sequence.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function MoveMPA(iMPAID As Integer, iPosition As Integer) As Boolean _
+            Implements IEcospaceDatasource.MoveMPA
+
+            Dim bSucces As Boolean = True
+            Try
+                Me.m_db.Execute(String.Format("UPDATE EcospaceScenarioMPA SET Sequence={1} WHERE (MPAID={0})", iMPAID, iPosition))
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while moving MPA {1}", ex.Message, iMPAID))
+                bSucces = False
+            End Try
+            Return bSucces
+
         End Function
 
 #End Region ' Modify
