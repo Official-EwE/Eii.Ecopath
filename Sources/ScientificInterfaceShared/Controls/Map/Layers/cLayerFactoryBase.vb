@@ -477,6 +477,8 @@ Namespace Controls.Map
                     DBID = core.EcospaceHabitats(iIndex).DBID
                 Case eVarNameFlags.LayerMPA
                     DBID = core.EcospaceMPAs(iIndex).DBID
+                Case eVarNameFlags.LayerDriver
+                    DBID = layer.DBID
             End Select
 
             Dim key As New cValueID(dt, DBID, eVarNameFlags.Name)

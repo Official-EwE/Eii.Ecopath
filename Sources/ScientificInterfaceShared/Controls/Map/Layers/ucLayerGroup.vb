@@ -366,6 +366,7 @@ Namespace Controls.Map
 
         Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
             Me.m_bHovering = False
+            Me.m_bDragDrop = False
             Me.Invalidate(False)
         End Sub
 

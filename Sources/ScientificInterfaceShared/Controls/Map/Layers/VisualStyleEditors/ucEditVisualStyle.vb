@@ -68,12 +68,6 @@ Namespace Controls
 
 #End Region ' Factory
 
-#Region " Private vars "
-
-        Private m_visualStyle As cVisualStyle = Nothing
-
-#End Region ' Private vars
-
 #Region " Constructor "
 
         ''' -------------------------------------------------------------------
@@ -104,7 +98,7 @@ Namespace Controls
             Debug.Assert(style <> cVisualStyle.eVisualStyleTypes.NotSet)
 
             Me.UIContext = uic
-            Me.m_visualStyle = vs
+            Me.VisualStyle = vs
             Me.RepresentationStyles = style
 
         End Sub
@@ -136,13 +130,6 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Overridable Property VisualStyle() As cVisualStyle
-            Get
-                Return Me.m_visualStyle
-            End Get
-            Set(ByVal value As cVisualStyle)
-                Me.m_visualStyle = value
-            End Set
-        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
