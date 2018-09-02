@@ -3710,6 +3710,10 @@ Public Class cEIIXMLDataSource
         Return strNumberString.Trim().Split(charSeparators, StringSplitOptions.RemoveEmptyEntries)
     End Function
 
+    Public Function MoveMPA(iMPAID As Integer, iPosition As Integer) As Boolean Implements IEcospaceDatasource.MoveMPA
+        Return False
+    End Function
+
 #End Region ' Helper methods
 
 End Class
