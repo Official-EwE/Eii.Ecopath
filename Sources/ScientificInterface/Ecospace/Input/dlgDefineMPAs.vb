@@ -59,6 +59,16 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
+        Private Sub m_btnMoveUp_Click(sender As Object, e As EventArgs) Handles m_btnMoveUp.Click
+            Me.m_grid.MoveRowUp()
+            Me.UpdateControls()
+        End Sub
+
+        Private Sub m_btnMoveDown_Click(sender As Object, e As EventArgs) Handles m_btnMoveDown.Click
+            Me.m_grid.MoveRowDown()
+            Me.UpdateControls()
+        End Sub
+
         Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
             ' Try to apply grid changes
@@ -84,12 +94,12 @@ Namespace Ecospace
         End Sub
 
         Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRemoveMPA.Click
-            Me.m_grid.ToggleDeleteRow()
+            Me.m_grid.ToggleDeleteSelected()
             Me.UpdateControls()
         End Sub
 
         Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
-            Me.m_grid.ToggleDeleteRow()
+            Me.m_grid.ToggleDeleteSelected()
             Me.UpdateControls()
         End Sub
 
@@ -105,6 +115,8 @@ Namespace Ecospace
             Me.m_btnAddMPA.Enabled = Me.m_grid.CanAddRow()
             Me.m_btnRemoveMPA.Enabled = Me.m_grid.IsMPARow() And (Not Me.m_grid.IsFlaggedForDeletionRow())
             Me.m_btnKeep.Enabled = Me.m_grid.IsMPARow() And Me.m_grid.IsFlaggedForDeletionRow()
+            Me.m_btnMoveUp.Enabled = Me.m_grid.CanMoveRowUp()
+            Me.m_btnMoveDown.Enabled = Me.m_grid.CanMoveRowDown()
         End Sub
 
 #End Region ' Updating

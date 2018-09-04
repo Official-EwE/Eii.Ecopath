@@ -11183,6 +11183,7 @@ Public Class cCore
         Return bSucces
 
     End Function
+
 #End Region ' Habitats
 
 #Region " MPAs "
@@ -11340,6 +11341,35 @@ Public Class cCore
         Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecospace)
 
         Return bsucces
+    End Function
+
+    Public Function MoveEcospaceMPA(ByVal iDBID As Integer, ByVal iIndex As Integer) As Boolean
+
+        Dim bSucces As Boolean = False
+        Dim ds As IEcospaceDatasource = Nothing
+
+        ' Sanity checks
+        If (Not Me.CanSave(True)) Then Return False
+        If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
+        If (Not TypeOf (Me.DataSource) Is IEcopathDataSource) Then Return False
+
+        ' Increase batch count
+        If Not SetBatchLock(eBatchLockType.Restructure) Then Return False
+
+        ds = DirectCast(DataSource, IEcospaceDatasource)
+        If ds.MoveMPA(iDBID, iIndex) Then
+
+            Me.DataModifiedMessage("Ecospace MPA order has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcospaceMPA)
+            Me.DataModifiedMessage("Ecospace MPA order has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcospaceLayerMPA)
+            bSucces = True
+
+        End If
+
+        ' Decrease batch count
+        Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecospace)
+
+        Return bSucces
+
     End Function
 
 #End Region ' MPAs
