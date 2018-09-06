@@ -171,9 +171,9 @@ Public Class cVariableStatus
 
         Dim vsCompare As cVariableStatus = DirectCast(obj, cVariableStatus)
 
-        Return (Me.Source = vsCompare.Source) And (Me.Status = vsCompare.Status) And _
-               (Me.VarName = vsCompare.VarName) And (Me.Index = vsCompare.Index) And (Me.iArrayIndex = vsCompare.iArrayIndex) And _
-               (String.Compare(Me.Message, vsCompare.Message) = 0)
+        ' Text comparison is too slow
+        Return (Me.Source = vsCompare.Source) And (Me.Status = vsCompare.Status) And
+               (Me.VarName = vsCompare.VarName) And (Me.Index = vsCompare.Index) And (Me.iArrayIndex = vsCompare.iArrayIndex)
 
     End Function
 
