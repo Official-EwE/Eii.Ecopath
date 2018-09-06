@@ -114,6 +114,8 @@ Namespace Ecosim
             Me.m_parms = Me.m_manager.Parameters
             Me.m_manager.RunStateChangedDelegate = AddressOf Me.OnMSYRunStateChanged
 
+            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+
             ' Set up zedgraph
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
@@ -147,6 +149,8 @@ Namespace Ecosim
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             If (Me.UIContext IsNot Nothing) Then
+
+                RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
                 Dim cmd As cCommand = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
                 cmd.RemoveControl(Me.m_tsbnShowHide)
@@ -199,6 +203,10 @@ Namespace Ecosim
 #End Region ' Form overrides
 
 #Region " Events "
+
+        Private Sub OnCoreExecutionStateChanged(statemonitor As cCoreStateMonitor)
+            Me.UpdateControls()
+        End Sub
 
         Private Sub OnSelectTarget(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_rbFleet.CheckedChanged, m_rbGroup.CheckedChanged
