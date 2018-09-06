@@ -52,43 +52,43 @@ Public Class cTaxon
         val = New cValue(New Integer, eVarNameFlags.TaxonStanza, eStatusFlags.Null, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Class, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+        val = New cValue(New String(cbuf), eVarNameFlags.Class, eStatusFlags.OK, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Phylum, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+        val = New cValue(New String(cbuf), eVarNameFlags.Phylum, eStatusFlags.OK, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Order, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+        val = New cValue(New String(cbuf), eVarNameFlags.Order, eStatusFlags.OK, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Family, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+        val = New cValue(New String(cbuf), eVarNameFlags.Family, eStatusFlags.OK, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Genus, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+        val = New cValue(New String(cbuf), eVarNameFlags.Genus, eStatusFlags.OK, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Species, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+        val = New cValue(New String(cbuf), eVarNameFlags.Species, eStatusFlags.OK, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.CodeSAUP, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int)
+        val = New cValue(New Integer, eVarNameFlags.CodeSAUP, eStatusFlags.OK, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.CodeFB, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int)
+        val = New cValue(New Integer, eVarNameFlags.CodeFB, eStatusFlags.OK, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New Integer, eVarNameFlags.CodeSLB, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int)
+        val = New cValue(New Integer, eVarNameFlags.CodeSLB, eStatusFlags.OK, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.CodeLSID, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+        val = New cValue(New String(cbuf), eVarNameFlags.CodeLSID, eStatusFlags.OK, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.CodeFAO, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+        val = New cValue(New String(cbuf), eVarNameFlags.CodeFAO, eStatusFlags.OK, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.Source, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+        val = New cValue(New String(cbuf), eVarNameFlags.Source, eStatusFlags.OK, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
-        val = New cValue(New String(cbuf), eVarNameFlags.SourceKey, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str)
+        val = New cValue(New String(cbuf), eVarNameFlags.SourceKey, eStatusFlags.OK, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
         val = New cValue(New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng)
