@@ -3108,7 +3108,7 @@ Namespace Core
         NotSet = 0
         BathyDemersal
         BathyPelagic
-        Bethic
+        Benthic
         BenthoPelagic
         Demersal
         Pelagic
