@@ -727,10 +727,10 @@
     <value>Mean weight</value>
   </data>
   <data name="VARIABLE_TAXONPROPBIOMASS" xml:space="preserve">
-    <value>Prop. B||Proportion of biomass</value>
+    <value>Prop. B||Biomass contribution|Contribution to the functional group biomass</value>
   </data>
   <data name="VARIABLE_TAXONPROPCATCH" xml:space="preserve">
-    <value>Prop. catch||Proportion of catch</value>
+    <value>Prop. catch||Catch contribution|Contribution to the functional group catch</value>
   </data>
   <data name="VARIABLE_TAXONVULNERABILITYINDEX" xml:space="preserve">
     <value>Vul. index||Vulnerability index</value>

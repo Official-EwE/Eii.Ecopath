@@ -7535,7 +7535,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Prop. B||Proportion of biomass.
+        '''  Looks up a localized string similar to Prop. B||Biomass contribution|Contribution to the functional group biomass.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_TAXONPROPBIOMASS() As String
             Get
@@ -7544,7 +7544,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Prop. catch||Proportion of catch.
+        '''  Looks up a localized string similar to Prop. catch||Catch contribution|Contribution to the functional group catch.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_TAXONPROPCATCH() As String
             Get
