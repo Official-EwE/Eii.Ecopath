@@ -41,9 +41,6 @@ Public Class cMessage
     ''' encouraged to use these variables to provide detailed event feedback.</summary>
     Private m_variables As New List(Of cVariableStatus)
 
-    ''' <summary><see cref="eMessageImportance">Importance</see> of the message.</summary>
-    Private m_importance As eMessageImportance = eMessageImportance.Maintenance
-
 #End Region ' Private variables
 
 #Region " Constructor "
@@ -71,10 +68,10 @@ Public Class cMessage
     ''' <param name="msgImportance">The <see cref="Importance"/> of the message.</param>
     ''' <param name="msgDataType">The <see cref="DataType"/> of the message.</param>
     ''' -----------------------------------------------------------------------
-    Sub New(ByVal strMessage As String, _
-            ByVal msgType As eMessageType, _
-            ByVal msgSource As eCoreComponentType, _
-            ByVal msgImportance As eMessageImportance, _
+    Sub New(ByVal strMessage As String,
+            ByVal msgType As eMessageType,
+            ByVal msgSource As eCoreComponentType,
+            ByVal msgImportance As eMessageImportance,
             Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
         Me.Message = strMessage
         Me.Type = msgType
@@ -95,15 +92,14 @@ Public Class cMessage
     ''' <remarks>This is used when the message object is being created to add variables to the message</remarks>
     Public Function AddVariable(ByVal Variable As cVariableStatus) As Boolean
 
-        If Me.m_variables Is Nothing Then
-            Me.m_variables = New List(Of cVariableStatus)
-        Else
-            ' Check for duplicates
-            For Each vs As cVariableStatus In Me.m_variables
-                If Variable.Equals(vs) Then Return True
-            Next
-        End If
+        ' Check for duplicates
+        For Each vs As cVariableStatus In Me.m_variables
+            If Variable.Equals(vs) Then Return True
+        Next
         Me.m_variables.Add(Variable)
+        ' JS 06Sep18: Performance boost for messages with large number of variables. Importance is elevated
+        ' the moment a message is added; no longer need to iterate of (potentially long) message lists as before
+        If (Variable.Importance > Me.Importance) Then Me.Importance = Variable.Importance
         Return True
 
     End Function
@@ -115,24 +111,10 @@ Public Class cMessage
     ''' <returns></returns>
     Public Function HasVariable(ByVal Variable As cVariableStatus) As Boolean
         For Each vs As cVariableStatus In Me.Variables
-            If (ReferenceEquals(vs.Source, Variable.Source)) And _
-               (vs.Index = Variable.Index) And _
-               (vs.Status = Variable.Status) And _
+            If (ReferenceEquals(vs.Source, Variable.Source)) And
+               (vs.Index = Variable.Index) And
+               (vs.Status = Variable.Status) And
                String.Compare(vs.Message, Variable.Message, True) = 0 Then
-                Return True
-            End If
-        Next
-        Return False
-    End Function
-
-    ''' <summary>
-    ''' Returns whether a message has a given variable attached.
-    ''' </summary>
-    ''' <param name="varname"></param>
-    ''' <returns></returns>
-    Public Function HasVariable(ByVal varname As eVarNameFlags) As Boolean
-        For Each vs As cVariableStatus In Me.m_variables
-            If (vs.VarName = varname) Then
                 Return True
             End If
         Next
@@ -162,18 +144,6 @@ Public Class cMessage
 
     ''' <inheritdocs cref="IMessage.Importance"/>
     Public Overridable Property Importance() As eMessageImportance Implements IMessage.Importance
-        Get
-            ' Return highest importance of this message and its variables
-            Dim imp As eMessageImportance = Me.m_importance
-            For Each vs As cVariableStatus In Me.m_variables
-                imp = DirectCast(Math.Max(imp, vs.Importance), eMessageImportance)
-            Next
-            Return imp
-        End Get
-        Set(value As eMessageImportance)
-            Me.m_importance = value
-        End Set
-    End Property
 
     ''' <inheritdocs cref="IMessage.DataType"/>
     Public Overridable Property DataType() As eDataTypes Implements IMessage.DataType
@@ -183,7 +153,7 @@ Public Class cMessage
 
     ''' <inheritdocs cref="IMessage.Suppressable"/>
     Public Overridable Property Suppressed() As Boolean Implements IMessage.Suppressed
-  
+
     ''' <summary>
     ''' Get/set the hyperlink for this message.
     ''' </summary>
@@ -205,7 +175,7 @@ Public Class cMessage
             Dim msg As cMessage = DirectCast(obj, cMessage)
 
             ' Compare main msg properties
-            Dim bEquals As Boolean = (msg.DataType = Me.DataType) And (msg.Importance = Me.Importance) And _
+            Dim bEquals As Boolean = (msg.DataType = Me.DataType) And (msg.Importance = Me.Importance) And
                                      (msg.Source = Me.Source) And (msg.Type = Me.Type) And (msg.Message = Me.Message)
 
             ' Return comparison result

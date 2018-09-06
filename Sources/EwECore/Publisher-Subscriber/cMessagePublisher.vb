@@ -83,7 +83,7 @@ Public Class cMessagePublisher
 
         Try
             ' Is this message not a duplicate?
-            If (Not Me.FindDuplicateMessage(msg)) Then
+            If (Not Me.MergeDuplicateMessageVariables(msg)) Then
                 ' Queue the message
                 m_msglist.Add(msg)
             Else
@@ -173,7 +173,7 @@ Public Class cMessagePublisher
             ' JS 27sep07: log only messages of certain importance
             ' JS 24nov14: also log questions
             Select Case Message.Importance
-                Case eMessageImportance.Critical, eMessageImportance.Warning, _
+                Case eMessageImportance.Critical, eMessageImportance.Warning,
                      eMessageImportance.Information, eMessageImportance.Question
 
                     ' JS 07jun13: allow message filtering
@@ -303,7 +303,7 @@ Public Class cMessagePublisher
     ''' <returns>
     ''' True if the queue contains a duplicate of the test message, False otherwise.
     ''' </returns>
-    Private Function FindDuplicateMessage(ByVal msg As cMessage) As Boolean
+    Private Function MergeDuplicateMessageVariables(ByVal msg As cMessage) As Boolean
 
         ' Check if similar message not already in the list
         For Each msgQueued As cMessage In Me.m_msglist
