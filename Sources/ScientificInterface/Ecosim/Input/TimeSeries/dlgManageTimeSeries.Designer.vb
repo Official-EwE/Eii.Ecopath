@@ -266,6 +266,7 @@ Partial Class dlgManageTimeSeries
         Me.m_dgvImportPreview.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders
         Me.m_dgvImportPreview.Size = New System.Drawing.Size(493, 254)
         Me.m_dgvImportPreview.TabIndex = 12
+        Me.m_dgvImportPreview.VirtualMode = True
         '
         'm_hdrTarget
         '
