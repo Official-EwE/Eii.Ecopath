@@ -3118,6 +3118,8 @@ Namespace Core
         ''' <summary>Taxon occurs on land</summary>
         ''' <remarks>To be specified further. Where on land? In a tree? A cave? A sub-urban dwelling made of clay?</remarks>
         LandBased
+        <Obsolete()>
+        Bethic = Benthic
     End Enum
 
 #End Region ' Ecology types

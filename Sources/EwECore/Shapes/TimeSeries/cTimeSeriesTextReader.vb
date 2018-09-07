@@ -76,11 +76,11 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' <remarks>Note that this number does not per definition denote the number of time series in the external text!</remarks>
         Private m_iColumnCount As Integer
         ''' <summary>Original lines of text encountered in the time series text.</summary>
-        Private m_alRows As New List(Of String)
+        Private m_rows As New List(Of String)
         ''' <summary>Lines of text from the time series text, split by delimiter.</summary>
-        Private m_alRowValues As New List(Of String())
+        Private m_rowvalues As New List(Of String())
         ''' <summary>Errors encountered for each line of text.</summary>
-        Private m_alRowErrors As New List(Of String)
+        Private m_rowerrors As New List(Of String)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -101,9 +101,9 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' -----------------------------------------------------------------------
         Friend Sub AddRow(ByVal strLine As String, ByVal astrValues() As String)
             If String.IsNullOrEmpty(strLine) Then Return
-            Me.m_alRows.Add(strLine)
-            Me.m_alRowValues.Add(astrValues)
-            Me.m_alRowErrors.Add("")
+            Me.m_rows.Add(strLine)
+            Me.m_rowvalues.Add(astrValues)
+            Me.m_rowerrors.Add("")
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -113,7 +113,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' <returns>The number of rows in the preview</returns>
         ''' -----------------------------------------------------------------------
         Public Function RowCount() As Integer
-            Return Me.m_alRowValues.Count
+            Return Me.m_rowvalues.Count
         End Function
 
         ''' -----------------------------------------------------------------------
@@ -135,7 +135,7 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' <returns>An original row of text, as read from the time series text.</returns>
         ''' -----------------------------------------------------------------------
         Public Function Row(ByVal iRow As Integer) As String
-            If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then Return Me.m_alRows(iRow - 1)
+            If (iRow > 0 And iRow <= Me.m_rowerrors.Count) Then Return Me.m_rows(iRow - 1)
             Return ""
         End Function
 
@@ -150,11 +150,11 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' -----------------------------------------------------------------------
         Public Property RowError(ByVal iRow As Integer) As String
             Get
-                If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then Return Me.m_alRowErrors(iRow - 1)
+                If (iRow > 0 And iRow <= Me.m_rowerrors.Count) Then Return Me.m_rowerrors(iRow - 1)
                 Return ""
             End Get
             Friend Set(value As String)
-                If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then Me.m_alRowErrors(iRow - 1) = value
+                If (iRow > 0 And iRow <= Me.m_rowerrors.Count) Then Me.m_rowerrors(iRow - 1) = value
             End Set
         End Property
 
@@ -170,20 +170,20 @@ Public MustInherit Class cTimeSeriesTextReader
         ''' -----------------------------------------------------------------------
         Public Property Value(ByVal iColumn As Integer, ByVal iRow As Integer) As String
             Get
-                If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then
-                    Dim astrValues As String() = Me.m_alRowValues(iRow - 1)
-                    If (iColumn > 0 And iColumn <= astrValues.Length) Then
-                        Return astrValues(iColumn - 1)
+                If (iRow > 0 And iRow <= Me.m_rowerrors.Count) Then
+                    Dim values As String() = Me.m_rowvalues(iRow - 1)
+                    If (iColumn > 0 And iColumn <= values.Length) Then
+                        Return values(iColumn - 1)
                     End If
                 End If
                 Return ("")
             End Get
             Friend Set(ByVal value As String)
-                If (iRow > 0 And iRow <= Me.m_alRowErrors.Count) Then
-                    Dim astrValues As String() = Me.m_alRowValues(iRow - 1)
+                If (iRow > 0 And iRow <= Me.m_rowerrors.Count) Then
+                    Dim astrValues As String() = Me.m_rowvalues(iRow - 1)
                     If (iColumn > 0 And iColumn <= astrValues.Length) Then
                         astrValues(iColumn - 1) = value
-                        Me.m_alRowValues(iRow - 1) = astrValues
+                        Me.m_rowvalues(iRow - 1) = astrValues
                     End If
                 End If
             End Set

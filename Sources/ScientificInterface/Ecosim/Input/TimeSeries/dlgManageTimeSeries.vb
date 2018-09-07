@@ -626,11 +626,11 @@ Public Class dlgManageTimeSeries
     Private Sub m_dgvImportPreview_CellValueNeeded(sender As Object, e As DataGridViewCellValueEventArgs) _
         Handles m_dgvImportPreview.CellValueNeeded
 
-        Dim iRow As Integer = e.RowIndex
-        Dim iCol As Integer = e.ColumnIndex
+        Dim iRow As Integer = e.RowIndex + 1
+        Dim iCol As Integer = e.ColumnIndex + 1
 
         ' If this Is the row for New records, no values are needed.
-        If (iRow >= Me.m_dgvImportPreview.RowCount - 1) Then Return
+        If (iRow >= Me.m_dgvImportPreview.RowCount) Then Return
 
         Dim tsrPreview As cTimeSeriesTextReader.cPreview = Nothing
 
@@ -645,10 +645,10 @@ Public Class dlgManageTimeSeries
     Private Sub m_dgvImportPreview_RowErrorTextNeeded(sender As Object, e As DataGridViewRowErrorTextNeededEventArgs) _
         Handles m_dgvImportPreview.RowErrorTextNeeded
 
-        Dim iRow As Integer = e.RowIndex
+        Dim iRow As Integer = e.RowIndex + 1
 
         ' If this Is the row for New records, no values are needed.
-        If (iRow >= Me.m_dgvImportPreview.RowCount - 1) Then Return
+        If (iRow >= Me.m_dgvImportPreview.RowCount) Then Return
 
         Dim tsrPreview As cTimeSeriesTextReader.cPreview = Nothing
 

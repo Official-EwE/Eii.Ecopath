@@ -111,8 +111,6 @@ Public Class cEcoSpace
     ''' <summary>
     ''' Message Publisher for Ecospace messages
     ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
     Private m_publisher As New cMessagePublisher
 
     Private m_AdvectionManager As Ecospace.Advection.cAdvectionManager
