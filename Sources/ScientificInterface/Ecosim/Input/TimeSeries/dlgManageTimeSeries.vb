@@ -612,28 +612,51 @@ Public Class dlgManageTimeSeries
 
         ' JS 23Dec15: performance was awful due to smart content resizing. Disable resizing during update ;)
         ' JS 23Dec15: removed 'preview 50' option now performance is acceptable again
+        ' JS 07Sep18: but when you start importing 77 TS of >1500 rows, performance is still killer. We need virtual mode
+        Me.m_dgvImportPreview.VirtualMode = True
+
         Me.m_dgvImportPreview.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        For Each col As DataGridViewColumn In Me.m_dgvImportPreview.Columns
-            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.None
-        Next
-        Me.m_dgvImportPreview.SuspendLayout()
-
-        Me.m_dgvImportPreview.RowCount = tsrPreview.RowCount
+        'Me.m_dgvImportPreview.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders
         Me.m_dgvImportPreview.ColumnCount = tsrPreview.ColumnCount
+        Me.m_dgvImportPreview.RowCount = tsrPreview.RowCount
 
-        For iRow As Integer = 1 To Me.m_dgvImportPreview.RowCount
-            drow = Me.m_dgvImportPreview.Rows(iRow - 1)
-            drow.ErrorText = tsrPreview.RowError(iRow)
-            For iCol As Integer = 1 To tsrPreview.ColumnCount
-                drow.Cells(iCol - 1).Value = tsrPreview.Value(iCol, iRow)
-            Next
-        Next
 
-        Me.m_dgvImportPreview.ResumeLayout()
-        Me.m_dgvImportPreview.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders
-        For Each col As DataGridViewColumn In Me.m_dgvImportPreview.Columns
-            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-        Next
+    End Sub
+
+    Private Sub m_dgvImportPreview_CellValueNeeded(sender As Object, e As DataGridViewCellValueEventArgs) _
+        Handles m_dgvImportPreview.CellValueNeeded
+
+        Dim iRow As Integer = e.RowIndex
+        Dim iCol As Integer = e.ColumnIndex
+
+        ' If this Is the row for New records, no values are needed.
+        If (iRow >= Me.m_dgvImportPreview.RowCount - 1) Then Return
+
+        Dim tsrPreview As cTimeSeriesTextReader.cPreview = Nothing
+
+        ' Try to obtain preview
+        If Me.m_tr IsNot Nothing Then tsrPreview = Me.m_tr.Preview()
+        If tsrPreview Is Nothing Then Return
+
+        e.Value = tsrPreview.Value(iCol, iRow)
+
+    End Sub
+
+    Private Sub m_dgvImportPreview_RowErrorTextNeeded(sender As Object, e As DataGridViewRowErrorTextNeededEventArgs) _
+        Handles m_dgvImportPreview.RowErrorTextNeeded
+
+        Dim iRow As Integer = e.RowIndex
+
+        ' If this Is the row for New records, no values are needed.
+        If (iRow >= Me.m_dgvImportPreview.RowCount - 1) Then Return
+
+        Dim tsrPreview As cTimeSeriesTextReader.cPreview = Nothing
+
+        ' Try to obtain preview
+        If Me.m_tr IsNot Nothing Then tsrPreview = Me.m_tr.Preview()
+        If tsrPreview Is Nothing Then Return
+
+        e.ErrorText = tsrPreview.RowError(iRow)
 
     End Sub
 
