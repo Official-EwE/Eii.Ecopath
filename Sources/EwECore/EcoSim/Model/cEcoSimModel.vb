@@ -192,9 +192,9 @@ Namespace Ecosim
         Private TimeSeriesFile As String
 
         'fitting of model to time series data
-        ''' <summary>sumof log(observed/predicted)</summary>
+        ''' <summary>sumof log(observed/predicted) (by time series)</summary>
         Private DatSumZ() As Single
-        ''' <summary>sumof log(observed/predicted)^2</summary>
+        ''' <summary>sumof log(observed/predicted)^2 (by time series)</summary>
         Private DatSumZ2() As Single
         ''' <summary>number of observation</summary>
         Private DatNobs() As Integer
@@ -2542,7 +2542,7 @@ Namespace Ecosim
 
                             'increment counters
                             NobsTime(iDYear) += 1
-                            DatNobs(iDType) = DatNobs(iDType) + 1
+                            DatNobs(iDType) += 1
 
                             m_RefData.Wt(m_RefData.Iobs) = m_RefData.WtType(iDType)
                             'log prediction error by observation
@@ -3602,7 +3602,6 @@ Namespace Ecosim
                         m_RefData.DatSS(iDType) = CSng(DatSumZ2(iDType) - DatSumZ(iDType) ^ 2 / DatNobs(iDType))
                         m_RefData.DatQ(iDType) = DatSumZ(iDType) / DatNobs(iDType)
                         m_RefData.eDatQ(iDType) = CSng(Math.Exp(m_RefData.DatQ(iDType)))
-
                     Else
                         'all other data types are used as is
                         m_RefData.DatSS(iDType) = DatSumZ2(iDType)
@@ -3646,7 +3645,16 @@ Namespace Ecosim
                         m_RefData.SSPredErr(iDType) = CSng(m_RefData.SSPredErr(iDType) + (m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2))
                         'Next is to calculate the SS by group:
                         If bSSgrp Then
-                            SSgroup(m_RefData.DatPool(iDType)) = CSng(SSgroup(m_RefData.DatPool(iDType)) + (m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2))
+                            Dim iGroup As Integer = 0
+                            Select Case m_RefData.DatType(iDType)
+                                Case eTimeSeriesType.Discards, eTimeSeriesType.Landings
+                                    ' Discards and landings data is indexed by fleet x group
+                                    iGroup = m_RefData.DatPoolSec(iDType)
+                                Case Else
+                                    ' All other reference time series are indexed by group
+                                    iGroup = m_RefData.DatPool(iDType)
+                            End Select
+                            SSgroup(iGroup) += CSng(m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2)
                         End If
                         m_RefData.Yhat(m_RefData.Iobs) = m_RefData.Yhat(m_RefData.Iobs) + m_RefData.DatQ(iDType)
                     End If
