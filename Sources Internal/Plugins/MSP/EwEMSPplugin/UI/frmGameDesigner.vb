@@ -1215,13 +1215,13 @@ Namespace UI
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Event handler, called when the users wishes to visit the NHTV site.
+        ''' Event handler, called when the users wishes to visit the BUAS site.
         ''' </summary>
         ''' <param name="sender">Ignored.</param>
         ''' <param name="e">Ignored</param>
         ''' -----------------------------------------------------------------------
-        Private Sub OnVisitNHTV(sender As Object, e As EventArgs) Handles m_pbNHTV.Click
-            Me.Visit("http://www.nhtv.nl/")
+        Private Sub OnVisitBUAS(sender As Object, e As EventArgs) Handles m_pbBUAS.Click
+            Me.Visit("https://www.buas.nl")
         End Sub
 
         ''' -----------------------------------------------------------------------

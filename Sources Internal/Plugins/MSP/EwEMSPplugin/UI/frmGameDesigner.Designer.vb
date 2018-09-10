@@ -116,7 +116,7 @@ Namespace UI
             Me.m_lblAboutDescription = New System.Windows.Forms.Label()
             Me.m_tlpLogos = New System.Windows.Forms.TableLayoutPanel()
             Me.m_pbEII = New System.Windows.Forms.PictureBox()
-            Me.m_pbNHTV = New System.Windows.Forms.PictureBox()
+            Me.m_pbBUAS = New System.Windows.Forms.PictureBox()
             Me.m_pbRWS = New System.Windows.Forms.PictureBox()
             Me.m_pbMSPC2050 = New System.Windows.Forms.PictureBox()
             Me.m_lblAboutCredits = New System.Windows.Forms.Label()
@@ -147,7 +147,7 @@ Namespace UI
             Me.m_tlpAbout.SuspendLayout()
             Me.m_tlpLogos.SuspendLayout()
             CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_pbNHTV, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbBUAS, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbRWS, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbMSPC2050, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -714,7 +714,7 @@ Namespace UI
             '
             resources.ApplyResources(Me.m_tlpLogos, "m_tlpLogos")
             Me.m_tlpLogos.Controls.Add(Me.m_pbEII, 7, 0)
-            Me.m_tlpLogos.Controls.Add(Me.m_pbNHTV, 5, 0)
+            Me.m_tlpLogos.Controls.Add(Me.m_pbBUAS, 5, 0)
             Me.m_tlpLogos.Controls.Add(Me.m_pbRWS, 3, 0)
             Me.m_tlpLogos.Controls.Add(Me.m_pbMSPC2050, 1, 0)
             Me.m_tlpLogos.Name = "m_tlpLogos"
@@ -725,12 +725,12 @@ Namespace UI
             Me.m_pbEII.Name = "m_pbEII"
             Me.m_pbEII.TabStop = False
             '
-            'm_pbNHTV
+            'm_pbBUAS
             '
-            Me.m_pbNHTV.BackgroundImage = Global.EwEMSPPlugin.My.Resources.Resources.NHTV
-            resources.ApplyResources(Me.m_pbNHTV, "m_pbNHTV")
-            Me.m_pbNHTV.Name = "m_pbNHTV"
-            Me.m_pbNHTV.TabStop = False
+            Me.m_pbBUAS.BackgroundImage = Global.EwEMSPPlugin.My.Resources.Resources.buas
+            resources.ApplyResources(Me.m_pbBUAS, "m_pbBUAS")
+            Me.m_pbBUAS.Name = "m_pbBUAS"
+            Me.m_pbBUAS.TabStop = False
             '
             'm_pbRWS
             '
@@ -866,7 +866,7 @@ Namespace UI
             Me.m_tlpAbout.PerformLayout()
             Me.m_tlpLogos.ResumeLayout(False)
             CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_pbNHTV, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbBUAS, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbRWS, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbMSPC2050, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
@@ -894,7 +894,7 @@ Namespace UI
         Private WithEvents m_tpAbout As Windows.Forms.TabPage
         Private WithEvents m_tlpLogos As Windows.Forms.TableLayoutPanel
         Private WithEvents m_pbEII As Windows.Forms.PictureBox
-        Private WithEvents m_pbNHTV As Windows.Forms.PictureBox
+        Private WithEvents m_pbBUAS As Windows.Forms.PictureBox
         Private WithEvents m_pbRWS As Windows.Forms.PictureBox
         Private WithEvents m_pbMSPC2050 As Windows.Forms.PictureBox
         Private WithEvents m_gridPressureMappings As gridDrivers

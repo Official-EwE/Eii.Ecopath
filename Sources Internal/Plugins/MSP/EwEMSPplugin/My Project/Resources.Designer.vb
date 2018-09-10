@@ -82,6 +82,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property buas() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("buas", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property change() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("change", resourceCulture)
@@ -303,16 +313,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend ReadOnly Property NHTV() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("NHTV", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to MSP tools.
         '''</summary>
         Friend ReadOnly Property NODE_CONFIG() As String
@@ -386,7 +386,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MSP tools for EwE desktop v 1.7.2 - 21 February 2018.
+        '''  Looks up a localized string similar to MSP tools for EwE desktop v 1.7.3 - 10 September 2018.
         '''</summary>
         Friend ReadOnly Property VERSION() As String
             Get
