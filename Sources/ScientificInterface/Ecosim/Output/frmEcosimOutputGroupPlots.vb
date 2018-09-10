@@ -588,19 +588,11 @@ Namespace Ecosim
                 End If
             Next
 
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Discards, iGroup, Color.Green)
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Discards, iGroup, Color.Black)
                 Me.AddCurveToGraphPane(ePlot.Discards, li)
             Next li
 
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.DiscardMortality, iGroup, Color.Green)
-                Me.AddCurveToGraphPane(ePlot.DiscardsMortality, li)
-            Next li
-
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.DiscardProportion, iGroup, Color.Green)
-                Me.AddCurveToGraphPane(ePlot.DiscardsSurvival, li)
-            Next li
-
-            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Landings, iGroup, Color.Green)
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Landings, iGroup, Color.Black)
                 Me.AddCurveToGraphPane(ePlot.Landings, li)
             Next li
 
@@ -609,7 +601,7 @@ Namespace Ecosim
 #Region " Time series "
 
         ' JS 09Sep18: now also allow fleet TS with group as secundary index
-        Private Function GetTimeSeriesLineItems(ByVal TSType As eTimeSeriesType, ByVal iGroup As Integer, ByVal clr As Color) As List(Of LineItem)
+        Private Function GetTimeSeriesLineItems(TSType As eTimeSeriesType, iGroup As Integer, clr As Color) As List(Of LineItem)
 
             Dim lli As New List(Of LineItem)
             Dim ppt As PointPairList = Nothing
