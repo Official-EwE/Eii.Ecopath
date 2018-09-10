@@ -2766,4 +2766,10 @@
   <data name="VARIABLE_NONFEEDING" xml:space="preserve">
     <value>Not feeding</value>
   </data>
+  <data name="VARIABLE_LAYERM0MULT" xml:space="preserve">
+    <value>M0 mult (out)||Other mortality multiplier map (computed)</value>
+  </data>
+  <data name="VARIABLE_LAYERM0MULTINPUT" xml:space="preserve">
+    <value>M0 mult||Other mortality multiplier map (entered)</value>
+  </data>
 </root>

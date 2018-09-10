@@ -562,12 +562,21 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     ''' <remarks>Habitat capacity is the normalized Capacity of all inputs (maps and response functions)  <see cref="cEcoSpace.SetHabCap">Ecospace.SetHabCap</see> </remarks>
     Public HabCap()(,) As Single
-    'Public HabCap(,,) As Single
+
     ''' <summary>
     ''' User defined input habitat capacity.
     ''' </summary>
     Public HabCapInput()(,) As Single
-    'Public HabCapInput(,,) As Single
+
+    ''' <summary>
+    ''' Other mortality multiplier by Row,Col,Group
+    ''' </summary>
+    Public M0Mult()(,) As Single
+
+    ''' <summary>
+    ''' User-defined other mortality multiplier.
+    ''' </summary>
+    Public M0MultInput()(,) As Single
 
     ''' <summary> Sum of Capacity across the map cells by group </summary>
     Public TotHabCap() As Single
@@ -1919,6 +1928,10 @@ Public Class cEcospaceDataStructures
             Me.allocate(Me.HabCapInput, NGroups, InRow + 1, InCol + 1)
             For i = 1 To InRow : For j = 1 To InCol : For k = 1 To NGroups : HabCapInput(k)(i, j) = 1 : Next : Next : Next
             Me.allocate(Me.HabCap, NGroups, InRow + 1, InCol + 1)
+
+            Me.allocate(Me.M0MultInput, NGroups, InRow + 1, InCol + 1)
+            For i = 1 To InRow : For j = 1 To InCol : For k = 1 To NGroups : M0MultInput(k)(i, j) = 1 : Next : Next : Next
+            Me.allocate(Me.M0Mult, NGroups, InRow + 1, InCol + 1)
 
             Me.allocate(PHabType, NoHabitats, InRow, InCol)
 

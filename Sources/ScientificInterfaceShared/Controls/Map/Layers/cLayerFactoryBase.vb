@@ -124,6 +124,26 @@ Namespace Controls.Map
                         lLayers.Add(layer)
                     End If
 
+
+                Case eVarNameFlags.LayerM0MultInput
+
+                    If (core.nGroups > 0) Then
+
+                        ad = GetAuxillaryData(core, varName)
+                        vs = ad.VisualStyle
+                        If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+
+                        renderer = New cLayerRendererValue(vs)
+                        renderer.ScaleMin = 0
+                        renderer.RenderMode = Definitions.eLayerRenderType.Selected
+
+                        editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
+                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerM0MultInput),
+                                                renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerM0MultInput)
+
+                        lLayers.Add(layer)
+                    End If
+
                 Case eVarNameFlags.LayerRegion
 
                     ad = GetAuxillaryData(core, varName)
@@ -376,18 +396,16 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerHabitat
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_HABITATS
 
-                Case eVarNameFlags.LayerHabitatCapacity,
-                     eVarNameFlags.LayerHabitatCapacityInput
-                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_HABCAP
+                Case eVarNameFlags.LayerHabitatCapacityInput,
+                     eVarNameFlags.LayerM0MultInput,
+                     eVarNameFlags.LayerMigration
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_GROUP
 
                 Case eVarNameFlags.LayerRegion
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_REGIONS
 
                 Case eVarNameFlags.LayerMPA
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_MPAS
-
-                Case eVarNameFlags.LayerMigration
-                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_MIGRATION
 
                 Case eVarNameFlags.LayerPort,
                       eVarNameFlags.LayerSail

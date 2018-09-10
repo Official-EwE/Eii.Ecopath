@@ -118,7 +118,7 @@ Namespace Controls.Map.Layers
             Me.m_hdDefaults.Name = "m_hdDefaults"
             Me.m_hdDefaults.Size = New System.Drawing.Size(195, 18)
             Me.m_hdDefaults.TabIndex = 9
-            Me.m_hdDefaults.Text = "Set default capacity"
+            Me.m_hdDefaults.Text = "Set to default"
             Me.m_hdDefaults.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_tlpButtons

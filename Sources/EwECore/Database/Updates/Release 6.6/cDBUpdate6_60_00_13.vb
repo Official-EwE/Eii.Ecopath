@@ -28,14 +28,13 @@ Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.60.0.12:</para>
+''' <para>Database update 6.60.0.13:</para>
 ''' <para>
-''' Added ecospacce fitness response type field.
-''' Adde3d non-feeding stanza field
+''' Added other mortality driver layer
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Friend Class cDBUpdate6_60_00_12
+Friend Class cDBUpdate6_60_00_13
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -43,7 +42,7 @@ Friend Class cDBUpdate6_60_00_12
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.600012!
+            Return 6.600013!
         End Get
     End Property
 
@@ -52,14 +51,13 @@ Friend Class cDBUpdate6_60_00_12
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added ecospace fitness response type, non-feeding stanzas"
+            Return "Added ecospace other mort driver layer"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN FitResponseType BYTE") And
-            db.Execute("ALTER TABLE StanzaLifeStage ADD COLUMN NonFeeding YESNO") ' Yuck yuck yuck
+        Return db.Execute("ALTER TABLE EcospaceScenarioGroup ADD COLUMN OtherMortMap VARCHAR")
 
     End Function
 

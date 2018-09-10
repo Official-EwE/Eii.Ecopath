@@ -477,9 +477,9 @@ Namespace Core
         LayerDepth
         ''' <summary>Ecospace cell habitat assignments</summary>
         LayerHabitat
-        ''' <summary>Ecospace cell habitat capacity, input</summary>
+        ''' <summary>Ecospace cell habitat capacity (entered)</summary>
         LayerHabitatCapacityInput
-        ''' <summary>Ecospace cell habitat capacity, computed</summary>
+        ''' <summary>Ecospace cell habitat capacity (computed)</summary>
         LayerHabitatCapacity
         ''' <summary>Ecospace cell MPA assignments</summary>
         LayerMPA
@@ -515,6 +515,10 @@ Namespace Core
         HabAreaProportion
         ''' <summary>Ecospace excluded cells layer</summary>
         LayerExclusion
+        ''' <summary>Ecospace cell other mortality (entered)</summary>
+        LayerM0MultInput
+        ''' <summary>Ecospace cell other mortality (computed)</summary>
+        LayerM0Mult
         ''' <summary>Total Effort multiplier</summary>
         SEmult
         ''' <summary>
@@ -2404,7 +2408,6 @@ Namespace Core
         LandingInteraction = 97
 
         EcospaceLayerHabitatCapacity = 98
-        EcospaceLayerHabitatCapacityInput = 101
 
         ''' <summary>
         ''' Data belongs to a Capacity Mediation.
@@ -2441,6 +2444,9 @@ Namespace Core
         EcoPathFleetOutput = 117
 
         FleetGroupCatchability = 118
+        EcospaceLayerHabitatCapacityInput = 119
+        EcospaceLayerOtherMort = 120
+        EcospaceLayerOtherMortInput = 121
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
