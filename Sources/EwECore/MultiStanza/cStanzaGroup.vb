@@ -36,8 +36,6 @@ Public Class cStanzaGroup
     ''' <summary>Core Counter interface for MaxAge</summary>
     Private m_CoreCounter As CoreIndexedCounterDelegate
 
-    Private m_isDirty As Boolean
-
 #Region "Constuction"
 
     ''' <summary>
@@ -157,20 +155,15 @@ Public Class cStanzaGroup
         val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaMortaility, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
         m_values.Add(val.varName, val)
 
-        Me.AllowValidation = False
+        ' Non-feeding
+        val = New cValueArrayIndexed(eValueTypes.BoolArray, eVarNameFlags.NonFeeding, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
+        m_values.Add(val.varName, val)
+
+        Me.AllowValidation = False ' Why?
 
     End Sub
 
 #End Region
-
-    Friend Overrides Property AllowValidation() As Boolean
-        Get
-            Return MyBase.AllowValidation
-        End Get
-        Set(ByVal value As Boolean)
-            MyBase.AllowValidation = False
-        End Set
-    End Property
 
 #Region "Public methods unique to this class for calculation of stanza parameters"
 
@@ -202,16 +195,16 @@ Public Class cStanzaGroup
         Try
             'If a user has changed a parameter then called CalculateParameters() before trying to save the data
             'so that all the data is up to date
-            If isDirty Then
-                CalculateParameters()
-                m_core.onChanged(Me)
-                isDirty = False
+            If Me.isDirty Then
+                Me.CalculateParameters()
+                Me.m_core.onChanged(Me)
+                Me.isDirty = False
             End If
             Return True
 
         Catch ex As Exception
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_APPLY_DATAERROR, ex.Message), _
+            Me.m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_APPLY_DATAERROR, ex.Message),
                     eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
         End Try
@@ -291,18 +284,11 @@ Public Class cStanzaGroup
     ''' <returns></returns>
     Public Overrides Function SetVariable(ByVal VarName As eVarNameFlags, ByVal newValue As Object, Optional ByVal iSecondaryIndex As Integer = -9999, Optional ByVal iThirdIndex As Integer = -9999) As Boolean
         Dim bSucces As Boolean = MyBase.SetVariable(VarName, newValue, iSecondaryIndex)
-        isDirty = isDirty Or bSucces
+        Me.isDirty = Me.isDirty Or bSucces
         Return bSucces
     End Function
 
-    Public Property isDirty() As Boolean
-        Get
-            Return m_isDirty
-        End Get
-        Friend Set(ByVal value As Boolean)
-            m_isDirty = value
-        End Set
-    End Property
+    Public Property isDirty() As Boolean = False
 
 #End Region
 
@@ -435,7 +421,6 @@ Public Class cStanzaGroup
         Get
             Return CBool(GetVariable(eVarNameFlags.IsFished))
         End Get
-
         Friend Set(ByVal value As Boolean)
             Me.SetVariable(eVarNameFlags.IsFished, value)
         End Set
@@ -507,39 +492,39 @@ Public Class cStanzaGroup
     End Property
 
     Public Property Biomass(ByVal iLifeStage As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.StanzaBiomass, iLifeStage))
         End Get
-
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.StanzaBiomass, value, iLifeStage)
         End Set
-
     End Property
 
     Public Property Mortality(ByVal iLifeStage As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.StanzaMortaility, iLifeStage))
         End Get
-
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.StanzaMortaility, value, iLifeStage)
         End Set
-
     End Property
 
     Public Property CB(ByVal iLifeStage As Integer) As Single
-
         Get
             Return CSng(GetVariable(eVarNameFlags.StanzaCB, iLifeStage))
         End Get
-
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.StanzaCB, value, iLifeStage)
         End Set
+    End Property
 
+    Public Property NonFeeding(ByVal iLifeStage As Integer) As Boolean
+        Get
+            Return CBool(Me.GetVariable(eVarNameFlags.NonFeeding, iLifeStage))
+        End Get
+        Set(ByVal value As Boolean)
+            Me.SetVariable(eVarNameFlags.NonFeeding, value, iLifeStage)
+        End Set
     End Property
 
 #End Region
@@ -563,7 +548,6 @@ Public Class cStanzaGroup
         End Set
     End Property
 
-
     Public Property WeightAtAge(ByVal iAge As Integer) As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.StanzaWeightAtAge, iAge))
@@ -572,7 +556,6 @@ Public Class cStanzaGroup
             Me.SetVariable(eVarNameFlags.StanzaWeightAtAge, Value, iAge)
         End Set
     End Property
-
 
     Public Property BiomassAtAge(ByVal iAge As Integer) As Single
         Get
@@ -608,7 +591,6 @@ Public Class cStanzaGroup
     '### ARRAY VARIABLES ###
 
 #End Region 'Status by dot (.) operator
-
 
     Friend Overrides Function ResetStatusFlags(Optional ByVal bForceReset As Boolean = False) As Boolean
         MyBase.ResetStatusFlags() 'for name and other default status flags

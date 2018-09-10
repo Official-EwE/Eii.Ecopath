@@ -588,20 +588,39 @@ Namespace Ecosim
                 End If
             Next
 
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Discards, iGroup, Color.Green)
+                Me.AddCurveToGraphPane(ePlot.Discards, li)
+            Next li
+
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.DiscardMortality, iGroup, Color.Green)
+                Me.AddCurveToGraphPane(ePlot.DiscardsMortality, li)
+            Next li
+
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.DiscardProportion, iGroup, Color.Green)
+                Me.AddCurveToGraphPane(ePlot.DiscardsSurvival, li)
+            Next li
+
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Landings, iGroup, Color.Green)
+                Me.AddCurveToGraphPane(ePlot.Landings, li)
+            Next li
+
         End Sub
 
 #Region " Time series "
 
+        ' JS 09Sep18: now also allow fleet TS with group as secundary index
         Private Function GetTimeSeriesLineItems(ByVal TSType As eTimeSeriesType, ByVal iGroup As Integer, ByVal clr As Color) As List(Of LineItem)
 
             Dim lli As New List(Of LineItem)
             Dim ppt As PointPairList = Nothing
             Dim ts As cTimeSeries = Nothing
             Dim gts As cGroupTimeSeries = Nothing
+            Dim fts As cFleetTimeSeries = Nothing
             Dim iNumLine As Integer = 0
             Dim iMaxLines As Integer = 1
 
             ' First count #TS (for colouring)
+            ' Do not count fleet time series; they will be drawn with fleet colors
             For i As Integer = 1 To Me.Core.nTimeSeries
                 ts = Me.Core.EcosimTimeSeries(i)
                 If ts.TimeSeriesType = TSType Then
@@ -625,26 +644,33 @@ Namespace Ecosim
                             iNumLine += 1
                         End If
                     End If
+                    If TypeOf ts Is cFleetTimeSeries Then
+                        fts = DirectCast(ts, cFleetTimeSeries)
+                        If (fts.GroupIndex = iGroup) And fts.Enabled() Then
+                            Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(fts.FleetIndex)
+                            lli.Add(Me.ToTimeSeriesLineItem(fts, cColorUtils.IntToColor(fleet.PoolColor)))
+                        End If
+                    End If
                 End If
             Next
             Return lli
 
         End Function
 
-        Private Function ToTimeSeriesLineItem(ByVal gts As cGroupTimeSeries, ByVal clr As Color) As LineItem
+        Private Function ToTimeSeriesLineItem(ByVal ts As cTimeSeries, ByVal clr As Color) As LineItem
 
             Dim ppt As New PointPairList
             Dim dScale As Single = 1.0F
             Dim li As LineItem = Nothing
             Dim xpos As Double = 0.0
             Dim deltaT As Double = 1 / cCore.N_MONTHS
-            Dim da() As Single = gts.ShapeData()
+            Dim da() As Single = ts.ShapeData()
             Dim iYear As Integer = Me.Core.EcosimFirstYear
             Dim h As New cTimeSeriesShapeGUIHandler(Me.UIContext)
 
-            If (gts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or (gts.TimeSeriesType = eTimeSeriesType.AverageWeight) Or (gts.TimeSeriesType = eTimeSeriesType.CatchesRel) Then
+            If (ts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or (ts.TimeSeriesType = eTimeSeriesType.AverageWeight) Or (ts.TimeSeriesType = eTimeSeriesType.CatchesRel) Then
                 'VC091209: totalmortality is absolute, not relative
-                If gts.eDataQ > 0 Then dScale = 1.0F / gts.eDataQ
+                If ts.eDataQ > 0 Then dScale = 1.0F / ts.eDataQ
             End If
 
             'Just in case...
@@ -661,7 +687,7 @@ Namespace Ecosim
                     ppt.Add(xpos, da(j) * dScale)
                 End If
             Next
-            Return Me.m_zgh.CreateLineItem(gts.Name, h.SketchDrawMode(gts), clr, ppt)
+            Return Me.m_zgh.CreateLineItem(ts.Name, h.SketchDrawMode(ts), clr, ppt)
 
         End Function
 

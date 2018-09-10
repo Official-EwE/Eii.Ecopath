@@ -108,10 +108,11 @@ Public Class cStanzaDatastructures
     Public Stanza_Z(,) As Single
     Public Stanza_Bio(,) As Single
     Public Stanza_CB(,) As Single
-
+    Public NonFeeding(,) As Boolean
 
     Public WmatWinf() As Single ' weight at maturity/ weight at infinity (max weight) from EwE5 interface
     Public EggsStanza() As Single
+
 
     ''' <summary>Boolean flag set in an interface.</summary>
     ''' <remarks>Used by SplitUpdate(b)</remarks>
@@ -166,6 +167,7 @@ Public Class cStanzaDatastructures
         ReDim Stanza_Z(Nsplit, MaxStanza) 'mortality
         ReDim Stanza_Bio(Nsplit, MaxStanza) 'mortality
         ReDim Stanza_CB(Nsplit, MaxStanza) 'mortality
+        ReDim NonFeeding(Nsplit, MaxStanza)
         ReDim RzeroS(Nsplit) 'base recruitment to age 0 for split species
         'redim PredS() 'effective predator abund for split species (set in ecosim splitpred)
         ReDim SplitAlpha(Nsplit, MaxAgeSplit) 'growth coefficients by split spp and age (set in initialstate)

@@ -1620,6 +1620,7 @@ Namespace DataSources
                             stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rdLifeStage("Mortality"))
                             stanzaDS.SpeciesCode(iGroup, 0) = iStanza
                             stanzaDS.Age1(iStanza, iLifeStage) = CInt(rdLifeStage("AgeStart"))
+                            stanzaDS.NonFeeding(iStanza, iLifeStage) = CBool(Me.m_db.ReadSafe(rdStanza, "NonFeeding", False))
 
                         Catch ex As Exception
                             Me.LogMessage(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
@@ -1730,6 +1731,7 @@ Namespace DataSources
                             drow("Sequence") = iLifeStage
                             drow("AgeStart") = stanzaDS.Age1(iStanza, iLifeStage)
                             drow("Mortality") = stanzaDS.Stanza_Z(iStanza, iLifeStage)
+                            drow("NonFeeding") = stanzaDS.NonFeeding(iStanza, iLifeStage)
                             'drow("vbK") = ecopathDS.vbKInput(iGroup)
                             writer.AddRow(drow)
                         End If
@@ -7418,6 +7420,7 @@ Namespace DataSources
                 ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
                 ecospaceDS.bUseEffortDistThreshold = CInt(Me.m_db.ReadSafe(reader, "UseEffortDistrThreshold", 0)) = 1
                 ecospaceDS.EffortDistThreshold = CSng(Me.m_db.ReadSafe(reader, "EffortDistrThreshold", 10000))
+                ecospaceDS.FitResponseType = DirectCast(Me.m_db.ReadSafe(reader, "FitResponseType", eFitResponseType.None), eFitResponseType)
 
                 stanzaDS.NPacketsMultiplier = CSng(reader("NumPacketsMultiplier"))
 
@@ -7602,6 +7605,7 @@ Namespace DataSources
                 drow("PredictEffort") = ecospaceDS.PredictEffort
                 drow("AssumeSquareCells") = ecospaceDS.AssumeSquareCells
                 drow("CoordinateSystemWKT") = ecospaceDS.ProjectionString
+                drow("FitResponseType") = ecospaceDS.FitResponseType
 
                 drow("TotalTime") = ecospaceDS.TotalTime
                 drow("IFDPower") = ecospaceDS.IFDPower
@@ -7618,6 +7622,7 @@ Namespace DataSources
                 drow("UseExact") = ecospaceDS.UseExact
                 drow("UseEffortDistrThreshold") = If(ecospaceDS.bUseEffortDistThreshold, 1, 0)
                 drow("EffortDistrThreshold") = ecospaceDS.EffortDistThreshold
+                drow("FitResponseType") = ecospaceDS.FitResponseType
 
                 If Me.Version >= 6.01 Then
                     drow("Tolerance") = ecospaceDS.Tol

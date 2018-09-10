@@ -358,7 +358,6 @@ Namespace Ecopath
 
         End Sub
 
-
 #End Region ' Internals
 
     End Class

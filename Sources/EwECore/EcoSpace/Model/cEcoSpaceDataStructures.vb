@@ -402,7 +402,7 @@ Public Class cEcospaceDataStructures
     ''' If <see cref="cEcospaceDataStructures.bUseEffortDistThreshold">bUseEffortDistThreshold</see> = True this will only include cells below the fishing effort threshold</remarks>
     Public SailScale() As Single
 
-    Public FitRespType As Integer
+    Public FitResponseType As eFitResponseType = eFitResponseType.None
 
     ''' <summary>
     ''' Sailing Effort Multiplier by Fleet
