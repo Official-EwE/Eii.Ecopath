@@ -205,7 +205,6 @@ Namespace Ecospace.Basemap
             Me.AddLayer(l, l.Name, "EditRefMap")
             l.Renderer.IsVisible = False
 
-            Me.AddData(eVarNameFlags.LayerMigration)
             Me.AddData(eVarNameFlags.LayerRegion)
             Me.AddData(eVarNameFlags.LayerRelPP)
             Me.AddData(eVarNameFlags.LayerRelCin, False)
@@ -213,6 +212,8 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerExclusion, False)
             Me.AddData(eVarNameFlags.LayerAdvection, False)
             Me.AddData(eVarNameFlags.LayerHabitatCapacityInput)
+            Me.AddData(eVarNameFlags.LayerMigration, False)
+            Me.AddData(eVarNameFlags.LayerM0MultInput, False)
             Me.AddData(eVarNameFlags.LayerDriver)
             Me.AddData(eVarNameFlags.LayerImportance)
             Me.AddData(eVarNameFlags.LayerHabitat)

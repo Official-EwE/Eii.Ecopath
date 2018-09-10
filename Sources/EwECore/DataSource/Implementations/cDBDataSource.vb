@@ -8323,6 +8323,8 @@ Namespace DataSources
 
                     strMap = CStr(Me.m_db.ReadSafe(reader, "CapacityMap", ""))
                     cStringUtils.StringToArray(strMap, ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                    strMap = CStr(Me.m_db.ReadSafe(reader, "OtherMortMap", ""))
+                    cStringUtils.StringToArray(strMap, ecospaceDS.M0MultInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
                 End While
                 Me.m_db.ReleaseReader(reader)
@@ -8485,12 +8487,10 @@ Namespace DataSources
                     'drow("EatEffBad") = ecospaceDS.EatEffBad(iGroup)
                     drow("IsAdvected") = ecospaceDS.IsAdvected(iGroup)
                     drow("IsMigratory") = ecospaceDS.IsMigratory(iGroup)
-
                     drow("BarrierAvoidanceWeight") = ecospaceDS.barrierAvoidanceWeight(iGroup)
                     drow("CapacityCalType") = ecospaceDS.CapCalType(iGroup)
-
-                    drow("CapacityMap") = cStringUtils.ArrayToString(ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol,
-                                                                     ecospaceDS.DepthInput, True)
+                    drow("CapacityMap") = cStringUtils.ArrayToString(ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                    drow("OtherMortMap") = cStringUtils.ArrayToString(ecospaceDS.M0MultInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
                     If bNewRow Then
                         writer.AddRow(drow)
@@ -8668,6 +8668,7 @@ Namespace DataSources
                 ' Detritus default of 10, non-detritus 300
                 drow("MVel") = If(bIsDetritus, 10.0!, 300.0!)
                 drow("CapacityMap") = ""
+                drow("OtherMortMap") = ""
                 writer.AddRow(drow)
 
                 Me.m_db.ReleaseWriter(writer)

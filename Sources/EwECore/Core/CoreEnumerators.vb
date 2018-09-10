@@ -454,7 +454,7 @@ End Enum
 
 #Region " Fitness responses "
 
-Public Enum eFitResponseType As Byte
+Public Enum eFitResponseType As Integer
     None = 0
     EmigRate = 1
     Gradient = 2

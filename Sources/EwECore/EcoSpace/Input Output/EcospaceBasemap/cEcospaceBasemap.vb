@@ -192,6 +192,15 @@ Public Class cEcospaceBasemap
             val.Stored = False
             m_values.Add(val.varName, val)
 
+            ' Other mortality
+            val = New cValue(0, eVarNameFlags.LayerM0Mult, eStatusFlags.Null, eValueTypes.Sng)
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
+            val = New cValue(0, eVarNameFlags.LayerM0MultInput, eStatusFlags.Null, eValueTypes.Sng)
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
             ' ----------------
             ' Init layers
             ' ----------------
@@ -310,6 +319,20 @@ Public Class cEcospaceBasemap
 
             '' MLD
             'Me.m_dictLayers(eVarNameFlags.LayerMLD) = New cEcospaceLayer() {New cEcospaceLayerMLD(theCore, Me)}
+
+            ' Other mortality output layer
+            llayers.Clear()
+            For i As Integer = 1 To ecospaceDS.NGroups
+                llayers.Add(New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerOtherMort, eVarNameFlags.LayerM0Mult, i))
+            Next
+            Me.m_dictLayers(eVarNameFlags.LayerM0Mult) = llayers.ToArray
+
+            ' Other mortality input layer
+            llayers.Clear()
+            For i As Integer = 1 To ecospaceDS.NGroups
+                llayers.Add(New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerOtherMortInput, eVarNameFlags.LayerM0MultInput, i))
+            Next
+            Me.m_dictLayers(eVarNameFlags.LayerM0MultInput) = llayers.ToArray
 
             'set status flags to default values
             ResetStatusFlags()
@@ -658,9 +681,9 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get the habitat foraging capacity input layer (prior)
     ''' </summary>
-    ''' <param name="iGroup"></param>
+    ''' <param name="iGroup">One-based group index</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerHabitatCapacityInput(iGroup As Integer) As cEcospaceLayerHabitatCapacity
         Get
@@ -670,9 +693,9 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Get the computed habitat foraging capacity layer
     ''' </summary>
-    ''' <param name="iGroup"></param>
+    ''' <param name="iGroup">One-based group index</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerHabitatCapacity(iGroup As Integer) As cEcospaceLayerHabitatCapacity
         Get
@@ -813,6 +836,30 @@ Public Class cEcospaceBasemap
     End Property
 
     ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the other mortality input layer (prior)
+    ''' </summary>
+    ''' <param name="iGroup">One-based group index</param>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerOtherMortalityInput(iGroup As Integer) As cEcospaceLayerOtherMortality
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerM0MultInput)(iGroup - 1), cEcospaceLayerOtherMortality)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the computed other mortality layer
+    ''' </summary>
+    ''' <param name="iGroup">One-based group index</param>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerOtherMortality(iGroup As Integer) As cEcospaceLayerOtherMortality
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerM0Mult)(iGroup - 1), cEcospaceLayerOtherMortality)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceLayerManager.Layers"/>
     ''' -----------------------------------------------------------------------
     Public Function Layers(Optional ByVal varName As eVarNameFlags = eVarNameFlags.NotSet) As cEcospaceLayer() _
@@ -906,6 +953,8 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.Bcell
             Case eVarNameFlags.LayerExclusion
                 Return Me.m_core.m_EcoSpaceData.Excluded
+            Case eVarNameFlags.LayerM0MultInput
+                Return Me.m_core.m_EcoSpaceData.M0MultInput
         End Select
         Return Nothing
     End Function

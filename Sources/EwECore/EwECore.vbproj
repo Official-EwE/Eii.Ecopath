@@ -163,6 +163,7 @@
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_03.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_01.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_02.vb" />
+    <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_13.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_12.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_11.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_10.vb" />
@@ -221,6 +222,7 @@
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportASCIIData.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportRaster.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
+    <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerOtherMortality.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceTimeSeriesData\cEcospaceTimeSeriesManager.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceTimeSeriesData\cEcospaceTimeSeriesXYZReader.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceTimeSeriesData\cEcospaceTimeSeriesRec.vb" />

@@ -1996,17 +1996,14 @@
   <data name="ECOSPACE_LAYERGROUP_FISHING" xml:space="preserve">
     <value>Fishing</value>
   </data>
-  <data name="ECOSPACE_LAYERGROUP_HABCAP" xml:space="preserve">
-    <value>Habitat capacity</value>
+  <data name="ECOSPACE_LAYERGROUP_GROUP" xml:space="preserve">
+    <value>Group dynamics</value>
   </data>
   <data name="ECOSPACE_LAYERGROUP_HABITATS" xml:space="preserve">
     <value>Habitats</value>
   </data>
   <data name="ECOSPACE_LAYERGROUP_IMPORTANCE" xml:space="preserve">
     <value>Importance</value>
-  </data>
-  <data name="ECOSPACE_LAYERGROUP_MIGRATION" xml:space="preserve">
-    <value>Migration</value>
   </data>
   <data name="ECOSPACE_LAYERGROUP_MPAS" xml:space="preserve">
     <value>MPAs</value>

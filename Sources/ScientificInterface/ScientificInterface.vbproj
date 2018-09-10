@@ -2101,34 +2101,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Personal\Safenet\EwEBiomassEmitterPlugin\EwEBiomassEmitterPlugin.vbproj">
-      <Project>{f1e83a61-8a90-4975-abae-a546e74e7235}</Project>
-      <Name>EwEBiomassEmitterPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Personal\Safenet\EwEImportExportLayersPlugin\EwEImportExportLayerDefinitionsPlugin.vbproj">
-      <Project>{ff2c3b42-6872-4841-96ae-b06d88da6f1c}</Project>
-      <Name>EwEImportExportLayerDefinitionsPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEEcospaceSpinupPlugin\EwEEcospaceSpinupPlugin.vbproj">
-      <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
-      <Name>EwEEcospaceSpinupPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEMPADynamicsPlugin\EwEMPADynamicsPlugin.vbproj">
-      <Project>{220ff584-9bfa-4872-949a-52c7a6877b65}</Project>
-      <Name>EwEMPADynamicsPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
-      <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
-      <Name>EwESpatialAssetsPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\MSP\EwEMSPplugin\EwEMSPPlugin.vbproj">
-      <Project>{5e75a493-7980-4d12-b03c-2844322fcd6b}</Project>
-      <Name>EwEMSPPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\MSP\EwEShell\EwEShell.vbproj">
-      <Project>{ddc5d15f-63f4-4b9d-ad24-a69d1d91c243}</Project>
-      <Name>EwEShell</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>

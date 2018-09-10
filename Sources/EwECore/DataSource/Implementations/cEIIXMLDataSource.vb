@@ -644,6 +644,7 @@ Public Class cEIIXMLDataSource
                     stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rowStage("Mortality"))
                     stanzaDS.SpeciesCode(iGroup, 0) = iStanza
                     stanzaDS.Age1(iStanza, iLifeStage) = CInt(rowStage("AgeStart"))
+                    stanzaDS.NonFeeding(iStanza, iLifeStage) = CBool(Me.ReadSafe(rowStage, "NonFeeding", False))
 
                 Catch ex As Exception
                     Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
@@ -2402,26 +2403,10 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(Me.ReadSafe(drow, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))
                 ecospaceDS.CapCalType(iGroup) = DirectCast(CInt(Me.ReadSafe(drow, "CapacityCalType", eEcospaceCapacityCalType.Habitat)), eEcospaceCapacityCalType)
 
-                '' ---------------------------
-                '' MIGRATION_UPD: BEGIN REMOVE
-                'ecospaceDS.MigConcRow(iGroup) = CSng(drow("MigConcRow"))
-                'ecospaceDS.MigConcCol(iGroup) = CSng(drow("MigConcCol"))
-
-                '' Monthly PrefRow
-                'astrSplit = CStr(drow("PrefRow")).Split(CChar(" "))
-                'For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
-                '    ecospaceDS.PrefRow(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
-                'Next
-                '' Monthly PrefCol
-                'astrSplit = CStr(drow("PrefCol")).Split(CChar(" "))
-                'For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
-                '    ecospaceDS.Prefcol(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
-                'Next
-                '' MIGRATION_UPD: END REMOVE
-                '' ---------------------------
-
                 strMap = CStr(Me.ReadSafe(drow, "CapacityMap", ""))
                 cStringUtils.StringToArray(strMap, ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                strMap = CStr(Me.ReadSafe(drow, "OtherMortMap", ""))
+                cStringUtils.StringToArray(strMap, ecospaceDS.M0MultInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
             Catch ex As Exception
                 Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading Ecospace group {1}", ex.Message, iGroup))

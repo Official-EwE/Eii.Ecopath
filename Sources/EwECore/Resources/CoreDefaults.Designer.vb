@@ -4034,6 +4034,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to M0 mult (out)||Other mortality multiplier map (computed).
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERM0MULT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERM0MULT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to M0 mult||Other mortality multiplier map (entered).
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERM0MULTINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERM0MULTINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Migration||Migration map.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERMIGRATION() As String
