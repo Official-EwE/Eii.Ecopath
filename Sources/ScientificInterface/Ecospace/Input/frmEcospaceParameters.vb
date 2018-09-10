@@ -55,16 +55,6 @@ Namespace Ecospace
         Private m_fpNEffortThreads As cEwEFormatProvider = Nothing
         Private m_fpNumPackets As cEwEFormatProvider = Nothing
 
-        ' Spatial
-        Private m_fpN As cEwEFormatProvider = Nothing
-        Private m_fpW As cEwEFormatProvider = Nothing
-        Private m_fpS As cEwEFormatProvider = Nothing
-        Private m_fpE As cEwEFormatProvider = Nothing
-        Private m_fpInCol As cEwEFormatProvider = Nothing
-        Private m_fpInRow As cEwEFormatProvider = Nothing
-        Private m_fpCellLength As cEwEFormatProvider = Nothing
-        Private m_fpCellSize As cEwEFormatProvider = Nothing
-
         ' Model
         Private m_fpTotalTime As cEwEFormatProvider = Nothing
         Private m_fpNumTSpYear As cEwEFormatProvider = Nothing
@@ -73,6 +63,7 @@ Namespace Ecospace
         Private m_fpMaxIterations As cEwEFormatProvider = Nothing
         Private m_fpUseExact As cEwEFormatProvider = Nothing
         Private m_fpAnnualOutput As cEwEFormatProvider = Nothing
+        Private m_fpFitResponseType As cEwEFormatProvider = Nothing
 
         Private m_fpMovePackets As cEwEFormatProvider = Nothing
         Private WithEvents m_bpConTracing As cBooleanProperty = Nothing
@@ -118,7 +109,6 @@ Namespace Ecospace
             Me.m_bpUseIBM = DirectCast(propMan.GetProperty(parms, eVarNameFlags.UseIBM), cBooleanProperty)
             Me.m_bpUseNewStanza = DirectCast(propMan.GetProperty(parms, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
             Me.m_bpAdjustSpace = DirectCast(propMan.GetProperty(parms, eVarNameFlags.AdjustSpace), cBooleanProperty)
-            Me.m_bpEffort = DirectCast(propMan.GetProperty(parms, eVarNameFlags.PredictEffort), cBooleanProperty)
 
             Me.m_bpConTracing = DirectCast(propMan.GetProperty(parms, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
 
@@ -136,24 +126,6 @@ Namespace Ecospace
 
             Me.UpdateControls()
 
-            Me.m_fpInCol = New cEwEFormatProvider(Me.UIContext, Me.m_nudColCount, GetType(Integer), bm.GetVariableMetadata(eVarNameFlags.InCol))
-            Me.m_fpInCol.Value = bm.InCol
-
-            Me.m_fpInRow = New cEwEFormatProvider(Me.UIContext, Me.m_nudRowCount, GetType(Integer), bm.GetVariableMetadata(eVarNameFlags.InRow))
-            Me.m_fpInRow.Value = bm.InRow
-
-            Me.m_fpN = New cEwEFormatProvider(Me.UIContext, Me.m_nudNorth, GetType(Single), bm.GetVariableMetadata(eVarNameFlags.Latitude))
-            Me.m_fpN.Value = bm.Latitude
-
-            Me.m_fpW = New cEwEFormatProvider(Me.UIContext, Me.m_nudWest, GetType(Single), bm.GetVariableMetadata(eVarNameFlags.Longitude))
-            Me.m_fpW.Value = bm.Longitude
-
-            Me.m_fpCellLength = New cEwEFormatProvider(Me.UIContext, Me.m_nudCellLength, GetType(Single), bm.GetVariableMetadata(eVarNameFlags.CellLength))
-            Me.m_fpCellLength.Value = bm.CellLength
-
-            Me.m_fpCellSize = New cEwEFormatProvider(Me.UIContext, Me.m_nudCellSize, GetType(Single), bm.GetVariableMetadata(eVarNameFlags.CellSize))
-            Me.m_fpCellSize.Value = bm.CellSize
-
             ' Hmm, connecting one control to three live properties - this could be dangerous
             Me.m_fpNGridThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, parms, eVarNameFlags.nGridSolverThreads)
             Me.m_fpNBiomassThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, parms, eVarNameFlags.nSpaceThreads)
@@ -169,8 +141,8 @@ Namespace Ecospace
             Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxIterations, parms, eVarNameFlags.MaxIterations)
             Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, parms, eVarNameFlags.UseExact)
             Me.m_fpAnnualOutput = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAnnualOutput, parms, eVarNameFlags.EcospaceUseAnnualOutput)
-
             Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, parms, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
+            Me.m_fpFitResponseType = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbFitResponseType, parms, eVarNameFlags.FitResponseType)
 
             Me.UpdateScenarioFormatProviders()
 
@@ -274,9 +246,6 @@ Namespace Ecospace
                 Me.m_clbAutosave.SetItemChecked(i, wr.Enabled And Me.Core.Autosave(eAutosaveTypes.EcospaceResults))
             Next
 
-            Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
-            Me.m_rbEcopathEffort.Checked = Not CBool(Me.m_bpEffort.GetValue())
-
             ' Time series
             Dim manager As EcospaceTimeSeries.cEcospaceTimeSeriesManager = Me.Core.EcospaceTimeSeriesManager
             Me.m_tbxXYTimeSeriesFile.Text = If(String.IsNullOrWhiteSpace(manager.BiomassInputFileName), SharedResources.GENERIC_VALUE_NOTSET, manager.BiomassInputFileName)
@@ -343,16 +312,6 @@ Namespace Ecospace
             If (Me.m_bInUpdate) Then Return
 
             Me.m_bpAdjustSpace.SetValue(Me.m_rbAdjustedBiomass.Checked)
-
-        End Sub
-
-        Private Sub OnEffortOptionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_rbPredictEffort.CheckedChanged, m_rbEcopathEffort.CheckedChanged
-
-            If (Me.UIContext Is Nothing) Then Return
-            If (Me.m_bInUpdate) Then Return
-
-            Me.m_bpEffort.SetValue(Me.m_rbPredictEffort.Checked)
 
         End Sub
 

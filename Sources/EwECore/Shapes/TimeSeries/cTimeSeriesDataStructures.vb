@@ -129,6 +129,7 @@ Public Class cTimeSeriesDataStructures
     Public DatVal(,) As Single
     ''' <summary>Year of the datum point.</summary>
     Public DatYear() As Integer
+    ''' <summary>Sum of squares contribution (x time series)</summary>
     Public DatSS() As Single
 
     ''' <summary>Time interval of the currently selected dataset (monthly or annual).</summary>

@@ -79,7 +79,6 @@ Public Class cEcospaceModelParameters
 
             ' UseExact
             val = New cValue(1, eVarNameFlags.UseExact, eStatusFlags.Null, eValueTypes.Bool)
-
             m_values.Add(val.varName, val)
 
             'Contaminant tracing
@@ -201,6 +200,8 @@ Public Class cEcospaceModelParameters
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
+            val = New cValue(0, eVarNameFlags.FitResponseType, eStatusFlags.OK, eValueTypes.Int)
+            m_values.Add(val.varName, val)
 
             'set status flags to default values
             ResetStatusFlags()
@@ -441,6 +442,15 @@ Public Class cEcospaceModelParameters
         End Get
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.SOR, value)
+        End Set
+    End Property
+
+    Public Property FitResponseType As eFitResponseType
+        Get
+            Return DirectCast(Me.GetVariable(eVarNameFlags.FitResponseType), eFitResponseType)
+        End Get
+        Set(value As eFitResponseType)
+            Me.SetVariable(eVarNameFlags.FitResponseType, value)
         End Set
     End Property
 

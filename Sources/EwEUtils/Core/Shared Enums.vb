@@ -430,6 +430,8 @@ Namespace Core
         ''' <see cref="eVarNameFlags.QBInput">QB</see> in a multi-stanza
         ''' configuration</summary>
         LeadingCB
+        ''' <summary>Stanza parameter; used to indicate that a life stage does not feed.</summary>
+        NonFeeding
         ''' <summary>BaB * Bio</summary>
         Bat
         ''' <summary>Start age of a group in a stanza configuration (in months)</summary>
@@ -521,6 +523,8 @@ Namespace Core
         AdjustSpace
         ''' <summary>Conversion factor for fishing effort</summary>
         FleetEffortConversion
+        ''' <summary></summary>
+        FitResponseType
         ''' <summary>Biomass map as computed by Ecospace.</summary>
         EcospaceMapBiomass
         ''' <summary>Catch map as computed by Ecospace.</summary>
@@ -804,7 +808,7 @@ Namespace Core
         ''' <summary>To document</summary>
         EcosimFleetCatchTime
 
-       ''' <summary>Sum of squares fit of Ecospace predicted values to all reference data across all groups</summary>
+        ''' <summary>Sum of squares fit of Ecospace predicted values to all reference data across all groups</summary>
         EcospaceSS
         ''' <summary>Sum of squares fit of Ecospace predicted values by group</summary>
         EcospaceSSGroup

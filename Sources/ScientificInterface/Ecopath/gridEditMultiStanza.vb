@@ -33,9 +33,9 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 <CLSCompliant(False)> _
 Public Class gridEditMultiStanza
-    : Inherits EwEGrid
+    Inherits EwEGrid
 
-#Region "Private variables"
+#Region " Private variables "
 
     Private m_stanzagroup As cStanzaGroup = Nothing
 
@@ -48,18 +48,20 @@ Public Class gridEditMultiStanza
         Z
         LeadingCB
         CBInput
+        NonFeeding
     End Enum
 
-#End Region
+#End Region ' Private variables
 
-#Region "Constructors"
+#Region " Constructor "
 
     Public Sub New()
+        ' NOP
     End Sub
 
-#End Region
+#End Region ' Constructor
 
-#Region "Properties"
+#Region " Properties "
 
     Public Property StanzaGroup() As cStanzaGroup
         Get
@@ -71,7 +73,9 @@ Public Class gridEditMultiStanza
         End Set
     End Property
 
-#End Region
+#End Region ' Properties
+
+#Region " Internals "
 
     Public Sub CalculateStanzaParameters()
         ' Sanity check
@@ -94,6 +98,7 @@ Public Class gridEditMultiStanza
         Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, eDescriptorTypes.Abbreviation)
         Me(0, eColumnTypes.LeadingCB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
         Me(0, eColumnTypes.CBInput) = New EwEColumnHeaderCell(eVarNameFlags.QBInput)
+        Me(0, eColumnTypes.NonFeeding) = New EwEColumnHeaderCell(eVarNameFlags.NonFeeding)
 
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.FixedColumnWidths = False
@@ -113,9 +118,9 @@ Public Class gridEditMultiStanza
 
         If (Me.m_stanzagroup Is Nothing) Then Return
 
-        For iStanza As Integer = 1 To Me.m_stanzagroup.nLifeStages
+        For iLifeStage As Integer = 1 To Me.m_stanzagroup.nLifeStages
 
-            source = Core.EcoPathGroupInputs(Me.m_stanzagroup.iGroups(iStanza))
+            source = Core.EcoPathGroupInputs(Me.m_stanzagroup.iGroups(iLifeStage))
             iRow = Me.AddRow
 
             'Index
@@ -126,40 +131,45 @@ Public Class gridEditMultiStanza
 
             'Start age
             ewec = New EwECell(0, GetType(Integer))
-            ewec.Value = Me.m_stanzagroup.GetVariable(eVarNameFlags.StartAge, iStanza)
+            ewec.Value = Me.m_stanzagroup.GetVariable(eVarNameFlags.StartAge, iLifeStage)
             ' First group start age cannot be edited
-            If (iStanza = 1) Then ewec.Style = cStyleGuide.eStyleFlags.NotEditable
+            If (iLifeStage = 1) Then ewec.Style = cStyleGuide.eStyleFlags.NotEditable
             Me(iRow, eColumnTypes.StartAge) = ewec
             Me(iRow, eColumnTypes.StartAge).Behaviors.Add(Me.EwEEditHandler)
 
             ' LeadingB
-            Me(iRow, eColumnTypes.LeadingB) = New Cells.Real.CheckBox(Me.m_stanzagroup.LeadingB = iStanza)
+            Me(iRow, eColumnTypes.LeadingB) = New Cells.Real.CheckBox(Me.m_stanzagroup.LeadingB = iLifeStage)
             Me(iRow, eColumnTypes.LeadingB).Behaviors.Add(Me.EwEEditHandler)
 
             'Biomass
             ewec = New EwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
-            ewec.Value = Me.m_stanzagroup.Biomass(iStanza)
+            ewec.Value = Me.m_stanzagroup.Biomass(iLifeStage)
             Me(iRow, eColumnTypes.Biomass) = ewec
             Me(iRow, eColumnTypes.Biomass).Behaviors.Add(Me.EwEEditHandler)
 
             'Total Mortality
             ewec = New EwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
-            ewec.Value = Me.m_stanzagroup.Mortality(iStanza)
+            ewec.Value = Me.m_stanzagroup.Mortality(iLifeStage)
             Me(iRow, eColumnTypes.Z) = ewec
             Me(iRow, eColumnTypes.Z).Behaviors.Add(Me.EwEEditHandler)
 
             ' LeadingCB
-            Me(iRow, eColumnTypes.LeadingCB) = New Cells.Real.CheckBox(Me.m_stanzagroup.LeadingCB = iStanza)
+            Me(iRow, eColumnTypes.LeadingCB) = New Cells.Real.CheckBox(Me.m_stanzagroup.LeadingCB = iLifeStage)
             Me(iRow, eColumnTypes.LeadingCB).Behaviors.Add(Me.EwEEditHandler)
 
             'Consumption/Biomass
             ewec = New EwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
-            ewec.Value = Me.m_stanzagroup.CB(iStanza)
+            ewec.Value = Me.m_stanzagroup.CB(iLifeStage)
             Me(iRow, eColumnTypes.CBInput) = ewec
             Me(iRow, eColumnTypes.CBInput).Behaviors.Add(Me.EwEEditHandler)
+
+            ' Non-feeding
+            Me(iRow, eColumnTypes.NonFeeding) = New Cells.Real.CheckBox(Me.m_stanzagroup.NonFeeding(iLifeStage))
+            Me(iRow, eColumnTypes.NonFeeding).Behaviors.Add(Me.EwEEditHandler)
+
         Next
 
         Me.SetLeadingGroup(Me.m_stanzagroup.LeadingB, eColumnTypes.LeadingB)
@@ -171,31 +181,33 @@ Public Class gridEditMultiStanza
 
         Dim iLeadingB As Integer = Me.m_stanzagroup.LeadingB
         Dim iLeadingCB As Integer = Me.m_stanzagroup.LeadingCB
-        For iStanza As Integer = 1 To Me.m_stanzagroup.nLifeStages
-            If CBool(Me(iStanza, eColumnTypes.LeadingB).Value) Then
-                iLeadingB = iStanza
+        For iLifeStage As Integer = 1 To Me.m_stanzagroup.nLifeStages
+            If CBool(Me(iLifeStage, eColumnTypes.LeadingB).Value) Then
+                iLeadingB = iLifeStage
             End If
-            If CBool(Me(iStanza, eColumnTypes.LeadingCB).Value) Then
-                iLeadingCB = iStanza
+            If CBool(Me(iLifeStage, eColumnTypes.LeadingCB).Value) Then
+                iLeadingCB = iLifeStage
             End If
         Next
         Me.m_stanzagroup.LeadingB = iLeadingB
         Me.m_stanzagroup.LeadingCB = iLeadingCB
 
-        For iStanza As Integer = 1 To Me.m_stanzagroup.nLifeStages
+        For iLifeStage As Integer = 1 To Me.m_stanzagroup.nLifeStages
 
             'Start age
-            Me.m_stanzagroup.SetVariable(eVarNameFlags.StartAge, CInt(Me(iStanza, eColumnTypes.StartAge).Value), iStanza)
+            Me.m_stanzagroup.SetVariable(eVarNameFlags.StartAge, CInt(Me(iLifeStage, eColumnTypes.StartAge).Value), iLifeStage)
             'Biomass
-            Me.m_stanzagroup.Biomass(iStanza) = CSng(Me(iStanza, eColumnTypes.Biomass).Value)
+            Me.m_stanzagroup.Biomass(iLifeStage) = CSng(Me(iLifeStage, eColumnTypes.Biomass).Value)
             'Total Mortality
-            Me.m_stanzagroup.Mortality(iStanza) = CSng(Me(iStanza, eColumnTypes.Z).Value)
+            Me.m_stanzagroup.Mortality(iLifeStage) = CSng(Me(iLifeStage, eColumnTypes.Z).Value)
             'Consumption/Biomass
-            Me.m_stanzagroup.CB(iStanza) = CSng(Me(iStanza, eColumnTypes.CBInput).Value)
+            Me.m_stanzagroup.CB(iLifeStage) = CSng(Me(iLifeStage, eColumnTypes.CBInput).Value)
+            'Non-feeding
+            Me.m_stanzagroup.NonFeeding(iLifeStage) = CBool(Me(iLifeStage, eColumnTypes.NonFeeding).Value)
         Next
 
         If bApplyToCore Then
-            ' JS 090826: apply changes for all stanza groups, not only the last used stanza group
+            ' JS 090816: apply changes for all stanza groups, not only the last used stanza group
             For iIndex As Integer = 0 To Core.nStanzas - 1
                 Core.StanzaGroups(iIndex).Apply()
             Next
@@ -217,11 +229,11 @@ Public Class gridEditMultiStanza
         Dim bLeading As Boolean = False
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
-        For iStanza As Integer = 1 To Me.m_stanzagroup.nLifeStages
-            bLeading = (iRow = iStanza)
+        For iLifeStage As Integer = 1 To Me.m_stanzagroup.nLifeStages
+            bLeading = (iRow = iLifeStage)
             If bLeading Then style = cStyleGuide.eStyleFlags.OK Else style = cStyleGuide.eStyleFlags.NotEditable
-            Me(iStanza, col).Value = (iRow = iStanza)
-            DirectCast(Me(iStanza, col + 1), EwECell).Style = style
+            Me(iLifeStage, col).Value = (iRow = iLifeStage)
+            DirectCast(Me(iLifeStage, col + 1), EwECell).Style = style
         Next
 
         Me.InvalidateCells()
@@ -237,12 +249,12 @@ Public Class gridEditMultiStanza
 
         Select Case DirectCast(p.Column, eColumnTypes)
             Case eColumnTypes.StartAge
-                Dim iStanza As Integer = p.Row - 1
+                Dim iLifeStage As Integer = p.Row - 1
                 Dim iAge As Integer = CInt(Me(p.Row, eColumnTypes.StartAge).Value)
-                If iStanza > 0 Then
+                If iLifeStage > 0 Then
                     bOK = bOK And (iAge > CInt(Me(p.Row - 1, eColumnTypes.StartAge).Value))
                 End If
-                If iStanza < Me.m_stanzagroup.nLifeStages - 1 Then
+                If iLifeStage < Me.m_stanzagroup.nLifeStages - 1 Then
                     bOK = bOK And (iAge < CInt(Me(p.Row + 1, eColumnTypes.StartAge).Value))
                 End If
         End Select
@@ -263,5 +275,7 @@ Public Class gridEditMultiStanza
         Return MyBase.OnCellValueChanged(p, cell)
 
     End Function
+
+#End Region ' Internals
 
 End Class

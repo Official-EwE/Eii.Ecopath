@@ -11783,6 +11783,7 @@ Public Class cCore
             ' Array variables
             For j As Integer = 1 To m_Stanza.Nstanza(iStanza)
                 stanza.StartAge(j) = m_Stanza.Age1(iStanza, j)
+                stanza.NonFeeding(j) = m_Stanza.NonFeeding(iStanza, j)
             Next
 
             For j As Integer = 1 To m_Stanza.Nstanza(iStanza)
@@ -11830,6 +11831,7 @@ Public Class cCore
     Friend Function CalculateStanza(ByVal stanza As cStanzaGroup) As Boolean
         Dim FirstAge() As Integer, SecondAge() As Integer
         Dim Bio() As Single, Z() As Single, cb() As Single, Bat() As Single
+        Dim NonFeeding() As Boolean
         Dim bSuccess As Boolean = True
 
         Try
@@ -11860,6 +11862,7 @@ Public Class cCore
             ReDim cb(nLifeStages)
             ReDim FirstAge(nLifeStages)
             ReDim SecondAge(nLifeStages) 'last month of age by spp, stanza (set in ecopath)
+            ReDim NonFeeding(nLifeStages)
 
             If Not stanza.OkToCalculate(msg) Then
                 'this stanza group has not had it parameters set B CB and Mort
@@ -11877,6 +11880,7 @@ Public Class cCore
                 Z(i) = stanza.Mortality(i)
                 cb(i) = stanza.CB(i)
                 FirstAge(i) = stanza.StartAge(i)
+                NonFeeding(i) = stanza.NonFeeding(i)
             Next
             leadingB = stanza.LeadingB
             leadingCB = stanza.LeadingCB
@@ -11914,6 +11918,8 @@ Public Class cCore
                 stanza.Mortality(i) = Z(i)
                 stanza.CB(i) = cb(i)
                 stanza.StartAge(i) = FirstAge(i)
+                stanza.StartAge(i) = FirstAge(i)
+                stanza.NonFeeding(i) = NonFeeding(i)
             Next
 
             stanza.WmatWinf = wmatwinf
@@ -11992,6 +11998,7 @@ Public Class cCore
         For iLifeStage As Integer = 1 To stanza.nLifeStages
             m_Stanza.EcopathCode(iStanza, iLifeStage) = stanza.iGroups(iLifeStage)
             m_Stanza.Age1(iStanza, iLifeStage) = stanza.StartAge(iLifeStage)
+            m_Stanza.NonFeeding(iStanza, iLifeStage) = stanza.NonFeeding(iLifeStage)
 
             ''update all the lifestages with the single vbK value EwE5 see frmGrpStanza.UpdateGroups
             'm_EcoPathData.vbKInput(m_Stanza.EcopathCode(iStanza, iLifeStage)) = stanza.VBGF
@@ -12004,8 +12011,6 @@ Public Class cCore
             m_EcoPathData.BAInput(m_Stanza.EcopathCode(iStanza, iLifeStage)) = stanza.Biomass(iLifeStage) * stanza.BiomassAccumulationRate
 
         Next iLifeStage
-
-
 
         Return bSucces
 

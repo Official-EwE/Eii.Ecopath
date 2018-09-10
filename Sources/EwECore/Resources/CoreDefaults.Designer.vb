@@ -3323,6 +3323,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Fit response||Movement response of migratory species to fitness.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_FITRESPONSETYPE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_FITRESPONSETYPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fixed cost|||Fixed cost is the cost of operating a fleet unit, independent of effort, in the unit time defined in Ecopath.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_FIXEDCOST() As String
@@ -6541,6 +6550,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property VARIABLE_NGRIDSOLVERTHREADS() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_NGRIDSOLVERTHREADS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Not feeding.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_NONFEEDING() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_NONFEEDING", resourceCulture)
             End Get
         End Property
         

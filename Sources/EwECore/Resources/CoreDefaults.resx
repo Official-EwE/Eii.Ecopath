@@ -2760,4 +2760,10 @@
   <data name="PARAM_SIGMOID_XOPT" xml:space="preserve">
     <value>X opt. (y = 0.998)</value>
   </data>
+  <data name="VARIABLE_FITRESPONSETYPE" xml:space="preserve">
+    <value>Fit response||Movement response of migratory species to fitness</value>
+  </data>
+  <data name="VARIABLE_NONFEEDING" xml:space="preserve">
+    <value>Not feeding</value>
+  </data>
 </root>

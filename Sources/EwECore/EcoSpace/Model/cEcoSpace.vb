@@ -5694,7 +5694,7 @@ exitline:
             'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
             For i = 0 To m_Data.InRow + 1
                 For j = 0 To m_Data.InCol + 1
-                    If m_Data.FitRespType > 0 Then
+                    If m_Data.FitResponseType > 0 Then
                         Ep = -Kmovefit(ip) * RelFitness(i, j, ip)
                         If Ep < -MaxCh Then Ep = -MaxCh
                         If Ep > MaxCh Then Ep = MaxCh
@@ -5717,7 +5717,7 @@ exitline:
                         'can there be movement to or from the cell to the right for this cell
                         If m_Data.Depth(i, j + 1) > 0 Then
 
-                            If m_Data.FitRespType < 2 Then
+                            If m_Data.FitResponseType < 2 Then
                                 'e() is the movement to the left 
                                 'set the movement from the cell to the left into this cell
                                 e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * RelMoveFit(i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
@@ -5746,7 +5746,7 @@ exitline:
 
                         'then check depths on bottom face of this cell
                         If m_Data.Depth(i + 1, j) > 0 Then
-                            If m_Data.FitRespType < 2 Then
+                            If m_Data.FitResponseType < 2 Then
                                 C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * RelMoveFit(i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
                                 Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
 
