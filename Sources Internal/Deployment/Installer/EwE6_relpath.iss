@@ -2,11 +2,11 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 #include <idp.iss>
 #define Compile64Bit 0
-#define Spinup 1
-#define SpatTemp 1
+#define Spinup 0
+#define SpatTemp 0
 #define MPAdynamics 1
 #define MergeGroups 0
-#define BiomassEmitters 1
+#define BiomassEmitters 0
 #define FISHMIP 0
 #define MSPTools 0
 
@@ -28,11 +28,11 @@
 
 [Setup]
 ; Automated build will provide file version as a command line parameter
-; /DFileVersion=6.6.15541.0
+; /DFileVersion=6.6.XXXXX.0
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.15541.0
+  VersionInfoVersion=6.6.15557.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
