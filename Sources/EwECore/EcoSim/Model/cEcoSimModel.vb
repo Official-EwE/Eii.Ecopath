@@ -1728,8 +1728,6 @@ Namespace Ecosim
                 ieco = m_stanza.EcopathCode(isp, m_stanza.Nstanza(isp))
                 If ResetPred(ieco) = False Then
 
-                    'Debug.Assert((m_Data.tval(m_stanza.EggProdShapeSplit(isp)) <= 1))
-
                     Be = 0
                     For ist = 1 To m_stanza.Nstanza(isp)
                         ieco = m_stanza.EcopathCode(isp, ist)
@@ -1743,7 +1741,10 @@ Namespace Ecosim
                             If m_stanza.FixedFecundity(isp) Then
                                 Be = Be + m_stanza.NageS(isp, ia) * m_stanza.EggsSplit(isp, ia)
                             Else
-                                If m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp) Then Be = Be + m_stanza.NageS(isp, ia) * (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp))
+                                ' JS 11-Sep-19 only for spawning life stages
+                                If (m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp)) And (m_stanza.Spawning(isp, ia)) Then
+                                    Be = Be + m_stanza.NageS(isp, ia) * (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp))
+                                End If
                             End If
                         Next
                     Next
@@ -3207,7 +3208,8 @@ Namespace Ecosim
                 For ia = m_stanza.Age1(isp, 1) To m_stanza.Age2(isp, m_stanza.Nstanza(isp))
                     m_stanza.NageS(isp, ia) = m_stanza.SplitNo(isp, ia)
                     m_stanza.WageS(isp, ia) = m_stanza.SplitWage(isp, ia)
-                    If m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp) Then
+                    ' JS 11-Sep-19 only for spawning life stages
+                    If m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp) And m_stanza.Spawning(isp, ia) Then
                         m_stanza.EggsSplit(isp, ia) = (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp))
                         Be = Be + m_stanza.NageS(isp, ia) * m_stanza.EggsSplit(isp, ia) ': Stop
                     End If
