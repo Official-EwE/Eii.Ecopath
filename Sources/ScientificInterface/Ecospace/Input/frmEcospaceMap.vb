@@ -211,7 +211,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerDepth, False)
             Me.AddData(eVarNameFlags.LayerExclusion, False)
             Me.AddData(eVarNameFlags.LayerAdvection, False)
-            Me.AddData(eVarNameFlags.LayerHabitatCapacityInput)
+            Me.AddData(eVarNameFlags.LayerHabitatCapacityInput, True)
             Me.AddData(eVarNameFlags.LayerMigration, False)
             Me.AddData(eVarNameFlags.LayerM0MultInput, False)
             Me.AddData(eVarNameFlags.LayerDriver)
@@ -380,7 +380,9 @@ Namespace Ecospace.Basemap
                     Me.Invalidate()
                 ElseIf (msg.Type = eMessageType.DataValidation And msg.HasVariable(eVarNameFlags.IsMigratory)) Then
                     ' Refresh the migration map group
-                    Me.AddData(eVarNameFlags.LayerMigration, True)
+                    Me.AddData(eVarNameFlags.LayerHabitatCapacityInput, True)
+                    Me.AddData(eVarNameFlags.LayerMigration, False)
+                    Me.AddData(eVarNameFlags.LayerM0MultInput, False)
                 ElseIf (msg.Type = eMessageType.DataModified) Then
                     ' Refresh only map
                     Me.m_ucBasemap.Invalidate()
