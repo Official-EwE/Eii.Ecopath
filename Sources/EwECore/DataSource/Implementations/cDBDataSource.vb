@@ -1620,7 +1620,8 @@ Namespace DataSources
                             stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rdLifeStage("Mortality"))
                             stanzaDS.SpeciesCode(iGroup, 0) = iStanza
                             stanzaDS.Age1(iStanza, iLifeStage) = CInt(rdLifeStage("AgeStart"))
-                            stanzaDS.NonFeeding(iStanza, iLifeStage) = CBool(Me.m_db.ReadSafe(rdStanza, "NonFeeding", False))
+                            stanzaDS.Feeding(iStanza, iLifeStage) = CBool(Me.m_db.ReadSafe(rdStanza, "Feeding", True))
+                            stanzaDS.Spawning(iStanza, iLifeStage) = CBool(Me.m_db.ReadSafe(rdStanza, "Spawning", True))
 
                         Catch ex As Exception
                             Me.LogMessage(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
@@ -1731,7 +1732,8 @@ Namespace DataSources
                             drow("Sequence") = iLifeStage
                             drow("AgeStart") = stanzaDS.Age1(iStanza, iLifeStage)
                             drow("Mortality") = stanzaDS.Stanza_Z(iStanza, iLifeStage)
-                            drow("NonFeeding") = stanzaDS.NonFeeding(iStanza, iLifeStage)
+                            drow("Feeding") = stanzaDS.Feeding(iStanza, iLifeStage)
+                            drow("Spawning") = stanzaDS.Spawning(iStanza, iLifeStage)
                             'drow("vbK") = ecopathDS.vbKInput(iGroup)
                             writer.AddRow(drow)
                         End If

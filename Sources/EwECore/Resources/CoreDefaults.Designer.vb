@@ -3287,6 +3287,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Feeding.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_FEEDING() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_FEEDING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to FeedingTimeAdjRate.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_FEEDINGTIMEADJRATE() As String
@@ -6572,15 +6581,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Not feeding.
-        '''</summary>
-        Public Shared ReadOnly Property VARIABLE_NONFEEDING() As String
-            Get
-                Return ResourceManager.GetString("VARIABLE_NONFEEDING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Shadow price|||Shadow price or non-market value represents the value of a resource in the ecosystem, e.g., for non-exploitative uses.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_NONMARKETVALUE() As String
@@ -7387,6 +7387,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property VARIABLE_SOUTH() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_SOUTH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Spawning.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_SPAWNING() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_SPAWNING", resourceCulture)
             End Get
         End Property
         

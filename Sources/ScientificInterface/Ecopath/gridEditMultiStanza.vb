@@ -48,7 +48,8 @@ Public Class gridEditMultiStanza
         Z
         LeadingCB
         CBInput
-        NonFeeding
+        Feeding
+        Spawning
     End Enum
 
 #End Region ' Private variables
@@ -98,10 +99,12 @@ Public Class gridEditMultiStanza
         Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, eDescriptorTypes.Abbreviation)
         Me(0, eColumnTypes.LeadingCB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
         Me(0, eColumnTypes.CBInput) = New EwEColumnHeaderCell(eVarNameFlags.QBInput)
-        Me(0, eColumnTypes.NonFeeding) = New EwEColumnHeaderCell(eVarNameFlags.NonFeeding)
+        Me(0, eColumnTypes.Feeding) = New EwEColumnHeaderCell(eVarNameFlags.Feeding, eDescriptorTypes.Name, False)
+        Me(0, eColumnTypes.Spawning) = New EwEColumnHeaderCell(eVarNameFlags.Spawning, eDescriptorTypes.Name, False)
 
         Me.Selection.SelectionMode = GridSelectionMode.Row
-        Me.FixedColumnWidths = False
+        Me.FixedColumnWidths = True
+
     End Sub
 
     Protected Overrides Sub FillData()
@@ -166,9 +169,13 @@ Public Class gridEditMultiStanza
             Me(iRow, eColumnTypes.CBInput) = ewec
             Me(iRow, eColumnTypes.CBInput).Behaviors.Add(Me.EwEEditHandler)
 
-            ' Non-feeding
-            Me(iRow, eColumnTypes.NonFeeding) = New Cells.Real.CheckBox(Me.m_stanzagroup.NonFeeding(iLifeStage))
-            Me(iRow, eColumnTypes.NonFeeding).Behaviors.Add(Me.EwEEditHandler)
+            ' Feeding
+            Me(iRow, eColumnTypes.Feeding) = New Cells.Real.CheckBox(Me.m_stanzagroup.Feeding(iLifeStage))
+            Me(iRow, eColumnTypes.Feeding).Behaviors.Add(Me.EwEEditHandler)
+
+            ' Spawning
+            Me(iRow, eColumnTypes.Spawning) = New Cells.Real.CheckBox(Me.m_stanzagroup.Spawning(iLifeStage))
+            Me(iRow, eColumnTypes.Spawning).Behaviors.Add(Me.EwEEditHandler)
 
         Next
 
@@ -202,8 +209,10 @@ Public Class gridEditMultiStanza
             Me.m_stanzagroup.Mortality(iLifeStage) = CSng(Me(iLifeStage, eColumnTypes.Z).Value)
             'Consumption/Biomass
             Me.m_stanzagroup.CB(iLifeStage) = CSng(Me(iLifeStage, eColumnTypes.CBInput).Value)
-            'Non-feeding
-            Me.m_stanzagroup.NonFeeding(iLifeStage) = CBool(Me(iLifeStage, eColumnTypes.NonFeeding).Value)
+            'Feeding
+            Me.m_stanzagroup.Feeding(iLifeStage) = CBool(Me(iLifeStage, eColumnTypes.Feeding).Value)
+            'Spawning
+            Me.m_stanzagroup.Spawning(iLifeStage) = CBool(Me(iLifeStage, eColumnTypes.Spawning).Value)
         Next
 
         If bApplyToCore Then

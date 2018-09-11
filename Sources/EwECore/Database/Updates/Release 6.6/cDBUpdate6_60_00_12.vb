@@ -31,7 +31,7 @@ Imports EwEUtils.Utilities
 ''' <para>Database update 6.60.0.12:</para>
 ''' <para>
 ''' Added ecospacce fitness response type field.
-''' Adde3d non-feeding stanza field
+''' Added stanza feeding and spawning flags
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
@@ -52,16 +52,31 @@ Friend Class cDBUpdate6_60_00_12
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added ecospace fitness response type, non-feeding stanzas"
+            Return "Added ecospace fitness response type, feeding and spawning stanzas"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN FitResponseType BYTE") And
-            db.Execute("ALTER TABLE StanzaLifeStage ADD COLUMN NonFeeding YESNO") ' Yuck yuck yuck
+        If db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN FitResponseType BYTE") And
+           db.Execute("ALTER TABLE StanzaLifeStage ADD COLUMN Feeding YESNO") And
+           db.Execute("ALTER TABLE StanzaLifeStage ADD COLUMN Spawning YESNO") Then
+
+            ' Set all stage values to True by default
+            Dim wr As cEwEDatabase.cEwEDbWriter = db.GetWriter("StanzaLifeStage")
+            Dim dt As DataTable = wr.GetDataTable()
+            For Each drow As DataRow In dt.Rows
+                drow.BeginEdit()
+                drow("Feeding") = True
+                drow("Spawning") = True
+                drow.EndEdit()
+            Next
+            db.ReleaseWriter(wr)
+            Return True
+
+        End If
+        Return False
 
     End Function
-
 
 End Class
