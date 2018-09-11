@@ -639,8 +639,7 @@ Namespace Ecosim
                     If TypeOf ts Is cFleetTimeSeries Then
                         fts = DirectCast(ts, cFleetTimeSeries)
                         If (fts.GroupIndex = iGroup) And fts.Enabled() Then
-                            Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(fts.FleetIndex)
-                            lli.Add(Me.ToTimeSeriesLineItem(fts, cColorUtils.IntToColor(fleet.PoolColor)))
+                            lli.Add(Me.ToTimeSeriesLineItem(fts, Me.StyleGuide.FleetColor(Me.Core, fts.FleetIndex)))
                         End If
                     End If
                 End If
