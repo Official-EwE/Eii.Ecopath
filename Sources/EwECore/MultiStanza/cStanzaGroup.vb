@@ -155,8 +155,12 @@ Public Class cStanzaGroup
         val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaMortaility, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
         m_values.Add(val.varName, val)
 
-        ' Non-feeding
-        val = New cValueArrayIndexed(eValueTypes.BoolArray, eVarNameFlags.NonFeeding, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
+        ' Feeding
+        val = New cValueArrayIndexed(eValueTypes.BoolArray, eVarNameFlags.Feeding, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
+        m_values.Add(val.varName, val)
+
+        ' Spawming
+        val = New cValueArrayIndexed(eValueTypes.BoolArray, eVarNameFlags.Spawning, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
         m_values.Add(val.varName, val)
 
         Me.AllowValidation = False ' Why?
@@ -179,7 +183,7 @@ Public Class cStanzaGroup
             Return m_core.CalculateStanza(Me)
         Catch ex As Exception
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_DATAERROR, ex.Message), _
+            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_DATAERROR, ex.Message),
                     eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
         End Try
@@ -221,7 +225,7 @@ Public Class cStanzaGroup
             Return CalculateParameters()
         Catch ex As Exception
             cLog.Write(ex)
-            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CANCEL_DATAERROR, ex.Message), _
+            m_core.Messages.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STANZA_CANCEL_DATAERROR, ex.Message),
                 eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical))
             Return False
         End Try
@@ -249,9 +253,9 @@ Public Class cStanzaGroup
 
                     bOk = False
                     grp = Me.m_core.EcoPathGroupInputs(Me.iGroups(ist))
-                    vs = New cVariableStatus(grp, eStatusFlags.MissingParameter, _
-                                             cStringUtils.Localize(My.Resources.CoreMessages.STANZA_MORT_MISSING, grp.Name), _
-                                             eVarNameFlags.StanzaMortaility, _
+                    vs = New cVariableStatus(grp, eStatusFlags.MissingParameter,
+                                             cStringUtils.Localize(My.Resources.CoreMessages.STANZA_MORT_MISSING, grp.Name),
+                                             eVarNameFlags.StanzaMortaility,
                                              Me.m_dataType, Me.m_coreComponent, grp.Index, cCore.NULL_VALUE)
                     msg.AddVariable(vs)
                 End If
@@ -262,9 +266,9 @@ Public Class cStanzaGroup
                 If (msg Is Nothing) Then Return bOk
 
                 bOk = False
-                vs = New cVariableStatus(Me, eStatusFlags.MissingParameter, _
-                                         cStringUtils.Localize(My.Resources.CoreMessages.STANZA_LEADING_MISSING, Me.Name), _
-                                         eVarNameFlags.LeadingBiomass, _
+                vs = New cVariableStatus(Me, eStatusFlags.MissingParameter,
+                                         cStringUtils.Localize(My.Resources.CoreMessages.STANZA_LEADING_MISSING, Me.Name),
+                                         eVarNameFlags.LeadingBiomass,
                                          Me.m_dataType, Me.m_coreComponent, Me.Index, cCore.NULL_VALUE)
                 msg.AddVariable(vs)
             End If
@@ -518,12 +522,21 @@ Public Class cStanzaGroup
         End Set
     End Property
 
-    Public Property NonFeeding(ByVal iLifeStage As Integer) As Boolean
+    Public Property Feeding(ByVal iLifeStage As Integer) As Boolean
         Get
-            Return CBool(Me.GetVariable(eVarNameFlags.NonFeeding, iLifeStage))
+            Return CBool(Me.GetVariable(eVarNameFlags.Feeding, iLifeStage))
         End Get
         Set(ByVal value As Boolean)
-            Me.SetVariable(eVarNameFlags.NonFeeding, value, iLifeStage)
+            Me.SetVariable(eVarNameFlags.Feeding, value, iLifeStage)
+        End Set
+    End Property
+
+    Public Property Spawning(ByVal iLifeStage As Integer) As Boolean
+        Get
+            Return CBool(Me.GetVariable(eVarNameFlags.Spawning, iLifeStage))
+        End Get
+        Set(ByVal value As Boolean)
+            Me.SetVariable(eVarNameFlags.Spawning, value, iLifeStage)
         End Set
     End Property
 

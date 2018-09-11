@@ -86,7 +86,7 @@ Namespace Ecosim
         Private m_zgh As cZedGraphHelper = Nothing
         Private m_plotPanel([Enum].GetValues(GetType(ePlot)).Length) As Integer
         Private m_plotVisible([Enum].GetValues(GetType(ePlot)).Length) As Boolean
-        Private m_bContainsAggregatedFleet As Boolean = False
+        Private m_bIsCatchAggregated As Boolean = False
 
         Dim m_TSInterval As eTSDataSetInterval
 
@@ -401,7 +401,7 @@ Namespace Ecosim
 
             'Set the master pane title
             Me.m_zgh.Configure(groupSimOut.Name)
-            Me.m_bContainsAggregatedFleet = groupSimOut.isCatchAggregated()
+            Me.m_bIsCatchAggregated = groupSimOut.isCatchAggregated()
 
             ' Clear all panes
             For Each pane As GraphPane In Me.m_graph.MasterPane.PaneList
@@ -443,7 +443,7 @@ Namespace Ecosim
                 pplMortFishing.Add(dXValue, groupSimOut.FishMort(i))
 
                 ' Special case: is catch aggregated?
-                If Me.m_bContainsAggregatedFleet Then
+                If Me.m_bIsCatchAggregated Then
                     ' Report F from fleet 1 for all fleets only
                     applFishMortFleet(0).Add(dXValue, groupSimOut.FishingMortByFleet(0, i))
                     applCatchFleet(0).Add(dXValue, groupSimOut.CatchByFleet(0, i))
@@ -485,7 +485,7 @@ Namespace Ecosim
             Me.AddCurveToGraphPane(ePlot.ConsumptionBiomass, Me.m_zgh.CreateLineItem(group, pplConsB))
             Me.AddCurveToGraphPane(ePlot.FeedingTime, Me.m_zgh.CreateLineItem(group, pplFeedTime))
 
-            If Me.m_bContainsAggregatedFleet Then
+            If Me.m_bIsCatchAggregated Then
                 Dim strAll As String = SharedResources.GENERIC_VALUE_ALL
                 Dim clrAll As Color = Me.StyleGuide.FleetColorDefault(0, 1)
                 Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, Me.m_zgh.CreateLineItem(strAll, eSketchDrawModeTypes.Line, clrAll, applFishMortFleet(0)))
@@ -728,7 +728,7 @@ Namespace Ecosim
             Me.PopulateGroupListBox(Me.m_lbPrey, lAvgPreyIndex.ToArray(), lAvgPreyConsumption.ToArray())
 
             ' Are fleet values aggregated?
-            If Me.m_bContainsAggregatedFleet Then
+            If Me.m_bIsCatchAggregated Then
                 ' #Yes: show only 'All fleets' item
                 Me.m_lbFleets.ShowAllFleetsItem = True
             Else

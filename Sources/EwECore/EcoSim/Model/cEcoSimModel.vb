@@ -1404,7 +1404,7 @@ Namespace Ecosim
                     End If
 
                     If bFChanged Then
-                        Debug.Assert((Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp)) <= 1.0, "Opps cEcosimModel.setForcedDiscards() may have calculated an incorrect PropLandedTime() or Propdiscardtime()")
+                        Debug.Assert((Me.m_Data.PropLandedTime(iflt, igrp) + Me.m_Data.Propdiscardtime(iflt, igrp)) <= 1.0001, "Opps cEcosimModel.setForcedDiscards() may have calculated an incorrect PropLandedTime() or Propdiscardtime()")
                         'FishMGear() only contains catch that incure mortality
                         'Changing the discard mortality rate changes F
                         'Changing the proportion of landings and discards changes F if discard mort rate is not 1

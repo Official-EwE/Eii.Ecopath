@@ -644,7 +644,8 @@ Public Class cEIIXMLDataSource
                     stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rowStage("Mortality"))
                     stanzaDS.SpeciesCode(iGroup, 0) = iStanza
                     stanzaDS.Age1(iStanza, iLifeStage) = CInt(rowStage("AgeStart"))
-                    stanzaDS.NonFeeding(iStanza, iLifeStage) = CBool(Me.ReadSafe(rowStage, "NonFeeding", False))
+                    stanzaDS.Feeding(iStanza, iLifeStage) = CBool(Me.ReadSafe(rowStage, "Feeding", True))
+                    stanzaDS.Spawning(iStanza, iLifeStage) = CBool(Me.ReadSafe(rowStage, "Spawning", True))
 
                 Catch ex As Exception
                     Me.LogMessage(cStringUtils.Localize("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))

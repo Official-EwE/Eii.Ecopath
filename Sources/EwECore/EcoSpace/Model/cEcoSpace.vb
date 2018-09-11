@@ -3347,6 +3347,7 @@ Public Class cEcoSpace
             'jb EatEff() and VulPred() ignored here because this is only used for initialization and both values are 1
             aeff(ii) = m_SimData.Alink(ii) * m_SimData.Ftime(j) * m_SimData.RelaSwitch(ii)
             Veff(ia) = m_SimData.VulArena(ia) * m_SimData.Ftime(i)
+            ' Sim m0 forcing carries over to Ecospace, but it should be spatial!
             m_Ecosim.ApplyAVmodifiers(its, aeff(ii), Veff(ia), Mo, i, m_SimData.Jarena(ia), False)  '?not sure this will work right with multiple preds in arenas
             Vdenom(ia) = Vdenom(ia) + aeff(ii) * m_SimData.pred(j) / m_SimData.Hden(j)
         Next

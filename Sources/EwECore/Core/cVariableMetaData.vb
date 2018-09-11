@@ -215,7 +215,8 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.HatchCode) = New cVariableMetaData(0, Integer.MaxValue, gt, lt)
         Me.Metadata(eVarNameFlags.FixedFecundity) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.EggAtSpawn) = New cVariableMetaData()
-        Me.Metadata(eVarNameFlags.NonFeeding) = New cVariableMetaData()
+        Me.Metadata(eVarNameFlags.Feeding) = New cVariableMetaData()
+        Me.Metadata(eVarNameFlags.Spawning) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.Bat) = New cVariableMetaData(0, Single.MaxValue, ge, lt) ' default?
         Me.Metadata(eVarNameFlags.StartAge) = New cVariableMetaData(0, Integer.MaxValue, ge, lt, 0, "[Timestep]")
         Me.Metadata(eVarNameFlags.StanzaNumberAtAge) = New cVariableMetaData(0, Single.MaxValue, ge, lt) ' Default, units, range?

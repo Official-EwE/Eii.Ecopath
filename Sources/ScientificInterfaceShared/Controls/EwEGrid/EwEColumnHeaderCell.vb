@@ -86,11 +86,13 @@ Namespace Controls.EwEGrid
             Me.New(varname, eDescriptorTypes.Name)
         End Sub
 
-        Public Sub New(ByVal varname As eVarNameFlags, detail As eDescriptorTypes)
+        Public Sub New(ByVal varname As eVarNameFlags, detail As eDescriptorTypes, Optional bShowUnits As Boolean = True)
             Me.New(New cVarnameTypeFormatter().GetDescriptor(varname, detail) & "|" & New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Description))
-            Dim md As cVariableMetaData = cVariableMetadata.Get(varname)
-            If (md IsNot Nothing) Then
-                Me.SetUnits(md.Units)
+            If (bShowUnits) Then
+                Dim md As cVariableMetaData = cVariableMetaData.Get(varname)
+                If (md IsNot Nothing) Then
+                    Me.SetUnits(md.Units)
+                End If
             End If
         End Sub
 

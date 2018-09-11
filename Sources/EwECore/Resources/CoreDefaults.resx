@@ -2763,13 +2763,16 @@
   <data name="VARIABLE_FITRESPONSETYPE" xml:space="preserve">
     <value>Fit response||Movement response of migratory species to fitness</value>
   </data>
-  <data name="VARIABLE_NONFEEDING" xml:space="preserve">
-    <value>Not feeding</value>
+  <data name="VARIABLE_FEEDING" xml:space="preserve">
+    <value>Feeding</value>
   </data>
   <data name="VARIABLE_LAYERM0MULT" xml:space="preserve">
     <value>M0 mult (out)||Other mortality multiplier map (computed)</value>
   </data>
   <data name="VARIABLE_LAYERM0MULTINPUT" xml:space="preserve">
     <value>M0 mult||Other mortality multiplier map (entered)</value>
+  </data>
+  <data name="VARIABLE_SPAWNING" xml:space="preserve">
+    <value>Spawning</value>
   </data>
 </root>
