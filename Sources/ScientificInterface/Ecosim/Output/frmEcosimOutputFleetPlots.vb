@@ -581,8 +581,7 @@ Namespace Ecosim
 
         Private Function ToTimeSeriesLineItem(ByVal ts As cTimeSeries, ByVal clr As Color) As LineItem
 
-            Dim ppt As New PointPairList
-            Dim dScale As Single = 1.0F
+            Dim ppt As New PointPairList()
             Dim li As LineItem = Nothing
             Dim xpos As Double = 0.0
             Dim deltaT As Double = 1 / cCore.N_MONTHS
@@ -590,12 +589,6 @@ Namespace Ecosim
             Dim iYear As Integer = Me.Core.EcosimFirstYear
             Dim h As New cTimeSeriesShapeGUIHandler(Me.UIContext)
 
-            If (ts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or (ts.TimeSeriesType = eTimeSeriesType.AverageWeight) Or (ts.TimeSeriesType = eTimeSeriesType.CatchesRel) Then
-                'VC091209: totalmortality is absolute, not relative
-                If ts.eDataQ > 0 Then dScale = 1.0F / ts.eDataQ
-            End If
-
-            'Just in case...
             Debug.Assert(Me.m_TSInterval = eTSDataSetInterval.Annual Or Me.m_TSInterval = eTSDataSetInterval.TimeStep, "Plotting Ecosim Output unknown timeseries interval.")
 
             For j As Integer = 1 To da.Length - 1
@@ -606,7 +599,7 @@ Namespace Ecosim
                         Case eTSDataSetInterval.Annual
                             xpos = iYear + j - 0.5
                     End Select
-                    ppt.Add(xpos, da(j) * dScale)
+                    ppt.Add(xpos, da(j))
                 End If
             Next
             Return Me.m_zgh.CreateLineItem(ts.Name, h.SketchDrawMode(ts), clr, ppt)
