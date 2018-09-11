@@ -61,9 +61,10 @@ Namespace Ecosim
                     Case ePlot.FleetFishingMortality : Return SharedResources.HEADER_FISHINGMORTALITY
                     Case ePlot.Value : Return SharedResources.HEADER_VALUE
                     Case ePlot.[Catch] : Return SharedResources.HEADER_CATCH
-                    Case ePlot.DiscardsMortality : Return "Discards mortality"
-                    Case ePlot.DiscardsSurvival : Return "Discards survival"
-                    Case ePlot.Landings : Return "Landings"
+                    Case ePlot.DiscardsMortality : Return SharedResources.HEADER_DISCARD_MORT
+                    Case ePlot.DiscardsSurvival : Return SharedResources.HEADER_DISCARD_SURV
+                    Case ePlot.Landings : Return SharedResources.HEADER_LANDINGS
+                    Case ePlot.Discards : Return SharedResources.HEADER_DISCARDS
                 End Select
                 Return ""
 
@@ -85,11 +86,12 @@ Namespace Ecosim
 
         Private Enum ePlot As Integer
             [Catch]
-            Value
-            Landings
             FleetFishingMortality
+            Landings
+            Discards
             DiscardsMortality
             DiscardsSurvival
+            Value
         End Enum
 
 #End Region ' Variables
@@ -185,24 +187,26 @@ Namespace Ecosim
             Handles m_btnSaveData.Click
 
             Dim cmd As cEcosimSaveDataCommand = DirectCast(Me.CommandHandler.GetCommand("ExportEcosimResultsToCSV"), cEcosimSaveDataCommand)
-            Dim aResults As New List(Of cEcosimResultWriter.eResultTypes)
+            Dim results As New List(Of cEcosimResultWriter.eResultTypes)
 
             If Me.m_cbSaveVisibleOnly.Checked Then
                 For Each plot As ePlot In [Enum].GetValues(GetType(ePlot))
                     If Me.m_plotVisible(plot) Then
                         Select Case plot
                             Case ePlot.Catch
-                                aResults.Add(cEcosimResultWriter.eResultTypes.Catch)
+                                results.Add(cEcosimResultWriter.eResultTypes.Catch)
                             Case ePlot.FleetFishingMortality
-                                aResults.Add(cEcosimResultWriter.eResultTypes.Mortality)
+                                results.Add(cEcosimResultWriter.eResultTypes.Mortality)
                             Case ePlot.Value
-                                aResults.Add(cEcosimResultWriter.eResultTypes.Value)
+                                results.Add(cEcosimResultWriter.eResultTypes.Value)
                             Case ePlot.Landings
-                                aResults.Add(cEcosimResultWriter.eResultTypes.Landings)
+                                results.Add(cEcosimResultWriter.eResultTypes.Landings)
+                            Case ePlot.Discards
+                                results.Add(cEcosimResultWriter.eResultTypes.DiscardFleetGroup)
                             Case ePlot.DiscardsMortality
-                                aResults.Add(cEcosimResultWriter.eResultTypes.DiscardMortalityFleetGroup)
+                                results.Add(cEcosimResultWriter.eResultTypes.DiscardMortalityFleetGroup)
                             Case ePlot.DiscardsSurvival
-                                aResults.Add(cEcosimResultWriter.eResultTypes.DiscardSurvivalFleetGroup)
+                                results.Add(cEcosimResultWriter.eResultTypes.DiscardSurvivalFleetGroup)
                             Case Else
                                 Debug.Assert(False, "Plot type not supported")
                         End Select
@@ -210,7 +214,7 @@ Namespace Ecosim
                 Next
             End If
 
-            cmd.Invoke(aResults.ToArray)
+            cmd.Invoke(results.ToArray)
 
         End Sub
 
@@ -370,6 +374,7 @@ Namespace Ecosim
                     Dim pplLandings As New PointPairList()
                     Dim pplValueFleet As New PointPairList()
                     Dim pplFishMortFleet As New PointPairList()
+                    Dim pplDiscards As New PointPairList()
                     Dim pplDiscardsMortality As New PointPairList()
                     Dim pplDiscardsSurvival As New PointPairList()
 
@@ -378,6 +383,7 @@ Namespace Ecosim
                     pplLandings.Add(Me.Core.EcosimFirstYear, 0)
                     pplValueFleet.Add(Me.Core.EcosimFirstYear, 0)
                     pplFishMortFleet.Add(Me.Core.EcosimFirstYear, 0)
+                    pplDiscards.Add(Me.Core.EcosimFirstYear, 0)
                     pplDiscardsMortality.Add(Me.Core.EcosimFirstYear, 0)
                     pplDiscardsSurvival.Add(Me.Core.EcosimFirstYear, 0)
 
@@ -391,16 +397,29 @@ Namespace Ecosim
                         pplFishMortFleet.Add(dXValue, grpOut.FishingMortByFleet(iFleet, i))
                         pplDiscardsMortality.Add(dXValue, grpOut.DiscardMortByFleet(iFleet, i))
                         pplDiscardsSurvival.Add(dXValue, grpOut.DiscardSurvivedByFleet(iFleet, i))
+                        pplDiscards.Add(dXValue, grpOut.DiscardByFleet(iFleet, i))
+
                     Next
 
                     Me.AddCurveToGraphPane(ePlot.[Catch], Me.m_zgh.CreateLineItem(grp, pplCatch))
                     Me.AddCurveToGraphPane(ePlot.Landings, Me.m_zgh.CreateLineItem(grp, pplLandings))
                     Me.AddCurveToGraphPane(ePlot.Value, Me.m_zgh.CreateLineItem(grp, pplValueFleet))
                     Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, Me.m_zgh.CreateLineItem(grp, pplFishMortFleet))
-                    Me.AddCurveToGraphPane(ePlot.DiscardsMortality, Me.m_zgh.CreateLineItem(grp, pplDiscardsMortality))
-                    Me.AddCurveToGraphPane(ePlot.DiscardsSurvival, Me.m_zgh.CreateLineItem(grp, pplDiscardsSurvival))
+                    If (fleet.Discards(iGroup) > 0) Then
+                        Me.AddCurveToGraphPane(ePlot.Discards, Me.m_zgh.CreateLineItem(grp, pplDiscards))
+                        Me.AddCurveToGraphPane(ePlot.DiscardsMortality, Me.m_zgh.CreateLineItem(grp, pplDiscardsMortality))
+                        Me.AddCurveToGraphPane(ePlot.DiscardsSurvival, Me.m_zgh.CreateLineItem(grp, pplDiscardsSurvival))
+                    End If
                 End If
             Next
+
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Discards, iFleet)
+                Me.AddCurveToGraphPane(ePlot.Discards, li)
+            Next li
+
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Landings, iFleet)
+                Me.AddCurveToGraphPane(ePlot.Landings, li)
+            Next li
 
         End Sub
 
@@ -534,6 +553,63 @@ Namespace Ecosim
             End Select
 
             Return ""
+
+        End Function
+
+        Private Function GetTimeSeriesLineItems(TSType As eTimeSeriesType, iFleet As Integer) As List(Of LineItem)
+
+            Dim lli As New List(Of LineItem)
+            Dim ppt As PointPairList = Nothing
+            Dim ts As cTimeSeries = Nothing
+            Dim fts As cFleetTimeSeries = Nothing
+
+            ' Build lines
+            For i As Integer = 1 To Me.Core.nTimeSeries
+                ts = Me.Core.EcosimTimeSeries(i)
+                If ts.TimeSeriesType = TSType Then
+                    If TypeOf ts Is cFleetTimeSeries Then
+                        fts = DirectCast(ts, cFleetTimeSeries)
+                        If (fts.FleetIndex = iFleet) And fts.Enabled() Then
+                            lli.Add(Me.ToTimeSeriesLineItem(fts, Me.StyleGuide.GroupColor(Me.Core, fts.GroupIndex)))
+                        End If
+                    End If
+                End If
+            Next
+            Return lli
+
+        End Function
+
+        Private Function ToTimeSeriesLineItem(ByVal ts As cTimeSeries, ByVal clr As Color) As LineItem
+
+            Dim ppt As New PointPairList
+            Dim dScale As Single = 1.0F
+            Dim li As LineItem = Nothing
+            Dim xpos As Double = 0.0
+            Dim deltaT As Double = 1 / cCore.N_MONTHS
+            Dim da() As Single = ts.ShapeData()
+            Dim iYear As Integer = Me.Core.EcosimFirstYear
+            Dim h As New cTimeSeriesShapeGUIHandler(Me.UIContext)
+
+            If (ts.TimeSeriesType = eTimeSeriesType.BiomassRel) Or (ts.TimeSeriesType = eTimeSeriesType.AverageWeight) Or (ts.TimeSeriesType = eTimeSeriesType.CatchesRel) Then
+                'VC091209: totalmortality is absolute, not relative
+                If ts.eDataQ > 0 Then dScale = 1.0F / ts.eDataQ
+            End If
+
+            'Just in case...
+            Debug.Assert(Me.m_TSInterval = eTSDataSetInterval.Annual Or Me.m_TSInterval = eTSDataSetInterval.TimeStep, "Plotting Ecosim Output unknown timeseries interval.")
+
+            For j As Integer = 1 To da.Length - 1
+                If (da(j) > 0) Then
+                    Select Case Me.m_TSInterval
+                        Case eTSDataSetInterval.TimeStep
+                            xpos = iYear + j * deltaT - deltaT * 0.5
+                        Case eTSDataSetInterval.Annual
+                            xpos = iYear + j - 0.5
+                    End Select
+                    ppt.Add(xpos, da(j) * dScale)
+                End If
+            Next
+            Return Me.m_zgh.CreateLineItem(ts.Name, h.SketchDrawMode(ts), clr, ppt)
 
         End Function
 
