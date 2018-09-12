@@ -98,7 +98,9 @@ Public Class cStanzaDatastructures
     Public SplitAlpha(,) As Single 'growth coefficients by split spp and age (set in initialstate)
     Public RscaleSplit() As Single
     Public EggsSplit(,) As Single
+    ''' <summary>Life stage start age</summary>
     Public Age1(,) As Integer
+    ''' <summary>Life stage end age</summary>
     Public Age2(,) As Integer
     Public SplitNo(,) As Single
     Public SplitWage(,) As Single
@@ -109,6 +111,9 @@ Public Class cStanzaDatastructures
     Public Stanza_Bio(,) As Single
     Public Stanza_CB(,) As Single
     Public Feeding(,) As Boolean
+    ''' <summary>
+    ''' Flag, stating whether as life stage is allowed to spawn. This flag can be used to prevent life stages at spawning ages from spawning. 
+    ''' The flag is ignored when <see cref="FixedFecundity"/> is set.</summary>
     Public Spawning(,) As Boolean
 
     Public WmatWinf() As Single ' weight at maturity/ weight at infinity (max weight) from EwE5 interface

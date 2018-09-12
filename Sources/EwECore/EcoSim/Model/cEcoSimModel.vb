@@ -1742,7 +1742,7 @@ Namespace Ecosim
                                 Be = Be + m_stanza.NageS(isp, ia) * m_stanza.EggsSplit(isp, ia)
                             Else
                                 ' JS 11-Sep-19 only for spawning life stages
-                                If (m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp)) And (m_stanza.Spawning(isp, ia)) Then
+                                If (m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp)) And (m_stanza.Spawning(isp, ist)) Then
                                     Be = Be + m_stanza.NageS(isp, ia) * (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp))
                                 End If
                             End If
@@ -3204,12 +3204,16 @@ Namespace Ecosim
                     m_stanza.EggProdIsSeasonal(isp) = True
                 End If
 
-                Be = 0
+                Be = 0 : ist = 1
                 For ia = m_stanza.Age1(isp, 1) To m_stanza.Age2(isp, m_stanza.Nstanza(isp))
                     m_stanza.NageS(isp, ia) = m_stanza.SplitNo(isp, ia)
                     m_stanza.WageS(isp, ia) = m_stanza.SplitWage(isp, ia)
+                    ' Keep track which life stage this age belongs to
+                    If (ia > m_stanza.Age2(isp, ist)) Then
+                        ist += 1
+                    End If
                     ' JS 11-Sep-19 only for spawning life stages
-                    If m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp) And m_stanza.Spawning(isp, ia) Then
+                    If m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp) And m_stanza.Spawning(isp, ist) Then
                         m_stanza.EggsSplit(isp, ia) = (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp))
                         Be = Be + m_stanza.NageS(isp, ia) * m_stanza.EggsSplit(isp, ia) ': Stop
                     End If
