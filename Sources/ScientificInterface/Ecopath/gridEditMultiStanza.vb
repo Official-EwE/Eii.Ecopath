@@ -176,8 +176,12 @@ Public Class gridEditMultiStanza
             Me(iRow, eColumnTypes.Feeding).Behaviors.Add(Me.EwEEditHandler)
 
             ' Spawning
-            Me(iRow, eColumnTypes.Spawning) = New Cells.Real.CheckBox(Me.m_stanzagroup.Spawning(iLifeStage))
-            Me(iRow, eColumnTypes.Spawning).Behaviors.Add(Me.EwEEditHandler)
+            If Me.m_stanzagroup.FixedFecundity Then
+                Me(iRow, eColumnTypes.Spawning) = New EwECell("", cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+            Else
+                Me(iRow, eColumnTypes.Spawning) = New Cells.Real.CheckBox(Me.m_stanzagroup.Spawning(iLifeStage))
+                Me(iRow, eColumnTypes.Spawning).Behaviors.Add(Me.EwEEditHandler)
+            End If
 
         Next
 
@@ -214,7 +218,10 @@ Public Class gridEditMultiStanza
             'Feeding
             Me.m_stanzagroup.Feeding(iLifeStage) = CBool(Me(iLifeStage, eColumnTypes.Feeding).Value)
             'Spawning
-            Me.m_stanzagroup.Spawning(iLifeStage) = CBool(Me(iLifeStage, eColumnTypes.Spawning).Value)
+            If (TypeOf Me(iLifeStage, eColumnTypes.Spawning) Is SourceGrid2.Cells.Real.CheckBox) Then
+                Me.m_stanzagroup.Spawning(iLifeStage) = CBool(Me(iLifeStage, eColumnTypes.Spawning).Value)
+            End If
+
         Next
 
         If bApplyToCore Then

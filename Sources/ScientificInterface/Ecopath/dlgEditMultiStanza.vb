@@ -143,7 +143,9 @@ Namespace Ecopath
         Private Sub OnFixedFecundityCheckChanged(sender As Object, e As EventArgs) Handles m_cbFFecun.CheckedChanged
 
             If (Me.m_bInUpdate) Then Return
+            Me.SaveChanges(False)
             Me.UpdateGraph(Me.m_zgc)
+            Me.m_grid.RefreshContent()
 
         End Sub
 
@@ -217,7 +219,6 @@ Namespace Ecopath
             Dim sMaxWeight As Single = 0.0
             Dim sMaxBiomass As Single = 0.0
             Dim iSpawnMonth As Integer = cCore.NULL_VALUE
-
 
             'don't show the last value
             'For i As Integer = 1 To sg.MaxAge - 1
