@@ -139,6 +139,14 @@ Namespace Ecopath
             End If
 
         End Sub
+
+        Private Sub OnFixedFecundityCheckChanged(sender As Object, e As EventArgs) Handles m_cbFFecun.CheckedChanged
+
+            If (Me.m_bInUpdate) Then Return
+            Me.UpdateGraph(Me.m_zgc)
+
+        End Sub
+
         Private Sub OnCalculate(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnCalculate.Click
 
@@ -259,7 +267,7 @@ Namespace Ecopath
                 pane.AddCurve(strLabel, pplSep, Color.Green, SymbolType.None)
             Next
 
-            If (Not sg.FixedFecundity) Then
+            If (Not Me.m_cbFFecun.Checked) Then
                 pplSep = New PointPairList
                 pplSep.Add(iSpawnMonth, 0)
                 pplSep.Add(iSpawnMonth, 1)
@@ -273,12 +281,17 @@ Namespace Ecopath
 
         End Sub
 
+        Private m_bInUpdate As Boolean = False
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Update format providers to match the current stanza group selection.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub UpdateControls()
+
+            If (Me.m_bInUpdate) Then Return
+            Me.m_bInUpdate = True
 
             Dim bEcosimLoaded As Boolean = Me.m_uic.Core.StateMonitor.HasEcosimLoaded()
             Dim stanza As cStanzaGroup = Me.m_grid.StanzaGroup
@@ -320,6 +333,8 @@ Namespace Ecopath
             Me.m_grid.RefreshContent()
 
             Me.UpdateGraph(m_zgc)
+
+            Me.m_bInUpdate = False
 
         End Sub
 
