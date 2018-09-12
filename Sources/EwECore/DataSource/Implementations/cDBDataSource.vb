@@ -1620,8 +1620,8 @@ Namespace DataSources
                             stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rdLifeStage("Mortality"))
                             stanzaDS.SpeciesCode(iGroup, 0) = iStanza
                             stanzaDS.Age1(iStanza, iLifeStage) = CInt(rdLifeStage("AgeStart"))
-                            stanzaDS.Feeding(iStanza, iLifeStage) = CBool(Me.m_db.ReadSafe(rdStanza, "Feeding", True))
-                            stanzaDS.Spawning(iStanza, iLifeStage) = CBool(Me.m_db.ReadSafe(rdStanza, "Spawning", True))
+                            stanzaDS.Feeding(iStanza, iLifeStage) = CBool(Me.m_db.ReadSafe(rdLifeStage, "Feeding", True))
+                            stanzaDS.Spawning(iStanza, iLifeStage) = CBool(Me.m_db.ReadSafe(rdLifeStage, "Spawning", True))
 
                         Catch ex As Exception
                             Me.LogMessage(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
