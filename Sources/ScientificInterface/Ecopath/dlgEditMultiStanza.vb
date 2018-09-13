@@ -259,13 +259,11 @@ Namespace Ecopath
                 pane.AddCurve(strLabel, pplSep, Color.Green, SymbolType.None)
             Next
 
-            If (Not Me.m_cbFFecun.Checked) Then
-                pplSep = New PointPairList
-                pplSep.Add(iSpawnMonth, 0)
+            pplSep = New PointPairList
+            pplSep.Add(iSpawnMonth, 0)
                 pplSep.Add(iSpawnMonth, 1)
                 li = pane.AddCurve(My.Resources.HEADER_SPAWNING_AGE, pplSep, Color.Orange, SymbolType.None)
                 li.Line.Style = Drawing2D.DashStyle.Dash
-            End If
 
             ' Calculate the Axis Scale Ranges
             zgc.AxisChange()
