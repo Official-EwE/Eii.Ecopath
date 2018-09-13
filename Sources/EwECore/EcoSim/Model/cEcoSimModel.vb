@@ -3219,7 +3219,7 @@ Namespace Ecosim
                         ist += 1
                     End If
                     ' JS 11-Sep-19 only for spawning life stages
-                    If m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp) And m_stanza.Spawning(isp, ist) Then
+                    If m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp) Then
                         m_stanza.EggsSplit(isp, ia) = (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp))
                         Be = Be + m_stanza.NageS(isp, ia) * m_stanza.EggsSplit(isp, ia) ': Stop
                     End If
