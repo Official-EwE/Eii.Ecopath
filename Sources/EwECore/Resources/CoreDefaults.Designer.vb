@@ -7391,11 +7391,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Spawning.
+        '''  Looks up a localized string similar to Spawning|||Proportion of life stage allowed to spawn.
         '''</summary>
-        Public Shared ReadOnly Property VARIABLE_SPAWNING() As String
+        Public Shared ReadOnly Property VARIABLE_SPAWNPROP() As String
             Get
-                Return ResourceManager.GetString("VARIABLE_SPAWNING", resourceCulture)
+                Return ResourceManager.GetString("VARIABLE_SPAWNPROP", resourceCulture)
             End Get
         End Property
         

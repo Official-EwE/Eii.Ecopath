@@ -11783,8 +11783,7 @@ Public Class cCore
             ' Array variables
             For j As Integer = 1 To m_Stanza.Nstanza(iStanza)
                 stanza.StartAge(j) = m_Stanza.Age1(iStanza, j)
-                stanza.Feeding(j) = m_Stanza.Feeding(iStanza, j)
-                stanza.Spawning(j) = m_Stanza.Spawning(iStanza, j)
+                stanza.SpawnProp(j) = m_Stanza.SpawnProp(iStanza, j)
             Next
 
             For j As Integer = 1 To m_Stanza.Nstanza(iStanza)
@@ -11832,7 +11831,7 @@ Public Class cCore
     Friend Function CalculateStanza(ByVal stanza As cStanzaGroup) As Boolean
         Dim FirstAge() As Integer, SecondAge() As Integer
         Dim Bio() As Single, Z() As Single, cb() As Single, Bat() As Single
-        Dim Feeding() As Boolean, Spawning() As Boolean
+        Dim SpawnProp() As Single
         Dim bSuccess As Boolean = True
 
         Try
@@ -11863,8 +11862,7 @@ Public Class cCore
             ReDim cb(nLifeStages)
             ReDim FirstAge(nLifeStages)
             ReDim SecondAge(nLifeStages) 'last month of age by spp, stanza (set in ecopath)
-            ReDim Feeding(nLifeStages)
-            ReDim Spawning(nLifeStages)
+            ReDim SpawnProp(nLifeStages)
 
             If Not stanza.OkToCalculate(msg) Then
                 'this stanza group has not had it parameters set B CB and Mort
@@ -11882,8 +11880,7 @@ Public Class cCore
                 Z(i) = stanza.Mortality(i)
                 cb(i) = stanza.CB(i)
                 FirstAge(i) = stanza.StartAge(i)
-                Feeding(i) = stanza.Feeding(i)
-                Spawning(i) = stanza.Spawning(i)
+                SpawnProp(i) = stanza.SpawnProp(i)
             Next
             leadingB = stanza.LeadingB
             leadingCB = stanza.LeadingCB
@@ -11922,8 +11919,7 @@ Public Class cCore
                 stanza.CB(i) = cb(i)
                 stanza.StartAge(i) = FirstAge(i)
                 stanza.StartAge(i) = FirstAge(i)
-                stanza.Feeding(i) = Feeding(i)
-                stanza.Spawning(i) = Spawning(i)
+                stanza.SpawnProp(i) = SpawnProp(i)
             Next
 
             stanza.WmatWinf = wmatwinf
@@ -12002,8 +11998,7 @@ Public Class cCore
         For iLifeStage As Integer = 1 To stanza.nLifeStages
             m_Stanza.EcopathCode(iStanza, iLifeStage) = stanza.iGroups(iLifeStage)
             m_Stanza.Age1(iStanza, iLifeStage) = stanza.StartAge(iLifeStage)
-            m_Stanza.Feeding(iStanza, iLifeStage) = stanza.Feeding(iLifeStage)
-            m_Stanza.Spawning(iStanza, iLifeStage) = stanza.Spawning(iLifeStage)
+            m_Stanza.SpawnProp(iStanza, iLifeStage) = stanza.SpawnProp(iLifeStage)
 
             ''update all the lifestages with the single vbK value EwE5 see frmGrpStanza.UpdateGroups
             'm_EcoPathData.vbKInput(m_Stanza.EcopathCode(iStanza, iLifeStage)) = stanza.VBGF

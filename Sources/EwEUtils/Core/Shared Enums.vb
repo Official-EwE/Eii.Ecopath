@@ -430,10 +430,8 @@ Namespace Core
         ''' <see cref="eVarNameFlags.QBInput">QB</see> in a multi-stanza
         ''' configuration</summary>
         LeadingCB
-        ''' <summary>Stanza parameter; used to indicate that a life stage is allowed to feed.</summary>
-        Feeding
-        ''' <summary>Stanza parameter; used to indicate that a life stage is allowed to spawn.</summary>
-        Spawning
+        ''' <summary>Stanza parameter; used to indicate which proporation of a life stage is allowed to spawn.</summary>
+        SpawnProp
         ''' <summary>BaB * Bio</summary>
         Bat
         ''' <summary>Start age of a group in a stanza configuration (in months)</summary>

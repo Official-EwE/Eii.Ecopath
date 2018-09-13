@@ -7252,7 +7252,7 @@ exitline:
                         If m_Stanza.FixedFecundity(isp) Then
                             Be = Be + m_Stanza.NageS(isp, ia) * m_Stanza.EggsSplit(isp, ia)
                         Else
-                            If (m_Stanza.WageS(isp, ia) > m_Stanza.WmatWinf(isp)) And (m_Stanza.Spawning(isp, ist)) Then
+                            If (m_Stanza.WageS(isp, ia) > m_Stanza.WmatWinf(isp)) Then
                                 Be = Be + m_Stanza.NageS(isp, ia) * (m_Stanza.WageS(isp, ia) - m_Stanza.WmatWinf(isp))
                             End If
                         End If

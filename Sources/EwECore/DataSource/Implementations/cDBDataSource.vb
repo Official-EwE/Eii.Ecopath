@@ -1620,8 +1620,7 @@ Namespace DataSources
                             stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rdLifeStage("Mortality"))
                             stanzaDS.SpeciesCode(iGroup, 0) = iStanza
                             stanzaDS.Age1(iStanza, iLifeStage) = CInt(rdLifeStage("AgeStart"))
-                            stanzaDS.Feeding(iStanza, iLifeStage) = CBool(Me.m_db.ReadSafe(rdLifeStage, "Feeding", True))
-                            stanzaDS.Spawning(iStanza, iLifeStage) = CBool(Me.m_db.ReadSafe(rdLifeStage, "Spawning", True))
+                            stanzaDS.SpawnProp(iStanza, iLifeStage) = CSng(Me.m_db.ReadSafe(rdLifeStage, "SpawnProp", 1.0))
 
                         Catch ex As Exception
                             Me.LogMessage(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
@@ -1732,8 +1731,7 @@ Namespace DataSources
                             drow("Sequence") = iLifeStage
                             drow("AgeStart") = stanzaDS.Age1(iStanza, iLifeStage)
                             drow("Mortality") = stanzaDS.Stanza_Z(iStanza, iLifeStage)
-                            drow("Feeding") = stanzaDS.Feeding(iStanza, iLifeStage)
-                            drow("Spawning") = stanzaDS.Spawning(iStanza, iLifeStage)
+                            drow("SpawnProp") = stanzaDS.SpawnProp(iStanza, iLifeStage)
                             'drow("vbK") = ecopathDS.vbKInput(iGroup)
                             writer.AddRow(drow)
                         End If
@@ -2429,11 +2427,6 @@ Namespace DataSources
                         Else
                             drow("DetritusFate") = 0
                         End If
-
-                        ' VERIFY_JS: check mapping for MTI with JB
-                        ' drow("MTI") = ??
-                        ' VERIFY_JS: check mapping for Electivity with JB
-                        ' drow("Electivity") = ??
 
                         writer.AddRow(drow)
 
@@ -3697,8 +3690,9 @@ Namespace DataSources
 
             bSucces = bSucces And Me.LoadEcosimGroups(iScenarioID)
             bSucces = bSucces And Me.LoadEcosimFleets(iScenarioID)
-            bSucces = bSucces And Me.LoadEcosimVulnerabilities()
-            bSucces = bSucces And Me.LoadShapes()
+            bSucces = bSucces And Me.LoadEcosimVulnerabilities(iScenarioID)
+            bSucces = bSucces And Me.LoadEcosimArenas(iScenarioID)
+            bSucces = bSucces And Me.LoadShapes(iScenarioID)
             bSucces = bSucces And Me.LoadEcosimMSE(iScenarioID)
             bSucces = bSucces And Me.LoadEcosimCatchabilities(iScenarioID)
             bSucces = bSucces And Me.LoadAuxillaryData()
@@ -3822,6 +3816,7 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcosimGroups(idm)
             bSucces = bSucces And Me.SaveEcosimFleets(idm)
             bSucces = bSucces And Me.SaveEcosimVulnerabilities(idm)
+            bSucces = bSucces And Me.SaveEcosimArenas(idm)
 
             If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.ShapesManager}) Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.EcoSim}) Then
                 bSucces = bSucces And Me.SaveShapes(idm)
@@ -4362,21 +4357,14 @@ Namespace DataSources
 
         End Function
 
-        Private Function LoadEcosimVulnerabilities() As Boolean
+        Private Function LoadEcosimVulnerabilities(iScenarioID As Integer) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim reader As IDataReader = Nothing
             Dim iPredator As Integer = 0
             Dim iPrey As Integer = 0
             Dim bSucces As Boolean = True
-
-            For iPredator = 1 To Me.m_core.nGroups
-                For iPrey = 1 To Me.m_core.nGroups
-                    ecosimDS.VulMult(iPrey, iPredator) = 2.0!
-                Next iPrey
-            Next iPredator
 
             Try
                 reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioForcingMatrix WHERE (ScenarioID={0})", iScenarioID))
@@ -4402,6 +4390,93 @@ Namespace DataSources
 
             Return bSucces
 
+        End Function
+
+        Private Function LoadEcosimArenas(ByVal iScenarioID As Integer) As Boolean
+
+            Return True
+
+#Region " EwE5 code "
+            'Sql = "SELECT * from [Ecosim Arena] where modelName='" + lastModel + "' and Scenario='" + SimScenario + "'"
+            'Sql = Sql + " ORDER BY [Ecosim Arena].ArenaNo"
+            'Set g_Recordset = CCG.ReadOnlyRecords(SQL)
+            'If g_Recordset.RecordCount > 0 Then
+            '    If NlinksSet < g_Recordset.RecordCount Then
+            '        NlinksSet = g_Recordset.RecordCount
+            '        ReDim PeatArena(NlinksSet, NumGroups)
+            '        ReDim IlinkSet(NlinksSet)
+            '        ReDim JlinkSet(NlinksSet)
+            '        ReDim KlinkSet(NlinksSet)
+            '    End If
+            '    g_Recordset.MoveFirst
+            '    ii = 0
+            '    Do While Not g_Recordset.EOF
+            '        ii = ii + 1
+            '        ArenaNo = g_Recordset("ArenaNo").value
+            '        IlinkSet(ii) = g_Recordset("IlinkSet").value
+            '        JlinkSet(ii) = g_Recordset("JlinkSet").value
+            '        KlinkSet(ii) = g_Recordset("KlinkSet").value
+            '        PeatArena(ArenaNo, KlinkSet(ii)) = g_Recordset("PeatArena").value
+            '        g_Recordset.MoveNext
+            '    Loop
+            '    PeatArenaSetFromDataBase = True
+#End Region ' EwE5 code
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim reader As IDataReader = Nothing
+            Dim iPred As Integer = 0
+            Dim iPrey As Integer = 0
+            Dim iPredShared As Integer = 0
+            Dim sPeatArena As Single = 0
+            Dim bSucces As Boolean = True
+            Dim ii As Integer = 0
+
+            ' We need this. Sort out flow with JB
+            Me.m_core.m_EcoSim.SetInlinks()
+
+            Try
+                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID))
+                While reader.Read()
+
+                    iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
+                    iPred = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredID")))
+                    iPredShared = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredSharedID")))
+                    sPeatArena = CSng(reader("PeatArena"))
+
+                    If (iPred > -1 And iPrey > -1 And iPredShared > -1 And sPeatArena > 0) Then
+                        Dim iLink1, iLink2 As Integer
+                        Dim i As Integer = 0
+                        ' Find iLinks
+                        While (iLink1 = 0 And iLink2 = 0 And i <= ecosimDS.inlinks)
+                            i += 1
+                            If (ecosimDS.ilink(i) = iPrey) And (ecosimDS.jlink(i) = iPred) Then
+                                iLink1 = i
+                            End If
+                            If (ecosimDS.ilink(i) = iPrey) And (ecosimDS.jlink(i) = iPredShared) Then
+                                iLink2 = i
+                            End If
+                        End While
+                        If (iLink1 > 0 And iLink2 > 0) Then
+                            ii += 1
+                            ecosimDS.IlinkSet(ii) = ecosimDS.ilink(iLink1)
+                            ecosimDS.JlinkSet(ii) = ecosimDS.jlink(iLink1)
+                            ecosimDS.KlinkSet(ii) = ecosimDS.jlink(iLink2)
+                            ecosimDS.PeatArena(ii, ecosimDS.jlink(iLink2)) = sPeatArena
+                        End If
+                    End If
+                    ecosimDS.NlinksSet = ii
+
+                End While
+                Me.m_db.ReleaseReader(reader)
+                reader = Nothing
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading ForcingMatrix", ex.Message))
+                bSucces = False
+            End Try
+
+            Return bSucces
         End Function
 
         Private Function LoadEcosimFleets(ByVal iScenarioID As Integer) As Boolean
@@ -4782,6 +4857,66 @@ Namespace DataSources
             Return bSucces
         End Function
 
+        Private Function SaveEcosimArenas(ByVal idm As cIDMappings) As Boolean
+
+            ' ToDo: activate this
+            Return True
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim iScenarioID As Integer = 0
+            Dim bSucces As Boolean = True
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+
+            ' Obtain mapped scenario ID
+            iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
+
+            Try
+                Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID))
+                writer = Me.m_db.GetWriter("EcosimScenarioArena")
+
+#Region " EwE5 code "
+                'For i = 1 To NlinksSet
+                '    g_Recordset.AddNew
+                '    g_Recordset.Fields("modelName").value = lastModel
+                '    g_Recordset.Fields("Scenario").value = SimScenario
+                '    Arena = ArenaNo(IlinkSet(i), JlinkSet(i))
+                '    g_Recordset.Fields("ArenaNo").value = Arena ' = ArenaNo(i, JlinkSet(iii))
+                '    g_Recordset.Fields("IlinkSet").value = IlinkSet(i)
+                '    g_Recordset.Fields("JlinkSet").value = JlinkSet(i)
+                '    g_Recordset.Fields("KlinkSet").value = KlinkSet(i)
+                '    g_Recordset.Fields("PeatArena").value = PeatArena(Arena, KlinkSet(i))
+                '    g_Recordset.Update
+                'Next
+#End Region ' EwE5 code
+
+                For i As Integer = 1 To ecosimDS.NlinksSet
+                    Dim iPrey As Integer = ecosimDS.ilink(ecosimDS.IlinkSet(i))
+                    Dim iPred As Integer = ecosimDS.jlink(ecosimDS.JlinkSet(i))
+                    Dim iPredShared As Integer = ecosimDS.jlink(ecosimDS.KlinkSet(i))
+                    Dim iArena As Integer = ecosimDS.ArenaNo(ecosimDS.IlinkSet(i), ecosimDS.JlinkSet(i))
+
+                    If (iPrey > 0) And (iPred > 0) And (iPredShared > 0) Then
+                        drow = writer.NewRow()
+                        drow("ScenarioID") = iScenarioID
+                        drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
+                        drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPred))
+                        drow("PredSharedID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredShared))
+                        drow("PeatArena") = ecosimDS.PeatArena(iArena, iPredShared)
+                        writer.AddRow(drow)
+                    End If
+                Next
+
+                Me.m_db.ReleaseWriter(writer, True)
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            Return bSucces
+        End Function
+
         Private Function SaveEcosimFleets(ByVal idm As cIDMappings) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -4989,14 +5124,13 @@ Namespace DataSources
 
 #Region " Forcing and Mediaton shapes "
 
-        Private Function LoadShapes() As Boolean
+        Private Function LoadShapes(ByVal iScenarioID As Integer) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim PredPreyMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.BioMedData
             Dim LandingsMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.PriceMedData
             Dim CapEnvResMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.CapEnvResData
-            Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
             Dim reader As IDataReader = Nothing
             Dim iShapeID As Integer = 0
             Dim shapeDataType As eDataTypes = eDataTypes.NotSet
@@ -6259,7 +6393,8 @@ Namespace DataSources
             If Me.AppendShapeImpl(strShapeName, shapeType, iShapeID, asData, functionType, params) Then
                 ' #Yes: reload
                 'jb the number of shapes has changed in the database so we need to reload all the shape data in memory
-                Return Me.LoadShapes()
+                Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+                Return Me.LoadShapes(ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
             End If
 
             Return False
@@ -6422,7 +6557,7 @@ Namespace DataSources
                 ' Destroy the given shape
                 Me.m_db.Execute(String.Format("DELETE FROM EcoSimShape WHERE (ShapeID={0})", iShapeID))
                 ' Reload shapes data
-                bSucces = Me.LoadShapes()
+                bSucces = Me.LoadShapes(ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while deleting shape {1}", ex.Message, iShapeID))

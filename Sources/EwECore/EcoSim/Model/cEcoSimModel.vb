@@ -338,7 +338,6 @@ Namespace Ecosim
                 'Init Propdiscardtime() and Proplandedtime() to Ecopath values
                 InitPropLanded()
 
-                ReDim m_Data.StartBiomass(nGroups)
                 SetStartBiomass()     'Startbiomass must be set before SimFile is opened
                 RemoveImportFromEcosim()
 
@@ -1745,7 +1744,7 @@ Namespace Ecosim
                                 Be = Be + m_stanza.NageS(isp, ia) * m_stanza.EggsSplit(isp, ia)
                             Else
                                 ' JS 11-Sep-19 only for spawning life stages
-                                If (m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp)) And (m_stanza.Spawning(isp, ist)) Then
+                                If (m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp)) Then
                                     'isSpawning used to set egg biomass in the Age 1 slot for this group
                                     isSpawning = True
                                     Be = Be + m_stanza.NageS(isp, ia) * (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp))
@@ -4855,10 +4854,12 @@ Namespace Ecosim
             Next i
 
             m_Data.NlinksSet = ii
-            ReDim m_Data.PeatArena(m_Data.NlinksSet, nGroups)
-            ReDim m_Data.IlinkSet(m_Data.NlinksSet)
-            ReDim m_Data.JlinkSet(m_Data.NlinksSet)
-            ReDim m_Data.KlinkSet(m_Data.NlinksSet)
+
+            ' JS 13Sep18: Redim already done in cEcosimDataStructures to max no of links
+            'ReDim m_Data.PeatArena(m_Data.NlinksSet, nGroups)
+            'ReDim m_Data.IlinkSet(m_Data.NlinksSet)
+            'ReDim m_Data.JlinkSet(m_Data.NlinksSet)
+            'ReDim m_Data.KlinkSet(m_Data.NlinksSet)
             ii = 0
 
             For i = 1 To nGroups
@@ -4874,6 +4875,7 @@ Namespace Ecosim
             Next i
 
         End Sub
+
         Sub DefineArenasAndFlowList()
             ' set up list of foraging arenas defined by nonzero trophic flows
             Dim i As Integer, j As Integer, K As Integer, ii As Integer, iii As Integer
@@ -5487,39 +5489,8 @@ Namespace Ecosim
 
         End Sub
 
-
         Public Sub SetInlinks()
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'WARNING 
-            'This does not set the iLink(i) and jLink(j) values properly
-            'The  iLink(i) and jLink(j) indexes as set in CalcEatenOfBy()
-            'xxxxxxxxxxxxxxxxxxxxxx
-            Dim i As Integer, j As Integer
-
-            'count the links
-            Me.m_Data.inlinks = 0
-            For j = 1 To Me.m_EPData.NumLiving      'Pred = all living groups; consumers
-                For i = 1 To Me.m_EPData.NumGroups  'prey
-                    If Me.m_EPData.DC(j, i) > 0 And Me.m_EPData.QB(j) > 0 Then
-                        Me.m_Data.inlinks = Me.m_Data.inlinks + 1
-                    End If
-                Next i
-            Next j
-
-            'redim the link array
-            ReDim Me.m_Data.ilink(Me.m_Data.inlinks)
-            ReDim Me.m_Data.jlink(Me.m_Data.inlinks)
-
-            'set the prey pred links
-            For j = 1 To Me.m_EPData.NumLiving      'Pred = all living groups; consumers
-                For i = 1 To Me.m_EPData.NumGroups  'prey
-                    If Me.m_EPData.DC(j, i) > 0 And Me.m_EPData.QB(j) > 0 Then
-                        Me.m_Data.ilink(Me.m_Data.inlinks) = i
-                        Me.m_Data.jlink(Me.m_Data.inlinks) = j
-                    End If
-                Next i
-            Next j
-
+            CalcEatenOfBy()
         End Sub
 
         Friend Function VulBo(ByVal BmaxBo As Single,
