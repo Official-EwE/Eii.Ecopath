@@ -414,6 +414,7 @@ Namespace Ecosim
             '
             'm_tsbnShowMultipleRuns
             '
+            Me.m_tsbnShowMultipleRuns.CheckOnClick = True
             Me.m_tsbnShowMultipleRuns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             resources.ApplyResources(Me.m_tsbnShowMultipleRuns, "m_tsbnShowMultipleRuns")
             Me.m_tsbnShowMultipleRuns.Name = "m_tsbnShowMultipleRuns"

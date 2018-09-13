@@ -195,27 +195,6 @@
   <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
-  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>837, 25</value>
-  </data>
-  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
-    <value>m_tsMain</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15353.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
-    <value>m_scPlots.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_tsbnFleet.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -241,12 +220,12 @@
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFrSURBVDhPYxia4P//K2z/358X+P//PxNUiHQA0vz//30O
-        KJeBwdo1c7aqTe5Go/BJ76FCDA0NDaeRaZxAXcV+b0BU9W+flCn/PQtW/ocZgm4AskGR1o6L3bT1toI5
+        KJeBwdo1c7aqTe5Go/BJ76FCDA0NDaeRaZxAXcV+b0BU1W+flCn/PQtW/ocZgm4AskGR1o6L3bT1toI5
         6h4pj+LaVv43y53236hyKUEDTKLqFrokVE90jCn/z6Dtmfo0tnr6/4CK2f/lQuv+27dtAhuATTOMndi5
         5n9Ecd9/FfsooAE+lv+TWwr/V87v+i/nYfQ/eWoV3AXo4M+fP6f9Z87479o39b9r9/T/IlFp/xmMQxz3
         3P7z8v+t/6//H3h15f+mJyf/exk7wW1Dd4FmcdF/32lz/9u3TvzP4BLwHyTHYGtpevj6xaP///97D8Qv
-        wAbANKHTBx+8kuTW9/yXMmHjcyX/AogBcdEhm358evb/5oWDeA2Agaf//2vwWcf8VwksghgAAvJ88q+9
-        zDwPZIek7CNkwKdP/0RBGJiYEAkJBmCahwpgYAAAH3jo+FuYfj4AAAAASUVORK5CYII=
+        wAbANKHTBx+8kuTW9/yX0r/huZJ/AcSAuOiQTT8+Pft/88JBvAbAwNP//zX4rGP+qwQWQQwAAXk++dde
+        Zp4HskNS9hEy4NOnf6IgDExMiIQEAzDNQwUwMAAAGiHo9Q58H2IAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="m_tsbnGroup.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -339,6 +318,27 @@
   <data name="m_tsbnResetFs.Text" xml:space="preserve">
     <value>Reset &amp;All</value>
   </data>
+  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>837, 25</value>
+  </data>
+  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
+    <value>m_tsMain</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15557.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
+    <value>m_scPlots.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_scPlots.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -403,7 +403,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.6.15353.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.6.15557.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>m_scPlots.Panel2</value>
@@ -556,6 +556,48 @@
   <data name="m_tsddGraphOptions.Text" xml:space="preserve">
     <value>&amp;Options</value>
   </data>
+  <data name="m_tsmiBiomassAbs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiBiomassAbs.Text" xml:space="preserve">
+    <value>&amp;Biomass (absolute)</value>
+  </data>
+  <data name="m_tsmiBiomassRel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiBiomassRel.Text" xml:space="preserve">
+    <value>Biomass (relative)</value>
+  </data>
+  <data name="ToolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 6</value>
+  </data>
+  <data name="m_tsmiCatchAbs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiCatchAbs.Text" xml:space="preserve">
+    <value>&amp;Catch (absolute)</value>
+  </data>
+  <data name="m_tsmiCatchRel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiCatchRel.Text" xml:space="preserve">
+    <value>Catch (relative)</value>
+  </data>
+  <data name="ToolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 6</value>
+  </data>
+  <data name="m_tsmiValueAbs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiValueAbs.Text" xml:space="preserve">
+    <value>Value (absolute)</value>
+  </data>
+  <data name="m_tsmiValueRel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiValueRel.Text" xml:space="preserve">
+    <value>Value (relative)</value>
+  </data>
   <data name="m_tsdrpdnbtnContent.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABEAAAATCAYAAAB2pebxAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -671,55 +713,13 @@
     <value>m_ts</value>
   </data>
   <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15353.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15557.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_ts.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="m_tsmiBiomassAbs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
-  </data>
-  <data name="m_tsmiBiomassAbs.Text" xml:space="preserve">
-    <value>&amp;Biomass (absolute)</value>
-  </data>
-  <data name="m_tsmiBiomassRel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
-  </data>
-  <data name="m_tsmiBiomassRel.Text" xml:space="preserve">
-    <value>Biomass (relative)</value>
-  </data>
-  <data name="ToolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 6</value>
-  </data>
-  <data name="m_tsmiCatchAbs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
-  </data>
-  <data name="m_tsmiCatchAbs.Text" xml:space="preserve">
-    <value>&amp;Catch (absolute)</value>
-  </data>
-  <data name="m_tsmiCatchRel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
-  </data>
-  <data name="m_tsmiCatchRel.Text" xml:space="preserve">
-    <value>Catch (relative)</value>
-  </data>
-  <data name="ToolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 6</value>
-  </data>
-  <data name="m_tsmiValueAbs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
-  </data>
-  <data name="m_tsmiValueAbs.Text" xml:space="preserve">
-    <value>Value (absolute)</value>
-  </data>
-  <data name="m_tsmiValueRel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
-  </data>
-  <data name="m_tsmiValueRel.Text" xml:space="preserve">
-    <value>Value (relative)</value>
   </data>
   <data name="m_scMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -742,11 +742,29 @@
   <data name="m_tlpControls.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
+  <data name="m_lbGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_lbGroups.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_lbGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 247</value>
+  </data>
+  <data name="m_lbGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 3</value>
+  </data>
+  <data name="m_lbGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 208</value>
+  </data>
+  <data name="m_lbGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
   <data name="&gt;&gt;m_lbGroups.Name" xml:space="preserve">
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.6.15353.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.6.15557.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -754,17 +772,56 @@
   <data name="&gt;&gt;m_lbGroups.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="m_hdrGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 229</value>
+  </data>
+  <data name="m_hdrGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 18</value>
+  </data>
+  <data name="m_hdrGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_hdrGroups.Text" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="m_hdrGroups.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
   <data name="&gt;&gt;m_hdrGroups.Name" xml:space="preserve">
     <value>m_hdrGroups</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15353.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15557.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="m_lbRuns.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_lbRuns.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_lbRuns.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 18</value>
+  </data>
+  <data name="m_lbRuns.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_lbRuns.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 211</value>
+  </data>
+  <data name="m_lbRuns.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_lbRuns.Name" xml:space="preserve">
     <value>m_lbRuns</value>
@@ -778,17 +835,62 @@
   <data name="&gt;&gt;m_lbRuns.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="m_hdrRuns.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrRuns.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrRuns.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="m_hdrRuns.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 18</value>
+  </data>
+  <data name="m_hdrRuns.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_hdrRuns.Text" xml:space="preserve">
+    <value>Runs</value>
+  </data>
+  <data name="m_hdrRuns.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
   <data name="&gt;&gt;m_hdrRuns.Name" xml:space="preserve">
     <value>m_hdrRuns</value>
   </data>
   <data name="&gt;&gt;m_hdrRuns.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15353.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15557.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRuns.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
   </data>
   <data name="&gt;&gt;m_hdrRuns.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="m_btnStop.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_btnStop.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="m_btnStop.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnStop.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 487</value>
+  </data>
+  <data name="m_btnStop.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 3, 0, 0</value>
+  </data>
+  <data name="m_btnStop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 24</value>
+  </data>
+  <data name="m_btnStop.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_btnStop.Text" xml:space="preserve">
+    <value>&amp;Stop</value>
   </data>
   <data name="&gt;&gt;m_btnStop.Name" xml:space="preserve">
     <value>m_btnStop</value>
@@ -864,168 +966,6 @@
   </data>
   <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="m_lbGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_lbGroups.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_lbGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 247</value>
-  </data>
-  <data name="m_lbGroups.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 3</value>
-  </data>
-  <data name="m_lbGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 208</value>
-  </data>
-  <data name="m_lbGroups.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_lbGroups.Name" xml:space="preserve">
-    <value>m_lbGroups</value>
-  </data>
-  <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.6.15353.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
-    <value>m_tlpControls</value>
-  </data>
-  <data name="&gt;&gt;m_lbGroups.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_hdrGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_hdrGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 229</value>
-  </data>
-  <data name="m_hdrGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 18</value>
-  </data>
-  <data name="m_hdrGroups.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_hdrGroups.Text" xml:space="preserve">
-    <value>Groups</value>
-  </data>
-  <data name="m_hdrGroups.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrGroups.Name" xml:space="preserve">
-    <value>m_hdrGroups</value>
-  </data>
-  <data name="&gt;&gt;m_hdrGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15353.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrGroups.Parent" xml:space="preserve">
-    <value>m_tlpControls</value>
-  </data>
-  <data name="&gt;&gt;m_hdrGroups.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_lbRuns.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_lbRuns.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_lbRuns.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 18</value>
-  </data>
-  <data name="m_lbRuns.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_lbRuns.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 211</value>
-  </data>
-  <data name="m_lbRuns.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_lbRuns.Name" xml:space="preserve">
-    <value>m_lbRuns</value>
-  </data>
-  <data name="&gt;&gt;m_lbRuns.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lbRuns.Parent" xml:space="preserve">
-    <value>m_tlpControls</value>
-  </data>
-  <data name="&gt;&gt;m_lbRuns.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_hdrRuns.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_hdrRuns.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrRuns.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
-  </data>
-  <data name="m_hdrRuns.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 18</value>
-  </data>
-  <data name="m_hdrRuns.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_hdrRuns.Text" xml:space="preserve">
-    <value>Runs</value>
-  </data>
-  <data name="m_hdrRuns.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrRuns.Name" xml:space="preserve">
-    <value>m_hdrRuns</value>
-  </data>
-  <data name="&gt;&gt;m_hdrRuns.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15353.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrRuns.Parent" xml:space="preserve">
-    <value>m_tlpControls</value>
-  </data>
-  <data name="&gt;&gt;m_hdrRuns.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_btnStop.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_btnStop.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
-  <data name="m_btnStop.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnStop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 487</value>
-  </data>
-  <data name="m_btnStop.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 0</value>
-  </data>
-  <data name="m_btnStop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 24</value>
-  </data>
-  <data name="m_btnStop.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_btnStop.Text" xml:space="preserve">
-    <value>&amp;Stop</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Name" xml:space="preserve">
-    <value>m_btnStop</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.Parent" xml:space="preserve">
-    <value>m_tlpControls</value>
-  </data>
-  <data name="&gt;&gt;m_btnStop.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1283,6 +1223,6 @@
     <value>frmRunEcosim</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15353.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15557.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
