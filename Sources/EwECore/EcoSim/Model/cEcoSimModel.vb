@@ -1721,10 +1721,8 @@ Namespace Ecosim
             Dim isp As Integer, ist As Integer, ieco As Integer, ia As Integer
             Dim Su As Single, Gf As Single, Nt As Single
             Dim Agemax As Integer, AgeMin As Integer, Be As Single
-            Dim isSpawning As Boolean
 
             For isp = 1 To m_stanza.Nsplit
-                isSpawning = False
 
                 'update numbers and body weights
                 ieco = m_stanza.EcopathCode(isp, m_stanza.Nstanza(isp))
@@ -1734,24 +1732,25 @@ Namespace Ecosim
                     For ist = 1 To m_stanza.Nstanza(isp)
                         ieco = m_stanza.EcopathCode(isp, ist)
                         'jb 16-Feb-2010 changed to use monthly averaged biomass and loss 
-                        'Su = Math.Exp(-m_Data.loss(ieco) / 12.0# / B(ieco))
                         Su = CSng(Math.Exp(-LossAvg(ieco) / 12.0# / BAvg(ieco)))
                         Gf = m_Data.Eatenby(ieco) / m_Data.pred(ieco)  '(month factor here included in splitalpha scaling setup)
                         For ia = m_stanza.Age1(isp, ist) To m_stanza.Age2(isp, ist)
                             m_stanza.NageS(isp, ia) = m_stanza.NageS(isp, ia) * Su
                             m_stanza.WageS(isp, ia) = m_stanza.vBM(isp) * m_stanza.WageS(isp, ia) + Gf * m_stanza.SplitAlpha(isp, ia)
                             If m_stanza.FixedFecundity(isp) Then
-                                Be = Be + m_stanza.NageS(isp, ia) * m_stanza.EggsSplit(isp, ia)
+                                Be = Be + m_stanza.NageS(isp, ia) * m_stanza.EggsSplit(isp, ia) * m_stanza.SpawnProp(isp, ist)
                             Else
                                 ' JS 11-Sep-19 only for spawning life stages
                                 If (m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp)) Then
                                     'isSpawning used to set egg biomass in the Age 1 slot for this group
-                                    isSpawning = True
-                                    Be = Be + m_stanza.NageS(isp, ia) * (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp))
+                                    ' Debug.Assert(isp <> 4)
+                                    '   isSpawning = True
+                                    Be = Be + m_stanza.NageS(isp, ia) * (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp)) * m_stanza.SpawnProp(isp, ist)
                                 End If
                             End If
                         Next ia
                     Next ist
+
                     m_stanza.WageS(isp, m_stanza.Age2(isp, m_stanza.Nstanza(isp))) = (Su * AhatStanza(isp) + (1 - Su) * m_stanza.WageS(isp, m_stanza.Age2(isp, m_stanza.Nstanza(isp)) - 1)) / (1 - RhatStanza(isp) * Su)
                     If Be = 0 Then Be = 1.0E-20F
                     m_stanza.EggsStanza(isp) = Be
@@ -1776,15 +1775,16 @@ Namespace Ecosim
                             Brec(ieco) = m_stanza.NageS(isp, m_stanza.Age2(isp, ist) + 1) * m_stanza.WageS(isp, m_stanza.Age2(isp, ist) + 1)
                         End If
                     Next
+
                     'finally set abundance at youngest age to recruitment rate
                     ieco = m_stanza.EcopathCode(isp, m_stanza.Nstanza(isp)) 'code for adult biomass for sp isp
                     'VILLY: note following assumes we extend pair list for egg prod and recpower to add multistanza options  at end of pair lists
                     Srec(ieco) = BAvg(ieco)
-                    ' Debug.Assert(isSpawning)
-                    If m_stanza.BaseEggsStanza(isp) > 0 And isSpawning Then
+
+                    If m_stanza.BaseEggsStanza(isp) > 0 Then
                         m_stanza.NageS(isp, m_stanza.Age1(isp, 1)) = m_stanza.RscaleSplit(isp) * m_Data.tval(m_stanza.EggProdShapeSplit(isp)) * m_stanza.RzeroS(isp) * m_Data.tval(m_stanza.HatchCode(isp))
                     End If
-                    If m_stanza.HatchCode(isp) = 0 And isSpawning Then
+                    If m_stanza.HatchCode(isp) = 0 And m_stanza.BaseEggsStanza(isp) > 0 Then
                         m_stanza.NageS(isp, m_stanza.Age1(isp, 1)) = CSng(m_stanza.NageS(isp, m_stanza.Age1(isp, 1)) * (m_stanza.EggsStanza(isp) / m_stanza.BaseEggsStanza(isp)) ^ m_stanza.RecPowerSplit(isp))
                     End If
                     m_stanza.WageS(isp, m_stanza.Age1(isp, 1)) = 0
@@ -3219,14 +3219,15 @@ Namespace Ecosim
                         ist += 1
                     End If
                     ' JS 11-Sep-19 only for spawning life stages
-                    If m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp) Then
-                        m_stanza.EggsSplit(isp, ia) = (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp))
+                    If (m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp)) Then
+                        m_stanza.EggsSplit(isp, ia) = (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp)) * m_stanza.SpawnProp(isp, ist)
                         Be = Be + m_stanza.NageS(isp, ia) * m_stanza.EggsSplit(isp, ia) ': Stop
                     End If
                 Next ia
 
-                m_stanza.BaseEggsStanza(isp) = Be + 1.0E-20F
-                m_stanza.EggsStanza(isp) = Be + 1.0E-20F
+                ' If Be = 0.0F Then Be = 1.0E-20F
+                m_stanza.BaseEggsStanza(isp) = Be
+                m_stanza.EggsStanza(isp) = Be
                 For ist = 1 To m_stanza.Nstanza(isp)
                     ieco = m_stanza.EcopathCode(isp, ist)
                     'turn of the integration for all multi stanza groups
