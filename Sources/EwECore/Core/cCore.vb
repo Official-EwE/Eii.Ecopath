@@ -13640,7 +13640,7 @@ Public Class cCore
 
 
             Case eDataTypes.EcoSimModelParameter
-                        Debug.Assert(TypeOf obj Is cEcoSimModelParameters)
+                Debug.Assert(TypeOf obj Is cEcoSimModelParameters)
                 Dim params As cEcoSimModelParameters = DirectCast(obj, cEcoSimModelParameters)
 
                 Select Case value.varName
