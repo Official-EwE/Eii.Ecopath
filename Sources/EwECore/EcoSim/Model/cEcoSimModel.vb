@@ -1746,6 +1746,7 @@ Namespace Ecosim
                             Else
                                 ' JS 11-Sep-19 only for spawning life stages
                                 If (m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp)) And (m_stanza.Spawning(isp, ist)) Then
+                                    'isSpawning used to set egg biomass in the Age 1 slot for this group
                                     isSpawning = True
                                     Be = Be + m_stanza.NageS(isp, ia) * (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp))
                                 End If
