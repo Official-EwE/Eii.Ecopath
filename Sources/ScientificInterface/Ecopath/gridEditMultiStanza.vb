@@ -31,9 +31,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
-' ToDo: block out "Spawning" cells when fixed fecundity is set
-
-<CLSCompliant(False)> _
+<CLSCompliant(False)>
 Public Class gridEditMultiStanza
     Inherits EwEGrid
 
