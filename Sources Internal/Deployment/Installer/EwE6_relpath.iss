@@ -4,7 +4,7 @@
 #define Compile64Bit 0
 #define Spinup 0
 #define SpatTemp 0
-#define MPAdynamics 1
+#define MPAdynamics 0
 #define MergeGroups 0
 #define BiomassEmitters 0
 #define FISHMIP 0
@@ -338,6 +338,7 @@ UseRelativePaths=True
 Filename: "{app}\{#MyAppExeName}"; Flags: postinstall skipifsilent; Description: "Run {#MyAppName}"
 
 [Code]
+// https://stackoverflow.com/questions/4104011/inno-setup-verify-that-net-4-0-is-installed
 // https://blogs.msdn.microsoft.com/davidrickard/2015/07/17/installing-net-framework-4-5-automatically-with-inno-setup/
 function IsDotNetDetected(): boolean;
 // Indicates whether the specified version and service pack of the .NET Framework is installed.
