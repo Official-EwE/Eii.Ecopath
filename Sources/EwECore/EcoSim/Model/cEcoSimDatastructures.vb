@@ -670,6 +670,7 @@ Public Class cEcosimDatastructures
         ReDim Qrisk(nGroups)
         ReDim RiskTime(nGroups)
         ReDim Consumption(nGroups, nGroups)
+        ReDim StartBiomass(nGroups)
 
         ReDim Eatenby(nGroups)
         ReDim Eatenof(nGroups)
@@ -694,6 +695,11 @@ Public Class cEcosimDatastructures
         ReDim jlink(nGroups * nGroups)
         ReDim SimDC(nGroups, nGroups)
         ReDim MPred(nGroups * nGroups)
+
+        ReDim IlinkSet(nGroups * nGroups)
+        ReDim JlinkSet(nGroups * nGroups)
+        ReDim KlinkSet(nGroups * nGroups)
+        ReDim PeatArena(nGroups * nGroups, nGroups)
 
         ReDim vulrate(nGroups, nGroups)
         ReDim VulMult(nGroups, nGroups)

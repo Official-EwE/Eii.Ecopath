@@ -140,15 +140,6 @@ Namespace Ecopath
 
         End Sub
 
-        Private Sub OnFixedFecundityCheckChanged(sender As Object, e As EventArgs) Handles m_cbFFecun.CheckedChanged
-
-            If (Me.m_bInUpdate) Then Return
-            Me.SaveChanges(False)
-            Me.UpdateGraph(Me.m_zgc)
-            Me.m_grid.RefreshContent()
-
-        End Sub
-
         Private Sub OnCalculate(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnCalculate.Click
 

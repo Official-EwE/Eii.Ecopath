@@ -28,14 +28,13 @@ Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.60.0.12:</para>
+''' <para>Database update 6.60.0.14:</para>
 ''' <para>
-''' Added ecospacce fitness response type field.
-''' Added stanza spawn proportion
+''' Brought back shared foraging arenas
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Friend Class cDBUpdate6_60_00_12
+Friend Class cDBUpdate6_60_00_14
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -43,7 +42,7 @@ Friend Class cDBUpdate6_60_00_12
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.600012!
+            Return 6.600014!
         End Get
     End Property
 
@@ -52,29 +51,27 @@ Friend Class cDBUpdate6_60_00_12
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added ecospace fitness response type, stanza spawn proportion"
+            Return "Brought back shared foraging arenas"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        If db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN FitResponseType BYTE") And
-           db.Execute("ALTER TABLE StanzaLifeStage ADD COLUMN SpawnProp SINGLE") Then
+        Dim bSuccess As Boolean = True
+        bSuccess = bSuccess And db.Execute("CREATE TABLE EcosimScenarioArena (ScenarioID LONG, PreyID LONG, PredID LONG, PredSharedID LONG, PeatArena SINGLE)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioArena ADD PRIMARY KEY (ScenarioID, PreyID, PredID, PredSharedID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioArena ADD FOREIGN KEY (PreyID) REFERENCES EcosimScenarioGroup(GroupID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioArena ADD FOREIGN KEY (PredID) REFERENCES EcosimScenarioGroup(GroupID)")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioArena ADD FOREIGN KEY (PredSharedID) REFERENCES EcosimScenarioGroup(GroupID)")
 
-            ' Set all stage values to True by default
-            Dim wr As cEwEDatabase.cEwEDbWriter = db.GetWriter("StanzaLifeStage")
-            Dim dt As DataTable = wr.GetDataTable()
-            For Each drow As DataRow In dt.Rows
-                drow.BeginEdit()
-                drow("SpawnProp") = 1.0
-                drow.EndEdit()
-            Next
-            db.ReleaseWriter(wr)
-            Return True
+        ' Clean up obsolete fields
+        db.Execute("ALTER TABLE EcopathDietComp DROP COLUM MTI")
+        db.Execute("ALTER TABLE EcopathDietComp DROP COLUM Electivity")
+        db.Execute("ALTER TABLE EcosimScenarioForcingMatrix DROP COLUM FlowType")
 
-        End If
-        Return False
+        Return bSuccess
 
     End Function
+
 
 End Class

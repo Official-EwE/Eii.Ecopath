@@ -50,8 +50,7 @@ Public Class gridEditMultiStanza
         Z
         LeadingCB
         CBInput
-        Feeding
-        Spawning
+        SpawnProp
     End Enum
 
 #End Region ' Private variables
@@ -101,8 +100,7 @@ Public Class gridEditMultiStanza
         Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(eVarNameFlags.Z, eDescriptorTypes.Abbreviation)
         Me(0, eColumnTypes.LeadingCB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
         Me(0, eColumnTypes.CBInput) = New EwEColumnHeaderCell(eVarNameFlags.QBInput)
-        Me(0, eColumnTypes.Feeding) = New EwEColumnHeaderCell(eVarNameFlags.Feeding, eDescriptorTypes.Name, False)
-        Me(0, eColumnTypes.Spawning) = New EwEColumnHeaderCell(eVarNameFlags.Spawning, eDescriptorTypes.Name, False)
+        Me(0, eColumnTypes.SpawnProp) = New EwEColumnHeaderCell(eVarNameFlags.SpawnProp)
 
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.FixedColumnWidths = True
@@ -171,17 +169,11 @@ Public Class gridEditMultiStanza
             Me(iRow, eColumnTypes.CBInput) = ewec
             Me(iRow, eColumnTypes.CBInput).Behaviors.Add(Me.EwEEditHandler)
 
-            ' Feeding
-            Me(iRow, eColumnTypes.Feeding) = New Cells.Real.CheckBox(Me.m_stanzagroup.Feeding(iLifeStage))
-            Me(iRow, eColumnTypes.Feeding).Behaviors.Add(Me.EwEEditHandler)
-
-            ' Spawning
-            If Me.m_stanzagroup.FixedFecundity Then
-                Me(iRow, eColumnTypes.Spawning) = New EwECell("", cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
-            Else
-                Me(iRow, eColumnTypes.Spawning) = New Cells.Real.CheckBox(Me.m_stanzagroup.Spawning(iLifeStage))
-                Me(iRow, eColumnTypes.Spawning).Behaviors.Add(Me.EwEEditHandler)
-            End If
+            ewec = New EwECell(0, GetType(Single))
+            ewec.SuppressZero(cCore.NULL_VALUE) = True
+            ewec.Value = Me.m_stanzagroup.SpawnProp(iLifeStage)
+            Me(iRow, eColumnTypes.SpawnProp) = ewec
+            Me(iRow, eColumnTypes.SpawnProp).Behaviors.Add(Me.EwEEditHandler)
 
         Next
 
@@ -215,12 +207,8 @@ Public Class gridEditMultiStanza
             Me.m_stanzagroup.Mortality(iLifeStage) = CSng(Me(iLifeStage, eColumnTypes.Z).Value)
             'Consumption/Biomass
             Me.m_stanzagroup.CB(iLifeStage) = CSng(Me(iLifeStage, eColumnTypes.CBInput).Value)
-            'Feeding
-            Me.m_stanzagroup.Feeding(iLifeStage) = CBool(Me(iLifeStage, eColumnTypes.Feeding).Value)
-            'Spawning
-            If (TypeOf Me(iLifeStage, eColumnTypes.Spawning) Is SourceGrid2.Cells.Real.CheckBox) Then
-                Me.m_stanzagroup.Spawning(iLifeStage) = CBool(Me(iLifeStage, eColumnTypes.Spawning).Value)
-            End If
+            'Spawn prop
+            Me.m_stanzagroup.SpawnProp(iLifeStage) = CSng(Me(iLifeStage, eColumnTypes.SpawnProp).Value)
 
         Next
 

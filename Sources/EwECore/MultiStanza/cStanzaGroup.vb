@@ -155,12 +155,8 @@ Public Class cStanzaGroup
         val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaMortaility, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
         m_values.Add(val.varName, val)
 
-        ' Feeding
-        val = New cValueArrayIndexed(eValueTypes.BoolArray, eVarNameFlags.Feeding, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
-        m_values.Add(val.varName, val)
-
         ' Spawming
-        val = New cValueArrayIndexed(eValueTypes.BoolArray, eVarNameFlags.Spawning, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
+        val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.SpawnProp, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
         m_values.Add(val.varName, val)
 
         Me.AllowValidation = False ' Why?
@@ -522,21 +518,12 @@ Public Class cStanzaGroup
         End Set
     End Property
 
-    Public Property Feeding(ByVal iLifeStage As Integer) As Boolean
+    Public Property SpawnProp(ByVal iLifeStage As Integer) As Single
         Get
-            Return CBool(Me.GetVariable(eVarNameFlags.Feeding, iLifeStage))
+            Return CSng(Me.GetVariable(eVarNameFlags.SpawnProp, iLifeStage))
         End Get
-        Set(ByVal value As Boolean)
-            Me.SetVariable(eVarNameFlags.Feeding, value, iLifeStage)
-        End Set
-    End Property
-
-    Public Property Spawning(ByVal iLifeStage As Integer) As Boolean
-        Get
-            Return CBool(Me.GetVariable(eVarNameFlags.Spawning, iLifeStage))
-        End Get
-        Set(ByVal value As Boolean)
-            Me.SetVariable(eVarNameFlags.Spawning, value, iLifeStage)
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.SpawnProp, value, iLifeStage)
         End Set
     End Property
 

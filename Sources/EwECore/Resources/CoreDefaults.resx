@@ -2772,7 +2772,7 @@
   <data name="VARIABLE_LAYERM0MULTINPUT" xml:space="preserve">
     <value>M0 mult||Other mortality multiplier map (entered)</value>
   </data>
-  <data name="VARIABLE_SPAWNING" xml:space="preserve">
-    <value>Spawning</value>
+  <data name="VARIABLE_SPAWNPROP" xml:space="preserve">
+    <value>Spawning|||Proportion of life stage allowed to spawn</value>
   </data>
 </root>

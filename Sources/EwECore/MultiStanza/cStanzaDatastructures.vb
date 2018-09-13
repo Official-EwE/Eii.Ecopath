@@ -110,11 +110,9 @@ Public Class cStanzaDatastructures
     Public Stanza_Z(,) As Single
     Public Stanza_Bio(,) As Single
     Public Stanza_CB(,) As Single
-    Public Feeding(,) As Boolean
     ''' <summary>
-    ''' Flag, stating whether as life stage is allowed to spawn. This flag can be used to prevent life stages at spawning ages from spawning. 
-    ''' The flag is ignored when <see cref="FixedFecundity"/> is set.</summary>
-    Public Spawning(,) As Boolean
+    ''' Flag, stating which propotion of a life stage is allowed to spawn.</summary>
+    Public SpawnProp(,) As Single
 
     Public WmatWinf() As Single ' weight at maturity/ weight at infinity (max weight) from EwE5 interface
     Public EggsStanza() As Single
@@ -173,8 +171,7 @@ Public Class cStanzaDatastructures
         ReDim Stanza_Z(Nsplit, MaxStanza) 'mortality
         ReDim Stanza_Bio(Nsplit, MaxStanza) 'mortality
         ReDim Stanza_CB(Nsplit, MaxStanza) 'mortality
-        ReDim Feeding(Nsplit, MaxStanza)
-        ReDim Spawning(Nsplit, MaxStanza)
+        ReDim SpawnProp(Nsplit, MaxStanza)
         ReDim RzeroS(Nsplit) 'base recruitment to age 0 for split species
         'redim PredS() 'effective predator abund for split species (set in ecosim splitpred)
         ReDim SplitAlpha(Nsplit, MaxAgeSplit) 'growth coefficients by split spp and age (set in initialstate)
@@ -193,7 +190,7 @@ Public Class cStanzaDatastructures
         ReDim BABsplit(Nsplit)
         ReDim EggAtSpawn(Nsplit)
 
-        For i As Integer = 0 To Nsplit : For j As Integer = 0 To MaxStanza : Feeding(i, j) = True : Spawning(i, j) = True : Next : Next
+        For i As Integer = 0 To Nsplit : For j As Integer = 0 To MaxStanza : SpawnProp(i, j) = 1.0 : Next : Next
 
         'variables by nGroups
         ReDim SpeciesCode(nGroups, 2) '0: Ecopath group no for this stanza, 1: Ecopath no for leading B stanza, 2: Ecopath no for leading QB stanza
