@@ -57,7 +57,7 @@ Friend Class cDBUpdate6_60_00_13
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return db.Execute("ALTER TABLE EcospaceScenarioGroup ADD COLUMN OtherMortMap VARCHAR")
+        Return db.Execute("ALTER TABLE EcospaceScenarioGroup ADD COLUMN OtherMortMap LONGTEXT")
 
     End Function
 
