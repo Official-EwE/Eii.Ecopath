@@ -917,8 +917,6 @@ Public Class cEcoSpace
             Me.ForceBiomassWithEcosimTimeSeries(1)
             ' hack to dump ecotracer C/B to csv file 
 
-
-
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'START OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -962,6 +960,8 @@ Public Class cEcoSpace
                     Me.SetHabCap()
                     'System.Console.WriteLine("SetHabCap() run time(sec), " + (stpwchTotRunTime.Elapsed.TotalSeconds - hcSt).ToString)
                 End If
+
+                Me.SetOtherMort()
 
                 'Tell Ecoseed that we are at the start of a timestep
                 Me.EcoseedBeginTimeStep(m_Data.MonthNow, m_Data.YearNow, Btime)
@@ -8163,6 +8163,23 @@ exitline:
         Return failedIndexes
 
     End Function
+
+    Public Sub SetOtherMort()
+
+        For igrp As Integer = 1 To Me.m_Data.NGroups
+            'Get the baseline M0 multi values from the user input map 
+            'This is done first so the values are just copied in
+            'All others mort drivers act as a multiplier on this baseline 
+            For irow As Integer = 1 To Me.m_Data.InRow
+                For icol As Integer = 1 To Me.m_Data.InCol
+                    If Me.m_Data.Depth(irow, icol) > 0 Then
+                        Me.m_Data.M0Mult(igrp)(irow, icol) = Me.m_Data.M0MultInput(igrp)(irow, icol)
+                    End If
+                Next icol
+            Next irow
+        Next igrp
+
+    End Sub
 
     ''' <summary>
     ''' Update the capacity map based on the datatype
