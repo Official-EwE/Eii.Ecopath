@@ -28,13 +28,11 @@ Public Class cEcosimFleetInput
 
     ' Private m_coreData As New Dictionary(Of eVarNameFlags, IResultsWrapper)
 
-    Public Sub New(ByRef TheCore As cCore, ByVal iFleet As Integer)
+    Public Sub New(TheCore As cCore, iFleet As Integer)
         MyBase.New(TheCore)
 
         Dim val As cValue
         Dim simdata As cEcosimDatastructures = Me.m_core.m_EcoSimData
-
-        AllowValidation = False
 
         Me.m_dataType = eDataTypes.EcosimFleetInput
         Me.m_coreComponent = eCoreComponentType.EcoSim
@@ -42,7 +40,7 @@ Public Class cEcosimFleetInput
         Me.AllowValidation = False
 
         Me.Index = iFleet
-        Me.DBID = TheCore.m_EcoSimData.FleetDBID(iFleet)
+        Me.DBID = simdata.FleetDBID(iFleet)
         Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
 
         'EPower
