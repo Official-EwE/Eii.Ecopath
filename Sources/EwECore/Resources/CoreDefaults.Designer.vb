@@ -4043,7 +4043,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to M0 mult (out)||Other mortality multiplier map (computed).
+        '''  Looks up a localized string similar to M0 mult (out)|Other mort. mult. map|Other mortality multiplier map (computed).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERM0MULT() As String
             Get
@@ -4052,7 +4052,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to M0 mult||Other mortality multiplier map (entered).
+        '''  Looks up a localized string similar to M0 mult|Other mort. mult. map|Other mortality multiplier map (entered).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERM0MULTINPUT() As String
             Get

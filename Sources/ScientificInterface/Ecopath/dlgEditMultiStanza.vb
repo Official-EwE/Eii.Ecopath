@@ -196,8 +196,8 @@ Namespace Ecopath
             ' Sanity check
             If (sg Is Nothing) Then Return
 
-            Dim pane As GraphPane = Me.m_zgh.ConfigurePane("", _
-                SharedResources.HEADER_AGE, 0, sg.MaxAge - 1, _
+            Dim pane As GraphPane = Me.m_zgh.ConfigurePane("",
+                SharedResources.HEADER_AGE, 0, sg.MaxAge - 1,
                 SharedResources.HEADER_NORMALIZED_VALUE, 0, 1, True)
 
             Dim pplNumber As New PointPairList()
@@ -261,9 +261,9 @@ Namespace Ecopath
 
             pplSep = New PointPairList
             pplSep.Add(iSpawnMonth, 0)
-                pplSep.Add(iSpawnMonth, 1)
-                li = pane.AddCurve(My.Resources.HEADER_SPAWNING_AGE, pplSep, Color.Orange, SymbolType.None)
-                li.Line.Style = Drawing2D.DashStyle.Dash
+            pplSep.Add(iSpawnMonth, 1)
+            li = pane.AddCurve(My.Resources.HEADER_SPAWNING_AGE, pplSep, Color.Orange, SymbolType.None)
+            li.Line.Style = Drawing2D.DashStyle.Dash
 
             ' Calculate the Axis Scale Ranges
             zgc.AxisChange()
