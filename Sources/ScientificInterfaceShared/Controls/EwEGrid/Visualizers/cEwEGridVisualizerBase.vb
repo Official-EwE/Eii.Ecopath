@@ -120,9 +120,9 @@ Namespace Controls.EwEGrid
 
             If (sg IsNot Nothing) Then
                 If (sg.ShowPedigree) Then
-                    Dim sPedigree As Single = Me.Pedigree(cell)
-                    If (sPedigree > 0) Then
-                        cPedigreeIndicator.Paint(sg, rc, e.Graphics, sPedigree)
+                    Dim CV As Integer = Me.PedigreeCV(cell)
+                    If (CV > 0) Then
+                        cPedigreeIndicator.Paint(sg, rc, e.Graphics, CV)
                     End If
                 End If
             End If
@@ -146,11 +146,11 @@ Namespace Controls.EwEGrid
         ''' Overidden to draw cell content using EwE color styles
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub DrawCell_ImageAndText( _
-                ByVal cell As SourceGrid2.Cells.ICellVirtual, _
-                ByVal pos As SourceGrid2.Position, _
-                ByVal e As System.Windows.Forms.PaintEventArgs, _
-                ByVal rc As System.Drawing.Rectangle, _
+        Protected Overrides Sub DrawCell_ImageAndText(
+                ByVal cell As SourceGrid2.Cells.ICellVirtual,
+                ByVal pos As SourceGrid2.Position,
+                ByVal e As System.Windows.Forms.PaintEventArgs,
+                ByVal rc As System.Drawing.Rectangle,
                 ByVal status As SourceGrid2.DrawCellStatus)
 
             If cell Is Nothing Then Return
@@ -218,10 +218,10 @@ Namespace Controls.EwEGrid
         ''' Overidden to draw cell border using EwE color styles
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub DrawCell_Border(ByVal cell As SourceGrid2.Cells.ICellVirtual, _
-                                                ByVal pos As SourceGrid2.Position, _
-                                                ByVal e As System.Windows.Forms.PaintEventArgs, _
-                                                ByVal rc As System.Drawing.Rectangle, _
+        Protected Overrides Sub DrawCell_Border(ByVal cell As SourceGrid2.Cells.ICellVirtual,
+                                                ByVal pos As SourceGrid2.Position,
+                                                ByVal e As System.Windows.Forms.PaintEventArgs,
+                                                ByVal rc As System.Drawing.Rectangle,
                                                 ByVal status As SourceGrid2.DrawCellStatus)
 
             If cell Is Nothing Then Return
@@ -244,23 +244,23 @@ Namespace Controls.EwEGrid
             ' Need to render highlightboder?
             If ((style And cStyleGuide.eStyleFlags.Highlight) > 0) And (sg IsNot Nothing) Then
                 ' #Yes: render highlight border
-                rcBorder = New RectangleBorder( _
+                rcBorder = New RectangleBorder(
                     New Border(sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), Me.m_nHighlightBorderWidth))
             End If
 
             ' Draw the border
-            ControlPaint.DrawBorder(e.Graphics, rc, _
-                rcBorder.Left.Color, _
-                rcBorder.Left.Width, _
-                ButtonBorderStyle.Solid, _
-                rcBorder.Top.Color, _
-                rcBorder.Top.Width, _
-                ButtonBorderStyle.Solid, _
-                rcBorder.Right.Color, _
-                rcBorder.Right.Width, _
-                ButtonBorderStyle.Solid, _
-                rcBorder.Bottom.Color, _
-                rcBorder.Bottom.Width, _
+            ControlPaint.DrawBorder(e.Graphics, rc,
+                rcBorder.Left.Color,
+                rcBorder.Left.Width,
+                ButtonBorderStyle.Solid,
+                rcBorder.Top.Color,
+                rcBorder.Top.Width,
+                ButtonBorderStyle.Solid,
+                rcBorder.Right.Color,
+                rcBorder.Right.Width,
+                ButtonBorderStyle.Solid,
+                rcBorder.Bottom.Color,
+                rcBorder.Bottom.Width,
                 ButtonBorderStyle.Solid)
         End Sub
 
@@ -301,12 +301,12 @@ Namespace Controls.EwEGrid
             End Get
         End Property
 
-        Protected ReadOnly Property Pedigree(ByVal cell As SourceGrid2.Cells.ICellVirtual) As Single
+        Protected ReadOnly Property PedigreeCV(ByVal cell As SourceGrid2.Cells.ICellVirtual) As Integer
             Get
                 ' Rendering an EwE base cell?
                 If (TypeOf cell Is EwECellBase) Then
                     ' #Yes: obtain cell style
-                    Return DirectCast(cell, EwECellBase).Pedigree
+                    Return DirectCast(cell, EwECellBase).PedigreeCV
                 End If
                 Return 0
             End Get

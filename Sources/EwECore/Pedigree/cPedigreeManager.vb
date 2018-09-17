@@ -79,11 +79,11 @@ Public Class cPedigreeManager
         Me.DBID = iDBID
 
         'Pedigree levels
-        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.PedigreeLevel, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.PedigreeLevel, eStatusFlags.NotEditable Or eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
         Me.m_values.Add(val.varName, val)
 
         'Pedigree confidence intervals
-        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.ConfidenceInterval, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.ConfidenceInterval, eStatusFlags.NotEditable Or eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
         Me.m_values.Add(val.varName, val)
 
         Me.AllowValidation = True
@@ -165,6 +165,18 @@ Public Class cPedigreeManager
             Me.SetStatus(eVarNameFlags.ConfidenceInterval, value)
         End Set
     End Property
+
+    ''' <summary>
+    ''' Get the pedigree CV assigned to a group, obtained either from a level, and
+    ''' if not present, from a possible custom assigned pedigree CV
+    ''' </summary>
+    ''' <param name="iGroup"></param>
+    ''' <returns></returns>
+    Public Function ResolvePedigreeGroupCV(iGroup As Integer) As Integer
+        Dim iLevel As Integer = Me.PedigreeGroupLevel(iGroup)
+        If (iLevel > 0) Then Return Me.Level(iLevel).ConfidenceInterval
+        Return Me.PedigreeGroupCV(iGroup)
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -402,6 +414,7 @@ Public Class cPedigreeManager
     Friend Sub Set_Pedigree_Flags(ByVal group As cEcoPathGroupInput)
 
         Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim lock As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
 
         ' Borrow status flags from groups
         Me.AllowValidation = False
@@ -413,34 +426,43 @@ Public Class cPedigreeManager
         Select Case Me.m_varName
 
             Case eVarNameFlags.BiomassAreaInput
-                Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
+                Me.ClearStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
+                Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
 
             Case eVarNameFlags.PBInput
                 If (group.IsDetritus()) Then
-                    Me.SetStatusFlags(eVarNameFlags.ConfidenceInterval, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
                 Else
-                    Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, eStatusFlags.NotEditable, group.Index)
+                    Me.ClearStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
+                    Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
                 End If
 
             Case eVarNameFlags.QBInput
                 If (group.IsDetritus() Or group.IsProducer()) Then
-                    Me.SetStatusFlags(eVarNameFlags.ConfidenceInterval, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
                 Else
-                    Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, eStatusFlags.NotEditable, group.Index)
+                    Me.ClearStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
+                    Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
                 End If
 
             Case eVarNameFlags.DietComp
                 If (group.IsDetritus() Or group.IsProducer()) Then
-                    Me.SetStatusFlags(eVarNameFlags.ConfidenceInterval, eStatusFlags.NotEditable, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
                 Else
-                    Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, eStatusFlags.NotEditable, group.Index)
+                    Me.ClearStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
+                    Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
                 End If
 
             Case eVarNameFlags.TCatchInput
                 If epdata.fCatch(group.Index) > 0 Then
-                    Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, eStatusFlags.NotEditable, group.Index)
+                    Me.ClearStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
+                    Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
                 Else
-                    Me.SetStatusFlags(eVarNameFlags.ConfidenceInterval, eStatusFlags.NotEditable, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
                 End If
 
         End Select

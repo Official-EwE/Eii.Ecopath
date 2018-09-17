@@ -417,7 +417,10 @@ Namespace Controls.EwEGrid
             End Set
         End Property
 
-        Public Overridable Property Pedigree As Integer
+        ''' <summary>
+        ''' Returns the pedigree CV [0, 100]
+        ''' </summary>
+        Public Overridable Property PedigreeCV As Integer
 
 #End Region ' Data (value, style, image, pedigree)
 

@@ -212,6 +212,7 @@
     <Compile Include="Ecopath\Tools\FlowDiagram\frmEcopathFlowDiagram.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecopath\Tools\Pedigree\cPedigreeCellVisualizer.vb" />
     <Compile Include="Ecopath\Tools\Taxonomy and traits\dlgDefineTaxonomy.Designer.vb">
       <DependentUpon>dlgDefineTaxonomy.vb</DependentUpon>
     </Compile>
@@ -257,6 +258,12 @@
     <Compile Include="Ecosim\Input\EggProduction\gridApplyEP.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecosim\Input\frmEcosimArenaShare.Designer.vb">
+      <DependentUpon>frmEcosimArenaShare.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\frmEcosimArenaShare.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\FunctionalResponses\frmEcosimFunctionalResponse.Designer.vb">
       <DependentUpon>frmEcosimFunctionalResponse.vb</DependentUpon>
     </Compile>
@@ -264,6 +271,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FunctionalResponses\gridApplyFunctionalResponses.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\gridEcosimArenaShare.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\Vulnerabilities\dlgScaleVs.Designer.vb">

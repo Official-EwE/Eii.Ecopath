@@ -223,6 +223,11 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_PARAMETERS, "ndEcosimParameters", eCoreExecutionState.EcosimLoaded, GetType(frmEcosimParameters), eNodeImages.Input, nodeInput, "Ecosim parameters.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_GROUPS, "ndGroupInfo", eCoreExecutionState.EcosimLoaded, GetType(gridEcosimGroupInput), eNodeImages.Input, nodeInput, "Group info.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_VULNERABILITES, "ndVulnerabilities", eCoreExecutionState.EcosimLoaded, GetType(frmVulnerabilities), eNodeImages.Input, nodeInput, "Vulnerabilities flow control.htm")
+#If 0 Then
+        ' Be careful to activate this. Arena indexing is still not working correctly, and is not getting loaded and saved yet
+        ' ToDo: globalize this!!
+        Me.m_nodecontroller.Add("Shared arenas", "ndSharedArenas", eCoreExecutionState.EcosimLoaded, GetType(gridEcosimArenaShare), eNodeImages.Input, nodeInput, "")
+#End If
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_TIMESERIES, "ndTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(frmTimeSeries), eNodeImages.Input, nodeInput, "Time series.htm")
 
         nodeFolder = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSIM_INPUT_MEDIATION, "ndMediation", eCoreExecutionState.EcosimLoaded, GetType(frmMediationFunction), eNodeImages.Input, nodeInput, "Forcing function.htm")
