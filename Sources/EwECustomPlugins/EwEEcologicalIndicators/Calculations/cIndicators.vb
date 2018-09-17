@@ -401,7 +401,7 @@ Public MustInherit Class cIndicators
                              (sB * ta.GroupCatchProportion(iGroup, eOrganismTypes.Mammals)) +
                              (sB * ta.GroupCatchProportion(iGroup, eOrganismTypes.Reptiles)))
             sDemB = sDemB + (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.Demersal)) +
-                (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.Bethic)) +
+                (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.Benthic)) +
                 (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.BathyDemersal))
             sPelB = sPelB + (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.Pelagic)) +
                 (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.BathyPelagic)) +
@@ -410,7 +410,7 @@ Public MustInherit Class cIndicators
                 (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.PelagicOceanic))
 
             sDemC = sDemC + (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.Demersal)) +
-                (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.Bethic)) +
+                (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.Benthic)) +
                 (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.BathyDemersal))
 
             sPelC = sPelC + (sC * ta.GroupCatchProportion(iGroup, eEcologyTypes.Pelagic)) +

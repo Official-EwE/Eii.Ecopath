@@ -1889,6 +1889,8 @@ Namespace Core
 
         ''' <summary>Ecosim base catchability at time.</summary>
         RelQt
+        EcosimArenaShare
+
     End Enum
 
 #End Region ' Variable names
@@ -2447,6 +2449,8 @@ Namespace Core
         EcospaceLayerHabitatCapacityInput = 119
         EcospaceLayerOtherMort = 120
         EcospaceLayerOtherMortInput = 121
+
+        EcosimArenaShare = 122
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

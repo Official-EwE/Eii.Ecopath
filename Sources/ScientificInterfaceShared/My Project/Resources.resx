@@ -3066,4 +3066,13 @@
   <data name="HEADER_ECOPATH_PEDIGREE_CV" xml:space="preserve">
     <value>Ecopath pedigree CV</value>
   </data>
+  <data name="FITRESPONSE_EMIGRATE" xml:space="preserve">
+    <value>Emigration rate</value>
+  </data>
+  <data name="FITRESPONSE_GRADIENT" xml:space="preserve">
+    <value>Gradient</value>
+  </data>
+  <data name="FITRESPONSE_NONE" xml:space="preserve">
+    <value>None</value>
+  </data>
 </root>

@@ -699,14 +699,21 @@ Namespace Properties
         ''' <summary>
         ''' Get the pedigree CV [0, 100] set for the related variable, if any.
         ''' </summary>
-        Public ReadOnly Property Pedigree As Integer
+        Public ReadOnly Property PedigreeCV As Integer
             Get
                 If (Me.m_pm Is Nothing) Then Return 0
                 If (Me.m_Source Is Nothing) Then Return 0
 
+                Dim var As eVarNameFlags = Me.m_VarName
                 Dim pedman As cPedigreeManager = Me.m_pm.Core.GetPedigreeManager(Me.m_VarName)
                 If (pedman Is Nothing) Then Return 0
-                Return pedman.PedigreeGroupCV(Me.m_Source.Index)
+                If (TypeOf Me.m_Source Is cCoreGroupBase) Then
+                    Return pedman.ResolvePedigreeGroupCV(Me.m_Source.Index)
+                End If
+                If (TypeOf Me.m_SourceSec Is cCoreGroupBase) Then
+                    Return pedman.ResolvePedigreeGroupCV(Me.m_SourceSec.Index)
+                End If
+                Return 0
             End Get
         End Property
 

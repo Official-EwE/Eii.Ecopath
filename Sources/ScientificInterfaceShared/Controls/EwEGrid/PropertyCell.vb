@@ -243,11 +243,11 @@ Namespace Controls.EwEGrid
 #Region " Pedigree "
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="EwECellBase.Pedigree"/>
+        ''' <inheritdocs cref="EwECellBase.PedigreeCV"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Property Pedigree As Integer
+        Public Overrides Property PedigreeCV As Integer
             Get
-                Return Me.GetProperty().Pedigree
+                Return Me.GetProperty().PedigreeCV
             End Get
             Set(value As Integer)
                 ' NOP

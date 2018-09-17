@@ -1936,6 +1936,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Emigration rate.
+        '''</summary>
+        Public ReadOnly Property FITRESPONSE_EMIGRATE() As String
+            Get
+                Return ResourceManager.GetString("FITRESPONSE_EMIGRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Gradient.
+        '''</summary>
+        Public ReadOnly Property FITRESPONSE_GRADIENT() As String
+            Get
+                Return ResourceManager.GetString("FITRESPONSE_GRADIENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to None.
+        '''</summary>
+        Public ReadOnly Property FITRESPONSE_NONE() As String
+            Get
+                Return ResourceManager.GetString("FITRESPONSE_NONE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Public ReadOnly Property FormulaEvaluatorHS() As System.Drawing.Bitmap

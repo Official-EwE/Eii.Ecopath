@@ -175,7 +175,7 @@ Public Class cCore
     ''' <summary>
     ''' List of all multi threaded models/processes <see cref="IThreadedProcess">IThreadedProcess</see> that the core can run.
     ''' </summary>
-    ''' <remarks>This list is used by the core to stop all running models when something major happens. </remarks>
+    ''' <remarks>This list is used by the core to stop all running models when something major happens.</remarks>
     Private m_ThreadedProcesses As New List(Of IThreadedProcess)
 
     ''' <summary>Delegate to interrupt a run.</summary>
@@ -187,6 +187,7 @@ Public Class cCore
     Friend m_MSYData As MSY.cMSYDataStructures
 
     Private m_SampleManager As Samples.cEcopathSampleManager = Nothing
+    Private m_ArenaManager As cEcosimArenaManager = Nothing
 
 #End Region ' Generic variables
 
@@ -1244,9 +1245,10 @@ Public Class cCore
         bsuccess = bsuccess And Me.InitPSD()
 
         m_SampleManager = New cEcopathSampleManager(Me)
-        m_MonteCarlo = New cMonteCarloManager
-        m_ConTracer = New cContaminantTracer
+        m_MonteCarlo = New cMonteCarloManager()
+        m_ConTracer = New cContaminantTracer()
         m_gameManager = New cGameServerInterface(Me)
+        m_ArenaManager = New cEcosimArenaManager(Me)
 
         InitThreadedProcesses()
 
@@ -6503,7 +6505,6 @@ Public Class cCore
 #End Region ' Variables
 
 
-
     Public Sub setDefaultCatchabilities(iFlt As Integer, iGrp As Integer)
 
         Me.m_EcoSim.setDefaultCatchabilities(iFlt, iGrp)
@@ -6972,6 +6973,8 @@ Public Class cCore
 
             m_MediatedInteractionManager.Init()
             m_MediatedInteractionManager.Load()
+
+            m_ArenaManager.Load()
 
             InitEcosimGroupOutput()
             InitEcosimFleetOutput()
@@ -7701,6 +7704,11 @@ Public Class cCore
         End Get
     End Property
 
+    Public ReadOnly Property EcosimArenaManager() As cEcosimArenaManager
+        Get
+            Return Me.m_ArenaManager
+        End Get
+    End Property
 
     Public ReadOnly Property EcosimEnviroResponseManager() As cEcosimEnviroResponseManager
         Get
@@ -13075,6 +13083,10 @@ Public Class cCore
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function GetPedigreeManager(ByVal varName As eVarNameFlags) As cPedigreeManager
+        ' Mappings
+        If (varName = eVarNameFlags.Discards) Or (varName = eVarNameFlags.Landings) Then
+            varName = eVarNameFlags.TCatchInput
+        End If
         If (Not Me.IsPedigreeVariableSupported(varName)) Then Return Nothing
         If (Not Me.m_PedigreeManagers.ContainsKey(varName)) Then Return Nothing
         Return Me.m_PedigreeManagers(varName)
@@ -13267,7 +13279,6 @@ Public Class cCore
                 Case eDataTypes.PedigreeManager
                     If bValidatedOk Then DirectCast(objValidated, cPedigreeManager).UpdatePedigreeAssignments()
 
-
                 Case eDataTypes.MSEBatchParameters, eDataTypes.MSEBatchTFMInput, eDataTypes.MSEBatchFixedFInput
                     'Something in the MSE Batch interface has changed
                     'Update all the underlying core data
@@ -13279,6 +13290,8 @@ Public Class cCore
                 Case eDataTypes.EcospaceAdvectionParameters
                     If bValidatedOk Then Me.m_AdvectionManager.Update()
 
+                Case eDataTypes.EcosimArenaShare
+                    If bValidatedOk Then Me.m_ArenaManager.Update()
 
             End Select
 

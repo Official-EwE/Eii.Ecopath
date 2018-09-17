@@ -47,7 +47,7 @@ Namespace Controls
         Public Shared Sub Paint(ByVal sg As cStyleGuide,
                                 ByVal rcClip As Rectangle,
                                 ByVal g As Graphics,
-                                ByVal confidence As Single)
+                                ByVal confidence As Integer)
 
             If (confidence > 0) Then
 
