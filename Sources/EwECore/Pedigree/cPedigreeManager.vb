@@ -174,7 +174,8 @@ Public Class cPedigreeManager
     ''' <returns></returns>
     Public Function ResolvePedigreeGroupCV(iGroup As Integer) As Integer
         Dim iLevel As Integer = Me.PedigreeGroupLevel(iGroup)
-        If (iLevel > 0) Then Return Me.Level(iLevel).ConfidenceInterval
+        Dim level As cPedigreeLevel = Me.Level(iLevel)
+        If (level IsNot Nothing) Then Return Me.Level(iLevel).ConfidenceInterval
         Return Me.PedigreeGroupCV(iGroup)
     End Function
 
@@ -202,7 +203,7 @@ Public Class cPedigreeManager
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Level(ByVal iLevel As Integer) As cPedigreeLevel
         Get
-            If (iLevel <= 0) Then Return Nothing
+            If (iLevel <= 0) Or (iLevel >= Me.m_levels.Count) Then Return Nothing
             Return Me.m_levels(iLevel)
         End Get
     End Property
