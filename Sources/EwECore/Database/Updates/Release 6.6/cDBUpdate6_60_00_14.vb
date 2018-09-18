@@ -65,9 +65,9 @@ Friend Class cDBUpdate6_60_00_14
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimScenarioArena ADD FOREIGN KEY (PredSharedID) REFERENCES EcosimScenarioGroup(GroupID)")
 
         ' Clean up obsolete fields
-        db.Execute("ALTER TABLE EcopathDietComp DROP COLUM MTI")
-        db.Execute("ALTER TABLE EcopathDietComp DROP COLUM Electivity")
-        db.Execute("ALTER TABLE EcosimScenarioForcingMatrix DROP COLUM FlowType")
+        db.Execute("ALTER TABLE EcopathDietComp DROP COLUMN MTI")
+        db.Execute("ALTER TABLE EcopathDietComp DROP COLUMN Electivity")
+        db.Execute("ALTER TABLE EcosimScenarioForcingMatrix DROP COLUMN FlowType")
 
         Return bSuccess
 
