@@ -26,7 +26,7 @@ Namespace Ecospace
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Try
                 If disposing AndAlso components IsNot Nothing Then
@@ -43,7 +43,7 @@ Namespace Ecospace
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Dim m_gbModel As System.Windows.Forms.GroupBox
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcospaceParameters))
@@ -56,8 +56,6 @@ Namespace Ecospace
             Me.m_hdrModel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpModelTop = New System.Windows.Forms.TableLayoutPanel()
             Me.m_gbMigration = New System.Windows.Forms.GroupBox()
-            Me.m_cmbFitResponseType = New System.Windows.Forms.ComboBox()
-            Me.m_lblFitResponseType = New System.Windows.Forms.Label()
             Me.m_gbIMB = New System.Windows.Forms.GroupBox()
             Me.m_cbMovePackets = New System.Windows.Forms.CheckBox()
             Me.m_tbNumPackets = New System.Windows.Forms.TextBox()
@@ -104,6 +102,8 @@ Namespace Ecospace
             Me.m_cbUseEcosimDiscardForcing = New System.Windows.Forms.CheckBox()
             Me.m_cbUseEcosimBiomassForcing = New System.Windows.Forms.CheckBox()
             Me.m_hdrTimeSeries = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_rbEcopathEffort = New System.Windows.Forms.RadioButton()
+            Me.m_rbPredictEffort = New System.Windows.Forms.RadioButton()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -189,23 +189,11 @@ Namespace Ecospace
             '
             'm_gbMigration
             '
-            Me.m_gbMigration.Controls.Add(Me.m_cmbFitResponseType)
-            Me.m_gbMigration.Controls.Add(Me.m_lblFitResponseType)
+            Me.m_gbMigration.Controls.Add(Me.m_rbEcopathEffort)
+            Me.m_gbMigration.Controls.Add(Me.m_rbPredictEffort)
             resources.ApplyResources(Me.m_gbMigration, "m_gbMigration")
             Me.m_gbMigration.Name = "m_gbMigration"
             Me.m_gbMigration.TabStop = False
-            '
-            'm_cmbFitResponseType
-            '
-            Me.m_cmbFitResponseType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbFitResponseType.FormattingEnabled = True
-            resources.ApplyResources(Me.m_cmbFitResponseType, "m_cmbFitResponseType")
-            Me.m_cmbFitResponseType.Name = "m_cmbFitResponseType"
-            '
-            'm_lblFitResponseType
-            '
-            resources.ApplyResources(Me.m_lblFitResponseType, "m_lblFitResponseType")
-            Me.m_lblFitResponseType.Name = "m_lblFitResponseType"
             '
             'm_gbIMB
             '
@@ -519,6 +507,20 @@ Namespace Ecospace
             Me.m_hdrTimeSeries.IsCollapsed = False
             Me.m_hdrTimeSeries.Name = "m_hdrTimeSeries"
             '
+            'm_rbEcopathEffort
+            '
+            resources.ApplyResources(Me.m_rbEcopathEffort, "m_rbEcopathEffort")
+            Me.m_rbEcopathEffort.Name = "m_rbEcopathEffort"
+            Me.m_rbEcopathEffort.TabStop = True
+            Me.m_rbEcopathEffort.UseVisualStyleBackColor = True
+            '
+            'm_rbPredictEffort
+            '
+            resources.ApplyResources(Me.m_rbPredictEffort, "m_rbPredictEffort")
+            Me.m_rbPredictEffort.Name = "m_rbPredictEffort"
+            Me.m_rbPredictEffort.TabStop = True
+            Me.m_rbPredictEffort.UseVisualStyleBackColor = True
+            '
             'frmEcospaceParameters
             '
             resources.ApplyResources(Me, "$this")
@@ -530,6 +532,7 @@ Namespace Ecospace
             m_gbModel.PerformLayout()
             Me.m_tlpModelTop.ResumeLayout(False)
             Me.m_gbMigration.ResumeLayout(False)
+            Me.m_gbMigration.PerformLayout()
             Me.m_gbIMB.ResumeLayout(False)
             Me.m_gbIMB.PerformLayout()
             CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).EndInit()
@@ -603,8 +606,8 @@ Namespace Ecospace
         Private WithEvents m_tbxXYTimeSeriesFile As TextBox
         Private WithEvents m_lblXY As Label
         Private WithEvents m_cbUseEcosimDiscardForcing As CheckBox
-        Private WithEvents m_cmbFitResponseType As ComboBox
-        Private WithEvents m_lblFitResponseType As Label
+        Private WithEvents m_rbEcopathEffort As RadioButton
+        Private WithEvents m_rbPredictEffort As RadioButton
     End Class
 
 End Namespace

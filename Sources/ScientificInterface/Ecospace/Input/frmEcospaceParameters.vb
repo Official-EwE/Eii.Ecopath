@@ -109,6 +109,7 @@ Namespace Ecospace
             Me.m_bpUseIBM = DirectCast(propMan.GetProperty(parms, eVarNameFlags.UseIBM), cBooleanProperty)
             Me.m_bpUseNewStanza = DirectCast(propMan.GetProperty(parms, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
             Me.m_bpAdjustSpace = DirectCast(propMan.GetProperty(parms, eVarNameFlags.AdjustSpace), cBooleanProperty)
+            Me.m_bpEffort = DirectCast(propMan.GetProperty(parms, eVarNameFlags.PredictEffort), cBooleanProperty)
 
             Me.m_bpConTracing = DirectCast(propMan.GetProperty(parms, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
 
@@ -142,7 +143,6 @@ Namespace Ecospace
             Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, parms, eVarNameFlags.UseExact)
             Me.m_fpAnnualOutput = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAnnualOutput, parms, eVarNameFlags.EcospaceUseAnnualOutput)
             Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, parms, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
-            Me.m_fpFitResponseType = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbFitResponseType, parms, eVarNameFlags.FitResponseType)
 
             Me.UpdateScenarioFormatProviders()
 
@@ -256,6 +256,9 @@ Namespace Ecospace
             Me.m_cbUseEcosimDiscardForcing.Visible = True
             Me.m_fpUseDiscardForcing.Enabled = Core.EcospaceModelParameters.IsEcosimDiscardForcingLoaded
 
+            Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
+            Me.m_rbEcopathEffort.Checked = Not CBool(Me.m_bpEffort.GetValue())
+
             Me.m_bInUpdate = False
 
         End Sub
@@ -272,7 +275,7 @@ Namespace Ecospace
         ''' <param name="changeFlags">The extent of the change.</param>
         ''' -------------------------------------------------------------------
         Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags) _
-            Handles m_bpUseIBM.PropertyChanged, m_bpUseNewStanza.PropertyChanged, m_bpConTracing.PropertyChanged, _
+            Handles m_bpUseIBM.PropertyChanged, m_bpUseNewStanza.PropertyChanged, m_bpConTracing.PropertyChanged,
                     m_bpUseBiomassForcing.PropertyChanged, m_bpUseDiscardForcing.PropertyChanged
             Me.UpdateControls()
         End Sub
@@ -313,6 +316,16 @@ Namespace Ecospace
             If (Me.m_bInUpdate) Then Return
 
             Me.m_bpAdjustSpace.SetValue(Me.m_rbAdjustedBiomass.Checked)
+
+        End Sub
+
+        Private Sub OnEffortOptionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_rbPredictEffort.CheckedChanged, m_rbEcopathEffort.CheckedChanged
+
+            If (Me.UIContext Is Nothing) Then Return
+            If (Me.m_bInUpdate) Then Return
+
+            Me.m_bpEffort.SetValue(Me.m_rbPredictEffort.Checked)
 
         End Sub
 
