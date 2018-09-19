@@ -110,8 +110,6 @@ Public Class cValidatorManager
         validator = New cValidatorCounter(theCore, eCoreCounterTypes.nEcospaceTimeSteps)
         m_validators.Add(eVarNameFlags.EcospaceFirstOutputTimeStep, validator)
 
-        m_validators.Add(eVarNameFlags.FitResponseType, New cValidatorEnum(GetType(eFitResponseType)))
-
         ' Ecospace layers - special cases
         Me.m_validators.Add(eVarNameFlags.LayerRegion, New cValidatorCounter(theCore, eCoreCounterTypes.nRegions))
 

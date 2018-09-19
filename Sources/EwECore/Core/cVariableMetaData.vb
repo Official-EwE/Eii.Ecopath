@@ -411,7 +411,6 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.EcospaceUseEcosimBiomassForcing) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.EcospaceIsEcosimDiscardForcingLoaded) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.EcospaceUseEcosimDiscardForcing) = New cVariableMetaData()
-        Me.Metadata(eVarNameFlags.FitResponseType) = New cVariableMetaData(0, Byte.MaxValue, ge, lt, eFitResponseType.None)
 
         ' map
         Me.Metadata(eVarNameFlags.InRow) = New cVariableMetaData(1, 10000, ge, le)

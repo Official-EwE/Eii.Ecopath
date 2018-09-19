@@ -80,6 +80,10 @@ Public Class cEcospaceGroupInput
             val = New cValue(New Single, eVarNameFlags.InMigAreaMoveWeight, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
+            ' KMoveFitness
+            val = New cValue(New Single, eVarNameFlags.KMoveFitness, eStatusFlags.Null, eValueTypes.Sng)
+            m_values.Add(val.varName, val)
+
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Array variables
 
@@ -228,6 +232,17 @@ Public Class cEcospaceGroupInput
         End Set
     End Property
 
+    ''' <summary>Relative vulnerability in bad habitat</summary>
+    Public Property KMoveFitness() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.KMoveFitness))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.KMoveFitness, value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "Status by dot (.) operator"
@@ -309,6 +324,16 @@ Public Class cEcospaceGroupInput
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.InMigAreaMoveWeight, value)
+        End Set
+    End Property
+
+    Public Property KMoveFitnessStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.KMoveFitness)
+        End Get
+
+        Friend Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.KMoveFitness, value)
         End Set
     End Property
 

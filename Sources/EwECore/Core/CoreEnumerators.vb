@@ -452,12 +452,3 @@ End Enum
 
 #End Region ' Diversity index
 
-#Region " Fitness responses "
-
-Public Enum eFitResponseType As Integer
-    None = 0
-    EmigRate = 1
-    Gradient = 2
-End Enum
-
-#End Region

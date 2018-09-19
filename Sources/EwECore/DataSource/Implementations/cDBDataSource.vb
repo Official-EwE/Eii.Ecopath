@@ -7557,7 +7557,6 @@ Namespace DataSources
                 ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
                 ecospaceDS.bUseEffortDistThreshold = CInt(Me.m_db.ReadSafe(reader, "UseEffortDistrThreshold", 0)) = 1
                 ecospaceDS.EffortDistThreshold = CSng(Me.m_db.ReadSafe(reader, "EffortDistrThreshold", 10000))
-                ecospaceDS.FitResponseType = DirectCast(Me.m_db.ReadSafe(reader, "FitResponseType", eFitResponseType.None), eFitResponseType)
 
                 stanzaDS.NPacketsMultiplier = CSng(reader("NumPacketsMultiplier"))
 
@@ -7742,7 +7741,6 @@ Namespace DataSources
                 drow("PredictEffort") = ecospaceDS.PredictEffort
                 drow("AssumeSquareCells") = ecospaceDS.AssumeSquareCells
                 drow("CoordinateSystemWKT") = ecospaceDS.ProjectionString
-                drow("FitResponseType") = ecospaceDS.FitResponseType
 
                 drow("TotalTime") = ecospaceDS.TotalTime
                 drow("IFDPower") = ecospaceDS.IFDPower
@@ -7759,7 +7757,6 @@ Namespace DataSources
                 drow("UseExact") = ecospaceDS.UseExact
                 drow("UseEffortDistrThreshold") = If(ecospaceDS.bUseEffortDistThreshold, 1, 0)
                 drow("EffortDistrThreshold") = ecospaceDS.EffortDistThreshold
-                drow("FitResponseType") = ecospaceDS.FitResponseType
 
                 If Me.Version >= 6.01 Then
                     drow("Tolerance") = ecospaceDS.Tol
@@ -8627,7 +8624,7 @@ Namespace DataSources
                     drow("BarrierAvoidanceWeight") = ecospaceDS.barrierAvoidanceWeight(iGroup)
                     drow("CapacityCalType") = ecospaceDS.CapCalType(iGroup)
                     drow("CapacityMap") = cStringUtils.ArrayToString(ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
-                    drow("OtherMortMap") = cStringUtils.ArrayToString(ecospaceDS.M0MultInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                    '    drow("OtherMortMap") = cStringUtils.ArrayToString(ecospaceDS.M0MultInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
                     If bNewRow Then
                         writer.AddRow(drow)

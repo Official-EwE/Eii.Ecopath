@@ -553,11 +553,14 @@ Public Class cSpaceSolver
             'jb now populate the spatial matrixes with the data computed by derivtRed() for this cell across all groups
             For iGrp = 1 To m_Data.NGroups
                 HdenCell(i, j, iGrp) = Hden(iGrp)
-                If pred(iGrp) > 1.0E-30 Then
-                    RelFitness(i, j, iGrp) = (m_SimData.SimGE(iGrp) * Eatenby(iGrp) - loss(iGrp)) / pred(iGrp) + FishTime(iGrp)
-                Else
-                    RelFitness(i, j, iGrp) = -2.0F * m_PathData.PB(iGrp)
-                End If
+
+                RelFitness(i, j, iGrp) = (m_SimData.SimGE(iGrp) * Eatenby(iGrp)) / loss(iGrp)
+
+                'If pred(iGrp) > 1.0E-30 Then
+                '    RelFitness(i, j, iGrp) = (m_SimData.SimGE(iGrp) * Eatenby(iGrp) - loss(iGrp)) / pred(iGrp) + FishTime(iGrp)
+                'Else
+                '    RelFitness(i, j, iGrp) = -2.0F * m_PathData.PB(iGrp)
+                'End If
 
                 Me.ResultsByGroup(eSpaceResultsGroups.FishingMort, iGrp) += FishTime(iGrp)
                 Me.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, iGrp) += Eatenby(iGrp) / (BB(iGrp) + 1.0E-20F)

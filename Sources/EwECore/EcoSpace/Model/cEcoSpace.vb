@@ -158,7 +158,7 @@ Public Class cEcoSpace
 
     Private RelMoveFit(,) As Single 'populated in SetKmove()
     Private PzoTOmove() As Single 'populated in SetKmove()
-    Private Kmovefit() As Single 'populated in SetKmove()
+    ' Private Kmovefit() As Single 'populated in SetKmove()
     Private RelFitness(,,) As Single
 
     Friend FtimeCell(,,) As Single 'feeding time???
@@ -1035,8 +1035,7 @@ Public Class cEcoSpace
                     End If
                 Next
 
-
-
+                m_Data.PredictEffort = True
                 If m_Data.PredictEffort Then
 
                     'Sets proportion of discards landed and discarded 
@@ -2430,6 +2429,9 @@ Public Class cEcoSpace
 
         Try
 
+            ' m_Data.FitResponseType = eFitResponseType.EmigRate
+            ' Debug.Assert(False, "Migration rate hard wired to use FitnessResp initSpatialEquilibrium()")
+
             'Is this model coupled to an external model
             If Me.m_EPdata.isEcospaceModelCoupled Then
                 'redim MPred at the start of each run because we have no way of knowing when EcoSimDataStructures.inlinks has changed
@@ -3125,12 +3127,23 @@ Public Class cEcoSpace
 
 
         ReDim PzoTOmove(m_Data.NGroups)
-        ReDim Kmovefit(m_Data.NGroups)
+        ' ReDim Kmovefit(m_Data.NGroups)
 
+        'temp hack for debugging Kmovefit()
+        'this will disappear once we have a UI for Kmovefit
         For i = 1 To m_Data.NGroups
-            PzoTOmove(i) = m_Data.FitnessResp
-            If m_EPdata.PB(i) > 0 Then Kmovefit(i) = 2.197225 / (PzoTOmove(i) * m_EPdata.PB(i))
+            Me.m_Data.Kmovefit(i) = 0
+            If m_Data.IsMigratory(i) Then
+                Me.m_Data.Kmovefit(i) = 0
+            End If
+            ''original code 
+            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'PzoTOmove(i) = m_Data.FitnessResp
+            'If m_EPdata.PB(i) > 0 Then Kmovefit(i) = 2.197225 / (PzoTOmove(i) * m_EPdata.PB(i))
+            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
         Next
+
 
     End Sub
 
@@ -3202,12 +3215,11 @@ Public Class cEcoSpace
                 EatEff(i) = 1
                 VulPred(i) = 1
             Next
-
-            'jb EwE5 called  derivtRed with BB() this is the biomass at the current time step defined in Ecosim
-            'I have changed it to call derivtRed with StartBiomass() which sould have the same effect and keep Ecosim.BB() out of this code
-            derivtRed(m_SimData.StartBiomass, Flowin, FlowoutRate, EatEff, VulPred, 1)
-
         End If
+
+        'jb EwE5 called  derivtRed with BB() this is the biomass at the current time step defined in Ecosim
+        'I have changed it to call derivtRed with StartBiomass() which sould have the same effect and keep Ecosim.BB() out of this code
+        derivtRed(m_SimData.StartBiomass, Flowin, FlowoutRate, EatEff, VulPred, 1)
 
         Dim isp As Integer, ist As Integer, St As Single, Sn As Single, ieco As Integer
         i = 0
@@ -3230,6 +3242,17 @@ Public Class cEcoSpace
                 PconSplit(i) = m_SimData.pred(ieco) / NstanzaBase(i)
             Next
         Next
+
+        For igrp As Integer = 1 To m_Data.NGroups
+            For ir As Integer = 1 To m_Data.InRow
+                For ic As Integer = 1 To m_Data.InCol
+                    RelFitness(ir, ic, igrp) = (m_SimData.SimGE(igrp) * m_SimData.Eatenby(igrp)) / loss(igrp)
+                Next ic
+            Next ir
+        Next igrp
+
+
+
     End Sub
 
     Public Sub CalcHabitatArea()
@@ -5669,113 +5692,155 @@ exitline:
         Dim ip As Integer
         Dim i As Integer, j As Integer, AdScale As Single
         Dim nvar2 As Integer, ir As Integer
-        Dim Ep As Single
+        '  Dim Ep As Single
         Dim MaxCh As Single
-        Dim FitRatio As Single
+        '   Dim FitRatio As Single
         AdScale = 1 '/ (2 * 3.14159 * CellLength)
         MaxCh = 1
         Dim ieco As Integer
-        Dim imig As Integer
+        Dim iMove As Integer
+        Dim iMig As Integer
         Dim nMig As Integer
         Dim MigToEcopath() As Integer
+        Dim EcopathToMig() As Integer
 
         ReDim MigToEcopath(m_Data.NGroups)
+        ReDim EcopathToMig(m_Data.NGroups)
+
         For i = 1 To m_Data.NGroups
             If m_Data.IsMigratory(i) Then
-                nMig = nMig + 1
-                MigToEcopath(nMig) = i
+                'just the migrating groups
+                'this is because MigGrad() is only calculated on
+                'migrating groups
+                iMig += 1
+                MigToEcopath(iMig) = i
+                EcopathToMig(i) = iMig
+
             End If
         Next
 
-        For imig = 1 To nMig
-            ip = MigToEcopath(imig)
-            ieco = IecoCode(ip)
+        For ip = 1 To m_Data.NGroups
 
-            'calculate relative emigration rate from each cell as function
-            'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
-            For i = 0 To m_Data.InRow + 1
-                For j = 0 To m_Data.InCol + 1
-                    If m_Data.FitResponseType > 0 Then
-                        Ep = -Kmovefit(ip) * RelFitness(i, j, ip)
-                        If Ep < -MaxCh Then Ep = -MaxCh
-                        If Ep > MaxCh Then Ep = MaxCh
-                        Ep = Math.Exp(Ep)
-                        RelMoveFit(i, j) = 2.0# * Ep / (1 + Ep)
+            If m_Data.IsMigratory(i) Or m_Data.Kmovefit(ip) > 0 Then
 
-                    Else
-                        RelMoveFit(i, j) = 1
-                    End If
+                'calculate relative emigration rate from each cell as function
+                'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
+                For i = 0 To m_Data.InRow + 1
+                    For j = 0 To m_Data.InCol + 1
+                        RelMoveFit(i, j) = (m_Data.Kmovefit(ip) + 1) / (1 + RelFitness(i, j, ip) * m_Data.Kmovefit(ip))
+
+                        'If m_Data.FitResponseType > 0 Then
+                        '    Ep = -Kmovefit(ip) * RelFitness(i, j, ip)
+
+                        '    If Ep < -MaxCh Then Ep = -MaxCh
+                        '    If Ep > MaxCh Then Ep = MaxCh
+                        '    Ep = Math.Exp(Ep)
+                        '    RelMoveFit(i, j) = 2.0# * Ep / (1 + Ep)
+
+                        'Else
+                        '    RelMoveFit(i, j) = 1
+                        'End If
+                    Next
                 Next
-            Next
 
-            For i = 0 To m_Data.InRow
-                For j = 0 To m_Data.InCol
-                    If m_Data.Depth(i, j) > 0 Then
+                For i = 0 To m_Data.InRow
+                    For j = 0 To m_Data.InCol
+                        If m_Data.Depth(i, j) > 0 Then
 
-                        ' Debug.Assert(Not (ip = 23 And i > 0 And j > 0))
+                            ' Debug.Assert(Not (ip = 23 And i > 0 And j > 0))
 
-                        'check depth on right face of this cell
-                        'can there be movement to or from the cell to the right for this cell
-                        If m_Data.Depth(i, j + 1) > 0 Then
+                            'check depth on right face of this cell
+                            'can there be movement to or from the cell to the right for this cell
+                            If m_Data.Depth(i, j + 1) > 0 Then
 
-                            If m_Data.FitResponseType < 2 Then
-                                'e() is the movement to the left 
-                                'set the movement from the cell to the left into this cell
-                                e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * RelMoveFit(i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
-                                'Movement from this cell into the cell to the right
-                                d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i, j + 1, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                If m_Data.IsMigratory(ip) Then
+                                    iMig = EcopathToMig(ip)
+                                    'e() is the movement to the left 
+                                    'set the movement from the cell to the left into this cell
+                                    e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * RelMoveFit(i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad(iMig, imonth), m_Data.MoveScale, iMig, imonth, ip)
+                                    'Movement from this cell into the cell to the right
+                                    d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i, j + 1, MigGrad(iMig, imonth), m_Data.MoveScale, iMig, imonth, ip)
 
-                            Else
-                                FitRatio = RelMoveFit(i, j + 1) / RelMoveFit(i, j)
-                                e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * FitRatio * RelMigMove(i, j, i, j + 1, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
-                                d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) / FitRatio * RelMigMove(i, j + 1, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                Else
+                                    e(i, j + 1, ip) = Enomig(i, j + 1, ip) * RelMoveFit(i, j + 1)
+                                    'Movement from this cell into the cell to the right
+                                    d(i, j, ip) = dNomig(i, j, ip) * RelMoveFit(i, j)
 
-                            End If
+                                End If
 
-                            If j = 0 Or j = m_Data.InCol Then
-                                e(i, j + 1, ip) = 0
-                                d(i, j, ip) = 0
-                            End If
+                                'If m_Data.FitResponseType < 2 Then
+                                '    'e() is the movement to the left 
+                                '    'set the movement from the cell to the left into this cell
+                                '    e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * RelMoveFit(i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                '    'Movement from this cell into the cell to the right
+                                '    d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i, j + 1, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
 
-                            nvar2 = m_Data.NGroups
-                            If ieco > 0 Then
-                                ir = IecoCode(ip)
-                                e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
-                                d(i, j, nvar2 + ir) = d(i, j, ip)
-                            End If
-                        End If ' If m_Data.Depth(i, j + 1) > 0 Then check depth on right face of this cell
+                                'Else
+                                '    FitRatio = RelMoveFit(i, j + 1) / RelMoveFit(i, j)
+                                '    e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * FitRatio * RelMigMove(i, j, i, j + 1, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                '    d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) / FitRatio * RelMigMove(i, j + 1, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
 
-                        'then check depths on bottom face of this cell
-                        If m_Data.Depth(i + 1, j) > 0 Then
-                            If m_Data.FitResponseType < 2 Then
-                                C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * RelMoveFit(i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
-                                Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                'End If
 
-                            Else
-                                FitRatio = RelMoveFit(i + 1, j) / RelMoveFit(i, j)
-                                C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * FitRatio * RelMigMove(i + 1, j, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
-                                Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) / FitRatio * RelMigMove(i, j, i + 1, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                If j = 0 Or j = m_Data.InCol Then
+                                    e(i, j + 1, ip) = 0
+                                    d(i, j, ip) = 0
+                                End If
 
-                            End If
+                                nvar2 = m_Data.NGroups
+                                If ieco > 0 Then
+                                    ir = IecoCode(ip)
+                                    e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
+                                    d(i, j, nvar2 + ir) = d(i, j, ip)
+                                End If
+                            End If ' If m_Data.Depth(i, j + 1) > 0 Then check depth on right face of this cell
 
-                            If i = 0 Or i = m_Data.InRow Then
-                                C(i, j, ip) = 0
-                                Bcw(i + 1, j, ip) = 0
-                            End If
+                            'then check depths on bottom face of this cell
+                            If m_Data.Depth(i + 1, j) > 0 Then
 
-                            If ieco > 0 Then
-                                ir = ieco
-                                Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
-                                C(i, j, nvar2 + ir) = C(i, j, ip)
-                            End If
+                                If m_Data.IsMigratory(ip) Then
+                                    iMig = EcopathToMig(ip)
+                                    C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * RelMoveFit(i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad(iMig, imonth), m_Data.MoveScale, iMig, imonth, ip)
+                                    Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad(iMig, imonth), m_Data.MoveScale, iMig, imonth, ip)
 
-                        End If 'If m_Data.Depth(i + 1, j) > 0 Then then check depths on bottom face of this cell
+                                Else
 
-                    End If 'If m_Data.Depth(i, j) > 0 Then
+                                    C(i, j, ip) = CNomig(i, j, ip) * RelMoveFit(i, j)
+                                    Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) * RelMoveFit(i + 1, j)
 
-                Next j
-            Next i
-        Next imig
+                                End If
+
+                                'If m_Data.FitResponseType < 2 Then
+                                '    C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * RelMoveFit(i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                '    Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+
+                                'Else
+                                '    FitRatio = RelMoveFit(i + 1, j) / RelMoveFit(i, j)
+                                '    C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * FitRatio * RelMigMove(i + 1, j, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                '    Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) / FitRatio * RelMigMove(i, j, i + 1, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+
+                                'End If
+
+                                If i = 0 Or i = m_Data.InRow Then
+                                    C(i, j, ip) = 0
+                                    Bcw(i + 1, j, ip) = 0
+                                End If
+
+                                If ieco > 0 Then
+                                    ir = ieco
+                                    Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
+                                    C(i, j, nvar2 + ir) = C(i, j, ip)
+                                End If
+
+                            End If 'If m_Data.Depth(i + 1, j) > 0 Then then check depths on bottom face of this cell
+
+                        End If 'If m_Data.Depth(i, j) > 0 Then
+
+                    Next j
+                Next i
+
+            End If 'm_Data.IsMigratory(i) Or m_Data.Kmovefit(ip) > 0
+        Next ip
 
         'Me.debugDumpFlowRates(C, 23, "VaryMigMovementParameters c " + imonth.ToString)
         'Me.debugDumpFlowRates(Bcw, 23, "VaryMigMovementParameters b " + imonth.ToString)
@@ -7234,7 +7299,6 @@ exitline:
             'update numbers and body weights
             ieco = m_Stanza.EcopathCode(isp, m_Stanza.Nstanza(isp))
             If m_Ecosim.ResetPred(ieco) = False Then
-                ' Debug.Assert((m_SimData.tval(m_Stanza.EggProdShapeSplit(isp)) <= 1))
                 Be = 0
                 For ist = 1 To m_Stanza.Nstanza(isp)
                     ieco = m_Stanza.EcopathCode(isp, ist)
@@ -7250,16 +7314,18 @@ exitline:
                         m_Stanza.NageS(isp, ia) = m_Stanza.NageS(isp, ia) * Su
                         m_Stanza.WageS(isp, ia) = m_Stanza.vBM(isp) * m_Stanza.WageS(isp, ia) + Gf * m_Stanza.SplitAlpha(isp, ia)
                         If m_Stanza.FixedFecundity(isp) Then
-                            Be = Be + m_Stanza.NageS(isp, ia) * m_Stanza.EggsSplit(isp, ia)
+                            Be = Be + m_Stanza.NageS(isp, ia) * m_Stanza.EggsSplit(isp, ia) * m_Stanza.SpawnProp(isp, ist)
                         Else
                             If (m_Stanza.WageS(isp, ia) > m_Stanza.WmatWinf(isp)) Then
-                                Be = Be + m_Stanza.NageS(isp, ia) * (m_Stanza.WageS(isp, ia) - m_Stanza.WmatWinf(isp))
+                                Be = Be + m_Stanza.NageS(isp, ia) * (m_Stanza.WageS(isp, ia) - m_Stanza.WmatWinf(isp)) * m_Stanza.SpawnProp(isp, ist)
                             End If
                         End If
-                    Next
-                Next
+                    Next ia
+                Next ist
+
                 m_Stanza.WageS(isp, m_Stanza.Age2(isp, m_Stanza.Nstanza(isp))) = (Su * m_Ecosim.AhatStanza(isp) + (1 - Su) * m_Stanza.WageS(isp, m_Stanza.Age2(isp, m_Stanza.Nstanza(isp)) - 1)) / (1 - m_Ecosim.RhatStanza(isp) * Su)
                 m_Stanza.EggsStanza(isp) = Be
+
                 'WageS(iSp, 0) = 0
                 'update ages looping backward over age
                 For ist = m_Stanza.Nstanza(isp) To 1 Step -1
@@ -7279,18 +7345,20 @@ exitline:
                     ieco = m_Stanza.EcopathCode(isp, ist)
                     If ist < m_Stanza.Nstanza(isp) Then m_Ecosim.Brec(ieco) = m_Stanza.NageS(isp, m_Stanza.Age2(isp, ist) + 1) * m_Stanza.WageS(isp, m_Stanza.Age2(isp, ist) + 1)
                 Next
+
                 'finally set abundance at youngest age to recruitment rate
                 ieco = m_Stanza.EcopathCode(isp, m_Stanza.Nstanza(isp)) 'code for adult biomass for sp isp
+
                 'VILLY: note following assumes we extend pair list for egg prod and recpower to add multistanza options  at end of pair lists
                 m_Ecosim.Srec(ieco) = m_EPdata.B(ieco)
                 If m_Stanza.BaseEggsStanza(isp) > 0 Then
-
                     m_Stanza.NageS(isp, m_Stanza.Age1(isp, 1)) = m_Stanza.RscaleSplit(isp) * m_SimData.tval(m_Stanza.EggProdShapeSplit(isp)) * m_Stanza.RzeroS(isp) * m_SimData.tval(m_Stanza.HatchCode(isp))
                 End If
                 If m_Stanza.HatchCode(isp) = 0 Then m_Stanza.NageS(isp, m_Stanza.Age1(isp, 1)) = m_Stanza.NageS(isp, m_Stanza.Age1(isp, 1)) * (m_Stanza.EggsStanza(isp) / m_Stanza.BaseEggsStanza(isp)) ^ m_Stanza.RecPowerSplit(isp)
                 m_Stanza.WageS(isp, m_Stanza.Age1(isp, 1)) = 0
             End If
-        Next
+        Next isp
+
         ' finally update bioamss and pred index information for all species
         m_Ecosim.SplitSetPred(Blocal)
         'this changes Blocal
@@ -8634,6 +8702,130 @@ exitline:
 #Region "Depreciated Code"
 
 #If 0 Then
+
+
+    
+
+    Sub VaryMigMovementParameters_org(ByVal imonth As Integer)
+        '20-Jan-2016 Altered to base the migration movement on an area rather than a single point
+        'the original code that set the movement based on a single cell is in VaryMigMovementParameters_SinglePoint()
+        Dim ip As Integer
+        Dim i As Integer, j As Integer, AdScale As Single
+        Dim nvar2 As Integer, ir As Integer
+        Dim Ep As Single
+        Dim MaxCh As Single
+        Dim FitRatio As Single
+        AdScale = 1 '/ (2 * 3.14159 * CellLength)
+        MaxCh = 1
+        Dim ieco As Integer
+        Dim imig As Integer
+        Dim nMig As Integer
+        Dim MigToEcopath() As Integer
+
+        ReDim MigToEcopath(m_Data.NGroups)
+        For i = 1 To m_Data.NGroups
+            If m_Data.IsMigratory(i) Then
+                nMig = nMig + 1
+                MigToEcopath(nMig) = i
+            End If
+        Next
+
+        For imig = 1 To nMig
+            ip = MigToEcopath(imig)
+            ieco = IecoCode(ip)
+
+            'calculate relative emigration rate from each cell as function
+            'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
+            For i = 0 To m_Data.InRow + 1
+                For j = 0 To m_Data.InCol + 1
+                    If m_Data.FitResponseType > 0 Then
+                        Ep = -Kmovefit(ip) * RelFitness(i, j, ip)
+
+                        If Ep < -MaxCh Then Ep = -MaxCh
+                        If Ep > MaxCh Then Ep = MaxCh
+                        Ep = Math.Exp(Ep)
+                        RelMoveFit(i, j) = 2.0# * Ep / (1 + Ep)
+
+                    Else
+                        RelMoveFit(i, j) = 1
+                    End If
+                Next
+            Next
+
+            For i = 0 To m_Data.InRow
+                For j = 0 To m_Data.InCol
+                    If m_Data.Depth(i, j) > 0 Then
+
+                        ' Debug.Assert(Not (ip = 23 And i > 0 And j > 0))
+
+                        'check depth on right face of this cell
+                        'can there be movement to or from the cell to the right for this cell
+                        If m_Data.Depth(i, j + 1) > 0 Then
+
+                            If m_Data.FitResponseType < 2 Then
+                                'e() is the movement to the left 
+                                'set the movement from the cell to the left into this cell
+                                e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * RelMoveFit(i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                'Movement from this cell into the cell to the right
+                                d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i, j + 1, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+
+                            Else
+                                FitRatio = RelMoveFit(i, j + 1) / RelMoveFit(i, j)
+                                e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * FitRatio * RelMigMove(i, j, i, j + 1, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) / FitRatio * RelMigMove(i, j + 1, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+
+                            End If
+
+                            If j = 0 Or j = m_Data.InCol Then
+                                e(i, j + 1, ip) = 0
+                                d(i, j, ip) = 0
+                            End If
+
+                            nvar2 = m_Data.NGroups
+                            If ieco > 0 Then
+                                ir = IecoCode(ip)
+                                e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
+                                d(i, j, nvar2 + ir) = d(i, j, ip)
+                            End If
+                        End If ' If m_Data.Depth(i, j + 1) > 0 Then check depth on right face of this cell
+
+                        'then check depths on bottom face of this cell
+                        If m_Data.Depth(i + 1, j) > 0 Then
+                            If m_Data.FitResponseType < 2 Then
+                                C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * RelMoveFit(i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+
+                            Else
+                                FitRatio = RelMoveFit(i + 1, j) / RelMoveFit(i, j)
+                                C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * FitRatio * RelMigMove(i + 1, j, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+                                Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) / FitRatio * RelMigMove(i, j, i + 1, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
+
+                            End If
+
+                            If i = 0 Or i = m_Data.InRow Then
+                                C(i, j, ip) = 0
+                                Bcw(i + 1, j, ip) = 0
+                            End If
+
+                            If ieco > 0 Then
+                                ir = ieco
+                                Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
+                                C(i, j, nvar2 + ir) = C(i, j, ip)
+                            End If
+
+                        End If 'If m_Data.Depth(i + 1, j) > 0 Then then check depths on bottom face of this cell
+
+                    End If 'If m_Data.Depth(i, j) > 0 Then
+
+                Next j
+            Next i
+        Next imig
+
+        'Me.debugDumpFlowRates(C, 23, "VaryMigMovementParameters c " + imonth.ToString)
+        'Me.debugDumpFlowRates(Bcw, 23, "VaryMigMovementParameters b " + imonth.ToString)
+
+    End Sub
+
     ''' <summary>
     ''' Threaded Version
     ''' This routine predicts spatial effort and fishing mortality rate
