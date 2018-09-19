@@ -2877,6 +2877,9 @@ Namespace Controls
             Try
                 Me.m_zgc.AxisChange()
                 Me.m_zgc.Invalidate()
+                Using g As Graphics = Me.m_zgc.CreateGraphics()
+                    Me.m_zgc.MasterPane.SetLayout(g, PaneLayout.SquareColPreferred)
+                End Using
             Catch ex As Exception
                 ' Whoah!
             End Try
