@@ -402,8 +402,6 @@ Public Class cEcospaceDataStructures
     ''' If <see cref="cEcospaceDataStructures.bUseEffortDistThreshold">bUseEffortDistThreshold</see> = True this will only include cells below the fishing effort threshold</remarks>
     Public SailScale() As Single
 
-    Public FitResponseType As eFitResponseType = eFitResponseType.None
-
     ''' <summary>
     ''' Sailing Effort Multiplier by Fleet
     ''' </summary>
@@ -793,6 +791,9 @@ Public Class cEcospaceDataStructures
 
     Public bENA As Boolean
 
+
+    Public Kmovefit() As Single
+
 #End Region
 
 #Region "Private Data"
@@ -1092,6 +1093,7 @@ Public Class cEcospaceDataStructures
             For i = 1 To NGroups                            'CJW had nvar not n1
                 PrefHab(i, 0) = 1.0! ' True
                 InMigAreaMovement(i) = 0.1F
+                Kmovefit(i) = 1
             Next 'set preferred habitat to 1 (pelagic) by default
 
             ReDimFleets()
@@ -2062,6 +2064,7 @@ Public Class cEcospaceDataStructures
 
             ReDim IsEcosimBioForcingGroup(m_ngroups)
             ReDim IsEcosimDiscardForcingGroup(m_ngroups)
+            ReDim Kmovefit(m_ngroups)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".redimGroupDBID() Error: " & ex.Message)

@@ -362,10 +362,10 @@ Public Class cIBMSolver
                     'accumulate contribution of this packet to total egg production by the species
                     Egg = 0
                     If m_Stanza.FixedFecundity(isp) Then
-                        Egg = m_Stanza.Npacket(isp, iaa, ip) * m_Stanza.EggsSplit(isp, ia)
+                        Egg = m_Stanza.Npacket(isp, iaa, ip) * m_Stanza.EggsSplit(isp, ia) * m_Stanza.SpawnProp(isp, ist)
                     Else
                         If m_Stanza.Wpacket(isp, iaa, ip) > m_Stanza.WmatWinf(isp) Then
-                            Egg = m_Stanza.Npacket(isp, iaa, ip) * (m_Stanza.Wpacket(isp, iaa, ip) - m_Stanza.WmatWinf(isp))
+                            Egg = m_Stanza.Npacket(isp, iaa, ip) * (m_Stanza.Wpacket(isp, iaa, ip) - m_Stanza.WmatWinf(isp)) * m_Stanza.SpawnProp(isp, ist)
                         End If
                     End If
                     Be = Be + Egg

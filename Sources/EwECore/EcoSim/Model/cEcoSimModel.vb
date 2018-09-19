@@ -1742,9 +1742,6 @@ Namespace Ecosim
                             Else
                                 ' JS 11-Sep-19 only for spawning life stages
                                 If (m_stanza.WageS(isp, ia) > m_stanza.WmatWinf(isp)) Then
-                                    'isSpawning used to set egg biomass in the Age 1 slot for this group
-                                    ' Debug.Assert(isp <> 4)
-                                    '   isSpawning = True
                                     Be = Be + m_stanza.NageS(isp, ia) * (m_stanza.WageS(isp, ia) - m_stanza.WmatWinf(isp)) * m_stanza.SpawnProp(isp, ist)
                                 End If
                             End If
@@ -2636,6 +2633,9 @@ Namespace Ecosim
                     m_Data.NoIntegrate(i) = 0
                 End If
             Next
+
+            Me.m_Data.StepsPerMonth = 1
+            'StepsPerMonth =  30.41666667 = 356 days per year
 
             DeltaT = CSng(1 / (12 * Me.m_Data.StepsPerMonth))
 

@@ -124,9 +124,6 @@ Namespace Ecospace
                 Me.m_clbAutosave.Items.Add(writer, writer.Enabled)
             Next
 
-            For Each n As eFitResponseType In [Enum].GetValues(GetType(eFitResponseType))
-                Me.m_cmbFitResponseType.Items.Add(n)
-            Next
             Me.UpdateControls()
 
             ' Hmm, connecting one control to three live properties - this could be dangerous
@@ -284,11 +281,6 @@ Namespace Ecospace
 
 #Region " Control events "
 
-        Private Sub OnFormatFitResponseType(sender As Object, e As ListControlConvertEventArgs) _
-            Handles m_cmbFitResponseType.Format
-            Dim fmt As New cFitResponseTypeFormatter()
-            e.Value = fmt.GetDescriptor(e.ListItem, EwEUtils.Utilities.eDescriptorTypes.Name)
-        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
