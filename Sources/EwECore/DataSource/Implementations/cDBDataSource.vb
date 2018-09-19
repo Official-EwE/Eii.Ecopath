@@ -4236,6 +4236,9 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroupYear WHERE GroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioCapacityDrivers WHERE GroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleetGroupCatchability WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioArena WHERE PredID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioArena WHERE PreyID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioArena WHERE PredSharedID={0}", iGroupID))
                 ' Last
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioGroup WHERE GroupID={0}", iGroupID))
 
@@ -4396,6 +4399,9 @@ Namespace DataSources
 
             Return True
 
+#Region " ToDo "
+#If 0 Then
+
 #Region " EwE5 code "
             'Sql = "SELECT * from [Ecosim Arena] where modelName='" + lastModel + "' and Scenario='" + SimScenario + "'"
             'Sql = Sql + " ORDER BY [Ecosim Arena].ArenaNo"
@@ -4432,42 +4438,41 @@ Namespace DataSources
             Dim bSucces As Boolean = True
             Dim ii As Integer = 0
 
-            ' We need this. Sort out flow with JB
-            Me.m_core.m_EcoSim.SetInlinks()
+            Me.m_core.m_EcoSim.DefaultPeatArena()
+            ecosimDS.PeatArenaSetFromDataBase = False
 
             Try
                 reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioArena WHERE (ScenarioID={0})", iScenarioID))
-                While reader.Read()
+                Dim n As Integer = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimScenarioArena WHERE (ScenarioID={0} AND PeatArena > 0)", iScenarioID)))
 
-                    iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
-                    iPred = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredID")))
-                    iPredShared = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredSharedID")))
-                    sPeatArena = CSng(reader("PeatArena"))
+                If (n > 0) Then
+                    ecosimDS.NlinksSet = n
+                    ReDim ecosimDS.IlinkSet(n)
+                    ReDim ecosimDS.JlinkSet(n)
+                    ReDim ecosimDS.KlinkSet(n)
+                    ReDim ecosimDS.PeatArena(n, Me.m_core.nGroups)
+                    While reader.Read()
 
-                    If (iPred > -1 And iPrey > -1 And iPredShared > -1 And sPeatArena > 0) Then
-                        Dim iLink1, iLink2 As Integer
-                        Dim i As Integer = 0
-                        ' Find iLinks
-                        While (iLink1 = 0 And iLink2 = 0 And i <= ecosimDS.inlinks)
-                            i += 1
-                            If (ecosimDS.ilink(i) = iPrey) And (ecosimDS.jlink(i) = iPred) Then
-                                iLink1 = i
-                            End If
-                            If (ecosimDS.ilink(i) = iPrey) And (ecosimDS.jlink(i) = iPredShared) Then
-                                iLink2 = i
-                            End If
-                        End While
-                        If (iLink1 > 0 And iLink2 > 0) Then
+                        iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
+                        iPred = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredID")))
+                        iPredShared = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredSharedID")))
+                        sPeatArena = CSng(reader("PeatArena"))
+
+                        If (iPred > -1 And iPrey > -1 And iPredShared > -1 And sPeatArena > 0) Then
                             ii += 1
-                            ecosimDS.IlinkSet(ii) = ecosimDS.ilink(iLink1)
-                            ecosimDS.JlinkSet(ii) = ecosimDS.jlink(iLink1)
-                            ecosimDS.KlinkSet(ii) = ecosimDS.jlink(iLink2)
-                            ecosimDS.PeatArena(ii, ecosimDS.jlink(iLink2)) = sPeatArena
+                            ecosimDS.IlinkSet(ii) = iPrey
+                            ecosimDS.JlinkSet(ii) = iPred
+                            ecosimDS.KlinkSet(ii) = iPredShared
+                            ecosimDS.PeatArena(ii, iPredShared) = sPeatArena
+                            'End If
                         End If
-                    End If
-                    ecosimDS.NlinksSet = ii
 
-                End While
+                    End While
+
+                    Debug.Assert(ii = n)
+                    ecosimDS.PeatArenaSetFromDataBase = True
+                End If
+
                 Me.m_db.ReleaseReader(reader)
                 reader = Nothing
 
@@ -4477,6 +4482,9 @@ Namespace DataSources
             End Try
 
             Return bSucces
+#End If
+#End Region
+
         End Function
 
         Private Function LoadEcosimFleets(ByVal iScenarioID As Integer) As Boolean
@@ -4859,8 +4867,10 @@ Namespace DataSources
 
         Private Function SaveEcosimArenas(ByVal idm As cIDMappings) As Boolean
 
-            ' ToDo: activate this
             Return True
+
+#Region " ToDo "
+#If 0 Then
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
@@ -4892,19 +4902,23 @@ Namespace DataSources
 #End Region ' EwE5 code
 
                 For i As Integer = 1 To ecosimDS.NlinksSet
-                    Dim iPrey As Integer = ecosimDS.ilink(ecosimDS.IlinkSet(i))
-                    Dim iPred As Integer = ecosimDS.jlink(ecosimDS.JlinkSet(i))
-                    Dim iPredShared As Integer = ecosimDS.jlink(ecosimDS.KlinkSet(i))
-                    Dim iArena As Integer = ecosimDS.ArenaNo(ecosimDS.IlinkSet(i), ecosimDS.JlinkSet(i))
+                    Dim iPrey As Integer = ecosimDS.IlinkSet(i)
+                    Dim iPred As Integer = ecosimDS.JlinkSet(i)
+                    Dim iPredShared As Integer = ecosimDS.KlinkSet(i)
+
+                    Console.WriteLine("Pred {0:d2} Prey {0:d2}", iPred, iPrey)
 
                     If (iPrey > 0) And (iPred > 0) And (iPredShared > 0) Then
-                        drow = writer.NewRow()
-                        drow("ScenarioID") = iScenarioID
-                        drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
-                        drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPred))
-                        drow("PredSharedID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredShared))
-                        drow("PeatArena") = ecosimDS.PeatArena(iArena, iPredShared)
-                        writer.AddRow(drow)
+                        Dim iArena As Integer = ecosimDS.ArenaNo(iPrey, iPred)
+                        If (ecosimDS.PeatArena(iArena, iPredShared) > 0) Then
+                            drow = writer.NewRow()
+                            drow("ScenarioID") = iScenarioID
+                            drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPrey))
+                            drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPred))
+                            drow("PredSharedID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecosimDS.GroupDBID(iPredShared))
+                            drow("PeatArena") = ecosimDS.PeatArena(iArena, iPredShared)
+                            writer.AddRow(drow)
+                        End If
                     End If
                 Next
 
@@ -4915,6 +4929,9 @@ Namespace DataSources
             End Try
 
             Return bSucces
+#End If
+#End Region
+
         End Function
 
         Private Function SaveEcosimFleets(ByVal idm As cIDMappings) As Boolean
@@ -7557,6 +7574,7 @@ Namespace DataSources
                 ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
                 ecospaceDS.bUseEffortDistThreshold = CInt(Me.m_db.ReadSafe(reader, "UseEffortDistrThreshold", 0)) = 1
                 ecospaceDS.EffortDistThreshold = CSng(Me.m_db.ReadSafe(reader, "EffortDistrThreshold", 10000))
+                ' ecospaceDS.FitResponseType = DirectCast(CInt(Me.m_db.ReadSafe(reader, "FitResponseType", eFitResponseType.None)), eFitResponseType)
 
                 stanzaDS.NPacketsMultiplier = CSng(reader("NumPacketsMultiplier"))
 
