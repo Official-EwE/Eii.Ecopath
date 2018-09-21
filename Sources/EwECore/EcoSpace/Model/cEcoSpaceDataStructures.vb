@@ -1093,7 +1093,7 @@ Public Class cEcospaceDataStructures
             For i = 1 To NGroups                            'CJW had nvar not n1
                 PrefHab(i, 0) = 1.0! ' True
                 InMigAreaMovement(i) = 0.1F
-                Kmovefit(i) = 1
+                Kmovefit(i) = 0
             Next 'set preferred habitat to 1 (pelagic) by default
 
             ReDimFleets()
