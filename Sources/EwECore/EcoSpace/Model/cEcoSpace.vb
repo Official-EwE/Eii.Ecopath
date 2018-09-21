@@ -157,8 +157,6 @@ Public Class cEcoSpace
     Private MigGrad(,)(,) As Single
 
     Private RelMoveFit(,) As Single 'populated in SetKmove()
-    Private PzoTOmove() As Single 'populated in SetKmove()
-    ' Private Kmovefit() As Single 'populated in SetKmove()
     Private RelFitness(,,) As Single
 
     Friend FtimeCell(,,) As Single 'feeding time???
@@ -1035,6 +1033,20 @@ Public Class cEcoSpace
                     End If
                 Next
 
+                'make sure none of the biomass cells are zero
+                For ip = 1 To m_Data.nvartot
+                    For i = 1 To m_Data.InRow
+                        For j = 1 To m_Data.InCol
+                            'Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ip)))
+                            If Single.IsNaN(Me.m_Data.Bcell(i, j, ip)) Then
+                                m_Data.Bcell(i, j, ip) = 0.000001
+                            End If
+                            If m_Data.Bcell(i, j, ip) < 0.000001 Then m_Data.Bcell(i, j, ip) = 0.000001
+                        Next j
+                    Next i
+                Next 'For ip = 1 To m_Data.nvartot
+
+
                 m_Data.PredictEffort = True
                 If m_Data.PredictEffort Then
 
@@ -1084,6 +1096,20 @@ Public Class cEcoSpace
                 runSpaceSolverThreads()
                 stpwchSolver.Stop()
 
+                'make sure none of the biomass cells are zero
+                For ip = 1 To m_Data.nvartot
+                    For i = 1 To m_Data.InRow
+                        For j = 1 To m_Data.InCol
+                            'Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ip)))
+                            If Single.IsNaN(Me.m_Data.Bcell(i, j, ip)) Then
+                                m_Data.Bcell(i, j, ip) = 0.000001
+                            End If
+                            If m_Data.Bcell(i, j, ip) < 0.000001 Then m_Data.Bcell(i, j, ip) = 0.000001
+                        Next j
+                    Next i
+                Next 'For ip = 1 To m_Data.nvartot
+
+
                 'now solve the spatial grid
                 stpwchGrid.Start()
                 runGridSolverThreads()
@@ -1099,10 +1125,11 @@ Public Class cEcoSpace
                 For ip = 1 To m_Data.nvartot
                     For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
+                            'Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ip)))
                             If Single.IsNaN(Me.m_Data.Bcell(i, j, ip)) Then
-                                m_Data.Bcell(i, j, ip) = 1.0E-30
+                                m_Data.Bcell(i, j, ip) = 0.000001
                             End If
-                            If m_Data.Bcell(i, j, ip) < 1.0E-30 Then m_Data.Bcell(i, j, ip) = 1.0E-30
+                            If m_Data.Bcell(i, j, ip) < 0.000001 Then m_Data.Bcell(i, j, ip) = 0.000001
                         Next j
                     Next i
                 Next 'For ip = 1 To m_Data.nvartot
@@ -1149,6 +1176,7 @@ Public Class cEcoSpace
                                     If m_Data.Depth(i, j) > 0 Then
                                         Wcell = m_Data.IFDweight(i, j, ieco) / TotIFDweight(ieco)
                                         m_Data.Bcell(i, j, ieco) = Tbiom * Wcell
+                                        ' Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ieco)))
                                         tbio(ieco) = tbio(ieco) + m_Data.Bcell(i, j, ieco)
                                         m_Data.PredCell(i, j, ieco) = Tpred * Wcell
                                     End If
@@ -2501,9 +2529,6 @@ Public Class cEcoSpace
 
             Me.NormalizeMigrationMaps()
 
-            'populates Kmovefit() and PzoTOmove()
-            SetKmove() 'test set for movement in relation to fitness 
-
             SetBoundaryDepths()
 
             'check to see if user wants to have some groups advected/migratory
@@ -3122,30 +3147,30 @@ Public Class cEcoSpace
     End Function
 
 
-    Sub SetKmove()
-        Dim i As Integer
+    'Sub SetKmove()
+    '    Dim i As Integer
 
 
-        ReDim PzoTOmove(m_Data.NGroups)
-        ' ReDim Kmovefit(m_Data.NGroups)
+    '    ReDim PzoTOmove(m_Data.NGroups)
+    '    ' ReDim Kmovefit(m_Data.NGroups)
 
-        'temp hack for debugging Kmovefit()
-        'this will disappear once we have a UI for Kmovefit
-        For i = 1 To m_Data.NGroups
-            Me.m_Data.Kmovefit(i) = 0
-            If m_Data.IsMigratory(i) Then
-                Me.m_Data.Kmovefit(i) = 0
-            End If
-            ''original code 
-            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'PzoTOmove(i) = m_Data.FitnessResp
-            'If m_EPdata.PB(i) > 0 Then Kmovefit(i) = 2.197225 / (PzoTOmove(i) * m_EPdata.PB(i))
-            ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    '    'temp hack for debugging Kmovefit()
+    '    'this will disappear once we have a UI for Kmovefit
+    '    For i = 1 To m_Data.NGroups
+    '        'Me.m_Data.Kmovefit(i) = 0
+    '        'If m_Data.IsMigratory(i) Then
+    '        '    Me.m_Data.Kmovefit(i) = 0
+    '        'End If
+    '        '''original code 
+    '        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    '        'PzoTOmove(i) = m_Data.FitnessResp
+    '        'If m_EPdata.PB(i) > 0 Then Kmovefit(i) = 2.197225 / (PzoTOmove(i) * m_EPdata.PB(i))
+    '        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-        Next
+    '    Next
 
 
-    End Sub
+    'End Sub
 
 
     Sub SetBoundaryDepths()
@@ -3246,7 +3271,7 @@ Public Class cEcoSpace
         For igrp As Integer = 1 To m_Data.NGroups
             For ir As Integer = 1 To m_Data.InRow
                 For ic As Integer = 1 To m_Data.InCol
-                    RelFitness(ir, ic, igrp) = (m_SimData.SimGE(igrp) * m_SimData.Eatenby(igrp)) / loss(igrp)
+                    RelFitness(ir, ic, igrp) = 1.0
                 Next ic
             Next ir
         Next igrp
@@ -4589,7 +4614,6 @@ exitline:
                                 'essentially by replacing the cost C with a simpler empirical cost scaler.
                                 ' Valt = Exp((Valt / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt)) - 1.0) * m_Data.EffPower(iFlt))
 
-
                                 Attract(i, j) = Valt * Me.m_Data.PAreaFished(iFlt)(i, j) 'may want to modify this by dividing by a site cost factor for cell i,j
                                 'sum of attractivness by zone
                                 TotAttractZone(Me.m_Data.EffZones(i, j)) += Attract(i, j)
@@ -4608,7 +4632,7 @@ exitline:
                                 '3-Feb-2014 Villy changed this to use Me.m_Data.EffZones(i, j) which is the index of the zone not the effort in the zone???
                                 'm_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * Me.m_Data.EffZones(i, j) * Attract(i, j) / TotAttractZone(Me.m_Data.EffZones(i, j))
                                 m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.m_Data.EffZones(i, j)) * Attract(i, j) / TotAttractZone(Me.m_Data.EffZones(i, j))
-
+                                '  Debug.Assert(Not Single.IsNaN(m_Data.EffortSpace(iFlt, i, j)))
                                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                                 'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
                                 'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
@@ -5201,7 +5225,6 @@ exitline:
                             'Fishing Mort Rate in a cell by group
                             Dim f As Single = m_SimData.relQ(iflt, igrp) * (m_SimData.PropLandedTime(iflt, igrp) + m_SimData.Propdiscardtime(iflt, igrp))
                             m_Data.Ftot(igrp, irow, jcol) += m_Data.EffortSpace(iflt, irow, jcol) * f / Me.m_Data.PAreaFished(iflt)(irow, jcol)
-
                         Next igrp
                     End If ' m_Data.Depth(i, j) > 0
 
@@ -5727,19 +5750,8 @@ exitline:
                 'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
                 For i = 0 To m_Data.InRow + 1
                     For j = 0 To m_Data.InCol + 1
-                        RelMoveFit(i, j) = (m_Data.Kmovefit(ip) + 1) / (1 + RelFitness(i, j, ip) * m_Data.Kmovefit(ip))
 
-                        'If m_Data.FitResponseType > 0 Then
-                        '    Ep = -Kmovefit(ip) * RelFitness(i, j, ip)
-
-                        '    If Ep < -MaxCh Then Ep = -MaxCh
-                        '    If Ep > MaxCh Then Ep = MaxCh
-                        '    Ep = Math.Exp(Ep)
-                        '    RelMoveFit(i, j) = 2.0# * Ep / (1 + Ep)
-
-                        'Else
-                        '    RelMoveFit(i, j) = 1
-                        'End If
+                        RelMoveFit(i, j) = (m_Data.Kmovefit(ip) + 1.0F) / (1.0F + RelFitness(i, j, ip) * m_Data.Kmovefit(ip))
                     Next
                 Next
 
@@ -5768,20 +5780,6 @@ exitline:
 
                                 End If
 
-                                'If m_Data.FitResponseType < 2 Then
-                                '    'e() is the movement to the left 
-                                '    'set the movement from the cell to the left into this cell
-                                '    e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * RelMoveFit(i, j + 1) * RelMigMove(i, j + 1, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
-                                '    'Movement from this cell into the cell to the right
-                                '    d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i, j + 1, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
-
-                                'Else
-                                '    FitRatio = RelMoveFit(i, j + 1) / RelMoveFit(i, j)
-                                '    e(i, j + 1, ip) = getMigMoveRate(Enomig, ip, i, j + 1, i, j, imonth) * FitRatio * RelMigMove(i, j, i, j + 1, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
-                                '    d(i, j, ip) = getMigMoveRate(dNomig, ip, i, j, i, j + 1, imonth) / FitRatio * RelMigMove(i, j + 1, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
-
-                                'End If
-
                                 If j = 0 Or j = m_Data.InCol Then
                                     e(i, j + 1, ip) = 0
                                     d(i, j, ip) = 0
@@ -5809,17 +5807,6 @@ exitline:
                                     Bcw(i + 1, j, ip) = BcwNomig(i + 1, j, ip) * RelMoveFit(i + 1, j)
 
                                 End If
-
-                                'If m_Data.FitResponseType < 2 Then
-                                '    C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * RelMoveFit(i + 1, j) * RelMigMove(i + 1, j, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
-                                '    Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) * RelMoveFit(i, j) * RelMigMove(i, j, i + 1, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
-
-                                'Else
-                                '    FitRatio = RelMoveFit(i + 1, j) / RelMoveFit(i, j)
-                                '    C(i, j, ip) = getMigMoveRate(CNomig, ip, i, j, i + 1, j, imonth) * FitRatio * RelMigMove(i + 1, j, i, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
-                                '    Bcw(i + 1, j, ip) = getMigMoveRate(BcwNomig, ip, i + 1, j, i, j, imonth) / FitRatio * RelMigMove(i, j, i + 1, j, MigGrad(imig, imonth), m_Data.MoveScale, imig, imonth, ip)
-
-                                'End If
 
                                 If i = 0 Or i = m_Data.InRow Then
                                     C(i, j, ip) = 0

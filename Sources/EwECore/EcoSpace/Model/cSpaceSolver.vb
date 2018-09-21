@@ -458,6 +458,7 @@ Public Class cSpaceSolver
                 'the long term equilibrium biomass or at least an approx to)
 
                 If m_Data.Depth(i, j) = 0 Then m_Data.Bcell(i, j, iGrp) = 0
+                If Single.IsNaN(m_Data.Bcell(i, j, iGrp)) = True Then m_Data.Bcell(i, j, iGrp) = 0.000001
                 BB(iGrp) = m_Data.Bcell(i, j, iGrp)
 
                 If m_TracerData.EcoSpaceConSimOn Then m_ConTracer.ConcTr(iGrp) = m_Data.Ccell(i, j, iGrp)
@@ -553,14 +554,16 @@ Public Class cSpaceSolver
             'jb now populate the spatial matrixes with the data computed by derivtRed() for this cell across all groups
             For iGrp = 1 To m_Data.NGroups
                 HdenCell(i, j, iGrp) = Hden(iGrp)
+                'Debug.Assert(Not Single.IsNaN(BB(iGrp)))
+                ' Debug.Assert(Not Single.IsNaN(loss(iGrp)))
 
-                RelFitness(i, j, iGrp) = (m_SimData.SimGE(iGrp) * Eatenby(iGrp)) / loss(iGrp)
-
-                'If pred(iGrp) > 1.0E-30 Then
-                '    RelFitness(i, j, iGrp) = (m_SimData.SimGE(iGrp) * Eatenby(iGrp) - loss(iGrp)) / pred(iGrp) + FishTime(iGrp)
-                'Else
-                '    RelFitness(i, j, iGrp) = -2.0F * m_PathData.PB(iGrp)
-                'End If
+                RelFitness(i, j, iGrp) = 1.0
+                If m_Data.Kmovefit(iGrp) > 0 Then
+                    RelFitness(i, j, iGrp) = (m_SimData.SimGE(iGrp) * Eatenby(iGrp)) / (loss(iGrp) + 1.0E-10F)
+                    If Single.IsNaN(RelFitness(i, j, iGrp)) Then RelFitness(i, j, iGrp) = 1.0
+                    If RelFitness(i, j, iGrp) < 0.5 Then RelFitness(i, j, iGrp) = 0.5
+                    If RelFitness(i, j, iGrp) > 2 Then RelFitness(i, j, iGrp) = 2
+                End If '
 
                 Me.ResultsByGroup(eSpaceResultsGroups.FishingMort, iGrp) += FishTime(iGrp)
                 Me.ResultsByGroup(eSpaceResultsGroups.ConsumpRate, iGrp) += Eatenby(iGrp) / (BB(iGrp) + 1.0E-20F)
@@ -938,6 +941,8 @@ Public Class cSpaceSolver
                     pbb(i) = 2 * EatEff(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * Pmult * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i))
 
                     loss(i) = Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * Ftime(i)) + m_PathData.Emig(i) + FishTime(i)) * Biomass(i)
+                    '  Debug.Assert(Not Single.IsNaN((loss(i))))
+                    ' Debug.Assert(Not Single.IsNaN((Biomass(i))))
 
                     'on the use of variable GE CJW wrote to VC on 041210: just need to modify derivt to calculate GE for each time step
                     'from GE=0.6Z/(Z+3K*), where Z=loss/B, in the last loop over groups.  That calculation will automatically be overwritten
@@ -979,7 +984,8 @@ Public Class cSpaceSolver
                     End If
                 End If
             Next
-            System.Console.WriteLine()
+
+            '  System.Console.WriteLine()
             If Me.m_Data.bENA Then
                 Me.ENAData(iRow, iCol, Biomass, Flowin, Consumpt, FishTime, ToDetritus, GroupDetritus)
             End If
