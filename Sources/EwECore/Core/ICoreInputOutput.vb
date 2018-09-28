@@ -472,13 +472,14 @@ Public MustInherit Class cCoreInputOutputBase
     ''' </summary>
     ''' <param name="VarName">Variable to request status information for.</param>
     ''' <param name="iIndex">Optional index within <paramref name="VarName">VarName</paramref>.</param>
+    ''' <param name="iIndex2">Optional secundary index within <paramref name="VarName">VarName</paramref>.</param>
     ''' -----------------------------------------------------------------------
     Public Overridable Function GetStatus(ByVal VarName As eVarNameFlags,
-                                           Optional ByVal iSecondaryIndex As Integer = -9999,
-                                            Optional ByVal iThirdIndex As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
+                                          Optional ByVal iIndex As Integer = -9999,
+                                          Optional ByVal iIndex2 As Integer = -9999) As eStatusFlags Implements ICoreInputOutput.GetStatus
         Try
             Dim val As cValue = m_values.Item(VarName)
-            Return val.Status(iSecondaryIndex, iThirdIndex) Or CType(If(val.Stored, eStatusFlags.Stored, 0), eStatusFlags)
+            Return val.Status(iIndex, iIndex2) Or CType(If(val.Stored, eStatusFlags.Stored, 0), eStatusFlags)
         Catch ex As Exception
             Debug.Assert(False, "GetStatus() Error " & ex.Message)
             Return Nothing
