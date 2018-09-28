@@ -5744,7 +5744,7 @@ exitline:
 
         For ip = 1 To m_Data.NGroups
 
-            If m_Data.IsMigratory(i) Or m_Data.Kmovefit(ip) > 0 Then
+            If m_Data.IsMigratory(ip) Or m_Data.Kmovefit(ip) > 0 Then
 
                 'calculate relative emigration rate from each cell as function
                 'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
