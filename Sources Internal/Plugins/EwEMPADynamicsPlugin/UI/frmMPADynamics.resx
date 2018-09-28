@@ -226,6 +226,9 @@
   <data name="m_tsbnExport.Text" xml:space="preserve">
     <value>m_tsbnExport</value>
   </data>
+  <data name="m_tsbnExport.ToolTipText" xml:space="preserve">
+    <value>Export to CSV file</value>
+  </data>
   <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -240,7 +243,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15344.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15557.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -336,18 +339,6 @@
   <data name="&gt;&gt;m_tscmbFleets.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_colTime.Name" xml:space="preserve">
-    <value>m_colTime</value>
-  </data>
-  <data name="&gt;&gt;m_colTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_colMPA.Name" xml:space="preserve">
-    <value>m_colMPA</value>
-  </data>
-  <data name="&gt;&gt;m_colMPA.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;m_sep2.Name" xml:space="preserve">
     <value>m_sep2</value>
   </data>
@@ -360,10 +351,22 @@
   <data name="&gt;&gt;m_tsbnExport.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_colTime.Name" xml:space="preserve">
+    <value>m_colTime</value>
+  </data>
+  <data name="&gt;&gt;m_colTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_colMPA.Name" xml:space="preserve">
+    <value>m_colMPA</value>
+  </data>
+  <data name="&gt;&gt;m_colMPA.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmMPADynamics</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15344.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15557.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

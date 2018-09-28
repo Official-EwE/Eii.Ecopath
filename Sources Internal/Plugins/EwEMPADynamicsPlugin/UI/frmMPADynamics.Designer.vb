@@ -43,11 +43,11 @@ Partial Class frmMPADynamics
         Me.m_tsbnShowMonths = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnShowFleets = New System.Windows.Forms.ToolStripButton()
         Me.m_tscmbFleets = New System.Windows.Forms.ToolStripComboBox()
+        Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
         Me.m_dgvStates = New System.Windows.Forms.DataGridView()
         Me.m_colTime = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.m_colMPA = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
-        Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
         Me.m_tsMain.SuspendLayout()
         CType(Me.m_dgvStates, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -91,6 +91,17 @@ Partial Class frmMPADynamics
         Me.m_tscmbFleets.Name = "m_tscmbFleets"
         resources.ApplyResources(Me.m_tscmbFleets, "m_tscmbFleets")
         '
+        'm_sep2
+        '
+        Me.m_sep2.Name = "m_sep2"
+        resources.ApplyResources(Me.m_sep2, "m_sep2")
+        '
+        'm_tsbnExport
+        '
+        Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
+        Me.m_tsbnExport.Name = "m_tsbnExport"
+        '
         'm_dgvStates
         '
         Me.m_dgvStates.AllowDrop = True
@@ -120,17 +131,6 @@ Partial Class frmMPADynamics
         resources.ApplyResources(Me.m_colMPA, "m_colMPA")
         Me.m_colMPA.Name = "m_colMPA"
         Me.m_colMPA.ReadOnly = True
-        '
-        'm_sep2
-        '
-        Me.m_sep2.Name = "m_sep2"
-        resources.ApplyResources(Me.m_sep2, "m_sep2")
-        '
-        'm_tsbnExport
-        '
-        Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
-        Me.m_tsbnExport.Name = "m_tsbnExport"
         '
         'frmMPADynamics
         '

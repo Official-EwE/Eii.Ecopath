@@ -176,7 +176,7 @@ Public Class cMPADynamicsEngine
                 sw.WriteLine()
 
                 For Each state As cMPAState In Me.MPAStates(True)
-                    sw.Write(If(bTimestepMode, 1, Me.m_core.EcosimFirstYear))
+                    sw.Write(If(bTimestepMode, "1", String.Format("{0}-01", Me.m_core.EcosimFirstYear)))
                     sw.Write("," & state.MPA)
                     For i As Integer = 1 To cCore.N_MONTHS : sw.Write(",{0}", Me.ToString(state.IsClosed(i))) : Next
                     For i As Integer = 1 To Me.m_core.nFleets : sw.Write(",{0}", Me.ToString(state.IsEnforced(i))) : Next
@@ -186,7 +186,7 @@ Public Class cMPADynamicsEngine
                 sw.Flush()
                 sw.Close()
             End Using
-            SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_SAVE_SUCCESS, strFile), eMessageImportance.Information, hyperlink:=strFile)
+            SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_SAVE_SUCCESS, strFile), eMessageImportance.Information, hyperlink:=Path.GetDirectoryName(strFile))
 
         Catch ex As Exception
             SendStatusMessage(cStringUtils.Localize(My.Resources.STATUS_CONFIG_LOAD_FAILED, strFile, ex.Message), eMessageImportance.Critical)
