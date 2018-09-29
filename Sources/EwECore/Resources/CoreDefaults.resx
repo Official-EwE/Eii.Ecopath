@@ -453,8 +453,8 @@
   <data name="VARIABLE_DISCARDS" xml:space="preserve">
     <value>Discards</value>
   </data>
-  <data name="VARIABLE_EATEFFBAD" xml:space="preserve">
-    <value>Rel. feed rate in bad hab.|||Relative feeding rate in bad habitat</value>
+  <data name="VARIABLE_KMOVEFITNESS" xml:space="preserve">
+    <value>Rel. move speed to cell fitness|||Relative movement speed to cell fitness</value>
   </data>
   <data name="VARIABLE_ECOLOGYTYPE" xml:space="preserve">
     <value>Ecology</value>

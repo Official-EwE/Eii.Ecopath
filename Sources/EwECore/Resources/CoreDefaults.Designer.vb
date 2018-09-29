@@ -1820,15 +1820,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Rel. feed rate in bad hab.|||Relative feeding rate in bad habitat.
-        '''</summary>
-        Public Shared ReadOnly Property VARIABLE_EATEFFBAD() As String
-            Get
-                Return ResourceManager.GetString("VARIABLE_EATEFFBAD", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Ecology.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_ECOLOGYTYPE() As String
@@ -3913,6 +3904,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property VARIABLE_KEMPTONSQ() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_KEMPTONSQ", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Rel. move speed to cell fitness|||Relative movement speed to cell fitness.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_KMOVEFITNESS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_KMOVEFITNESS", resourceCulture)
             End Get
         End Property
         

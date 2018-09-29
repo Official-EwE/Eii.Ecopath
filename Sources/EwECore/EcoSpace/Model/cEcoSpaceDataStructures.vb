@@ -204,7 +204,7 @@ Public Class cEcospaceDataStructures
     Public Basebiomass() As Single
     Public Bnew() As Single
     Public der() As Single
-    Public EatEffBad() As Single
+    'Public EatEffBad() As Single
     Public MPABiomass() As Single
     ''' <summary>Movement rate?!</summary>
     Public Mrate() As Single
@@ -983,7 +983,7 @@ Public Class cEcospaceDataStructures
             Basebiomass = Nothing
             Bnew = Nothing
             der = Nothing
-            EatEffBad = Nothing
+            'EatEffBad = Nothing
             MPABiomass = Nothing
             Mrate = Nothing
             Mvel = Nothing
@@ -1305,7 +1305,7 @@ Public Class cEcospaceDataStructures
             ReDim Bnew(nvartot)
             ReDim der(nvartot)
             'ReDim EatEff(nvartot)
-            ReDim EatEffBad(nvartot)
+            'ReDim EatEffBad(nvartot)
             'ReDim Flowin(nvartot)
             'ReDim FlowoutRate(nvartot)
             ReDim MPABiomass(nvartot)

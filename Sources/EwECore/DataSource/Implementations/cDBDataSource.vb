@@ -8464,9 +8464,7 @@ Namespace DataSources
                     ecospaceDS.Mvel(iGroup) = CSng(reader("Mvel"))
                     ecospaceDS.RelMoveBad(iGroup) = CSng(reader("RelMoveBad"))
                     ecospaceDS.RelVulBad(iGroup) = CSng(reader("RelVulBad"))
-                    ecospaceDS.EatEffBad(iGroup) = 1 'CSng(reader("EatEffBad"))
-                    ' VERIFY_JS: RiskSens imported but not used in EwE5
-                    ' ecospaceDS.RiskSens(i) = CSng(reader("RiskSens"))
+                    ecospaceDS.Kmovefit(iGroup) = CSng(Me.m_db.ReadSafe(reader, "KMoveFit", 0))
                     ecospaceDS.IsAdvected(iGroup) = (CInt(reader("IsAdvected")) <> 0)
                     ecospaceDS.IsMigratory(iGroup) = (CInt(reader("IsMigratory")) <> 0)
 
@@ -8636,7 +8634,7 @@ Namespace DataSources
                     drow("Mvel") = ecospaceDS.Mvel(iGroup)
                     drow("RelMoveBad") = ecospaceDS.RelMoveBad(iGroup)
                     drow("RelVulBad") = ecospaceDS.RelVulBad(iGroup)
-                    'drow("EatEffBad") = ecospaceDS.EatEffBad(iGroup)
+                    drow("KMoveFit") = ecospaceDS.Kmovefit(iGroup)
                     drow("IsAdvected") = ecospaceDS.IsAdvected(iGroup)
                     drow("IsMigratory") = ecospaceDS.IsMigratory(iGroup)
                     drow("BarrierAvoidanceWeight") = ecospaceDS.barrierAvoidanceWeight(iGroup)
