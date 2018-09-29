@@ -449,7 +449,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.MVel) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 300)
         Me.Metadata(eVarNameFlags.RelMoveBad) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 5, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.RelVulBad) = New cVariableMetaData(0, Single.MaxValue, gt, lt, 2)
-        Me.Metadata(eVarNameFlags.EatEffBad) = New cVariableMetaData(0.01!, Single.MaxValue, ge, lt, 0.5!, cUnits.Proportion)
+        Me.Metadata(eVarNameFlags.KMoveFitness) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0)
         Me.Metadata(eVarNameFlags.IsAdvected) = New cVariableMetaData(False)
         Me.Metadata(eVarNameFlags.IsMigratory) = New cVariableMetaData(False)
         Me.Metadata(eVarNameFlags.BarrierAvoidanceWeight) = New cVariableMetaData(0, 1, ge, le, 0)

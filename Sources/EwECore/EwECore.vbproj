@@ -163,6 +163,7 @@
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_03.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_01.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_02.vb" />
+    <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_15.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_14.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_13.vb" />
     <Compile Include="Database\Updates\Release 6.6\cDBUpdate6_60_00_12.vb" />

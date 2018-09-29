@@ -120,10 +120,8 @@ Namespace Controls
             End Get
             Set(value As cVisualStyle)
                 MyBase.VisualStyle = value
-                If (MyBase.VisualStyle IsNot Nothing) Then
+                If (MyBase.VisualStyle IsNot Nothing) And (Me.m_glyphSelect IsNot Nothing) Then
                     Me.m_glyphSelect.SelectedImage = Me.VisualStyle.Image
-                Else
-                    Me.m_glyphSelect.SelectedImage = Nothing
                 End If
             End Set
         End Property

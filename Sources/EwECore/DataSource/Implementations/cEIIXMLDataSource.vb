@@ -2395,9 +2395,7 @@ Public Class cEIIXMLDataSource
                 ecospaceDS.Mvel(iGroup) = CSng(drow("Mvel"))
                 ecospaceDS.RelMoveBad(iGroup) = CSng(drow("RelMoveBad"))
                 ecospaceDS.RelVulBad(iGroup) = CSng(drow("RelVulBad"))
-                ecospaceDS.EatEffBad(iGroup) = 1 'CSng(drow("EatEffBad"))
-                ' VERIFY_JS: RiskSens imported but not used in EwE5
-                ' ecospaceDS.RiskSens(i) = CSng(drow("RiskSens"))
+                ecospaceDS.Kmovefit(iGroup) = CSng(Me.ReadSafe(drow, "KMoveFit", 0))
                 ecospaceDS.IsAdvected(iGroup) = (CInt(drow("IsAdvected")) <> 0)
                 ecospaceDS.IsMigratory(iGroup) = (CInt(drow("IsMigratory")) <> 0)
                 ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(Me.ReadSafe(drow, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))

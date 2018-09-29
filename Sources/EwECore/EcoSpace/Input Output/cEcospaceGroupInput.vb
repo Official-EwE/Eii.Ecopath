@@ -52,10 +52,6 @@ Public Class cEcospaceGroupInput
             val = New cValue(New Single, eVarNameFlags.RelVulBad, eStatusFlags.Null, eValueTypes.Sng)
             m_values.Add(val.varName, val)
 
-            ' EatEffBad
-            val = New cValue(New Single, eVarNameFlags.EatEffBad, eStatusFlags.Null, eValueTypes.Sng)
-            m_values.Add(val.varName, val)
-
             ' IsAdvected
             val = New cValue(New Boolean, eVarNameFlags.IsAdvected, eStatusFlags.Null, eValueTypes.Bool)
             m_values.Add(val.varName, val)
@@ -166,17 +162,6 @@ Public Class cEcospaceGroupInput
         End Set
     End Property
 
-    ''' <summary>Relative feeding in bad habitat</summary>
-    Public Property EatEffBad() As Single
-        Get
-            Return CSng(GetVariable(eVarNameFlags.EatEffBad))
-        End Get
-
-        Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.EatEffBad, value)
-        End Set
-    End Property
-
     Public Property IsAdvected() As Boolean
         Get
             Return CBool(GetVariable(eVarNameFlags.IsAdvected))
@@ -274,16 +259,6 @@ Public Class cEcospaceGroupInput
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.RelVulBad, value)
-        End Set
-    End Property
-
-    Public Property EatEffBadStatus() As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.EatEffBad)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.EatEffBad, value)
         End Set
     End Property
 

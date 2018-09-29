@@ -10763,7 +10763,6 @@ Public Class cCore
 
                 grp.RelMoveBad = m_EcoSpaceData.RelMoveBad(iGroup)
                 grp.RelVulBad = m_EcoSpaceData.RelVulBad(iGroup)
-                grp.EatEffBad = m_EcoSpaceData.EatEffBad(iGroup)
                 grp.KMoveFitness = m_EcoSpaceData.Kmovefit(iGroup)
                 grp.IsMigratory = m_EcoSpaceData.IsMigratory(iGroup)
                 grp.IsAdvected = m_EcoSpaceData.IsAdvected(iGroup)
@@ -10808,7 +10807,6 @@ Public Class cCore
 
             m_EcoSpaceData.RelMoveBad(iGroup) = grp.RelMoveBad
             m_EcoSpaceData.RelVulBad(iGroup) = grp.RelVulBad
-            m_EcoSpaceData.EatEffBad(iGroup) = grp.EatEffBad
             m_EcoSpaceData.Kmovefit(iGroup) = grp.KMoveFitness
             m_EcoSpaceData.IsAdvected(iGroup) = grp.IsAdvected
             m_EcoSpaceData.IsMigratory(iGroup) = grp.IsMigratory
