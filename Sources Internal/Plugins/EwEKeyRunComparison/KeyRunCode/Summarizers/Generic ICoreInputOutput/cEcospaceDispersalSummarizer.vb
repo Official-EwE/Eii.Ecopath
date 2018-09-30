@@ -39,18 +39,17 @@ Public Class cEcospaceDispersalSummarizer
         MyBase.Init()
 
         For iGrp As Integer = 1 To Me.m_core.nGroups
-            Me.m_objects.Add(Me.Core.EcospaceGroups(iGrp))
+            Me.m_objects.Add(Me.Core.EcospaceGroupInputs(iGrp))
         Next
 
         Me.m_variables.Add(eVarNameFlags.MVel)
         Me.m_variables.Add(eVarNameFlags.RelMoveBad)
         Me.m_variables.Add(eVarNameFlags.RelVulBad)
-        Me.m_variables.Add(eVarNameFlags.EatEffBad)
+        Me.m_variables.Add(eVarNameFlags.KMoveFitness)
         Me.m_variables.Add(eVarNameFlags.IsAdvected)
         Me.m_variables.Add(eVarNameFlags.IsMigratory)
-        'Me.m_variables.Add(eVarNameFlags.MigrationConcRow)
-        'Me.m_variables.Add(eVarNameFlags.MigrationConcCol)
         Me.m_variables.Add(eVarNameFlags.BarrierAvoidanceWeight)
+        Me.m_variables.Add(eVarNameFlags.InMigAreaMoveWeight)
 
     End Sub
 
