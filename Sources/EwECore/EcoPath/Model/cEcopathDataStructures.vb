@@ -663,9 +663,9 @@ Public Class cEcopathDataStructures
         Try
 
             UpdateBH()
-            Compute_M2_Resp_and_Stats()
+            Compute_M2_Resp_and_Stats(fn)
             ComputeFisheriesStats()
-            Compute_M2_Resp_and_Stats()
+            Compute_M2_Resp_and_Stats(fn)
             ComputeMoreStats(fn)
             ComputeProfit()
             ComputePedigree()
@@ -791,7 +791,7 @@ Public Class cEcopathDataStructures
     ''' <remarks>
     ''' Was Public Sub ParamEstimate2() in original code
     ''' </remarks>
-    Friend Function Compute_M2_Resp_and_Stats(Optional bQuiet As Boolean = False) As Boolean
+    Friend Function Compute_M2_Resp_and_Stats(ByVal Functions As cEcoFunctions, Optional bQuiet As Boolean = False) As Boolean
         Dim Prod As Single
         Dim Consump As Single, UnAssimConsump As Single
         Dim M2Sum As Single
@@ -857,7 +857,9 @@ Public Class cEcopathDataStructures
 
             'Sum of respiration across all the groups
             RTZ += Resp(i)
-            If Resp(i) < 0 Then bRespOK = False 'pt = 2
+            If Resp(i) < 0 And (Functions.getStanzaIndexForGroup(i) = cCore.NULL_VALUE) Then
+                bRespOK = False 'pt = 2
+            End If
 
         Next i
 

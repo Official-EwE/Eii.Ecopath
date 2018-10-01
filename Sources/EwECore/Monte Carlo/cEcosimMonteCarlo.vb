@@ -1045,6 +1045,10 @@ Public Class cEcosimMonteCarlo
         Dim igrp As Integer
         Dim bEcopathNeedsBalancing As Boolean
 
+        'for getStanzaIndexForGroup(i)
+        Dim EcoFunctions As New cEcoFunctions()
+        EcoFunctions.Init(Me.m_core)
+
         Try
             'for debugging which parameters are being estimated
             'dumpEstimatedParameters()
@@ -1167,7 +1171,7 @@ Public Class cEcosimMonteCarlo
                     bEcopathNeedsBalancing = False
 
                     If Me.ValidateRespiration Then
-                        bEcopathNeedsBalancing = bEcopathNeedsBalancing And (Me.m_epdata.Compute_M2_Resp_and_Stats(True) = False)
+                        bEcopathNeedsBalancing = bEcopathNeedsBalancing And (Me.m_epdata.Compute_M2_Resp_and_Stats(EcoFunctions, True) = False)
                     End If
 
                     For igrp = 1 To m_core.nGroups
