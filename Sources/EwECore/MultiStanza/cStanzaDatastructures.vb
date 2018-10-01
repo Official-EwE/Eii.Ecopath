@@ -320,7 +320,7 @@ Public Class cStanzaDatastructures
 
     Public Sub OnPostInitialization()
 
-        Dim msg As New cMessage(My.Resources.CoreMessages.STANZA_LEADING_ADJUSTED, eMessageType.DataModified, _
+        Dim msg As New cMessage(My.Resources.CoreMessages.STANZA_LEADING_ADJUSTED, eMessageType.DataModified,
                                 EwEUtils.Core.eCoreComponentType.EcoPath, eMessageImportance.Warning)
         Dim vs As cVariableStatus = Nothing
         Dim i As Integer = 0
@@ -332,8 +332,8 @@ Public Class cStanzaDatastructures
             i = Math.Max(1, Math.Min(Nstanza(iStanza), Me.BaseStanza(iStanza)))
             If (i <> Me.BaseStanza(iStanza)) Then
                 Me.BaseStanza(iStanza) = i
-                vs = New cVariableStatus(eStatusFlags.MissingParameter, _
-                                         cStringUtils.Localize(My.Resources.CoreMessages.STANZA_LEADINGB_ADJUSTED, Me.StanzaName(iStanza)), _
+                vs = New cVariableStatus(eStatusFlags.MissingParameter,
+                                         cStringUtils.Localize(My.Resources.CoreMessages.STANZA_LEADINGB_ADJUSTED, Me.StanzaName(iStanza)),
                                          EwEUtils.Core.eVarNameFlags.LeadingBiomass, EwEUtils.Core.eDataTypes.Stanza, EwEUtils.Core.eCoreComponentType.EcoPath, iStanza)
                 msg.AddVariable(vs)
             End If
@@ -342,8 +342,8 @@ Public Class cStanzaDatastructures
             i = Math.Max(1, Math.Min(Nstanza(iStanza), Me.BaseStanzaCB(iStanza)))
             If (i <> Me.BaseStanzaCB(iStanza)) Then
                 Me.BaseStanzaCB(iStanza) = i
-                vs = New cVariableStatus(eStatusFlags.MissingParameter, _
-                                         cStringUtils.Localize(My.Resources.CoreMessages.STANZA_LEADINGCB_ADJUSTED, Me.StanzaName(iStanza)), _
+                vs = New cVariableStatus(eStatusFlags.MissingParameter,
+                                         cStringUtils.Localize(My.Resources.CoreMessages.STANZA_LEADINGCB_ADJUSTED, Me.StanzaName(iStanza)),
                                          EwEUtils.Core.eVarNameFlags.LeadingCB, EwEUtils.Core.eDataTypes.Stanza, EwEUtils.Core.eCoreComponentType.EcoPath, iStanza)
                 msg.AddVariable(vs)
             End If

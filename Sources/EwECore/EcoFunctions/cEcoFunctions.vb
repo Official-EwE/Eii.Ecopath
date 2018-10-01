@@ -196,10 +196,10 @@ Public Class cEcoFunctions
     ''' This method is totally independent of cCore; all required information
     ''' is passed in.
     ''' </remarks>
-    Public Function EstimateTrophicLevels(ByVal iNumGroups As Integer, _
-                                          ByVal iNumLiving As Integer, _
-                                          ByVal PP() As Single, _
-                                          ByVal Diet(,) As Single, _
+    Public Function EstimateTrophicLevels(ByVal iNumGroups As Integer,
+                                          ByVal iNumLiving As Integer,
+                                          ByVal PP() As Single,
+                                          ByVal Diet(,) As Single,
                                           ByVal TLreturn() As Single) As Boolean
 
         Dim SumDC(iNumGroups) As Single
@@ -267,6 +267,33 @@ Public Class cEcoFunctions
         End Try
 
         Return True
+
+    End Function
+
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the zero-based stanza index for a group index, or <see cref="cCore.NULL_VALUE"/>
+    ''' if the group does not belong to a stanza..
+    ''' </summary>
+    ''' <param name="iGroup">The one-based group index to get the stanza for.</param>
+    ''' <returns>Gets Stanza index if this group is a stanza group, or
+    ''' cCore.NULL_VALUE if this group does not belong to a stanza configuration.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
+    Public Function getStanzaIndexForGroup(ByVal iGroup As Integer) As Integer
+
+        For i As Integer = 1 To Me.m_core.m_Stanza.Nsplit
+
+            For ii As Integer = 1 To Me.m_core.m_Stanza.Nstanza(i)
+                If iGroup = Me.m_core.m_Stanza.EcopathCode(i, ii) Then
+                    Return i - 1 'stanzas are indexed from zero
+                End If
+            Next ii
+
+        Next i
+
+        Return cCore.NULL_VALUE
 
     End Function
 
