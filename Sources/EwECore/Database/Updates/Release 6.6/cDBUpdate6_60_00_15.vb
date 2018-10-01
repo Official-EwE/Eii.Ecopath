@@ -57,8 +57,11 @@ Friend Class cDBUpdate6_60_00_15
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return db.Execute("ALTER TABLE EcospaceScenarioGroup ADD COLUMN KMoveFit SINGLE") And
-               db.Execute("ALTER TABLE EcospaceScenarioGroup DROP COLUMN EatEffBad")
+        ' Don't fail; some models ran through intermediate builds already had this column removed
+        db.Execute("ALTER TABLE EcospaceScenarioGroup DROP COLUMN EatEffBad")
+        ' This has to succeed though
+        Return db.Execute("ALTER TABLE EcospaceScenarioGroup ADD COLUMN KMoveFit SINGLE")
+
 
     End Function
 
