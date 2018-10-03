@@ -1254,12 +1254,12 @@ Public Class cEcosimMonteCarlo
     ''' <param name="igrp">The igrp.</param>
     ''' <param name="varType">Type of the variable.</param>
     ''' <returns>
-    ''' True if the variable depends on other life stages and thus cannot be varied.
+    ''' True if the variable depends on other life stages.
     ''' </returns>
     Private Function isStanzaGroupVariable(igrp As Integer, varType As eMCParams) As Boolean
 
-        'Not a multistanza group so OK to vary
-        If Not m_epdata.StanzaGroup(igrp) Then Return True
+        'Not a multistanza group
+        If Not m_epdata.StanzaGroup(igrp) Then Return False
 
         'Optimistic this group can be varied
         Dim bReturn As Boolean = True
