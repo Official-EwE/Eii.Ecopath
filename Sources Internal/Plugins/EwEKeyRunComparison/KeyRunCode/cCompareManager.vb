@@ -34,49 +34,9 @@ Imports System.Text
 
 Public Class cCompareManager
 
-    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    '
-    ' Make summarizer accessible as utility class for the outside world
-    '
-    ' Convert KeyRun file to XML format
-    '
-    ' Add a ModelType/Component tag to the hash record.
-    '       JB thinks it will be better to use a new ModelType/CoreComponent enum rather than the ICoreInterface.CoreComponent property.
-    '       The ICoreInterface.CoreComponent property can have enums other than one of the 3 core model Ecopath, Ecosim or Ecospace.
-    '       This would make it hard to organize the UI around the core models based on the ModelType ennum.
-    '       The ModelType/CoreComponent enum can be hardwired into the cHashValue when it is created.
-    '
-    ' Comparing a KeyRun file to the current model
-    '       Once there is a ModelType/CoreComponent enum as part of the cHashValue objects.
-    '       There could be a different cHashResults object for each ModelType/CoreComponent. 
-    '       They could be stored in a dictionary of cHashResults by ModelType/CoreComponent then fished out by type
-    '       When the compare function creates a new cHashResultPair object, the match result, it could store it in the correct cHashResults by the ModelType/CoreComponent
-    '       The UI could use a different property for each cHashResults or use the enum to get the correct result object.
-    '
-    ' KeyRunVerion is already stored in the KeyRun file; it may be a good idea to tag it explicitly for easier retrieval. 
-    '       This would allow for easier modification of the file format at a later date.
-    '
-    ' Add a dedicated field for which ModelType/CoreComponents are stored in the file and currently loaded in the SI-UI
-    '       This is not totaly necessary as it can be calculated on the fly when the comparison is made and is not really relavant until that time.
-    '       Unless you need a live update of the current model to the currently loaded KeyRun file... which seems like nothing more then a cluster fuck 
-    '
-    ' Add KeyRun configuration to be stored in the database? We need to sort out how this would be used.
-    '       Change the format of the .ewekeyrun file to .xml, or add that as a format.
-    '       Change the popultation of the keyrun hash values dictionary to use a .xml string in memory instead of reading the values from file.
-    '       That should more or less do it. Once the data is in memory it should all work the same.
-    '       We really need to sort out how this would work in the UI because you still need to ability to load, create and save files.
-    '        * Users can make sure a new configuration is the same across models.
-    '        * It would have to be clear where the data is being saved: to a model database or to a file.
-    '
-    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 #Region " Private variables "
 
-    Private m_core As EwECore.cCore = Nothing
-    Private m_EcopathData As EwECore.cEcopathDataStructures = Nothing
-    Private m_EcosimData As EwECore.cEcosimDatastructures = Nothing
-    Private m_EcospaceData As EwECore.cEcospaceDataStructures = Nothing
-
+    ''' <summary>Hashed values read from a keyrun file</summary>
     Private m_dctKeyRunValues As Dictionary(Of String, cHashValues) = Nothing
     Private m_dctCurValues As Dictionary(Of String, cHashValues) = Nothing
 
@@ -85,57 +45,41 @@ Public Class cCompareManager
 
     Private m_Results As cHashResults = Nothing
 
-    ''' <summary>List of errors that occurred during an operation.</summary>
-    Private m_lErrors As List(Of String) = Nothing
-
 #End Region ' Private variables
 
 #Region " Construction initialization "
 
-    Public Sub New(ByVal Core As EwECore.cCore, _
-                   ByVal PathData As EwECore.cEcopathDataStructures, _
-                   ByVal SimData As EwECore.cEcosimDatastructures, _
-                   ByVal SpaceData As EwECore.cEcospaceDataStructures)
+    Public Sub New(ByVal uic As cUIContext,
+                   ByVal PathData As cEcopathDataStructures,
+                   ByVal SimData As cEcosimDatastructures,
+                   ByVal SpaceData As cEcospaceDataStructures)
 
-        Me.m_core = Core
-        Me.m_EcopathData = PathData
-        Me.m_EcosimData = SimData
-        Me.m_EcospaceData = SpaceData
+        Me.UIContext = uic
+        Me.Core = uic.Core
+        Me.EcopathData = PathData
+        Me.EcosimData = SimData
+        Me.EcoSpaceData = SpaceData
 
         Me.m_dctCurValues = New Dictionary(Of String, cHashValues)
         Me.m_dctKeyRunValues = New Dictionary(Of String, cHashValues)
         Me.m_lSummarizers = New List(Of IHashSummarizer)
-        Me.m_lErrors = New List(Of String)
+        Me.Messages = New List(Of String)
 
     End Sub
+
+    Private ReadOnly Property UIContext As cUIContext
 
 #End Region ' Construction initialization
 
 #Region " Public properties "
 
-    Public ReadOnly Property Core As EwECore.cCore
-        Get
-            Return Me.m_core
-        End Get
-    End Property
+    Public ReadOnly Property Core As cCore = Nothing
 
-    Public ReadOnly Property EcopathData As EwECore.cEcopathDataStructures
-        Get
-            Return Me.m_EcopathData
-        End Get
-    End Property
+    Public ReadOnly Property EcopathData As cEcopathDataStructures = Nothing
 
-    Public ReadOnly Property EcosimData As EwECore.cEcosimDatastructures
-        Get
-            Return Me.m_EcosimData
-        End Get
-    End Property
+    Public ReadOnly Property EcosimData As cEcosimDatastructures = Nothing
 
-    Public ReadOnly Property EcoSpaceData As EwECore.cEcospaceDataStructures
-        Get
-            Return Me.m_EcospaceData
-        End Get
-    End Property
+    Public ReadOnly Property EcoSpaceData As cEcospaceDataStructures = Nothing
 
     Public ReadOnly Property Results As cHashResults
         Get
@@ -149,11 +93,7 @@ Public Class cCompareManager
         End Get
     End Property
 
-    Public ReadOnly Property Messages As List(Of String)
-        Get
-            Return Me.m_lErrors
-        End Get
-    End Property
+    Public ReadOnly Property Messages As New List(Of String)
 
 #End Region ' Public properties
 
@@ -170,7 +110,7 @@ Public Class cCompareManager
     Public Function DefaultKeyRunFileName() As String
 
         Dim sbFile As New StringBuilder()
-        sbFile.Append(Path.GetFileNameWithoutExtension(Me.m_core.DataSource.ToString()))
+        sbFile.Append(Path.GetFileNameWithoutExtension(Me.Core.DataSource.ToString()))
 
         '' Append author name
         'If (Not String.IsNullOrWhiteSpace(Me.m_core.DefaultAuthor)) Then
@@ -185,7 +125,7 @@ Public Class cCompareManager
     End Function
 
     Public Function DefaultKeyRunFileLocation() As String
-        Return Path.GetDirectoryName(Me.m_core.DataSource.ToString())
+        Return Path.GetDirectoryName(Me.Core.DataSource.ToString())
     End Function
 
     Public Function LoadKeyRun(strFileName As String) As Boolean
@@ -257,7 +197,7 @@ Public Class cCompareManager
         End If
 
         If (bSuccess) Then
-            Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_SAVE_SUCCESS, strFileName), _
+            Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_SAVE_SUCCESS, strFileName),
                            Path.GetDirectoryName(strFileName))
         Else
             Me.SendMessage(cStringUtils.Localize(My.Resources.STATUS_KEYRUN_SAVE_FAILED, strFileName))
@@ -318,7 +258,7 @@ Public Class cCompareManager
             Do While Not strm.EndOfStream
                 Dim line As String
                 line = strm.ReadLine()
-                If cHashValues.isHashRecord(line) Then
+                If cHashValues.IsHashRecord(line) Then
                     hashVal = New cHashValues()
                     If hashVal.FromRecordString(line) Then
                         Debug.Assert(Not Me.m_dctKeyRunValues.ContainsKey(hashVal.Key), "Oh my! You're trying to add a duplicate key to the key run dictionary.")
@@ -343,10 +283,16 @@ Public Class cCompareManager
 
     Private Function CompareRuns() As Boolean
 
+        ' This code works the wrong way around. We should:
+        '  1. Load a key run file
+        '  2. Read the number of digits from the key run file, and use this to generate the hash set for the current model
+        '  3. Compare the two with that number of digits
+
         Dim bSuccess As Boolean = False
+        Dim iNumDigits As Integer = Me.UIContext.StyleGuide.NumDigits
 
         Try
-            Me.m_Results = New cHashResults(Me.m_strKeyRunFile)
+            Me.m_Results = New cHashResults(Me.m_strKeyRunFile, iNumDigits)
 
             Dim curHash As cHashValues
             Dim bMatch As Boolean
@@ -420,7 +366,7 @@ Public Class cCompareManager
     Private Sub SendProgress(strStatus As String, status As eProgressState, sProgress As Single)
 
         Dim pm As New cProgressMessage(status, 1, sProgress, strStatus)
-        Me.m_core.Messages.SendMessage(pm)
+        Me.Core.Messages.SendMessage(pm)
 
     End Sub
 
@@ -498,7 +444,7 @@ Public Class cCompareManager
             Dim an As AssemblyName = cAssemblyUtils.GetAssemblyName(Me.GetType())
 
             ' Write header info
-            strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
+            strm.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecospace))
             ' Add plug-in version. 
             strm.WriteLine("KeyRunVersion," & cStringUtils.ToCSVField(cAssemblyUtils.GetVersion(an).ToString()))
             strm.WriteLine()
@@ -531,27 +477,27 @@ Public Class cCompareManager
 #Region " Messaging "
 
     Private Sub ResetErrors()
-        Me.m_lErrors.Clear()
+        Me.Messages.Clear()
     End Sub
 
     Private Sub AddError(message As String)
-        Me.m_lErrors.Add(message)
+        Me.Messages.Add(message)
     End Sub
 
     Private Sub SendMessage(ByVal strMessage As String, Optional strHyperlink As String = "")
 
-        Dim msg As New cMessage(strMessage, _
-                                eMessageType.DataExport, _
-                                eCoreComponentType.External, _
-                                CType(cSystemUtils.IIF(Me.m_lErrors.Count = 0, eMessageImportance.Information, eMessageImportance.Critical), eMessageImportance))
+        Dim msg As New cMessage(strMessage,
+                                eMessageType.DataExport,
+                                eCoreComponentType.External,
+                                CType(cSystemUtils.IIF(Me.Messages.Count = 0, eMessageImportance.Information, eMessageImportance.Critical), eMessageImportance))
         msg.Hyperlink = strHyperlink
 
-        For i As Integer = 0 To Me.m_lErrors.Count - 1
-            Dim vs As New cVariableStatus(eStatusFlags.OK, Me.m_lErrors(i), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+        For i As Integer = 0 To Me.Messages.Count - 1
+            Dim vs As New cVariableStatus(eStatusFlags.OK, Me.Messages(i), eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
             msg.Variables.Add(vs)
         Next
 
-        Me.m_core.Messages.SendMessage(msg)
+        Me.Core.Messages.SendMessage(msg)
         Me.ResetErrors()
 
     End Sub

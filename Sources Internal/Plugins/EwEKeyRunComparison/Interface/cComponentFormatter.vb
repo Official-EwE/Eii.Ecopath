@@ -27,6 +27,13 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Class for providing a localized description of EwE components, as used in 
+''' the key run logic. Components can hold any type (Ecopath, Ecosim, Ecospace, 
+''' or any other module name that may be needed)
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cComponentFormatter
     Implements ITypeFormatter
 

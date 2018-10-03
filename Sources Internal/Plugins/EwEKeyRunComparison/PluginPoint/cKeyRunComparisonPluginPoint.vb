@@ -91,7 +91,7 @@ Public Class cKeyRunComparisonPluginPoint
             m_EcoSimModel = TryCast(EcoSimAsObject, cEcoSimModel)
             m_EcoSpaceModel = TryCast(EcoSpaceAsObject, cEcoSpace)
 
-            Me.m_CompareManager = New cCompareManager(Me.Core, Me.m_EcoPathModel.EcopathData, Me.m_EcoSimModel.EcosimData, Me.m_EcoSpaceModel.EcoSpaceData)
+            Me.m_CompareManager = New cCompareManager(Me.m_uic, Me.m_EcoPathModel.EcopathData, Me.m_EcoSimModel.EcosimData, Me.m_EcoSpaceModel.EcoSpaceData)
 
             Debug.Assert((m_EcoPathModel IsNot Nothing) And (m_EcoSimModel IsNot Nothing) And (m_EcoSpaceModel IsNot Nothing), _
                          Me.ToString + ".CoreInitialized() Failed to initialize data.")

@@ -25,6 +25,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports System.Text
 Imports EwEUtils.Utilities
+Imports EwEKeyRunComparisonPlugin
 
 #End Region ' Imports
 

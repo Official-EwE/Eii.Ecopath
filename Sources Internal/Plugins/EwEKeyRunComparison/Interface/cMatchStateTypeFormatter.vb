@@ -30,7 +30,7 @@ Imports ScientificInterfaceShared.Style
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Class for providing a textual description of <see cref="cHashResultPair.eMatchState"/>.
+''' Class for providing a localized description of <see cref="cHashResultPair.eMatchState"/>.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cMatchStateTypeFormatter

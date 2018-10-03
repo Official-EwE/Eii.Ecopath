@@ -140,7 +140,7 @@ Public Class cHashValues
     Public Function FromRecordString(Record As String) As Boolean
         Try
 
-            If cHashValues.isHashRecord(Record) Then
+            If cHashValues.IsHashRecord(Record) Then
 
                 Dim data() As String = cStringUtils.SplitQualified(Record, ",")
                 Me.m_sortOrder = Integer.Parse(data(eFieldOrder.SortOrder))
@@ -160,7 +160,7 @@ Public Class cHashValues
 
     End Function
 
-    Public Shared Function isHashRecord(record As String) As Boolean
+    Public Shared Function IsHashRecord(record As String) As Boolean
 
         Try
             Dim data() As String = record.Split(CChar(","))
@@ -178,106 +178,5 @@ Public Class cHashValues
     End Function
 
 #End Region
-
-End Class
-
-Public Class cHashResults
-
-    Private m_pairs As List(Of cHashResultPair)
-    Private m_match As eMatchState = eMatchState.NotSet
-    Private m_keyRunFile As String
-
-    Public Enum eMatchState As Integer
-        NotSet = 0
-        Match
-        NoMatch
-    End Enum
-
-    Public Sub New(strKeyRunFile As String)
-        Me.m_pairs = New List(Of cHashResultPair)
-        Me.m_keyRunFile = strKeyRunFile
-        ' Assume all is ok
-        Me.m_match = eMatchState.Match
-    End Sub
-
-    Public Sub Add(KeyRun As cHashValues, CurModel As cHashValues, Match As Boolean)
-        Me.m_pairs.Add(New cHashResultPair(KeyRun, CurModel, Match))
-        If Not Match Then Me.m_match = eMatchState.NoMatch
-    End Sub
-
-    Public ReadOnly Property HashPairs As List(Of cHashResultPair)
-        Get
-            Return m_pairs
-        End Get
-    End Property
-
-    Public ReadOnly Property KeyRunFile As String
-        Get
-            Return Me.m_keyRunFile
-        End Get
-    End Property
-
-    Public ReadOnly Property Match As eMatchState
-        Get
-            Return Me.m_match
-        End Get
-    End Property
-
-    Public Sub Invalidate()
-        Me.m_match = eMatchState.NotSet
-    End Sub
-
-End Class
-
-
-Public Class cHashResultPair
-
-    Public Enum eMatchState
-        NotEqual = 0
-        MissingCurrentModel
-        MissingKeyRun
-        Equal
-    End Enum
-
-    Private m_isMatch As Boolean
-
-    Public Property Component As String
-    Public Property VariableID As String
-    Public Property SortOrder As Integer
-    Public Property MatchedState As eMatchState
-
-    Public Sub New(KeyRun As cHashValues, CurModel As cHashValues, Match As Boolean)
-        m_isMatch = Match
-
-        If Match Then
-            Me.MatchedState = eMatchState.Equal
-        Else
-            Me.MatchedState = eMatchState.NotEqual
-        End If
-
-        If KeyRun IsNot Nothing Then
-            Me.Component = KeyRun.Component
-            Me.VariableID = KeyRun.VariableID
-            Me.SortOrder = KeyRun.SortOrder
-        Else
-            Debug.Assert(CurModel IsNot Nothing, "Oppsss Null HashValue passed to Results.")
-            Me.Component = CurModel.Component
-            Me.VariableID = CurModel.VariableID
-            Me.SortOrder = CurModel.SortOrder
-        End If
-
-        If KeyRun Is Nothing Then
-            Me.MatchedState = eMatchState.MissingKeyRun
-        ElseIf CurModel Is Nothing Then
-            Me.MatchedState = eMatchState.MissingCurrentModel
-        End If
-
-    End Sub
-
-    Public ReadOnly Property isMatch As Boolean
-        Get
-            Return m_isMatch
-        End Get
-    End Property
 
 End Class

@@ -1,0 +1,34 @@
+﻿Needed improvements
+===================
+- Convert KeyRun file to XML format
+	* A keyrun file needs to be generated from a model with the current selected # of decimal digits
+	* A keyrun file needs to get header information, carrying all required metadata to identify model, author, contact, and number of decimal digits used
+	* KeyRunVerion is already stored in the KeyRun file; it may be a good idea to tag it explicitly for easier retrieval. 
+      This would allow for easier modification of the file format at a later date.
+- Make summarizer accessible as utility class for the outside world
+
+- Add a ModelType/Component tag to the hash record.
+	* JB thinks it will be better to use a new ModelType/CoreComponent enum rather than the ICoreInterface.CoreComponent property.
+	* The ICoreInterface.CoreComponent property can have enums other than one of the 3 core model Ecopath, Ecosim or Ecospace.
+	* This would make it hard to organize the UI around the core models based on the ModelType ennum.
+	* The ModelType/CoreComponent enum can be hardwired into the cHashValue when it is created.
+
+- Comparing a KeyRun file to the current model
+	* Once there is a ModelType/CoreComponent enum as part of the cHashValue objects.
+	* There could be a different cHashResults object for each ModelType/CoreComponent. 
+	* They could be stored in a dictionary of cHashResults by ModelType/CoreComponent then fished out by type
+	* When the compare function creates a new cHashResultPair object, the match result, it could store it in the correct cHashResults by the ModelType/CoreComponent
+	* The UI could use a different property for each cHashResults or use the enum to get the correct result object.
+	* When comparing a model to a keyrun file, the number of digits in the keyrun file should be used to generate the life comparison
+
+ - Add a dedicated field for which ModelType/CoreComponents are stored in the file and currently loaded in the SI-UI
+   This is not totaly necessary as it can be calculated on the fly when the comparison is made and is not really relavant until that time.
+   Unless you need a live update of the current model to the currently loaded KeyRun file... which seems like nothing more then a cluster f!ck
+   
+- Add KeyRun configuration to be stored in the database? We need to sort out how this would be used.
+	* Change the format of the .ewekeyrun file to .xml, or add that as a format.
+    * Change the population of the keyrun hash values dictionary to use a .xml string in memory instead of reading the values from file.
+      That should more or less do it. Once the data is in memory it should all work the same.
+    * We really need to sort out how this would work in the UI because you still need to ability to load, create and save files.
+		* Users can make sure a new configuration is the same across models.
+		* It would have to be clear where the data is being saved: to a model database or to a file.

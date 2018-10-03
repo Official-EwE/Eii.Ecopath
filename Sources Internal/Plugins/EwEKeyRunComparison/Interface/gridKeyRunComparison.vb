@@ -27,6 +27,11 @@ Imports ScientificInterfaceShared.Style.cStyleGuide
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Main grid to show in the Key rUn interface.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class gridKeyRunComparison
     Inherits EwEGrid
 

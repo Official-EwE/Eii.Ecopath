@@ -32,7 +32,7 @@ Imports ScientificInterfaceShared.Style
 
 ''' -------------------------------------------------------------------
 ''' <summary>
-''' Panic!
+''' Visualizer for showing alert icones in <see cref="gridKeyRunComparison"/>
 ''' </summary>
 ''' -------------------------------------------------------------------
 <CLSCompliant(False)> _

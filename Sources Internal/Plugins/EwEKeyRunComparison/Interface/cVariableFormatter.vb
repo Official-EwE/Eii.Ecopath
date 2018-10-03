@@ -28,6 +28,13 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Class for providing a localized description of EwE variables, as used in 
+''' the key run logic. Components can hold any EwE core variable or user-defined 
+''' variables as needed.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cVariableFormatter
     Implements ITypeFormatter
 

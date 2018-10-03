@@ -111,6 +111,8 @@
     <Compile Include="Interface\gridKeyRunComparison.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="KeyRunCode\cHashResultPair.vb" />
+    <Compile Include="KeyRunCode\cHashResults.vb" />
     <Compile Include="KeyRunCode\cCompareManager.vb" />
     <Compile Include="KeyRunCode\cHashValues.vb" />
     <Compile Include="KeyRunCode\Summarizers\Core managers\cCoreScenariosSummarizer.vb" />
@@ -218,6 +220,7 @@
     <Content Include="Resources\Check.png" />
     <Content Include="Resources\Ecopath_keyrun.ico" />
     <Content Include="Resources\Uncheck.png" />
+    <Content Include="ToDo.txt" />
     <None Include="Resources\Star_HD.png" />
   </ItemGroup>
   <ItemGroup />
