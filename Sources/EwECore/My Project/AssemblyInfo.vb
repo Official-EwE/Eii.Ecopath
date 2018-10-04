@@ -13,7 +13,6 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -31,8 +30,8 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("EwECore")> 
-<Assembly: AssemblyDescription("Ecopath with Ecosim computational core")> 
-<Assembly: AssemblyCompany("UBC Institute for the Oceans and Fisheries & Ecopath International Initiative Research Association")> 
+<Assembly: AssemblyDescription("Ecopath with Ecosim computational core")>
+<Assembly: AssemblyCompany("Ecopath International Initiative Research Association")>
 <Assembly: AssemblyProduct("EwECore")> 
 <Assembly: AssemblyCopyright("Copyright © 1991")> 
 <Assembly: CLSCompliant(True)> 

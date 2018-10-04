@@ -13,7 +13,6 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -233,7 +232,7 @@ Namespace Ecospace.Controls
                 Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("EditSpatialDatasets")
                 If (cmd IsNot Nothing) Then
                     cmd.Invoke()
-                    Me.RefreshDatasetList()
+                    Me.m_lbSourceDatasets.RefreshContent()
                     Me.UpdateControls()
                 End If
             Catch ex As Exception

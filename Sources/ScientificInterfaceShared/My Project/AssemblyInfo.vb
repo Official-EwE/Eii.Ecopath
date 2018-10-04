@@ -13,7 +13,6 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -31,8 +30,8 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("ScientificInterfaceShared")> 
-<Assembly: AssemblyDescription("Foundation library with Ecopath with Ecosim Scientific User Interface elements")> 
-<Assembly: AssemblyCompany("UBC Institute for the Oceans and Fisheries & Ecopath International Initiative Research Association")> 
+<Assembly: AssemblyDescription("Foundation library with Ecopath with Ecosim Scientific User Interface elements")>
+<Assembly: AssemblyCompany("Ecopath International Initiative Research Association")>
 <Assembly: AssemblyProduct("ScientificInterfaceShared")> 
 <Assembly: AssemblyCopyright("Copyright © 2008")> 
 <Assembly: CLSCompliant(True)> 

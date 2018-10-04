@@ -238,9 +238,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Sources Internal\Deployment\License\EwE.licenseheader">
-      <Link>EwE.licenseheader</Link>
-    </None>
+    <None Include="Agrocampus.licenseheader" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>

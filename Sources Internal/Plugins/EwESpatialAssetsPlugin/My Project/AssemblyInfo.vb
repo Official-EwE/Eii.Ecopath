@@ -13,7 +13,6 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -29,8 +28,8 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("EwESpatialAssetsPlugin")> 
-<Assembly: AssemblyDescription("DotSpatial-based implementation of the EwE spatial/temporal framework")> 
-<Assembly: AssemblyCompany("UBC Institute for the Oceans and Fisheries & Ecopath International Initiative Research Association")> 
+<Assembly: AssemblyDescription("DotSpatial-based implementation of the EwE spatial/temporal framework")>
+<Assembly: AssemblyCompany("Ecopath International Initiative Research Association")>
 <Assembly: AssemblyProduct("EwESpatialAssetsPlugin")> 
 <Assembly: AssemblyCopyright("Copyright © UBC Institute for the Oceans and Fisheries 2012")> 
 <Assembly: AssemblyTrademark("")> 

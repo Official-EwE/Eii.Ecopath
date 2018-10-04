@@ -13,7 +13,6 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -29,7 +28,7 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("Ecopath with Ecosim 6.6 for Windows Desktop - development version")>
-<Assembly: AssemblyCompany("UBC Institute for the Oceans and Fisheries & Ecopath International Initiative Research Association")>
+<Assembly: AssemblyCompany("Ecopath International Initiative Research Association")>
 <Assembly: AssemblyProduct("Ecopath with Ecosim")>
 <Assembly: AssemblyCopyright("Copyright © 1991")> 
 <Assembly: AssemblyDescription("Ecopath with Ecosim (EwE) is a free ecological/ecosystem modeling software suite. EwE has three main components: Ecopath - a static, mass-balanced snapshot of the system; Ecosim - a time dynamic simulation module for policy exploration; and Ecospace - a spatial and temporal dynamic module primarily designed for exploring impact and placement of protected areas.")> 
