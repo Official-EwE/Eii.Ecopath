@@ -13,7 +13,6 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -29,8 +28,8 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("EwEModelFromEcosim")> 
-<Assembly: AssemblyDescription("Plug-in that generates Ecopath models from given Ecosim time steps")> 
-<Assembly: AssemblyCompany("UBC Institute for the Oceans and Fisheries & Ecopath International Initiative Research Association")> 
+<Assembly: AssemblyDescription("Plug-in that generates Ecopath models from given Ecosim time steps")>
+<Assembly: AssemblyCompany("Ecopath International Initiative Research Association")>
 <Assembly: AssemblyProduct("EwEModelFromEcosim")> 
 <Assembly: AssemblyCopyright("Copyright ©  2010")> 
 <Assembly: AssemblyTrademark("")> 

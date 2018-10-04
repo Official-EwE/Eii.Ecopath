@@ -13,7 +13,6 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '

@@ -13,7 +13,6 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -29,8 +28,8 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("EwEWoRMSPlugin")> 
-<Assembly: AssemblyDescription("Plug-in for Ecopath with Ecosim to search taxonomic information from WoRMS - the World Register of Marine Species")> 
-<Assembly: AssemblyCompany("UBC Institute for the Oceans and Fisheries & Ecopath International Initiative Research Association")> 
+<Assembly: AssemblyDescription("Plug-in for Ecopath with Ecosim to search taxonomic information from WoRMS - the World Register of Marine Species")>
+<Assembly: AssemblyCompany("Ecopath International Initiative Research Association")>
 <Assembly: AssemblyProduct("EwEWoRMSPlugin")> 
 <Assembly: AssemblyCopyright("Copyright © UBC Institute for the Oceans and Fisheries 2012")> 
 <Assembly: AssemblyTrademark("")> 
