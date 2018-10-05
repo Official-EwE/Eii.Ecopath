@@ -356,6 +356,7 @@ Namespace Ecospace.Basemap.Layers
             'm_cmbCopyStyleFrom
             '
             resources.ApplyResources(Me.m_cmbCopyStyleFrom, "m_cmbCopyStyleFrom")
+            Me.m_cmbCopyStyleFrom.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_cmbCopyStyleFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbCopyStyleFrom.FormattingEnabled = True
             Me.m_cmbCopyStyleFrom.Name = "m_cmbCopyStyleFrom"

@@ -136,6 +136,8 @@ Namespace Controls
                 If Not Me.m_bReady Then Return
 
                 Dim aGrads() As cVisualStyle = Me.UIContext.StyleGuide.GetVisualStyles(-1, cStyleGuide.eBrushType.Gradient)
+                Me.m_cmbGradient.Items.Clear()
+
                 For i As Integer = 0 To aGrads.Length - 1
                     Dim vs As cVisualStyle = aGrads(i)
                     Me.m_cmbGradient.Items.Add(New cARGBColorRamp(vs.GradientColors, vs.GradientBreaks))
@@ -147,6 +149,12 @@ Namespace Controls
                         End If
                     End If
                 Next i
+
+                If (Me.m_cmbGradient.SelectedIndex = -1) Then
+                    Me.m_rbDefaultGradient.Checked = True
+                Else
+                    Me.m_rbCustomGradient.Checked = True
+                End If
 
             End Set
         End Property

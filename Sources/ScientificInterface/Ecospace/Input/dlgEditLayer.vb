@@ -487,6 +487,34 @@ Namespace Ecospace.Basemap.Layers
             If (item Is Nothing) Then Return
 
             Me.m_ucEditVisualStyle.VisualStyle = item.Renderer.VisualStyle
+
+        End Sub
+
+        Private Sub m_cmbCopyStyleFrom_DrawItem(sender As Object, e As DrawItemEventArgs) Handles m_cmbCopyStyleFrom.DrawItem
+
+            Dim fmt As New StringFormat(StringFormatFlags.NoWrap)
+            fmt.LineAlignment = StringAlignment.Center
+            Dim bIsSelected As Boolean = ((e.State And DrawItemState.Selected) > 0)
+
+            e.DrawBackground()
+
+            If (e.Index >= 0) Then
+                Dim item As cDisplayLayerRaster = CType(m_cmbCopyStyleFrom.Items(e.Index), cDisplayLayerRaster)
+                If (item IsNot Nothing) Then
+                    ' ToDo: add R2L support
+                    Dim rc As New Rectangle(2, e.Bounds.Top, e.Bounds.Width - 30, e.Bounds.Height)
+                    e.Graphics.DrawString(item.DisplayText, Me.Font, If(bIsSelected, SystemBrushes.HighlightText, SystemBrushes.ControlText), rc, fmt)
+                    rc.X = rc.Width + 2
+                    rc.Width = 22
+                    rc.Y += 2
+                    rc.Height -= 4
+                    item.Renderer.RenderPreview(e.Graphics, rc)
+                    e.Graphics.DrawRectangle(Pens.Black, rc)
+                End If
+            End If
+
+            e.DrawFocusRectangle()
+
         End Sub
 
 #End Region ' Internal implementation
