@@ -42,40 +42,39 @@ Public Class cTrapezoidShapeFunction
     Public Overrides Function Shape(ByVal nPoints As Integer) As Single()
 
         If (Me.ParamsChanged) Then
-            Dim LeftBott As Single = Me.ParamValue(1)
-            Dim LeftTop As Single = Me.ParamValue(2)
-            Dim RightBot As Single = Me.ParamValue(3)
-            Dim RightTop As Single = Me.ParamValue(4)
-
-            ' JS: IT MAY BE THAT PARAMETERS ARE REVERSED IN THIS METHOD!!!! TO TEST!!
+            Dim LeftBot As Single = Me.LeftBottom
+            Dim LeftTop As Single = Me.LeftTop
+            Dim RightBot As Single = Me.RightBottom
+            Dim RightTop As Single = Me.RightTop
 
             Dim xpt As Single
-            Dim width As Single = RightTop
-            Dim x0 As Single = 0
-            If LeftBott < 0 Then
-                x0 = LeftBott
-                width = RightTop - LeftBott
-            End If
-
+            Dim width As Single = RightBottom - LeftBottom
+            Dim x0 As Single = LeftBot
             Dim dx As Single = width / nPoints
 
             If RightBot = 0 Then RightBot = 1
-            If LeftBott > LeftTop Then LeftTop = LeftBott
-            If RightBot < LeftBott Or RightBot < LeftTop Then RightBot = LeftTop + 1
+            If LeftBot > LeftTop Then LeftTop = LeftBot
+            If RightBot < LeftBot Or RightBot < LeftTop Then RightBot = LeftTop + 1
 
             Dim yVal() As Single = New Single() {0, 0, 1, 1, 0, 0}
-            Dim xVal() As Single = New Single() {x0, LeftBott, LeftTop, RightBot, RightTop, width}
+            Dim xVal() As Single = New Single() {x0, LeftBot, LeftTop, RightTop, RightBot, width}
 
             'Break the line up into segments based on the xpoints the user entered
-            'The location of the shoulder in the response function is determined by it's index position in the points array
-            Dim iSegment() As Integer = New Integer() {0, Me.getIndex(LeftBott, x0, RightTop, nPoints), Me.getIndex(LeftTop, x0, RightTop, nPoints), Me.getIndex(RightBot, x0, RightTop, nPoints), Me.getIndex(RightTop, x0, RightTop, nPoints), nPoints}
+            'The location of the trapezoid in the response function is determined by its index position in the points array
+            Dim iSegment() As Integer = New Integer() {
+                0,
+                Me.getIndex(LeftBot, x0, RightBot, nPoints),
+                Me.getIndex(LeftTop, x0, RightBot, nPoints),
+                Me.getIndex(RightTop, x0, RightBot, nPoints),
+                Me.getIndex(RightBot, x0, RightBot, nPoints),
+                nPoints}
 
             'loop over the segments and interpolate the points on the line
             For i As Integer = 0 To 4
                 xpt = xVal(i)
                 'loop from the start to the end position in this segment
                 'and interpolate the y point on the line
-                For j As Integer = iSegment(i) To iSegment(i + 1)
+                For j As Integer = iSegment(i) To iSegment(i + 1) - 1
                     Me.m_points(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
                     xpt += dx
                 Next j
