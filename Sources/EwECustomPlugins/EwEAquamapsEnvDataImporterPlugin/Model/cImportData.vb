@@ -36,20 +36,14 @@ Public Class cImportData
     ''' </summary>
     Public Class cFileData
 
-        ''' <summary>The species that the file was read for.</summary>
-        Private m_strSpecies As String = ""
         ''' <summary>Envelopes contained in the file</summary>
         Private m_lEnvelopes As New List(Of cEnvelopeData)
 
         Public Sub New(strSpecies As String)
-            Me.m_strSpecies = strSpecies
+            Me.Species = strSpecies
         End Sub
 
-        Public ReadOnly Property Species As String
-            Get
-                Return Me.m_strSpecies
-            End Get
-        End Property
+        Public ReadOnly Property Species As String = ""
 
         Public ReadOnly Property Envelopes As cEnvelopeData()
             Get
@@ -77,7 +71,12 @@ Public Class cImportData
             Me.RightBottom = sMax
         End Sub
 
-        Public Property Name As String
+        Public ReadOnly Property Name As String = ""
+
+        ''' <summary>
+        ''' Get/set the database ID assigned to the new shape once created
+        ''' </summary>
+        Public Property DBID As Integer = -1
 
     End Class
 

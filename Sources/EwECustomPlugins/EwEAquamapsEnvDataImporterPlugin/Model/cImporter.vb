@@ -103,7 +103,33 @@ Public Class cImporter
             cApplicationStatusNotifier.UpdateProgress(Me.m_uic.Core, My.Resources.STATUS_CONFIGURING, -1)
             Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
             ' Set X axis range
-            Me.UpdateShapes()
+            For Each file As cImportData.cFileData In Me.m_data.Files
+                If (Array.IndexOf(species, file.Species) >= 0) Then
+                    For Each env As cImportData.cEnvelopeData In file.Envelopes
+                        If (Array.IndexOf(drivers, env.Name) >= 0) Then
+                            Try
+                                Dim strName As String = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, env.Name, file.Species)
+                                cApplicationStatusNotifier.UpdateProgress(Me.m_uic.Core,
+                                                                          cStringUtils.Localize(My.Resources.STATUS_CONFIGURING, strName),
+                                                                          -1)
+                                If Me.ConfigureShape(env) Then
+                                    vs = New cVariableStatus(eStatusFlags.OK, cStringUtils.Localize(My.Resources.PROMPT_IMPORT_DETAIL_SUCCESS, strName),
+                                                             eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+                                Else
+                                    vs = New cVariableStatus(eStatusFlags.ErrorEncountered, String.Format(My.Resources.PROMPT_IMPORT_DETAIL_FAILED, strName),
+                                                             eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+                                    bSuccess = False
+                                End If
+                                msg.AddVariable(vs)
+                            Catch ex As Exception
+                                bSuccess = False
+                            End Try
+                        End If
+                    Next
+                End If
+            Next
+            Me.Commit()
+
             ' Cap shapes stored with SIM
             Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecosim)
 
@@ -130,14 +156,32 @@ Public Class cImporter
         Dim shp As cEnviroResponseFunction = Nothing
 
         shp = DirectCast(man.CreateNewShape(strName, env.Shape(cMediationDataStructures.N_DEFAULT_MEDIATIONPOINTS), eShapeFunctionType.Trapezoid, env.Parameters), cEnviroResponseFunction)
-        shp.ResponseLeftLimit = env.LeftBottom
-        shp.ResponseRightLimit = env.RightBottom
+        env.DBID = shp.DBID
 
         Return True
 
     End Function
 
-    Private Function UpdateShapes() As Boolean
+    Private Function ConfigureShape(env As cImportData.cEnvelopeData) As Boolean
+
+        Dim man As cEnviroResponseShapeManager = Me.m_core.EnviroResponseShapeManager
+        Dim shp As cEnviroResponseFunction = Nothing
+
+        For Each shp In man
+            If shp.DBID = env.DBID Then
+                shp.LockUpdates()
+                shp.ResponseLeftLimit = env.LeftBottom
+                shp.ResponseRightLimit = env.RightBottom
+                shp.UnlockUpdates()
+                Return True
+            End If
+        Next
+
+        Return False
+
+    End Function
+
+    Private Function Commit() As Boolean
 
         Return Me.m_core.EnviroResponseShapeManager.Update() And Me.m_core.SaveChanges(True)
 
