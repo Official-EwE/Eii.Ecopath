@@ -24,6 +24,7 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -114,7 +115,7 @@ Namespace Ecospace
 
             Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
             Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
-            Me(0, eColumnTypes.InputCapacity) = New EwEColumnHeaderCell(eVarNameFlags.LayerHabitatCapacityInput)
+            Me(0, eColumnTypes.InputCapacity) = New EwEColumnHeaderCell(eVarNameFlags.LayerHabitatCapacityInput, eDescriptorTypes.Name, False)
             Me(0, eColumnTypes.Habitat) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_HABITAT)
             Me(0, eColumnTypes.EnvResponses) = New EwEColumnHeaderCell(My.Resources.HEADER_USE_ENVRESPONSES)
 
@@ -162,7 +163,7 @@ Namespace Ecospace
 
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
-            Me.FixedColumnWidths = False
+            Me.FixedColumnWidths(100) = True
         End Sub
 
         Private m_bDirty As Boolean = False
