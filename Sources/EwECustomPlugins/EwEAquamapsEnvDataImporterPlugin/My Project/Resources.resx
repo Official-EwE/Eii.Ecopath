@@ -181,4 +181,8 @@
     <value>Cannot interpret '{0}'</value>
     <comment>{0}=one line from the HSPEN CSV file</comment>
   </data>
+  <data name="STATUS_CONFIGURING_DETAIL" xml:space="preserve">
+    <value>Configuring response function '{0}'</value>
+    <comment>{0}=function name</comment>
+  </data>
 </root>

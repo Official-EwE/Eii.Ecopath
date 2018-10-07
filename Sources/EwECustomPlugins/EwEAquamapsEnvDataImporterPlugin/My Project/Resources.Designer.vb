@@ -201,7 +201,16 @@ Namespace My.Resources
                 Return ResourceManager.GetString("STATUS_CREATING_DETAIL", resourceCulture)
             End Get
         End Property
-        
+
+        '''<summary>
+        '''  Looks up a localized string similar to Configuring response function &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property STATUS_CONFIGURING_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("STATUS_CONFIGURING_DETAIL", resourceCulture)
+            End Get
+        End Property
+
         '''<summary>
         '''  Looks up a localized string similar to Example Aquamaps HSPEN file failed to save {0}.
         '''</summary>
