@@ -769,7 +769,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         <Browsable(True), Description("States whether columns are fixed in width and height")>
-        Public Property FixedColumnWidths() As Boolean
+        Public Property FixedColumnWidths(Optional iWidth As Integer = 80) As Boolean
             Get
                 Return m_bFixedColumnWidths
             End Get
@@ -780,7 +780,7 @@ Namespace Controls.EwEGrid
                 If (Me.RowsCount > 0) And (Me.ColumnsCount > 0) Then
                     If (Me.m_bFixedColumnWidths = True) Then
                         For i As Integer = 2 To Me.ColumnsCount - 1
-                            Me.Columns(i).Width = 80
+                            Me.Columns(i).Width = iWidth
                         Next
                         Me.Rows(0).Height = 45
                         Me.AutoStretchColumnsToFitWidth = False
