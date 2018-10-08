@@ -118,11 +118,17 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Includes\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Interop.JRO, Version=2.6.0.0, Culture=neutral, PublicKeyToken=1d875393b3ebcad0, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.interop.access.dao, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
     <Reference Include="ProjNet, Version=1.2.3432.30659, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
@@ -254,6 +260,11 @@
     <Compile Include="HelperClasses\Linear Programming\cLPSolver.vb" />
     <Compile Include="HelperClasses\Threading\cThreadWaitBase.vb" />
     <Compile Include="HelperClasses\Threading\IThreadedProcess.vb" />
+    <Compile Include="IO\cBaseDataReader.vb" />
+    <Compile Include="IO\cBaseDataWriter.vb" />
+    <Compile Include="IO\cDataTableConverter.vb" />
+    <Compile Include="IO\cDataTableEnumerable.vb" />
+    <Compile Include="IO\cDataTableEnumerator.vb" />
     <Compile Include="Monte Carlo\cMonteCarloResultsWriterMultipleFiles.vb" />
     <Compile Include="MPAOptimization\Model\cMPAOptBaseClass.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchFGroup.vb" />
@@ -658,6 +669,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Includes\EPPlus.dll" />
     <Content Include="Includes\Interop.JRO.dll" />
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
     <Content Include="Includes\LPSolve\win64\lpsolve55.dll">
