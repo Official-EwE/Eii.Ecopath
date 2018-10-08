@@ -107,11 +107,9 @@ Namespace Controls.Map.Layers
             Try
                 Dim capManager As EwECore.cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
                 Dim map As cEcospaceLayerHabitatCapacity
-                Dim nrows As Integer = capManager.InRow
-                Dim ncols As Integer = capManager.InCol
                 For igrp As Integer = 1 To ngrps
                     map = capManager.LayerHabitatCapacityInput(igrp)
-                    Me.SetDefault(map, nrows, ncols)
+                    map.Reset()
                 Next igrp
 
                 Me.UpdateCore()
@@ -124,8 +122,7 @@ Namespace Controls.Map.Layers
         Private Sub OnSetDefaultThis(sender As System.Object, e As System.EventArgs) Handles m_btnLayerDefault.Click
             Try
                 Dim capManager As EwECore.cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
-                Me.SetDefault(capManager.LayerHabitatCapacityInput(Me.GroupIndex), _
-                                  capManager.InRow, capManager.InCol)
+                capManager.LayerHabitatCapacityInput(Me.GroupIndex).Reset()
                 Me.UpdateCore()
             Catch ex As Exception
 
@@ -135,16 +132,6 @@ Namespace Controls.Map.Layers
 #End Region ' Events
 
 #Region " Internals "
-
-        Private Sub SetDefault(map As cEcospaceLayerHabitatCapacity, nrows As Integer, ncols As Integer)
-            For ir As Integer = 1 To nrows
-                For ic As Integer = 1 To ncols
-                    ' The user interface should really not assume this. It's a core thing
-                    map.Cell(ir, ic) = 1.0
-                Next
-            Next
-            map.Invalidate()
-        End Sub
 
         Private Sub UpdateCore()
             Me.UIContext.Core.onChanged(Me.UIContext.Core.EcospaceBasemap.LayerHabitatCapacityInput(1))

@@ -1128,7 +1128,6 @@
     <None Include="Resources\site_logo.png" />
     <Content Include="Resources\SnapshotHS.png" />
     <Content Include="Resources\ExportPictureHS.png" />
-    <Content Include="Resources\Refresh.png" />
     <None Include="Resources\Regions.png" />
     <None Include="Resources\Seed.PNG" />
     <None Include="Resources\taxon.png" />

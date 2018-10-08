@@ -60,4 +60,10 @@ Public Class cEcospaceLayerHabitatCapacity
         Return Me.m_core.EcoPathGroupInputs(Me.Index).Name
     End Function
 
+    Public Overrides ReadOnly Property [Default] As Single
+        Get
+            Return 1
+        End Get
+    End Property
+
 End Class

@@ -54,9 +54,7 @@ Namespace Ecospace
             Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCapacityCalcType))
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnClear = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnHabitats = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnEnvResponses = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnResetInputCapacity = New System.Windows.Forms.ToolStripButton()
             Me.m_grid = New ScientificInterface.Ecospace.gridCapacityCalcType(Me.components)
             Me.m_tsMain.SuspendLayout()
             Me.SuspendLayout()
@@ -64,25 +62,15 @@ Namespace Ecospace
             'm_tsMain
             '
             Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnClear, Me.m_tsbnHabitats, Me.m_tsbnEnvResponses})
+            Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnResetInputCapacity})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
             Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
-            'm_tsbnClear
+            'm_tsbnResetInputCapacity
             '
-            resources.ApplyResources(Me.m_tsbnClear, "m_tsbnClear")
-            Me.m_tsbnClear.Name = "m_tsbnClear"
-            '
-            'm_tsbnHabitats
-            '
-            resources.ApplyResources(Me.m_tsbnHabitats, "m_tsbnHabitats")
-            Me.m_tsbnHabitats.Name = "m_tsbnHabitats"
-            '
-            'm_tsbnEnvResponses
-            '
-            resources.ApplyResources(Me.m_tsbnEnvResponses, "m_tsbnEnvResponses")
-            Me.m_tsbnEnvResponses.Name = "m_tsbnEnvResponses"
+            resources.ApplyResources(Me.m_tsbnResetInputCapacity, "m_tsbnResetInputCapacity")
+            Me.m_tsbnResetInputCapacity.Name = "m_tsbnResetInputCapacity"
             '
             'm_grid
             '
@@ -99,7 +87,6 @@ Namespace Ecospace
             Me.m_grid.CustomSort = False
             Me.m_grid.DataName = "grid content"
             resources.ApplyResources(Me.m_grid, "m_grid")
-            Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
             Me.m_grid.IsLayoutSuspended = False
@@ -132,10 +119,8 @@ Namespace Ecospace
         End Sub
 
         Private WithEvents m_tsMain As cEwEToolstrip
-        Private WithEvents m_tsbnHabitats As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tsbnEnvResponses As System.Windows.Forms.ToolStripButton
         Private WithEvents m_grid As gridCapacityCalcType
-        Private WithEvents m_tsbnClear As ToolStripButton
+        Private WithEvents m_tsbnResetInputCapacity As ToolStripButton
     End Class
 
 End Namespace
