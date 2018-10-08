@@ -1,0 +1,27 @@
+EwE todo
+========
+
+  Warning if there are no water cells on pre-run
+  Hatchery stocking ff cannot be removed from stanza group -> Works OK in Georgia Strait. Joe?
+V Pedigree not drawing in pedigree grid (but data is there?), not showing on grids
+V In the MTI, the options to change the image are not showing up
+V In the keystone index, the options to change the figure to include biomasses are not showing up 
+V Group capacity model grid: use fixed column widths
+  
+V MPA dyn: export button needs tooltip
+V MPA dyn: exported csv needs year + month, not just year
+V MPA dyn: export CSV link opens file, not the folder
+  MPA dyn: add 'all year', 'all fleets' columns to CSV file (or 'm*', 'fleet*') -> Colette?
+  
+  Connect ext data -> define ext data -> connection list does not refresh
+  External data grid incremental updates, not total refresh
+  
+? How does RelPP layer work with multiple Producer groups?
+
+V New movement parm in Ecospace: movement rel to cell fitness (not cap; prod as ratio of loss) 0 = default
+V Ecospace dispersal grid: EatEffBad can be deleted from the UI? 
+  Disable respiration warning for MS groups: non-feeding last stanza high mort -> resp warning
+  Ecosampler: add means to select batch run start sample index
+  
+V Import Hake HSPEN Depth does not set depth limits correctly (40-1000m imports to limits 0-1m)
+V Copy layer style does not work between env driver layers
