@@ -1,0 +1,11 @@
+Building a model is a process. Don;t try to get group structure right at the first go, don't agonize: start, model, learn and improve. Just make sure your questions are well defined. 
+Make a model in the first week, run it to address the questions. 
+
+Space Solver can get stuck on unconnected parts of the map (narrow channels etc). 
+Do not represent all small inlets just to create a pretty map, but focus on the important areas.
+
+Recruit where spawned OFF: 
+Move stanza on Entry:
+Two magic flags. IBM magically transports packets to suitable locations. Juvinile habitat suitability is very important here
+
+basic PDE = no multistanza
