@@ -512,6 +512,7 @@ Public Class cEcoNetwork
                 strErr = "Ulanow()"
                 Ulanow(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp)
 
+                ' JS: Lindeman should not be part of the main ENA run, but should be requested separately. Cycle computations are killers
                 Me.startAbortTimer()
 
                 cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_LINDEMAN, 0.3)

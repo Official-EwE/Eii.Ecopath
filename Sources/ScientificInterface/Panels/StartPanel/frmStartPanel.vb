@@ -104,7 +104,7 @@ Public Class frmStartPanel
         Me.m_tsbnStartPage.Image = SharedResources.HomeHS
         Me.m_tsbnBack.Image = SharedResources.Back
         Me.m_tsbnForward.Image = SharedResources.forward
-        Me.m_tsbnRefresh.Image = SharedResources.Refresh
+        Me.m_tsbnRefresh.Image = SharedResources.ResetHS
         Me.m_tsbnEcopathSite.Image = SharedResources.Ecopath_32x32
         Me.m_tsbnBugTracker.Image = SharedResources.bug
         Me.m_tsbnBetaFeedback.Image = My.Resources.logo_sm

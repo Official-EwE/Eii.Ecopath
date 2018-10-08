@@ -34,9 +34,6 @@ Namespace Ecospace
 
 #Region " Private vars "
 
-        Private m_lProps As New List(Of cProperty)
-        Private m_bDirty As Boolean = True
-
 #End Region ' Private vars
 
 #Region " Construction "
@@ -53,101 +50,24 @@ Namespace Ecospace
 
 #Region " Overrides "
 
-        Protected Overrides Sub OnLoad(e As System.EventArgs)
+        Protected Overrides Sub OnLoad(e As EventArgs)
             MyBase.OnLoad(e)
-
-            If (Me.UIContext Is Nothing) Then Return
-
-            Me.m_tsbnClear.Image = SharedResources.Editable
-            Me.m_tsbnHabitats.Image = SharedResources.Habitat
-            Me.m_tsbnEnvResponses.Image = SharedResources.FunctionHS
-
-            For i As Integer = 1 To Me.Core.nLivingGroups
-                Dim grp As cEcospaceGroupInput = Me.Core.EcospaceGroupInputs(i)
-                Dim prop As cProperty = Me.PropertyManager.GetProperty(grp, eVarNameFlags.EcospaceCapCalType)
-                Me.m_lProps.Add(prop)
-                AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
-            Next
-
-            Me.m_bDirty = True
-            Me.UpdateControls()
-
-        End Sub
-
-        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
-
-            For Each prop As cProperty In Me.m_lProps
-                RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
-            Next
-            Me.m_lProps.Clear()
-
-            MyBase.OnFormClosed(e)
-        End Sub
-
-        Protected Overrides Sub UpdateControls()
-
-            If (Not Me.m_bDirty) Then Return
-
-            Dim iHab As Integer = 0
-            Dim iCap As Integer = 0
-
-            For Each prop As cProperty In Me.m_lProps
-                Dim val As eEcospaceCapacityCalType = DirectCast(prop.GetValue, eEcospaceCapacityCalType)
-                If ((val And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Then iCap += 1
-                If ((val And eEcospaceCapacityCalType.Habitat) = eEcospaceCapacityCalType.Habitat) Then iHab += 1
-            Next
-
-            Me.m_tsbnHabitats.Checked = (iHab = Me.Core.nLivingGroups)
-            Me.m_tsbnEnvResponses.Checked = (iCap = Me.Core.nLivingGroups)
-
-            MyBase.UpdateControls()
-
+            Me.m_tsbnResetInputCapacity.Image = SharedResources.ResetHS
         End Sub
 
 #End Region ' Overrides
 
 #Region " Events "
 
-        Private Sub OnUseOnlyInput(sender As Object, e As EventArgs) _
-            Handles m_tsbnClear.Click
+        Private Sub OnResetInputCapacity(sender As Object, e As EventArgs) Handles m_tsbnResetInputCapacity.Click
 
-            Try
-                Me.m_grid.SetAllCalcTypes(eEcospaceCapacityCalType.Input, True)
-            Catch ex As Exception
-                cLog.Write(ex, "frmCapacityCalcType.OnUseOnlyInput")
-            End Try
+            ' ToDo: prompt?
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            For igroup As Integer = 1 To Me.Core.nGroups
+                bm.LayerHabitatCapacityInput(igroup).Reset()
+            Next
+            Me.Core.onChanged(bm.LayerHabitatCapacityInput(1))
 
-        End Sub
-
-        Private Sub OnToggleHabitatModeForAll(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnHabitats.Click
-
-            Try
-                Me.m_grid.SetAllCalcTypes(eEcospaceCapacityCalType.Habitat, Not Me.m_tsbnHabitats.Checked)
-            Catch ex As Exception
-                cLog.Write(ex, "frmCapacityCalcType.OnToggleHabitatModeForAll")
-            End Try
-
-        End Sub
-
-        Private Sub OnToggleEnvResponsesModeForAll(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnEnvResponses.Click
-
-            Try
-                Me.m_grid.SetAllCalcTypes(eEcospaceCapacityCalType.EnvResponses, Not Me.m_tsbnEnvResponses.Checked)
-            Catch ex As Exception
-                cLog.Write(ex, "frmCapacityCalcType.OnToggleEnvResponsesModeForAll")
-            End Try
-
-        End Sub
-
-        Private Sub OnPropertyChanged(prop As cProperty, ct As cProperty.eChangeFlags)
-            Try
-                Me.m_bDirty = True
-                Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
-            Catch ex As Exception
-
-            End Try
         End Sub
 
 #End Region ' Events
