@@ -214,7 +214,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_btnKeep.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -223,13 +223,13 @@
     <value>NoControl</value>
   </data>
   <data name="Cancel_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>676, 376</value>
+    <value>676, 566</value>
   </data>
   <data name="Cancel_Button.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
   <data name="Cancel_Button.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>3</value>
   </data>
   <data name="Cancel_Button.Text" xml:space="preserve">
     <value>Cancel</value>
@@ -253,13 +253,13 @@
     <value>NoControl</value>
   </data>
   <data name="OK_Button.Location" type="System.Drawing.Point, System.Drawing">
-    <value>574, 376</value>
+    <value>574, 566</value>
   </data>
   <data name="OK_Button.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 23</value>
   </data>
   <data name="OK_Button.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>2</value>
   </data>
   <data name="OK_Button.Text" xml:space="preserve">
     <value>OK</value>
@@ -289,7 +289,7 @@
     <value>67, 13</value>
   </data>
   <data name="m_lblSearchTerm.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_lblSearchTerm.Text" xml:space="preserve">
     <value>&amp;Search term:</value>
@@ -316,7 +316,7 @@
     <value>276, 20</value>
   </data>
   <data name="m_tbxSearchTerm.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;m_tbxSearchTerm.Name" xml:space="preserve">
     <value>m_tbxSearchTerm</value>
@@ -349,7 +349,7 @@
     <value>557, 21</value>
   </data>
   <data name="m_cmbEngine.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_cmbEngine.Name" xml:space="preserve">
     <value>m_cmbEngine</value>
@@ -376,7 +376,7 @@
     <value>96, 23</value>
   </data>
   <data name="m_btnConfigure.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_btnConfigure.Text" xml:space="preserve">
     <value>&amp;Configure...</value>
@@ -409,7 +409,7 @@
     <value>108, 17</value>
   </data>
   <data name="m_cbIncludeExtent.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_cbIncludeExtent.Text" xml:space="preserve">
     <value>&amp;Use model extent</value>
@@ -445,7 +445,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_gridGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>655, 180</value>
+    <value>655, 275</value>
   </data>
   <data name="m_gridGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -454,7 +454,7 @@
     <value>m_gridGroups</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Type" xml:space="preserve">
-    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridDefineTaxonomy, EwE6, Version=6.6.15621.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridGroups.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -487,13 +487,85 @@
     <value>m_hdrEdit</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15621.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_hdrEdit.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="m_btnExport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnExport.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_btnExport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnExport.Location" type="System.Drawing.Point, System.Drawing">
+    <value>661, 218</value>
+  </data>
+  <data name="m_btnExport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 23</value>
+  </data>
+  <data name="m_btnExport.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_btnExport.Text" xml:space="preserve">
+    <value>&amp;Export...</value>
+  </data>
+  <data name="m_btnExport.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageBeforeText</value>
+  </data>
+  <data name="&gt;&gt;m_btnExport.Name" xml:space="preserve">
+    <value>m_btnExport</value>
+  </data>
+  <data name="&gt;&gt;m_btnExport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnExport.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_btnExport.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_btnImport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnImport.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="m_btnImport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnImport.Location" type="System.Drawing.Point, System.Drawing">
+    <value>661, 189</value>
+  </data>
+  <data name="m_btnImport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 23</value>
+  </data>
+  <data name="m_btnImport.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_btnImport.Text" xml:space="preserve">
+    <value>&amp;Import...</value>
+  </data>
+  <data name="m_btnImport.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageBeforeText</value>
+  </data>
+  <data name="&gt;&gt;m_btnImport.Name" xml:space="preserve">
+    <value>m_btnImport</value>
+  </data>
+  <data name="&gt;&gt;m_btnImport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnImport.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_btnImport.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="m_btnProps.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -529,7 +601,40 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_btnProps.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
+  </data>
+  <data name="m_hdrIO.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_hdrIO.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrIO.Location" type="System.Drawing.Point, System.Drawing">
+    <value>658, 168</value>
+  </data>
+  <data name="m_hdrIO.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 18</value>
+  </data>
+  <data name="m_hdrIO.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_hdrIO.Text" xml:space="preserve">
+    <value>CSV access</value>
+  </data>
+  <data name="m_hdrIO.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrIO.Name" xml:space="preserve">
+    <value>m_hdrIO</value>
+  </data>
+  <data name="&gt;&gt;m_hdrIO.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15621.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrIO.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_hdrIO.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
   <data name="m_hdrProps.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -556,13 +661,13 @@
     <value>m_hdrProps</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15621.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_hdrProps.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -586,7 +691,7 @@
     <value>754, 18</value>
   </data>
   <data name="m_hdrSearch.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>0</value>
   </data>
   <data name="m_hdrSearch.Text" xml:space="preserve">
     <value>Search</value>
@@ -598,7 +703,7 @@
     <value>m_hdrSearch</value>
   </data>
   <data name="&gt;&gt;m_hdrSearch.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15621.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSearch.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -637,7 +742,7 @@
     <value>141, 21</value>
   </data>
   <data name="m_cmbFilter.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;m_cmbFilter.Name" xml:space="preserve">
     <value>m_cmbFilter</value>
@@ -664,7 +769,7 @@
     <value>96, 23</value>
   </data>
   <data name="m_btnAdd.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>10</value>
   </data>
   <data name="m_btnAdd.Text" xml:space="preserve">
     <value>&amp;Add...</value>
@@ -694,7 +799,7 @@
     <value>15, 13</value>
   </data>
   <data name="m_lblIn.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_lblIn.Text" xml:space="preserve">
     <value>&amp;in</value>
@@ -718,16 +823,16 @@
     <value>0, 84</value>
   </data>
   <data name="m_gridResults.Size" type="System.Drawing.Size, System.Drawing">
-    <value>655, 90</value>
+    <value>655, 185</value>
   </data>
   <data name="m_gridResults.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Name" xml:space="preserve">
     <value>m_gridResults</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Type" xml:space="preserve">
-    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridTaxonSearchResults, EwE6, Version=6.6.15621.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_gridResults.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -748,7 +853,7 @@
     <value>79, 13</value>
   </data>
   <data name="m_lblEngine.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lblEngine.Text" xml:space="preserve">
     <value>&amp;Search engine:</value>
@@ -778,10 +883,10 @@
     <value>1</value>
   </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>757, 358</value>
+    <value>757, 548</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>180</value>
+    <value>275</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -805,13 +910,13 @@
     <value>True</value>
   </data>
   <data name="m_cbShowCodes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 380</value>
+    <value>15, 570</value>
   </data>
   <data name="m_cbShowCodes.Size" type="System.Drawing.Size, System.Drawing">
     <value>133, 17</value>
   </data>
   <data name="m_cbShowCodes.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>1</value>
   </data>
   <data name="m_cbShowCodes.Text" xml:space="preserve">
     <value>&amp;Show taxonomy codes</value>
@@ -841,7 +946,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>784, 411</value>
+    <value>784, 601</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>600, 400</value>

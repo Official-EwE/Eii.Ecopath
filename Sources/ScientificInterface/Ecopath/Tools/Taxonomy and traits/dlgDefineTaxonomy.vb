@@ -154,6 +154,11 @@ Public Class dlgDefineTaxonomy
         Me.PopulateTaxonDataProducerControls()
         Me.UpdateControls()
 
+#If Not DEBUG Then
+        Me.m_hdrIO.Visible = False
+        Me.m_btnImport.Visible = False
+        Me.m_btnExport.Visible = False
+#End If
         ' Connect to group grid selection changes
         AddHandler Me.m_gridGroups.OnSelectionChanged, AddressOf OnRowSelectionChanged
         ' Connect to search result changes
@@ -266,15 +271,15 @@ Public Class dlgDefineTaxonomy
         End Try
     End Sub
 
-    'Private Sub OnUpdateCurrent(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-    '    Handles m_btnUpdate.Click
-    '    ' Hmm
-    'End Sub
+    Private Sub OnImportTaxaCSV(sender As Object, e As EventArgs) _
+        Handles m_btnImport.Click
 
-    'Private Sub OnUpdateAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-    '    Handles m_btnUpdateAll.Click
-    '    ' Hmm
-    'End Sub
+    End Sub
+
+    Private Sub OnExportTaxaCSV(sender As Object, e As EventArgs) _
+        Handles m_btnExport.Click
+
+    End Sub
 
     Private Sub OnSearchTextChanged(ByVal sender As System.Object, ByVal e As EventArgs) _
         Handles m_tbxSearchTerm.TextChanged
@@ -379,7 +384,7 @@ Public Class dlgDefineTaxonomy
         End Try
     End Sub
 
-    Private Sub m_btnAdd_Click(sender As Object, e As System.EventArgs) _
+    Private Sub OnAddTaxa(sender As Object, e As System.EventArgs) _
         Handles m_btnAdd.Click
 
         Try
