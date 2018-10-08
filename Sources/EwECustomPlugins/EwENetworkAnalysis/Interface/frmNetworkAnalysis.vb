@@ -139,6 +139,11 @@ Public Class frmNetworkAnalysis
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
+        If (Me.m_contentmanager IsNot Nothing) Then
+            Me.m_contentmanager.Detach()
+            Me.m_contentmanager = Nothing
+        End If
+
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
             'Me.m_cmdDisplayGroups.RemoveControl(Me.tsmiDisplayGroups)
             RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnPostInvokeDisplayGroups
