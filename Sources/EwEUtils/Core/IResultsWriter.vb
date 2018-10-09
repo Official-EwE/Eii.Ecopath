@@ -28,14 +28,35 @@ Namespace Core
     ''' <summary>
     ''' Interface for writing Ecospace time step results to file
     ''' </summary>
-    Public Interface IEcospaceResultsWriter
-        Inherits IResultsWriter
+    Public Interface IResultsWriter
 
         ''' <summary>
-        ''' Save time step data to file.
+        ''' Inititialize a writer.
         ''' </summary>
-        ''' <param name="SpaceTimeStepResults">cEcospaceTimestep as object containing the data to save.</param>
-        Sub WriteResults(ByVal SpaceTimeStepResults As Object)
+        ''' <param name="theCore">The core to initialize with.</param>
+        Sub Init(ByVal theCore As Object)
+
+        ''' <summary>
+        ''' Start writing.
+        ''' </summary>
+        Sub StartWrite()
+
+        ''' <summary>
+        ''' End writing.
+        ''' </summary>
+        Sub EndWrite()
+
+        ''' <summary>
+        ''' Return a human-legible name of the data that this writer produces.
+        ''' </summary>
+        ReadOnly Property DisplayName() As String
+
+        ''' <summary>
+        ''' Get/set whether this writer is allowed to write outputs.
+        ''' </summary>
+        Property Enabled As Boolean
+
+        ReadOnly Property OutputPath As String
 
     End Interface
 

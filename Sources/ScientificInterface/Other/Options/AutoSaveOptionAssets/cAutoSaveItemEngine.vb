@@ -41,7 +41,6 @@ Namespace Other
 
 #Region " Private vars "
 
-        Private m_uic As cUIContext = Nothing
         Private m_pl As Panel = Nothing
         Private m_cbh As cCheckboxHierarchy = Nothing
         Private m_lControls As List(Of ucAutosaveOption) = Nothing
@@ -56,9 +55,8 @@ Namespace Other
         Private Class cPluginSorter
             Implements IComparer(Of IAutoSavePlugin)
 
-            Public Function Compare(x As EwEPlugin.IAutoSavePlugin,
-                                y As EwEPlugin.IAutoSavePlugin) As Integer _
-                            Implements IComparer(Of EwEPlugin.IAutoSavePlugin).Compare
+            Public Function Compare(x As IAutoSavePlugin, y As IAutoSavePlugin) As Integer _
+                Implements IComparer(Of IAutoSavePlugin).Compare
                 Return String.Compare(x.Name, y.Name)
             End Function
 
@@ -73,7 +71,7 @@ Namespace Other
         ''' <param name="uic">The <see cref="cUIContext"/> to connect to.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext)
-            Me.m_uic = uic
+            Me.UIContext = uic
             Me.m_lControls = New List(Of ucAutosaveOption)
         End Sub
 
@@ -106,7 +104,7 @@ Namespace Other
             ' Store panel ref
             Me.m_pl = pl
 
-            Dim core As cCore = Me.m_uic.Core
+            Dim core As cCore = Me.UIContext.Core
             Dim pm As cPluginManager = core.PluginManager
             Dim lPlugins([Enum].GetValues(GetType(eAutosaveTypes)).Length - 1) As List(Of IAutoSavePlugin)
 
@@ -185,6 +183,8 @@ Namespace Other
 
 #Region " Internals "
 
+        Private ReadOnly Property UIContext As cUIContext = Nothing
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Recursive core to build the hierarchy control structure.
@@ -194,28 +194,29 @@ Namespace Other
         ''' <param name="iIndent">Control indentation.</param>
         ''' <param name="lPlugins">2-dimensional list of autosaving plug-ins.</param>
         ''' -------------------------------------------------------------------
-        Private Sub BuildControlTree(ByVal t As eAutosaveTypes, _
-                                     ByVal cbParent As CheckBox, _
-                                     ByVal iIndent As Integer, _
+        Private Sub BuildControlTree(ByVal t As eAutosaveTypes,
+                                     ByVal cbParent As CheckBox,
+                                     ByVal iIndent As Integer,
                                      ByVal lPlugins() As List(Of IAutoSavePlugin))
 
+            Dim core As cCore = Me.UIContext.Core
             Dim ctrl As ucAutosaveOption = Nothing
 
             Select Case t
                 Case eAutosaveTypes.NotSet
-                    ctrl = New ucAutosaveOption(Me.m_uic, SharedResources.AUTOSAVE_ALL, 0)
+                    ctrl = New ucAutosaveOption(Me.UIContext, SharedResources.AUTOSAVE_ALL, 0)
                     Me.Add(ctrl, Nothing)
                     Dim cbRoot As CheckBox = ctrl.Checkbox
 
-                    ctrl = New ucAutosaveOption(Me.m_uic, SharedResources.HEADER_ECOPATH, 1)
+                    ctrl = New ucAutosaveOption(Me.UIContext, SharedResources.HEADER_ECOPATH, 1)
                     Me.Add(ctrl, cbRoot)
                     Me.BuildControlTree(eAutosaveTypes.Ecopath, ctrl.Checkbox, 2, lPlugins)
 
-                    ctrl = New ucAutosaveOption(Me.m_uic, SharedResources.HEADER_ECOSIM, 1)
+                    ctrl = New ucAutosaveOption(Me.UIContext, SharedResources.HEADER_ECOSIM, 1)
                     Me.Add(ctrl, cbRoot)
                     Me.BuildControlTree(eAutosaveTypes.Ecosim, ctrl.Checkbox, 2, lPlugins)
 
-                    ctrl = New ucAutosaveOption(Me.m_uic, SharedResources.HEADER_ECOSPACE, 1)
+                    ctrl = New ucAutosaveOption(Me.UIContext, SharedResources.HEADER_ECOSPACE, 1)
                     Me.Add(ctrl, cbRoot)
                     Me.BuildControlTree(eAutosaveTypes.Ecospace, ctrl.Checkbox, 2, lPlugins)
 
@@ -250,9 +251,26 @@ Namespace Other
                     ' Add Ecospace plug-in nodes
                     Me.Add(lPlugins(t), cbParent, iIndent)
 
+                Case eAutosaveTypes.EcospaceResults
+
+                    ' Add master node
+                    ctrl = New ucAutosaveOption(Me.UIContext, t, iIndent)
+                    Me.Add(ctrl, cbParent)
+
+                    If (Core.ActiveEcospaceScenarioIndex > 0) Then
+                        Dim parms As cEcospaceModelParameters = Core.EcospaceModelParameters
+                        For n As Integer = 1 To parms.nResultWriters
+                            Dim writer As IEcospaceResultsWriter = parms.ResultWriter(n)
+                            Me.Add(New ucAutosaveOption(Me.UIContext, writer, t, iIndent + 1), ctrl.Checkbox)
+                        Next
+                    End If
+
+                    ' Add child plug-in nodes
+                    Me.Add(lPlugins(t), ctrl.Checkbox, iIndent + 1)
+
                 Case eAutosaveTypes.Ecotracer
                     ' Add tracer node
-                    ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
+                    ctrl = New ucAutosaveOption(Me.UIContext, t, iIndent)
                     Me.Add(ctrl, cbParent)
                     ' Add tracer plug-in nodes
                     Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
@@ -260,7 +278,7 @@ Namespace Other
                 Case Else
 
                     ' Add master node
-                    ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
+                    ctrl = New ucAutosaveOption(Me.UIContext, t, iIndent)
                     Me.Add(ctrl, cbParent)
                     ' Add child plug-in nodes
                     Me.Add(lPlugins(t), ctrl.Checkbox, iIndent + 1)
@@ -299,14 +317,14 @@ Namespace Other
         ''' <param name="parent"></param>
         ''' <param name="iIndent"></param>
         ''' -------------------------------------------------------------------
-        Private Sub Add(ByVal l As List(Of IAutoSavePlugin), _
-                        ByVal parent As CheckBox, _
+        Private Sub Add(ByVal l As List(Of IAutoSavePlugin),
+                        ByVal parent As CheckBox,
                         ByVal iIndent As Integer)
 
             Dim api As IAutoSavePlugin() = l.ToArray
             Array.Sort(api, New cPluginSorter())
             For Each pi As IAutoSavePlugin In api
-                Me.Add(New ucAutosaveOption(Me.m_uic, pi, iIndent), parent)
+                Me.Add(New ucAutosaveOption(Me.UIContext, pi, iIndent), parent)
             Next
 
         End Sub

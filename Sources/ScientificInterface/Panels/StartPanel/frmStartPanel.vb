@@ -20,17 +20,15 @@
 #Region " Imports "
 
 Option Strict On
-
-Imports System.Reflection
-Imports EwEPlugin
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Forms
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
+
+' JS 09Oct18: Traditionally, the embedded web view control uses the Internet Explorer engine.
+'             It may be necessary to switch to a newer engine where available. 
+'             See https : //blogs.windows.com/msedgedev/2018/05/09/modern-webview-winforms-wpf-apps/
 
 ''' ===========================================================================
 ''' <summary>

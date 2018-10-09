@@ -43,12 +43,14 @@ Namespace Other
         Implements IUIElement
 
         Private Const cINDENT_SIZE As Integer = 18
-
-        Private m_uic As cUIContext = Nothing
         Private m_strOutputMask As String = ""
         Private m_autosavetype As eAutosaveTypes = eAutosaveTypes.NotSet
         Private m_iIndent As Integer = 0
+
+        ' For plug-in types
         Private m_pi As IAutoSavePlugin = Nothing
+        ' For stock result writers
+        Private m_writer As IResultsWriter = Nothing
 
         Private m_strPath As String = ""
 
@@ -68,8 +70,8 @@ Namespace Other
         ''' <param name="strLabel">Label to use for the item.</param>
         ''' <param name="iIndent">Checkbox indentation to use.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal strLabel As String, _
+        Public Sub New(ByVal uic As cUIContext,
+                       ByVal strLabel As String,
                        ByVal iIndent As Integer)
 
             MyBase.New()
@@ -91,8 +93,8 @@ Namespace Other
         ''' associate the item with.</param>
         ''' <param name="iIndent">Checkbox indentation to use.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal autosavetype As eAutosaveTypes, _
+        Public Sub New(ByVal uic As cUIContext,
+                       ByVal autosavetype As eAutosaveTypes,
                        ByVal iIndent As Integer)
             Me.New()
 
@@ -107,14 +109,14 @@ Namespace Other
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create an autosave item associated with an <see cref="eAutosaveTypes"/> value.
+        ''' Create an autosave item associated with a plug-in.
         ''' </summary>
         ''' <param name="uic">UI Context to connect to the item.</param>
         ''' <param name="pi"><see cref="IAutoSavePlugin"/> to associate the 
         ''' item with.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal pi As IAutoSavePlugin, _
+        Public Sub New(ByVal uic As cUIContext,
+                       ByVal pi As IAutoSavePlugin,
                        ByVal iIndent As Integer)
             Me.New()
 
@@ -126,15 +128,29 @@ Namespace Other
 
         End Sub
 
-        Private Property UIContext As cUIContext _
-            Implements IUIElement.UIContext
-            Get
-                Return Me.m_uic
-            End Get
-            Set(value As ScientificInterfaceShared.Controls.cUIContext)
-                Me.m_uic = value
-            End Set
-        End Property
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create an autosave item associated with a stock result writer.
+        ''' </summary>
+        ''' <param name="uic">UI Context to connect to the item.</param>
+        ''' <param name="writer"><see cref="IResultsWriter"/> to associate the 
+        ''' item with.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(ByVal uic As cUIContext,
+                       ByVal writer As IResultsWriter,
+                       ByVal autosavetype As eAutosaveTypes,
+                       ByVal iIndent As Integer)
+            Me.New()
+
+            Me.UIContext = uic
+            Me.m_writer = writer
+            Me.m_autosavetype = autosavetype
+            Me.m_cbOption.Text = writer.DisplayName
+            Me.m_iIndent = iIndent
+
+        End Sub
+
+        Private Property UIContext As cUIContext = Nothing Implements IUIElement.UIContext
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Try
@@ -163,19 +179,19 @@ Namespace Other
         Public Sub Apply()
 
             Try
-                ' Represents a plug-in?
-                If (Me.m_pi IsNot Nothing) Then
-                    ' #Yes: Update plug-in auto-save state, bypassing the core.
-                    '       The plug-in is responsible for remembering this setting.
+                ' Represents a stock writer or a plug-in?
+                If (Me.m_writer IsNot Nothing) Then
+                    Me.m_writer.Enabled = (Me.m_cbOption.Checked = True)
+                ElseIf (Me.m_pi IsNot Nothing) Then
                     Me.m_pi.AutoSave = (Me.m_cbOption.Checked = True)
-                    Me.m_uic.Core.OnSettingsChanged()
+                    Me.UIContext.Core.OnSettingsChanged()
                 Else
                     ' #No: Only update the core setting when representing a auto-save setting
                     If (Me.m_autosavetype <> eAutosaveTypes.NotSet) Then
                         If (Me.m_cbOption.Checked = True) Then
-                            Me.m_uic.Core.Autosave(Me.m_autosavetype) = True
+                            Me.UIContext.Core.Autosave(Me.m_autosavetype) = True
                         Else
-                            Me.m_uic.Core.Autosave(Me.m_autosavetype) = False
+                            Me.UIContext.Core.Autosave(Me.m_autosavetype) = False
                         End If
                     End If
                 End If
@@ -206,6 +222,8 @@ Namespace Other
             ' Set initial state
             If (Me.m_pi IsNot Nothing) Then
                 Me.m_cbOption.Checked = Me.m_pi.AutoSave
+            ElseIf (Me.m_writer IsNot Nothing) Then
+                Me.m_cbOption.Checked = Me.m_writer.Enabled
             ElseIf (Me.m_autosavetype <> eAutosaveTypes.NotSet) Then
                 Me.m_cbOption.Checked = (Me.UIContext.Core.Autosave(Me.m_autosavetype) = True)
             End If
@@ -226,9 +244,9 @@ Namespace Other
         Private Sub OnVisitFolder(sender As System.Object, e As System.EventArgs) _
             Handles m_btnVisitFolder.Click
 
-            If (Me.m_uic IsNot Nothing) Then
+            If (Me.UIContext IsNot Nothing) Then
                 Try
-                    Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+                    Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
                     Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
                     cmd.Invoke(Me.m_strPath)
                 Catch ex As Exception
@@ -251,11 +269,14 @@ Namespace Other
                 Dim strPath As String = ""
                 If (Me.m_pi IsNot Nothing) Then
                     strPath = Me.m_pi.AutoSaveOutputPath
+                ElseIf (Me.m_writer IsNot Nothing) Then
+                    strPath = Me.m_writer.OutputPath
                 End If
+
                 If (String.IsNullOrWhiteSpace(strPath)) Then
-                    strPath = Me.UIContext.Core.DefaultOutputPath(Me.m_autosavetype, Me.m_strOutputMask)
-                End If
-                Me.m_strPath = strPath
+                        strPath = Me.UIContext.Core.DefaultOutputPath(Me.m_autosavetype, Me.m_strOutputMask)
+                    End If
+                    Me.m_strPath = strPath
 
                 Me.m_lblPath.Text = cStringUtils.CompactString(strPath, Me.m_lblPath.ClientSize.Width, Me.Font)
                 Me.m_lblPath.Visible = True
