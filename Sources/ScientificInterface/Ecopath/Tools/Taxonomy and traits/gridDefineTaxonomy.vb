@@ -86,11 +86,6 @@ Public Class gridDefineTaxonomy
 
 #Region " Private vars "
 
-        ' JS cannot hang on to a cTaxon because the core may reload taxa amidst applying.
-        ' Private m_taxon As cTaxon = Nothing
-        Private m_iDBIDTaxon As Integer = cCore.NULL_VALUE
-        Private m_iTaxon As Integer = -1
-
         ''' <summary>The status of a Layer in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
 
@@ -129,8 +124,8 @@ Public Class gridDefineTaxonomy
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal taxon As cTaxon)
             MyBase.New(taxon.Source)
-            Me.m_iDBIDTaxon = CInt(taxon.GetVariable(eVarNameFlags.DBID))
-            Me.m_iTaxon = taxon.Index
+            Me.TaxonID = CInt(taxon.GetVariable(eVarNameFlags.DBID))
+            Me.TaxonIndex = taxon.Index
             Me.iGroup = taxon.iGroup
             Me.iStanza = taxon.iStanza
             Me.Proportion = taxon.Proportion
@@ -167,6 +162,131 @@ Public Class gridDefineTaxonomy
             MyBase.New(taxon.Source)
             Me.Update(taxon)
         End Sub
+
+        ''' <summary>
+        ''' Via serialization
+        ''' </summary>
+        Protected Sub New()
+            MyBase.New("")
+        End Sub
+
+#Region " Serialization "
+
+        Protected Property Group As String = ""
+        Protected Property Stanza As String = ""
+
+        Protected Property Name As String
+            Get
+                Return Me.Genus & " " & Me.Species
+            End Get
+            Set(value As String)
+                If value.Contains(" ") Then
+                    Dim bits As String() = value.Split(" "c)
+                    Me.Genus = bits(0)
+                    Me.Species = bits(1)
+                Else
+                    Me.Genus = value
+                    Me.Species = ""
+                End If
+            End Set
+        End Property
+
+        Private Shared separators As Char() = {"-"c, "/"c}
+
+        Protected Property Ecology As String
+            Get
+                Return Me.EcologyType.ToString()
+            End Get
+            Set(value As String)
+                Try
+                    Dim e As eEcologyTypes = eEcologyTypes.NotSet
+                    If Not String.IsNullOrWhiteSpace(value) Then
+                        For Each c As Char In separators
+                            If value.Contains(c) Then
+                                value = value.Split(c)(0).Trim
+                                ' Simplifying value
+                            End If
+                        Next
+                        Select Case value.ToLower
+                            Case "reef" : e = eEcologyTypes.ReefAssociated
+                            Case Else
+                                [Enum].TryParse(value.Replace(" ", ""), e)
+                        End Select
+                    End If
+                    Me.EcologyType = e
+                Catch ex As Exception
+                    Debug.Assert(False, value & " is not a recognized ecology type")
+                    Me.EcologyType = eEcologyTypes.NotSet
+                End Try
+            End Set
+        End Property
+
+        Protected Property Organism As String
+            Get
+                Return Me.OrganismType.ToString()
+            End Get
+            Set(value As String)
+                Dim s As eOrganismTypes = eOrganismTypes.NotSet
+                If Not String.IsNullOrWhiteSpace(value) Then
+                    If Not [Enum].TryParse(value.Replace(" ", ""), s) Then
+                        ' ToDo: find partial matches
+                    End If
+                End If
+                Me.OrganismType = CType(s, eOrganismTypes)
+            End Set
+        End Property
+
+        Protected Property Occurrence As String
+            Get
+                Return Me.OccurrenceStatus.ToString()
+            End Get
+            Set(value As String)
+                Dim s As eOccurrenceStatusTypes = eOccurrenceStatusTypes.NotSet
+                If Not String.IsNullOrWhiteSpace(value) Then
+                    [Enum].TryParse(value.Replace(" ", ""), s)
+                End If
+                Me.OccurrenceStatus = s
+            End Set
+        End Property
+
+        Protected Property Exploitation As String
+            Get
+                Return Me.ExploitationStatus.ToString()
+            End Get
+            Set(value As String)
+                Dim e As eExploitationTypes = eExploitationTypes.NotSet
+                If (Not String.IsNullOrWhiteSpace(value)) Then
+                    [Enum].TryParse(value.Replace(" ", ""), e)
+                End If
+                Me.ExploitationStatus = e
+            End Set
+        End Property
+
+        Protected Property IUCN As String
+            Get
+                Return Me.IUCNConservationStatus.ToString
+            End Get
+            Set(value As String)
+                Dim s As eIUCNConservationStatusTypes = eIUCNConservationStatusTypes.NotSet
+                Dim i As Integer = s
+                If Integer.TryParse(value, i) Then
+                    s = CType(i, eIUCNConservationStatusTypes)
+                Else
+                    Select Case value.ToUpper
+                        Case "NE" : s = eIUCNConservationStatusTypes.NotEvaluated
+                        Case "DD" : s = eIUCNConservationStatusTypes.DataDeficient
+                        Case "LC" : s = eIUCNConservationStatusTypes.LeastConcern
+                        Case "NT" : s = eIUCNConservationStatusTypes.NearThreatened
+                        Case "VU" : s = eIUCNConservationStatusTypes.Vulnerable
+                        Case "EN" : s = eIUCNConservationStatusTypes.Endangered
+                        Case "CR" : s = eIUCNConservationStatusTypes.CriticallyEndangered
+                    End Select
+                End If
+                Me.IUCNConservationStatus = s
+            End Set
+        End Property
+
+#End Region ' Serialization
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -214,17 +334,9 @@ Public Class gridDefineTaxonomy
         ''' with this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property TaxonID() As Integer
-            Get
-                Return Me.m_iDBIDTaxon
-            End Get
-        End Property
+        Public ReadOnly Property TaxonID() As Integer = cCore.NULL_VALUE
 
-        ReadOnly Property TaxonIndex() As Integer
-            Get
-                Return Me.m_iTaxon
-            End Get
-        End Property
+        Public ReadOnly Property TaxonIndex() As Integer = -1
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -235,7 +347,7 @@ Public Class gridDefineTaxonomy
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function IsNew() As Boolean
-            Return (Me.m_iDBIDTaxon = cCore.NULL_VALUE)
+            Return (Me.TaxonID = cCore.NULL_VALUE)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -249,7 +361,7 @@ Public Class gridDefineTaxonomy
             Get
                 If (Me.IsNew()) Then Return False
 
-                Debug.Assert(CInt(taxon.GetVariable(eVarNameFlags.DBID)) = Me.m_iDBIDTaxon)
+                Debug.Assert(CInt(taxon.GetVariable(eVarNameFlags.DBID)) = Me.TaxonID)
 
                 If (Math.Round(taxon.Proportion, 5) <> Math.Round(Me.Proportion, 5)) Then Return True
                 If (taxon.iGroup <> Me.iGroup) Then Return True
@@ -774,6 +886,15 @@ Public Class gridDefineTaxonomy
 #End Region ' Internals
 
 #Region " Public bits "
+
+#Region " Import "
+
+    Public Sub Import(file As String)
+        Dim taxa As New List(Of cTaxonInfo)
+        ' ToDo
+    End Sub
+
+#End Region ' Import
 
 #Region " Data "
 

@@ -236,7 +236,7 @@ Public Class dlgDefineTaxonomy
             Me.m_gridGroups.AddTaxon()
             Me.m_gridResults.OnUsedTaxaChanged()
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::m_btnAdd_Click")
+            cLog.Write(ex, "dlgDefineTaxa::OnDefineNew")
         End Try
         Me.UpdateControls()
     End Sub
@@ -247,7 +247,7 @@ Public Class dlgDefineTaxonomy
             Me.m_gridGroups.DeleteRows(True)
             Me.m_gridResults.OnUsedTaxaChanged()
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::m_btnRemove_Click")
+            cLog.Write(ex, "dlgDefineTaxa::OnRemoveSelected")
         End Try
         Me.UpdateControls()
     End Sub
@@ -257,7 +257,7 @@ Public Class dlgDefineTaxonomy
         Try
             Me.m_gridGroups.DeleteRows(False)
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::m_btnKeep_Click")
+            cLog.Write(ex, "dlgDefineTaxa::OnKeepSelected")
         End Try
         Me.UpdateControls()
     End Sub
@@ -267,13 +267,22 @@ Public Class dlgDefineTaxonomy
         Try
             Me.m_gridGroups.NormalizeProportions()
         Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::m_btnProps_Click")
+            cLog.Write(ex, "dlgDefineTaxa::OnNormalizeProportions")
         End Try
     End Sub
 
     Private Sub OnImportTaxaCSV(sender As Object, e As EventArgs) _
         Handles m_btnImport.Click
+        Try
+            ' ToDo: globalize this
+            Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Select taxa file", "", SharedResources.FILEFILTER_CSV)
+            If (ofd.ShowDialog() = DialogResult.OK) Then
+                Me.m_gridGroups.Import(ofd.FileName)
+            End If
+        Catch ex As Exception
+            cLog.Write(ex, "dlgDefineTaxa::OnImportTaxaCSV")
 
+        End Try
     End Sub
 
     Private Sub OnExportTaxaCSV(sender As Object, e As EventArgs) _
