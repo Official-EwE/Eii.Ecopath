@@ -22,6 +22,7 @@
 Option Strict On
 Imports System
 Imports System.Collections.Generic
+Imports System.Reflection
 Imports System.Runtime.CompilerServices
 Imports Microsoft.VisualBasic
 
@@ -29,6 +30,24 @@ Imports Microsoft.VisualBasic
 
 <HideModuleNameAttribute()>
 Public Module Extensions
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Extension method; extract a value from an object by property name.
+    ''' </summary>
+    ''' <param name="o"></param>
+    ''' <param name="strField"></param>
+    ''' -----------------------------------------------------------------------
+    <Extension()>
+    Public Function Value(o As Object, strField As String) As String
+        Dim t As Type = o.GetType()
+        For Each pi As PropertyInfo In t.GetProperties(BindingFlags.Public Or BindingFlags.Instance)
+            If (String.Compare(pi.Name, strField, True) = 0) Then
+                Return CStr(pi.GetValue(o, Nothing))
+            End If
+        Next
+        Return ""
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
