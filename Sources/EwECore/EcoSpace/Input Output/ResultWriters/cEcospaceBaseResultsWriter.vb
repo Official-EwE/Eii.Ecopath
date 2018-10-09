@@ -149,7 +149,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' </summary>
     ''' <remarks>Initialized by <see cref="CreateOutputDir"/>.</remarks>
     ''' -----------------------------------------------------------------------
-    Protected Overridable ReadOnly Property OutputDirectory() As String
+    Public Overridable ReadOnly Property OutputDirectory() As String Implements IEcospaceResultsWriter.OutputPath
         Get
             Return Me.m_OutputPath
         End Get

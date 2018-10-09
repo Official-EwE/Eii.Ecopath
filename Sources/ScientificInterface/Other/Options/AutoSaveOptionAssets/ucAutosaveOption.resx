@@ -129,7 +129,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_cbOption.Size" type="System.Drawing.Size, System.Drawing">
-    <value>197, 17</value>
+    <value>250, 17</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_cbOption.TabIndex" type="System.Int32, mscorlib">
@@ -154,13 +154,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_lblPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>197, -1</value>
+    <value>250, -1</value>
   </data>
   <data name="m_lblPath.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 23</value>
+    <value>119, 23</value>
   </data>
   <data name="m_lblPath.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -188,17 +188,17 @@
   </data>
   <data name="m_btnVisitFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAIASURBVDhPxZPdS5NRAIffiy666qq/IBAvgt1YF3WbUFEE
-        BWlR9CG0PimEQjZzbTrmvqfWyA1rn226Wa2Coi6EwpA+NNRhYmrWRUSFaYGR4p7OOcOlK9plBx44nPP+
-        nvN7z8urAdq/0EqN/y/ojvuqBRRzv8vuke1KDhkcGwrzYyat+DmdYOFziFTEQyZubSwpSEe9zE0nV4QX
-        P7azkK0led1BLGAjdKWRYIuJq24jl+11otjvi9c6wy7mPoULJ+dEmDEjZI//lT8ENzrsfP8QVLVl+GG3
-        S/Eg5eRews7tmI1UqIlE0ELEf4lrrRcJeI34XQbVRosFbXx714asPdlrJpP0sjhpgSnrSt6KtYl6GD0P
-        I6cZ7KriXM2uqBbyNzE77oD3bu50euh75M4/tOwV9C+hQADeRHWcObR1VgjWax2tZr6+tjD1tIFMwk1u
-        wgzDJ/KCwRro36fCieczCr0QWE6Wsb9ybYv6zO3eBr4MGbgZdzHwRDQZrRWCYzBwkNyz3cw/3q5CASGR
-        yPmBHevYUL6mXAn8TiPDPSZuxZ0wboJXh+HFXuZ7dxYCskFBIOYVQlIhF6WgrbmOdMRB9u4p+n1agT73
-        Knrsq9WJxQ2Wwkrgs17AZ9bTbDhC/dlqebMcrapkz7ZNbNmsY6OuTJyWl0iWh5Wg1N+4tC+DxWG59wuN
-        hHoCb1zptgAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EQAACxEBf2RfkQAAAftJREFUOE+NkN1L01Ech38XXXTVVX9BIF4Eu7Eu6jahoggKUqPoRcheKYRCNnNt
+        Oubep9bIDWuvbbpZrYKiLoTCkCwNdZiYmnURUWFaYKS4p/M7szXXcn3hgXMO5/nwOUcBVqXoFJJyKTqF
+        pFyKTnfEXSkgnwddFuf/BjA+HODHbELycybK4mc/8aCTZMTUuHzt35MIuZifia2Qlz62s5iqJXbDSthr
+        xn+1EV+LnmsOHVcsdaJYzhM7A3bmPwWyclrIjOsgdaIgfwXc7LDw/YMvKz/qtksexm3cj1q4EzYT9zcR
+        9RkJei5zvfUSXpcOj10rw5Swz8y3d22y9lSvgWTMxdKUEaZNK3krzibrYewCjJ5hqKuC89V7Qorf08Tc
+        hBXeO7jb6aTvsSNzKad2zUv+4IU3IQ1nD2+fEwEblY5WA19fG5l+1kAy6iA9aYCRkxl5qBoGqqQY7Z+V
+        qAHGUyUcKF/fIv+g3dXAl2EttyJ2Bp+KJmO1IuA4DB4i/XwvC092SskrQlTU9cFdG9hUuq5UBnhsOkZ6
+        9NyO2GBCD6+OwIv9LPTuzgpqg2yAoEyclakLNaCtuY5E0Erq3mkG3EqWPscaeixrMwF5DX7LMsBtuojb
+        UEOz9ij15yrVn+VYRTn7dmxh21YNmzUlQlhukifLgNzNaqhivgwovwCNhHoCpiVMEgAAAABJRU5ErkJg
+        gg==
 </value>
   </data>
   <data name="m_btnVisitFolder.Location" type="System.Drawing.Point, System.Drawing">
