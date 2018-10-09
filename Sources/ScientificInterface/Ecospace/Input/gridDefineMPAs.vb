@@ -417,7 +417,7 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Public Sub ToggleDeleteSelected()
 
-            For iRow As Integer = 1 To Me.RowsCount
+            For Each iRow As Integer In Me.SelectedRows
 
                 Dim iMPA As Integer = iRow - iFIRSTMPAROW
                 Dim mi As cMPAInfo = Nothing
@@ -749,7 +749,7 @@ Namespace Ecospace
 
             If (iDeleteCount > 0) Then
 
-                strPrompt = cStringUtils.Localize(My.Resources.ECOSPACE_EDITMPA_CONFIRMDELETE_PROMPT, iDeleteCount)
+                strPrompt = cStringUtils.Localize(My.Resources.ECOSPACE_EDITMPA_CONFIRMDELETENUM_PROMPT, iDeleteCount)
                 Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)
 
