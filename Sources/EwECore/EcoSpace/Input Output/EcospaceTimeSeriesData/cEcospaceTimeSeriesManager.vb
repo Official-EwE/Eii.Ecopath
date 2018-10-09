@@ -22,7 +22,7 @@ Option Explicit On
 Imports EwEUtils
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
-
+Imports System.IO
 
 
 Namespace EcospaceTimeSeries
@@ -265,7 +265,7 @@ Namespace EcospaceTimeSeries
         Public Function Load(InputFilename As String, OutputFileName As String, VarName As eVarNameFlags) As Boolean
             Dim bReturn As Boolean = True
 
-            If Not IO.File.Exists(InputFilename) Then
+            If Not File.Exists(InputFilename) Then
                 System.Console.WriteLine(Me.ToString + ".Read() file does not exist!")
                 Return False
             End If
@@ -846,7 +846,7 @@ Namespace EcospaceTimeSeries
         Public Function getDefaultOutputFileName(InputFileName As String) As String
             If (String.IsNullOrWhiteSpace(InputFileName)) Then Return ""
             Dim tempFileName As String = IO.Path.GetFileNameWithoutExtension(InputFileName) + "_Residuals.csv"
-            Return IO.Path.Combine(Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), tempFileName)
+            Return Path.Combine(Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), tempFileName)
         End Function
 
 
