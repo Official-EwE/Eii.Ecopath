@@ -26,9 +26,10 @@
     <HtmlHelp1xCompilerPath>C:\Program Files (x86)\HTML Help Workshop\</HtmlHelp1xCompilerPath>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\..\Sources\EwECore\EwECore.vbproj" platform="x86" />
-<DocumentationSource sourceFile="..\..\Sources\EwEPlugin\EwEPlugin.vbproj" platform="x86" />
-<DocumentationSource sourceFile="..\..\Sources\EwEUtils\EwEUtils.vbproj" platform="x86" />
-<DocumentationSource sourceFile="..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" platform="x86" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\..\Sources\EwEPlugin\EwEPlugin.vbproj" platform="x86" />
+      <DocumentationSource sourceFile="..\..\Sources\EwEUtils\EwEUtils.vbproj" platform="x86" />
+      <DocumentationSource sourceFile="..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" platform="x86" />
+    </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True">EwE API Code Documentation</NamespaceSummaryItem>
       <NamespaceSummaryItem name="EwECore" isDocumented="True">Namespace containing all elements essential to the functioning of the EwE computational engine.</NamespaceSummaryItem>
@@ -69,7 +70,7 @@
     <IncludeFavorites>True</IncludeFavorites>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
-    <FrameworkVersion>.NET Framework 4.6</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <IndentHtml>False</IndentHtml>
