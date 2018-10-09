@@ -7240,7 +7240,7 @@ Description: {1}</value>
     <value>Traits</value>
   </data>
   <data name="ECOSPACE_EDITMPA_CONFIRMDELETE_PROMPT" xml:space="preserve">
-    <value>Are you sure you want to delete MPA '{0}? This action cannot be undone.</value>
+    <value>Are you sure you want to delete MPA '{0}'? This action cannot be undone.</value>
     <comment>{0}=MPA name</comment>
   </data>
   <data name="PROMPT_CACHE_CLEAR" xml:space="preserve">

@@ -1092,7 +1092,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Are you sure you want to delete MPA &apos;{0}? This action cannot be undone..
+        '''  Looks up a localized string similar to Are you sure you want to delete MPA &apos;{0}&apos;? This action cannot be undone..
         '''</summary>
         Public ReadOnly Property ECOSPACE_EDITMPA_CONFIRMDELETE_PROMPT() As String
             Get
@@ -1873,15 +1873,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_ALL_REGULATIONS_APPLY() As String
             Get
                 Return ResourceManager.GetString("HEADER_ALL_REGULATIONS_APPLY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to .
-        '''</summary>
-        Public ReadOnly Property HEADER_CAPACITY_ENTERED() As String
-            Get
-                Return ResourceManager.GetString("HEADER_CAPACITY_ENTERED", resourceCulture)
             End Get
         End Property
         

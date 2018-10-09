@@ -260,11 +260,6 @@
     <Compile Include="HelperClasses\Linear Programming\cLPSolver.vb" />
     <Compile Include="HelperClasses\Threading\cThreadWaitBase.vb" />
     <Compile Include="HelperClasses\Threading\IThreadedProcess.vb" />
-    <Compile Include="CoreIO\cBaseDataReader.vb" />
-    <Compile Include="CoreIO\cBaseDataWriter.vb" />
-    <Compile Include="CoreIO\cDataTableConverter.vb" />
-    <Compile Include="CoreIO\cDataTableEnumerable.vb" />
-    <Compile Include="CoreIO\cDataTableEnumerator.vb" />
     <Compile Include="Monte Carlo\cMonteCarloResultsWriterMultipleFiles.vb" />
     <Compile Include="MPAOptimization\Model\cMPAOptBaseClass.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchFGroup.vb" />
