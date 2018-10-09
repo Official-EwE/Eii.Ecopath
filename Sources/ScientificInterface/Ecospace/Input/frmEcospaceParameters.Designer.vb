@@ -55,6 +55,8 @@ Namespace Ecospace
             Me.m_hdrModel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpModelTop = New System.Windows.Forms.TableLayoutPanel()
             Me.m_gbMigration = New System.Windows.Forms.GroupBox()
+            Me.m_rbEcopathEffort = New System.Windows.Forms.RadioButton()
+            Me.m_rbPredictEffort = New System.Windows.Forms.RadioButton()
             Me.m_gbIMB = New System.Windows.Forms.GroupBox()
             Me.m_cbMovePackets = New System.Windows.Forms.CheckBox()
             Me.m_tbNumPackets = New System.Windows.Forms.TextBox()
@@ -101,8 +103,8 @@ Namespace Ecospace
             Me.m_cbUseEcosimDiscardForcing = New System.Windows.Forms.CheckBox()
             Me.m_cbUseEcosimBiomassForcing = New System.Windows.Forms.CheckBox()
             Me.m_hdrTimeSeries = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_rbEcopathEffort = New System.Windows.Forms.RadioButton()
-            Me.m_rbPredictEffort = New System.Windows.Forms.RadioButton()
+            Me.m_tlpRunTime = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_gbAutoSave = New System.Windows.Forms.GroupBox()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -117,6 +119,8 @@ Namespace Ecospace
             Me.m_plScenario.SuspendLayout()
             Me.m_plModel.SuspendLayout()
             Me.m_plTimeSeries.SuspendLayout()
+            Me.m_tlpRunTime.SuspendLayout()
+            Me.m_gbAutoSave.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_gbModel
@@ -193,6 +197,20 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_gbMigration, "m_gbMigration")
             Me.m_gbMigration.Name = "m_gbMigration"
             Me.m_gbMigration.TabStop = False
+            '
+            'm_rbEcopathEffort
+            '
+            resources.ApplyResources(Me.m_rbEcopathEffort, "m_rbEcopathEffort")
+            Me.m_rbEcopathEffort.Name = "m_rbEcopathEffort"
+            Me.m_rbEcopathEffort.TabStop = True
+            Me.m_rbEcopathEffort.UseVisualStyleBackColor = True
+            '
+            'm_rbPredictEffort
+            '
+            resources.ApplyResources(Me.m_rbPredictEffort, "m_rbPredictEffort")
+            Me.m_rbPredictEffort.Name = "m_rbPredictEffort"
+            Me.m_rbPredictEffort.TabStop = True
+            Me.m_rbPredictEffort.UseVisualStyleBackColor = True
             '
             'm_gbIMB
             '
@@ -288,11 +306,6 @@ Namespace Ecospace
             '
             'm_gbRunTime
             '
-            resources.ApplyResources(Me.m_gbRunTime, "m_gbRunTime")
-            Me.m_gbRunTime.Controls.Add(Me.m_cbAnnualOutput)
-            Me.m_gbRunTime.Controls.Add(Me.m_clbAutosave)
-            Me.m_gbRunTime.Controls.Add(Me.Label2)
-            Me.m_gbRunTime.Controls.Add(Me.m_nudFirstTimeStep)
             Me.m_gbRunTime.Controls.Add(Me.m_lbNumThreads)
             Me.m_gbRunTime.Controls.Add(Me.m_nudNumThreads)
             Me.m_gbRunTime.Controls.Add(Me.m_tbSOR)
@@ -307,6 +320,7 @@ Namespace Ecospace
             Me.m_gbRunTime.Controls.Add(Me.m_lblNumTimstepsPerYear)
             Me.m_gbRunTime.Controls.Add(Me.m_lbTotalTime)
             Me.m_gbRunTime.Controls.Add(Me.m_nudMaxIterations)
+            resources.ApplyResources(Me.m_gbRunTime, "m_gbRunTime")
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
             '
@@ -432,8 +446,8 @@ Namespace Ecospace
             '
             'm_plModel
             '
+            Me.m_plModel.Controls.Add(Me.m_tlpRunTime)
             Me.m_plModel.Controls.Add(Me.m_hdrModel)
-            Me.m_plModel.Controls.Add(Me.m_gbRunTime)
             Me.m_plModel.Controls.Add(Me.m_tlpModelTop)
             resources.ApplyResources(Me.m_plModel, "m_plModel")
             Me.m_plModel.Name = "m_plModel"
@@ -506,19 +520,22 @@ Namespace Ecospace
             Me.m_hdrTimeSeries.IsCollapsed = False
             Me.m_hdrTimeSeries.Name = "m_hdrTimeSeries"
             '
-            'm_rbEcopathEffort
+            'm_tlpRunTime
             '
-            resources.ApplyResources(Me.m_rbEcopathEffort, "m_rbEcopathEffort")
-            Me.m_rbEcopathEffort.Name = "m_rbEcopathEffort"
-            Me.m_rbEcopathEffort.TabStop = True
-            Me.m_rbEcopathEffort.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_tlpRunTime, "m_tlpRunTime")
+            Me.m_tlpRunTime.Controls.Add(Me.m_gbAutoSave, 1, 0)
+            Me.m_tlpRunTime.Controls.Add(Me.m_gbRunTime, 0, 0)
+            Me.m_tlpRunTime.Name = "m_tlpRunTime"
             '
-            'm_rbPredictEffort
+            'm_gbAutoSave
             '
-            resources.ApplyResources(Me.m_rbPredictEffort, "m_rbPredictEffort")
-            Me.m_rbPredictEffort.Name = "m_rbPredictEffort"
-            Me.m_rbPredictEffort.TabStop = True
-            Me.m_rbPredictEffort.UseVisualStyleBackColor = True
+            Me.m_gbAutoSave.Controls.Add(Me.m_nudFirstTimeStep)
+            Me.m_gbAutoSave.Controls.Add(Me.m_cbAnnualOutput)
+            Me.m_gbAutoSave.Controls.Add(Me.m_clbAutosave)
+            Me.m_gbAutoSave.Controls.Add(Me.Label2)
+            resources.ApplyResources(Me.m_gbAutoSave, "m_gbAutoSave")
+            Me.m_gbAutoSave.Name = "m_gbAutoSave"
+            Me.m_gbAutoSave.TabStop = False
             '
             'frmEcospaceParameters
             '
@@ -547,6 +564,9 @@ Namespace Ecospace
             Me.m_plModel.ResumeLayout(False)
             Me.m_plTimeSeries.ResumeLayout(False)
             Me.m_plTimeSeries.PerformLayout()
+            Me.m_tlpRunTime.ResumeLayout(False)
+            Me.m_gbAutoSave.ResumeLayout(False)
+            Me.m_gbAutoSave.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -607,6 +627,8 @@ Namespace Ecospace
         Private WithEvents m_cbUseEcosimDiscardForcing As CheckBox
         Private WithEvents m_rbEcopathEffort As RadioButton
         Private WithEvents m_rbPredictEffort As RadioButton
+        Private WithEvents m_tlpRunTime As TableLayoutPanel
+        Private WithEvents m_gbAutoSave As GroupBox
     End Class
 
 End Namespace
