@@ -1048,6 +1048,46 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Converts an incoming string for display in tooltips, adding line breaks
+        ''' to avoid too long lines.
+        ''' </summary>
+        ''' <param name="strIn">The string to convert.</param>
+        ''' <param name="iMaxChars">The maximum numbers of characters for a single line.</param>
+        ''' <returns>A string formatted for display in a tool tip.</returns>
+        ''' <remarks>
+        ''' https://stackoverflow.com/questions/2512781/winforms-big-paragraph-tooltip
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToTooltip(ByVal strIn As String, Optional iMaxChars As Integer = 80) As String
+
+            If strIn.Length < iMaxChars Then Return strIn
+
+            Dim sb As StringBuilder = New StringBuilder()
+            Dim iLineLen As Integer = iMaxChars ' Math.Min(CInt(Math.Sqrt(CDbl(strIn.Length))) * 2, iMaxChars)
+            Dim iPos As Integer = 0
+
+            For iChar As Integer = 0 To strIn.Length - 1
+
+                If iPos >= iLineLen And Char.IsWhiteSpace(strIn(iChar)) Then
+                    sb.Append(Environment.NewLine)
+                    iPos = 0
+                End If
+
+                If iPos = 0 Then
+                    While iChar < strIn.Length And Char.IsWhiteSpace(strIn(iChar))
+                        iChar += 1
+                    End While
+                End If
+
+                If iChar < strIn.Length Then sb.Append(strIn(iChar))
+                iPos += 1
+            Next
+
+            Return sb.ToString()
+        End Function
+
         ''' <summary>Default string split delimiters, in order of decreasing relevance.</summary>
         Public Shared c_DELIMITERS As Char() = New Char() {Convert.ToChar(Keys.Tab), ";"c, Convert.ToChar(Keys.Space), ","c}
 
