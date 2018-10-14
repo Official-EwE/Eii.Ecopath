@@ -25,3 +25,17 @@ V Ecospace dispersal grid: EatEffBad can be deleted from the UI?
   
 V Import Hake HSPEN Depth does not set depth limits correctly (40-1000m imports to limits 0-1m)
 V Copy layer style does not work between env driver layers
+V Navigator > Ecospace: move habitat foraging usage nav item up
+  Sort out confusing terminology in Space: fn responses, env responses, habitat foraging responses
+  Rewrite map? Double-buffering now can create out of memory errors. Perhaps simple fix will do? If not, manage zooming in code (not in WinForms)
+V Add "Auto save settings" group box in Ecospace Parameters
+  Ecowriter: remark column size to width, not size to content
+  
+? Bring Ecosim Nutrient loading + Production forcing per PP group to Ecospace: 
+     - Add Nutrient loading layer
+	 - Add RelPP layer per PP group
+? Allow remarks on forcing & mediation functions
+? Allow plug-in points on toolstrips (by identifying the class name of the grid / form that has a main toolbar, like quick editor)
+? Hyperbolic function parameters are still defaults, is this correct?
+
+  Add cStringUtils.ToParagraph, adding line breaks after a preferred no. of characters, and use this in tooltips
