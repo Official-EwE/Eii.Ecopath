@@ -129,6 +129,10 @@ Friend Class cRemarksGrid
 
         Me.Columns(eColumnTypes.SourceIndex).Width = 20
         Me.Columns(eColumnTypes.SourceIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.Columns(eColumnTypes.Source).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.Columns(eColumnTypes.Parameter).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.Columns(eColumnTypes.SourceSec).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+        Me.Columns(eColumnTypes.Remark).AutoSizeMode = SourceGrid2.AutoSizeMode.None
 
         Me.AutoStretchColumnsToFitWidth = True
         Me.StretchColumnsToFitWidth()

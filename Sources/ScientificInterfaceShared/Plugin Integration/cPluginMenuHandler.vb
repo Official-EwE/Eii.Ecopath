@@ -21,6 +21,7 @@
 
 Option Strict On
 Imports EwEPlugin
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
@@ -49,7 +50,7 @@ Namespace Integration
         Private Class MenuItemPluginComparer
             Implements IComparer(Of IMenuItemPlugin)
 
-            Public Function Compare(ByVal x As IMenuItemPlugin, _
+            Public Function Compare(ByVal x As IMenuItemPlugin,
                                     ByVal y As IMenuItemPlugin) As Integer _
                                     Implements IComparer(Of IMenuItemPlugin).Compare
 
@@ -79,8 +80,8 @@ Namespace Integration
         ''' <param name="pm"><see cref="cPluginManager">Plugin manager</see>
         ''' that holds the plugins to place in the main menu.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal menu As MenuStrip, _
-                       ByVal pm As cPluginManager, _
+        Public Sub New(ByVal menu As MenuStrip,
+                       ByVal pm As cPluginManager,
                        ByVal cmdh As cCommandHandler)
 
             MyBase.New(pm, cmdh)
@@ -211,7 +212,7 @@ Namespace Integration
                         ' Set name
                         tsi.Name = ip.Name
                         ' Set tooltip text
-                        tsi.ToolTipText = ip.ControlTooltipText
+                        tsi.ToolTipText = cStringUtils.ToTooltip(ip.ControlTooltipText)
                         ' Add tag
                         tsi.Tag = ip
 
@@ -221,21 +222,21 @@ Namespace Integration
 
                         Me.m_lItems.Add(tsi)
 
-                            ' try to insert menu item into strip
-                            Dim bFoundGroup As Boolean = False
-                            For iItem = 0 To tsic.Count - 1
-                                If (tsi.Name.Contains(tsic(iItem).Name)) Then
-                                    bFoundGroup = True
-                                ElseIf (bFoundGroup) Then
-                                    tsic.Insert(iItem, tsi)
-                                    Return ' Done
-                                End If
-                            Next
-                            ' Add new item to menu item strip
-                            tsic.Add(tsi)
-                        Else
-                            ' Remove menu item
-                            tsic.RemoveByKey(ip.Name)
+                        ' try to insert menu item into strip
+                        Dim bFoundGroup As Boolean = False
+                        For iItem = 0 To tsic.Count - 1
+                            If (tsi.Name.Contains(tsic(iItem).Name)) Then
+                                bFoundGroup = True
+                            ElseIf (bFoundGroup) Then
+                                tsic.Insert(iItem, tsi)
+                                Return ' Done
+                            End If
+                        Next
+                        ' Add new item to menu item strip
+                        tsic.Add(tsi)
+                    Else
+                        ' Remove menu item
+                        tsic.RemoveByKey(ip.Name)
                         tsi = DirectCast(tsic.Find(ip.Name, True)(0), ToolStripMenuItem)
                         Me.m_lItems.Remove(tsi)
                     End If
