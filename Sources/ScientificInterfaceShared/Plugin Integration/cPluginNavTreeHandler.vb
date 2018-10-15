@@ -21,6 +21,7 @@
 
 Option Strict On
 Imports EwEPlugin
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
@@ -50,7 +51,7 @@ Namespace Integration
         Private Class NavTreePluginComparer
             Implements IComparer(Of INavigationTreeItemPlugin)
 
-            Public Function Compare(ByVal x As INavigationTreeItemPlugin, _
+            Public Function Compare(ByVal x As INavigationTreeItemPlugin,
                                     ByVal y As INavigationTreeItemPlugin) As Integer _
                                     Implements IComparer(Of INavigationTreeItemPlugin).Compare
 
@@ -78,10 +79,10 @@ Namespace Integration
         ''' <param name="pm"><see cref="cPluginManager">Plugin manager</see>
         ''' that holds the plugins to place in the control.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal tv As TreeView, _
-                       ByVal pm As cPluginManager, _
+        Public Sub New(ByVal tv As TreeView,
+                       ByVal pm As cPluginManager,
                        ByVal cmdh As cCommandHandler)
-            MyBase.new(pm, cmdh)
+            MyBase.New(pm, cmdh)
             ' Remember tree view
             Me.m_tv = tv
         End Sub
@@ -186,7 +187,7 @@ Namespace Integration
                         ' Set name
                         tn.Name = ipNavTree.Name
                         ' Set tooltip text
-                        tn.ToolTipText = ipNavTree.ControlTooltipText
+                        tn.ToolTipText = cStringUtils.ToTooltip(ipNavTree.ControlTooltipText)
                         ' Attach plugin info to node tag
                         tn.Tag = ipNavTree
 
