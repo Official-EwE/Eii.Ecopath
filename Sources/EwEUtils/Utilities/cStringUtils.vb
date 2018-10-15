@@ -1062,8 +1062,11 @@ Namespace Utilities
         ''' -------------------------------------------------------------------
         Public Shared Function ToTooltip(ByVal strIn As String, Optional iMaxChars As Integer = 80) As String
 
-            If (String.IsNullOrWhiteSpace(strIn)) Then Return String.Empty;
+            If (String.IsNullOrWhiteSpace(strIn)) Then Return String.Empty
             If (strIn.Length < iMaxChars) Then Return strIn
+
+            ' Leave preformatted strings alone
+            If (strIn.Contains(Environment.NewLine)) Then Return strIn
 
             Dim sb As StringBuilder = New StringBuilder()
             Dim iLineLen As Integer = iMaxChars ' CInt(Math.Sqrt(CDbl(strIn.Length))) * 2
