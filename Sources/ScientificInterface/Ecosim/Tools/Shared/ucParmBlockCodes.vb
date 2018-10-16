@@ -98,8 +98,8 @@ Namespace Ecosim
 
             Set(ByVal value As Integer)
 
-                ' Truncate value
-                value = Math.Max(0, Math.Min(CInt(Me.m_nudNumBlockCodes.Maximum), value))
+                '' Truncate value
+                'value = Math.Max(0, Math.Min(CInt(Me.m_nudNumBlockCodes.Maximum), value))
 
                 ' Optimization
                 If (value = Me.m_iNumBlocks) Then Return

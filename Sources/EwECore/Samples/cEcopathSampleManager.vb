@@ -51,6 +51,7 @@ Namespace Samples
 
         ' -- Batch run ariables --
         Private m_iRunLength As Integer
+        Private m_iRunStart As Integer
         Private m_bRandomize As Boolean = False
         Private m_bStopRun As Boolean
 
@@ -579,11 +580,18 @@ Namespace Samples
 
 #Region " Running perturbations "
 
-        Public Sub Run(ByVal iNumSamples As Integer, bRandomize As Boolean)
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="iNumSamples"></param>
+        ''' <param name="iStartAt">One-based sample index to start at</param>
+        ''' <param name="bRandomize"></param>
+        Public Sub Run(ByVal iNumSamples As Integer, iStartAt As Integer, bRandomize As Boolean)
 
             If (iNumSamples = 0) Then Return
 
-            Me.m_iRunLength = Math.Min(Me.nSamples, iNumSamples)
+            Me.m_iRunStart = Math.Max(1, iStartAt)
+            Me.m_iRunLength = Math.Min(Me.nSamples - iStartAt, iNumSamples)
             Me.m_bRandomize = bRandomize
             Me.m_bStopRun = False
 
@@ -886,7 +894,7 @@ Namespace Samples
         Private Sub RunBatch()
 
             Dim strPathOld As String = Me.m_core.OutputPath
-            Dim i As Integer = 1
+            Dim i As Integer = 0
             Dim msg As cProgressMessage = Nothing
             Dim bIsBalanced As Boolean = False
 
@@ -920,10 +928,10 @@ Namespace Samples
                         Me.m_bStopRun = True
                     End If
 
-                    While (i <= Me.m_iRunLength) And (Not Me.m_bStopRun)
+                    While (i < Me.m_iRunLength) And (Not Me.m_bStopRun)
 
                         ' Run sample
-                        Dim s As cEcopathSample = samples(i)
+                        Dim s As cEcopathSample = samples(Me.m_iRunStart - 1 + i)
 
                         Me.LogEvent(cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_SAMPLE, s.Index), eMessageImportance.Information)
                         Me.SendProgress(CSng(i / Me.m_iRunLength), cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_SAMPLE, s.Index))

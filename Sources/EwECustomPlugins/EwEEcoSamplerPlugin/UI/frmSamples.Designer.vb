@@ -41,7 +41,6 @@ Partial Class frmSamples
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSamples))
         Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
@@ -56,8 +55,10 @@ Partial Class frmSamples
         Me.m_tsmiImportModel = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiImportCefas = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_plBatchRun = New System.Windows.Forms.Panel()
-        Me.m_cbBatchRandomize = New System.Windows.Forms.CheckBox()
+        Me.m_rbStartAtNo = New System.Windows.Forms.RadioButton()
+        Me.m_rbRandom = New System.Windows.Forms.RadioButton()
         Me.m_btnRun = New System.Windows.Forms.Button()
+        Me.m_nudStartAt = New System.Windows.Forms.NumericUpDown()
         Me.m_nudNumSamples = New System.Windows.Forms.NumericUpDown()
         Me.m_lblNumSamples = New System.Windows.Forms.Label()
         Me.m_hdrRun = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -65,6 +66,7 @@ Partial Class frmSamples
         Me.m_tlpMain.SuspendLayout()
         Me.m_tsMain.SuspendLayout()
         Me.m_plBatchRun.SuspendLayout()
+        CType(Me.m_nudStartAt, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudNumSamples, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -167,25 +169,42 @@ Partial Class frmSamples
         '
         'm_plBatchRun
         '
-        Me.m_plBatchRun.Controls.Add(Me.m_cbBatchRandomize)
+        Me.m_plBatchRun.Controls.Add(Me.m_rbStartAtNo)
+        Me.m_plBatchRun.Controls.Add(Me.m_rbRandom)
         Me.m_plBatchRun.Controls.Add(Me.m_btnRun)
+        Me.m_plBatchRun.Controls.Add(Me.m_nudStartAt)
         Me.m_plBatchRun.Controls.Add(Me.m_nudNumSamples)
         Me.m_plBatchRun.Controls.Add(Me.m_lblNumSamples)
         Me.m_plBatchRun.Controls.Add(Me.m_hdrRun)
         resources.ApplyResources(Me.m_plBatchRun, "m_plBatchRun")
         Me.m_plBatchRun.Name = "m_plBatchRun"
         '
-        'm_cbBatchRandomize
+        'm_rbStartAtNo
         '
-        resources.ApplyResources(Me.m_cbBatchRandomize, "m_cbBatchRandomize")
-        Me.m_cbBatchRandomize.Name = "m_cbBatchRandomize"
-        Me.m_cbBatchRandomize.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbStartAtNo, "m_rbStartAtNo")
+        Me.m_rbStartAtNo.Name = "m_rbStartAtNo"
+        Me.m_rbStartAtNo.TabStop = True
+        Me.m_rbStartAtNo.UseVisualStyleBackColor = True
+        '
+        'm_rbRandom
+        '
+        resources.ApplyResources(Me.m_rbRandom, "m_rbRandom")
+        Me.m_rbRandom.Name = "m_rbRandom"
+        Me.m_rbRandom.TabStop = True
+        Me.m_rbRandom.UseVisualStyleBackColor = True
         '
         'm_btnRun
         '
         resources.ApplyResources(Me.m_btnRun, "m_btnRun")
         Me.m_btnRun.Name = "m_btnRun"
         Me.m_btnRun.UseVisualStyleBackColor = True
+        '
+        'm_nudStartAt
+        '
+        resources.ApplyResources(Me.m_nudStartAt, "m_nudStartAt")
+        Me.m_nudStartAt.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+        Me.m_nudStartAt.Name = "m_nudStartAt"
+        Me.m_nudStartAt.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'm_nudNumSamples
         '
@@ -221,6 +240,7 @@ Partial Class frmSamples
         Me.m_tsMain.PerformLayout()
         Me.m_plBatchRun.ResumeLayout(False)
         Me.m_plBatchRun.PerformLayout()
+        CType(Me.m_nudStartAt, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudNumSamples, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -242,5 +262,7 @@ Partial Class frmSamples
     Private WithEvents m_tsmiImportModel As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiImportCefas As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsddImport As System.Windows.Forms.ToolStripDropDownButton
-    Private WithEvents m_cbBatchRandomize As System.Windows.Forms.CheckBox
+    Private WithEvents m_rbStartAtNo As Windows.Forms.RadioButton
+    Private WithEvents m_rbRandom As Windows.Forms.RadioButton
+    Private WithEvents m_nudStartAt As Windows.Forms.NumericUpDown
 End Class

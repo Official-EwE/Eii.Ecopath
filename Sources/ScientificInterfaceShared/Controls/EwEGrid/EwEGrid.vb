@@ -769,7 +769,23 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         <Browsable(True), Description("States whether columns are fixed in width and height")>
-        Public Property FixedColumnWidths(Optional iWidth As Integer = 80) As Boolean
+        Public Property FixedColumnWidths() As Boolean
+            Get
+                Return Me.FixedColumnWidths(80)
+            End Get
+            Set(value As Boolean)
+                Me.FixedColumnWidths(80) = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Flag, states whether columns are fixed in width and height. When True, 
+        ''' the header row is set to a fixed height of 45 (shudder)
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Browsable(False)>
+        Public Property FixedColumnWidths(iWidth As Integer) As Boolean
             Get
                 Return m_bFixedColumnWidths
             End Get

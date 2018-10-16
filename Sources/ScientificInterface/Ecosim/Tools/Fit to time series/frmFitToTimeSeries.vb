@@ -23,9 +23,9 @@ Option Strict On
 
 Imports EwECore
 Imports EwECore.FitToTimeSeries
-Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -76,6 +76,9 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
 
             Try
+
+                Me.m_tsbnLoadBlocks.Image = SharedResources.ImportHS
+                Me.m_tsbnSaveBlocks.Image = SharedResources.ExportHS
 
                 Me.m_F2TSManager = Me.Core.EcosimFitToTimeSeries
 
@@ -677,6 +680,32 @@ Namespace Ecosim
                 Me.m_sketchPad.NumSplinePoints = CInt(Me.m_nudSplinePts.Value)
             End If
             Me.m_nudSplinePts.Maximum = Me.m_nudLastYear.Value
+
+        End Sub
+
+        Private Const BlockFilter As String = "Block layout|*.eweblockxml"
+
+        Private Sub OnLoadBlocks(sender As Object, e As EventArgs) Handles m_tsbnLoadBlocks.Click
+
+            ' ToDo: globalize this
+            Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Select file with block layout", "", BlockFilter)
+
+            If (ofd.ShowDialog() = DialogResult.OK) Then
+                If Me.m_vulnerabilityBlockMatrix.LoadLayout(ofd.FileName) Then
+                    Me.m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
+                    Me.m_F2TSManager.nBlockCodes = Me.m_vulnerabilityBlockMatrix.NumColors
+                    Me.m_vulnerabilityBlockCodeSelector.NumBlocks = Me.m_vulnerabilityBlockMatrix.NumColors ' Me.m_vulnerabilityBlockCodeSelector.NumBlocks
+                End If
+            End If
+
+        End Sub
+
+        Private Sub OnSaveBlocks(sender As Object, e As EventArgs) Handles m_tsbnSaveBlocks.Click
+
+            Dim sfd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog("Select file to save block layout to", "", BlockFilter)
+            If (sfd.ShowDialog() = DialogResult.OK) Then
+                Me.m_vulnerabilityBlockMatrix.SaveLayout(sfd.FileName)
+            End If
 
         End Sub
 
