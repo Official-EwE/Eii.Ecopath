@@ -129,6 +129,9 @@ Public Class frmSamples
         Me.m_btnLoad.Text = If(bIsLoaded, My.Resources.LABEL_UNLOAD, My.Resources.LABEL_LOAD)
         Me.m_btnDelete.Enabled = Not bIsRunning And bHasSelection
 
+        Me.m_nudStartAt.Value = Math.Max(1, Math.Min(Me.m_nudStartAt.Value, man.nSamples))
+        Me.m_nudNumSamples.Maximum = man.nSamples
+
         Me.m_nudNumSamples.Value = Math.Min(Me.m_nudNumSamples.Value, man.nSamples)
         Me.m_nudNumSamples.Maximum = man.nSamples
 
@@ -222,7 +225,7 @@ Public Class frmSamples
     End Sub
 
     Private Sub OnNumSamplesChanged(sender As Object, e As System.EventArgs) _
-        Handles m_nudNumSamples.ValueChanged
+        Handles m_nudNumSamples.ValueChanged, m_nudStartAt.ValueChanged
         Try
             Me.UpdateControls()
         Catch ex As Exception
@@ -239,7 +242,7 @@ Public Class frmSamples
                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO, defaultReply:=eMessageReply.NO)
             Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply = eMessageReply.YES) Then
-                Me.Core.SampleManager.Run(CInt(Me.m_nudNumSamples.Value), Me.m_cbBatchRandomize.Checked)
+                Me.Core.SampleManager.Run(CInt(Me.m_nudNumSamples.Value), CInt(Me.m_nudNumSamples.Value), Me.m_rbRandom.Checked)
             End If
 
         Catch ex As Exception

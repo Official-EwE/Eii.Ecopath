@@ -25,7 +25,9 @@ Imports System.Drawing.Drawing2D
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports System.Xml
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports System.Text
 
 #End Region ' Imports
 
@@ -43,13 +45,8 @@ Namespace Ecosim
         Implements IUIElement
 
         Private m_uic As cUIContext = Nothing
-
-        ''' <summary>Two-dim arr of integer representing vulnerability blocks layout.</summary>
-        Private m_a2iVulBlocks(,) As Integer
         ''' <summary>Block colours to show.</summary>
-        Private m_acolors As Color()
-        ''' <summary>Index of the selected block with the list of block colours.</summary>
-        Private m_iSelectedBlockCodeIndex As Integer = 0
+        Private m_colors As Color()
         ''' <summary>Helper var; remembers the last processed mouse position while drawing.</summary>
         ''' <remarks>When drawing, all grid cells on a line between the previous mouse position
         ''' and the current mouse position are considered.</remarks>
@@ -88,7 +85,7 @@ Namespace Ecosim
         ''' Initialize the control to a given instance of the EwE core.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
+        <Browsable(False)>
         Public Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -113,7 +110,7 @@ Namespace Ecosim
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Sub RefreshContent()
-            ReDim Me.m_a2iVulBlocks(Me.m_uic.Core.nGroups, Me.m_uic.Core.nGroups)
+            ReDim Me.Vulblocks(Me.m_uic.Core.nGroups, Me.m_uic.Core.nGroups)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -125,10 +122,10 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Public Property BlockColors() As Color()
             Get
-                Return Me.m_acolors
+                Return Me.m_colors
             End Get
             Set(ByVal value As Color())
-                Me.m_acolors = value
+                Me.m_colors = value
                 Me.Invalidate()
             End Set
         End Property
@@ -142,14 +139,7 @@ Namespace Ecosim
         ''' drawing with.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property SelectedBlockNum() As Integer
-            Get
-                Return Me.m_iSelectedBlockCodeIndex
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iSelectedBlockCodeIndex = value
-            End Set
-        End Property
+        Public Property SelectedBlockNum() As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -158,11 +148,122 @@ Namespace Ecosim
         ''' the number of groups in the core.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Vulblocks() As Integer(,)
+        Public Property Vulblocks() As Integer(,)
+
+        Public ReadOnly Property NumColors As Integer
             Get
-                Return Me.m_a2iVulBlocks
+                Return Me.m_colors.Length - 1 ' Do not account for black
             End Get
         End Property
+
+        Public Function LoadLayout(file As String) As Boolean
+
+            ' Format: XML, colors and data
+            Dim doc As New XmlDocument()
+            doc.Load(file)
+
+            Dim nGroups As Integer = -1
+            Dim nColors As Integer = -1
+
+            ' Read settings
+            For Each ndSettings As XmlNode In doc.SelectNodes("//settings")
+                For Each xa As XmlAttribute In ndSettings.Attributes
+                    Select Case xa.Name.ToLower()
+                        Case "ngroups" : Integer.TryParse(xa.InnerText, nGroups)
+                        Case "ncolors" : Integer.TryParse(xa.InnerText, nColors)
+                    End Select
+                Next
+                If (nGroups = -1) Or (nColors = -1) Then Return False
+                If (nGroups <> Me.m_uic.Core.nGroups) Then
+                    ' Not compatible with this model: abort
+                    ' ToDo: throw warning
+                    Return False
+                End If
+            Next
+
+            ' Parse colors
+            Dim lColors(nColors - 1) As Color
+            For Each ndColor As XmlNode In doc.SelectNodes("//color")
+                Dim i As Integer = -1
+                Dim rgb As Integer = -1
+                For Each xa As XmlAttribute In ndColor.Attributes
+                    Select Case xa.Name.ToLower()
+                        Case "index" : Integer.TryParse(xa.InnerText, i)
+                        Case "rgb" : rgb = Convert.ToInt32(xa.InnerText, 16)
+                    End Select
+                Next
+                If (i < 1) Or (i > nColors) Or (rgb = -1) Or (rgb > &HFFFFFF) Then Return False
+                lColors(i - 1) = cColorUtils.IntToColor(rgb)
+            Next
+
+            ' Parse data block
+            Dim data(nGroups, nGroups) As Integer
+            For Each ndBlock As XmlNode In doc.SelectNodes("//blocks")
+                Dim lines() As String = ndBlock.InnerText.Split(";"c)
+                If (lines.Count <> nGroups) Then Return False
+                For i As Integer = 1 To nGroups
+                    Dim vals() As String = lines(i - 1).Split(","c)
+                    If (vals.Count <> nGroups) Then Return False
+                    For j As Integer = 1 To nGroups
+                        Dim block As Integer = 0
+                        If Not String.IsNullOrWhiteSpace(vals(j - 1)) Then
+                            data(i, j) = Convert.ToInt16(vals(j - 1))
+                        End If
+                    Next
+                Next
+            Next
+
+            Me.Vulblocks = data
+            Me.BlockColors = lColors.ToArray()
+            Return True
+
+        End Function
+
+        Public Function SaveLayout(file As String) As Boolean
+
+            Dim ndRoot As XmlNode = Nothing
+            Dim doc As XmlDocument = cXMLUtils.NewDoc("vulnerability_blocks", ndRoot)
+            Dim xa As XmlAttribute = Nothing
+            Dim core As cCore = Me.m_uic.Core
+
+            Dim ndSettings As XmlNode = doc.CreateElement("settings")
+            xa = doc.CreateAttribute("nGroups")
+            xa.InnerText = CStr(core.nGroups)
+            ndSettings.Attributes.Append(xa)
+
+            xa = doc.CreateAttribute("nColors")
+            xa.InnerText = CStr(Me.m_colors.Length)
+            ndSettings.Attributes.Append(xa)
+            ndRoot.AppendChild(ndSettings)
+
+            For i As Integer = 1 To Me.m_colors.Length - 1
+                Dim ndColor As XmlNode = doc.CreateElement("color")
+                xa = doc.CreateAttribute("index")
+                xa.InnerText = CStr(i + 1)
+                ndColor.Attributes.Append(xa)
+
+                xa = doc.CreateAttribute("RGB")
+                xa.InnerText = cColorUtils.ColorToInt(Me.m_colors(i)).ToString("X6")
+                ndColor.Attributes.Append(xa)
+                ndSettings.AppendChild(ndColor)
+            Next
+
+            Dim sbBlock As New StringBuilder()
+            For i As Integer = 1 To core.nGroups
+                If (i > 1) Then sbBlock.Append(";")
+                For j As Integer = 1 To core.nGroups
+                    If (j > 1) Then sbBlock.Append(",")
+                    If Me.Vulblocks(i, j) > 0 Then sbBlock.Append(CStr(Me.Vulblocks(i, j)))
+                Next
+            Next
+            Dim ndBlock As XmlNode = doc.CreateElement("blocks")
+            ndBlock.InnerText = sbBlock.ToString
+            ndSettings.AppendChild(ndBlock)
+
+            doc.Save(file)
+            Return True
+
+        End Function
 
 #End Region ' Public interfaces
 
@@ -183,15 +284,16 @@ Namespace Ecosim
 
             If (Me.m_uic Is Nothing) Then Return
 
+            ' Right-click picks up the block under the cursor
             If (e.Button And System.Windows.Forms.MouseButtons.Right) > 0 Then
                 Dim ptClick As Point = Me.PointToPredPrey(e.Location)
                 Dim manager As cMediatedInteractionManager = Me.m_uic.Core.MediatedInteractionManager
 
                 If ptClick.X > 0 And ptClick.Y > 0 Then
                     If manager.isPredPrey(ptClick.X, ptClick.Y) Then
-                        Me.SelectedBlockNum = Me.m_a2iVulBlocks(ptClick.X, ptClick.Y)
+                        Me.SelectedBlockNum = Me.Vulblocks(ptClick.X, ptClick.Y)
                         Try
-                            RaiseEvent OnSelectedBlockChanged(Me, Me.m_iSelectedBlockCodeIndex)
+                            RaiseEvent OnSelectedBlockChanged(Me, Me.SelectedBlockNum)
                         Catch ex As Exception
                             ' NOP
                         End Try
@@ -278,10 +380,10 @@ Namespace Ecosim
                         Else
                             ' Draw content cell
                             If (manager.isPredPrey(i, j)) Then
-                                iBlock = Me.m_a2iVulBlocks(i, j)
-                                If iBlock < Me.m_acolors.Count - 1 Then
+                                iBlock = Me.Vulblocks(i, j)
+                                If iBlock < Me.m_colors.Count - 1 Then
                                     ' Render solid block
-                                    Using tmpBrush As New SolidBrush(Me.m_acolors(iBlock))
+                                    Using tmpBrush As New SolidBrush(Me.m_colors(iBlock))
                                         e.Graphics.FillRectangle(tmpBrush, i * szCell.Width, j * szCell.Height, szCell.Width, szCell.Height)
                                     End Using
                                 Else
@@ -375,7 +477,7 @@ Namespace Ecosim
                 ' For each step:
                 For iStep As Integer = 0 To iNumSteps
                     ' Set pred/prey block
-                    Me.FillBlocks(CInt(Math.Floor(pfPredPrey.X + 0.5)), CInt(Math.Floor(pfPredPrey.Y + 0.5)), Me.m_iSelectedBlockCodeIndex)
+                    Me.FillBlocks(CInt(Math.Floor(pfPredPrey.X + 0.5)), CInt(Math.Floor(pfPredPrey.Y + 0.5)), Me.SelectedBlockNum)
                     ' Next pred/prey
                     pfPredPrey.X += pfIncrement.X
                     pfPredPrey.Y += pfIncrement.Y
@@ -424,24 +526,24 @@ Namespace Ecosim
                         ' #Yes: fill entire grid
                         For iPred = 1 To Me.m_uic.Core.nLivingGroups
                             For iPrey = 1 To Me.m_uic.Core.nGroups
-                                If manager.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
+                                If manager.isPredPrey(iPred, iPrey) Then Me.Vulblocks(iPred, iPrey) = iBlockCode
                             Next iPrey
                         Next iPred
                     Else
                         ' #No: Fill entire prey column
                         For iPred = 1 To Me.m_uic.Core.nLivingGroups
-                            If manager.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
+                            If manager.isPredPrey(iPred, iPrey) Then Me.Vulblocks(iPred, iPrey) = iBlockCode
                         Next iPred
                     End If
                 Else
                     ' #No: Fill entire predator row
                     For iPrey = 1 To Me.m_uic.Core.nGroups
-                        If manager.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
+                        If manager.isPredPrey(iPred, iPrey) Then Me.Vulblocks(iPred, iPrey) = iBlockCode
                     Next iPrey
                 End If
             Else
                 ' #No: fill single cell
-                If manager.isPredPrey(iPred, iPrey) Then Me.m_a2iVulBlocks(iPred, iPrey) = iBlockCode
+                If manager.isPredPrey(iPred, iPrey) Then Me.Vulblocks(iPred, iPrey) = iBlockCode
             End If
 
             ' Redraw at your leasure
