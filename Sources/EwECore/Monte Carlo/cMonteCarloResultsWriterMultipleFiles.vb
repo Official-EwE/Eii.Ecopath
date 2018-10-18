@@ -42,8 +42,6 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
 #Region " Private vars "
 
-    Private m_MC As cEcosimMonteCarlo
-    Private m_core As cCore
     Private m_msgStatus As cMessage = Nothing
     Private m_bSaveError As Boolean = False
     Private m_bCalcExtrasOld As Boolean = False
@@ -52,8 +50,8 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
     Public Sub New(ByVal MonteCarlo As cEcosimMonteCarlo, ByVal theCore As cCore)
 
-        Me.m_MC = MonteCarlo
-        Me.m_core = theCore
+        Me.MC = MonteCarlo
+        Me.Core = theCore
 
     End Sub
 
@@ -67,11 +65,11 @@ Public Class cMonteCarloResultsWriterMultipleFiles
         Me.m_msgStatus = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.MONTECARLO_RESULTS_SAVED_SUCCESS, Me.DataDir),
                                           eMessageType.DataExport, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Information)
         Me.m_msgStatus.Hyperlink = Me.DataDir
-        Me.m_bCalcExtrasOld = Me.m_core.m_EcoSimData.bAlwaysCalcTLc
+        Me.m_bCalcExtrasOld = Me.Core.m_EcoSimData.bAlwaysCalcTLc
 
         If cFileUtils.IsDirectoryAvailable(Me.DataDir, True) Then
             Me.Save(cCore.NULL_VALUE)
-            Me.m_core.m_EcoSimData.bAlwaysCalcTLc = True
+            Me.Core.m_EcoSimData.bAlwaysCalcTLc = True
         Else
             Me.ReportSaveError("Directory unavailable")
         End If
@@ -92,7 +90,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
             If (iTrial <= 0) Then
 
                 For Each par As eMCParams In [Enum].GetValues(GetType(eMCParams))
-                    If (Me.m_MC.IsEnabled(par)) Then
+                    If (Me.MC.IsEnabled(par)) Then
                         Dim sw As StreamWriter = Nothing
                         Try
                             cFileUtils.IsDirectoryAvailable(strPathInput, True)
@@ -111,7 +109,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                 Next
             ElseIf (iTrial < Integer.MaxValue) Then
                 For Each par As eMCParams In [Enum].GetValues(GetType(eMCParams))
-                    If (Me.m_MC.IsEnabled(par)) Then
+                    If (Me.MC.IsEnabled(par)) Then
                         Dim sw As StreamWriter = Nothing
                         Try
                             cFileUtils.IsDirectoryAvailable(strPathInput, True)
@@ -152,12 +150,12 @@ Public Class cMonteCarloResultsWriterMultipleFiles
 
         ' Write save notification message
         If (Me.m_msgStatus IsNot Nothing) Then
-            Me.m_core.Messages.SendMessage(Me.m_msgStatus)
+            Me.Core.Messages.SendMessage(Me.m_msgStatus)
             Me.m_msgStatus = Nothing
         End If
         Me.m_bSaveError = False
 
-        Me.m_core.m_EcoSimData.bAlwaysCalcTLc = Me.m_bCalcExtrasOld
+        Me.Core.m_EcoSimData.bAlwaysCalcTLc = Me.m_bCalcExtrasOld
 
     End Sub
 
@@ -186,27 +184,19 @@ Public Class cMonteCarloResultsWriterMultipleFiles
     End Function
 
     Private Function ScenarioName() As String
-        Return Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
+        Return Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).Name
     End Function
 
     Private ReadOnly Property MC() As cEcosimMonteCarlo
-        Get
-            Return Me.m_MC
-        End Get
-    End Property
 
     Private ReadOnly Property Core() As cCore
-        Get
-            Return Me.m_core
-        End Get
-    End Property
 
     Private Sub WriteHeader(sw As StreamWriter, iTrial As Integer)
         Try
-            If Me.m_core.SaveWithFileHeader Then
-                sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
-                sw.WriteLine(cStringUtils.ToCSVField("Num. groups") & "," & Me.m_core.nGroups)
-                sw.WriteLine(cStringUtils.ToCSVField("Num. trials") & "," & Me.m_MC.Ntrials)
+            If Me.Core.SaveWithFileHeader Then
+                sw.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
+                sw.WriteLine(cStringUtils.ToCSVField("Num. groups") & "," & Me.Core.nGroups)
+                sw.WriteLine(cStringUtils.ToCSVField("Num. trials") & "," & Me.MC.Ntrials)
                 sw.WriteLine(cStringUtils.ToCSVField("Trial") & "," & If(iTrial <= 0, "baseline", CStr(iTrial)))
                 sw.WriteLine(cStringUtils.ToCSVField("SS") & "," & If(iTrial <= 0, cStringUtils.ToCSVField(Me.MC.SSorg), cStringUtils.ToCSVField(Me.MC.SSCurrent)))
             End If
@@ -287,7 +277,7 @@ Public Class cMonteCarloResultsWriterMultipleFiles
                 For iPred As Integer = 1 To Core.nGroups
                     sw.Write("{0}", iPred)
                     For iPrey As Integer = 1 To Me.Core.nGroups
-                        Dim val As Single = Me.m_core.m_EcoPathData.DC(iPred, iPrey)
+                        Dim val As Single = Me.Core.m_EcoPathData.DC(iPred, iPrey)
                         sw.Write(",{0}", If(val > 0, cStringUtils.ToCSVField(val), ""))
                     Next
                     sw.WriteLine()

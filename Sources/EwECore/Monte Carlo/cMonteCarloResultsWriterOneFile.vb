@@ -33,14 +33,12 @@ Imports EwEUtils.Utilities
 Public Class cMonteCarloResultsWriterOneFile
     Implements IMonteCarloResultsWriter
 
-    Private m_MC As cEcosimMonteCarlo
-    Private m_core As cCore
     Private m_msgStatus As cMessage = Nothing
 
     Public Sub New(ByVal MonteCarlo As cEcosimMonteCarlo, ByVal theCore As cCore)
 
-        Me.m_MC = MonteCarlo
-        Me.m_core = theCore
+        Me.MC = MonteCarlo
+        Me.Core = theCore
 
     End Sub
 
@@ -84,7 +82,7 @@ Public Class cMonteCarloResultsWriterOneFile
 
         ' Write save notification message
         If (Me.m_msgStatus IsNot Nothing) Then
-            Me.m_core.Messages.SendMessage(Me.m_msgStatus)
+            Me.Core.Messages.SendMessage(Me.m_msgStatus)
             Me.m_msgStatus = Nothing
         End If
         Me.m_bSaveError = False
@@ -237,20 +235,12 @@ Public Class cMonteCarloResultsWriterOneFile
     End Function
 
     Private Function ScenarioName() As String
-        Return Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
+        Return Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).Name
     End Function
 
     Private ReadOnly Property MC() As cEcosimMonteCarlo
-        Get
-            Return Me.m_MC
-        End Get
-    End Property
 
     Private ReadOnly Property Core() As cCore
-        Get
-            Return Me.m_core
-        End Get
-    End Property
 
     Private Sub WriteHeader()
         Try
@@ -258,11 +248,11 @@ Public Class cMonteCarloResultsWriterOneFile
 
             Dim strm As New StreamWriter(Me.OutputFilename)
 
-            If Me.m_core.SaveWithFileHeader Then
-                strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
+            If Me.Core.SaveWithFileHeader Then
+                strm.WriteLine(Me.Core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
             End If
-            strm.Write(cStringUtils.ToCSVField("Num. groups") & "," & Me.m_core.nGroups)
-            strm.Write(cStringUtils.ToCSVField("Num. trials") & "," & Me.m_MC.Ntrials)
+            strm.Write(cStringUtils.ToCSVField("Num. groups") & "," & Me.Core.nGroups)
+            strm.Write(cStringUtils.ToCSVField("Num. trials") & "," & Me.MC.Ntrials)
             strm.Close()
 
         Catch ex As Exception
