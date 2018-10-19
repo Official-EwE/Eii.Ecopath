@@ -15,9 +15,9 @@
 ' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
 ' Aquaculture Science (Cefas). 
 '
-' EwE copyright 1991- :
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
-'    Ecopath International Initiative, Barcelona, Spain
+' EwE copyright:
+'    1991- Ecopath International Initiative, Barcelona, Spain
+'
 ' Cefas MSE plug-in copyright: 
 '    2013- Cefas, Lowestoft, UK.
 ' ===============================================================================
@@ -56,14 +56,14 @@ Public MustInherit Class cResultsCollector_2DArray
         End Get
     End Property
 
-    Public ReadOnly Property GetValue(ByVal iStrategy As Integer, ByVal iGroup As Integer, ByVal iFleet As Integer, _
+    Public ReadOnly Property GetValue(ByVal iStrategy As Integer, ByVal iGroup As Integer, ByVal iFleet As Integer,
                                       ByVal iTime As Integer) As Object
         Get
             Return m_DataArray(iStrategy, iGroup, iFleet, iTime)
         End Get
     End Property
 
-    Protected WriteOnly Property SetValue(ByVal iStrategy As Integer, ByVal iGroup As Integer, ByVal iFleet As Integer, _
+    Protected WriteOnly Property SetValue(ByVal iStrategy As Integer, ByVal iGroup As Integer, ByVal iFleet As Integer,
                                           ByVal iTime As Integer) As Object
         Set(value As Object)
             m_DataArray(iStrategy, iGroup, iFleet, iTime) = value
