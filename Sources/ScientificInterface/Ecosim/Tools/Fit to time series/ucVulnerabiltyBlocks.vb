@@ -27,7 +27,6 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports System.Xml
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports System.Text
 
 #End Region ' Imports
 
@@ -150,71 +149,50 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Public Property Vulblocks() As Integer(,)
 
-        Public ReadOnly Property NumColors As Integer
-            Get
-                Return Me.m_colors.Length - 1 ' Do not account for black
-            End Get
-        End Property
-
-        Public Function LoadLayout(file As String) As Boolean
+        Public Function LoadLayout(file As String, ByRef iNumBlocks As Integer) As Boolean
 
             ' Format: XML, colors and data
             Dim doc As New XmlDocument()
             doc.Load(file)
 
             Dim nGroups As Integer = -1
-            Dim nColors As Integer = -1
+            iNumBlocks = -1
 
             ' Read settings
-            For Each ndSettings As XmlNode In doc.SelectNodes("//settings")
-                For Each xa As XmlAttribute In ndSettings.Attributes
+            For Each ndBlocks As XmlNode In doc.SelectNodes("//blocks")
+                For Each xa As XmlAttribute In ndBlocks.Attributes
                     Select Case xa.Name.ToLower()
-                        Case "ngroups" : Integer.TryParse(xa.InnerText, nGroups)
-                        Case "ncolors" : Integer.TryParse(xa.InnerText, nColors)
+                        Case "groups" : Integer.TryParse(xa.InnerText, nGroups)
+                        Case "maxblocks" : Integer.TryParse(xa.InnerText, iNumBlocks)
                     End Select
                 Next
-                If (nGroups = -1) Or (nColors = -1) Then Return False
-                If (nGroups <> Me.m_uic.Core.nGroups) Then
-                    ' Not compatible with this model: abort
-                    ' ToDo: throw warning
-                    Return False
-                End If
             Next
 
-            ' Parse colors
-            Dim lColors(nColors - 1) As Color
-            For Each ndColor As XmlNode In doc.SelectNodes("//color")
-                Dim i As Integer = -1
-                Dim rgb As Integer = -1
-                For Each xa As XmlAttribute In ndColor.Attributes
-                    Select Case xa.Name.ToLower()
-                        Case "index" : Integer.TryParse(xa.InnerText, i)
-                        Case "rgb" : rgb = Convert.ToInt32(xa.InnerText, 16)
-                    End Select
-                Next
-                If (i < 1) Or (i > nColors) Or (rgb = -1) Or (rgb > &HFFFFFF) Then Return False
-                lColors(i - 1) = cColorUtils.IntToColor(rgb)
-            Next
+            If (nGroups = -1) Or (iNumBlocks = -1) Then Return False
+            If (nGroups <> Me.m_uic.Core.nGroups) Then
+                ' Not compatible with this model: abort
+                ' ToDo: throw warning
+                Return False
+            End If
 
             ' Parse data block
             Dim data(nGroups, nGroups) As Integer
-            For Each ndBlock As XmlNode In doc.SelectNodes("//blocks")
-                Dim lines() As String = ndBlock.InnerText.Split(";"c)
-                If (lines.Count <> nGroups) Then Return False
-                For i As Integer = 1 To nGroups
-                    Dim vals() As String = lines(i - 1).Split(","c)
-                    If (vals.Count <> nGroups) Then Return False
-                    For j As Integer = 1 To nGroups
-                        Dim block As Integer = 0
-                        If Not String.IsNullOrWhiteSpace(vals(j - 1)) Then
-                            data(i, j) = Convert.ToInt16(vals(j - 1))
-                        End If
-                    Next
+            For Each ndBlock As XmlNode In doc.SelectNodes("//block")
+                Dim iPred As Integer = -1
+                Dim iPrey As Integer = -1
+                Dim iBlock As Integer = -1
+                For Each xa As XmlAttribute In ndBlock.Attributes
+                    Select Case xa.Name.ToLower()
+                        Case "pred" : Integer.TryParse(xa.InnerText, iPred)
+                        Case "prey" : Integer.TryParse(xa.InnerText, iPrey)
+                        Case "block" : Integer.TryParse(xa.InnerText, iBlock)
+                    End Select
                 Next
+                If (iPred < 1 Or iPrey < 1 Or iPred > nGroups Or iPrey > nGroups Or iBlock > iNumBlocks) Then Return False
+                data(iPred, iPrey) = iBlock
             Next
 
             Me.Vulblocks = data
-            Me.BlockColors = lColors.ToArray()
             Return True
 
         End Function
@@ -222,43 +200,43 @@ Namespace Ecosim
         Public Function SaveLayout(file As String) As Boolean
 
             Dim ndRoot As XmlNode = Nothing
-            Dim doc As XmlDocument = cXMLUtils.NewDoc("vulnerability_blocks", ndRoot)
+            Dim doc As XmlDocument = cXMLUtils.NewDoc("EwEFitToTimeseriesBlocks", ndRoot)
             Dim xa As XmlAttribute = Nothing
             Dim core As cCore = Me.m_uic.Core
+            Dim manager As cMediatedInteractionManager = core.MediatedInteractionManager
 
-            Dim ndSettings As XmlNode = doc.CreateElement("settings")
-            xa = doc.CreateAttribute("nGroups")
+            Dim ndBlocks As XmlNode = doc.CreateElement("blocks")
+            xa = doc.CreateAttribute("groups")
             xa.InnerText = CStr(core.nGroups)
-            ndSettings.Attributes.Append(xa)
+            ndBlocks.Attributes.Append(xa)
 
-            xa = doc.CreateAttribute("nColors")
-            xa.InnerText = CStr(Me.m_colors.Length)
-            ndSettings.Attributes.Append(xa)
-            ndRoot.AppendChild(ndSettings)
+            xa = doc.CreateAttribute("maxblocks")
+            xa.InnerText = CStr(Me.m_colors.Length - 2)
+            ndBlocks.Attributes.Append(xa)
 
-            For i As Integer = 1 To Me.m_colors.Length - 1
-                Dim ndColor As XmlNode = doc.CreateElement("color")
-                xa = doc.CreateAttribute("index")
-                xa.InnerText = CStr(i + 1)
-                ndColor.Attributes.Append(xa)
+            ndRoot.AppendChild(ndBlocks)
 
-                xa = doc.CreateAttribute("RGB")
-                xa.InnerText = cColorUtils.ColorToInt(Me.m_colors(i)).ToString("X6")
-                ndColor.Attributes.Append(xa)
-                ndSettings.AppendChild(ndColor)
-            Next
-
-            Dim sbBlock As New StringBuilder()
-            For i As Integer = 1 To core.nGroups
-                If (i > 1) Then sbBlock.Append(";")
+            For i As Integer = 1 To core.nLivingGroups
                 For j As Integer = 1 To core.nGroups
-                    If (j > 1) Then sbBlock.Append(",")
-                    If Me.Vulblocks(i, j) > 0 Then sbBlock.Append(CStr(Me.Vulblocks(i, j)))
+                    If (manager.isPredPrey(i, j) And Me.Vulblocks(i, j) > 0) Then
+                        Dim ndBlock As XmlNode = doc.CreateElement("block")
+
+                        xa = doc.CreateAttribute("pred")
+                        xa.InnerText = CStr(i)
+                        ndBlock.Attributes.Append(xa)
+
+                        xa = doc.CreateAttribute("prey")
+                        xa.InnerText = CStr(j)
+                        ndBlock.Attributes.Append(xa)
+
+                        xa = doc.CreateAttribute("block")
+                        xa.InnerText = CStr(Me.Vulblocks(i, j))
+                        ndBlock.Attributes.Append(xa)
+
+                        ndBlocks.AppendChild(ndBlock)
+                    End If
                 Next
             Next
-            Dim ndBlock As XmlNode = doc.CreateElement("blocks")
-            ndBlock.InnerText = sbBlock.ToString
-            ndSettings.AppendChild(ndBlock)
 
             doc.Save(file)
             Return True
@@ -624,6 +602,13 @@ Namespace Ecosim
         Private Function CellSize() As SizeF
             If (Me.m_uic Is Nothing) Then Return New SizeF(1, 1)
             Return New SizeF(CSng(Me.ClientRectangle.Width / (Me.m_uic.Core.nLivingGroups + 1)), CSng(Me.ClientRectangle.Height / (Me.m_uic.Core.nGroups + 1)))
+        End Function
+
+        Private Function DefaultFileName() As String
+            Dim core As cCore = Me.UIContext.Core
+            Dim model As cEwEModel = core.EwEModel
+            Dim scenario As cEcoSimScenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex)
+            Return cFileUtils.ToValidFileName(model.Name & "_" & scenario.Name & "_fit2ts-vulblocks.xml", False)
         End Function
 
 #End Region ' Internals

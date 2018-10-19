@@ -3072,4 +3072,7 @@
   <data name="FITRESPONSE_NONE" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="FILEFILTER_XML" xml:space="preserve">
+    <value>XML files|*.xml</value>
+  </data>
 </root>

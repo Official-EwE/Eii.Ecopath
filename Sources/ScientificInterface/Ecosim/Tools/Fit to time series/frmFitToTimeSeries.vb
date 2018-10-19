@@ -683,18 +683,17 @@ Namespace Ecosim
 
         End Sub
 
-        Private Const BlockFilter As String = "Block layout|*.eweblockxml"
-
         Private Sub OnLoadBlocks(sender As Object, e As EventArgs) Handles m_tsbnLoadBlocks.Click
 
             ' ToDo: globalize this
-            Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Select file with block layout", "", BlockFilter)
+            Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog("Select file with block layout", "", SharedResources.FILEFILTER_XML)
 
             If (ofd.ShowDialog() = DialogResult.OK) Then
-                If Me.m_vulnerabilityBlockMatrix.LoadLayout(ofd.FileName) Then
+                Dim iNumBlocks As Integer = 0
+                If Me.m_vulnerabilityBlockMatrix.LoadLayout(ofd.FileName, iNumBlocks) Then
+                    Me.m_F2TSManager.nBlockCodes = iNumBlocks
                     Me.m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
-                    Me.m_F2TSManager.nBlockCodes = Me.m_vulnerabilityBlockMatrix.NumColors
-                    Me.m_vulnerabilityBlockCodeSelector.NumBlocks = Me.m_vulnerabilityBlockMatrix.NumColors ' Me.m_vulnerabilityBlockCodeSelector.NumBlocks
+                    Me.m_vulnerabilityBlockCodeSelector.NumBlocks = iNumBlocks
                 End If
             End If
 
@@ -702,7 +701,9 @@ Namespace Ecosim
 
         Private Sub OnSaveBlocks(sender As Object, e As EventArgs) Handles m_tsbnSaveBlocks.Click
 
-            Dim sfd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog("Select file to save block layout to", "", BlockFilter)
+            ' ToDo: globalize this
+            Dim sfd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog("Select file to save block layout to", "", SharedResources.FILEFILTER_XML)
+
             If (sfd.ShowDialog() = DialogResult.OK) Then
                 Me.m_vulnerabilityBlockMatrix.SaveLayout(sfd.FileName)
             End If

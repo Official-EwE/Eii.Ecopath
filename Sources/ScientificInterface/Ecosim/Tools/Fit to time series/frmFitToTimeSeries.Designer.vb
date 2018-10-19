@@ -512,7 +512,7 @@ Namespace Ecosim
             'm_tsVulSearchTools
             '
             Me.m_tsVulSearchTools.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsVulSearchTools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSensOfSS2V, Me.m_tsbSearchGroup, Me.ToolStripButton1, Me.m_tsbnLoadBlocks, Me.m_tsbnSaveBlocks})
+            Me.m_tsVulSearchTools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSensOfSS2V, Me.m_tsbSearchGroup, Me.ToolStripButton1, Me.m_tsbnSaveBlocks, Me.m_tsbnLoadBlocks})
             Me.m_tsVulSearchTools.Location = New System.Drawing.Point(3, 3)
             Me.m_tsVulSearchTools.Name = "m_tsVulSearchTools"
             Me.m_tsVulSearchTools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
