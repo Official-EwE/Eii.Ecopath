@@ -1,96 +1,71 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' The Cefas MSE plug-in was developed by the Centre for Environment, Fisheries and 
-' Aquaculture Science (Cefas). 
-'
-' EwE copyright 1991- :
-'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
-'    Ecopath International Initiative, Barcelona, Spain
-' Cefas MSE plug-in copyright: 
-'    2013- Cefas, Lowestoft, UK.
-' ===============================================================================
-'
-
 Module XAlglib
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'    Callback definitions for optimizers/fitters/solvers.
-'    
-'    Callbacks for unparameterized (general) functions:
-'    * ndimensional_func         calculates f(arg), stores result to func
-'    * ndimensional_grad         calculates func = f(arg), 
-'                                grad[i] = df(arg)/d(arg[i])
-'    * ndimensional_hess         calculates func = f(arg),
-'                                grad[i] = df(arg)/d(arg[i]),
-'                                hess[i,j] = d2f(arg)/(d(arg[i])*d(arg[j]))
-'    
-'    Callbacks for systems of functions:
-'    * ndimensional_fvec         calculates vector function f(arg),
-'                                stores result to fi
-'    * ndimensional_jac          calculates f[i] = fi(arg)
-'                                jac[i,j] = df[i](arg)/d(arg[j])
-'                                
-'    Callbacks for  parameterized  functions,  i.e.  for  functions  which 
-'    depend on two vectors: P and Q.  Gradient  and Hessian are calculated 
-'    with respect to P only.
-'    * ndimensional_pfunc        calculates f(p,q),
-'                                stores result to func
-'    * ndimensional_pgrad        calculates func = f(p,q),
-'                                grad[i] = df(p,q)/d(p[i])
-'    * ndimensional_phess        calculates func = f(p,q),
-'                                grad[i] = df(p,q)/d(p[i]),
-'                                hess[i,j] = d2f(p,q)/(d(p[i])*d(p[j]))
-'
-'    Callbacks for progress reports:
-'    * ndimensional_rep          reports current position of optimization algo    
-'    
-'    Callbacks for ODE solvers:
-'    * ndimensional_ode_rp       calculates dy/dx for given y[] and x
-'    
-'    Callbacks for integrators:
-'    * integrator1_func          calculates f(x) for given x
-'                                (additional parameters xminusa and bminusx
-'                                contain x-a and b-x)
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Public Delegate Sub ndimensional_func(arg As Double(), ByRef func As Double, obj As Object)
-Public Delegate Sub ndimensional_grad(arg As Double(), ByRef func As Double, grad As Double(), obj As Object)
-Public Delegate Sub ndimensional_hess(arg As Double(), ByRef func As Double, grad As Double(), hess As Double(,), obj As Object)
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    '    Callback definitions for optimizers/fitters/solvers.
+    '    
+    '    Callbacks for unparameterized (general) functions:
+    '    * ndimensional_func         calculates f(arg), stores result to func
+    '    * ndimensional_grad         calculates func = f(arg), 
+    '                                grad[i] = df(arg)/d(arg[i])
+    '    * ndimensional_hess         calculates func = f(arg),
+    '                                grad[i] = df(arg)/d(arg[i]),
+    '                                hess[i,j] = d2f(arg)/(d(arg[i])*d(arg[j]))
+    '    
+    '    Callbacks for systems of functions:
+    '    * ndimensional_fvec         calculates vector function f(arg),
+    '                                stores result to fi
+    '    * ndimensional_jac          calculates f[i] = fi(arg)
+    '                                jac[i,j] = df[i](arg)/d(arg[j])
+    '                                
+    '    Callbacks for  parameterized  functions,  i.e.  for  functions  which 
+    '    depend on two vectors: P and Q.  Gradient  and Hessian are calculated 
+    '    with respect to P only.
+    '    * ndimensional_pfunc        calculates f(p,q),
+    '                                stores result to func
+    '    * ndimensional_pgrad        calculates func = f(p,q),
+    '                                grad[i] = df(p,q)/d(p[i])
+    '    * ndimensional_phess        calculates func = f(p,q),
+    '                                grad[i] = df(p,q)/d(p[i]),
+    '                                hess[i,j] = d2f(p,q)/(d(p[i])*d(p[j]))
+    '
+    '    Callbacks for progress reports:
+    '    * ndimensional_rep          reports current position of optimization algo    
+    '    
+    '    Callbacks for ODE solvers:
+    '    * ndimensional_ode_rp       calculates dy/dx for given y[] and x
+    '    
+    '    Callbacks for integrators:
+    '    * integrator1_func          calculates f(x) for given x
+    '                                (additional parameters xminusa and bminusx
+    '                                contain x-a and b-x)
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    Public Delegate Sub ndimensional_func(arg As Double(), ByRef func As Double, obj As Object)
+    Public Delegate Sub ndimensional_grad(arg As Double(), ByRef func As Double, grad As Double(), obj As Object)
+    Public Delegate Sub ndimensional_hess(arg As Double(), ByRef func As Double, grad As Double(), hess As Double(,), obj As Object)
 
-Public Delegate Sub ndimensional_fvec(arg As Double(), fi As Double(), obj As Object)
-Public Delegate Sub ndimensional_jac(arg As Double(), fi As Double(), jac As Double(,), obj As Object)
+    Public Delegate Sub ndimensional_fvec(arg As Double(), fi As Double(), obj As Object)
+    Public Delegate Sub ndimensional_jac(arg As Double(), fi As Double(), jac As Double(,), obj As Object)
 
-Public Delegate Sub ndimensional_pfunc(p As Double(), q As Double(), ByRef func As Double, obj As Object)
-Public Delegate Sub ndimensional_pgrad(p As Double(), q As Double(), ByRef func As Double, grad As Double(), obj As Object)
-Public Delegate Sub ndimensional_phess(p As Double(), q As Double(), ByRef func As Double, grad As Double(), hess As Double(,), obj As Object)
+    Public Delegate Sub ndimensional_pfunc(p As Double(), q As Double(), ByRef func As Double, obj As Object)
+    Public Delegate Sub ndimensional_pgrad(p As Double(), q As Double(), ByRef func As Double, grad As Double(), obj As Object)
+    Public Delegate Sub ndimensional_phess(p As Double(), q As Double(), ByRef func As Double, grad As Double(), hess As Double(,), obj As Object)
 
-Public Delegate Sub ndimensional_rep(arg As Double(), func As Double, obj As Object)
+    Public Delegate Sub ndimensional_rep(arg As Double(), func As Double, obj As Object)
 
-Public Delegate Sub ndimensional_ode_rp(y As Double(), x As Double, dy As Double(), obj As Object)
+    Public Delegate Sub ndimensional_ode_rp(y As Double(), x As Double, dy As Double(), obj As Object)
 
-Public Delegate Sub integrator1_func(x As Double, xminusa As Double, bminusx As Double, ByRef f As Double, obj As Object)
+    Public Delegate Sub integrator1_func(x As Double, xminusa As Double, bminusx As Double, ByRef f As Double, obj As Object)
 
-'
-' ALGLIB exception
-'
-Public Class AlglibException
-    Inherits System.ApplicationException
-    Public Sub New(ByVal message As String)
-        MyBase.New(message)
-    End Sub
-End Class
+    '
+    ' ALGLIB exception
+    '
+    Public Class AlglibException
+        Inherits System.ApplicationException
+        Public Sub New(ByVal message As String)
+            MyBase.New(message)
+        End Sub
+    End Class
 
 
     Public Class hqrndstate
@@ -103,7 +78,7 @@ End Class
             state = New hqrndstate()
             alglib.hqrndrandomize(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -113,7 +88,7 @@ End Class
             state = New hqrndstate()
             alglib.hqrndseed(s1, s2, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -122,7 +97,7 @@ End Class
         Try
             hqrnduniformr = alglib.hqrnduniformr(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -131,7 +106,7 @@ End Class
         Try
             hqrnduniformi = alglib.hqrnduniformi(state.csobj, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -140,7 +115,7 @@ End Class
         Try
             hqrndnormal = alglib.hqrndnormal(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -149,7 +124,7 @@ End Class
         Try
             alglib.hqrndunit2(state.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -158,7 +133,7 @@ End Class
         Try
             alglib.hqrndnormal2(state.csobj, x1, x2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -167,7 +142,7 @@ End Class
         Try
             hqrndexponential = alglib.hqrndexponential(state.csobj, lambdav)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -176,7 +151,7 @@ End Class
         Try
             hqrnddiscrete = alglib.hqrnddiscrete(state.csobj, x, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -185,7 +160,7 @@ End Class
         Try
             hqrndcontinuous = alglib.hqrndcontinuous(state.csobj, x, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -196,7 +171,7 @@ End Class
         Try
             alglib.kdtreeserialize(obj.csobj, s_out)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -204,7 +179,7 @@ End Class
         Try
             alglib.kdtreeunserialize(s_in, obj.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -214,7 +189,7 @@ End Class
             kdt = New kdtree()
             alglib.kdtreebuild(xy, n, nx, ny, normtype, kdt.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -224,7 +199,7 @@ End Class
             kdt = New kdtree()
             alglib.kdtreebuild(xy, nx, ny, normtype, kdt.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -234,7 +209,7 @@ End Class
             kdt = New kdtree()
             alglib.kdtreebuildtagged(xy, tags, n, nx, ny, normtype, kdt.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -244,7 +219,7 @@ End Class
             kdt = New kdtree()
             alglib.kdtreebuildtagged(xy, tags, nx, ny, normtype, kdt.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -253,7 +228,7 @@ End Class
         Try
             kdtreequeryknn = alglib.kdtreequeryknn(kdt.csobj, x, k, selfmatch)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -262,7 +237,7 @@ End Class
         Try
             kdtreequeryknn = alglib.kdtreequeryknn(kdt.csobj, x, k)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -271,7 +246,7 @@ End Class
         Try
             kdtreequeryrnn = alglib.kdtreequeryrnn(kdt.csobj, x, r, selfmatch)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -280,7 +255,7 @@ End Class
         Try
             kdtreequeryrnn = alglib.kdtreequeryrnn(kdt.csobj, x, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -289,7 +264,7 @@ End Class
         Try
             kdtreequeryaknn = alglib.kdtreequeryaknn(kdt.csobj, x, k, selfmatch, eps)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -298,7 +273,7 @@ End Class
         Try
             kdtreequeryaknn = alglib.kdtreequeryaknn(kdt.csobj, x, k, eps)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -307,7 +282,7 @@ End Class
         Try
             alglib.kdtreequeryresultsx(kdt.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -316,7 +291,7 @@ End Class
         Try
             alglib.kdtreequeryresultsxy(kdt.csobj, xy)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -325,7 +300,7 @@ End Class
         Try
             alglib.kdtreequeryresultstags(kdt.csobj, tags)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -334,7 +309,7 @@ End Class
         Try
             alglib.kdtreequeryresultsdistances(kdt.csobj, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -343,7 +318,7 @@ End Class
         Try
             alglib.kdtreequeryresultsxi(kdt.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -352,7 +327,7 @@ End Class
         Try
             alglib.kdtreequeryresultsxyi(kdt.csobj, xy)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -361,7 +336,7 @@ End Class
         Try
             alglib.kdtreequeryresultstagsi(kdt.csobj, tags)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -370,7 +345,7 @@ End Class
         Try
             alglib.kdtreequeryresultsdistancesi(kdt.csobj, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -381,7 +356,7 @@ End Class
         Try
             alglib.cmatrixtranspose(m, n, a, ia, ja, b, ib, jb)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -390,7 +365,7 @@ End Class
         Try
             alglib.rmatrixtranspose(m, n, a, ia, ja, b, ib, jb)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -399,7 +374,7 @@ End Class
         Try
             alglib.cmatrixcopy(m, n, a, ia, ja, b, ib, jb)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -408,7 +383,7 @@ End Class
         Try
             alglib.rmatrixcopy(m, n, a, ia, ja, b, ib, jb)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -417,7 +392,7 @@ End Class
         Try
             alglib.cmatrixrank1(m, n, a, ia, ja, u, iu, v, iv)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -426,7 +401,7 @@ End Class
         Try
             alglib.rmatrixrank1(m, n, a, ia, ja, u, iu, v, iv)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -435,7 +410,7 @@ End Class
         Try
             alglib.cmatrixmv(m, n, a, ia, ja, opa, x, ix, y, iy)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -444,7 +419,7 @@ End Class
         Try
             alglib.rmatrixmv(m, n, a, ia, ja, opa, x, ix, y, iy)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -453,7 +428,7 @@ End Class
         Try
             alglib.cmatrixrighttrsm(m, n, a, i1, j1, isupper, isunit, optype, x, i2, j2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -462,7 +437,7 @@ End Class
         Try
             alglib.cmatrixlefttrsm(m, n, a, i1, j1, isupper, isunit, optype, x, i2, j2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -471,7 +446,7 @@ End Class
         Try
             alglib.rmatrixrighttrsm(m, n, a, i1, j1, isupper, isunit, optype, x, i2, j2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -480,7 +455,7 @@ End Class
         Try
             alglib.rmatrixlefttrsm(m, n, a, i1, j1, isupper, isunit, optype, x, i2, j2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -489,7 +464,7 @@ End Class
         Try
             alglib.cmatrixsyrk(n, k, alpha, a, ia, ja, optypea, beta, c, ic, jc, isupper)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -498,7 +473,7 @@ End Class
         Try
             alglib.rmatrixsyrk(n, k, alpha, a, ia, ja, optypea, beta, c, ic, jc, isupper)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -507,7 +482,7 @@ End Class
         Try
             alglib.cmatrixgemm(m, n, k, alpha, a, ia, ja, optypea, b, ib, jb, optypeb, beta, c, ic, jc)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -516,7 +491,7 @@ End Class
         Try
             alglib.rmatrixgemm(m, n, k, alpha, a, ia, ja, optypea, b, ib, jb, optypeb, beta, c, ic, jc)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -527,7 +502,7 @@ End Class
         Try
             alglib.samplemoments(x, n, mean, variance, skewness, kurtosis)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -536,7 +511,7 @@ End Class
         Try
             alglib.samplemoments(x, mean, variance, skewness, kurtosis)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -545,7 +520,7 @@ End Class
         Try
             samplemean = alglib.samplemean(x, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -554,7 +529,7 @@ End Class
         Try
             samplemean = alglib.samplemean(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -563,7 +538,7 @@ End Class
         Try
             samplevariance = alglib.samplevariance(x, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -572,7 +547,7 @@ End Class
         Try
             samplevariance = alglib.samplevariance(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -581,7 +556,7 @@ End Class
         Try
             sampleskewness = alglib.sampleskewness(x, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -590,7 +565,7 @@ End Class
         Try
             sampleskewness = alglib.sampleskewness(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -599,7 +574,7 @@ End Class
         Try
             samplekurtosis = alglib.samplekurtosis(x, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -608,7 +583,7 @@ End Class
         Try
             samplekurtosis = alglib.samplekurtosis(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -617,7 +592,7 @@ End Class
         Try
             alglib.sampleadev(x, n, adev)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -626,7 +601,7 @@ End Class
         Try
             alglib.sampleadev(x, adev)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -635,7 +610,7 @@ End Class
         Try
             alglib.samplemedian(x, n, median)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -644,7 +619,7 @@ End Class
         Try
             alglib.samplemedian(x, median)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -653,7 +628,7 @@ End Class
         Try
             alglib.samplepercentile(x, n, p, v)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -662,7 +637,7 @@ End Class
         Try
             alglib.samplepercentile(x, p, v)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -671,7 +646,7 @@ End Class
         Try
             cov2 = alglib.cov2(x, y, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -680,7 +655,7 @@ End Class
         Try
             cov2 = alglib.cov2(x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -689,7 +664,7 @@ End Class
         Try
             pearsoncorr2 = alglib.pearsoncorr2(x, y, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -698,7 +673,7 @@ End Class
         Try
             pearsoncorr2 = alglib.pearsoncorr2(x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -707,7 +682,7 @@ End Class
         Try
             spearmancorr2 = alglib.spearmancorr2(x, y, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -716,7 +691,7 @@ End Class
         Try
             spearmancorr2 = alglib.spearmancorr2(x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -725,7 +700,7 @@ End Class
         Try
             alglib.covm(x, n, m, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -734,7 +709,7 @@ End Class
         Try
             alglib.covm(x, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -743,7 +718,7 @@ End Class
         Try
             alglib.pearsoncorrm(x, n, m, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -752,7 +727,7 @@ End Class
         Try
             alglib.pearsoncorrm(x, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -761,7 +736,7 @@ End Class
         Try
             alglib.spearmancorrm(x, n, m, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -770,7 +745,7 @@ End Class
         Try
             alglib.spearmancorrm(x, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -779,7 +754,7 @@ End Class
         Try
             alglib.covm2(x, y, n, m1, m2, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -788,7 +763,7 @@ End Class
         Try
             alglib.covm2(x, y, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -797,7 +772,7 @@ End Class
         Try
             alglib.pearsoncorrm2(x, y, n, m1, m2, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -806,7 +781,7 @@ End Class
         Try
             alglib.pearsoncorrm2(x, y, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -815,7 +790,7 @@ End Class
         Try
             alglib.spearmancorrm2(x, y, n, m1, m2, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -824,7 +799,7 @@ End Class
         Try
             alglib.spearmancorrm2(x, y, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -833,7 +808,7 @@ End Class
         Try
             pearsoncorrelation = alglib.pearsoncorrelation(x, y, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -842,7 +817,7 @@ End Class
         Try
             spearmanrankcorrelation = alglib.spearmanrankcorrelation(x, y, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -853,7 +828,7 @@ End Class
         Try
             alglib.dsoptimalsplit2(a, c, n, info, threshold, pal, pbl, par, pbr, cve)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -862,7 +837,7 @@ End Class
         Try
             alglib.dsoptimalsplit2fast(a, c, tiesbuf, cntbuf, bufr, bufi, n, nc, alpha, info, threshold, rms, cvrms)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -874,84 +849,84 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class dfreport
         Public Property relclserror() As Double
-        Get
-            Return csobj.relclserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.relclserror = Value
-        End Set
+            Get
+                Return csobj.relclserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.relclserror = Value
+            End Set
         End Property
         Public Property avgce() As Double
-        Get
-            Return csobj.avgce
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgce = Value
-        End Set
+            Get
+                Return csobj.avgce
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgce = Value
+            End Set
         End Property
         Public Property rmserror() As Double
-        Get
-            Return csobj.rmserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.rmserror = Value
-        End Set
+            Get
+                Return csobj.rmserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.rmserror = Value
+            End Set
         End Property
         Public Property avgerror() As Double
-        Get
-            Return csobj.avgerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgerror = Value
-        End Set
+            Get
+                Return csobj.avgerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgerror = Value
+            End Set
         End Property
         Public Property avgrelerror() As Double
-        Get
-            Return csobj.avgrelerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgrelerror = Value
-        End Set
+            Get
+                Return csobj.avgrelerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgrelerror = Value
+            End Set
         End Property
         Public Property oobrelclserror() As Double
-        Get
-            Return csobj.oobrelclserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.oobrelclserror = Value
-        End Set
+            Get
+                Return csobj.oobrelclserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.oobrelclserror = Value
+            End Set
         End Property
         Public Property oobavgce() As Double
-        Get
-            Return csobj.oobavgce
-        End Get
-        Set(ByVal Value As Double)
-            csobj.oobavgce = Value
-        End Set
+            Get
+                Return csobj.oobavgce
+            End Get
+            Set(ByVal Value As Double)
+                csobj.oobavgce = Value
+            End Set
         End Property
         Public Property oobrmserror() As Double
-        Get
-            Return csobj.oobrmserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.oobrmserror = Value
-        End Set
+            Get
+                Return csobj.oobrmserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.oobrmserror = Value
+            End Set
         End Property
         Public Property oobavgerror() As Double
-        Get
-            Return csobj.oobavgerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.oobavgerror = Value
-        End Set
+            Get
+                Return csobj.oobavgerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.oobavgerror = Value
+            End Set
         End Property
         Public Property oobavgrelerror() As Double
-        Get
-            Return csobj.oobavgrelerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.oobavgrelerror = Value
-        End Set
+            Get
+                Return csobj.oobavgrelerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.oobavgrelerror = Value
+            End Set
         End Property
         Public csobj As alglib.dfreport
     End Class
@@ -959,7 +934,7 @@ End Class
         Try
             alglib.dfserialize(obj.csobj, s_out)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -967,7 +942,7 @@ End Class
         Try
             alglib.dfunserialize(s_in, obj.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -978,7 +953,7 @@ End Class
             rep = New dfreport()
             alglib.dfbuildrandomdecisionforest(xy, npoints, nvars, nclasses, ntrees, r, info, df.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -989,7 +964,7 @@ End Class
             rep = New dfreport()
             alglib.dfbuildrandomdecisionforestx1(xy, npoints, nvars, nclasses, ntrees, nrndvars, r, info, df.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -998,7 +973,7 @@ End Class
         Try
             alglib.dfprocess(df.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1007,7 +982,7 @@ End Class
         Try
             alglib.dfprocessi(df.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1016,7 +991,7 @@ End Class
         Try
             dfrelclserror = alglib.dfrelclserror(df.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1025,7 +1000,7 @@ End Class
         Try
             dfavgce = alglib.dfavgce(df.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1034,7 +1009,7 @@ End Class
         Try
             dfrmserror = alglib.dfrmserror(df.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1043,7 +1018,7 @@ End Class
         Try
             dfavgerror = alglib.dfavgerror(df.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1052,7 +1027,7 @@ End Class
         Try
             dfavgrelerror = alglib.dfavgrelerror(df.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1063,7 +1038,7 @@ End Class
         Try
             gammafunction = alglib.gammafunction(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1072,7 +1047,7 @@ End Class
         Try
             lngamma = alglib.lngamma(x, sgngam)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1083,7 +1058,7 @@ End Class
         Try
             errorfunction = alglib.errorfunction(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1092,7 +1067,7 @@ End Class
         Try
             errorfunctionc = alglib.errorfunctionc(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1101,7 +1076,7 @@ End Class
         Try
             normaldistribution = alglib.normaldistribution(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1110,7 +1085,7 @@ End Class
         Try
             inverf = alglib.inverf(e)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1119,7 +1094,7 @@ End Class
         Try
             invnormaldistribution = alglib.invnormaldistribution(y0)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1130,7 +1105,7 @@ End Class
         Try
             incompletegamma = alglib.incompletegamma(a, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1139,7 +1114,7 @@ End Class
         Try
             incompletegammac = alglib.incompletegammac(a, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1148,7 +1123,7 @@ End Class
         Try
             invincompletegammac = alglib.invincompletegammac(a, y0)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1159,7 +1134,7 @@ End Class
         Try
             alglib.rmatrixqr(a, m, n, tau)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1168,7 +1143,7 @@ End Class
         Try
             alglib.rmatrixlq(a, m, n, tau)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1177,7 +1152,7 @@ End Class
         Try
             alglib.cmatrixqr(a, m, n, tau)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1186,7 +1161,7 @@ End Class
         Try
             alglib.cmatrixlq(a, m, n, tau)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1195,7 +1170,7 @@ End Class
         Try
             alglib.rmatrixqrunpackq(a, m, n, tau, qcolumns, q)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1204,7 +1179,7 @@ End Class
         Try
             alglib.rmatrixqrunpackr(a, m, n, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1213,7 +1188,7 @@ End Class
         Try
             alglib.rmatrixlqunpackq(a, m, n, tau, qrows, q)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1222,7 +1197,7 @@ End Class
         Try
             alglib.rmatrixlqunpackl(a, m, n, l)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1231,7 +1206,7 @@ End Class
         Try
             alglib.cmatrixqrunpackq(a, m, n, tau, qcolumns, q)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1240,7 +1215,7 @@ End Class
         Try
             alglib.cmatrixqrunpackr(a, m, n, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1249,7 +1224,7 @@ End Class
         Try
             alglib.cmatrixlqunpackq(a, m, n, tau, qrows, q)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1258,7 +1233,7 @@ End Class
         Try
             alglib.cmatrixlqunpackl(a, m, n, l)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1267,7 +1242,7 @@ End Class
         Try
             alglib.rmatrixbd(a, m, n, tauq, taup)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1276,7 +1251,7 @@ End Class
         Try
             alglib.rmatrixbdunpackq(qp, m, n, tauq, qcolumns, q)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1285,7 +1260,7 @@ End Class
         Try
             alglib.rmatrixbdmultiplybyq(qp, m, n, tauq, z, zrows, zcolumns, fromtheright, dotranspose)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1294,7 +1269,7 @@ End Class
         Try
             alglib.rmatrixbdunpackpt(qp, m, n, taup, ptrows, pt)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1303,7 +1278,7 @@ End Class
         Try
             alglib.rmatrixbdmultiplybyp(qp, m, n, taup, z, zrows, zcolumns, fromtheright, dotranspose)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1312,7 +1287,7 @@ End Class
         Try
             alglib.rmatrixbdunpackdiagonals(b, m, n, isupper, d, e)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1321,7 +1296,7 @@ End Class
         Try
             alglib.rmatrixhessenberg(a, n, tau)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1330,7 +1305,7 @@ End Class
         Try
             alglib.rmatrixhessenbergunpackq(a, n, tau, q)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1339,7 +1314,7 @@ End Class
         Try
             alglib.rmatrixhessenbergunpackh(a, n, h)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1348,7 +1323,7 @@ End Class
         Try
             alglib.smatrixtd(a, n, isupper, tau, d, e)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1357,7 +1332,7 @@ End Class
         Try
             alglib.smatrixtdunpackq(a, n, isupper, tau, q)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1366,7 +1341,7 @@ End Class
         Try
             alglib.hmatrixtd(a, n, isupper, tau, d, e)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1375,7 +1350,7 @@ End Class
         Try
             alglib.hmatrixtdunpackq(a, n, isupper, tau, q)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1386,7 +1361,7 @@ End Class
         Try
             rmatrixbdsvd = alglib.rmatrixbdsvd(d, e, n, isupper, isfractionalaccuracyrequired, u, nru, c, ncc, vt, ncvt)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1397,7 +1372,7 @@ End Class
         Try
             rmatrixsvd = alglib.rmatrixsvd(a, m, n, uneeded, vtneeded, additionalmemory, w, u, vt)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1423,76 +1398,76 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class lrreport
         Public Property c() As Double(,)
-        Get
-            Return csobj.c
-        End Get
-        Set(ByVal Value As Double(,))
-            csobj.c = Value
-        End Set
+            Get
+                Return csobj.c
+            End Get
+            Set(ByVal Value As Double(,))
+                csobj.c = Value
+            End Set
         End Property
         Public Property rmserror() As Double
-        Get
-            Return csobj.rmserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.rmserror = Value
-        End Set
+            Get
+                Return csobj.rmserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.rmserror = Value
+            End Set
         End Property
         Public Property avgerror() As Double
-        Get
-            Return csobj.avgerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgerror = Value
-        End Set
+            Get
+                Return csobj.avgerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgerror = Value
+            End Set
         End Property
         Public Property avgrelerror() As Double
-        Get
-            Return csobj.avgrelerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgrelerror = Value
-        End Set
+            Get
+                Return csobj.avgrelerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgrelerror = Value
+            End Set
         End Property
         Public Property cvrmserror() As Double
-        Get
-            Return csobj.cvrmserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.cvrmserror = Value
-        End Set
+            Get
+                Return csobj.cvrmserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.cvrmserror = Value
+            End Set
         End Property
         Public Property cvavgerror() As Double
-        Get
-            Return csobj.cvavgerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.cvavgerror = Value
-        End Set
+            Get
+                Return csobj.cvavgerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.cvavgerror = Value
+            End Set
         End Property
         Public Property cvavgrelerror() As Double
-        Get
-            Return csobj.cvavgrelerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.cvavgrelerror = Value
-        End Set
+            Get
+                Return csobj.cvavgrelerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.cvavgrelerror = Value
+            End Set
         End Property
         Public Property ncvdefects() As Integer
-        Get
-            Return csobj.ncvdefects
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.ncvdefects = Value
-        End Set
+            Get
+                Return csobj.ncvdefects
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.ncvdefects = Value
+            End Set
         End Property
         Public Property cvdefects() As Integer()
-        Get
-            Return csobj.cvdefects
-        End Get
-        Set(ByVal Value As Integer())
-            csobj.cvdefects = Value
-        End Set
+            Get
+                Return csobj.cvdefects
+            End Get
+            Set(ByVal Value As Integer())
+                csobj.cvdefects = Value
+            End Set
         End Property
         Public csobj As alglib.lrreport
     End Class
@@ -1504,7 +1479,7 @@ End Class
             ar = New lrreport()
             alglib.lrbuild(xy, npoints, nvars, info, lm.csobj, ar.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1515,7 +1490,7 @@ End Class
             ar = New lrreport()
             alglib.lrbuilds(xy, s, npoints, nvars, info, lm.csobj, ar.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1526,7 +1501,7 @@ End Class
             ar = New lrreport()
             alglib.lrbuildzs(xy, s, npoints, nvars, info, lm.csobj, ar.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1537,7 +1512,7 @@ End Class
             ar = New lrreport()
             alglib.lrbuildz(xy, npoints, nvars, info, lm.csobj, ar.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1546,7 +1521,7 @@ End Class
         Try
             alglib.lrunpack(lm.csobj, v, nvars)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1556,7 +1531,7 @@ End Class
             lm = New linearmodel()
             alglib.lrpack(v, nvars, lm.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1565,7 +1540,7 @@ End Class
         Try
             lrprocess = alglib.lrprocess(lm.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1574,7 +1549,7 @@ End Class
         Try
             lrrmserror = alglib.lrrmserror(lm.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1583,7 +1558,7 @@ End Class
         Try
             lravgerror = alglib.lravgerror(lm.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1592,7 +1567,7 @@ End Class
         Try
             lravgrelerror = alglib.lravgrelerror(lm.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1603,7 +1578,7 @@ End Class
         Try
             alglib.filtersma(x, n, k)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1612,7 +1587,7 @@ End Class
         Try
             alglib.filtersma(x, k)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1621,7 +1596,7 @@ End Class
         Try
             alglib.filterema(x, n, alpha)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1630,7 +1605,7 @@ End Class
         Try
             alglib.filterema(x, alpha)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1639,7 +1614,7 @@ End Class
         Try
             alglib.filterlrma(x, n, k)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1648,7 +1623,7 @@ End Class
         Try
             alglib.filterlrma(x, k)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1659,7 +1634,7 @@ End Class
         Try
             alglib.kmeansgenerate(xy, npoints, nvars, k, restarts, info, c, xyc)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1670,7 +1645,7 @@ End Class
         Try
             smatrixevd = alglib.smatrixevd(a, n, zneeded, isupper, d, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1679,7 +1654,7 @@ End Class
         Try
             smatrixevdr = alglib.smatrixevdr(a, n, zneeded, isupper, b1, b2, m, w, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1688,7 +1663,7 @@ End Class
         Try
             smatrixevdi = alglib.smatrixevdi(a, n, zneeded, isupper, i1, i2, w, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1697,7 +1672,7 @@ End Class
         Try
             hmatrixevd = alglib.hmatrixevd(a, n, zneeded, isupper, d, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1706,7 +1681,7 @@ End Class
         Try
             hmatrixevdr = alglib.hmatrixevdr(a, n, zneeded, isupper, b1, b2, m, w, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1715,7 +1690,7 @@ End Class
         Try
             hmatrixevdi = alglib.hmatrixevdi(a, n, zneeded, isupper, i1, i2, w, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1724,7 +1699,7 @@ End Class
         Try
             smatrixtdevd = alglib.smatrixtdevd(d, e, n, zneeded, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1733,7 +1708,7 @@ End Class
         Try
             smatrixtdevdr = alglib.smatrixtdevdr(d, e, n, zneeded, a, b, m, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1742,7 +1717,7 @@ End Class
         Try
             smatrixtdevdi = alglib.smatrixtdevdi(d, e, n, zneeded, i1, i2, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1751,7 +1726,7 @@ End Class
         Try
             rmatrixevd = alglib.rmatrixevd(a, n, vneeded, wr, wi, vl, vr)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1762,7 +1737,7 @@ End Class
         Try
             alglib.rmatrixrndorthogonal(n, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1771,7 +1746,7 @@ End Class
         Try
             alglib.rmatrixrndcond(n, c, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1780,7 +1755,7 @@ End Class
         Try
             alglib.cmatrixrndorthogonal(n, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1789,7 +1764,7 @@ End Class
         Try
             alglib.cmatrixrndcond(n, c, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1798,7 +1773,7 @@ End Class
         Try
             alglib.smatrixrndcond(n, c, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1807,7 +1782,7 @@ End Class
         Try
             alglib.spdmatrixrndcond(n, c, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1816,7 +1791,7 @@ End Class
         Try
             alglib.hmatrixrndcond(n, c, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1825,7 +1800,7 @@ End Class
         Try
             alglib.hpdmatrixrndcond(n, c, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1834,7 +1809,7 @@ End Class
         Try
             alglib.rmatrixrndorthogonalfromtheright(a, m, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1843,7 +1818,7 @@ End Class
         Try
             alglib.rmatrixrndorthogonalfromtheleft(a, m, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1852,7 +1827,7 @@ End Class
         Try
             alglib.cmatrixrndorthogonalfromtheright(a, m, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1861,7 +1836,7 @@ End Class
         Try
             alglib.cmatrixrndorthogonalfromtheleft(a, m, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1870,7 +1845,7 @@ End Class
         Try
             alglib.smatrixrndmultiply(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1879,7 +1854,7 @@ End Class
         Try
             alglib.hmatrixrndmultiply(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1890,7 +1865,7 @@ End Class
         Try
             alglib.rmatrixlu(a, m, n, pivots)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1899,7 +1874,7 @@ End Class
         Try
             alglib.cmatrixlu(a, m, n, pivots)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -1908,7 +1883,7 @@ End Class
         Try
             hpdmatrixcholesky = alglib.hpdmatrixcholesky(a, n, isupper)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1917,7 +1892,7 @@ End Class
         Try
             spdmatrixcholesky = alglib.spdmatrixcholesky(a, n, isupper)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1928,7 +1903,7 @@ End Class
         Try
             rmatrixrcond1 = alglib.rmatrixrcond1(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1937,7 +1912,7 @@ End Class
         Try
             rmatrixrcondinf = alglib.rmatrixrcondinf(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1946,7 +1921,7 @@ End Class
         Try
             spdmatrixrcond = alglib.spdmatrixrcond(a, n, isupper)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1955,7 +1930,7 @@ End Class
         Try
             rmatrixtrrcond1 = alglib.rmatrixtrrcond1(a, n, isupper, isunit)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1964,7 +1939,7 @@ End Class
         Try
             rmatrixtrrcondinf = alglib.rmatrixtrrcondinf(a, n, isupper, isunit)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1973,7 +1948,7 @@ End Class
         Try
             hpdmatrixrcond = alglib.hpdmatrixrcond(a, n, isupper)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1982,7 +1957,7 @@ End Class
         Try
             cmatrixrcond1 = alglib.cmatrixrcond1(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -1991,7 +1966,7 @@ End Class
         Try
             cmatrixrcondinf = alglib.cmatrixrcondinf(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2000,7 +1975,7 @@ End Class
         Try
             rmatrixlurcond1 = alglib.rmatrixlurcond1(lua, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2009,7 +1984,7 @@ End Class
         Try
             rmatrixlurcondinf = alglib.rmatrixlurcondinf(lua, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2018,7 +1993,7 @@ End Class
         Try
             spdmatrixcholeskyrcond = alglib.spdmatrixcholeskyrcond(a, n, isupper)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2027,7 +2002,7 @@ End Class
         Try
             hpdmatrixcholeskyrcond = alglib.hpdmatrixcholeskyrcond(a, n, isupper)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2036,7 +2011,7 @@ End Class
         Try
             cmatrixlurcond1 = alglib.cmatrixlurcond1(lua, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2045,7 +2020,7 @@ End Class
         Try
             cmatrixlurcondinf = alglib.cmatrixlurcondinf(lua, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2054,7 +2029,7 @@ End Class
         Try
             cmatrixtrrcond1 = alglib.cmatrixtrrcond1(a, n, isupper, isunit)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2063,7 +2038,7 @@ End Class
         Try
             cmatrixtrrcondinf = alglib.cmatrixtrrcondinf(a, n, isupper, isunit)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2074,20 +2049,20 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class matinvreport
         Public Property r1() As Double
-        Get
-            Return csobj.r1
-        End Get
-        Set(ByVal Value As Double)
-            csobj.r1 = Value
-        End Set
+            Get
+                Return csobj.r1
+            End Get
+            Set(ByVal Value As Double)
+                csobj.r1 = Value
+            End Set
         End Property
         Public Property rinf() As Double
-        Get
-            Return csobj.rinf
-        End Get
-        Set(ByVal Value As Double)
-            csobj.rinf = Value
-        End Set
+            Get
+                Return csobj.rinf
+            End Get
+            Set(ByVal Value As Double)
+                csobj.rinf = Value
+            End Set
         End Property
         Public csobj As alglib.matinvreport
     End Class
@@ -2098,7 +2073,7 @@ End Class
             rep = New matinvreport()
             alglib.rmatrixluinverse(a, pivots, n, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2108,7 +2083,7 @@ End Class
             rep = New matinvreport()
             alglib.rmatrixluinverse(a, pivots, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2118,7 +2093,7 @@ End Class
             rep = New matinvreport()
             alglib.rmatrixinverse(a, n, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2128,7 +2103,7 @@ End Class
             rep = New matinvreport()
             alglib.rmatrixinverse(a, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2138,7 +2113,7 @@ End Class
             rep = New matinvreport()
             alglib.cmatrixluinverse(a, pivots, n, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2148,7 +2123,7 @@ End Class
             rep = New matinvreport()
             alglib.cmatrixluinverse(a, pivots, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2158,7 +2133,7 @@ End Class
             rep = New matinvreport()
             alglib.cmatrixinverse(a, n, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2168,7 +2143,7 @@ End Class
             rep = New matinvreport()
             alglib.cmatrixinverse(a, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2178,7 +2153,7 @@ End Class
             rep = New matinvreport()
             alglib.spdmatrixcholeskyinverse(a, n, isupper, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2188,7 +2163,7 @@ End Class
             rep = New matinvreport()
             alglib.spdmatrixcholeskyinverse(a, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2198,7 +2173,7 @@ End Class
             rep = New matinvreport()
             alglib.spdmatrixinverse(a, n, isupper, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2208,7 +2183,7 @@ End Class
             rep = New matinvreport()
             alglib.spdmatrixinverse(a, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2218,7 +2193,7 @@ End Class
             rep = New matinvreport()
             alglib.hpdmatrixcholeskyinverse(a, n, isupper, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2228,7 +2203,7 @@ End Class
             rep = New matinvreport()
             alglib.hpdmatrixcholeskyinverse(a, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2238,7 +2213,7 @@ End Class
             rep = New matinvreport()
             alglib.hpdmatrixinverse(a, n, isupper, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2248,7 +2223,7 @@ End Class
             rep = New matinvreport()
             alglib.hpdmatrixinverse(a, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2258,7 +2233,7 @@ End Class
             rep = New matinvreport()
             alglib.rmatrixtrinverse(a, n, isupper, isunit, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2268,7 +2243,7 @@ End Class
             rep = New matinvreport()
             alglib.rmatrixtrinverse(a, isupper, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2278,7 +2253,7 @@ End Class
             rep = New matinvreport()
             alglib.cmatrixtrinverse(a, n, isupper, isunit, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2288,7 +2263,7 @@ End Class
             rep = New matinvreport()
             alglib.cmatrixtrinverse(a, isupper, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2299,7 +2274,7 @@ End Class
         Try
             alglib.fisherlda(xy, npoints, nvars, nclasses, info, w)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2308,7 +2283,7 @@ End Class
         Try
             alglib.fisherldan(xy, npoints, nvars, nclasses, info, w)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2319,7 +2294,7 @@ End Class
         Try
             alglib.mlpserialize(obj.csobj, s_out)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2327,7 +2302,7 @@ End Class
         Try
             alglib.mlpunserialize(s_in, obj.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2337,7 +2312,7 @@ End Class
             network = New multilayerperceptron()
             alglib.mlpcreate0(nin, nout, network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2347,7 +2322,7 @@ End Class
             network = New multilayerperceptron()
             alglib.mlpcreate1(nin, nhid, nout, network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2357,7 +2332,7 @@ End Class
             network = New multilayerperceptron()
             alglib.mlpcreate2(nin, nhid1, nhid2, nout, network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2367,7 +2342,7 @@ End Class
             network = New multilayerperceptron()
             alglib.mlpcreateb0(nin, nout, b, d, network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2377,7 +2352,7 @@ End Class
             network = New multilayerperceptron()
             alglib.mlpcreateb1(nin, nhid, nout, b, d, network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2387,7 +2362,7 @@ End Class
             network = New multilayerperceptron()
             alglib.mlpcreateb2(nin, nhid1, nhid2, nout, b, d, network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2397,7 +2372,7 @@ End Class
             network = New multilayerperceptron()
             alglib.mlpcreater0(nin, nout, a, b, network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2407,7 +2382,7 @@ End Class
             network = New multilayerperceptron()
             alglib.mlpcreater1(nin, nhid, nout, a, b, network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2417,7 +2392,7 @@ End Class
             network = New multilayerperceptron()
             alglib.mlpcreater2(nin, nhid1, nhid2, nout, a, b, network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2427,7 +2402,7 @@ End Class
             network = New multilayerperceptron()
             alglib.mlpcreatec0(nin, nout, network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2437,7 +2412,7 @@ End Class
             network = New multilayerperceptron()
             alglib.mlpcreatec1(nin, nhid, nout, network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2447,7 +2422,7 @@ End Class
             network = New multilayerperceptron()
             alglib.mlpcreatec2(nin, nhid1, nhid2, nout, network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2456,7 +2431,7 @@ End Class
         Try
             alglib.mlprandomize(network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2465,7 +2440,7 @@ End Class
         Try
             alglib.mlprandomizefull(network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2474,7 +2449,7 @@ End Class
         Try
             alglib.mlpproperties(network.csobj, nin, nout, wcount)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2483,7 +2458,7 @@ End Class
         Try
             mlpgetinputscount = alglib.mlpgetinputscount(network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2492,7 +2467,7 @@ End Class
         Try
             mlpgetoutputscount = alglib.mlpgetoutputscount(network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2501,7 +2476,7 @@ End Class
         Try
             mlpgetweightscount = alglib.mlpgetweightscount(network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2510,7 +2485,7 @@ End Class
         Try
             mlpissoftmax = alglib.mlpissoftmax(network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2519,7 +2494,7 @@ End Class
         Try
             mlpgetlayerscount = alglib.mlpgetlayerscount(network.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2528,7 +2503,7 @@ End Class
         Try
             mlpgetlayersize = alglib.mlpgetlayersize(network.csobj, k)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2537,7 +2512,7 @@ End Class
         Try
             alglib.mlpgetinputscaling(network.csobj, i, mean, sigma)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2546,7 +2521,7 @@ End Class
         Try
             alglib.mlpgetoutputscaling(network.csobj, i, mean, sigma)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2555,7 +2530,7 @@ End Class
         Try
             alglib.mlpgetneuroninfo(network.csobj, k, i, fkind, threshold)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2564,7 +2539,7 @@ End Class
         Try
             mlpgetweight = alglib.mlpgetweight(network.csobj, k0, i0, k1, i1)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2573,7 +2548,7 @@ End Class
         Try
             alglib.mlpsetinputscaling(network.csobj, i, mean, sigma)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2582,7 +2557,7 @@ End Class
         Try
             alglib.mlpsetoutputscaling(network.csobj, i, mean, sigma)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2591,7 +2566,7 @@ End Class
         Try
             alglib.mlpsetneuroninfo(network.csobj, k, i, fkind, threshold)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2600,7 +2575,7 @@ End Class
         Try
             alglib.mlpsetweight(network.csobj, k0, i0, k1, i1, w)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2609,7 +2584,7 @@ End Class
         Try
             alglib.mlpactivationfunction(net, k, f, df, d2f)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2618,7 +2593,7 @@ End Class
         Try
             alglib.mlpprocess(network.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2627,7 +2602,7 @@ End Class
         Try
             alglib.mlpprocessi(network.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2636,7 +2611,7 @@ End Class
         Try
             mlperror = alglib.mlperror(network.csobj, xy, ssize)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2645,7 +2620,7 @@ End Class
         Try
             mlperrorn = alglib.mlperrorn(network.csobj, xy, ssize)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2654,7 +2629,7 @@ End Class
         Try
             mlpclserror = alglib.mlpclserror(network.csobj, xy, ssize)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2663,7 +2638,7 @@ End Class
         Try
             mlprelclserror = alglib.mlprelclserror(network.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2672,7 +2647,7 @@ End Class
         Try
             mlpavgce = alglib.mlpavgce(network.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2681,7 +2656,7 @@ End Class
         Try
             mlprmserror = alglib.mlprmserror(network.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2690,7 +2665,7 @@ End Class
         Try
             mlpavgerror = alglib.mlpavgerror(network.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2699,7 +2674,7 @@ End Class
         Try
             mlpavgrelerror = alglib.mlpavgrelerror(network.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -2708,7 +2683,7 @@ End Class
         Try
             alglib.mlpgrad(network.csobj, x, desiredy, e, grad)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2717,7 +2692,7 @@ End Class
         Try
             alglib.mlpgradn(network.csobj, x, desiredy, e, grad)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2726,7 +2701,7 @@ End Class
         Try
             alglib.mlpgradbatch(network.csobj, xy, ssize, e, grad)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2735,7 +2710,7 @@ End Class
         Try
             alglib.mlpgradnbatch(network.csobj, xy, ssize, e, grad)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2744,7 +2719,7 @@ End Class
         Try
             alglib.mlphessiannbatch(network.csobj, xy, ssize, e, grad, h)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2753,7 +2728,7 @@ End Class
         Try
             alglib.mlphessianbatch(network.csobj, xy, ssize, e, grad, h)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2762,20 +2737,20 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class densesolverreport
         Public Property r1() As Double
-        Get
-            Return csobj.r1
-        End Get
-        Set(ByVal Value As Double)
-            csobj.r1 = Value
-        End Set
+            Get
+                Return csobj.r1
+            End Get
+            Set(ByVal Value As Double)
+                csobj.r1 = Value
+            End Set
         End Property
         Public Property rinf() As Double
-        Get
-            Return csobj.rinf
-        End Get
-        Set(ByVal Value As Double)
-            csobj.rinf = Value
-        End Set
+            Get
+                Return csobj.rinf
+            End Get
+            Set(ByVal Value As Double)
+                csobj.rinf = Value
+            End Set
         End Property
         Public csobj As alglib.densesolverreport
     End Class
@@ -2784,36 +2759,36 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class densesolverlsreport
         Public Property r2() As Double
-        Get
-            Return csobj.r2
-        End Get
-        Set(ByVal Value As Double)
-            csobj.r2 = Value
-        End Set
+            Get
+                Return csobj.r2
+            End Get
+            Set(ByVal Value As Double)
+                csobj.r2 = Value
+            End Set
         End Property
         Public Property cx() As Double(,)
-        Get
-            Return csobj.cx
-        End Get
-        Set(ByVal Value As Double(,))
-            csobj.cx = Value
-        End Set
+            Get
+                Return csobj.cx
+            End Get
+            Set(ByVal Value As Double(,))
+                csobj.cx = Value
+            End Set
         End Property
         Public Property n() As Integer
-        Get
-            Return csobj.n
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.n = Value
-        End Set
+            Get
+                Return csobj.n
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.n = Value
+            End Set
         End Property
         Public Property k() As Integer
-        Get
-            Return csobj.k
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.k = Value
-        End Set
+            Get
+                Return csobj.k
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.k = Value
+            End Set
         End Property
         Public csobj As alglib.densesolverlsreport
     End Class
@@ -2824,7 +2799,7 @@ End Class
             rep = New densesolverreport()
             alglib.rmatrixsolve(a, n, b, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2834,7 +2809,7 @@ End Class
             rep = New densesolverreport()
             alglib.rmatrixsolvem(a, n, b, m, rfs, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2844,7 +2819,7 @@ End Class
             rep = New densesolverreport()
             alglib.rmatrixlusolve(lua, p, n, b, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2854,7 +2829,7 @@ End Class
             rep = New densesolverreport()
             alglib.rmatrixlusolvem(lua, p, n, b, m, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2864,7 +2839,7 @@ End Class
             rep = New densesolverreport()
             alglib.rmatrixmixedsolve(a, lua, p, n, b, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2874,7 +2849,7 @@ End Class
             rep = New densesolverreport()
             alglib.rmatrixmixedsolvem(a, lua, p, n, b, m, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2884,7 +2859,7 @@ End Class
             rep = New densesolverreport()
             alglib.cmatrixsolvem(a, n, b, m, rfs, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2894,7 +2869,7 @@ End Class
             rep = New densesolverreport()
             alglib.cmatrixsolve(a, n, b, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2904,7 +2879,7 @@ End Class
             rep = New densesolverreport()
             alglib.cmatrixlusolvem(lua, p, n, b, m, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2914,7 +2889,7 @@ End Class
             rep = New densesolverreport()
             alglib.cmatrixlusolve(lua, p, n, b, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2924,7 +2899,7 @@ End Class
             rep = New densesolverreport()
             alglib.cmatrixmixedsolvem(a, lua, p, n, b, m, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2934,7 +2909,7 @@ End Class
             rep = New densesolverreport()
             alglib.cmatrixmixedsolve(a, lua, p, n, b, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2944,7 +2919,7 @@ End Class
             rep = New densesolverreport()
             alglib.spdmatrixsolvem(a, n, isupper, b, m, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2954,7 +2929,7 @@ End Class
             rep = New densesolverreport()
             alglib.spdmatrixsolve(a, n, isupper, b, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2964,7 +2939,7 @@ End Class
             rep = New densesolverreport()
             alglib.spdmatrixcholeskysolvem(cha, n, isupper, b, m, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2974,7 +2949,7 @@ End Class
             rep = New densesolverreport()
             alglib.spdmatrixcholeskysolve(cha, n, isupper, b, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2984,7 +2959,7 @@ End Class
             rep = New densesolverreport()
             alglib.hpdmatrixsolvem(a, n, isupper, b, m, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -2994,7 +2969,7 @@ End Class
             rep = New densesolverreport()
             alglib.hpdmatrixsolve(a, n, isupper, b, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3004,7 +2979,7 @@ End Class
             rep = New densesolverreport()
             alglib.hpdmatrixcholeskysolvem(cha, n, isupper, b, m, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3014,7 +2989,7 @@ End Class
             rep = New densesolverreport()
             alglib.hpdmatrixcholeskysolve(cha, n, isupper, b, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3024,7 +2999,7 @@ End Class
             rep = New densesolverlsreport()
             alglib.rmatrixsolvels(a, nrows, ncols, b, threshold, info, rep.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3038,20 +3013,20 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class mnlreport
         Public Property ngrad() As Integer
-        Get
-            Return csobj.ngrad
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.ngrad = Value
-        End Set
+            Get
+                Return csobj.ngrad
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.ngrad = Value
+            End Set
         End Property
         Public Property nhess() As Integer
-        Get
-            Return csobj.nhess
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nhess = Value
-        End Set
+            Get
+                Return csobj.nhess
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nhess = Value
+            End Set
         End Property
         Public csobj As alglib.mnlreport
     End Class
@@ -3063,7 +3038,7 @@ End Class
             rep = New mnlreport()
             alglib.mnltrainh(xy, npoints, nvars, nclasses, info, lm.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3072,7 +3047,7 @@ End Class
         Try
             alglib.mnlprocess(lm.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3081,7 +3056,7 @@ End Class
         Try
             alglib.mnlprocessi(lm.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3090,7 +3065,7 @@ End Class
         Try
             alglib.mnlunpack(lm.csobj, a, nvars, nclasses)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3100,7 +3075,7 @@ End Class
             lm = New logitmodel()
             alglib.mnlpack(a, nvars, nclasses, lm.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3109,7 +3084,7 @@ End Class
         Try
             mnlavgce = alglib.mnlavgce(lm.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -3118,7 +3093,7 @@ End Class
         Try
             mnlrelclserror = alglib.mnlrelclserror(lm.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -3127,7 +3102,7 @@ End Class
         Try
             mnlrmserror = alglib.mnlrmserror(lm.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -3136,7 +3111,7 @@ End Class
         Try
             mnlavgerror = alglib.mnlavgerror(lm.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -3145,7 +3120,7 @@ End Class
         Try
             mnlavgrelerror = alglib.mnlavgrelerror(lm.csobj, xy, ssize)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -3154,7 +3129,7 @@ End Class
         Try
             mnlclserror = alglib.mnlclserror(lm.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -3169,36 +3144,36 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class mincgreport
         Public Property iterationscount() As Integer
-        Get
-            Return csobj.iterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.iterationscount = Value
-        End Set
+            Get
+                Return csobj.iterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.iterationscount = Value
+            End Set
         End Property
         Public Property nfev() As Integer
-        Get
-            Return csobj.nfev
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nfev = Value
-        End Set
+            Get
+                Return csobj.nfev
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nfev = Value
+            End Set
         End Property
         Public Property varidx() As Integer
-        Get
-            Return csobj.varidx
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.varidx = Value
-        End Set
+            Get
+                Return csobj.varidx
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.varidx = Value
+            End Set
         End Property
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public csobj As alglib.mincgreport
     End Class
@@ -3209,7 +3184,7 @@ End Class
             state = New mincgstate()
             alglib.mincgcreate(n, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3219,7 +3194,7 @@ End Class
             state = New mincgstate()
             alglib.mincgcreate(x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3229,7 +3204,7 @@ End Class
             state = New mincgstate()
             alglib.mincgcreatef(n, x, diffstep, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3239,7 +3214,7 @@ End Class
             state = New mincgstate()
             alglib.mincgcreatef(x, diffstep, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3248,7 +3223,7 @@ End Class
         Try
             alglib.mincgsetcond(state.csobj, epsg, epsf, epsx, maxits)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3257,7 +3232,7 @@ End Class
         Try
             alglib.mincgsetscale(state.csobj, s)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3266,7 +3241,7 @@ End Class
         Try
             alglib.mincgsetxrep(state.csobj, needxrep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3275,7 +3250,7 @@ End Class
         Try
             alglib.mincgsetcgtype(state.csobj, cgtype)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3284,7 +3259,7 @@ End Class
         Try
             alglib.mincgsetstpmax(state.csobj, stpmax)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3293,7 +3268,7 @@ End Class
         Try
             alglib.mincgsuggeststep(state.csobj, stp)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3302,7 +3277,7 @@ End Class
         Try
             alglib.mincgsetprecdefault(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3311,7 +3286,7 @@ End Class
         Try
             alglib.mincgsetprecdiag(state.csobj, d)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3320,7 +3295,7 @@ End Class
         Try
             alglib.mincgsetprecscale(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3329,7 +3304,7 @@ End Class
         Try
             mincgiteration = alglib.mincgiteration(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -3389,11 +3364,11 @@ End Class
         Try
             While alglib.mincg.mincgiteration(innerobj)
                 If innerobj.needf Then
-                    func(innerobj.x,  innerobj.f, obj)
+                    func(innerobj.x, innerobj.f, obj)
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -3401,7 +3376,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'mincgoptimize' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -3418,7 +3393,7 @@ End Class
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -3426,7 +3401,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'mincgoptimize' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -3438,7 +3413,7 @@ End Class
             rep = New mincgreport()
             alglib.mincgresults(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3447,7 +3422,7 @@ End Class
         Try
             alglib.mincgresultsbuf(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3456,7 +3431,7 @@ End Class
         Try
             alglib.mincgrestartfrom(state.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3465,7 +3440,7 @@ End Class
         Try
             alglib.mincgsetgradientcheck(state.csobj, teststep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3512,92 +3487,92 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class minbleicreport
         Public Property inneriterationscount() As Integer
-        Get
-            Return csobj.inneriterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.inneriterationscount = Value
-        End Set
+            Get
+                Return csobj.inneriterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.inneriterationscount = Value
+            End Set
         End Property
         Public Property outeriterationscount() As Integer
-        Get
-            Return csobj.outeriterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.outeriterationscount = Value
-        End Set
+            Get
+                Return csobj.outeriterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.outeriterationscount = Value
+            End Set
         End Property
         Public Property nfev() As Integer
-        Get
-            Return csobj.nfev
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nfev = Value
-        End Set
+            Get
+                Return csobj.nfev
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nfev = Value
+            End Set
         End Property
         Public Property varidx() As Integer
-        Get
-            Return csobj.varidx
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.varidx = Value
-        End Set
+            Get
+                Return csobj.varidx
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.varidx = Value
+            End Set
         End Property
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public Property debugeqerr() As Double
-        Get
-            Return csobj.debugeqerr
-        End Get
-        Set(ByVal Value As Double)
-            csobj.debugeqerr = Value
-        End Set
+            Get
+                Return csobj.debugeqerr
+            End Get
+            Set(ByVal Value As Double)
+                csobj.debugeqerr = Value
+            End Set
         End Property
         Public Property debugfs() As Double
-        Get
-            Return csobj.debugfs
-        End Get
-        Set(ByVal Value As Double)
-            csobj.debugfs = Value
-        End Set
+            Get
+                Return csobj.debugfs
+            End Get
+            Set(ByVal Value As Double)
+                csobj.debugfs = Value
+            End Set
         End Property
         Public Property debugff() As Double
-        Get
-            Return csobj.debugff
-        End Get
-        Set(ByVal Value As Double)
-            csobj.debugff = Value
-        End Set
+            Get
+                Return csobj.debugff
+            End Get
+            Set(ByVal Value As Double)
+                csobj.debugff = Value
+            End Set
         End Property
         Public Property debugdx() As Double
-        Get
-            Return csobj.debugdx
-        End Get
-        Set(ByVal Value As Double)
-            csobj.debugdx = Value
-        End Set
+            Get
+                Return csobj.debugdx
+            End Get
+            Set(ByVal Value As Double)
+                csobj.debugdx = Value
+            End Set
         End Property
         Public Property debugfeasqpits() As Integer
-        Get
-            Return csobj.debugfeasqpits
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.debugfeasqpits = Value
-        End Set
+            Get
+                Return csobj.debugfeasqpits
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.debugfeasqpits = Value
+            End Set
         End Property
         Public Property debugfeasgpaits() As Integer
-        Get
-            Return csobj.debugfeasgpaits
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.debugfeasgpaits = Value
-        End Set
+            Get
+                Return csobj.debugfeasgpaits
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.debugfeasgpaits = Value
+            End Set
         End Property
         Public csobj As alglib.minbleicreport
     End Class
@@ -3608,7 +3583,7 @@ End Class
             state = New minbleicstate()
             alglib.minbleiccreate(n, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3618,7 +3593,7 @@ End Class
             state = New minbleicstate()
             alglib.minbleiccreate(x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3628,7 +3603,7 @@ End Class
             state = New minbleicstate()
             alglib.minbleiccreatef(n, x, diffstep, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3638,7 +3613,7 @@ End Class
             state = New minbleicstate()
             alglib.minbleiccreatef(x, diffstep, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3647,7 +3622,7 @@ End Class
         Try
             alglib.minbleicsetbc(state.csobj, bndl, bndu)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3656,7 +3631,7 @@ End Class
         Try
             alglib.minbleicsetlc(state.csobj, c, ct, k)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3665,7 +3640,7 @@ End Class
         Try
             alglib.minbleicsetlc(state.csobj, c, ct)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3674,7 +3649,7 @@ End Class
         Try
             alglib.minbleicsetinnercond(state.csobj, epsg, epsf, epsx)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3683,7 +3658,7 @@ End Class
         Try
             alglib.minbleicsetoutercond(state.csobj, epsx, epsi)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3692,7 +3667,7 @@ End Class
         Try
             alglib.minbleicsetscale(state.csobj, s)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3701,7 +3676,7 @@ End Class
         Try
             alglib.minbleicsetprecdefault(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3710,7 +3685,7 @@ End Class
         Try
             alglib.minbleicsetprecdiag(state.csobj, d)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3719,7 +3694,7 @@ End Class
         Try
             alglib.minbleicsetprecscale(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3728,7 +3703,7 @@ End Class
         Try
             alglib.minbleicsetmaxits(state.csobj, maxits)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3737,7 +3712,7 @@ End Class
         Try
             alglib.minbleicsetxrep(state.csobj, needxrep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3746,7 +3721,7 @@ End Class
         Try
             alglib.minbleicsetstpmax(state.csobj, stpmax)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3755,7 +3730,7 @@ End Class
         Try
             minbleiciteration = alglib.minbleiciteration(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -3815,11 +3790,11 @@ End Class
         Try
             While alglib.minbleic.minbleiciteration(innerobj)
                 If innerobj.needf Then
-                    func(innerobj.x,  innerobj.f, obj)
+                    func(innerobj.x, innerobj.f, obj)
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -3827,7 +3802,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'minbleicoptimize' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -3844,7 +3819,7 @@ End Class
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -3852,7 +3827,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'minbleicoptimize' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -3864,7 +3839,7 @@ End Class
             rep = New minbleicreport()
             alglib.minbleicresults(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3873,7 +3848,7 @@ End Class
         Try
             alglib.minbleicresultsbuf(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3882,7 +3857,7 @@ End Class
         Try
             alglib.minbleicrestartfrom(state.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3891,7 +3866,7 @@ End Class
         Try
             alglib.minbleicsetgradientcheck(state.csobj, teststep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3915,36 +3890,36 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class mcpdreport
         Public Property inneriterationscount() As Integer
-        Get
-            Return csobj.inneriterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.inneriterationscount = Value
-        End Set
+            Get
+                Return csobj.inneriterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.inneriterationscount = Value
+            End Set
         End Property
         Public Property outeriterationscount() As Integer
-        Get
-            Return csobj.outeriterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.outeriterationscount = Value
-        End Set
+            Get
+                Return csobj.outeriterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.outeriterationscount = Value
+            End Set
         End Property
         Public Property nfev() As Integer
-        Get
-            Return csobj.nfev
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nfev = Value
-        End Set
+            Get
+                Return csobj.nfev
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nfev = Value
+            End Set
         End Property
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public csobj As alglib.mcpdreport
     End Class
@@ -3955,7 +3930,7 @@ End Class
             s = New mcpdstate()
             alglib.mcpdcreate(n, s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3965,7 +3940,7 @@ End Class
             s = New mcpdstate()
             alglib.mcpdcreateentry(n, entrystate, s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3975,7 +3950,7 @@ End Class
             s = New mcpdstate()
             alglib.mcpdcreateexit(n, exitstate, s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3985,7 +3960,7 @@ End Class
             s = New mcpdstate()
             alglib.mcpdcreateentryexit(n, entrystate, exitstate, s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -3994,7 +3969,7 @@ End Class
         Try
             alglib.mcpdaddtrack(s.csobj, xy, k)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4003,7 +3978,7 @@ End Class
         Try
             alglib.mcpdaddtrack(s.csobj, xy)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4012,7 +3987,7 @@ End Class
         Try
             alglib.mcpdsetec(s.csobj, ec)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4021,7 +3996,7 @@ End Class
         Try
             alglib.mcpdaddec(s.csobj, i, j, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4030,7 +4005,7 @@ End Class
         Try
             alglib.mcpdsetbc(s.csobj, bndl, bndu)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4039,7 +4014,7 @@ End Class
         Try
             alglib.mcpdaddbc(s.csobj, i, j, bndl, bndu)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4048,7 +4023,7 @@ End Class
         Try
             alglib.mcpdsetlc(s.csobj, c, ct, k)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4057,7 +4032,7 @@ End Class
         Try
             alglib.mcpdsetlc(s.csobj, c, ct)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4066,7 +4041,7 @@ End Class
         Try
             alglib.mcpdsettikhonovregularizer(s.csobj, v)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4075,7 +4050,7 @@ End Class
         Try
             alglib.mcpdsetprior(s.csobj, pp)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4084,7 +4059,7 @@ End Class
         Try
             alglib.mcpdsetpredictionweights(s.csobj, pw)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4093,7 +4068,7 @@ End Class
         Try
             alglib.mcpdsolve(s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4103,7 +4078,7 @@ End Class
             rep = New mcpdreport()
             alglib.mcpdresults(s.csobj, p, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4118,36 +4093,36 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class minlbfgsreport
         Public Property iterationscount() As Integer
-        Get
-            Return csobj.iterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.iterationscount = Value
-        End Set
+            Get
+                Return csobj.iterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.iterationscount = Value
+            End Set
         End Property
         Public Property nfev() As Integer
-        Get
-            Return csobj.nfev
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nfev = Value
-        End Set
+            Get
+                Return csobj.nfev
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nfev = Value
+            End Set
         End Property
         Public Property varidx() As Integer
-        Get
-            Return csobj.varidx
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.varidx = Value
-        End Set
+            Get
+                Return csobj.varidx
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.varidx = Value
+            End Set
         End Property
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public csobj As alglib.minlbfgsreport
     End Class
@@ -4158,7 +4133,7 @@ End Class
             state = New minlbfgsstate()
             alglib.minlbfgscreate(n, m, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4168,7 +4143,7 @@ End Class
             state = New minlbfgsstate()
             alglib.minlbfgscreate(m, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4178,7 +4153,7 @@ End Class
             state = New minlbfgsstate()
             alglib.minlbfgscreatef(n, m, x, diffstep, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4188,7 +4163,7 @@ End Class
             state = New minlbfgsstate()
             alglib.minlbfgscreatef(m, x, diffstep, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4197,7 +4172,7 @@ End Class
         Try
             alglib.minlbfgssetcond(state.csobj, epsg, epsf, epsx, maxits)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4206,7 +4181,7 @@ End Class
         Try
             alglib.minlbfgssetxrep(state.csobj, needxrep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4215,7 +4190,7 @@ End Class
         Try
             alglib.minlbfgssetstpmax(state.csobj, stpmax)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4224,7 +4199,7 @@ End Class
         Try
             alglib.minlbfgssetscale(state.csobj, s)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4233,7 +4208,7 @@ End Class
         Try
             alglib.minlbfgssetprecdefault(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4242,7 +4217,7 @@ End Class
         Try
             alglib.minlbfgssetpreccholesky(state.csobj, p, isupper)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4251,7 +4226,7 @@ End Class
         Try
             alglib.minlbfgssetprecdiag(state.csobj, d)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4260,7 +4235,7 @@ End Class
         Try
             alglib.minlbfgssetprecscale(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4269,7 +4244,7 @@ End Class
         Try
             minlbfgsiteration = alglib.minlbfgsiteration(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -4329,11 +4304,11 @@ End Class
         Try
             While alglib.minlbfgs.minlbfgsiteration(innerobj)
                 If innerobj.needf Then
-                    func(innerobj.x,  innerobj.f, obj)
+                    func(innerobj.x, innerobj.f, obj)
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -4341,7 +4316,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'minlbfgsoptimize' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -4358,7 +4333,7 @@ End Class
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -4366,7 +4341,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'minlbfgsoptimize' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -4378,7 +4353,7 @@ End Class
             rep = New minlbfgsreport()
             alglib.minlbfgsresults(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4387,7 +4362,7 @@ End Class
         Try
             alglib.minlbfgsresultsbuf(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4396,7 +4371,7 @@ End Class
         Try
             alglib.minlbfgsrestartfrom(state.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4405,7 +4380,7 @@ End Class
         Try
             alglib.minlbfgssetgradientcheck(state.csobj, teststep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4417,28 +4392,28 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class mlpreport
         Public Property ngrad() As Integer
-        Get
-            Return csobj.ngrad
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.ngrad = Value
-        End Set
+            Get
+                Return csobj.ngrad
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.ngrad = Value
+            End Set
         End Property
         Public Property nhess() As Integer
-        Get
-            Return csobj.nhess
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nhess = Value
-        End Set
+            Get
+                Return csobj.nhess
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nhess = Value
+            End Set
         End Property
         Public Property ncholesky() As Integer
-        Get
-            Return csobj.ncholesky
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.ncholesky = Value
-        End Set
+            Get
+                Return csobj.ncholesky
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.ncholesky = Value
+            End Set
         End Property
         Public csobj As alglib.mlpreport
     End Class
@@ -4447,44 +4422,44 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class mlpcvreport
         Public Property relclserror() As Double
-        Get
-            Return csobj.relclserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.relclserror = Value
-        End Set
+            Get
+                Return csobj.relclserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.relclserror = Value
+            End Set
         End Property
         Public Property avgce() As Double
-        Get
-            Return csobj.avgce
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgce = Value
-        End Set
+            Get
+                Return csobj.avgce
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgce = Value
+            End Set
         End Property
         Public Property rmserror() As Double
-        Get
-            Return csobj.rmserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.rmserror = Value
-        End Set
+            Get
+                Return csobj.rmserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.rmserror = Value
+            End Set
         End Property
         Public Property avgerror() As Double
-        Get
-            Return csobj.avgerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgerror = Value
-        End Set
+            Get
+                Return csobj.avgerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgerror = Value
+            End Set
         End Property
         Public Property avgrelerror() As Double
-        Get
-            Return csobj.avgrelerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgrelerror = Value
-        End Set
+            Get
+                Return csobj.avgrelerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgrelerror = Value
+            End Set
         End Property
         Public csobj As alglib.mlpcvreport
     End Class
@@ -4495,7 +4470,7 @@ End Class
             rep = New mlpreport()
             alglib.mlptrainlm(network.csobj, xy, npoints, decay, restarts, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4505,7 +4480,7 @@ End Class
             rep = New mlpreport()
             alglib.mlptrainlbfgs(network.csobj, xy, npoints, decay, restarts, wstep, maxits, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4515,7 +4490,7 @@ End Class
             rep = New mlpreport()
             alglib.mlptraines(network.csobj, trnxy, trnsize, valxy, valsize, decay, restarts, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4526,7 +4501,7 @@ End Class
             cvrep = New mlpcvreport()
             alglib.mlpkfoldcvlbfgs(network.csobj, xy, npoints, decay, restarts, wstep, maxits, foldscount, info, rep.csobj, cvrep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4537,7 +4512,7 @@ End Class
             cvrep = New mlpcvreport()
             alglib.mlpkfoldcvlm(network.csobj, xy, npoints, decay, restarts, foldscount, info, rep.csobj, cvrep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4548,7 +4523,7 @@ End Class
         Try
             alglib.mlpeserialize(obj.csobj, s_out)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4556,7 +4531,7 @@ End Class
         Try
             alglib.mlpeunserialize(s_in, obj.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4566,7 +4541,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreate0(nin, nout, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4576,7 +4551,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreate1(nin, nhid, nout, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4586,7 +4561,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreate2(nin, nhid1, nhid2, nout, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4596,7 +4571,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreateb0(nin, nout, b, d, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4606,7 +4581,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreateb1(nin, nhid, nout, b, d, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4616,7 +4591,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreateb2(nin, nhid1, nhid2, nout, b, d, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4626,7 +4601,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreater0(nin, nout, a, b, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4636,7 +4611,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreater1(nin, nhid, nout, a, b, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4646,7 +4621,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreater2(nin, nhid1, nhid2, nout, a, b, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4656,7 +4631,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreatec0(nin, nout, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4666,7 +4641,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreatec1(nin, nhid, nout, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4676,7 +4651,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreatec2(nin, nhid1, nhid2, nout, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4686,7 +4661,7 @@ End Class
             ensemble = New mlpensemble()
             alglib.mlpecreatefromnetwork(network.csobj, ensemblesize, ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4695,7 +4670,7 @@ End Class
         Try
             alglib.mlperandomize(ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4704,7 +4679,7 @@ End Class
         Try
             alglib.mlpeproperties(ensemble.csobj, nin, nout)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4713,7 +4688,7 @@ End Class
         Try
             mlpeissoftmax = alglib.mlpeissoftmax(ensemble.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -4722,7 +4697,7 @@ End Class
         Try
             alglib.mlpeprocess(ensemble.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4731,7 +4706,7 @@ End Class
         Try
             alglib.mlpeprocessi(ensemble.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4740,7 +4715,7 @@ End Class
         Try
             mlperelclserror = alglib.mlperelclserror(ensemble.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -4749,7 +4724,7 @@ End Class
         Try
             mlpeavgce = alglib.mlpeavgce(ensemble.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -4758,7 +4733,7 @@ End Class
         Try
             mlpermserror = alglib.mlpermserror(ensemble.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -4767,7 +4742,7 @@ End Class
         Try
             mlpeavgerror = alglib.mlpeavgerror(ensemble.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -4776,7 +4751,7 @@ End Class
         Try
             mlpeavgrelerror = alglib.mlpeavgrelerror(ensemble.csobj, xy, npoints)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -4787,7 +4762,7 @@ End Class
             ooberrors = New mlpcvreport()
             alglib.mlpebagginglm(ensemble.csobj, xy, npoints, decay, restarts, info, rep.csobj, ooberrors.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4798,7 +4773,7 @@ End Class
             ooberrors = New mlpcvreport()
             alglib.mlpebagginglbfgs(ensemble.csobj, xy, npoints, decay, restarts, wstep, maxits, info, rep.csobj, ooberrors.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4808,7 +4783,7 @@ End Class
             rep = New mlpreport()
             alglib.mlpetraines(ensemble.csobj, xy, npoints, decay, restarts, info, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4819,7 +4794,7 @@ End Class
         Try
             alglib.pcabuildbasis(x, npoints, nvars, info, s2, v)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4831,20 +4806,20 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class odesolverreport
         Public Property nfev() As Integer
-        Get
-            Return csobj.nfev
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nfev = Value
-        End Set
+            Get
+                Return csobj.nfev
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nfev = Value
+            End Set
         End Property
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public csobj As alglib.odesolverreport
     End Class
@@ -4855,7 +4830,7 @@ End Class
             state = New odesolverstate()
             alglib.odesolverrkck(y, n, x, m, eps, h, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4865,7 +4840,7 @@ End Class
             state = New odesolverstate()
             alglib.odesolverrkck(y, x, eps, h, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4874,7 +4849,7 @@ End Class
         Try
             odesolveriteration = alglib.odesolveriteration(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -4902,7 +4877,7 @@ End Class
                 Throw New AlglibException("ALGLIB: unexpected error in 'odesolversolve'")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -4914,7 +4889,7 @@ End Class
             rep = New odesolverreport()
             alglib.odesolverresults(state.csobj, m, xtbl, ytbl, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4925,7 +4900,7 @@ End Class
         Try
             alglib.fftc1d(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4934,7 +4909,7 @@ End Class
         Try
             alglib.fftc1d(a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4943,7 +4918,7 @@ End Class
         Try
             alglib.fftc1dinv(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4952,7 +4927,7 @@ End Class
         Try
             alglib.fftc1dinv(a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4961,7 +4936,7 @@ End Class
         Try
             alglib.fftr1d(a, n, f)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4970,7 +4945,7 @@ End Class
         Try
             alglib.fftr1d(a, f)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4979,7 +4954,7 @@ End Class
         Try
             alglib.fftr1dinv(f, n, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4988,7 +4963,7 @@ End Class
         Try
             alglib.fftr1dinv(f, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -4999,7 +4974,7 @@ End Class
         Try
             alglib.convc1d(a, m, b, n, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5008,7 +4983,7 @@ End Class
         Try
             alglib.convc1dinv(a, m, b, n, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5017,7 +4992,7 @@ End Class
         Try
             alglib.convc1dcircular(s, m, r, n, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5026,7 +5001,7 @@ End Class
         Try
             alglib.convc1dcircularinv(a, m, b, n, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5035,7 +5010,7 @@ End Class
         Try
             alglib.convr1d(a, m, b, n, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5044,7 +5019,7 @@ End Class
         Try
             alglib.convr1dinv(a, m, b, n, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5053,7 +5028,7 @@ End Class
         Try
             alglib.convr1dcircular(s, m, r, n, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5062,7 +5037,7 @@ End Class
         Try
             alglib.convr1dcircularinv(a, m, b, n, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5073,7 +5048,7 @@ End Class
         Try
             alglib.corrc1d(signal, n, pattern, m, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5082,7 +5057,7 @@ End Class
         Try
             alglib.corrc1dcircular(signal, m, pattern, n, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5091,7 +5066,7 @@ End Class
         Try
             alglib.corrr1d(signal, n, pattern, m, r)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5100,7 +5075,7 @@ End Class
         Try
             alglib.corrr1dcircular(signal, m, pattern, n, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5111,7 +5086,7 @@ End Class
         Try
             alglib.fhtr1d(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5120,7 +5095,7 @@ End Class
         Try
             alglib.fhtr1dinv(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5131,7 +5106,7 @@ End Class
         Try
             alglib.gqgeneraterec(alpha, beta, mu0, n, info, x, w)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5140,7 +5115,7 @@ End Class
         Try
             alglib.gqgenerategausslobattorec(alpha, beta, mu0, a, b, n, info, x, w)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5149,7 +5124,7 @@ End Class
         Try
             alglib.gqgenerategaussradaurec(alpha, beta, mu0, a, n, info, x, w)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5158,7 +5133,7 @@ End Class
         Try
             alglib.gqgenerategausslegendre(n, info, x, w)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5167,7 +5142,7 @@ End Class
         Try
             alglib.gqgenerategaussjacobi(n, alpha, beta, info, x, w)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5176,7 +5151,7 @@ End Class
         Try
             alglib.gqgenerategausslaguerre(n, alpha, info, x, w)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5185,7 +5160,7 @@ End Class
         Try
             alglib.gqgenerategausshermite(n, info, x, w)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5196,7 +5171,7 @@ End Class
         Try
             alglib.gkqgeneraterec(alpha, beta, mu0, n, info, x, wkronrod, wgauss)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5205,7 +5180,7 @@ End Class
         Try
             alglib.gkqgenerategausslegendre(n, info, x, wkronrod, wgauss)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5214,7 +5189,7 @@ End Class
         Try
             alglib.gkqgenerategaussjacobi(n, alpha, beta, info, x, wkronrod, wgauss)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5223,7 +5198,7 @@ End Class
         Try
             alglib.gkqlegendrecalc(n, info, x, wkronrod, wgauss)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5232,7 +5207,7 @@ End Class
         Try
             alglib.gkqlegendretbl(n, x, wkronrod, wgauss, eps)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5249,28 +5224,28 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class autogkreport
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public Property nfev() As Integer
-        Get
-            Return csobj.nfev
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nfev = Value
-        End Set
+            Get
+                Return csobj.nfev
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nfev = Value
+            End Set
         End Property
         Public Property nintervals() As Integer
-        Get
-            Return csobj.nintervals
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nintervals = Value
-        End Set
+            Get
+                Return csobj.nintervals
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nintervals = Value
+            End Set
         End Property
         Public csobj As alglib.autogkreport
     End Class
@@ -5284,7 +5259,7 @@ End Class
             state = New autogkstate()
             alglib.autogksmooth(a, b, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5294,7 +5269,7 @@ End Class
             state = New autogkstate()
             alglib.autogksmoothw(a, b, xwidth, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5304,7 +5279,7 @@ End Class
             state = New autogkstate()
             alglib.autogksingular(a, b, alpha, beta, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5313,7 +5288,7 @@ End Class
         Try
             autogkiteration = alglib.autogkiteration(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -5343,7 +5318,7 @@ End Class
                 Throw New AlglibException("ALGLIB: unexpected error in 'autogksolve'")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -5353,7 +5328,7 @@ End Class
             rep = New autogkreport()
             alglib.autogkresults(state.csobj, v, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5366,7 +5341,7 @@ End Class
         Try
             idwcalc = alglib.idwcalc(z.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -5376,7 +5351,7 @@ End Class
             z = New idwinterpolant()
             alglib.idwbuildmodifiedshepard(xy, n, nx, d, nq, nw, z.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5386,7 +5361,7 @@ End Class
             z = New idwinterpolant()
             alglib.idwbuildmodifiedshepardr(xy, n, nx, r, z.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5396,7 +5371,7 @@ End Class
             z = New idwinterpolant()
             alglib.idwbuildnoisy(xy, n, nx, d, nq, nw, z.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5409,7 +5384,7 @@ End Class
         Try
             barycentriccalc = alglib.barycentriccalc(b.csobj, t)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -5418,7 +5393,7 @@ End Class
         Try
             alglib.barycentricdiff1(b.csobj, t, f, df)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5427,7 +5402,7 @@ End Class
         Try
             alglib.barycentricdiff2(b.csobj, t, f, df, d2f)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5436,7 +5411,7 @@ End Class
         Try
             alglib.barycentriclintransx(b.csobj, ca, cb)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5445,7 +5420,7 @@ End Class
         Try
             alglib.barycentriclintransy(b.csobj, ca, cb)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5454,7 +5429,7 @@ End Class
         Try
             alglib.barycentricunpack(b.csobj, n, x, y, w)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5464,7 +5439,7 @@ End Class
             b = New barycentricinterpolant()
             alglib.barycentricbuildxyw(x, y, w, n, b.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5474,7 +5449,7 @@ End Class
             b = New barycentricinterpolant()
             alglib.barycentricbuildfloaterhormann(x, y, n, d, b.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5485,7 +5460,7 @@ End Class
         Try
             alglib.polynomialbar2cheb(p.csobj, a, b, t)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5495,7 +5470,7 @@ End Class
             p = New barycentricinterpolant()
             alglib.polynomialcheb2bar(t, n, a, b, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5505,7 +5480,7 @@ End Class
             p = New barycentricinterpolant()
             alglib.polynomialcheb2bar(t, a, b, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5514,7 +5489,7 @@ End Class
         Try
             alglib.polynomialbar2pow(p.csobj, c, s, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5523,7 +5498,7 @@ End Class
         Try
             alglib.polynomialbar2pow(p.csobj, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5533,7 +5508,7 @@ End Class
             p = New barycentricinterpolant()
             alglib.polynomialpow2bar(a, n, c, s, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5543,7 +5518,7 @@ End Class
             p = New barycentricinterpolant()
             alglib.polynomialpow2bar(a, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5553,7 +5528,7 @@ End Class
             p = New barycentricinterpolant()
             alglib.polynomialbuild(x, y, n, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5563,7 +5538,7 @@ End Class
             p = New barycentricinterpolant()
             alglib.polynomialbuild(x, y, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5573,7 +5548,7 @@ End Class
             p = New barycentricinterpolant()
             alglib.polynomialbuildeqdist(a, b, y, n, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5583,7 +5558,7 @@ End Class
             p = New barycentricinterpolant()
             alglib.polynomialbuildeqdist(a, b, y, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5593,7 +5568,7 @@ End Class
             p = New barycentricinterpolant()
             alglib.polynomialbuildcheb1(a, b, y, n, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5603,7 +5578,7 @@ End Class
             p = New barycentricinterpolant()
             alglib.polynomialbuildcheb1(a, b, y, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5613,7 +5588,7 @@ End Class
             p = New barycentricinterpolant()
             alglib.polynomialbuildcheb2(a, b, y, n, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5623,7 +5598,7 @@ End Class
             p = New barycentricinterpolant()
             alglib.polynomialbuildcheb2(a, b, y, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5632,7 +5607,7 @@ End Class
         Try
             polynomialcalceqdist = alglib.polynomialcalceqdist(a, b, f, n, t)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -5641,7 +5616,7 @@ End Class
         Try
             polynomialcalceqdist = alglib.polynomialcalceqdist(a, b, f, t)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -5650,7 +5625,7 @@ End Class
         Try
             polynomialcalccheb1 = alglib.polynomialcalccheb1(a, b, f, n, t)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -5659,7 +5634,7 @@ End Class
         Try
             polynomialcalccheb1 = alglib.polynomialcalccheb1(a, b, f, t)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -5668,7 +5643,7 @@ End Class
         Try
             polynomialcalccheb2 = alglib.polynomialcalccheb2(a, b, f, n, t)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -5677,7 +5652,7 @@ End Class
         Try
             polynomialcalccheb2 = alglib.polynomialcalccheb2(a, b, f, t)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -5691,7 +5666,7 @@ End Class
             c = New spline1dinterpolant()
             alglib.spline1dbuildlinear(x, y, n, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5701,7 +5676,7 @@ End Class
             c = New spline1dinterpolant()
             alglib.spline1dbuildlinear(x, y, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5711,7 +5686,7 @@ End Class
             c = New spline1dinterpolant()
             alglib.spline1dbuildcubic(x, y, n, boundltype, boundl, boundrtype, boundr, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5721,7 +5696,7 @@ End Class
             c = New spline1dinterpolant()
             alglib.spline1dbuildcubic(x, y, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5730,7 +5705,7 @@ End Class
         Try
             alglib.spline1dgriddiffcubic(x, y, n, boundltype, boundl, boundrtype, boundr, d)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5739,7 +5714,7 @@ End Class
         Try
             alglib.spline1dgriddiffcubic(x, y, d)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5748,7 +5723,7 @@ End Class
         Try
             alglib.spline1dgriddiff2cubic(x, y, n, boundltype, boundl, boundrtype, boundr, d1, d2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5757,7 +5732,7 @@ End Class
         Try
             alglib.spline1dgriddiff2cubic(x, y, d1, d2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5766,7 +5741,7 @@ End Class
         Try
             alglib.spline1dconvcubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, y2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5775,7 +5750,7 @@ End Class
         Try
             alglib.spline1dconvcubic(x, y, x2, y2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5784,7 +5759,7 @@ End Class
         Try
             alglib.spline1dconvdiffcubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, y2, d2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5793,7 +5768,7 @@ End Class
         Try
             alglib.spline1dconvdiffcubic(x, y, x2, y2, d2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5802,7 +5777,7 @@ End Class
         Try
             alglib.spline1dconvdiff2cubic(x, y, n, boundltype, boundl, boundrtype, boundr, x2, n2, y2, d2, dd2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5811,7 +5786,7 @@ End Class
         Try
             alglib.spline1dconvdiff2cubic(x, y, x2, y2, d2, dd2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5821,7 +5796,7 @@ End Class
             c = New spline1dinterpolant()
             alglib.spline1dbuildcatmullrom(x, y, n, boundtype, tension, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5831,7 +5806,7 @@ End Class
             c = New spline1dinterpolant()
             alglib.spline1dbuildcatmullrom(x, y, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5841,7 +5816,7 @@ End Class
             c = New spline1dinterpolant()
             alglib.spline1dbuildhermite(x, y, d, n, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5851,7 +5826,7 @@ End Class
             c = New spline1dinterpolant()
             alglib.spline1dbuildhermite(x, y, d, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5861,7 +5836,7 @@ End Class
             c = New spline1dinterpolant()
             alglib.spline1dbuildakima(x, y, n, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5871,7 +5846,7 @@ End Class
             c = New spline1dinterpolant()
             alglib.spline1dbuildakima(x, y, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5880,7 +5855,7 @@ End Class
         Try
             spline1dcalc = alglib.spline1dcalc(c.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -5889,7 +5864,7 @@ End Class
         Try
             alglib.spline1ddiff(c.csobj, x, s, ds, d2s)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5898,7 +5873,7 @@ End Class
         Try
             alglib.spline1dunpack(c.csobj, n, tbl)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5907,7 +5882,7 @@ End Class
         Try
             alglib.spline1dlintransx(c.csobj, a, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5916,7 +5891,7 @@ End Class
         Try
             alglib.spline1dlintransy(c.csobj, a, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5925,7 +5900,7 @@ End Class
         Try
             spline1dintegrate = alglib.spline1dintegrate(c.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -5935,7 +5910,7 @@ End Class
             c = New spline1dinterpolant()
             alglib.spline1dbuildmonotone(x, y, n, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5945,7 +5920,7 @@ End Class
             c = New spline1dinterpolant()
             alglib.spline1dbuildmonotone(x, y, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5959,7 +5934,7 @@ End Class
             s = New sparsematrix()
             alglib.sparsecreate(m, n, k, s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5969,7 +5944,7 @@ End Class
             s = New sparsematrix()
             alglib.sparsecreate(m, n, s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5979,7 +5954,7 @@ End Class
             s = New sparsematrix()
             alglib.sparsecreatecrs(m, n, ner, s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5989,7 +5964,7 @@ End Class
             s1 = New sparsematrix()
             alglib.sparsecopy(s0.csobj, s1.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -5998,7 +5973,7 @@ End Class
         Try
             alglib.sparseadd(s.csobj, i, j, v)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6007,7 +5982,7 @@ End Class
         Try
             alglib.sparseset(s.csobj, i, j, v)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6016,7 +5991,7 @@ End Class
         Try
             sparseget = alglib.sparseget(s.csobj, i, j)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -6025,7 +6000,7 @@ End Class
         Try
             alglib.sparseconverttocrs(s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6034,7 +6009,7 @@ End Class
         Try
             alglib.sparsemv(s.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6043,7 +6018,7 @@ End Class
         Try
             alglib.sparsemtv(s.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6052,7 +6027,7 @@ End Class
         Try
             alglib.sparsemv2(s.csobj, x, y0, y1)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6061,7 +6036,7 @@ End Class
         Try
             alglib.sparsesmv(s.csobj, isupper, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6070,7 +6045,7 @@ End Class
         Try
             alglib.sparsemm(s.csobj, a, k, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6079,7 +6054,7 @@ End Class
         Try
             alglib.sparsemtm(s.csobj, a, k, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6088,7 +6063,7 @@ End Class
         Try
             alglib.sparsemm2(s.csobj, a, k, b0, b1)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6097,7 +6072,7 @@ End Class
         Try
             alglib.sparsesmm(s.csobj, isupper, a, k, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6106,7 +6081,7 @@ End Class
         Try
             alglib.sparseresizematrix(s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6115,7 +6090,7 @@ End Class
         Try
             sparseenumerate = alglib.sparseenumerate(s.csobj, t0, t1, i, j, v)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -6124,7 +6099,7 @@ End Class
         Try
             sparserewriteexisting = alglib.sparserewriteexisting(s.csobj, i, j, v)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -6138,7 +6113,7 @@ End Class
             state = New normestimatorstate()
             alglib.normestimatorcreate(m, n, nstart, nits, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6147,7 +6122,7 @@ End Class
         Try
             alglib.normestimatorsetseed(state.csobj, seedval)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6156,7 +6131,7 @@ End Class
         Try
             alglib.normestimatorestimatesparse(state.csobj, a.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6165,7 +6140,7 @@ End Class
         Try
             alglib.normestimatorresults(state.csobj, nrm)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6201,44 +6176,44 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class minqpreport
         Public Property inneriterationscount() As Integer
-        Get
-            Return csobj.inneriterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.inneriterationscount = Value
-        End Set
+            Get
+                Return csobj.inneriterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.inneriterationscount = Value
+            End Set
         End Property
         Public Property outeriterationscount() As Integer
-        Get
-            Return csobj.outeriterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.outeriterationscount = Value
-        End Set
+            Get
+                Return csobj.outeriterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.outeriterationscount = Value
+            End Set
         End Property
         Public Property nmv() As Integer
-        Get
-            Return csobj.nmv
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nmv = Value
-        End Set
+            Get
+                Return csobj.nmv
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nmv = Value
+            End Set
         End Property
         Public Property ncholesky() As Integer
-        Get
-            Return csobj.ncholesky
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.ncholesky = Value
-        End Set
+            Get
+                Return csobj.ncholesky
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.ncholesky = Value
+            End Set
         End Property
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public csobj As alglib.minqpreport
     End Class
@@ -6249,7 +6224,7 @@ End Class
             state = New minqpstate()
             alglib.minqpcreate(n, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6258,7 +6233,7 @@ End Class
         Try
             alglib.minqpsetlinearterm(state.csobj, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6267,7 +6242,7 @@ End Class
         Try
             alglib.minqpsetquadraticterm(state.csobj, a, isupper)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6276,7 +6251,7 @@ End Class
         Try
             alglib.minqpsetquadraticterm(state.csobj, a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6285,7 +6260,7 @@ End Class
         Try
             alglib.minqpsetstartingpoint(state.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6294,7 +6269,7 @@ End Class
         Try
             alglib.minqpsetorigin(state.csobj, xorigin)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6303,7 +6278,7 @@ End Class
         Try
             alglib.minqpsetalgocholesky(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6312,7 +6287,7 @@ End Class
         Try
             alglib.minqpsetbc(state.csobj, bndl, bndu)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6321,7 +6296,7 @@ End Class
         Try
             alglib.minqpsetlc(state.csobj, c, ct, k)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6330,7 +6305,7 @@ End Class
         Try
             alglib.minqpsetlc(state.csobj, c, ct)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6339,7 +6314,7 @@ End Class
         Try
             alglib.minqpoptimize(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6349,7 +6324,7 @@ End Class
             rep = New minqpreport()
             alglib.minqpresults(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6358,7 +6333,7 @@ End Class
         Try
             alglib.minqpresultsbuf(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6389,76 +6364,76 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class minlmreport
         Public Property iterationscount() As Integer
-        Get
-            Return csobj.iterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.iterationscount = Value
-        End Set
+            Get
+                Return csobj.iterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.iterationscount = Value
+            End Set
         End Property
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public Property funcidx() As Integer
-        Get
-            Return csobj.funcidx
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.funcidx = Value
-        End Set
+            Get
+                Return csobj.funcidx
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.funcidx = Value
+            End Set
         End Property
         Public Property varidx() As Integer
-        Get
-            Return csobj.varidx
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.varidx = Value
-        End Set
+            Get
+                Return csobj.varidx
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.varidx = Value
+            End Set
         End Property
         Public Property nfunc() As Integer
-        Get
-            Return csobj.nfunc
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nfunc = Value
-        End Set
+            Get
+                Return csobj.nfunc
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nfunc = Value
+            End Set
         End Property
         Public Property njac() As Integer
-        Get
-            Return csobj.njac
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.njac = Value
-        End Set
+            Get
+                Return csobj.njac
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.njac = Value
+            End Set
         End Property
         Public Property ngrad() As Integer
-        Get
-            Return csobj.ngrad
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.ngrad = Value
-        End Set
+            Get
+                Return csobj.ngrad
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.ngrad = Value
+            End Set
         End Property
         Public Property nhess() As Integer
-        Get
-            Return csobj.nhess
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nhess = Value
-        End Set
+            Get
+                Return csobj.nhess
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nhess = Value
+            End Set
         End Property
         Public Property ncholesky() As Integer
-        Get
-            Return csobj.ncholesky
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.ncholesky = Value
-        End Set
+            Get
+                Return csobj.ncholesky
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.ncholesky = Value
+            End Set
         End Property
         Public csobj As alglib.minlmreport
     End Class
@@ -6469,7 +6444,7 @@ End Class
             state = New minlmstate()
             alglib.minlmcreatevj(n, m, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6479,7 +6454,7 @@ End Class
             state = New minlmstate()
             alglib.minlmcreatevj(m, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6489,7 +6464,7 @@ End Class
             state = New minlmstate()
             alglib.minlmcreatev(n, m, x, diffstep, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6499,7 +6474,7 @@ End Class
             state = New minlmstate()
             alglib.minlmcreatev(m, x, diffstep, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6509,7 +6484,7 @@ End Class
             state = New minlmstate()
             alglib.minlmcreatefgh(n, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6519,7 +6494,7 @@ End Class
             state = New minlmstate()
             alglib.minlmcreatefgh(x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6528,7 +6503,7 @@ End Class
         Try
             alglib.minlmsetcond(state.csobj, epsg, epsf, epsx, maxits)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6537,7 +6512,7 @@ End Class
         Try
             alglib.minlmsetxrep(state.csobj, needxrep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6546,7 +6521,7 @@ End Class
         Try
             alglib.minlmsetstpmax(state.csobj, stpmax)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6555,7 +6530,7 @@ End Class
         Try
             alglib.minlmsetscale(state.csobj, s)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6564,7 +6539,7 @@ End Class
         Try
             alglib.minlmsetbc(state.csobj, bndl, bndu)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6573,7 +6548,7 @@ End Class
         Try
             alglib.minlmsetacctype(state.csobj, acctype)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6582,7 +6557,7 @@ End Class
         Try
             minlmiteration = alglib.minlmiteration(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -6635,7 +6610,7 @@ End Class
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -6643,7 +6618,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'minlmoptimize' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -6667,7 +6642,7 @@ End Class
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -6675,7 +6650,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'minlmoptimize' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -6694,7 +6669,7 @@ End Class
         Try
             While alglib.minlm.minlmiteration(innerobj)
                 If innerobj.needf Then
-                    func(innerobj.x,  innerobj.f, obj)
+                    func(innerobj.x, innerobj.f, obj)
                     Continue While
                 End If
                 If innerobj.needfg Then
@@ -6706,7 +6681,7 @@ End Class
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -6714,7 +6689,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'minlmoptimize' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -6730,7 +6705,7 @@ End Class
         Try
             While alglib.minlm.minlmiteration(innerobj)
                 If innerobj.needf Then
-                    func(innerobj.x,  innerobj.f, obj)
+                    func(innerobj.x, innerobj.f, obj)
                     Continue While
                 End If
                 If innerobj.needfij Then
@@ -6738,7 +6713,7 @@ End Class
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -6746,7 +6721,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'minlmoptimize' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -6765,7 +6740,7 @@ End Class
         Try
             While alglib.minlm.minlmiteration(innerobj)
                 If innerobj.needf Then
-                    func(innerobj.x,  innerobj.f, obj)
+                    func(innerobj.x, innerobj.f, obj)
                     Continue While
                 End If
                 If innerobj.needfg Then
@@ -6777,7 +6752,7 @@ End Class
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -6785,7 +6760,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'minlmoptimize' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -6797,7 +6772,7 @@ End Class
             rep = New minlmreport()
             alglib.minlmresults(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6806,7 +6781,7 @@ End Class
         Try
             alglib.minlmresultsbuf(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6815,7 +6790,7 @@ End Class
         Try
             alglib.minlmrestartfrom(state.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6825,7 +6800,7 @@ End Class
             state = New minlmstate()
             alglib.minlmcreatevgj(n, m, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6835,7 +6810,7 @@ End Class
             state = New minlmstate()
             alglib.minlmcreatevgj(m, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6845,7 +6820,7 @@ End Class
             state = New minlmstate()
             alglib.minlmcreatefgj(n, m, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6855,7 +6830,7 @@ End Class
             state = New minlmstate()
             alglib.minlmcreatefgj(m, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6865,7 +6840,7 @@ End Class
             state = New minlmstate()
             alglib.minlmcreatefj(n, m, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6875,7 +6850,7 @@ End Class
             state = New minlmstate()
             alglib.minlmcreatefj(m, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6884,7 +6859,7 @@ End Class
         Try
             alglib.minlmsetgradientcheck(state.csobj, teststep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -6898,44 +6873,44 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class polynomialfitreport
         Public Property taskrcond() As Double
-        Get
-            Return csobj.taskrcond
-        End Get
-        Set(ByVal Value As Double)
-            csobj.taskrcond = Value
-        End Set
+            Get
+                Return csobj.taskrcond
+            End Get
+            Set(ByVal Value As Double)
+                csobj.taskrcond = Value
+            End Set
         End Property
         Public Property rmserror() As Double
-        Get
-            Return csobj.rmserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.rmserror = Value
-        End Set
+            Get
+                Return csobj.rmserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.rmserror = Value
+            End Set
         End Property
         Public Property avgerror() As Double
-        Get
-            Return csobj.avgerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgerror = Value
-        End Set
+            Get
+                Return csobj.avgerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgerror = Value
+            End Set
         End Property
         Public Property avgrelerror() As Double
-        Get
-            Return csobj.avgrelerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgrelerror = Value
-        End Set
+            Get
+                Return csobj.avgrelerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgrelerror = Value
+            End Set
         End Property
         Public Property maxerror() As Double
-        Get
-            Return csobj.maxerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.maxerror = Value
-        End Set
+            Get
+                Return csobj.maxerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.maxerror = Value
+            End Set
         End Property
         Public csobj As alglib.polynomialfitreport
     End Class
@@ -6949,52 +6924,52 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class barycentricfitreport
         Public Property taskrcond() As Double
-        Get
-            Return csobj.taskrcond
-        End Get
-        Set(ByVal Value As Double)
-            csobj.taskrcond = Value
-        End Set
+            Get
+                Return csobj.taskrcond
+            End Get
+            Set(ByVal Value As Double)
+                csobj.taskrcond = Value
+            End Set
         End Property
         Public Property dbest() As Integer
-        Get
-            Return csobj.dbest
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.dbest = Value
-        End Set
+            Get
+                Return csobj.dbest
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.dbest = Value
+            End Set
         End Property
         Public Property rmserror() As Double
-        Get
-            Return csobj.rmserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.rmserror = Value
-        End Set
+            Get
+                Return csobj.rmserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.rmserror = Value
+            End Set
         End Property
         Public Property avgerror() As Double
-        Get
-            Return csobj.avgerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgerror = Value
-        End Set
+            Get
+                Return csobj.avgerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgerror = Value
+            End Set
         End Property
         Public Property avgrelerror() As Double
-        Get
-            Return csobj.avgrelerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgrelerror = Value
-        End Set
+            Get
+                Return csobj.avgrelerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgrelerror = Value
+            End Set
         End Property
         Public Property maxerror() As Double
-        Get
-            Return csobj.maxerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.maxerror = Value
-        End Set
+            Get
+                Return csobj.maxerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.maxerror = Value
+            End Set
         End Property
         Public csobj As alglib.barycentricfitreport
     End Class
@@ -7011,44 +6986,44 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class spline1dfitreport
         Public Property taskrcond() As Double
-        Get
-            Return csobj.taskrcond
-        End Get
-        Set(ByVal Value As Double)
-            csobj.taskrcond = Value
-        End Set
+            Get
+                Return csobj.taskrcond
+            End Get
+            Set(ByVal Value As Double)
+                csobj.taskrcond = Value
+            End Set
         End Property
         Public Property rmserror() As Double
-        Get
-            Return csobj.rmserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.rmserror = Value
-        End Set
+            Get
+                Return csobj.rmserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.rmserror = Value
+            End Set
         End Property
         Public Property avgerror() As Double
-        Get
-            Return csobj.avgerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgerror = Value
-        End Set
+            Get
+                Return csobj.avgerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgerror = Value
+            End Set
         End Property
         Public Property avgrelerror() As Double
-        Get
-            Return csobj.avgrelerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgrelerror = Value
-        End Set
+            Get
+                Return csobj.avgrelerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgrelerror = Value
+            End Set
         End Property
         Public Property maxerror() As Double
-        Get
-            Return csobj.maxerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.maxerror = Value
-        End Set
+            Get
+                Return csobj.maxerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.maxerror = Value
+            End Set
         End Property
         Public csobj As alglib.spline1dfitreport
     End Class
@@ -7066,68 +7041,68 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class lsfitreport
         Public Property taskrcond() As Double
-        Get
-            Return csobj.taskrcond
-        End Get
-        Set(ByVal Value As Double)
-            csobj.taskrcond = Value
-        End Set
+            Get
+                Return csobj.taskrcond
+            End Get
+            Set(ByVal Value As Double)
+                csobj.taskrcond = Value
+            End Set
         End Property
         Public Property iterationscount() As Integer
-        Get
-            Return csobj.iterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.iterationscount = Value
-        End Set
+            Get
+                Return csobj.iterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.iterationscount = Value
+            End Set
         End Property
         Public Property varidx() As Integer
-        Get
-            Return csobj.varidx
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.varidx = Value
-        End Set
+            Get
+                Return csobj.varidx
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.varidx = Value
+            End Set
         End Property
         Public Property rmserror() As Double
-        Get
-            Return csobj.rmserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.rmserror = Value
-        End Set
+            Get
+                Return csobj.rmserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.rmserror = Value
+            End Set
         End Property
         Public Property avgerror() As Double
-        Get
-            Return csobj.avgerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgerror = Value
-        End Set
+            Get
+                Return csobj.avgerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgerror = Value
+            End Set
         End Property
         Public Property avgrelerror() As Double
-        Get
-            Return csobj.avgrelerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.avgrelerror = Value
-        End Set
+            Get
+                Return csobj.avgrelerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.avgrelerror = Value
+            End Set
         End Property
         Public Property maxerror() As Double
-        Get
-            Return csobj.maxerror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.maxerror = Value
-        End Set
+            Get
+                Return csobj.maxerror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.maxerror = Value
+            End Set
         End Property
         Public Property wrmserror() As Double
-        Get
-            Return csobj.wrmserror
-        End Get
-        Set(ByVal Value As Double)
-            csobj.wrmserror = Value
-        End Set
+            Get
+                Return csobj.wrmserror
+            End Get
+            Set(ByVal Value As Double)
+                csobj.wrmserror = Value
+            End Set
         End Property
         Public csobj As alglib.lsfitreport
     End Class
@@ -7142,7 +7117,7 @@ End Class
             rep = New polynomialfitreport()
             alglib.polynomialfit(x, y, n, m, info, p.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7153,7 +7128,7 @@ End Class
             rep = New polynomialfitreport()
             alglib.polynomialfit(x, y, m, info, p.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7164,7 +7139,7 @@ End Class
             rep = New polynomialfitreport()
             alglib.polynomialfitwc(x, y, w, n, xc, yc, dc, k, m, info, p.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7175,7 +7150,7 @@ End Class
             rep = New polynomialfitreport()
             alglib.polynomialfitwc(x, y, w, xc, yc, dc, m, info, p.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7186,7 +7161,7 @@ End Class
             rep = New barycentricfitreport()
             alglib.barycentricfitfloaterhormannwc(x, y, w, n, xc, yc, dc, k, m, info, b.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7197,7 +7172,7 @@ End Class
             rep = New barycentricfitreport()
             alglib.barycentricfitfloaterhormann(x, y, n, m, info, b.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7208,7 +7183,7 @@ End Class
             rep = New spline1dfitreport()
             alglib.spline1dfitpenalized(x, y, n, m, rho, info, s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7219,7 +7194,7 @@ End Class
             rep = New spline1dfitreport()
             alglib.spline1dfitpenalized(x, y, m, rho, info, s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7230,7 +7205,7 @@ End Class
             rep = New spline1dfitreport()
             alglib.spline1dfitpenalizedw(x, y, w, n, m, rho, info, s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7241,7 +7216,7 @@ End Class
             rep = New spline1dfitreport()
             alglib.spline1dfitpenalizedw(x, y, w, m, rho, info, s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7252,7 +7227,7 @@ End Class
             rep = New spline1dfitreport()
             alglib.spline1dfitcubicwc(x, y, w, n, xc, yc, dc, k, m, info, s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7263,7 +7238,7 @@ End Class
             rep = New spline1dfitreport()
             alglib.spline1dfitcubicwc(x, y, w, xc, yc, dc, m, info, s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7274,7 +7249,7 @@ End Class
             rep = New spline1dfitreport()
             alglib.spline1dfithermitewc(x, y, w, n, xc, yc, dc, k, m, info, s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7285,7 +7260,7 @@ End Class
             rep = New spline1dfitreport()
             alglib.spline1dfithermitewc(x, y, w, xc, yc, dc, m, info, s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7296,7 +7271,7 @@ End Class
             rep = New spline1dfitreport()
             alglib.spline1dfitcubic(x, y, n, m, info, s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7307,7 +7282,7 @@ End Class
             rep = New spline1dfitreport()
             alglib.spline1dfitcubic(x, y, m, info, s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7318,7 +7293,7 @@ End Class
             rep = New spline1dfitreport()
             alglib.spline1dfithermite(x, y, n, m, info, s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7329,7 +7304,7 @@ End Class
             rep = New spline1dfitreport()
             alglib.spline1dfithermite(x, y, m, info, s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7339,7 +7314,7 @@ End Class
             rep = New lsfitreport()
             alglib.lsfitlinearw(y, w, fmatrix, n, m, info, c, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7349,7 +7324,7 @@ End Class
             rep = New lsfitreport()
             alglib.lsfitlinearw(y, w, fmatrix, info, c, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7359,7 +7334,7 @@ End Class
             rep = New lsfitreport()
             alglib.lsfitlinearwc(y, w, fmatrix, cmatrix, n, m, k, info, c, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7369,7 +7344,7 @@ End Class
             rep = New lsfitreport()
             alglib.lsfitlinearwc(y, w, fmatrix, cmatrix, info, c, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7379,7 +7354,7 @@ End Class
             rep = New lsfitreport()
             alglib.lsfitlinear(y, fmatrix, n, m, info, c, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7389,7 +7364,7 @@ End Class
             rep = New lsfitreport()
             alglib.lsfitlinear(y, fmatrix, info, c, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7399,7 +7374,7 @@ End Class
             rep = New lsfitreport()
             alglib.lsfitlinearc(y, fmatrix, cmatrix, n, m, k, info, c, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7409,7 +7384,7 @@ End Class
             rep = New lsfitreport()
             alglib.lsfitlinearc(y, fmatrix, cmatrix, info, c, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7419,7 +7394,7 @@ End Class
             state = New lsfitstate()
             alglib.lsfitcreatewf(x, y, w, c, n, m, k, diffstep, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7429,7 +7404,7 @@ End Class
             state = New lsfitstate()
             alglib.lsfitcreatewf(x, y, w, c, diffstep, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7439,7 +7414,7 @@ End Class
             state = New lsfitstate()
             alglib.lsfitcreatef(x, y, c, n, m, k, diffstep, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7449,7 +7424,7 @@ End Class
             state = New lsfitstate()
             alglib.lsfitcreatef(x, y, c, diffstep, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7459,7 +7434,7 @@ End Class
             state = New lsfitstate()
             alglib.lsfitcreatewfg(x, y, w, c, n, m, k, cheapfg, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7469,7 +7444,7 @@ End Class
             state = New lsfitstate()
             alglib.lsfitcreatewfg(x, y, w, c, cheapfg, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7479,7 +7454,7 @@ End Class
             state = New lsfitstate()
             alglib.lsfitcreatefg(x, y, c, n, m, k, cheapfg, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7489,7 +7464,7 @@ End Class
             state = New lsfitstate()
             alglib.lsfitcreatefg(x, y, c, cheapfg, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7499,7 +7474,7 @@ End Class
             state = New lsfitstate()
             alglib.lsfitcreatewfgh(x, y, w, c, n, m, k, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7509,7 +7484,7 @@ End Class
             state = New lsfitstate()
             alglib.lsfitcreatewfgh(x, y, w, c, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7519,7 +7494,7 @@ End Class
             state = New lsfitstate()
             alglib.lsfitcreatefgh(x, y, c, n, m, k, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7529,7 +7504,7 @@ End Class
             state = New lsfitstate()
             alglib.lsfitcreatefgh(x, y, c, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7538,7 +7513,7 @@ End Class
         Try
             alglib.lsfitsetcond(state.csobj, epsf, epsx, maxits)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7547,7 +7522,7 @@ End Class
         Try
             alglib.lsfitsetstpmax(state.csobj, stpmax)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7556,7 +7531,7 @@ End Class
         Try
             alglib.lsfitsetxrep(state.csobj, needxrep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7565,7 +7540,7 @@ End Class
         Try
             alglib.lsfitsetscale(state.csobj, s)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7574,7 +7549,7 @@ End Class
         Try
             alglib.lsfitsetbc(state.csobj, bndl, bndu)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7583,7 +7558,7 @@ End Class
         Try
             lsfititeration = alglib.lsfititeration(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -7647,11 +7622,11 @@ End Class
         Try
             While alglib.lsfit.lsfititeration(innerobj)
                 If innerobj.needf Then
-                    func(innerobj.c, innerobj.x,  innerobj.f, obj)
+                    func(innerobj.c, innerobj.x, innerobj.f, obj)
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.c, innerobj.f, obj)
                     End If
                     Continue While
@@ -7659,7 +7634,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'lsfitfit' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -7675,7 +7650,7 @@ End Class
         Try
             While alglib.lsfit.lsfititeration(innerobj)
                 If innerobj.needf Then
-                    func(innerobj.c, innerobj.x,  innerobj.f, obj)
+                    func(innerobj.c, innerobj.x, innerobj.f, obj)
                     Continue While
                 End If
                 If innerobj.needfg Then
@@ -7683,7 +7658,7 @@ End Class
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.c, innerobj.f, obj)
                     End If
                     Continue While
@@ -7691,7 +7666,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'lsfitfit' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -7710,7 +7685,7 @@ End Class
         Try
             While alglib.lsfit.lsfititeration(innerobj)
                 If innerobj.needf Then
-                    func(innerobj.c, innerobj.x,  innerobj.f, obj)
+                    func(innerobj.c, innerobj.x, innerobj.f, obj)
                     Continue While
                 End If
                 If innerobj.needfg Then
@@ -7722,7 +7697,7 @@ End Class
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.c, innerobj.f, obj)
                     End If
                     Continue While
@@ -7730,7 +7705,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'lsfitfit' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -7742,7 +7717,7 @@ End Class
             rep = New lsfitreport()
             alglib.lsfitresults(state.csobj, info, c, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7751,7 +7726,7 @@ End Class
         Try
             alglib.lsfitsetgradientcheck(state.csobj, teststep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7768,7 +7743,7 @@ End Class
             p = New pspline2interpolant()
             alglib.pspline2build(xy, n, st, pt, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7778,7 +7753,7 @@ End Class
             p = New pspline3interpolant()
             alglib.pspline3build(xy, n, st, pt, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7788,7 +7763,7 @@ End Class
             p = New pspline2interpolant()
             alglib.pspline2buildperiodic(xy, n, st, pt, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7798,7 +7773,7 @@ End Class
             p = New pspline3interpolant()
             alglib.pspline3buildperiodic(xy, n, st, pt, p.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7807,7 +7782,7 @@ End Class
         Try
             alglib.pspline2parametervalues(p.csobj, n, t)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7816,7 +7791,7 @@ End Class
         Try
             alglib.pspline3parametervalues(p.csobj, n, t)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7825,7 +7800,7 @@ End Class
         Try
             alglib.pspline2calc(p.csobj, t, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7834,7 +7809,7 @@ End Class
         Try
             alglib.pspline3calc(p.csobj, t, x, y, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7843,7 +7818,7 @@ End Class
         Try
             alglib.pspline2tangent(p.csobj, t, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7852,7 +7827,7 @@ End Class
         Try
             alglib.pspline3tangent(p.csobj, t, x, y, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7861,7 +7836,7 @@ End Class
         Try
             alglib.pspline2diff(p.csobj, t, x, dx, y, dy)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7870,7 +7845,7 @@ End Class
         Try
             alglib.pspline3diff(p.csobj, t, x, dx, y, dy, z, dz)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7879,7 +7854,7 @@ End Class
         Try
             alglib.pspline2diff2(p.csobj, t, x, dx, d2x, y, dy, d2y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7888,7 +7863,7 @@ End Class
         Try
             alglib.pspline3diff2(p.csobj, t, x, dx, d2x, y, dy, d2y, z, dz, d2z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7897,7 +7872,7 @@ End Class
         Try
             pspline2arclength = alglib.pspline2arclength(p.csobj, a, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -7906,7 +7881,7 @@ End Class
         Try
             pspline3arclength = alglib.pspline3arclength(p.csobj, a, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -7918,28 +7893,28 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class linlsqrreport
         Public Property iterationscount() As Integer
-        Get
-            Return csobj.iterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.iterationscount = Value
-        End Set
+            Get
+                Return csobj.iterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.iterationscount = Value
+            End Set
         End Property
         Public Property nmv() As Integer
-        Get
-            Return csobj.nmv
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nmv = Value
-        End Set
+            Get
+                Return csobj.nmv
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nmv = Value
+            End Set
         End Property
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public csobj As alglib.linlsqrreport
     End Class
@@ -7950,7 +7925,7 @@ End Class
             state = New linlsqrstate()
             alglib.linlsqrcreate(m, n, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7959,7 +7934,7 @@ End Class
         Try
             alglib.linlsqrsetlambdai(state.csobj, lambdai)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7968,7 +7943,7 @@ End Class
         Try
             alglib.linlsqrsolvesparse(state.csobj, a.csobj, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7977,7 +7952,7 @@ End Class
         Try
             alglib.linlsqrsetcond(state.csobj, epsa, epsb, maxits)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7987,7 +7962,7 @@ End Class
             rep = New linlsqrreport()
             alglib.linlsqrresults(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -7996,7 +7971,7 @@ End Class
         Try
             alglib.linlsqrsetxrep(state.csobj, needxrep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8010,52 +7985,52 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class rbfreport
         Public Property arows() As Integer
-        Get
-            Return csobj.arows
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.arows = Value
-        End Set
+            Get
+                Return csobj.arows
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.arows = Value
+            End Set
         End Property
         Public Property acols() As Integer
-        Get
-            Return csobj.acols
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.acols = Value
-        End Set
+            Get
+                Return csobj.acols
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.acols = Value
+            End Set
         End Property
         Public Property annz() As Integer
-        Get
-            Return csobj.annz
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.annz = Value
-        End Set
+            Get
+                Return csobj.annz
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.annz = Value
+            End Set
         End Property
         Public Property iterationscount() As Integer
-        Get
-            Return csobj.iterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.iterationscount = Value
-        End Set
+            Get
+                Return csobj.iterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.iterationscount = Value
+            End Set
         End Property
         Public Property nmv() As Integer
-        Get
-            Return csobj.nmv
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nmv = Value
-        End Set
+            Get
+                Return csobj.nmv
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nmv = Value
+            End Set
         End Property
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public csobj As alglib.rbfreport
     End Class
@@ -8063,7 +8038,7 @@ End Class
         Try
             alglib.rbfserialize(obj.csobj, s_out)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8071,7 +8046,7 @@ End Class
         Try
             alglib.rbfunserialize(s_in, obj.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8081,7 +8056,7 @@ End Class
             s = New rbfmodel()
             alglib.rbfcreate(nx, ny, s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8090,7 +8065,7 @@ End Class
         Try
             alglib.rbfsetpoints(s.csobj, xy, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8099,7 +8074,7 @@ End Class
         Try
             alglib.rbfsetpoints(s.csobj, xy)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8108,7 +8083,7 @@ End Class
         Try
             alglib.rbfsetalgoqnn(s.csobj, q, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8117,7 +8092,7 @@ End Class
         Try
             alglib.rbfsetalgoqnn(s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8126,7 +8101,7 @@ End Class
         Try
             alglib.rbfsetalgomultilayer(s.csobj, rbase, nlayers, lambdav)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8135,7 +8110,7 @@ End Class
         Try
             alglib.rbfsetalgomultilayer(s.csobj, rbase, nlayers)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8144,7 +8119,7 @@ End Class
         Try
             alglib.rbfsetlinterm(s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8153,7 +8128,7 @@ End Class
         Try
             alglib.rbfsetconstterm(s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8162,7 +8137,7 @@ End Class
         Try
             alglib.rbfsetzeroterm(s.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8172,7 +8147,7 @@ End Class
             rep = New rbfreport()
             alglib.rbfbuildmodel(s.csobj, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8181,7 +8156,7 @@ End Class
         Try
             rbfcalc2 = alglib.rbfcalc2(s.csobj, x0, x1)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8190,7 +8165,7 @@ End Class
         Try
             rbfcalc3 = alglib.rbfcalc3(s.csobj, x0, x1, x2)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8199,7 +8174,7 @@ End Class
         Try
             alglib.rbfcalc(s.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8208,7 +8183,7 @@ End Class
         Try
             alglib.rbfcalcbuf(s.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8217,7 +8192,7 @@ End Class
         Try
             alglib.rbfgridcalc2(s.csobj, x0, n0, x1, n1, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8226,7 +8201,7 @@ End Class
         Try
             alglib.rbfunpack(s.csobj, nx, ny, xwr, nc, v)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8239,7 +8214,7 @@ End Class
         Try
             spline2dcalc = alglib.spline2dcalc(c.csobj, x, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8248,7 +8223,7 @@ End Class
         Try
             alglib.spline2ddiff(c.csobj, x, y, f, fx, fy, fxy)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8257,7 +8232,7 @@ End Class
         Try
             alglib.spline2dlintransxy(c.csobj, ax, bx, ay, by)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8266,7 +8241,7 @@ End Class
         Try
             alglib.spline2dlintransf(c.csobj, a, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8276,7 +8251,7 @@ End Class
             cc = New spline2dinterpolant()
             alglib.spline2dcopy(c.csobj, cc.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8285,7 +8260,7 @@ End Class
         Try
             alglib.spline2dresamplebicubic(a, oldheight, oldwidth, b, newheight, newwidth)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8294,7 +8269,7 @@ End Class
         Try
             alglib.spline2dresamplebilinear(a, oldheight, oldwidth, b, newheight, newwidth)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8304,7 +8279,7 @@ End Class
             c = New spline2dinterpolant()
             alglib.spline2dbuildbilinearv(x, n, y, m, f, d, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8314,7 +8289,7 @@ End Class
             c = New spline2dinterpolant()
             alglib.spline2dbuildbicubicv(x, n, y, m, f, d, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8323,7 +8298,7 @@ End Class
         Try
             alglib.spline2dcalcvbuf(c.csobj, x, y, f)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8332,7 +8307,7 @@ End Class
         Try
             alglib.spline2dcalcv(c.csobj, x, y, f)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8341,7 +8316,7 @@ End Class
         Try
             alglib.spline2dunpackv(c.csobj, m, n, d, tbl)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8351,7 +8326,7 @@ End Class
             c = New spline2dinterpolant()
             alglib.spline2dbuildbilinear(x, y, f, m, n, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8361,7 +8336,7 @@ End Class
             c = New spline2dinterpolant()
             alglib.spline2dbuildbicubic(x, y, f, m, n, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8370,7 +8345,7 @@ End Class
         Try
             alglib.spline2dunpack(c.csobj, m, n, tbl)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8383,7 +8358,7 @@ End Class
         Try
             spline3dcalc = alglib.spline3dcalc(c.csobj, x, y, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8392,7 +8367,7 @@ End Class
         Try
             alglib.spline3dlintransxyz(c.csobj, ax, bx, ay, by, az, bz)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8401,7 +8376,7 @@ End Class
         Try
             alglib.spline3dlintransf(c.csobj, a, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8410,7 +8385,7 @@ End Class
         Try
             alglib.spline3dresampletrilinear(a, oldzcount, oldycount, oldxcount, newzcount, newycount, newxcount, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8420,7 +8395,7 @@ End Class
             c = New spline3dinterpolant()
             alglib.spline3dbuildtrilinearv(x, n, y, m, z, l, f, d, c.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8429,7 +8404,7 @@ End Class
         Try
             alglib.spline3dcalcvbuf(c.csobj, x, y, z, f)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8438,7 +8413,7 @@ End Class
         Try
             alglib.spline3dcalcv(c.csobj, x, y, z, f)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8447,7 +8422,7 @@ End Class
         Try
             alglib.spline3dunpackv(c.csobj, n, m, l, d, stype, tbl)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8458,7 +8433,7 @@ End Class
         Try
             rmatrixludet = alglib.rmatrixludet(a, pivots, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8467,7 +8442,7 @@ End Class
         Try
             rmatrixludet = alglib.rmatrixludet(a, pivots)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8476,7 +8451,7 @@ End Class
         Try
             rmatrixdet = alglib.rmatrixdet(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8485,7 +8460,7 @@ End Class
         Try
             rmatrixdet = alglib.rmatrixdet(a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8494,7 +8469,7 @@ End Class
         Try
             cmatrixludet = alglib.cmatrixludet(a, pivots, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8503,7 +8478,7 @@ End Class
         Try
             cmatrixludet = alglib.cmatrixludet(a, pivots)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8512,7 +8487,7 @@ End Class
         Try
             cmatrixdet = alglib.cmatrixdet(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8521,7 +8496,7 @@ End Class
         Try
             cmatrixdet = alglib.cmatrixdet(a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8530,7 +8505,7 @@ End Class
         Try
             spdmatrixcholeskydet = alglib.spdmatrixcholeskydet(a, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8539,7 +8514,7 @@ End Class
         Try
             spdmatrixcholeskydet = alglib.spdmatrixcholeskydet(a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8548,7 +8523,7 @@ End Class
         Try
             spdmatrixdet = alglib.spdmatrixdet(a, n, isupper)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8557,7 +8532,7 @@ End Class
         Try
             spdmatrixdet = alglib.spdmatrixdet(a)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8568,7 +8543,7 @@ End Class
         Try
             smatrixgevd = alglib.smatrixgevd(a, n, isuppera, b, isupperb, zneeded, problemtype, d, z)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8577,7 +8552,7 @@ End Class
         Try
             smatrixgevdreduce = alglib.smatrixgevdreduce(a, n, isuppera, b, isupperb, problemtype, r, isupperr)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8588,7 +8563,7 @@ End Class
         Try
             alglib.rmatrixinvupdatesimple(inva, n, updrow, updcolumn, updval)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8597,7 +8572,7 @@ End Class
         Try
             alglib.rmatrixinvupdaterow(inva, n, updrow, v)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8606,7 +8581,7 @@ End Class
         Try
             alglib.rmatrixinvupdatecolumn(inva, n, updcolumn, u)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8615,7 +8590,7 @@ End Class
         Try
             alglib.rmatrixinvupdateuv(inva, n, u, v)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8626,7 +8601,7 @@ End Class
         Try
             rmatrixschur = alglib.rmatrixschur(a, n, s)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -8638,36 +8613,36 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class minasareport
         Public Property iterationscount() As Integer
-        Get
-            Return csobj.iterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.iterationscount = Value
-        End Set
+            Get
+                Return csobj.iterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.iterationscount = Value
+            End Set
         End Property
         Public Property nfev() As Integer
-        Get
-            Return csobj.nfev
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nfev = Value
-        End Set
+            Get
+                Return csobj.nfev
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nfev = Value
+            End Set
         End Property
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public Property activeconstraints() As Integer
-        Get
-            Return csobj.activeconstraints
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.activeconstraints = Value
-        End Set
+            Get
+                Return csobj.activeconstraints
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.activeconstraints = Value
+            End Set
         End Property
         Public csobj As alglib.minasareport
     End Class
@@ -8677,7 +8652,7 @@ End Class
         Try
             alglib.minlbfgssetdefaultpreconditioner(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8686,7 +8661,7 @@ End Class
         Try
             alglib.minlbfgssetcholeskypreconditioner(state.csobj, p, isupper)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8695,7 +8670,7 @@ End Class
         Try
             alglib.minbleicsetbarrierwidth(state.csobj, mu)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8704,7 +8679,7 @@ End Class
         Try
             alglib.minbleicsetbarrierdecay(state.csobj, mudecay)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8714,7 +8689,7 @@ End Class
             state = New minasastate()
             alglib.minasacreate(n, x, bndl, bndu, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8724,7 +8699,7 @@ End Class
             state = New minasastate()
             alglib.minasacreate(x, bndl, bndu, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8733,7 +8708,7 @@ End Class
         Try
             alglib.minasasetcond(state.csobj, epsg, epsf, epsx, maxits)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8742,7 +8717,7 @@ End Class
         Try
             alglib.minasasetxrep(state.csobj, needxrep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8751,7 +8726,7 @@ End Class
         Try
             alglib.minasasetalgorithm(state.csobj, algotype)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8760,7 +8735,7 @@ End Class
         Try
             alglib.minasasetstpmax(state.csobj, stpmax)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8769,7 +8744,7 @@ End Class
         Try
             minasaiteration = alglib.minasaiteration(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -8800,7 +8775,7 @@ End Class
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -8808,7 +8783,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'minasaoptimize' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -8820,7 +8795,7 @@ End Class
             rep = New minasareport()
             alglib.minasaresults(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8829,7 +8804,7 @@ End Class
         Try
             alglib.minasaresultsbuf(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8838,7 +8813,7 @@ End Class
         Try
             alglib.minasarestartfrom(state.csobj, x, bndl, bndu)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8850,36 +8825,36 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class lincgreport
         Public Property iterationscount() As Integer
-        Get
-            Return csobj.iterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.iterationscount = Value
-        End Set
+            Get
+                Return csobj.iterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.iterationscount = Value
+            End Set
         End Property
         Public Property nmv() As Integer
-        Get
-            Return csobj.nmv
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nmv = Value
-        End Set
+            Get
+                Return csobj.nmv
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nmv = Value
+            End Set
         End Property
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public Property r2() As Double
-        Get
-            Return csobj.r2
-        End Get
-        Set(ByVal Value As Double)
-            csobj.r2 = Value
-        End Set
+            Get
+                Return csobj.r2
+            End Get
+            Set(ByVal Value As Double)
+                csobj.r2 = Value
+            End Set
         End Property
         Public csobj As alglib.lincgreport
     End Class
@@ -8890,7 +8865,7 @@ End Class
             state = New lincgstate()
             alglib.lincgcreate(n, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8899,7 +8874,7 @@ End Class
         Try
             alglib.lincgsetstartingpoint(state.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8908,7 +8883,7 @@ End Class
         Try
             alglib.lincgsetcond(state.csobj, epsf, maxits)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8917,7 +8892,7 @@ End Class
         Try
             alglib.lincgsolvesparse(state.csobj, a.csobj, isupper, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8927,7 +8902,7 @@ End Class
             rep = New lincgreport()
             alglib.lincgresults(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8936,7 +8911,7 @@ End Class
         Try
             alglib.lincgsetrestartfreq(state.csobj, srf)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8945,7 +8920,7 @@ End Class
         Try
             alglib.lincgsetrupdatefreq(state.csobj, freq)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8954,7 +8929,7 @@ End Class
         Try
             alglib.lincgsetxrep(state.csobj, needxrep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -8966,36 +8941,36 @@ End Class
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     Public Class nleqreport
         Public Property iterationscount() As Integer
-        Get
-            Return csobj.iterationscount
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.iterationscount = Value
-        End Set
+            Get
+                Return csobj.iterationscount
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.iterationscount = Value
+            End Set
         End Property
         Public Property nfunc() As Integer
-        Get
-            Return csobj.nfunc
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.nfunc = Value
-        End Set
+            Get
+                Return csobj.nfunc
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.nfunc = Value
+            End Set
         End Property
         Public Property njac() As Integer
-        Get
-            Return csobj.njac
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.njac = Value
-        End Set
+            Get
+                Return csobj.njac
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.njac = Value
+            End Set
         End Property
         Public Property terminationtype() As Integer
-        Get
-            Return csobj.terminationtype
-        End Get
-        Set(ByVal Value As Integer)
-            csobj.terminationtype = Value
-        End Set
+            Get
+                Return csobj.terminationtype
+            End Get
+            Set(ByVal Value As Integer)
+                csobj.terminationtype = Value
+            End Set
         End Property
         Public csobj As alglib.nleqreport
     End Class
@@ -9006,7 +8981,7 @@ End Class
             state = New nleqstate()
             alglib.nleqcreatelm(n, m, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9016,7 +8991,7 @@ End Class
             state = New nleqstate()
             alglib.nleqcreatelm(m, x, state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9025,7 +9000,7 @@ End Class
         Try
             alglib.nleqsetcond(state.csobj, epsf, maxits)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9034,7 +9009,7 @@ End Class
         Try
             alglib.nleqsetxrep(state.csobj, needxrep)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9043,7 +9018,7 @@ End Class
         Try
             alglib.nleqsetstpmax(state.csobj, stpmax)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9052,7 +9027,7 @@ End Class
         Try
             nleqiteration = alglib.nleqiteration(state.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -9084,7 +9059,7 @@ End Class
         Try
             While alglib.nleq.nleqiteration(innerobj)
                 If innerobj.needf Then
-                    func(innerobj.x,  innerobj.f, obj)
+                    func(innerobj.x, innerobj.f, obj)
                     Continue While
                 End If
                 If innerobj.needfij Then
@@ -9092,7 +9067,7 @@ End Class
                     Continue While
                 End If
                 If innerobj.xupdated Then
-                    If rep Isnot Nothing Then
+                    If rep IsNot Nothing Then
                         rep(innerobj.x, innerobj.f, obj)
                     End If
                     Continue While
@@ -9100,7 +9075,7 @@ End Class
                 Throw New AlglibException("ALGLIB: error in 'nleqsolve' (some derivatives were not provided?)")
             End While
         Catch E As alglib.alglibexception
-            Throw New AlglibException(E.Msg)
+            Throw New AlglibException(E.msg)
         End Try
     End Sub
 
@@ -9112,7 +9087,7 @@ End Class
             rep = New nleqreport()
             alglib.nleqresults(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9121,7 +9096,7 @@ End Class
         Try
             alglib.nleqresultsbuf(state.csobj, x, rep.csobj)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9130,7 +9105,7 @@ End Class
         Try
             alglib.nleqrestartfrom(state.csobj, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9141,7 +9116,7 @@ End Class
         Try
             alglib.airy(x, ai, aip, bi, bip)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9152,7 +9127,7 @@ End Class
         Try
             besselj0 = alglib.besselj0(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9161,7 +9136,7 @@ End Class
         Try
             besselj1 = alglib.besselj1(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9170,7 +9145,7 @@ End Class
         Try
             besseljn = alglib.besseljn(n, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9179,7 +9154,7 @@ End Class
         Try
             bessely0 = alglib.bessely0(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9188,7 +9163,7 @@ End Class
         Try
             bessely1 = alglib.bessely1(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9197,7 +9172,7 @@ End Class
         Try
             besselyn = alglib.besselyn(n, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9206,7 +9181,7 @@ End Class
         Try
             besseli0 = alglib.besseli0(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9215,7 +9190,7 @@ End Class
         Try
             besseli1 = alglib.besseli1(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9224,7 +9199,7 @@ End Class
         Try
             besselk0 = alglib.besselk0(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9233,7 +9208,7 @@ End Class
         Try
             besselk1 = alglib.besselk1(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9242,7 +9217,7 @@ End Class
         Try
             besselkn = alglib.besselkn(nn, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9253,7 +9228,7 @@ End Class
         Try
             beta = alglib.beta(a, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9264,7 +9239,7 @@ End Class
         Try
             incompletebeta = alglib.incompletebeta(a, b, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9273,7 +9248,7 @@ End Class
         Try
             invincompletebeta = alglib.invincompletebeta(a, b, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9284,7 +9259,7 @@ End Class
         Try
             binomialdistribution = alglib.binomialdistribution(k, n, p)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9293,7 +9268,7 @@ End Class
         Try
             binomialcdistribution = alglib.binomialcdistribution(k, n, p)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9302,7 +9277,7 @@ End Class
         Try
             invbinomialdistribution = alglib.invbinomialdistribution(k, n, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9313,7 +9288,7 @@ End Class
         Try
             chebyshevcalculate = alglib.chebyshevcalculate(r, n, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9322,7 +9297,7 @@ End Class
         Try
             chebyshevsum = alglib.chebyshevsum(c, r, n, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9331,7 +9306,7 @@ End Class
         Try
             alglib.chebyshevcoefficients(n, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9340,7 +9315,7 @@ End Class
         Try
             alglib.fromchebyshev(a, n, b)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9351,7 +9326,7 @@ End Class
         Try
             chisquaredistribution = alglib.chisquaredistribution(v, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9360,7 +9335,7 @@ End Class
         Try
             chisquarecdistribution = alglib.chisquarecdistribution(v, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9369,7 +9344,7 @@ End Class
         Try
             invchisquaredistribution = alglib.invchisquaredistribution(v, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9380,7 +9355,7 @@ End Class
         Try
             dawsonintegral = alglib.dawsonintegral(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9391,7 +9366,7 @@ End Class
         Try
             ellipticintegralk = alglib.ellipticintegralk(m)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9400,7 +9375,7 @@ End Class
         Try
             ellipticintegralkhighprecision = alglib.ellipticintegralkhighprecision(m1)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9409,7 +9384,7 @@ End Class
         Try
             incompleteellipticintegralk = alglib.incompleteellipticintegralk(phi, m)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9418,7 +9393,7 @@ End Class
         Try
             ellipticintegrale = alglib.ellipticintegrale(m)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9427,7 +9402,7 @@ End Class
         Try
             incompleteellipticintegrale = alglib.incompleteellipticintegrale(phi, m)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9438,7 +9413,7 @@ End Class
         Try
             exponentialintegralei = alglib.exponentialintegralei(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9447,7 +9422,7 @@ End Class
         Try
             exponentialintegralen = alglib.exponentialintegralen(x, n)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9458,7 +9433,7 @@ End Class
         Try
             fdistribution = alglib.fdistribution(a, b, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9467,7 +9442,7 @@ End Class
         Try
             fcdistribution = alglib.fcdistribution(a, b, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9476,7 +9451,7 @@ End Class
         Try
             invfdistribution = alglib.invfdistribution(a, b, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9487,7 +9462,7 @@ End Class
         Try
             alglib.fresnelintegral(x, c, s)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9498,7 +9473,7 @@ End Class
         Try
             hermitecalculate = alglib.hermitecalculate(n, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9507,7 +9482,7 @@ End Class
         Try
             hermitesum = alglib.hermitesum(c, n, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9516,7 +9491,7 @@ End Class
         Try
             alglib.hermitecoefficients(n, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9527,7 +9502,7 @@ End Class
         Try
             alglib.jacobianellipticfunctions(u, m, sn, cn, dn, ph)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9538,7 +9513,7 @@ End Class
         Try
             laguerrecalculate = alglib.laguerrecalculate(n, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9547,7 +9522,7 @@ End Class
         Try
             laguerresum = alglib.laguerresum(c, n, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9556,7 +9531,7 @@ End Class
         Try
             alglib.laguerrecoefficients(n, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9567,7 +9542,7 @@ End Class
         Try
             legendrecalculate = alglib.legendrecalculate(n, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9576,7 +9551,7 @@ End Class
         Try
             legendresum = alglib.legendresum(c, n, x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9585,7 +9560,7 @@ End Class
         Try
             alglib.legendrecoefficients(n, c)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9596,7 +9571,7 @@ End Class
         Try
             poissondistribution = alglib.poissondistribution(k, m)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9605,7 +9580,7 @@ End Class
         Try
             poissoncdistribution = alglib.poissoncdistribution(k, m)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9614,7 +9589,7 @@ End Class
         Try
             invpoissondistribution = alglib.invpoissondistribution(k, y)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9625,7 +9600,7 @@ End Class
         Try
             psi = alglib.psi(x)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9636,7 +9611,7 @@ End Class
         Try
             studenttdistribution = alglib.studenttdistribution(k, t)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9645,7 +9620,7 @@ End Class
         Try
             invstudenttdistribution = alglib.invstudenttdistribution(k, p)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Function
 
@@ -9656,7 +9631,7 @@ End Class
         Try
             alglib.sinecosineintegrals(x, si, ci)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9665,7 +9640,7 @@ End Class
         Try
             alglib.hyperbolicsinecosineintegrals(x, shi, chi)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9676,7 +9651,7 @@ End Class
         Try
             alglib.pearsoncorrelationsignificance(r, n, bothtails, lefttail, righttail)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9685,7 +9660,7 @@ End Class
         Try
             alglib.spearmanrankcorrelationsignificance(r, n, bothtails, lefttail, righttail)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9696,7 +9671,7 @@ End Class
         Try
             alglib.jarqueberatest(x, n, p)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9707,7 +9682,7 @@ End Class
         Try
             alglib.mannwhitneyutest(x, n, y, m, bothtails, lefttail, righttail)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9718,7 +9693,7 @@ End Class
         Try
             alglib.onesamplesigntest(x, n, median, bothtails, lefttail, righttail)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9729,7 +9704,7 @@ End Class
         Try
             alglib.studentttest1(x, n, mean, bothtails, lefttail, righttail)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9738,7 +9713,7 @@ End Class
         Try
             alglib.studentttest2(x, n, y, m, bothtails, lefttail, righttail)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9747,7 +9722,7 @@ End Class
         Try
             alglib.unequalvariancettest(x, n, y, m, bothtails, lefttail, righttail)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9758,7 +9733,7 @@ End Class
         Try
             alglib.ftest(x, n, y, m, bothtails, lefttail, righttail)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9767,7 +9742,7 @@ End Class
         Try
             alglib.onesamplevariancetest(x, n, variance, bothtails, lefttail, righttail)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
@@ -9778,7 +9753,7 @@ End Class
         Try
             alglib.wilcoxonsignedranktest(x, n, e, bothtails, lefttail, righttail)
         Catch _E_Alglib As alglib.alglibexception
-            Throw New AlglibException(_E_Alglib.Msg)
+            Throw New AlglibException(_E_Alglib.msg)
         End Try
     End Sub
 
