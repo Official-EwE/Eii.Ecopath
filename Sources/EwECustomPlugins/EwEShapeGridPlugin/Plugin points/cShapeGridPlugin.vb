@@ -107,7 +107,7 @@ Public MustInherit Class cShapeGridPlugin
     Public ReadOnly Property Author As String _
         Implements EwEPlugin.IPlugin.Author
         Get
-            Return "Jeroen Steenbeek, UBC Institute for the Oceans and Fisheries"
+            Return "Jeroen Steenbeek, Ecopath International Initiative"
         End Get
     End Property
 

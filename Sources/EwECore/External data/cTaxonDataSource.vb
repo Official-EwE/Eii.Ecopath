@@ -240,7 +240,7 @@ Namespace ExternalData
         Public ReadOnly Property Author() As String _
             Implements EwEPlugin.IPlugin.Author
             Get
-                Return "UBC Institute for the Oceans and Fisheries"
+                Return "Ecopath International Initiative Research Association, Barcelona, Spain"
             End Get
         End Property
 
