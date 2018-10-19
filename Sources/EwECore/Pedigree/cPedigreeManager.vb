@@ -202,7 +202,7 @@ Public Class cPedigreeManager
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Level(ByVal iLevel As Integer) As cPedigreeLevel
         Get
-            If (iLevel <= 0) Or (iLevel >= Me.m_levels.Count) Then Return Nothing
+            If (iLevel <= 0) Or (iLevel > Me.m_levels.Count) Then Return Nothing
             Return Me.m_levels(iLevel)
         End Get
     End Property
