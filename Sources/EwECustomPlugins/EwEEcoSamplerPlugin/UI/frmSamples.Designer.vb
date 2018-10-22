@@ -46,9 +46,9 @@ Partial Class frmSamples
         Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
         Me.m_btnDelete = New System.Windows.Forms.Button()
         Me.m_btnLoad = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_lblAction = New System.Windows.Forms.Label()
         Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_grid = New gridSamples()
+        Me.m_grid = New EwEEcosamplerPlugin.gridSamples()
         Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnRecord = New System.Windows.Forms.ToolStripButton()
         Me.m_tsddImport = New System.Windows.Forms.ToolStripDropDownButton()
@@ -75,7 +75,7 @@ Partial Class frmSamples
         resources.ApplyResources(Me.m_tlpOptions, "m_tlpOptions")
         Me.m_tlpOptions.Controls.Add(Me.m_btnDelete, 2, 0)
         Me.m_tlpOptions.Controls.Add(Me.m_btnLoad, 1, 0)
-        Me.m_tlpOptions.Controls.Add(Me.Label1, 0, 0)
+        Me.m_tlpOptions.Controls.Add(Me.m_lblAction, 0, 0)
         Me.m_tlpOptions.Name = "m_tlpOptions"
         '
         'm_btnDelete
@@ -90,10 +90,10 @@ Partial Class frmSamples
         Me.m_btnLoad.Name = "m_btnLoad"
         Me.m_btnLoad.UseVisualStyleBackColor = True
         '
-        'Label1
+        'm_lblAction
         '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
+        resources.ApplyResources(Me.m_lblAction, "m_lblAction")
+        Me.m_lblAction.Name = "m_lblAction"
         '
         'm_tlpMain
         '
@@ -253,7 +253,7 @@ Partial Class frmSamples
     Private WithEvents m_tsMain As cEwEToolstrip
     Private WithEvents m_tsbnRecord As System.Windows.Forms.ToolStripButton
     Private WithEvents m_btnLoad As System.Windows.Forms.Button
-    Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_lblAction As System.Windows.Forms.Label
     Private WithEvents m_plBatchRun As System.Windows.Forms.Panel
     Private WithEvents m_btnRun As System.Windows.Forms.Button
     Private WithEvents m_nudNumSamples As System.Windows.Forms.NumericUpDown
@@ -262,7 +262,7 @@ Partial Class frmSamples
     Private WithEvents m_tsmiImportModel As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiImportCefas As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsddImport As System.Windows.Forms.ToolStripDropDownButton
-    Private WithEvents m_rbStartAtNo As Windows.Forms.RadioButton
-    Private WithEvents m_rbRandom As Windows.Forms.RadioButton
-    Private WithEvents m_nudStartAt As Windows.Forms.NumericUpDown
+    Private WithEvents m_rbStartAtNo As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbRandom As System.Windows.Forms.RadioButton
+    Private WithEvents m_nudStartAt As System.Windows.Forms.NumericUpDown
 End Class
