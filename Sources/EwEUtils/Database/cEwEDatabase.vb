@@ -377,7 +377,10 @@ Namespace Database
                             Case OleDbType.Boolean
                                 If (bHasDefault) Then
                                     ' Get default value for this column (it's a string, regardless of column datatype. Brilliant)
-                                    drow(strColumnName) = Boolean.Parse(CStr(drowSchema("COLUMN_DEFAULT")))
+                                    ' Work-around for Access yes/no values
+                                    Dim dummy As Boolean
+                                    Boolean.TryParse(CStr(drowSchema("COLUMN_DEFAULT")), dummy)
+                                    drow(strColumnName) = dummy
                                 Else
                                     drow(strColumnName) = False
                                 End If
