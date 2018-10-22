@@ -1730,7 +1730,11 @@ Namespace DataSources
                             drow("Sequence") = iLifeStage
                             drow("AgeStart") = stanzaDS.Age1(iStanza, iLifeStage)
                             drow("Mortality") = stanzaDS.Stanza_Z(iStanza, iLifeStage)
-                            drow("SpawnProp") = stanzaDS.SpawnProp(iStanza, iLifeStage)
+                            Try
+                                drow("SpawnProp") = stanzaDS.SpawnProp(iStanza, iLifeStage)
+                            Catch ex As Exception
+                                ' To make the Ewe course fly smooth, good grief
+                            End Try
                             'drow("vbK") = ecopathDS.vbKInput(iGroup)
                             writer.AddRow(drow)
                         End If
