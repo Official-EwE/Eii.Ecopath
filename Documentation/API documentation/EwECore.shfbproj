@@ -15,20 +15,22 @@
     <RootNamespace>Documentation</RootNamespace>
     <Name>Documentation</Name>
     <!-- SHFB properties -->
-    <OutputPath>.\Help\</OutputPath>
+    <OutputPath>Help\</OutputPath>
     <HtmlHelpName>EwE6_API</HtmlHelpName>
-    <CopyrightText>Copyright %28c%29 UBC Centre of Oceans and Fisheries &amp; Ecopath International Initiative</CopyrightText>
+    <CopyrightText>Copyright %28c%29 UBC Centre of Oceans and Fisheries &amp;amp%3b Ecopath International Initiative</CopyrightText>
     <HelpTitle>EwE6 API documentation</HelpTitle>
     <HelpFileVersion>6.6.0.0</HelpFileVersion>
     <SandcastlePath>
     </SandcastlePath>
     <WorkingPath>Temp\</WorkingPath>
-    <HtmlHelp1xCompilerPath>C:\Program Files (x86)\HTML Help Workshop\</HtmlHelp1xCompilerPath>
+    <HtmlHelp1xCompilerPath>
+    </HtmlHelp1xCompilerPath>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\..\Sources\EwECore\EwECore.vbproj" platform="x86" />
-<DocumentationSource sourceFile="..\..\Sources\EwEPlugin\EwEPlugin.vbproj" platform="x86" />
-<DocumentationSource sourceFile="..\..\Sources\EwEUtils\EwEUtils.vbproj" platform="x86" />
-<DocumentationSource sourceFile="..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" platform="x86" /></DocumentationSources>
+      <DocumentationSource sourceFile="..\..\Sources\EwEPlugin\EwEPlugin.vbproj" platform="x86" />
+      <DocumentationSource sourceFile="..\..\Sources\EwEUtils\EwEUtils.vbproj" platform="x86" />
+      <DocumentationSource sourceFile="..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" platform="x86" />
+    </DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="True">EwE API Code Documentation</NamespaceSummaryItem>
       <NamespaceSummaryItem name="EwECore" isDocumented="True">Namespace containing all elements essential to the functioning of the EwE computational engine.</NamespaceSummaryItem>
@@ -64,18 +66,28 @@
     </NamespaceSummaries>
     <ProjectSummary>API documentation for the Ecopath with Ecosim version 6 food web modelling approach.</ProjectSummary>
     <FeedbackEMailAddress>ewedevteam%40gmail.com</FeedbackEMailAddress>
-    <FeedbackEMailLinkText>EwE development support</FeedbackEMailLinkText>
+    <FeedbackEMailLinkText>EwE development team</FeedbackEMailLinkText>
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <IncludeFavorites>True</IncludeFavorites>
     <CollectionTocStyle>Hierarchical</CollectionTocStyle>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
-    <FrameworkVersion>.NET Framework 4.6</FrameworkVersion>
+    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
     <IndentHtml>False</IndentHtml>
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <NamespaceGrouping>False</NamespaceGrouping>
+    <SyntaxFilters>C#, Visual Basic, F#</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <PresentationStyle>VS2013</PresentationStyle>
+    <Preliminary>False</Preliminary>
+    <NamingMethod>Guid</NamingMethod>
+    <Language>en-US</Language>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->
