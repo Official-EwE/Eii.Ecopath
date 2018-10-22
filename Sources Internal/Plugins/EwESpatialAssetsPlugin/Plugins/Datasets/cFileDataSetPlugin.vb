@@ -652,7 +652,7 @@ Namespace SpatialData
         Public ReadOnly Property Author As String _
             Implements EwEPlugin.IPlugin.Author
             Get
-                Return "Jeroen Steenbeek, UBC Institute for the Oceans and Fisheries"
+                Return "Jeroen Steenbeek, Ecopathg "
             End Get
         End Property
 

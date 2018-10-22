@@ -30,8 +30,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("EwESpatialAssetsPlugin")> 
 <Assembly: AssemblyDescription("DotSpatial-based implementation of the EwE spatial/temporal framework")>
 <Assembly: AssemblyCompany("Ecopath International Initiative Research Association")>
-<Assembly: AssemblyProduct("EwESpatialAssetsPlugin")> 
-<Assembly: AssemblyCopyright("Copyright © UBC Institute for the Oceans and Fisheries 2012")> 
+<Assembly: AssemblyProduct("EwESpatialAssetsPlugin")>
+<Assembly: AssemblyCopyright("Copyright © Ecopath International Research Association, Barcelona, Spain")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
