@@ -23,8 +23,7 @@
     <SandcastlePath>
     </SandcastlePath>
     <WorkingPath>Temp\</WorkingPath>
-    <HtmlHelp1xCompilerPath>
-    </HtmlHelp1xCompilerPath>
+	<HtmlHelp1xCompilerPath>C:\Program Files (x86)\HTML Help Workshop\</HtmlHelp1xCompilerPath>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\..\Sources\EwECore\EwECore.vbproj" platform="x86" />
       <DocumentationSource sourceFile="..\..\Sources\EwEPlugin\EwEPlugin.vbproj" platform="x86" />
