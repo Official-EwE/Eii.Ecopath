@@ -97,20 +97,17 @@ Namespace Ecopath.Tools
         ''' <see cref="RenderStyle">default</see> <see cref="eRenderStyleTypes">render styles</see>.
         ''' </summary>
         ''' <param name="level">The <see cref="cPedigreeLevel">level</see> to render.</param>
-        ''' <param name="iValueAlt">ALternate value to display if the level does not exist.</param>
         ''' <param name="style">The <see cref="eRenderStyleTypes">render style</see> to
         ''' use, or <see cref="eRenderStyleTypes.NotSet">NotSet</see> to use the
         ''' <see cref="RenderStyle">present render style</see>.</param>
         ''' <returns>A text that represents the given level, considering the
         ''' <paramref name="style">provided</paramref> and <see cref="RenderStyle">selected</see> render styles.</returns>
         ''' -------------------------------------------------------------------
-        Public Function DisplayText(ByVal level As cPedigreeLevel, ByVal iValueAlt As Integer,
+        Public Function DisplayText(ByVal level As cPedigreeLevel, _
                                     Optional ByVal style As eRenderStyleTypes = eRenderStyleTypes.NotSet) As String
 
             ' Fix up render style
             If (style = eRenderStyleTypes.NotSet) Then style = Me.m_renderstyle
-
-            If (iValueAlt > 0) Then Return Me.m_uic.StyleGuide.FormatNumber(iValueAlt)
             If (level Is Nothing) Then Return ""
 
             ' Decide on string to display
@@ -132,7 +129,7 @@ Namespace Ecopath.Tools
                 Case eRenderStyleTypes.ConfidenceInterval
                     ' Represent level by its ConfidenceInterval
                     Dim iValue As Integer = level.ConfidenceInterval
-                    If (iValue <= 0) Then Return ""
+                    If (iValue < 0) Then Return ""
                     Return Me.m_uic.StyleGuide.FormatNumber(iValue, cStyleGuide.eStyleFlags.OK)
 
             End Select

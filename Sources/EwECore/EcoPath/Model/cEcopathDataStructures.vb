@@ -333,10 +333,8 @@ Public Class cEcopathDataStructures
     Public PedigreeLevelConfidence() As Integer
     Public PedigreeLevelEstimated() As Boolean
 
-    ''' <summary>Array [#groups, #supported vars] = CV.</summary>
-    Public PedigreeEcopathGroupCV(,) As Integer
     ''' <summary>Array [#groups, #supported vars] = Level index.</summary>
-    Public PedigreeEcopathGroupLevel(,) As Integer
+    Public Pedigree(,) As Integer
     ''' <summary>One-based array of variables supported by the pedigree system.</summary>
     Public PedigreeVariables As eVarNameFlags() = {eVarNameFlags.NotSet, eVarNameFlags.BiomassAreaInput, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp, eVarNameFlags.TCatchInput}
     ''' <summary>Number of <see cref="PedigreeVariables"/></summary>
@@ -632,8 +630,7 @@ Public Class cEcopathDataStructures
         ReDim Me.PedigreeLevelIndexValue(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelConfidence(Me.NumPedigreeLevels)
         ReDim Me.PedigreeLevelEstimated(Me.NumPedigreeLevels)
-        ReDim Me.PedigreeEcopathGroupLevel(Me.NumGroups, Me.NumPedigreeVariables)
-        ReDim Me.PedigreeEcopathGroupCV(Me.NumGroups, Me.NumPedigreeVariables)
+        ReDim Me.Pedigree(Me.NumGroups, Me.NumPedigreeVariables)
 
     End Sub
 
@@ -958,12 +955,9 @@ Public Class cEcopathDataStructures
     End Sub
 
     Private Sub ComputePedigree()
-
         Dim iLevel As Integer = 0
-        Dim sTotalIndex As Single = 0
-        Dim sTotalCV As Single = 0
-        Dim iNumIndex As Integer = 0
-        Dim iNumCV As Integer = 0
+        Dim iTotal As Integer = 0
+        Dim iNumLevels As Integer = 0
         Dim group As cEcoPathGroupInput = Nothing
         Dim var As eVarNameFlags = eVarNameFlags.NotSet
         Dim bPedigreeComplete As Boolean = (Me.NumPedigreeLevels > 0)
@@ -976,43 +970,18 @@ Public Class cEcopathDataStructures
 
                 If Me.PP(iGroup) = 1 And (var = eVarNameFlags.PBInput Or var = eVarNameFlags.QBInput) Then
                     'Skip qb for producers
+                ElseIf Me.fCatch(iGroup) = 0 And (var = eVarNameFlags.TCatchInput) Then
+                    'do nothing continue to next par
                 ElseIf Me.PP(iGroup) = 2 Then
                     'do nothing
                 Else
                     Try
-                        Dim cv As Integer = Me.PedigreeEcopathGroupCV(iGroup, iVariable)
-
-                        If (cv = 0) Then
-                            iLevel = Me.PedigreeEcopathGroupLevel(iGroup, iVariable)
-                            sTotalIndex += Me.PedigreeLevelIndexValue(iLevel)
-                            iNumIndex += 1
-                        Else
-                            Dim iBestLevel As Integer = -1
-                            Dim iBestCV As Integer = 100
-
-                            For iLevel = 1 To Me.NumPedigreeLevels
-                                If Me.PedigreeLevelVarName(iLevel) = var Then
-                                    If Me.PedigreeLevelConfidence(iLevel) >= cv Then
-                                        If (Me.PedigreeLevelConfidence(iLevel) < iBestCV) Then
-                                            iBestCV = Me.PedigreeLevelConfidence(iLevel)
-                                            iBestLevel = iLevel
-                                        End If
-                                    End If
-                                End If
-                            Next iLevel
-
-                            If iBestLevel < 0 Then
-                                bPedigreeComplete = False
-                            Else
-                                sTotalIndex += Me.PedigreeLevelIndexValue(iBestLevel)
-                                iNumIndex += 1
-                            End If
-
-                            sTotalCV += cv
-                            iNumCV += 1
-
+                        iLevel = Me.Pedigree(iGroup, iVariable)
+                        iTotal += Me.PedigreeLevelIndexValue(iLevel)
+                        iNumLevels += 1
+                        If (Me.Pedigree(iGroup, iVariable) < 0) Then
+                            bPedigreeComplete = False
                         End If
-
                     Catch ex As Exception
 
                     End Try
@@ -1021,19 +990,13 @@ Public Class cEcopathDataStructures
             Next iVariable
         Next iGroup
 
-        If (iNumIndex = 0 Or Not bPedigreeComplete) Then
+        If (iNumLevels = 0 Or Not bPedigreeComplete) Then
             Me.PedigreeStatsModelIndex = cCore.NULL_VALUE
             Me.PedigreeStatsTStar = cCore.NULL_VALUE
         Else
-            Dim sVar As Single = sTotalIndex / iNumIndex
+            Dim sVar As Single = CSng(iTotal / iNumLevels)
             Me.PedigreeStatsModelIndex = sVar
             Me.PedigreeStatsTStar = CSng(sVar * Math.Sqrt(Me.NumLiving - 2) / Math.Sqrt(1 - sVar ^ 2))
-        End If
-
-        If (iNumCV = 0 Or sTotalCV = 0) Then
-            Me.PedigreeStatsModelCV = cCore.NULL_VALUE
-        Else
-            Me.PedigreeStatsModelCV = sTotalCV / iNumCV
         End If
 
     End Sub

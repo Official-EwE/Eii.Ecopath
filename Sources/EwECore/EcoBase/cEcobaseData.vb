@@ -21,11 +21,13 @@
 
 Option Strict On
 Imports System.IO
+Imports System.Text
 Imports System.Xml
 Imports System.Xml.Serialization
 Imports EwEUtils.Core
 Imports EwEUtils.NetUtilities
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -50,55 +52,55 @@ Namespace WebServices.Ecobase
 #Region " Variables "
 
         ''' <summary>Ecobase ID.</summary>
-        <XmlElement("model_number")> _
+        <XmlElement("model_number")>
         Public Property EcobaseCode As String = ""
 
-        <XmlElement("model_name")> _
+        <XmlElement("model_name")>
         Public Property Name As String = ""
 
-        <XmlElement("description")> _
+        <XmlElement("description")>
         Public Property Description As String = ""
 
-        <XmlElement("author")> _
+        <XmlElement("author")>
         Public Property Author As String = ""
 
-        <XmlElement("contact")> _
+        <XmlElement("contact")>
         Public Property Contact As String = ""
 
-        <XmlElement("num_digits")> _
+        <XmlElement("num_digits")>
         Public Property NumDigits As Integer = 3
 
-        <XmlElement("model_year")> _
+        <XmlElement("model_year")>
         Public Property FirstYear As Integer = 0
 
-        <XmlElement("model_period")> _
+        <XmlElement("model_period")>
         Public Property NumYears As Integer = 1
 
-        <XmlElement("country")> _
+        <XmlElement("country")>
         Public Property Country As String = ""
 
         ''' <summary>Area size.</summary>
-        <XmlElement("area")> _
+        <XmlElement("area")>
         Public Property Area As Single = 0
 
         ''' <summary>Northern limit of the <see cref="Extent"/>.</summary>
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property North As Single = cCore.NULL_VALUE
 
         ''' <summary>Eastern limit of the <see cref="Extent"/>.</summary>
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property East As Single = cCore.NULL_VALUE
 
         ''' <summary>Western limit of the <see cref="Extent"/>.</summary>
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property West As Single = cCore.NULL_VALUE
 
         ''' <summary>Southern limit of the <see cref="Extent"/>.</summary>
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public Property South As Single = cCore.NULL_VALUE
 
         ''' <summary>Spatial bounding box.</summary>
-        <XmlElement("geographic_extent")> _
+        <XmlElement("geographic_extent")>
         Public Property Extent As String
             Get
                 Return "BOX(" & cStringUtils.FormatSingle(Me.West) & " " & cStringUtils.FormatSingle(Me.North) & "," & cStringUtils.FormatSingle(Me.East) & " " & cStringUtils.FormatSingle(Me.South) & ")"
@@ -115,116 +117,116 @@ Namespace WebServices.Ecobase
         End Property
 
         ''' <summary>Ecosystem type.</summary>
-        <XmlElement("ecosystem_type")> _
+        <XmlElement("ecosystem_type")>
         Public Property EcosystemType As String = ""
 
         ''' <summary>Currency unit.</summary>
-        <XmlElement("currency_units")> _
+        <XmlElement("currency_units")>
         Public Property UnitCurrency As String = ""
 
         ''' <summary>Flag, stating if currency unit is a custom unit.</summary>
-        <XmlElement("currency_units_custom")> _
+        <XmlElement("currency_units_custom")>
         Public Property UnitCurrencyIsCustom As Boolean
 
         ''' <summary>Flag, stating if Ecobase has the right to make model parameters available for download.</summary>
-        <XmlElement("dissemination_allow")> _
+        <XmlElement("dissemination_allow")>
         Public Property AllowDissemination As Boolean = False
 
         ''' <summary>The digitial object identifier (doi) of the publication for this model.</summary>
-        <XmlElement("doi")> _
+        <XmlElement("doi")>
         Public Property DOI As String = ""
 
         ''' <summary>The URI to the publication for this model.</summary>
-        <XmlElement("url")> _
+        <XmlElement("url")>
         Public Property URI As String = ""
 
         ''' <summary>The reference of the publication for this model.</summary>
-        <XmlElement("reference")> _
+        <XmlElement("reference")>
         Public Property Reference As String = ""
 
         ''' <summary>EwE version</summary>
-        <XmlElement("ewe_version")> _
+        <XmlElement("ewe_version")>
         Public Property EwEVersion As String = ""
 
         ''' <summary>Flag, stating if the model matches the paper version.</summary>
-        <XmlElement("match_paper")> _
+        <XmlElement("match_paper")>
         Public Property ModelMatchesPaper As Boolean = False
 
         ''' <summary></summary>
-        <XmlElement("temperature_mean")> _
+        <XmlElement("temperature_mean")>
         Public Property TempMean As Single = 0
         ''' <summary></summary>
-        <XmlElement("temperature_min")> _
+        <XmlElement("temperature_min")>
         Public Property TempMin As Single = 0
         ''' <summary></summary>
-        <XmlElement("temperature_max")> _
+        <XmlElement("temperature_max")>
         Public Property TempMax As Single = 0
 
         ''' <summary></summary>
-        <XmlElement("depth_mean")> _
+        <XmlElement("depth_mean")>
         Public Property DepthMean As Single = 0
         ''' <summary></summary>
-        <XmlElement("depth_min")> _
+        <XmlElement("depth_min")>
         Public Property DepthMin As Single = 0
         ''' <summary></summary>
-        <XmlElement("depth_max")> _
+        <XmlElement("depth_max")>
         Public Property DepthMax As Single = 0
 
         ''' <summary>Is Ecosim used?</summary>
-        <XmlElement("ecosim")> _
+        <XmlElement("ecosim")>
         Public Property EcosimUsed As Boolean = False
 
         ''' <summary>Is Ecospace used?</summary>
-        <XmlElement("ecospace")> _
+        <XmlElement("ecospace")>
         Public Property EcospaceUsed As Boolean = False
 
-        <XmlElement("is_fitted")> _
+        <XmlElement("is_fitted")>
         Public Property IsFittedToTimeSeries As Boolean = False
 
         ''' <summary>Is the entire foodweb accounted for?</summary>
-        <XmlElement("whole_food_web")> _
+        <XmlElement("whole_food_web")>
         Public Property IsWholeFoodWeb As Boolean = False
 
         ''' <summary>Comments if there is difference between model used for the references and model upload</summary>
-        <XmlElement("comments_difference")> _
+        <XmlElement("comments_difference")>
         Public Property CommentsDifference As String
 
         ''' <summary>Comments if model is not declared as open access.</summary>
-        <XmlElement("comments_access")> _
+        <XmlElement("comments_access")>
         Public Property CommentsAccess As String
 
-        <XmlElement("fisheries")> _
+        <XmlElement("fisheries")>
         Public Property ObjectiveFisheries As Boolean
-        <XmlElement("aquaculture")> _
+        <XmlElement("aquaculture")>
         Public Property ObjectiveAquaculture As Boolean
-        <XmlElement("environment_variability")> _
+        <XmlElement("environment_variability")>
         Public Property ObjectiveEnvironmentalVariability As Boolean
-        <XmlElement("ecosyst_functioning")> _
+        <XmlElement("ecosyst_functioning")>
         Public Property ObjectiveEcosystemFunctioning As Boolean
-        <XmlElement("pollution")> _
+        <XmlElement("pollution")>
         Public Property ObjectivePollution As Boolean
-        <XmlElement("mpa")> _
+        <XmlElement("mpa")>
         Public Property ObjectiveMarineProtection As Boolean
-        <XmlElement("other_impact_assessment")> _
+        <XmlElement("other_impact_assessment")>
         Public Property ObjectiveOtherImpactAssessment As Boolean
         ''' <summary>Description of objectives of the model.</summary>
-        <XmlElement("comments_objectives")> _
+        <XmlElement("comments_objectives")>
         Public Property Objectives As String
 
         ''' <summary>
         ''' 
         ''' </summary>
         ''' <remarks>Set as <see cref="eSubmissionType"/></remarks>
-        <XmlElement("submission_type")> _
+        <XmlElement("submission_type")>
         Public Property SubmissionType As Integer
 
         ''' <summary>
         ''' Linked / updated EcoBase model
         ''' </summary>
-        <XmlElement("modification_child")> _
+        <XmlElement("modification_child")>
         Public Property SubmissionLink As String
 
-        <XmlElement("modification_comments")> _
+        <XmlElement("modification_comments")>
         Public Property SubmissionComments As String
 
 #End Region ' Variables
@@ -504,8 +506,8 @@ Namespace WebServices.Ecobase
 
             Me.PedigreeAssignments.Clear()
             For iVar As Integer = 1 To ecopathDS.NumPedigreeVariables
-                If (ecopathDS.PedigreeEcopathGroupCV(iGroup, iVar) > 0) Then
-                    Me.PedigreeAssignments.Add(New cPedigreeAssignmentData(ecopathDS.PedigreeVariables(iVar), ecopathDS.PedigreeEcopathGroupCV(iGroup, iVar)))
+                If (ecopathDS.Pedigree(iGroup, iVar) > 0) Then
+                    Me.PedigreeAssignments.Add(New cPedigreeAssignmentData(ecopathDS.PedigreeVariables(iVar), ecopathDS.Pedigree(iGroup, iVar)))
                 End If
             Next
 

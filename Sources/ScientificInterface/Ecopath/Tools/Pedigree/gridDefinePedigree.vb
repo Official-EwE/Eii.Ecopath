@@ -13,6 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -571,29 +572,8 @@ Imports SourceGrid2.Cells
             End Select
         Next
 
-        Me.ActiveConfig.Levels.AddRange(DefaultLevels())
+        Me.ActiveConfig.Levels.AddRange(Me.DefaultLevels())
         Me.UpdateGrid()
-
-    End Sub
-
-    ''' <summary>
-    ''' Import pedigree definitions from another core.
-    ''' </summary>
-    ''' <param name="core">The core to copy pedigree levels from.</param>
-    Public Sub ImportFrom(core As cCore)
-
-        For Each var As eVarNameFlags In Me.m_dictConfigs.Keys
-            Dim manFrom As cPedigreeManager = core.GetPedigreeManager(var)
-            Dim manTo As cPedigreeManagerInfo = Me.m_dictConfigs(var)
-
-            manTo.Levels.Clear()
-            For i As Integer = 1 To manFrom.NumLevels
-                Dim lvlFrom As cPedigreeLevel = manFrom.Level(i)
-                Dim lvlTo As New cPedigreeLevelInfo(lvlFrom.Name, lvlFrom.IndexValue, lvlFrom.ConfidenceInterval)
-                manTo.Levels.Add(lvlTo)
-            Next
-        Next
-        Me.RefreshContent()
 
     End Sub
 
@@ -818,7 +798,7 @@ Imports SourceGrid2.Cells
                 For iLevel As Integer = 0 To Me.ActiveConfig.Levels.Count - 1
                     Dim giTemp As cPedigreeLevelInfo = DirectCast(Me.ActiveConfig.Levels(iLevel), cPedigreeLevelInfo)
                     ' Does name already exist?
-                    If (Not ReferenceEquals(giTemp, lvlInfo)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
+                    If (Not Object.ReferenceEquals(giTemp, lvlInfo)) And (String.Compare(strName, giTemp.Name, True) = 0) Then
                         ' Change is not allowed
                         Me.UpdateRow(p.Row)
                         ' Report failure
@@ -1066,7 +1046,7 @@ Imports SourceGrid2.Cells
 
     Private Overloads Sub SelectRow(ByVal info As cPedigreeLevelInfo)
         For iLevel As Integer = 0 To Me.ActiveConfig.Levels.Count - 1
-            If ReferenceEquals(Me.ActiveConfig.Levels(iLevel), info) Then
+            If Object.ReferenceEquals(Me.ActiveConfig.Levels(iLevel), info) Then
                 Me.SelectRow(iLevel + iFIRSTDATAROW)
             End If
         Next

@@ -13,6 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -25,6 +26,7 @@ Imports EwECore
 Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -243,7 +245,19 @@ Namespace Ecopath.Tools
         Private Sub OnLevelClick(ByVal sender As Object, ByVal e As MouseEventArgs) _
             Handles m_lbLevels.MouseClick
 
-            Me.m_grid.SetLevel(Me.m_lbLevels.SelectedIndex)
+            Dim item As Object = Me.m_lbLevels.SelectedItem
+            Dim level As cPedigreeLevel = Nothing
+            Dim iValue As Integer = 0 ' No level
+
+            If (item IsNot Nothing) Then
+                If (TypeOf item Is cPedigreeLevelListboxItem) Then
+                    level = DirectCast(item, cPedigreeLevelListboxItem).Level
+                    If (level IsNot Nothing) Then
+                        iValue = level.Sequence
+                    End If
+                End If
+            End If
+            Me.m_grid.SetValue(iValue)
 
         End Sub
 
@@ -258,16 +272,13 @@ Namespace Ecopath.Tools
         End Sub
 
         Protected Sub OnGridSelectionChanged()
-
-            Dim iSelectedCV As Integer = Me.m_grid.SelectedCV
-            Dim iSelectedLevel As Integer = Me.m_grid.SelectedLevel
-            Dim iSelection As Integer = -1
-
-            If iSelectedCV = 0 Then
-                iSelection = iSelectedLevel
+            Dim level As cPedigreeLevel = Nothing
+            Dim iValueSel As Integer = Me.m_grid.SelectedValue
+            If iValueSel <= 0 Then
+                Me.m_lbLevels.SelectedIndex = -1
+            Else
+                Me.m_lbLevels.SelectedIndex = iValueSel
             End If
-            Me.m_lbLevels.SelectedIndex = iSelection
-
         End Sub
 
 #End Region ' Events
@@ -321,7 +332,7 @@ Namespace Ecopath.Tools
             Set(ByVal value As cPedigreeLevel)
                 For i As Integer = 0 To Me.m_lbLevels.Items.Count - 1
                     Dim item As cPedigreeLevelListboxItem = DirectCast(Me.m_lbLevels.Items(i), cPedigreeLevelListboxItem)
-                    If ReferenceEquals(item.Level, value) Then
+                    If Object.ReferenceEquals(item.Level, value) Then
                         Me.m_lbLevels.SelectedIndex = i
                         Return
                     End If

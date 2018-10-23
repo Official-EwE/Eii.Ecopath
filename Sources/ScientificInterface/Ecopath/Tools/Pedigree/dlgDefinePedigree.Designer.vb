@@ -13,6 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -66,7 +67,6 @@ Namespace Ecopath
             Me.m_btnColorCustom = New System.Windows.Forms.Button()
             Me.m_btnColorDefaultCurrent = New System.Windows.Forms.Button()
             Me.m_btnColorDefaultAll = New System.Windows.Forms.Button()
-            Me.m_btnImport = New System.Windows.Forms.Button()
             Me.TableLayoutPanel1.SuspendLayout()
             CType(Me.m_scYupi, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scYupi.Panel1.SuspendLayout()
@@ -181,14 +181,14 @@ Namespace Ecopath
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SelectedLevelDescription = ""
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TrackPropertySelection = False
             Me.m_grid.UIContext = Nothing
             Me.m_grid.VarName = EwEUtils.Core.eVarNameFlags.NotSet
@@ -256,12 +256,6 @@ Namespace Ecopath
             Me.m_btnColorDefaultAll.Name = "m_btnColorDefaultAll"
             Me.m_btnColorDefaultAll.UseVisualStyleBackColor = True
             '
-            'm_btnImport
-            '
-            resources.ApplyResources(Me.m_btnImport, "m_btnImport")
-            Me.m_btnImport.Name = "m_btnImport"
-            Me.m_btnImport.UseVisualStyleBackColor = True
-            '
             'dlgEditPedigree
             '
             resources.ApplyResources(Me, "$this")
@@ -277,7 +271,6 @@ Namespace Ecopath
             Me.Controls.Add(Me.m_lblVariable)
             Me.Controls.Add(Me.m_hdrOrder)
             Me.Controls.Add(Me.m_hdrEdit)
-            Me.Controls.Add(Me.m_btnImport)
             Me.Controls.Add(Me.m_btnCreateDefaultLevels)
             Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.TableLayoutPanel1)
@@ -325,7 +318,7 @@ Namespace Ecopath
         Private WithEvents m_tpRemarks As System.Windows.Forms.TabPage
         Private WithEvents m_tbDescription As System.Windows.Forms.TextBox
         Friend WithEvents m_ilPretty As System.Windows.Forms.ImageList
-        Private WithEvents m_btnImport As Button
+
     End Class
 
 End Namespace

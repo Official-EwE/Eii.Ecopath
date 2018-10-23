@@ -246,7 +246,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Overrides Property PedigreeCV As Integer
             Get
-                Return Me.GetProperty().PedigreeCV
+                Return Me.GetProperty().Pedigree
             End Get
             Set(value As Integer)
                 ' NOP

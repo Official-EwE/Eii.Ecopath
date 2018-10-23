@@ -452,7 +452,7 @@ Public Class cEcosimMonteCarlo
         ' For all groups
         For i As Integer = 1 To Me.m_epdata.NumGroups
             ' Read assigned pedigree level for a group (was 'Opt = ReadPedigreeFromDatabase(Par)')
-            opt = Me.m_epdata.PedigreeEcopathGroupCV(i, iVar)
+            opt = Me.m_epdata.Pedigree(i, iVar)
             If opt > 0 Then ' Non-estimated level
                 Try
 

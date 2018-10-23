@@ -13071,7 +13071,7 @@ Public Class cCore
     ''' <param name="man">The <see cref="cPedigreeManager">manager</see> to load.</param>
     ''' <returns>True if successful.</returns>
     Private Function LoadPedigree(ByVal man As cPedigreeManager) As Boolean
-        Return man.LoadPedigreeAssignments()
+        Return man.LoadPedigree()
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -13276,7 +13276,7 @@ Public Class cCore
                     If bValidatedOk Then Me.m_SearchManagers.Item(eDataTypes.FitToTimeSeries).Update(dtAffected)
 
                 Case eDataTypes.PedigreeManager
-                    If bValidatedOk Then DirectCast(objValidated, cPedigreeManager).UpdatePedigreeAssignments()
+                    If bValidatedOk Then DirectCast(objValidated, cPedigreeManager).UpdatePedigree()
 
                 Case eDataTypes.MSEBatchParameters, eDataTypes.MSEBatchTFMInput, eDataTypes.MSEBatchFixedFInput
                     'Something in the MSE Batch interface has changed
@@ -14468,7 +14468,7 @@ Public Class cCore
 
                 Case eDataTypes.PedigreeManager
                     Dim man As cPedigreeManager = DirectCast(obj, cPedigreeManager)
-                    man.LoadPedigreeAssignments()
+                    man.LoadPedigree()
 
                     Me.m_publisher.AddMessage(New cMessage("Pedigree assignments have changed.", eMessageType.DataModified,
                                        man.CoreComponent, eMessageImportance.Maintenance))
