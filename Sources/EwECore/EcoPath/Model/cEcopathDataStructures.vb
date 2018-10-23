@@ -340,8 +340,7 @@ Public Class cEcopathDataStructures
     ''' <summary>Number of <see cref="PedigreeVariables"/></summary>
     Public NumPedigreeVariables As Integer = Me.PedigreeVariables.Length - 1
 
-    Public PedigreeStatsModelIndex As Single
-    Public PedigreeStatsModelCV As Single
+    Public PedigreeStatsModel As Single
     Public PedigreeStatsTStar As Single
 
     ''' <summary>
@@ -991,11 +990,11 @@ Public Class cEcopathDataStructures
         Next iGroup
 
         If (iNumLevels = 0 Or Not bPedigreeComplete) Then
-            Me.PedigreeStatsModelIndex = cCore.NULL_VALUE
+            Me.PedigreeStatsModel = cCore.NULL_VALUE
             Me.PedigreeStatsTStar = cCore.NULL_VALUE
         Else
             Dim sVar As Single = CSng(iTotal / iNumLevels)
-            Me.PedigreeStatsModelIndex = sVar
+            Me.PedigreeStatsModel = sVar
             Me.PedigreeStatsTStar = CSng(sVar * Math.Sqrt(Me.NumLiving - 2) / Math.Sqrt(1 - sVar ^ 2))
         End If
 

@@ -251,9 +251,7 @@ Namespace Core
         ''' <summary>Profit</summary>
         EcopathStatsProfit
         ''' <summary>Pedigree index</summary>
-        EcopathStatsPedigreeIndex
-        ''' <summary>Pedigree CV</summary>
-        EcopathStatsPedigreeCV
+        EcopathStatsPedigree
         ''' <summary>Measure of pedigree fit</summary>
         EcopathStatsMeasureOfFit
         ''' <summary>Selected diversity indicator</summary>

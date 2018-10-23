@@ -4410,20 +4410,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath pedigree CV.
+        '''  Looks up a localized string similar to Ecopath pedigree.
         '''</summary>
-        Public ReadOnly Property HEADER_ECOPATH_PEDIGREE_CV() As String
+        Public ReadOnly Property HEADER_ECOPATH_PEDIGREE() As String
             Get
-                Return ResourceManager.GetString("HEADER_ECOPATH_PEDIGREE_CV", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Ecopath pedigree index.
-        '''</summary>
-        Public ReadOnly Property HEADER_ECOPATH_PEDIGREE_INDEX() As String
-            Get
-                Return ResourceManager.GetString("HEADER_ECOPATH_PEDIGREE_INDEX", resourceCulture)
+                Return ResourceManager.GetString("HEADER_ECOPATH_PEDIGREE", resourceCulture)
             End Get
         End Property
         
