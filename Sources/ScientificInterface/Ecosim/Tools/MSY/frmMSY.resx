@@ -156,7 +156,7 @@
     <value>m_ts</value>
   </data>
   <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15663.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>$this</value>
@@ -307,7 +307,7 @@
     <value>m_hdrRun</value>
   </data>
   <data name="&gt;&gt;m_hdrRun.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15663.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRun.Parent" xml:space="preserve">
     <value>m_plRunSel</value>
@@ -454,7 +454,7 @@
     <value>m_hdrAssessment</value>
   </data>
   <data name="&gt;&gt;m_hdrAssessment.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15663.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAssessment.Parent" xml:space="preserve">
     <value>m_plAssessment</value>
@@ -466,7 +466,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plAssessment.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 221</value>
+    <value>0, 239</value>
   </data>
   <data name="m_plAssessment.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -514,7 +514,7 @@
     <value>m_hdr</value>
   </data>
   <data name="&gt;&gt;m_hdr.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15663.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdr.Parent" xml:space="preserve">
     <value>m_plData</value>
@@ -643,7 +643,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 315</value>
+    <value>0, 333</value>
   </data>
   <data name="m_plData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 3, 0, 3</value>
@@ -694,7 +694,7 @@
     <value>m_hdrTools</value>
   </data>
   <data name="&gt;&gt;m_hdrTools.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15663.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrTools.Parent" xml:space="preserve">
     <value>m_plMisc</value>
@@ -760,13 +760,13 @@
     <value>Fill</value>
   </data>
   <data name="m_plMisc.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 432</value>
+    <value>0, 450</value>
   </data>
   <data name="m_plMisc.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plMisc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 104</value>
+    <value>194, 86</value>
   </data>
   <data name="m_plMisc.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -783,11 +783,38 @@
   <data name="&gt;&gt;m_plMisc.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="m_cbRunToDepletion.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbRunToDepletion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 9</value>
+  </data>
+  <data name="m_cbRunToDepletion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 17</value>
+  </data>
+  <data name="m_cbRunToDepletion.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_cbRunToDepletion.Text" xml:space="preserve">
+    <value>&amp;Run to depletion</value>
+  </data>
+  <data name="&gt;&gt;m_cbRunToDepletion.Name" xml:space="preserve">
+    <value>m_cbRunToDepletion</value>
+  </data>
+  <data name="&gt;&gt;m_cbRunToDepletion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbRunToDepletion.Parent" xml:space="preserve">
+    <value>m_plRun</value>
+  </data>
+  <data name="&gt;&gt;m_cbRunToDepletion.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_nudNumSteps.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_nudNumSteps.Location" type="System.Drawing.Point, System.Drawing">
-    <value>115, 35</value>
+    <value>115, 58</value>
   </data>
   <data name="m_nudNumSteps.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 0, 3</value>
@@ -796,7 +823,7 @@
     <value>71, 20</value>
   </data>
   <data name="m_nudNumSteps.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_nudNumSteps.Name" xml:space="preserve">
     <value>m_nudNumSteps</value>
@@ -808,13 +835,13 @@
     <value>m_plRun</value>
   </data>
   <data name="&gt;&gt;m_nudNumSteps.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_nudNumTrialYears.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_nudNumTrialYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>115, 61</value>
+    <value>115, 84</value>
   </data>
   <data name="m_nudNumTrialYears.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 0, 3</value>
@@ -823,7 +850,7 @@
     <value>71, 20</value>
   </data>
   <data name="m_nudNumTrialYears.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;m_nudNumTrialYears.Name" xml:space="preserve">
     <value>m_nudNumTrialYears</value>
@@ -835,7 +862,7 @@
     <value>m_plRun</value>
   </data>
   <data name="&gt;&gt;m_nudNumTrialYears.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_lblNumTrialYears.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -844,13 +871,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblNumTrialYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 63</value>
+    <value>9, 86</value>
   </data>
   <data name="m_lblNumTrialYears.Size" type="System.Drawing.Size, System.Drawing">
     <value>86, 13</value>
   </data>
   <data name="m_lblNumTrialYears.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lblNumTrialYears.Text" xml:space="preserve">
     <value>No. of trial &amp;years:</value>
@@ -865,13 +892,13 @@
     <value>m_plRun</value>
   </data>
   <data name="&gt;&gt;m_lblNumTrialYears.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_nudMaxF.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_nudMaxF.Location" type="System.Drawing.Point, System.Drawing">
-    <value>115, 9</value>
+    <value>115, 32</value>
   </data>
   <data name="m_nudMaxF.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 0, 3</value>
@@ -880,7 +907,7 @@
     <value>71, 20</value>
   </data>
   <data name="m_nudMaxF.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_nudMaxF.Name" xml:space="preserve">
     <value>m_nudMaxF</value>
@@ -892,13 +919,13 @@
     <value>m_plRun</value>
   </data>
   <data name="&gt;&gt;m_nudMaxF.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_btnRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
   <data name="m_btnRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 93</value>
+    <value>9, 111</value>
   </data>
   <data name="m_btnRun.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 3, 0, 3</value>
@@ -907,7 +934,7 @@
     <value>177, 23</value>
   </data>
   <data name="m_btnRun.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_btnRun.Text" xml:space="preserve">
     <value>&amp;Run</value>
@@ -922,7 +949,7 @@
     <value>m_plRun</value>
   </data>
   <data name="&gt;&gt;m_btnRun.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lblMaxRelF.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -931,13 +958,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblMaxRelF.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 11</value>
+    <value>9, 34</value>
   </data>
   <data name="m_lblMaxRelF.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 13</value>
   </data>
   <data name="m_lblMaxRelF.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lblMaxRelF.Text" xml:space="preserve">
     <value>&amp;Maximum relative F:</value>
@@ -952,7 +979,7 @@
     <value>m_plRun</value>
   </data>
   <data name="&gt;&gt;m_lblMaxRelF.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_lblNumSteps.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -961,13 +988,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblNumSteps.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 37</value>
+    <value>9, 60</value>
   </data>
   <data name="m_lblNumSteps.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 13</value>
   </data>
   <data name="m_lblNumSteps.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_lblNumSteps.Text" xml:space="preserve">
     <value>No. of &amp;steps:</value>
@@ -982,7 +1009,7 @@
     <value>m_plRun</value>
   </data>
   <data name="&gt;&gt;m_lblNumSteps.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_plRun.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 92</value>
@@ -991,10 +1018,10 @@
     <value>0, 0, 0, 3</value>
   </data>
   <data name="m_plRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>194, 126</value>
+    <value>194, 144</value>
   </data>
   <data name="m_plRun.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_plRun.Name" xml:space="preserve">
     <value>m_plRun</value>
@@ -1123,6 +1150,6 @@
     <value>frmMSY</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15663.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

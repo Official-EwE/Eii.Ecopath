@@ -81,6 +81,7 @@ Namespace Ecosim
             Me.m_btnRun = New System.Windows.Forms.Button()
             Me.m_lblMaxRelF = New System.Windows.Forms.Label()
             Me.m_lblNumSteps = New System.Windows.Forms.Label()
+            Me.m_cbRunToDepletion = New System.Windows.Forms.CheckBox()
             Me.m_ts.SuspendLayout()
             CType(Me.m_sc, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_sc.Panel1.SuspendLayout()
@@ -123,13 +124,13 @@ Namespace Ecosim
             Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0.0R
-            Me.m_graph.ScrollMaxX = 0.0R
-            Me.m_graph.ScrollMaxY = 0.0R
-            Me.m_graph.ScrollMaxY2 = 0.0R
-            Me.m_graph.ScrollMinX = 0.0R
-            Me.m_graph.ScrollMinY = 0.0R
-            Me.m_graph.ScrollMinY2 = 0.0R
+            Me.m_graph.ScrollGrace = 0R
+            Me.m_graph.ScrollMaxX = 0R
+            Me.m_graph.ScrollMaxY = 0R
+            Me.m_graph.ScrollMaxY2 = 0R
+            Me.m_graph.ScrollMinX = 0R
+            Me.m_graph.ScrollMinY = 0R
+            Me.m_graph.ScrollMinY2 = 0R
             '
             'm_sc
             '
@@ -304,6 +305,7 @@ Namespace Ecosim
             '
             'm_plRun
             '
+            Me.m_plRun.Controls.Add(Me.m_cbRunToDepletion)
             Me.m_plRun.Controls.Add(Me.m_nudNumSteps)
             Me.m_plRun.Controls.Add(Me.m_nudNumTrialYears)
             Me.m_plRun.Controls.Add(Me.m_lblNumTrialYears)
@@ -357,6 +359,12 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_lblNumSteps, "m_lblNumSteps")
             Me.m_lblNumSteps.Name = "m_lblNumSteps"
+            '
+            'm_cbRunToDepletion
+            '
+            resources.ApplyResources(Me.m_cbRunToDepletion, "m_cbRunToDepletion")
+            Me.m_cbRunToDepletion.Name = "m_cbRunToDepletion"
+            Me.m_cbRunToDepletion.UseVisualStyleBackColor = True
             '
             'frmMSY
             '
@@ -427,6 +435,7 @@ Namespace Ecosim
         Private WithEvents m_lblMaxRelF As System.Windows.Forms.Label
         Private WithEvents m_plRun As System.Windows.Forms.Panel
         Private WithEvents m_nudNumSteps As System.Windows.Forms.NumericUpDown
+        Private WithEvents m_cbRunToDepletion As CheckBox
     End Class
 
 End Namespace
