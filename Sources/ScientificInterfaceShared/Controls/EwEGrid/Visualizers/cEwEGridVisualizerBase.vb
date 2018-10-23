@@ -119,10 +119,7 @@ Namespace Controls.EwEGrid
 
             If (sg IsNot Nothing) Then
                 If (sg.ShowPedigree) Then
-                    Dim CV As Integer = Me.PedigreeCV(cell)
-                    If (CV > 0) Then
-                        cPedigreeIndicator.Paint(sg, rc, e.Graphics, CV)
-                    End If
+                    cPedigreeIndicator.Paint(sg, rc, e.Graphics, Me.RelativePedigree(cell))
                 End If
             End If
 
@@ -300,12 +297,10 @@ Namespace Controls.EwEGrid
             End Get
         End Property
 
-        Protected ReadOnly Property PedigreeCV(ByVal cell As SourceGrid2.Cells.ICellVirtual) As Integer
+        Protected ReadOnly Property RelativePedigree(ByVal cell As SourceGrid2.Cells.ICellVirtual) As Single
             Get
-                ' Rendering an EwE base cell?
                 If (TypeOf cell Is EwECellBase) Then
-                    ' #Yes: obtain cell style
-                    Return DirectCast(cell, EwECellBase).PedigreeCV
+                    Return DirectCast(cell, EwECellBase).RelativePedigree
                 End If
                 Return 0
             End Get
