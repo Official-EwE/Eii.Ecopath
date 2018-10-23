@@ -250,8 +250,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.EcopathStatsTotalVarCost) = [Default](eValueTypes.Sng, cUnits.Monetary)
         Me.Metadata(eVarNameFlags.EcopathStatsTotalCost) = [Default](eValueTypes.Sng, cUnits.Monetary)
         Me.Metadata(eVarNameFlags.EcopathStatsProfit) = [Default](eValueTypes.Sng, cUnits.Monetary)
-        Me.Metadata(eVarNameFlags.EcopathStatsPedigreeIndex) = [Default](eValueTypes.Sng)
-        Me.Metadata(eVarNameFlags.EcopathStatsPedigreeCV) = [Default](eValueTypes.Sng)
+        Me.Metadata(eVarNameFlags.EcopathStatsPedigree) = [Default](eValueTypes.Sng)
         Me.Metadata(eVarNameFlags.EcopathStatsMeasureOfFit) = [Default](eValueTypes.Sng)
         Me.Metadata(eVarNameFlags.EcopathStatsDiversity) = [Default](eValueTypes.Sng)
 
