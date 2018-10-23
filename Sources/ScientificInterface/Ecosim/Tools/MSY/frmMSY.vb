@@ -87,7 +87,7 @@ Namespace Ecosim
         ''' <summary>Flag, stating that stationary stock assessment data should be shown.</summary>
         Private m_bStatAssessment As Boolean = True
 
-        Private m_fpMaxF As cEwEFormatProvider = Nothing
+        Private m_fpMaxRelF As cEwEFormatProvider = Nothing
         Private m_fpNumSteps As cEwEFormatProvider = Nothing
         Private m_fpNumTrialYears As cEwEFormatProvider = Nothing
 
@@ -96,7 +96,7 @@ Namespace Ecosim
 #Region " Constructor "
 
         Public Sub New()
-            MyBase.new()
+            MyBase.New()
             Me.InitializeComponent()
         End Sub
 
@@ -113,8 +113,6 @@ Namespace Ecosim
             Me.m_parms = Me.m_manager.Parameters
             Me.m_manager.RunStateChangedDelegate = AddressOf Me.OnMSYRunStateChanged
 
-            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
-
             ' Set up zedgraph
             Me.m_zgh = New cZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
@@ -129,8 +127,8 @@ Namespace Ecosim
             Me.m_fpNumTrialYears = New cEwEFormatProvider(Me.UIContext, Me.m_nudNumTrialYears, GetType(Integer), Me.m_parms.GetVariableMetadata(eVarNameFlags.MSYNumTrialYears))
             Me.m_fpNumTrialYears.Value = Me.m_parms.NumTrialYears
 
-            Me.m_fpMaxF = New cEwEFormatProvider(Me.UIContext, Me.m_nudMaxF, GetType(Single), Me.m_parms.GetVariableMetadata(eVarNameFlags.MSYMaxFishingRate))
-            Me.m_fpMaxF.Value = Me.m_parms.MaxFishingRate
+            Me.m_fpMaxRelF = New cEwEFormatProvider(Me.UIContext, Me.m_nudMaxF, GetType(Single), Me.m_parms.GetVariableMetadata(eVarNameFlags.MSYMaxFishingRate))
+            Me.m_fpMaxRelF.Value = Me.m_parms.MaxFishingRate
 
             Me.m_fpNumSteps = New cEwEFormatProvider(Me.UIContext, Me.m_nudNumSteps, GetType(Integer))
             Me.m_fpNumSteps.Value = CInt(1 / Me.m_parms.EquilibriumStepSize)
@@ -142,6 +140,9 @@ Namespace Ecosim
             Me.UpdateControls()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSY, eCoreComponentType.Core}
+            AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+
+            Me.UpdateControls()
 
         End Sub
 
@@ -155,7 +156,7 @@ Namespace Ecosim
                 cmd.RemoveControl(Me.m_tsbnShowHide)
 
                 Me.m_fpNumTrialYears.Release()
-                Me.m_fpMaxF.Release()
+                Me.m_fpMaxRelF.Release()
                 Me.m_fpNumSteps.Release()
 
                 Me.m_zgh.Detach()
@@ -181,8 +182,9 @@ Namespace Ecosim
             Dim bIsRunning As Boolean = False
             Dim bHasResults As Boolean = (Me.m_results IsNot Nothing)
 
-            Me.m_plAssessment.Enabled = bHasResults
-            Me.m_plData.Enabled = bHasResults
+            Me.m_lblMaxRelF.Enabled = (Not Me.m_cbRunToDepletion.Checked)
+            Me.m_fpMaxRelF.Enabled = (Not Me.m_cbRunToDepletion.Checked)
+
             Me.m_tsbnSaveOutput.Checked = (Me.Core.Autosave(eAutosaveTypes.MSY))
 
             Me.m_rbBiomass.Checked = (Me.m_dataMode = eViewDataModeType.Biomass)
@@ -193,7 +195,7 @@ Namespace Ecosim
             Me.m_bInUpdate = False
             Me.m_btnRun.Enabled = bCanRun
 
-#If Not Debug Then
+#If Not DEBUG Then
             Me.m_btnTest.Visible = False
 #End If
 
@@ -214,14 +216,6 @@ Namespace Ecosim
 
             Me.UpdateControls()
             Me.PopulateSelectionComboBox()
-
-        End Sub
-
-        Private Sub OnRunMaxModeChanged(sender As System.Object, e As System.EventArgs)
-
-
-            If (Me.UIContext Is Nothing) Then Return
-            Me.UpdateControls()
 
         End Sub
 
@@ -248,6 +242,11 @@ Namespace Ecosim
             Me.UpdatePlot()
             Me.UpdateControls()
 
+        End Sub
+
+        Private Sub OnRunToDepletionChanged(sender As Object, e As EventArgs) _
+            Handles m_cbRunToDepletion.CheckedChanged
+            Me.UpdateControls()
         End Sub
 
         Private Sub OnRun(sender As System.Object, e As System.EventArgs) _
@@ -282,7 +281,7 @@ Namespace Ecosim
             Try
                 Me.m_parms.FSelectionMode = eMSYFSelectionModeType.Groups
                 Me.m_parms.SelGroupFleetIndex = Me.Target.Index
-                Me.m_parms.MaxFishingRate = CSng(Me.m_fpMaxF.Value)
+                Me.m_parms.MaxFishingRate = CSng(Me.m_fpMaxRelF.Value)
                 Me.m_parms.EquilibriumStepSize = 1.0! / CSng(Me.m_fpNumSteps.Value)
                 Me.m_parms.NumTrialYears = CInt(Me.m_fpNumTrialYears.Value)
                 Me.m_manager.RunMSYEcosimUnitTest()
@@ -420,15 +419,15 @@ Namespace Ecosim
 
             Try
                 Me.m_parms.SelGroupFleetIndex = item.Index
-                Me.m_parms.MaxFishingRate = CSng(Me.m_fpMaxF.Value)
+                Me.m_parms.MaxFishingRate = CSng(Me.m_fpMaxRelF.Value)
                 Me.m_parms.EquilibriumStepSize = 1.0! / CSng(Me.m_fpNumSteps.Value)
                 Me.m_parms.NumTrialYears = CInt(Me.m_fpNumTrialYears.Value)
 
-                'If Me.m_rbFixedMax.Checked Then
-                Me.m_parms.RunLengthMode = eMSYRunLengthModeTypes.FixedF
-                'Else
-                'Me.m_parms.RunLengthMode = eMSYRunLengthModeTypes.ToDepletion
-                'End If
+                If Me.m_cbRunToDepletion.Checked Then
+                    Me.m_parms.RunLengthMode = eMSYRunLengthModeTypes.ToDepletion
+                Else
+                    Me.m_parms.RunLengthMode = eMSYRunLengthModeTypes.FixedF
+                End If
 
                 If Me.m_rbGroup.Checked Then
                     Me.m_parms.FSelectionMode = eMSYFSelectionModeType.Groups
@@ -502,8 +501,8 @@ Namespace Ecosim
                 Case eViewDataModeType.Catch
                     strYAxisLabel = SharedResources.HEADER_RELATIVE_CATCH
                 Case eViewDataModeType.BiomassAndCatch
-                    strYAxisLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, _
-                                                  SharedResources.HEADER_RELATIVEBIOMASS, _
+                    strYAxisLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE,
+                                                  SharedResources.HEADER_RELATIVEBIOMASS,
                                                   SharedResources.HEADER_RELATIVE_CATCH)
                 Case eViewDataModeType.Value
                     strYAxisLabel = SharedResources.HEADER_RELATIVE_VALUE
@@ -570,11 +569,11 @@ Namespace Ecosim
         ''' <param name="style"></param>
         ''' <returns>A list of <see cref="LineItem"/> isntances.</returns>
         ''' -------------------------------------------------------------------
-        Private Function GetLines(ByVal strTarget As String, _
-                                  ByVal results As cMSYFResult(), _
-                                  ByVal optimum As cMSYOptimum, _
-                                  ByVal strPostfix As String, _
-                                  ByVal style As Drawing2D.DashStyle, _
+        Private Function GetLines(ByVal strTarget As String,
+                                  ByVal results As cMSYFResult(),
+                                  ByVal optimum As cMSYOptimum,
+                                  ByVal strPostfix As String,
+                                  ByVal style As Drawing2D.DashStyle,
                                   ByVal bSolidSymbol As Boolean) As LineItem()
 
             Dim base As cMSYFResult = Me.m_manager.BaseLineResults()
@@ -677,7 +676,7 @@ Namespace Ecosim
                                     pplFMSY.Add(r.FCur, r.Catch(i) / base.Catch(i))
 
                                     strLabel = cStringUtils.Localize(My.Resources.MSY_LABEL_FMSY, grp.Name)
-                                    liFMSY = New LineItem(Me.GetLabel(strLabel, strPostfix), pplFMSY, _
+                                    liFMSY = New LineItem(Me.GetLabel(strLabel, strPostfix), pplFMSY,
                                                           Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), SymbolType.Diamond)
                                     liFMSY.Line.Style = style
                                     liFMSY.Line.Width = 2
@@ -732,15 +731,15 @@ Namespace Ecosim
 
             Me.m_results = New cMSYRunResults()
 
-            Me.m_parms.MaxFishingRate = CSng(Me.m_fpMaxF.Value)
+            Me.m_parms.MaxFishingRate = CSng(Me.m_fpMaxRelF.Value)
             Me.m_parms.EquilibriumStepSize = 1.0! / CSng(Me.m_fpNumSteps.Value)
             Me.m_parms.NumTrialYears = CInt(Me.m_fpNumTrialYears.Value)
 
-            'If Me.m_rbFixedMax.Checked Then
-            Me.m_parms.RunLengthMode = eMSYRunLengthModeTypes.FixedF
-            'Else
-            'Me.m_parms.RunLengthMode = eMSYRunLengthModeTypes.ToDepletion
-            'End If
+            If Me.m_cbRunToDepletion.Checked Then
+                Me.m_parms.RunLengthMode = eMSYRunLengthModeTypes.ToDepletion
+            Else
+                Me.m_parms.RunLengthMode = eMSYRunLengthModeTypes.FixedF
+            End If
 
             Try
                 bSucces = bSucces Or Me.m_manager.RunFindFMSY()
