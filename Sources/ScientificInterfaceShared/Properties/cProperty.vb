@@ -684,16 +684,30 @@ Namespace Properties
 #Region " Pedigree "
 
         ''' <summary>
-        ''' Get the pedigree value [0, 1] set for the related variable, if any.
+        ''' Get the relative pedigree [0, 1] set for the related variable, if any.
         ''' </summary>
-        Public ReadOnly Property Pedigree As Integer
+        Public ReadOnly Property RelativePedigree As Single
             Get
                 If (Me.m_pm Is Nothing) Then Return 0
                 If (Me.m_Source Is Nothing) Then Return 0
 
-                Dim pedman As cPedigreeManager = Me.m_pm.Core.GetPedigreeManager(Me.m_VarName)
+                Dim var As eVarNameFlags = Me.m_VarName
+                Dim iIndex As Integer = Me.Source.Index
+
+                ' This is unfortunate
+                If (Me.VarName = eVarNameFlags.Landings) Or (Me.VarName = eVarNameFlags.Discards) Then
+                    var = eVarNameFlags.TCatchInput
+                    iIndex = Me.m_SourceSec.Index
+                End If
+
+                Dim pedman As cPedigreeManager = Me.m_pm.Core.GetPedigreeManager(var)
                 If (pedman Is Nothing) Then Return 0
-                Return CInt(pedman.Pedigree(Me.m_Source.Index))
+                If (pedman.NumLevels = 0) Then Return 0
+
+                Dim status As eStatusFlags = pedman.PedigreeStatus(iIndex)
+                If ((status And eStatusFlags.Null) > 0) Then Return 0
+
+                Return CSng(pedman.Pedigree(iIndex) / pedman.NumLevels)
             End Get
         End Property
 
