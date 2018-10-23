@@ -13,6 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -37,7 +38,7 @@ Namespace Properties
     ''' <param name="prop">The property that fired off the change enent</param>
     ''' <param name="changeFlags">A bit flag pattern that indicates which aspects of the property changed</param>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(True)> _
+    <CLSCompliant(True)>
     Public Delegate Sub PropertyChangeEventHandler(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
 
     ''' -----------------------------------------------------------------------
@@ -46,9 +47,9 @@ Namespace Properties
     ''' change events whenever its value and/or Style changes!
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(True)> _
+    <CLSCompliant(True)>
     Public MustInherit Class cProperty
-        : Implements IDisposable
+        Implements IDisposable
 
 #Region " Private parts "
 
@@ -73,7 +74,6 @@ Namespace Properties
         Private m_bDisposed As Boolean = False
 
         Private m_bStored As Boolean = True
-        Private m_bInUpdate As Boolean = False
 
 #If DEBUG Then
         Private Shared s_iNextID As Long = 0
@@ -100,33 +100,33 @@ Namespace Properties
         ''' <summary>
         ''' Constructor, initializes the property
         ''' </summary>
-        ''' <param name="source">The <see cref="cCoreInputOutputBase"/> instance that is the data source for this property.</param>
-        ''' <param name="VarName">The <see cref="eVarNameFlags">Variable name</see> in <paramref name="Source"/> that is the data source for this property.</param>
-        ''' <param name="srcSec">The object acting as index on <paramref name="VarName"/> in case this is an indexed variable.</param>
+        ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> instance that is the data source for this property.</param>
+        ''' <param name="VarName">The <see cref="eVarNameFlags">Variable name</see> in <paramref name="Source">Source</paramref> that is the data source for this property.</param>
+        ''' <param name="SourceSec">The object acting as index on <paramref name="VarName">VarName</paramref> in case this is an indexed variable.</param>
         ''' <param name="iSecIndexOffset">An optional offset that defines the diffence between the index provided by
-        ''' <paramref name="srcSec"/> and the actual storage position in the underlying arrays.</param>
+        ''' <paramref name="SourceSec">srcSec</paramref> and the actual storage position in the underlying arrays.</param>
         ''' <remarks>
-        ''' <para>The <paramref name="iSecIndexOffset"/> parameter is useful in cases where secundary
+        ''' <para>The <paramref name="iSecIndexOffset">iSecIndexOffset</paramref> parameter is useful in cases where secundary
         ''' objects represent array indices other than their ID value.</para>
         ''' <para>A typical example would be the use of groups as secundary indexes to access Detritus fate information.
         ''' The Core detritus fate arrays are indexed by [1, {numdetritusgroups}], while the actual detritus groups that act as
-        ''' secundary indexes have an <see cref="cCoreInputOutputBase.Index"/> value that is most likely higher than
+        ''' secundary indexes have an <see cref="cCoreInputOutputBase.Index">Index</see> value that is most likely higher than
         ''' the the detritus fate array index range. To compensate for this difference, a 
-        ''' <paramref name="iSecIndexOffset"/> value of {<see cref="cCore.nGroups">numgroups</see>} -
-        ''' {<see cref="cCore.nDetritusGroups"/>} will ensure that the <paramref name="srcSec"/>
+        ''' <paramref name="iSecIndexOffset">iSecIndexOffset</paramref> value of {<see cref="cCore.nGroups">numgroups</see>} -
+        ''' {<see cref="cCore.nDetritusGroups">numdetritusgroups</see>} will ensure that the <paramref name="SourceSec">srcSec</paramref>
         ''' object is used to correctly access the underlying array.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal source As EwECore.cCoreInputOutputBase,
+        Public Sub New(ByVal Source As EwECore.cCoreInputOutputBase,
                        ByVal VarName As eVarNameFlags,
-                       Optional ByVal srcSec As EwECore.cCoreInputOutputBase = Nothing,
+                       Optional ByVal SourceSec As EwECore.cCoreInputOutputBase = Nothing,
                        Optional ByVal iSecIndexOffset As Integer = 0)
 
-            Me.m_key = New cValueID(source, VarName, srcSec)
+            Me.m_key = New cValueID(Source, VarName, SourceSec)
 
-            Me.m_Source = source
+            Me.m_Source = Source
             Me.m_VarName = VarName
-            Me.m_SourceSec = srcSec
+            Me.m_SourceSec = SourceSec
             Me.m_iSecIndex = cCore.NULL_VALUE
             Me.m_iSecIndexOffset = iSecIndexOffset
 
@@ -283,8 +283,8 @@ Namespace Properties
                 coreStatus = m_Source.GetStatus(Me.m_VarName, iIndex)
 
                 ' Hard-copy only the core status bits. All other flags are GUI flags and are preserved
-                guiStyle = DirectCast((coreStatus And cStyleGuide.eStyleFlags.CoreStatusFlagsMask) Or
-                                      (Me.Style And (Not cStyleGuide.eStyleFlags.CoreStatusFlagsMask)), cStyleGuide.eStyleFlags)
+                guiStyle = DirectCast(CInt(coreStatus And cStyleGuide.eStyleFlags.CoreStatusFlagsMask) Or
+                                  CInt(Me.Style And (Not cStyleGuide.eStyleFlags.CoreStatusFlagsMask)), cStyleGuide.eStyleFlags)
                 ' Did Style change?
                 If Not Me.IsStyle(guiStyle) Then
                     ' # Yes: flag as changed
@@ -308,14 +308,6 @@ Namespace Properties
             Me.m_bStored = ((coreStatus And eStatusFlags.Stored) > 0)
 
             ' Anything changed?
-            ' JS 03Jul17: do not send out change notification when the property is actively being edited
-            'If (changeFlags <> 0 And Not Me.m_bInUpdate) Then
-
-            'jb 7-Aug-2017 Removed the m_bInUpdate flag 
-            'because it was preventing the diet matrix sum col from updating in response to FireChangeNotification(...) when edited
-            'In the Diet Matrix edit case the FireChangeNotification() should be handled by SetValue(), not here, 
-            'unfortunatly SetValue() calls cCore.OnValidation() which sends a message which causes this to be called which handles the update.
-            'Then SetValue(...) can no longer tell there has been an edit to call FireChangeNotification()
             If (changeFlags <> 0) Then
                 ' #Yes: fire away
                 Me.FireChangeNotification(changeFlags)
@@ -403,16 +395,12 @@ Namespace Properties
                 ' Correct for secundary offset
                 iIndex -= Me.m_iSecIndexOffset
 
-                Me.m_bInUpdate = True
-
                 'jb 16/mar/06 setVariable() now returns boolean so get the Style object from CurrentStyle
                 ' Set new value
                 m_Source.SetVariable(Me.m_VarName, newValue, iIndex)
 
                 ' Get the status of this operation
                 vs = m_Source.ValidationStatus
-
-                Me.m_bInUpdate = False
 
                 ' Did the core accept this value?
                 If ((vs.Status And eStatusFlags.FailedValidation) = 0) Then
@@ -463,7 +451,7 @@ Namespace Properties
 
         Public Overridable Function GetVariableMetadata() As cVariableMetaData
             ' Santiy checks
-            If Me.m_Source Is Nothing Then
+            If Object.ReferenceEquals(Me.m_Source, Nothing) Then
                 Return Nothing
             End If
 
@@ -523,8 +511,8 @@ Namespace Properties
         ''' <remarks>Be aware that Style flags set here are not passed down to the Core. Core status bits are exclusively
         ''' managed by the core itself. Rather, this method allows </remarks>
         ''' -------------------------------------------------------------------
-        Public Function SetStyle(ByVal newStyle As cStyleGuide.eStyleFlags, _
-                    Optional ByVal notify As TriState = TriState.False, _
+        Public Function SetStyle(ByVal newStyle As cStyleGuide.eStyleFlags,
+                    Optional ByVal notify As TriState = TriState.False,
                     Optional ByVal BitSetMode As eBitSetMode = eBitSetMode.All) As Boolean
 
             ' Change flag
@@ -696,23 +684,16 @@ Namespace Properties
 #Region " Pedigree "
 
         ''' <summary>
-        ''' Get the pedigree CV [0, 100] set for the related variable, if any.
+        ''' Get the pedigree value [0, 1] set for the related variable, if any.
         ''' </summary>
-        Public ReadOnly Property PedigreeCV As Integer
+        Public ReadOnly Property Pedigree As Integer
             Get
                 If (Me.m_pm Is Nothing) Then Return 0
                 If (Me.m_Source Is Nothing) Then Return 0
 
-                Dim var As eVarNameFlags = Me.m_VarName
                 Dim pedman As cPedigreeManager = Me.m_pm.Core.GetPedigreeManager(Me.m_VarName)
                 If (pedman Is Nothing) Then Return 0
-                If (TypeOf Me.m_Source Is cCoreGroupBase) Then
-                    Return pedman.ResolvePedigreeGroupCV(Me.m_Source.Index)
-                End If
-                If (TypeOf Me.m_SourceSec Is cCoreGroupBase) Then
-                    Return pedman.ResolvePedigreeGroupCV(Me.m_SourceSec.Index)
-                End If
-                Return 0
+                Return CInt(pedman.Pedigree(Me.m_Source.Index) / pedman.NumLevels)
             End Get
         End Property
 

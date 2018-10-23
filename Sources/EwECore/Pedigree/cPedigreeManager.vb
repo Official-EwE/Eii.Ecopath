@@ -13,6 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -29,26 +30,11 @@ Imports System.Collections.Generic
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Class that contains and distributes <see cref="cPedigreeLevel">pedigree levels</see>,
-''' and maintains group <see cref="cPedigreeManager.PedigreeGroupCV">pedigree assignments</see>.
+''' and maintains group <see cref="cPedigreeManager.Pedigree">pedigree assignments</see>.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cPedigreeManager
     Inherits cCoreInputOutputBase
-
-#Region " Private classes "
-
-    Private Class cPedigreeLevelSort
-        Implements IComparer(Of cPedigreeLevel)
-
-        Public Function Compare(x As cPedigreeLevel, y As cPedigreeLevel) As Integer Implements IComparer(Of cPedigreeLevel).Compare
-            If (x Is Nothing) Or (y Is Nothing) Then Return 0
-            If x.ConfidenceInterval < y.ConfidenceInterval Then Return 1
-            If x.ConfidenceInterval > y.ConfidenceInterval Then Return -1
-            Return 0
-        End Function
-
-    End Class
-#End Region ' Private classes
 
 #Region " Private vars "
 
@@ -67,6 +53,7 @@ Public Class cPedigreeManager
         MyBase.New(core)
 
         Dim val As cValue = Nothing
+        Dim meta As cVariableMetaData = Nothing
 
         Me.m_dataType = eDataTypes.PedigreeManager
         Me.m_coreComponent = eCoreComponentType.EcoPath
@@ -77,12 +64,10 @@ Public Class cPedigreeManager
 
         Me.DBID = iDBID
 
-        'Pedigree levels
-        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.PedigreeLevel, eStatusFlags.NotEditable Or eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
-        Me.m_values.Add(val.varName, val)
-
-        'Pedigree confidence intervals
-        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.ConfidenceInterval, eStatusFlags.NotEditable Or eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter)
+        'Array variables
+        'Pedigree
+        meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+        val = New cValueArray(eValueTypes.IntArray, eVarNameFlags.Pedigree, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.Pedigree))
         Me.m_values.Add(val.varName, val)
 
         Me.AllowValidation = True
@@ -107,46 +92,16 @@ Public Class cPedigreeManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the pedigree level index for a given variable. 
-    ''' </summary>
-    ''' <param name="iGroup">One-based index of the group.</param>
-    ''' -----------------------------------------------------------------------
-    Public Property PedigreeGroupLevel(ByVal iGroup As Integer) As Integer
-        Get
-            Return CInt(Me.GetVariable(eVarNameFlags.PedigreeLevel, iGroup))
-        End Get
-        Set(ByVal value As Integer)
-            Me.SetVariable(eVarNameFlags.PedigreeLevel, value, iGroup)
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the pedigree level index status for a given variable. 
-    ''' </summary>
-    ''' <param name="iVariable">One-based index of the variable for which to access the status.</param>
-    ''' -----------------------------------------------------------------------
-    Public Property PedigreeGroupLevelStatus(ByVal iVariable As Integer) As eStatusFlags
-        Get
-            Return Me.GetStatus(eVarNameFlags.PedigreeLevel, iVariable)
-        End Get
-        Friend Set(ByVal value As eStatusFlags)
-            Me.SetStatus(eVarNameFlags.PedigreeLevel, value)
-        End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Get/set the pedigree index for a given variable. 
     ''' </summary>
     ''' <param name="iGroup">One-based index of the group.</param>
     ''' -----------------------------------------------------------------------
-    Public Property PedigreeGroupCV(ByVal iGroup As Integer) As Integer
+    Public Property Pedigree(ByVal iGroup As Integer) As Integer
         Get
-            Return CInt(Me.GetVariable(eVarNameFlags.ConfidenceInterval, iGroup))
+            Return CInt(Me.GetVariable(eVarNameFlags.Pedigree, iGroup))
         End Get
         Set(ByVal value As Integer)
-            Me.SetVariable(eVarNameFlags.ConfidenceInterval, value, iGroup)
+            Me.SetVariable(eVarNameFlags.Pedigree, value, iGroup)
         End Set
     End Property
 
@@ -156,27 +111,14 @@ Public Class cPedigreeManager
     ''' </summary>
     ''' <param name="iVariable">One-based index of the variable for which to access the status.</param>
     ''' -----------------------------------------------------------------------
-    Public Property PedigreeGroupCVStatus(ByVal iVariable As Integer) As eStatusFlags
+    Public Property PedigreeStatus(ByVal iVariable As Integer) As eStatusFlags
         Get
-            Return Me.GetStatus(eVarNameFlags.ConfidenceInterval, iVariable)
+            Return Me.GetStatus(eVarNameFlags.Pedigree, iVariable)
         End Get
         Friend Set(ByVal value As eStatusFlags)
-            Me.SetStatus(eVarNameFlags.ConfidenceInterval, value)
+            Me.SetStatus(eVarNameFlags.Pedigree, value)
         End Set
     End Property
-
-    ''' <summary>
-    ''' Get the pedigree CV assigned to a group, obtained either from a level, and
-    ''' if not present, from a possible custom assigned pedigree CV
-    ''' </summary>
-    ''' <param name="iGroup"></param>
-    ''' <returns></returns>
-    Public Function ResolvePedigreeGroupCV(iGroup As Integer) As Integer
-        Dim iLevel As Integer = Me.PedigreeGroupLevel(iGroup)
-        Dim level As cPedigreeLevel = Me.Level(iLevel)
-        If (level IsNot Nothing) Then Return Me.Level(iLevel).ConfidenceInterval
-        Return Me.PedigreeGroupCV(iGroup)
-    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -202,7 +144,7 @@ Public Class cPedigreeManager
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Level(ByVal iLevel As Integer) As cPedigreeLevel
         Get
-            If (iLevel <= 0) Or (iLevel > Me.m_levels.Count) Then Return Nothing
+            If (iLevel <= 0) Then Return Nothing
             Return Me.m_levels(iLevel)
         End Get
     End Property
@@ -267,17 +209,28 @@ Public Class cPedigreeManager
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function UpdatePedigreeAssignments() As Boolean
+    Friend Function UpdatePedigree() As Boolean
 
         Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim iVariable As Integer = Me.m_core.PedigreeVariableIndex(Me.m_varName)
+        Dim iIndex As Integer = 0
+        Dim iLevel As Integer = 0
 
-        ' Store CV values
+        ' Map local manager indexes to core level indexes 
         For iGroup As Integer = 1 To Me.m_core.nGroups
+            ' Get local index
+            iIndex = Me.Pedigree(iGroup)
+            ' Is in valid range?
+            If (iIndex > 0) And (iIndex <= Me.m_levels.Count) Then
+                ' #Yes: obtain actual core index for this level
+                iLevel = Me.m_levels(iIndex).Index
+            Else
+                ' #No: assume 'no assignment'
+                iLevel = 0
+            End If
             Try
                 ' Store
-                data.PedigreeEcopathGroupCV(iGroup, iVariable) = Me.PedigreeGroupCV(iGroup)
-                data.PedigreeEcopathGroupLevel(iGroup, iVariable) = Me.PedigreeGroupLevel(iGroup)
+                data.Pedigree(iGroup, iVariable) = iLevel
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".UpdatePedigree() group failed to update DBID=" & iGroup)
                 Debug.Assert(False, Me.ToString & ".UpdatePedigree() group failed to update DBID=" & iGroup)
@@ -293,7 +246,7 @@ Public Class cPedigreeManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Create pedigree levels.
+    ''' Create pedigree levels and load all data.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Friend Sub Init()
@@ -368,25 +321,33 @@ Public Class cPedigreeManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Load or update assigned pedigree CV values.
+    ''' Load or update pedigree assignment values.
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function LoadPedigreeAssignments() As Boolean
+    Friend Function LoadPedigree() As Boolean
 
         Dim data As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim iVariable As Integer = Me.m_core.PedigreeVariableIndex(Me.m_varName)
+        Dim iLevel As Integer = 0
+        Dim iIndex As Integer = 0
 
         ' Sanity check
-        Debug.Assert(data.PedigreeEcopathGroupCV IsNot Nothing, "Pedigree data not dimensioned")
+        Debug.Assert(data.Pedigree IsNot Nothing, "Pedigree data not dimensioned")
 
         Me.AllowValidation = False
 
         ' Map core level indexes to local manager indexes
         For iGroup As Integer = 1 To Me.m_core.nGroups
-            ' No assignment = 0
-            Me.PedigreeGroupLevel(iGroup) = data.PedigreeEcopathGroupLevel(iGroup, iVariable)
-            Me.PedigreeGroupCV(iGroup) = data.PedigreeEcopathGroupCV(iGroup, iVariable)
+
+            iLevel = data.Pedigree(iGroup, iVariable)
+            If (iLevel > 0) Then
+                iIndex = Me.m_dictID(iLevel)
+            Else
+                iIndex = -1
+            End If
+            Me.Pedigree(iGroup) = iIndex
+
         Next
         Me.ResetStatusFlags()
         Me.AllowValidation = True
@@ -414,7 +375,6 @@ Public Class cPedigreeManager
     Friend Sub Set_Pedigree_Flags(ByVal group As cEcoPathGroupInput)
 
         Dim epdata As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim lock As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
 
         ' Borrow status flags from groups
         Me.AllowValidation = False
@@ -426,43 +386,34 @@ Public Class cPedigreeManager
         Select Case Me.m_varName
 
             Case eVarNameFlags.BiomassAreaInput
-                Me.ClearStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
-                Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
+                Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
 
             Case eVarNameFlags.PBInput
                 If (group.IsDetritus()) Then
-                    Me.SetStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
-                    Me.SetStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
                 Else
-                    Me.ClearStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
-                    Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
+                    Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 End If
 
             Case eVarNameFlags.QBInput
                 If (group.IsDetritus() Or group.IsProducer()) Then
-                    Me.SetStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
-                    Me.SetStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable Or eStatusFlags.Null, group.Index)
                 Else
-                    Me.ClearStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
-                    Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
+                    Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 End If
 
             Case eVarNameFlags.DietComp
                 If (group.IsDetritus() Or group.IsProducer()) Then
-                    Me.SetStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
-                    Me.SetStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 Else
-                    Me.ClearStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
-                    Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
+                    Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 End If
 
             Case eVarNameFlags.TCatchInput
                 If epdata.fCatch(group.Index) > 0 Then
-                    Me.ClearStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
-                    Me.ClearStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
+                    Me.ClearStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 Else
-                    Me.SetStatusFlags(eVarNameFlags.PedigreeLevel, lock, group.Index)
-                    Me.SetStatusFlags(eVarNameFlags.ConfidenceInterval, lock, group.Index)
+                    Me.SetStatusFlags(eVarNameFlags.Pedigree, eStatusFlags.NotEditable, group.Index)
                 End If
 
         End Select

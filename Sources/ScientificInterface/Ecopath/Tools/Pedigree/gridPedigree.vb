@@ -13,6 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -25,6 +26,7 @@ Imports EwECore
 Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports SourceGrid2
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region 'Imports
@@ -36,9 +38,162 @@ Namespace Ecopath.Tools
     ''' Grid for displaying Pedigree assignments.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Friend Class gridPedigree
         Inherits EwEGrid
+
+#Region " Helper classes "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Visualizer for rendering pedigree cells in the lovely
+        ''' <see cref="gridPedigree">pedigree grid</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Class cPedigreeCellVisualizer
+            Inherits cEwEGridVisualizerBase
+
+            Private m_psg As cPedigreeStyleGuide = Nothing
+
+            Public Sub New(ByVal psg As cPedigreeStyleGuide)
+                Me.m_psg = psg
+            End Sub
+
+            ''' <summary>
+            ''' Helper method, returns a pedigree level for a given cell.
+            ''' </summary>
+            ''' <param name="cell">The cell to obtain pedigree info for.</param>
+            ''' <param name="pos">The position to obtain pedigree info for.</param>
+            ''' <returns>A <see cref="cPedigreeLevel">pedigree level</see>, or
+            ''' Nothing if something went wrong.</returns>
+            Private Function GetLevel(ByVal cell As SourceGrid2.Cells.ICellVirtual,
+                    ByVal pos As SourceGrid2.Position) As cPedigreeLevel
+
+                Try
+
+                    ' Sanity checks
+                    If (cell Is Nothing) Then Return Nothing
+
+                    Dim value As Object = cell.GetValue(pos)
+                    ' Need an integer value representing a level index
+                    If Not (TypeOf value Is Integer) Then Return Nothing
+
+                    Dim iLevel As Integer = CInt(value)
+                    ' Need a one-based index
+                    If (iLevel <= 0) Then Return Nothing
+
+                    Dim clr As Color = Nothing
+                    Dim core As cCore = Me.Core(cell)
+                    If (core Is Nothing) Then Return Nothing
+
+                    ' Ok, this is downright nasty code. The visualizer assumes that the
+                    ' columns represent pedigree variable indices starting at column 2.
+                    Dim var As eVarNameFlags = core.PedigreeVariable(pos.Column - 1)
+
+                    ' Get manager
+                    Dim man As cPedigreeManager = core.GetPedigreeManager(var)
+                    If (man Is Nothing) Then Return Nothing
+
+                    Return man.Level(iLevel)
+
+                Catch ex As Exception
+                    ' Whoah
+                End Try
+
+                Return Nothing
+
+            End Function
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Overidden to draw pedigree cell content background bits.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Protected Overrides Sub DrawCell_Background(
+                    ByVal cell As SourceGrid2.Cells.ICellVirtual,
+                    ByVal pos As SourceGrid2.Position,
+                    ByVal e As System.Windows.Forms.PaintEventArgs,
+                    ByVal rc As System.Drawing.Rectangle,
+                    ByVal status As SourceGrid2.DrawCellStatus)
+
+                MyBase.DrawCell_Background(cell, pos, e, rc, status)
+
+                Dim level As cPedigreeLevel = Me.GetLevel(cell, pos)
+                If (level Is Nothing) Then Return
+
+                Using br As New SolidBrush(Me.m_psg.BackgroundColor(Color.Transparent, level))
+                    e.Graphics.FillRectangle(br, New Rectangle(rc.Left + 4, rc.Top + 3, rc.Width - 8, rc.Height - 6))
+                End Using
+
+            End Sub
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Overidden to draw pedigree cell content text.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Protected Overrides Sub DrawCell_ImageAndText(
+                    ByVal cell As SourceGrid2.Cells.ICellVirtual,
+                    ByVal pos As SourceGrid2.Position,
+                    ByVal e As System.Windows.Forms.PaintEventArgs,
+                    ByVal rc As System.Drawing.Rectangle,
+                    ByVal status As SourceGrid2.DrawCellStatus)
+
+                Dim level As cPedigreeLevel = Me.GetLevel(cell, pos)
+                If (level Is Nothing) Then Return
+
+                Dim style As cStyleGuide.eStyleFlags = 0
+                Dim clrFore As Color = Me.ForeColor
+                Dim clrBack As Color = Nothing ' Not used here
+                Dim rcBorder As RectangleBorder = Me.Border
+                Dim fontCell As Font = Me.GetCellFont()
+                Dim sg As cStyleGuide = Me.StyleGuide(cell)
+                Dim strText As String = Me.m_psg.DisplayText(level)
+                Dim fmt As StringFormat = Me.StringFormat
+
+                ' Rendering a cell with an associated property?
+                If (TypeOf cell Is EwECellBase) Then
+                    ' #Yes: obtain cell style
+                    style = DirectCast(cell, EwECellBase).Style()
+                    If (sg IsNot Nothing) Then
+                        ' Get SG colours for this style
+                        sg.GetStyleColors(style, clrFore, clrBack)
+                    End If
+                End If
+
+                fmt.Alignment = StringAlignment.Center
+                fmt.LineAlignment = StringAlignment.Center
+
+                ' Render Image and Text in determined fore colour and text
+                Utility.PaintImageAndText(e.Graphics, rc,
+                    Me.Image, Me.ImageAlignment, Me.ImageStretch,
+                    strText, fmt,
+                    Me.AlignTextToImage, Me.Border,
+                    clrFore, Me.GetCellFont())
+
+            End Sub
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Borrow core reference from parent cell, if possible.
+            ''' </summary>
+            ''' <param name="cell">Cell to borrow core from.</param>
+            ''' -------------------------------------------------------------------
+            Protected ReadOnly Property Core(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cCore
+                Get
+                    If (TypeOf cell Is IUIElement) Then
+                        Dim uic As cUIContext = DirectCast(cell, IUIElement).UIContext
+                        If (uic IsNot Nothing) Then
+                            Return uic.Core
+                        End If
+                    End If
+                    Return Nothing
+                End Get
+            End Property
+
+        End Class
+
+#End Region ' Helper classes
 
 #Region " Private vars "
 
@@ -48,7 +203,6 @@ Namespace Ecopath.Tools
         Private m_pcv As cPedigreeCellVisualizer = Nothing
         ''' <summary>Varname currently selected in the pedigree interface.</summary>
         Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
-        Private m_varCol As Integer = -1
 
 #End Region ' Private vars
 
@@ -119,7 +273,7 @@ Namespace Ecopath.Tools
         ''' </summary>
         ''' <param name="iLevel"></param>
         ''' -------------------------------------------------------------------
-        Public Sub SetLevel(ByVal iLevel As Integer)
+        Public Sub SetValue(ByVal iLevel As Integer)
 
             ' Get grid selection
             Dim sel As SourceGrid2.Selection = Me.Selection
@@ -129,91 +283,40 @@ Namespace Ecopath.Tools
             ' while we're at it.
             If Not core.SetBatchLock(cCore.eBatchLockType.Update) Then Return
 
-            ' ToDo: can limit column iterations to selected variable
-            For iCol As Integer = 2 To Me.ColumnsCount - 1
-                Dim var As eVarNameFlags = Me.Core.PedigreeVariable(iCol - 1)
-                Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(var)
-                For iRow As Integer = 1 To Me.RowsCount - 1
-                    Dim pos As New SourceGrid2.Position(iRow, iCol)
-                    Dim cell As SourceGrid2.Cells.ICell = Me(iRow, iCol)
-                    If (cell IsNot Nothing) And Me.Selection.Contains(pos) Then
-                        If TypeOf cell Is PropertyCell Then
-                            Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
-                            If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
-                                Dim prop As cProperty = pcell.GetProperty()
-                                Dim bChanged As Boolean = (CInt(prop.GetValue()) <> 0) Or (man.PedigreeGroupLevel(iRow) <> iLevel)
-                                man.PedigreeGroupLevel(iRow) = iLevel
-                                ' Force update
-                                prop.SetValue(0, If(bChanged, TriState.True, TriState.UseDefault))
-                            End If
-                        End If
-
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_APPLYVALUES)
+            For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
+                If TypeOf cell Is PropertyCell Then
+                    Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                    If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
+                        pcell.GetProperty().SetValue(iLevel)
                     End If
-                Next
+                End If
             Next
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
             core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
 
         End Sub
 
-        Public ReadOnly Property SelectedLevel As Integer
+        Public ReadOnly Property SelectedValue As Integer
             Get
-                If (Me.m_varCol <= 0) Then Return 0
-
                 Dim sel As SourceGrid2.Selection = Me.Selection
                 Dim iValueSel As Integer = 0
                 Dim iValue As Integer
                 Dim bValid As Boolean = True
-                Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(Me.m_varName)
 
-                For iRow As Integer = 1 To Me.RowsCount - 1
-                    Dim pos As New SourceGrid2.Position(iRow, Me.m_varCol)
-                    Dim cell As SourceGrid2.Cells.ICell = Me(iRow, Me.m_varCol)
-                    If (cell IsNot Nothing) And Me.Selection.Contains(pos) Then
-                        If TypeOf cell Is PropertyCell Then
-                            Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
-                            If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
-                                iValue = man.PedigreeGroupLevel(iRow)
-                                If (iValue > 0) Then
-                                    bValid = bValid And ((iValueSel = 0) Or (iValueSel = iValue))
-                                    iValueSel = iValue
-                                End If
+                For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
+                    If TypeOf cell Is PropertyCell Then
+                        Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
+                        If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
+                            iValue = CInt(pcell.GetProperty().GetValue)
+                            If (iValue > 0) Then
+                                bValid = bValid And ((iValueSel = 0) Or (iValueSel = iValue))
+                                iValueSel = iValue
                             End If
                         End If
                     End If
-                Next iRow
-
-                If bValid Then Return iValueSel Else Return 0
-            End Get
-        End Property
-
-        Public ReadOnly Property SelectedCV As Integer
-            Get
-                If (Me.m_varCol <= 0) Then Return 0
-
-                Dim sel As SourceGrid2.Selection = Me.Selection
-                Dim iValueSel As Integer = 0
-                Dim iValue As Integer
-                Dim bValid As Boolean = True
-                Dim man As cPedigreeManager = Me.Core.GetPedigreeManager(Me.m_varName)
-
-                For iRow As Integer = 1 To Me.RowsCount - 1
-                    Dim pos As New SourceGrid2.Position(iRow, Me.m_varCol)
-                    Dim cell As SourceGrid2.Cells.ICell = Me(iRow, Me.m_varCol)
-                    If (cell IsNot Nothing) And Me.Selection.Contains(pos) Then
-                        If TypeOf cell Is PropertyCell Then
-                            Dim pcell As PropertyCell = DirectCast(cell, PropertyCell)
-                            If (pcell.Style And cStyleGuide.eStyleFlags.NotEditable) = 0 Then
-                                iValue = CInt(pcell.GetProperty().GetValue)
-                                If (iValue > 0) Then
-                                    bValid = bValid And ((iValueSel = 0) Or (iValueSel = iValue))
-                                    iValueSel = iValue
-                                End If
-                            End If
-                        End If
-                    End If
-                Next iRow
-
+                Next cell
                 If bValid Then Return iValueSel Else Return 0
             End Get
         End Property
@@ -277,11 +380,9 @@ Namespace Ecopath.Tools
             Dim man As cPedigreeManager = Nothing
             Dim prop As cProperty = Nothing
             Dim cell As PropertyCell = Nothing
-            Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.ValueComputed
+            Dim style As cStyleGuide.eStyleFlags = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed)
             Dim iSelectedVar As Integer = Me.Core.PedigreeVariableIndex(Me.SelectedVariable)
             Dim varname As eVarNameFlags = eVarNameFlags.NotSet
-
-            Me.m_varCol = -1
 
             ' For all pedigree variables
             For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
@@ -296,26 +397,26 @@ Namespace Ecopath.Tools
                     group = Me.Core.EcoPathGroupInputs(iGroup)
 
                     ' Get property
-                    prop = Me.PropertyManager.GetProperty(man, eVarNameFlags.ConfidenceInterval, group)
+                    prop = Me.PropertyManager.GetProperty(man, eVarNameFlags.Pedigree, group)
                     ' Prepare cell
                     cell = New PropertyCell(prop)
                     ' Add EditHandler to track column selection changes
                     cell.Behaviors.Add(Me.EwEEditHandler)
                     ' Connect special pedigree cell visualizer that handles different display styles
                     cell.VisualModel = Me.m_pcv
+                    ' Can edit cells, but not via normal UI methods. This will allow pasting content,
+                    ' will allow the quick-edit bar to work, but will not allow click-and-type interaction.
+                    cell.DataModel.EnableEdit = True
+                    cell.DataModel.EditableMode = EditableMode.None
                     ' Merge cell and property styles
                     cell.JoinStyles = True
-                    cell.SuppressZero(0) = True
 
-                    ' Apply selected variable to show only specific cells as editable
-                    style = prop.GetStyle()
+                    ' Apply selected variable to show only specific cells as editable (even though the
+                    ' individual cells cannot be edited)
                     If iSelectedVar <> iVariable Then
-                        style = style Or cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
-                    Else
-                        style = style Or cStyleGuide.eStyleFlags.OK
-                        Me.m_varCol = 1 + iVariable
+                        cell.Style = cell.Style Or cStyleGuide.eStyleFlags.NotEditable
                     End If
-                    cell.Style = style
+
                     ' Store cell
                     Me(iGroup, 1 + iVariable) = cell
                 Next

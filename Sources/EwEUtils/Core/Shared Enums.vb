@@ -1487,14 +1487,14 @@ Namespace Core
 
         ' Pedigree
 
-        ''' <summary>To document</summary>
+        ''' <summary>Pedigree variable</summary>
         VariableName
         ''' <summary>To document</summary>
         IndexValue
-        ''' <summary>Assigned pedigree level</summary>
-        PedigreeLevel
-        ''' <summary>Custom confidence interval for pedigree</summary>
+        ''' <summary>Pedigree confidence</summary>
         ConfidenceInterval
+        ''' <summary>Assigned pedigree</summary>
+        Pedigree
 
         'Varnames added for Game Server
 
