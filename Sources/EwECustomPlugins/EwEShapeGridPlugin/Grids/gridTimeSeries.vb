@@ -66,35 +66,20 @@ Public Class gridTimeSeries
 
         cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, SharedResources.STATUS_UPDATING)
 
-        Dim edt As EwEComboBoxCellEditor = Nothing
-
-        Dim aGroupTSTypes As eTimeSeriesType() = Me.GroupTSTypes()
-        Dim aFleetTSTypes As eTimeSeriesType() = Me.FleetTSTypes()
-
         Dim nPoints As Integer = Me.Core.nTimeSeriesYears
         Dim ats As cShapeData() = Me.Shapes
         Dim nTS As Integer = ats.Length
         Dim ts As cTimeSeries = Nothing
         Dim cell As SourceGrid2.Cells.ICell = Nothing
-        Dim cmb As SourceGrid2.Cells.Real.ComboBox = Nothing
 
-        Dim lGroups As New List(Of cCoreInputOutputBase)
-        Dim lFleets As New List(Of cCoreInputOutputBase)
-
-        For igroup As Integer = 1 To Me.Core.nGroups
-            lGroups.Add(Me.Core.EcoPathGroupInputs(igroup))
-        Next
-
-        For ifleet As Integer = 1 To Me.Core.nFleets
-            lFleets.Add(Me.Core.EcopathFleetInputs(ifleet))
-        Next
-
-        Dim collPoolPrim As ICollection = Nothing
         Dim selDatTypePrim As cCoreInputOutputBase = Nothing
-        Dim collPoolSec As ICollection = Nothing
         Dim selDatTypeSec As cCoreInputOutputBase = Nothing
-        Dim aTypes As eTimeSeriesType() = Nothing
-        Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
+        Dim fmtInterval As New cTimeSeriesDatasetIntervalTypeFormatter()
+        Dim fmtCore As New cCoreInterfaceFormatter()
+        Dim fmtTSType As New cTimeSeriesTypeFormatter()
+
+        Dim styleEditable As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+        Dim styleReadOnly As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.NotEditable
 
         Me.Redim(nPoints + [Enum].GetValues(GetType(eRowType)).Length, nTS + 1)
 
@@ -131,48 +116,36 @@ Public Class gridTimeSeries
             selDatTypePrim = Nothing
             If (TypeOf ts Is cGroupTimeSeries) Then
                 Dim gts As cGroupTimeSeries = DirectCast(ts, cGroupTimeSeries)
-                collPoolPrim = lGroups
                 If (gts.GroupIndex >= 1) Then
                     selDatTypePrim = Me.Core.EcoPathGroupInputs(gts.GroupIndex)
                 End If
-                aTypes = Me.GroupTSTypes
             Else
                 Dim fts As cFleetTimeSeries = DirectCast(ts, cFleetTimeSeries)
-                collPoolPrim = lFleets
                 If (fts.FleetIndex >= 1) Then
                     selDatTypePrim = Me.Core.EcopathFleetInputs(fts.FleetIndex)
                 End If
-                aTypes = Me.FleetTSTypes
-
                 If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.FleetGroup) Then
-                    collPoolSec = lGroups
                     If (fts.GroupIndex >= 1) Then
                         selDatTypeSec = Me.Core.EcoPathGroupInputs(fts.GroupIndex)
                     End If
-                    aTypes = Me.FleetGroupTSTypes()
                 End If
             End If
 
-            edt = New EwEComboBoxCellEditor(New cCoreInterfaceFormatter(), collPoolPrim)
-            cell = New SourceGrid2.Cells.Real.Cell(selDatTypePrim, edt)
-            cell.Behaviors.Add(Me.EwEEditHandler)
-            Me(eRowType.PoolPrimary, i + 1) = cell
+            If (selDatTypePrim IsNot Nothing) Then
+                Me(eRowType.PoolPrimary, i + 1) = New EwECell(fmtCore.GetDescriptor(selDatTypePrim), cStyleGuide.eStyleFlags.NotEditable)
+            Else
+                Me(eRowType.PoolPrimary, i + 1) = New EwECell("", cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
+            End If
 
-            If (collPoolSec IsNot Nothing) Then
-                edt = New EwEComboBoxCellEditor(New cCoreInterfaceFormatter(), collPoolSec)
-                cell = New SourceGrid2.Cells.Real.Cell(selDatTypeSec, edt)
-                cell.Behaviors.Add(Me.EwEEditHandler)
-                Me(eRowType.PoolSecundary, i + 1) = cell
+            If (selDatTypeSec IsNot Nothing) Then
+                Me(eRowType.PoolSecundary, i + 1) = New EwECell(fmtCore.GetDescriptor(selDatTypeSec), cStyleGuide.eStyleFlags.NotEditable)
             Else
                 Me(eRowType.PoolSecundary, i + 1) = New EwECell("", cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
             End If
 
-            edt = New EwEComboBoxCellEditor(New cTimeSeriesTypeFormatter(), aTypes)
-            cell = New SourceGrid2.Cells.Real.Cell(ts.TimeSeriesType, edt)
-            cell.Behaviors.Add(Me.EwEEditHandler)
-            Me(eRowType.Type, i + 1) = cell
+            Me(eRowType.Type, i + 1) = New EwECell(fmtTSType.GetDescriptor(ts.TimeSeriesType), cStyleGuide.eStyleFlags.NotEditable)
 
-            cell = New EwECell(fmt.GetDescriptor(ts.Interval), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            cell = New EwECell(fmtInterval.GetDescriptor(ts.Interval), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             Me(eRowType.Interval, i + 1) = cell
 
             cell = New EwECell(ts.WtType, GetType(Single))
@@ -180,9 +153,8 @@ Public Class gridTimeSeries
             Me(eRowType.Weight, i + 1) = cell
 
             For j As Integer = 0 To nPoints - 1
-                cell = New EwECell(ts.ShapeData(j + 1), GetType(Single))
+                cell = New EwECell(ts.ShapeData(j + 1), GetType(Single), cStyleGuide.eStyleFlags.NotEditable)
                 DirectCast(cell, EwECell).SuppressZero = Not ts.SupportsNull()
-                cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(eRowType.FirstTime + j, i + 1) = cell
             Next
         Next
@@ -232,15 +204,18 @@ Public Class gridTimeSeries
         Select Case DirectCast(p.Row, eRowType)
             Case eRowType.Name
                 ts.Name = CStr(cell.GetValue(p))
-            Case eRowType.PoolPrimary
-                ts.DatPool = DirectCast(cell.GetValue(p), cCoreInputOutputBase).Index
+            Case eRowType.PoolPrimary, eRowType.PoolSecundary
+                Debug.Assert(False)
+                'ts.DatPool = DirectCast(cell.GetValue(p), cCoreInputOutputBase).Index
             Case eRowType.Type
-                ts.TimeSeriesType = DirectCast(cell.GetValue(p), eTimeSeriesType)
+                Debug.Assert(False)
+                'ts.TimeSeriesType = DirectCast(cell.GetValue(p), eTimeSeriesType)
             Case eRowType.Weight
                 ts.WtType = CSng(cell.GetValue(p))
             Case Else
-                Dim iTime As Integer = p.Row - eRowType.FirstTime
-                ts.ShapeData(iTime + 1) = CSng(cell.GetValue(p))
+                ' Don't allow
+                'Dim iTime As Integer = p.Row - eRowType.FirstTime
+                'ts.ShapeData(iTime + 1) = CSng(cell.GetValue(p))
         End Select
 
         ' Do not invalidate individual shapes on a batch cell edit
@@ -283,66 +258,6 @@ Public Class gridTimeSeries
 #End Region ' Updates
 
 #Region " Helper methods "
-
-    Protected Function GroupIndexes() As Integer()
-        Dim lIndexes As New List(Of Integer)
-        For i As Integer = 1 To Me.Core.nGroups
-            lIndexes.Add(i)
-        Next
-        Return lIndexes.ToArray
-    End Function
-
-    Protected Function GroupNames(ByVal aIndexes As Integer()) As String()
-        Dim fmt As New cCoreInterfaceFormatter()
-        Dim lstrNames As New List(Of String)
-
-        For i As Integer = 0 To aIndexes.Length - 1
-            Dim iGroup As Integer = aIndexes(i)
-            Dim group As cCoreInputOutputBase = Me.Core.EcoPathGroupInputs(iGroup)
-            lstrNames.Add(fmt.GetDescriptor(group))
-        Next
-        Return lstrNames.ToArray
-    End Function
-
-    Protected Function FleetIndexes() As Integer()
-        Dim lIndexes As New List(Of Integer)
-        For i As Integer = 1 To Me.Core.nFleets
-            lIndexes.Add(i)
-        Next
-        Return lIndexes.ToArray
-    End Function
-
-    Protected Function FleetNames(ByVal aIndexes As Integer()) As String()
-        Dim fmt As New cCoreInterfaceFormatter()
-        Dim lstrNames As New List(Of String)
-        For i As Integer = 0 To aIndexes.Length - 1
-            Dim iFleet As Integer = aIndexes(i)
-            Dim fleet As cCoreInputOutputBase = Me.Core.EcopathFleetInputs(iFleet)
-            lstrNames.Add(fmt.GetDescriptor(fleet))
-        Next
-        Return lstrNames.ToArray
-    End Function
-
-    Protected Function GroupTSTypes() As eTimeSeriesType()
-        Return cTimeSeriesFactory.CompatibleTypes(eTimeSeriesCategoryType.Group)
-    End Function
-
-    Protected Function FleetTSTypes() As eTimeSeriesType()
-        Return cTimeSeriesFactory.CompatibleTypes(eTimeSeriesCategoryType.Fleet)
-    End Function
-
-    Protected Function FleetGroupTSTypes() As eTimeSeriesType()
-        Return cTimeSeriesFactory.CompatibleTypes(eTimeSeriesCategoryType.FleetGroup)
-    End Function
-
-    Protected Function TSTypeNames(ByVal aTypes As eTimeSeriesType()) As String()
-        Dim lstrNames As New List(Of String)
-        Dim desc As New cTimeSeriesTypeFormatter()
-        For Each tst As eTimeSeriesType In aTypes
-            lstrNames.Add(desc.GetDescriptor(tst))
-        Next tst
-        Return lstrNames.ToArray
-    End Function
 
     Protected Overrides Function Label(ByVal iPoint As Integer) As String
         Dim ds As cTimeSeriesDataset = Nothing
