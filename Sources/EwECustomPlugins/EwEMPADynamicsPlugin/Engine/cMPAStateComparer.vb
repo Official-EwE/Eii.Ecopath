@@ -1,0 +1,37 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991- 
+'    Ecopath International Initiative, Barcelona, Spain
+' ===============================================================================
+'
+
+#Region " Imports "
+
+Option Strict On
+
+#End Region ' Imports
+
+Public Class cMPAStateComparer
+    Implements IComparer(Of cMPAState)
+
+    Public Function Compare(x As cMPAState, y As cMPAState) As Integer Implements IComparer(Of cMPAState).Compare
+        If (x.TimeStamp < y.TimeStamp) Then Return -1
+        If (x.TimeStamp > y.TimeStamp) Then Return 1
+        If (x.MPA < y.MPA) Then Return -1
+        If (x.MPA > y.MPA) Then Return 1
+        Return 0
+    End Function
+
+End Class

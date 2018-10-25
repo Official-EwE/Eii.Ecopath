@@ -293,6 +293,8 @@ Namespace Controls.Map
                 Me.Capture = True
             End If
 
+            Me.UpdateMap()
+
         End Sub
 
         ''' -------------------------------------------------------------------

@@ -74,17 +74,16 @@ Namespace Controls.Map.Layers
         ''' <param name="e"></param>
         ''' <param name="ptClick"></param>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub SetCellValue(ByVal ptSet As System.Drawing.Point, _
-                                             ByVal value As Object, _
-                                             ByVal e As System.Windows.Forms.MouseEventArgs, _
-                                             ByVal ptClick As System.Drawing.Point)
+        Protected Overrides Function SetCellValue(ptSet As System.Drawing.Point,
+                                                  value As Object,
+                                                  e As System.Windows.Forms.MouseEventArgs,
+                                                  ptClick As System.Drawing.Point) As Boolean
             ' Sanity checks
             Debug.Assert(Me.m_layerDepth IsNot Nothing)
-            If (Not Me.IsEditable) Then Return
 
-            MyBase.SetCellValue(ptSet, Math.Min(CSng(value), CSng(Me.m_layerDepth.Cell(ptSet.Y, ptSet.X))), e, ptClick)
+            Return MyBase.SetCellValue(ptSet, Math.Min(CSng(value), CSng(Me.m_layerDepth.Cell(ptSet.Y, ptSet.X))), e, ptClick)
 
-        End Sub
+        End Function
 
 #End Region ' Overrides
 

@@ -97,7 +97,7 @@ Public Class cMPAOptManager
     ''' <summary>
     ''' Original MPA configuration (row x col x mpa)
     ''' </summary>
-    Private m_orgMPAConfig()(,) As Integer
+    Private m_orgMPAConfig()(,) As Boolean
 
     ''' <summary>directory for the output data</summary>
     Private m_dataDir As String = ""
@@ -315,8 +315,8 @@ Public Class cMPAOptManager
             Me.SetWait()
 
             ' Keep a copy of the original MPA configuration
-            Dim map(,) As Integer
-            Me.m_orgMPAConfig = New Integer(Me.m_core.nMPAs)(,) {}
+            Dim map(,) As Boolean
+            Me.m_orgMPAConfig = New Boolean(Me.m_core.nMPAs)(,) {}
             For i As Integer = 1 To Me.m_core.nMPAs
                 ReDim map(Me.m_core.EcospaceBasemap.InRow + 1, Me.m_core.EcospaceBasemap.InCol + 1)
                 Me.m_orgMPAConfig(i) = map
@@ -520,7 +520,7 @@ Public Class cMPAOptManager
         End Get
     End Property
 
-    Public ReadOnly Property OrgMPA() As Integer()(,)
+    Public ReadOnly Property OrgMPA() As Boolean()(,)
         Get
             Return Me.m_orgMPAConfig
         End Get

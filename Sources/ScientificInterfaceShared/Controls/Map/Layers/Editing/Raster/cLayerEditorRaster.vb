@@ -244,16 +244,17 @@ Namespace Controls.Map.Layers
             Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X), Math.Min(ptCellFrom.Y, ptCellTo.Y))
             Dim ptUpdateMax As New Point(Math.Max(ptCellFrom.X, ptCellTo.X), Math.Max(ptCellFrom.Y, ptCellTo.Y))
 
-            Me.Edit(ptCellFrom, ptCellTo,
-                           New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y),
-                           map.GetCellSize(),
-                           e,
-                           ptUpdateMin, ptUpdateMax)
+            If (Me.Edit(ptCellFrom, ptCellTo,
+                        New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y),
+                        map.GetCellSize(),
+                        e,
+                        ptUpdateMin, ptUpdateMax)) Then
 
-            ' Flag layer as changed
-            DirectCast(Me.m_layer, cDisplayLayerRaster).IsModified = True
+                ' Flag layer as changed
+                DirectCast(Me.m_layer, cDisplayLayerRaster).IsModified = True
 
-            map.UpdateMap(ptUpdateMin, ptUpdateMax)
+                map.UpdateMap(ptUpdateMin, ptUpdateMax)
+            End If
 
             Me.m_ptScreenPrevious = ptScreenCur
 
@@ -282,9 +283,12 @@ Namespace Controls.Map.Layers
             ' If NOT Shift key pressed, release the last mouse pos
             If Not (Control.ModifierKeys = Keys.Shift) Then Me.m_ptScreenPrevious = Nothing
 
-            If (Me.GUI Is Nothing) Or (Not Me.IsEditable) Then Return
-            ' Notify the editor GUI, if any
-            Me.GUI.StartEdit(Me)
+            If (Not Me.IsEditable) Then Return
+
+            If (Me.GUI IsNot Nothing) Then ' Notify the editor GUI, if any
+                Me.GUI.StartEdit(Me)
+            End If
+
             ' Perform edit
             Me.ProcessMouseDraw(args, map)
 
@@ -445,6 +449,7 @@ Namespace Controls.Map.Layers
         End Sub
 
 #End Region ' Cloning
+
 #Region " Internals "
 
         ''' -------------------------------------------------------------------
@@ -455,13 +460,17 @@ Namespace Controls.Map.Layers
         ''' <param name="ptSet">The cell location (Col, Row) to set.</param>
         ''' <param name="ptClick">The cell location (Col, Row) in the cursor.</param>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub SetCellValue(ByVal ptSet As Point,
-                                               ByVal value As Object,
-                                               ByVal e As MouseEventArgs,
-                                               ByVal ptClick As Point)
-            If (Not Me.IsEditable) Then Return
-            Me.Layer.Value(ptSet.Y, ptSet.X) = value
-        End Sub
+        Protected Overridable Function SetCellValue(ptSet As Point,
+                                                    value As Object,
+                                                    e As MouseEventArgs,
+                                                    ptClick As Point) As Boolean
+            If (Not Me.IsEditable) Then Return False
+            If Not Convert.Equals(Me.Layer.Value(ptSet.Y, ptSet.X), value) Then
+                Me.Layer.Value(ptSet.Y, ptSet.X) = value
+                Return True
+            End If
+            Return False
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -477,14 +486,15 @@ Namespace Controls.Map.Layers
         ''' the edit operation.</param>
         ''' <param name="ptUpdateMax">Bottom-right cell position affected by
         ''' the edit operation.</param>
+        ''' <returns>True if map values have changed due to the edit.</returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub Edit(ByVal ptFrom As Point,
+        Protected Overridable Function Edit(ByVal ptFrom As Point,
                                     ByVal ptTo As Point,
                                     ByVal ptDelta As Point,
                                     ByVal szfCell As SizeF,
                                     ByVal args As MouseEventArgs,
                                     ByRef ptUpdateMin As Point,
-                                    ByRef ptUpdateMax As Point)
+                                    ByRef ptUpdateMax As Point) As Boolean
 
             ' Calc positions between current and last draw point
             Dim iNumSteps As Integer = Math.Max(1, Math.Max(Math.Abs(ptFrom.X - ptTo.X), Math.Abs(ptFrom.Y - ptTo.Y)))
@@ -495,8 +505,9 @@ Namespace Controls.Map.Layers
 
             Dim ptDraw As Point = Nothing
             Dim ptCell As Point = Nothing
-
             Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+
+            Dim bChanged As Boolean = False
 
             ' Draw every step between the two draw points
             For iStep As Integer = 1 To iNumSteps
@@ -517,7 +528,7 @@ Namespace Controls.Map.Layers
                             ' JS 26Feb15: This is the only spot to protect for invalid row/col access.
                             '             Should this check not have been here ages ago?!
                             If (bm.IsValidCellPosition(ptCell.Y, ptCell.X)) Then
-                                Me.SetCellValue(ptCell, Me.CellValue, args, New Point(iX, iY))
+                                bChanged = bChanged Or Me.SetCellValue(ptCell, Me.CellValue, args, New Point(iX, iY))
 
                                 ptUpdateMin.X = Math.Min(ptCell.X, ptUpdateMin.X)
                                 ptUpdateMin.Y = Math.Min(ptCell.Y, ptUpdateMin.Y)
@@ -530,7 +541,9 @@ Namespace Controls.Map.Layers
 
             Next iStep
 
-        End Sub
+            Return bChanged
+
+        End Function
 
 #End Region ' Internals
 
