@@ -43,12 +43,12 @@ Namespace Controls.Map.Layers
 
         Public Property UseHabitatAreaCorrection As Boolean = False
 
-        Protected Overrides Sub SetCellValue(ptSet As System.Drawing.Point,
+        Protected Overrides Function SetCellValue(ptSet As System.Drawing.Point,
                                              value As Object,
                                              e As System.Windows.Forms.MouseEventArgs,
-                                             ptClick As System.Drawing.Point)
+                                             ptClick As System.Drawing.Point) As Boolean
 
-            If (Me.UIContext Is Nothing) Then Return
+            If (Me.UIContext Is Nothing) Then Return False
 
             Dim core As cCore = Me.UIContext.Core
             Dim bm As cEcospaceBasemap = core.EcospaceBasemap
@@ -78,9 +78,9 @@ Namespace Controls.Map.Layers
 
             End If
 
-            MyBase.SetCellValue(ptSet, sValue, e, ptClick)
+            Return MyBase.SetCellValue(ptSet, sValue, e, ptClick)
 
-        End Sub
+        End Function
 
     End Class
 

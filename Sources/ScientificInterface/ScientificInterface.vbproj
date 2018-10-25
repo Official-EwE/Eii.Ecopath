@@ -2149,6 +2149,10 @@
       <Project>{243cbcb0-4fd7-43b8-a6d1-27e26e866a99}</Project>
       <Name>EwEModelFromEcosimPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEMPADynamicsPlugin\EwEMPADynamicsPlugin.vbproj">
+      <Project>{220ff584-9bfa-4872-949a-52c7a6877b65}</Project>
+      <Name>EwEMPADynamicsPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEMSEPlugin\EwEMSEPlugin.vbproj">
       <Project>{19b57860-d7c5-479a-8979-e4dfe9a46b50}</Project>
       <Name>EwEMSEPlugin</Name>

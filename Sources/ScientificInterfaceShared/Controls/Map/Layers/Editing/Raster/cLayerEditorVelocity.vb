@@ -56,20 +56,20 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cLayerEditor.ProcessMouseDraw"/>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub Edit(ByVal ptFrom As Point,
-                                  ByVal ptTo As Point,
-                                  ByVal ptDeltaMouse As Point,
-                                  ByVal szfCell As SizeF,
-                                  ByVal args As MouseEventArgs,
+        Protected Overrides Function Edit(ptFrom As Point,
+                                  ptTo As Point,
+                                  ptDeltaMouse As Point,
+                                  szfCell As SizeF,
+                                  args As MouseEventArgs,
                                   ByRef ptUpdateMin As Point,
-                                  ByRef ptUpdateMax As Point)
+                                  ByRef ptUpdateMax As Point) As Boolean
 
             Me.m_ptfDelta = New PointF(ptDeltaMouse.X, ptDeltaMouse.Y)
             Me.m_szfCell = New SizeF(szfCell.Width, szfCell.Height)
 
-            MyBase.Edit(ptFrom, ptTo, ptDeltaMouse, szfCell, args, ptUpdateMin, ptUpdateMax)
+            Return MyBase.Edit(ptFrom, ptTo, ptDeltaMouse, szfCell, args, ptUpdateMin, ptUpdateMax)
 
-        End Sub
+        End Function
 
 #End Region ' Public interfaces
 
@@ -156,7 +156,7 @@ Namespace Controls.Map.Layers
         ''' Duplicate layer data across indexed layers.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub Duplicate(ByVal iFrom As Integer)
+        Public Overrides Sub Duplicate(iFrom As Integer)
 
             If (Not Me.IsEditable) Then Return
 
@@ -195,23 +195,25 @@ Namespace Controls.Map.Layers
         ''' <param name="e">Mouse event args accompanying this action.</param>
         ''' <param name="ptClick">The cell location (Col, Row) in the cursor.</param>
         ''' -------------------------------------------------------------------
-        Protected Overrides Sub SetCellValue(ByVal ptSet As Point,
-                                             ByVal value As Object,
-                                             ByVal e As MouseEventArgs,
-                                             ByVal ptClick As Point)
+        Protected Overrides Function SetCellValue(ptSet As Point,
+                                             value As Object,
+                                             e As MouseEventArgs,
+                                             ptClick As Point) As Boolean
 
-            If (Not Me.IsEditable) Then Return
+            If (Not Me.IsEditable) Then Return False
 
             ' Calc the distance the mouse has travelled
             Dim dx As Single = CSng(Math.Sqrt(Me.m_ptfDelta.X * Me.m_ptfDelta.X + Me.m_ptfDelta.Y * Me.m_ptfDelta.Y))
             ' Only process significant changes
-            If dx <= 2 Then Return
+            If dx <= 2 Then Return False
 
             Dim sVal As Single = CSng(Me.CellValue)
             Me.Layer.Value(ptSet.Y, ptSet.X) = New Single() {Me.m_ptfDelta.X * sVal / dx,
                                                              Me.m_ptfDelta.Y * sVal / dx}
 
-        End Sub
+            Return True
+
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -221,7 +223,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="pt">The cell location to pick up a value from.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub Pickup(ByVal pt As System.Drawing.Point)
+        Public Overrides Sub Pickup(pt As System.Drawing.Point)
 
             Try
                 ' JS: pt(X,Y) translated to value(row, col); it never fails to confuse me. Even if I wrote this code...

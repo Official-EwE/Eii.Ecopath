@@ -35,26 +35,24 @@ Namespace Controls.Map.Layers
 
         Public Property ProtectCoastLine() As Boolean
 
-        Protected Overrides Sub SetCellValue(ByVal ptSet As Point, _
-                                             ByVal value As Object, _
-                                             ByVal e As MouseEventArgs, _
-                                             ByVal ptClick As System.Drawing.Point)
+        Protected Overrides Function SetCellValue(ptSet As Point,
+                                                  value As Object,
+                                                  e As MouseEventArgs,
+                                                  ptClick As System.Drawing.Point) As Boolean
 
-            If (Not Me.IsEditable) Then Return
+            If (Not Me.IsEditable) Then Return False
 
             Dim layerDepth As cEcospaceLayerDepth = DirectCast(Me.Layer.Data, cEcospaceLayerDepth)
             Dim bIsLandCell As Boolean = (layerDepth.IsLandCell(ptSet.Y, ptSet.X))
             Dim bIsLandValue As Boolean = (CInt(value) = 0)
 
             If Me.ProtectCoastLine Then
-                If (bIsLandCell <> bIsLandValue) Then
-                    Return
-                End If
+                If (bIsLandCell <> bIsLandValue) Then Return False
             End If
 
-            MyBase.SetCellValue(ptSet, value, e, ptClick)
+            Return MyBase.SetCellValue(ptSet, value, e, ptClick)
 
-        End Sub
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>

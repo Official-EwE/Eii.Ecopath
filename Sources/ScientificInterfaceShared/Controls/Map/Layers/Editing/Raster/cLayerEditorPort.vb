@@ -90,20 +90,21 @@ Namespace Controls.Map.Layers
         ''' <param name="value"></param>
         ''' <param name="e"></param>
         ''' <param name="ptClick"></param>
-        Protected Overrides Sub SetCellValue(ptSet As System.Drawing.Point, _
-                                             value As Object, _
-                                             e As System.Windows.Forms.MouseEventArgs, _
-                                             ptClick As System.Drawing.Point)
+        Protected Overrides Function SetCellValue(ptSet As System.Drawing.Point,
+                                                  value As Object,
+                                                  e As System.Windows.Forms.MouseEventArgs,
+                                                  ptClick As System.Drawing.Point) As Boolean
 
             Dim core As cCore = Me.UIContext.Core
             Dim bm As cEcospaceBasemap = core.EcospaceBasemap
             Dim depth As cEcospaceLayerDepth = bm.LayerDepth
 
             If depth.IsCoastalCell(ptSet.Y, ptSet.X) Then
-                MyBase.SetCellValue(ptSet, value, e, ptClick)
+                Return MyBase.SetCellValue(ptSet, value, e, ptClick)
             End If
+            Return False
 
-        End Sub
+        End Function
 
 #End Region ' Public interfaces
 

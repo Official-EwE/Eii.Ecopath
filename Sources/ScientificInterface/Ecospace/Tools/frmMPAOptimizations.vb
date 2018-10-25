@@ -272,7 +272,6 @@ Namespace Ecospace
             Me.m_fpIterations.Release()
             Me.m_fpMaxArea.Release()
             Me.m_fpMinArea.Release()
-            Me.m_fpMPA.Release()
             Me.m_fpStartYear.Release()
             Me.m_fpStepSize.Release()
 
@@ -383,13 +382,6 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnReset(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-
-            Me.RunMode = eFormModeTypes.Prepare
-
-        End Sub
-
         Private Sub OnSelectAreaClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbAreaClosed.SelectedIndexChanged
 
@@ -441,7 +433,7 @@ Namespace Ecospace
 
                 Case eMPAOptimizationModels.RandomSearch
                     ' Get cell map at 100% best cells
-                    aiMap = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile(), _
+                    aiMap = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile(),
                                                          Me.SelectedClosedPercentage(), iNumResults)
                     ' Convert to MPA
                     Me.ConvertToMPA(aiMap, Me.SelectedClosedPercentage, Me.SelectedMPA())
@@ -476,8 +468,8 @@ Namespace Ecospace
                 ' Get area closed
                 iAreaClosed = CInt(Me.m_cmbAreaClosed.Items(iLevel))
                 ' Wrap this in a core map layer to handle projections
-                ldataTmp = New cEcospaceLayerInteger(Me.UIContext.Core, _
-                                                     Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults), _
+                ldataTmp = New cEcospaceLayerInteger(Me.UIContext.Core,
+                                                     Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults),
                                                      cStringUtils.Localize(My.Resources.ECOSPACE_LAYER_MPABESTCOUNT, iAreaClosed))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
                 layerTmp = New cDisplayLayerRaster(Me.UIContext, ldataTmp, Nothing, Nothing)
@@ -739,11 +731,11 @@ Namespace Ecospace
                 Me.InitMapFeedback()
 
                 ' Update visible state of existing layers
-                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPASeed), _
+                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPASeed),
                     SearchType = eMPAOptimizationModels.EcoSeed, SearchType = eMPAOptimizationModels.EcoSeed)
-                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPARandom), _
+                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPARandom),
                     SearchType = eMPAOptimizationModels.RandomSearch, SearchType = eMPAOptimizationModels.RandomSearch)
-                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerImportance), _
+                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerImportance),
                      SearchType = eMPAOptimizationModels.RandomSearch, SearchType = eMPAOptimizationModels.RandomSearch)
 
                 ' Update graph labels
@@ -937,9 +929,9 @@ Namespace Ecospace
 
                     End Try
 
-                    Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue, _
-                                                output.MandatedValue, output.EcologicalValue, _
-                                                output.BiomassDiversityValue, output.AreaBoundaryValue, _
+                    Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue,
+                                                output.MandatedValue, output.EcologicalValue,
+                                                output.BiomassDiversityValue, output.AreaBoundaryValue,
                                                 output.TotalValue, output.PercentageClosed)
 
                 Case eMPAOptimizationModels.RandomSearch
@@ -947,9 +939,9 @@ Namespace Ecospace
                     ' MPA layout has changed
                     Me.m_ucZoom.Map.Refresh()
 
-                    Me.LogProgress(output.EconomicValue, output.SocialValue, _
-                                   output.MandatedValue, output.EcologicalValue, _
-                                   output.BiomassDiversityValue, output.AreaBoundaryValue, _
+                    Me.LogProgress(output.EconomicValue, output.SocialValue,
+                                   output.MandatedValue, output.EcologicalValue,
+                                   output.BiomassDiversityValue, output.AreaBoundaryValue,
                                    output.TotalValue, output.PercentageClosed)
 
             End Select
@@ -977,9 +969,9 @@ Namespace Ecospace
                         ' Redraw MPA map
                         Me.m_ucZoom.Map.Refresh()
                         ' Show this in the graph
-                        Me.LogProgress(output.EconomicValue, output.SocialValue, _
-                                            output.MandatedValue, output.EcologicalValue, _
-                                            output.BiomassDiversityValue, output.AreaBoundaryValue, _
+                        Me.LogProgress(output.EconomicValue, output.SocialValue,
+                                            output.MandatedValue, output.EcologicalValue,
+                                            output.BiomassDiversityValue, output.AreaBoundaryValue,
                                             output.TotalValue, output.PercentageClosed)
 
                     Case eMPAOptimizationModels.RandomSearch
@@ -1173,8 +1165,8 @@ Namespace Ecospace
                 Case eMPAOptimizationModels.RandomSearch
 
                     Dim iNumResults As Integer = 0
-                    Dim aiCells(,) As Integer = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile, _
-                                                                             Me.SelectedClosedPercentage, _
+                    Dim aiCells(,) As Integer = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile,
+                                                                             Me.SelectedClosedPercentage,
                                                                              iNumResults)
 
                     For iRow As Integer = 1 To Me.m_basemap.InRow
@@ -1197,9 +1189,9 @@ Namespace Ecospace
 
 #Region " Progress "
 
-        Private Sub LogProgress(ByVal sEconomicValue As Single, ByVal sSocialValue As Single, _
-                                     ByVal sMandatedValue As Single, ByVal sEcologicalValue As Single, _
-                                     ByVal sBiomassDiversityValue As Single, ByVal sBoundaryWeightValue As Single, _
+        Private Sub LogProgress(ByVal sEconomicValue As Single, ByVal sSocialValue As Single,
+                                     ByVal sMandatedValue As Single, ByVal sEcologicalValue As Single,
+                                     ByVal sBiomassDiversityValue As Single, ByVal sBoundaryWeightValue As Single,
                                      ByVal sTotalValue As Single, ByVal sAreaPercentageClosed As Single)
 
             ' Show this in the graph
@@ -1223,9 +1215,9 @@ Namespace Ecospace
 
             Me.m_zghProgress.RescaleAndRedraw()
 
-            Me.m_gridProgress.LogResult(sEconomicValue, sSocialValue, _
-                                        sMandatedValue, sEcologicalValue, _
-                                        sBiomassDiversityValue, sBoundaryWeightValue, _
+            Me.m_gridProgress.LogResult(sEconomicValue, sSocialValue,
+                                        sMandatedValue, sEcologicalValue,
+                                        sBiomassDiversityValue, sBoundaryWeightValue,
                                         sTotalValue, sAreaPercentageClosed)
 
             If (Me.m_cmbAreaClosed.FindStringExact(strPerc) = -1) Then
@@ -1249,7 +1241,7 @@ Namespace Ecospace
             ''' <param name="y"></param>
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
-            Public Function Compare(ByVal x As EwECore.cObjectiveResult, _
+            Public Function Compare(ByVal x As EwECore.cObjectiveResult,
                                     ByVal y As EwECore.cObjectiveResult) As Integer _
                                     Implements IComparer(Of EwECore.cObjectiveResult).Compare
                 ' DESCENDING ORDER! < 1, = 0, > -1 (instead of customary ascending order < -1, = 0, > 1)
@@ -1339,9 +1331,9 @@ Namespace Ecospace
             Me.SetLayer(aiCellMPA, Me.m_basemap.LayerMPA(Me.SelectedMPA()), Me.SelectedMPA())
 
             ' Update indicators
-            Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue, _
-                                       res.objFuncMandatedValue, res.objFuncEcologicalValue, _
-                                       res.objBiomassDiversity, res.objFuncAreaBorder, _
+            Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue,
+                                       res.objFuncMandatedValue, res.objFuncEcologicalValue,
+                                       res.objBiomassDiversity, res.objFuncAreaBorder,
                                        res.objFuncTotal, res.PercentageClosed)
 
             Me.m_ucZoom.Map.Refresh()
@@ -1352,7 +1344,7 @@ Namespace Ecospace
             Me.UpdateBestCountMap()
         End Sub
 
-        Private Function FilteredResults(ByVal lIn As List(Of cObjectiveResult), _
+        Private Function FilteredResults(ByVal lIn As List(Of cObjectiveResult),
                                          Optional ByVal iPercAreaClosed As Integer = -1) As List(Of cObjectiveResult)
 
             If iPercAreaClosed = -1 Then Return lIn
@@ -1421,7 +1413,7 @@ Namespace Ecospace
         ''' to, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> to 
         ''' directly copy the values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub SetLayer(ByVal src As Integer(,), ByVal lDest As cEcospaceLayer, _
+        Private Sub SetLayer(ByVal src As Integer(,), ByVal lDest As cEcospaceLayer,
             Optional ByVal iConvertTo As Integer = cCore.NULL_VALUE)
 
             Dim iValue As Integer = 0
@@ -1434,10 +1426,33 @@ Namespace Ecospace
                     ' Must convert?
                     If iConvertTo <> cCore.NULL_VALUE Then
                         ' #Yes: transmogrify non-zero values
-                        iValue = if(iValue = 0, iValue, iConvertTo)
+                        iValue = If(iValue = 0, iValue, iConvertTo)
                     End If
                     ' Apply!
                     lDest.Cell(iRow, iCol) = iValue
+                Next iCol
+            Next iRow
+
+            ' Invalidate min/max
+            lDest.Invalidate()
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Sets a layer to a grid of values.
+        ''' </summary>
+        ''' <param name="src">NxN array of integer to copy from.</param>
+        ''' <param name="lDest">Layer to copy to.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub SetLayer(ByVal src As Boolean(,), ByVal lDest As cEcospaceLayer)
+
+            Dim iValue As Integer = 0
+            ' For all rows
+            For iRow As Integer = 1 To Me.m_basemap.InRow
+                ' For all cols
+                For iCol As Integer = 1 To Me.m_basemap.InCol
+                    lDest.Cell(iRow, iCol) = src(iRow, iCol)
                 Next iCol
             Next iRow
 
@@ -1456,7 +1471,7 @@ Namespace Ecospace
         ''' to, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> to 
         ''' directly copy the values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub SetLayer(ByVal src As Single(,), ByVal lDest As cEcospaceLayer, _
+        Private Sub SetLayer(ByVal src As Single(,), ByVal lDest As cEcospaceLayer,
             Optional ByVal iConvertTo As Integer = cCore.NULL_VALUE)
 
             Dim sValue As Single = 0
@@ -1469,7 +1484,7 @@ Namespace Ecospace
                     ' Must convert?
                     If iConvertTo <> cCore.NULL_VALUE Then
                         ' #Yes: ognotrizarp non-zero values
-                        sValue = CInt(if(sValue = 0, sValue, iConvertTo))
+                        sValue = CInt(If(sValue = 0, sValue, iConvertTo))
                     End If
                     ' Apply!
                     lDest.Cell(iRow, iCol) = sValue
@@ -1493,8 +1508,8 @@ Namespace Ecospace
         ''' convertable cells left.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Function ConvertToMPA(ByVal aiMap As Integer(,), _
-                                      ByVal iAreaPercentToClose As Integer, _
+        Private Function ConvertToMPA(ByVal aiMap As Integer(,),
+                                      ByVal iAreaPercentToClose As Integer,
                                       ByVal iMPA As Integer) As Boolean
 
             ' Ecospace MPA layer
@@ -1679,8 +1694,8 @@ Namespace Ecospace
 
             ' Check MPA selection
             If Me.m_cmbMPA.SelectedIndex = -1 Then
-                Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_MPAOPT_SELECTION, _
-                                                                    eMessageType.Any, eCoreComponentType.MPAOptimization, _
+                Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_MPAOPT_SELECTION,
+                                                                    eMessageType.Any, eCoreComponentType.MPAOptimization,
                                                                     eMessageImportance.Warning))
                 Return False
             End If
@@ -1693,8 +1708,8 @@ Namespace Ecospace
                     bOk = bOk Or (CSng(source.GetVariable(eVarNameFlags.FPSGroupMandRelBiom)) > 0.0)
                 Next
                 If bOk = False Then
-                    Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_MPAOPT_MANDATEDB, _
-                                                                        eMessageType.Any, eCoreComponentType.MPAOptimization, _
+                    Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_MPAOPT_MANDATEDB,
+                                                                        eMessageType.Any, eCoreComponentType.MPAOptimization,
                                                                         eMessageImportance.Warning))
                     Return False
                 End If
