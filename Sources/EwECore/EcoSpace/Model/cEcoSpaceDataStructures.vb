@@ -280,7 +280,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' MPA layout, dimensioned as mpa x (row, col)
     ''' </summary>
-    Public MPA()(,) As Boolean
+    Public MPA()(,) As Integer
 
     ''' <summary>
     ''' Base value for relative PP (relative PP at t=0). Set after PP has been read from the database.

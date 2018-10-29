@@ -9296,7 +9296,7 @@ Namespace DataSources
 
                     ' Read map
                     strMPAMap = CStr(Me.m_db.ReadSafe(reader, "MPAMap", ""))
-                    bSucces = bSucces And cStringUtils.StringToArray(strMPAMap, ecospaceDS.MPA(iMPA), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                    bSucces = bSucces And cStringUtils.StringToArray(strMPAMap, ecospaceDS.MPA(iMPA), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
 
                 End While
 
@@ -9356,7 +9356,7 @@ Namespace DataSources
                     End If
 
                     drow("MPAName") = ecospaceDS.MPAname(iMPA)
-                    drow("MPAMap") = cStringUtils.ArrayToString(ecospaceDS.MPA(iMPA), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True, True)
+                    drow("MPAMap") = cStringUtils.ArrayToString(ecospaceDS.MPA(iMPA), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True, 1)
 
                     ' Create MPA month bit pattern
                     sbMPAMonth.Length = 0
