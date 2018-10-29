@@ -57,25 +57,25 @@ Public Class frmMPADynamics
         MyBase.OnLoad(e)
 
         Dim fmt As New cCoreInterfaceFormatter()
-        Dim col As DataGridViewColumn = Nothing
+        Dim col As System.Windows.Forms.DataGridViewColumn = Nothing
 
         ' Create grid cols
         For i As Integer = 1 To cCore.N_MONTHS
-            col = New DataGridViewImageColumn()
+            col = New System.Windows.Forms.DataGridViewImageColumn()
             col.Name = "m_colM" & i
             col.HeaderText = cDateUtils.GetMonthName(i, False)
             col.ReadOnly = True
-            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader
+            col.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader
             Me.m_dgvStates.Columns.Add(col)
         Next
 
         For i As Integer = 1 To Me.Core.nFleets
             Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
-            col = New DataGridViewImageColumn()
+            col = New System.Windows.Forms.DataGridViewImageColumn()
             col.Name = "m_colF" & i
             col.HeaderText = fmt.GetDescriptor(fleet)
             col.ReadOnly = True
-            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader
+            col.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader
             Me.m_dgvStates.Columns.Add(col)
         Next
 
@@ -162,7 +162,7 @@ Public Class frmMPADynamics
         ' Bundle multiple messages into one update
         If (m_bGridInvalid = False) Then
             Me.m_bGridInvalid = True
-            Me.BeginInvoke(New MethodInvoker(AddressOf UpdateGrid))
+            Me.BeginInvoke(New System.Windows.Forms.MethodInvoker(AddressOf UpdateGrid))
         End If
     End Sub
 
@@ -194,7 +194,7 @@ Public Class frmMPADynamics
             For i As Integer = 0 To states.Count - 1
 
                 Dim state As cMPAState = states(i)
-                Dim row As DataGridViewRow = Me.m_dgvStates.Rows(i)
+                Dim row As System.Windows.Forms.DataGridViewRow = Me.m_dgvStates.Rows(i)
                 Dim mpa As cEcospaceMPA = Me.Core.EcospaceMPAs(state.MPA)
 
                 Dim timestamp As Date = state.TimeStamp
