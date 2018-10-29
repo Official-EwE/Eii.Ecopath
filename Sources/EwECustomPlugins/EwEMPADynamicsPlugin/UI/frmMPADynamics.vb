@@ -20,10 +20,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Utilities
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -115,9 +114,9 @@ Public Class frmMPADynamics
 
 #Region " Event handlers "
 
-    Private Sub OnDropFile(sender As Object, e As DragEventArgs) Handles m_dgvStates.DragDrop
+    Private Sub OnDropFile(sender As Object, e As System.Windows.Forms.DragEventArgs) Handles m_dgvStates.DragDrop
         Try
-            Dim files As String() = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            Dim files As String() = CType(e.Data.GetData(System.Windows.Forms.DataFormats.FileDrop), String())
             Me.m_engine.Clear()
             For Each file As String In files
                 Me.m_engine.LoadCSV(file, False)
@@ -129,16 +128,16 @@ Public Class frmMPADynamics
     End Sub
 
     Private Sub OnLoadCSV(sender As Object, e As EventArgs) Handles m_tsbnLoadCSV.Click
-        Dim ofd As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_SELECT_FILE_LOAD, "", SharedResources.FILEFILTER_CSV)
-        If (ofd.ShowDialog() = DialogResult.OK) Then
+        Dim ofd As System.Windows.Forms.OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(My.Resources.PROMPT_SELECT_FILE_LOAD, "", SharedResources.FILEFILTER_CSV)
+        If (ofd.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
             Me.m_engine.LoadCSV(ofd.FileName)
             Me.UpdateGrid()
         End If
     End Sub
 
     Private Sub OnExportFile(sender As Object, e As EventArgs) Handles m_tsbnExport.Click
-        Dim sfd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog(My.Resources.PROMPT_SELECT_FILE_SAVE, "", SharedResources.FILEFILTER_CSV)
-        If (sfd.ShowDialog() = DialogResult.OK) Then
+        Dim sfd As System.Windows.Forms.SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog(My.Resources.PROMPT_SELECT_FILE_SAVE, "", SharedResources.FILEFILTER_CSV)
+        If (sfd.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
             Me.m_engine.SaveCSV(sfd.FileName)
         End If
     End Sub

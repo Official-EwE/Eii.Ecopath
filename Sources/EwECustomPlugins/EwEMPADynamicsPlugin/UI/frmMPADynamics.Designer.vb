@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Option Explicit On
 Imports ScientificInterfaceShared.Forms
 
 #End Region ' Imports
@@ -149,14 +150,15 @@ Partial Class frmMPADynamics
     End Sub
 
     Private WithEvents m_tsMain As ScientificInterfaceShared.Controls.cEwEToolstrip
-    Private WithEvents m_tsbnLoadCSV As Windows.Forms.ToolStripButton
-    Private WithEvents m_dgvStates As Windows.Forms.DataGridView
-    Private WithEvents m_colTime As Windows.Forms.DataGridViewTextBoxColumn
-    Private WithEvents m_colMPA As Windows.Forms.DataGridViewTextBoxColumn
-    Private WithEvents m_tsbnShowMonths As Windows.Forms.ToolStripButton
-    Private WithEvents m_tsbnShowFleets As Windows.Forms.ToolStripButton
-    Private WithEvents m_tscmbFleets As Windows.Forms.ToolStripComboBox
-    Private WithEvents m_sep2 As Windows.Forms.ToolStripSeparator
-    Private WithEvents m_sep1 As Windows.Forms.ToolStripSeparator
-    Private WithEvents m_tsbnExport As Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnLoadCSV As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_dgvStates As System.Windows.Forms.DataGridView
+    Private WithEvents m_colTime As System.Windows.Forms.DataGridViewTextBoxColumn
+    Private WithEvents m_colMPA As System.Windows.Forms.DataGridViewTextBoxColumn
+    Private WithEvents m_tsbnShowMonths As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnShowFleets As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tscmbFleets As System.Windows.Forms.ToolStripComboBox
+    Private WithEvents m_sep2 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsbnExport As System.Windows.Forms.ToolStripButton
+
 End Class
