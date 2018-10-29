@@ -142,7 +142,7 @@ Public MustInherit Class cMPAOptBaseClass
                 ' make snapshot of MPA cell occupation for quick lookup during computations
                 Me.IsMPA(i, j) = False
                 For k As Integer = 1 To m_SpaceData.MPAno
-                    Me.IsMPA(i, j) = Me.IsMPA(i, j) Or (Me.m_SpaceData.MPA(k)(i, j))
+                    Me.IsMPA(i, j) = Me.IsMPA(i, j) Or (Me.m_SpaceData.MPA(k)(i, j) > 0)
                 Next
             Next
         Next
@@ -209,7 +209,7 @@ Public MustInherit Class cMPAOptBaseClass
             For ic As Integer = 1 To m_SpaceData.InCol
                 'm_SpaceData.MPA(ir, ic) = 0
                 For impa As Integer = 1 To m_SpaceData.MPAno
-                    m_SpaceData.MPA(impa)(ir, ic) = False
+                    m_SpaceData.MPA(impa)(ir, ic) = 0
                 Next
 
             Next ic
@@ -229,13 +229,12 @@ Public MustInherit Class cMPAOptBaseClass
 
         'make sure the MPA index supplied by the user is in bounds
         If MAPIndex > 0 And MAPIndex <= m_SpaceData.MPAno Then
-            Dim impanew As Boolean
+            Dim impanew As Integer
             For impa As Integer = 1 To m_SpaceData.MPAno
-                impanew = False
+                impanew = 0
                 If impa = MAPIndex Then
-                    impanew = True
+                    impanew = 1
                 End If
-
                 For ir As Integer = 1 To m_SpaceData.InRow
                     For ic As Integer = 1 To m_SpaceData.InCol
                         m_SpaceData.MPA(impa)(ir, ic) = impanew
@@ -490,7 +489,7 @@ Public MustInherit Class cMPAOptBaseClass
             For j As Integer = 1 To m_SpaceData.InCol
                 If Me.m_SpaceData.Depth(i, j) > 0 Then
                     For impa As Integer = 1 To Me.m_SpaceData.MPAno
-                        If m_SpaceData.MPA(impa)(i, j) Then
+                        If m_SpaceData.MPA(impa)(i, j) > 0 Then
                             Return True
                         End If
                     Next impa

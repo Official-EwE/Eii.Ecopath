@@ -97,7 +97,7 @@ Public Class cMPAOptManager
     ''' <summary>
     ''' Original MPA configuration (row x col x mpa)
     ''' </summary>
-    Private m_orgMPAConfig()(,) As Boolean
+    Private m_orgMPAConfig()(,) As Integer
 
     ''' <summary>directory for the output data</summary>
     Private m_dataDir As String = ""
@@ -315,8 +315,8 @@ Public Class cMPAOptManager
             Me.SetWait()
 
             ' Keep a copy of the original MPA configuration
-            Dim map(,) As Boolean
-            Me.m_orgMPAConfig = New Boolean(Me.m_core.nMPAs)(,) {}
+            Dim map(,) As Integer
+            Me.m_orgMPAConfig = New Integer(Me.m_core.nMPAs)(,) {}
             For i As Integer = 1 To Me.m_core.nMPAs
                 ReDim map(Me.m_core.EcospaceBasemap.InRow + 1, Me.m_core.EcospaceBasemap.InCol + 1)
                 Me.m_orgMPAConfig(i) = map
@@ -520,7 +520,7 @@ Public Class cMPAOptManager
         End Get
     End Property
 
-    Public ReadOnly Property OrgMPA() As Boolean()(,)
+    Public ReadOnly Property OrgMPA() As Integer()(,)
         Get
             Return Me.m_orgMPAConfig
         End Get
@@ -802,7 +802,7 @@ Public Class cObjectiveResult
                             '    Cells.Add(New cMPACell(ir, ic, SpaceData.MPA(ir, ic)))
                             'End If
                             For impa As Integer = 1 To SpaceData.MPAno
-                                If SpaceData.MPA(impa)(ir, ic) Then
+                                If SpaceData.MPA(impa)(ir, ic) > 0 Then
                                     Cells.Add(New cMPACell(ir, ic, impa))
                                 End If
                             Next
@@ -831,7 +831,7 @@ Public Class cObjectiveResult
         For ir As Integer = 1 To SpaceData.InRow
             For ic As Integer = 1 To SpaceData.InCol
                 'If SpaceData.MPA(ir, ic) = MPAData.iMPAtoUse Then
-                If SpaceData.MPA(MPAData.iMPAtoUse)(ir, ic) = True Then
+                If SpaceData.MPA(MPAData.iMPAtoUse)(ir, ic) > 0 Then
                     nMPACells += 1
                 End If
             Next

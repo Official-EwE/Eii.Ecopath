@@ -85,7 +85,7 @@ Namespace EcoSeed
                         'End If
 
                         For impa As Integer = 1 To Me.m_SpaceData.MPAno
-                            If m_SpaceData.MPA(impa)(ir, ic) Then
+                            If m_SpaceData.MPA(impa)(ir, ic) > 0 Then
                                 Return True
                             End If
                         Next
@@ -304,7 +304,7 @@ Namespace EcoSeed
                         'set the MPA cell to the selected Seed cell
                         'm_SpaceData.MPA(m_data.bestrow, m_data.bestcol) = m_data.MPASeed(m_data.bestrow, m_data.bestcol)
                         Dim iMPA As Integer = m_data.MPASeed(m_data.bestrow, m_data.bestcol)
-                        m_SpaceData.MPA(iMPA)(m_data.bestrow, m_data.bestcol) = (iMPA > 0)
+                        m_SpaceData.MPA(iMPA)(m_data.bestrow, m_data.bestcol) = If(iMPA > 0, 1, 0)
                         m_data.MPASeed(m_data.bestrow, m_data.bestcol) = 0
 
                         SeedSumMax = Single.MinValue
@@ -379,7 +379,7 @@ Namespace EcoSeed
                                         'MPASeed(row,col) was set in SetSeedCellsAdjacentToMPAs()
                                         'MPA() will need to be cleared at the end of this iteration
                                         'm_SpaceData.MPA(i, j) = m_data.MPASeed(ir, ic)
-                                        m_SpaceData.MPA(m_data.MPASeed(ir, ic))(i, j) = (m_data.MPASeed(ir, ic) > 0)
+                                        m_SpaceData.MPA(m_data.MPASeed(ir, ic))(i, j) = If(m_data.MPASeed(ir, ic) > 0, 1, 0)
 
                                     End If ' If m_esData.Depth(i, j) > 0 Then
                                 End If ' If i >= 0 And i <= m_esData.Inrow And j >= 0 And j <= m_esData.InCol Then
@@ -496,7 +496,7 @@ Namespace EcoSeed
 
                         If m_data.MPASeed(ir, ic) > 0 Then
                             'm_SpaceData.MPA(ir, ic) = 0
-                            m_SpaceData.MPA(m_data.MPASeed(ir, ic))(ir, ic) = False
+                            m_SpaceData.MPA(m_data.MPASeed(ir, ic))(ir, ic) = 0
                         End If
 
                     End If ' If ir <= m_esData.Inrow And ic <= m_esData.InCol Then
@@ -547,7 +547,7 @@ Namespace EcoSeed
 
                         'find the first mpa in this cell
                         For impa As Integer = 1 To Me.m_SpaceData.MPAno
-                            If m_SpaceData.MPA(impa)(iro, ico) Then
+                            If m_SpaceData.MPA(impa)(iro, ico) > 0 Then
                                 iTemp = impa
                                 Exit For
                             End If

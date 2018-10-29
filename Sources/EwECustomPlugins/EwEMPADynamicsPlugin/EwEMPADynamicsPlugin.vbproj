@@ -169,8 +169,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="Sample data\HongKong.csv" />
-    <None Include="Sample data\HongKong2.csv" />
     <None Include="~design~\Overview.cd" />
   </ItemGroup>
   <ItemGroup>
