@@ -3,6 +3,7 @@ EwE todo
 
   Warning if there are no water cells on pre-run
   Hatchery stocking ff cannot be removed from stanza group -> Works OK in Georgia Strait. Joe?
+   - Unable to reproduce
 V Pedigree not drawing in pedigree grid (but data is there?), not showing on grids
 V In the MTI, the options to change the image are not showing up
 V In the keystone index, the options to change the figure to include biomasses are not showing up 
@@ -14,22 +15,28 @@ V MPA dyn: export CSV link opens file, not the folder
   MPA dyn: add 'all year', 'all fleets' columns to CSV file (or 'm*', 'fleet*') -> Colette?
   
   Connect ext data -> define ext data -> connection list does not refresh
-  External data grid incremental updates, not total refresh
+  External data grid add incremental updates, do not total refresh
   
-? How does RelPP layer work with multiple Producer groups?
-
 V New movement parm in Ecospace: movement rel to cell fitness (not cap; prod as ratio of loss) 0 = default
 V Ecospace dispersal grid: EatEffBad can be deleted from the UI? 
   Disable respiration warning for MS groups: non-feeding last stanza high mort -> resp warning
-  Ecosampler: add means to select batch run start sample index
+V Ecosampler: add means to select batch run start sample index
   
 V Import Hake HSPEN Depth does not set depth limits correctly (40-1000m imports to limits 0-1m)
 V Copy layer style does not work between env driver layers
 V Navigator > Ecospace: move habitat foraging usage nav item up
   Sort out confusing terminology in Space: fn responses, env responses, habitat foraging responses
-  Rewrite map? Double-buffering now can create out of memory errors. Perhaps simple fix will do? If not, manage zooming in code (not in WinForms)
+  Rewrite map logic! Double-buffering can cause out of memory errors. Perhaps simple fix will do? If not, manage zooming in code (not in WinForms)
 V Add "Auto save settings" group box in Ecospace Parameters
+V Add Ecospace result writers to file management UI 
+  Add Ecospace result writers to EwE core (with secundary access through Ecospace parameters)
+  Add Monte Carlo result writers to file management UI
   Ecowriter: remark column size to width, not size to content
+  Transect extraction: add fleet and group plots
+  Transect extraction: add fleet effort and discards, and show which fleets are banned from fishing through MPAs
+  Transect extraction: add plot that shows where there are habitat limitations to fishing
+V Add cStringUtils.ToParagraph, adding line breaks after a preferred no. of characters, and use this in tooltips
+  ImportLayer: use ApplicationStatus to notify user what's happening
   
 ? Bring Ecosim Nutrient loading + Production forcing per PP group to Ecospace: 
      - Add Nutrient loading layer
@@ -37,5 +44,15 @@ V Add "Auto save settings" group box in Ecospace Parameters
 ? Allow remarks on forcing & mediation functions
 ? Allow plug-in points on toolstrips (by identifying the class name of the grid / form that has a main toolbar, like quick editor)
 ? Hyperbolic function parameters are still defaults, is this correct?
+  
 
-  Add cStringUtils.ToParagraph, adding line breaks after a preferred no. of characters, and use this in tooltips
+--- EwE Barcelona course issues ---
+V Ecopath does not save on ??
+V Pedigree issues: remove ability to add custom CVs in pedigree: that was a bad idea
+V Catchabilities column too small
+V Run Ecosim: cannot highlight last group
+  ENA: After clicking around a lot, MTI table (and others) stop appearing. The wait cursor is spinning, and the status bar is saying "executing plug-in".
+V Time series shapes grid should not allow editing of points, type, but should be able to edit weight and name
+  Add multi-item delete/keep toggle in 'Define' dialogs (habitat, mpa, etc)
+V Policy Optimization does not run; boolean MPA maps stop the system
+  Stepwise Fitting: allow stopping!
