@@ -4,7 +4,6 @@
 #define Compile64Bit 0
 #define Spinup 0
 #define SpatTemp 0
-#define MPAdynamics 0
 #define MergeGroups 0
 #define BiomassEmitters 0
 #define FISHMIP 0
@@ -21,7 +20,7 @@
 #endif
 
 #define MyAppExeName "ewe6.exe"
-#define MyAppPublisher "UBC Institute for Oceans and Fisheries & Ecopath International Initiative"
+#define MyAppPublisher "Ecopath International Initiative"
 
 #define DefRoot "..\..\..\"
 #define DefDB "Database"
@@ -32,7 +31,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.15557.0
+  VersionInfoVersion=6.6.15683.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -139,12 +138,11 @@ Source: "{#DefRoot}{#DefDB}\Georgia_Strait.EwEmdb"; DestDir: "{userdocs}\EwE sam
 Source: "{#DefRoot}{#DefSrc}\EwEEcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\automation\sampler
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler-user-manual.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion; Components: plugin\automation\sampler
 Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\transects
+Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mpadynamics
+Source: "{#DefRoot}{#DefSrc}\EwEImportExportLayerDefinitionsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\layerimportexport
 ; -- Stuff under development --
 #if MergeGroups == 1 
 Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mergegroups
-#endif
-#if MPAdynamics == 1
-Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mpadynamics
 #endif
 #if Spinup == 1 
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
@@ -286,6 +284,7 @@ Name: "plugin\analysis\valuechain"; Description: "Value chain"; Types: full
 Name: "plugin\input"; Description: "Data retrieval"; Types: full custom
 Name: "plugin\input\worms"; Description: "WoRMS taxonomy search"; Types: full
 Name: "plugin\input\aquamaps"; Description: "Aquamaps functional response importer"; Types: full
+Name: "plugin\input\layerimportexport"; Description: "Ecospace layer style import and export"; Types: full
 Name: "plugin\output"; Description: "Data export"; Types: full
 Name: "plugin\output\modelfromsim"; Description: "Ecopath model from Ecosim"; Types: full
 Name: "plugin\output\resultextractor"; Description: "Results extractor"; Types: full
@@ -297,12 +296,11 @@ Name: "plugin\automation\sampler"; Description: "Ecosampler"; Types: full
 Name: "plugin\ui"; Description: "Usability"; Types: full custom
 Name: "plugin\ui\remarks"; Description: "Remarks collector"; Types: full custom
 Name: "plugin\ui\shapegrid"; Description: "Shape grids"; Types: full custom
-#if MergeGroups == 1
+
+#if MergeGroups == 1
 Name: "plugin\input\mergegroups"; Description: "Merge groups"; Types: full
 #endif
-#if MPAdynamics == 1
 Name: "plugin\input\mpadynamics"; Description: "MPA dynamics"; Types: full
-#endif
 #if SpatTemp == 1
 Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange framework"; Types: full
 #endif
