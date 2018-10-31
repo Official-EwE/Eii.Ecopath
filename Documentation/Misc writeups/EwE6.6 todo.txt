@@ -3,7 +3,7 @@ EwE todo
 
   Warning if there are no water cells on pre-run
   Hatchery stocking ff cannot be removed from stanza group -> Works OK in Georgia Strait. Joe?
-   - Unable to reproduce
+	 - Unable to reproduce
 V Pedigree not drawing in pedigree grid (but data is there?), not showing on grids
 V In the MTI, the options to change the image are not showing up
 V In the keystone index, the options to change the figure to include biomasses are not showing up 
@@ -45,6 +45,8 @@ V Add cStringUtils.ToParagraph, adding line breaks after a preferred no. of char
 ? Allow plug-in points on toolstrips (by identifying the class name of the grid / form that has a main toolbar, like quick editor)
 ? Hyperbolic function parameters are still defaults, is this correct?
   
+? Consider hiding Catchability additions from Beta, including new "Use effort dynamics" flag from Ecospace parameters
+	 - Use effort dynamics flag prevents users from resetting effort and Fitting
 
 --- EwE Barcelona course issues ---
 V Ecopath does not save on ??
@@ -53,6 +55,7 @@ V Catchabilities column too small
 V Run Ecosim: cannot highlight last group
   ENA: After clicking around a lot, MTI table (and others) stop appearing. The wait cursor is spinning, and the status bar is saying "executing plug-in".
 V Time series shapes grid should not allow editing of points, type, but should be able to edit weight and name
-  Add multi-item delete/keep toggle in 'Define' dialogs (habitat, mpa, etc)
+  Add multi-item delete/keep toggle in 'Define' dialogs (group, fleets, habitats, mpas, env driver layers, importance layers)
+  Remove importance layers from Ecospace maps UI; MPA opt only
 V Policy Optimization does not run; boolean MPA maps stop the system
   Stepwise Fitting: allow stopping!
