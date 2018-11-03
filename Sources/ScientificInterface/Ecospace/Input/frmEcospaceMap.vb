@@ -214,7 +214,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerMigration, False)
             Me.AddData(eVarNameFlags.LayerM0MultInput, False)
             Me.AddData(eVarNameFlags.LayerDriver)
-            Me.AddData(eVarNameFlags.LayerImportance)
+            'Me.AddData(eVarNameFlags.LayerImportance)
             Me.AddData(eVarNameFlags.LayerHabitat)
 
             ' Addresses issue #1251
