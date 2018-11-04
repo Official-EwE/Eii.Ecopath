@@ -66,8 +66,6 @@ Namespace Controls.Map
         ''' <summary>States whether map must be refreshed</summary>
         Private m_bRefreshMap As Boolean = False
 
-        Private m_cmdPropSelect As cPropertySelectionCommand = Nothing
-
         Public Sub New()
 
             Me.InitializeComponent()

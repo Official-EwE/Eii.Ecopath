@@ -200,14 +200,49 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
+        Public Overridable ReadOnly Property NameStatus As eStatusFlags
+            Get
+                Return eStatusFlags.NotEditable Or eStatusFlags.Null
+            End Get
+        End Property
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get the units of this layer.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Overridable ReadOnly Property Units() As String
+        Public Overridable Property Units() As String
             Get
                 Return ""
+            End Get
+            Set(value As String)
+                ' NOP
+            End Set
+        End Property
+
+        Public Overridable ReadOnly Property UnitStatus As eStatusFlags
+            Get
+                Return eStatusFlags.NotEditable Or eStatusFlags.Null
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the units of this layer.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Overridable Property Remark() As String
+            Get
+                Return ""
+            End Get
+            Set(value As String)
+                ' NOP
+            End Set
+        End Property
+
+        Public Overridable ReadOnly Property RemarkStatus As eStatusFlags
+            Get
+                Return eStatusFlags.Null Or eStatusFlags.NotEditable
             End Get
         End Property
 

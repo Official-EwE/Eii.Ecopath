@@ -55,6 +55,7 @@ Namespace Ecospace.Basemap.Layers
         Private m_ucEditVisualStyle As ucEditVisualStyle = Nothing
 
         Private m_fpName As cEwEFormatProvider = Nothing
+        Private m_fpUnits As cEwEFormatProvider = Nothing
         Private m_fpWeight As cEwEFormatProvider = Nothing
         Private m_fpDescription As cEwEFormatProvider = Nothing
 
@@ -139,6 +140,7 @@ Namespace Ecospace.Basemap.Layers
 
             ' Set up format providers
             Me.m_fpName = New cEwEFormatProvider(Me.m_uic, Me.m_tbNameValue, GetType(String))
+            Me.m_fpUnits = New cEwEFormatProvider(Me.m_uic, Me.m_tbUnits, GetType(String))
             Me.m_fpWeight = New cEwEFormatProvider(Me.m_uic, Me.m_nudWeight, GetType(Single))
             Me.m_fpDescription = New cEwEFormatProvider(Me.m_uic, Me.m_tbDescription, GetType(String))
 
@@ -162,7 +164,8 @@ Namespace Ecospace.Basemap.Layers
             If (Me.m_ucEditVisualStyle IsNot Nothing) Then
                 AddHandler Me.m_ucEditVisualStyle.OnVisualStyleChanged, AddressOf OnVisualStyleChanged
             End If
-            AddHandler Me.m_fpName.OnValueChanged, AddressOf OnNameChanged
+            AddHandler Me.m_fpName.OnValueChanged, AddressOf OnPropChanged
+            AddHandler Me.m_fpUnits.OnValueChanged, AddressOf OnPropChanged
 
         End Sub
 
@@ -176,7 +179,8 @@ Namespace Ecospace.Basemap.Layers
             Me.m_qehGrid = Nothing
             Me.m_grid.UIContext = Nothing
 
-            RemoveHandler Me.m_fpName.OnValueChanged, AddressOf OnNameChanged
+            RemoveHandler Me.m_fpName.OnValueChanged, AddressOf OnPropChanged
+            RemoveHandler Me.m_fpUnits.OnValueChanged, AddressOf OnPropChanged
 
             Me.m_fpName.Release()
             Me.m_fpWeight.Release()
@@ -323,7 +327,7 @@ Namespace Ecospace.Basemap.Layers
 
 #End Region ' Export
 
-        Private Sub OnNameChanged(sender As Object, e As System.EventArgs)
+        Private Sub OnPropChanged(sender As Object, e As System.EventArgs)
             Try
                 Me.UpdateControls()
             Catch ex As Exception
@@ -345,52 +349,37 @@ Namespace Ecospace.Basemap.Layers
 
 #Region " Internal implementation "
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Diagnostic method, states if a layer has a unique core variable 
-        ''' link. Layers with unique sources support extra's that can be stored
-        ''' in the database such as remarks and visual styles.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' -------------------------------------------------------------------
-        Private Function HasUniqueSource() As Boolean
-            If (Me.m_layerOriginal.Source Is Nothing) Then Return False
-            If (TypeOf Me.m_layerOriginal.Source Is cEcospaceBasemap) Then Return False
-            Return True
-        End Function
-
         Private Sub LoadLayer()
 
             Dim vs As cVisualStyle = Me.m_layerWork.Renderer.VisualStyle
-            Dim src As cCoreInputOutputBase = Me.m_layerWork.Source
+            Dim src As cCoreInputOutputBase = Me.m_layerWork.Data
 
             Me.m_lblWeight.Visible = False
             Me.m_nudWeight.Visible = False
             Me.m_lblDescription.Visible = False
             Me.m_tbDescription.Visible = False
 
-            If (Me.HasUniqueSource()) Then
-                Me.m_fpName.Enabled = True
-                Me.m_tbRemarks.Text = src.Remark
-                Me.m_tbRemarks.Enabled = True
+            Me.m_fpUnits.Enabled = (Me.m_layerWork.UnitStatus And eStatusFlags.NotEditable) = 0
+            Me.m_fpUnits.Value = Me.m_layerWork.Units
 
-                If TypeOf src Is cEcospaceLayerImportance Then
-                    Me.m_lblWeight.Visible = True
-                    Me.m_nudWeight.Visible = True
-                    Me.m_lblDescription.Visible = True
-                    Me.m_tbDescription.Visible = True
+            Me.m_fpName.Enabled = (Me.m_layerWork.NameStatus And eStatusFlags.NotEditable) = 0
+            Me.m_fpName.Value = Me.m_layerWork.Name
 
-                    Me.m_fpWeight.Value = src.GetVariable(eVarNameFlags.ImportanceWeight)
-                    Me.m_fpDescription.Value = src.GetVariable(eVarNameFlags.Description)
-                End If
-            Else
-                Me.m_fpName.Enabled = False
-                Me.m_tbRemarks.Text = My.Resources.STATUS_REMARKS_NOT_SUPPORTED
-                Me.m_tbRemarks.Enabled = False
+            If TypeOf src Is cEcospaceLayerDriver Then
+                Me.m_lblDescription.Visible = True
+                Me.m_tbDescription.Visible = True
+                Me.m_fpDescription.Value = src.GetVariable(eVarNameFlags.Description)
             End If
 
-            ' Do not use display text; user may want to edit this
-            Me.m_fpName.Value = m_layerWork.Name
+            If TypeOf src Is cEcospaceLayerImportance Then
+                Me.m_lblWeight.Visible = True
+                Me.m_nudWeight.Visible = True
+                Me.m_lblDescription.Visible = True
+                Me.m_tbDescription.Visible = True
+
+                Me.m_fpWeight.Value = src.GetVariable(eVarNameFlags.ImportanceWeight)
+                Me.m_fpDescription.Value = src.GetVariable(eVarNameFlags.Description)
+            End If
 
             Me.m_ucEditVisualStyle = ucEditVisualStyle.GetEditor(Me.m_uic, vs, Me.m_layerWork.Renderer.VisualStyleFlags)
 
@@ -433,21 +422,18 @@ Namespace Ecospace.Basemap.Layers
             Dim cf As cDisplayLayer.eChangeFlags = 0
             Dim src As cCoreInputOutputBase = Me.m_layerOriginal.Source
 
-            If Me.m_tbNameValue.Enabled Then
+            If Me.m_fpName.Enabled Then
                 Me.m_layerOriginal.Name = CStr(Me.m_fpName.Value)
             End If
 
-            If (HasUniqueSource()) Then
+            If TypeOf Me.m_layerOriginal.Source Is cEcospaceLayerDriver Then
+                src.SetVariable(eVarNameFlags.UnitEnvDriver, Me.m_fpUnits.Value)
+                src.SetVariable(eVarNameFlags.Description, Me.m_fpDescription.Value)
+            End If
 
-                If Me.m_tbRemarks.Enabled Then
-                    src.Remark = Me.m_tbRemarks.Text
-                End If
-
-                If TypeOf Me.m_layerOriginal.Source Is cEcospaceLayerImportance Then
-                    src.SetVariable(eVarNameFlags.ImportanceWeight, Me.m_fpWeight.Value)
-                    src.SetVariable(eVarNameFlags.Description, Me.m_fpDescription.Value)
-                End If
-
+            If TypeOf Me.m_layerOriginal.Source Is cEcospaceLayerImportance Then
+                src.SetVariable(eVarNameFlags.ImportanceWeight, Me.m_fpWeight.Value)
+                src.SetVariable(eVarNameFlags.Description, Me.m_fpDescription.Value)
             End If
 
             If (Me.m_ucEditVisualStyle IsNot Nothing) Then

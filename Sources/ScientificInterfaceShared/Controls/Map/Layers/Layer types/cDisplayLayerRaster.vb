@@ -331,19 +331,73 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
+        Public Overrides ReadOnly Property NameStatus As eStatusFlags
+            Get
+                If (Me.m_propName IsNot Nothing) Then
+                    ' #Yes: and is this property linked to a true name?
+                    If (Me.m_propName.VarName = eVarNameFlags.Name) Then
+                        ' #Yes: return name property value
+                        Return CType(Me.m_propName.GetStyle(), eStatusFlags)
+                    End If
+                End If
+                Return MyBase.NameStatus
+            End Get
+        End Property
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get the formatted units for this layer.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Overrides ReadOnly Property Units As String
+        Public Overrides Property Units As String
             Get
+                If (TypeOf Me.Source Is cEcospaceLayerDriver) Then
+                    Return DirectCast(Me.Source, cEcospaceLayerDriver).Units()
+                End If
+
                 Dim u As New cUnits(Me.m_uic.Core)
                 Dim md As cVariableMetaData = cVariableMetaData.Get(Me.VarName)
                 If (Me.Data IsNot Nothing) Then
                     md = Me.Data.MetadataCell
                 End If
                 Return u.ToString(md)
+            End Get
+            Set(value As String)
+                If (TypeOf Me.Source Is cEcospaceLayerDriver) Then
+                    DirectCast(Me.Source, cEcospaceLayerDriver).Units = value
+                End If
+            End Set
+        End Property
+
+        Public Overrides ReadOnly Property UnitStatus As eStatusFlags
+            Get
+                If (TypeOf Me.Source Is cEcospaceLayerDriver) Then
+                    Return eStatusFlags.OK
+                End If
+                Return MyBase.UnitStatus
+            End Get
+        End Property
+
+        Public Overrides Property Remark As String
+            Get
+                If (Me.Source IsNot Nothing) Then
+                    Return Me.Source.Remark(Me.VarName, Me.SourceSec)
+                End If
+                Return MyBase.Remark
+            End Get
+            Set(value As String)
+                If (Me.Source IsNot Nothing) Then
+                    ' ToDo: fire off update if this caused a change
+                    Me.Source.Remark(Me.VarName, Me.SourceSec) = value
+                    Return
+                End If
+                MyBase.Remark = value
+            End Set
+        End Property
+
+        Public Overrides ReadOnly Property RemarkStatus As eStatusFlags
+            Get
+                Return eStatusFlags.OK
             End Get
         End Property
 

@@ -655,17 +655,12 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Protected Overridable Property Remark() As String
             Get
-                If (Me.m_key Is Nothing) Then Return ""
-                If (Me.m_pm Is Nothing) Then Return ""
-                Return Me.m_pm.Core.AuxillaryData(Me.m_key).Remark
+                If Me.Source Is Nothing Then Return ""
+                Return Me.Source.Remark(Me.VarName, Me.SourceSec)
             End Get
             Set(ByVal strRemark As String)
-                If (Me.m_key IsNot Nothing) Then
-                    If (Me.m_pm IsNot Nothing) Then
-                        Me.m_pm.Core.AuxillaryData(Me.m_key).Remark = strRemark
-                    End If
-                    Me.m_strRemark = strRemark
-                End If
+                If Me.Source Is Nothing Then Return
+                Me.Source.Remark(Me.VarName, Me.SourceSec) = strRemark
             End Set
         End Property
 
