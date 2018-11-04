@@ -176,7 +176,7 @@ Namespace Ecospace
                 If (Me.IsNew()) Then Return False
                 If (TypeOf Layer Is cEcospaceLayerDriver) Then
                     If (DirectCast(Layer, cEcospaceLayerDriver).Units <> Me.Units) Then
-                        Return False
+                        Return True
                     End If
                 End If
                 Return (Me.Layer.Name <> Me.Name) Or
@@ -977,7 +977,7 @@ Namespace Ecospace
                 Catch ex As Exception
 
                 End Try
-                Return Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+                Return Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bLayersChanged)
             End If
 
             Return bSuccess
