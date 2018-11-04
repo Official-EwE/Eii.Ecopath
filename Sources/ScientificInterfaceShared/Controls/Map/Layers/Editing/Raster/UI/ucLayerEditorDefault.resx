@@ -142,7 +142,7 @@
     <value>m_ucSlider</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.6.14951.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.6.15684.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ucSlider.Parent" xml:space="preserve">
     <value>$this</value>
@@ -258,28 +258,28 @@
   <data name="&gt;&gt;m_lblUnits.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="m_tbxunits.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_tbxUnits.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_tbxunits.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_tbxUnits.Location" type="System.Drawing.Point, System.Drawing">
     <value>68, 73</value>
   </data>
-  <data name="m_tbxunits.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tbxUnits.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 20</value>
   </data>
-  <data name="m_tbxunits.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tbxUnits.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;m_tbxunits.Name" xml:space="preserve">
-    <value>m_tbxunits</value>
+  <data name="&gt;&gt;m_tbxUnits.Name" xml:space="preserve">
+    <value>m_tbxUnits</value>
   </data>
-  <data name="&gt;&gt;m_tbxunits.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxUnits.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tbxunits.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxUnits.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_tbxunits.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxUnits.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_tbxMax.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -427,6 +427,6 @@
     <value>ucLayerEditorDefault</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditor, ScientificInterfaceShared, Version=6.6.14951.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditor, ScientificInterfaceShared, Version=6.6.15684.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

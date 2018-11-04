@@ -40,6 +40,7 @@ Namespace Controls.Map.Layers
     Public Class ucLayerEditorDefault
 
         Protected m_fpName As cEwEFormatProvider = Nothing
+        Protected m_fpUnits As cEwEFormatProvider = Nothing
         Protected m_bInUpdate As Boolean = False
 
         Public Sub New()
@@ -50,12 +51,16 @@ Namespace Controls.Map.Layers
         Public Overrides Sub Attach(uic As cUIContext, editor As cLayerEditor, layer As cDisplayLayerRaster)
             MyBase.Attach(uic, editor, layer)
             Me.m_fpName = New cEwEFormatProvider(uic, Me.m_tbxName, GetType(String))
-            AddHandler Me.m_fpName.OnValueChanged, AddressOf OnNameChanged
+            Me.m_fpUnits = New cEwEFormatProvider(uic, Me.m_tbxUnits, GetType(String))
+            AddHandler Me.m_fpName.OnValueChanged, AddressOf OnPropChanged
+            AddHandler Me.m_fpUnits.OnValueChanged, AddressOf OnPropChanged
         End Sub
 
         Public Overrides Sub Detach()
-            RemoveHandler Me.m_fpName.OnValueChanged, AddressOf OnNameChanged
+            RemoveHandler Me.m_fpName.OnValueChanged, AddressOf OnPropChanged
+            RemoveHandler Me.m_fpUnits.OnValueChanged, AddressOf OnPropChanged
             Me.m_fpName.Release()
+            Me.m_fpUnits.Release()
             MyBase.Detach()
         End Sub
 
@@ -73,8 +78,12 @@ Namespace Controls.Map.Layers
             Me.m_ucSlider.Enabled = bEnabled
 
             If (Me.Layer IsNot Nothing) Then
-                Me.m_fpName.Enabled = Me.HasUniqueSource()
+
+                Me.m_fpName.Enabled = (Me.Layer.NameStatus And eStatusFlags.NotEditable) = 0
                 Me.m_fpName.Value = Me.Layer.Name
+
+                Me.m_fpUnits.Enabled = (Me.Layer.UnitStatus And eStatusFlags.NotEditable) = 0
+                Me.m_fpUnits.Value = Me.Layer.Units
 
                 Dim sMin As Single = cCore.NULL_VALUE
                 Dim sMax As Single = cCore.NULL_VALUE
@@ -90,8 +99,6 @@ Namespace Controls.Map.Layers
 
                 Me.m_tbxMin.Text = cStringUtils.FormatNumber(sMin)
                 Me.m_tbxMax.Text = cStringUtils.FormatNumber(sMax)
-                Me.m_tbxunits.Text = Me.Layer.Units
-
             Else
                 Me.m_fpName.Enabled = False
             End If
@@ -125,11 +132,12 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Private Sub OnNameChanged(sender As Object, args As EventArgs)
+        Private Sub OnPropChanged(sender As Object, args As EventArgs)
             If (Me.m_bInUpdate) Then Return
             Me.m_bInUpdate = True
             Try
                 If Me.m_fpName.Enabled Then Me.Layer.Name = CStr(Me.m_fpName.Value)
+                If Me.m_fpUnits.Enabled Then Me.Layer.Units = CStr(Me.m_fpUnits.Value)
             Catch ex As Exception
 
             End Try
@@ -152,7 +160,7 @@ Namespace Controls.Map.Layers
         End Function
 
         Private Sub OnDoubleclickValue(sender As System.Object, e As System.EventArgs) _
-            Handles m_tbxMax.DoubleClick, m_tbxunits.DoubleClick, m_tbxMin.DoubleClick
+            Handles m_tbxMax.DoubleClick, m_tbxUnits.DoubleClick, m_tbxMin.DoubleClick
             Me.EditLayer(eLayerEditTypes.EditData)
         End Sub
 

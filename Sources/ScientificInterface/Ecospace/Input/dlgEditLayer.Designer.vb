@@ -48,8 +48,6 @@ Namespace Ecospace.Basemap.Layers
             Me.Apply_Button = New System.Windows.Forms.Button()
             Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_tbNameValue = New System.Windows.Forms.TextBox()
-            Me.m_lblRemarks = New System.Windows.Forms.Label()
-            Me.m_tbRemarks = New System.Windows.Forms.TextBox()
             Me.m_plAppearance = New System.Windows.Forms.Panel()
             Me.m_tcLayerView = New System.Windows.Forms.TabControl()
             Me.m_tpData = New System.Windows.Forms.TabPage()
@@ -75,6 +73,8 @@ Namespace Ecospace.Basemap.Layers
             Me.m_lblWeight = New System.Windows.Forms.Label()
             Me.m_lblDescription = New System.Windows.Forms.Label()
             Me.m_nudWeight = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblUnits = New System.Windows.Forms.Label()
+            Me.m_tbUnits = New System.Windows.Forms.TextBox()
             Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpImportStyle = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblCopyFrom = New System.Windows.Forms.Label()
@@ -128,16 +128,6 @@ Namespace Ecospace.Basemap.Layers
             '
             resources.ApplyResources(Me.m_tbNameValue, "m_tbNameValue")
             Me.m_tbNameValue.Name = "m_tbNameValue"
-            '
-            'm_lblRemarks
-            '
-            resources.ApplyResources(Me.m_lblRemarks, "m_lblRemarks")
-            Me.m_lblRemarks.Name = "m_lblRemarks"
-            '
-            'm_tbRemarks
-            '
-            resources.ApplyResources(Me.m_tbRemarks, "m_tbRemarks")
-            Me.m_tbRemarks.Name = "m_tbRemarks"
             '
             'm_plAppearance
             '
@@ -304,12 +294,12 @@ Namespace Ecospace.Basemap.Layers
             resources.ApplyResources(Me.m_tlpDetails, "m_tlpDetails")
             Me.m_tlpDetails.Controls.Add(Me.m_lblName, 0, 0)
             Me.m_tlpDetails.Controls.Add(Me.m_tbNameValue, 1, 0)
-            Me.m_tlpDetails.Controls.Add(Me.m_tbRemarks, 1, 3)
-            Me.m_tlpDetails.Controls.Add(Me.m_tbDescription, 1, 2)
-            Me.m_tlpDetails.Controls.Add(Me.m_lblRemarks, 0, 3)
-            Me.m_tlpDetails.Controls.Add(Me.m_lblWeight, 0, 1)
-            Me.m_tlpDetails.Controls.Add(Me.m_lblDescription, 0, 2)
-            Me.m_tlpDetails.Controls.Add(Me.m_nudWeight, 1, 1)
+            Me.m_tlpDetails.Controls.Add(Me.m_tbDescription, 1, 3)
+            Me.m_tlpDetails.Controls.Add(Me.m_lblWeight, 0, 2)
+            Me.m_tlpDetails.Controls.Add(Me.m_lblDescription, 0, 3)
+            Me.m_tlpDetails.Controls.Add(Me.m_nudWeight, 1, 2)
+            Me.m_tlpDetails.Controls.Add(Me.m_lblUnits, 0, 1)
+            Me.m_tlpDetails.Controls.Add(Me.m_tbUnits, 1, 1)
             Me.m_tlpDetails.Name = "m_tlpDetails"
             '
             'm_tbDescription
@@ -329,9 +319,19 @@ Namespace Ecospace.Basemap.Layers
             '
             'm_nudWeight
             '
-            Me.m_nudWeight.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             resources.ApplyResources(Me.m_nudWeight, "m_nudWeight")
+            Me.m_nudWeight.InterceptMouseWheel = ScientificInterfaceShared.Controls.cEwENumericUpDown.eInterceptMouseWheelType.WhenMouseOver
             Me.m_nudWeight.Name = "m_nudWeight"
+            '
+            'm_lblUnits
+            '
+            resources.ApplyResources(Me.m_lblUnits, "m_lblUnits")
+            Me.m_lblUnits.Name = "m_lblUnits"
+            '
+            'm_tbUnits
+            '
+            resources.ApplyResources(Me.m_tbUnits, "m_tbUnits")
+            Me.m_tbUnits.Name = "m_tbUnits"
             '
             'm_hdrAppearance
             '
@@ -398,8 +398,6 @@ Namespace Ecospace.Basemap.Layers
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
         Private WithEvents m_lblName As System.Windows.Forms.Label
-        Private WithEvents m_lblRemarks As System.Windows.Forms.Label
-        Private WithEvents m_tbRemarks As System.Windows.Forms.TextBox
         Private WithEvents Apply_Button As System.Windows.Forms.Button
         Private WithEvents m_plAppearance As System.Windows.Forms.Panel
         Private WithEvents m_tbNameValue As System.Windows.Forms.TextBox
@@ -431,5 +429,7 @@ Namespace Ecospace.Basemap.Layers
         Private WithEvents m_tlpImportStyle As TableLayoutPanel
         Private WithEvents m_lblCopyFrom As Label
         Private WithEvents m_cmbCopyStyleFrom As ComboBox
+        Private WithEvents m_lblUnits As Label
+        Private WithEvents m_tbUnits As TextBox
     End Class
 End Namespace

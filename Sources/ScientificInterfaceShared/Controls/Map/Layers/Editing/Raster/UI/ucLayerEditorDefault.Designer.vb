@@ -48,7 +48,7 @@ Namespace Controls.Map.Layers
             Me.m_lblName = New System.Windows.Forms.Label()
             Me.m_tbxName = New System.Windows.Forms.TextBox()
             Me.m_lblUnits = New System.Windows.Forms.Label()
-            Me.m_tbxunits = New System.Windows.Forms.TextBox()
+            Me.m_tbxUnits = New System.Windows.Forms.TextBox()
             Me.m_tbxMax = New System.Windows.Forms.TextBox()
             Me.m_lblMax = New System.Windows.Forms.Label()
             Me.m_plLegend = New System.Windows.Forms.Panel()
@@ -85,11 +85,10 @@ Namespace Controls.Map.Layers
             resources.ApplyResources(Me.m_lblUnits, "m_lblUnits")
             Me.m_lblUnits.Name = "m_lblUnits"
             '
-            'm_tbxunits
+            'm_tbxUnits
             '
-            resources.ApplyResources(Me.m_tbxunits, "m_tbxunits")
-            Me.m_tbxunits.Name = "m_tbxunits"
-            Me.m_tbxunits.ReadOnly = True
+            resources.ApplyResources(Me.m_tbxUnits, "m_tbxUnits")
+            Me.m_tbxUnits.Name = "m_tbxUnits"
             '
             'm_tbxMax
             '
@@ -126,7 +125,7 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_plLegend)
             Me.Controls.Add(Me.m_tbxMax)
             Me.Controls.Add(Me.m_tbxMin)
-            Me.Controls.Add(Me.m_tbxunits)
+            Me.Controls.Add(Me.m_tbxUnits)
             Me.Controls.Add(Me.m_tbxName)
             Me.Controls.Add(Me.m_lblMin)
             Me.Controls.Add(Me.m_lblMax)
@@ -142,7 +141,7 @@ Namespace Controls.Map.Layers
             Me.Controls.SetChildIndex(Me.m_lblMax, 0)
             Me.Controls.SetChildIndex(Me.m_lblMin, 0)
             Me.Controls.SetChildIndex(Me.m_tbxName, 0)
-            Me.Controls.SetChildIndex(Me.m_tbxunits, 0)
+            Me.Controls.SetChildIndex(Me.m_tbxUnits, 0)
             Me.Controls.SetChildIndex(Me.m_tbxMin, 0)
             Me.Controls.SetChildIndex(Me.m_tbxMax, 0)
             Me.Controls.SetChildIndex(Me.m_plLegend, 0)
@@ -156,7 +155,7 @@ Namespace Controls.Map.Layers
         Private WithEvents m_lblName As System.Windows.Forms.Label
         Private WithEvents m_tbxName As System.Windows.Forms.TextBox
         Private WithEvents m_lblUnits As System.Windows.Forms.Label
-        Private WithEvents m_tbxunits As System.Windows.Forms.TextBox
+        Private WithEvents m_tbxUnits As System.Windows.Forms.TextBox
         Private WithEvents m_tbxMax As System.Windows.Forms.TextBox
         Private WithEvents m_lblMax As System.Windows.Forms.Label
         Private WithEvents m_plLegend As System.Windows.Forms.Panel

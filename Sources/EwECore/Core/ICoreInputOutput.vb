@@ -377,6 +377,17 @@ Public MustInherit Class cCoreInputOutputBase
         End Set
     End Property
 
+    Public Overridable Property Units(Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name) As String
+        Get
+            Dim md As cVariableMetaData = cVariableMetaData.Get(varName)
+            Return md.Units()
+        End Get
+        Set(value As String)
+            ' NOP
+        End Set
+    End Property
+
+
 #End Region ' Public Functions/Methods
 
 #Region " Mustoverride Methods "
