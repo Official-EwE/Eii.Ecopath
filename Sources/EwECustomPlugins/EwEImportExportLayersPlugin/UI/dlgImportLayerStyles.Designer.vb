@@ -207,15 +207,15 @@ Partial Class dlgImportLayerStyles
         Me.PerformLayout()
 
     End Sub
-    Private WithEvents m_cbCreateMissingLayers As Windows.Forms.CheckBox
-    Private WithEvents m_btnCancel As Windows.Forms.Button
-    Private WithEvents m_btnOK As Windows.Forms.Button
-    Private WithEvents m_lblPrompt As Windows.Forms.Label
-    Private WithEvents m_dgLayers As Windows.Forms.DataGridView
-    Friend WithEvents m_colUsed As Windows.Forms.DataGridViewCheckBoxColumn
-    Friend WithEvents m_colIndex As Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents m_colName As Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents m_colStatus As Windows.Forms.DataGridViewTextBoxColumn
-    Private WithEvents m_pbCredits As Windows.Forms.PictureBox
+    Private WithEvents m_cbCreateMissingLayers As System.Windows.Forms.CheckBox
+    Private WithEvents m_btnCancel As System.Windows.Forms.Button
+    Private WithEvents m_btnOK As System.Windows.Forms.Button
+    Private WithEvents m_lblPrompt As System.Windows.Forms.Label
+    Private WithEvents m_dgLayers As System.Windows.Forms.DataGridView
+    Private WithEvents m_colUsed As System.Windows.Forms.DataGridViewCheckBoxColumn
+    Private WithEvents m_colIndex As System.Windows.Forms.DataGridViewTextBoxColumn
+    Private WithEvents m_colName As System.Windows.Forms.DataGridViewTextBoxColumn
+    Private WithEvents m_colStatus As System.Windows.Forms.DataGridViewTextBoxColumn
+    Private WithEvents m_pbCredits As System.Windows.Forms.PictureBox
     Private WithEvents m_hdrCredits As cEwEHeaderLabel
 End Class
