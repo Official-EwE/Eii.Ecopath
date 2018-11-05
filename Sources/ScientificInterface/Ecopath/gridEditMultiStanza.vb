@@ -99,7 +99,6 @@ Public Class gridEditMultiStanza
         Me(0, eColumnTypes.CBInput) = New EwEColumnHeaderCell(eVarNameFlags.QBInput)
         Me(0, eColumnTypes.SpawnProp) = New EwEColumnHeaderCell(eVarNameFlags.SpawnProp)
 
-        Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.FixedColumnWidths = True
 
     End Sub

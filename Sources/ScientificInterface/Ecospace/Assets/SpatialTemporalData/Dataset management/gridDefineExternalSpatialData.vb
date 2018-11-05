@@ -151,7 +151,6 @@ Namespace Ecospace.Controls
             Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
             Me(0, eColumnTypes.Description).VisualModel = Me.m_vmDescriptionHdr
 
-            Me.Selection.SelectionMode = GridSelectionMode.Row
             Me.Selection.EnableMultiSelection = False
             Me.AllowBlockSelect = False
 

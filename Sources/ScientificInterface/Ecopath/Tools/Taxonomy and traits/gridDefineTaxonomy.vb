@@ -549,7 +549,6 @@ Public Class gridDefineTaxonomy
 
         MyBase.InitStyle()
 
-        Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.Selection.EnableMultiSelection = False
 
         Dim iNumCols As Integer = CInt(if(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Status + 1))
