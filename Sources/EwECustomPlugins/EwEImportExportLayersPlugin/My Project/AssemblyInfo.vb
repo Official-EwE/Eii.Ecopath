@@ -1,4 +1,4 @@
-﻿' ===============================================================================
+' ===============================================================================
 ' This file is part of the Safenet toolkit, contributed to Ecopath with Ecosim
 ' as part of Safenet project.
 '
@@ -51,5 +51,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyVersion("6.6.15704.0")>
+<Assembly: AssemblyFileVersion("6.6.15704.0")>
