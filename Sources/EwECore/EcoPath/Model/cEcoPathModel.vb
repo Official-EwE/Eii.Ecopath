@@ -354,7 +354,7 @@ Namespace Ecopath
                         End If
                         'WARNING: This assumes that any m_EstimStatus other than eStatusFlags.OK or eStatusFlags.MissingParameter is an Error
                         'So if you mess with m_EstimStatus make sure you have it right
-                        msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, _
+                        msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR,
                                             eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical, eDataTypes.NotSet)
                         NotifyCore(msg)
                         cLog.Write("cEcopathModel.Run() failed to estimate parameters because of an error.")
@@ -371,7 +371,7 @@ Namespace Ecopath
 
                 Debug.Assert(False, ex.Message)
                 Me.RunState = eEcopathRunState.Error
-                msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, _
+                msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR,
                                     eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical, eDataTypes.NotSet)
                 NotifyCore(msg)
 
@@ -411,7 +411,7 @@ Namespace Ecopath
                     'Set default for GS = (1 - production / consumption) 
                     'In this case GS is not editable
                     For igrp As Integer = 1 To Me.m_Data.NumLiving
-                        Me.m_Data.GS(igrp) = CSng(if(Me.m_Data.GE(igrp) > 0, (1 - Me.m_Data.GE(igrp)), -99))
+                        Me.m_Data.GS(igrp) = CSng(If(Me.m_Data.GE(igrp) > 0, (1 - Me.m_Data.GE(igrp)), -99))
                         If Me.m_Data.PP(igrp) = 1 Then
                             Me.m_Data.GS(igrp) = 0
                         End If
@@ -497,14 +497,14 @@ Namespace Ecopath
             Dim j As Integer
             Dim Sum As Single
             Dim MM2 As Single
-            Dim msg As New cMessage(My.Resources.CoreMessages.ECOPATH_ESTIMATED, _
-                                    eMessageType.DataModified, eCoreComponentType.EcoPath, _
+            Dim msg As New cMessage(My.Resources.CoreMessages.ECOPATH_ESTIMATED,
+                                    eMessageType.DataModified, eCoreComponentType.EcoPath,
                                     eMessageImportance.Information)
             Dim vs As cVariableStatus = Nothing
 
             For i = 1 To m_Data.NumLiving
-                Sum = CSng(if(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.BaBi(i), 0))
-                Sum = Sum + CSng(if(m_Data.Emig(i) > 0 And m_Data.Emigration(i) = 0, m_Data.Emig(i), 0))
+                Sum = CSng(If(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.BaBi(i), 0))
+                Sum = Sum + CSng(If(m_Data.Emig(i) > 0 And m_Data.Emigration(i) = 0, m_Data.Emig(i), 0))
                 Sum = CSng(Sum * m_Data.B(i))
 
                 MM2 = 0
@@ -517,7 +517,7 @@ Namespace Ecopath
                 'ToDo_jb EstimEEAgain EstimateWhat(i) Is never getting set to anything I need to check this with the EwE5 code
                 Select Case EstimateWhat(i)
 
-                    Case eEstimateTypes.EE, _
+                    Case eEstimateTypes.EE,
                          eEstimateTypes.NotSet
 
                         If m_Data.B(i) > 0 And m_Data.PB(i) > 0 Then
@@ -544,20 +544,20 @@ Namespace Ecopath
 
                     Case eEstimateTypes.Migration
 
-                        Sum = CSng(if(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.B(i) * m_Data.BaBi(i), 0))
+                        Sum = CSng(If(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.B(i) * m_Data.BaBi(i), 0))
                         Sum = CSng(m_Data.B(i) * m_Data.PB(i) * m_Data.EE(i) - Sum - m_Data.BA(i) - m_Data.fCatch(i) - MM2)
                         If Sum < 0 Then
                             If (m_Data.Immig(i) <> -Sum) Then
                                 m_Data.Immig(i) = -Sum
-                                msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight, _
-                                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_ESTIMATED_IMMIGRATION, Me.m_Data.GroupName(i)), _
+                                msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight,
+                                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_ESTIMATED_IMMIGRATION, Me.m_Data.GroupName(i)),
                                                     eVarNameFlags.Immig, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
                             End If
                         Else
                             If (m_Data.Emigration(i) <> Sum) Then
                                 m_Data.Emigration(i) = Sum
-                                msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight, _
-                                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_ESTIMATED_EMIGRATION, Me.m_Data.GroupName(i)), _
+                                msg.AddVariable(New cVariableStatus(eStatusFlags.CoreHighlight,
+                                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_ESTIMATED_EMIGRATION, Me.m_Data.GroupName(i)),
                                                     eVarNameFlags.Emig, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
                             End If
                         End If
@@ -725,7 +725,7 @@ Namespace Ecopath
 
                     If m_Data.Resp(i) >= m_Data.InputToDet(i) Then
                         If msg Is Nothing Then
-                            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP, _
+                            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP,
                                                eMessageType.RespirationExceeedsDetritus, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                             msg.Suppressable = True
                         End If
@@ -821,12 +821,12 @@ Namespace Ecopath
                     breturn = False
                     If bSendMessage Then
                         If msg Is Nothing Then
-                            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE_GENERIC, _
+                            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE_GENERIC,
                                                 eMessageType.EE, eCoreComponentType.EcoPath, eMessageImportance.Warning, eDataTypes.EcoPathGroupOutput)
                             msg.Suppressable = True
                         End If
-                        msg.AddVariable(New cVariableStatus(eStatusFlags.InvalidModelResult, _
-                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE, Me.m_Data.GroupName(i), m_Data.EE(i)), _
+                        msg.AddVariable(New cVariableStatus(eStatusFlags.InvalidModelResult,
+                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE, Me.m_Data.GroupName(i), m_Data.EE(i)),
                                     eVarNameFlags.EEOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
                     End If
                 End If
@@ -864,14 +864,14 @@ Namespace Ecopath
                         ' Msg for PB0 not created yet?
                         If msgPB0 Is Nothing Then
                             ' #Not existing, create it
-                            msgPB0 = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_PB0_GENERIC, _
-                                     eMessageType.InvalidModel_PB0_Generic, eCoreComponentType.EcoPath, eMessageImportance.Warning, _
+                            msgPB0 = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_PB0_GENERIC,
+                                     eMessageType.InvalidModel_PB0_Generic, eCoreComponentType.EcoPath, eMessageImportance.Warning,
                                      eDataTypes.EcoPathGroupInput)
                             msgPB0.Suppressable = True
                         End If
                         ' Create variable information for this messages
-                        vs = New cVariableStatus(eStatusFlags.InvalidModelResult, _
-                                cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_PB0, Me.m_Data.GroupName(i)), _
+                        vs = New cVariableStatus(eStatusFlags.InvalidModelResult,
+                                cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_PB0, Me.m_Data.GroupName(i)),
                                 eVarNameFlags.PBInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
                         ' Add variable info
                         msgPB0.Variables.Add(vs)
@@ -880,14 +880,14 @@ Namespace Ecopath
 
                         If msgQB0 Is Nothing Then
                             ' #Not existing, create it
-                            msgQB0 = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_QB0_GENERIC, _
-                                     eMessageType.InvalidModel_QB0_Generic, eCoreComponentType.EcoPath, eMessageImportance.Warning, _
+                            msgQB0 = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_QB0_GENERIC,
+                                     eMessageType.InvalidModel_QB0_Generic, eCoreComponentType.EcoPath, eMessageImportance.Warning,
                                      eDataTypes.EcoPathGroupInput)
                             msgQB0.Suppressable = True
                         End If
                         ' Create variable information for this messages
-                        vs = New cVariableStatus(eStatusFlags.InvalidModelResult, _
-                                cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_QB0_GENERIC, Me.m_Data.GroupName(i)), _
+                        vs = New cVariableStatus(eStatusFlags.InvalidModelResult,
+                                cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_QB0_GENERIC, Me.m_Data.GroupName(i)),
                                 eVarNameFlags.QBInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i)
                         ' Add variable info
                         msgQB0.Variables.Add(vs)
@@ -953,7 +953,7 @@ Namespace Ecopath
             m_Data.fCatch(Group) = sumValue
             m_Data.Ex(Group) = m_Data.fCatch(Group)
 
-            Sum = CSng(if(m_Data.Emig(Group) > 0 And m_Data.Emigration(Group) = 0 And m_Data.B(Group) > 0, m_Data.Emig(Group) * m_Data.B(Group), 0))
+            Sum = CSng(If(m_Data.Emig(Group) > 0 And m_Data.Emigration(Group) = 0 And m_Data.B(Group) > 0, m_Data.Emig(Group) * m_Data.B(Group), 0))
 
             If Group <= m_Data.NumLiving Then
                 m_Data.Ex(Group) = m_Data.Ex(Group) - m_Data.Immig(Group) + m_Data.Emigration(Group) + Sum
@@ -998,21 +998,21 @@ Namespace Ecopath
 
                     If (m_Data.Discard(i, j) = 0) Or (m_Data.Landing(i, j) = 0) Then
                         If msg Is Nothing Then
-                            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_CATCH_GENERIC, _
-                                    eMessageType.NoCatchForFleet, eCoreComponentType.EcoPath, _
+                            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_CATCH_GENERIC,
+                                    eMessageType.NoCatchForFleet, eCoreComponentType.EcoPath,
                                     eMessageImportance.Warning, eDataTypes.FleetInput)
                             msg.Suppressable = True
                         End If
 
                         If m_Data.Landing(i, j) = 0 Then
                             ' Inform core that the sum of landing and discards is missing
-                            msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, _
-                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_LANDING, m_Data.FleetName(i), m_Data.GroupName(j)), _
+                            msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter,
+                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_LANDING, m_Data.FleetName(i), m_Data.GroupName(j)),
                                     eVarNameFlags.Landings, eDataTypes.FleetInput, eCoreComponentType.EcoPath, i, j))
                         End If
                         If m_Data.Discard(i, j) = 0 Then
-                            msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, _
-                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_DISCARD, m_Data.FleetName(i), m_Data.GroupName(j)), _
+                            msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter,
+                                    cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_MISSINGPARAM_DISCARD, m_Data.FleetName(i), m_Data.GroupName(j)),
                                     eVarNameFlags.Discards, eDataTypes.FleetInput, eCoreComponentType.EcoPath, i, j))
                         End If
                     End If
@@ -1099,19 +1099,19 @@ Namespace Ecopath
 
             If isMissing Then
 
-                Dim msg As New cMessage(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC, _
-                                        eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, _
+                Dim msg As New cMessage(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC,
+                                        eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath,
                                         eMessageImportance.Warning, eDataTypes.EcoPathGroupInput)
                 msg.Suppressable = False
 
                 For i = 1 To m_Data.NumLiving
-                    If m_Data.B(i) <= 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B, i), eVarNameFlags.Biomass, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
-                    If m_Data.PB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_PB, i), eVarNameFlags.PBInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
-                    If m_Data.QB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_QB, i), eVarNameFlags.QBInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                    If m_Data.B(i) <= 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_B, i), eVarNameFlags.Biomass, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
+                    If m_Data.PB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_PB, i), eVarNameFlags.PBOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
+                    If m_Data.QB(i) < 0 Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_QB, i), eVarNameFlags.QBOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
                     If m_Data.EE(i) < 0 Then
-                        msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE, i), eVarNameFlags.EEInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                        msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE, i), eVarNameFlags.EEOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
                         If m_Data.BA(i) < 0 Then
-                            msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE_BA, i), eVarNameFlags.BioAccumInput, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                            msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_EE_BA, i), eVarNameFlags.BioAccumOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
                         End If
                     End If
                 Next
@@ -1299,7 +1299,7 @@ Namespace Ecopath
 
             For i As Integer = m_Data.NumLiving + 1 To m_Data.NumGroups
                 If m_Data.BHinput(i) < 0 And msg Is Nothing Then
-                    msg = New cMessage(My.Resources.CoreMessages.ECOPATH_PROMPT_ENTER_B_BEFORE_PROCEEDING, _
+                    msg = New cMessage(My.Resources.CoreMessages.ECOPATH_PROMPT_ENTER_B_BEFORE_PROCEEDING,
                                 eMessageType.InvalidModel_B_Detritus, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                     msg.Suppressable = True
                 End If
@@ -1326,13 +1326,13 @@ Namespace Ecopath
             Next
 
             If (nFound > 0) Then
-                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_DIETIMPORTONLY, nFound), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_DIETIMPORTONLY, nFound),
                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = True
 
                 For iGroup As Integer = 1 To m_Data.NumLiving
-                    If bImportOnly(iGroup) Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter, _
-                        cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_DIETIMPORTONLY_GROUP, Me.m_Data.GroupName(iGroup)), _
+                    If bImportOnly(iGroup) Then msg.AddVariable(New cVariableStatus(eStatusFlags.MissingParameter,
+                        cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_DIETIMPORTONLY_GROUP, Me.m_Data.GroupName(iGroup)),
                         eVarNameFlags.Name, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, iGroup))
                 Next
                 Me.NotifyCore(msg)
@@ -1407,7 +1407,7 @@ Namespace Ecopath
             Next
 
             If nFound > 0 Then
-                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_DFLARGERTHANONE, nFound), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_DFLARGERTHANONE, nFound),
                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = True
 
@@ -1595,7 +1595,7 @@ LoopCalc:
                 '040112VC: In case B is missing, BABi is entered, then estimate BA(i) again
                 For ji = 1 To m_Data.NumLiving
                     If m_Data.BA(ji) = 0 Then
-                        m_Data.BA(ji) = CSng(if(m_Data.BaBi(ji) <> 0 And m_Data.B(ji) > 0, m_Data.BaBi(ji) * m_Data.B(ji), m_Data.BA(ji)))
+                        m_Data.BA(ji) = CSng(If(m_Data.BaBi(ji) <> 0 And m_Data.B(ji) > 0, m_Data.BaBi(ji) * m_Data.B(ji), m_Data.BA(ji)))
                         'jb was m_data.BA(ji) = if(m_data.BaBi(ji) <> 0 And m_data.B(ji) > 0, m_data.BaBi(ji) * m_data.B(ji), m_data.BAi(ji))
                     End If
 

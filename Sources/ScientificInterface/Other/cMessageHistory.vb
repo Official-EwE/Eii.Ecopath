@@ -476,7 +476,7 @@ Public Class cMessageHistory
                             Me.ShowMessageBox(msg)
 
                         Case eMessageImportance.Warning
-                            ' Only show wanring messages when core is not busy
+                            ' Only show warning messages when core is not busy
                             Dim sm As cCoreStateMonitor = Me.UIContext.Core.StateMonitor
                             If (Not sm.IsBusy) Then Me.ShowMessageBox(msg)
 

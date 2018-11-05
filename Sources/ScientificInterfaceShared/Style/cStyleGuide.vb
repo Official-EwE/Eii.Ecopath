@@ -261,13 +261,8 @@ Namespace Style
             ''' <summary>Flag indicating that an Unknown Error has been encountered regarding this value.</summary>
             ErrorEncountered = CInt(eStatusFlags.ErrorEncountered)
 
-            '''' <summary>Flag indicating that a value is a Missing Parameter for one of the EwE models.</summary>
-            '''' <remarks>
-            '''' This flag is different from <see cref="eStatusFlags.Null">StyleFlags.Null</see>; Null values
-            '''' are model-technically not initialized while Missing Parameter values do not contain a valid
-            '''' value for the model that they are used in.
-            '''' </remarks>
-            'MissingParameter = CInt(eStatusFlags.MissingParameter)
+            ''' <summary>Flag indicating that a value is a Missing Parameter for one of the EwE models.</summary>
+            MissingParameter = CInt(eStatusFlags.MissingParameter)
 
             ''' <summary>
             ''' Flag indicating that the core deemed a value as important for whatever reason. The
@@ -286,8 +281,6 @@ Namespace Style
             '-----------------------------------------------------------------
             ' GUI-specific flags
             '-----------------------------------------------------------------
-
-            ' There is room for 3 flags (2^13, 2^14, and 2^15) here
 
             ''' <summary>EcoPath GUI flag; indicates whether a value has associated remarks.</summary>
             Remarks = 65536 ' 2^16
@@ -1364,24 +1357,19 @@ Namespace Style
 
             ' Default priorities, used when the provided priorities did not yield
             ' a status to display, or when no priority sequence has been provided.
-            Dim ePriorities() As cStyleGuide.eStyleFlags = { _
-                    cStyleGuide.eStyleFlags.Null, _
-                    cStyleGuide.eStyleFlags.InvalidModelResult, _
-                    cStyleGuide.eStyleFlags.FailedValidation, _
-                    cStyleGuide.eStyleFlags.ErrorEncountered, _
-                    cStyleGuide.eStyleFlags.ValueComputed, _
-                    cStyleGuide.eStyleFlags.Remarks, _
-                    cStyleGuide.eStyleFlags.Sum, _
-                    cStyleGuide.eStyleFlags.Names, _
-                    cStyleGuide.eStyleFlags.Checked, _
-                    cStyleGuide.eStyleFlags.NotEditable, _
+            Dim ePriorities() As cStyleGuide.eStyleFlags = {
+                    cStyleGuide.eStyleFlags.Null,
+                    cStyleGuide.eStyleFlags.InvalidModelResult,
+                    cStyleGuide.eStyleFlags.FailedValidation,
+                    cStyleGuide.eStyleFlags.ErrorEncountered,
+                    cStyleGuide.eStyleFlags.MissingParameter,
+                    cStyleGuide.eStyleFlags.ValueComputed,
+                    cStyleGuide.eStyleFlags.Remarks,
+                    cStyleGuide.eStyleFlags.Sum,
+                    cStyleGuide.eStyleFlags.Names,
+                    cStyleGuide.eStyleFlags.Checked,
+                    cStyleGuide.eStyleFlags.NotEditable,
                     cStyleGuide.eStyleFlags.OK}
-
-            ' JS 02Aug08: disabled, not used at all
-            'StyleGuide.eStyleFlags.FishingPressure, _
-            'StyleGuide.eStyleFlags.Profit, _
-            'StyleGuide.eStyleFlags.TotalCatch, _
-            'StyleGuide.eStyleFlags.TrophicLink, _
 
             ' Set defaults
             Dim eColorText As cStyleGuide.eApplicationColorType = 0
@@ -1410,6 +1398,9 @@ Namespace Style
                     Case cStyleGuide.eStyleFlags.ErrorEncountered
                         eColorBack = eApplicationColorType.GENERICERROR_BACKGROUND
 
+                    Case cStyleGuide.eStyleFlags.MissingParameter
+                        eColorBack = eApplicationColorType.MISSINGPARAMETER_BACKGROUND
+
                     Case cStyleGuide.eStyleFlags.ValueComputed
                         eColorText = eApplicationColorType.COMPUTED_TEXT
 
@@ -1418,18 +1409,6 @@ Namespace Style
 
                     Case cStyleGuide.eStyleFlags.Sum
                         eColorBack = eApplicationColorType.SUM_BACKGROUND
-
-                        'Case StyleGuide.eStyleFlags.FishingPressure
-                        '    eColorText = eApplicationColorType.FISHINGPRESSURE_TEXT
-
-                        'Case StyleGuide.eStyleFlags.Profit
-                        '    eColorText = eApplicationColorType.PROFIT_TEXT
-
-                        'Case StyleGuide.eStyleFlags.TotalCatch
-                        '    eColorText = eApplicationColorType.TOTALCATCH_TEXT
-
-                        'Case StyleGuide.eStyleFlags.TrophicLink
-                        '    eColorText = eApplicationColorType.TROPHICLINK_TEXT
 
                     Case eStyleFlags.Checked
                         eColorBack = eApplicationColorType.CHECKED_BACKGROUND
