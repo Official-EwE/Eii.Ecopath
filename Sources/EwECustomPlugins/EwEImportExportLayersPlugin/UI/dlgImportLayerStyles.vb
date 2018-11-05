@@ -158,7 +158,7 @@ Public Class dlgImportLayerStyles
         Me.UpdateEntries()
 
         If Me.m_io.MergeToLayers(Me.m_cbCreateMissingLayers.Checked) Then
-            Me.DialogResult = Windows.Forms.DialogResult.OK
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
         End If
 
