@@ -5220,15 +5220,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Leading.
-        '''</summary>
-        Public ReadOnly Property HEADER_LEADING() As String
-            Get
-                Return ResourceManager.GetString("HEADER_LEADING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Leading biomass.
         '''</summary>
         Public ReadOnly Property HEADER_LEADING_BIOMASS() As String

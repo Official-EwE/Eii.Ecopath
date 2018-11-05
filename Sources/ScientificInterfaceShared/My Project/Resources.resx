@@ -1703,9 +1703,6 @@
   <data name="HEADER_BIOMASS" xml:space="preserve">
     <value>Biomass</value>
   </data>
-  <data name="HEADER_LEADING" xml:space="preserve">
-    <value>Leading</value>
-  </data>
   <data name="PROMPT_MEDIATION_CANNOTMIX" xml:space="preserve">
     <value>You cannot assign a mix of groups and fleets</value>
   </data>
