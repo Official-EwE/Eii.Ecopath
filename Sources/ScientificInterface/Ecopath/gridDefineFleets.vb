@@ -245,7 +245,6 @@ Imports EwEUtils.Core
 
         MyBase.InitStyle()
 
-        Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.Selection.EnableMultiSelection = False
 
         ' JS 15Apr07: there will be no context menu item until we have a better idea

@@ -588,7 +588,6 @@ Imports SourceGrid2.Cells
 
         MyBase.InitStyle()
 
-        Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.Selection.EnableMultiSelection = False
 
         Me.ContextMenu = Nothing

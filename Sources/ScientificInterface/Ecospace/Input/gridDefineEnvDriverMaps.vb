@@ -267,7 +267,6 @@ Namespace Ecospace
 
             MyBase.InitStyle()
 
-            Me.Selection.SelectionMode = GridSelectionMode.Row
             Me.Selection.EnableMultiSelection = False
             Me.AllowBlockSelect = False
 

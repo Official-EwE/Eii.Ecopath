@@ -108,8 +108,6 @@ Namespace Import
 
             MyBase.InitStyle()
 
-            ' Set selection mode
-            Me.Selection.SelectionMode = GridSelectionMode.Cell
             Me.Selection.EnableMultiSelection = False
 
             ' Resize grid
