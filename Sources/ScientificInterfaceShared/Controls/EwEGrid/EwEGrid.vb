@@ -1272,8 +1272,8 @@ Namespace Controls.EwEGrid
             ' JS 28Feb12: added special paste behaviour
             ' - Rows can be repeated if the selected row(s) exactly fit the selected area
             ' - Columns can be repeated if the selected column(s) exactly fit the selected area
-            Dim bRepeatRow As Boolean = (r.ColumnsCount Mod iDX = 0) And (iDX > 1)
-            Dim bRepeatCol As Boolean = (r.RowsCount Mod iDY = 0) And (iDY > 1)
+            Dim bRepeatCol As Boolean = (r.ColumnsCount Mod iDX = 0) And (iDX > 1)
+            Dim bRepeatRow As Boolean = (r.RowsCount Mod iDY = 0) And (iDY > 1)
             Dim iRowFrom As Integer = r.Start.Row
             Dim iRowTo As Integer = Math.Min(If(bRepeatRow, r.End.Row, r.Start.Row + astrLines.Length - 1), Me.RowsCount - 1)
             ' Restrict paste operation to the selection area when repeating data and/or when pasting into a range
