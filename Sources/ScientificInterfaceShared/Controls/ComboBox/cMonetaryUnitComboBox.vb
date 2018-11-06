@@ -42,7 +42,6 @@ Namespace Controls
 
         Private Class MonetaryUnitItem
 
-            Private m_strISOSymbol As String = ""
             Private m_strDescription As String
 
             ''' <summary>
@@ -52,18 +51,14 @@ Namespace Controls
             ''' <param name="strDescription"></param>
             ''' <remarks></remarks>
             Public Sub New(ByVal m_strISOSymbol As String, ByVal strDescription As String)
-                Me.m_strISOSymbol = m_strISOSymbol
+                Me.ISOSymbol = m_strISOSymbol
                 Me.m_strDescription = strDescription
             End Sub
 
-            Public ReadOnly Property ISOSymbol() As String
-                Get
-                    Return Me.m_strISOSymbol
-                End Get
-            End Property
+            Public ReadOnly Property ISOSymbol() As String = ""
 
             Public Overrides Function ToString() As String
-                Return String.Format(My.Resources.GENERIC_LABEL_DOUBLE, Me.m_strISOSymbol, Me.m_strDescription)
+                Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, Me.ISOSymbol, Me.m_strDescription)
             End Function
 
         End Class
@@ -78,7 +73,7 @@ Namespace Controls
 
         Public Sub New()
             Me.InitializeComponent()
-            Me.DropDownStyle = ComboBoxStyle.DropDownList
+            'Me.DropDownStyle = ComboBoxStyle.DropDownList
         End Sub
 
         Public Property UIContext() As cUIContext _
@@ -124,11 +119,16 @@ Namespace Controls
                 If TypeOf Me.SelectedItem Is MonetaryUnitItem Then
                     Return DirectCast(Me.SelectedItem, MonetaryUnitItem).ISOSymbol
                 Else
-                    Return "EUR"
+                    Return Me.Text
                 End If
             End Get
             Set(ByVal value As String)
-                Me.SelectedIndex = GetUnitIndex(value)
+                Dim i As Integer = Me.GetUnitIndex(value)
+                If (i < 0) Then
+                    Me.Text = value
+                Else
+                    Me.SelectedIndex = i
+                End If
             End Set
         End Property
 

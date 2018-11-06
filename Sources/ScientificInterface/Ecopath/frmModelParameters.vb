@@ -116,7 +116,6 @@ Public Class frmModelParameters
         AddHandler Me.m_propUnitMonetary.PropertyChanged, AddressOf OnUnitMonetaryChanged
 
         Me.m_cmbMonetaryUnit.UIContext = Me.UIContext
-        ' Listen to shapes data added or removed messages
         Me.CoreComponents = Nothing
 
         Me.m_lblAreaUnit.UIContext = Me.UIContext
@@ -336,7 +335,8 @@ Public Class frmModelParameters
 #Region " Monetary "
 
     Private Sub m_cmbMonetaryUnit_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles m_cmbMonetaryUnit.SelectedIndexChanged
+        Handles m_cmbMonetaryUnit.TextChanged
+        If (Me.m_propUnitMonetary Is Nothing) Then Return
         Me.m_propUnitMonetary.SetValue(Me.m_cmbMonetaryUnit.Unit)
     End Sub
 
