@@ -617,9 +617,9 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>{0} cleared</value>
     <comment>{0}=variable name</comment>
   </data>
-  <data name="VARIABLE_VALIDATION_FAILED" xml:space="preserve">
-    <value>{0} cannot be {1}</value>
-    <comment>{0}=variable name, {1}=value</comment>
+  <data name="VARIABLE_VALIDATION_FAILED_DETAIL" xml:space="preserve">
+    <value>{0} cannot be {1}. {2}</value>
+    <comment>{0}=variable name, {1}=value, {2}=reason</comment>
   </data>
   <data name="VARIABLE_VALIDATION_PASSED" xml:space="preserve">
     <value>{0} set to {1}</value>
@@ -1404,5 +1404,15 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="PROMPT_SAVE_CHANGES_DETAILED" xml:space="preserve">
     <value>Unsaved changes in {0} will be lost if you proceed. Do you wish to save these changes?</value>
     <comment>{0}=list of EwE modules</comment>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED" xml:space="preserve">
+    <value>{0} cannot be {1}</value>
+    <comment>{0}=variable name, {1}=value</comment>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_OUTOFRANGE" xml:space="preserve">
+    <value>Value is out of range</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_TOOLONG" xml:space="preserve">
+    <value>Text cannot exceed {0} characters</value>
   </data>
 </root>

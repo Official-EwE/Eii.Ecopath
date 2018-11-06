@@ -96,7 +96,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.UnitTimeCustomText) = New cVariableMetaData(20)
         Me.Metadata(eVarNameFlags.UnitCurrency) = New cVariableMetaData(0, [Enum].GetValues(GetType(eUnitCurrencyType)).Length - 1, ge, le)
         Me.Metadata(eVarNameFlags.UnitCurrencyCustomText) = New cVariableMetaData(20)
-        Me.Metadata(eVarNameFlags.UnitMonetary) = New cVariableMetaData(4)
+        Me.Metadata(eVarNameFlags.UnitMonetary) = New cVariableMetaData(10)
         Me.Metadata(eVarNameFlags.UnitArea) = New cVariableMetaData(0, [Enum].GetValues(GetType(eUnitAreaType)).Length - 1, ge, le)
         Me.Metadata(eVarNameFlags.UnitAreaCustomText) = New cVariableMetaData(20)
         Me.Metadata(eVarNameFlags.UnitMapRef) = New cVariableMetaData(0, [Enum].GetValues(GetType(eUnitMapRefType)).Length - 1, ge, le)

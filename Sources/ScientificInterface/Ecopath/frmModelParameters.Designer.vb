@@ -44,7 +44,7 @@ Partial Class frmModelParameters
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmModelParameters))
-        Dim CMarineRegionsLookup2 As ScientificInterfaceShared.GeoCode.cMarineRegionsLookup = New ScientificInterfaceShared.GeoCode.cMarineRegionsLookup()
+        Dim CMarineRegionsLookup1 As ScientificInterfaceShared.GeoCode.cMarineRegionsLookup = New ScientificInterfaceShared.GeoCode.cMarineRegionsLookup()
         Me.m_udNumDigits = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.lbNumDigits = New System.Windows.Forms.Label()
         Me.m_lblOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -382,7 +382,6 @@ Partial Class frmModelParameters
         'm_cmbMonetaryUnit
         '
         resources.ApplyResources(Me.m_cmbMonetaryUnit, "m_cmbMonetaryUnit")
-        Me.m_cmbMonetaryUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbMonetaryUnit.FormattingEnabled = True
         Me.m_cmbMonetaryUnit.Name = "m_cmbMonetaryUnit"
         Me.m_cmbMonetaryUnit.Sorted = True
@@ -509,8 +508,8 @@ Partial Class frmModelParameters
         '
         resources.ApplyResources(Me.m_gcmbAreaName, "m_gcmbAreaName")
         Me.m_gcmbAreaName.AutoSearch = True
-        CMarineRegionsLookup2.Term = Nothing
-        Me.m_gcmbAreaName.LookupEngine = CMarineRegionsLookup2
+        CMarineRegionsLookup1.Term = Nothing
+        Me.m_gcmbAreaName.LookupEngine = CMarineRegionsLookup1
         Me.m_gcmbAreaName.Name = "m_gcmbAreaName"
         '
         'm_lblAreaName

@@ -291,30 +291,32 @@ Namespace ValueWrapper
 
             'set the value of this object to the new value passed in 
             'this allows the validator the access the new value via the public interface
-            m_orgvalue = m_value
+            Me.m_orgvalue = Me.m_value
             'convert null or empty inputs into something that can be used
-            m_value = Me.convertEmptyInputs(NewValue)
+            Me.m_value = Me.convertEmptyInputs(NewValue)
+            ' Clear previous validation message
+            Me.m_message = ""
 
             'is it ok to run the validator?
             If Not Me.AllowValidation Then
                 'No Validation set the value without running the validator
-                m_validationstatus = eStatusFlags.OK
+                Me.m_validationstatus = eStatusFlags.OK
                 Return False 'validation was not run???
             End If
 
             'not every value object has a validator?
             'outputs are validated by the core once it has run the model because only it knows the working of the models and what the model results mean
-            If m_validator Is Nothing Then
+            If Me.m_validator Is Nothing Then
                 'set the value without running the validator
-                m_validationstatus = eStatusFlags.OK
-                System.Console.WriteLine(m_varName.ToString & " does not have a validator.")
+                Me.m_validationstatus = eStatusFlags.OK
+                System.Console.WriteLine(Me.m_varName.ToString & " does not have a validator.")
                 Return False 'validation was not run???
             End If
 
-            If m_validator.Validate(Me, m_metadata, iSecondIndex, iThirdIndex) Then
-                If m_validationstatus = eStatusFlags.FailedValidation Then
+            If Me.m_validator.Validate(Me, Me.m_metadata, iSecondIndex, iThirdIndex) Then
+                If Me.m_validationstatus = eStatusFlags.FailedValidation Then
                     'if the new value failed validation then set the value back to its original value
-                    m_value = m_orgvalue
+                    Me.m_value = Me.m_orgvalue
                 End If
 
                 ' JS 10Jan08: disabled the following logic. Setting a validation status to NULL will 

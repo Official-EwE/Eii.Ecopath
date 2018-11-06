@@ -75,6 +75,7 @@ Public Class cValidatorDefault
                     Else
                         'failed the validation 
                         ValueObject.ValidationStatus = eStatusFlags.FailedValidation
+                        ValueObject.ValidationMessage = My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_OUTOFRANGE
                     End If
 
                     ' Always flag successfully validated cCore.NULL_VALUE values as Null
@@ -82,7 +83,6 @@ Public Class cValidatorDefault
                         ValueObject.Status(iSecondaryIndex) = eStatusFlags.Null
                         bCleared = True
                     End If
-
                 End If
 
 
@@ -100,6 +100,7 @@ Public Class cValidatorDefault
                     ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Else
                     ValueObject.ValidationStatus = eStatusFlags.FailedValidation
+                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_TOOLONG, MetaData.Length)
                 End If
 
             Case eValueTypes.Bool, eValueTypes.BoolArray
@@ -110,23 +111,26 @@ Public Class cValidatorDefault
         End Select
 
         Dim fmt As New Style.cVarnameTypeFormatter()
+        Dim val As Object = Nothing
+        If TypeOf ValueObject.Value Is System.Array And iSecondaryIndex >= 0 Then
+            val = ValueObject.Value(iSecondaryIndex, iThirdIndex)
+        Else
+            val = ValueObject.Value
+        End If
+        Dim reason As String = ValueObject.ValidationMessage
 
         ' Prepare message
         If ValueObject.ValidationStatus = eStatusFlags.OK Then
             If bCleared Then
                 ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_CLEARED, fmt.GetDescriptor(ValueObject.varName))
             Else
-                If TypeOf ValueObject.Value Is System.Array And iSecondaryIndex >= 0 Then
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value(iSecondaryIndex, iThirdIndex))
-                Else
-                    ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
-                End If
+                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), val)
             End If
         Else
-            If TypeOf ValueObject.Value Is System.Array And iSecondaryIndex >= 0 Then
-                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value(iSecondaryIndex, iThirdIndex))
+            If (String.IsNullOrWhiteSpace(ValueObject.ValidationMessage)) Then
+                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), val)
             Else
-                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
+                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_DETAIL, fmt.GetDescriptor(ValueObject.varName), val, ValueObject.ValidationMessage)
             End If
         End If
 
