@@ -475,7 +475,9 @@ Public Class ucDriverResponseView
     End Sub
 
     Private Sub ApplyMinMax()
+
         If Me.m_bInUpdate Then Return
+        If Me.m_shape Is Nothing Then Return
 
         Debug.Assert(Me.ShowMinMax())
 
