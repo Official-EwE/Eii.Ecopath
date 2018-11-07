@@ -275,9 +275,9 @@ Namespace Ecosim
             Me.m_F2TSManager.AnomalySearch = Me.m_cbAnomalySearch.Checked
             Me.m_F2TSManager.VulnerabilitySearch = Me.m_cbVulnerabilitySearch.Checked
 
-            Me.m_F2TSManager.FirstYear = CInt(Me.m_nudFirstYear.Text) + 1
-            Me.m_F2TSManager.LastYear = CInt(Me.m_nudLastYear.Text)
-            Me.m_F2TSManager.NumSplinePoints = CInt(Me.m_nudSplinePts.Text)
+            Me.m_F2TSManager.FirstYear = CInt(Me.m_nudFirstYear.Value) + 1
+            Me.m_F2TSManager.LastYear = CInt(Me.m_nudLastYear.Value)
+            Me.m_F2TSManager.NumSplinePoints = CInt(Me.m_nudSplinePts.Value)
             Me.m_F2TSManager.PPVariance = CSng(Me.m_nudVariancePrimaryProd.Value)
             Me.m_F2TSManager.VulnerabilityVariance = CSng(Me.m_nudVariance.Value)
             Me.m_F2TSManager.VulnerabilityBlocks = Me.m_vulnerabilityBlockMatrix.Vulblocks
