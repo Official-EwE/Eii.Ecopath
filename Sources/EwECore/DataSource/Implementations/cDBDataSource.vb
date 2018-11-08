@@ -6703,10 +6703,12 @@ Namespace DataSources
                         Debug.Assert(False)
                 End Select
 
+                Dim val As Single = 0
                 For iYear As Integer = 0 To ts.nPoints - 1
+                    If ts.ShapeData(iYear) > 0 Then val = ts.ShapeData(iYear)
                     For iMonth As Integer = 1 To iRepetitions
                         If sbZScale.Length > 0 Then sbZScale.Append(" ")
-                        sbZScale.Append(cStringUtils.FormatSingle(ts.ShapeData(iYear)))
+                        sbZScale.Append(cStringUtils.FormatSingle(val))
                     Next
                 Next
 
