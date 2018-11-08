@@ -302,7 +302,7 @@ Public Class cSFPManager
 
         Dim iNumSteps As Integer = 1
         Dim iStep As Integer = 0
-        Dim msg As New cMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, My.Resources.CAPTION), _
+        Dim msg As New cMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, My.Resources.CAPTION),
                                 eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
         msg.Hyperlink = Me.OutputFolder
         Dim bSuccess As Boolean
@@ -315,6 +315,7 @@ Public Class cSFPManager
         '       Batch locks are incremental, which is why the batch lock is chosen here instead of the search mode.
 
         Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
+        Me.m_core.StateMonitor.SetIsSearching(eSearchModes.External)
         Me.m_core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
         cApplicationStatusNotifier.StartProgress(Me.m_core)
 
@@ -333,10 +334,10 @@ Public Class cSFPManager
                 'Check if iteration is enabled to run
                 If Iteration.Enabled And Not m_bStopRun Then
 
-                    cApplicationStatusNotifier.UpdateProgress(Me.m_core, _
-                                                              cStringUtils.Localize(My.Resources.STATUS_RUNNING, _
-                                                                                    My.Resources.CAPTION, _
-                                                                                    Iteration.Name), _
+                    cApplicationStatusNotifier.UpdateProgress(Me.m_core,
+                                                              cStringUtils.Localize(My.Resources.STATUS_RUNNING,
+                                                                                    My.Resources.CAPTION,
+                                                                                    Iteration.Name),
                                                               CSng((iStep + 0.5) / iNumSteps))
 
                     ' Assume the worst
@@ -380,8 +381,8 @@ Public Class cSFPManager
 
             'Save results to CSV file
             iStep += 1
-            cApplicationStatusNotifier.UpdateProgress(Me.m_core, _
-                                                      cStringUtils.Localize(My.Resources.STATUS_SAVING, My.Resources.CAPTION), _
+            cApplicationStatusNotifier.UpdateProgress(Me.m_core,
+                                                      cStringUtils.Localize(My.Resources.STATUS_SAVING, My.Resources.CAPTION),
                                                       sProgress:=CSng(iStep / iNumSteps))
             SaveResultsToCSV(msg)
 
@@ -394,6 +395,7 @@ Public Class cSFPManager
         End Try
 
         Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
+        Me.m_core.StateMonitor.SetIsSearching(eSearchModes.NotInSearch)
         Me.m_core.SetStopRunDelegate(Nothing)
         cApplicationStatusNotifier.EndProgress(Me.m_core)
 
@@ -665,12 +667,12 @@ Public Class cSFPManager
                         If (Iteration.RunState = ISFPIterations.eRunState.Completed) Then
 
                             ' Write iteration info line
-                            writer.Write(cStringUtils.ToCSVField(Iteration.Name) & "," & _
-                                         cStringUtils.ToCSVField(Iteration.K) & "," & _
-                                         cStringUtils.ToCSVField(Iteration.EstimatedV) & "," & _
-                                         cStringUtils.ToCSVField(Iteration.SplinePoints) & "," & _
-                                         cStringUtils.ToCSVField(Iteration.SS) & "," & _
-                                         cStringUtils.ToCSVField(Iteration.AIC) & "," & _
+                            writer.Write(cStringUtils.ToCSVField(Iteration.Name) & "," &
+                                         cStringUtils.ToCSVField(Iteration.K) & "," &
+                                         cStringUtils.ToCSVField(Iteration.EstimatedV) & "," &
+                                         cStringUtils.ToCSVField(Iteration.SplinePoints) & "," &
+                                         cStringUtils.ToCSVField(Iteration.SS) & "," &
+                                         cStringUtils.ToCSVField(Iteration.AIC) & "," &
                                          cStringUtils.ToCSVField(Iteration.AICc))
 
                             For i As Integer = 1 To TimeSeries.nTimeSeries
@@ -714,7 +716,7 @@ Public Class cSFPManager
         Dim strIterationPath As String = Path.Combine(Me.OutputFolder, cFileUtils.ToValidFileName(iteration.Name, False))
         Dim bSuccess As Boolean = True
 
-        If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Ecosim) Or _
+        If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Ecosim) Or
            (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
 
             If cFileUtils.IsDirectoryAvailable(strIterationPath, True) Then
@@ -735,7 +737,7 @@ Public Class cSFPManager
             End If
         End If
 
-        If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Aggregated) Or _
+        If (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.Aggregated) Or
            (Me.Parameters.AutosaveMode = cSFPParameters.eAutosaveMode.All) Then
 
             'Save output results in Monthly and Yearly format 
@@ -776,14 +778,14 @@ Public Class cSFPManager
     ''' <param name="msg"> The message to append status information to </param>
     ''' <returns>Always returns true.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function SaveAggregatedResults(ByVal iteration As ISFPIterations, _
-                                           ByVal tsMonthly As Boolean, _
+    Private Function SaveAggregatedResults(ByVal iteration As ISFPIterations,
+                                           ByVal tsMonthly As Boolean,
                                            ByVal msg As cMessage) As Boolean
 
         For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(cEcosimResultWriter.eResultTypes))
             Select Case outputtype
-                Case cEcosimResultWriter.eResultTypes.Biomass, _
-                     cEcosimResultWriter.eResultTypes.Mortality, _
+                Case cEcosimResultWriter.eResultTypes.Biomass,
+                     cEcosimResultWriter.eResultTypes.Mortality,
                      cEcosimResultWriter.eResultTypes.Catch
                     SaveAggregatedTypeResult(outputtype, iteration, tsMonthly, msg)
             End Select
@@ -802,9 +804,9 @@ Public Class cSFPManager
     ''' <param name="msg">The message to append status information to.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function SaveAggregatedTypeResult(ByVal ResultType As cEcosimResultWriter.eResultTypes, _
-                                              ByVal iteration As ISFPIterations, _
-                                              ByVal tsMonthly As Boolean, _
+    Private Function SaveAggregatedTypeResult(ByVal ResultType As cEcosimResultWriter.eResultTypes,
+                                              ByVal iteration As ISFPIterations,
+                                              ByVal tsMonthly As Boolean,
                                               ByVal msg As cMessage) As Boolean
 
         ' Note on globalization: 

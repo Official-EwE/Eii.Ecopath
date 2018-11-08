@@ -337,7 +337,7 @@
     <value>m_hdrIterations</value>
   </data>
   <data name="&gt;&gt;m_hdrIterations.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15712.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrIterations.Parent" xml:space="preserve">
     <value>m_plConfig</value>
@@ -442,7 +442,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnApply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>560, 241</value>
+    <value>560, 236</value>
   </data>
   <data name="m_btnApply.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -637,7 +637,7 @@
     <value>m_hdrParameters</value>
   </data>
   <data name="&gt;&gt;m_hdrParameters.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15712.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrParameters.Parent" xml:space="preserve">
     <value>m_plSettings</value>
@@ -670,7 +670,7 @@
     <value>m_hdrOutput</value>
   </data>
   <data name="&gt;&gt;m_hdrOutput.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15712.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOutput.Parent" xml:space="preserve">
     <value>m_plRun</value>
@@ -793,7 +793,7 @@
     <value>m_hdrEwE</value>
   </data>
   <data name="&gt;&gt;m_hdrEwE.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15712.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEwE.Parent" xml:space="preserve">
     <value>m_plModel</value>
@@ -988,7 +988,7 @@
     <value>6, 21</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>548, 243</value>
+    <value>548, 238</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -997,7 +997,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEStepwiseFittingPlugin.gridRun, EwEStepwiseFittingPlugin, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=834460e7616bd410</value>
+    <value>EwEStepwiseFittingPlugin.gridRun, EwEStepwiseFittingPlugin, Version=6.6.15712.0, Culture=neutral, PublicKeyToken=834460e7616bd410</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_plConfig</value>
@@ -1015,7 +1015,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_plConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>663, 271</value>
+    <value>663, 266</value>
   </data>
   <data name="m_plConfig.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1102,7 +1102,7 @@
     <value>Fill</value>
   </data>
   <data name="m_plRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 478</value>
+    <value>0, 473</value>
   </data>
   <data name="m_plRun.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -1321,7 +1321,7 @@
     <value>4</value>
   </data>
   <data name="m_tlpContent.Size" type="System.Drawing.Size, System.Drawing">
-    <value>663, 556</value>
+    <value>663, 551</value>
   </data>
   <data name="m_tlpContent.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1378,18 +1378,18 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>663, 556</value>
+    <value>663, 551</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>679, 590</value>
+    <value>679, 490</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmRun</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15712.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
