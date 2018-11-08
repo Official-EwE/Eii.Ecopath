@@ -57,7 +57,9 @@ Namespace Controls
                     Case eShapeCommandTypes.Import
                         Dim dlg As New dlgImportShapes(Me.UIContext, Me.ShapeManager)
                         If dlg.ShowDialog() = DialogResult.OK Then
-                            Me.MediationAssignments.RefreshContent()
+                            If Me.MediationAssignments IsNot Nothing Then
+                                Me.MediationAssignments.RefreshContent()
+                            End If
                         End If
 
                     Case Else
