@@ -436,6 +436,8 @@ Public Class cCoreStateMonitor
             End If
         Next
 
+        Me.m_ccPending.Clear()
+
         If (tsSendUpdate = TriState.False) Or (pm Is Nothing) Then Return
         If (bHasEcospaceRan <> Me.HasEcospaceRan) Then pm.EcospaceRunInvalidated()
         If (bHasEcosimRan <> Me.HasEcosimRan) Then pm.EcosimRunInvalidated()
