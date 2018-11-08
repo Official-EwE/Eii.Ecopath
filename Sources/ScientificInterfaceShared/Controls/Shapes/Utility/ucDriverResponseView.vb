@@ -178,7 +178,6 @@ Public Class ucDriverResponseView
         End Get
         Set(value As cEnviroResponseFunction)
             Me.m_shape = value
-            Me.m_shapefunction = cShapeFunctionFactory.GetShapeFunction(value)
             Me.InitToShapeType()
             Me.UpdatePlot()
             Me.UpdateControls()
@@ -220,7 +219,6 @@ Public Class ucDriverResponseView
         Handles m_btnChangeShape.Click
         Try
             Me.ChangeFFShape()
-            ' Type of shape may have changed
             Me.InitToShapeType()
             Me.UpdateControls()
             Me.UpdatePlot()
@@ -237,6 +235,8 @@ Public Class ucDriverResponseView
     Protected Sub InitToShapeType()
 
         If (Me.m_zgh Is Nothing) Then Return
+
+        Me.m_shapefunction = cShapeFunctionFactory.GetShapeFunction(Me.m_shape)
 
         If (Me.ShowMinMax) Then
             RemoveHandler Me.m_fpMin.OnValueChanged, AddressOf OnMinMaxValueChanged
