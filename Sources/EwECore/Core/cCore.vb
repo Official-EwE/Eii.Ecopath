@@ -13333,10 +13333,7 @@ Public Class cCore
 
                 ' Update core run state:
                 ' Block selected variables from affecting the core run state
-                bBlock = (value.AffectsRunState = False) Or (Me.m_StateMonitor.IsBusy)
-
-                If (Not bBlock) Then
-                    If Me.m_batchLockType = eBatchLockType.NotSet Then updateState = TriState.UseDefault Else updateState = TriState.False
+                If (value.AffectsRunState) Then
                     Me.m_StateMonitor.UpdateExecutionState(msAffected, updateState)
                 End If
 

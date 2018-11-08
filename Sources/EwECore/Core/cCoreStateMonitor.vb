@@ -98,6 +98,9 @@ Public Class cCoreStateMonitor
     ''' <summary>Flag indicating whether plugin data contains unsaved changes.</summary>
     Private m_bPluginModified As Boolean = False
 
+    ''' <summary>Pending core state invalidations, kept at bay while core was running</summary>
+    Private m_ccPending As New List(Of eCoreComponentType)
+
 #End Region ' Private members
 
     ''' -----------------------------------------------------------------------
@@ -383,49 +386,55 @@ Public Class cCoreStateMonitor
     Friend Sub UpdateExecutionState(ByVal cc As eCoreComponentType,
                                     Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
 
+        If Not Me.m_ccPending.Contains(cc) Then Me.m_ccPending.Add(cc)
+        If Me.IsBusy Then Return
+
         Dim pm As EwEPlugin.cPluginManager = Me.m_core.PluginManager
         Dim bHasEcopathRan As Boolean = Me.HasEcopathRan
         Dim bHasEcosimRan As Boolean = Me.HasEcosimRan
         Dim bHasEcospaceRan As Boolean = Me.HasEcospaceRan
         Dim bHandled As Boolean = False
 
-        Select Case cc
-            Case eCoreComponentType.Core,
-                 eCoreComponentType.DataSource,
-                 eCoreComponentType.External,
-                 eCoreComponentType.NotSet,
-                 eCoreComponentType.SearchObjective
+        For Each cc In Me.m_ccPending
+
+            Select Case cc
+                Case eCoreComponentType.Core,
+                     eCoreComponentType.DataSource,
+                     eCoreComponentType.External,
+                     eCoreComponentType.NotSet,
+                     eCoreComponentType.SearchObjective
                 ' NOP
 
-            Case eCoreComponentType.EcoPath
-                SetEcopathLoaded(Me.HasEcopathLoaded(), tsSendUpdate)
-                bHandled = True
+                Case eCoreComponentType.EcoPath
+                    SetEcopathLoaded(Me.HasEcopathLoaded(), tsSendUpdate)
+                    bHandled = True
 
-            Case eCoreComponentType.EcoSim,
-                 eCoreComponentType.EcoSimFitToTimeSeries,
-                 eCoreComponentType.EcoSimMonteCarlo,
-                 eCoreComponentType.FishingPolicySearch,
-                 eCoreComponentType.ShapesManager,
-                 eCoreComponentType.TimeSeries
-                SetEcoSimLoaded(Me.HasEcosimLoaded(), tsSendUpdate, False)
-                bHandled = True
+                Case eCoreComponentType.EcoSim,
+                     eCoreComponentType.EcoSimFitToTimeSeries,
+                     eCoreComponentType.EcoSimMonteCarlo,
+                     eCoreComponentType.FishingPolicySearch,
+                     eCoreComponentType.ShapesManager,
+                     eCoreComponentType.TimeSeries
+                    SetEcoSimLoaded(Me.HasEcosimLoaded(), tsSendUpdate, False)
+                    bHandled = True
 
-            Case eCoreComponentType.EcoSpace,
-                 eCoreComponentType.MPAOptimization
-                Me.SetEcospaceLoaded(Me.HasEcospaceLoaded(), tsSendUpdate, False)
-                bHandled = True
+                Case eCoreComponentType.EcoSpace,
+                     eCoreComponentType.MPAOptimization
+                    Me.SetEcospaceLoaded(Me.HasEcospaceLoaded(), tsSendUpdate, False)
+                    bHandled = True
 
-            Case eCoreComponentType.Ecotracer
-                Me.SetEcotracerLoaded(Me.HasEcotracerLoaded(), tsSendUpdate, False)
-                bHandled = True
+                Case eCoreComponentType.Ecotracer
+                    Me.SetEcotracerLoaded(Me.HasEcotracerLoaded(), tsSendUpdate, False)
+                    bHandled = True
 
-        End Select
+            End Select
 
-        ' Not handled but notification requested?
-        If tsSendUpdate = TriState.True And bHandled = False Then
-            ' #Yes: force notification
-            Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, Me.m_iEcospaceState, Me.m_iEcotracerState, tsSendUpdate)
-        End If
+            ' Not handled but notification requested?
+            If tsSendUpdate = TriState.True And bHandled = False Then
+                ' #Yes: force notification
+                Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, Me.m_iEcospaceState, Me.m_iEcotracerState, tsSendUpdate)
+            End If
+        Next
 
         If (tsSendUpdate = TriState.False) Or (pm Is Nothing) Then Return
         If (bHasEcospaceRan <> Me.HasEcospaceRan) Then pm.EcospaceRunInvalidated()
