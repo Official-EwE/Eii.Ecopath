@@ -37,27 +37,66 @@ V Add Ecospace result writers to file management UI
   Transect extraction: add plot that shows where there are habitat limitations to fishing
 V Add cStringUtils.ToParagraph, adding line breaks after a preferred no. of characters, and use this in tooltips
   ImportLayer: use ApplicationStatus to notify user what's happening
-  Edit env drivers; changes in name, units, and descriptions rarely stick
-  Edit layer UI: add field to edit units
+V Edit env drivers; changes in name, units, and descriptions rarely stick
+V Edit layer UI: add field to edit units
+V Edit layer UI: allow remarks for layers
+  Multi-sim does not seem to validate function names when ran?!
+V Remove importance layers from Ecospace maps UI; MPA opt only
   
 ? Bring Ecosim Nutrient loading + Production forcing per PP group to Ecospace: 
-     - Add Nutrient loading layer
-	 - Add RelPP layer per PP group
+   - Add Nutrient loading layer
+   - Add RelPP layer per PP group
 ? Allow remarks on forcing & mediation functions
 ? Allow plug-in points on toolstrips (by identifying the class name of the grid / form that has a main toolbar, like quick editor)
-? Hyperbolic function parameters are still defaults, is this correct?
+? Hyperbolic function parameter names are still at old defaults, is this correct?
+  MC best fitting trial does not show diet, landings, discards
+V Ecosim CSV output: "landings" not appened to file name
+  Sometimes biomass plot stay empty when re-running MC? 
+> Output MC results per group variable for all trials
+  Old MC: was there a link between output saving and the selected group in MC? Check EwE 6.5 code
+  MC: index out of range in Ecosim for larger models?
+V MC: blocked QB variables still perturbed; should check QBinput and not include GS into IsVariable assessment
+  Tools icon in Nav tree does not have transparent background
+  Ecosampler: record sum of squares with each sample
   
-? Consider hiding Catchability additions from Beta, including new "Use effort dynamics" flag from Ecospace parameters
-	 - Use effort dynamics flag prevents users from resetting effort and Fitting
+? Consider hiding Catchability grid from EwE 6.6 Beta
 
 --- EwE Barcelona course issues ---
-V Ecopath does not save on ??
 V Pedigree issues: remove ability to add custom CVs in pedigree: that was a bad idea
 V Catchabilities column too small
 V Run Ecosim: cannot highlight last group
   ENA: After clicking around a lot, MTI table (and others) stop appearing. The wait cursor is spinning, and the status bar is saying "executing plug-in".
 V Time series shapes grid should not allow editing of points, type, but should be able to edit weight and name
   Add multi-item delete/keep toggle in 'Define' dialogs (group, fleets, habitats, mpas, env driver layers, importance layers)
-  Remove importance layers from Ecospace maps UI; MPA opt only
 V Policy Optimization does not run; boolean MPA maps stop the system
-  Stepwise Fitting: allow stopping!
+V Stepwise Fitting: allow stopping! Issue with Application status feedback; forgets that Stop issue is set
+V Stepwise Fitting: window too heigh for low-res monitors
+  
+--- EwE Faro course issues ---
+  Start page empty for most machines: IE compatibility flag not set in installer?
+V Copy/paste group names does not work
+V Tutorial 1: "Edit Fleets" vs "Define Fleets"
+V Tutorial 1: Move stanza setup info to earlier on in the exercise text
+V Tutorial 1: Add temperature 10C
+V Tutorial 1: Parameterization > Ecopath Output
+? Define multi-stanza: vbK = -9999 validation failure warning popup. Provide default instead!
+V Define multi-stanza: extend labels to leading (B), leading (QB)
+V Exercise 2f/2d, cycles: no error feedback when cannot estimate?
+   - I brought back missing parameter status feedback in the UI, and made sure silenced Ecopath messages are sent out after the run
+V Add custom currency unit
+V Validation status error message should explain why validation fails
+V Ecopath output value: Add units to fleet columns
+  Group info: use cUnit in headers, remove from label resources
+  >> JOE Ecopath params: Remove "Ecospace coupled to external model" checkbox?
+  Read only models: do not allow users to create/delete items
+  Ecosim FD sometimes does not animate on Macs? Try running sim, opening, closing disgram, in various ways. Perhaps timer is not properly released? Slider works
+  Fit to time series does not open up on Macs?
+  Fit to time series anomaly search panel does not extent all the way to the right on some models
+V Clear "N. spline points" in Fit2TS.NudUpDown, run: Exception unable to convert empty string to integer
+  On some monitors Tools > Options does not stretch all the way to the right
+  Import TS type 2 (environmental forcing, which translates to a FF): should be able to leave pool code field empty
+  Import TS type 2 should overwrite any function with the same name!
+  Apply functional response > Define shape > OK does not update shape data in dlg
+  
+--- No issues / need further work or clarification ---
+? Effort dynamics flag overrides effort/F sketching by using economic evaluation only
