@@ -110,6 +110,8 @@ Public Class frmSamples
 
     Protected Overrides Sub UpdateControls()
 
+        If (Me.UIContext Is Nothing) Then Return
+
         MyBase.UpdateControls()
 
         Dim man As cEcopathSampleManager = Me.Core.SampleManager

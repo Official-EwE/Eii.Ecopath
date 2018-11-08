@@ -20,12 +20,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Text
+Imports EwECore
 Imports EwECore.Samples
 Imports EwECore.Style
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -41,6 +39,7 @@ Public Class gridSamples
     Private Enum eColumnTypes As Integer
         Index
         Loaded
+        SS
         NumInvalidEE
 #If ShowPerturbations Then
         Perturbed
@@ -66,6 +65,7 @@ Public Class gridSamples
         ' ToDo: globalize this
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
         Me(0, eColumnTypes.Loaded) = New EwEColumnHeaderCell(My.Resources.HEADER_LOADED)
+        Me(0, eColumnTypes.SS) = New EwEColumnHeaderCell("SS")
         Me(0, eColumnTypes.NumInvalidEE) = New EwEColumnHeaderCell(My.Resources.HEADER_NUM_INVALID_EE)
 #If ShowPerturbations Then
         Me(0, eColumnTypes.Perturbed) = New EwEColumnHeaderCell(My.Resources.HEADER_PERTURBED)
@@ -100,6 +100,10 @@ Public Class gridSamples
 
             Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, s, eVarNameFlags.Index)
             Me(iRow, eColumnTypes.Loaded) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
+
+            cell = New EwECell(s.SS, cStyleGuide.eStyleFlags.NotEditable)
+            cell.SuppressZero(cCore.NULL_VALUE) = True
+            Me(iRow, eColumnTypes.SS) = cell
 
             cell = New EwECell(s.NumInvalidEE, cStyleGuide.eStyleFlags.NotEditable)
             cell.SuppressZero(0) = True
