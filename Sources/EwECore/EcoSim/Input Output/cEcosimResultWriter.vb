@@ -404,12 +404,6 @@ Namespace Ecosim
 
 
             Select Case outputtype
-                Case eResultTypes.Biomass
-                    strFileName = "biomass"
-                Case eResultTypes.Mortality
-                    strFileName = "mortality"
-                Case eResultTypes.Catch
-                    strFileName = "catch"
                 Case eResultTypes.ConsumptionBiomass
                     strFileName = "consumption-biomass"
                 Case eResultTypes.FeedingTime
@@ -420,31 +414,19 @@ Namespace Ecosim
                     strFileName = "predation_" & strGroupName
                 Case eResultTypes.Prey
                     strFileName = "prey_" & strGroupName
-                Case eResultTypes.TL
-                    strFileName = "tl"
-                Case eResultTypes.Value
-                    strFileName = "value"
-                Case eResultTypes.FIB
-                    strFileName = "fib"
-                Case eResultTypes.KemptonsQ
-                    strFileName = "kemptonsq"
-                Case eResultTypes.ShannonDiversity
-                    strFileName = "shannondiversity"
-                Case eResultTypes.TLC
-                    strFileName = "tlc"
-                Case eResultTypes.TotalCatch
-                    strFileName = "totalcatch"
                 Case eResultTypes.CatchFleetGroup
                     strFileName = "catch-fleet-group"
                 Case eResultTypes.MortFleetGroup
                     strFileName = "mort-fleet-group"
                 Case eResultTypes.ValueFleetGroup
                     strFileName = "value-fleet-group"
+                Case Else
+                    strFileName = outputtype.ToString()
             End Select
 
             strFileName = strFileName & "_" & If(bSaveAnnual, "annual", "monthly")
 
-            Dim strFullPath As String = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt)
+            Dim strFullPath As String = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False) & strExt).ToLower()
             If Not EwEUtils.Utilities.cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFullPath), True) Then Return ""
             Return strFullPath
 
