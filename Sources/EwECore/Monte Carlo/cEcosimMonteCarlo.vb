@@ -391,7 +391,7 @@ Public Class cEcosimMonteCarlo
             Me.m_isVariableItem(iGrp, eMCParams.BA) = (Me.m_epdata.BAInput(iGrp) <> 0) ' Can vary BA on estimated biomasses!
             Me.m_isVariableItem(iGrp, eMCParams.BaBi) = (Me.m_epdata.BaBi(iGrp) <> 0)
             Me.m_isVariableItem(iGrp, eMCParams.PB) = Not Me.m_ecopath.missing(iGrp, 2)
-            Me.m_isVariableItem(iGrp, eMCParams.QB) = Not (Me.m_ecopath.missing(iGrp, 3) Or Me.isStanzaGroupVariable(iGrp, eMCParams.QB))
+            Me.m_isVariableItem(iGrp, eMCParams.QB) = (Me.m_epdata.QBinput(iGrp) > 0) And (Not Me.isStanzaGroupVariable(iGrp, eMCParams.QB))
             Me.m_isVariableItem(iGrp, eMCParams.EE) = (Not Me.m_ecopath.missing(iGrp, 4)) And (iGrp <= Me.m_epdata.NumLiving)
 
         Next

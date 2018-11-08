@@ -109,6 +109,11 @@ Namespace Samples
         Public Property Source As String = ""
 
         ''' <summary>
+        ''' Sum of squares for the sample. 
+        ''' </summary>
+        Public Property SS As Single = cCore.NULL_VALUE
+
+        ''' <summary>
         ''' Returns the number of EE values that exceed 1
         ''' </summary>
         ''' <returns></returns>
