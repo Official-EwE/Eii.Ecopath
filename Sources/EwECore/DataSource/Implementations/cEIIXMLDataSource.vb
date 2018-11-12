@@ -3165,7 +3165,7 @@ Public Class cEIIXMLDataSource
 
 #Region " Taxon "
 
-    Public Function AddTaxon(iTargetDBID As Integer, bIsStanza As Boolean, data As ITaxonSearchData, sProportion As Single, ByRef iDBID As Integer) As Boolean _
+    Public Function AddTaxon(iTargetDBID As Integer, bIsStanza As Boolean, data As ITaxonSearchData, sPropB As Single, sPropC As Single, ByRef iDBID As Integer) As Boolean _
         Implements DataSources.IEcopathDataSource.AddTaxon
         Return False
     End Function

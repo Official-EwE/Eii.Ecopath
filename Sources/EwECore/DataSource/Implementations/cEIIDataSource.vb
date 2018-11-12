@@ -699,7 +699,7 @@ Public Class cEIIDataSource
 
 #Region " Taxon "
 
-    Public Function AddTaxon(ByVal iTargetDBID As Integer, ByVal bIsStanza As Boolean, ByVal data As ITaxonSearchData, ByVal sProportion As Single, ByRef iDBID As Integer) As Boolean _
+    Public Function AddTaxon(iTargetDBID As Integer, bIsStanza As Boolean, data As ITaxonSearchData, sPropB As Single, sPropC As Single, ByRef iDBID As Integer) As Boolean _
         Implements DataSources.IEcopathDataSource.AddTaxon
         Return False
     End Function

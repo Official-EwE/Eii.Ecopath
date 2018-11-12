@@ -243,9 +243,9 @@ Public Class cEcopathModelFromEcosim
         For iTaxon As Integer = 1 To Me.m_core.nTaxon
             Dim iIDNew As Integer = 0
             If taxonSrc.IsTaxonStanza(iTaxon) Then
-                bSuccess = bSuccess And coreNew.AddTaxon(taxonSrc.TaxonTarget(iTaxon), True, Nothing, 1, iIDNew)
+                bSuccess = bSuccess And coreNew.AddTaxon(taxonSrc.TaxonTarget(iTaxon), True, Nothing, 1, 1, iIDNew)
             Else
-                bSuccess = bSuccess And coreNew.AddTaxon(taxonSrc.TaxonTarget(iTaxon), False, Nothing, taxonSrc.TaxonPropBiomass(iTaxon), iIDNew)
+                bSuccess = bSuccess And coreNew.AddTaxon(taxonSrc.TaxonTarget(iTaxon), False, Nothing, taxonSrc.TaxonPropBiomass(iTaxon), taxonSrc.TaxonPropCatch(iTaxon), iIDNew)
             End If
             aiTaxonID(iTaxon) = iIDNew
         Next

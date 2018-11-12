@@ -4532,13 +4532,15 @@ Public Class cCore
     ''' stanza (true) or a group (false).</param>
     ''' <param name="data">Taxonomy data to add.</param>
     ''' <param name="sPropBiomass">Proportion that this taxonomy contributes to the biomass of the group.</param>
+    ''' <param name="sPropCatch">Proportion that this taxonomy contributes to the catch of the group.</param>
     ''' <param name="iDBID">Database ID for the new taxonomy definition.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddTaxon(ByVal iTarget As Integer,
-                             ByVal bIsStanza As Boolean,
-                             ByVal data As ITaxonSearchData,
-                             ByVal sPropBiomass As Single,
+    Public Function AddTaxon(iTarget As Integer,
+                             bIsStanza As Boolean,
+                             data As ITaxonSearchData,
+                             sPropBiomass As Single,
+                             sPropCatch As Single,
                              ByRef iDBID As Integer) As Boolean
 
         Dim bSucces As Boolean = False
@@ -4558,7 +4560,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ' Start the actual work. The data source will ensure the new fleet will be added througout models and scenarios
-        If (DirectCast(DataSource, IEcopathDataSource).AddTaxon(iTargetDBID, bIsStanza, data, sPropBiomass, iDBID)) Then
+        If (DirectCast(DataSource, IEcopathDataSource).AddTaxon(iTargetDBID, bIsStanza, data, sPropBiomass, sPropCatch, iDBID)) Then
             Me.DataAddedOrRemovedMessage("Ecopath number of taxa has changed.", eCoreComponentType.EcoPath, eDataTypes.Taxon)
             bSucces = True
         End If

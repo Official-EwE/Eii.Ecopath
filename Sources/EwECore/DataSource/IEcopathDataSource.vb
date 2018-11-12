@@ -271,14 +271,16 @@ Namespace DataSources
         ''' <param name="bIsStanza">Flag stating whether the <paramref name="iTargetDBID"/>
         ''' is a stanza (true) or a group (false).</param>
         ''' <param name="data">Data to populate taxonomy definition with. This data can be NULL.</param>
-        ''' <param name="sProportion">Proportion this taxon contributes to the group.</param>
+        ''' <param name="sPropB">Proportion this taxon contributes to the group biomass.</param>
+        ''' <param name="sPropC">Proportion this taxon contributes to the group catch.</param>
         ''' <param name="iDBID">Database ID assigned to the new taxon.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddTaxon(ByVal iTargetDBID As Integer, _
-                          ByVal bIsStanza As Boolean, _
-                          ByVal data As ITaxonSearchData, _
-                          ByVal sProportion As Single, _
+        Function AddTaxon(iTargetDBID As Integer,
+                          bIsStanza As Boolean,
+                          data As ITaxonSearchData,
+                          sPropB As Single,
+                          sPropC As Single,
                           ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
