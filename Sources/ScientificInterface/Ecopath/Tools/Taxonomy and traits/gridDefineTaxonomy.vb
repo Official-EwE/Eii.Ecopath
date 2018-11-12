@@ -128,7 +128,7 @@ Public Class gridDefineTaxonomy
             Me.TaxonIndex = taxon.Index
             Me.iGroup = taxon.iGroup
             Me.iStanza = taxon.iStanza
-            Me.Proportion = taxon.Proportion
+            Me.PropB = taxon.Proportion
             Me.CodeSAUP = taxon.CodeSAUP
             Me.CodeFB = taxon.CodeFishBase
             Me.CodeSLB = taxon.CodeSeaLifeBase
@@ -363,7 +363,7 @@ Public Class gridDefineTaxonomy
 
                 Debug.Assert(CInt(taxon.GetVariable(eVarNameFlags.DBID)) = Me.TaxonID)
 
-                If (Math.Round(taxon.Proportion, 5) <> Math.Round(Me.Proportion, 5)) Then Return True
+                If (Math.Round(taxon.Proportion, 5) <> Math.Round(Me.PropB, 5)) Then Return True
                 If (taxon.iGroup <> Me.iGroup) Then Return True
                 If (taxon.iStanza <> Me.iStanza) Then Return True
                 If (taxon.CodeSAUP <> Me.CodeSAUP) Then Return True
@@ -428,10 +428,10 @@ Public Class gridDefineTaxonomy
             If (obj Is Nothing) Then Return False
             If (TypeOf obj Is ITaxonSearchData) Then
                 Dim t As ITaxonSearchData = DirectCast(obj, ITaxonSearchData)
-                Return (t.CodeSAUP > 0 And t.CodeSAUP = Me.CodeSAUP) Or _
-                       (t.CodeFB > 0 And t.CodeFB = Me.CodeFB) Or _
-                       (t.CodeSLB > 0 And t.CodeSLB = Me.CodeSLB) Or _
-                       (Not String.IsNullOrWhiteSpace(t.CodeLSID) And String.Compare(t.CodeLSID, Me.CodeLSID, True) = 0) Or _
+                Return (t.CodeSAUP > 0 And t.CodeSAUP = Me.CodeSAUP) Or
+                       (t.CodeFB > 0 And t.CodeFB = Me.CodeFB) Or
+                       (t.CodeSLB > 0 And t.CodeSLB = Me.CodeSLB) Or
+                       (Not String.IsNullOrWhiteSpace(t.CodeLSID) And String.Compare(t.CodeLSID, Me.CodeLSID, True) = 0) Or
                        (Not String.IsNullOrWhiteSpace(t.CodeFAO) And String.Compare(t.CodeFAO, Me.CodeFAO, True) = 0)
             End If
             Return MyBase.Equals(obj)
@@ -456,7 +456,7 @@ Public Class gridDefineTaxonomy
         ''' Get/set the group/stanza biomass proportion for this taxon.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Proportion() As Single = 1.0!
+        Public Property PropB() As Single = 1.0!
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -472,7 +472,7 @@ Public Class gridDefineTaxonomy
                     .Name = Me.Common
                     .iGroup = Me.iGroup
                     .iStanza = Me.iStanza
-                    .Proportion = Me.Proportion
+                    .Proportion = Me.PropB
                     .CodeSAUP = Me.CodeSAUP
                     .CodeFishBase = Me.CodeFB
                     .CodeSeaLifeBase = Me.CodeSLB
@@ -551,7 +551,7 @@ Public Class gridDefineTaxonomy
 
         Me.Selection.EnableMultiSelection = False
 
-        Dim iNumCols As Integer = CInt(if(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Status + 1))
+        Dim iNumCols As Integer = CInt(If(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Status + 1))
 
         ' Redim columns
         Me.Redim(1, iNumCols)
@@ -722,7 +722,7 @@ Public Class gridDefineTaxonomy
         Me(iRow, eColumnTypes.Family).Value = ti.Family
         Me(iRow, eColumnTypes.Genus).Value = ti.Genus
         Me(iRow, eColumnTypes.Species).Value = ti.Species
-        Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
+        Me(iRow, eColumnTypes.Proportion).Value = ti.PropB
 
         If (Me.m_bShowCodes) Then
             Me(iRow, eColumnTypes.CodeSAUP).Value = ti.CodeSAUP
@@ -771,7 +771,7 @@ Public Class gridDefineTaxonomy
         Me(iRow, eColumnTypes.Class).Behaviors.Add(Me.EwEEditHandler)
         Me(iRow, eColumnTypes.Phylum) = New EwECell(ti.Phylum, GetType(String))
         Me(iRow, eColumnTypes.Phylum).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.Proportion) = New EwECell(ti.Proportion, GetType(Single))
+        Me(iRow, eColumnTypes.Proportion) = New EwECell(ti.PropB, GetType(Single))
         Me(iRow, eColumnTypes.Proportion).Behaviors.Add(Me.EwEEditHandler)
         Me(iRow, eColumnTypes.Status) = New EwEStatusCell(eItemStatusTypes.Original)
 
@@ -816,7 +816,7 @@ Public Class gridDefineTaxonomy
         For iRow As Integer = 1 To Me.RowsCount - 1
             Dim ti As cTaxonInfo = Me.TaxonInfo(iRow)
             If ti IsNot Nothing Then
-                Me(iRow, eColumnTypes.Proportion).Value = ti.Proportion
+                Me(iRow, eColumnTypes.Proportion).Value = ti.PropB
             End If
         Next
     End Sub
@@ -850,7 +850,7 @@ Public Class gridDefineTaxonomy
             Case eColumnTypes.Genus : ti.Genus = CStr(val)
             Case eColumnTypes.Species : ti.Species = CStr(val)
             Case eColumnTypes.Phylum : ti.Phylum = CStr(val)
-            Case eColumnTypes.Proportion : ti.Proportion = CSng(val)
+            Case eColumnTypes.Proportion : ti.PropB = CSng(val)
                 'Case eColumnTypes.Code : ti.CodeTaxon = CStr(val)
             Case eColumnTypes.CodeFB : ti.CodeFB = CLng(val)
             Case eColumnTypes.CodeSLB : ti.CodeSLB = CLng(val)
@@ -1177,7 +1177,7 @@ Public Class gridDefineTaxonomy
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function IsSearchTerm(ByVal taxon As ITaxonSearchData) As Boolean
-        Return (ReferenceEquals(taxon, Me.m_tiSearch)) And _
+        Return (ReferenceEquals(taxon, Me.m_tiSearch)) And
                (ReferenceEquals(Me.SelectedTaxon, Me.m_tiSearchLinked))
     End Function
 
@@ -1199,10 +1199,10 @@ Public Class gridDefineTaxonomy
             ti = Me.m_lTaxonInfo(iTaxon)
             If (ti.Status <> eItemStatusTypes.Removed) Then
                 If ti.iStanza > 0 Then
-                    asTotalTaxon(ti.iStanza) += ti.Proportion
+                    asTotalTaxon(ti.iStanza) += ti.PropB
                     aiTotalTaxon(ti.iStanza) += 1
                 Else
-                    asTotalGroup(ti.iGroup) += ti.Proportion
+                    asTotalGroup(ti.iGroup) += ti.PropB
                     aiTotalGroup(ti.iGroup) += 1
                 End If
             End If
@@ -1215,17 +1215,17 @@ Public Class gridDefineTaxonomy
                     ' Has a total of 0?
                     If (asTotalTaxon(ti.iStanza) = 0.0!) Then
                         ' #Yes: redistribute values
-                        ti.Proportion = 1.0! / aiTotalTaxon(ti.iStanza)
+                        ti.PropB = 1.0! / aiTotalTaxon(ti.iStanza)
                     Else
-                        ti.Proportion = ti.Proportion / asTotalTaxon(ti.iStanza)
+                        ti.PropB = ti.PropB / asTotalTaxon(ti.iStanza)
                     End If
                 Else
                     ' Has a total of 0?
                     If (asTotalGroup(ti.iGroup) = 0.0!) Then
                         ' #Yes: redistribute values
-                        ti.Proportion = 1.0! / aiTotalGroup(ti.iGroup)
+                        ti.PropB = 1.0! / aiTotalGroup(ti.iGroup)
                     Else
-                        ti.Proportion = ti.Proportion / asTotalGroup(ti.iGroup)
+                        ti.PropB = ti.PropB / asTotalGroup(ti.iGroup)
                     End If
                 End If
             End If
@@ -1293,7 +1293,7 @@ Public Class gridDefineTaxonomy
                 For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
                     ti = Me.m_lTaxonInfo(iTaxon)
                     If (ti.IsNew) Then
-                        bSuccess = bSuccess And Me.Core.AddTaxon(Math.Max(ti.iGroup, ti.iStanza), (ti.iStanza > 0), ti, ti.Proportion, iDBID)
+                        bSuccess = bSuccess And Me.Core.AddTaxon(Math.Max(ti.iGroup, ti.iStanza), (ti.iStanza > 0), ti, ti.PropB, ti.PropCatch, iDBID)
                         ' Map this new ID during update
                         htTaxonID.Add(ti, iDBID)
                     End If
