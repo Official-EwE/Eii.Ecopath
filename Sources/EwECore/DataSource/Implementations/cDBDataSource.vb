@@ -3405,7 +3405,8 @@ Namespace DataSources
         Public Function AddTaxon(ByVal iTargetDBID As Integer,
                                  ByVal bIsStanza As Boolean,
                                  ByVal data As ITaxonSearchData,
-                                 ByVal sProportion As Single,
+                                 ByVal sPropB As Single,
+                                 ByVal sPropC As Single,
                                  ByRef iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.AddTaxon
 
@@ -3483,8 +3484,8 @@ Namespace DataSources
                     drow = writer.NewRow()
                     drow("TaxonID") = iDBID
                     drow("EcopathGroupID") = iTargetDBID
-                    drow("Proportion") = sProportion
-                    drow("PropCatch") = sProportion
+                    drow("Proportion") = sPropB
+                    drow("PropCatch") = sPropC
                     writer.AddRow(drow)
                     bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
                 Else
