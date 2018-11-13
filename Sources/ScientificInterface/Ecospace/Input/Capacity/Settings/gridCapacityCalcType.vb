@@ -54,23 +54,6 @@ Namespace Ecospace
         Private m_lProps As New List(Of cProperty)
         Private m_bInUpdate As Boolean = False
 
-        Public Sub SetAllCalcTypes(type As eEcospaceCapacityCalType, bSet As Boolean)
-
-            For iGroup As Integer = 1 To Core.nGroups
-                Dim group As cEcospaceGroupInput = Core.EcospaceGroupInputs(iGroup)
-                Select Case type
-                    Case eEcospaceCapacityCalType.Input : group.CapacityCalculationType = eEcospaceCapacityCalType.Input
-                    Case Else
-                        If bSet Then
-                            group.CapacityCalculationType = group.CapacityCalculationType Or type
-                        Else
-                            group.CapacityCalculationType = group.CapacityCalculationType And Not type
-                        End If
-                End Select
-            Next
-
-        End Sub
-
 #Region " Overrides "
 
         Private m_mhLayers As cMessageHandler = Nothing
@@ -222,6 +205,7 @@ Namespace Ecospace
 
                 Dim img As Image = Nothing
                 Dim layer As cEcospaceLayerHabitatCapacity = Me.Core.EcospaceBasemap.LayerHabitatCapacityInput(iGroup)
+                layer.Invalidate()
 
                 Select Case layer.MeanValue
                     Case cCore.NULL_VALUE, 0
