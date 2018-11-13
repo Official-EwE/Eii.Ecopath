@@ -181,6 +181,7 @@ Public Class frmMain
         Me.m_cbRunWithEcospace.Checked = My.Settings.RunWithEcospace
         Me.m_cbRunWithMC.Checked = My.Settings.RunWithMC
         Me.m_cbPlotAtEnd.Checked = My.Settings.PlotAtEnd
+        Me.m_sliderNoBins.Value = My.Settings.NunHistBins
 
         If (My.Settings.SaveToDefault) Then
             Me.m_rbDefault.Checked = True
@@ -311,6 +312,8 @@ Public Class frmMain
         Me.m_tpEcospace.ImageIndex = If(My.Settings.RunWithEcospace, 1, 0)
         Me.m_tpMCpath.ImageIndex = If(My.Settings.RunWithMC, 1, 0)
         Me.m_tpMCsim.ImageIndex = If(My.Settings.RunWithMC, 1, 0)
+
+        Me.m_tbxHistNoBins.Text = CStr(Me.m_mcgraphPath.NumBins)
 
     End Sub
 
@@ -508,6 +511,22 @@ Public Class frmMain
         Catch ex As Exception
 
         End Try
+    End Sub
+
+    Private Sub OnSliderNoBins(sender As Object, e As EventArgs) Handles m_sliderNoBins.ValueChanged
+        Try
+            If (Me.m_settings Is Nothing) Then Return
+            If (Me.m_mcgraphPath Is Nothing) Then Return
+
+            Me.m_mcgraphPath.NumBins = CInt(Me.m_sliderNoBins.Value)
+
+            Me.UpdateControls()
+            My.Settings.NunHistBins = Me.m_mcgraphPath.NumBins
+            My.Settings.Save()
+        Catch ex As Exception
+
+        End Try
+
     End Sub
 
 #End Region ' Events

@@ -53,8 +53,8 @@ Partial Class frmMain
         Me.m_plCredits = New System.Windows.Forms.Panel()
         Me.m_tlpCredits = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbIRD = New System.Windows.Forms.PictureBox()
-        Me.m_pbCSIC = New System.Windows.Forms.PictureBox()
         Me.m_pbEII = New System.Windows.Forms.PictureBox()
+        Me.m_pbCSIC = New System.Windows.Forms.PictureBox()
         Me.m_btnChangeDefault = New System.Windows.Forms.Button()
         Me.m_btnChooseFolder = New System.Windows.Forms.Button()
         Me.m_tbxDefaultLocation = New System.Windows.Forms.TextBox()
@@ -79,6 +79,10 @@ Partial Class frmMain
         Me.m_pbEcospaceMap = New System.Windows.Forms.PictureBox()
         Me.m_tpMCpath = New System.Windows.Forms.TabPage()
         Me.m_graphMCpath = New ZedGraph.ZedGraphControl()
+        Me.m_tlpHistSettings = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_sliderNoBins = New ScientificInterfaceShared.Controls.ucSlider()
+        Me.m_lblHistNoBins = New System.Windows.Forms.Label()
+        Me.m_tbxHistNoBins = New System.Windows.Forms.TextBox()
         Me.m_tpMCsim = New System.Windows.Forms.TabPage()
         Me.m_graphMCsim = New ZedGraph.ZedGraphControl()
         Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
@@ -93,13 +97,14 @@ Partial Class frmMain
         Me.m_plCredits.SuspendLayout()
         Me.m_tlpCredits.SuspendLayout()
         CType(Me.m_pbIRD, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_pbCSIC, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbCSIC, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpEcopath.SuspendLayout()
         Me.m_tpEcosim.SuspendLayout()
         Me.m_tpEcospace.SuspendLayout()
         CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tpMCpath.SuspendLayout()
+        Me.m_tlpHistSettings.SuspendLayout()
         Me.m_tpMCsim.SuspendLayout()
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -125,6 +130,7 @@ Partial Class frmMain
         Me.m_tvIndicators.HideSelection = False
         Me.m_tvIndicators.HotTracking = True
         Me.m_tvIndicators.Name = "m_tvIndicators"
+        Me.m_tvIndicators.ShowImages = True
         Me.m_tvIndicators.ShowLines = False
         '
         'm_tcOutput
@@ -190,14 +196,6 @@ Partial Class frmMain
         Me.m_pbIRD.Name = "m_pbIRD"
         Me.m_pbIRD.TabStop = False
         '
-        'm_pbCSIC
-        '
-        Me.m_pbCSIC.BackgroundImage = Global.EwEEcologicalIndicatorsPlugin.My.Resources.Resources.csic
-        resources.ApplyResources(Me.m_pbCSIC, "m_pbCSIC")
-        Me.m_pbCSIC.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.m_pbCSIC.Name = "m_pbCSIC"
-        Me.m_pbCSIC.TabStop = False
-        '
         'm_pbEII
         '
         Me.m_pbEII.BackgroundImage = Global.EwEEcologicalIndicatorsPlugin.My.Resources.Resources.eii
@@ -205,6 +203,14 @@ Partial Class frmMain
         Me.m_pbEII.Cursor = System.Windows.Forms.Cursors.Hand
         Me.m_pbEII.Name = "m_pbEII"
         Me.m_pbEII.TabStop = False
+        '
+        'm_pbCSIC
+        '
+        Me.m_pbCSIC.BackgroundImage = Global.EwEEcologicalIndicatorsPlugin.My.Resources.Resources.csic
+        resources.ApplyResources(Me.m_pbCSIC, "m_pbCSIC")
+        Me.m_pbCSIC.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.m_pbCSIC.Name = "m_pbCSIC"
+        Me.m_pbCSIC.TabStop = False
         '
         'm_btnChangeDefault
         '
@@ -322,7 +328,7 @@ Partial Class frmMain
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
         Me.m_grid.DataName = "grid content"
-        Me.m_grid.FixedColumnWidths = False
+        Me.m_grid.FixedColumnWidths = True
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.IsLayoutSuspended = False
@@ -387,6 +393,7 @@ Partial Class frmMain
         'm_tpMCpath
         '
         Me.m_tpMCpath.Controls.Add(Me.m_graphMCpath)
+        Me.m_tpMCpath.Controls.Add(Me.m_tlpHistSettings)
         resources.ApplyResources(Me.m_tpMCpath, "m_tpMCpath")
         Me.m_tpMCpath.Name = "m_tpMCpath"
         Me.m_tpMCpath.UseVisualStyleBackColor = True
@@ -402,6 +409,35 @@ Partial Class frmMain
         Me.m_graphMCpath.ScrollMinX = 0R
         Me.m_graphMCpath.ScrollMinY = 0R
         Me.m_graphMCpath.ScrollMinY2 = 0R
+        '
+        'm_tlpHistSettings
+        '
+        Me.m_tlpHistSettings.BackColor = System.Drawing.SystemColors.Control
+        resources.ApplyResources(Me.m_tlpHistSettings, "m_tlpHistSettings")
+        Me.m_tlpHistSettings.Controls.Add(Me.m_sliderNoBins, 1, 0)
+        Me.m_tlpHistSettings.Controls.Add(Me.m_lblHistNoBins, 0, 0)
+        Me.m_tlpHistSettings.Controls.Add(Me.m_tbxHistNoBins, 2, 0)
+        Me.m_tlpHistSettings.Name = "m_tlpHistSettings"
+        '
+        'm_sliderNoBins
+        '
+        resources.ApplyResources(Me.m_sliderNoBins, "m_sliderNoBins")
+        Me.m_sliderNoBins.CurrentKnob = 0
+        Me.m_sliderNoBins.Maximum = 100
+        Me.m_sliderNoBins.Minimum = 10
+        Me.m_sliderNoBins.Name = "m_sliderNoBins"
+        Me.m_sliderNoBins.NumKnobs = 1
+        '
+        'm_lblHistNoBins
+        '
+        resources.ApplyResources(Me.m_lblHistNoBins, "m_lblHistNoBins")
+        Me.m_lblHistNoBins.Name = "m_lblHistNoBins"
+        '
+        'm_tbxHistNoBins
+        '
+        resources.ApplyResources(Me.m_tbxHistNoBins, "m_tbxHistNoBins")
+        Me.m_tbxHistNoBins.Name = "m_tbxHistNoBins"
+        Me.m_tbxHistNoBins.ReadOnly = True
         '
         'm_tpMCsim
         '
@@ -464,14 +500,16 @@ Partial Class frmMain
         Me.m_plCredits.ResumeLayout(False)
         Me.m_tlpCredits.ResumeLayout(False)
         CType(Me.m_pbIRD, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_pbCSIC, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_pbEII, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbCSIC, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpEcopath.ResumeLayout(False)
         Me.m_tpEcopath.PerformLayout()
         Me.m_tpEcosim.ResumeLayout(False)
         Me.m_tpEcospace.ResumeLayout(False)
         CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpMCpath.ResumeLayout(False)
+        Me.m_tlpHistSettings.ResumeLayout(False)
+        Me.m_tlpHistSettings.PerformLayout()
         Me.m_tpMCsim.ResumeLayout(False)
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
@@ -516,4 +554,8 @@ Partial Class frmMain
     Private WithEvents m_tpMCpath As System.Windows.Forms.TabPage
     Private WithEvents m_graphMCpath As ZedGraph.ZedGraphControl
     Private WithEvents m_cbPlotAtEnd As System.Windows.Forms.CheckBox
+    Private WithEvents m_tlpHistSettings As Windows.Forms.TableLayoutPanel
+    Private WithEvents m_sliderNoBins As ScientificInterfaceShared.Controls.ucSlider
+    Private WithEvents m_lblHistNoBins As Windows.Forms.Label
+    Private WithEvents m_tbxHistNoBins As Windows.Forms.TextBox
 End Class

@@ -142,7 +142,7 @@
     <value>m_tvIndicators</value>
   </data>
   <data name="&gt;&gt;m_tvIndicators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.6.15734.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tvIndicators.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -766,7 +766,7 @@
     <value>m_hdrExport</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15734.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
@@ -799,7 +799,7 @@
     <value>m_hdrExecution</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15734.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
@@ -853,7 +853,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEEcologicalIndicatorsPlugin.gridEcopath, EwEEcologicalIndicatorsPlugin, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=04cd55d5998388f6</value>
+    <value>EwEEcologicalIndicatorsPlugin.gridEcopath, EwEEcologicalIndicatorsPlugin, Version=6.6.15734.0, Culture=neutral, PublicKeyToken=04cd55d5998388f6</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tpEcopath</value>
@@ -967,7 +967,7 @@
     <value>m_legend</value>
   </data>
   <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.6.15734.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
     <value>m_tpEcospace</value>
@@ -1036,7 +1036,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_graphMCpath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>541, 479</value>
+    <value>541, 455</value>
   </data>
   <data name="m_graphMCpath.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1052,6 +1052,123 @@
   </data>
   <data name="&gt;&gt;m_graphMCpath.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_tlpHistSettings.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_sliderNoBins.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="m_sliderNoBins.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_sliderNoBins.Location" type="System.Drawing.Point, System.Drawing">
+    <value>90, 3</value>
+  </data>
+  <data name="m_sliderNoBins.Size" type="System.Drawing.Size, System.Drawing">
+    <value>398, 18</value>
+  </data>
+  <data name="m_sliderNoBins.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_sliderNoBins.Name" xml:space="preserve">
+    <value>m_sliderNoBins</value>
+  </data>
+  <data name="&gt;&gt;m_sliderNoBins.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.6.15734.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_sliderNoBins.Parent" xml:space="preserve">
+    <value>m_tlpHistSettings</value>
+  </data>
+  <data name="&gt;&gt;m_sliderNoBins.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lblHistNoBins.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblHistNoBins.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_lblHistNoBins.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="m_lblHistNoBins.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 24</value>
+  </data>
+  <data name="m_lblHistNoBins.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_lblHistNoBins.Text" xml:space="preserve">
+    <value>&amp;Number of bins:</value>
+  </data>
+  <data name="m_lblHistNoBins.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblHistNoBins.Name" xml:space="preserve">
+    <value>m_lblHistNoBins</value>
+  </data>
+  <data name="&gt;&gt;m_lblHistNoBins.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblHistNoBins.Parent" xml:space="preserve">
+    <value>m_tlpHistSettings</value>
+  </data>
+  <data name="&gt;&gt;m_lblHistNoBins.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbxHistNoBins.Location" type="System.Drawing.Point, System.Drawing">
+    <value>494, 0</value>
+  </data>
+  <data name="m_tbxHistNoBins.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 3, 0</value>
+  </data>
+  <data name="m_tbxHistNoBins.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 20</value>
+  </data>
+  <data name="m_tbxHistNoBins.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_tbxHistNoBins.Name" xml:space="preserve">
+    <value>m_tbxHistNoBins</value>
+  </data>
+  <data name="&gt;&gt;m_tbxHistNoBins.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxHistNoBins.Parent" xml:space="preserve">
+    <value>m_tlpHistSettings</value>
+  </data>
+  <data name="&gt;&gt;m_tbxHistNoBins.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tlpHistSettings.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="m_tlpHistSettings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 455</value>
+  </data>
+  <data name="m_tlpHistSettings.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tlpHistSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>541, 24</value>
+  </data>
+  <data name="m_tlpHistSettings.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_tlpHistSettings.Name" xml:space="preserve">
+    <value>m_tlpHistSettings</value>
+  </data>
+  <data name="&gt;&gt;m_tlpHistSettings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpHistSettings.Parent" xml:space="preserve">
+    <value>m_tpMCpath</value>
+  </data>
+  <data name="&gt;&gt;m_tlpHistSettings.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpHistSettings.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_sliderNoBins" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblHistNoBins" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxHistNoBins" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100,Absolute,50" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tpMCpath.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1273,7 +1390,7 @@
     <value>m_llStatus</value>
   </data>
   <data name="&gt;&gt;m_llStatus.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.6.15734.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_llStatus.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1306,6 +1423,6 @@
     <value>frmMain</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15734.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
