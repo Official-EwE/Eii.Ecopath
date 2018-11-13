@@ -82,9 +82,10 @@ Public Class cEwEEcologicalIndicatorsPlugin
     Friend m_indEcopath As cEcopathIndicators = Nothing
     ''' <summary>Indicators for each Ecosim time step.</summary>
     Friend m_lIndEcosim As List(Of cEcosimIndicators) = Nothing
-    ''' <summary>Indicators for each MC trial and time step.</summary>
-    Friend m_lIndMCsim As List(Of List(Of cMCIndicators)) = Nothing
+    ''' <summary>Indicators for MC histogram.</summary>
     Friend m_lIndMCpath As List(Of cEcopathIndicators)
+    ''' <summary>Indicators for MC over time.</summary>
+    Friend m_lIndMCsim As List(Of List(Of cMCIndicators)) = Nothing
 
     ''' <summary>Indicators for each Ecospace cell.</summary>
     Friend m_dtIndEcospace As Dictionary(Of Point, cEcospaceIndicators)
@@ -463,6 +464,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
         Dim ind As New cEcopathIndicators(Me.m_core, Me.m_ecopathDS, Me.m_stanzaDS, Me.m_taxonDS, Me.m_core.TaxonAnalysis)
         ind.Compute()
+
         Me.m_lIndMCpath.Add(ind)
 
     End Sub

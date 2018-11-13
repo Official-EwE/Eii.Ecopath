@@ -140,8 +140,6 @@ Public Class cMCHistogramGraphWrapper
             For iPane As Integer = 1 To Me.NumPanes
                 ' Get pane for indicator iInd
                 gp = Me.GetPane(iPane)
-                ' Prepare for determining axis range
-                sXMin = Single.MaxValue : sXMax = Single.MinValue
                 ' Prepare structures for creating point list for indicator
                 info = DirectCast(gp.Tag, cIndicatorInfo)
 
@@ -153,11 +151,8 @@ Public Class cMCHistogramGraphWrapper
                 'The X value in the histogram is the max value of the bin, right hand side of the bin
                 'So an input value of 1.0 will be in the .X = 1.0 bin
                 For ipt As Integer = 1 To hist.Length - 1
-                    ppl.Add(hist(ipt).X - sBinWidth, hist(ipt).Y)
-                    ppl.Add(hist(ipt).X, hist(ipt).Y)
-
-                    sXMin = Math.Min(sXMin, hist(ipt).X - sBinWidth)
-                    sXMax = Math.Max(sXMax, hist(ipt).X)
+                    ppl.Add(hist(ipt).X - sBinWidth / 2, hist(ipt).Y)
+                    ppl.Add(hist(ipt).X + sBinWidth / 2, hist(ipt).Y)
                 Next
 
                 Dim il As LineItem = Me.CreateLineItem(info.Name, eSketchDrawModeTypes.NotSet, Drawing.Color.RoyalBlue, ppl)
@@ -165,10 +160,10 @@ Public Class cMCHistogramGraphWrapper
 
                 gp.XAxis.Scale.MinAuto = False
                 gp.XAxis.Scale.MinGrace = 0
-                gp.XAxis.Scale.Min = sXMin
+                gp.XAxis.Scale.Min = hist(1).X - sBinWidth / 2
                 gp.XAxis.Scale.MaxAuto = False
                 gp.XAxis.Scale.MaxGrace = 0
-                gp.XAxis.Scale.Max = sXMax
+                gp.XAxis.Scale.Max = hist(hist.Length - 1).X + sBinWidth / 2
                 gp.AxisChange()
 
             Next iPane
@@ -184,10 +179,12 @@ Public Class cMCHistogramGraphWrapper
 
     Private Function Histogram(info As cIndicatorInfo, ByRef sBinWidth As Single) As Drawing.PointF()
 
-        Dim nBins As Integer = 100
-        Dim pts(nBins) As Drawing.PointF
+        ' ToDo: allow user to set number of bins 
 
         Dim nValues As Integer = Math.Max(1, Me.m_lind.Count)
+        Dim nBins As Integer = 50 ' Math.Min(100, CInt(Math.Ceiling(Math.Sqrt(nValues))))
+
+        Dim pts(nBins) As Drawing.PointF
 
         Dim sMin As Single = Single.MaxValue
         Dim sMax As Single = Single.MinValue
