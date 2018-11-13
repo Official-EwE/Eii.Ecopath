@@ -49,6 +49,8 @@ Public Class cMCHistogramGraphWrapper
     ''' <summary>Current indicator to display in the graph.</summary>
     Private m_indCurrent As cIndicatorInfo = Nothing
 
+    Private m_nBins As Integer = 100
+
 #End Region ' Private variables
 
 #Region " Attach + detach "
@@ -86,7 +88,21 @@ Public Class cMCHistogramGraphWrapper
 
 #Region " Refreshing "
 
+    Public Property NumBins As Integer
+        Get
+            Return Me.m_nBins
+        End Get
+        Set(value As Integer)
+            If (Me.m_settings Is Nothing) Then Return
+
+            Me.m_nBins = Math.Max(10, Math.Min(100, value))
+            Me.RefreshContent(Me.m_indCurrent, Me.m_groupCurrent)
+        End Set
+    End Property
+
     Public Sub RefreshContent(indSingle As cIndicatorInfo, indGroup As cIndicatorInfoGroup)
+
+        If (indSingle Is Nothing) And (indGroup Is Nothing) Then Return
 
         Dim lInfo As New List(Of cIndicatorInfo)
         Dim info As cIndicatorInfo = Nothing
@@ -102,17 +118,18 @@ Public Class cMCHistogramGraphWrapper
 
         If (indSingle Is Nothing) Then
             ' Group mode
-            If Not ReferenceEquals(indGroup, Me.m_groupCurrent) Then
-                For i As Integer = 0 To indGroup.NumIndicators - 1
-                    lInfo.Add(indGroup.Indicator(i))
-                Next
-            End If
+            Me.m_groupCurrent = indGroup
+            Me.m_indCurrent = Nothing
+
+            For i As Integer = 0 To indGroup.NumIndicators - 1
+                lInfo.Add(indGroup.Indicator(i))
+            Next
             strLabelPane = indGroup.Name
         Else
             ' Indicator mode
-            If Not ReferenceEquals(indSingle, Me.m_indCurrent) Then
-                lInfo.Add(indSingle)
-            End If
+            Me.m_groupCurrent = Nothing
+            Me.m_indCurrent = indSingle
+            lInfo.Add(indSingle)
             strLabelPane = indSingle.Name
         End If
 
@@ -179,12 +196,8 @@ Public Class cMCHistogramGraphWrapper
 
     Private Function Histogram(info As cIndicatorInfo, ByRef sBinWidth As Single) As Drawing.PointF()
 
-        ' ToDo: allow user to set number of bins 
-
         Dim nValues As Integer = Math.Max(1, Me.m_lind.Count)
-        Dim nBins As Integer = 50 ' Math.Min(100, CInt(Math.Ceiling(Math.Sqrt(nValues))))
-
-        Dim pts(nBins) As Drawing.PointF
+        Dim pts(Me.m_nBins) As Drawing.PointF
 
         Dim sMin As Single = Single.MaxValue
         Dim sMax As Single = Single.MinValue
@@ -202,21 +215,21 @@ Public Class cMCHistogramGraphWrapper
 
         Dim sRange As Single = sMax - sMin
         If (sRange > 0) Then
-            sBinWidth = sRange / nBins
+            sBinWidth = sRange / Me.m_nBins
         Else
             'No data in the map so just set a default binwidth 
             'this will dump all the data into the zero bin
-            sBinWidth = 1.0F / CSng(nBins)
+            sBinWidth = 1.0F / Me.m_nBins
         End If
 
         For Each ind As cEcopathIndicators In Me.m_lind
             Dim sVal As Single = info.GetValue(ind)
             Dim ipt As Integer = CInt(Math.Truncate((sVal - sMin) / sBinWidth)) + 1
-            ipt = Math.Max(1, Math.Min(nBins, ipt))
+            ipt = Math.Max(1, Math.Min(Me.m_nBins, ipt))
             pts(ipt).Y += 1
         Next
 
-        For i As Integer = 1 To nBins
+        For i As Integer = 1 To Me.m_nBins
             pts(i).X = CSng(sMin + sBinWidth * i)
             'pts(i).Y = pts(i).Y / nValues
         Next
