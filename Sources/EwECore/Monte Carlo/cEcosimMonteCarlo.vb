@@ -1109,7 +1109,7 @@ Public Class cEcosimMonteCarlo
 
                     If Me.IsEnabled(eMCParams.Landings) Then
                         For iflt As Integer = 1 To m_epdata.NumFleet
-                            If (Me.PMeanLanding(iflt, igrp) > 0) Then
+                            If (Me.PMeanLanding(iflt, igrp) > 0) And (Me.CVparLanding(iflt, igrp) > 0) Then
                                 Me.m_epdata.Landing(iflt, igrp) = ChooseFeasiblePar(eMCParams.Landings,
                                                                                     Me.PMeanLanding(iflt, igrp),
                                                                                     Me.CVparLanding(iflt, igrp),
@@ -1122,7 +1122,7 @@ Public Class cEcosimMonteCarlo
 
                     If Me.IsEnabled(eMCParams.Discards) Then
                         For iflt As Integer = 1 To m_epdata.NumFleet
-                            If (Me.PMeanDiscard(iflt, igrp) > 0) Then
+                            If (Me.PMeanDiscard(iflt, igrp) > 0) And (Me.CVparDiscard(iflt, igrp) > 0) Then
                                 Me.m_epdata.Discard(iflt, igrp) = ChooseFeasiblePar(eMCParams.Discards,
                                                                                     Me.PMeanDiscard(iflt, igrp),
                                                                                     Me.CVparDiscard(iflt, igrp),

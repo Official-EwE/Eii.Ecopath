@@ -71,9 +71,6 @@ Namespace Ecopath
         End Enum
 
         Private m_Data As cEcopathDataStructures
-        Private m_pluginManager As cPluginManager = Nothing
-        Private m_bSuppressMsgs As Boolean
-        Private m_eEstimType As eEstimateParameterFor
 
         Private DCNoCyc(,) As Single
         Private CycDC(,) As Single
@@ -114,7 +111,7 @@ Namespace Ecopath
         Friend m_psd As cPSDDatastructures
 
         Public Sub New(ByVal EcoFunctions As cEcoFunctions)
-            m_eEstimType = eEstimateParameterFor.ParameterEstimation
+            ParameterEstimationType = eEstimateParameterFor.ParameterEstimation
             m_Ecofunctions = EcoFunctions
             RunState = eEcopathRunState.NotRun
         End Sub
@@ -158,25 +155,10 @@ Namespace Ecopath
         ''' <returns></returns>
         ''' <remarks>This allows Ecopath to run in a 'Silent' mode</remarks>
         Public Property suppressMessages() As Boolean
-            Get
-                Return m_bSuppressMsgs
-            End Get
-            Set(ByVal value As Boolean)
-                m_bSuppressMsgs = value
-            End Set
-        End Property
-
 
         Public Property ParameterEstimationType() As eEstimateParameterFor
-            Get
-                Return m_eEstimType
-            End Get
-            Set(ByVal value As eEstimateParameterFor)
-                m_eEstimType = value
-            End Set
-        End Property
 
-
+        Public Property PluginManager() As cPluginManager
 
         ''' <summary>
         ''' Tell the core to send this message
@@ -191,7 +173,7 @@ Namespace Ecopath
                 'messages can be turned off be a user
                 'to speed up the running of the model as in the case of the Monte Carlo which run the model multiple times
                 'this puts the model into a 'silent' mode
-                If Not m_bSuppressMsgs Then
+                If Not suppressMessages Then
                     m_msgPub.SendMessage(msg)
                 End If
             Catch ex As Exception
@@ -284,7 +266,7 @@ Namespace Ecopath
                     Return False
                 End If
 
-                If m_eEstimType = eEstimateParameterFor.ParameterEstimation Then
+                If ParameterEstimationType = eEstimateParameterFor.ParameterEstimation Then
 
                     CheckDetritusFate()
                     checkForMissingDetritusBiomass()
@@ -294,49 +276,47 @@ Namespace Ecopath
                     CheckDiscardFateZero()
                     CheckQB()
 
-                    CalcNewExportCatch(0)
-                    Catch_calculations()
                 End If
 
+                CalcNewExportCatch(0)
+                Catch_calculations()
 
                 Dim bPluginFailed As Boolean = True
                 'Ask the plugin manager to try and do the mass balance 
                 'if it fails then run the default mass balance 
-                If Me.m_pluginManager IsNot Nothing Then
-                    If Me.m_pluginManager.MassBalance(m_Data, m_eEstimType, iParamsEstimated) Then
+                If Me.PluginManager IsNot Nothing Then
+                    If Me.PluginManager.MassBalance(m_Data, ParameterEstimationType, iParamsEstimated) Then
                         m_EstimStatus = DirectCast(iParamsEstimated, eStatusFlags)
                         bPluginFailed = False
                     End If
                 End If
 
                 If bPluginFailed Then
-                    Me.EstimateParameters(m_eEstimType, m_EstimStatus)
+                    Me.EstimateParameters(ParameterEstimationType, m_EstimStatus)
                 End If
 
                 If m_EstimStatus = eStatusFlags.OK Then
-                    If m_eEstimType = eEstimateParameterFor.ParameterEstimation Then
-                        'this code does not run for the sensitivty estimation
+                    'If ParameterEstimationType = eEstimateParameterFor.ParameterEstimation Then
+                    '    'this code does not run for the sensitivty estimation
+                    '    'JS 13Nov18: Ecological Indicators needs this code to run though. It does not hurt to calculate a few extra outputs, Ecopath is fast enough
 
-                        'parameters successfully estimated
-                        CalcTotalPrimProd()
-                        CheckIfEstimatesAreZero()
-                        EstimEEAgain()
-                        EstimateTrophicLevels(m_Data.NumGroups, m_Data.NumLiving, m_Data.PP, m_Data.DC, m_Data.TTLX)
-                        DetritusCalculations()
-                        Omniv(m_Data.DC, m_Data.TTLX, m_Data.BQB, m_Data.NumGroups)
-                        CalcNichePiankaPred()
-                        CalcNichePiankaPrey()
-                        Chesson()
+                    'parameters successfully estimated
+                    CalcTotalPrimProd()
+                    CheckIfEstimatesAreZero()
+                    EstimEEAgain()
+                    EstimateTrophicLevels(m_Data.NumGroups, m_Data.NumLiving, m_Data.PP, m_Data.DC, m_Data.TTLX)
+                    DetritusCalculations()
+                    Omniv(m_Data.DC, m_Data.TTLX, m_Data.BQB, m_Data.NumGroups)
+                    CalcNichePiankaPred()
+                    CalcNichePiankaPrey()
+                    Chesson()
 
-                        m_Data.onPostEcopathRun(Me.m_Ecofunctions)
+                    m_Data.onPostEcopathRun(Me.m_Ecofunctions)
 
-                        CheckIfEEsAreOK(bSendMessage:=True)
-
-                    Else
-
-                        EstimEEAgain()
-
-                    End If
+                    CheckIfEEsAreOK(bSendMessage:=True)
+                    'Else
+                    '    EstimEEAgain()
+                    'End If
 
                 Else
 
@@ -1502,16 +1482,6 @@ Namespace Ecopath
             End If
 
         End Sub
-
-        Public Property PluginManager() As cPluginManager
-            Get
-                Return Me.m_pluginManager
-            End Get
-            Set(ByVal pm As cPluginManager)
-                Me.m_pluginManager = pm
-            End Set
-        End Property
-
 
 
 #Region "Estimate Parameters"
