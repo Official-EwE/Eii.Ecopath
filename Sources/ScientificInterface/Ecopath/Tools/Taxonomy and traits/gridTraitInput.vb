@@ -205,7 +205,7 @@ Namespace Ecopath.Input
                 Case eColumnTypes.Ecology
                     taxon.EcologyType = CType(cell.GetValue(p), eEcologyTypes)
                 Case eColumnTypes.PropCatch
-                    taxon.ProportionCatch = CSng(cell.GetValue(p))
+                    taxon.PropC = CSng(cell.GetValue(p))
                 Case eColumnTypes.Occurrence
                     taxon.OccurrenceStatus = CType(cell.GetValue(p), eOccurrenceStatusTypes)
                 Case eColumnTypes.Organism
