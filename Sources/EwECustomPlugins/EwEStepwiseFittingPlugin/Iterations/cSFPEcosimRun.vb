@@ -34,7 +34,6 @@ Imports EwECore.FitToTimeSeries
 
 Public Class cSFPEcosimRun
     Inherits cSFPGenericIterations
-    Implements ISFPIterations
 
     Public Sub New(ByVal BOrF As Boolean)
         BaseorFish = BOrF

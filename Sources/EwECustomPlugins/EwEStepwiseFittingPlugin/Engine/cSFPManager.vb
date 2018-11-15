@@ -308,25 +308,25 @@ Public Class cSFPManager
         Dim bSuccess As Boolean
 
         'Debug.WriteLine("Number of Observations = " & Parameters.NumberOfObservations)
+        For Each Iteration As ISFPIterations In m_iterations
+            Iteration.RunState = ISFPIterations.eRunState.Idle
+            Iteration.IsBestFit = False
+            If (Iteration.Enabled) Then iNumSteps += 1
+        Next
 
         ' Set a core batch lock to keep the state monitor busy. This keeps the stop option enabled
         ' Note: the busy flag depends either on the core search mode or a core batch lock.
         '       The search mode is reset every time a F2TS search finishes, which is not practical for our purposes
         '       Batch locks are incremental, which is why the batch lock is chosen here instead of the search mode.
+        ' Clear all
 
         Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
         Me.m_core.StateMonitor.SetIsSearching(eSearchModes.External)
         Me.m_core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
-        cApplicationStatusNotifier.StartProgress(Me.m_core)
+        cApplicationStatusNotifier.StartProgress(Me.m_core, "", 0.5! / iNumSteps)
 
         Try
 
-            ' Clear all
-            For Each Iteration As ISFPIterations In m_iterations
-                Iteration.RunState = ISFPIterations.eRunState.Idle
-                Iteration.IsBestFit = False
-                If (Iteration.Enabled) Then iNumSteps += 1
-            Next
 
             'Go through each iteration
             For Each Iteration As ISFPIterations In m_iterations
