@@ -58,9 +58,7 @@ Partial Class dlgDefineTaxonomy
         Me.m_hdrEdit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnExport = New System.Windows.Forms.Button()
         Me.m_btnImport = New System.Windows.Forms.Button()
-        Me.m_btnProps = New System.Windows.Forms.Button()
         Me.m_hdrIO = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_hdrProps = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_pbSearching = New System.Windows.Forms.PictureBox()
         Me.m_cmbFilter = New System.Windows.Forms.ComboBox()
@@ -148,9 +146,7 @@ Partial Class dlgDefineTaxonomy
         Me.m_scMain.Panel1.Controls.Add(Me.m_btnRemove)
         Me.m_scMain.Panel1.Controls.Add(Me.m_btnExport)
         Me.m_scMain.Panel1.Controls.Add(Me.m_btnImport)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_btnProps)
         Me.m_scMain.Panel1.Controls.Add(Me.m_hdrIO)
-        Me.m_scMain.Panel1.Controls.Add(Me.m_hdrProps)
         Me.m_scMain.Panel1.Controls.Add(Me.m_btnKeep)
         '
         'm_scMain.Panel2
@@ -183,6 +179,7 @@ Partial Class dlgDefineTaxonomy
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridGroups.CustomSort = False
         Me.m_gridGroups.DataName = "grid content"
+        Me.m_gridGroups.FixedColumnWidths = True
         Me.m_gridGroups.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridGroups.GridToolTipActive = True
         Me.m_gridGroups.IsLayoutSuspended = False
@@ -221,12 +218,6 @@ Partial Class dlgDefineTaxonomy
         Me.m_btnImport.Name = "m_btnImport"
         Me.m_btnImport.UseVisualStyleBackColor = True
         '
-        'm_btnProps
-        '
-        resources.ApplyResources(Me.m_btnProps, "m_btnProps")
-        Me.m_btnProps.Name = "m_btnProps"
-        Me.m_btnProps.UseVisualStyleBackColor = True
-        '
         'm_hdrIO
         '
         resources.ApplyResources(Me.m_hdrIO, "m_hdrIO")
@@ -234,14 +225,6 @@ Partial Class dlgDefineTaxonomy
         Me.m_hdrIO.CollapsedParentHeight = 0
         Me.m_hdrIO.IsCollapsed = False
         Me.m_hdrIO.Name = "m_hdrIO"
-        '
-        'm_hdrProps
-        '
-        resources.ApplyResources(Me.m_hdrProps, "m_hdrProps")
-        Me.m_hdrProps.CanCollapseParent = False
-        Me.m_hdrProps.CollapsedParentHeight = 0
-        Me.m_hdrProps.IsCollapsed = False
-        Me.m_hdrProps.Name = "m_hdrProps"
         '
         'm_hdrSearch
         '
@@ -290,6 +273,7 @@ Partial Class dlgDefineTaxonomy
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridResults.CustomSort = False
         Me.m_gridResults.DataName = "grid content"
+        Me.m_gridResults.FixedColumnWidths = False
         Me.m_gridResults.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridResults.GridToolTipActive = True
         Me.m_gridResults.IsLayoutSuspended = False
@@ -356,8 +340,6 @@ Partial Class dlgDefineTaxonomy
     Private WithEvents m_cbIncludeExtent As System.Windows.Forms.CheckBox
     Private WithEvents m_lblEngine As System.Windows.Forms.Label
     Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
-    Private WithEvents m_hdrProps As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_btnProps As System.Windows.Forms.Button
     Private WithEvents m_cmbFilter As System.Windows.Forms.ComboBox
     Private WithEvents m_lblIn As System.Windows.Forms.Label
     Private WithEvents m_gridResults As ScientificInterface.gridTaxonSearchResults

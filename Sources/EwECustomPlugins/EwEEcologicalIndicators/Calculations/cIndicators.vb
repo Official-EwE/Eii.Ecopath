@@ -423,36 +423,36 @@ Public MustInherit Class cIndicators
                 taxon = Me.Core.Taxon(iTaxon)
 
                 If taxon.OrganismType = eOrganismTypes.Fishes Then
-                    sIVIiCi = sIVIiCi + (taxon.VulnerabilityIndex * taxon.ProportionCatch * sC)
+                    sIVIiCi = sIVIiCi + (taxon.VulnerabilityIndex * taxon.PropC * sC)
 
                     If (taxon.MeanLifespan > 0) Then
-                        sMLifeSSC = sMLifeSSC + (taxon.MeanLifespan * taxon.ProportionCatch * sC)
-                        sMLifeSC = sMLifeSC + (taxon.ProportionCatch * sC)
+                        sMLifeSSC = sMLifeSSC + (taxon.MeanLifespan * taxon.PropC * sC)
+                        sMLifeSC = sMLifeSC + (taxon.PropC * sC)
                     End If
 
                     If (taxon.MeanLifespan > 0) Then
-                        sMLifeSSB = sMLifeSSB + (taxon.MeanLifespan * taxon.Proportion * sB)
-                        sMLifeSB = sMLifeSB + (taxon.Proportion * sB)
+                        sMLifeSSB = sMLifeSSB + (taxon.MeanLifespan * taxon.PropB * sB)
+                        sMLifeSB = sMLifeSB + (taxon.PropB * sB)
                     End If
 
                     If (taxon.MeanWeight > 0) Then
-                        sMWeightSC = sMWeightSC + (taxon.MeanWeight * taxon.ProportionCatch * sC)
-                        sMWeightC = sMWeightC + (taxon.ProportionCatch * sC)
+                        sMWeightSC = sMWeightSC + (taxon.MeanWeight * taxon.PropC * sC)
+                        sMWeightC = sMWeightC + (taxon.PropC * sC)
                     End If
 
                     If (taxon.MeanWeight > 0) Then
-                        sMWeightSB = sMWeightSB + (taxon.MeanWeight * taxon.Proportion * sB)
-                        sMWeightB = sMWeightB + (taxon.Proportion * sB)
+                        sMWeightSB = sMWeightSB + (taxon.MeanWeight * taxon.PropB * sB)
+                        sMWeightB = sMWeightB + (taxon.PropB * sB)
                     End If
 
                     If (taxon.MeanLength > 0) Then
-                        sMLengthSC = sMLengthSC + (taxon.MeanLength * taxon.ProportionCatch * sC)
-                        sMLengthC = sMLengthC + (taxon.ProportionCatch * sC)
+                        sMLengthSC = sMLengthSC + (taxon.MeanLength * taxon.PropC * sC)
+                        sMLengthC = sMLengthC + (taxon.PropC * sC)
                     End If
 
                     If (taxon.MeanLength > 0) Then
-                        sMLengthSB = sMLengthSB + (taxon.MeanLength * taxon.Proportion * sB)
-                        sMLengthB = sMLengthB + (taxon.Proportion * sB)
+                        sMLengthSB = sMLengthSB + (taxon.MeanLength * taxon.PropB * sB)
+                        sMLengthB = sMLengthB + (taxon.PropB * sB)
                     End If
 
                 End If ' fishes

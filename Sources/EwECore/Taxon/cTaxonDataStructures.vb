@@ -273,4 +273,44 @@ Public Class cTaxonDataStructures
 
 #End Region ' Taxon index
 
+    Public Sub NormalizeProportions()
+
+        Dim groupTotB(Me.m_ecopathDS.NumGroups) As Single
+        Dim groupNumB(Me.m_ecopathDS.NumGroups) As Integer
+        Dim groupTotC(Me.m_ecopathDS.NumGroups) As Single
+        Dim groupNumC(Me.m_ecopathDS.NumGroups) As Integer
+
+        Dim stanzaTotC(Me.m_stanzaDS.Nsplit) As Single
+
+        Dim iTaxon As Integer = 0
+
+        For iTaxon = 0 To Me.NumTaxon - 1
+            Dim iTarget As Integer = Me.TaxonTarget(iTaxon)
+            If Me.IsTaxonStanza(iTaxon) Then
+                stanzaTotC(iTarget) += Me.TaxonPropCatch(iTaxon)
+            Else
+                groupTotB(iTarget) += Me.TaxonPropBiomass(iTaxon)
+                groupNumB(iTarget) += 1
+                groupTotC(iTarget) += Me.TaxonPropCatch(iTaxon)
+                groupNumC(iTarget) += 1
+            End If
+        Next
+
+        For iTaxon = 0 To Me.NumTaxon - 1
+            Dim iTarget As Integer = Me.TaxonTarget(iTaxon)
+            If Me.IsTaxonStanza(iTaxon) Then
+                Me.TaxonPropBiomass(iTaxon) = 1
+                Me.TaxonPropCatch(iTaxon) = If(stanzaTotC(iTarget) = 0.0!, 0.0!, 1.0!)
+            Else
+                If (groupTotB(iTarget) = 0.0!) Then
+                    Me.TaxonPropBiomass(iTaxon) = 1.0! / groupNumB(iTarget)
+                Else
+                    Me.TaxonPropBiomass(iTaxon) = Me.TaxonPropBiomass(iTaxon) / groupTotB(iTarget)
+                End If
+                Me.TaxonPropCatch(iTaxon) = If(groupTotC(iTarget) = 0.0!, 0, Me.TaxonPropCatch(iTaxon) / groupTotC(iTarget))
+            End If
+        Next
+
+    End Sub
+
 End Class

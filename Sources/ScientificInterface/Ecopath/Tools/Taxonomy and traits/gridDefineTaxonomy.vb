@@ -1195,52 +1195,6 @@ Public Class gridDefineTaxonomy
 
 #Region " Apply changes "
 
-    Public Sub NormalizeProportions()
-
-        Dim groupTotB(Me.Core.nGroups) As Single
-        Dim groupNumB(Me.Core.nGroups) As Integer
-        Dim groupTotC(Me.Core.nGroups) As Single
-        Dim groupNumC(Me.Core.nGroups) As Integer
-
-        Dim stanzaTotC(Me.Core.nStanzas) As Single
-
-        Dim ti As cTaxonInfo = Nothing
-        Dim iTaxon As Integer = 0
-
-        For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
-            ti = Me.m_lTaxonInfo(iTaxon)
-            If (ti.Status <> eItemStatusTypes.Removed) Then
-                If ti.iStanza > 0 Then
-                    stanzaTotC(ti.iStanza) += ti.PropC
-                Else
-                    groupTotB(ti.iGroup) += ti.PropB
-                    groupNumB(ti.iGroup) += 1
-                    groupTotC(ti.iGroup) += ti.PropC
-                    groupNumC(ti.iGroup) += 1
-                End If
-            End If
-        Next
-
-        For iTaxon = 0 To Me.m_lTaxonInfo.Count - 1
-            ti = Me.m_lTaxonInfo(iTaxon)
-            If (ti.Status <> eItemStatusTypes.Removed) Then
-                If ti.iStanza > 0 Then
-                    ti.PropB = 1
-                    ti.PropC = If(stanzaTotC(ti.iStanza) = 0.0!, 0, 1)
-                Else
-                    If (groupTotB(ti.iGroup) = 0.0!) Then
-                        ti.PropB = 1.0! / groupNumB(ti.iGroup)
-                    Else
-                        ti.PropB = ti.PropB / groupTotB(ti.iGroup)
-                    End If
-                    ti.PropC = If(groupTotC(ti.iGroup) = 0.0!, 0, ti.PropC / groupTotC(ti.iGroup))
-                End If
-            End If
-        Next
-        Me.UpdateProportions()
-
-    End Sub
-
     Public Function Apply() As Boolean
 
         Dim bConfigurationChanged As Boolean = False

@@ -213,7 +213,7 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the proportion that a taxonomy definition contributes to a <see cref="Group">group</see>.
     ''' </summary>
-    Public Property Proportion() As Single
+    Public Property PropB() As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonPropBiomass))
         End Get
@@ -492,7 +492,7 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the proportion of the catch of this taxon.
     ''' </summary>
-    Public Property ProportionCatch() As Single
+    Public Property PropC() As Single
         Get
             Return CSng(Me.GetVariable(eVarNameFlags.TaxonPropCatch))
         End Get

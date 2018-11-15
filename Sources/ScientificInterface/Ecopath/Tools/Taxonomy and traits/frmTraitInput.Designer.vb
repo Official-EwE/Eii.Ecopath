@@ -54,6 +54,7 @@ Namespace Ecopath.Input
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTaxonInput))
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnEditTaxonomy = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnNormalizeProportions = New System.Windows.Forms.ToolStripButton()
             Me.m_tscmbUpdate = New System.Windows.Forms.ToolStripSplitButton()
             Me.m_grid = New ScientificInterface.Ecopath.Input.gridTaxonInput()
             Me.m_ts.SuspendLayout()
@@ -62,7 +63,7 @@ Namespace Ecopath.Input
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditTaxonomy, Me.m_tscmbUpdate})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEditTaxonomy, Me.m_tsbnNormalizeProportions, Me.m_tscmbUpdate})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -76,6 +77,14 @@ Namespace Ecopath.Input
             Me.m_tsbnEditTaxonomy.Name = "m_tsbnEditTaxonomy"
             Me.m_tsbnEditTaxonomy.Size = New System.Drawing.Size(126, 22)
             Me.m_tsbnEditTaxonomy.Text = "Define taxonomy..."
+            '
+            'm_tsbnNormalizeProportions
+            '
+            Me.m_tsbnNormalizeProportions.Image = CType(resources.GetObject("m_tsbnNormalizeProportions.Image"), System.Drawing.Image)
+            Me.m_tsbnNormalizeProportions.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnNormalizeProportions.Name = "m_tsbnNormalizeProportions"
+            Me.m_tsbnNormalizeProportions.Size = New System.Drawing.Size(146, 22)
+            Me.m_tsbnNormalizeProportions.Text = "&Normalize proportions"
             '
             'm_tscmbUpdate
             '
@@ -96,8 +105,8 @@ Namespace Ecopath.Input
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
             Me.m_grid.DataName = "grid content"
             Me.m_grid.Dock = System.Windows.Forms.DockStyle.Fill
@@ -110,14 +119,14 @@ Namespace Ecopath.Input
             Me.m_grid.Name = "m_grid"
             Me.m_grid.Size = New System.Drawing.Size(655, 237)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TabIndex = 1
             Me.m_grid.UIContext = Nothing
             '
@@ -144,6 +153,7 @@ Namespace Ecopath.Input
         Private WithEvents m_grid As ScientificInterface.Ecopath.Input.gridTaxonInput
         Private WithEvents m_tsbnEditTaxonomy As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tscmbUpdate As System.Windows.Forms.ToolStripSplitButton
+        Private WithEvents m_tsbnNormalizeProportions As ToolStripButton
     End Class
 
 End Namespace
