@@ -150,13 +150,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cSFPAnomalySearch.vb" />
-    <Compile Include="cSFPEcosimRun.vb" />
-    <Compile Include="cSFPGenericIterations.vb" />
-    <Compile Include="cSFPManager.vb" />
-    <Compile Include="cSFPParameters.vb" />
-    <Compile Include="cSFPVandASearch.vb" />
-    <Compile Include="cSFPVulnerabilitySearch.vb" />
+    <Compile Include="Iterations\cSFPAnomalySearch.vb" />
+    <Compile Include="Iterations\cSFPEcosimRun.vb" />
+    <Compile Include="Iterations\cSFPGenericIterations.vb" />
+    <Compile Include="Engine\cSFPManager.vb" />
+    <Compile Include="Engine\cSFPParameters.vb" />
+    <Compile Include="Iterations\cSFPVandASearch.vb" />
+    <Compile Include="Iterations\cSFPVulnerabilitySearch.vb" />
     <Compile Include="ISFPIterations.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
