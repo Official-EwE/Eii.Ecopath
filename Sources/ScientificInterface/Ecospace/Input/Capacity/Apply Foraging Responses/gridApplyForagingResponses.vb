@@ -192,6 +192,7 @@ Namespace Ecospace
         End Sub
 
         Private Sub ShowSelectionDialog(ByVal SelectionType As eEnvironmentalResponseSelectionType, ByVal iGrp As Integer, ByVal iDriver As Integer)
+            If (iDriver = 0) Then Return
             Try
                 Dim MapManager As IEnvironmentalResponseManager = Core.CapacityMapInteractionManager
                 Dim ShapeManager As cBaseShapeManager = Core.EnviroResponseShapeManager
