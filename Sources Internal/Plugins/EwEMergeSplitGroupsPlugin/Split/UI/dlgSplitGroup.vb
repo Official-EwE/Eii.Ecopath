@@ -437,7 +437,7 @@ Public Class dlgSplitGroup
 
         Dim bTot As Single = 0
         For Each taxon As cTaxon In taxa
-            bTot += taxon.Proportion() * Me.m_biomass
+            bTot += taxon.PropB() * Me.m_biomass
         Next
         Return bTot
 

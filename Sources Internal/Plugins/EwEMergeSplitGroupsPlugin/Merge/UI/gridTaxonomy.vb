@@ -127,16 +127,16 @@ Public Class gridTaxonomy
     Private Sub UpdateRow(iRow As Integer, taxon As cTaxon)
 
         If (taxon.iGroup = Me.m_data.IndexTarget) Then
-            Me.UpdateCell(iRow, eColumnTypes.Agg1B, taxon.Proportion, eStyleFlags.NotEditable)
-            Me.UpdateCell(iRow, eColumnTypes.Agg1C, taxon.ProportionCatch, eStyleFlags.NotEditable)
+            Me.UpdateCell(iRow, eColumnTypes.Agg1B, taxon.PropB, eStyleFlags.NotEditable)
+            Me.UpdateCell(iRow, eColumnTypes.Agg1C, taxon.PropC, eStyleFlags.NotEditable)
         Else
             Me.UpdateCell(iRow, eColumnTypes.Agg1B, 0, eStyleFlags.NotEditable Or eStyleFlags.Null)
             Me.UpdateCell(iRow, eColumnTypes.Agg1C, 0, eStyleFlags.NotEditable Or eStyleFlags.Null)
         End If
 
         If (taxon.iGroup = Me.m_data.IndexMerge) Then
-            Me.UpdateCell(iRow, eColumnTypes.Agg2B, taxon.Proportion, eStyleFlags.NotEditable)
-            Me.UpdateCell(iRow, eColumnTypes.Agg2C, taxon.ProportionCatch, eStyleFlags.NotEditable)
+            Me.UpdateCell(iRow, eColumnTypes.Agg2B, taxon.PropB, eStyleFlags.NotEditable)
+            Me.UpdateCell(iRow, eColumnTypes.Agg2C, taxon.PropC, eStyleFlags.NotEditable)
         Else
             Me.UpdateCell(iRow, eColumnTypes.Agg2B, 0, eStyleFlags.NotEditable Or eStyleFlags.Null)
             Me.UpdateCell(iRow, eColumnTypes.Agg2C, 0, eStyleFlags.NotEditable Or eStyleFlags.Null)

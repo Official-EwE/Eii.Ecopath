@@ -262,15 +262,6 @@ Public Class dlgDefineTaxonomy
         Me.UpdateControls()
     End Sub
 
-    Private Sub OnNormalizeProportions(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnProps.Click
-        Try
-            Me.m_gridGroups.NormalizeProportions()
-        Catch ex As Exception
-            cLog.Write(ex, "dlgDefineTaxa::OnNormalizeProportions")
-        End Try
-    End Sub
-
     Private Sub OnImportTaxaCSV(sender As Object, e As EventArgs) _
         Handles m_btnImport.Click
         Try

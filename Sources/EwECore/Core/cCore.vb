@@ -4413,7 +4413,7 @@ Public Class cCore
                     taxon.iStanza = NULL_VALUE
                     taxon.iGroup = Me.m_TaxonData.TaxonTarget(iTaxon)
                 End If
-                taxon.Proportion = Me.m_TaxonData.TaxonPropBiomass(iTaxon)
+                taxon.PropB = Me.m_TaxonData.TaxonPropBiomass(iTaxon)
                 taxon.Name = Me.m_TaxonData.TaxonName(iTaxon)
                 taxon.Class = Me.m_TaxonData.TaxonClass(iTaxon)
                 taxon.Order = Me.m_TaxonData.TaxonOrder(iTaxon)
@@ -4432,7 +4432,7 @@ Public Class cCore
                 taxon.East = Me.m_TaxonData.TaxonEast(iTaxon)
                 taxon.West = Me.m_TaxonData.TaxonWest(iTaxon)
                 taxon.EcologyType = Me.m_TaxonData.TaxonEcologyType(iTaxon)
-                taxon.ProportionCatch = Me.m_TaxonData.TaxonPropCatch(iTaxon)
+                taxon.PropC = Me.m_TaxonData.TaxonPropCatch(iTaxon)
                 taxon.IUCNConservationStatus = Me.m_TaxonData.TaxonIUCNConservationStatus(iTaxon)
                 taxon.ExploitationStatus = Me.m_TaxonData.TaxonExploitationStatus(iTaxon)
                 taxon.OrganismType = Me.m_TaxonData.TaxonOrganismType(iTaxon)
@@ -4477,8 +4477,8 @@ Public Class cCore
             Me.m_TaxonData.TaxonTarget(iTaxon) = taxon.iStanza
             Me.m_TaxonData.IsTaxonStanza(iTaxon) = True
         End If
-        Me.m_TaxonData.TaxonPropBiomass(iTaxon) = taxon.Proportion
-        Me.m_TaxonData.TaxonPropCatch(iTaxon) = taxon.ProportionCatch
+        Me.m_TaxonData.TaxonPropBiomass(iTaxon) = taxon.PropB
+        Me.m_TaxonData.TaxonPropCatch(iTaxon) = taxon.PropC
         Me.m_TaxonData.TaxonName(iTaxon) = taxon.Name
         Me.m_TaxonData.TaxonClass(iTaxon) = taxon.Class
         Me.m_TaxonData.TaxonOrder(iTaxon) = taxon.Order
@@ -4606,6 +4606,19 @@ Public Class cCore
     Public Function TaxonAnalysis() As cTaxonAnalysis
         If Not Me.m_StateMonitor.HasEcopathLoaded Then Return Nothing
         Return New cTaxonAnalysis(Me.m_TaxonData)
+    End Function
+
+    Public Function NormalizeTaxonProportions() As Boolean
+
+        ' Increase batch count
+        If Not Me.SetBatchLock(eBatchLockType.Update) Then Return False
+
+        Me.m_TaxonData.NormalizeProportions()
+        Me.LoadEcopathTaxon()
+        Me.DataModifiedMessage("Ecopath taxa normalized.", eCoreComponentType.EcoPath, eDataTypes.Taxon)
+
+        Return Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecopath)
+
     End Function
 
 #End Region ' Taxon
@@ -6063,7 +6076,7 @@ Public Class cCore
                 t.SetStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.NotEditable)
             End If
 
-            If (Not bIsFished) Or (t.ProportionCatch <= 0) Then
+            If (Not bIsFished) Or (t.PropC <= 0) Then
                 t.SetStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.Null)
             Else
                 t.ClearStatusFlags(eVarNameFlags.TaxonPropCatch, eStatusFlags.Null)

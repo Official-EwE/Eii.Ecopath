@@ -52,6 +52,8 @@ Namespace Ecopath.Input
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditTaxonomy")
             If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditTaxonomy)
 
+            Me.m_tsbnNormalizeProportions.Image = ScientificInterfaceShared.My.Resources.CalculatorHS
+
             Dim pm As cPluginManager = Me.Core.PluginManager
             Dim pi As IPlugin = Nothing
             Dim dpi As IDataSearchProducerPlugin = Nothing
@@ -101,6 +103,16 @@ Namespace Ecopath.Input
             MyBase.UpdateControls()
             Me.m_tscmbUpdate.Enabled = Me.m_bHasSearchEngines
 
+        End Sub
+
+        Private Sub OnNormalizeProportions(sender As Object, e As EventArgs) _
+            Handles m_tsbnNormalizeProportions.Click
+
+            Try
+                Me.Core.NormalizeTaxonProportions()
+            Catch ex As Exception
+
+            End Try
         End Sub
 
         Private Sub OnClickEngine(sender As Object, args As EventArgs)
