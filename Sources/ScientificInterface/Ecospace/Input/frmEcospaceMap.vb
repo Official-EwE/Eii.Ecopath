@@ -212,7 +212,11 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerAdvection, False)
             Me.AddData(eVarNameFlags.LayerHabitatCapacityInput, True)
             Me.AddData(eVarNameFlags.LayerMigration, False)
+
+#If DEBUG Then
             Me.AddData(eVarNameFlags.LayerM0MultInput, False)
+#End If
+
             Me.AddData(eVarNameFlags.LayerDriver)
             'Me.AddData(eVarNameFlags.LayerImportance)
             Me.AddData(eVarNameFlags.LayerHabitat)
