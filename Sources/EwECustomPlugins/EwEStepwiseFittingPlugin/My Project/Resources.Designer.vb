@@ -124,6 +124,96 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to AIC.
+        '''</summary>
+        Friend ReadOnly Property HEADER_AIC() As String
+            Get
+                Return ResourceManager.GetString("HEADER_AIC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to AICc.
+        '''</summary>
+        Friend ReadOnly Property HEADER_AICc() As String
+            Get
+                Return ResourceManager.GetString("HEADER_AICc", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to K.
+        '''</summary>
+        Friend ReadOnly Property HEADER_K() As String
+            Get
+                Return ResourceManager.GetString("HEADER_K", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to # spline.
+        '''</summary>
+        Friend ReadOnly Property HEADER_NUMSPLINE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_NUMSPLINE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to # Vs.
+        '''</summary>
+        Friend ReadOnly Property HEADER_NUMVULS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_NUMVULS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to SS.
+        '''</summary>
+        Friend ReadOnly Property HEADER_SS() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to State.
+        '''</summary>
+        Friend ReadOnly Property HEADER_STATE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_STATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Error.
+        '''</summary>
+        Friend ReadOnly Property STATE_ERROR() As String
+            Get
+                Return ResourceManager.GetString("STATE_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to OK.
+        '''</summary>
+        Friend ReadOnly Property STATE_OK() As String
+            Get
+                Return ResourceManager.GetString("STATE_OK", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (running).
+        '''</summary>
+        Friend ReadOnly Property STATE_RUNNING() As String
+            Get
+                Return ResourceManager.GetString("STATE_RUNNING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} running {1}....
         '''</summary>
         Friend ReadOnly Property STATUS_RUNNING() As String
