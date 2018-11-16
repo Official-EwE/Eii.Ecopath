@@ -126,7 +126,7 @@ Public Class frmRun
 
         End Select
 
-        AddHandler Me.m_engine.OnIterationCompleted, AddressOf OnIterationCompleted
+        AddHandler Me.m_engine.OnIterationUpdated, AddressOf OnIterationUpdated
 
         Me.UpdateControls()
 
@@ -137,7 +137,7 @@ Public Class frmRun
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         ' Cleanup
-        RemoveHandler Me.m_engine.OnIterationCompleted, AddressOf OnIterationCompleted
+        RemoveHandler Me.m_engine.OnIterationUpdated, AddressOf OnIterationUpdated
 
         'Detach time series load command from time series button
         If Me.m_cmdLoadTS IsNot Nothing Then Me.m_cmdLoadTS.RemoveControl(Me.m_btnTS)
@@ -151,6 +151,12 @@ Public Class frmRun
     Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
         MyBase.OnFormClosing(e)
     End Sub
+
+    Public Overrides ReadOnly Property IsRunForm As Boolean
+        Get
+            Return True
+        End Get
+    End Property
 
     Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
         MyBase.OnCoreMessage(msg)
@@ -210,12 +216,9 @@ Public Class frmRun
 
         End Try
 
-        ' -- Entire UI --
-        Me.m_tlpContent.Enabled = Not bIsRunning
-
         ' -- Model panel --
         Me.m_plModel.Visible = (Me.m_runmode = eRunMode.StandAlone)
-        Me.m_plModel.Enabled = (Me.m_runmode = eRunMode.StandAlone)
+        Me.m_plModel.Enabled = (Me.m_runmode = eRunMode.StandAlone) And Not bIsRunning
         Me.m_cmbScenario.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
         Me.m_cmbTimeSeries.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
 
@@ -224,16 +227,30 @@ Public Class frmRun
         Me.m_btnSelectV.Enabled = bContainsVul
         Me.m_btnSelectVandA.Enabled = bContainsVul Or bContainsAnomaly
         Me.m_btnApply.Enabled = bHasCompletedIterationSelected And bHasEnabledIterationSelected
+        Me.m_plSettings.Enabled = Not bIsRunning
+
+        ' -- Iterations panel --
+        Me.m_btnSelectAll.Enabled = Not bIsRunning
+        Me.m_btnClearAll.Enabled = Not bIsRunning
+        Me.m_btnClearAll.Enabled = Not bIsRunning
+        Me.m_btnSelectA.Enabled = Not bIsRunning
+        Me.m_btnSelectBaseline.Enabled = Not bIsRunning
+        Me.m_btnSelectFishing.Enabled = Not bIsRunning
+        Me.m_btnSelectV.Enabled = Not bIsRunning
+        Me.m_btnSelectVandA.Enabled = Not bIsRunning
+        Me.m_btnApply.Enabled = Not bIsRunning
+        Me.m_grid.UpdateRunState()
 
         ' -- Run panel --
-
         Me.m_cmbAutoSave.SelectedIndex = Me.m_engine.Parameters.AutosaveMode
+        Me.m_cmbAutoSave.Enabled = Not bIsRunning
 
         ' Update output path entirely to resolve path placeholders
         Me.m_tbxOutputFolder.Text = Me.m_engine.OutputFolder
+        Me.m_btnChooseFolder.Enabled = Not bIsRunning
 
         'Run button enabled when at least one iteration is enabled, time series are loaded, and anomaly search is set up ok
-        Me.m_btnRun.Enabled = bHasEnabledIterations And bHasTimeSeries And bAnomalyOk
+        Me.m_btnRun.Enabled = bHasEnabledIterations And bHasTimeSeries And bAnomalyOk And Not bIsRunning
 
         'Enable Absolute Biomass time series check box when time series are loaded
         Me.m_cbEnableAbsBioforBaseline.Enabled = bHasTimeSeries
@@ -408,7 +425,7 @@ Public Class frmRun
     End Sub
 
     Private Sub OnSearchCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_rbPredator.CheckedChanged, _
+        Handles m_rbPredator.CheckedChanged,
                 m_rbPredPrey.CheckedChanged
 
         Me.m_engine.Parameters.PredOrPredPreySSToV = Me.m_rbPredator.Checked
@@ -624,12 +641,12 @@ Public Class frmRun
 
     End Sub
 
-    Private Delegate Sub OnIterationCompletedDelegate(ByVal sender As cSFPManager, ByVal iteration As ISFPIterations)
+    Private Delegate Sub OnIterationUpdatedDelegate(ByVal sender As cSFPManager, ByVal iteration As ISFPIterations)
 
-    Private Sub OnIterationCompleted(ByVal sender As cSFPManager, ByVal iteration As ISFPIterations)
+    Private Sub OnIterationUpdated(ByVal sender As cSFPManager, ByVal iteration As ISFPIterations)
 
         If Me.InvokeRequired Then
-            Me.Invoke(New OnIterationCompletedDelegate(AddressOf OnIterationCompleted), New Object() {sender, iteration})
+            Me.Invoke(New OnIterationUpdatedDelegate(AddressOf OnIterationUpdated), New Object() {sender, iteration})
         Else
             ' Lazy update
             BeginInvoke(New MethodInvoker(AddressOf Me.m_grid.UpdateContent))

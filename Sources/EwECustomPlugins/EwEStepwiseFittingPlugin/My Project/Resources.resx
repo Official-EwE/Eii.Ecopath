@@ -139,6 +139,36 @@
     <value>Cannot access directory {0}.</value>
     <comment>{0}=directory path</comment>
   </data>
+  <data name="HEADER_AIC" xml:space="preserve">
+    <value>AIC</value>
+  </data>
+  <data name="HEADER_AICc" xml:space="preserve">
+    <value>AICc</value>
+  </data>
+  <data name="HEADER_K" xml:space="preserve">
+    <value>K</value>
+  </data>
+  <data name="HEADER_NUMSPLINE" xml:space="preserve">
+    <value># spline</value>
+  </data>
+  <data name="HEADER_NUMVULS" xml:space="preserve">
+    <value># Vs</value>
+  </data>
+  <data name="HEADER_SS" xml:space="preserve">
+    <value>SS</value>
+  </data>
+  <data name="HEADER_STATE" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="STATE_ERROR" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="STATE_OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="STATE_RUNNING" xml:space="preserve">
+    <value>(running)</value>
+  </data>
   <data name="STATUS_RUNNING" xml:space="preserve">
     <value>{0} running {1}...</value>
     <comment>{0}=CAPTION; {1}=iteration name</comment>

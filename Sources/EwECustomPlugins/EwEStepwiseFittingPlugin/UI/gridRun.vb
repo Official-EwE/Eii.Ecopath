@@ -29,6 +29,7 @@ Option Strict On
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style.cStyleGuide
 Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -83,6 +84,13 @@ Public Class gridRun
         End Get
     End Property
 
+    Public Sub UpdateRunState()
+        For i As Integer = 1 To Me.RowsCount - 1
+            Dim cell As EwECheckboxCell = DirectCast(Me(i, eColumnTypes.Enabled), EwECheckboxCell)
+            cell.Style = If(Me.m_manager.IsRunning, eStyleFlags.NotEditable, eStyleFlags.OK)
+        Next
+    End Sub
+
 #Region " Overrides "
 
     Protected Overrides Sub InitStyle()
@@ -90,17 +98,16 @@ Public Class gridRun
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
-        ' ToDo: globalize this
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell("Name")
-        Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell("Enabled")
-        Me(0, eColumnTypes.K) = New EwEColumnHeaderCell("K")
-        Me(0, eColumnTypes.EstimatedV) = New EwEColumnHeaderCell("# Vs")
-        Me(0, eColumnTypes.SplinePoints) = New EwEColumnHeaderCell("# spline")
-        Me(0, eColumnTypes.SS) = New EwEColumnHeaderCell("SS")
-        Me(0, eColumnTypes.AIC) = New EwEColumnHeaderCell("AIC")
-        Me(0, eColumnTypes.AICc) = New EwEColumnHeaderCell("AICc")
-        Me(0, eColumnTypes.State) = New EwEColumnHeaderCell("State")
+        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_NAME)
+        Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLED)
+        Me(0, eColumnTypes.K) = New EwEColumnHeaderCell(My.Resources.HEADER_K)
+        Me(0, eColumnTypes.EstimatedV) = New EwEColumnHeaderCell(My.Resources.HEADER_NUMVULS)
+        Me(0, eColumnTypes.SplinePoints) = New EwEColumnHeaderCell(My.Resources.HEADER_NUMSPLINE)
+        Me(0, eColumnTypes.SS) = New EwEColumnHeaderCell(My.Resources.HEADER_SS)
+        Me(0, eColumnTypes.AIC) = New EwEColumnHeaderCell(My.Resources.HEADER_AIC)
+        Me(0, eColumnTypes.AICc) = New EwEColumnHeaderCell(My.Resources.HEADER_AICc)
+        Me(0, eColumnTypes.State) = New EwEColumnHeaderCell(My.Resources.HEADER_STATE)
 
         Me.AllowBlockSelect = False
         Me.FixedColumnWidths = False
@@ -209,16 +216,15 @@ Public Class gridRun
 
     Protected Function State(iteration As ISFPIterations) As String
 
-        ' ToDo: globalize this
         Select Case iteration.RunState
             Case ISFPIterations.eRunState.Idle
                 Return ""
             Case ISFPIterations.eRunState.Completed
-                Return "OK"
+                Return My.Resources.STATE_OK
             Case ISFPIterations.eRunState.Error
-                Return "error"
+                Return My.Resources.STATE_ERROR
             Case ISFPIterations.eRunState.Running
-                Return "Running"
+                Return My.Resources.STATE_RUNNING
         End Select
         Return "?"
 

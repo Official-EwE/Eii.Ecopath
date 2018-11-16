@@ -345,8 +345,12 @@ Public Class cSFPManager
 
                     'Changed Runstate to running instead of error as it confuses the users
                     Iteration.RunState = ISFPIterations.eRunState.Running
+                    SendIterationUpdated(Iteration)
+
                     Iteration.Init(m_core, m_iTimeSeries, Me.Parameters.PredOrPredPreySSToV, Parameters, m_frmMain)
                     Iteration.Load()
+                    SendIterationUpdated(Iteration)
+
                     If Iteration.Run() Then
                         If (Not m_bStopRun) Then
                             Debug.WriteLine(Iteration.Name & " SS= " & Iteration.SS & " AIC= " & Iteration.AIC & " AICc= " & Iteration.AICc & ", " & Iteration.RunState)
@@ -370,7 +374,7 @@ Public Class cSFPManager
                     End If
 
                     Iteration.Clear()
-                    SendIterationCompleted(Iteration)
+                    SendIterationUpdated(Iteration)
 
                     iStep += 1
 
@@ -400,7 +404,7 @@ Public Class cSFPManager
         cApplicationStatusNotifier.EndProgress(Me.m_core)
 
         Me.m_bIsRunning = False
-        SendIterationCompleted(Nothing)
+        SendIterationUpdated(Nothing)
 
         If (msg IsNot Nothing) Then
             If msg.Importance = eMessageImportance.Critical Then
@@ -442,7 +446,7 @@ Public Class cSFPManager
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Event to notify that an iteraton has been completed during a <see cref="IsRunning">run</see>.
+    ''' Event to notify that an iteraton has been updated during a <see cref="IsRunning">run</see>.
     ''' <see cref="RunSFPIterations"/>
     ''' <see cref="IsRunning"/>
     ''' <see cref="StopRun"/>
@@ -450,12 +454,12 @@ Public Class cSFPManager
     ''' <param name="sender">This class.</param>
     ''' <param name="iteration">The iteration that completed.</param>
     ''' -----------------------------------------------------------------------
-    Public Event OnIterationCompleted(ByVal sender As cSFPManager, ByVal iteration As ISFPIterations)
+    Public Event OnIterationUpdated(ByVal sender As cSFPManager, ByVal iteration As ISFPIterations)
 
-    Private Sub SendIterationCompleted(ByVal iteration As ISFPIterations)
+    Private Sub SendIterationUpdated(ByVal iteration As ISFPIterations)
         Try
             ' Notify the world that the run is over
-            RaiseEvent OnIterationCompleted(Me, Nothing)
+            RaiseEvent OnIterationUpdated(Me, Nothing)
         Catch ex As Exception
             ' This should not happen
             Debug.Assert(False, ex.Message)
