@@ -396,9 +396,11 @@ Namespace Controls.Map
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_HABITATS
 
                 Case eVarNameFlags.LayerHabitatCapacityInput,
-                     eVarNameFlags.LayerM0MultInput,
-                     eVarNameFlags.LayerMigration
+                     eVarNameFlags.LayerM0MultInput
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_GROUP
+
+                Case eVarNameFlags.LayerMigration
+                    strGroup = "Migration"
 
                 Case eVarNameFlags.LayerRegion
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_REGIONS
