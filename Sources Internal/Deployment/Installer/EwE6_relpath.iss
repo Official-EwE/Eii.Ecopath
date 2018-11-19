@@ -4,10 +4,9 @@
 #define Compile64Bit 0
 #define Spinup 0
 #define SpatTemp 0
-#define MergeGroups 0
-#define BiomassEmitters 0
 #define FISHMIP 0
 #define MSPTools 0
+#define SAFENET 0
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
@@ -31,7 +30,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.15683.0
+  VersionInfoVersion=6.6.15767.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -140,17 +139,12 @@ Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler-user-manual.pdf"; DestDir: "{a
 Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\transects
 Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mpadynamics
 Source: "{#DefRoot}{#DefSrc}\EwEImportExportLayerDefinitionsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\layerimportexport
-; -- Stuff under development --
-#if MergeGroups == 1 
 Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mergegroups
-#endif
-#if Spinup == 1 
+; -- Stuff under development --
+#if Spinup == 1
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
 #endif
-#if BiomassEmitters == 1
-Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\emissions
-#endif
-#if SpatTemp == 1 
+#if SpatTemp == 1
 Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Controls.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
@@ -270,6 +264,11 @@ Source: "{#DefRoot}{#DefSrc}\EwEMSPPlugin.dll"; DestDir: "{app}\Plugins\"; Flags
 Source: "{#DefRoot}{#DefSrc}\GOMplugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\FishMIP2Plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 #endif
+#if SAFENET == 1
+Source: "{#DefRoot}{#DefSrc}\SafenetUtils.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
+Source: "{#DefRoot}{#DefSrc}\EwEMassApplyEnvResponsesPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
+Source: "{#DefRoot}{#DefSrc}\EwEBiomassEmitterPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\safenet
+#endif
 
 [Components]
 Name: "userguide"; Description: "EwE user guide (2008)"; Types: full custom
@@ -296,10 +295,7 @@ Name: "plugin\automation\sampler"; Description: "Ecosampler"; Types: full
 Name: "plugin\ui"; Description: "Usability"; Types: full custom
 Name: "plugin\ui\remarks"; Description: "Remarks collector"; Types: full custom
 Name: "plugin\ui\shapegrid"; Description: "Shape grids"; Types: full custom
-
-#if MergeGroups == 1
 Name: "plugin\input\mergegroups"; Description: "Merge groups"; Types: full
-#endif
 Name: "plugin\input\mpadynamics"; Description: "MPA dynamics"; Types: full
 #if SpatTemp == 1
 Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange framework"; Types: full
@@ -311,8 +307,8 @@ Name: "plugin\output\spinup"; Description: "Ecospace spin-up"; Types: full
 #if MSPTools == 1
 Name: "plugin\ui\msptools"; Description: "MSP tools"; Types: full
 #endif
-#if BiomassEmitters == 1
-Name: "plugin\input\emissions"; Description: "Ecospace biomass emissions"; Types: full
+#if SAFENET == 1
+Name: "plugin\safenet"; Description: "Safenet utilities"; Types: full custom
 #endif
 
 [Tasks]
@@ -442,4 +438,5 @@ Root: "HKCR"; Subkey: "ewe-ecobase\DefaultIcon\"; ValueType: string; ValueData: 
 Root: "HKCR"; Subkey: "ewe-ecobase\Shell\Open\Command\"; ValueType: string; ValueData: """{app}\EwE6.exe"" ""%1"""; Flags: uninsdeletekey; Tasks: associatefiles
 ; Iexplore rendering mode for start page
 ; Inno setup automatically redirects to wow6432node where needed
-Root: "HKLM"; Subkey: "Software\Microsoft\Internet Explorer\Main\Feature Control\FEATURE_BROWSER_EMULATION"; ValueType: dword; ValueName: "{#MyAppExeName}"; ValueData: "10000"; Flags: createvalueifdoesntexist uninsdeletekey
+Root: "HKLM"; Subkey: "SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION"; ValueType: dword; ValueName: "{#MyAppExeName}"; ValueData: "10000"; Flags: createvalueifdoesntexist uninsdeletekey
+Root: "HKCR"; Subkey: "SOFTWARE\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION"; ValueType: dword; ValueName: "{#MyAppExeName}"; ValueData: "10000"; Flags: createvalueifdoesntexist uninsdeletekey
