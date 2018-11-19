@@ -2864,7 +2864,7 @@ Public Class cCore
             xa.Value = Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
         End If
 
-        Return xn
+        Return xnEwE
 
     End Function
 
