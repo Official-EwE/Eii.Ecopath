@@ -22,6 +22,8 @@
 Option Strict On
 Imports System
 Imports System.Diagnostics
+Imports System.Net
+Imports System.Net.Sockets
 
 #End Region ' Imports
 
@@ -166,6 +168,44 @@ Namespace Utilities
         ''' -------------------------------------------------------------------
         Public Shared Function MonthDifference(ByVal first As DateTime, ByVal second As DateTime) As Integer
             Return Math.Abs((first.Month - second.Month) + 12 * (first.Year - second.Year))
+        End Function
+
+        Public Shared Function GetNetworkTime(Optional NtpServer As String = "pool.ntp.org") As DateTime
+
+            Try
+
+                Const DaysTo1900 As Integer = 1900 * 365 + 95
+                Const TicksPerSecond As Long = 10000000L
+                Const TicksPerDay As Long = 24 * 60 * 60 * TicksPerSecond
+                Const TicksTo1900 As Long = DaysTo1900 * TicksPerDay
+                Dim ntpData(47) As Byte
+                ntpData(0) = &H1B
+
+                Dim addresses As IPAddress() = Dns.GetHostEntry(NtpServer).AddressList
+                Dim ipEndPoint As New IPEndPoint(addresses(0), 123)
+                Dim pingDuration As Long = Stopwatch.GetTimestamp()
+
+                Using socket As New Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)
+                    socket.Connect(ipEndPoint)
+                    socket.ReceiveTimeout = 3000
+                    socket.Send(ntpData)
+                    pingDuration = Stopwatch.GetTimestamp()
+                    socket.Receive(ntpData)
+                    pingDuration = Stopwatch.GetTimestamp() - pingDuration
+                End Using
+
+                Dim pingTicks As Long = CLng(pingDuration * TicksPerSecond / Stopwatch.Frequency)
+                Dim intPart As Long = (CLng(ntpData(40)) << 24) + (CLng(ntpData(41) << 16) + (CLng(ntpData(42)) << 8) + CLng(ntpData(43)))
+                Dim fractPart As Long = (CLng(ntpData(44)) << 24) + (CLng(ntpData(45) << 16) + (CLng(ntpData(46)) << 8) + CLng(ntpData(47)))
+
+                Dim netTicks As Long = intPart * TicksPerSecond + (fractPart * TicksPerSecond >> 32)
+                Dim networkDateTime As New DateTime(CLng(TicksTo1900 + netTicks + pingTicks / 2))
+                Return networkDateTime.ToLocalTime()
+
+            Catch ex As Exception
+                Return DateTime.Now
+            End Try
+
         End Function
 
     End Class
