@@ -77,7 +77,7 @@ Namespace Other
             ' ToDo: globalize this
             Me.m_tvOptions.Nodes.Add(Me.CreateNode("General", eApplicationOptionTypes.General.ToString(), GetType(ucOptionsGeneral)))
             Me.m_tvOptions.Nodes.Add(Me.CreateNode("Colors", eApplicationOptionTypes.Colours.ToString(), GetType(ucOptionsStatusColors)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Fonts", eApplicationOptionTypes.Fonts.ToString(), GetType(ucOptionsGraphs)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Graphs and charts", eApplicationOptionTypes.Fonts.ToString(), GetType(ucOptionsGraphs)))
             Me.m_tvOptions.Nodes.Add(Me.CreateNode("Maps", eApplicationOptionTypes.ReferenceMaps.ToString(), GetType(ucOptionsMap)))
             Me.m_tvOptions.Nodes.Add(Me.CreateNode("Pedigree", eApplicationOptionTypes.Pedigree.ToString(), GetType(ucOptionsPedigree)))
             Me.m_tvOptions.Nodes.Add(Me.CreateNode("Main window", eApplicationOptionTypes.Window.ToString(), GetType(ucOptionsPresentation)))

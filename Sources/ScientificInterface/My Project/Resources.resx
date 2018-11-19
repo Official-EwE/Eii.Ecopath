@@ -13544,4 +13544,20 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="STATUS_ECOSPACE_RUNNING_SPINUP" xml:space="preserve">
     <value>Running Ecospace spin-up...</value>
   </data>
+  <data name="ABOUT_EXPIRED" xml:space="preserve">
+    <value>This version of EwE has expired. Please visit ecopath.org to upgrade</value>
+  </data>
+  <data name="ABOUT_EXPIRY" xml:space="preserve">
+    <value>This version of EwE will run until {0}</value>
+  </data>
+  <data name="ABOUT_EXPIRY_BETA" xml:space="preserve">
+    <value>This evaluatlion version of EwE will run until {0}</value>
+  </data>
+  <data name="STATUS_CHECKING_LICENSE" xml:space="preserve">
+    <value>Checking license, please wait...</value>
+  </data>
+  <data name="ABOUT_VERSION_PRO" xml:space="preserve">
+    <value>Version {0} Pro - {1}</value>
+    <comment>{0}=core version, {1}=32 / 64 bit indicator</comment>
+  </data>
 </root>

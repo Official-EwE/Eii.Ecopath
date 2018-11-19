@@ -17,12 +17,11 @@
 ' ===============================================================================
 '
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmSplash
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -39,22 +38,66 @@ Partial Class frmSplash
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSplash))
+        Me.m_pbIcon = New System.Windows.Forms.PictureBox()
+        Me.m_lblDetails = New System.Windows.Forms.Label()
+        Me.m_lblEwE = New System.Windows.Forms.Label()
+        Me.m_btnOK = New System.Windows.Forms.Button()
+        Me.m_chugchug = New System.ComponentModel.BackgroundWorker()
+        CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'm_pbIcon
+        '
+        resources.ApplyResources(Me.m_pbIcon, "m_pbIcon")
+        Me.m_pbIcon.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.logo_EWE5
+        Me.m_pbIcon.Name = "m_pbIcon"
+        Me.m_pbIcon.TabStop = False
+        '
+        'm_lblDetails
+        '
+        resources.ApplyResources(Me.m_lblDetails, "m_lblDetails")
+        Me.m_lblDetails.Name = "m_lblDetails"
+        '
+        'm_lblEwE
+        '
+        resources.ApplyResources(Me.m_lblEwE, "m_lblEwE")
+        Me.m_lblEwE.Name = "m_lblEwE"
+        '
+        'm_btnOK
+        '
+        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
+        Me.m_btnOK.Name = "m_btnOK"
+        Me.m_btnOK.UseVisualStyleBackColor = True
+        '
+        'm_chugchug
+        '
         '
         'frmSplash
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_lblDetails)
+        Me.Controls.Add(Me.m_btnOK)
+        Me.Controls.Add(Me.m_lblEwE)
+        Me.Controls.Add(Me.m_pbIcon)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmSplash"
         Me.ShowIcon = False
-        Me.ShowInTaskbar = False
+        Me.TopMost = True
         Me.TransparencyKey = System.Drawing.Color.Transparent
+        CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
+
+    Private WithEvents m_pbIcon As PictureBox
+    Private WithEvents m_lblDetails As Label
+    Private WithEvents m_lblEwE As Label
+    Private WithEvents m_chugchug As System.ComponentModel.BackgroundWorker
+    Private WithEvents m_btnOK As Button
 End Class

@@ -20,17 +20,23 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing.Drawing2D
-Imports System.Drawing.Text
+Imports System.ComponentModel
+Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
 Friend Class frmSplash
 
-    Private Const CS_DROPSHADOW As Integer = &H20000
-    Private m_img As Bitmap = Nothing
-    Private Shared g_instance As frmSplash
+    Private m_expired As TriState = TriState.UseDefault
+    Private m_mode As eReleaseMode = eReleaseMode.Dev
+    Private m_dtServer As DateTime = DateTime.MinValue
+    Private m_dtExpiry As DateTime = DateTime.MinValue
+    Private m_bCanAutoClose As Boolean = True
+
+    Private Shared g_instance As frmSplash = Nothing
 
     Public Sub New()
         Me.InitializeComponent()
@@ -40,55 +46,92 @@ Friend Class frmSplash
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_img = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current(), Me.ClientRectangle.Size)
-        Me.TransparencyKey = Me.BackColor
+        Me.m_pbIcon.BackgroundImage = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current())
+        Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Zoom
+
+        Me.m_lblEwE.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, cCore.Version(False))
+
+        Me.m_btnOK.Visible = False
+
+        Me.m_mode = frmEwE6.ReleaseMode()
+        Select Case Me.m_mode
+            Case eReleaseMode.Beta, eReleaseMode.Pro
+                Me.m_dtExpiry = cCore.BestBefore(eReleaseMode.Beta)
+                Me.m_lblDetails.Text = My.Resources.STATUS_CHECKING_LICENSE
+                Me.m_bCanAutoClose = False
+                Me.m_chugchug.RunWorkerAsync()
+            Case Else
+                Me.m_dtExpiry = cCore.BestBefore(eReleaseMode.Free)
+                Me.m_dtServer = Me.m_dtExpiry
+                Me.m_lblDetails.Text = "Loading..."
+        End Select
 
         Me.CenterToScreen()
         Me.TopMost = True
-        Me.Visible = (Me.m_img IsNot Nothing)
 
-    End Sub
-
-    Public Overloads Sub Close()
-        If (Me.InvokeRequired) Then
-            Me.BeginInvoke(New MethodInvoker(AddressOf MyBase.Close))
-        Else
-            Me.Close()
-        End If
     End Sub
 
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
         MyBase.OnFormClosed(e)
         frmSplash.g_instance = Nothing
-        Me.m_img.Dispose()
     End Sub
 
     Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
         ' NOP
     End Sub
 
-    Protected Overrides Sub OnPaintBackground(e As System.Windows.Forms.PaintEventArgs)
-
-        Dim g As Graphics = e.Graphics
-
-        g.InterpolationMode = InterpolationMode.High
-        g.SmoothingMode = SmoothingMode.HighQuality
-        g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit
-        g.CompositingQuality = CompositingQuality.HighQuality
-
-        g.DrawImage(Me.m_img, Me.ClientRectangle)
-
-        'Using p As New GraphicsPath()
-        '    Dim strBitApp As String = If(cSystemUtils.Is64BitProcess, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
-        '    p.AddString(cStringUtils.Localize(My.Resources.ABOUT_VERSION, cCore.Version(True), strBitApp), FontFamily.GenericSansSerif, FontStyle.Regular, g.DpiY * 12 / 72, New Point(0, 0), New StringFormat())
-        '    g.DrawPath(Pens.Black, p)
-        '    g.FillPath(Brushes.White, p)
-        'End Using
-
-    End Sub
-
     Public Shared Function GetInstance() As frmSplash
         Return frmSplash.g_instance
     End Function
+
+    Public Function CanAutoClose() As Boolean
+        Return m_bCanAutoClose
+    End Function
+
+    Public Function Expired() As TriState
+        Return Me.m_expired
+    End Function
+
+    Public Sub PleaseClose()
+        If Me.InvokeRequired() Then
+            Me.Invoke(New MethodInvoker(AddressOf Close))
+        Else
+            Me.Close()
+        End If
+    End Sub
+
+    Private Sub DoWork(sender As Object, args As DoWorkEventArgs) Handles m_chugchug.DoWork
+        Me.m_dtServer = cDateUtils.GetNetworkTime()
+    End Sub
+
+    Private Sub OnChuggedOut(sender As Object, e As RunWorkerCompletedEventArgs) Handles m_chugchug.RunWorkerCompleted
+        If Me.InvokeRequired Then
+            Me.Invoke(New MethodInvoker(AddressOf UpdateControls))
+        Else
+            Me.UpdateControls()
+        End If
+    End Sub
+
+    Private Sub OnClose(sender As Object, e As EventArgs) Handles m_btnOK.Click
+        Me.Close()
+    End Sub
+
+    Private Sub UpdateControls()
+
+        Select Case Me.m_mode
+            Case eReleaseMode.Beta, eReleaseMode.Pro
+                If Me.m_dtServer <= Me.m_dtExpiry Then
+                    Me.m_lblDetails.Text = cStringUtils.Localize(My.Resources.ABOUT_EXPIRY, Me.m_dtExpiry.ToShortDateString)
+                    Me.m_expired = TriState.False
+                Else
+                    Me.m_lblDetails.Text = My.Resources.ABOUT_EXPIRED
+                    Me.m_expired = TriState.True
+                End If
+                Me.m_btnOK.Visible = True
+            Case Else
+                Me.m_btnOK.Visible = False
+        End Select
+
+    End Sub
 
 End Class
