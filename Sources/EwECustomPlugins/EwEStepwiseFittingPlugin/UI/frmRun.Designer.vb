@@ -67,6 +67,7 @@ Partial Class frmRun
         Me.m_nudK = New System.Windows.Forms.NumericUpDown()
         Me.m_lblNumVars = New System.Windows.Forms.Label()
         Me.m_btnClearAll = New System.Windows.Forms.Button()
+        Me.m_btnExport = New System.Windows.Forms.Button()
         CType(Me.m_nudStepSize, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plModel.SuspendLayout()
@@ -348,6 +349,7 @@ Partial Class frmRun
         '
         'm_plSettings
         '
+        Me.m_plSettings.Controls.Add(Me.m_btnExport)
         Me.m_plSettings.Controls.Add(Me.m_cmbAnomalyShape)
         Me.m_plSettings.Controls.Add(Me.m_lblAnomalyShape)
         Me.m_plSettings.Controls.Add(Me.m_cbEnableAbsBioforBaseline)
@@ -405,6 +407,12 @@ Partial Class frmRun
         resources.ApplyResources(Me.m_btnClearAll, "m_btnClearAll")
         Me.m_btnClearAll.Name = "m_btnClearAll"
         Me.m_btnClearAll.UseVisualStyleBackColor = True
+        '
+        'm_btnExport
+        '
+        resources.ApplyResources(Me.m_btnExport, "m_btnExport")
+        Me.m_btnExport.Name = "m_btnExport"
+        Me.m_btnExport.UseVisualStyleBackColor = True
         '
         'frmRun
         '
@@ -471,4 +479,5 @@ Partial Class frmRun
     Private WithEvents m_plSettings As System.Windows.Forms.Panel
     Private WithEvents m_nudK As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblNumVars As System.Windows.Forms.Label
+    Private WithEvents m_btnExport As Windows.Forms.Button
 End Class

@@ -138,28 +138,28 @@ Public Interface ISFPIterations
     ''' Get the computed Sum of Squares.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    ReadOnly Property SS As Single
+    Property SS As Single
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     '''  Get the computed Sum of Squares per <see cref="cTimeSeries.Index">time series</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    ReadOnly Property TimeSeriesSS As Single()
+    Property TimeSeriesSS As Single()
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get the computed Akaike Information Criterion.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    ReadOnly Property AIC As Single
+    Property AIC As Single
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get the computed Akaike Information Criterion with a correction for finite sample sizes.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    ReadOnly Property AICc As Single
+    Property AICc As Single
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
