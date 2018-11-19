@@ -23,7 +23,6 @@ Option Explicit On
 Option Strict On
 
 Imports System.ComponentModel
-Imports System.Globalization
 Imports System.IO
 Imports System.Threading
 Imports EwECore
@@ -328,6 +327,19 @@ Public Class frmEwE6
 
     Public Shared Function GetInstance() As frmEwE6
         Return frmEwE6.__inst__
+    End Function
+
+    Public Shared Function ReleaseMode() As eReleaseMode
+#If BETA = 1 Then
+        Return eReleaseMode.Beta
+#End If
+#If PRO = 1 Then
+            return eReleaseMode.Pro
+#End If
+#If DEBUG Then
+        Return eReleaseMode.Dev
+#End If
+        Return eReleaseMode.Free
     End Function
 
 #End Region ' Singleton
@@ -1028,7 +1040,12 @@ Public Class frmEwE6
             ' Dismiss splash screen, if any
             Dim splash As frmSplash = frmSplash.GetInstance()
             If (splash IsNot Nothing) Then
-                splash.Close()
+                If (splash.CanAutoClose) Then
+                    splash.PleaseClose()
+                    Me.Activate()
+                Else
+                    AddHandler splash.FormClosed, AddressOf OnSplashClosed
+                End If
             End If
         Catch ex As Exception
 
@@ -1138,6 +1155,15 @@ Public Class frmEwE6
         End If
 
         MyBase.OnFormClosed(e)
+
+    End Sub
+
+    Private Sub OnSplashClosed(sender As Object, args As EventArgs)
+        Dim splash As frmSplash = frmSplash.GetInstance()
+        If (splash IsNot Nothing) Then
+            RemoveHandler splash.FormClosed, AddressOf OnSplashClosed
+            If splash.Expired = TriState.True Then Me.Close()
+        End If
 
     End Sub
 

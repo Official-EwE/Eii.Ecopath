@@ -1942,7 +1942,6 @@
     <None Include="Resources\Regions.png" />
     <None Include="Resources\Habitat.png" />
     <None Include="Resources\MPA.png" />
-    <None Include="Resources\ecopath 256x256.bmp" />
     <None Include="Resources\Ecotracer.ico" />
     <None Include="Resources\ewe_home.url.txt" />
     <None Include="Resources\certificate.png" />
@@ -2121,10 +2120,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEMergeSplitGroupsPlugin\EwEMergeSplitGroupsPlugin.vbproj">
-      <Project>{88137892-3068-42b7-bcca-b811d7264b4a}</Project>
-      <Name>EwEMergeSplitGroupsPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
@@ -2148,6 +2143,10 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEImportExportLayersPlugin\EwEImportExportLayerDefinitionsPlugin.vbproj">
       <Project>{ff2c3b42-6872-4841-96ae-b06d88da6f1c}</Project>
       <Name>EwEImportExportLayerDefinitionsPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEMergeSplitGroupsPlugin\EwEMergeSplitGroupsPlugin.vbproj">
+      <Project>{88137892-3068-42b7-bcca-b811d7264b4a}</Project>
+      <Name>EwEMergeSplitGroupsPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEModelFromEcosimPlugin\EwEModelFromEcosimPlugin.vbproj">
       <Project>{243cbcb0-4fd7-43b8-a6d1-27e26e866a99}</Project>

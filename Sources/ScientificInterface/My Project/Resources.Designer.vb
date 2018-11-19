@@ -79,6 +79,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to This version of EwE has expired. Please visit ecopath.org to upgrade.
+        '''</summary>
+        Public ReadOnly Property ABOUT_EXPIRED() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_EXPIRED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to This version of EwE will run until {0}.
+        '''</summary>
+        Public ReadOnly Property ABOUT_EXPIRY() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_EXPIRY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to This evaluatlion version of EwE will run until {0}.
+        '''</summary>
+        Public ReadOnly Property ABOUT_EXPIRY_BETA() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_EXPIRY_BETA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Version {0} - {1}.
         '''</summary>
         Public ReadOnly Property ABOUT_VERSION() As String
@@ -93,6 +120,15 @@ Namespace My.Resources
         Public ReadOnly Property ABOUT_VERSION_BETA() As String
             Get
                 Return ResourceManager.GetString("ABOUT_VERSION_BETA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Version {0} Pro - {1}.
+        '''</summary>
+        Public ReadOnly Property ABOUT_VERSION_PRO() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_VERSION_PRO", resourceCulture)
             End Get
         End Property
         
@@ -4810,6 +4846,15 @@ Namespace My.Resources
         Public ReadOnly Property STATUS_CACHECLEARED() As String
             Get
                 Return ResourceManager.GetString("STATUS_CACHECLEARED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Checking license, please wait....
+        '''</summary>
+        Public ReadOnly Property STATUS_CHECKING_LICENSE() As String
+            Get
+                Return ResourceManager.GetString("STATUS_CHECKING_LICENSE", resourceCulture)
             End Get
         End Property
         

@@ -445,7 +445,7 @@
     <value>m_nudMaxNumMessages</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15250.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15748.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.Parent" xml:space="preserve">
     <value>$this</value>
@@ -463,7 +463,7 @@
     <value>0, 158</value>
   </data>
   <data name="m_hdrAuthor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>287, 18</value>
+    <value>487, 18</value>
   </data>
   <data name="m_hdrAuthor.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -478,7 +478,7 @@
     <value>m_hdrAuthor</value>
   </data>
   <data name="&gt;&gt;m_hdrAuthor.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15250.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15748.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAuthor.Parent" xml:space="preserve">
     <value>$this</value>
@@ -496,7 +496,7 @@
     <value>0, 246</value>
   </data>
   <data name="m_hdrStatusPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>287, 18</value>
+    <value>487, 18</value>
   </data>
   <data name="m_hdrStatusPanel.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -511,7 +511,7 @@
     <value>m_hdrStatusPanel</value>
   </data>
   <data name="&gt;&gt;m_hdrStatusPanel.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15250.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15748.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStatusPanel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -532,7 +532,7 @@
     <value>m_nudMRU</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15250.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15748.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.Parent" xml:space="preserve">
     <value>$this</value>
@@ -565,7 +565,7 @@
     <value>m_hdrCaption</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15250.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15748.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>

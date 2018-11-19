@@ -3514,4 +3514,15 @@ Namespace Core
 
 #End Region ' Taxonomy
 
+#Region " Release modes "
+
+    Public Enum eReleaseMode
+        Dev = 0
+        Beta
+        Free
+        Pro
+    End Enum
+
+#End Region ' Release modes
+
 End Namespace ' Core
