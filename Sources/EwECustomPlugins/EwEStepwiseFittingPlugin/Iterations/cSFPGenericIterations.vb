@@ -199,10 +199,10 @@ Public MustInherit Class cSFPGenericIterations
                 Dim ts As cTimeSeries = dataset.TimeSeries(i)
                 'If the time series type is 0, 1, 5, 6, 7 enable it
                 Select Case ts.TimeSeriesType
-                    Case eTimeSeriesType.BiomassRel, _
-                         eTimeSeriesType.TotalMortality, _
-                         eTimeSeriesType.Catches, _
-                         eTimeSeriesType.CatchesRel, _
+                    Case eTimeSeriesType.BiomassRel,
+                         eTimeSeriesType.TotalMortality,
+                         eTimeSeriesType.Catches,
+                         eTimeSeriesType.CatchesRel,
                          eTimeSeriesType.AverageWeight
                         ts.Enabled = True
                     Case eTimeSeriesType.BiomassAbs
@@ -482,34 +482,43 @@ Public MustInherit Class cSFPGenericIterations
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="ISFPIterations.SS"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property SS() As Single _
+    Public Property SS() As Single _
         Implements ISFPIterations.SS
         Get
             If (Me.RunState <> ISFPIterations.eRunState.Completed) Then Return 0
             Return Me.m_ss
         End Get
+        Friend Set(value As Single)
+            Me.m_ss = value
+        End Set
     End Property
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="ISFPIterations.AIC"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property AIC() As Single _
+    Public Property AIC() As Single _
         Implements ISFPIterations.AIC
         Get
             If (Me.RunState <> ISFPIterations.eRunState.Completed) Then Return 0
             Return Me.m_aic
         End Get
+        Friend Set(value As Single)
+            Me.m_aic = value
+        End Set
     End Property
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="ISFPIterations.AICc"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property AICc() As Single _
+    Public Property AICc() As Single _
         Implements ISFPIterations.AICc
         Get
             If (Me.RunState <> ISFPIterations.eRunState.Completed) Then Return 0
             Return Me.m_aicc
         End Get
+        Friend Set(value As Single)
+            Me.m_aicc = value
+        End Set
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -537,14 +546,16 @@ Public MustInherit Class cSFPGenericIterations
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="ISFPIterations.TimeSeriesSS"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property TimeSeriesSS As Single() _
+    Public Property TimeSeriesSS As Single() _
           Implements ISFPIterations.TimeSeriesSS
         Get
             If (Me.RunState <> ISFPIterations.eRunState.Completed) Then Return Nothing
             Return Me.m_timeseriesSS
         End Get
+        Friend Set(value As Single())
+            Me.m_timeseriesSS = value
+        End Set
     End Property
-
 
 #Region " Subs needed for connect search runs of F2TSManager "
 

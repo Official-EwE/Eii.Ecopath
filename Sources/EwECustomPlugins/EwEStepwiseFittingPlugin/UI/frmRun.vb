@@ -90,6 +90,12 @@ Public Class frmRun
         Me.m_grid.UIContext = Me.UIContext
         Me.m_grid.Initialize(Me.m_engine)
 
+#If DEBUG Then
+        Me.m_btnExport.Visible = True
+#Else
+        Me.m_btnExport.Visible = False
+#End If
+
         ' Populate controls
         Me.m_nudStepSize.Value = Me.m_engine.AnomalySearchSplineStepSize
         Me.m_cmbAutoSave.SelectedIndex = Me.m_engine.Parameters.AutosaveMode
@@ -226,7 +232,6 @@ Public Class frmRun
         Me.m_btnSelectA.Enabled = bContainsAnomaly
         Me.m_btnSelectV.Enabled = bContainsVul
         Me.m_btnSelectVandA.Enabled = bContainsVul Or bContainsAnomaly
-        Me.m_btnApply.Enabled = bHasCompletedIterationSelected And bHasEnabledIterationSelected
         Me.m_plSettings.Enabled = Not bIsRunning
 
         ' -- Iterations panel --
@@ -238,7 +243,8 @@ Public Class frmRun
         Me.m_btnSelectFishing.Enabled = Not bIsRunning
         Me.m_btnSelectV.Enabled = Not bIsRunning
         Me.m_btnSelectVandA.Enabled = Not bIsRunning
-        Me.m_btnApply.Enabled = Not bIsRunning
+        Me.m_btnApply.Enabled = bHasCompletedIterationSelected And bHasEnabledIterationSelected And Not bIsRunning
+        Me.m_btnExport.Enabled = Not bIsRunning
         Me.m_grid.UpdateRunState()
 
         ' -- Run panel --
@@ -431,6 +437,27 @@ Public Class frmRun
         Me.m_engine.Parameters.PredOrPredPreySSToV = Me.m_rbPredator.Checked
         Me.UpdateControls()
 
+    End Sub
+
+    Private Sub OnExport(sender As Object, e As EventArgs) _
+        Handles m_btnExport.Click
+        Try
+            Dim cmd As cFileSaveCommand = CType(Me.UIContext.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+            cmd.Invoke(ScientificInterfaceShared.My.Resources.FILEFILTER_XML, 0, "Select file save location")
+            If cmd.Result = DialogResult.OK Then
+                Dim IO As New cSFPio(Me.m_engine)
+                Dim msg As cMessage = Nothing
+                If IO.ToXML(cmd.FileName) Then
+                    msg = New cMessage(String.Format("Stepwise fitting results saved to {0}", cmd.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                    msg.Hyperlink = System.IO.Path.GetDirectoryName(cmd.FileName)
+                Else
+                    msg = New cMessage(String.Format("Stepwise fitting results failed to save to {0}", cmd.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+                End If
+                Me.Core.Messages.SendMessage(msg)
+            End If
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub OnSelectAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _

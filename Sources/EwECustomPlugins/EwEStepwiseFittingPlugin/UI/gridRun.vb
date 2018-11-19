@@ -76,7 +76,7 @@ Public Class gridRun
 
     End Sub
 
-    Public ReadOnly Property SelectedIteration As ISFPIterations
+    Friend ReadOnly Property SelectedIteration As ISFPIterations
         Get
             Dim iRow As Integer = Me.SelectedRow
             If (iRow < 1) Then Return Nothing
@@ -214,7 +214,7 @@ Public Class gridRun
 
     End Function
 
-    Protected Function State(iteration As ISFPIterations) As String
+    Friend Function State(iteration As ISFPIterations) As String
 
         Select Case iteration.RunState
             Case ISFPIterations.eRunState.Idle
