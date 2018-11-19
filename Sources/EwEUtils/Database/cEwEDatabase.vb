@@ -108,7 +108,7 @@ Namespace Database
             Public Sub Dispose() Implements IDisposable.Dispose
                 If (Me.m_bDisposed = False) Then
                     Me.m_bDisposed = True
-#If DEBUG Then
+#If VERBOSE_LEVEL > 2 Then
                     Debug.WriteLine("DB writer " & Me.m_ID & " disposed")
 #End If
                     If Me.IsConnected Then Me.Disconnect(True)
