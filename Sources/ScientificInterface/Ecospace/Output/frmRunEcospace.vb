@@ -27,6 +27,7 @@ Imports System.IO
 Imports System.Threading
 Imports EwECore
 Imports EwECore.Auxiliary
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
@@ -471,7 +472,7 @@ Namespace Ecospace
 
 #End Region ' Events 
 
-#Region " Biomass graph "
+#Region " Graph "
 
         Private Sub AppendPlotData()
             Try
@@ -484,13 +485,13 @@ Namespace Ecospace
                 Next
                 Me.m_zgh.RescaleAndRedraw()
             Catch ex As Exception
-                cLog.Write(ex, Me.ToString + ".UpdateBiomassPlot()")
+                cLog.Write(ex, Me.ToString + ".AppendPlotData()")
             End Try
         End Sub
 
-#End Region ' Biomass graph
+#End Region ' Graph
 
-#Region " Map plot "
+#Region " Map "
 
         Private Sub PlotMap(ByVal g As Graphics)
             Try
@@ -918,7 +919,7 @@ Namespace Ecospace
 
         End Sub
 
-#End Region ' Map plot
+#End Region ' Map 
 
 #Region " Events "
 
@@ -1459,47 +1460,46 @@ Namespace Ecospace
 
             ' ToDo: globalize this
 
-            ' THSI CODE IS NOT DONE YET! NEED TO PROVIDE UNITS TO AXIS!!
-
             Dim strTitle As String = ""
-            Dim strYLabel As String = ""
+            Dim strUnit As String = ""
+            Dim u As New cUnits(Me.Core)
 
             Select Case Me.m_graphPlotType
                 Case ePlotTypes.RelB
-                    strTitle = My.Resources.ECOSPACE_HEADER_LOGBREL
-                    strYLabel = My.Resources.ECOSPACE_HEADER_LOGBREL
+                    strTitle = "Relative Biomass"
+                    strUnit = cUnits.CurrencyOverArea
                 Case ePlotTypes.CatchGraph
                     strTitle = "Relative catch"
-                    strYLabel = "?"
+                    strUnit = cUnits.CurrencyOverArea
                 Case ePlotTypes.ConsumpRateGraph
                     strTitle = "Relative consumption rates"
-                    strYLabel = "?"
+                    strUnit = cUnits.CurrencyOverArea
                 Case ePlotTypes.Contaminant
                     strTitle = "Relative contaminants"
-                    strYLabel = "?"
+                    strUnit = cUnits.Proportion
                 Case ePlotTypes.CoverB
                     strTitle = "C/B"
-                    strYLabel = "?"
+                    strUnit = cUnits.Proportion
                 Case ePlotTypes.Effort
-                    strTitle = "Effort"
-                    strYLabel = "?"
+                    strTitle = "Relative Effort"
+                    strUnit = cUnits.Proportion
                 Case ePlotTypes.F
-                    strTitle = "F"
-                    strYLabel = "?"
+                    strTitle = "Relative F"
+                    strUnit = cUnits.CurrencyOverArea
                 Case ePlotTypes.FishingMortGraph
                     strTitle = "Relative fishing mortality"
-                    strYLabel = "?"
+                    strUnit = cUnits.CurrencyOverArea
                 Case ePlotTypes.FOverB
                     strTitle = "F/B"
-                    strYLabel = "?"
+                    strUnit = cUnits.Proportion
                 Case ePlotTypes.PredMortRateGraph
                     strTitle = "Relative predation mortality rate"
-                    strYLabel = "?"
+                    strUnit = cUnits.Proportion
                 Case Else
                     Debug.Assert(False)
 
             End Select
-            Me.m_zgh.Reset(strTitle, strYLabel, Me.Core.nGroups, Me.Core.nEcospaceTimeSteps, Me.Core.EcosimFirstYear, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+            Me.m_zgh.Reset(strTitle, u.ToString(strUnit), Me.Core.nGroups, Me.Core.nEcospaceTimeSteps, Me.Core.EcosimFirstYear, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
 
         End Sub
 
