@@ -46,8 +46,8 @@ V Apply functional response > Define shape > OK does not update shape data in dl
 V EcoInd histogram: allow user to set number of bins, remember this
 V StepWiseFitting: do not disable entire screen when running; allow vert scroll, stopping
 X StepwiseFitting: run selection buttons are not intuitive: hard to select "baseline and no anomaly", for instance
-  EcosimScenarioFleetGroupCatchability table blocked Ecosim scenario delete
-  Default XML header missing various details
+V EcosimScenarioFleetGroupCatchability table blocked Ecosim scenario delete
+V Default XML header missing various details
 
 == BUGS ==
   Read only models: do not allow users to create/delete items
@@ -57,7 +57,6 @@ X StepwiseFitting: run selection buttons are not intuitive: hard to select "base
   Sort out confusing terminology in Space: fn responses, env responses, habitat foraging responses
   Rewrite map logic! Double-buffering can cause out of memory errors. Perhaps simple fix will do? If not, manage zooming in code (not in WinForms)
   Ecowriter: remark column size to width, not size to content
-  Transect extraction: add plot that shows where there are habitat limitations to fishing
   ImportLayer: use ApplicationStatus to notify user what's happening
   Sometimes biomass plot stay empty when re-running MC? 
   MC: index out of range in Ecosim for larger models. Could be related to QB resample bug that was just fixed
@@ -78,7 +77,9 @@ X StepwiseFitting: run selection buttons are not intuitive: hard to select "base
   EcoInd histogram shows no variaton where MCMC does: Ecopath does not calc stats when in Sensitivity run
   EcoInd histogram items bars sometimes drawn like an X when axis uses very small ticks
   Monte Carlo: Output panel alignment can be pretty weird (computed values misaligned)
-  Unable to delete Ecosim scenario in NWMed model?
+  Cannot reorganize MPAs well in UI
+! Apply foraging responses: X-axis on application lot does not properly show X axis!!!
+? Apply foraging responses - new UI is (too) slow when applying. Perhaps something is wrong?
 
 == FEATURES ==
   Warning if there are no water cells on pre-run
@@ -86,18 +87,16 @@ X StepwiseFitting: run selection buttons are not intuitive: hard to select "base
   MPA dyn: add 'all year', 'all fleets' columns to CSV file (or 'm*', 'fleet*') -> Colette?
   Transect extraction: add fleet and group plots
   Transect extraction: add fleet effort and discards, and show which fleets are banned from fishing through MPAs
-  Bring Ecosim Nutrient loading + Production forcing per PP group to Ecospace: 
-   - Add Nutrient loading layer
-   - Add RelPP layer per PP group
+  Transect extraction: add plot that shows where there are habitat limitations to fishing
   Output MC results per group variable for all trials
   Consider hiding Catchability grid from EwE 6.6 Beta
   Allow remarks on forcing & mediation functions
   Allow remarks on ff / med / capacity assignments
+  Allow copy/paste of 'weird' grids: apply ff, med, etc
   Allow plug-in points on toolstrips (by identifying the class name of the grid / form that has a main toolbar, like quick editor)
   MC best fitting trial summary should show diet, landings, discards data
   Add multi-item delete/keep toggle in 'Define' dialogs (group, fleets, habitats, mpas, env driver layers, importance layers)
   Group info: use cUnit in headers, remove from label resources
-  @Joe: Ecopath params: Remove "Ecospace coupled to external model" checkbox?
   Add Ecospace result writers to EwE core (with secundary access through Ecospace parameters)
   Add Monte Carlo result writers to file management UI
   Monte Carlo: make all entries on settings page permanent (in app settings)
@@ -107,7 +106,11 @@ X StepwiseFitting: run selection buttons are not intuitive: hard to select "base
   Hatchery stocking ff cannot be removed from stanza group -> Works OK in Georgia Strait. Joe?
 	 - Unable to reproduce
   Multi-sim does not seem to validate function names when ran?!  
-  Hyperbolic function parameter names are still at old defaults, is this correct?
   Old MC: was there a link between output saving and the selected group in MC? Check EwE 6.5 code
   Effort dynamics flag overrides effort/F sketching by using economic evaluation only
  
+@ Joe: Ecopath params: Remove "Ecospace coupled to external model" checkbox?
+@ Joe: Hyperbolic function parameter names are still at old defaults, is this correct?
+@ Joe: Bring Ecosim Nutrient loading + Production forcing per PP group to Ecospace: 
+   - Add Nutrient loading layer
+   - Add RelPP layer for each PP group to individually drive production
