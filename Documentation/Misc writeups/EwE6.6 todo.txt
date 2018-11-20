@@ -19,7 +19,7 @@ V Edit env drivers; changes in name, units, and descriptions rarely stick
 V Edit layer UI: add field to edit units
 V Edit layer UI: allow remarks for layers
 V Remove importance layers from Ecospace maps UI; MPA opt only
-V Ecosim CSV output: "landings" not appened to file name
+V Ecosim CSV output: "landings" not appended to file name
 V MC: blocked QB variables still perturbed; should check QBinput and not include GS into IsVariable assessment
 V Pedigree issues: remove ability to add custom CVs in pedigree: that was a bad idea
 V Catchabilities column too small
