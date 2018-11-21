@@ -338,7 +338,7 @@
     <value>Save to a CSV file</value>
   </data>
   <data name="FILEFILTER_ASC" xml:space="preserve">
-    <value>ESRI Asc files|*.asc</value>
+    <value>ESRI Asc files|*.asc;*.txt</value>
   </data>
   <data name="FILEFILTER_IMAGE_EMF" xml:space="preserve">
     <value>Enhanced meta files|*.emf</value>
