@@ -4358,7 +4358,8 @@ Public Class frmEwE6
                     dlg.File = Me.m_cmdImportLayerData.File
                     dlg.ShowDialog(Me)
 
-                Case eNativeLayerFileFormatTypes.ASCII
+                Case eNativeLayerFileFormatTypes.ASCII,
+                     eNativeLayerFileFormatTypes.TXT
                     Dim l As cEcospaceLayer = Me.m_cmdImportLayerData.Layers(0)
                     Dim file As String = Me.m_cmdImportLayerData.File
 
