@@ -103,8 +103,11 @@ V Default XML header missing various details
   StepWise fitting: store and retrieve fitted params (vuls, anomaly shape)
 
 == NOT UNASSESSED ==
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+JB assessed on a couple of models and it looks like it's working
   Hatchery stocking ff cannot be removed from stanza group -> Works OK in Georgia Strait. Joe?
 	 - Unable to reproduce
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   Multi-sim does not seem to validate function names when ran?!  
   Old MC: was there a link between output saving and the selected group in MC? Check EwE 6.5 code
   Effort dynamics flag overrides effort/F sketching by using economic evaluation only
