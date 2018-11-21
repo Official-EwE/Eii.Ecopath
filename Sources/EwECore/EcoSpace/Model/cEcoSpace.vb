@@ -2553,7 +2553,7 @@ Public Class cEcoSpace
                         If EcoSpaceData.Depth(i, j) > 0 Then
 
                             EcoSpaceData.Bcell(i, j, ip) = (Me.EcoSpaceData.nWaterCells / Me.EcoSpaceData.TotHabCap(ip)) * Me.EcoSpaceData.HabCap(ip)(i, j) * EcoSimData.StartBiomass(ip)
-                            'sumb(ip) += m_Data.Bcell(i, j, ip)
+                            sumb(ip) += EcoSpaceData.Bcell(i, j, ip)
 
                             If EcoSpaceData.IsMigratory(ip) Then
                                 If Me.EcoSpaceData.MigMaps(ip, 1)(i, j) > MIN_MIG_PROB Then
@@ -2590,7 +2590,7 @@ Public Class cEcoSpace
                 Btime(ip) = Btime(ip) / EcoSpaceData.nWaterCells
                 'For Debugging
                 If ip > 0 Then
-                    ' System.Console.WriteLine(Me.m_EPdata.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.m_EPdata.B(ip)).ToString)
+                    System.Console.WriteLine(Me.EcoPathData.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.EcoPathData.B(ip)).ToString)
                 End If
             Next ip
 
@@ -8177,7 +8177,7 @@ exitline:
 
     Private Sub normalizeCapacityMap()
         Dim iGrp As Integer, ir As Integer, ic As Integer
-
+        Dim sumCap As Single, nCap As Integer
         'now normalize the capacity map
         For iGrp = 1 To Me.EcoSpaceData.NGroups
 
@@ -8187,11 +8187,15 @@ exitline:
 
                 'Capacity Model has a one time initialization of the max capacity used for normalization
                 If Not Me.EcoSpaceData.hasCapInitialized Then
+                    sumCap = 0
+                    nCap = 0
                     For ir = 1 To Me.EcoSpaceData.InRow
                         For ic = 1 To Me.EcoSpaceData.InCol
                             If Me.EcoSpaceData.Depth(ir, ic) > 0 Then
                                 If Not EcoSpaceData.IsMigratory(iGrp) Then
                                     EcoSpaceData.MaxHabCap(iGrp) = Math.Max(Me.EcoSpaceData.HabCap(iGrp)(ir, ic), EcoSpaceData.MaxHabCap(iGrp))
+                                    'sumCap += Me.EcoSpaceData.HabCap(iGrp)(ir, ic)
+                                    'nCap += 1
                                 Else
                                     For imon As Integer = 1 To 12
                                         'is this cell part of the migration pattern for any month
@@ -8204,6 +8208,8 @@ exitline:
                             End If 'Me.m_Data.Depth(ir, ic) > 0
                         Next ic
                     Next ir
+                    'Normalize by mean instead of max
+                    'Me.EcoSpaceData.MaxHabCap(iGrp) = CSng(sumCap / nCap)
                 End If 'Not Me.m_Data.hasCapInitialized 
 
                 'Normalize and get the total cap by group
@@ -8212,6 +8218,7 @@ exitline:
                         If Me.EcoSpaceData.Depth(ir, ic) > 0 Then
                             'normalized capacity
                             Me.EcoSpaceData.HabCap(iGrp)(ir, ic) = Me.EcoSpaceData.HabCap(iGrp)(ir, ic) / Me.EcoSpaceData.MaxHabCap(iGrp)
+
                             'Greater than min Capacity
                             If Me.EcoSpaceData.HabCap(iGrp)(ir, ic) < MIN_HABCAP Then Me.EcoSpaceData.HabCap(iGrp)(ir, ic) = MIN_HABCAP '0.000001F
 
