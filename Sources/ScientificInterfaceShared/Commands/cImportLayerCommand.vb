@@ -33,6 +33,7 @@ Namespace Commands
         CSV = [Default]
         XYZ
         ASCII
+        TXT = ASCII
     End Enum
 
     ''' ---------------------------------------------------------------------------

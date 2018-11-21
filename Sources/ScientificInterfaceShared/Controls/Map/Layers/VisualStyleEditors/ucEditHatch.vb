@@ -191,7 +191,7 @@ Namespace Controls
             SelectCustomControl(eSelectionType.BackColor)
         End Sub
 
-        Private Sub pbBackColor_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles plBackColor.Click
+        Private Sub pbBackColor_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles plBackColor.DoubleClick
             SelectCustomControl(eSelectionType.BackColor)
             DisplayDropdown()
         End Sub

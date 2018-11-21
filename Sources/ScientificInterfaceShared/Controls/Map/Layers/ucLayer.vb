@@ -202,6 +202,10 @@ Namespace Controls.Map
             e.Graphics.FillRectangle(Brushes.White, rcPreview)
             Me.m_layer.Renderer.RenderPreview(e.Graphics, rcPreview)
 
+            ' - Render border
+            ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Sunken,
+                Border3DSide.Bottom Or Border3DSide.Left Or Border3DSide.Top Or Border3DSide.Right)
+
             If (prop IsNot Nothing) Then
                 ' - Render remarks indicator
                 Dim sg As cStyleGuide = Me.m_uic.StyleGuide
@@ -209,10 +213,6 @@ Namespace Controls.Map
                     cRemarksIndicator.Paint(sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND), rcPreview, e.Graphics, True, cSystemUtils.IsRightToLeft)
                 End If
             End If
-
-            ' - Render border
-            ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Sunken,
-                Border3DSide.Bottom Or Border3DSide.Left Or Border3DSide.Top Or Border3DSide.Right)
 
             If Me.m_bDragDrop Then
                 ' Draw hot track border when dragging

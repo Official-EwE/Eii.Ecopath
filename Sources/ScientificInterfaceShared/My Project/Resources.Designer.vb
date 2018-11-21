@@ -1732,7 +1732,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to ESRI Asc files|*.asc.
+        '''  Looks up a localized string similar to ESRI Asc files|*.asc;*.txt.
         '''</summary>
         Public ReadOnly Property FILEFILTER_ASC() As String
             Get
