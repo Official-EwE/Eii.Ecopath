@@ -48,6 +48,11 @@ V StepWiseFitting: do not disable entire screen when running; allow vert scroll,
 X StepwiseFitting: run selection buttons are not intuitive: hard to select "baseline and no anomaly", for instance
 V EcosimScenarioFleetGroupCatchability table blocked Ecosim scenario delete
 V Default XML header missing various details
+V Run Ecospace Y axis graph legend only correct for Biomass, not for others
+V Tools icon in Nav tree does not have transparent background
+V Generic EwE ASCII map import should use US formatting
+V Generic EwE ASCII map import should allow the use of .txt extension too
+V Allow custom monetary units
 
 == BUGS ==
   Read only models: do not allow users to create/delete items
@@ -60,7 +65,6 @@ V Default XML header missing various details
   ImportLayer: use ApplicationStatus to notify user what's happening
   Sometimes biomass plot stay empty when re-running MC? 
   MC: index out of range in Ecosim for larger models. Could be related to QB resample bug that was just fixed
-  Tools icon in Nav tree does not have transparent background
   Edit MultiStanza: unable to fix start age of 1 group if two groups start at 0. Can be corrected in Define Groups though
   Fleet-based map drawers in RunEcospace do not draw MPAs
   ENA: After clicking around a lot, MTI table (and others) stop appearing. The wait cursor is spinning, and the status bar is saying "executing plug-in".
@@ -80,6 +84,7 @@ V Default XML header missing various details
   Cannot reorganize MPAs well in UI
 ! Apply foraging responses: X-axis on application lot does not properly show X axis!!!
 ? Apply foraging responses - new UI is (too) slow when applying. Perhaps something is wrong?
+  Run Ecospace shows excluded cells in red, regardless of the customized colour
 
 == FEATURES ==
   Warning if there are no water cells on pre-run
