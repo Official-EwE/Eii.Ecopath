@@ -265,42 +265,46 @@ Public Class cEcospaceImportExportASCIIData
                 Select Case strField.Trim().ToLower
 
                     Case "ncols"
-                        bSuccess = bSuccess And Integer.TryParse(strValue, nCols)
+                        nCols = cStringUtils.ConvertToInteger(strValue, 0)
                         bSuccess = bSuccess And (nCols > 0)
                         checksum = CByte(checksum Or &H1)
 
                     Case "nrows"
-                        bSuccess = bSuccess And Integer.TryParse(strValue, nRows)
+                        nRows = cStringUtils.ConvertToInteger(strValue, 0)
                         bSuccess = bSuccess And (nRows > 0)
                         checksum = CByte(checksum Or &H2)
 
                     Case "xllcorner"
-                        bSuccess = bSuccess And Double.TryParse(strValue, dXLLpos)
+                        dXLLpos = cStringUtils.ConvertToDouble(strValue, cCore.NULL_VALUE)
+                        bSuccess = bSuccess And (dXLLpos <> cCore.NULL_VALUE)
                         bIsCenterX = False
                         checksum = CByte(checksum Or &H4)
 
                     Case "xllcenter"
-                        bSuccess = bSuccess And Double.TryParse(strValue, dXLLpos)
+                        dXLLpos = cStringUtils.ConvertToDouble(strValue, cCore.NULL_VALUE)
+                        bSuccess = bSuccess And (dXLLpos <> cCore.NULL_VALUE)
                         bIsCenterX = True
                         checksum = CByte(checksum Or &H4)
 
                     Case "yllcorner"
-                        bSuccess = bSuccess And Double.TryParse(strValue, dYLLpos)
+                        dYLLpos = cStringUtils.ConvertToDouble(strValue, cCore.NULL_VALUE)
+                        bSuccess = bSuccess And (dYLLpos <> cCore.NULL_VALUE)
                         bIsCenterY = False
                         checksum = CByte(checksum Or &H8)
 
                     Case "yllcenter"
-                        bSuccess = bSuccess And Double.TryParse(strValue, dYLLpos)
+                        dXLLpos = cStringUtils.ConvertToDouble(strValue, cCore.NULL_VALUE)
+                        bSuccess = bSuccess And (dYLLpos <> cCore.NULL_VALUE)
                         bIsCenterY = True
                         checksum = CByte(checksum Or &H8)
 
                     Case "cellsize"
-                        bSuccess = bSuccess And Double.TryParse(strValue, dCellSize)
+                        dCellSize = cStringUtils.ConvertToDouble(strValue, cCore.NULL_VALUE)
                         bSuccess = bSuccess And (dCellSize > 0)
                         checksum = CByte(checksum Or &H10)
 
                     Case "nodatavalue", "nodata_value"
-                        bSuccess = bSuccess And Double.TryParse(strValue, dNoData)
+                        dNoData = cStringUtils.ConvertToDouble(strValue, cCore.NULL_VALUE)
                         checksum = CByte(checksum Or &H20)
 
                     Case Else
@@ -353,22 +357,17 @@ Public Class cEcospaceImportExportASCIIData
     ''' -------------------------------------------------------------------
     Protected Function ReadBody(ByVal reader As StreamReader) As Boolean
 
-        Dim value As Double = 0
-        Dim strValue As String = ""
         Dim bSuccess As Boolean = True
+        Dim separators() As String = {" ", cStringUtils.vbTab, ","}
 
         Try
             For ir As Integer = 1 To Me.m_nRows
                 If (Not reader.EndOfStream) Then
                     'ASC files written by GDAL contain a space at the start of the line so strip it off
-                    'this should not affect other ASC file reading
                     Dim strLine As String = reader.ReadLine.Trim()
-                    Dim astrBits() As String = strLine.Split(" "c)
+                    Dim astrBits() As String = strLine.Split(separators, StringSplitOptions.RemoveEmptyEntries)
                     For ic As Integer = 1 To Math.Min(Me.m_nCols, astrBits.Length)
-                        If Not Double.TryParse(astrBits(ic - 1), value) Then
-                            value = Me.m_dNoData
-                        End If
-                        Me.Value(Me.Seq(ir, ic)) = value
+                        Me.Value(Me.Seq(ir, ic)) = cStringUtils.ConvertToDouble(astrBits(ic - 1), Me.m_dNoData)
                     Next
                 Else
                     bSuccess = False
