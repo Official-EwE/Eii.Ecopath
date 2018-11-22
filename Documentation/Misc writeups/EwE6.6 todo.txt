@@ -53,12 +53,12 @@ V Tools icon in Nav tree does not have transparent background
 V Generic EwE ASCII map import should use US formatting
 V Generic EwE ASCII map import should allow the use of .txt extension too
 V Allow custom monetary units
+V Disable respiration warning for MS groups: non-feeding last stanza high mort -> resp warning
 
 == BUGS ==
   Read only models: do not allow users to create/delete items
   Connect ext data -> define ext data -> connection list does not refresh
-  External data grid add incremental updates, do not total refresh
-  Disable respiration warning for MS groups: non-feeding last stanza high mort -> resp warning
+  External data grid add incremental updates, do not total refresh 
   Sort out confusing terminology in Space: fn responses, env responses, habitat foraging responses
   Rewrite map logic! Double-buffering can cause out of memory errors. Perhaps simple fix will do? If not, manage zooming in code (not in WinForms)
   Ecowriter: remark column size to width, not size to content
@@ -119,6 +119,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
  
 @ Joe: Ecopath params: Remove "Ecospace coupled to external model" checkbox?
 @ Joe: Hyperbolic function parameter names are still at old defaults, is this correct?
+	Yep there was an issue with the order but they are correct, what they mean and how to use it is another story
 @ Joe: Bring Ecosim Nutrient loading + Production forcing per PP group to Ecospace: 
    - Add Nutrient loading layer
    - Add RelPP layer for each PP group to individually drive production
