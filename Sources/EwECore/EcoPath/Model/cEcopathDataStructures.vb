@@ -852,6 +852,8 @@ Public Class cEcopathDataStructures
 
             'Sum of respiration across all the groups
             RTZ += Resp(i)
+
+            'No respiration warning for multistanza groups
             If Resp(i) < 0 And (Functions.getStanzaIndexForGroup(i) = cCore.NULL_VALUE) Then
                 bRespOK = False 'pt = 2
             End If

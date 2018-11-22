@@ -40,21 +40,38 @@ Public Class cHyperbolicShapeFunction
     Public Overrides Function Shape(nPoints As Integer) As Single()
 
         If (Me.ParamsChanged) Then
-            Dim sYZero As Single = Me.ParamValue(1)
-            Dim sYEnd As Single = Me.ParamValue(2)
-            Dim sYBase As Single = Me.ParamValue(3)
-            Dim sSteep As Single = 1.0
+            Dim YZero As Single = Me.ParamValue(1)
+            Dim YEnd As Single = Me.ParamValue(2)
+            Dim YBase As Single = Me.ParamValue(3)
+            Dim Steep As Single = 1.0
             Dim xHalf, xPow As Single
 
-            If sYBase <> sYZero Then
-                xHalf = CSng((sYEnd - sYZero) * ((cShapeFunction.xBase ^ sSteep) / (sYBase - sYZero)) - (cShapeFunction.xBase ^ sSteep))
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'jb 22-Nov-2018 no point in including sSteep parameter. 
+            'It's not doing anything
+            'If sYBase <> sYZero Then
+            '    xHalf = CSng((sYEnd - sYZero) * ((cShapeFunction.xBase ^ sSteep) / (sYBase - sYZero)) - (cShapeFunction.xBase ^ sSteep))
+            'Else
+            '    xHalf = 1000
+            'End If
+            'For i As Integer = 1 To nPoints
+            '    xPow = CSng((i / nPoints) ^ sSteep)
+            '    If (xHalf + xPow <> 0) Then
+            '        Me.m_points(i) = sYZero + ((sYEnd - sYZero) * xPow / (xHalf + xPow))
+            '    End If
+            'Next i
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+            If YBase <> YZero Then
+                xHalf = CSng((YEnd - YZero) * (cShapeFunction.xBase / (YBase - YZero)) - cShapeFunction.xBase)
             Else
                 xHalf = 1000
             End If
             For i As Integer = 1 To nPoints
-                xPow = CSng((i / nPoints) ^ sSteep)
+                xPow = CSng((i / nPoints))
                 If (xHalf + xPow <> 0) Then
-                    Me.m_points(i) = sYZero + ((sYEnd - sYZero) * xPow / (xHalf + xPow))
+                    Me.m_points(i) = YZero + ((YEnd - YZero) * xPow / (xHalf + xPow))
                 End If
             Next i
         End If
@@ -79,6 +96,13 @@ Public Class cHyperbolicShapeFunction
     Public Overrides ReadOnly Property ParamName(iParam As Integer) As String
         Get
             Select Case iParam
+                Case 1
+                    Return "Y Zero"
+                Case 2
+                    Return "Y End"
+                Case 3
+                    Return "Y Base"
+
                 'Only override the scalar name
                 Case 4 : Return "Y scalar"
             End Select
