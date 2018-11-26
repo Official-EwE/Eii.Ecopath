@@ -75,6 +75,14 @@ Namespace Ecospace.Basemap.Layers
             Me.m_nudWeight = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_lblUnits = New System.Windows.Forms.Label()
             Me.m_tbUnits = New System.Windows.Forms.TextBox()
+            Me.m_lblMaxValue = New System.Windows.Forms.Label()
+            Me.m_lblMinValue = New System.Windows.Forms.Label()
+            Me.m_lblMeanValue = New System.Windows.Forms.Label()
+            Me.m_lblNoCellsValue = New System.Windows.Forms.Label()
+            Me.m_tbxMaxValue = New System.Windows.Forms.TextBox()
+            Me.m_tbxMeanValue = New System.Windows.Forms.TextBox()
+            Me.m_tbxMinValue = New System.Windows.Forms.TextBox()
+            Me.m_tbxNoCellsValue = New System.Windows.Forms.TextBox()
             Me.m_hdrAppearance = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpImportStyle = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblCopyFrom = New System.Windows.Forms.Label()
@@ -300,6 +308,14 @@ Namespace Ecospace.Basemap.Layers
             Me.m_tlpDetails.Controls.Add(Me.m_nudWeight, 1, 2)
             Me.m_tlpDetails.Controls.Add(Me.m_lblUnits, 0, 1)
             Me.m_tlpDetails.Controls.Add(Me.m_tbUnits, 1, 1)
+            Me.m_tlpDetails.Controls.Add(Me.m_lblMaxValue, 0, 5)
+            Me.m_tlpDetails.Controls.Add(Me.m_lblMinValue, 0, 6)
+            Me.m_tlpDetails.Controls.Add(Me.m_lblMeanValue, 0, 7)
+            Me.m_tlpDetails.Controls.Add(Me.m_lblNoCellsValue, 0, 8)
+            Me.m_tlpDetails.Controls.Add(Me.m_tbxMaxValue, 1, 5)
+            Me.m_tlpDetails.Controls.Add(Me.m_tbxMeanValue, 1, 6)
+            Me.m_tlpDetails.Controls.Add(Me.m_tbxMinValue, 1, 7)
+            Me.m_tlpDetails.Controls.Add(Me.m_tbxNoCellsValue, 1, 8)
             Me.m_tlpDetails.Name = "m_tlpDetails"
             '
             'm_tbDescription
@@ -332,6 +348,50 @@ Namespace Ecospace.Basemap.Layers
             '
             resources.ApplyResources(Me.m_tbUnits, "m_tbUnits")
             Me.m_tbUnits.Name = "m_tbUnits"
+            '
+            'm_lblMaxValue
+            '
+            resources.ApplyResources(Me.m_lblMaxValue, "m_lblMaxValue")
+            Me.m_lblMaxValue.Name = "m_lblMaxValue"
+            '
+            'm_lblMinValue
+            '
+            resources.ApplyResources(Me.m_lblMinValue, "m_lblMinValue")
+            Me.m_lblMinValue.Name = "m_lblMinValue"
+            '
+            'm_lblMeanValue
+            '
+            resources.ApplyResources(Me.m_lblMeanValue, "m_lblMeanValue")
+            Me.m_lblMeanValue.Name = "m_lblMeanValue"
+            '
+            'm_lblNoCellsValue
+            '
+            resources.ApplyResources(Me.m_lblNoCellsValue, "m_lblNoCellsValue")
+            Me.m_lblNoCellsValue.Name = "m_lblNoCellsValue"
+            '
+            'm_tbxMaxValue
+            '
+            resources.ApplyResources(Me.m_tbxMaxValue, "m_tbxMaxValue")
+            Me.m_tbxMaxValue.Name = "m_tbxMaxValue"
+            Me.m_tbxMaxValue.ReadOnly = True
+            '
+            'm_tbxMeanValue
+            '
+            resources.ApplyResources(Me.m_tbxMeanValue, "m_tbxMeanValue")
+            Me.m_tbxMeanValue.Name = "m_tbxMeanValue"
+            Me.m_tbxMeanValue.ReadOnly = True
+            '
+            'm_tbxMinValue
+            '
+            resources.ApplyResources(Me.m_tbxMinValue, "m_tbxMinValue")
+            Me.m_tbxMinValue.Name = "m_tbxMinValue"
+            Me.m_tbxMinValue.ReadOnly = True
+            '
+            'm_tbxNoCellsValue
+            '
+            resources.ApplyResources(Me.m_tbxNoCellsValue, "m_tbxNoCellsValue")
+            Me.m_tbxNoCellsValue.Name = "m_tbxNoCellsValue"
+            Me.m_tbxNoCellsValue.ReadOnly = True
             '
             'm_hdrAppearance
             '
@@ -431,5 +491,13 @@ Namespace Ecospace.Basemap.Layers
         Private WithEvents m_cmbCopyStyleFrom As ComboBox
         Private WithEvents m_lblUnits As Label
         Private WithEvents m_tbUnits As TextBox
+        Private WithEvents m_lblMaxValue As Label
+        Private WithEvents m_lblMinValue As Label
+        Private WithEvents m_lblMeanValue As Label
+        Private WithEvents m_lblNoCellsValue As Label
+        Private WithEvents m_tbxMaxValue As TextBox
+        Private WithEvents m_tbxMeanValue As TextBox
+        Private WithEvents m_tbxMinValue As TextBox
+        Private WithEvents m_tbxNoCellsValue As TextBox
     End Class
 End Namespace
