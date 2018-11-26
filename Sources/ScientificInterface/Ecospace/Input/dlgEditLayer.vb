@@ -415,6 +415,20 @@ Namespace Ecospace.Basemap.Layers
 
             Me.m_tscmbVectorData.Visible = Me.m_bIsVectorData
 
+            Dim data As cEcospaceLayer = Me.m_layerWork.Data
+            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+
+            Me.m_tbxMaxValue.Text = sg.FormatNumber(data.MaxValue)
+            Me.m_tbxMinValue.Text = sg.FormatNumber(data.MinValue)
+            Me.m_tbxNoCellsValue.Text = sg.FormatNumber(data.NumValueCells)
+
+            If (TypeOf data Is cEcospaceLayerSingle) Then
+                Me.m_tbxMeanValue.Visible = True : Me.m_lblMeanValue.Visible = True
+                Me.m_tbxMeanValue.Text = sg.FormatNumber(DirectCast(data, cEcospaceLayerSingle).MeanValue)
+            Else
+                Me.m_tbxMeanValue.Visible = False : Me.m_lblMeanValue.Visible = False
+            End If
+
         End Sub
 
         Private Function ApplyChanges() As Boolean
