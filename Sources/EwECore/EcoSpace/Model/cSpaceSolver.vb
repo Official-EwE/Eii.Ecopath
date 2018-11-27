@@ -80,6 +80,10 @@ Public Class cSpaceSolver
     Public HdenCell(,,) As Single
     Public RelFitness(,,) As Single
     Public FtimeCell(,,) As Single
+
+    ''' <summary>
+    ''' Consumption rate by cell, group. EatenBy/Biomass
+    ''' </summary>
     Public Cper(,,) As Single
     Public PconSplit() As Single
     Public RelRepStanza() As Single
