@@ -161,7 +161,6 @@ Namespace Ecospace.Basemap.Layers
             'm_grid
             '
             Me.m_grid.AllowBlockSelect = True
-            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -169,6 +168,7 @@ Namespace Ecospace.Basemap.Layers
             Me.m_grid.ContextMenuStyle = SourceGrid2.ContextMenuStyle.None
             Me.m_grid.CustomSort = False
             Me.m_grid.DataName = "grid content"
+            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = True
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
