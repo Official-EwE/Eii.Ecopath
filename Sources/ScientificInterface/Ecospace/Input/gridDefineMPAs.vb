@@ -535,26 +535,26 @@ Namespace Ecospace
 
             Dim objTemp As cMPAInfo = Nothing
             Dim iStep As Integer = 1
-            Dim iFromHab As Integer = iFromRow - iFIRSTMPAROW
-            Dim iToHab As Integer = iToRow - iFIRSTMPAROW
+            Dim iFrom As Integer = iFromRow - iFIRSTMPAROW
+            Dim iTo As Integer = iToRow - iFIRSTMPAROW
 
             ' Truncate
-            iFromHab = Math.Max(0, Math.Min(Me.m_mpas.Count - 1, iFromHab))
-            iToHab = Math.Max(0, Math.Min(Me.m_mpas.Count - 1, iToHab))
+            iFrom = Math.Max(0, Math.Min(Me.m_mpas.Count - 1, iFrom))
+            iTo = Math.Max(0, Math.Min(Me.m_mpas.Count - 1, iTo))
 
             ' Nothing to do? abort
-            If iFromHab = iToHab Then Return
+            If iFrom = iTo Then Return
             ' Determine direction of movement
-            If iFromHab < iToHab Then iStep = 1 Else iStep = -1
+            If iFrom < iTo Then iStep = 1 Else iStep = -1
 
             ' Swap  
-            For iHab As Integer = iFromHab To iToHab - iStep Step iStep
-                objTemp = Me.m_mpas(iHab + iStep)
-                Me.m_mpas(iHab + iStep) = Me.m_mpas(iHab)
-                Me.m_mpas(iHab) = objTemp
-                Me.UpdateRow(iHab + iFIRSTMPAROW)
-                Me.UpdateRow(iHab + iFIRSTMPAROW + iStep)
-            Next iHab
+            For i As Integer = iFrom To iTo - iStep Step iStep
+                objTemp = Me.m_mpas(i + iStep)
+                Me.m_mpas(i + iStep) = Me.m_mpas(i)
+                Me.m_mpas(i) = objTemp
+                Me.UpdateRow(i + iFIRSTMPAROW)
+                Me.UpdateRow(i + iFIRSTMPAROW + iStep)
+            Next i
 
         End Sub
 
