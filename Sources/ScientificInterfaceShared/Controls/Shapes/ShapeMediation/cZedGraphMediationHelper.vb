@@ -26,6 +26,7 @@ Imports EwECore
 Imports ZedGraph
 Imports System.ComponentModel
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 
 #End Region
 
@@ -56,8 +57,6 @@ Namespace Controls
 
         Protected Overrides Function FormatTooltip(ByVal pane As ZedGraph.GraphPane, ByVal curve As ZedGraph.CurveItem, ByVal iPoint As Integer) As String
 
-            ' ToDo: localize this
-
             'This is not a very good way to do this 
             'It may be better to not use a tool tip at all 
             'instead pass out the X and Y Axis value(s) and let the container figure out how to show the data
@@ -87,13 +86,12 @@ Namespace Controls
 
                 Debug.Assert(curve.IsLine, "ToolTip wrong line type.")
 
-                ' ToDo: localize this
                 Dim sb As New System.Text.StringBuilder()
-                sb.AppendLine("Capacity for Map input.")
+                sb.AppendLine(My.Resources.TOOLTIP_MEDIATION_CAPACITY)
 
                 Dim pp As PointPair = curve(iPoint)
-                sb.AppendLine("Map input " & Me.StyleGuide.FormatNumber(pp.X))
-                sb.AppendLine("Capacity multiplier" & Me.StyleGuide.FormatNumber(pp.Y))
+                sb.AppendLine(cStringUtils.Localize(My.Resources.TOOLTIP_MEDIATION_DRIVER_VALUE, Me.StyleGuide.FormatNumber(pp.X)))
+                sb.AppendLine(cStringUtils.Localize(My.Resources.TOOLTIP_MEDIATION_CAPACITY_MULTIPLIER, Me.StyleGuide.FormatNumber(pp.Y)))
                 Return sb.ToString
             Catch ex As Exception
 

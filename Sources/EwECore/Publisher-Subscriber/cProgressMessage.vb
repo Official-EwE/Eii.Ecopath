@@ -39,10 +39,10 @@ Public Class cProgressMessage
     ''' <param name="msgType">Optional <see cref="eMessageType">type</see> of the message.</param>
     ''' <param name="msgDataType">Optional <see cref="eDataTypes">data type</see> associated with the message.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal state As eProgressState, _
-                   ByVal sMaxValue As Single, ByVal sProgress As Single, _
-                   ByVal strMessage As String, _
-                   Optional ByVal msgType As eMessageType = eMessageType.Progress, _
+    Public Sub New(ByVal state As eProgressState,
+                   ByVal sMaxValue As Single, ByVal sProgress As Single,
+                   ByVal strMessage As String,
+                   Optional ByVal msgType As eMessageType = eMessageType.Progress,
                    Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
 
         If (sMaxValue = 0) Then sMaxValue = 1

@@ -8451,6 +8451,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Driver histogram.
+        '''</summary>
+        Public ReadOnly Property TOOLTIP_MEDIATION_CAPACITY() As String
+            Get
+                Return ResourceManager.GetString("TOOLTIP_MEDIATION_CAPACITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Capacity multiplier {0}.
+        '''</summary>
+        Public ReadOnly Property TOOLTIP_MEDIATION_CAPACITY_MULTIPLIER() As String
+            Get
+                Return ResourceManager.GetString("TOOLTIP_MEDIATION_CAPACITY_MULTIPLIER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Driver value {0}.
+        '''</summary>
+        Public ReadOnly Property TOOLTIP_MEDIATION_DRIVER_VALUE() As String
+            Get
+                Return ResourceManager.GetString("TOOLTIP_MEDIATION_DRIVER_VALUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Save to a CSV file.
         '''</summary>
         Public ReadOnly Property TOOLTIP_SAVETOCSV() As String

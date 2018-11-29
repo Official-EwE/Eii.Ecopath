@@ -33,6 +33,7 @@ Imports ScientificInterfaceShared.Controls
 
 Public Class EwEEcosamplerPlugin
     Implements IMonteCarloPlugin
+    Implements IEcosimInitializedPlugin
     Implements IUIContextPlugin
     Implements INavigationTreeItemPlugin
     Implements IDockStatePlugin
@@ -45,6 +46,7 @@ Public Class EwEEcosamplerPlugin
     Private m_uic As cUIContext = Nothing
     Private m_sampleman As cEcopathSampleManager = Nothing
     Private m_montecarlo As cEcosimMonteCarlo = Nothing
+    Private m_esdata As cEcosimDatastructures = Nothing
     Private m_iNumSamples As Integer = 0
     Private m_ui As frmSamples = Nothing
 
@@ -188,6 +190,17 @@ Public Class EwEEcosamplerPlugin
 
 #End Region ' Menu plugin
 
+#Region " Ecosim plugin "
+
+    Public Sub EcosimInitialized(EcosimDatastructures As Object) _
+        Implements IEcosimInitializedPlugin.EcosimInitialized
+
+        Me.m_esdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
+
+    End Sub
+
+#End Region ' Ecosim plug-in
+
 #Region " Monte Carlo plugin "
 
     Public Sub MontCarloInitialized(MonteCarloAsObject As Object) _
@@ -208,13 +221,17 @@ Public Class EwEEcosamplerPlugin
 
     End Sub
 
+    Private m_sampleCurrent As cEcopathSample = Nothing
+
     Public Sub MonteCarloBalancedEcopathModel(TrialNumber As Integer, nIterations As Integer) _
         Implements EwEPlugin.IMonteCarloPlugin.MonteCarloBalancedEcopathModel
 
         If (Not Me.IsRecording) Then Return
 
         Try
-            If (Me.m_sampleman.Record(Me.m_strBaseHash, Me.m_montecarlo) IsNot Nothing) Then
+            ' Note that the SS has not been calculated here!!
+            Me.m_sampleCurrent = Me.m_sampleman.Record(Me.m_strBaseHash, Me.m_montecarlo)
+            If (Me.m_sampleCurrent IsNot Nothing) Then
                 Me.m_iNumSamples += 1
             End If
         Catch ex As Exception
@@ -230,7 +247,14 @@ Public Class EwEEcosamplerPlugin
 
     Public Sub MonteCarloEcosimRunCompleted() _
         Implements EwEPlugin.IMonteCarloPlugin.MonteCarloEcosimRunCompleted
-        ' NOP
+
+        If (Not Me.IsRecording) Then Return
+
+        ' Capture SS and store it
+        If (Me.m_sampleCurrent IsNot Nothing) Then
+            Me.m_sampleman.StoreEcosimDiagnostics(Me.m_sampleCurrent, Me.m_montecarlo, m_esdata)
+            Me.m_sampleCurrent = Nothing
+        End If
     End Sub
 
     Public Sub MonteCarloRunCompleted() _
@@ -241,6 +265,7 @@ Public Class EwEEcosamplerPlugin
         ' Restore MCMC respiration validation to original state
         Me.m_montecarlo.ValidateRespiration = Me.m_bValidateRespirationOrg
         Me.m_bValidateRespirationOrg = False
+        Me.m_uic.Core.SaveChanges(True)
 
         Try
             Dim msg As New cMessage(cStringUtils.Localize(My.Resources.RECORD_REPORT, Me.m_iNumSamples),

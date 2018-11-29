@@ -160,7 +160,7 @@ Namespace Controls
                 Me.m_uic = value
 
                 If Me.m_uic IsNot Nothing Then
-                    Me.m_zgh = New cZedGraphMediationHelper 'cZedGraphHelper()
+                    Me.m_zgh = New cZedGraphMediationHelper
                     Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph, 1)
                     Me.LoadGraphData(Me.m_data)
 

@@ -73,6 +73,9 @@ Namespace Samples
             val = New cValue(New Integer, eVarNameFlags.SampleRating, eStatusFlags.Null, eValueTypes.Int)
             Me.m_values.Add(val.varName, val)
 
+            val = New cValue(New Single, eVarNameFlags.SampleSS, eStatusFlags.Null, eValueTypes.Sng)
+            Me.m_values.Add(val.varName, val)
+
             Me.AllowValidation = True
 
             Me.ResetStatusFlags()
@@ -107,11 +110,6 @@ Namespace Samples
         ''' Get/set the source computer that a sample was generated on.
         ''' </summary>
         Public Property Source As String = ""
-
-        ''' <summary>
-        ''' Sum of squares for the sample. 
-        ''' </summary>
-        Public Property SS As Single = cCore.NULL_VALUE
 
         ''' <summary>
         ''' Returns the number of EE values that exceed 1
@@ -224,6 +222,15 @@ Namespace Samples
             End Get
             Set(value As eStatusFlags)
                 Me.SetStatus(eVarNameFlags.SampleRating, value)
+            End Set
+        End Property
+
+        Public Property SS() As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.SampleSS))
+            End Get
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.SampleSS, value)
             End Set
         End Property
 

@@ -731,14 +731,6 @@ Public Class cEcosimMonteCarlo
 
                     Me.m_bIsBestFit = Me.isTimeSeriesLoaded() And (m_esdata.SS < SSBestFit)
 
-                    If Me.m_pluginmanager IsNot Nothing Then
-                        Try
-                            Me.m_pluginmanager.MonteCarloEcosimRunCompleted()
-                        Catch ex As Exception
-                            cLog.Write(ex, "cEcosimMonteCarlo::Run(" & m_iTrial & ")")
-                        End Try
-                    End If
-
                     'xxxxxxxxxxxxxxxxxxxx Below is for global Nereus model, June 2013 xxxxxxxxxxxxxxxxxx
                     'Calculate penalty for being away from reasonable fishing mortalityIsVariable
                     Fpenalty = Me.getFPenalty(bFirstRun, bForcedCatches)
@@ -781,6 +773,14 @@ Public Class cEcosimMonteCarlo
 
                         End If 'bRetainBiomass
                     End If ' m_esdata.SS < SSBestFit
+
+                    If Me.m_pluginmanager IsNot Nothing Then
+                        Try
+                            Me.m_pluginmanager.MonteCarloEcosimRunCompleted()
+                        Catch ex As Exception
+                            cLog.Write(ex, "cEcosimMonteCarlo::Run(" & m_iTrial & ")")
+                        End Try
+                    End If
 
                     If (Me.ResultWriter IsNot Nothing) Then
                         ' Only save when an alternative balanced model was found

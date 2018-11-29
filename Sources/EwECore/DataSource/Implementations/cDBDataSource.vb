@@ -10831,6 +10831,7 @@ Namespace DataSources
                     sample.Hash = CStr(reader("Hash"))
                     sample.Source = CStr(reader("Source"))
                     sample.Rating = CInt(reader("Rating"))
+                    sample.SS = CSng(Me.m_db.ReadSafe(reader, "SS", cCore.NULL_VALUE))
                     sample.Generated = cDateUtils.JulianToDate(CDbl(reader("Generated")))
                     sample.AllowValidation = True
 
@@ -10980,6 +10981,7 @@ Namespace DataSources
                     Debug.Assert(drow IsNot Nothing)
                     drow.BeginEdit()
                     drow("Rating") = sample.Rating
+                    drow("SS") = sample.SS
                     drow.EndEdit()
                 Next
 
@@ -11014,6 +11016,7 @@ Namespace DataSources
                 drow("Hash") = sample.Hash
                 drow("Source") = sample.Source
                 drow("Rating") = sample.Rating
+                drow("SS") = cCore.NULL_VALUE
                 drow("Generated") = cDateUtils.DateToJulian(sample.Generated)
                 writer.AddRow(drow)
             Catch ex As Exception

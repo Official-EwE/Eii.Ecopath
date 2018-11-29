@@ -303,6 +303,7 @@ Public Class cVariableMetaData
 
         ' -- Samples --
         Me.Metadata(eVarNameFlags.SampleRating) = New cVariableMetaData(0, 5, ge, le)
+        Me.Metadata(eVarNameFlags.SampleSS) = New cVariableMetaData(0, Single.MaxValue, ge, lt, cCore.NULL_VALUE)
 
         ' -- Ecosim --
         ' params
