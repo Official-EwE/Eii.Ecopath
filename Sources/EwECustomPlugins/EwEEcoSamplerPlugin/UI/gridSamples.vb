@@ -102,7 +102,7 @@ Public Class gridSamples
             Me(iRow, eColumnTypes.Loaded) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
 
             cell = New EwECell(s.SS, cStyleGuide.eStyleFlags.NotEditable)
-            cell.SuppressZero(cCore.NULL_VALUE) = True
+            cell.SuppressZero(0) = True
             Me(iRow, eColumnTypes.SS) = cell
 
             cell = New EwECell(s.NumInvalidEE, cStyleGuide.eStyleFlags.NotEditable)
@@ -155,6 +155,7 @@ Public Class gridSamples
         For iRow As Integer = 1 To Me.RowsCount - 1
             Dim s As cEcopathSample = Me.Sample(iRow)
             Me(iRow, eColumnTypes.Loaded).Value = If(man.IsLoaded(s), SharedResources.GENERIC_VALUE_YES, "")
+            Me(iRow, eColumnTypes.SS).Value = s.SS
 #If ShowRatings Then
             Me(iRow, eColumnTypes.Rating).Value = s.Rating
 #End If

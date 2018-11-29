@@ -509,10 +509,11 @@
     <Compile Include="Ecobase\dlgEcobaseImport.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Other\frmSplash.Designer.vb">
+    <Compile Include="Other\SplashScreen\cSplashManager.vb" />
+    <Compile Include="Other\SplashScreen\frmSplash.Designer.vb">
       <DependentUpon>frmSplash.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\frmSplash.vb">
+    <Compile Include="Other\SplashScreen\frmSplash.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Other\Import\Pages\ucImportPageError.Designer.vb">
@@ -1197,7 +1198,7 @@
       <DependentUpon>dlgEcobaseImport.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\frmSplash.resx">
+    <EmbeddedResource Include="Other\SplashScreen\frmSplash.resx">
       <DependentUpon>frmSplash.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Import\Pages\ucImportPageError.resx">
@@ -2120,6 +2121,22 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Personal\Safenet\EwEBiomassEmitterPlugin\EwEBiomassEmitterPlugin.vbproj">
+      <Project>{f1e83a61-8a90-4975-abae-a546e74e7235}</Project>
+      <Name>EwEBiomassEmitterPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Personal\Safenet\EwEMassApplyEnvResponsesPlugin\EwEMassApplyEnvResponsesPlugin.vbproj">
+      <Project>{d0482e79-0d3e-4cd8-ac65-a26bb3104ec6}</Project>
+      <Name>EwEMassApplyEnvResponsesPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEEcospaceSpinupPlugin\EwEEcospaceSpinupPlugin.vbproj">
+      <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
+      <Name>EwEEcospaceSpinupPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
+      <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
+      <Name>EwESpatialAssetsPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>

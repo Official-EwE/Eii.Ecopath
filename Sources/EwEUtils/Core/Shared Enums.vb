@@ -1878,6 +1878,7 @@ Namespace Core
         PublicationReference
 
         SampleRating
+        SampleSS
 
         Z
 

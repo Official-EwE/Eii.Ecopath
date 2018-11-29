@@ -36,11 +36,8 @@ Friend Class frmSplash
     Private m_dtExpiry As DateTime = DateTime.MinValue
     Private m_bCanAutoClose As Boolean = True
 
-    Private Shared g_instance As frmSplash = Nothing
-
     Public Sub New()
         Me.InitializeComponent()
-        frmSplash.g_instance = Me
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
@@ -71,18 +68,9 @@ Friend Class frmSplash
 
     End Sub
 
-    Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
-        MyBase.OnFormClosed(e)
-        frmSplash.g_instance = Nothing
-    End Sub
-
     Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
         ' NOP
     End Sub
-
-    Public Shared Function GetInstance() As frmSplash
-        Return frmSplash.g_instance
-    End Function
 
     Public Function CanAutoClose() As Boolean
         Return m_bCanAutoClose

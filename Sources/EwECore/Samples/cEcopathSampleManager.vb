@@ -319,6 +319,7 @@ Namespace Samples
         ''' <seealso cref="cEcopathSample"/>
         ''' </summary>
         ''' <param name="strBaseHash">The hash code for the original model.</param>
+        ''' <param name="mc">Monte Carlo to obtain values from.</param>
         ''' <returns>A valid sample, or Nothing if an error occurred.</returns>
         ''' -------------------------------------------------------------------
         Public Function Record(strBaseHash As String, mc As cEcosimMonteCarlo) As cEcopathSample
@@ -343,6 +344,20 @@ Namespace Samples
 
             Return s
 
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Extend an existing sample with Ecosim run diagnostics
+        ''' </summary>
+        ''' <param name="sample">The sample to update.</param>
+        ''' <param name="mc">Monte Carlo to obtain values from.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function StoreEcosimDiagnostics(sample As cEcopathSample, mc As cEcosimMonteCarlo, esdata As cEcosimDatastructures) As Boolean
+            If (mc IsNot Nothing And sample IsNot Nothing) Then
+                sample.SS = esdata.SS
+            End If
         End Function
 
         ''' -------------------------------------------------------------------
@@ -652,7 +667,6 @@ Namespace Samples
             s.Source = Me.MachineName
             s.Generated = Date.Now()
             s.Hash = ""
-            If (mc IsNot Nothing) Then s.SS = mc.SSCurrent
 
             ' Grab parameters
 
@@ -892,6 +906,12 @@ Namespace Samples
 
 #Region " Batch running "
 
+        Private Enum eProgress As Integer
+            Start
+            Busy
+            [End]
+        End Enum
+
         Private Sub RunBatch()
 
             Dim strPathOld As String = Me.m_core.OutputPath
@@ -916,7 +936,7 @@ Namespace Samples
 
                 Try
                     ' Run baseline
-                    Me.SendProgress(0, My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_BASELINE)
+                    Me.SendProgress(eProgressState.Start, 0.01, My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_BASELINE)
                     Me.LogEvent(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_BASELINE, eMessageImportance.Information)
 
                     Me.m_core.OutputPath = System.IO.Path.Combine(strPathOld, "Sample_baseline")
@@ -925,7 +945,7 @@ Namespace Samples
                         If (iEcosim > 0) Then Me.m_core.RunEcoSim()
                         If (iEcospace > 0) Then Me.m_core.RunEcoSpace()
                     Else
-                        Me.SendProgress(100, My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_ABORT_NOBALANCE)
+                        Me.SendProgress(eProgressState.Running, CSng(i / Me.m_iRunLength), My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_ABORT_NOBALANCE)
                         Me.m_bStopRun = True
                     End If
 
@@ -935,7 +955,7 @@ Namespace Samples
                         Dim s As cEcopathSample = samples(Me.m_iRunStart - 1 + i)
 
                         Me.LogEvent(cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_SAMPLE, s.Index), eMessageImportance.Information)
-                        Me.SendProgress(CSng(i / Me.m_iRunLength), cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_SAMPLE, s.Index))
+                        Me.SendProgress(eProgressState.Running, CSng(i / Me.m_iRunLength), cStringUtils.Localize(My.Resources.CoreMessages.ECOSAMPLER_BATCHRUN_SAMPLE, s.Index))
 
                         Me.Load(s, False)
 
@@ -964,22 +984,15 @@ Namespace Samples
                 Me.m_core.OutputPath = strPathOld
 
                 ' Done
-                Me.SendProgress(1, "")
+                Me.SendProgress(eProgressState.Finished, 1, "")
 
             End If
 
         End Sub
 
-        Private Sub SendProgress(ByVal s As Single, ByVal strStatus As String)
+        Private Sub SendProgress(state As eProgressState, sProgress As Single, strStatus As String)
 
-            Dim state As eProgressState
-            Select Case s
-                Case 0 : state = eProgressState.Start
-                Case 1 : state = eProgressState.Finished
-                Case Else : state = eProgressState.Running
-            End Select
-
-            Dim msg As New cProgressMessage(state, 1.0, s, strStatus)
+            Dim msg As New cProgressMessage(state, 1.0, sProgress, strStatus)
             Me.m_core.Messages.SendMessage(msg)
 
         End Sub

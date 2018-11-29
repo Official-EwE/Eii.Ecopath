@@ -3069,4 +3069,15 @@
   <data name="FILEFILTER_XML" xml:space="preserve">
     <value>XML files|*.xml</value>
   </data>
+  <data name="TOOLTIP_MEDIATION_CAPACITY" xml:space="preserve">
+    <value>Driver histogram</value>
+  </data>
+  <data name="TOOLTIP_MEDIATION_CAPACITY_MULTIPLIER" xml:space="preserve">
+    <value>Capacity multiplier {0}</value>
+    <comment>{0} = value</comment>
+  </data>
+  <data name="TOOLTIP_MEDIATION_DRIVER_VALUE" xml:space="preserve">
+    <value>Driver value {0}</value>
+    <comment>{0} = value</comment>
+  </data>
 </root>

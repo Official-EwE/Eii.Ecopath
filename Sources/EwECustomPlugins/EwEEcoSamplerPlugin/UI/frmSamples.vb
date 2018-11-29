@@ -69,6 +69,7 @@ Public Class frmSamples
 
             Dim man As cEcopathSampleManager = Me.Core.SampleManager
             Me.m_nudNumSamples.Value = man.nSamples
+            Me.m_nudStartAt.Value = 1
         End If
 
         Me.Icon = System.Drawing.Icon.FromHandle(My.Resources.SampleHS.GetHicon)
@@ -244,7 +245,7 @@ Public Class frmSamples
                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO, defaultReply:=eMessageReply.NO)
             Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply = eMessageReply.YES) Then
-                Me.Core.SampleManager.Run(CInt(Me.m_nudNumSamples.Value), CInt(Me.m_nudNumSamples.Value), Me.m_rbRandom.Checked)
+                Me.Core.SampleManager.Run(CInt(Me.m_nudNumSamples.Value), CInt(Me.m_nudStartAt.Value), Me.m_rbRandom.Checked)
             End If
 
         Catch ex As Exception

@@ -182,6 +182,7 @@ Partial Class frmSamples
         'm_rbStartAtNo
         '
         resources.ApplyResources(Me.m_rbStartAtNo, "m_rbStartAtNo")
+        Me.m_rbStartAtNo.Checked = True
         Me.m_rbStartAtNo.Name = "m_rbStartAtNo"
         Me.m_rbStartAtNo.TabStop = True
         Me.m_rbStartAtNo.UseVisualStyleBackColor = True
@@ -190,7 +191,6 @@ Partial Class frmSamples
         '
         resources.ApplyResources(Me.m_rbRandom, "m_rbRandom")
         Me.m_rbRandom.Name = "m_rbRandom"
-        Me.m_rbRandom.TabStop = True
         Me.m_rbRandom.UseVisualStyleBackColor = True
         '
         'm_btnRun

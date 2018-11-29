@@ -67,13 +67,6 @@ Namespace Controls
 
             Private m_strLabel As String = ""
             Private m_colour As Color = Color.Aqua
-            Private m_lineType As eSketchDrawModeTypes = eSketchDrawModeTypes.NotSet
-            Private m_liOffset As LineItem = Nothing
-
-            ' == Status flags ==
-
-            Private m_bGrayedOut As Boolean = False
-            Private m_bHighlighted As Boolean = False
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -103,18 +96,18 @@ Namespace Controls
                 If (TypeOf src Is cCoreInputOutputBase) Then
                     If (TypeOf src Is cEcoPathGroupInput) Then
                         Me.m_iGroup = src.Index
-                        Me.m_lineType = eSketchDrawModeTypes.Line
+                        Me.LineType = eSketchDrawModeTypes.Line
                     ElseIf (TypeOf src Is cEcopathFleetInput) Then
                         Me.m_iFleet = src.Index
-                        Me.m_lineType = eSketchDrawModeTypes.Line
+                        Me.LineType = eSketchDrawModeTypes.Line
                     End If
                 Else
                     If (TypeOf src Is cGroupTimeSeries) Then
                         Me.m_iGroup = DirectCast(src, cGroupTimeSeries).GroupIndex
-                        Me.m_lineType = h.SketchDrawMode(DirectCast(src, cTimeSeries))
+                        Me.LineType = h.SketchDrawMode(DirectCast(src, cTimeSeries))
                     ElseIf (TypeOf src Is cFleetTimeSeries) Then
                         Me.m_iFleet = DirectCast(src, cFleetTimeSeries).FleetIndex
-                        Me.m_lineType = h.SketchDrawMode(DirectCast(src, cTimeSeries))
+                        Me.LineType = h.SketchDrawMode(DirectCast(src, cTimeSeries))
                     End If
                 End If
 
@@ -139,7 +132,7 @@ Namespace Controls
 
                 Me.m_strLabel = strLabel
                 Me.m_colour = colour
-                Me.m_lineType = lineType
+                Me.LineType = lineType
                 Me.Data("") = tag
 
             End Sub
@@ -151,11 +144,7 @@ Namespace Controls
             ''' <value></value>
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
-            Public ReadOnly Property LineType() As eSketchDrawModeTypes
-                Get
-                    Return Me.m_lineType
-                End Get
-            End Property
+            Public ReadOnly Property LineType() As eSketchDrawModeTypes = eSketchDrawModeTypes.NotSet
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -168,8 +157,7 @@ Namespace Controls
                     If Not String.IsNullOrEmpty(Me.m_strLabel) Then Return Me.m_strLabel
                     ' Deduct from source
                     If Me.m_source IsNot Nothing Then
-                        Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED,
-                                             Me.m_source.Index, Me.m_source.Name)
+                        Return cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, Me.m_source.Index, Me.m_source.Name)
                     End If
                     ' Hmm...
                     Return ""
@@ -196,7 +184,7 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public ReadOnly Property Colour() As Color
                 Get
-                    If Me.m_bGrayedOut Then Return Color.LightGray
+                    If Me.IsGrayedOut Then Return Color.LightGray
 
                     If Me.m_iGroup <> cCore.NULL_VALUE Then Return Me.m_uic.StyleGuide.GroupColor(Me.m_uic.Core, Me.m_iGroup)
                     If Me.m_iFleet <> cCore.NULL_VALUE Then Return Me.m_uic.StyleGuide.FleetColor(Me.m_uic.Core, Me.m_iFleet)
@@ -222,42 +210,21 @@ Namespace Controls
             ''' Get/set grayed-out state of a curve.
             ''' </summary>
             ''' ---------------------------------------------------------------
-            Public Property IsGrayedOut() As Boolean
-                Get
-                    Return Me.m_bGrayedOut
-                End Get
-                Set(ByVal value As Boolean)
-                    Me.m_bGrayedOut = value
-                End Set
-            End Property
+            Public Property IsGrayedOut() As Boolean = False
 
             ''' ---------------------------------------------------------------
             ''' <summary>
             ''' Get/set highlight state of a curve.
             ''' </summary>
             ''' ---------------------------------------------------------------
-            Public Property IsHighlighted() As Boolean
-                Get
-                    Return Me.m_bHighlighted
-                End Get
-                Set(ByVal value As Boolean)
-                    Me.m_bHighlighted = value
-                End Set
-            End Property
+            Public Property IsHighlighted() As Boolean = False
 
             ''' ---------------------------------------------------------------
             ''' <summary>
             ''' Get/set the offset line that a given line was added to
             ''' </summary>
             ''' ---------------------------------------------------------------
-            Public Property Offset() As LineItem
-                Get
-                    Return Me.m_liOffset
-                End Get
-                Set(ByVal value As LineItem)
-                    Me.m_liOffset = value
-                End Set
-            End Property
+            Public Property Offset() As LineItem = Nothing
 
             ''' ---------------------------------------------------------------
             ''' <summary>
@@ -266,7 +233,7 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public ReadOnly Property IsCumulative() As Boolean
                 Get
-                    Return (Me.m_liOffset IsNot Nothing)
+                    Return (Me.Offset IsNot Nothing)
                 End Get
             End Property
 
