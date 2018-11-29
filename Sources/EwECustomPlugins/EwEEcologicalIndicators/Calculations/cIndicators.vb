@@ -397,8 +397,8 @@ Public MustInherit Class cIndicators
                              (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Mammals)) +
                              (sB * ta.GroupBiomassProportion(iGroup, eOrganismTypes.Reptiles)))
             sMSRC = sMSRC + ((sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Birds)) +
-                             (sB * ta.GroupCatchProportion(iGroup, eOrganismTypes.Mammals)) +
-                             (sB * ta.GroupCatchProportion(iGroup, eOrganismTypes.Reptiles)))
+                             (sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Mammals)) +
+                             (sC * ta.GroupCatchProportion(iGroup, eOrganismTypes.Reptiles)))
             sDemB = sDemB + (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.Demersal)) +
                 (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.Benthic)) +
                 (sB * ta.GroupCatchProportion(iGroup, eEcologyTypes.BathyDemersal))
@@ -829,7 +829,7 @@ Public MustInherit Class cIndicators
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the 'Catch of predatory organisms with TL >= 4.
+    ''' Returns the 'Catch of predatory organisms with TL >= 4' indicator.
     ''' </summary>
     ''' <returns>The 'Catch of predatory organisms with TL >= 4.</returns>
     Public Function sC4() As Single
@@ -838,7 +838,7 @@ Public MustInherit Class cIndicators
 
     '' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the 'total catch of marine mammals, seabirds and turtles.
+    ''' Returns the 'total catch of marine mammals, seabirds and turtles' indicator.
     ''' </summary>
     ''' <returns>The 'total catch of marine mammals, seabirds and turtles.</returns>
     ''' -----------------------------------------------------------------------
