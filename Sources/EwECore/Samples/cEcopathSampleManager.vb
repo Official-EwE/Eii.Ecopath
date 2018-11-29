@@ -652,7 +652,7 @@ Namespace Samples
             s.Source = Me.MachineName
             s.Generated = Date.Now()
             s.Hash = ""
-            s.SS = mc.SSCurrent
+            If (mc IsNot Nothing) Then s.SS = mc.SSCurrent
 
             ' Grab parameters
 
