@@ -26,6 +26,7 @@ Imports ZedGraph
 Imports System.Text
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Definitions
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -172,8 +173,9 @@ Public Class cMCHistogramGraphWrapper
                     ppl.Add(hist(ipt).X + sBinWidth / 2, hist(ipt).Y)
                 Next
 
-                Dim il As LineItem = Me.CreateLineItem(info.Name, eSketchDrawModeTypes.NotSet, Drawing.Color.RoyalBlue, ppl)
-                Me.PlotLines(New LineItem() {il}, iPane)
+                Dim li As LineItem = Me.CreateLineItem(info.Name, eSketchDrawModeTypes.NotSet, Drawing.Color.Gray, ppl)
+                li.Line.Fill = New Fill(cColorUtils.GetVariant(li.Color, 0.5))
+                Me.PlotLines(New LineItem() {li}, iPane)
 
                 gp.XAxis.Scale.MinAuto = False
                 gp.XAxis.Scale.MinGrace = 0
