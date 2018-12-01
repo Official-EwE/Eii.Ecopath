@@ -43,6 +43,7 @@ Namespace Controls
         Public Enum eEnvResponseLineType As Integer
             Response
             Histogram
+            Baseline
         End Enum
 
         Public Shadows Function CreateLineItem(ByVal strName As String, ByVal ppl As ZedGraph.PointPairList, ByVal lineType As eEnvResponseLineType) As ZedGraph.LineItem
@@ -50,6 +51,7 @@ Namespace Controls
             Select Case lineType
                 Case eEnvResponseLineType.Histogram : clr = Color.Gray
                 Case eEnvResponseLineType.Response : clr = Color.SandyBrown
+                Case eEnvResponseLineType.Baseline : clr = Color.Red
                 Case Else : Debug.Assert(False)
             End Select
             Return MyBase.CreateLineItem(strName, Definitions.eSketchDrawModeTypes.Line, clr, ppl, lineType)
@@ -74,6 +76,8 @@ Namespace Controls
                                 bUseBase = False
                             Case eEnvResponseLineType.Histogram
                                 Return ""
+                            Case eEnvResponseLineType.Baseline
+                                ' NOP
                             Case Else
                                 Debug.Assert(False, "Unsupported line type")
                         End Select

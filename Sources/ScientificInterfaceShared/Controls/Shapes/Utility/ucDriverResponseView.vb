@@ -503,26 +503,38 @@ Public Class ucDriverResponseView
 
             Dim histPts() As Drawing.PointF = Me.m_driver.Histogram()
             Dim binWidth As Single = Me.m_driver.HistogramBinWidth
-            Dim lstPts As New PointPairList()
+            Dim histData As New PointPairList()
+            Dim Ymax As Single = 0
             Dim fmt As New cCoreInterfaceFormatter()
+            Dim li As LineItem = Nothing
+            Dim gp As GraphPane = Me.m_zgh.GetPane(1)
 
             'The X value in the histogram is the max value of the bin, right hand side of the bin
             'So an input value of 1.0 will be in the .X = 1.0 bin
             For ipt As Integer = 1 To histPts.Length - 1
-                lstPts.Add(histPts(ipt).X - binWidth, histPts(ipt).Y)
-                lstPts.Add(histPts(ipt).X, histPts(ipt).Y)
+                histData.Add(histPts(ipt).X - binWidth, histPts(ipt).Y)
+                histData.Add(histPts(ipt).X, histPts(ipt).Y)
+
+                Ymax = Math.Max(Ymax, histPts(ipt).Y)
             Next
 
-            Dim li As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_HISTOGRAM_TARGET, Me.m_driver.Name),
-                                                         lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Histogram)
+            li = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_HISTOGRAM_TARGET, Me.m_driver.Name),
+                                                         histData, cZedGraphMediationHelper.eEnvResponseLineType.Histogram)
 
             li.IsY2Axis = True
             li.Line.Fill = New Fill(cColorUtils.GetVariant(li.Color, 0.5))
-            Me.m_zgh.GetPane(1).CurveList.Add(li)
+            gp.CurveList.Add(li)
+
+            Dim startData As New PointPairList()
+            startData.Add(Me.m_driver.Start, 0)
+            startData.Add(Me.m_driver.Start, Ymax)
+            ' ToDo: globalize mean
+            li = Me.m_zgh.CreateLineItem(If(TypeOf Me.m_driver Is cEcosimEnviroInputData, "First time step", "Driver mean"), startData, cZedGraphMediationHelper.eEnvResponseLineType.Baseline)
+            li.IsY2Axis = True
+            gp.CurveList.Add(li)
 
             'Let the response function decide the plot window size
-            'Me.m_zgh.XScaleMax = Me.m_map.Max
-            Me.m_zgh.YScaleMin = 0
+            gp.Y2Axis.Scale.Max = Ymax
 
         Catch ex As Exception
             Debug.Assert(False, "PlotMap " & ex.Message)

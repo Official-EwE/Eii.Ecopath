@@ -26,7 +26,7 @@ Imports EwEUtils.Core
 Public Interface IEnviroInputData
 
     ''' <summary>
-    ''' Return the value of the map as a function of the applied Response Function
+    ''' Return the driver value as a function of the applied Response Function
     ''' </summary>
     ''' <param name="iGroup">Index of the Group that this Response is for</param>
     ''' <param name="iRow">Row of the map</param>
@@ -34,14 +34,14 @@ Public Interface IEnviroInputData
     Function ResponseFunction(ByVal iGroup As Integer, ByVal iRow As Integer, ByVal iCol As Integer) As Single
 
     ''' <summary>
-    ''' Initialize the map with the cMediationDataStructures containing all the available response functions and cEcospaceDataStructures
+    ''' Initialize from the cMediationDataStructures containing all the available response functions and cEcospaceDataStructures
     ''' </summary>
     ''' <param name="MediationData">cMediationDataStructures that contains the Response Function (mediation functions) that can be used by this Map</param>
     ''' <param name="SpaceData"></param>
     Function Init(ByVal MediationData As cMediationDataStructures, ByVal SpaceData As cEcospaceDataStructures) As Boolean
 
     ''' <summary>
-    ''' Get or Set the index of the Response function applied to a Group
+    ''' Get / set the index of the Response function applied to a Group
     ''' </summary>
     ''' <param name="iGroup">One-based index of the Group that the response function is applied to</param>
     ''' <param name="bUpdateMaps">Optional flag to suppress (possibly expensive) map updates</param>
@@ -66,34 +66,37 @@ Public Interface IEnviroInputData
     ''' <param name="iGroup"></param>
     ''' <param name="iTimeStep"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Function ResponseFunction(ByVal iGroup As Integer, iTimeStep As Integer) As Single
 
     ''' <summary>
-    ''' Initialize the map with the cMediationDataStructures containing all the available response functions and cEcospaceDataStructures
+    ''' Initialize from cMediationDataStructures containing all the available response functions and cEcospaceDataStructures
     ''' </summary>
-    ''' <param name="MediationData">cMediationDataStructures that contains the Response Function (mediation functions) that can be used by this Map</param>
+    ''' <param name="MediationData">cMediationDataStructures that contains the Response Function (mediation functions) that can be used by this environmental driver</param>
     ''' <param name="EcosimData"></param>
     Function Init(ByVal MediationData As cMediationDataStructures, ByVal EcosimData As cEcosimDatastructures) As Boolean
 
-
     ''' <summary>
-    ''' Max value of the map
+    ''' Max value of the driver
     ''' </summary>
     ReadOnly Property Max() As Single
 
     ''' <summary>
-    ''' Minimum value of the map
+    ''' Minimum value of the driver
     ''' </summary>
     ReadOnly Property Min() As Single
 
     ''' <summary>
-    ''' Mean value of the map
+    ''' Mean value of the driver
     ''' </summary>
     ReadOnly Property Mean() As Single
 
     ''' <summary>
-    ''' Histogram of the map values
+    ''' Simulation start value of the driver
+    ''' </summary>
+    ReadOnly Property Start() As Single
+
+    ''' <summary>
+    ''' Histogram of driver values
     ''' </summary>
     ''' <remarks>
     ''' Values in the Histogram will be normalized.
