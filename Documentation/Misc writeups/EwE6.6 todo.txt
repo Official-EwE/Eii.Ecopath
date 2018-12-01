@@ -54,6 +54,11 @@ V Generic EwE ASCII map import should use US formatting
 V Generic EwE ASCII map import should allow the use of .txt extension too
 V Allow custom monetary units
 V Disable respiration warning for MS groups: non-feeding last stanza high mort -> resp warning
+V Ecosampler does not preserve and reload SS
+V Ecosampler does not capture correct SS
+V Ecosampler crashes when batch running 
+V Ecosampler does not correctly pick start sample
+V Ecosampler maintains running progress when finished
 
 == BUGS ==
   Read only models: do not allow users to create/delete items
@@ -85,6 +90,9 @@ V Disable respiration warning for MS groups: non-feeding last stanza high mort -
 ! Apply foraging responses: X-axis on application lot does not properly show X axis!!!
 ? Apply foraging responses - new UI is (too) slow when applying. Perhaps something is wrong?
   Run Ecospace shows excluded cells in red, regardless of the customized colour
+  
+== FIXED BUT NOT LOGGED YET ==
+V EcoIND does not correctly compute "catch of mammals, seabirds and reptiles" indicator
 
 == FEATURES ==
   Warning if there are no water cells on pre-run
@@ -106,6 +114,7 @@ V Disable respiration warning for MS groups: non-feeding last stanza high mort -
   Add Monte Carlo result writers to file management UI
   Monte Carlo: make all entries on settings page permanent (in app settings)
   StepWise fitting: store and retrieve fitted params (vuls, anomaly shape)
+  Ecosampler: warn if no autosaving is selected for loaded components (path, sim, space, ..)
 
 == NOT UNASSESSED ==
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -123,3 +132,10 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 @ Joe: Bring Ecosim Nutrient loading + Production forcing per PP group to Ecospace: 
    - Add Nutrient loading layer
    - Add RelPP layer for each PP group to individually drive production
+
+EwE wishes ICES meeting
+=======================
+- Document with all equations, and how EwE mechanisms influence equations
+- Management UI with big knobs to turn
+- Macro recorder for loading & running
+- Bend plug-in computed indicators back into EwE
