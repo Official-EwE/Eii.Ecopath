@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 #include <idp.iss>
 #define Compile64Bit 0
-#define Spinup 0
-#define SpatTemp 0
+#define Spinup 1
+#define SpatTemp 1
 #define FISHMIP 0
 #define MSPTools 0
 #define SAFENET 0
@@ -30,7 +30,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.15767.0
+  VersionInfoVersion=6.6.15813.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
