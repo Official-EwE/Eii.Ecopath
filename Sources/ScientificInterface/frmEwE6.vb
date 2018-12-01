@@ -988,6 +988,7 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
+        Me.ShowSplash()
         Me.SuspendLayout()
 
         ' Add the dock panel 
@@ -1036,20 +1037,8 @@ Public Class frmEwE6
 
         Me.ResumeLayout()
 
-        Try
-            ' Dismiss splash screen, if any
-            Dim splash As frmSplash = frmSplash.GetInstance()
-            If (splash IsNot Nothing) Then
-                If (splash.CanAutoClose) Then
-                    splash.PleaseClose()
-                    Me.Activate()
-                Else
-                    AddHandler splash.FormClosed, AddressOf OnSplashClosed
-                End If
-            End If
-        Catch ex As Exception
-
-        End Try
+        Me.m_manager.CloseSplash()
+        Me.Activate()
 
     End Sub
 
@@ -1158,15 +1147,6 @@ Public Class frmEwE6
 
     End Sub
 
-    Private Sub OnSplashClosed(sender As Object, args As EventArgs)
-        Dim splash As frmSplash = frmSplash.GetInstance()
-        If (splash IsNot Nothing) Then
-            RemoveHandler splash.FormClosed, AddressOf OnSplashClosed
-            If splash.Expired = TriState.True Then Me.Close()
-        End If
-
-    End Sub
-
 #Region " KeyDown "
 
     ''' -----------------------------------------------------------------------
@@ -1239,6 +1219,26 @@ Public Class frmEwE6
 #End Region ' Drag and drop
 
 #End Region ' Form overrides
+
+#Region " Splash screen "
+
+    Private m_manager As cSplashManager = Nothing
+    Private WithEvents m_backgroundworker As New BackgroundWorker()
+
+    Private Sub ShowSplash()
+        Me.m_manager = New cSplashManager(SynchronizationContext.Current, Me)
+        Me.m_backgroundworker.RunWorkerAsync()
+    End Sub
+
+    Private Sub OnShowSplashAsync(sender As Object, e As DoWorkEventArgs) Handles m_backgroundworker.DoWork
+        Me.m_manager.ShowSplash()
+    End Sub
+
+    Private Sub CloseSplashAsync()
+        Me.m_manager.CloseSplash()
+    End Sub
+
+#End Region ' Splash screen
 
 #Region " Status feedback "
 

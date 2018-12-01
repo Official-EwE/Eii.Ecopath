@@ -37,6 +37,7 @@ Public Class cEcosimEnviroInputData
     Private m_min As Single
     Private m_max As Single
     Private m_mean As Single
+    Private m_start As Single
     Private m_binWidth As Single
     Private m_manager As IEnvironmentalResponseManager
     Private m_iTSIndex As Integer
@@ -66,7 +67,7 @@ Public Class cEcosimEnviroInputData
     Public Function Update() As Boolean Implements IEnviroInputData.Update
         Dim bReturn As Boolean = False
         Try
-            Me.computeMinMax()
+            Me.RecalcStats()
             bReturn = True
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".Update() Exception: " & ex.Message)
@@ -89,7 +90,7 @@ Public Class cEcosimEnviroInputData
         Dim pts() As Drawing.PointF
         'Dim nPts As Integer
         ReDim pts(nBins)
-        Me.computeMinMax()
+        Me.RecalcStats()
         Dim range As Single = Me.Max - Me.Min
         'Make sure there is data in the map
         If range > 0 Then
@@ -246,10 +247,11 @@ Public Class cEcosimEnviroInputData
 
 #Region "Private Functions"
 
-    Private Sub computeMinMax()
+    Private Sub RecalcStats()
 
-        m_min = Single.MaxValue
-        m_max = Single.MinValue
+        Me.m_min = Single.MaxValue
+        Me.m_max = Single.MinValue
+        Me.m_start = cCore.NULL_VALUE
 
         Try
 
@@ -257,6 +259,7 @@ Public Class cEcosimEnviroInputData
                 Dim value As Single = Me.m_EcosimData.zscale(ipt, Me.m_iTSIndex)
                 Me.m_min = Math.Min(value, Me.m_min)
                 Me.m_max = Math.Max(value, Me.m_max)
+                If (ipt = 1) Then Me.m_start = value
             Next
 
         Catch ex As Exception
@@ -278,6 +281,12 @@ Public Class cEcosimEnviroInputData
 
     Public Property IsDriverActive As Boolean = True _
         Implements IEnviroInputData.IsDriverActive
+
+    Public ReadOnly Property Start As Single Implements IEnviroInputData.Start
+        Get
+            Return Me.m_start
+        End Get
+    End Property
 
 #Region "Overloaded Methods not implemented by cEcosimEnviroInputData"
 

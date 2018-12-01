@@ -325,6 +325,12 @@ Public Class cEnviroInputMap
     Public Property IsDriverActive As Boolean = True _
         Implements IEnviroInputData.IsDriverActive
 
+    Public ReadOnly Property Start As Single Implements IEnviroInputData.Start
+        Get
+            Return Me.Mean
+        End Get
+    End Property
+
 #Region "Overloaded Ecosim methods"
 
 

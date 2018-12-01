@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
 Imports EwECore.Samples
 Imports EwECore.Style
 Imports EwEUtils.Core
