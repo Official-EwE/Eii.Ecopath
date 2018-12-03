@@ -698,51 +698,25 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the Core assembly version.
+    ''' Get the Core assembly version, formatted as a string.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Shared ReadOnly Property Version(Optional ByVal bIncludeCompilationDate As Boolean = False) As String
         Get
             Try
-                Dim an As Reflection.AssemblyName = cAssemblyUtils.GetAssemblyName(GetType(cCore))
+                Dim ass As System.Reflection.Assembly = System.Reflection.Assembly.GetAssembly(GetType(cCore))
+                Dim an As System.Reflection.AssemblyName = ass.GetName()
+
                 If bIncludeCompilationDate Then
                     Return cStringUtils.Localize(My.Resources.CoreDefaults.VERSION_EXT_COMPILED,
                                                  cAssemblyUtils.GetVersion(an),
-                                                 cAssemblyUtils.GetCompileDate(an).ToShortDateString)
+                                                 cAssemblyUtils.GetCompileDate(ass).ToShortDateString)
                 Else
                     Return cAssemblyUtils.GetVersion(an).ToString
                 End If
             Catch ex As Exception
                 Return ""
             End Try
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the Core expiry date.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Shared ReadOnly Property BestBefore(mode As eReleaseMode) As DateTime
-        Get
-            Dim dt As DateTime = DateTime.Now()
-            Try
-                Dim an As Reflection.AssemblyName = cAssemblyUtils.GetAssemblyName(GetType(cCore))
-                Select Case mode
-                    Case eReleaseMode.Dev
-                        ' NOP
-                    Case eReleaseMode.Beta
-                        dt = cAssemblyUtils.GetCompileDate(an).AddMonths(6)
-                    Case eReleaseMode.Pro
-                        dt = cAssemblyUtils.GetCompileDate(an).AddYears(1)
-                    Case eReleaseMode.Free
-                        dt = DateTime.MaxValue
-                    Case Else
-                        Debug.Assert(False)
-                End Select
-            Catch ex As Exception
-            End Try
-            Return dt
         End Get
     End Property
 

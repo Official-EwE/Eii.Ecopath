@@ -169,15 +169,12 @@ Namespace Utilities
         ''' </summary>
         ''' <value>The compile date.</value>
         ''' -----------------------------------------------------------------------
-        Public Shared ReadOnly Property GetCompileDate(Optional ByVal an As AssemblyName = Nothing) As System.DateTime
+        Public Shared ReadOnly Property GetCompileDate(Optional ByVal ass As Assembly = Nothing) As System.DateTime
             Get
-                Dim ass As Assembly = Nothing
 
                 Dim strFile As String = ""
-                If (an Is Nothing) Then
+                If (ass Is Nothing) Then
                     ass = ExecutingAssembly
-                Else
-                    ass = Assembly.Load(an)
                 End If
                 Dim dt As DateTime = RetrieveLinkerTimestamp(ass.Location)
                 If (dt = Nothing) Then dt = New DateTime()

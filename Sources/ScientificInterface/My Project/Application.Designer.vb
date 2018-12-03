@@ -54,5 +54,11 @@ Namespace My
             Me.MainForm = Global.ScientificInterface.frmEwE6
         End Sub
 
+        <Global.System.Diagnostics.DebuggerStepThroughAttribute()>
+        Protected Overrides Sub OnCreateSplashScreen()
+            Me.SplashScreen = Global.ScientificInterface.frmSplash
+        End Sub
+
     End Class
+
 End Namespace

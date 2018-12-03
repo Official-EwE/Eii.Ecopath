@@ -126,7 +126,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_pbIcon.Location" type="System.Drawing.Point, System.Drawing">
-    <value>175, 17</value>
+    <value>175, 29</value>
   </data>
   <data name="m_pbIcon.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 100</value>
@@ -145,37 +145,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_pbIcon.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="m_lblDetails.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left, Right</value>
-  </data>
-  <data name="m_lblDetails.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 157</value>
-  </data>
-  <data name="m_lblDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>426, 29</value>
-  </data>
-  <data name="m_lblDetails.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_lblDetails.Text" xml:space="preserve">
-    <value>This Beta release of EwE will expire on {0}</value>
-  </data>
-  <data name="m_lblDetails.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;m_lblDetails.Name" xml:space="preserve">
-    <value>m_lblDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lblDetails.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblDetails.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_lblDetails.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_lblEwE.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
@@ -187,10 +157,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblEwE.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 120</value>
+    <value>12, 141</value>
   </data>
   <data name="m_lblEwE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>430, 37</value>
+    <value>426, 37</value>
   </data>
   <data name="m_lblEwE.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -211,41 +181,47 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblEwE.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom</value>
-  </data>
-  <data name="m_btnOK.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>175, 189</value>
-  </data>
-  <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
-  </data>
-  <data name="m_btnOK.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_btnOK.Text" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="&gt;&gt;m_btnOK.Name" xml:space="preserve">
-    <value>m_btnOK</value>
-  </data>
-  <data name="&gt;&gt;m_btnOK.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnOK.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnOK.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <metadata name="m_chugchug.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="m_lblReleaseMode.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="m_lblReleaseMode.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="m_lblReleaseMode.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblReleaseMode.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 177</value>
+  </data>
+  <data name="m_lblReleaseMode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>426, 37</value>
+  </data>
+  <data name="m_lblReleaseMode.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lblReleaseMode.Text" xml:space="preserve">
+    <value>&lt;release mode&gt;</value>
+  </data>
+  <data name="m_lblReleaseMode.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="&gt;&gt;m_lblReleaseMode.Name" xml:space="preserve">
+    <value>m_lblReleaseMode</value>
+  </data>
+  <data name="&gt;&gt;m_lblReleaseMode.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblReleaseMode.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblReleaseMode.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

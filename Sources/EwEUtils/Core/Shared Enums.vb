@@ -3520,8 +3520,7 @@ Namespace Core
     Public Enum eReleaseMode
         Dev = 0
         Beta
-        Free
-        Pro
+        Release
     End Enum
 
 #End Region ' Release modes

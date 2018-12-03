@@ -74,10 +74,10 @@ Namespace Other
             Select Case mode
                 Case eReleaseMode.Beta
                     Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION_BETA, cCore.Version(True), strBitApp)
-                    Me.m_lblExpiry.Text = cStringUtils.Localize(My.Resources.ABOUT_EXPIRY, cCore.BestBefore(mode).ToShortDateString)
-                Case eReleaseMode.Pro
-                    Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION_PRO, cCore.Version(True), strBitApp)
-                    Me.m_lblExpiry.Text = cStringUtils.Localize(My.Resources.ABOUT_EXPIRY, cCore.BestBefore(mode).ToShortDateString)
+                    Me.m_lblExpiry.Text = cStringUtils.Localize(My.Resources.ABOUT_EXPIRY, cSystemUtils.BestBefore(mode).ToShortDateString)
+                    'Case eReleaseMode.Pro
+                    '    Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION_PRO, cCore.Version(True), strBitApp)
+                    '    Me.m_lblExpiry.Text = cStringUtils.Localize(My.Resources.ABOUT_EXPIRY, cCore.BestBefore(mode).ToShortDateString)
                 Case Else
                     Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION, cCore.Version(True), strBitApp)
                     Me.m_lblExpiry.Visible = False
