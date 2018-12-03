@@ -43,7 +43,6 @@ Partial Class frmSplash
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSplash))
         Me.m_pbIcon = New System.Windows.Forms.PictureBox()
         Me.m_lblEwE = New System.Windows.Forms.Label()
-        Me.m_chugchug = New System.ComponentModel.BackgroundWorker()
         Me.m_lblReleaseMode = New System.Windows.Forms.Label()
         CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -86,6 +85,5 @@ Partial Class frmSplash
 
     Private WithEvents m_pbIcon As PictureBox
     Private WithEvents m_lblEwE As Label
-    Private WithEvents m_chugchug As System.ComponentModel.BackgroundWorker
     Private WithEvents m_lblReleaseMode As Label
 End Class

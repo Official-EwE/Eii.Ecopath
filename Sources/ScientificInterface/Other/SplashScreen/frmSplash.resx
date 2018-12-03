@@ -183,9 +183,6 @@
   <data name="&gt;&gt;m_lblEwE.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <metadata name="m_chugchug.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="m_lblReleaseMode.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left, Right</value>
   </data>
@@ -236,12 +233,6 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>frmSplash</value>
-  </data>
-  <data name="&gt;&gt;m_chugchug.Name" xml:space="preserve">
-    <value>m_chugchug</value>
-  </data>
-  <data name="&gt;&gt;m_chugchug.Type" xml:space="preserve">
-    <value>System.ComponentModel.BackgroundWorker, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmSplash</value>
