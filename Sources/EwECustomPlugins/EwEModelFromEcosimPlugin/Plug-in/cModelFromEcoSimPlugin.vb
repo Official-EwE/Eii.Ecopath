@@ -278,7 +278,7 @@ Public Class cModelFromEcosimPluginPoint
 
             Dim nStepsPerYear As Integer = Me.m_simdata.NumStepsPerYear
             Dim iStep As Integer = 1 + ((iTime - 1) Mod nStepsPerYear) ' Engine uses one-based time steps
-            Dim iYear As Integer = CInt((iTime - 1) / nStepsPerYear) + 1 ' Engine uses one-based years
+            Dim iYear As Integer = CInt(Math.Truncate((iTime - 1) / nStepsPerYear) + 1) ' Engine uses one-based years
 
             If (iStep <> Me.m_data.OutputTimeStep) Then Return
 
