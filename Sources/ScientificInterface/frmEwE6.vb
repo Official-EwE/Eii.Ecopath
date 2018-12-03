@@ -82,6 +82,9 @@ Public Class frmEwE6
     ''' <summary>Status messages stack.</summary>
     Private m_lstrStatus As New List(Of String)
 
+    ''' <summary>Server time</summary>
+    Private m_dtServer As DateTime = Date.Now
+
 #Region " Panels "
 
     Private Const cPANEL_REMARKS As String = "remarks"
@@ -333,13 +336,10 @@ Public Class frmEwE6
 #If BETA = 1 Then
         Return eReleaseMode.Beta
 #End If
-#If PRO = 1 Then
-            return eReleaseMode.Pro
-#End If
 #If DEBUG Then
         Return eReleaseMode.Dev
 #End If
-        Return eReleaseMode.Free
+        Return eReleaseMode.Release
     End Function
 
 #End Region ' Singleton
@@ -888,6 +888,18 @@ Public Class frmEwE6
 
 #End Region ' Initialization
 
+#Region " Server time "
+
+    Private Sub OnObtainServerTime(sender As Object, args As DoWorkEventArgs) Handles m_bgw.DoWork
+        Me.m_dtServer = cDateUtils.GetNetworkTime()
+    End Sub
+
+    Private Sub OnServerTimeObtained(sender As Object, e As RunWorkerCompletedEventArgs) Handles m_bgw.RunWorkerCompleted
+        ' NOP
+    End Sub
+
+#End Region ' Server time
+
 #Region " Properties "
 
     ''' -----------------------------------------------------------------------
@@ -988,7 +1000,8 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-        Me.ShowSplash()
+        Me.m_bgw.RunWorkerAsync()
+
         Me.SuspendLayout()
 
         ' Add the dock panel 
@@ -1037,7 +1050,7 @@ Public Class frmEwE6
 
         Me.ResumeLayout()
 
-        Me.m_manager.CloseSplash()
+        frmSplash.BuggerOff()
         Me.Activate()
 
     End Sub
@@ -1219,26 +1232,6 @@ Public Class frmEwE6
 #End Region ' Drag and drop
 
 #End Region ' Form overrides
-
-#Region " Splash screen "
-
-    Private m_manager As cSplashManager = Nothing
-    Private WithEvents m_backgroundworker As New BackgroundWorker()
-
-    Private Sub ShowSplash()
-        Me.m_manager = New cSplashManager(SynchronizationContext.Current, Me)
-        Me.m_backgroundworker.RunWorkerAsync()
-    End Sub
-
-    Private Sub OnShowSplashAsync(sender As Object, e As DoWorkEventArgs) Handles m_backgroundworker.DoWork
-        Me.m_manager.ShowSplash()
-    End Sub
-
-    Private Sub CloseSplashAsync()
-        Me.m_manager.CloseSplash()
-    End Sub
-
-#End Region ' Splash screen
 
 #Region " Status feedback "
 

@@ -42,10 +42,9 @@ Partial Class frmSplash
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSplash))
         Me.m_pbIcon = New System.Windows.Forms.PictureBox()
-        Me.m_lblDetails = New System.Windows.Forms.Label()
         Me.m_lblEwE = New System.Windows.Forms.Label()
-        Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_chugchug = New System.ComponentModel.BackgroundWorker()
+        Me.m_lblReleaseMode = New System.Windows.Forms.Label()
         CType(Me.m_pbIcon, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -56,24 +55,15 @@ Partial Class frmSplash
         Me.m_pbIcon.Name = "m_pbIcon"
         Me.m_pbIcon.TabStop = False
         '
-        'm_lblDetails
-        '
-        resources.ApplyResources(Me.m_lblDetails, "m_lblDetails")
-        Me.m_lblDetails.Name = "m_lblDetails"
-        '
         'm_lblEwE
         '
         resources.ApplyResources(Me.m_lblEwE, "m_lblEwE")
         Me.m_lblEwE.Name = "m_lblEwE"
         '
-        'm_btnOK
+        'm_lblReleaseMode
         '
-        resources.ApplyResources(Me.m_btnOK, "m_btnOK")
-        Me.m_btnOK.Name = "m_btnOK"
-        Me.m_btnOK.UseVisualStyleBackColor = True
-        '
-        'm_chugchug
-        '
+        resources.ApplyResources(Me.m_lblReleaseMode, "m_lblReleaseMode")
+        Me.m_lblReleaseMode.Name = "m_lblReleaseMode"
         '
         'frmSplash
         '
@@ -81,8 +71,7 @@ Partial Class frmSplash
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.ControlBox = False
-        Me.Controls.Add(Me.m_lblDetails)
-        Me.Controls.Add(Me.m_btnOK)
+        Me.Controls.Add(Me.m_lblReleaseMode)
         Me.Controls.Add(Me.m_lblEwE)
         Me.Controls.Add(Me.m_pbIcon)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
@@ -96,8 +85,7 @@ Partial Class frmSplash
     End Sub
 
     Private WithEvents m_pbIcon As PictureBox
-    Private WithEvents m_lblDetails As Label
     Private WithEvents m_lblEwE As Label
     Private WithEvents m_chugchug As System.ComponentModel.BackgroundWorker
-    Private WithEvents m_btnOK As Button
+    Private WithEvents m_lblReleaseMode As Label
 End Class

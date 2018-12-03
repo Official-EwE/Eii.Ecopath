@@ -163,6 +163,7 @@ Partial Public Class frmEwE6
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
+        Me.m_bgw = New System.ComponentModel.BackgroundWorker()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -969,5 +970,6 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiEcospaceDefineImportanceMaps As ToolStripMenuItem
     Private WithEvents m_tssEcospace4 As ToolStripSeparator
     Private WithEvents m_tsmiEcospaceLoadXYRefData As ToolStripMenuItem
+    Private WithEvents m_bgw As System.ComponentModel.BackgroundWorker
 End Class
 

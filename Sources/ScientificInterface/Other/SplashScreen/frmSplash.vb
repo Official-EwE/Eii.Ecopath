@@ -23,6 +23,7 @@ Option Strict On
 Imports System.ComponentModel
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -30,37 +31,32 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Friend Class frmSplash
 
-    Private m_expired As TriState = TriState.UseDefault
-    Private m_mode As eReleaseMode = eReleaseMode.Dev
-    Private m_dtServer As DateTime = DateTime.MinValue
-    Private m_dtExpiry As DateTime = DateTime.MinValue
-    Private m_bCanAutoClose As Boolean = True
+    Private Shared s_splash As frmSplash
 
     Public Sub New()
         Me.InitializeComponent()
+        s_splash = Me
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
+
+        ' ToDo: globalize this
 
         Me.m_pbIcon.BackgroundImage = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current())
         Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Zoom
 
         Me.m_lblEwE.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, cCore.Version(False))
 
-        Me.m_btnOK.Visible = False
-
-        Me.m_mode = frmEwE6.ReleaseMode()
-        Select Case Me.m_mode
-            Case eReleaseMode.Beta, eReleaseMode.Pro
-                Me.m_dtExpiry = cCore.BestBefore(eReleaseMode.Beta)
-                Me.m_lblDetails.Text = My.Resources.STATUS_CHECKING_LICENSE
-                Me.m_bCanAutoClose = False
-                Me.m_chugchug.RunWorkerAsync()
-            Case Else
-                Me.m_dtExpiry = cCore.BestBefore(eReleaseMode.Free)
-                Me.m_dtServer = Me.m_dtExpiry
-                Me.m_lblDetails.Text = "Loading..."
+        Select Case frmEwE6.ReleaseMode
+            Case eReleaseMode.Beta
+                Dim dt As DateTime = cSystemUtils.BestBefore(eReleaseMode.Beta, System.Reflection.Assembly.GetAssembly(GetType(cCore)))
+                Me.m_lblReleaseMode.Text = cStringUtils.Localize("Beta release, valid until {0}", dt.ToShortDateString)
+            Case eReleaseMode.Dev
+                Me.m_lblReleaseMode.Text = "Development version"
+            Case eReleaseMode.Release
+                ' ToDo: show pro / free
+                Me.m_lblReleaseMode.Text = "Free version"
         End Select
 
         Me.CenterToScreen()
@@ -68,58 +64,16 @@ Friend Class frmSplash
 
     End Sub
 
-    Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
-        ' NOP
-    End Sub
-
-    Public Function CanAutoClose() As Boolean
-        Return m_bCanAutoClose
-    End Function
-
-    Public Function Expired() As TriState
-        Return Me.m_expired
-    End Function
-
-    Public Sub PleaseClose()
-        If Me.InvokeRequired() Then
-            Me.Invoke(New MethodInvoker(AddressOf Close))
-        Else
-            Me.Close()
+    Public Shared Sub BuggerOff()
+        If (s_splash Is Nothing) Then Return
+        If (s_splash.InvokeRequired) Then
+            If s_splash.InvokeRequired Then
+                s_splash.Invoke(New MethodInvoker(AddressOf s_splash.Close))
+            Else
+                s_splash.Close()
+            End If
+            s_splash = Nothing
         End If
-    End Sub
-
-    Private Sub DoWork(sender As Object, args As DoWorkEventArgs) Handles m_chugchug.DoWork
-        Me.m_dtServer = cDateUtils.GetNetworkTime()
-    End Sub
-
-    Private Sub OnChuggedOut(sender As Object, e As RunWorkerCompletedEventArgs) Handles m_chugchug.RunWorkerCompleted
-        If Me.InvokeRequired Then
-            Me.Invoke(New MethodInvoker(AddressOf UpdateControls))
-        Else
-            Me.UpdateControls()
-        End If
-    End Sub
-
-    Private Sub OnClose(sender As Object, e As EventArgs) Handles m_btnOK.Click
-        Me.Close()
-    End Sub
-
-    Private Sub UpdateControls()
-
-        Select Case Me.m_mode
-            Case eReleaseMode.Beta, eReleaseMode.Pro
-                If Me.m_dtServer <= Me.m_dtExpiry Then
-                    Me.m_lblDetails.Text = cStringUtils.Localize(My.Resources.ABOUT_EXPIRY, Me.m_dtExpiry.ToShortDateString)
-                    Me.m_expired = TriState.False
-                Else
-                    Me.m_lblDetails.Text = My.Resources.ABOUT_EXPIRED
-                    Me.m_expired = TriState.True
-                End If
-                Me.m_btnOK.Visible = True
-            Case Else
-                Me.m_btnOK.Visible = False
-        End Select
-
     End Sub
 
 End Class
