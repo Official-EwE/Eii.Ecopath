@@ -150,12 +150,9 @@ Namespace Controls
             'm_graph
             '
             Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_graph.Data = Nothing
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.Shape = Nothing
             Me.m_graph.Title = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_OK
-            Me.m_graph.UIContext = Nothing
             Me.m_graph.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Pie
             Me.m_graph.XAxisLabel = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_OK
             Me.m_graph.YAxisLabel = Global.ScientificInterfaceShared.My.Resources.Resources.STYLEFLAGS_OK

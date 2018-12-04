@@ -24,6 +24,7 @@ Option Strict On
 
 Imports System.ComponentModel
 Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
@@ -132,15 +133,11 @@ Namespace Controls
         ''' This data is automatically extracted when a <see cref="Shape"/> is provided.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        <Browsable(False)> _
-        Public Property Data() As cBioPercentData
+        <Browsable(False)>
+        Public ReadOnly Property Data() As cBioPercentData
             Get
                 Return Me.m_data
             End Get
-            Set(ByVal value As cBioPercentData)
-                Me.m_data = value
-                Me.RefreshContent()
-            End Set
         End Property
 
         <Browsable(False)> _
@@ -460,30 +457,27 @@ Namespace Controls
             If (Me.m_uic Is Nothing) Then Return
             If (Me.IsDisposed) Then Return
 
+            Me.m_zgh.ConfigurePane(Me.m_strTitle, "", "", True)
+
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-            Dim medGrp As cMediatingGroup = Nothing
-            Dim medFlt As cMediatingFleet = Nothing
-            Dim list As PointPairList = Nothing
-            Dim pane As GraphPane = Nothing
+            Dim core As cCore = Me.m_uic.Core
+            Dim pane As GraphPane = Me.m_zgh.GetPane(1)
             Dim valSource As cCoreInputOutputBase = Nothing
             Dim strLabel As String = ""
             Dim fmt As New cCoreInterfaceFormatter()
             Dim clr As Color = Color.Transparent
             Dim myCurve As BarItem = Nothing
-            Dim varname As EwEUtils.Core.eVarNameFlags
-            Dim iGroup As Integer
-
-            Me.m_zgh.ConfigurePane(Me.m_strTitle, "", "", True)
-            pane = Me.m_zgh.GetPane(1)
+            Dim varname As eVarNameFlags
 
             pane.XAxis.Scale.IsVisible = False
             pane.CurveList.Clear()
 
             For i As Integer = 0 To Data.Groups.Length - 1
 
-                ' Get the group
-                medGrp = Data.Groups(i)
-                valSource = Me.m_uic.Core.EcoPathGroupOutputs(medGrp.iGroupIndex)
+                Dim iGroup As Integer = cCore.NULL_VALUE
+                Dim medGrp As cMediatingGroup = Data.Groups(i)
+
+                valSource = core.EcoPathGroupOutputs(medGrp.iGroupIndex)
 
                 ' Is a landings interaction?
                 If (TypeOf medGrp Is cLandingsMediatingGroup) Then
@@ -495,31 +489,28 @@ Namespace Controls
 
                     If (medLandings.iFleetIndex > 0) Then
                         Dim FleetSource As cCoreInputOutputBase = Me.m_uic.Core.EcopathFleetInputs(medLandings.iFleetIndex)
-                        strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, _
-                                                 fmt.GetDescriptor(valSource), _
+                        strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED,
+                                                 fmt.GetDescriptor(valSource),
                                                  fmt.GetDescriptor(FleetSource))
 
                         'Ok this is a little strange
                         'set the source of the values to the FleetInput 
                         valSource = FleetSource
-                        varname = EwEUtils.Core.eVarNameFlags.Landings
-
+                        varname = eVarNameFlags.Landings
                     Else
-                        strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, _
-                                                 fmt.GetDescriptor(valSource), _
+                        strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE,
+                                                 fmt.GetDescriptor(valSource),
                                                  My.Resources.GENERIC_VALUE_ALL)
                     End If
                 Else
                     'Biomass 
                     strLabel = fmt.GetDescriptor(valSource)
-                    iGroup = cCore.NULL_VALUE
-                    varname = EwEUtils.Core.eVarNameFlags.Biomass
-
+                    varname = eVarNameFlags.Biomass
                 End If
 
                 clr = sg.GroupColor(Me.m_uic.Core, medGrp.iGroupIndex)
 
-                If varname <> EwEUtils.Core.eVarNameFlags.NotSet Then
+                If (varname <> eVarNameFlags.NotSet) Then
 
                     Dim sliceVal As Double = CDbl(valSource.GetVariable(varname, iGroup)) * medGrp.Weight
                     Dim slice As PieItem = pane.AddPieSlice(sliceVal, clr, 0.05, strLabel)
@@ -528,6 +519,24 @@ Namespace Controls
 
                 End If
 
+            Next
+
+            For i As Integer = 0 To Data.Fleets.Length - 1
+
+                Dim medFlt As cMediatingFleet = Data.Fleets(i)
+                Dim iFleet As Integer = medFlt.iFleetIndex
+
+                ' Get the fleet
+                valSource = Me.m_uic.Core.EcopathFleetInputs(iFleet)
+                clr = sg.FleetColor(core, iFleet)
+                strLabel = fmt.GetDescriptor(valSource)
+
+                Dim man As cFishingEffortShapeManger = Me.UIContext.Core.FishingEffortShapeManager
+                Dim effort As cShapeData = man(iFleet)
+                Dim sliceVal As Double = effort.ShapeData(1) * medFlt.Weight
+                Dim slice As PieItem = pane.AddPieSlice(sliceVal, clr, 0.05, strLabel)
+                slice.ValueDecimalDigits = sg.NumDigits
+                slice.LabelType = PieLabelType.Value
             Next
 
             ' Configure pane
