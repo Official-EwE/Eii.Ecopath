@@ -40,23 +40,12 @@ Namespace My
     '
     Partial Friend Class MyApplication
 
-        <Global.System.Diagnostics.DebuggerStepThroughAttribute()>
         Public Sub New()
             MyBase.New(Global.Microsoft.VisualBasic.ApplicationServices.AuthenticationMode.Windows)
             Me.IsSingleInstance = False
             Me.EnableVisualStyles = True
             Me.SaveMySettingsOnExit = True
-            Me.ShutDownStyle = Global.Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses
-        End Sub
-
-        <Global.System.Diagnostics.DebuggerStepThroughAttribute()>
-        Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.ScientificInterface.frmEwE6
-        End Sub
-
-        <Global.System.Diagnostics.DebuggerStepThroughAttribute()>
-        Protected Overrides Sub OnCreateSplashScreen()
-            Me.SplashScreen = Global.ScientificInterface.frmSplash
+            Me.ShutdownStyle = Global.Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses
         End Sub
 
     End Class
