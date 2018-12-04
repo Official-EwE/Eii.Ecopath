@@ -173,12 +173,8 @@ Partial Class frmEcosimFunctionalResponse
         '
         'm_assignments
         '
-        Me.m_assignments.Data = Nothing
         resources.ApplyResources(Me.m_assignments, "m_assignments")
         Me.m_assignments.Name = "m_assignments"
-        Me.m_assignments.Shape = Nothing
-        Me.m_assignments.Title = ""
-        Me.m_assignments.UIContext = Nothing
         Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Line
         Me.m_assignments.XAxisLabel = "Assigned environmental forcing"
         Me.m_assignments.YAxisLabel = "Response"
