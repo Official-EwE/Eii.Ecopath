@@ -48,8 +48,9 @@ Namespace My
         End Function
 
         Protected Overrides Function OnInitialize(ByVal commandLineArgs As System.Collections.ObjectModel.ReadOnlyCollection(Of String)) As Boolean
-            ' Set the display time to 5000 milliseconds (5 seconds). 
             Me.MinimumSplashScreenDisplayTime = 5000
+            Me.MainForm = Global.ScientificInterface.frmEwE6
+            Me.SplashScreen = Global.ScientificInterface.frmSplash
             Return MyBase.OnInitialize(commandLineArgs)
         End Function
 
