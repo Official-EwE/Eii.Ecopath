@@ -156,6 +156,7 @@ Namespace Other
             'm_lblExpiry
             '
             resources.ApplyResources(Me.m_lblExpiry, "m_lblExpiry")
+            Me.m_lblExpiry.ForeColor = System.Drawing.Color.Red
             Me.m_lblExpiry.Name = "m_lblExpiry"
             '
             'm_tcMain

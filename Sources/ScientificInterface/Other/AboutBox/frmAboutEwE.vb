@@ -72,15 +72,16 @@ Namespace Other
 
             Dim mode As eReleaseMode = frmEwE6.ReleaseMode
             Select Case mode
+#If BETA = 1 Then
                 Case eReleaseMode.Beta
                     Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION_BETA, cCore.Version(True), strBitApp)
-                    Me.m_lblExpiry.Text = cStringUtils.Localize(My.Resources.ABOUT_EXPIRY, cSystemUtils.BestBefore(mode).ToShortDateString)
-                    'Case eReleaseMode.Pro
-                    '    Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION_PRO, cCore.Version(True), strBitApp)
-                    '    Me.m_lblExpiry.Text = cStringUtils.Localize(My.Resources.ABOUT_EXPIRY, cCore.BestBefore(mode).ToShortDateString)
+                    Dim frmEwE As frmEwE6 = DirectCast(Me.m_uic.FormMain, frmEwE6)
+                    Me.m_lblExpiry.Visible = frmEwE.IsExpired()
+                    Me.m_lblExpiry.Text = My.Resources.VERSION_EXPIRED
+#End If
                 Case Else
-                    Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION, cCore.Version(True), strBitApp)
-                    Me.m_lblExpiry.Visible = False
+                        Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION, cCore.Version(True), strBitApp)
+                        Me.m_lblExpiry.Visible = False
             End Select
             Me.m_lbCopyright.Text = cStringUtils.Localize(My.Resources.ABOUT_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 

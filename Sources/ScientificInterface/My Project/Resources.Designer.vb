@@ -79,33 +79,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to This version of EwE has expired. Please visit ecopath.org to upgrade.
-        '''</summary>
-        Public ReadOnly Property ABOUT_EXPIRED() As String
-            Get
-                Return ResourceManager.GetString("ABOUT_EXPIRED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to This version of EwE will run until {0}.
-        '''</summary>
-        Public ReadOnly Property ABOUT_EXPIRY() As String
-            Get
-                Return ResourceManager.GetString("ABOUT_EXPIRY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to This evaluatlion version of EwE will run until {0}.
-        '''</summary>
-        Public ReadOnly Property ABOUT_EXPIRY_BETA() As String
-            Get
-                Return ResourceManager.GetString("ABOUT_EXPIRY_BETA", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Version {0} - {1}.
         '''</summary>
         Public ReadOnly Property ABOUT_VERSION() As String
@@ -134,7 +107,7 @@ Namespace My.Resources
         
         '''<summary>
         '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang2057\deflangfe2057\themelang3082\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
-        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\f40\fbidi \fswiss\fcharset134\fprq2{\*\panose 020b0503020204020204}Microsoft YaHei;}{\f41 [rest of string was truncated]&quot;;.
+        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\f40\fbidi \fswiss\fcharset134\fprq2{\*\panose 00000000000000000000}Microsoft YaHei;}{\f41 [rest of string was truncated]&quot;;.
         '''</summary>
         Public ReadOnly Property acknowledgements() As String
             Get
@@ -4778,6 +4751,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property splash_01() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("splash_01", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to No stanza groups.
         '''</summary>
         Public ReadOnly Property SR_PLOT_NO_STANZA_GROUP() As String
@@ -5694,6 +5677,42 @@ Namespace My.Resources
         Public ReadOnly Property VALUE_REGION_UNDEFINED() As String
             Get
                 Return ResourceManager.GetString("VALUE_REGION_UNDEFINED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Beta release, issued {0}.
+        '''</summary>
+        Public ReadOnly Property VERSION_BETA() As String
+            Get
+                Return ResourceManager.GetString("VERSION_BETA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Development version, compiled {0}.
+        '''</summary>
+        Public ReadOnly Property VERSION_DEVELOPMENT() As String
+            Get
+                Return ResourceManager.GetString("VERSION_DEVELOPMENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to This Beta release has expired. Please download an official releasefrom http://ecopath.org.
+        '''</summary>
+        Public ReadOnly Property VERSION_EXPIRED() As String
+            Get
+                Return ResourceManager.GetString("VERSION_EXPIRED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Official release, issued {0}.
+        '''</summary>
+        Public ReadOnly Property VERSION_RELEASE() As String
+            Get
+                Return ResourceManager.GetString("VERSION_RELEASE", resourceCulture)
             End Get
         End Property
     End Module
