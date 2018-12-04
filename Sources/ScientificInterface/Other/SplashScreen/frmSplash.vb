@@ -76,4 +76,8 @@ Friend Class frmSplash
         End If
     End Sub
 
+    Public Shared Function IsAlive() As Boolean
+        Return (s_splash IsNot Nothing)
+    End Function
+
 End Class

@@ -174,12 +174,8 @@ Namespace Ecosim
             '
             'm_assignments
             '
-            Me.m_assignments.Data = Nothing
             resources.ApplyResources(Me.m_assignments, "m_assignments")
             Me.m_assignments.Name = "m_assignments"
-            Me.m_assignments.Shape = Nothing
-            Me.m_assignments.Title = ""
-            Me.m_assignments.UIContext = Nothing
             Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Pie
             Me.m_assignments.XAxisLabel = "Applied mediating groups and fleets"
             Me.m_assignments.YAxisLabel = "Relative weight"

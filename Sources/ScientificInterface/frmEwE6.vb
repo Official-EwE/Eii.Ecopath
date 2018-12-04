@@ -83,7 +83,11 @@ Public Class frmEwE6
     Private m_lstrStatus As New List(Of String)
 
     ''' <summary>Server time</summary>
-    Private m_dtServer As DateTime = Date.Now
+    Private m_dtServer As DateTime = Date.MinValue
+
+#If BETA = 1 Then
+    Private m_bExpirationChecked As Boolean = False
+#End If
 
 #Region " Panels "
 
@@ -886,6 +890,18 @@ Public Class frmEwE6
 
     End Sub
 
+#If BETA = 1 Then
+    Private Sub CheckExpired()
+        If (frmSplash.IsAlive()) Then Return
+        If (Me.m_dtServer <> Date.MinValue And Me.m_bExpirationChecked = False) Then
+            If (Me.m_dtServer > cSystemUtils.BestBefore(eReleaseMode.Beta, System.Reflection.Assembly.GetAssembly(GetType(cCore)))) Then
+                Me.SendMessage("This Beta release should no longer be used. Please download a newer version of EwE from http://ecopath.org", eMessageImportance.Warning, eCoreComponentType.External, "http://download.ecopath.org")
+            End If
+            Me.m_bExpirationChecked = True
+        End If
+    End Sub
+#End If
+
 #End Region ' Initialization
 
 #Region " Server time "
@@ -895,7 +911,16 @@ Public Class frmEwE6
     End Sub
 
     Private Sub OnServerTimeObtained(sender As Object, e As RunWorkerCompletedEventArgs) Handles m_bgw.RunWorkerCompleted
-        ' NOP
+        If (Me.m_dtServer = Date.MinValue) Then
+            Me.m_dtServer = Date.Now
+        End If
+#If BETA = 1 Then
+        If (Me.InvokeRequired()) Then
+            Me.Invoke(New MethodInvoker(AddressOf CheckExpired))
+        Else
+            Me.CheckExpired()
+        End If
+#End If
     End Sub
 
 #End Region ' Server time
@@ -1053,6 +1078,7 @@ Public Class frmEwE6
         frmSplash.BuggerOff()
         Me.Activate()
 
+        Me.CheckExpired()
     End Sub
 
     ''' -----------------------------------------------------------------------

@@ -154,14 +154,12 @@ Partial Class frmForagingResponse
         Me.m_shapeToolBox.Name = "m_shapeToolBox"
         Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
         Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
-        Me.m_shapeToolBox.UIContext = Nothing
         Me.m_shapeToolBox.XAxisMaxValue = -9999
         Me.m_shapeToolBox.YAxisMinValue = -9999.0!
         '
         'm_shapeToolboxToolbar
         '
         resources.ApplyResources(Me.m_shapeToolboxToolbar, "m_shapeToolboxToolbar")
-        Me.m_shapeToolboxToolbar.Handler = Nothing
         Me.m_shapeToolboxToolbar.Name = "m_shapeToolboxToolbar"
         '
         'm_tlpAssingments
@@ -174,11 +172,7 @@ Partial Class frmForagingResponse
         'm_assignments
         '
         resources.ApplyResources(Me.m_assignments, "m_assignments")
-        Me.m_assignments.Data = Nothing
         Me.m_assignments.Name = "m_assignments"
-        Me.m_assignments.Shape = Nothing
-        Me.m_assignments.Title = ""
-        Me.m_assignments.UIContext = Nothing
         Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Line
         Me.m_assignments.XAxisLabel = "Assigned driver maps"
         Me.m_assignments.YAxisLabel = "Response"
@@ -188,7 +182,6 @@ Partial Class frmForagingResponse
         resources.ApplyResources(Me.m_assignmentsToolbar, "m_assignmentsToolbar")
         Me.m_assignmentsToolbar.BackColor = System.Drawing.SystemColors.Control
         Me.m_assignmentsToolbar.DefineMediationLabel = "Define foraging response...."
-        Me.m_assignmentsToolbar.Handler = Nothing
         Me.m_assignmentsToolbar.IsMenuVisible = True
         Me.m_assignmentsToolbar.Name = "m_assignmentsToolbar"
         '

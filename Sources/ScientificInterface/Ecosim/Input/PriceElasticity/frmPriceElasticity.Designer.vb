@@ -171,7 +171,6 @@ Namespace Ecosim
             'm_shapeToolboxToolbar
             '
             resources.ApplyResources(Me.m_shapeToolboxToolbar, "m_shapeToolboxToolbar")
-            Me.m_shapeToolboxToolbar.Handler = Nothing
             Me.m_shapeToolboxToolbar.Name = "m_shapeToolboxToolbar"
             '
             'm_shapeToolBox
@@ -179,22 +178,16 @@ Namespace Ecosim
             Me.m_shapeToolBox.AllowCheckboxes = False
             resources.ApplyResources(Me.m_shapeToolBox, "m_shapeToolBox")
             Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
-            Me.m_shapeToolBox.Handler = Nothing
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
             Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
             Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
-            Me.m_shapeToolBox.UIContext = Nothing
             Me.m_shapeToolBox.XAxisMaxValue = -9999
             Me.m_shapeToolBox.YAxisMinValue = -9999.0!
             '
             'm_assignments
             '
             resources.ApplyResources(Me.m_assignments, "m_assignments")
-            Me.m_assignments.Data = Nothing
             Me.m_assignments.Name = "m_assignments"
-            Me.m_assignments.Shape = Nothing
-            Me.m_assignments.Title = ""
-            Me.m_assignments.UIContext = Nothing
             Me.m_assignments.ViewMode = ScientificInterfaceShared.Controls.ucMediationAssignments.eViewModeTypes.Pie
             Me.m_assignments.XAxisLabel = "Assigned landings"
             Me.m_assignments.YAxisLabel = "Relative weight"
