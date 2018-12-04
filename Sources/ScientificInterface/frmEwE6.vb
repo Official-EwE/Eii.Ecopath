@@ -891,11 +891,16 @@ Public Class frmEwE6
     End Sub
 
 #If BETA = 1 Then
+
+    Public Function IsExpired() As Boolean
+        Return (Me.m_dtServer > cSystemUtils.BestBefore(eReleaseMode.Beta, System.Reflection.Assembly.GetAssembly(GetType(cCore))))
+    End Function
+
     Private Sub CheckExpired()
         If (frmSplash.IsAlive()) Then Return
         If (Me.m_dtServer <> Date.MinValue And Me.m_bExpirationChecked = False) Then
-            If (Me.m_dtServer > cSystemUtils.BestBefore(eReleaseMode.Beta, System.Reflection.Assembly.GetAssembly(GetType(cCore)))) Then
-                Me.SendMessage("This Beta release should no longer be used. Please download a newer version of EwE from http://ecopath.org", eMessageImportance.Warning, eCoreComponentType.External, "http://download.ecopath.org")
+            If (Me.IsExpired()) Then
+                Me.SendMessage(My.Resources.VERSION_EXPIRED, eMessageImportance.Warning, eCoreComponentType.External, "http://download.ecopath.org")
             End If
             Me.m_bExpirationChecked = True
         End If

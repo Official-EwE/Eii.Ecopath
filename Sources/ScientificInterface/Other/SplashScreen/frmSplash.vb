@@ -41,23 +41,28 @@ Friend Class frmSplash
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        ' ToDo: globalize this
+        Me.BackgroundImage = My.Resources.splash_01
+        Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Stretch
 
         Me.m_pbIcon.BackgroundImage = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current())
         Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Zoom
 
         Me.m_lblEwE.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, cCore.Version(False))
 
+        Dim dt As DateTime = cAssemblyUtils.GetCompileDate(System.Reflection.Assembly.GetAssembly(GetType(cCore)))
+        Dim strMask As String = ""
+
         Select Case frmEwE6.ReleaseMode
             Case eReleaseMode.Beta
-                Dim dt As DateTime = cSystemUtils.BestBefore(eReleaseMode.Beta, System.Reflection.Assembly.GetAssembly(GetType(cCore)))
-                Me.m_lblReleaseMode.Text = cStringUtils.Localize("Beta release, valid until {0}", dt.ToShortDateString)
+                strMask = My.Resources.VERSION_BETA
             Case eReleaseMode.Dev
-                Me.m_lblReleaseMode.Text = "Development version"
+                strMask = My.Resources.VERSION_DEVELOPMENT
             Case eReleaseMode.Release
                 ' ToDo: show pro / free
-                Me.m_lblReleaseMode.Text = "Free version"
+                strMask = My.Resources.VERSION_RELEASE
         End Select
+
+        Me.m_lblReleaseMode.Text = cStringUtils.Localize(strMask, dt.ToShortDateString)
 
         Me.CenterToScreen()
         Me.TopMost = True

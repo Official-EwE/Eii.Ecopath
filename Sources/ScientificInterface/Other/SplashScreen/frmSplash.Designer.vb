@@ -50,18 +50,20 @@ Partial Class frmSplash
         'm_pbIcon
         '
         resources.ApplyResources(Me.m_pbIcon, "m_pbIcon")
-        Me.m_pbIcon.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.logo_EWE5
+        Me.m_pbIcon.BackColor = System.Drawing.Color.Transparent
         Me.m_pbIcon.Name = "m_pbIcon"
         Me.m_pbIcon.TabStop = False
         '
         'm_lblEwE
         '
         resources.ApplyResources(Me.m_lblEwE, "m_lblEwE")
+        Me.m_lblEwE.BackColor = System.Drawing.Color.Transparent
         Me.m_lblEwE.Name = "m_lblEwE"
         '
         'm_lblReleaseMode
         '
         resources.ApplyResources(Me.m_lblReleaseMode, "m_lblReleaseMode")
+        Me.m_lblReleaseMode.BackColor = System.Drawing.Color.Transparent
         Me.m_lblReleaseMode.Name = "m_lblReleaseMode"
         '
         'frmSplash
