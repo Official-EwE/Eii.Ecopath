@@ -1137,8 +1137,8 @@ Namespace DataSources
 
                 Try
                     ecopathDS.PedigreeLevelDBID(iLevel) = CInt(reader("LevelID"))
-                    ecopathDS.PedigreeLevelName(iLevel) = CStr(reader("LevelName"))
-                    ecopathDS.PedigreeLevelDescription(iLevel) = CStr(reader("Description"))
+                    ecopathDS.PedigreeLevelName(iLevel) = ToLocalizedDefault(CStr(reader("LevelName")), 0)
+                    ecopathDS.PedigreeLevelDescription(iLevel) = ToLocalizedDefault(CStr(reader("Description")), 1)
 
                     Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
                     ' fudge, no need to issue a database update
@@ -1167,6 +1167,24 @@ Namespace DataSources
             Return bSucces
         End Function
 
+        Private Function ToLocalizedDefault(str As String, Optional part As Integer = 0) As String
+
+            If (String.IsNullOrWhiteSpace(str)) Then Return ""
+            If (Not str.StartsWith("[")) Or (Not str.EndsWith("]")) Then Return str
+
+            str = str.Substring(1, str.Length - 2).Trim()
+            str = cResourceUtils.LoadString(str, My.Resources.CoreDefaults.ResourceManager)
+            If (str.Contains("|"c)) Then
+                Dim bits() As String = str.Split("|"c)
+                If bits.Length > part Then
+                    Return bits(part)
+                Else
+                    Return bits(0)
+                End If
+            End If
+            Return str
+        End Function
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Load the pedigree level assignments.
@@ -1187,7 +1205,7 @@ Namespace DataSources
 
                 Try
                     iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
-                    iVariable = Array.IndexOf(ecopathDS.PedigreeVariables, cin.GetVarName(CStr(reader("VarName"))))
+                    iVariable = Array.IndexOf(cEcopathDataStructures, cin.GetVarName(CStr(reader("VarName"))))
                     iLevel = Array.IndexOf(ecopathDS.PedigreeLevelDBID, CInt(Me.m_db.ReadSafe(reader, "LevelID", 0)))
 
                     If (iGroup >= 1) And (iVariable >= 1) And (iLevel > 0) Then
@@ -1282,7 +1300,7 @@ Namespace DataSources
                         If (iLevel > 0) Then
                             drow = writer.NewRow()
                             drow("GroupID") = ecopathDS.GroupDBID(iGroup)
-                            drow("VarName") = cin.GetVarName(ecopathDS.PedigreeVariables(iVariable))
+                            drow("VarName") = cin.GetVarName(cEcopathDataStructures.PedigreeVariables(iVariable))
                             drow("LevelID") = ecopathDS.PedigreeLevelDBID(iLevel)
                             writer.AddRow(drow)
                         End If

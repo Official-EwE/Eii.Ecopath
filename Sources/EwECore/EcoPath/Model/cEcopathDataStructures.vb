@@ -336,9 +336,9 @@ Public Class cEcopathDataStructures
     ''' <summary>Array [#groups, #supported vars] = Level index.</summary>
     Public Pedigree(,) As Integer
     ''' <summary>One-based array of variables supported by the pedigree system.</summary>
-    Public PedigreeVariables As eVarNameFlags() = {eVarNameFlags.NotSet, eVarNameFlags.BiomassAreaInput, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp, eVarNameFlags.TCatchInput}
+    Public Shared PedigreeVariables() As eVarNameFlags = {eVarNameFlags.NotSet, eVarNameFlags.BiomassAreaInput, eVarNameFlags.PBInput, eVarNameFlags.QBInput, eVarNameFlags.DietComp, eVarNameFlags.TCatchInput}
     ''' <summary>Number of <see cref="PedigreeVariables"/></summary>
-    Public NumPedigreeVariables As Integer = Me.PedigreeVariables.Length - 1
+    Public NumPedigreeVariables As Integer = PedigreeVariables.Length - 1
 
     Public PedigreeStatsModel As Single
     Public PedigreeStatsTStar As Single
@@ -967,7 +967,7 @@ Public Class cEcopathDataStructures
             ' For all vars
             For iVariable As Integer = 1 To Me.NumPedigreeVariables
 
-                var = Me.PedigreeVariables(iVariable)
+                var = cEcopathDataStructures.PedigreeVariables(iVariable)
 
                 If Me.PP(iGroup) = 1 And (var = eVarNameFlags.PBInput Or var = eVarNameFlags.QBInput) Then
                     'Skip qb for producers

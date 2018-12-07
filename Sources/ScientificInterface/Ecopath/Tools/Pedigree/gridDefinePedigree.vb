@@ -271,24 +271,8 @@ Imports SourceGrid2.Cells
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Protected Class cPedigreeLevelInfo
-
-        Private m_iLevelDBID As Integer = cCore.NULL_VALUE
-        Private m_iLevelIndex As Integer = cCore.NULL_VALUE
-
-        ''' <summary>Name for this level.</summary>
-        Private m_strName As String = ""
-        ''' <summary>Level color.</summary>
-        Private m_iColor As Integer = 0
-        ''' <summary>Description for this level.</summary>
-        Private m_strDescription As String = ""
-        ''' <summary>Index value for this level [0, 1].</summary>
-        Private m_sIndexValue As Single = 0.0!
-        ''' <summary>Confidence interval for this level [0, 100].</summary>
-        Private m_iConfidenceInterval As Integer = 0
         ''' <summary>The status of a Level in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
-        ''' <summary>Index of the pedigree level in its manager.</summary>
-        Private m_iSequence As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -302,16 +286,16 @@ Imports SourceGrid2.Cells
 
             Debug.Assert(level IsNot Nothing)
 
-            Me.m_iLevelDBID = level.DBID
-            Me.m_iLevelIndex = level.Index
+            Me.LevelDBID = level.DBID
+            Me.LevelIndex = level.Index
 
-            Me.m_strName = level.Name
-            Me.m_iColor = level.PoolColor
-            Me.m_strDescription = level.Description
-            Me.m_sIndexValue = level.IndexValue
-            Me.m_iConfidenceInterval = level.ConfidenceInterval
+            Me.Name = level.Name
+            Me.Color = level.PoolColor
+            Me.Description = level.Description
+            Me.IndexValue = level.IndexValue
+            Me.ConfidenceInterval = level.ConfidenceInterval
             Me.m_status = eItemStatusTypes.Original
-            Me.m_iSequence = level.Sequence
+            Me.Index = level.Sequence
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -320,21 +304,15 @@ Imports SourceGrid2.Cells
         ''' </summary>
         ''' <param name="strName">Name to assign to this administrative unit.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal strName As String, _
-                       Optional ByVal sIndexValue As Single = 0.0!, _
+        Public Sub New(ByVal strName As String,
+                       Optional ByVal sIndexValue As Single = 0.0!,
                        Optional ByVal iConfidenceInterval As Integer = 0)
 
-            If strName.IndexOf("|"c) > -1 Then
-                Dim astrSplit As String() = strName.Split("|"c)
-                Me.m_strName = astrSplit(0)
-                Me.m_strDescription = astrSplit(1)
-            Else
-                Me.m_strName = strName
-                Me.m_strDescription = ""
-            End If
-            Me.m_iColor = 0
-            Me.m_sIndexValue = sIndexValue
-            Me.m_iConfidenceInterval = iConfidenceInterval
+            Me.Name = strName
+            Me.Description = ""
+            Me.Color = 0
+            Me.IndexValue = sIndexValue
+            Me.ConfidenceInterval = iConfidenceInterval
             Me.m_status = eItemStatusTypes.Added
         End Sub
 
@@ -343,64 +321,35 @@ Imports SourceGrid2.Cells
         ''' Get/set the name of a level.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Name() As String
-            Get
-                Return Me.m_strName
-            End Get
-            Set(ByVal value As String)
-                Me.m_strName = value
-            End Set
-        End Property
+        Public Property Name() As String = ""
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the Color value of a level.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property [Color]() As Integer
-            Get
-                Return Me.m_iColor
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iColor = value
-            End Set
-        End Property
+        Public Property [Color]() As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the description of a level.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Description() As String
-            Get
-                Return Me.m_strDescription
-            End Get
-            Set(ByVal value As String)
-                Me.m_strDescription = value
-            End Set
-        End Property
+        Public Property Description() As String = ""
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the DBID associated with a level.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property LevelDBID() As Integer
-            Get
-                Return Me.m_iLevelDBID
-            End Get
-        End Property
+        Public ReadOnly Property LevelDBID() As Integer = cCore.NULL_VALUE
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the index associated with a level.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property LevelIndex() As Integer
-            Get
-                Return Me.m_iLevelIndex
-            End Get
-        End Property
+        Public ReadOnly Property LevelIndex() As Integer = cCore.NULL_VALUE
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -408,14 +357,7 @@ Imports SourceGrid2.Cells
         ''' [0, 1].
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property IndexValue() As Single
-            Get
-                Return Me.m_sIndexValue
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sIndexValue = value
-            End Set
-        End Property
+        Public Property IndexValue() As Single = 0.0!
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -423,14 +365,7 @@ Imports SourceGrid2.Cells
         ''' as a percentage [0, 100].
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property ConfidenceInterval() As Integer
-            Get
-                Return Me.m_iConfidenceInterval
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iConfidenceInterval = value
-            End Set
-        End Property
+        Public Property ConfidenceInterval() As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -441,14 +376,7 @@ Imports SourceGrid2.Cells
         ''' and bears little relationship to <see cref="cPedigreeLevel.Index">cPedigreeLevel.Index</see>.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property Index() As Integer
-            Get
-                Return Me.m_iSequence
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iSequence = value
-            End Set
-        End Property
+        Public Property Index() As Integer = 0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -463,7 +391,7 @@ Imports SourceGrid2.Cells
         End Property
 
         Public Function IsNew() As Boolean
-            Return (Me.m_iLevelDBID = cCore.NULL_VALUE)
+            Return (Me.LevelDBID = cCore.NULL_VALUE)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -477,11 +405,11 @@ Imports SourceGrid2.Cells
         ''' </returns>
         ''' -------------------------------------------------------------------
         Public Function IsChanged(ByVal level As cPedigreeLevel) As Boolean
-            If (Me.m_iLevelDBID <> level.DBID) Then Return False
-            Return (level.Name <> Me.Name) Or _
-                   (level.PoolColor <> Me.m_iColor) Or _
-                   (level.Description <> Me.Description) Or _
-                   (level.IndexValue <> Me.IndexValue) Or _
+            If (Me.LevelDBID <> level.DBID) Then Return False
+            Return (level.Name <> Me.Name) Or
+                   (level.PoolColor <> Me.Color) Or
+                   (level.Description <> Me.Description) Or
+                   (level.IndexValue <> Me.IndexValue) Or
                    (level.ConfidenceInterval <> Me.ConfidenceInterval)
         End Function
 
@@ -544,38 +472,6 @@ Imports SourceGrid2.Cells
             End If
         End Set
     End Property
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Create default pedigree levels for the current variable
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Public Sub CreateDefaults()
-
-        ' Remove all current rows
-        Dim alevels As cPedigreeLevelInfo() = Me.ActiveConfig.Levels.ToArray
-
-        For Each lvlInfo As cPedigreeLevelInfo In alevels
-            lvlInfo.FlaggedForDeletion = True
-
-            ' Check to see what is to happen to the Level now
-            Select Case lvlInfo.Status
-
-                Case eItemStatusTypes.Removed
-                    ' Set removed status
-                    Me.ActiveConfig.LevelsRemoved.Add(lvlInfo)
-
-                Case eItemStatusTypes.Invalid
-                    ' Set removed status
-                    Me.ActiveConfig.Levels.Remove(lvlInfo)
-
-            End Select
-        Next
-
-        Me.ActiveConfig.Levels.AddRange(Me.DefaultLevels())
-        Me.UpdateGrid()
-
-    End Sub
 
 #Region " Grid interaction "
 
@@ -1052,55 +948,6 @@ Imports SourceGrid2.Cells
     End Sub
 
 #End Region ' Selection extension
-
-    Private Function DefaultLevels() As cPedigreeLevelInfo()
-
-        Dim lLevels As New List(Of cPedigreeLevelInfo)
-
-        Select Case Me.m_vnActive
-
-            Case eVarNameFlags.Biomass, eVarNameFlags.BiomassAreaInput
-
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_ESTIMATED, 0, 80))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.0, 80))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.0, 80))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_APPROX_INDIRECT, 0.4, 50))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAMPLING_LOW, 0.7, 30))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAMPLING_HIGH, 1.0, 10))
-
-            Case eVarNameFlags.PBInput, eVarNameFlags.QBInput
-
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_ESTIMATED, 0, 80))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.1, 70))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.2, 60))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_EMPERICAL, 0.5, 50))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SIM_SIM, 0.6, 40))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SIM_SAME, 0.7, 30))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAME_SIM, 0.8, 20))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_SAME_SAME, 1.0, 10))
-
-            Case eVarNameFlags.DietComp
-
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GENERAL_SIM, 0.0, 80))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.0, 80))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GENERAL_SAME, 0.2, 60))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_QUALDC, 0.5, 50))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_QUANDC_LIM, 0.7, 30))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_QUANDC_DET, 1.0, 10))
-
-            Case eVarNameFlags.TCatchInput
-
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_GUESSTIMATE, 0.1, 70))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.1, 70))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_FAO, 0.2, 80))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_NATIONAL, 0.5, 50))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_LOCAL_LOW, 0.7, 30))
-                lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_LOCAL_HIGH, 1.0, 10))
-
-        End Select
-        Return lLevels.ToArray
-
-    End Function
 
 #End Region ' Admin
 

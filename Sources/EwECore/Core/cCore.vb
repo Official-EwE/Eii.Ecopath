@@ -13130,7 +13130,7 @@ Public Class cCore
     ''' supported for the variable.</returns>
     ''' -----------------------------------------------------------------------
     Public Function PedigreeVariableIndex(ByVal varName As eVarNameFlags) As Integer
-        Return Array.IndexOf(Me.m_EcoPathData.PedigreeVariables, varName)
+        Return Array.IndexOf(cEcopathDataStructuresa.PedigreeVariables, varName)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -13143,7 +13143,7 @@ Public Class cCore
     Public Function PedigreeVariable(ByVal iIndex As Integer) As eVarNameFlags
         If (iIndex < 1 Or iIndex > Me.m_EcoPathData.NumPedigreeVariables) Then Return eVarNameFlags.NotSet
         Try
-            Return Me.m_EcoPathData.PedigreeVariables(iIndex)
+            Return cEcopathDataStructures.PedigreeVariables(iIndex)
         Catch ex As Exception
             Return eVarNameFlags.NotSet
         End Try

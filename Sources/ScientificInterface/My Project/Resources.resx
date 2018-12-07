@@ -198,9 +198,6 @@ Description: {2}</value>
     <value>Predator {0}, prey {1}</value>
     <comment>{0}=predator name, {1}=prey name</comment>
   </data>
-  <data name="PEDIGREE_DEFAULT_SAMPLING_LOW" xml:space="preserve">
-    <value>Sampling/locally, low precision</value>
-  </data>
   <data name="LABEL_NAV_ECOSIM_INPUT_EGGPROD" xml:space="preserve">
     <value>Egg production</value>
   </data>
@@ -374,17 +371,8 @@ Download and install a recent version of Ecopath 5 to update your database. Once
   <data name="HEADER_ECOPATH_MODEL_NAME" xml:space="preserve">
     <value>Ecopath model file name</value>
   </data>
-  <data name="PEDIGREE_DEFAULT_QUANDC_LIM" xml:space="preserve">
-    <value>Quantitative but limited diet composition study</value>
-  </data>
-  <data name="PEDIGREE_DEFAULT_SIM_SAME" xml:space="preserve">
-    <value>Similar species, same system, low precision</value>
-  </data>
   <data name="TS_AVERAGEWEIGHT_REMARKS" xml:space="preserve">
     <value>For stanza groups only, partial series are acceptable</value>
-  </data>
-  <data name="PEDIGREE_DEFAULT_SAME_SAME" xml:space="preserve">
-    <value>Same species, same system, high precision</value>
   </data>
   <data name="STATUS_ADVECTION_ITERATION" xml:space="preserve">
     <value>Advection running iteration {0}</value>
@@ -7273,9 +7261,6 @@ Description: {1}</value>
     <value>The spatial data cache occupies {0} of disk space, of which {1} is not in use by this model. Do you want to clear unused data only?</value>
     <comment>{0}=total cache size, in memory units; {1}=unused cache size, in memory units</comment>
   </data>
-  <data name="PEDIGREE_DEFAULT_FAO" xml:space="preserve">
-    <value>FAO statistics</value>
-  </data>
   <data name="OPTIONS_FONTDLG_AXISSCALE_AND_VALUES" xml:space="preserve">
     <value>Scales and values|Font to render scales and values in graphs and figures</value>
   </data>
@@ -7285,9 +7270,6 @@ Description: {1}</value>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_HIGHLIGHT" xml:space="preserve">
     <value>Highlighted values|Values that are highlighted by you, the user</value>
-  </data>
-  <data name="PEDIGREE_DEFAULT_SIM_SIM" xml:space="preserve">
-    <value>Similar species, similar system, low precision</value>
   </data>
   <data name="STATUS_ECOSIM_LOADING" xml:space="preserve">
     <value>Loading Ecosim scenario '{0}'...</value>
@@ -7319,9 +7301,6 @@ Description: {1}</value>
     <value>The plug-in '{0}' uses outdated EwE components, and is likely to be incompatible with this version of EwE6. Do you wish to disable this plug-in?</value>
     <comment>{0}=plug-in name</comment>
   </data>
-  <data name="PEDIGREE_DEFAULT_APPROX_INDIRECT" xml:space="preserve">
-    <value>Approximate or indirect method|May include methods like remote sensing, etc.</value>
-  </data>
   <data name="LABEL_NAV_MSE_INPUT_ASSESSMENTGROUP" xml:space="preserve">
     <value>Group CVs</value>
   </data>
@@ -7343,9 +7322,6 @@ Description: {1}</value>
   <data name="FIT2TS_PROGRESS_RUNSTEP" xml:space="preserve">
     <value>Iteration {0},  SS =  {1}</value>
     <comment>{0}=iteration #, {1}= SS value at iteration</comment>
-  </data>
-  <data name="PEDIGREE_DEFAULT_QUALDC" xml:space="preserve">
-    <value>Qualitative diet composition study</value>
   </data>
   <data name="LABEL_NAV_ECOSPACE_INPUT_HABITATPREFS" xml:space="preserve">
     <value>Habitat foraging usage</value>
@@ -7582,9 +7558,6 @@ Description: {1}</value>
   <data name="STATUS_MODEL_ACCESS_OS" xml:space="preserve">
     <value>Your system does not have to proper drivers installed to read the file format of model '{0}'. Install the 'Microsoft Access Database Engine 2010 Redistributable' from the Microsoft website to use Access 2010 (ACCDB) databases.</value>
   </data>
-  <data name="PEDIGREE_DEFAULT_SAME_SIM" xml:space="preserve">
-    <value>Same species, similar system, high precision</value>
-  </data>
   <data name="IMPORT_FILE_FAILED" xml:space="preserve">
     <value>Failed to import {0}</value>
     <comment>{0}=file</comment>
@@ -7656,9 +7629,6 @@ Description: {1}</value>
   <data name="GENERIC_TEXT_CREATE" xml:space="preserve">
     <value>&amp;Create</value>
     <comment>Generic 'Create' button text</comment>
-  </data>
-  <data name="PEDIGREE_DEFAULT_LOCAL_LOW" xml:space="preserve">
-    <value>Local study, low precision/incomplete</value>
   </data>
   <data name="PROMPT_INVALIDMODEL" xml:space="preserve">
     <value>'{0}' does not seem to be a valid Ecopath model.</value>
@@ -7934,12 +7904,6 @@ Location: {1}</value>
   <data name="FR_PLOT_X_AXIS" xml:space="preserve">
     <value>Prey biomass relative to Ecopath biomass</value>
   </data>
-  <data name="PEDIGREE_DEFAULT_NATIONAL" xml:space="preserve">
-    <value>National statistics</value>
-  </data>
-  <data name="PEDIGREE_DEFAULT_GENERAL_SAME" xml:space="preserve">
-    <value>General knowledge for same group/species</value>
-  </data>
   <data name="GENERIC_TOOLTIP_PREY" xml:space="preserve">
     <value>Prey {0}</value>
     <comment>{0}=prey name</comment>
@@ -7949,9 +7913,6 @@ Location: {1}</value>
   </data>
   <data name="ECOSPACE_BASEMAP_SHRINK_PROMPT" xml:space="preserve">
     <value>You are about to reduce the size of the map, values outside the new map area will be lost. This operation cannot be undone. Are you sure you want to proceed?</value>
-  </data>
-  <data name="PEDIGREE_DEFAULT_QUANDC_DET" xml:space="preserve">
-    <value>Quantitative, detailed, diet composition study</value>
   </data>
   <data name="HEADER_ECOPATH_NAME" xml:space="preserve">
     <value>Ecopath model name</value>
@@ -7985,9 +7946,6 @@ Location: {1}</value>
   </data>
   <data name="STATUS_UPDATE_CHECKING" xml:space="preserve">
     <value>Checking for updated components...</value>
-  </data>
-  <data name="PEDIGREE_DEFAULT_GENERAL_SIM" xml:space="preserve">
-    <value>General knowledge of related group/species</value>
   </data>
   <data name="SELECTION_SINGLEVAR" xml:space="preserve">
     <value>{0} ({1})</value>
@@ -13074,21 +13032,12 @@ Location: {1}</value>
     <value>Do you wish to import '{0}' as monthly forcing data?</value>
     <comment>{0}=name of dataset</comment>
   </data>
-  <data name="PEDIGREE_DEFAULT_EMPERICAL" xml:space="preserve">
-    <value>Empirical relationship</value>
-  </data>
   <data name="FIT2TS_PROGRESS_RUNCOMPLETED" xml:space="preserve">
     <value>Run completed at {0}</value>
     <comment>{0}=time run completed</comment>
   </data>
-  <data name="PEDIGREE_DEFAULT_ESTIMATED" xml:space="preserve">
-    <value>Estimated by Ecopath</value>
-  </data>
   <data name="logo_EU" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\logo_eu.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="PEDIGREE_DEFAULT_GUESSTIMATE" xml:space="preserve">
-    <value>Guesstimate</value>
   </data>
   <data name="ECOSPACE_HEADER_AREAFISHING" xml:space="preserve">
     <value>Fleet \ habitat + MPA usage</value>
@@ -13342,9 +13291,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="ECOSPACE_HEADER_HABITAT_AREA" xml:space="preserve">
     <value>Habitat area</value>
   </data>
-  <data name="PEDIGREE_DEFAULT_OTHERMODEL" xml:space="preserve">
-    <value>From other model</value>
-  </data>
   <data name="OPTIONS_FONTDLG_LEGEND" xml:space="preserve">
     <value>Legend|Font to render legends in graphs and figures</value>
   </data>
@@ -13428,9 +13374,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>&amp;Stop</value>
     <comment>Generic 'Stop' button text</comment>
   </data>
-  <data name="PEDIGREE_DEFAULT_LOCAL_HIGH" xml:space="preserve">
-    <value>Local study, high precision/complete</value>
-  </data>
   <data name="CAPTION_TIMESTEP" xml:space="preserve">
     <value>Time step {0} ({1})</value>
     <comment>{0}=time step, {1}=date</comment>
@@ -13486,9 +13429,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="EcoBase" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ecobase.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="PEDIGREE_DEFAULT_SAMPLING_HIGH" xml:space="preserve">
-    <value>Sampling/locally, high precision</value>
   </data>
   <data name="ECOSPACE_PAUSE" xml:space="preserve">
     <value>Pause</value>

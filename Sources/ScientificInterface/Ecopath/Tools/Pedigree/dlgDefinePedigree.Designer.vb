@@ -62,7 +62,6 @@ Namespace Ecopath
             Me.m_tbDescription = New System.Windows.Forms.TextBox()
             Me.m_ilPretty = New System.Windows.Forms.ImageList(Me.components)
             Me.m_lblDescription = New System.Windows.Forms.Label()
-            Me.m_btnCreateDefaultLevels = New System.Windows.Forms.Button()
             Me.m_hdrColors = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnColorCustom = New System.Windows.Forms.Button()
             Me.m_btnColorDefaultCurrent = New System.Windows.Forms.Button()
@@ -181,14 +180,14 @@ Namespace Ecopath
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SelectedLevelDescription = ""
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TrackPropertySelection = False
             Me.m_grid.UIContext = Nothing
             Me.m_grid.VarName = EwEUtils.Core.eVarNameFlags.NotSet
@@ -223,12 +222,6 @@ Namespace Ecopath
             '
             resources.ApplyResources(Me.m_lblDescription, "m_lblDescription")
             Me.m_lblDescription.Name = "m_lblDescription"
-            '
-            'm_btnCreateDefaultLevels
-            '
-            resources.ApplyResources(Me.m_btnCreateDefaultLevels, "m_btnCreateDefaultLevels")
-            Me.m_btnCreateDefaultLevels.Name = "m_btnCreateDefaultLevels"
-            Me.m_btnCreateDefaultLevels.UseVisualStyleBackColor = True
             '
             'm_hdrColors
             '
@@ -271,7 +264,6 @@ Namespace Ecopath
             Me.Controls.Add(Me.m_lblVariable)
             Me.Controls.Add(Me.m_hdrOrder)
             Me.Controls.Add(Me.m_hdrEdit)
-            Me.Controls.Add(Me.m_btnCreateDefaultLevels)
             Me.Controls.Add(Me.m_btnKeep)
             Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Controls.Add(Me.m_btnDelete)
@@ -309,7 +301,6 @@ Namespace Ecopath
         Private WithEvents m_cmbVariable As System.Windows.Forms.ComboBox
         Private WithEvents m_scYupi As System.Windows.Forms.SplitContainer
         Private WithEvents m_lblDescription As System.Windows.Forms.Label
-        Private WithEvents m_btnCreateDefaultLevels As System.Windows.Forms.Button
         Private WithEvents m_hdrColors As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_btnColorCustom As System.Windows.Forms.Button
         Private WithEvents m_btnColorDefaultCurrent As System.Windows.Forms.Button

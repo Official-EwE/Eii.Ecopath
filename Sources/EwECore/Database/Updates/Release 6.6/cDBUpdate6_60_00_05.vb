@@ -52,7 +52,6 @@ Friend Class cDBUpdate6_60_00_05
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
-        'db.Execute("ALTER TABLE EcosimTimeSeriesFleet DROP CONSTRAINT " & db.GetFkKeyName("EcosimTimeSeriesFleet", "EcopathGroup", "GroupID"))
         Return db.Execute("ALTER TABLE EcosimTimeSeriesFleet DROP CONSTRAINT " & db.GetFkKeyName("EcopathGroup", "EcosimTimeSeriesFleet", "GroupID"))
     End Function
 

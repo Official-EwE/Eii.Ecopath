@@ -1290,6 +1290,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\splash_01.png" />
     <None Include="Resources\saveOutputHS.png" />
     <None Include="Resources\Ecopath6_joepie.ico" />
     <None Include="Resources\ecopath5_30.ico" />

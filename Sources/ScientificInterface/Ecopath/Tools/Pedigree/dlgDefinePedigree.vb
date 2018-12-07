@@ -154,11 +154,6 @@ Namespace Ecopath
             Me.m_grid.SelectedLevelDescription = Me.m_tbDescription.Text
         End Sub
 
-        Private Sub OnSetDefaults(ByVal sender As Object, ByVal e As EventArgs) _
-            Handles m_btnCreateDefaultLevels.Click
-            Me.m_grid.CreateDefaults()
-        End Sub
-
         Private Sub OnDefaultAllColors(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnColorDefaultAll.Click
             Me.m_grid.SetDefaultColors()
