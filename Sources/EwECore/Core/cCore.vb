@@ -13130,7 +13130,7 @@ Public Class cCore
     ''' supported for the variable.</returns>
     ''' -----------------------------------------------------------------------
     Public Function PedigreeVariableIndex(ByVal varName As eVarNameFlags) As Integer
-        Return Array.IndexOf(cEcopathDataStructuresa.PedigreeVariables, varName)
+        Return Array.IndexOf(cEcopathDataStructures.PedigreeVariables, varName)
     End Function
 
     ''' -----------------------------------------------------------------------
