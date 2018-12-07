@@ -317,8 +317,10 @@ Namespace Ecopath.Controls.FlowDiagram
                 Next j
 
                 Dim sValue As Single = Me.Value(i)
-                Me.m_sValueMax = Math.Max(Me.m_sValueMax, sValue)
-                Me.m_sValueMin = Math.Min(Me.m_sValueMin, sValue)
+                If (sValue <> cCore.NULL_VALUE) Then
+                    Me.m_sValueMax = Math.Max(Me.m_sValueMax, sValue)
+                    Me.m_sValueMin = Math.Min(Me.m_sValueMin, sValue)
+                End If
                 val_all(i) = sValue
 
                 PP_all(c.nFleets + i) = c.EcoPathGroupInputs(i).PP
@@ -334,10 +336,12 @@ Namespace Ecopath.Controls.FlowDiagram
                     link_all(i, c.nFleets + j) = sDiet
                 Next j
 
-                Dim sB As Single = Me.Value(i + c.nGroups)
-                Me.m_sValueMax = Math.Max(Me.m_sValueMax, sB)
-                Me.m_sValueMin = Math.Min(Me.m_sValueMin, sB)
-                val_all(i + c.nFleets) = sB
+                Dim sValue As Single = Me.Value(i + c.nGroups)
+                If (sValue <> cCore.NULL_VALUE) Then
+                    Me.m_sValueMax = Math.Max(Me.m_sValueMax, sValue)
+                    Me.m_sValueMin = Math.Min(Me.m_sValueMin, sValue)
+                End If
+                val_all(i + c.nFleets) = sValue
 
                 ' Just to be explicit: fleets are full-on consumers
                 PP_all(i) = 0

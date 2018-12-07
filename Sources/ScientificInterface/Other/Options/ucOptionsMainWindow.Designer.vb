@@ -58,7 +58,7 @@ Namespace Other
             Me.Label1 = New System.Windows.Forms.Label()
             Me.m_rbIn = New System.Windows.Forms.RadioButton()
             Me.m_rbOut = New System.Windows.Forms.RadioButton()
-            Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrWindowSize = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.SuspendLayout()
             '
             'm_hdrCaption
@@ -152,13 +152,13 @@ Namespace Other
             Me.m_rbOut.TabStop = True
             Me.m_rbOut.UseVisualStyleBackColor = True
             '
-            'CEwEHeaderLabel1
+            'm_hdrWindowSize
             '
-            Me.CEwEHeaderLabel1.CanCollapseParent = False
-            Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
-            Me.CEwEHeaderLabel1.IsCollapsed = False
-            Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
+            resources.ApplyResources(Me.m_hdrWindowSize, "m_hdrWindowSize")
+            Me.m_hdrWindowSize.CanCollapseParent = False
+            Me.m_hdrWindowSize.CollapsedParentHeight = 0
+            Me.m_hdrWindowSize.IsCollapsed = False
+            Me.m_hdrWindowSize.Name = "m_hdrWindowSize"
             '
             'ucOptionsPresentation
             '
@@ -174,7 +174,7 @@ Namespace Other
             Me.Controls.Add(Me.Label1)
             Me.Controls.Add(Me.m_rbIn)
             Me.Controls.Add(Me.m_rbOut)
-            Me.Controls.Add(Me.CEwEHeaderLabel1)
+            Me.Controls.Add(Me.m_hdrWindowSize)
             Me.Controls.Add(Me.m_cbCollapseNavPanel)
             Me.Controls.Add(Me.m_cbHideMainMenu)
             Me.Controls.Add(Me.m_cbHideStatusBar)
@@ -202,7 +202,7 @@ Namespace Other
         Friend WithEvents Label1 As Label
         Friend WithEvents m_rbIn As RadioButton
         Friend WithEvents m_rbOut As RadioButton
-        Private WithEvents CEwEHeaderLabel1 As cEwEHeaderLabel
+        Private WithEvents m_hdrWindowSize As cEwEHeaderLabel
     End Class
 
 End Namespace

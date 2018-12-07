@@ -305,13 +305,13 @@ Namespace Controls
 
         Friend Sub DrawNode(ByVal g As Graphics,
                             ByVal rc As Rectangle,
-                            ByVal iGroup As Integer,
+                            ByVal iNode As Integer,
                             ByVal highlight As IFlowDiagramRenderer.eFDHighlightType) _
             Implements IFlowDiagramRenderer.DrawNode
 
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
-            Dim strLabel As String = Me.FormatLabelText(iGroup)
-            Dim sValue As Single = Me.m_data.Value(iGroup)
+            Dim strLabel As String = Me.FormatLabelText(iNode)
+            Dim sValue As Single = Me.m_data.Value(iNode)
             Dim sValueMax As Single = Me.m_data.ValueMax
             Dim clrPen As Color = Me.TextColor()
             Dim clrLabel As Color = clrPen
@@ -332,11 +332,11 @@ Namespace Controls
                 Case IFlowDiagramRenderer.eFDHighlightType.None
                     Select Case Me.m_colorusagetype
                         Case eFDColorUsageTypes.EwE
-                            clrFill = Me.m_data.ItemColor(iGroup)
+                            clrFill = Me.m_data.ItemColor(iNode)
                         Case eFDColorUsageTypes.Value
                             clrFill = Me.m_colorramp.GetColor(sValue, sValueMax)
                         Case eFDColorUsageTypes.TrophicLevel
-                            clrFill = Me.m_colorramp.GetColor(Me.m_data.TrophicLevel(iGroup) - 1, Me.m_iNumTrophicLevels - 1)
+                            clrFill = Me.m_colorramp.GetColor(Me.m_data.TrophicLevel(iNode) - 1, Me.m_iNumTrophicLevels - 1)
                         Case Else
                             clrFill = Me.m_clrNode
                     End Select
@@ -357,10 +357,10 @@ Namespace Controls
                 clrLabel = clrPen
             End If
 
-            Me.m_node.DrawNode(g, Me.NodeLocation(iGroup, rc), Me.NodeType, iSize, clrPen, clrFill)
+            Me.m_node.DrawNode(g, Me.NodeLocation(iNode, rc), Me.NodeType, iSize, clrPen, clrFill)
 
             If (Me.m_bIsDrawLabel) Then
-                Me.m_node.DrawLabel(g, Me.LabelLocation(iGroup, rc), Me.RenderFont, clrLabel, Me.FormatLabelText(iGroup))
+                Me.m_node.DrawLabel(g, Me.LabelLocation(iNode, rc), Me.RenderFont, clrLabel, Me.FormatLabelText(iNode))
             End If
 
         End Sub
@@ -429,7 +429,8 @@ Namespace Controls
             End If
 
             If (tsShowLegend = TriState.True) Then
-                Dim strTitle As String = ""
+                Dim lgd As New cLegend(Me.UIContext, "")
+
                 Dim sMin As Single = 0
                 Dim sMax As Single = 0
                 Select Case Me.AutoColorUsage
@@ -438,18 +439,23 @@ Namespace Controls
                     Case eFDColorUsageTypes.Value
                         sMin = Me.m_data.ValueMin
                         sMax = Me.m_data.ValueMax
-                        strTitle = Me.m_data.DataTitle
+                        lgd.Title = Me.m_data.DataTitle
                     Case eFDColorUsageTypes.EwE
                         sMin = 1
                         sMax = Me.m_data.NumItems
-                        strTitle = My.Resources.HEADER_COMPARTMENT
+                        Dim breaks(CInt(sMax)) As Double
+                        Dim colors(CInt(sMax)) As Color
+                        For i As Integer = 1 To CInt(sMax)
+                            breaks(i) = 1 / sMax
+                            colors(i) = Me.m_data.ItemColor(i)
+                        Next
+                        lgd.AddGradient("", 1, Me.m_data.NumItems, "", breaks, colors)
+                        lgd.Title = My.Resources.HEADER_COMPARTMENT
                     Case eFDColorUsageTypes.Flow
                         sMin = Me.m_data.LinkValueMin
                         sMax = Me.m_data.LinkValueMax
-                        strTitle = My.Resources.HEADER_LINK
+                        lgd.Title = My.Resources.HEADER_LINK
                 End Select
-                Dim lgd As New cLegend(Me.UIContext, strTitle)
-                lgd.AddGradient("", sMin, sMax)
                 lgd.Draw(g, ptTopLeft)
             End If
 

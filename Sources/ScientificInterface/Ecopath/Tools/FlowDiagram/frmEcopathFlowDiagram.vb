@@ -24,6 +24,7 @@ Imports System.Drawing.Imaging
 Imports System.IO
 Imports EwECore
 Imports EwECore.Auxiliary
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -133,6 +134,8 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim ad As cAuxiliaryData = Me.Core.AuxillaryData(Me.DataName())
             Me.m_doodler.Load(ad.Settings, Me.m_pbFlowDiagram)
             Me.m_tree.Load(ad.Settings)
+
+            Me.UpdateTitle()
 
         End Sub
 
@@ -364,8 +367,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
             Try
                 Me.m_data.ValueType = CType(Me.m_tscmbData.SelectedItem, eFDNodeValueType)
-                ' ToDo: localize this
-                Me.m_data.DataTitle = Me.m_data.ValueType.ToString()
+                Me.UpdateTitle()
                 Me.m_pbFlowDiagram.Invalidate()
             Catch ex As Exception
 
@@ -386,6 +388,24 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim model As cEwEModel = Me.UIContext.Core.EwEModel
             Return cFileUtils.ToValidFileName(model.Name & " " & Me.m_tree.Title, False)
         End Function
+
+        Protected Sub UpdateTitle()
+            Dim ftm As New cVarnameTypeFormatter()
+            Dim var As eVarNameFlags = eVarNameFlags.NotSet
+            Dim units As New cUnits(Me.Core)
+
+            Select Case Me.m_data.ValueType
+                Case eFDNodeValueType.Biomass
+                    var = eVarNameFlags.Biomass
+                Case eFDNodeValueType.Production
+                    var = eVarNameFlags.PBOutput
+                Case Else
+                    Debug.Assert(False)
+            End Select
+            Dim md As cVariableMetaData = cVariableMetaData.Get(var)
+
+            Me.m_data.DataTitle = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, ftm.GetDescriptor(var), units.ToString(md))
+        End Sub
 
         Protected Overrides Sub UpdateControls()
             Me.m_scContent.Panel2Collapsed = Not Me.m_tsmiSettings.Checked

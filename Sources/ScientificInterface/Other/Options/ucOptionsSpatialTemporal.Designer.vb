@@ -222,6 +222,7 @@ Namespace Other
             Me.Controls.Add(Me.m_btnAdd)
             Me.Controls.Add(Me.m_btnViewCache)
             Me.Controls.Add(Me.m_hdrCaption)
+            Me.MinimumSize = New System.Drawing.Size(400, 307)
             Me.Name = "ucOptionsSpatialTemporal"
             Me.ResumeLayout(False)
             Me.PerformLayout()
