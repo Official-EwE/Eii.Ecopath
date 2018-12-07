@@ -1205,7 +1205,7 @@ Namespace DataSources
 
                 Try
                     iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
-                    iVariable = Array.IndexOf(cEcopathDataStructures, cin.GetVarName(CStr(reader("VarName"))))
+                    iVariable = Array.IndexOf(cEcopathDataStructures.PedigreeVariables, cin.GetVarName(CStr(reader("VarName"))))
                     iLevel = Array.IndexOf(ecopathDS.PedigreeLevelDBID, CInt(Me.m_db.ReadSafe(reader, "LevelID", 0)))
 
                     If (iGroup >= 1) And (iVariable >= 1) And (iLevel > 0) Then
