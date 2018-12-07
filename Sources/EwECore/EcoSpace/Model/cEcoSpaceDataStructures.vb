@@ -677,24 +677,19 @@ Public Class cEcospaceDataStructures
     ''' <remarks>This incurs significant overhead so it is Off(False) by default. At this time is can only be turned ON(True) via code.</remarks>
     Public bCalTrophicLevel As Boolean
 
-
     ''' <summary>
     ''' Number of fishing effort zones (LME's, EEZ...)
     ''' </summary>
-    ''' <remarks></remarks>
     Public nEffZones As Integer
 
     ''' <summary>
     ''' Proportion of relative fishing effort for a fleet in an zone(LME,Region....) by nFleets, nEffZones
     ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
     Public PropEffortFleetZone(,) As Single
 
     ''' <summary>
     ''' Index of the Effort Zone a cell is in by Row Col
     ''' </summary>
-    ''' <remarks></remarks>
     Public EffZones(,) As Integer
 
     ''' <summary>
