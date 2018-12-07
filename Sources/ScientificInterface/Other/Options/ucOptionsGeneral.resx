@@ -300,6 +300,9 @@
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
     <value>20</value>
   </data>
+  <data name="m_cmbLogLevel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="m_cmbLogLevel.Location" type="System.Drawing.Point, System.Drawing">
     <value>168, 54</value>
   </data>
@@ -445,7 +448,7 @@
     <value>m_nudMaxNumMessages</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15748.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.Parent" xml:space="preserve">
     <value>$this</value>
@@ -478,7 +481,7 @@
     <value>m_hdrAuthor</value>
   </data>
   <data name="&gt;&gt;m_hdrAuthor.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15748.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAuthor.Parent" xml:space="preserve">
     <value>$this</value>
@@ -511,7 +514,7 @@
     <value>m_hdrStatusPanel</value>
   </data>
   <data name="&gt;&gt;m_hdrStatusPanel.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15748.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrStatusPanel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -532,7 +535,7 @@
     <value>m_nudMRU</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15748.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.Parent" xml:space="preserve">
     <value>$this</value>
@@ -565,7 +568,7 @@
     <value>m_hdrCaption</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15748.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>

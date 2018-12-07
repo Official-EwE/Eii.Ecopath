@@ -126,7 +126,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdr1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>436, 18</value>
+    <value>385, 18</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_hdr1.TabIndex" type="System.Int32, mscorlib">
@@ -142,7 +142,7 @@
     <value>m_hdr1</value>
   </data>
   <data name="&gt;&gt;m_hdr1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdr1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -190,7 +190,7 @@
     <value>m_nudThumbnailSize</value>
   </data>
   <data name="&gt;&gt;m_nudThumbnailSize.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudThumbnailSize.Parent" xml:space="preserve">
     <value>$this</value>
@@ -286,7 +286,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_nudFontSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>360, 179</value>
+    <value>309, 179</value>
   </data>
   <data name="m_nudFontSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 20</value>
@@ -298,7 +298,7 @@
     <value>m_nudFontSize</value>
   </data>
   <data name="&gt;&gt;m_nudFontSize.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudFontSize.Parent" xml:space="preserve">
     <value>$this</value>
@@ -316,7 +316,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblFontSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>356, 163</value>
+    <value>305, 163</value>
   </data>
   <data name="m_lblFontSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>52, 13</value>
@@ -349,7 +349,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblExample.Location" type="System.Drawing.Point, System.Drawing">
-    <value>232, 221</value>
+    <value>181, 221</value>
   </data>
   <data name="m_lblExample.Size" type="System.Drawing.Size, System.Drawing">
     <value>204, 44</value>
@@ -382,7 +382,7 @@
     <value>0, 102</value>
   </data>
   <data name="m_hdr2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>436, 18</value>
+    <value>385, 18</value>
   </data>
   <data name="m_hdr2.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -397,7 +397,7 @@
     <value>m_hdr2</value>
   </data>
   <data name="&gt;&gt;m_hdr2.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.5.13981.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdr2.Parent" xml:space="preserve">
     <value>$this</value>
@@ -421,7 +421,7 @@
     <value>Bold Italic</value>
   </data>
   <data name="m_cbFontStyle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>231, 178</value>
+    <value>180, 178</value>
   </data>
   <data name="m_cbFontStyle.MaxDropDownItems" type="System.Int32, mscorlib">
     <value>17</value>
@@ -454,7 +454,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblItemFontStyle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>228, 162</value>
+    <value>177, 162</value>
   </data>
   <data name="m_lblItemFontStyle.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 13</value>
@@ -481,7 +481,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_cbFontFamily.Location" type="System.Drawing.Point, System.Drawing">
-    <value>231, 139</value>
+    <value>180, 139</value>
   </data>
   <data name="m_cbFontFamily.MaxDropDownItems" type="System.Int32, mscorlib">
     <value>17</value>
@@ -514,7 +514,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblItemForeColor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>228, 123</value>
+    <value>177, 123</value>
   </data>
   <data name="lblItemForeColor.Size" type="System.Drawing.Size, System.Drawing">
     <value>51, 13</value>
@@ -547,7 +547,7 @@
     <value>0, 123</value>
   </data>
   <data name="m_lbFontTypes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 219</value>
+    <value>175, 219</value>
   </data>
   <data name="m_lbFontTypes.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -574,7 +574,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>228, 206</value>
+    <value>177, 206</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 13</value>
@@ -607,7 +607,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>436, 342</value>
+    <value>385, 342</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucOptionsGraphs</value>

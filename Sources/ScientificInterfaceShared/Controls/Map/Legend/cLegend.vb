@@ -59,7 +59,17 @@ Namespace Controls.Map
         Private Class cStaticEntry
             Inherits cLegendEntry
 
-            Public Sub New(strName As String, strUnits As String, sMin As Single, sMax As Single)
+            ''' <summary>
+            ''' 
+            ''' </summary>
+            ''' <param name="strName"></param>
+            ''' <param name="strUnits"></param>
+            ''' <param name="sMin"></param>
+            ''' <param name="sMax"></param>
+            ''' <param name="breaks">Optional gradient color breaks</param>
+            ''' <param name="colors">Optional gradient color breaks</param>
+            Public Sub New(strName As String, strUnits As String, sMin As Single, sMax As Single,
+                           Optional breaks As Double() = Nothing, Optional colors() As Color = Nothing)
 
                 If String.IsNullOrWhiteSpace(strUnits) Then
                     Me.Label = strName
@@ -68,9 +78,16 @@ Namespace Controls.Map
                 End If
                 Me.Min = sMin
                 Me.Max = sMax
-                Me.Renderer = New cLayerRendererValue(New Auxiliary.cVisualStyle())
+
+                Dim vs As New Auxiliary.cVisualStyle()
+                If (breaks IsNot Nothing And colors IsNot Nothing) Then
+                    vs.GradientBreaks = breaks
+                    vs.GradientColors = colors
+                End If
+                Me.Renderer = New cLayerRendererValue(vs)
                 Me.Renderer.ScaleMin = Me.Min
                 Me.Renderer.ScaleMax = Me.Max
+
             End Sub
 
             Public Overrides ReadOnly Property Renderer As Layers.cLayerRenderer
@@ -144,7 +161,6 @@ Namespace Controls.Map
         End Enum
 
         Private m_uic As cUIContext = Nothing
-        Private m_strTitle As String = ""
         Private m_lLayers As New List(Of cLegendEntry)
         Private m_fmt As New StringFormat(StringFormat.GenericTypographic)
 
@@ -183,14 +199,14 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor, create a new legend with a fixed name.
+        ''' Constructor, create a new legend.
         ''' </summary>
         ''' <param name="uic"><see cref="cUIContext"/> to use.</param>
-        ''' <param name="strTitle">Map title.</param>
+        ''' <param name="strTitle">Legend title.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(uic As cUIContext, strTitle As String)
+        Public Sub New(uic As cUIContext, Optional strTitle As String = "")
             Me.m_uic = uic
-            Me.m_strTitle = strTitle
+            Me.Title = strTitle
             Me.m_fmt.Alignment = If(cSystemUtils.IsRightToLeft, StringAlignment.Far, StringAlignment.Near)
             Me.m_fmt.LineAlignment = StringAlignment.Center
         End Sub
@@ -214,6 +230,13 @@ Namespace Controls.Map
 #End Region ' Shared interfaces
 
 #Region " Public interfaces "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the legend title.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property Title As String = ""
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -275,10 +298,14 @@ Namespace Controls.Map
         ''' <param name="strName"></param>
         ''' <param name="sMin"></param>
         ''' <param name="sMax"></param>
-        ''' <param name="strUnits">Units mask to show</param>
+        ''' <param name="strUnits">Units to show.</param>
+        ''' <param name="breaks">Gradient breaks, if any.</param>
+        ''' <param name="colors">Gradient colors, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddGradient(strName As String, sMin As Single, sMax As Single, Optional strUnits As String = "")
-            Me.m_lLayers.Add(New cStaticEntry(strName, strUnits, sMin, sMax))
+        Public Sub AddGradient(strName As String, sMin As Single, sMax As Single,
+                               Optional strUnits As String = "",
+                               Optional breaks As Double() = Nothing, Optional colors() As Color = Nothing)
+            Me.m_lLayers.Add(New cStaticEntry(strName, strUnits, sMin, sMax, breaks, colors))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -423,11 +450,11 @@ Namespace Controls.Map
 #Region " Internals "
 
         Private Function RenderTitleSize(ByVal g As Graphics, ByVal ft As Font) As SizeF
-            Return g.MeasureString(Me.m_strTitle, ft, 10000, Me.m_fmt)
+            Return g.MeasureString(Me.Title, ft, 10000, Me.m_fmt)
         End Function
 
         Private Sub DrawTitle(ByVal g As Graphics, ByVal ft As Font, ByVal pt As Point)
-            g.DrawString(Me.m_strTitle, ft, Brushes.Black, pt)
+            g.DrawString(Me.Title, ft, Brushes.Black, pt)
         End Sub
 
         Private Function MeasureLayer(ByVal g As Graphics, ByVal ftLabel As Font, ByVal ftScale As Font, ByVal l As cLegendEntry) As SizeF
@@ -446,7 +473,7 @@ Namespace Controls.Map
                     szBox.Height += Me.LayerBoxVSpacing
                 End If
 
-                Dim szName As SizeF = g.MeasureString(If(String.IsNullOrWhiteSpace(strText), "X", strText), ftLabel, 10000, Me.m_fmt)
+                Dim szName As SizeF = g.MeasureString(If(String.IsNullOrWhiteSpace(strText), "XXXXXXXXX", strText), ftLabel, 10000, Me.m_fmt)
 
                 Select Case style
                     Case eLayerRenderStyle.Element, eLayerRenderStyle.Symbol
@@ -478,7 +505,7 @@ Namespace Controls.Map
                     style = eLayerRenderStyle.Element
                 End If
 
-                Dim szName As SizeF = g.MeasureString(If(String.IsNullOrWhiteSpace(strText), "X", strText), ftLabel, 10000, Me.m_fmt)
+                Dim szName As SizeF = g.MeasureString(If(String.IsNullOrWhiteSpace(strText), "XXXXXXXXX", strText), ftLabel, 10000, Me.m_fmt)
                 Dim rcPreview As Rectangle = New Rectangle(pt.X, pt.Y, Me.LayerBoxWidth, CInt(Math.Max(Me.LayerBoxHeight, szName.Height)))
                 Dim iSymbolKey As Integer = l.Renderer.SymbolKey(i)
                 Dim fmt As StringFormat = CType(Me.m_fmt.Clone(), StringFormat)

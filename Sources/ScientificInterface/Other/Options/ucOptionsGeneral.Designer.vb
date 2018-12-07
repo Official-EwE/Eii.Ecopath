@@ -94,9 +94,9 @@ Namespace Other
             '
             'm_cmbLogLevel
             '
+            resources.ApplyResources(Me.m_cmbLogLevel, "m_cmbLogLevel")
             Me.m_cmbLogLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbLogLevel.FormattingEnabled = True
-            resources.ApplyResources(Me.m_cmbLogLevel, "m_cmbLogLevel")
             Me.m_cmbLogLevel.Name = "m_cmbLogLevel"
             '
             'Label2
