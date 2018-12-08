@@ -431,30 +431,40 @@ Namespace Controls
             If (tsShowLegend = TriState.True) Then
                 Dim lgd As New cLegend(Me.UIContext, "")
 
-                Dim sMin As Single = 0
-                Dim sMax As Single = 0
                 Select Case Me.AutoColorUsage
                     Case eFDColorUsageTypes.None
                         Return
                     Case eFDColorUsageTypes.Value
-                        sMin = Me.m_data.ValueMin
-                        sMax = Me.m_data.ValueMax
                         lgd.Title = Me.m_data.DataTitle
+                        lgd.AddGradient("", Me.m_data.ValueMin, Me.m_data.ValueMax)
                     Case eFDColorUsageTypes.EwE
-                        sMin = 1
-                        sMax = Me.m_data.NumItems
-                        Dim breaks(CInt(sMax)) As Double
-                        Dim colors(CInt(sMax)) As Color
-                        For i As Integer = 1 To CInt(sMax)
-                            breaks(i) = 1 / sMax
-                            colors(i) = Me.m_data.ItemColor(i)
+                        ' ToDo: group items
+                        Dim dtGroups As New Dictionary(Of String, Integer)
+                        For i As Integer = 1 To Me.m_data.NumItems
+                            Dim cat As String = Me.m_data.ItemCategory(i)
+                            If Not dtGroups.ContainsKey(cat) Then dtGroups(cat) = 0
+                            dtGroups(cat) += 1
                         Next
-                        lgd.AddGradient("", 1, Me.m_data.NumItems, "", breaks, colors)
+                        For Each cat As String In dtGroups.Keys
+                            Dim n As Integer = Me.m_data.NumItems
+                            Dim j As Integer = dtGroups(cat)
+                            Dim breaks(j) As Double
+                            Dim colors(j) As Color
+                            Dim k As Integer = 0
+                            For i As Integer = 1 To Me.m_data.NumItems
+                                If (Me.m_data.ItemCategory(i) = cat) Then
+                                    k += 1
+                                    breaks(k) = 1 / j
+                                    colors(k) = Me.m_data.ItemColor(i)
+                                End If
+                            Next
+                            lgd.AddGradient(cat, 1, k, "", breaks, colors)
+                            Debug.Assert(k = j)
+                        Next
                         lgd.Title = My.Resources.HEADER_COMPARTMENT
                     Case eFDColorUsageTypes.Flow
-                        sMin = Me.m_data.LinkValueMin
-                        sMax = Me.m_data.LinkValueMax
                         lgd.Title = My.Resources.HEADER_LINK
+                        lgd.AddGradient("", Me.m_data.LinkValueMin, Me.m_data.LinkValueMax)
                 End Select
                 lgd.Draw(g, ptTopLeft)
             End If
