@@ -252,6 +252,14 @@ Public Class cFlowDiagramData
     Public Property DataTitle As String _
         Implements IFlowDiagramData.DataTitle
 
+    ''' <inheritdocs cref="IFlowDiagramData.ItemCategory(Integer)"/>
+    Public ReadOnly Property ItemCategory(iItem As Integer) As String _
+        Implements IFlowDiagramData.ItemCategory
+        Get
+            Return ""
+        End Get
+    End Property
+
 #End Region ' Properties
 
 #Region " Internals "

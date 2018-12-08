@@ -280,6 +280,18 @@ Namespace Ecopath.Controls.FlowDiagram
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IFlowDiagramData.ItemCategory(Integer)"/>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property ItemCategory(iItem As Integer) As String _
+           Implements IFlowDiagramData.ItemCategory
+            Get
+                Dim c As cCore = Me.UIContext.Core
+                If (iItem <= c.nGroups) Then Return "Group"
+                Return "Fleet"
+            End Get
+        End Property
+
 #End Region ' Properties
 
 #Region " Internals "

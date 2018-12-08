@@ -229,6 +229,12 @@ Namespace Ecosim
         Public Property DataTitle As String _
             Implements IFlowDiagramData.DataTitle
 
+        Public ReadOnly Property ItemCategory(iItem As Integer) As String Implements IFlowDiagramData.ItemCategory
+            Get
+                Return "Group"
+            End Get
+        End Property
+
 #End Region ' Properties
 
 #Region " Internals "

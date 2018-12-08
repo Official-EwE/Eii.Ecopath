@@ -98,6 +98,14 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get the category to render an item in the flow diagram legend.
+        ''' </summary>
+        ''' <param name="iItem">The index of the item to get the category for.</param>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property ItemCategory(ByVal iItem As Integer) As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Get whether an item should be rendered as visible.
         ''' </summary>
         ''' <param name="iIndex">The index of the item to get the visibility state for.</param>
@@ -131,12 +139,12 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the rank for placing the group in the diagram. In foodwebs, the
-        ''' rank would typcally be the trophic level of a group.
+        ''' Get the rank for placing an item in the diagram. In foodwebs, the
+        ''' rank would typcally be the trophic level of a group or fleet.
         ''' </summary>
-        ''' <param name="iGroup">The index of the group to get the rank for.</param>
+        ''' <param name="iItem">The index of the item to get the rank for.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property TrophicLevel(ByVal iGroup As Integer) As Single
+        ReadOnly Property TrophicLevel(ByVal iItem As Integer) As Single
 
         ''' -------------------------------------------------------------------
         ''' <summary>
