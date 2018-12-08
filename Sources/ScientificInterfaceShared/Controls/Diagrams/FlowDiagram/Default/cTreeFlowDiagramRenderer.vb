@@ -436,7 +436,7 @@ Namespace Controls
                         Return
                     Case eFDColorUsageTypes.Value
                         lgd.Title = Me.m_data.DataTitle
-                        lgd.AddGradient("", Me.m_data.ValueMin, Me.m_data.ValueMax)
+                        lgd.AddGradient("", cStringUtils.FormatNumber(Me.m_data.ValueMin), cStringUtils.FormatNumber(Me.m_data.ValueMax))
                     Case eFDColorUsageTypes.EwE
                         ' ToDo: group items
                         Dim dtGroups As New Dictionary(Of String, Integer)
@@ -458,13 +458,13 @@ Namespace Controls
                                     colors(k) = Me.m_data.ItemColor(i)
                                 End If
                             Next
-                            lgd.AddGradient(cat, 1, k, "", breaks, colors)
+                            lgd.AddGradient(cat, "1", CStr(k), "", breaks, colors)
                             Debug.Assert(k = j)
                         Next
                         lgd.Title = My.Resources.HEADER_COMPARTMENT
                     Case eFDColorUsageTypes.Flow
                         lgd.Title = My.Resources.HEADER_LINK
-                        lgd.AddGradient("", Me.m_data.LinkValueMin, Me.m_data.LinkValueMax)
+                        lgd.AddGradient("", cStringUtils.FormatNumber(Me.m_data.LinkValueMin), cStringUtils.FormatNumber(Me.m_data.LinkValueMax))
                 End Select
                 lgd.Draw(g, ptTopLeft)
             End If

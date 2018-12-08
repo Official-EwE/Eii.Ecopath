@@ -21,8 +21,8 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -287,8 +287,8 @@ Namespace Ecopath.Controls.FlowDiagram
            Implements IFlowDiagramData.ItemCategory
             Get
                 Dim c As cCore = Me.UIContext.Core
-                If (iItem <= c.nGroups) Then Return "Group"
-                Return "Fleet"
+                If (iItem <= c.nGroups) Then Return SharedResources.HEADER_GROUP
+                Return SharedResources.HEADER_FLEET
             End Get
         End Property
 

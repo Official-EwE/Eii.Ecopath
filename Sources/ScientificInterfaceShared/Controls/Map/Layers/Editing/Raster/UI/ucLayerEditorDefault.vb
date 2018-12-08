@@ -85,20 +85,20 @@ Namespace Controls.Map.Layers
                 Me.m_fpUnits.Enabled = (Me.Layer.UnitStatus And eStatusFlags.NotEditable) = 0
                 Me.m_fpUnits.Value = Me.Layer.Units
 
-                Dim sMin As Single = cCore.NULL_VALUE
-                Dim sMax As Single = cCore.NULL_VALUE
+                Dim strLabelMin As String = ""
+                Dim strLabelMax As String = ""
                 Dim r As cLayerRenderer = editor.Layer.Renderer
 
                 If (r IsNot Nothing) Then
-                    sMin = r.ScaleMin
-                    sMax = r.ScaleMax
+                    strLabelMin = r.LabelMin
+                    strLabelMax = r.LabelMax
                 End If
 
-                If sMin = cCore.NULL_VALUE Then sMin = Me.Layer.Data.MinValue
-                If sMax = cCore.NULL_VALUE Then sMax = Me.Layer.Data.MaxValue
+                If String.IsNullOrWhiteSpace(strLabelMin) Then strLabelMin = cStringUtils.FormatNumber(Me.Layer.Data.MinValue)
+                If String.IsNullOrWhiteSpace(strLabelMax) Then strLabelMax = cStringUtils.FormatNumber(Me.Layer.Data.MaxValue)
 
-                Me.m_tbxMin.Text = cStringUtils.FormatNumber(sMin)
-                Me.m_tbxMax.Text = cStringUtils.FormatNumber(sMax)
+                Me.m_tbxMin.Text = strLabelMin
+                Me.m_tbxMax.Text = strLabelMax
             Else
                 Me.m_fpName.Enabled = False
             End If

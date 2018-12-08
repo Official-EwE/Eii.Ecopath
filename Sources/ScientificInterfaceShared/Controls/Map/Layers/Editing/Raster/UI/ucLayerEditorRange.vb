@@ -172,15 +172,16 @@ Namespace Controls.Map.Layers
 
         Public Overrides Sub StartEdit(editor As cLayerEditorRaster)
             ' Freeze renderer min/max values 
-            Me.Layer.Renderer.ScaleMax = Me.Layer.Data.MaxValue
-            Me.Layer.Renderer.ScaleMin = Me.Layer.Data.MinValue
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            Me.Layer.Renderer.LabelMax = sg.FormatNumber(Me.Layer.Data.MaxValue)
+            Me.Layer.Renderer.LabelMin = sg.FormatNumber(Me.Layer.Data.MinValue)
             MyBase.StartEdit(editor)
         End Sub
 
         Public Overrides Sub EndEdit(editor As cLayerEditorRaster)
             ' Release renderer min/max values
-            Me.Layer.Renderer.ScaleMax = cCore.NULL_VALUE
-            Me.Layer.Renderer.ScaleMin = cCore.NULL_VALUE
+            Me.Layer.Renderer.LabelMax = ""
+            Me.Layer.Renderer.LabelMin = ""
             MyBase.EndEdit(editor)
         End Sub
 
