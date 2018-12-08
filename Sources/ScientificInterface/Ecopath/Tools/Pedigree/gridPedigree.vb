@@ -430,7 +430,7 @@ Namespace Ecopath.Tools
             MyBase.FinishStyle()
 
             Me.FixedColumns = 2
-            Me.FixedColumnWidths = False
+            Me.FixedColumnWidths = True
             Me.SizeColumnsEqually(2)
 
         End Sub
