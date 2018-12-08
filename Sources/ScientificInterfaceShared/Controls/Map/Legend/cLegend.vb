@@ -49,8 +49,8 @@ Namespace Controls.Map
         Private MustInherit Class cLegendEntry
             MustOverride ReadOnly Property Label As String
             MustOverride ReadOnly Property Renderer As cLayerRenderer
-            MustOverride ReadOnly Property Max As Single
-            MustOverride ReadOnly Property Min As Single
+            MustOverride ReadOnly Property LabelMax As String
+            MustOverride ReadOnly Property LabelMin As String
         End Class
 
         ''' <summary>
@@ -64,11 +64,11 @@ Namespace Controls.Map
             ''' </summary>
             ''' <param name="strName"></param>
             ''' <param name="strUnits"></param>
-            ''' <param name="sMin"></param>
-            ''' <param name="sMax"></param>
+            ''' <param name="strLabelMin"></param>
+            ''' <param name="strLabelMax"></param>
             ''' <param name="breaks">Optional gradient color breaks</param>
             ''' <param name="colors">Optional gradient color breaks</param>
-            Public Sub New(strName As String, strUnits As String, sMin As Single, sMax As Single,
+            Public Sub New(strName As String, strUnits As String, strLabelMin As String, strLabelMax As String,
                            Optional breaks As Double() = Nothing, Optional colors() As Color = Nothing)
 
                 If String.IsNullOrWhiteSpace(strUnits) Then
@@ -76,8 +76,8 @@ Namespace Controls.Map
                 Else
                     Me.Label = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, strName, strUnits)
                 End If
-                Me.Min = sMin
-                Me.Max = sMax
+                Me.LabelMin = strLabelMin
+                Me.LabelMax = strLabelMax
 
                 Dim vs As New Auxiliary.cVisualStyle()
                 If (breaks IsNot Nothing And colors IsNot Nothing) Then
@@ -85,8 +85,8 @@ Namespace Controls.Map
                     vs.GradientColors = colors
                 End If
                 Me.Renderer = New cLayerRendererValue(vs)
-                Me.Renderer.ScaleMin = Me.Min
-                Me.Renderer.ScaleMax = Me.Max
+                Me.Renderer.LabelMin = strLabelMin
+                Me.Renderer.LabelMax = strLabelMax
 
             End Sub
 
@@ -94,9 +94,9 @@ Namespace Controls.Map
 
             Public Overrides ReadOnly Property Label As String
 
-            Public Overrides ReadOnly Property Max As Single
+            Public Overrides ReadOnly Property LabelMax As String
 
-            Public Overrides ReadOnly Property Min As Single
+            Public Overrides ReadOnly Property LabelMin As String
 
         End Class
 
@@ -130,21 +130,27 @@ Namespace Controls.Map
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property Max As Single
+            Public Overrides ReadOnly Property LabelMax As String
                 Get
                     If (TypeOf Me.m_layer Is cDisplayLayerRaster) Then
-                        Return DirectCast(Me.m_layer, cDisplayLayerRaster).Data.MaxValue
+                        Dim l As cDisplayLayerRaster = DirectCast(Me.m_layer, cDisplayLayerRaster)
+                        Dim strMax As String = l.Renderer.LabelMax
+                        If Not String.IsNullOrWhiteSpace(strMax) Then Return strMax
+                        Return cStringUtils.FormatNumber(l.Data.MaxValue)
                     End If
-                    Return cCore.NULL_VALUE
+                    Return ""
                 End Get
             End Property
 
-            Public Overrides ReadOnly Property Min As Single
+            Public Overrides ReadOnly Property LabelMin As String
                 Get
                     If (TypeOf Me.m_layer Is cDisplayLayerRaster) Then
-                        Return DirectCast(Me.m_layer, cDisplayLayerRaster).Data.MinValue
+                        Dim l As cDisplayLayerRaster = DirectCast(Me.m_layer, cDisplayLayerRaster)
+                        Dim strMin As String = l.Renderer.LabelMin
+                        If Not String.IsNullOrWhiteSpace(strMin) Then Return strMin
+                        Return cStringUtils.FormatNumber(l.Data.MinValue)
                     End If
-                    Return cCore.NULL_VALUE
+                    Return ""
                 End Get
             End Property
 
@@ -296,16 +302,16 @@ Namespace Controls.Map
         ''' Add a static value range to the legend, that will be displayed as a gradient.
         ''' </summary>
         ''' <param name="strName"></param>
-        ''' <param name="sMin"></param>
-        ''' <param name="sMax"></param>
+        ''' <param name="strLabelMin"></param>
+        ''' <param name="strLabelMax"></param>
         ''' <param name="strUnits">Units to show.</param>
         ''' <param name="breaks">Gradient breaks, if any.</param>
         ''' <param name="colors">Gradient colors, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddGradient(strName As String, sMin As Single, sMax As Single,
+        Public Sub AddGradient(strName As String, strLabelMin As String, strLabelMax As String,
                                Optional strUnits As String = "",
                                Optional breaks As Double() = Nothing, Optional colors() As Color = Nothing)
-            Me.m_lLayers.Add(New cStaticEntry(strName, strUnits, sMin, sMax, breaks, colors))
+            Me.m_lLayers.Add(New cStaticEntry(strName, strUnits, strLabelMin, strLabelMax, breaks, colors))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -523,16 +529,22 @@ Namespace Controls.Map
                         g.DrawString(strText, ftLabel, Brushes.Black, rcItem, fmt)
 
                     Case eLayerRenderStyle.Gradient
-                        fmt.LineAlignment = StringAlignment.Near
-                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Max), ftScale, Brushes.Black, rcItem, fmt)
+                        If (Not String.IsNullOrWhiteSpace(l.LabelMax)) Then
+                            fmt.LineAlignment = StringAlignment.Near
+                            g.DrawString(l.LabelMax, ftScale, Brushes.Black, rcItem, fmt)
+                        End If
 
                         rcItem.Y += rcPreview.Height
-                        fmt.LineAlignment = StringAlignment.Center
-                        g.DrawString(l.Label, ftLabel, Brushes.Black, rcItem, fmt)
+                        If (Not String.IsNullOrWhiteSpace(l.Label)) Then
+                            fmt.LineAlignment = StringAlignment.Center
+                            g.DrawString(l.Label, ftLabel, Brushes.Black, rcItem, fmt)
+                        End If
 
                         rcItem.Y += rcPreview.Height
-                        fmt.LineAlignment = StringAlignment.Far
-                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Min), ftScale, Brushes.Black, rcItem, fmt)
+                        If (Not String.IsNullOrWhiteSpace(l.LabelMin)) Then
+                            fmt.LineAlignment = StringAlignment.Far
+                            g.DrawString(l.LabelMin, ftScale, Brushes.Black, rcItem, fmt)
+                        End If
 
                         rcPreview.Height *= 3
                         l.Renderer.RenderPreview(g, rcPreview)

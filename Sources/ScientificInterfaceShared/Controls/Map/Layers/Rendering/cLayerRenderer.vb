@@ -24,6 +24,7 @@ Imports EwECore
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Definitions
+Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 
@@ -36,7 +37,7 @@ Namespace Controls.Map.Layers
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public MustInherit Class cLayerRenderer
-        : Implements IDisposable
+        Implements IDisposable
 
 #Region " Helper classes "
 
@@ -90,6 +91,9 @@ Namespace Controls.Map.Layers
         Private m_vs As cVisualStyle = Nothing
 
         Private m_lSymbols As New List(Of cSymbol)
+
+        Private m_strLabelMax As String = ""
+        Private m_strLabelMin As String = ""
 
 #End Region ' Private vars
 
@@ -244,14 +248,36 @@ Namespace Controls.Map.Layers
         ''' Get/set the scale max value to render to.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property ScaleMax() As Single = cCore.NULL_VALUE
+        Public Property ScaleMax As Single = cCore.NULL_VALUE
+
+        Public Property LabelMax As String
+            Get
+                If Not String.IsNullOrWhiteSpace(Me.m_strLabelMax) Then Return Me.m_strLabelMax
+                If Me.ScaleMax = cCore.NULL_VALUE Then Return ""
+                Return cStringUtils.FormatNumber(Me.ScaleMax)
+            End Get
+            Set(value As String)
+                Me.m_strLabelMax = value
+            End Set
+        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Get/set the scale min value to render to.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property ScaleMin() As Single = cCore.NULL_VALUE
+        Public Property ScaleMin As Single = cCore.NULL_VALUE
+
+        Public Property LabelMin As String
+            Get
+                If Not String.IsNullOrWhiteSpace(Me.m_strLabelMin) Then Return Me.m_strLabelMin
+                If Me.ScaleMin = cCore.NULL_VALUE Then Return ""
+                Return cStringUtils.FormatNumber(Me.ScaleMin)
+            End Get
+            Set(value As String)
+                Me.m_strLabelMin = value
+            End Set
+        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
