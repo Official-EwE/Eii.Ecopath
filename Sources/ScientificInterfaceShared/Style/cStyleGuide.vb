@@ -2152,7 +2152,7 @@ Namespace Style
 
             Try
 
-                Dim bmp As New Bitmap(width, height, PixelFormat.Format32bppArgb)
+                Dim bmp As New Bitmap(width, height, PixelFormat.Format32bppPArgb)
                 bmp.SetResolution(Me.PreferredDPI, Me.PreferredDPI)
 
                 Using g As Graphics = Graphics.FromImage(bmp)
