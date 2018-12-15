@@ -39,19 +39,34 @@ Namespace Controls.Map.Layers
 
 #Region " Construction / destruction "
 
-        ''' -----------------------------------------------------------------------
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' 
         ''' </summary>
         ''' <param name="vs"></param>
         ''' <param name="layerStyleFlags"></param>
-        ''' -----------------------------------------------------------------------
+        ''' -------------------------------------------------------------------
         Public Sub New(ByVal vs As cVisualStyle, _
                        Optional ByVal layerStyleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet)
             MyBase.New(vs, layerStyleFlags)
         End Sub
 
 #End Region ' Construction / destruction
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Render vector data.
+        ''' </summary>
+        ''' <param name="g"></param>
+        ''' <param name="layer"></param>
+        ''' <param name="rc">Screen rectangle to draw onto</param>
+        ''' <param name="ptfTL">Top-left coordinate, in actual basemap coordinates, of the screen rectangle.</param>
+        ''' <param name="ptfBR">Bottom-right coordinate, in actual basemap coordinates, of the screen rectangle.</param>
+        ''' <param name="style"></param>
+        ''' -------------------------------------------------------------------
+        Public Overrides Sub Render(g As Graphics, layer As cDisplayLayer, rc As RectangleF, ptfTL As PointF, ptfBR As PointF, style As cStyleGuide.eStyleFlags)
+            ' NOP
+        End Sub
 
     End Class
 

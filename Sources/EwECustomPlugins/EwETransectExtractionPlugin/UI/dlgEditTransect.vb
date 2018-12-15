@@ -91,9 +91,9 @@ Public Class dlgEditTransect
             Case 2
                 ' Convert coordinate to cell
                 If (e.RowIndex Mod 2 = 0) Then
-                    v1 = bm.LonToCol(v2)
+                    v1 = CInt(Math.Floor(bm.LonToCol(v2)))
                 Else
-                    v1 = bm.LatToRow(v2)
+                    v1 = CInt(Math.Floor(bm.LatToRow(v2)))
                 End If
                 row.Cells(1).Value = v1
         End Select

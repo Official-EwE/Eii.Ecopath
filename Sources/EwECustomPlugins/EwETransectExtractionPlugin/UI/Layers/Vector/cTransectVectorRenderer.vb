@@ -50,10 +50,13 @@ Public Class cTransectVectorRenderer
 
 #Region " Overrides "
 
-    Public Overrides Sub RenderPreview(g As Graphics, rc As Rectangle, Optional iSymbol As Integer = 0)
+    Public Overrides Sub RenderPreview(g As Graphics, rc As RectangleF, Optional iSymbol As Integer = 0)
     End Sub
 
-    Public Overrides Sub Render(g As Graphics, layer As cDisplayLayer, rc As Rectangle, ptfTL As PointF, ptfBR As PointF, style As cStyleGuide.eStyleFlags)
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cVectorLayerRenderer.Render(Graphics, cDisplayLayer, RectangleF, PointF, PointF, eStyleFlags)"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Sub Render(g As Graphics, layer As cDisplayLayer, rc As RectangleF, ptfTL As PointF, ptfBR As PointF, style As cStyleGuide.eStyleFlags)
 
         Dim m_data As cTransectDatastructures = DirectCast(layer, cTransectVectorDisplay).Data
 
@@ -68,17 +71,17 @@ Public Class cTransectVectorRenderer
     End Sub
 
     Public Overrides Function GetDisplayText(value As Object) As String
-        Return "Transects"
+        Return My.Resources.CAPTION_IN
     End Function
 
 #End Region ' Overrides
 
-    Private Sub RenderTransect(t As cTransect, g As Graphics, rc As Rectangle, ptfTL As PointF, sScaleX As Single, sScaleY As Single, clr As Color)
+    Private Sub RenderTransect(t As cTransect, g As Graphics, rc As RectangleF, ptfTL As PointF, sScaleX As Single, sScaleY As Single, clr As Color)
 
         If (t Is Nothing) Then Return
 
-        Dim ptFrom As New PointF((t.Start.X - ptfTL.X) * sScaleX, (ptfTL.Y - t.Start.Y) * sScaleY)
-        Dim ptTo As New PointF((t.End.X - ptfTL.X) * sScaleX, (ptfTL.Y - t.End.Y) * sScaleY)
+        Dim ptFrom As New PointF(rc.X + (t.Start.X - ptfTL.X) * sScaleX, rc.Y + (ptfTL.Y - t.Start.Y) * sScaleY)
+        Dim ptTo As New PointF(rc.X + (t.End.X - ptfTL.X) * sScaleX, rc.Y + (ptfTL.Y - t.End.Y) * sScaleY)
 
         Using p As New Pen(Color.Black, 5)
             p.StartCap = LineCap.RoundAnchor

@@ -150,6 +150,7 @@ Namespace Controls.Map.Layers
 #Region " Cursor feedback "
 
         Protected Shared s_cursor As Cursor = Nothing
+        Protected Shared s_lastsize As Single = -1.0!
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -179,6 +180,11 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Overrides Function Cursor(ByVal ptMouse As Point, ByVal map As ucMap) As Cursor
 
+            If (map.GetCellSize.Width <> s_lastsize) Then
+                s_lastsize = map.GetCellSize.Width
+                Me.CursorSize = Me.CursorSize
+            End If
+
             If (s_cursor Is Nothing) Then
                 Dim szCell As SizeF = map.GetCellSize()
                 s_cursor = cLayerEditorRaster.EditorCursor(Me.CursorSize, szCell)
@@ -194,19 +200,18 @@ Namespace Controls.Map.Layers
 
             If (iCursorSize > 0) Then
                 Try
-                    Dim bm As New Bitmap(ptIconSize.Width + 1, ptIconSize.Height + 1)
-                    Dim g As Graphics = Graphics.FromImage(bm)
-
-                    g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
-                    g.FillRectangle(Brushes.Transparent, New Rectangle(0, 0, bm.Width, bm.Height))
-                    g.DrawEllipse(Pens.White, 1, 1, ptIconSize.Width - 2, ptIconSize.Height - 2)
-                    g.DrawEllipse(Pens.Black, 0, 0, ptIconSize.Width, ptIconSize.Height)
-                    Using br As New SolidBrush(Color.FromArgb(45, 0, 0, 0))
-                        g.FillEllipse(br, 0, 0, ptIconSize.Width, ptIconSize.Height)
+                    Using bmp As New Bitmap(ptIconSize.Width + 1, ptIconSize.Height + 1)
+                        Using g As Graphics = Graphics.FromImage(bmp)
+                            g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
+                            g.FillRectangle(Brushes.Transparent, New Rectangle(0, 0, bmp.Width, bmp.Height))
+                            g.DrawEllipse(Pens.White, 1, 1, ptIconSize.Width - 2, ptIconSize.Height - 2)
+                            g.DrawEllipse(Pens.Black, 0, 0, ptIconSize.Width, ptIconSize.Height)
+                            Using br As New SolidBrush(Color.FromArgb(45, 0, 0, 0))
+                                g.FillEllipse(br, 0, 0, ptIconSize.Width, ptIconSize.Height)
+                            End Using
+                            cursor = New Cursor(bmp.GetHicon())
+                        End Using
                     End Using
-                    cursor = New Cursor(bm.GetHicon())
-                    g.Dispose()
-                    bm.Dispose()
 
                 Catch e As Exception
                     Debug.WriteLine(e.Message)
@@ -224,7 +229,8 @@ Namespace Controls.Map.Layers
             If Not Me.IsEditable Then Return
 
             If ((e.Button And MouseButtons.Right) > 0) Then
-                Me.Pickup(map.GetCellIndex(e.Location))
+                Dim ptfClick As PointF = map.PointToMapExact(e.Location)
+                Me.Pickup(map.PointToMap(e.Location))
             ElseIf ((e.Button And MouseButtons.Left) > 0) Then
                 Me.StartEdit(e, map)
             End If
@@ -235,14 +241,16 @@ Namespace Controls.Map.Layers
 
             If Not Me.IsEditing Then Return
 
-            Dim ptScreenCur As Point = New Point(e.X, e.Y)
+            Dim ptScreenCur As Point = e.Location '  New Point(e.X, e.Y)
+            Dim size As Integer = Me.CursorSize + 1
 
             If (Me.m_ptScreenPrevious = Nothing) Then Me.m_ptScreenPrevious = ptScreenCur
 
-            Dim ptCellFrom As Point = map.GetCellIndex(Me.m_ptScreenPrevious)
-            Dim ptCellTo As Point = map.GetCellIndex(ptScreenCur)
-            Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X), Math.Min(ptCellFrom.Y, ptCellTo.Y))
-            Dim ptUpdateMax As New Point(Math.Max(ptCellFrom.X, ptCellTo.X), Math.Max(ptCellFrom.Y, ptCellTo.Y))
+            Dim ptCellFrom As Point = map.PointToMap(Me.m_ptScreenPrevious)
+            Dim ptCellTo As Point = map.PointToMap(ptScreenCur)
+
+            Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X) - size, Math.Min(ptCellFrom.Y, ptCellTo.Y) + size)
+            Dim ptUpdateMax As New Point(Math.Max(ptCellFrom.X, ptCellTo.X) - size, Math.Max(ptCellFrom.Y, ptCellTo.Y) + size)
 
             If (Me.Edit(ptCellFrom, ptCellTo,
                         New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y),

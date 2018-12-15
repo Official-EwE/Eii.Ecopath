@@ -48,8 +48,6 @@ Public Class cEwEIcon
                 Return My.Resources.Ecopath3_easter
             Case cDateUtils.eNextEvent.Xmas
                 Return My.Resources.Ecopath4_hohoho
-            Case cDateUtils.eNextEvent.Conf30
-                Return My.Resources.ecopath5_30
             Case cDateUtils.eNextEvent.DagVanDeLiefde
                 Return My.Resources.Ecopath6_joepie
         End Select

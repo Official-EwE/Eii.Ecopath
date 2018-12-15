@@ -57,6 +57,7 @@ Namespace Controls.Map.Layers
             Me.UIContext = uic
             Me.Editor = CType(editor, cLayerEditorRaster)
             Me.Layer = layer
+            Me.Map = Map
         End Sub
 
         Public Overridable Sub Detach()
@@ -82,6 +83,8 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Property Layer() As cDisplayLayerRaster
+
+        Public Property Map As ucMap
 
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="ILayerEditorGUI.Initialize"/>

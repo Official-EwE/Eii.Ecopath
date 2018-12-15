@@ -95,11 +95,11 @@ Namespace Controls
         ''' <param name="dx">X velocity.</param>
         ''' <param name="dy">Y velocity.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub DrawArrowDxDy(ByVal g As Graphics, _
-                                    ByVal clr As Color, _
-                                    ByVal rc As Rectangle, _
-                                    ByVal dx As Single, _
-                                    ByVal dy As Single, _
+        Public Shared Sub DrawArrowDxDy(ByVal g As Graphics,
+                                    ByVal clr As Color,
+                                    ByVal rc As RectangleF,
+                                    ByVal dx As Single,
+                                    ByVal dy As Single,
                                     Optional ByVal bFilledArrow As Boolean = True)
 
             ' Leave a margin
@@ -112,8 +112,8 @@ Namespace Controls
             Using p As New Pen(clr, 0.001!)
                 p.StartCap = LineCap.Round
                 p.CustomEndCap = New AdjustableArrowCap(3, 3, bFilledArrow)
-                g.DrawLine(p, _
-                           ptfCenter.X - szfHalfArrow.Width, ptfCenter.Y - szfHalfArrow.Height, _
+                g.DrawLine(p,
+                           ptfCenter.X - szfHalfArrow.Width, ptfCenter.Y - szfHalfArrow.Height,
                            ptfCenter.X + szfHalfArrow.Width, ptfCenter.Y + szfHalfArrow.Height)
             End Using
 

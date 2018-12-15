@@ -67,7 +67,8 @@ Public Class cTransect
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the start location (expressed in map units lon, lat) of the transect.
+    ''' Get/set the start location (expressed in map units lon, lat) of the transect,
+    ''' in real-world coodinates.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Start As PointF
@@ -84,7 +85,8 @@ Public Class cTransect
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the end location (expressed in map units lon, lat) of the transect.
+    ''' Get/set the end location (expressed in map units lon, lat) of the transect,
+    ''' in real-world coodinates.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property [End] As PointF
@@ -132,10 +134,10 @@ Public Class cTransect
 
         If (Me.m_cells.Count = 0) Then
 
-            Dim x0 As Integer = bm.LonToCol(Me.m_ptStart.X)
-            Dim y0 As Integer = bm.LatToRow(Me.m_ptStart.Y)
-            Dim x1 As Integer = bm.LonToCol(Me.m_ptEnd.X)
-            Dim y1 As Integer = bm.LatToRow(Me.m_ptEnd.Y)
+            Dim x0 As Integer = CInt(Math.Floor(bm.LonToCol(Me.m_ptStart.X)))
+            Dim y0 As Integer = CInt(Math.Floor(bm.LatToRow(Me.m_ptStart.Y)))
+            Dim x1 As Integer = CInt(Math.Floor(bm.LonToCol(Me.m_ptEnd.X)))
+            Dim y1 As Integer = CInt(Math.Floor(bm.LatToRow(Me.m_ptEnd.Y)))
 
             Dim difX As Double = x1 - x0
             Dim difY As Double = y1 - y0

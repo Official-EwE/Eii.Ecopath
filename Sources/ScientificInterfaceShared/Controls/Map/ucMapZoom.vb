@@ -36,7 +36,24 @@ Namespace Controls.Map
     Public Class ucMapZoom
         Implements IUIElement
 
-#Region " Public enums "
+#Region " Private vars "
+
+        ''' <summary>UI context to connect to.</summary>
+        Private m_uic As cUIContext = Nothing
+
+        Private m_bInUpdate As Boolean = False
+
+#End Region ' Private vars
+
+#Region " Constructor "
+
+        Public Sub New()
+            Me.InitializeComponent()
+        End Sub
+
+#End Region ' Constructor
+
+#Region " Public access "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -52,30 +69,20 @@ Namespace Controls.Map
             ZoomReset
         End Enum
 
-#End Region ' Public enums
+        Public Event OnPositionChanged(ByVal sender As ucMapZoom)
 
-#Region " Private vars "
+        ''' <summary>
+        ''' Zoom and position to the location of another map
+        ''' </summary>
+        ''' <param name="src"></param>
+        Public Sub UpdatePosition(ByVal src As ucMapZoom)
+            Me.m_bInUpdate = True
 
-        ''' <summary>UI context to connect to.</summary>
-        Private m_uic As cUIContext = Nothing
+            Me.ZoomScale = src.ZoomScale
+            'Me.ScaleMap()
 
-        Private m_sZoom As Single = 1.0!
-        Private m_sZoomMax As Single = 1.0!
-
-        Private m_bInit As Boolean = False
-
-#End Region ' Private vars
-
-#Region " Constructor "
-
-        Public Sub New()
-            Me.InitializeComponent()
-            Me.SetStyle(ControlStyles.ResizeRedraw Or ControlStyles.OptimizedDoubleBuffer, True)
+            Me.m_bInUpdate = False
         End Sub
-
-#End Region ' Constructor
-
-#Region " Public access "
 
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="IUIElement.UIContext"/>
@@ -86,17 +93,9 @@ Namespace Controls.Map
             Get
                 Return Me.m_uic
             End Get
-            Set(ByVal value As cUIContext)
-                If (Me.m_uic IsNot Nothing) Then
-                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-                End If
+            Set(value As cUIContext)
                 Me.m_uic = value
-                If (Me.m_map IsNot Nothing) Then
-                    Me.m_map.UIContext = Me.m_uic
-                End If
-                If (Me.m_uic IsNot Nothing) Then
-                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
-                End If
+                Me.m_map.UIContext = value
             End Set
         End Property
 
@@ -114,70 +113,22 @@ Namespace Controls.Map
         <Browsable(False)>
         Public Property ZoomScale(Optional bZoomToCursor As Boolean = False) As Single
             Get
-                Return Me.m_sZoom
+                Return Me.m_map.Zoom
             End Get
             Set(ByVal value As Single)
-                Me.m_bInUpdate = True
-
-                Dim x, y As Single
-
-                ' JS 10May18: the 'zoom to cursor' logic attempts to keep the map location under the
-                ' mouse position fixed in place while zooming. AutoScrollPosition has to be 'in view', and does not work.
-                ' Best solution is probably to calculate the top-left map corner to show after zooming,
-                ' and move the scroll position to that location
-
-                Me.SuspendLayout()
-
-                If (bZoomToCursor) Then
-                    ' A: Grab the map focus point under the cursor
-                    Dim ptScreen As Point = Control.MousePosition
-                    Dim ptMap As Point = Me.m_map.PointToClient(ptScreen)
-                    x = CSng(ptMap.X / Me.m_map.Width)
-                    y = CSng(ptMap.Y / Me.m_map.Width)
-                End If
-
-                Me.m_sZoom = Math.Max(1.0!, Math.Min(Me.m_sZoomMax, value))
-                Me.ScaleMap()
-
-                If (bZoomToCursor) Then
-
-                    ' B: Convert back up
-                    Dim ptMap As New Point(CInt(x * Me.m_map.Width), CInt(y * Me.m_map.Height))
-                    Dim ptScreen As Point = Me.m_map.PointToScreen(ptMap)
-                    ' Calculate how much the location under the cursor has moved
-                    Dim ptDisplaced As Point = Me.PointToClient(ptScreen)
-                    ' Find the new point under the cursor
-                    ptScreen = Me.PointToClient(Control.MousePosition)
-                    Dim dx As Integer = ptScreen.X - ptDisplaced.X
-                    Dim dy As Integer = ptScreen.Y - ptDisplaced.Y
-
-                    ' Offset scroll
-                    Me.VerticalScroll.Value = Math.Max(0, Math.Min(Me.VerticalScroll.Maximum, Me.VerticalScroll.Value - dy))
-                    Me.HorizontalScroll.Value = Math.Max(0, Math.Min(Me.HorizontalScroll.Maximum, Me.HorizontalScroll.Value - dx))
-
-                End If
-
-                Me.ResumeLayout()
-
-                Me.m_bInUpdate = False
+                Me.m_map.Zoom = value
             End Set
         End Property
 
-        Public Overrides Sub Refresh()
-            'Re-evaluate map size etc
-            Me.ScaleMap()
-            MyBase.Refresh()
-        End Sub
-
         Public ReadOnly Property CanZoomIn As Boolean
             Get
-                Return (Me.m_sZoom < Me.m_sZoomMax)
+                Return (Me.ZoomScale < Me.m_map.MaxZoom)
             End Get
         End Property
 
         Public ReadOnly Property CanZoomOut As Boolean
             Get
-                Return (Me.m_sZoom > 1)
+                Return (Me.ZoomScale > 1)
             End Get
         End Property
 
@@ -189,35 +140,29 @@ Namespace Controls.Map
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
-
-            If (Me.UIContext IsNot Nothing) Then
-
-                ' Max zoom scale displays 10 cells width or height in the map
-                Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
-                Me.m_sZoomMax = Math.Max(1, Math.Max(bm.InCol / 10.0!, bm.InRow / 10.0!))
-
-            End If
-
-            Me.CenterMap()
-            Me.m_bInit = False
-
         End Sub
 
-        Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
-            MyBase.OnResize(e)
-            Me.ScaleMap()
-            If Not Me.m_bInit Then
-                Me.CenterMap()
-                Me.m_bInit = True
-            End If
-        End Sub
-
-        Protected Overrides Sub OnScroll(se As ScrollEventArgs)
-            MyBase.OnScroll(se)
+        Protected Sub OnMapScrolled(sender As Object, args As EventArgs) Handles m_map.OnMapScrolled
 
             If (Me.m_bInUpdate) Then Return
             Me.m_bInUpdate = True
             Try
+                Dim szRange As Size = Me.m_map.ScrollRange
+                Dim szSize As Size = Me.m_map.ScrollSize
+                Dim ptPos As Point = Me.m_map.ScrollPos
+
+                Me.m_sbHorz.LargeChange = CInt(szRange.Width / 10)
+                Me.m_sbHorz.SmallChange = CInt(szRange.Width / 20)
+                ' https://stackoverflow.com/questions/12369994/how-to-get-a-scroll-bar-to-reach-the-maximum-in-vb-net
+                Me.m_sbHorz.Maximum = szSize.Width + Me.m_sbHorz.LargeChange + 1
+                Me.m_sbHorz.Value = szSize.Width - ptPos.X
+
+                Me.m_sbVert.LargeChange = CInt(szRange.Height / 10)
+                Me.m_sbVert.SmallChange = CInt(szRange.Height / 20)
+                ' https://stackoverflow.com/questions/12369994/how-to-get-a-scroll-bar-to-reach-the-maximum-in-vb-net
+                Me.m_sbVert.Maximum = szSize.Height + Me.m_sbVert.LargeChange + 1
+                Me.m_sbVert.Value = szSize.Height - ptPos.Y
+
                 RaiseEvent OnPositionChanged(Me)
             Catch ex As Exception
                 ' Plop
@@ -226,64 +171,25 @@ Namespace Controls.Map
 
         End Sub
 
+        Private Sub OnScrolled(sender As Object, e As ScrollEventArgs) _
+        Handles m_sbHorz.Scroll, m_sbVert.Scroll
+
+            If Me.m_bInUpdate Then Return
+
+            Me.m_bInUpdate = True
+            Try
+                ' https://stackoverflow.com/questions/12369994/how-to-get-a-scroll-bar-to-reach-the-maximum-in-vb-net
+                Me.m_map.ScrollPos = New Point(Me.m_sbHorz.Maximum - Me.m_sbHorz.Value - Me.m_sbHorz.LargeChange - 1, Me.m_sbVert.Maximum - Me.m_sbVert.Value - Me.m_sbVert.LargeChange - 1)
+            Catch ex As Exception
+
+            End Try
+            Me.m_bInUpdate = False
+
+        End Sub
+
 #End Region ' Form events
 
-#Region " Style guide "
-
-        Private Sub OnStyleGuideChanged(ct As Style.cStyleGuide.eChangeType)
-            If (ct And Style.cStyleGuide.eChangeType.Colours) > 0 Then
-                Me.UpdateControls()
-            End If
-        End Sub
-
-#End Region ' Style guide
-
 #End Region ' Events
-
-#Region " Internal implementation "
-
-        Private Sub ScaleMap()
-            Dim cellsize As Single = CSng(Math.Min(Me.ClientRectangle.Width / Me.m_map.NumCols, Me.ClientRectangle.Height / Me.m_map.NumRows) * Me.m_sZoom)
-            Me.m_map.Size = New Size(CInt(cellsize * Me.m_map.NumCols), CInt(cellsize * Me.m_map.NumRows))
-        End Sub
-
-        Private Sub CenterMap()
-            Me.m_map.Location = New Point(CInt((Me.ClientRectangle.Width - Me.m_map.Width) / 2), CInt((Me.ClientRectangle.Height - Me.m_map.Height) / 2))
-        End Sub
-
-        Public Event OnPositionChanged(ByVal sender As ucMapZoom)
-        Private m_bInUpdate As Boolean = False
-
-        ''' <summary>
-        ''' Zoom and position to the location of another map
-        ''' </summary>
-        ''' <param name="src"></param>
-        Public Sub UpdatePosition(ByVal src As ucMapZoom)
-            Me.m_bInUpdate = True
-
-            Me.m_sZoom = src.m_sZoom
-            Me.ScaleMap()
-            Me.AutoScrollPosition = src.AutoScrollPosition
-
-            Me.m_bInUpdate = False
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Update enabled- and checked states of child controls.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Private Sub UpdateControls()
-
-            If (Me.IsDisposed) Then Return
-
-            If (Me.m_uic IsNot Nothing) Then
-                Me.BackColor = Me.m_uic.StyleGuide.ApplicationColor(Style.cStyleGuide.eApplicationColorType.MAP_BACKGROUND)
-            End If
-
-        End Sub
-
-#End Region ' Internal implementation
 
     End Class
 

@@ -177,7 +177,7 @@ Namespace Controls.Map.Layers
         ''' If left at 0 the default cell value should be drawn.</param>
         ''' -----------------------------------------------------------------------
         Public MustOverride Sub RenderPreview(ByVal g As Graphics,
-                                              ByVal rc As Rectangle,
+                                              ByVal rc As RectangleF,
                                               Optional iSymbol As Integer = 0)
 
         ''' -----------------------------------------------------------------------
@@ -193,7 +193,7 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public MustOverride Sub Render(ByVal g As Graphics,
                                        ByVal layer As cDisplayLayer,
-                                       ByVal rc As Rectangle,
+                                       ByVal rc As RectangleF,
                                        ByVal ptfTL As PointF,
                                        ByVal ptfBR As PointF,
                                        ByVal style As cStyleGuide.eStyleFlags)
@@ -214,7 +214,7 @@ Namespace Controls.Map.Layers
         ''' <param name="g">Graphics device to render onto.</param>
         ''' <param name="rc">Area to render to.</param>
         ''' -----------------------------------------------------------------------
-        Protected Sub RenderError(ByVal g As Graphics, ByVal rc As Rectangle)
+        Protected Sub RenderError(ByVal g As Graphics, ByVal rc As RectangleF)
             'g.FillRectangle(Brushes.White, rc)
             g.DrawLine(Pens.Red, rc.Left, rc.Top, rc.Right, rc.Bottom)
             g.DrawLine(Pens.Red, rc.Left, rc.Bottom, rc.Right, rc.Top)

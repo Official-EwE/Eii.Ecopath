@@ -485,6 +485,8 @@ Namespace Database
 
         ''' <summary>Current database version.</summary>
         Private m_sVersion As Single = 0.0
+        ''' <summary>EwE version that produces the current database version.</summary>
+        Private m_strEwEversion As String = ""
         ''' <summary>Database read-only state.</summary>
         Private m_bIsReadonly As Boolean = False
         ''' <summary>Directory associated with the database.</summary>
@@ -3376,6 +3378,34 @@ Namespace Database
                 End Try
             End If
             Return Me.m_sVersion
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the current version of the connected EwE database.
+        ''' </summary>
+        ''' <returns>
+        ''' A Single value with the version latest version number of the connected database.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Public Function GetEwEVersion() As String
+
+            If (String.IsNullOrWhiteSpace(Me.m_strEwEversion)) Then
+                Dim sVersion As Single = GetVersion()
+                Try
+                    ' Try EwE6 version first
+                    Dim reader As IDataReader = Me.GetReader("SELECT EwEVersion FROM UpdateLog WHERE Version=" & sVersion)
+                    While reader.Read()
+                        Me.m_strEwEversion = CStr(Me.ReadSafe(reader, "EwEVersion", ""))
+                    End While
+                    If String.IsNullOrWhiteSpace(Me.m_strEwEversion) Then Me.m_strEwEversion = My.Resources.VERSION_ANCIENT
+
+                Catch ex As Exception
+                    Me.m_strEwEversion = "?"
+                End Try
+            End If
+            Return Me.m_strEwEversion
 
         End Function
 

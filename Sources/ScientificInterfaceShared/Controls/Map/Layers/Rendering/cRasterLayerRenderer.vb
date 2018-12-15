@@ -58,7 +58,7 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public Overrides Sub Render(ByVal g As System.Drawing.Graphics,
                                     ByVal layer As cDisplayLayer,
-                                    ByVal rc As System.Drawing.Rectangle,
+                                    ByVal rc As System.Drawing.RectangleF,
                                     ByVal ptfTL As System.Drawing.PointF,
                                     ByVal ptfBR As System.Drawing.PointF,
                                     ByVal style As Style.cStyleGuide.eStyleFlags)
@@ -76,10 +76,10 @@ Namespace Controls.Map.Layers
         ''' <param name="layer">Layer to render from</param>
         ''' <param name="value">The value to render.</param>
         ''' -----------------------------------------------------------------------
-        Public MustOverride Sub RenderCell(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle, _
-                                           ByVal layer As cEcospaceLayer, _
-                                           ByVal value As Object, _
+        Public MustOverride Sub RenderCell(ByVal g As Graphics,
+                                           ByVal rc As RectangleF,
+                                           ByVal layer As cEcospaceLayer,
+                                           ByVal value As Object,
                                            ByVal style As cStyleGuide.eStyleFlags)
 
         Public Property SuppressZero As Boolean

@@ -55,29 +55,31 @@ Namespace Controls.Map
 
         ''' <summary>UI context to work against.</summary>
         Private m_uic As cUIContext = Nothing
-        ''' <summary>The bitmap to draw on.</summary>
-        Private m_bmp As Bitmap = Nothing
         ''' <summary>Map title.</summary>
         Private m_strTitle As String = ""
         ''' <summary>List of layers.</summary>
         Private m_layers As New List(Of cDisplayLayer)
         ''' <summary>Selected layer</summary>
         Private m_layerSelected As cDisplayLayer = Nothing
-        ''' <summary>States whether map must be refreshed</summary>
-        Private m_bRefreshMap As Boolean = False
+
+        ' JS New map logic Dec 18--
+        Private m_zoom As Single = 1
+        Private m_maprect As Rectangle
+        Private m_cellsize As Single = 0
+        Public Event OnMapScrolled(sender As Object, args As EventArgs)
+        ' -- JS New map logic Dec 18
 
         Public Sub New()
 
             Me.InitializeComponent()
 
-            '' Enable double buffering
-            'Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
-            'Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
-            'Me.SetStyle(ControlStyles.ResizeRedraw, True)
-            'Me.SetStyle(ControlStyles.UserPaint, True)
+            ' Enable double buffering
+            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+            Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+            Me.SetStyle(ControlStyles.ResizeRedraw, True)
+            Me.SetStyle(ControlStyles.UserPaint, True)
 
             Me.BackColor = Color.White
-            Me.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
 
         End Sub
 
@@ -103,15 +105,19 @@ Namespace Controls.Map
 
         Public Function SaveToBitmap(ByVal strFileName As String, ByVal format As System.Drawing.Imaging.ImageFormat) As Boolean
 
-            Dim bm As cEcospaceBasemap = Me.Basemap
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            Dim bm As cEcospaceBasemap = Me.Basemap
             Dim szCellSize As SizeF = Me.GetCellSize()
+            Dim rc As New Rectangle(0, 0, CInt(bm.InCol * szCellSize.Width), CInt(bm.InRow * szCellSize.Height))
             Dim strFilenameLegend As String = ""
 
             Try
-                Dim bmp As Bitmap = sg.GetImage(CInt(Me.NumCols * szCellSize.Width), CInt(Me.NumRows * szCellSize.Height), format, strFileName)
-                Me.UpdateMap(bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
-                bmp.Save(strFileName, format)
+                Using bmp As Bitmap = sg.GetImage(rc.Width, rc.Height, format, strFileName)
+                    Using g As Graphics = Graphics.FromImage(bmp)
+                        Me.DrawMap(g, rc)
+                        bmp.Save(strFileName, format)
+                    End Using
+                End Using
 
                 Dim lgd As cLegend = cLegend.FromMap(Me)
                 Dim strExt As String = Path.GetExtension(strFileName)
@@ -120,7 +126,7 @@ Namespace Controls.Map
                 lgd.Save(strFilenameLegend, format)
 
                 ' ToDo: globalize this
-                Dim msg As New cMessage(String.Format("Map image has been saved to {0}, legend to {1}", strFileName, strFilenameLegend), _
+                Dim msg As New cMessage(String.Format("Map image has been saved to {0}, legend to {1}", strFileName, strFilenameLegend),
                                         eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(strFileName)
                 Me.m_uic.Core.Messages.SendMessage(msg)
@@ -141,9 +147,9 @@ Namespace Controls.Map
         ''' Get/set the map title.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        <Browsable(True)> _
-        <Category("Appearance")> _
-        <Description("Title of the map to display")> _
+        <Browsable(True)>
+        <Category("Appearance")>
+        <Description("Title of the map to display")>
         Public Property Title() As String
             Get
                 Return Me.m_strTitle
@@ -152,17 +158,6 @@ Namespace Controls.Map
                 Me.m_strTitle = strTitle
             End Set
         End Property
-
-        ' ''' -------------------------------------------------------------------
-        ' ''' <summary>
-        ' ''' Get a legend for the current map.
-        ' ''' </summary>
-        ' ''' -------------------------------------------------------------------
-        'Public ReadOnly Property Legend() As cLegend
-        '    Get
-        '        Return cLegend.FromMap(Me, Me.m_uic)
-        '    End Get
-        'End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -176,26 +171,29 @@ Namespace Controls.Map
 
         Public Property Editable() As Boolean = False
 
-        Public ReadOnly Property NumCols() As Integer
-            Get
-                If (Me.Basemap Is Nothing) Then Return 20
-                Return Me.Basemap.InCol
-            End Get
-        End Property
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update the entire map image.
+        ''' </summary>
+        ''' <remarks>
+        ''' This will invalidate the entire map screen area.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Sub UpdateMap()
+            ' Invalidate entirely
+            Me.Invalidate()
+        End Sub
 
-        Public ReadOnly Property NumRows() As Integer
-            Get
-                If (Me.Basemap Is Nothing) Then Return 20
-                Return Me.Basemap.InRow
-            End Get
-        End Property
+        Public Sub UpdateMap(ByVal ptCellFrom As Point, ByVal ptCellTo As Point)
 
-        Public ReadOnly Property CellSize As Single
-            Get
-                If (Me.Basemap Is Nothing) Then Return 0.5
-                Return Me.Basemap.CellSize
-            End Get
-        End Property
+            If (ptCellFrom = ptCellTo) Then Return
+
+            Dim ptTL As Point = Me.MapToPoint(ptCellFrom)
+            Dim ptBR As Point = Me.MapToPoint(ptCellTo)
+            ' ToDO: Invalidate selectively
+            'Me.Invalidate(New Rectangle(ptTL.X, ptTL.Y, ptBR.X - ptTL.X, ptBR.Y - ptTL.Y))
+            Me.Invalidate()
+        End Sub
 
 #End Region ' Public properties
 
@@ -203,6 +201,7 @@ Namespace Controls.Map
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+            Me.CalcMapSize()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -215,9 +214,16 @@ Namespace Controls.Map
             Me.Clear()
         End Sub
 
-#If DRAW_THREADED Then
-        Private m_thread As Threading.Thread
-#End If
+        Protected Overrides Sub OnMouseWheel(e As MouseEventArgs)
+            MyBase.OnMouseWheel(e)
+            Me.Zoom(e.Location) += e.Delta / 300.0!
+        End Sub
+
+        Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
+            MyBase.OnSizeChanged(e)
+            Me.CalcMapSize()
+            Me.Invalidate()
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -226,48 +232,15 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
 
-            If Me.Basemap Is Nothing Then Return
+            If (Me.Basemap Is Nothing) Then Return
 
             Try
-
-                ' Needs new bitmap?
-                If (Me.m_bmp Is Nothing) Then
-                    ' #Yes: create new bitmap
-                    Me.m_bmp = New Bitmap(Me.Width, Me.Height)
-                    Me.BackgroundImage = Me.m_bmp
-                    Me.m_bRefreshMap = True
-                End If
-
-                If (Me.m_bRefreshMap) Then
-                    Me.m_bRefreshMap = False
-                    Try
-#If DRAW_THREADED Then
-                        If (Me.m_thread Is Nothing) Then
-                            Me.m_thread = New Threading.Thread(AddressOf RedrawMapThreaded)
-                            Me.m_thread.Start()
-                        End If
-#Else
-                        Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
-#End If
-                    Catch ex As Exception
-
-                    End Try
-
-                End If
-
-                MyBase.OnPaint(e)
+                Me.DrawMap(e.Graphics, e.ClipRectangle)
             Catch ex As Exception
                 ResetExceptionState(Me)
             End Try
 
         End Sub
-
-#If DRAW_THREADED Then
-        Private Sub RedrawMapThreaded()
-            Me.UpdateMap(Me.m_bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
-            Me.m_thread = Nothing
-        End Sub
-#End If
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -277,8 +250,6 @@ Namespace Controls.Map
         Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
 
             Dim bm As cEcospaceBasemap = Me.Basemap
-            Dim InRow As Integer = bm.InRow
-            Dim InCol As Integer = bm.InCol
 
             If (Me.CanEdit = False) Then Return
 
@@ -302,6 +273,8 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs)
 
+            If (Me.UIContext Is Nothing) Then Return
+
             ' Get value in selected layer
             Dim bm As cEcospaceBasemap = Me.Basemap
             Dim l As cDisplayLayer = Me.m_layerSelected
@@ -316,10 +289,10 @@ Namespace Controls.Map
                 Me.ProcessMouseMove(e)
             End If
 
-            Dim ptCell As Point = Me.GetCellIndex(e.Location)
-            Dim pos As PointF = Me.GetLocation(e.Location)
             Dim strVal As String = ""
             Dim strFeedback As String = ""
+            Dim ptCell As Point = Me.PointToMap(e.Location)
+            Dim ptCoord As PointF = Me.PointToGeoref(e.Location)
 
             If (l IsNot Nothing) Then
                 If (TypeOf l Is cDisplayLayerRaster) Then
@@ -327,12 +300,12 @@ Namespace Controls.Map
                 End If
             End If
 
-            Dim strLat As String = Me.UIContext.StyleGuide.FormatNumber(pos.Y)
-            Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(pos.X)
+            Dim strLat As String = Me.UIContext.StyleGuide.FormatNumber(ptCoord.Y)
+            Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(ptCoord.X)
             Dim fmt As New cMapUnitFormatter()
             Dim strUnit As String = If(bm.AssumeSquareCells,
-                                                     fmt.GetDescriptor(eUnitMapRefType.m, eDescriptorTypes.Symbol),
-                                                     fmt.GetDescriptor(eUnitMapRefType.dd, eDescriptorTypes.Symbol))
+                                       fmt.GetDescriptor(eUnitMapRefType.m, eDescriptorTypes.Symbol),
+                                       fmt.GetDescriptor(eUnitMapRefType.dd, eDescriptorTypes.Symbol))
 
             If Not String.IsNullOrWhiteSpace(strVal) Then
                 strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE,
@@ -355,6 +328,8 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnMouseUp(ByVal e As MouseEventArgs)
 
+            If (Me.UIContext Is Nothing) Then Return
+
             If (Me.CanEdit = False) Then Return
             If (Me.Capture = False) Then Return
 
@@ -374,20 +349,9 @@ Namespace Controls.Map
 
         Protected Overrides Sub OnMouseLeave(e As System.EventArgs)
             MyBase.OnMouseLeave(e)
+
+            If (Me.UIContext Is Nothing) Then Return
             cApplicationStatusNotifier.UpdateStatus(Me.m_uic.Core, "")
-        End Sub
-
-        Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
-            MyBase.OnSizeChanged(e)
-
-            If (Me.m_bmp IsNot Nothing) Then
-                Me.BackgroundImage = Nothing
-                Me.m_bmp.Dispose()
-                Me.m_bmp = Nothing
-            End If
-
-            ' Schedule paint job
-            Me.Invalidate()
 
         End Sub
 
@@ -433,6 +397,10 @@ Namespace Controls.Map
 
 #Region " Internals "
 
+        ''' <summary>
+        ''' May be needed from the outside (by layer editors, for instance)
+        ''' </summary>
+        ''' <returns></returns>
         Public ReadOnly Property Basemap As cEcospaceBasemap
             Get
                 If (Me.m_uic Is Nothing) Then Return Nothing
@@ -455,29 +423,6 @@ Namespace Controls.Map
 
         End Sub
 
-        Public Sub UpdateMap(ByVal ptCellFrom As Point, ByVal ptCellTo As Point)
-            Me.UpdateMap(Me.m_bmp, ptCellFrom, ptCellTo)
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Update the entire map image.
-        ''' </summary>
-        ''' <remarks>
-        ''' This will invalidate the entire map screen area.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Public Sub UpdateMap()
-
-            ' Sanity check
-            If Me.Basemap Is Nothing Then Return
-            ' Set reminder
-            Me.m_bRefreshMap = True
-            ' Refresh
-            Me.Invalidate()
-
-        End Sub
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Update a range of cells in the map image.
@@ -487,45 +432,37 @@ Namespace Controls.Map
         ''' of indicated cells.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateMap(ByVal bmp As Bitmap, ByVal ptCellFrom As Point, ByVal ptCellTo As Point)
+        Private Sub DrawMap(g As Graphics, ByVal rcClip As Rectangle)
 
             ' Sanity check
-            If Me.Basemap Is Nothing Then Return
-
             Dim bm As cEcospaceBasemap = Me.Basemap
-            Dim g As Graphics = Graphics.FromImage(bmp)
+            If (bm Is Nothing) Then Return
+
             Dim l As cDisplayLayer = Nothing
             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
             Dim layDepth As cEcospaceLayerDepth = Me.Basemap.LayerDepth()
             Dim layExcl As cEcospaceLayerExclusion = Me.Basemap.LayerExclusion()
             Dim szCell As SizeF = Me.GetCellSize()
             Dim ptCell As Point = Nothing
-            Dim rcScreen As Rectangle = Nothing
-            Dim bDrawCell As Boolean = False
+            Dim bRenderCell As Boolean = False
 
-            ' Calc area to invalidate
-            Dim p1 As Point = Me.GetCellPos(ptCellFrom)
-            Dim p2 As Point = Me.GetCellPos(ptCellTo)
+            ' Clear the area! Nothing to see here! Move on now, be a good lad.
+            Using br As New SolidBrush(Me.BackColor)
+                g.FillRectangle(br, rcClip)
+            End Using
 
-            ' Sort coords
-            Dim iXFrom As Integer = Math.Min(p1.X, p2.X)
-            Dim iXTo As Integer = Math.Max(p1.X, p2.X)
-            Dim iYFrom As Integer = Math.Min(p1.Y, p2.Y)
-            Dim iYTo As Integer = Math.Max(p1.Y, p2.Y)
+            ' Clear the area! Nothing to see here! Move on now, be a good lad.
+            Using br As New SolidBrush(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
+                g.FillRectangle(br, Me.m_maprect)
+            End Using
 
-            ' Clear and invalidate the area
-            rcScreen = New Rectangle(iXFrom, iYFrom, iXTo - iXFrom + CInt(szCell.Width), iYTo - iYFrom + CInt(szCell.Height))
-            g.FillRectangle(New SolidBrush(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND)), rcScreen)
-            Me.Invalidate(rcScreen)
-
-            ' Draw surrounding cells as well to avoid anomalies
-            iXFrom = Math.Max(1, Math.Min(ptCellFrom.X, ptCellTo.X) - 1)
-            iYFrom = Math.Max(1, Math.Min(ptCellFrom.Y, ptCellTo.Y) - 1)
-            iXTo = Math.Min(Me.Basemap.InCol, Math.Max(ptCellFrom.X, ptCellTo.X) + 1)
-            iYTo = Math.Min(Me.Basemap.InRow, Math.Max(ptCellFrom.Y, ptCellTo.Y) + 1)
-
-            Dim ptTL As New PointF(bm.ColToLon(iXFrom), bm.RowToLat(iYFrom))
-            Dim ptBR As New PointF(bm.ColToLon(iXTo + 1), bm.RowToLat(iYTo + 1))
+            ' --- for raster rendering ---
+            Dim ptfTL As PointF = Me.PointToMapExact(rcClip.Location)
+            Dim ptfBR As PointF = Me.PointToMapExact(New Point(rcClip.Right, rcClip.Bottom))
+            Dim rcRast As New Rectangle(CInt(Math.Floor(Math.Max(1, ptfTL.X))),
+                                        CInt(Math.Floor(Math.Max(1, ptfTL.Y))),
+                                        CInt(Math.Ceiling(Math.Min(bm.InCol, ptfBR.X - ptfTL.X))),
+                                        CInt(Math.Ceiling(Math.Min(bm.InRow, ptfBR.Y - ptfTL.Y))))
 
             Dim layers As New List(Of cDisplayLayer)
             Dim displayDepth As cDisplayLayer = Nothing
@@ -540,6 +477,7 @@ Namespace Controls.Map
             End If
 
             For Each l In Me.m_layers
+
                 Dim bDrawLayer As Boolean = (l.Renderer.IsVisible)
 
                 If (TypeOf l Is cDisplayLayerRaster) Then
@@ -592,22 +530,22 @@ Namespace Controls.Map
 
                         If (rl.HasData) Then
 
-                            For X As Integer = iXFrom To iXTo
-                                For Y As Integer = iYFrom To iYTo
+                            For X As Integer = rcRast.Left To rcRast.Right
+                                For Y As Integer = rcRast.Top To rcRast.Bottom
 
                                     ptCell = New Point(X, Y)
-                                    Dim rcCell As Rectangle = Me.GetCellRect(ptCell)
+                                    Dim rcCell As RectangleF = Me.GetCellRect(ptCell)
 
                                     Select Case dt
                                         Case eDataTypes.EcospaceLayerExclusion,
                                              eDataTypes.EcospaceLayerDepth,
                                              eDataTypes.EcospaceLayerPort
-                                            bDrawCell = True
+                                            bRenderCell = True
                                         Case Else
-                                            bDrawCell = layDepth.IsWaterCell(Y, X) And CBool(layExcl.Cell(Y, X)) = False
+                                            bRenderCell = layDepth.IsWaterCell(Y, X) And CBool(layExcl.Cell(Y, X)) = False
                                     End Select
 
-                                    If bDrawCell Then
+                                    If bRenderCell Then
                                         Dim objValue As Object = rl.Value(ptCell.Y, ptCell.X)
                                         If rl.IsValue(objValue) Then
                                             ' Build style flags
@@ -627,12 +565,17 @@ Namespace Controls.Map
                     ElseIf (TypeOf l.Renderer Is cVectorLayerRenderer) Then
                         style = cStyleGuide.eStyleFlags.OK
                         If l.IsSelected Then style = (style Or cStyleGuide.eStyleFlags.Highlight)
-                        DirectCast(l.Renderer, cVectorLayerRenderer).Render(g, l, rcScreen, ptTL, ptBR, style)
+
+                        Dim ptfVTL As PointF = New PointF(bm.ColToLon(1), bm.RowToLat(1))
+                        Dim ptfVBR As PointF = New PointF(bm.ColToLon(bm.InCol), bm.RowToLat(bm.InRow))
+                        DirectCast(l.Renderer, cVectorLayerRenderer).Render(g, l, Me.m_maprect, ptfVTL, ptfVBR, style)
+
                     End If
                 End If
             Next iLayer
 
-            g.Dispose()
+            ' Draw map outer border
+            g.DrawRectangle(Pens.LightGray, Me.m_maprect)
 
         End Sub
 
@@ -687,18 +630,12 @@ Namespace Controls.Map
 
         Public Sub Clear()
 
-            ' Unplug background image
-            If (Me.m_bmp IsNot Nothing) Then
-                Me.BackgroundImage = Nothing
-                Me.m_bmp.Dispose()
-                Me.m_bmp = Nothing
-            End If
-
             ' Clean up layers to prevent dangling event handlers, which in turn keep disposed objects alive.
             Dim alayers As cDisplayLayer() = Me.m_layers.ToArray()
             For iLayer As Integer = 0 To alayers.Length - 1
                 Me.RemoveLayer(alayers(iLayer))
             Next
+
             ' Should be neatly cleaned out
             Debug.Assert(m_layers.Count = 0)
 
@@ -781,11 +718,11 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Calculate the width and height of a cell in pixels, as drawn in the map.
+        ''' Returns the width and height of a cell in pixels, as drawn in the map.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function GetCellSize() As SizeF
-            Return New SizeF(CSng(Me.Width / Me.NumCols), CSng(Me.Height / Me.NumRows))
+            Return New SizeF(Me.m_cellsize, Me.m_cellsize)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -793,32 +730,49 @@ Namespace Controls.Map
         ''' Calculate the cell screen rectangle of a cell, given its index.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Function GetCellRect(ByVal ptCellIndex As Point) As Rectangle
-
-            Dim ptCell As Point = Me.GetCellPos(ptCellIndex)
-            Dim szCell As SizeF = Me.GetCellSize()
-
-            Return New Rectangle(
-                    ptCell.X,
-                    ptCell.Y,
-                    CInt(Math.Ceiling(szCell.Width)),
-                    CInt(Math.Ceiling(szCell.Height))
-            )
-
+        Public Function GetCellRect(ByVal ptCellIndex As Point) As RectangleF
+            Return New RectangleF(Me.m_maprect.X + Me.m_cellsize * (ptCellIndex.X - 1),
+                                  Me.m_maprect.Y + Me.m_cellsize * (ptCellIndex.Y - 1), Me.m_cellsize, Me.m_cellsize)
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Calculate the top left screen coordinates of a cell, given its index.
+        ''' Calculate the top left screen coordinates of a cell, given its cell index.
         ''' </summary>
+        ''' <param name="ptCellIndex">The one-based cell index</param>
         ''' -------------------------------------------------------------------
-        Public Function GetCellPos(ByVal ptCellIndex As Point) As Point
+        Public Function GetCellPos(ByVal ptCellIndex As Point) As PointF
 
-            Dim szCell As SizeF = Me.GetCellSize()
-            Return New Point(
-                    CInt(Math.Floor((ptCellIndex.X - 1) * szCell.Width)),
-                    CInt(Math.Floor((ptCellIndex.Y - 1) * szCell.Height))
-            )
+            Return New PointF(Me.m_maprect.X + Me.m_cellsize * (ptCellIndex.X - 1),
+                              Me.m_maprect.Y + Me.m_cellsize * (ptCellIndex.Y - 1))
+
+        End Function
+
+        Public Function PointToMap(ptScreen As Point) As Point
+
+            Dim pt As New Point(0, 0)
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            If (bm IsNot Nothing) Then
+                pt.X = CInt(Math.Floor(Math.Min(bm.InCol, Math.Max(1, 1 + (ptScreen.X - Me.m_maprect.X) / Me.m_cellsize))))
+                pt.Y = CInt(Math.Floor(Math.Min(bm.InRow, Math.Max(1, 1 + (ptScreen.Y - Me.m_maprect.Y) / Me.m_cellsize))))
+            End If
+            Return pt
+        End Function
+
+        ''' <summary>
+        ''' Convert a mouse location to a georeferenced point (expressed in basemap map units)
+        ''' </summary>
+        ''' <param name="ptScreen"></param>
+        ''' <returns></returns>
+        Public Function PointToLocation(ptScreen As Point) As PointF
+
+            Dim pt As PointF = Me.PointToMapExact(ptScreen)
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            If (bm IsNot Nothing) Then
+                pt.X = bm.ColToLon(pt.X)
+                pt.Y = bm.RowToLat(pt.X)
+            End If
+            Return pt
 
         End Function
 
@@ -829,13 +783,20 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         Public Function GetCellIndex(ByVal ptScreen As Point) As Point
 
-            Dim szCell As SizeF = Me.GetCellSize()
-            Dim iColIndex As Integer = CInt((ptScreen.X + 0.5 * szCell.Width) / szCell.Width)
-            Dim iRowIndex As Integer = CInt((ptScreen.Y + 0.5 * szCell.Height) / szCell.Height)
+            Dim iColIndex As Integer = 0
+            Dim iRowIndex As Integer = 0
 
-            ' Truncate
-            iRowIndex = Math.Max(Math.Min(iRowIndex, Me.NumRows), 1)
-            iColIndex = Math.Max(Math.Min(iColIndex, Me.NumCols), 1)
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            If (bm IsNot Nothing) Then
+
+                Dim szCell As SizeF = Me.GetCellSize()
+                iColIndex = CInt((ptScreen.X + 0.5 * szCell.Width) / szCell.Width)
+                iRowIndex = CInt((ptScreen.Y + 0.5 * szCell.Height) / szCell.Height)
+
+                ' Truncate
+                iRowIndex = Math.Max(Math.Min(iRowIndex, Me.Height), 1)
+                iColIndex = Math.Max(Math.Min(iColIndex, Me.Width), 1)
+            End If
 
             Return New Point(iColIndex, iRowIndex)
 
@@ -845,44 +806,225 @@ Namespace Controls.Map
         ''' <summary>
         ''' Returns the georeferenced location of a given screen point.
         ''' </summary>
+        ''' <param name="ptScreen"></param>
+        ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function GetLocation(ByVal ptScreen As Point) As PointF
+        Public Function PointToMapExact(ptScreen As Point) As PointF
 
+            Dim ptf As New PointF(0, 0)
             Dim bm As cEcospaceBasemap = Me.Basemap
-            If (bm Is Nothing) Then Return Nothing
-
-            Dim tl As PointF = bm.PosTopLeft
-            Dim br As PointF = bm.PosBottomRight
-            Dim lon As Single = tl.X + ptScreen.X * (br.X - tl.X) / Me.ClientRectangle.Width
-            Dim lat As Single = tl.Y - ptScreen.Y * (tl.Y - br.Y) / Me.ClientRectangle.Height
-
-            Return New PointF(lon, lat)
+            If (bm IsNot Nothing) Then
+                ptf.X = Math.Min(bm.InCol, Math.Max(1, 1 + (ptScreen.X - Me.m_maprect.X) / Me.m_cellsize))
+                ptf.Y = Math.Min(bm.InRow, Math.Max(1, 1 + (ptScreen.Y - Me.m_maprect.Y) / Me.m_cellsize))
+            End If
+            Return ptf
 
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the screen point for a georeferenced location.
+        ''' Returns the screen point for a X,y location on the map.
         ''' </summary>
+        ''' <param name="ptfMap"></param>
         ''' -------------------------------------------------------------------
-        Public Function GetScreenPoint(ptLocation As PointF) As Point
+        Public Function MapToPoint(ptfMap As PointF) As Point
 
-            Dim bm As cEcospaceBasemap = Me.Basemap
-            If (bm Is Nothing) Then Return Nothing
-
-            Dim tl As PointF = bm.PosTopLeft
-            Dim br As PointF = bm.PosBottomRight
-            Dim x As Integer = CInt((ptLocation.X - tl.X) * Me.ClientRectangle.Width / (br.X - tl.X))
-            Dim y As Integer = CInt((tl.Y - ptLocation.Y) * Me.ClientRectangle.Height / (tl.Y - br.Y))
-
-            Return New Point(x, y)
-
+            Return New Point(CInt((ptfMap.X - 1) * Me.m_cellsize) + Me.m_maprect.X,
+                             CInt((ptfMap.Y - 1) * Me.m_cellsize) + Me.m_maprect.Y)
 
         End Function
 
+        Public Function PointToGeoref(pt As Point) As PointF
+            Dim ptf As PointF = Me.PointToMapExact(pt)
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            If (bm IsNot Nothing) Then
+                ptf.X = bm.ColToLon(ptf.X)
+                ptf.Y = bm.RowToLat(ptf.Y)
+            End If
+            Return ptf
+        End Function
+
+        Public Function MapUnits() As String
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            If (bm IsNot Nothing) Then
+                Return bm.Units
+            End If
+            Return ""
+        End Function
+
+        Public Property Zoom(Optional ptLocation As Point = Nothing) As Single
+            Get
+                Return Me.m_zoom
+            End Get
+            Set(value As Single)
+
+                Dim bm As cEcospaceBasemap = Me.Basemap
+                If (bm Is Nothing) Then Return
+
+                If (ptLocation = Nothing) Then ptLocation = Me.CenterPoint
+
+                Dim ptf1 As PointF = Me.PointToMapExact(ptLocation)
+                Me.m_zoom = Math.Max(Me.MinZoom, Math.Min(Me.MaxZoom, value))
+                Me.CalcMapSize()
+                Dim ptf2 As PointF = Me.PointToMapExact(ptLocation)
+                Dim dx As New Point(CInt(Me.m_cellsize * (ptf2.X - ptf1.X)), CInt(Me.m_cellsize * (ptf2.Y - ptf1.Y)))
+                Me.ScrollBy(dx)
+
+            End Set
+        End Property
+
+        Public ReadOnly Property MinZoom As Single = 1.0!
+
+        Public ReadOnly Property MaxZoom As Single
+            Get
+                Dim bm As cEcospaceBasemap = Me.Basemap
+                If (bm Is Nothing) Then Return -1
+                Return Math.Min(CInt(bm.InCol / 10), CInt(bm.InRow / 10))
+            End Get
+        End Property
+
+
 #End Region ' Helper methods
+
+#Region " JS New map logic dec18 "
+
+        ''' <summary>
+        ''' Get the scroll range for large and small change
+        ''' </summary>
+        ''' <remarks>
+        ''' Small change typically range / 20
+        ''' Large change typically range / 10
+        ''' </remarks>
+        ''' <returns></returns>
+        Public ReadOnly Property ScrollRange As Size
+            Get
+                Dim sz As New Size(0, 0)
+                Dim bm As cEcospaceBasemap = Me.Basemap
+
+                If (bm IsNot Nothing) Then
+                    sz.Width = Me.m_maprect.Width
+                    sz.Height = Me.m_maprect.Height
+                End If
+                Return sz
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Get the scroll maximum values
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property ScrollSize As Size
+            Get
+                Dim sz As New Size(0, 0)
+                Dim bm As cEcospaceBasemap = Me.Basemap
+
+                If (bm IsNot Nothing) Then
+                    Dim rc As Rectangle = Me.ClientRectangle()
+                    sz.Width = Math.Max(0, Me.m_maprect.Width - rc.Width)
+                    sz.Height = Math.Max(0, Me.m_maprect.Height - rc.Height)
+                End If
+                Return sz
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Get the map scroll position
+        ''' </summary>
+        Public Property ScrollPos As Point
+            Get
+                Dim pt As New Point(0, 0)
+                Dim bm As cEcospaceBasemap = Me.Basemap
+
+                If (bm IsNot Nothing) Then
+                    Dim rc As Rectangle = Me.ClientRectangle()
+                    Dim sz As Size = Me.ScrollSize
+                    pt.X = Math.Min(sz.Width, Me.m_maprect.X + sz.Width)
+                    pt.Y = Math.Min(sz.Height, Me.m_maprect.Y + sz.Height)
+                End If
+                Return pt
+            End Get
+            Set(value As Point)
+                Dim bm As cEcospaceBasemap = Me.Basemap
+
+                If (bm IsNot Nothing) Then
+                    Dim rc As Rectangle = Me.ClientRectangle()
+                    Dim sz As Size = Me.ScrollSize
+
+                    Dim x As Integer = value.X - sz.Width
+                    Dim y As Integer = value.Y - sz.Height
+
+                    Dim dx As Integer = Math.Min(Me.m_maprect.Width, rc.Width)
+                    Dim dy As Integer = Math.Min(Me.m_maprect.Height, rc.Height)
+
+                    Dim ptcenter As New Point(CInt(rc.X + rc.Width / 2), CInt(rc.Y + rc.Height / 2))
+                    If (x > 0) Then
+                        x = CInt(Math.Max(0, ptcenter.X - dx / 2))
+                    End If
+                    If (x < rc.Width - Me.m_maprect.Width) Then
+                        x = CInt(Math.Min(rc.Width - Me.m_maprect.Width, ptcenter.X - dx / 2))
+                    End If
+
+                    If (y > 0) Then
+                        y = CInt(Math.Max(0, ptcenter.Y - dy / 2))
+                    End If
+                    If (y < rc.Height - Me.m_maprect.Height) Then
+                        y = CInt(Math.Min(rc.Height - Me.m_maprect.Height, ptcenter.Y - dy / 2))
+                    End If
+
+                    Me.m_maprect.X = x
+                    Me.m_maprect.Y = y
+                    Me.Invalidate()
+
+                End If
+            End Set
+        End Property
+
+        Private Sub CalcMapSize()
+
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            If (bm Is Nothing) Then Return
+
+            Dim rc As Rectangle = Me.ClientRectangle()
+            Dim dx As Single = CSng(rc.Width / bm.InCol)
+            Dim dy As Single = CSng(rc.Height / bm.InRow)
+
+            Me.m_cellsize = Math.Min(dx, dy) * Me.m_zoom
+
+            ' Position focus point at the center of the map
+            Dim ptcenter As New Point(CInt(rc.X + rc.Width / 2), CInt(rc.Y + rc.Height / 2))
+
+            ' Center map
+            Me.m_maprect = New Rectangle(CInt(ptcenter.X - bm.InCol * m_cellsize / 2.0!),
+                                         CInt(ptcenter.Y - bm.InRow * m_cellsize / 2.0!),
+                                         CInt(bm.InCol * Me.m_cellsize),
+                                         CInt(bm.InRow * Me.m_cellsize))
+
+            Me.Invalidate()
+
+        End Sub
+
+        Private Sub ScrollBy(pt As Point)
+
+            ' ToDo: limit to visible area
+            Dim pts As Point = Me.ScrollPos()
+            pts.X += pt.X
+            pts.Y += pt.Y
+            Me.ScrollPos = pts
+
+            Try
+                RaiseEvent OnMapScrolled(Me, New EventArgs())
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Function CenterPoint() As Point
+            Dim rc As Rectangle = Me.ClientRectangle()
+            Return New Point(CInt(rc.X + rc.Width / 2), CInt(rc.Y + rc.Height / 2))
+        End Function
+
+#End Region ' JS New map logic dec18
 
     End Class
 
 End Namespace
-

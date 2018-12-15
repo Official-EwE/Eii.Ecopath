@@ -47,7 +47,7 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                           ByVal rc As Rectangle,
+                                           ByVal rc As RectangleF,
                                            Optional iSymbol As Integer = 0)
 
             If Me.m_brFore Is Nothing Then Me.Update()
@@ -61,10 +61,10 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, _
-                                        ByVal rc As System.Drawing.Rectangle, _
-                                        ByVal layer As cEcospaceLayer, _
-                                        ByVal value As Object, _
+        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics,
+                                        ByVal rc As System.Drawing.RectangleF,
+                                        ByVal layer As cEcospaceLayer,
+                                        ByVal value As Object,
                                         ByVal style As cStyleGuide.eStyleFlags)
 
             Try

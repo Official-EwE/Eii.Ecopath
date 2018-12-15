@@ -13311,9 +13311,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="STATUS_MSE_RUNNNG" xml:space="preserve">
     <value>Running MSE...</value>
   </data>
-  <data name="ecopath5_30" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ecopath5_30.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="REGION_DELETE_CONFIRMATION" xml:space="preserve">
     <value>Do you want to delete the selected region? </value>
   </data>

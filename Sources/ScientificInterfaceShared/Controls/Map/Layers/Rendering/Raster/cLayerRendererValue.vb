@@ -69,7 +69,7 @@ Namespace Controls.Map.Layers
         Public Property DrawAlways() As Boolean
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                           ByVal rc As Rectangle,
+                                           ByVal rc As RectangleF,
                                            Optional ByVal iSymbol As Integer = 0)
 
             If (Me.ForeBrush Is Nothing) Then Me.Update()
@@ -92,7 +92,7 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Overrides Sub RenderCell(ByVal g As Graphics,
-                                        ByVal rc As Rectangle,
+                                        ByVal rc As RectangleF,
                                         ByVal layer As cEcospaceLayer,
                                         ByVal value As Object,
                                         ByVal style As cStyleGuide.eStyleFlags)

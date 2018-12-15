@@ -559,16 +559,6 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         '''</summary>
-        Public ReadOnly Property ecopath5_30() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("ecopath5_30", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        '''</summary>
         Public ReadOnly Property Ecopath6_joepie() As System.Drawing.Icon
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ecopath6_joepie", resourceCulture)

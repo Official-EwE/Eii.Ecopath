@@ -42,10 +42,10 @@ Namespace Controls.Map.Layers
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor)
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As Graphics, _
-                                        ByVal rc As Rectangle, _
-                                        ByVal layer As cEcospaceLayer, _
-                                        ByVal value As Object, _
+        Public Overrides Sub RenderCell(ByVal g As Graphics,
+                                        ByVal rc As RectangleF,
+                                        ByVal layer As cEcospaceLayer,
+                                        ByVal value As Object,
                                         ByVal style As ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)
 
             'Cl2 = 0.01 / CellLength ' ^ 2
@@ -80,18 +80,18 @@ Namespace Controls.Map.Layers
                     iG = If(sValue > 0, 150, 0)
                     iB = If(sValue > 0, 0, 150)
                     Using p As New Pen(Color.FromArgb(255, iR, iG, iB), 0.001!)
-                        g.DrawLine(p, _
-                                   ptfCenter.X, ptfCenter.Y - sHalfArrow, _
+                        g.DrawLine(p,
+                                   ptfCenter.X, ptfCenter.Y - sHalfArrow,
                                    ptfCenter.X, ptfCenter.Y + sHalfArrow)
-                        g.DrawEllipse(p, _
-                                      ptfCenter.X - rc.Width / 8.0!, _
-                                      ptfCenter.Y + sHalfArrow - rc.Height / 8.0!, _
+                        g.DrawEllipse(p,
+                                      ptfCenter.X - rc.Width / 8.0!,
+                                      ptfCenter.Y + sHalfArrow - rc.Height / 8.0!,
                                       rc.Width / 4.0!, rc.Height / 4.0!)
                     End Using
                 Else
                     Using p As New Pen(Me.VisualStyle.ForeColour, 0.001!)
-                        g.DrawLine(p, _
-                                   ptfCenter.X - rc.Width / 4.0!, ptfCenter.Y, _
+                        g.DrawLine(p,
+                                   ptfCenter.X - rc.Width / 4.0!, ptfCenter.Y,
                                    ptfCenter.X + rc.Width / 4.0!, ptfCenter.Y)
                     End Using
                 End If
@@ -103,7 +103,7 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                           ByVal rc As Rectangle,
+                                           ByVal rc As RectangleF,
                                            Optional ByVal iSymbol As Integer = 0)
 
             If Me.IsStyleValid Then

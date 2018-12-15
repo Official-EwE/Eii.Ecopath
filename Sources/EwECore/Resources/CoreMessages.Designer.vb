@@ -146,7 +146,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The EWE6 Core could not be initialized. The following critical error occurred: {0}.
+        '''  Looks up a localized string similar to The EwE6 core could not be initialized. The following critical error occurred: {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_INIT_CRITICAL_GENERIC() As String
             Get
@@ -155,7 +155,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The EWE6 Core could not be initialized. The following critical error occurred while creating validators: {0}.
+        '''  Looks up a localized string similar to The EwE6 core could not be initialized. The following critical error occurred while creating validators: {0}.
         '''</summary>
         Public Shared ReadOnly Property CORE_INIT_CRITICAL_VALIDATORS() As String
             Get
@@ -191,7 +191,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Failed to make a backup copy of your database to &apos;{0}&apos;.
+        '''  Looks up a localized string similar to Failed to make a backup copy of model to &apos;{0}&apos;.
         '''</summary>
         Public Shared ReadOnly Property DATABASE_BACKUP_FAILED() As String
             Get
@@ -200,7 +200,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to The database &apos;{0}&apos; was last accessed by an earlier version of EwE6 and will be updated. Do you wish to create a backup copy of this database?.
+        '''  Looks up a localized string similar to Model &apos;{0}&apos; was last accessed by EwE version {1}  and will be updated. Do you wish to create a backup copy of this model?.
         '''</summary>
         Public Shared ReadOnly Property DATABASE_BACKUP_PROMPT() As String
             Get
@@ -209,7 +209,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to A backup copy of your database was made to &apos;{0}&apos;.
+        '''  Looks up a localized string similar to A backup copy of your model was made to &apos;{0}&apos;.
         '''</summary>
         Public Shared ReadOnly Property DATABASE_BACKUP_SUCCESS() As String
             Get
@@ -218,7 +218,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Database update {0} failed.
+        '''  Looks up a localized string similar to Model update {0} failed.
         '''</summary>
         Public Shared ReadOnly Property DATABASE_UPDATE_FAILED() As String
             Get
@@ -227,7 +227,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Database update {0} failed: {1}.
+        '''  Looks up a localized string similar to Model update {0} failed: {1}.
         '''</summary>
         Public Shared ReadOnly Property DATABASE_UPDATE_FAILED_DETAIL() As String
             Get
@@ -236,7 +236,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Imported Detritus must be greater than or equal to zero..
+        '''  Looks up a localized string similar to Imported detritus must be greater than or equal to zero..
         '''</summary>
         Public Shared ReadOnly Property DETIMP_RANGE() As String
             Get
@@ -254,7 +254,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Diet Comp does not sum to one..
+        '''  Looks up a localized string similar to Diet composition does not sum to one for one or more predators.
         '''</summary>
         Public Shared ReadOnly Property DIETCOMP_NOT_SUM_ONE() As String
             Get

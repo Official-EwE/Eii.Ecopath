@@ -65,7 +65,7 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public Overrides Sub Render(ByVal g As Graphics,
                                        ByVal layer As cDisplayLayer,
-                                       ByVal rc As Rectangle,
+                                       ByVal rc As RectangleF,
                                        ByVal ptfTL As PointF,
                                        ByVal ptfBR As PointF,
                                        ByVal style As cStyleGuide.eStyleFlags)
@@ -88,7 +88,7 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                           ByVal rc As Rectangle,
+                                           ByVal rc As RectangleF,
                                            Optional iSymbol As Integer = 0)
             g.DrawImage(My.Resources.map, rc)
         End Sub

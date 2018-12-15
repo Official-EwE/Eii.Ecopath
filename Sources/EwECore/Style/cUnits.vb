@@ -26,6 +26,8 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+' ToDo: add Distance unit (km, mi, etc), to be used by Area and Mapping
+
 Namespace Style
 
     ''' <summary>

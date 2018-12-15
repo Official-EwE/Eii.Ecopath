@@ -41,25 +41,25 @@ Namespace Controls
         ''' <param name="ramp">The <see cref="cColorRamp"/> to draw.</param>
         ''' <param name="rc">Area to draw ramp onto.</param>
         ''' -----------------------------------------------------------------------
-        Public Shared Sub DrawColorRamp(ByVal g As Graphics, _
-                                        ByVal ramp As cColorRamp, _
-                                        ByVal rc As Rectangle, _
+        Public Shared Sub DrawColorRamp(ByVal g As Graphics,
+                                        ByVal ramp As cColorRamp,
+                                        ByVal rc As RectangleF,
                                         Optional ByVal bHorizontal As Boolean = True)
 
             If (ramp Is Nothing) Then Return
             If (rc.Width <= 0) Or (rc.Height <= 0) Then Return
 
-            Dim bmp As New Bitmap(rc.Width, rc.Height, PixelFormat.Format32bppArgb)
+            Dim bmp As New Bitmap(CInt(rc.Width), CInt(rc.Height), PixelFormat.Format32bppArgb)
             Dim gtmp As Graphics = Graphics.FromImage(bmp)
 
             If bHorizontal Then
-                For i As Integer = 0 To rc.Width
+                For i As Integer = 0 To CInt(rc.Width)
                     Using p As New Pen(ramp.GetColor(i / rc.Width), 1)
                         gtmp.DrawLine(p, i, 0, i, rc.Height - 1)
                     End Using
                 Next
             Else
-                For i As Integer = 0 To rc.Height
+                For i As Integer = 0 To CInt(rc.Height)
                     Using p As New Pen(ramp.GetColor(i / rc.Height), 1)
                         gtmp.DrawLine(p, 0, rc.Height - i, rc.Width - 1, rc.Height - i)
                     End Using
