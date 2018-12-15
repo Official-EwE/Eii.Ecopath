@@ -22,6 +22,7 @@
 Option Strict On
 Imports System.Drawing
 Imports System.Windows.Forms
+Imports EwECore
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 
@@ -40,9 +41,13 @@ Public Class cTransectVectorEditor
     Private m_transectEdit As cTransect = Nothing
     Private m_transectEditMode As eEditModeType = eEditModeType.NotSet
 
-    ' For line editing
+    ' --- For transect editing ---
+
+    ''' <summary>Map location where transect starts</summary>
     Private m_ptfStartOrg As PointF
+    ''' <summary>Map location where transect ends</summary>
     Private m_ptfEndOrg As PointF
+    ''' <summary>Screen point where the user clicked</summary>
     Private m_ptClickOrg As Point
 
     Public Sub New()
@@ -51,8 +56,6 @@ Public Class cTransectVectorEditor
 
     Public Overrides Sub ProcessMouseClick(e As MouseEventArgs, map As ucMap)
 
-        ' ToDo: globalize this method
-
         Dim td As cTransectVectorDisplay = DirectCast(Me.Layer, cTransectVectorDisplay)
         Dim data As cTransectDatastructures = td.Data
 
@@ -60,14 +63,14 @@ Public Class cTransectVectorEditor
 
             ' Get transect names
             Dim lNames As New List(Of String)
-            Dim strMask As String = "Transect {0}"
+            Dim strMask As String = My.Resources.DEFAULT_TRANSECT_NAME
             For Each t As cTransect In data.Transects
                 lNames.Add(t.Name)
             Next
             Dim n As Integer = EwEUtils.Utilities.cStringUtils.GetNextNumber(lNames.ToArray, strMask)
 
             Me.m_transectEdit = New cTransect(String.Format(strMask, n)) With {
-                .Start = map.GetLocation(e.Location),
+                .Start = map.PointToMapExact(e.Location),
                 .End = .Start
             }
             Me.m_transectEditMode = eEditModeType.End
@@ -92,7 +95,7 @@ Public Class cTransectVectorEditor
 
         If (Me.IsEditing) Then
 
-            Dim loc As PointF = map.GetLocation(e.Location)
+            Dim loc As PointF = map.PointToMapExact(e.Location)
             Dim td As cTransectVectorDisplay = DirectCast(Me.Layer, cTransectVectorDisplay)
             Dim data As cTransectDatastructures = td.Data
 
@@ -102,7 +105,7 @@ Public Class cTransectVectorEditor
                 Case eEditModeType.End
                     Me.m_transectEdit.End = loc
                 Case eEditModeType.Line
-                    Dim locOrg As PointF = map.GetLocation(Me.m_ptClickOrg)
+                    Dim locOrg As PointF = map.PointToMapExact(Me.m_ptClickOrg)
                     Dim dx As Single = loc.X - locOrg.X
                     Dim dy As Single = loc.Y - locOrg.Y
                     Me.m_transectEdit.Start = New PointF(Me.m_ptfStartOrg.X + dx, Me.m_ptfStartOrg.Y + dy)
@@ -138,6 +141,7 @@ Public Class cTransectVectorEditor
 
         Dim t As cTransect = Nothing
         Dim editmode As eEditModeType = eEditModeType.NotSet
+        Dim ptMap As PointF = map.PointToMapExact(ptMouse)
 
         If TransectAt(ptMouse, map, t, editmode) Then
             Return Cursors.Hand
@@ -150,18 +154,19 @@ Public Class cTransectVectorEditor
 
         Dim td As cTransectVectorDisplay = DirectCast(Me.Layer, cTransectVectorDisplay)
         Dim data As cTransectDatastructures = td.Data
+        Dim bm As cEcospaceBasemap = map.Basemap
         Dim ptStart As Point = Nothing
         Dim ptEnd As Point = Nothing
-        Dim sDist As Single = 10.0
+        Dim sDist As Single = 10
         For Each t In data.Transects
 
-            ptStart = map.GetScreenPoint(t.Start)
+            ptStart = Me.LocationToScreen(t.Start, map)
             If IsNear(ptStart, ptMouse, sDist) Then
                 editMode = eEditModeType.Start
                 Return True
             End If
 
-            ptEnd = map.GetScreenPoint(t.End)
+            ptEnd = Me.LocationToScreen(t.End, map)
             If IsNear(ptEnd, ptMouse, sDist) Then
                 editMode = eEditModeType.End
                 Return True
@@ -204,6 +209,20 @@ Public Class cTransectVectorEditor
 
     End Function
 
+    Private Function LocationToScreen(ptf As PointF, map As ucMap) As Point
+
+        Dim bm As cEcospaceBasemap = map.Basemap
+        Return map.MapToPoint(New PointF(bm.LonToCol(ptf.X), bm.LatToRow(ptf.Y)))
+
+    End Function
+
+    ''' <summary>
+    ''' Check if the distance between two screen points is less than a given distance
+    ''' </summary>
+    ''' <param name="pt1"></param>
+    ''' <param name="pt2"></param>
+    ''' <param name="sDist"></param>
+    ''' <returns></returns>
     Private Function IsNear(pt1 As Point, pt2 As Point, sDist As Single) As Boolean
         Dim dx As Single = pt1.X - pt2.X
         Dim dy As Single = pt1.Y - pt2.Y

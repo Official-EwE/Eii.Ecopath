@@ -43,11 +43,11 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                           ByVal rc As Rectangle,
+                                           ByVal rc As RectangleF,
                                            Optional iSymbol As Integer = 0)
             If Me.IsStyleValid Then
-                Dim sz As Integer = Math.Min(rc.Width, rc.Height)
-                Dim rcSymbol As New Rectangle(rc.X + CInt((rc.Width - sz) / 2), rc.Y + CInt((rc.Height - sz) / 2), sz, sz)
+                Dim sz As Single = Math.Min(rc.Width, rc.Height)
+                Dim rcSymbol As New RectangleF(rc.X + CInt((rc.Width - sz) / 2), rc.Y + CInt((rc.Height - sz) / 2), sz, sz)
                 Me.RenderCell(g, rcSymbol, Nothing, New Single() {5, 5}, cStyleGuide.eStyleFlags.OK)
             Else
                 Me.RenderError(g, rc)
@@ -66,7 +66,7 @@ Namespace Controls.Map.Layers
         ''' <param name="style"></param>
         ''' -------------------------------------------------------------------
         Public Overrides Sub RenderCell(ByVal g As Graphics,
-                                        ByVal rc As Rectangle,
+                                        ByVal rc As RectangleF,
                                         ByVal layer As cEcospaceLayer,
                                         ByVal value As Object,
                                         ByVal style As cStyleGuide.eStyleFlags)

@@ -44,7 +44,7 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                            ByVal rc As Rectangle,
+                                            ByVal rc As RectangleF,
                                             Optional iSymbol As Integer = 0)
             If (Me.IsStyleValid) Then
                 Me.DrawImageAlpha(g, rc, Me.VisualStyle.Image, 1.0!)
@@ -53,10 +53,10 @@ Namespace Controls.Map.Layers
             End If
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, _
-                                        ByVal rc As System.Drawing.Rectangle, _
-                                        ByVal layer As cEcospaceLayer, _
-                                        ByVal value As Object, _
+        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics,
+                                        ByVal rc As System.Drawing.RectangleF,
+                                        ByVal layer As cEcospaceLayer,
+                                        ByVal value As Object,
                                         ByVal style As cStyleGuide.eStyleFlags)
             If (Me.IsStyleValid) Then
                 Me.DrawImageAlpha(g, rc, Me.VisualStyle.Image, Math.Min(1, Math.Max(0, CSng(value))))
@@ -77,25 +77,25 @@ Namespace Controls.Map.Layers
             Return DirectCast(objClone, cRasterLayerRenderer)
         End Function
 
-        Private Sub DrawImageAlpha(ByVal g As Graphics, ByVal rc As Rectangle, ByVal img As Image, ByVal sAlpha As Single)
+        Private Sub DrawImageAlpha(ByVal g As Graphics, ByVal rc As RectangleF, ByVal img As Image, ByVal sAlpha As Single)
 
             If sAlpha >= 1 Then
                 Using br As New TextureBrush(img, WrapMode.Tile)
                     g.FillRectangle(br, rc)
                 End Using
             Else
-                Dim matrixItems As Single()() = { _
-                    New Single() {1, 0, 0, 0, 0}, _
-                    New Single() {0, 1, 0, 0, 0}, _
-                    New Single() {0, 0, 1, 0, 0}, _
-                    New Single() {0, 0, 0, sAlpha, 0}, _
+                Dim matrixItems As Single()() = {
+                    New Single() {1, 0, 0, 0, 0},
+                    New Single() {0, 1, 0, 0, 0},
+                    New Single() {0, 0, 1, 0, 0},
+                    New Single() {0, 0, 0, sAlpha, 0},
                     New Single() {0, 0, 0, 0, 1}}
 
                 Dim colorMatrix As New ColorMatrix(matrixItems)
                 Dim imageAtt As New ImageAttributes()
-                imageAtt.SetColorMatrix( _
-                   colorMatrix, _
-                   ColorMatrixFlag.Default, _
+                imageAtt.SetColorMatrix(
+                   colorMatrix,
+                   ColorMatrixFlag.Default,
                    ColorAdjustType.Bitmap)
 
                 Using br As New TextureBrush(img, New Rectangle(0, 0, img.Width, img.Height), imageAtt)

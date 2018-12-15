@@ -53,10 +53,10 @@ Namespace Controls.Map.Layers
         ''' [0, 1] as the second index.</param>
         ''' <param name="style"></param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub RenderCell(ByVal g As Graphics, _
-                                        ByVal rc As Rectangle, _
-                                        ByVal layer As cEcospaceLayer, _
-                                        ByVal value As Object, _
+        Public Overrides Sub RenderCell(ByVal g As Graphics,
+                                        ByVal rc As RectangleF,
+                                        ByVal layer As cEcospaceLayer,
+                                        ByVal value As Object,
                                         ByVal style As cStyleGuide.eStyleFlags)
 
             If CBool(value) Then Me.RenderPreview(g, rc)

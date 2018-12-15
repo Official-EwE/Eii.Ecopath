@@ -135,6 +135,9 @@
   <data name="CAPTION_OUT" xml:space="preserve">
     <value>Transect summary</value>
   </data>
+  <data name="DEFAULT_TRANSECT_NAME" xml:space="preserve">
+    <value>Transect {0}</value>
+  </data>
   <data name="GENERIC_LABEL_POINT" xml:space="preserve">
     <value>({0}, {1})</value>
     <comment>{0}: X coordinate, {1}: Y coordinate</comment>

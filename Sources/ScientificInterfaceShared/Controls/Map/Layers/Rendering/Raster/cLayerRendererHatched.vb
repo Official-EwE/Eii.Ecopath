@@ -42,8 +42,8 @@ Namespace Controls.Map.Layers
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor Or cVisualStyle.eVisualStyleTypes.BackColor Or cVisualStyle.eVisualStyleTypes.Hatch)
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle,
+        Public Overrides Sub RenderPreview(ByVal g As Graphics,
+                                           ByVal rc As RectangleF,
                                            Optional ByVal iSymbol As Integer = 0)
             If Me.IsStyleValid Then
                 Using br As New HatchBrush(Me.VisualStyle.HatchStyle, Me.VisualStyle.ForeColour, Me.VisualStyle.BackColour)
@@ -54,10 +54,10 @@ Namespace Controls.Map.Layers
             End If
         End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, _
-                                        ByVal rc As System.Drawing.Rectangle, _
-                                        ByVal layer As cEcospaceLayer, _
-                                        ByVal value As Object, _
+        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics,
+                                        ByVal rc As System.Drawing.RectangleF,
+                                        ByVal layer As cEcospaceLayer,
+                                        ByVal value As Object,
                                         ByVal style As cStyleGuide.eStyleFlags)
             Me.RenderPreview(g, rc)
         End Sub

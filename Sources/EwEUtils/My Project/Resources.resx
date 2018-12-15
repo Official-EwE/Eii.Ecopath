@@ -123,4 +123,7 @@
   <data name="SEP_OR" xml:space="preserve">
     <value>or</value>
   </data>
+  <data name="VERSION_ANCIENT" xml:space="preserve">
+    <value>5 or older</value>
+  </data>
 </root>

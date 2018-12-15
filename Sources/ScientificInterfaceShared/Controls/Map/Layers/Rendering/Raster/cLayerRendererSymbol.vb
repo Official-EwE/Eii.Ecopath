@@ -43,7 +43,7 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                            ByVal rc As Rectangle,
+                                            ByVal rc As RectangleF,
                                             Optional iSymbol As Integer = 0)
 
             Me.RenderSymbol(g, rc, Me.VisualStyle.ForeColour)
@@ -51,7 +51,7 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics,
-                                        ByVal rc As System.Drawing.Rectangle,
+                                        ByVal rc As System.Drawing.RectangleF,
                                         ByVal layer As cEcospaceLayer,
                                         ByVal value As Object,
                                         ByVal style As cStyleGuide.eStyleFlags)
@@ -71,14 +71,14 @@ Namespace Controls.Map.Layers
 #Region " Internals "
 
         Protected Sub RenderSymbol(ByVal g As Graphics,
-                                   ByVal rc As Rectangle,
+                                   ByVal rc As RectangleF,
                                    ByVal colorFill As Color)
             If Me.IsStyleValid() Then
                 rc.Inflate(CInt(-rc.Width * 0.1), CInt(-rc.Height * 0.1))
 
                 ' JS 05Sep16: center symbol
-                Dim sz As Integer = Math.Min(rc.Width, rc.Height)
-                Dim rcSymbol As New Rectangle(rc.X + CInt((rc.Width - sz) / 2), rc.Y + CInt((rc.Height - sz) / 2), sz, sz)
+                Dim sz As Single = Math.Min(rc.Width, rc.Height)
+                Dim rcSymbol As New RectangleF(rc.X + CInt((rc.Width - sz) / 2), rc.Y + CInt((rc.Height - sz) / 2), sz, sz)
 
                 Using p As New Pen(Color.White, 3)
                     g.DrawEllipse(p, rcSymbol)

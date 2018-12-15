@@ -50,10 +50,10 @@ Namespace Controls.Map.Layers
         '    g.DrawString("#", Me.Font, Me.ForeBrush, rc)
         'End Sub
 
-        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, _
-                                        ByVal rc As System.Drawing.Rectangle, _
-                                        ByVal layer As cEcospaceLayer, _
-                                        ByVal value As Object, _
+        Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics,
+                                        ByVal rc As System.Drawing.RectangleF,
+                                        ByVal layer As cEcospaceLayer,
+                                        ByVal value As Object,
                                         ByVal style As cStyleGuide.eStyleFlags)
 
             Try

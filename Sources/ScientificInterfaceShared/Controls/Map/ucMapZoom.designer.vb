@@ -52,7 +52,11 @@ Namespace Controls.Map
             Me.m_tsmiZoomIn = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiZoomOut = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiZoomReset = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tlpMap = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_sbVert = New System.Windows.Forms.VScrollBar()
+            Me.m_sbHorz = New System.Windows.Forms.HScrollBar()
             Me.m_cmsZoom.SuspendLayout()
+            Me.m_tlpMap.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_map
@@ -60,11 +64,13 @@ Namespace Controls.Map
             Me.m_map.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.m_map.BackColor = System.Drawing.SystemColors.Window
             Me.m_map.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_map.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_map.Editable = False
-            Me.m_map.Location = New System.Drawing.Point(123, 79)
+            Me.m_map.Location = New System.Drawing.Point(0, 0)
             Me.m_map.Margin = New System.Windows.Forms.Padding(0)
             Me.m_map.Name = "m_map"
-            Me.m_map.Size = New System.Drawing.Size(200, 200)
+            Me.m_map.ScrollPos = New System.Drawing.Point(0, 0)
+            Me.m_map.Size = New System.Drawing.Size(426, 347)
             Me.m_map.TabIndex = 0
             Me.m_map.Title = ""
             Me.m_map.UIContext = Nothing
@@ -124,16 +130,50 @@ Namespace Controls.Map
             Me.m_tsmiZoomReset.Size = New System.Drawing.Size(176, 22)
             Me.m_tsmiZoomReset.Text = "Reset zoom"
             '
+            'm_tlpMap
+            '
+            Me.m_tlpMap.ColumnCount = 2
+            Me.m_tlpMap.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpMap.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+            Me.m_tlpMap.Controls.Add(Me.m_map, 0, 0)
+            Me.m_tlpMap.Controls.Add(Me.m_sbVert, 1, 0)
+            Me.m_tlpMap.Controls.Add(Me.m_sbHorz, 0, 1)
+            Me.m_tlpMap.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_tlpMap.Location = New System.Drawing.Point(0, 0)
+            Me.m_tlpMap.Name = "m_tlpMap"
+            Me.m_tlpMap.RowCount = 2
+            Me.m_tlpMap.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpMap.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_tlpMap.Size = New System.Drawing.Size(443, 364)
+            Me.m_tlpMap.TabIndex = 1
+            '
+            'm_sbVert
+            '
+            Me.m_sbVert.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_sbVert.Location = New System.Drawing.Point(426, 0)
+            Me.m_sbVert.Name = "m_sbVert"
+            Me.m_sbVert.Size = New System.Drawing.Size(17, 347)
+            Me.m_sbVert.TabIndex = 1
+            '
+            'm_sbHorz
+            '
+            Me.m_sbHorz.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_sbHorz.Location = New System.Drawing.Point(0, 347)
+            Me.m_sbHorz.Name = "m_sbHorz"
+            Me.m_sbHorz.Size = New System.Drawing.Size(426, 17)
+            Me.m_sbHorz.TabIndex = 2
+            '
             'ucMapZoom
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.AutoScroll = True
             Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-            Me.Controls.Add(Me.m_map)
+            Me.Controls.Add(Me.m_tlpMap)
             Me.Name = "ucMapZoom"
             Me.Size = New System.Drawing.Size(443, 364)
             Me.m_cmsZoom.ResumeLayout(False)
+            Me.m_tlpMap.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -146,6 +186,9 @@ Namespace Controls.Map
         Private WithEvents m_tsmiZoomReset As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_cmsZoom As System.Windows.Forms.ContextMenuStrip
         Private WithEvents m_map As ucMap
+        Private WithEvents m_tlpMap As TableLayoutPanel
+        Private WithEvents m_sbVert As VScrollBar
+        Private WithEvents m_sbHorz As HScrollBar
     End Class
 
 End Namespace

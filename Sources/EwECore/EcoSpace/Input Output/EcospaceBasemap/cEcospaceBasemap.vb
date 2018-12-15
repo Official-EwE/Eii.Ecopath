@@ -21,9 +21,9 @@
 
 Option Strict On
 Imports EwECore.Core
+Imports EwECore.Style
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -379,11 +379,11 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the <see cref="cEcospaceDataStructures.Inrow">InRow</see>
+    ''' Get/set the <see cref="cEcospaceDataStructures.InRow">nRows</see>
     ''' value for this scenario
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property InRow() As Integer
+    Public Property InRow As Integer
         Get
             Return CInt(GetVariable(eVarNameFlags.InRow))
         End Get
@@ -394,7 +394,7 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the <see cref="cEcospaceDataStructures.Incol">InCol</see>
+    ''' Get/set the <see cref="cEcospaceDataStructures.InCol">nCols</see>
     ''' value for this scenario
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -974,11 +974,12 @@ Public Class cEcospaceBasemap
     ''' <summary>
     ''' Returns the top-left latitude position of the given row.
     ''' </summary>
-    ''' <param name="iRow"></param>
+    ''' <param name="sRow"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function RowToLat(ByVal iRow As Integer) As Single
-        Return Me.Latitude - (iRow - 1) * Me.CellSize
+    Public Function RowToLat(ByVal sRow As Single) As Single
+        ' ToDo: validate if this correct for basemaps in meters (AssumeSquareCells = true)
+        Return Me.Latitude - (sRow - 1) * Me.CellSize
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -988,19 +989,21 @@ Public Class cEcospaceBasemap
     ''' <param name="sLat"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function LatToRow(ByVal sLat As Single) As Integer
-        Return CInt(Math.Floor((Me.Latitude - sLat) / Me.CellSize)) + 1
+    Public Function LatToRow(ByVal sLat As Single) As Single
+        ' ToDo: validate if this correct for basemaps in meters (AssumeSquareCells = true)
+        Return CSng(((Me.Latitude - sLat) / Me.CellSize)) + 1
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns the top-left longitude position of the given row.
     ''' </summary>
-    ''' <param name="iCol"></param>
+    ''' <param name="sCol"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function ColToLon(ByVal iCol As Integer) As Single
-        Return Me.Longitude + (iCol - 1) * Me.CellSize
+    Public Function ColToLon(ByVal sCol As Single) As Single
+        ' ToDo: validate if this correct for basemaps in meters (AssumeSquareCells = true)
+        Return Me.Longitude + (sCol - 1) * Me.CellSize
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -1011,10 +1014,22 @@ Public Class cEcospaceBasemap
     ''' <param name="sLon"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function LonToCol(ByVal sLon As Single) As Integer
-        Return CInt(Math.Floor((sLon - Me.Longitude) / Me.CellSize)) + 1
+    Public Function LonToCol(ByVal sLon As Single) As Single
+        ' ToDo: validate if this correct for basemaps in meters (AssumeSquareCells = true)
+        Return CSng(((sLon - Me.Longitude) / Me.CellSize)) + 1
+    End Function
+
+    Public Function MapUnits() As String
+        ' This can be seriously improved. See ToDo notes in cUnits
+        Dim units As New cUnits(Me.m_core)
+        If Me.AssumeSquareCells Then
+            Return units.ToString("[km]")
+        End If
+        Return units.ToString(cUnits.Mapping)
     End Function
 
 #End Region ' Cell calculations
+
+#End Region ' Obsolete
 
 End Class
