@@ -505,21 +505,22 @@ Namespace SystemUtilities
         ''' <param name="mode"></param>
         ''' <param name="iMonths"></param>
         ''' -----------------------------------------------------------------------
-        Public Shared Function BestBefore(mode As eReleaseMode, Optional ass As System.Reflection.Assembly = Nothing, Optional iMonths As Integer = -1) As DateTime
+        Public Shared Function BestBefore(mode As eReleaseMode, Optional ass As System.Reflection.Assembly = Nothing, Optional iMonths As Integer = -9999) As DateTime
             Dim dt As DateTime = DateTime.Now()
             Try
                 dt = cAssemblyUtils.GetCompileDate(ass)
             Catch ex As Exception
-                cLog.Write(ex, eVerboseLevel.Standard, "BestBefore")
+                cLog.Write(ex, eVerboseLevel.Standard, "cSystemUtils.BestBefore")
             End Try
 
             Select Case mode
                 Case eReleaseMode.Dev
                     iMonths = 1
                 Case eReleaseMode.Beta
-                    If (iMonths < 0) Then iMonths = 6
+                    If (iMonths = -9999) Then iMonths = 6
                 Case eReleaseMode.Release
-                    If (iMonths < 0) Then iMonths = 100 * 12
+                    ' Release licenses are handled in another way
+                    Return DateTime.Now.AddDays(1)
                 Case Else
                     Debug.Assert(False)
             End Select
@@ -527,15 +528,6 @@ Namespace SystemUtilities
             Return dt.AddMonths(iMonths)
 
         End Function
-
-#Region " Discontinued "
-
-        <Obsolete("Please use Is64BitProcess instead")> _
-        Public Shared Function Is64Bit() As Boolean
-            Return cSystemUtils.Is64BitProcess
-        End Function
-
-#End Region ' Discontinued
 
     End Class
 

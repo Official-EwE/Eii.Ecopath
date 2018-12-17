@@ -76,7 +76,7 @@ Namespace Other
                 Case eReleaseMode.Beta
                     Me.m_lbVersion.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION_BETA, cCore.Version(True), strBitApp)
                     Dim frmEwE As frmEwE6 = DirectCast(Me.m_uic.FormMain, frmEwE6)
-                    Me.m_lblExpiry.Visible = frmEwE.IsExpired()
+                    Me.m_lblExpiry.Visible = frmEwE.IsBetaExpired()
                     Me.m_lblExpiry.Text = My.Resources.VERSION_EXPIRED
 #End If
                 Case Else
