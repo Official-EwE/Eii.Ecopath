@@ -31,6 +31,7 @@ Imports DotSpatial.Projections
 Imports DotSpatial.Topology
 Imports EwECore
 Imports EwESpatialAssetsPlugin.SpatialData
+Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 
@@ -561,5 +562,24 @@ Public Class cDotSpatialUtils
     End Function
 
 #End Region ' Feature extraction
+
+#Region " License "
+
+    Private Shared g_bValidated As Boolean = False
+    Private Shared g_bValid As Boolean = False
+
+    Public Shared Function Valid(core As cCore) As Boolean
+        If Not g_bValidated Then
+            g_bValid = (cDateUtils.StartTime < cSystemUtils.BestBefore(eReleaseMode.Beta, System.Reflection.Assembly.GetAssembly(GetType(cLifespanPlugin))))
+            g_bValidated = True
+        End If
+        If Not g_bValid Then
+            Dim msg As New cFeedbackMessage(My.Resources.LICENSE_EXPIRED, eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Warning, eMessageReplyStyle.OK)
+            core.Messages.SendMessage(msg)
+        End If
+        Return g_bValid
+    End Function
+
+#End Region ' License
 
 End Class

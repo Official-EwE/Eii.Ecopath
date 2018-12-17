@@ -881,9 +881,26 @@ Public Class cPluginManager
     Public Function CoreInitialized(ByVal objEcoPath As Object, ByVal objEcoSim As Object, ByVal objEcoSpace As Object) As Boolean
 
         ' Invokes ICorePlugin.CoreInitialized(objEcoPath, objEcoSim, objEcoSpace)
-        Return Me.TryInvokeMethod(GetType(ICorePlugin), _
-                                  "CoreInitialized", _
+        Return Me.TryInvokeMethod(GetType(ICorePlugin),
+                                  "CoreInitialized",
                                   New Object() {objEcoPath, objEcoSim, objEcoSpace})
+
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the Validate Lifespan point point on any available and
+    ''' response <see cref="ILifespanPlugin"/>.
+    ''' </summary>
+    ''' <param name="mode"></param>
+    ''' <returns>True if successful.</returns>
+    ''' ---------------------------------------------------------------------------
+    Public Function ValidateLifespan(mode As eReleaseMode) As Boolean
+
+        ' Invokes ILifespanPlugin.ValidateLifespan(mode)
+        Return Me.TryInvokeMethod(GetType(ILifespanPlugin),
+                                  "ValidateLifespan",
+                                  New Object() {mode})
 
     End Function
 

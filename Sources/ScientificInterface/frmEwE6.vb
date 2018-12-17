@@ -82,9 +82,6 @@ Public Class frmEwE6
     ''' <summary>Status messages stack.</summary>
     Private m_lstrStatus As New List(Of String)
 
-    ''' <summary>Server time</summary>
-    Private m_dtServer As DateTime = Date.MinValue
-
 #If BETA = 1 Then
     Private m_bExpirationChecked As Boolean = False
 #End If
@@ -892,40 +889,54 @@ Public Class frmEwE6
 
 #If BETA = 1 Then
 
-    Public Function IsExpired() As Boolean
-        Return (Me.m_dtServer > cSystemUtils.BestBefore(eReleaseMode.Beta, System.Reflection.Assembly.GetAssembly(GetType(cCore))))
+    Public Function IsBetaExpired() As Boolean
+        Return (cDateUtils.StartTime > cSystemUtils.BestBefore(eReleaseMode.Beta, System.Reflection.Assembly.GetAssembly(GetType(cCore))))
     End Function
 
-    Private Sub CheckExpired()
-        If (frmSplash.IsAlive()) Then Return
-        If (Me.m_dtServer <> Date.MinValue And Me.m_bExpirationChecked = False) Then
-            If (Me.IsExpired()) Then
-                Me.SendMessage(My.Resources.VERSION_EXPIRED, eMessageImportance.Warning, eCoreComponentType.External, "http://download.ecopath.org")
+    Private Sub CheckBetaExpired()
+        If (Me.m_bExpirationChecked = False) Then
+            If (Me.IsBetaExpired()) Then
+                Me.AskFeedback(My.Resources.VERSION_EXPIRED, eMessageImportance.Warning, eCoreComponentType.External, strHyperlink:="http://download.ecopath.org")
             End If
             Me.m_bExpirationChecked = True
         End If
     End Sub
+
 #End If
 
 #End Region ' Initialization
 
 #Region " Server time "
 
+    Private Sub ValidateSetup()
+        Me.m_bgw.RunWorkerAsync()
+    End Sub
+
     Private Sub OnObtainServerTime(sender As Object, args As DoWorkEventArgs) Handles m_bgw.DoWork
-        Me.m_dtServer = cDateUtils.GetNetworkTime()
+        If Not cDateUtils.GetNetworkTime() Then
+            cLog.Write("Unable to obtain server time")
+        End If
     End Sub
 
     Private Sub OnServerTimeObtained(sender As Object, e As RunWorkerCompletedEventArgs) Handles m_bgw.RunWorkerCompleted
-        If (Me.m_dtServer = Date.MinValue) Then
-            Me.m_dtServer = Date.Now
-        End If
-#If BETA = 1 Then
         If (Me.InvokeRequired()) Then
-            Me.Invoke(New MethodInvoker(AddressOf CheckExpired))
+            Me.Invoke(New MethodInvoker(AddressOf DoValidateSetup))
         Else
-            Me.CheckExpired()
+            Me.DoValidateSetup()
         End If
+    End Sub
+
+    Private Sub DoValidateSetup()
+#If BETA = 1 Then
+        Me.CheckBetaExpired()
 #End If
+        If (Me.m_pluginManager IsNot Nothing) Then
+            Me.m_pluginManager.ValidateLifespan(frmEwE6.ReleaseMode)
+        End If
+
+        ' Auto-launch plugins
+        Me.AutolaunchPlugins()
+
     End Sub
 
 #End Region ' Server time
@@ -1030,8 +1041,6 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-        Me.m_bgw.RunWorkerAsync()
-
         Me.SuspendLayout()
 
         ' Add the dock panel 
@@ -1066,8 +1075,6 @@ Public Class frmEwE6
 
         ' Load plugins once GUI has been created.
         Me.LoadPlugins()
-        ' Auto-launch plugins
-        Me.AutolaunchPlugins()
 
         ' JS 11Sep14: this will be done when settings are loaded
         'Me.Core.SpatialDataConnectionManager.DatasetManager.Load(My.Settings.SpatialTemporalConfigFile)
@@ -1080,10 +1087,12 @@ Public Class frmEwE6
 
         Me.ResumeLayout()
 
+        ' Remove splash screen and activate UI
         frmSplash.BuggerOff()
         Me.Activate()
 
-        Me.CheckExpired()
+        Me.ValidateSetup()
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -1344,12 +1353,6 @@ Public Class frmEwE6
 
 #Region " Plug-ins "
 
-    Private Sub AutolaunchPlugins()
-        Using pl As New cPluginAutolaunchHandler(Me.m_pluginManager, Me.UIContext.CommandHandler)
-            ' Hah! The 'using' construction here will deal with proper disposal
-        End Using
-    End Sub
-
     Private Sub LoadPlugins()
 
         Dim strMessage As String = ""
@@ -1366,6 +1369,12 @@ Public Class frmEwE6
             ' Ouch!
         End Try
 
+    End Sub
+
+    Private Sub AutolaunchPlugins()
+        Using pl As New cPluginAutolaunchHandler(Me.m_pluginManager, Me.UIContext.CommandHandler)
+            ' Hah! The 'using' construction here will deal with proper disposal
+        End Using
     End Sub
 
 #End Region ' Plug-ins

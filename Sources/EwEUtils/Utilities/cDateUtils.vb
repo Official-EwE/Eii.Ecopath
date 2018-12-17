@@ -22,8 +22,8 @@
 Option Strict On
 Imports System
 Imports System.Diagnostics
+Imports System.Globalization
 Imports System.Net
-Imports System.Net.Sockets
 
 #End Region ' Imports
 
@@ -35,6 +35,12 @@ Namespace Utilities
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cDateUtils
+
+#Region " Internals "
+
+        Private Shared s_starttime As DateTime = Date.Now
+
+#End Region ' Internals
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -67,7 +73,7 @@ Namespace Utilities
         ''' <param name="iMonth">The month to format [1, 12]</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetMonthName(ByVal iMonth As Integer, _
+        Public Shared Function GetMonthName(ByVal iMonth As Integer,
                                             Optional ByVal bFullName As Boolean = True) As String
             Try
                 If (iMonth < 1 Or iMonth > 12) Then Return ""
@@ -167,44 +173,45 @@ Namespace Utilities
             Return Math.Abs((first.Month - second.Month) + 12 * (first.Year - second.Year))
         End Function
 
-        Public Shared Function GetNetworkTime(Optional NtpServer As String = "pool.ntp.org") As DateTime
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the time from an Internet server. The retrieved time can be obtained
+        ''' from <see cref="StartTime"/>.
+        ''' </summary>
+        ''' <param name="server">Full URL to the server to obtain time from.</param>
+        ''' <returns>True if successful.</returns>
+        ''' <remarks>
+        ''' https://stackoverflow.com/questions/6435099/how-to-get-datetime-from-the-internet
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function GetNetworkTime(Optional server As String = "http://www.google.com") As Boolean
 
             Try
-
-                Const DaysTo1900 As Integer = 1900 * 365 + 95
-                Const TicksPerSecond As Long = 10000000L
-                Const TicksPerDay As Long = 24 * 60 * 60 * TicksPerSecond
-                Const TicksTo1900 As Long = DaysTo1900 * TicksPerDay
-                Dim ntpData(47) As Byte
-                ntpData(0) = &H1B
-
-                Dim addresses As IPAddress() = Dns.GetHostEntry(NtpServer).AddressList
-                Dim ipEndPoint As New IPEndPoint(addresses(0), 123)
-                Dim pingDuration As Long = Stopwatch.GetTimestamp()
-
-                Using socket As New Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)
-                    socket.Connect(ipEndPoint)
-                    socket.ReceiveTimeout = 3000
-                    socket.Send(ntpData)
-                    pingDuration = Stopwatch.GetTimestamp()
-                    socket.Receive(ntpData)
-                    pingDuration = Stopwatch.GetTimestamp() - pingDuration
+                Using response As WebResponse = WebRequest.Create(server).GetResponse()
+                    cDateUtils.StartTime = DateTime.ParseExact(response.Headers("date"), "ddd, dd MMM yyyy HH:mm:ss 'GMT'", CultureInfo.InvariantCulture.DateTimeFormat, DateTimeStyles.AssumeUniversal)
                 End Using
-
-                Dim pingTicks As Long = CLng(pingDuration * TicksPerSecond / Stopwatch.Frequency)
-                Dim intPart As Long = (CLng(ntpData(40)) << 24) + (CLng(ntpData(41) << 16) + (CLng(ntpData(42)) << 8) + CLng(ntpData(43)))
-                Dim fractPart As Long = (CLng(ntpData(44)) << 24) + (CLng(ntpData(45) << 16) + (CLng(ntpData(46)) << 8) + CLng(ntpData(47)))
-
-                Dim netTicks As Long = intPart * TicksPerSecond + (fractPart * TicksPerSecond >> 32)
-                Dim networkDateTime As New DateTime(CLng(TicksTo1900 + netTicks + pingTicks / 2))
-                Return networkDateTime.ToLocalTime()
+                Return True
 
             Catch ex As Exception
-                Return DateTime.Now
+                ' Ouch
             End Try
+            Return False
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the time returned by <see cref="GetNetworkTime(String)"/>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Shared Property StartTime As DateTime
+            Get
+                Return s_starttime
+            End Get
+            Private Set(value As DateTime)
+                s_starttime = value
+            End Set
+        End Property
     End Class
 
 End Namespace

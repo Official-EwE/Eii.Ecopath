@@ -173,6 +173,7 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Plugins\cLifespanPlugin.vb" />
     <Compile Include="Plugins\Converters\cSpatialDataConverter.vb" />
     <Compile Include="Plugins\Converters\Vector\Area ratio\cAreaRatioConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\Vector\ucAttributeFilterConfigPage.Designer.vb">

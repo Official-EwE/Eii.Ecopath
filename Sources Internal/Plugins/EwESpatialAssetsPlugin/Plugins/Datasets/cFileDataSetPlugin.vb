@@ -652,7 +652,7 @@ Namespace SpatialData
         Public ReadOnly Property Author As String _
             Implements EwEPlugin.IPlugin.Author
             Get
-                Return "Jeroen Steenbeek, Ecopathg "
+                Return "Ecopath International Initiative Research Association"
             End Get
         End Property
 
@@ -662,7 +662,7 @@ Namespace SpatialData
         Public ReadOnly Property Contact As String _
             Implements EwEPlugin.IPlugin.Contact
             Get
-                Return "mailto:ewedevteam@gmail.com"
+                Return "mailto:ecopathinternational@gmail.com"
             End Get
         End Property
 

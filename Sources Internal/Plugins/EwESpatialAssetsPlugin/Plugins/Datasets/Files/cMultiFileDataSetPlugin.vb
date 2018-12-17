@@ -217,9 +217,12 @@ Namespace SpatialData
         ''' <inheritdocs cref="cFileDataSetPlugin.GetConfigUI"/>
         ''' -------------------------------------------------------------------
         Public Overrides Function GetConfigUI() As Windows.Forms.Control
-            Dim pg As New ucMultiFileDatasetConfigPage()
-            pg.Dataset = Me
-            Return pg
+            If (cDotSpatialUtils.Valid(Me.m_core)) Then
+                Dim pg As New ucMultiFileDatasetConfigPage()
+                pg.Dataset = Me
+                Return pg
+            End If
+            Return Nothing
         End Function
 
         ''' -------------------------------------------------------------------
