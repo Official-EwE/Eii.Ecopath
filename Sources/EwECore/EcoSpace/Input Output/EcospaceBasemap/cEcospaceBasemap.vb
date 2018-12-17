@@ -1030,6 +1030,4 @@ Public Class cEcospaceBasemap
 
 #End Region ' Cell calculations
 
-#End Region ' Obsolete
-
 End Class
