@@ -59,13 +59,21 @@ V Ecosampler does not capture correct SS
 V Ecosampler crashes when batch running 
 V Ecosampler does not correctly pick start sample
 V Ecosampler maintains running progress when finished
+V Applying fleet effort to pred/prey interactions not drawn in the mediation pie charts
+  
+== FIXES TAHT NEED TESTING ==
+# On some monitors Tools > Options does not stretch all the way to the right
+# Flow diagram does not display units when ColorUsage is set to Flow
+# Color gradients do not show proper fleet and group colors, but only standard EwE gradient
+# Rewrite map logic! Double-buffering can cause out of memory errors. Perhaps simple fix will do? If not, manage zooming in code (not in WinForms)
+# Ecospace map cursor does not change size when changing zoom level. Maintain cursor in map instead of in layer editors?
+# Opening old model: show which old EwE version last used the model in upgrade message
 
 == BUGS ==
   Read only models: do not allow users to create/delete items
   Connect ext data -> define ext data -> connection list does not refresh
   External data grid add incremental updates, do not total refresh 
   Sort out confusing terminology in Space: fn responses, env responses, habitat foraging responses
-  Rewrite map logic! Double-buffering can cause out of memory errors. Perhaps simple fix will do? If not, manage zooming in code (not in WinForms)
   Ecowriter: remark column size to width, not size to content
   ImportLayer: use ApplicationStatus to notify user what's happening
   Sometimes biomass plot stay empty when re-running MC? 
@@ -75,14 +83,12 @@ V Ecosampler maintains running progress when finished
   ENA: After clicking around a lot, MTI table (and others) stop appearing. The wait cursor is spinning, and the status bar is saying "executing plug-in".
   Start page empty for most machines: IE compatibility flag not set in installer?
   Define multi-stanza: vbK = -9999 validation failure warning popup. Provide default instead!
-  Ecosim FD sometimes does not animate on Macs? Try running sim, opening, closing disgram, in various ways. Perhaps timer is not properly released? Slider works
+  Ecosim FD sometimes does not animate on Macs? Try running sim, opening, closing diagram, in various ways. Perhaps timer is not properly released? Slider works
   Fit to time series does not open up on Macs?
   Fit to time series anomaly search panel does not extent all the way to the right on some models
-  On some monitors Tools > Options does not stretch all the way to the right
   Import TS type 2 (environmental forcing, which translates to a FF): should be able to leave pool code field empty
   Import TS type 2 should overwrite any function with the same name!
   Import TS type 2 should retain last value for NULL data points (instead of creating 0 forcing points)
-  Flow diagram B, prod: legend does not display min & max. Works OK when showing flows
   EcoInd histogram shows no variaton where MCMC does: Ecopath does not calc stats when in Sensitivity run
   EcoInd histogram items bars sometimes drawn like an X when axis uses very small ticks
   Monte Carlo: Output panel alignment can be pretty weird (computed values misaligned)
@@ -90,6 +96,7 @@ V Ecosampler maintains running progress when finished
 ! Apply foraging responses: X-axis on application lot does not properly show X axis!!!
 ? Apply foraging responses - new UI is (too) slow when applying. Perhaps something is wrong?
   Run Ecospace shows excluded cells in red, regardless of the customized colour
+  Applying fleet effort to pred/prey interactions does not seem to work
   
 == FIXED BUT NOT LOGGED YET ==
 V EcoIND does not correctly compute "catch of mammals, seabirds and reptiles" indicator
@@ -115,7 +122,7 @@ V EcoIND does not correctly compute "catch of mammals, seabirds and reptiles" in
   Monte Carlo: make all entries on settings page permanent (in app settings)
   StepWise fitting: store and retrieve fitted params (vuls, anomaly shape)
   Ecosampler: warn if no autosaving is selected for loaded components (path, sim, space, ..)
-
+ 
 == NOT UNASSESSED ==
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 JB assessed on a couple of models and it looks like it's working
