@@ -57,12 +57,12 @@ Public Class cPluginAssembly
     Private m_dictPlugins As New Dictionary(Of String, IPlugin)
     ''' <summary>Assembly enable state.</summary>
     Private m_bEnabled As Boolean = True
-    ''' <summary>Assembly enabled state at startup.</summary>
-    Private m_bEnabledInitially As Boolean = True
     ''' <summary>Assembly compatibility state.</summary>
     Private m_compatibility As ePluginCompatibilityTypes = ePluginCompatibilityTypes.VersionCompatible
-    ''' <summary>Name of the plug-in sandbox, if any.</summary>
-    Private m_strSandbox As String = ""
+    ''' <summary>Assembly licensed state.</summary>
+    Private m_bLicensed As Boolean = False
+    ''' <summary>Assembly license expiry date.</summary>
+    Private m_dtExpiry As DateTime = DateTime.MinValue
 
 #End Region ' Private parts
 
@@ -77,8 +77,8 @@ Public Class cPluginAssembly
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal ass As Assembly, ByVal bEnabled As Boolean, strSandbox As String)
         Me.m_ass = ass
-        Me.m_strSandbox = strSandbox
-        Me.m_bEnabledInitially = bEnabled
+        Me.Sandbox = strSandbox
+        Me.SessionEnabled = bEnabled
         Me.m_bEnabled = bEnabled
     End Sub
 
@@ -114,6 +114,15 @@ Public Class cPluginAssembly
             If Me.m_dictPlugins.ContainsKey(strName) Then
                 Throw New cPluginException(Me, String.Format(My.Resources.PLUGIN_EXCEPTION_DUPLICATE, Me.Filename, strName), Nothing)
             Else
+                If (TypeOf ip Is ILicensePlugin) Then
+                    Dim lp As ILicensePlugin = DirectCast(ip, ILicensePlugin)
+                    Me.m_bLicensed = True
+                    Try
+                        lp.Expiry(Me.m_dtExpiry)
+                    Catch ex As Exception
+
+                    End Try
+                End If
                 Me.m_dictPlugins.Add(strName, ip)
             End If
         End Set
@@ -128,7 +137,7 @@ Public Class cPluginAssembly
     ''' <param name="bAllowDisabled">Flag stating if plug-ins from disabled 
     ''' assemblies can be aquired as well.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Plugins(Optional ByVal t As Type = Nothing, _
+    Public ReadOnly Property Plugins(Optional ByVal t As Type = Nothing,
                                      Optional ByVal bAllowDisabled As Boolean = False) As ICollection(Of IPlugin)
         Get
             Dim collPlugins As New List(Of IPlugin)
@@ -195,21 +204,39 @@ Public Class cPluginAssembly
     ''' enabled state does not change thoughtout a session.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property SessionEnabled() As Boolean
-        Get
-            Return Me.m_bEnabledInitially
-        End Get
-    End Property
+    Public ReadOnly Property SessionEnabled() As Boolean = True
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get whether this assembly canot be disabled.
+    ''' Get whether this assembly cannot be disabled.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property AlwaysEnabled() As Boolean
         Get
             ' Core plugins are always enabled
             Return cStringUtils.EndsWith(Me.Filename, "ewecore.dll", True)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get whether this assembly is licensed.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property IsLicensed As Boolean
+        Get
+            Return Me.m_bLicensed
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the license date for this assembly, if any.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Expiry As DateTime
+        Get
+            Return Me.m_dtExpiry
         End Get
     End Property
 
@@ -254,7 +281,7 @@ Public Class cPluginAssembly
     ''' -----------------------------------------------------------------------
     Public Function IsCompatibleToRun() As Boolean
         ' Minor version revisions should not matter
-        Return (Me.Compatibility = ePluginCompatibilityTypes.VersionCompatible) Or _
+        Return (Me.Compatibility = ePluginCompatibilityTypes.VersionCompatible) Or
                (Me.Compatibility = ePluginCompatibilityTypes.VersionCompatibleCaution)
     End Function
 
@@ -278,14 +305,14 @@ Public Class cPluginAssembly
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Company() As String
-       
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set assembly version.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Version() As String
-       
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set assembly description.
@@ -299,14 +326,14 @@ Public Class cPluginAssembly
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Copyright() As String
-     
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set assembly file name.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Filename() As String
-       
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get the <see cref="AssemblyName">AssemblyName</see> associated with this
@@ -335,11 +362,7 @@ Public Class cPluginAssembly
     ''' Get the name of the sandbox the plug-in was loaded in, if any.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Sandbox As String
-        Get
-            Return Me.m_strSandbox
-        End Get
-    End Property
+    Public ReadOnly Property Sandbox As String = ""
 
 #End Region ' Assembly metadata
 

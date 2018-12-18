@@ -37,6 +37,19 @@ Namespace My
 
     Class MyApplication
 
+        Public ReadOnly Property ReleaseMode As eReleaseMode
+            Get
+#If BETA = 1 Then
+                Return eReleaseMode.Beta
+#End If
+#If DEBUG Then
+                Return eReleaseMode.Dev
+#Else
+                Return eReleaseMode.Release
+#End If
+            End Get
+        End Property
+
         ''' <summary>
         ''' Safety catch
         ''' </summary>
@@ -49,8 +62,8 @@ Namespace My
 
         Protected Overrides Function OnInitialize(ByVal commandLineArgs As System.Collections.ObjectModel.ReadOnlyCollection(Of String)) As Boolean
             Me.MinimumSplashScreenDisplayTime = 5000
-            Me.MainForm = Global.ScientificInterface.frmEwE6
-            Me.SplashScreen = Global.ScientificInterface.frmSplash
+            Me.MainForm = New Global.ScientificInterface.frmEwE6(Me.ReleaseMode)
+            Me.SplashScreen = New Global.ScientificInterface.frmSplash(Me.ReleaseMode)
             Return MyBase.OnInitialize(commandLineArgs)
         End Function
 

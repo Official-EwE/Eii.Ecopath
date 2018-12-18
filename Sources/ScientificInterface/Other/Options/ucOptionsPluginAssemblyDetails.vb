@@ -24,6 +24,7 @@ Option Explicit On
 
 Imports EwEPlugin
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -44,13 +45,22 @@ Public Class ucOptionsPluginAssemblyDetails
 
         Me.m_tbCompany.Text = pa.Company
         Me.m_tbCopyright.Text = pa.Copyright
-        Me.m_tbDescription.Text = pa.Description
         Me.m_tbFile.Text = pa.Filename
         Me.m_tbVersion.Text = pa.Version
         Me.m_tbxTrusted.Text = If(String.IsNullOrWhiteSpace(pa.Sandbox), SharedResources.GENERIC_VALUE_YES, SharedResources.GENERIC_VALUE_NO)
+        Me.m_lbLicense.Visible = pa.IsLicensed
+        Me.m_tbxLicense.Visible = pa.IsLicensed
+
+        Dim dtStart As DateTime = cDateUtils.StartTime
+        Dim dtExp As DateTime = pa.Expiry
+        If (dtStart > dtExp) Then
+            Me.m_tbxLicense.Text = cStringUtils.Localize(My.Resources.PLUGIN_LICENSE_EXPIRED, pa.Expiry.ToShortDateString())
+        Else
+            Me.m_tbxLicense.Text = cStringUtils.Localize(My.Resources.PLUGIN_LICENSE_EXPIRATION, pa.Expiry.ToShortDateString())
+        End If
+        Me.m_tbDescription.Text = pa.Description
 
         Me.m_pa = pa
-
 
     End Sub
 

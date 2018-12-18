@@ -19,25 +19,31 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
+Imports System
 
 #End Region ' Imports
 
 ''' ===========================================================================
 ''' <summary>
-''' Interface for implementing plug-ins that may expire.
+''' Interface for implementing plug-ins that are licensed.
 ''' </summary>
 ''' ===========================================================================
-Public Interface ILifespanPlugin
+Public Interface ILicensePlugin
     Inherits IPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Plug-in point called when the EwE UI is ready for plug-in validation.
     ''' </summary>
-    ''' <param name="mode">The EwE <see cref="eReleaseMode"/> that this plug-in
-    ''' is executed under.</param>
     ''' -----------------------------------------------------------------------
-    Function ValidateLifespan(mode As eReleaseMode) As Boolean
+    Sub Validate()
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Plug-in point to obtain the expiry date.
+    ''' </summary>
+    ''' <param name="dt"></param>
+    ''' -----------------------------------------------------------------------
+    Sub Expiry(ByRef dt As DateTime)
 
 End Interface

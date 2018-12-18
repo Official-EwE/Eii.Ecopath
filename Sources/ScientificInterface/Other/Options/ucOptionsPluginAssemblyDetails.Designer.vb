@@ -53,6 +53,8 @@ Partial Class ucOptionsPluginAssemblyDetails
         Me.m_tbxTrusted = New System.Windows.Forms.TextBox()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.m_lblDescription = New System.Windows.Forms.Label()
+        Me.m_lbLicense = New System.Windows.Forms.Label()
+        Me.m_tbxLicense = New System.Windows.Forms.TextBox()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -159,12 +161,12 @@ Partial Class ucOptionsPluginAssemblyDetails
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbDescription.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.m_tbDescription.Location = New System.Drawing.Point(72, 131)
+        Me.m_tbDescription.Location = New System.Drawing.Point(72, 156)
         Me.m_tbDescription.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.m_tbDescription.Multiline = True
         Me.m_tbDescription.Name = "m_tbDescription"
         Me.m_tbDescription.ReadOnly = True
-        Me.m_tbDescription.Size = New System.Drawing.Size(368, 124)
+        Me.m_tbDescription.Size = New System.Drawing.Size(368, 99)
         Me.m_tbDescription.TabIndex = 11
         Me.m_tbDescription.TabStop = False
         Me.m_tbDescription.Text = "Description"
@@ -198,9 +200,9 @@ Partial Class ucOptionsPluginAssemblyDetails
         Me.TableLayoutPanel1.ColumnCount = 2
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.m_lblDescription, 0, 5)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_lblDescription, 0, 6)
         Me.TableLayoutPanel1.Controls.Add(Me.m_lblFile, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.m_tbDescription, 1, 5)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_tbDescription, 1, 6)
         Me.TableLayoutPanel1.Controls.Add(Me.m_tbxTrusted, 1, 4)
         Me.TableLayoutPanel1.Controls.Add(Me.m_tbFile, 1, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.m_tbCopyright, 1, 3)
@@ -210,10 +212,13 @@ Partial Class ucOptionsPluginAssemblyDetails
         Me.TableLayoutPanel1.Controls.Add(Me.m_tbVersion, 1, 1)
         Me.TableLayoutPanel1.Controls.Add(Me.m_lblCopyright, 0, 3)
         Me.TableLayoutPanel1.Controls.Add(Me.m_lblCompany, 0, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_lbLicense, 0, 5)
+        Me.TableLayoutPanel1.Controls.Add(Me.m_tbxLicense, 1, 5)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 6
+        Me.TableLayoutPanel1.RowCount = 7
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -227,12 +232,36 @@ Partial Class ucOptionsPluginAssemblyDetails
         '
         Me.m_lblDescription.AutoSize = True
         Me.m_lblDescription.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lblDescription.Location = New System.Drawing.Point(3, 131)
+        Me.m_lblDescription.Location = New System.Drawing.Point(3, 156)
         Me.m_lblDescription.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
         Me.m_lblDescription.Name = "m_lblDescription"
-        Me.m_lblDescription.Size = New System.Drawing.Size(63, 124)
+        Me.m_lblDescription.Size = New System.Drawing.Size(63, 99)
         Me.m_lblDescription.TabIndex = 10
         Me.m_lblDescription.Text = "Description:"
+        '
+        'm_lbLicense
+        '
+        Me.m_lbLicense.AutoSize = True
+        Me.m_lbLicense.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_lbLicense.Location = New System.Drawing.Point(3, 131)
+        Me.m_lbLicense.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
+        Me.m_lbLicense.Name = "m_lbLicense"
+        Me.m_lbLicense.Size = New System.Drawing.Size(63, 13)
+        Me.m_lbLicense.TabIndex = 8
+        Me.m_lbLicense.Text = "License:"
+        Me.m_lbLicense.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'm_tbxLicense
+        '
+        Me.m_tbxLicense.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.m_tbxLicense.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_tbxLicense.Location = New System.Drawing.Point(72, 131)
+        Me.m_tbxLicense.Margin = New System.Windows.Forms.Padding(3, 6, 3, 6)
+        Me.m_tbxLicense.Name = "m_tbxLicense"
+        Me.m_tbxLicense.ReadOnly = True
+        Me.m_tbxLicense.Size = New System.Drawing.Size(368, 13)
+        Me.m_tbxLicense.TabIndex = 9
+        Me.m_tbxLicense.TabStop = False
         '
         'ucOptionsPluginAssemblyDetails
         '
@@ -260,4 +289,6 @@ Partial Class ucOptionsPluginAssemblyDetails
     Private WithEvents m_tbxTrusted As System.Windows.Forms.TextBox
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
     Private WithEvents m_lblDescription As Label
+    Private WithEvents m_lbLicense As Label
+    Private WithEvents m_tbxLicense As TextBox
 End Class

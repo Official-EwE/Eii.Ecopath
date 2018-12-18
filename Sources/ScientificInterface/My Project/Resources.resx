@@ -13506,4 +13506,12 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>Official release, issued {0}</value>
     <comment>{0}=date</comment>
   </data>
+  <data name="PLUGIN_LICENSE_EXPIRATION" xml:space="preserve">
+    <value>License expires {0}</value>
+    <comment>{0}=date</comment>
+  </data>
+  <data name="PLUGIN_LICENSE_EXPIRED" xml:space="preserve">
+    <value>License expired on {0}</value>
+    <comment>{0}=date</comment>
+  </data>
 </root>

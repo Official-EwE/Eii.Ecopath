@@ -52,6 +52,7 @@ Namespace Style
 #Region " Private bits "
 
         Private m_core As cCore = Nothing
+        Private m_mode As eReleaseMode = eReleaseMode.Dev
 
         ''' <summary>States the number of decimal digits to be displayed</summary>
         Private m_iNumDigits As Integer = 3
@@ -157,11 +158,11 @@ Namespace Style
         ''' <summary>
         ''' Constructor
         ''' </summary>
-        ''' <remarks>Singleton enforced: constructor is only accessible locally</remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub New(core As cCore)
+        Public Sub New(core As cCore, mode As eReleaseMode)
 
             Me.m_core = core
+            Me.m_mode = mode
 
             ' Control how colour ramp delivers its colours
             Me.m_colorrampGroups.ColorOffsetStart = c_sRampOffsetStart
@@ -399,14 +400,14 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns whether the current UI culture is right-to-left ordered.
+        ''' Get the <see cref="eReleaseMode">release mode</see> of EwE.
         ''' </summary>
-        ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        <Obsolete("Use cSystemUtils.IsRightToLeft instead")>
-        Public Shared Function IsRightToLeft() As Boolean
-            Return cSystemUtils.IsRightToLeft()
-        End Function
+        Public ReadOnly Property ReleaseMode As eReleaseMode
+            Get
+                Return Me.m_mode
+            End Get
+        End Property
 
 #End Region ' System settings
 
@@ -2090,6 +2091,7 @@ Namespace Style
         End Sub
 
 #End Region ' Internal implementation
+
 #End Region ' Visual styles
 
 #Region " Images "

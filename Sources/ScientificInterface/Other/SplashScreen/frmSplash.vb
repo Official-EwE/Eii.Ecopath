@@ -33,8 +33,11 @@ Friend Class frmSplash
 
     Private Shared s_splash As frmSplash
 
-    Public Sub New()
+    Private m_mode As eReleaseMode
+
+    Public Sub New(mode As eReleaseMode)
         Me.InitializeComponent()
+        Me.m_mode = mode
         s_splash = Me
     End Sub
 
@@ -52,7 +55,7 @@ Friend Class frmSplash
         Dim dt As DateTime = cAssemblyUtils.GetCompileDate(System.Reflection.Assembly.GetAssembly(GetType(cCore)))
         Dim strMask As String = ""
 
-        Select Case frmEwE6.ReleaseMode
+        Select Case Me.m_mode
             Case eReleaseMode.Beta
                 strMask = My.Resources.VERSION_BETA
             Case eReleaseMode.Dev
