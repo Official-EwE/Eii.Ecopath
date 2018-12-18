@@ -70,7 +70,7 @@ Namespace Other
             Me.Text = cStringUtils.Localize(My.Resources.ABOUT_CAPTION, strTitle)
             Me.m_lbTitle.Text = strTitle
 
-            Dim mode As eReleaseMode = frmEwE6.ReleaseMode
+            Dim mode As eReleaseMode = Me.m_uic.StyleGuide.ReleaseMode
             Select Case mode
 #If BETA = 1 Then
                 Case eReleaseMode.Beta

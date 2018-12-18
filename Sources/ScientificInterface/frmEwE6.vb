@@ -82,6 +82,8 @@ Public Class frmEwE6
     ''' <summary>Status messages stack.</summary>
     Private m_lstrStatus As New List(Of String)
 
+    Private m_mode As eReleaseMode
+
 #If BETA = 1 Then
     Private m_bExpirationChecked As Boolean = False
 #End If
@@ -333,21 +335,13 @@ Public Class frmEwE6
         Return frmEwE6.__inst__
     End Function
 
-    Public Shared Function ReleaseMode() As eReleaseMode
-#If BETA = 1 Then
-        Return eReleaseMode.Beta
-#End If
-#If DEBUG Then
-        Return eReleaseMode.Dev
-#End If
-        Return eReleaseMode.Release
-    End Function
-
 #End Region ' Singleton
 
 #Region " Constructors "
 
-    Public Sub New()
+    Public Sub New(mode As eReleaseMode)
+
+        Me.m_mode = mode
 
 #If 0 Then
         ' Uncomment to torture EwE and see if all decimal comma / point issues have been solved
@@ -805,7 +799,7 @@ Public Class frmEwE6
         End If
 
         Dim core As New cCore()
-        Dim sg As New cStyleGuide(core)
+        Dim sg As New cStyleGuide(core, Me.m_mode)
         Dim cmdh As New cCommandHandler()
         Dim pm As New cPropertyManager(core, so)
         Dim fps As New cFormSettings()
@@ -931,7 +925,7 @@ Public Class frmEwE6
         Me.CheckBetaExpired()
 #End If
         If (Me.m_pluginManager IsNot Nothing) Then
-            Me.m_pluginManager.ValidateLifespan(frmEwE6.ReleaseMode)
+            Me.m_pluginManager.ValidateLifespan()
         End If
 
         ' Auto-launch plugins

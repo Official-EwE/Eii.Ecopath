@@ -570,7 +570,7 @@ Public Class cDotSpatialUtils
 
     Public Shared Function Valid(core As cCore) As Boolean
         If Not g_bValidated Then
-            g_bValid = (cDateUtils.StartTime < cSystemUtils.BestBefore(eReleaseMode.Beta, System.Reflection.Assembly.GetAssembly(GetType(cLifespanPlugin))))
+            g_bValid = (cDateUtils.StartTime < cDotSpatialUtils.ValidDate)
             g_bValidated = True
         End If
         If Not g_bValid Then
@@ -579,6 +579,13 @@ Public Class cDotSpatialUtils
         End If
         Return g_bValid
     End Function
+
+    Public Shared ReadOnly Property ValidDate As DateTime
+        Get
+            ' Return New Date(2014, 1, 1)
+            Return cAssemblyUtils.GetCompileDate(System.Reflection.Assembly.GetAssembly(GetType(cLifespanPlugin))).AddYears(1)
+        End Get
+    End Property
 
 #End Region ' License
 

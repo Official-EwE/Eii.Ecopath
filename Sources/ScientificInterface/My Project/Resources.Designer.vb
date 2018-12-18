@@ -3844,6 +3844,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to License expires {0}.
+        '''</summary>
+        Public ReadOnly Property PLUGIN_LICENSE_EXPIRATION() As String
+            Get
+                Return ResourceManager.GetString("PLUGIN_LICENSE_EXPIRATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to License expired on {0}.
+        '''</summary>
+        Public ReadOnly Property PLUGIN_LICENSE_EXPIRED() As String
+            Get
+                Return ResourceManager.GetString("PLUGIN_LICENSE_EXPIRED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Inflows and outflows do not balance; it is recommend not using this velocity field for simulations if ecospace shows strange behavior. Do you wish to revert the advection data to the previous state?.
         '''</summary>
         Public ReadOnly Property PROMPT_ADVECTION_INBALANCED() As String

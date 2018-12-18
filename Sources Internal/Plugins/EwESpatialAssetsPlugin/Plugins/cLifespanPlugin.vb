@@ -20,13 +20,12 @@
 
 Option Strict On
 Imports EwEPlugin
-Imports EwEUtils.Core
 Imports EwECore
 
 #End Region ' Imports
 
 Public Class cLifespanPlugin
-    Implements ILifespanPlugin
+    Implements ILicensePlugin
 
     Private m_core As cCore = Nothing
 
@@ -66,9 +65,12 @@ Public Class cLifespanPlugin
         Me.m_core = DirectCast(core, cCore)
     End Sub
 
-    Public Function ValidateLifespan(mode As eReleaseMode) As Boolean Implements ILifespanPlugin.ValidateLifespan
+    Public Sub Validate() Implements ILicensePlugin.Validate
         cDotSpatialUtils.Valid(Me.m_core)
-        Return True
-    End Function
+    End Sub
+
+    Public Sub Expiry(ByRef dt As Date) Implements ILicensePlugin.Expiry
+        dt = cDotSpatialUtils.ValidDate
+    End Sub
 
 End Class

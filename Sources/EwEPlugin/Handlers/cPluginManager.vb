@@ -889,20 +889,30 @@ Public Class cPluginManager
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Bridge, invokes the Validate Lifespan point point on any available and
-    ''' response <see cref="ILifespanPlugin"/>.
+    ''' Bridge, invokes the Validate Lifespan plug-in point on any available and
+    ''' response <see cref="ILicensePlugin"/>.
     ''' </summary>
-    ''' <param name="mode"></param>
-    ''' <returns>True if successful.</returns>
     ''' ---------------------------------------------------------------------------
-    Public Function ValidateLifespan(mode As eReleaseMode) As Boolean
+    Public Sub ValidateLifespan()
 
-        ' Invokes ILifespanPlugin.ValidateLifespan(mode)
-        Return Me.TryInvokeMethod(GetType(ILifespanPlugin),
-                                  "ValidateLifespan",
-                                  New Object() {mode})
+        ' Invokes ILifespanPlugin.Validate()
+        Me.TryInvokeMethod(GetType(ILicensePlugin), "Validate")
 
-    End Function
+    End Sub
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, invokes the ExpiryDate plug-in point on any available and
+    ''' response <see cref="ILicensePlugin"/>.
+    ''' </summary>
+    ''' <param name="enddate">The end date of this plug-in.</param>
+    ''' ---------------------------------------------------------------------------
+    Public Sub ExpiryDate(ByRef enddate As DateTime)
+
+        ' Invokes ILicensePlugin.Expiry(enddate)
+        Me.TryInvokeMethod(GetType(ILicensePlugin), "Expiry", New Object() {enddate})
+
+    End Sub
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>

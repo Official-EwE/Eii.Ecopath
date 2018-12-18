@@ -51,6 +51,7 @@ Namespace Other
         Const cIMAGE_ANYPLUGINPOINT As Integer = 2
         Const cIMAGE_DISABLED As Integer = 3
         Const cIMAGE_CONFLICT As Integer = 4
+        Const cIMAGE_LICENSE As Integer = 5
 
         Private Class cPluginAssemblyInfo
 
@@ -61,7 +62,7 @@ Namespace Other
 
             Public ReadOnly Property PluginAssembly() As cPluginAssembly = Nothing
 
-            Public Property Enabled() As Boolean
+            Public Property Enabled() As Boolean = False
 
             Public ReadOnly Property AlwaysEnabled() As Boolean
                 Get
@@ -185,6 +186,7 @@ Namespace Other
             Me.m_ilPlugins.Images.Add(SharedResources.pluginpoint)
             Me.m_ilPlugins.Images.Add(SharedResources.Cancel)
             Me.m_ilPlugins.Images.Add(SharedResources.Warning)
+            Me.m_ilPlugins.Images.Add(SharedResources.certificate)
 
             collPA = Me.m_pm.PluginAssemblies
             For Each pa In collPA
@@ -194,9 +196,6 @@ Namespace Other
                     info = New cPluginAssemblyInfo(pa)
 
                     tnPA = New TreeNode(Path.GetFileNameWithoutExtension(pa.Filename))
-                    tnPA.Tag = pa
-                    tnPA.ImageIndex = Me.GetPluginAssemblyImageIndex(info)
-                    tnPA.SelectedImageIndex = tnPA.ImageIndex
                     Me.m_dictPluginAssemblyInfo(pa) = info
 
                     For Each p In pa.Plugins(Nothing, True)
@@ -214,6 +213,10 @@ Namespace Other
 
                         tnPA.Nodes.Add(tnP)
                     Next
+
+                    tnPA.Tag = pa
+                    tnPA.ImageIndex = Me.GetPluginAssemblyImageIndex(info)
+                    tnPA.SelectedImageIndex = tnPA.ImageIndex
                     Me.m_tvPlugins.Nodes.Add(tnPA)
                 End If
 
@@ -316,6 +319,8 @@ Namespace Other
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Private Function GetPluginAssemblyImageIndex(ByVal info As cPluginAssemblyInfo) As Integer
+            ' ToDo: show alert icon when license expiring?
+            If (info.PluginAssembly.IsLicensed) Then Return cIMAGE_LICENSE
             If (info.Enabled = False) Then Return cIMAGE_DISABLED
             If (info.Compatible = False) Then Return cIMAGE_CONFLICT
             If (info.AlwaysEnabled = True) Then Return cIMAGE_CORE
