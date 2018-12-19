@@ -34,6 +34,8 @@ Imports EwEUtils.Utilities
 ''' ---------------------------------------------------------------------------
 Public Class cEwEIcon
 
+    Private Shared m_ico As Icon = Nothing
+    Private Shared m_bTried As Boolean = False
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns the current icon for EwE.
@@ -41,6 +43,22 @@ Public Class cEwEIcon
     ''' <returns>The current icon for EwE, catered to important events.</returns>
     ''' -----------------------------------------------------------------------
     Public Shared Function Current() As Icon
+
+        If Not cEwEIcon.m_bTried Then
+
+            Dim tf As String = cFileUtils.MakeTempFile(".ico")
+            Try
+                My.Computer.Network.DownloadFile(New Uri("http://ecopath.org/EwE/current.ico"), tf)
+                cEwEIcon.m_ico = New Icon(tf)
+            Catch ex As Exception
+                ' OK
+            End Try
+            cEwEIcon.m_bTried = True
+        End If
+
+        If (cEwEIcon.m_ico IsNot Nothing) Then
+            Return cEwEIcon.m_ico
+        End If
 
         ' Prepare icon
         Select Case cDateUtils.GetNextEvent(15)
