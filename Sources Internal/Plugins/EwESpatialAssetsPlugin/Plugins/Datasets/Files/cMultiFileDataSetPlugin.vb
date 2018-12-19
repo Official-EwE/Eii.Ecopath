@@ -218,9 +218,13 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overrides Function GetConfigUI() As Windows.Forms.Control
             If (cDotSpatialUtils.Valid(Me.m_core)) Then
-                Dim pg As New ucMultiFileDatasetConfigPage()
-                pg.Dataset = Me
-                Return pg
+                Try
+                    Dim pg As New ucMultiFileDatasetConfigPage()
+                    pg.Dataset = Me
+                    Return pg
+                Catch ex As Exception
+                    cLog.Write(ex)
+                End Try
             End If
             Return Nothing
         End Function
