@@ -37,6 +37,11 @@ Friend Class ucSingleFileDataSetConfigPage
 
     Private m_dataset As cSingleFileDataSetPlugin = Nothing
 
+    Public Sub New()
+        If (Not cDotSpatialUtils.Valid()) Then Throw New Exception("Plug-in license expired")
+        Me.InitializeComponent()
+    End Sub
+
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 

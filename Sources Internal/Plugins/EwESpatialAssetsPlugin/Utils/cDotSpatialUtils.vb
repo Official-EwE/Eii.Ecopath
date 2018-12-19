@@ -568,12 +568,12 @@ Public Class cDotSpatialUtils
     Private Shared g_bValidated As Boolean = False
     Private Shared g_bValid As Boolean = False
 
-    Public Shared Function Valid(core As cCore) As Boolean
+    Public Shared Function Valid(Optional core As cCore = Nothing) As Boolean
         If Not g_bValidated Then
             g_bValid = (cDateUtils.StartTime < cDotSpatialUtils.ValidDate)
             g_bValidated = True
         End If
-        If Not g_bValid Then
+        If (g_bValid = False) And (core IsNot Nothing) Then
             Dim msg As New cFeedbackMessage(My.Resources.LICENSE_EXPIRED, eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Warning, eMessageReplyStyle.OK)
             core.Messages.SendMessage(msg)
         End If

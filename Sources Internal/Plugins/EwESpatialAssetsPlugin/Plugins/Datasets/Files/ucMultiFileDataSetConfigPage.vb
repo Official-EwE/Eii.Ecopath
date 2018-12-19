@@ -78,6 +78,7 @@ Namespace SpatialData
 #Region " Constructor / destructor "
 
         Public Sub New()
+            If (Not cDotSpatialUtils.Valid()) Then Throw New Exception("Plug-in license expired")
             Me.InitializeComponent()
         End Sub
 
