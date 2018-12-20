@@ -640,9 +640,9 @@ Public Class cCore
         Me.m_EcoSpaceData = New cEcospaceDataStructures(Me.Messages)
         Me.m_SpatialData = New cSpatialDataStructures(Me.m_EcoPathData, Me.m_EcoSpaceData)
         Me.m_Stanza = New cStanzaDatastructures(Me.Messages)
-        Me.m_tracerData = New cContaminantTracerDataStructures
+        Me.m_tracerData = New cContaminantTracerDataStructures()
         Me.m_TSData = New cTimeSeriesDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
-        Me.m_MPAOptData = New cMPAOptDataStructures
+        Me.m_MPAOptData = New cMPAOptDataStructures()
         Me.m_MSEData = New cMSEDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
         Me.m_TaxonData = New cTaxonDataStructures(Me.m_EcoPathData, Me.m_Stanza)
         Me.m_SampleData = New cEcopathSampleDatastructures(Me.m_EcoPathData)
@@ -3531,7 +3531,10 @@ Public Class cCore
         Me.m_StateMonitor.SetEcopathLoaded(True)
 
         'Core initialized plugin point
-        If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.CoreInitialized(m_EcoPath, m_EcoSim, m_Ecospace)
+        If (Me.PluginManager IsNot Nothing) Then
+            Me.PluginManager.CoreInitialized(m_EcoPath, m_EcoSim, m_Ecospace)
+            Me.PluginManager.CoreDataInitialized(m_EcoPathData, m_Stanza, m_TaxonData, m_SampleData, m_PSDData, m_EcoSimData, m_TSData, m_EcoSpaceData)
+        End If
 
         m_publisher.sendAllMessages()
 
