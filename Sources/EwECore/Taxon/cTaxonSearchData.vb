@@ -74,6 +74,15 @@ Public Class cTaxonSearchData
     ''' <inheritdocs cref="ITaxonSearchData.CodeSLB"/>
     Public Property CodeSLB As Long Implements ITaxonSearchData.CodeSLB
 
+    ''' <inheritdocs cref="ITaxonSearchData.CodeAquaMaps"/>
+    Public Property CodeAquaMaps As String Implements ITaxonSearchData.CodeAquaMaps
+
+    ''' <inheritdocs cref="ITaxonSearchData.CodeAphia"/>
+    Public Property CodeAphia As String Implements ITaxonSearchData.CodeAphia
+
+    ''' <inheritdocs cref="ITaxonSearchData.CodeOBIS"/>
+    Public Property CodeOBIS As Long Implements ITaxonSearchData.CodeOBIS
+
     ''' <inheritdocs cref="ITaxonSearchData.CodeLSID"/>
     Public Property CodeLSID() As String Implements ITaxonSearchData.CodeLSID
 
@@ -93,7 +102,7 @@ Public Class cTaxonSearchData
 
     ''' <inheritdocs cref="ITaxonSearchData.South"/>
     Public Property South() As Single = cCore.NULL_VALUE Implements ITaxonSearchData.South
-    
+
     ''' <inheritdocs cref="ITaxonSearchData.East"/>
     Public Property East() As Single = cCore.NULL_VALUE Implements ITaxonSearchData.East
 

@@ -78,6 +78,15 @@ Public Class cTaxon
         val = New cValue(New Integer, eVarNameFlags.CodeSLB, eStatusFlags.OK, eValueTypes.Int)
         m_values.Add(val.varName, val)
 
+        val = New cValue(New String(cbuf), eVarNameFlags.CodeAquaMaps, eStatusFlags.OK, eValueTypes.Str)
+        m_values.Add(val.varName, val)
+
+        val = New cValue(New String(cbuf), eVarNameFlags.CodeAphia, eStatusFlags.OK, eValueTypes.Str)
+        m_values.Add(val.varName, val)
+
+        val = New cValue(New Integer, eVarNameFlags.CodeOBIS, eStatusFlags.OK, eValueTypes.Int)
+        m_values.Add(val.varName, val)
+
         val = New cValue(New String(cbuf), eVarNameFlags.CodeLSID, eStatusFlags.OK, eValueTypes.Str)
         m_values.Add(val.varName, val)
 
@@ -356,6 +365,36 @@ Public Class cTaxon
         End Get
         Set(ByVal value As Long)
             Me.SetVariable(eVarNameFlags.CodeSLB, value)
+        End Set
+    End Property
+
+    ''' <inheritdocs cref=" ITaxonDetailsData.CodeAquaMaps"/>
+    Public Property CodeAquaMaps As String Implements ITaxonSearchData.CodeAquaMaps
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.CodeAquaMaps))
+        End Get
+        Set(value As String)
+            Me.SetVariable(eVarNameFlags.CodeAquaMaps, value)
+        End Set
+    End Property
+
+    ''' <inheritdocs cref=" ITaxonDetailsData.CodeAphia"/>
+    Public Property CodeAphia As String Implements ITaxonSearchData.CodeAphia
+        Get
+            Return CStr(Me.GetVariable(eVarNameFlags.CodeAphia))
+        End Get
+        Set(value As String)
+            Me.SetVariable(eVarNameFlags.CodeAphia, value)
+        End Set
+    End Property
+
+    ''' <inheritdocs cref=" ITaxonDetailsData.CodeOBIS"/>
+    Public Property CodeOBIS As Long Implements ITaxonSearchData.CodeOBIS
+        Get
+            Return CLng(Me.GetVariable(eVarNameFlags.CodeOBIS))
+        End Get
+        Set(value As Long)
+            Me.SetVariable(eVarNameFlags.CodeOBIS, value)
         End Set
     End Property
 
@@ -710,7 +749,7 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the index of the Ecopath group that a taxonomy definition contributes to.
     ''' </summary>
-    <Obsolete("Use iGroup instead")> _
+    <Obsolete("Use iGroup instead")>
     Public Property Group() As Integer
         Get
             Return Me.iGroup
@@ -723,7 +762,7 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the index of the Stanza configuration that a taxonomy definition contributes to.
     ''' </summary>
-    <Obsolete("Use iStanza instead")> _
+    <Obsolete("Use iStanza instead")>
     Public Property Stanza() As Integer
         Get
             Return Me.iStanza
