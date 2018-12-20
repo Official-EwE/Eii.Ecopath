@@ -39,8 +39,9 @@ Public Interface ICoreDataPlugin
     ''' <param name="objPDSdata">Particle size distribution data structures</param>
     ''' <param name="objEcosimData">The Ecosim data structures</param>
     ''' <param name="objEcosimTimeSeriesData">The Ecosim time series data structures</param>
+    ''' <param name="objSearchData">The search data structures</param>
     ''' <param name="objEcoSpaceData">The Ecospace data structures</param>
     Sub CoreDataInitialized(objEcopathData As Object, objStanzaData As Object, objTaxonData As Object, objEcosamplerData As Object, objPDSdata As Object,
-                            objEcosimData As Object, objEcosimTimeSeriesData As Object, objEcoSpaceData As Object)
+                            objEcosimData As Object, objEcosimTimeSeriesData As Object, objSearchData As Object, objEcoSpaceData As Object)
 
 End Interface
