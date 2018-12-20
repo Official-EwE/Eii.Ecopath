@@ -3154,9 +3154,12 @@ Namespace DataSources
             Try
                 While reader.Read()
                     taxonDS.TaxonDBID(iTaxon) = CInt(reader("TaxonID"))
-                    taxonDS.TaxonCodeSAUP(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeSAUP", cCore.NULL_VALUE))
                     taxonDS.TaxonCodeFB(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeFB", cCore.NULL_VALUE))
                     taxonDS.TaxonCodeSLB(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeSLB", cCore.NULL_VALUE))
+                    taxonDS.TaxonCodeSAUP(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeSAUP", cCore.NULL_VALUE))
+                    taxonDS.TaxonCodeAquaMaps(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeAquaMaps", cCore.NULL_VALUE))
+                    taxonDS.TaxonCodeAphia(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeAphia", cCore.NULL_VALUE))
+                    taxonDS.TaxonCodeOBIS(iTaxon) = CLng(Me.m_db.ReadSafe(reader, "CodeOBIS", cCore.NULL_VALUE))
                     taxonDS.TaxonCodeFAO(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeFAO", ""))
                     taxonDS.TaxonCodeLSID(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "CodeLCID", ""))
                     taxonDS.TaxonClass(iTaxon) = CStr(Me.m_db.ReadSafe(reader, "ClassName", ""))
@@ -3301,6 +3304,9 @@ Namespace DataSources
                         drow("CodeSAUP") = taxonDS.TaxonCodeSAUP(iTaxon)
                         drow("CodeFB") = taxonDS.TaxonCodeFB(iTaxon)
                         drow("CodeSLB") = taxonDS.TaxonCodeSLB(iTaxon)
+                        drow("CodeAquaMaps") = taxonDS.TaxonCodeAquaMaps(iTaxon)
+                        drow("CodeAphia") = taxonDS.TaxonCodeAphia(iTaxon)
+                        drow("CodeOBIS") = taxonDS.TaxonCodeOBIS(iTaxon)
                         drow("CodeFAO") = taxonDS.TaxonCodeFAO(iTaxon)
                         drow("CodeLCID") = taxonDS.TaxonCodeLSID(iTaxon)
                         drow("ClassName") = taxonDS.TaxonClass(iTaxon)
@@ -3443,6 +3449,9 @@ Namespace DataSources
                 drow("TaxonID") = iDBID
                 drow("CodeFAO") = ""
                 drow("CodeLCID") = ""
+                drow("CodeLCID") = ""
+                drow("CodeAquaMaps") = ""
+                drow("CodeAphia") = ""
                 drow("ClassName") = ""
                 drow("OrderName") = ""
                 drow("FamilyName") = ""
@@ -3460,6 +3469,9 @@ Namespace DataSources
                     drow("CodeFB") = data.CodeFB
                     drow("CodeFAO") = data.CodeFAO
                     drow("CodeLCID") = data.CodeLSID
+                    drow("CodeAquaMaps") = data.CodeAquaMaps
+                    drow("CodeAphia") = data.CodeAphia
+                    drow("CodeOBIS") = data.CodeOBIS
                     drow("ClassName") = data.Class
                     drow("OrderName") = data.Order
                     drow("FamilyName") = data.Family

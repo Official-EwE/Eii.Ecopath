@@ -2835,4 +2835,13 @@
   <data name="PEDIGREE_DEFAULT_SIM_SIM" xml:space="preserve">
     <value>Similar species, similar system, low precision</value>
   </data>
+  <data name="VARIABLE_CODEAPHIA" xml:space="preserve">
+    <value>Aphia id|||Aphia ID (WoRMS)</value>
+  </data>
+  <data name="VARIABLE_CODEAQUAMAPS" xml:space="preserve">
+    <value>AquaMaps id|||Species ID in AquaMaps</value>
+  </data>
+  <data name="VARIABLE_CODEOBIS" xml:space="preserve">
+    <value>OBIS id|||Taxonomy number in OBIS</value>
+  </data>
 </root>

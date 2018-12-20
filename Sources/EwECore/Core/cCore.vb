@@ -4568,6 +4568,7 @@ Public Class cCore
         If (DirectCast(DataSource, IEcopathDataSource).AddTaxon(iTargetDBID, bIsStanza, data, sPropBiomass, sPropCatch, iDBID)) Then
             Me.DataAddedOrRemovedMessage("Ecopath number of taxa has changed.", eCoreComponentType.EcoPath, eDataTypes.Taxon)
             bSucces = True
+            cLog.Write("Taxon " & data.Genus & " " & data.Species & " added", eVerboseLevel.Detailed)
         End If
 
         ' Decrease batch count
@@ -4599,6 +4600,7 @@ Public Class cCore
         If ds.RemoveTaxon(Me.m_TaxonData.TaxonDBID(iTaxon)) Then
             Me.DataAddedOrRemovedMessage("Ecopath number of taxa has changed.", eCoreComponentType.EcoPath, eDataTypes.Taxon)
             bSucces = True
+            cLog.Write("Taxon " & iTaxon & " deleted", eVerboseLevel.Detailed)
         End If
 
         ' Decrease batch count

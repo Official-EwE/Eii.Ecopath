@@ -61,6 +61,12 @@ Public Class cTaxonDataStructures
     Public TaxonCodeFB() As Long
     ''' <summary>Taxonomy SeaLifeBase codes (xNumTaxa).</summary>
     Public TaxonCodeSLB() As Long
+    ''' <summary>Taxonomy SeaLifeBase codes (xNumTaxa).</summary>
+    Public TaxonCodeAquaMaps() As Long
+    ''' <summary>Taxonomy SeaLifeBase codes (xNumTaxa).</summary>
+    Public TaxonCodeAphia() As Long
+    ''' <summary>Taxonomy SeaLifeBase codes (xNumTaxa).</summary>
+    Public TaxonCodeOBIS() As Long
     ''' <summary>Taxonomy source names where Taxon information was derived from (xNumTaxa).</summary>
     Public TaxonSource() As String
     ''' <summary>Taxonomy source keys to access Taxon information in <see cref="TaxonSource">a source</see>(xNumTaxa).</summary>
@@ -128,6 +134,9 @@ Public Class cTaxonDataStructures
         ReDim Me.TaxonCodeSAUP(Me.NumTaxon)
         ReDim Me.TaxonCodeFB(Me.NumTaxon)
         ReDim Me.TaxonCodeSLB(Me.NumTaxon)
+        ReDim Me.TaxonCodeAquaMaps(Me.NumTaxon)
+        ReDim Me.TaxonCodeAphia(Me.NumTaxon)
+        ReDim Me.TaxonCodeOBIS(Me.NumTaxon)
         ReDim Me.TaxonCodeFAO(Me.NumTaxon)
         ReDim Me.TaxonCodeLSID(Me.NumTaxon)
         ReDim Me.TaxonName(Me.NumTaxon)
@@ -173,6 +182,9 @@ Public Class cTaxonDataStructures
         TaxonCodeSAUP.CopyTo(d.TaxonCodeSAUP, 0)
         TaxonCodeFB.CopyTo(d.TaxonCodeFB, 0)
         TaxonCodeSLB.CopyTo(d.TaxonCodeSLB, 0)
+        TaxonCodeAquaMaps.CopyTo(d.TaxonCodeAquaMaps, 0)
+        TaxonCodeAphia.CopyTo(d.TaxonCodeAphia, 0)
+        TaxonCodeOBIS.CopyTo(d.TaxonCodeOBIS, 0)
         TaxonCodeFAO.CopyTo(d.TaxonCodeFAO, 0)
         TaxonCodeLSID.CopyTo(d.TaxonCodeLSID, 0)
         TaxonName.CopyTo(d.TaxonName, 0)

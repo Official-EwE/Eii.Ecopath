@@ -1604,6 +1604,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Aphia id|||Aphia ID (WoRMS).
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_CODEAPHIA() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_CODEAPHIA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to AquaMaps id|||Species ID in AquaMaps.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_CODEAQUAMAPS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_CODEAQUAMAPS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecobase code.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_CODEECOBASE() As String
@@ -1636,6 +1654,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property VARIABLE_CODELSID() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_CODELSID", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to OBIS id|||Taxonomy number in OBIS.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_CODEOBIS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_CODEOBIS", resourceCulture)
             End Get
         End Property
         
