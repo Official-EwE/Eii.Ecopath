@@ -3533,7 +3533,7 @@ Public Class cCore
         'Core initialized plugin point
         If (Me.PluginManager IsNot Nothing) Then
             Me.PluginManager.CoreInitialized(m_EcoPath, m_EcoSim, m_Ecospace)
-            Me.PluginManager.CoreDataInitialized(m_EcoPathData, m_Stanza, m_TaxonData, m_SampleData, m_PSDData, m_EcoSimData, m_TSData, m_EcoSpaceData)
+            Me.PluginManager.CoreDataInitialized(m_EcoPathData, m_Stanza, m_TaxonData, m_SampleData, m_PSDData, m_EcoSimData, m_TSData, m_SearchData, m_EcoSpaceData)
         End If
 
         m_publisher.sendAllMessages()
