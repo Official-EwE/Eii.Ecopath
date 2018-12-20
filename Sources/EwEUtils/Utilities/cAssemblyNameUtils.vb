@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Text
 Imports System.Reflection
 Imports System
 Imports System.Collections.Generic

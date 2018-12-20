@@ -889,6 +889,32 @@ Public Class cPluginManager
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
+    ''' Bridge, invokes the Core Initialized plugin point on any available and responsive 
+    ''' <see cref="ICorePlugin">ICorePlugin plug-in</see>.
+    ''' </summary>
+    ''' <param name="objEcopathData">The Ecopath data structures</param>
+    ''' <param name="objStanzaData">The stanza data structures</param>
+    ''' <param name="objTaxonData">The taxon data structures</param>
+    ''' <param name="objEcosamplerData">The ecosampler data structures</param>
+    ''' <param name="objPDSdata">Particle size distribution data structures</param>
+    ''' <param name="objEcosimData">The Ecosim data structures</param>
+    ''' <param name="objEcosimTimeSeriesData">The Ecosim time series data structures</param>
+    ''' <param name="objEcoSpaceData">The Ecospace data structures</param>
+    ''' <returns>True if successful.</returns>
+    ''' ---------------------------------------------------------------------------
+    Public Function CoreDataInitialized(objEcopathData As Object, objStanzaData As Object,
+                                        objTaxonData As Object, objEcosamplerData As Object, objPDSdata As Object,
+                                        objEcosimData As Object, objEcosimTimeSeriesData As Object, objEcoSpaceData As Object) As Boolean
+
+        ' Invokes ICorePlugin.CoreInitialized(objEcoPath, objEcoSim, objEcoSpace)
+        Return Me.TryInvokeMethod(GetType(ICoreDataPlugin),
+                                  "CoreDataInitialized",
+                                  New Object() {objEcopathData, objStanzaData, objTaxonData, objEcosamplerData, objPDSdata, objEcosimData, objEcosimTimeSeriesData, objEcoSpaceData})
+
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
     ''' Bridge, invokes the Validate Lifespan plug-in point on any available and
     ''' response <see cref="ILicensePlugin"/>.
     ''' </summary>
