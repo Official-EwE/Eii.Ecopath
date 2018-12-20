@@ -1777,10 +1777,16 @@ Namespace Core
         Species
         ''' <summary>Sea Around Us Project code for a species</summary>
         CodeSAUP
-        ''' <summary>Sea Life Base code for a species</summary>
-        CodeSLB
         ''' <summary>FishBase code for a species</summary>
         CodeFB
+        ''' <summary>Sea Life Base code for a species</summary>
+        CodeSLB
+        ''' <summary>AquaMaps code for a species</summary>
+        CodeAquaMaps
+        ''' <summary>WoRMS code for a species</summary>
+        CodeAphia
+        ''' <summary>OBIS code for a species</summary>
+        CodeOBIS
         ''' <summary>FAO code for a species</summary>
         CodeFAO
         ''' <summary>Life Science indentifier for a species (http://en.wikipedia.org/wiki/LSID)</summary>

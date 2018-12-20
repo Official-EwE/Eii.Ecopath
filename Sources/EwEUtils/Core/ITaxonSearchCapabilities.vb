@@ -75,6 +75,12 @@ Namespace Core
         Property CodeSAUP As Long
         ''' <summary>Taxonomy Databases Working Group Life Catalogue ID (http://lsid.tdwg.org/)</summary>
         Property CodeLSID As String
+        ''' <summary>AquaMaps SpeciesID.</summary>
+        Property CodeAquaMaps As String
+        ''' <summary>WoRMS AphiaID.</summary>
+        Property CodeAphia As String
+        ''' <summary>OBIS taxonomy number.</summary>
+        Property CodeOBIS As Long
 
         ' -- Spatial extent --
 
