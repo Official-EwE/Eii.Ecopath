@@ -899,12 +899,14 @@ Public Class cPluginManager
     ''' <param name="objPDSdata">Particle size distribution data structures</param>
     ''' <param name="objEcosimData">The Ecosim data structures</param>
     ''' <param name="objEcosimTimeSeriesData">The Ecosim time series data structures</param>
+    ''' <param name="objSearchData">The search data structures</param>
     ''' <param name="objEcoSpaceData">The Ecospace data structures</param>
     ''' <returns>True if successful.</returns>
     ''' ---------------------------------------------------------------------------
     Public Function CoreDataInitialized(objEcopathData As Object, objStanzaData As Object,
                                         objTaxonData As Object, objEcosamplerData As Object, objPDSdata As Object,
-                                        objEcosimData As Object, objEcosimTimeSeriesData As Object, objEcoSpaceData As Object) As Boolean
+                                        objEcosimData As Object, objEcosimTimeSeriesData As Object, objSearchData As Object,
+                                        objEcoSpaceData As Object) As Boolean
 
         ' Invokes ICorePlugin.CoreInitialized(objEcoPath, objEcoSim, objEcoSpace)
         Return Me.TryInvokeMethod(GetType(ICoreDataPlugin),
