@@ -911,7 +911,7 @@ Public Class cPluginManager
         ' Invokes ICorePlugin.CoreInitialized(objEcoPath, objEcoSim, objEcoSpace)
         Return Me.TryInvokeMethod(GetType(ICoreDataPlugin),
                                   "CoreDataInitialized",
-                                  New Object() {objEcopathData, objStanzaData, objTaxonData, objEcosamplerData, objPDSdata, objEcosimData, objEcosimTimeSeriesData, objEcoSpaceData})
+                                  New Object() {objEcopathData, objStanzaData, objTaxonData, objEcosamplerData, objPDSdata, objEcosimData, objEcosimTimeSeriesData, objSearchData, objEcoSpaceData})
 
     End Function
 
@@ -2600,6 +2600,8 @@ Public Class cPluginManager
                 objReturn = typePlugin.InvokeMember(strMethod, BindingFlags.InvokeMethod, Type.DefaultBinder, ipc.Plugin, aArgs)
                 If (TypeOf objReturn Is Boolean) Then
                     bHandled = CBool(objReturn)
+                Else
+                    bHandled = True
                 End If
 
             Catch ex As MissingMethodException
