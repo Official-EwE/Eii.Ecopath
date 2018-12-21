@@ -61,11 +61,11 @@ Public Class cTaxonDataStructures
     Public TaxonCodeFB() As Long
     ''' <summary>Taxonomy SeaLifeBase codes (xNumTaxa).</summary>
     Public TaxonCodeSLB() As Long
-    ''' <summary>Taxonomy SeaLifeBase codes (xNumTaxa).</summary>
-    Public TaxonCodeAquaMaps() As Long
-    ''' <summary>Taxonomy SeaLifeBase codes (xNumTaxa).</summary>
-    Public TaxonCodeAphia() As Long
-    ''' <summary>Taxonomy SeaLifeBase codes (xNumTaxa).</summary>
+    ''' <summary>Taxonomy Aquamaps codes (xNumTaxa).</summary>
+    Public TaxonCodeAquaMaps() As String
+    ''' <summary>Taxonomy AphiaID codes (xNumTaxa).</summary>
+    Public TaxonCodeAphia() As String
+    ''' <summary>Taxonomy OBIS Taxonomic numbers (xNumTaxa).</summary>
     Public TaxonCodeOBIS() As Long
     ''' <summary>Taxonomy source names where Taxon information was derived from (xNumTaxa).</summary>
     Public TaxonSource() As String
