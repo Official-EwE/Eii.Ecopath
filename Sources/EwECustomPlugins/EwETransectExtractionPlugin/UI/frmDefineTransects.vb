@@ -24,6 +24,7 @@ Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwETransectExtractionPlugin
 Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
@@ -87,10 +88,19 @@ Public Class frmDefineTransects
 
         Me.UpdateTransects()
 
+        Dim cmd As cBrowserCommand = CType(Me.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+        cmd.AddControl(Me.m_pbINSITE, "https://www.insitenorthsea.org/projects/cosm/")
+        cmd.AddControl(Me.m_pbCEFAS, "https://www.cefas.co.uk/")
+
     End Sub
 
-    Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
-        MyBase.OnFormClosed(e)
+    Protected Overrides Sub OnFormClosing(e As FormClosingEventArgs)
+
+        Dim cmd As cBrowserCommand = CType(Me.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+        cmd.RemoveControl(Me.m_pbINSITE)
+        cmd.RemoveControl(Me.m_pbCEFAS)
+        MyBase.OnFormClosing(e)
+
     End Sub
 
     Protected Overrides Sub UpdateControls()
