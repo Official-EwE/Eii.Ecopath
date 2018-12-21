@@ -4519,7 +4519,7 @@ Public Class cCore
     ''' <summary>
     ''' Get a <see cref="cTaxon">taxon</see> for a given index.
     ''' </summary>
-    ''' <param name="iTaxon">The index to obtain the Taxon definition for.</param>
+    ''' <param name="iTaxon">The one-based index to obtain the Taxon definition for.</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Taxon(ByVal iTaxon As Integer) As cTaxon
         Get

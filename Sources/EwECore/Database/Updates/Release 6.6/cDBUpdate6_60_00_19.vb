@@ -59,7 +59,8 @@ Friend Class cDBUpdate6_60_00_19
 
         Return db.Execute("ALTER TABLE EcopathTaxon ADD COLUMN CodeAquaMaps TEXT(255)") And
                db.Execute("ALTER TABLE EcopathTaxon ADD COLUMN CodeAphia TEXT(255)") And
-               db.Execute("ALTER TABLE EcopathTaxon ADD COLUMN CodeOBIS LONG")
+               db.Execute("ALTER TABLE EcopathTaxon ADD COLUMN CodeOBIS LONG") And
+               db.Execute("ALTER TABLE EcopathTaxon DROP COLUMN CodeTaxon")
 
     End Function
 

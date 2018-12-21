@@ -29,30 +29,69 @@ Namespace Core
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Template for reporting taxonomic search capabilities
+    ''' Template for searching Taxonomy data from external data sources.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Interface ITaxonSearchCapabilities
+    Public Interface ITaxonSearchData
 
-        ''' <summary>
-        ''' Returns a bitwise pattern of <see cref="eTaxonClassificationType"/> enumerated
-        ''' values stating which taxonomic classification fields can be searched.
-        ''' </summary>
-        ''' <returns>A bitwise pattern of <see cref="eTaxonClassificationType"/> enumerated
-        ''' values stating which taxonomic classification fields can be searched.</returns>
-        Function TaxonSearchCapabilities() As eTaxonClassificationType
+        ' -- Reference --
 
-        ''' <summary>
-        ''' Returns whether the taxonomic search engine can search by spatial bounding box.
-        ''' </summary>
-        ''' <returns>True if the taxonomic search engine can search by spatial bounding box</returns>
-        Function HasSpatialSearchCapabilities() As Boolean
+        ''' <summary>Data source that a taxon was obtained for.</summary>
+        Property Source() As String
+        ''' <summary>Key to update this taxonomy from the source.</summary>
+        Property SourceKey() As String
 
-        ''' <summary>
-        ''' Returns whether the taxonomic search engine can search by depth range.
+        ''' <summary>Bitwise flag pattern indicating which fields to search, and
+        ''' which fields have been searched.
         ''' </summary>
-        ''' <returns>True if the taxonomic search engine can search by depth range.</returns>
-        Function HasDepthRangeSearchCapabilities() As Boolean
+        Property SearchFields As eTaxonClassificationType
+
+        ' -- Data fields --
+
+        ''' <summary>Class name of a taxon.</summary>
+        Property [Class]() As String
+        ''' <summary>Order name of a taxon.</summary>
+        Property Order() As String
+        ''' <summary>Family name of a taxon.</summary>
+        Property Family() As String
+        ''' <summary>Genus name of a taxon.</summary>
+        Property Genus() As String
+        ''' <summary>Species name of a taxon.</summary>
+        Property Species() As String
+        ''' <summary>Common name of a taxon.</summary>
+        Property Common() As String
+        ''' <summary>Phylum of a taxon.</summary>
+        Property Phylum() As String
+
+        ' -- Identification --
+
+        ''' <summary>FAO taxon code (http://www.fao.org/fishery/collection/asfis/en).</summary>
+        Property CodeFAO() As String
+        ''' <summary>FishBase SpecCode.</summary>
+        Property CodeFB() As Long
+        ''' <summary>Sea Life Base SpecCode.</summary>
+        Property CodeSLB As Long
+        ''' <summary>Sea Around Us project Taxon ID</summary>
+        Property CodeSAUP As Long
+        ''' <summary>Taxonomy Databases Working Group Life Catalogue ID (http://lsid.tdwg.org/)</summary>
+        Property CodeLSID As String
+        ''' <summary>AquaMaps SpeciesID.</summary>
+        Property CodeAquaMaps As String
+        ''' <summary>WoRMS AphiaID.</summary>
+        Property CodeAphia As String
+        ''' <summary>OBIS taxonomy number.</summary>
+        Property CodeOBIS As Long
+
+        ' -- Spatial extent --
+
+        ''' <summary>Northern limit of the bounding box where this taxon occurs.</summary>
+        Property North() As Single
+        ''' <summary>Southern limit of the bounding box where this taxon occurs.</summary>
+        Property South() As Single
+        ''' <summary>Eastern limit of the bounding box where this taxon occurs.</summary>
+        Property East() As Single
+        ''' <summary>Western limit of the bounding box where this taxon occurs.</summary>
+        Property West() As Single
 
     End Interface
 
