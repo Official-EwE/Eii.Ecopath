@@ -223,6 +223,11 @@
       <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\insite-logo %28003%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cefas_logo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

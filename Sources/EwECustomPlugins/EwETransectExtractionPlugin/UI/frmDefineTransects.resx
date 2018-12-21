@@ -125,6 +125,10 @@
   <data name="m_scMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_mapzoom.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="m_mapzoom.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
@@ -137,7 +141,6 @@
   <data name="m_mapzoom.Size" type="System.Drawing.Size, System.Drawing">
     <value>516, 501</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_mapzoom.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -145,7 +148,7 @@
     <value>m_mapzoom</value>
   </data>
   <data name="&gt;&gt;m_mapzoom.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.6.15853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_mapzoom.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -178,7 +181,7 @@
     <value>m_toolstrip</value>
   </data>
   <data name="&gt;&gt;m_toolstrip.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.6.15853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_toolstrip.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -198,32 +201,8 @@
   <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_btnDeleteTransect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="m_btnDeleteTransect.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 500</value>
-  </data>
-  <data name="m_btnDeleteTransect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 23</value>
-  </data>
-  <data name="m_btnDeleteTransect.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_btnDeleteTransect.Text" xml:space="preserve">
-    <value>Delete transect</value>
-  </data>
-  <data name="&gt;&gt;m_btnDeleteTransect.Name" xml:space="preserve">
-    <value>m_btnDeleteTransect</value>
-  </data>
-  <data name="&gt;&gt;m_btnDeleteTransect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnDeleteTransect.Parent" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_btnDeleteTransect.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="m_tlpContent.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="m_lbxTransects.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -232,10 +211,10 @@
     <value>False</value>
   </data>
   <data name="m_lbxTransects.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 3</value>
+    <value>3, 3</value>
   </data>
   <data name="m_lbxTransects.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 491</value>
+    <value>147, 371</value>
   </data>
   <data name="m_lbxTransects.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -247,10 +226,160 @@
     <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lbxTransects.Parent" xml:space="preserve">
-    <value>m_scMain.Panel2</value>
+    <value>m_tlpContent</value>
   </data>
   <data name="&gt;&gt;m_lbxTransects.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_btnDeleteTransect.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="m_btnDeleteTransect.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 380</value>
+  </data>
+  <data name="m_btnDeleteTransect.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 23</value>
+  </data>
+  <data name="m_btnDeleteTransect.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_btnDeleteTransect.Text" xml:space="preserve">
+    <value>Delete selected</value>
+  </data>
+  <data name="&gt;&gt;m_btnDeleteTransect.Name" xml:space="preserve">
+    <value>m_btnDeleteTransect</value>
+  </data>
+  <data name="&gt;&gt;m_btnDeleteTransect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnDeleteTransect.Parent" xml:space="preserve">
+    <value>m_tlpContent</value>
+  </data>
+  <data name="&gt;&gt;m_btnDeleteTransect.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="m_hdrCredits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_hdrCredits.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 406</value>
+  </data>
+  <data name="m_hdrCredits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 20</value>
+  </data>
+  <data name="m_hdrCredits.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_hdrCredits.Text" xml:space="preserve">
+    <value>Credits</value>
+  </data>
+  <data name="m_hdrCredits.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCredits.Name" xml:space="preserve">
+    <value>m_hdrCredits</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCredits.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCredits.Parent" xml:space="preserve">
+    <value>m_tlpContent</value>
+  </data>
+  <data name="&gt;&gt;m_hdrCredits.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_pbCEFAS.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="m_pbCEFAS.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_pbCEFAS.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 431</value>
+  </data>
+  <data name="m_pbCEFAS.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="m_pbCEFAS.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 40</value>
+  </data>
+  <data name="m_pbCEFAS.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_pbCEFAS.Name" xml:space="preserve">
+    <value>m_pbCEFAS</value>
+  </data>
+  <data name="&gt;&gt;m_pbCEFAS.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbCEFAS.Parent" xml:space="preserve">
+    <value>m_tlpContent</value>
+  </data>
+  <data name="&gt;&gt;m_pbCEFAS.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_pbINSITE.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="m_pbINSITE.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_pbINSITE.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbINSITE.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 481</value>
+  </data>
+  <data name="m_pbINSITE.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="m_pbINSITE.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 40</value>
+  </data>
+  <data name="m_pbINSITE.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_pbINSITE.Name" xml:space="preserve">
+    <value>m_pbINSITE</value>
+  </data>
+  <data name="&gt;&gt;m_pbINSITE.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbINSITE.Parent" xml:space="preserve">
+    <value>m_tlpContent</value>
+  </data>
+  <data name="&gt;&gt;m_pbINSITE.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_tlpContent.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlpContent.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tlpContent.RowCount" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_tlpContent.Size" type="System.Drawing.Size, System.Drawing">
+    <value>153, 526</value>
+  </data>
+  <data name="m_tlpContent.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_tlpContent.Name" xml:space="preserve">
+    <value>m_tlpContent</value>
+  </data>
+  <data name="&gt;&gt;m_tlpContent.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpContent.Parent" xml:space="preserve">
+    <value>m_scMain.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_tlpContent.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpContent.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lbxTransects" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_btnDeleteTransect" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrCredits" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbCEFAS" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_pbINSITE" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Percent,100,AutoSize,0,AutoSize,0,Absolute,50,Absolute,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Name" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -304,6 +433,6 @@
     <value>frmDefineTransects</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.15853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -135,12 +135,19 @@
   <data name="CAPTION_OUT" xml:space="preserve">
     <value>Transect summary</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="cefas_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cefas_logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="DEFAULT_TRANSECT_NAME" xml:space="preserve">
     <value>Transect {0}</value>
   </data>
   <data name="GENERIC_LABEL_POINT" xml:space="preserve">
     <value>({0}, {1})</value>
     <comment>{0}: X coordinate, {1}: Y coordinate</comment>
+  </data>
+  <data name="insite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\insite-logo (003).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LABEL_CELL" xml:space="preserve">
     <value>Cell</value>

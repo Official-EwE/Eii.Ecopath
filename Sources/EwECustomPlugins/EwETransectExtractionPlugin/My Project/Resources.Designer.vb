@@ -115,6 +115,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property cefas_logo() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("cefas_logo", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Transect {0}.
         '''</summary>
         Friend ReadOnly Property DEFAULT_TRANSECT_NAME() As String
@@ -129,6 +139,16 @@ Namespace My.Resources
         Friend ReadOnly Property GENERIC_LABEL_POINT() As String
             Get
                 Return ResourceManager.GetString("GENERIC_LABEL_POINT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property insite() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("insite", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
