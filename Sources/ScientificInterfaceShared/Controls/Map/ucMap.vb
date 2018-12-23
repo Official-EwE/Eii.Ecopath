@@ -292,7 +292,7 @@ Namespace Controls.Map
             Dim strVal As String = ""
             Dim strFeedback As String = ""
             Dim ptCell As Point = Me.PointToColRow(e.Location)
-            Dim ptCoord As PointF = Me.PointToGeoref(e.Location)
+            Dim ptCoord As PointF = Me.PointToLonLat(e.Location)
 
             If (l IsNot Nothing) Then
                 If (TypeOf l Is cDisplayLayerRaster) Then
@@ -565,9 +565,7 @@ Namespace Controls.Map
                         style = cStyleGuide.eStyleFlags.OK
                         If l.IsSelected Then style = (style Or cStyleGuide.eStyleFlags.Highlight)
 
-                        Dim ptfVTL As PointF = New PointF(bm.ColToLon(1), bm.RowToLat(1))
-                        Dim ptfVBR As PointF = New PointF(bm.ColToLon(bm.InCol), bm.RowToLat(bm.InRow))
-                        DirectCast(l.Renderer, cVectorLayerRenderer).Render(g, l, Me.m_maprect, ptfVTL, ptfVBR, style)
+                        DirectCast(l.Renderer, cVectorLayerRenderer).Render(g, l, Me.m_maprect, Me.Basemap.PosTopLeft, Me.Basemap.PosBottomRight, style)
 
                     End If
                 End If
@@ -784,6 +782,16 @@ Namespace Controls.Map
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a map location (col, row) to a georeferenced coordinate (lon, lat) 
+        ''' <seealso cref="cEcospaceBasemap.ColToLon(Single)"/>
+        ''' <seealso cref="cEcospaceBasemap.RowToLat(Single)"/>
+        ''' <seealso cref="LonLatToColRow"/>
+        ''' </summary>
+        ''' <param name="ptf"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Public Function ColRowToLonLat(ptf As PointF) As PointF
             Dim bm As cEcospaceBasemap = Me.Basemap
             If (bm IsNot Nothing) Then
@@ -793,6 +801,16 @@ Namespace Controls.Map
             Return ptf
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a map location (col, row) to a georeferenced coordinate (lon, lat) 
+        ''' <seealso cref="cEcospaceBasemap.LonToCol(Single)"/>
+        ''' <seealso cref="cEcospaceBasemap.LatToRow(Single)"/>
+        ''' <seealso cref="ColRowToLonLat"/>
+        ''' </summary>
+        ''' <param name="ptf"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Public Function LonLatToColRow(ptf As PointF) As PointF
             Dim bm As cEcospaceBasemap = Me.Basemap
             If (bm IsNot Nothing) Then
@@ -802,52 +820,26 @@ Namespace Controls.Map
             Return ptf
         End Function
 
-
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Convert a mouse location to a georeferenced point (expressed in basemap map units)
+        ''' Convert a map control point (in pixels) to a lon, lat coordinate.
+        ''' <seealso cref="PointToColRowExact(Point)"/>
+        ''' <seealso cref="PointToColRow(Point)"/>
+        ''' <seealso cref="ColRowToLonLat(PointF)"/>
         ''' </summary>
         ''' <param name="ptScreen"></param>
-        ''' <returns></returns>
-        <Obsolete()>
+        ''' -------------------------------------------------------------------
         Public Function PointToLonLat(ptScreen As Point) As PointF
-
-            Dim pt As PointF = Me.PointToColRowExact(ptScreen)
-            Dim bm As cEcospaceBasemap = Me.Basemap
-            If (bm IsNot Nothing) Then
-                pt.X = bm.ColToLon(pt.X)
-                pt.Y = bm.RowToLat(pt.Y)
-            End If
-            Return pt
-
+            Return Me.ColRowToLonLat(Me.PointToColRowExact(ptScreen))
         End Function
 
         ''' <summary>
-        ''' Convert a georeferenced point (expressed in basemap map units) to a point on the map control
+        ''' Smack!
         ''' </summary>
-        ''' <param name="ptfLocation"></param>
+        ''' <param name="ptfLonLat"></param>
         ''' <returns></returns>
-        <Obsolete()>
-        Public Function LonLatToPoint(ptfLocation As PointF) As Point
-
-            Dim pt As New PointF(0, 0)
-            Dim bm As cEcospaceBasemap = Me.Basemap
-            If (bm IsNot Nothing) Then
-                pt.X = bm.LonToCol(pt.X)
-                pt.Y = bm.LatToRow(pt.Y)
-            End If
-            Return Me.ColRowToPoint(pt)
-
-        End Function
-
-        <Obsolete()>
-        Public Function PointToGeoref(pt As Point) As PointF
-            Dim ptf As PointF = Me.PointToColRowExact(pt)
-            Dim bm As cEcospaceBasemap = Me.Basemap
-            If (bm IsNot Nothing) Then
-                ptf.X = bm.ColToLon(ptf.X)
-                ptf.Y = bm.RowToLat(ptf.Y)
-            End If
-            Return ptf
+        Public Function LonLatToPoint(ptfLonLat As PointF) As Point
+            Return Me.ColRowToPoint(Me.LonLatToColRow(ptfLonLat))
         End Function
 
         Public Function MapUnits() As String
