@@ -162,4 +162,7 @@
   <data name="UNIT_MPACOUNT" xml:space="preserve">
     <value>Num. intersecting MPAs</value>
   </data>
+  <data name="RASTER_TRANSECT_NAME" xml:space="preserve">
+    <value>Transect cells</value>
+  </data>
 </root>

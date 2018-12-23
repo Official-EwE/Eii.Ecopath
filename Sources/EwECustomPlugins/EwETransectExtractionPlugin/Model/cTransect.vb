@@ -134,30 +134,27 @@ Public Class cTransect
 
         If (Me.m_cells.Count = 0) Then
 
-            Dim x0 As Integer = CInt(Math.Floor(bm.LonToCol(Me.m_ptStart.X)))
-            Dim y0 As Integer = CInt(Math.Floor(bm.LatToRow(Me.m_ptStart.Y)))
-            Dim x1 As Integer = CInt(Math.Floor(bm.LonToCol(Me.m_ptEnd.X)))
-            Dim y1 As Integer = CInt(Math.Floor(bm.LatToRow(Me.m_ptEnd.Y)))
+            ' https://en.wikipedia.org/wiki/Bresenham's_line_algorithm
 
-            Dim difX As Double = x1 - x0
-            Dim difY As Double = y1 - y0
-            Dim dist As Double = Math.Abs(difX) + Math.Abs(difY)
+            Dim x0 As Single = bm.LonToCol(Me.m_ptStart.X)
+            Dim y0 As Single = bm.LatToRow(Me.m_ptStart.Y)
+            Dim x1 As Single = bm.LonToCol(Me.m_ptEnd.X)
+            Dim y1 As Single = bm.LatToRow(Me.m_ptEnd.Y)
 
-            Dim dx As Double = 0
-            Dim dy As Double = 0
+            If Math.Abs(y1 - y0) < Math.Abs(x1 - x0) Then
 
-            If (dist > 0) Then
-                dx = difX / dist : dy = difY / dist
+                If x0 > x1 Then
+                    GetCellsLow(x1, y1, x0, y0)
+                Else
+                    GetCellsLow(x0, y0, x1, y1)
+                End If
+            Else
+                If y0 > y1 Then
+                    GetCellsHigh(x1, y1, x0, y0)
+                Else
+                    GetCellsHigh(x0, y0, x1, y1)
+                End If
             End If
-
-            For i As Integer = 0 To CInt(Math.Ceiling(dist))
-                Dim iCol As Integer = x0 + CInt(Math.Round(dx * i))
-                Dim iRow As Integer = y0 + CInt(Math.Round(dy * i))
-                ' Note reversal of row and col here. It's messy, but it's deliberate
-                'If bm.IsModelledCell(iRow, iCol) Then
-                Me.m_cells.Add(New Point(iCol, iRow))
-                'End If
-            Next
         End If
 
         Return Me.m_cells.ToArray()
@@ -253,6 +250,63 @@ Public Class cTransect
     Private Function Key(t As Integer, iGroup As Integer, value As Byte) As String
         Return t & "_" & iGroup & "_" & value
     End Function
+
+    ''' <summary>
+    ''' https://en.wikipedia.org/wiki/Bresenham's_line_algorithm
+    ''' </summary>
+    ''' <param name="x0"></param>
+    ''' <param name="y0"></param>
+    ''' <param name="x1"></param>
+    ''' <param name="y1"></param>
+    Private Sub GetCellsLow(x0 As Single, y0 As Single, x1 As Single, y1 As Single)
+        Dim dx = x1 - x0
+        Dim dy = y1 - y0
+        Dim yi = 1
+        If dy < 0 Then
+            yi = -1
+            dy = -dy
+        End If
+        Dim D = 2 * dy - dx
+        Dim y = y0
+
+        For x As Integer = CInt(Math.Floor(x0)) To CInt(Math.Floor(x1))
+            m_cells.Add(New Point(x, CInt(Math.Floor(y))))
+            If D > 0 Then
+                y = y + yi
+                D = D - 2 * dx
+            End If
+            D = D + 2 * dy
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' https://en.wikipedia.org/wiki/Bresenham's_line_algorithm
+    ''' </summary>
+    ''' <param name="x0"></param>
+    ''' <param name="y0"></param>
+    ''' <param name="x1"></param>
+    ''' <param name="y1"></param>
+    Private Sub GetCellsHigh(x0 As Single, y0 As Single, x1 As Single, y1 As Single)
+
+        Dim dx = x1 - x0
+        Dim dy = y1 - y0
+        Dim xi = 1
+        If dx < 0 Then
+            xi = -1
+            dx = -dx
+        End If
+        Dim D = 2 * dx - dy
+        Dim x = x0
+
+        For y As Integer = CInt(Math.Floor(y0)) To CInt(Math.Floor(y1))
+            m_cells.Add(New Point(CInt(Math.Floor(x)), y))
+            If D > 0 Then
+                x = x + xi
+                D = D - 2 * dy
+            End If
+            D = D + 2 * dx
+        Next
+    End Sub
 
 #End Region ' Internals
 

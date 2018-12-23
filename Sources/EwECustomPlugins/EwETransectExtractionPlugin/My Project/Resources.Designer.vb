@@ -180,6 +180,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Transect cells.
+        '''</summary>
+        Friend ReadOnly Property RASTER_TRANSECT_NAME() As String
+            Get
+                Return ResourceManager.GetString("RASTER_TRANSECT_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Num. intersecting MPAs.
         '''</summary>
         Friend ReadOnly Property UNIT_MPACOUNT() As String
