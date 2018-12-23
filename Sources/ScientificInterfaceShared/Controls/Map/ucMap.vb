@@ -188,8 +188,8 @@ Namespace Controls.Map
 
             If (ptCellFrom = ptCellTo) Then Return
 
-            Dim ptTL As Point = Me.MapToPoint(ptCellFrom)
-            Dim ptBR As Point = Me.MapToPoint(ptCellTo)
+            Dim ptTL As Point = Me.ColRowToPoint(ptCellFrom)
+            Dim ptBR As Point = Me.ColRowToPoint(ptCellTo)
             ' ToDO: Invalidate selectively
             'Me.Invalidate(New Rectangle(ptTL.X, ptTL.Y, ptBR.X - ptTL.X, ptBR.Y - ptTL.Y))
             Me.Invalidate()
@@ -291,7 +291,7 @@ Namespace Controls.Map
 
             Dim strVal As String = ""
             Dim strFeedback As String = ""
-            Dim ptCell As Point = Me.PointToMap(e.Location)
+            Dim ptCell As Point = Me.PointToColRow(e.Location)
             Dim ptCoord As PointF = Me.PointToGeoref(e.Location)
 
             If (l IsNot Nothing) Then
@@ -456,9 +456,8 @@ Namespace Controls.Map
                 g.FillRectangle(br, Me.m_maprect)
             End Using
 
-            ' --- for raster rendering ---
-            Dim ptfTL As PointF = Me.PointToMapExact(rcClip.Location)
-            Dim ptfBR As PointF = Me.PointToMapExact(New Point(rcClip.Right, rcClip.Bottom))
+            Dim ptfTL As PointF = Me.PointToColRowExact(rcClip.Location)
+            Dim ptfBR As PointF = Me.PointToColRowExact(New Point(rcClip.Right, rcClip.Bottom))
             Dim rcRast As New Rectangle(CInt(Math.Floor(Math.Max(1, ptfTL.X))),
                                         CInt(Math.Floor(Math.Max(1, ptfTL.Y))),
                                         CInt(Math.Ceiling(Math.Min(bm.InCol, ptfBR.X - ptfTL.X))),
@@ -727,7 +726,7 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Calculate the cell screen rectangle of a cell, given its index.
+        ''' Calculate the control rectangle of a cell in pixels, given its index.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function GetCellRect(ByVal ptCellIndex As Point) As RectangleF
@@ -737,18 +736,12 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Calculate the top left screen coordinates of a cell, given its cell index.
+        ''' Get the map column and row at a given point in the map contol
         ''' </summary>
-        ''' <param name="ptCellIndex">The one-based cell index</param>
+        ''' <param name="ptScreen"></param>
+        ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function GetCellPos(ByVal ptCellIndex As Point) As PointF
-
-            Return New PointF(Me.m_maprect.X + Me.m_cellsize * (ptCellIndex.X - 1),
-                              Me.m_maprect.Y + Me.m_cellsize * (ptCellIndex.Y - 1))
-
-        End Function
-
-        Public Function PointToMap(ptScreen As Point) As Point
+        Public Function PointToColRow(ptScreen As Point) As Point
 
             Dim pt As New Point(0, 0)
             Dim bm As cEcospaceBasemap = Me.Basemap
@@ -759,57 +752,14 @@ Namespace Controls.Map
             Return pt
         End Function
 
-        ''' <summary>
-        ''' Convert a mouse location to a georeferenced point (expressed in basemap map units)
-        ''' </summary>
-        ''' <param name="ptScreen"></param>
-        ''' <returns></returns>
-        Public Function PointToLocation(ptScreen As Point) As PointF
-
-            Dim pt As PointF = Me.PointToMapExact(ptScreen)
-            Dim bm As cEcospaceBasemap = Me.Basemap
-            If (bm IsNot Nothing) Then
-                pt.X = bm.ColToLon(pt.X)
-                pt.Y = bm.RowToLat(pt.X)
-            End If
-            Return pt
-
-        End Function
-
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Calculate the one-based index of a cell, based on a given screen point.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Function GetCellIndex(ByVal ptScreen As Point) As Point
-
-            Dim iColIndex As Integer = 0
-            Dim iRowIndex As Integer = 0
-
-            Dim bm As cEcospaceBasemap = Me.Basemap
-            If (bm IsNot Nothing) Then
-
-                Dim szCell As SizeF = Me.GetCellSize()
-                iColIndex = CInt((ptScreen.X + 0.5 * szCell.Width) / szCell.Width)
-                iRowIndex = CInt((ptScreen.Y + 0.5 * szCell.Height) / szCell.Height)
-
-                ' Truncate
-                iRowIndex = Math.Max(Math.Min(iRowIndex, Me.Height), 1)
-                iColIndex = Math.Max(Math.Min(iColIndex, Me.Width), 1)
-            End If
-
-            Return New Point(iColIndex, iRowIndex)
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns the georeferenced location of a given screen point.
+        ''' Get the exact map column and row position at a given map contrl location.
         ''' </summary>
         ''' <param name="ptScreen"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function PointToMapExact(ptScreen As Point) As PointF
+        Public Function PointToColRowExact(ptScreen As Point) As PointF
 
             Dim ptf As New PointF(0, 0)
             Dim bm As cEcospaceBasemap = Me.Basemap
@@ -823,19 +773,75 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the screen point for a X,y location on the map.
+        ''' Returns the map control location represented by a basemap location.
         ''' </summary>
         ''' <param name="ptfMap"></param>
         ''' -------------------------------------------------------------------
-        Public Function MapToPoint(ptfMap As PointF) As Point
+        Public Function ColRowToPoint(ptfMap As PointF) As Point
 
             Return New Point(CInt((ptfMap.X - 1) * Me.m_cellsize) + Me.m_maprect.X,
                              CInt((ptfMap.Y - 1) * Me.m_cellsize) + Me.m_maprect.Y)
 
         End Function
 
+        Public Function ColRowToLonLat(ptf As PointF) As PointF
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            If (bm IsNot Nothing) Then
+                ptf.X = bm.ColToLon(ptf.X)
+                ptf.Y = bm.RowToLat(ptf.Y)
+            End If
+            Return ptf
+        End Function
+
+        Public Function LonLatToColRow(ptf As PointF) As PointF
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            If (bm IsNot Nothing) Then
+                ptf.X = bm.LonToCol(ptf.X)
+                ptf.Y = bm.LatToRow(ptf.Y)
+            End If
+            Return ptf
+        End Function
+
+
+        ''' <summary>
+        ''' Convert a mouse location to a georeferenced point (expressed in basemap map units)
+        ''' </summary>
+        ''' <param name="ptScreen"></param>
+        ''' <returns></returns>
+        <Obsolete()>
+        Public Function PointToLonLat(ptScreen As Point) As PointF
+
+            Dim pt As PointF = Me.PointToColRowExact(ptScreen)
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            If (bm IsNot Nothing) Then
+                pt.X = bm.ColToLon(pt.X)
+                pt.Y = bm.RowToLat(pt.Y)
+            End If
+            Return pt
+
+        End Function
+
+        ''' <summary>
+        ''' Convert a georeferenced point (expressed in basemap map units) to a point on the map control
+        ''' </summary>
+        ''' <param name="ptfLocation"></param>
+        ''' <returns></returns>
+        <Obsolete()>
+        Public Function LonLatToPoint(ptfLocation As PointF) As Point
+
+            Dim pt As New PointF(0, 0)
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            If (bm IsNot Nothing) Then
+                pt.X = bm.LonToCol(pt.X)
+                pt.Y = bm.LatToRow(pt.Y)
+            End If
+            Return Me.ColRowToPoint(pt)
+
+        End Function
+
+        <Obsolete()>
         Public Function PointToGeoref(pt As Point) As PointF
-            Dim ptf As PointF = Me.PointToMapExact(pt)
+            Dim ptf As PointF = Me.PointToColRowExact(pt)
             Dim bm As cEcospaceBasemap = Me.Basemap
             If (bm IsNot Nothing) Then
                 ptf.X = bm.ColToLon(ptf.X)
@@ -863,10 +869,10 @@ Namespace Controls.Map
 
                 If (ptLocation = Nothing) Then ptLocation = Me.CenterPoint
 
-                Dim ptf1 As PointF = Me.PointToMapExact(ptLocation)
+                Dim ptf1 As PointF = Me.PointToColRowExact(ptLocation)
                 Me.m_zoom = Math.Max(Me.MinZoom, Math.Min(Me.MaxZoom, value))
                 Me.CalcMapSize()
-                Dim ptf2 As PointF = Me.PointToMapExact(ptLocation)
+                Dim ptf2 As PointF = Me.PointToColRowExact(ptLocation)
                 Dim dx As New Point(CInt(Me.m_cellsize * (ptf2.X - ptf1.X)), CInt(Me.m_cellsize * (ptf2.Y - ptf1.Y)))
                 Me.ScrollBy(dx)
 

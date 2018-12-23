@@ -1016,7 +1016,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public Function LonToCol(ByVal sLon As Single) As Single
         ' ToDo: validate if this correct for basemaps in meters (AssumeSquareCells = true)
-        Return CSng(((sLon - Me.Longitude) / Me.CellSize)) + 1
+        Return 1 + CSng((sLon - Me.Longitude) / Me.CellSize)
     End Function
 
     Public Function MapUnits() As String

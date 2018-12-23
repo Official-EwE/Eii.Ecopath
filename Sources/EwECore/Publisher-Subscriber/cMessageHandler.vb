@@ -69,9 +69,9 @@ Public Class cMessageHandler
     ''' <para>For a default handler set the MessageTypeToHandle flag to eMessageType.Any this will send any unhandled message to this delegate.</para>
     ''' <para>To have s single delegate handle multiple messages create a new cMessageHandler with this same 'DelegateToCall' argument and a different MessageTypeToHandle flag.</para>
     ''' </remarks>
-    Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate, _
-            ByVal SourceToHandle As eCoreComponentType, _
-            ByVal MessageTypeToHandle As eMessageType, _
+    Sub New(ByVal DelegateToCall As EwECore.cCore.CoreMessageDelegate,
+            ByVal SourceToHandle As eCoreComponentType,
+            ByVal MessageTypeToHandle As eMessageType,
             ByVal syncobj As System.Threading.SynchronizationContext)
 
         Debug.Assert(DelegateToCall IsNot Nothing, "Must specify a valid delegate")
