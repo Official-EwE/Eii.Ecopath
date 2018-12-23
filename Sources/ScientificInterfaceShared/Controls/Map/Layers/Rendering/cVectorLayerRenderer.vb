@@ -59,12 +59,12 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="g"></param>
         ''' <param name="layer"></param>
-        ''' <param name="rc">Screen rectangle to draw onto</param>
-        ''' <param name="ptfTL">Top-left coordinate, in actual basemap coordinates, of the screen rectangle.</param>
-        ''' <param name="ptfBR">Bottom-right coordinate, in actual basemap coordinates, of the screen rectangle.</param>
+        ''' <param name="ClipRectangle">Screen rectangle to draw onto</param>
+        ''' <param name="ClipTLLonLat">Top-left coordinate, in actual basemap coordinates, of the screen rectangle.</param>
+        ''' <param name="ClipBRLonLat">Bottom-right coordinate, in actual basemap coordinates, of the screen rectangle.</param>
         ''' <param name="style"></param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub Render(g As Graphics, layer As cDisplayLayer, rc As RectangleF, ptfTL As PointF, ptfBR As PointF, style As cStyleGuide.eStyleFlags)
+        Public Overrides Sub Render(g As Graphics, layer As cDisplayLayer, ClipRectangle As RectangleF, ClipTLLonLat As PointF, ClipBRLonLat As PointF, style As cStyleGuide.eStyleFlags)
             ' NOP
         End Sub
 
