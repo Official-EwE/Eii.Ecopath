@@ -229,8 +229,8 @@ Namespace Controls.Map.Layers
             If Not Me.IsEditable Then Return
 
             If ((e.Button And MouseButtons.Right) > 0) Then
-                Dim ptfClick As PointF = map.PointToMapExact(e.Location)
-                Me.Pickup(map.PointToMap(e.Location))
+                Dim ptfClick As PointF = map.PointToColRowExact(e.Location)
+                Me.Pickup(map.PointToColRow(e.Location))
             ElseIf ((e.Button And MouseButtons.Left) > 0) Then
                 Me.StartEdit(e, map)
             End If
@@ -246,8 +246,8 @@ Namespace Controls.Map.Layers
 
             If (Me.m_ptScreenPrevious = Nothing) Then Me.m_ptScreenPrevious = ptScreenCur
 
-            Dim ptCellFrom As Point = map.PointToMap(Me.m_ptScreenPrevious)
-            Dim ptCellTo As Point = map.PointToMap(ptScreenCur)
+            Dim ptCellFrom As Point = map.PointToColRow(Me.m_ptScreenPrevious)
+            Dim ptCellTo As Point = map.PointToColRow(ptScreenCur)
 
             Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X) - size, Math.Min(ptCellFrom.Y, ptCellTo.Y) + size)
             Dim ptUpdateMax As New Point(Math.Max(ptCellFrom.X, ptCellTo.X) - size, Math.Max(ptCellFrom.Y, ptCellTo.Y) + size)

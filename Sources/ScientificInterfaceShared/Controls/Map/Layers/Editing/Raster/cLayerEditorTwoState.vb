@@ -65,7 +65,7 @@ Namespace Controls.Map.Layers
 
             MyBase.StartEdit(e, map)
 
-            Dim ptClick As Point = map.PointToMap(e.Location)
+            Dim ptClick As Point = map.PointToColRow(e.Location)
 
             If (Me.AutoToggleCellValue) Then
 

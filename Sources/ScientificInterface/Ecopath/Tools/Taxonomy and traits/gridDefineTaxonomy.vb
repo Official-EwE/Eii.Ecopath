@@ -69,9 +69,12 @@ Public Class gridDefineTaxonomy
         Phylum
         Status
         ' - Codes -
-        CodeSAUP
         CodeFB
         CodeSLB
+        CodeAquaMaps
+        CodeOBIS
+        CodeAphia
+        CodeSAUP
         CodeFAO
         CodeLSID
     End Enum
@@ -134,6 +137,9 @@ Public Class gridDefineTaxonomy
             Me.CodeSAUP = taxon.CodeSAUP
             Me.CodeFB = taxon.CodeFishBase
             Me.CodeSLB = taxon.CodeSeaLifeBase
+            Me.CodeAquaMaps = taxon.CodeAquaMaps
+            Me.CodeOBIS = taxon.CodeOBIS
+            Me.CodeAphia = taxon.CodeAphia
             Me.CodeFAO = taxon.CodeFAO
             Me.CodeLSID = taxon.CodeLSID
             Me.Common = taxon.Name
@@ -300,6 +306,9 @@ Public Class gridDefineTaxonomy
             Me.CodeSAUP = taxon.CodeSAUP
             Me.CodeFB = taxon.CodeFB
             Me.CodeSLB = taxon.CodeSLB
+            Me.CodeAquaMaps = taxon.CodeAquaMaps
+            Me.CodeAphia = taxon.CodeAphia
+            Me.CodeOBIS = taxon.CodeOBIS
             Me.CodeFAO = taxon.CodeFAO
             Me.CodeLSID = taxon.CodeLSID
             Me.Common = taxon.Common
@@ -369,9 +378,12 @@ Public Class gridDefineTaxonomy
                 If (Math.Round(taxon.PropC, 5) <> Math.Round(Me.PropC, 5)) Then Return True
                 If (taxon.iGroup <> Me.iGroup) Then Return True
                 If (taxon.iStanza <> Me.iStanza) Then Return True
-                If (taxon.CodeSAUP <> Me.CodeSAUP) Then Return True
                 If (taxon.CodeFishBase <> Me.CodeFB) Then Return True
                 If (taxon.CodeSeaLifeBase <> Me.CodeSLB) Then Return True
+                If (taxon.CodeAquaMaps <> Me.CodeAquaMaps) Then Return True
+                If (taxon.CodeOBIS <> Me.CodeOBIS) Then Return True
+                If (taxon.CodeAphia <> Me.CodeAphia) Then Return True
+                If (taxon.CodeSAUP <> Me.CodeSAUP) Then Return True
                 If (String.Compare(taxon.CodeLSID, Me.CodeLSID) <> 0) Then Return True
                 If (String.Compare(taxon.CodeFAO, Me.CodeFAO) <> 0) Then Return True
 
@@ -434,7 +446,10 @@ Public Class gridDefineTaxonomy
                 Return (t.CodeSAUP > 0 And t.CodeSAUP = Me.CodeSAUP) Or
                        (t.CodeFB > 0 And t.CodeFB = Me.CodeFB) Or
                        (t.CodeSLB > 0 And t.CodeSLB = Me.CodeSLB) Or
+                       (t.CodeOBIS > 0 And t.CodeOBIS = Me.CodeOBIS) Or
                        (Not String.IsNullOrWhiteSpace(t.CodeLSID) And String.Compare(t.CodeLSID, Me.CodeLSID, True) = 0) Or
+                       (Not String.IsNullOrWhiteSpace(t.CodeAquaMaps) And String.Compare(t.CodeAquaMaps, Me.CodeAquaMaps, True) = 0) Or
+                       (Not String.IsNullOrWhiteSpace(t.CodeAphia) And String.Compare(t.CodeAphia, Me.CodeAphia, True) = 0) Or
                        (Not String.IsNullOrWhiteSpace(t.CodeFAO) And String.Compare(t.CodeFAO, Me.CodeFAO, True) = 0)
             End If
             Return MyBase.Equals(obj)
@@ -480,6 +495,9 @@ Public Class gridDefineTaxonomy
                     .CodeSAUP = Me.CodeSAUP
                     .CodeFishBase = Me.CodeFB
                     .CodeSeaLifeBase = Me.CodeSLB
+                    .CodeAquaMaps = Me.CodeAquaMaps
+                    .CodeOBIS = Me.CodeOBIS
+                    .CodeAphia = Me.CodeAphia
                     .CodeLSID = Me.CodeLSID
                     .CodeFAO = Me.CodeFAO
                     .Species = Me.Species
@@ -577,6 +595,9 @@ Public Class gridDefineTaxonomy
             Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(eVarNameFlags.CodeFB)
             Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(eVarNameFlags.CodeSLB)
             Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(eVarNameFlags.CodeSAUP)
+            Me(0, eColumnTypes.CodeAquaMaps) = New EwEColumnHeaderCell(eVarNameFlags.CodeAquaMaps)
+            Me(0, eColumnTypes.CodeOBIS) = New EwEColumnHeaderCell(eVarNameFlags.CodeOBIS)
+            Me(0, eColumnTypes.CodeAphia) = New EwEColumnHeaderCell(eVarNameFlags.CodeAphia)
             Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(eVarNameFlags.CodeFAO)
             Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(eVarNameFlags.CodeLSID)
         End If
@@ -736,6 +757,9 @@ Public Class gridDefineTaxonomy
             Me(iRow, eColumnTypes.CodeSLB).Value = ti.CodeSLB
             Me(iRow, eColumnTypes.CodeFAO).Value = ti.CodeFAO
             Me(iRow, eColumnTypes.CodeLSID).Value = ti.CodeLSID
+            Me(iRow, eColumnTypes.CodeAquaMaps).Value = ti.CodeAquaMaps
+            Me(iRow, eColumnTypes.CodeOBIS).Value = ti.CodeOBIS
+            Me(iRow, eColumnTypes.CodeAphia).Value = ti.CodeAphia
         End If
 
         Me(iRow, eColumnTypes.Status).Value = ti.Status
@@ -800,8 +824,14 @@ Public Class gridDefineTaxonomy
             cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
             Me(iRow, eColumnTypes.CodeSAUP) = cell
 
+            cell = New EwECell(ti.CodeOBIS, GetType(Long))
+            cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
+            Me(iRow, eColumnTypes.CodeOBIS) = cell
+
             Me(iRow, eColumnTypes.CodeFAO) = New EwECell(ti.CodeFAO, GetType(String))
             Me(iRow, eColumnTypes.CodeLSID) = New EwECell(ti.CodeLSID, GetType(String))
+            Me(iRow, eColumnTypes.CodeAquaMaps) = New EwECell(ti.CodeAquaMaps, GetType(String))
+            Me(iRow, eColumnTypes.CodeAphia) = New EwECell(ti.CodeAphia, GetType(String))
 
         End If
 
@@ -863,6 +893,9 @@ Public Class gridDefineTaxonomy
             Case eColumnTypes.PropC : ti.PropC = CSng(val)
             Case eColumnTypes.CodeFB : ti.CodeFB = CLng(val)
             Case eColumnTypes.CodeSLB : ti.CodeSLB = CLng(val)
+            Case eColumnTypes.CodeAquaMaps : ti.CodeAquaMaps = CStr(val)
+            Case eColumnTypes.CodeOBIS : ti.CodeOBIS = CLng(val)
+            Case eColumnTypes.CodeAphia : ti.CodeAphia = CStr(val)
             Case eColumnTypes.CodeSAUP : ti.CodeSAUP = CLng(val)
             Case eColumnTypes.CodeFAO : ti.CodeFAO = CStr(val)
             Case eColumnTypes.CodeLSID : ti.CodeLSID = CStr(val)

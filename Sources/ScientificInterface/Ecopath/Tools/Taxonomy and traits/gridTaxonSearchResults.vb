@@ -51,9 +51,12 @@ Public Class gridTaxonSearchResults
         Order
         [Class]
         'Code
-        CodeSAUP
         CodeFB
         CodeSLB
+        CodeAquaMaps
+        CodeOBIS
+        CodeAphia
+        CodeSAUP
         CodeFAO
         CodeLSID
     End Enum
@@ -155,6 +158,9 @@ Public Class gridTaxonSearchResults
             'Me(0, eColumnTypes.Code) = New EwEColumnHeaderCell(SharedResources.HEADER_CODE)
             Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(eVarNameFlags.CodeFB)
             Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(eVarNameFlags.CodeSLB)
+            Me(0, eColumnTypes.CodeAquaMaps) = New EwEColumnHeaderCell(eVarNameFlags.CodeAquaMaps)
+            Me(0, eColumnTypes.CodeOBIS) = New EwEColumnHeaderCell(eVarNameFlags.CodeOBIS)
+            Me(0, eColumnTypes.CodeAphia) = New EwEColumnHeaderCell(eVarNameFlags.CodeAphia)
             Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(eVarNameFlags.CodeSAUP)
             Me(0, eColumnTypes.CodeFAO) = New EwEColumnHeaderCell(eVarNameFlags.CodeFAO)
             Me(0, eColumnTypes.CodeLSID) = New EwEColumnHeaderCell(eVarNameFlags.CodeLSID)
@@ -184,11 +190,11 @@ Public Class gridTaxonSearchResults
 
     Private Function IsNullOrEmpty(res As ITaxonSearchData) As Boolean
         If (res Is Nothing) Then Return True
-        Return String.IsNullOrWhiteSpace(res.Common) And _
-               String.IsNullOrWhiteSpace(res.Species) And _
-               String.IsNullOrWhiteSpace(res.Genus) And _
-               String.IsNullOrWhiteSpace(res.Family) And _
-               String.IsNullOrWhiteSpace(res.Order) And _
+        Return String.IsNullOrWhiteSpace(res.Common) And
+               String.IsNullOrWhiteSpace(res.Species) And
+               String.IsNullOrWhiteSpace(res.Genus) And
+               String.IsNullOrWhiteSpace(res.Family) And
+               String.IsNullOrWhiteSpace(res.Order) And
                String.IsNullOrWhiteSpace(res.Class)
     End Function
 
@@ -267,10 +273,12 @@ Public Class gridTaxonSearchResults
                 'Case eColumnTypes.Code: value = result.SourceKey
             Case eColumnTypes.CodeFB : value = result.CodeFB
             Case eColumnTypes.CodeSLB : value = result.CodeSLB
+            Case eColumnTypes.CodeAquaMaps : value = result.CodeAquaMaps
+            Case eColumnTypes.CodeOBIS : value = result.CodeOBIS
+            Case eColumnTypes.CodeAphia : value = result.CodeAphia
             Case eColumnTypes.CodeSAUP : value = result.CodeSAUP
             Case eColumnTypes.CodeFAO : value = result.CodeFAO
             Case eColumnTypes.CodeLSID : value = result.CodeLSID
-
         End Select
 
         If (value Is Nothing) Then value = ""

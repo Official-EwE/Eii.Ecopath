@@ -61,7 +61,7 @@ Public Class cTransectVectorEditor
 
         If Not TransectAt(e.Location, map, Me.m_transectEdit, Me.m_transectEditMode) Then
 
-            ' Get transect names
+            ' Create a new transect frin existung transect names
             Dim lNames As New List(Of String)
             Dim strMask As String = My.Resources.DEFAULT_TRANSECT_NAME
             For Each t As cTransect In data.Transects
@@ -69,10 +69,12 @@ Public Class cTransectVectorEditor
             Next
             Dim n As Integer = EwEUtils.Utilities.cStringUtils.GetNextNumber(lNames.ToArray, strMask)
 
+            ' Start new transect at this location
             Me.m_transectEdit = New cTransect(String.Format(strMask, n)) With {
-                .Start = map.PointToMapExact(e.Location),
+                .Start = map.PointToLonLat(e.Location),
                 .End = .Start
             }
+            ' Start is fixed, and end is being edited now
             Me.m_transectEditMode = eEditModeType.End
             data.Add(Me.m_transectEdit)
 
@@ -95,7 +97,7 @@ Public Class cTransectVectorEditor
 
         If (Me.IsEditing) Then
 
-            Dim loc As PointF = map.PointToMapExact(e.Location)
+            Dim loc As PointF = map.PointToLonLat(e.Location)
             Dim td As cTransectVectorDisplay = DirectCast(Me.Layer, cTransectVectorDisplay)
             Dim data As cTransectDatastructures = td.Data
 
@@ -105,7 +107,7 @@ Public Class cTransectVectorEditor
                 Case eEditModeType.End
                     Me.m_transectEdit.End = loc
                 Case eEditModeType.Line
-                    Dim locOrg As PointF = map.PointToMapExact(Me.m_ptClickOrg)
+                    Dim locOrg As PointF = map.PointToLonLat(Me.m_ptClickOrg)
                     Dim dx As Single = loc.X - locOrg.X
                     Dim dy As Single = loc.Y - locOrg.Y
                     Me.m_transectEdit.Start = New PointF(Me.m_ptfStartOrg.X + dx, Me.m_ptfStartOrg.Y + dy)
@@ -141,7 +143,7 @@ Public Class cTransectVectorEditor
 
         Dim t As cTransect = Nothing
         Dim editmode As eEditModeType = eEditModeType.NotSet
-        Dim ptMap As PointF = map.PointToMapExact(ptMouse)
+        Dim ptMap As PointF = map.PointToColRowExact(ptMouse)
 
         If TransectAt(ptMouse, map, t, editmode) Then
             Return Cursors.Hand
@@ -160,13 +162,13 @@ Public Class cTransectVectorEditor
         Dim sDist As Single = 10
         For Each t In data.Transects
 
-            ptStart = Me.LocationToScreen(t.Start, map)
+            ptStart = map.LonLatToPoint(t.Start)
             If IsNear(ptStart, ptMouse, sDist) Then
                 editMode = eEditModeType.Start
                 Return True
             End If
 
-            ptEnd = Me.LocationToScreen(t.End, map)
+            ptEnd = map.LonLatToPoint(t.End)
             If IsNear(ptEnd, ptMouse, sDist) Then
                 editMode = eEditModeType.End
                 Return True
@@ -206,13 +208,6 @@ Public Class cTransectVectorEditor
         Next
         t = Nothing
         Return False
-
-    End Function
-
-    Private Function LocationToScreen(ptf As PointF, map As ucMap) As Point
-
-        Dim bm As cEcospaceBasemap = map.Basemap
-        Return map.MapToPoint(New PointF(bm.LonToCol(ptf.X), bm.LatToRow(ptf.Y)))
 
     End Function
 
