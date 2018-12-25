@@ -365,6 +365,7 @@ Public Class frmEwE6
         ' Prepare Icon
         Me.Icon = cEwEIcon.Current()
 
+
     End Sub
 
 #End Region ' Constructors
@@ -900,7 +901,7 @@ Public Class frmEwE6
 
 #End Region ' Initialization
 
-#Region " Server time "
+#Region " Validation "
 
     Private Sub ValidateSetup()
         Me.m_bgw.RunWorkerAsync()
@@ -933,7 +934,7 @@ Public Class frmEwE6
 
     End Sub
 
-#End Region ' Server time
+#End Region ' Validation
 
 #Region " Properties "
 
