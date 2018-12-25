@@ -128,18 +128,17 @@ Public Class cTransect
     ''' <returns>The cells.</returns>
     ''' <remarks>
     ''' Once determined, the cells are cached until the transect is modified.
+    ''' See https://en.wikipedia.org/wiki/Bresenham's_line_algorithm 
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Function Cells(bm As cEcospaceBasemap) As Point()
 
         If (Me.m_cells.Count = 0) Then
 
-            ' https://en.wikipedia.org/wiki/Bresenham's_line_algorithm
-
-            Dim x0 As Single = bm.LonToCol(Me.m_ptStart.X)
-            Dim y0 As Single = bm.LatToRow(Me.m_ptStart.Y)
-            Dim x1 As Single = bm.LonToCol(Me.m_ptEnd.X)
-            Dim y1 As Single = bm.LatToRow(Me.m_ptEnd.Y)
+            Dim x0 As Integer = CInt(Math.Floor(bm.LonToCol(Me.m_ptStart.X)))
+            Dim y0 As Integer = CInt(Math.Floor(bm.LatToRow(Me.m_ptStart.Y)))
+            Dim x1 As Integer = CInt(Math.Floor(bm.LonToCol(Me.m_ptEnd.X)))
+            Dim y1 As Integer = CInt(Math.Floor(bm.LatToRow(Me.m_ptEnd.Y)))
 
             If Math.Abs(y1 - y0) < Math.Abs(x1 - x0) Then
 
@@ -252,53 +251,61 @@ Public Class cTransect
     End Function
 
     ''' <summary>
-    ''' https://en.wikipedia.org/wiki/Bresenham's_line_algorithm
+    ''' Get pixels on a line by increasing along the X axis.
     ''' </summary>
     ''' <param name="x0"></param>
     ''' <param name="y0"></param>
     ''' <param name="x1"></param>
     ''' <param name="y1"></param>
-    Private Sub GetCellsX(x0 As Single, y0 As Single, x1 As Single, y1 As Single)
+    ''' <remarks>
+    ''' See https://en.wikipedia.org/wiki/Bresenham's_line_algorithm 
+    ''' </remarks>
+    Private Sub GetCellsX(x0 As Integer, y0 As Integer, x1 As Integer, y1 As Integer)
 
-        Dim dx = x1 - x0
-        Dim dy = Math.Abs(y1 - y0)
-        Dim yi = If(y1 < y0, -1, 1)
-        Dim D = 2 * dy - dx
-        Dim y = y0
+        Dim dx As Integer = x1 - x0
+        Dim dy As Integer = Math.Abs(y1 - y0)
+        Dim yi As Integer = If(y1 < y0, -1, 1)
+        Dim D As Integer = 2 * dy - dx
+        Dim y As Integer = y0
 
-        For x As Integer = CInt(Math.Floor(x0)) To CInt(Math.Floor(x1))
-            m_cells.Add(New Point(x, CInt(Math.Floor(y))))
+        For x As Integer = x0 To x1
+            Me.m_cells.Add(New Point(x, y))
             If D > 0 Then
                 y = y + yi
                 D = D - 2 * dx
             End If
             D = D + 2 * dy
         Next
+
     End Sub
 
     ''' <summary>
-    ''' https://en.wikipedia.org/wiki/Bresenham's_line_algorithm
+    ''' Get pixels on a line by increasing along the Y axis.
     ''' </summary>
     ''' <param name="x0"></param>
     ''' <param name="y0"></param>
     ''' <param name="x1"></param>
     ''' <param name="y1"></param>
-    Private Sub GetCellsY(x0 As Single, y0 As Single, x1 As Single, y1 As Single)
+    ''' <remarks>
+    ''' See https://en.wikipedia.org/wiki/Bresenham's_line_algorithm 
+    ''' </remarks>
+    Private Sub GetCellsY(x0 As Integer, y0 As Integer, x1 As Integer, y1 As Integer)
 
-        Dim dx = Math.Abs(x1 - x0)
-        Dim dy = y1 - y0
-        Dim xi = If(x1 < x0, -1, 1)
-        Dim D = 2 * dx - dy
-        Dim x = x0
+        Dim dx As Integer = Math.Abs(x1 - x0)
+        Dim dy As Integer = y1 - y0
+        Dim xi As Integer = If(x1 < x0, -1, 1)
+        Dim D As Integer = 2 * dx - dy
+        Dim x As Integer = x0
 
-        For y As Integer = CInt(Math.Floor(y0)) To CInt(Math.Floor(y1))
-            m_cells.Add(New Point(CInt(Math.Floor(x)), y))
+        For y As Integer = y0 To y1
+            Me.m_cells.Add(New Point(x, y))
             If D > 0 Then
                 x = x + xi
                 D = D - 2 * dy
             End If
             D = D + 2 * dx
         Next
+
     End Sub
 
 #End Region ' Internals
