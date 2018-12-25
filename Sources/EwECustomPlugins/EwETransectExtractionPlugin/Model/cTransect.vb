@@ -144,15 +144,15 @@ Public Class cTransect
             If Math.Abs(y1 - y0) < Math.Abs(x1 - x0) Then
 
                 If x0 > x1 Then
-                    GetCellsLow(x1, y1, x0, y0)
+                    GetCellsX(x1, y1, x0, y0)
                 Else
-                    GetCellsLow(x0, y0, x1, y1)
+                    GetCellsX(x0, y0, x1, y1)
                 End If
             Else
                 If y0 > y1 Then
-                    GetCellsHigh(x1, y1, x0, y0)
+                    GetCellsY(x1, y1, x0, y0)
                 Else
-                    GetCellsHigh(x0, y0, x1, y1)
+                    GetCellsY(x0, y0, x1, y1)
                 End If
             End If
         End If
@@ -233,7 +233,7 @@ Public Class cTransect
     ''' <param name="iIndex"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function Summary(bm As cEcospacebasemap, l As cEcospaceLayer, iIndex As Integer) As cTransectSummary
+    Public Function Summary(bm As cEcospaceBasemap, l As cEcospaceLayer, iIndex As Integer) As cTransectSummary
         Return New cTransectSummary(Me, bm, l, iIndex)
     End Function
 
@@ -258,14 +258,11 @@ Public Class cTransect
     ''' <param name="y0"></param>
     ''' <param name="x1"></param>
     ''' <param name="y1"></param>
-    Private Sub GetCellsLow(x0 As Single, y0 As Single, x1 As Single, y1 As Single)
+    Private Sub GetCellsX(x0 As Single, y0 As Single, x1 As Single, y1 As Single)
+
         Dim dx = x1 - x0
-        Dim dy = y1 - y0
-        Dim yi = 1
-        If dy < 0 Then
-            yi = -1
-            dy = -dy
-        End If
+        Dim dy = Math.Abs(y1 - y0)
+        Dim yi = If(y1 < y0, -1, 1)
         Dim D = 2 * dy - dx
         Dim y = y0
 
@@ -286,15 +283,11 @@ Public Class cTransect
     ''' <param name="y0"></param>
     ''' <param name="x1"></param>
     ''' <param name="y1"></param>
-    Private Sub GetCellsHigh(x0 As Single, y0 As Single, x1 As Single, y1 As Single)
+    Private Sub GetCellsY(x0 As Single, y0 As Single, x1 As Single, y1 As Single)
 
-        Dim dx = x1 - x0
+        Dim dx = Math.Abs(x1 - x0)
         Dim dy = y1 - y0
-        Dim xi = 1
-        If dx < 0 Then
-            xi = -1
-            dx = -dx
-        End If
+        Dim xi = If(x1 < x0, -1, 1)
         Dim D = 2 * dx - dy
         Dim x = x0
 
