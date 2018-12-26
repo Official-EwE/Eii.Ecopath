@@ -762,8 +762,8 @@ Namespace Controls.Map
             Dim ptf As New PointF(0, 0)
             Dim bm As cEcospaceBasemap = Me.Basemap
             If (bm IsNot Nothing) Then
-                ptf.X = Math.Min(bm.InCol, Math.Max(1, 1 + (ptScreen.X - Me.m_maprect.X) / Me.m_cellsize))
-                ptf.Y = Math.Min(bm.InRow, Math.Max(1, 1 + (ptScreen.Y - Me.m_maprect.Y) / Me.m_cellsize))
+                ptf.X = Math.Min(bm.InCol + 1, Math.Max(1, 1 + (ptScreen.X - Me.m_maprect.X) / Me.m_cellsize))
+                ptf.Y = Math.Min(bm.InRow + 1, Math.Max(1, 1 + (ptScreen.Y - Me.m_maprect.Y) / Me.m_cellsize))
             End If
             Return ptf
 
