@@ -1,86 +1,28 @@
-== FIXED ==
-V Pedigree not drawing in pedigree grid (but data is there?), not showing on grids
-V In the MTI, the options to change the image are not showing up
-V In the keystone index, the options to change the figure to include biomasses are not showing up 
-V Group capacity model grid: use fixed column widths
-V MPA dyn: export button needs tooltip
-V MPA dyn: exported csv needs year + month, not just year
-V MPA dyn: export CSV link opens file, not the folder
-V New movement parm in Ecospace: movement rel to cell fitness (not cap; prod as ratio of loss) 0 = default
-V Ecospace dispersal grid: EatEffBad can be deleted from the UI? 
-V Ecosampler: add means to select batch run start sample index
-V Import Hake HSPEN Depth does not set depth limits correctly (40-1000m imports to limits 0-1m)
-V Copy layer style does not work between env driver layers
-V Navigator > Ecospace: move habitat foraging usage nav item up
-V Add "Auto save settings" group box in Ecospace Parameters
-V Add Ecospace result writers to file management UI 
-V Add cStringUtils.ToParagraph, adding line breaks after a preferred no. of characters, and use this in tooltips
-V Edit env drivers; changes in name, units, and descriptions rarely stick
-V Edit layer UI: add field to edit units
-V Edit layer UI: allow remarks for layers
-V Remove importance layers from Ecospace maps UI; MPA opt only
-V Ecosim CSV output: "landings" not appended to file name
-V MC: blocked QB variables still perturbed; should check QBinput and not include GS into IsVariable assessment
-V Pedigree issues: remove ability to add custom CVs in pedigree: that was a bad idea
-V Catchabilities column too small
-V Run Ecosim: cannot highlight last group
-V Time series shapes grid should not allow editing of points, type, but should be able to edit weight and name
-V Policy Optimization does not run; boolean MPA maps stop the system
-V Stepwise Fitting: allow stopping! Issue with Application status feedback; forgets that Stop issue is set
-V Stepwise Fitting: window too heigh for low-res monitors
-V Copy/paste group names does not work
-V Tutorial 1: "Edit Fleets" vs "Define Fleets"
-V Tutorial 1: Move stanza setup info to earlier on in the exercise text
-V Tutorial 1: Add temperature 10C
-V Tutorial 1: Parameterization > Ecopath Output
-V Define multi-stanza: extend labels to leading (B), leading (QB)
-V Exercise 2f/2d, cycles: no error feedback when cannot estimate?
-   - I brought back missing parameter status feedback in the UI, and made sure silenced Ecopath messages are sent out after the run
-V Add custom currency unit
-V Validation status error message should explain why validation fails
-V Ecopath output value: Add units to fleet columns
-V Clear "N. spline points" in Fit2TS.NudUpDown, run: Exception unable to convert empty string to integer
-V Ecosampler: record sum of squares with each sample
-V Changing variables through quick edit does not invalidate run
-V Apply functional response > Define shape > OK does not update shape data in dlg
-V EcoInd histogram: allow user to set number of bins, remember this
-V StepWiseFitting: do not disable entire screen when running; allow vert scroll, stopping
-X StepwiseFitting: run selection buttons are not intuitive: hard to select "baseline and no anomaly", for instance
-V EcosimScenarioFleetGroupCatchability table blocked Ecosim scenario delete
-V Default XML header missing various details
-V Run Ecospace Y axis graph legend only correct for Biomass, not for others
-V Tools icon in Nav tree does not have transparent background
-V Generic EwE ASCII map import should use US formatting
-V Generic EwE ASCII map import should allow the use of .txt extension too
-V Allow custom monetary units
-V Disable respiration warning for MS groups: non-feeding last stanza high mort -> resp warning
-V Ecosampler does not preserve and reload SS
-V Ecosampler does not capture correct SS
-V Ecosampler crashes when batch running 
-V Ecosampler does not correctly pick start sample
-V Ecosampler maintains running progress when finished
-V Applying fleet effort to pred/prey interactions not drawn in the mediation pie charts
+== NEEDS FIXING FOR EWE 6.6 ==
   
-== FIXES TAHT NEED TESTING ==
+== FIXES THAT NEED TESTING ==
 # On some monitors Tools > Options does not stretch all the way to the right
 # Flow diagram does not display units when ColorUsage is set to Flow
 # Color gradients do not show proper fleet and group colors, but only standard EwE gradient
 # Rewrite map logic! Double-buffering can cause out of memory errors. Perhaps simple fix will do? If not, manage zooming in code (not in WinForms)
 # Ecospace map cursor does not change size when changing zoom level. Maintain cursor in map instead of in layer editors?
 # Opening old model: show which old EwE version last used the model in upgrade message
+# EcoInd histogram shows no variaton where MCMC does: Ecopath does not calc stats when in Sensitivity run
 
 == BUGS ==
+! Sometimes biomass plot stay empty when re-running MC? 
+! Edit MultiStanza: unable to fix start age of 1 group if two groups start at 0. Can be corrected in Define Groups though
+! Cannot reorganize MPAs well in UI
+! Applying fleet effort to pred/prey interactions does not seem to work
+? ENA: After clicking around a lot, MTI table (and others) stop appearing. The wait cursor is spinning, and the status bar is saying "executing plug-in".
   Read only models: do not allow users to create/delete items
   Connect ext data -> define ext data -> connection list does not refresh
   External data grid add incremental updates, do not total refresh 
   Sort out confusing terminology in Space: fn responses, env responses, habitat foraging responses
   Ecowriter: remark column size to width, not size to content
   ImportLayer: use ApplicationStatus to notify user what's happening
-  Sometimes biomass plot stay empty when re-running MC? 
   MC: index out of range in Ecosim for larger models. Could be related to QB resample bug that was just fixed
-  Edit MultiStanza: unable to fix start age of 1 group if two groups start at 0. Can be corrected in Define Groups though
   Fleet-based map drawers in RunEcospace do not draw MPAs
-  ENA: After clicking around a lot, MTI table (and others) stop appearing. The wait cursor is spinning, and the status bar is saying "executing plug-in".
   Start page empty for most machines: IE compatibility flag not set in installer?
   Define multi-stanza: vbK = -9999 validation failure warning popup. Provide default instead!
   Ecosim FD sometimes does not animate on Macs? Try running sim, opening, closing diagram, in various ways. Perhaps timer is not properly released? Slider works
@@ -89,14 +31,13 @@ V Applying fleet effort to pred/prey interactions not drawn in the mediation pie
   Import TS type 2 (environmental forcing, which translates to a FF): should be able to leave pool code field empty
   Import TS type 2 should overwrite any function with the same name!
   Import TS type 2 should retain last value for NULL data points (instead of creating 0 forcing points)
-  EcoInd histogram shows no variaton where MCMC does: Ecopath does not calc stats when in Sensitivity run
   EcoInd histogram items bars sometimes drawn like an X when axis uses very small ticks
   Monte Carlo: Output panel alignment can be pretty weird (computed values misaligned)
-  Cannot reorganize MPAs well in UI
-! Apply foraging responses: X-axis on application lot does not properly show X axis!!!
+! Apply foraging responses: X-axis on application plot does not properly show X axis!!!
 ? Apply foraging responses - new UI is (too) slow when applying. Perhaps something is wrong?
   Run Ecospace shows excluded cells in red, regardless of the customized colour
-  Applying fleet effort to pred/prey interactions does not seem to work
+  Need AutoRUn system (just like AutoSave) where plug-ins can register and be controlled to run with Path, Sim, and Space
+   - Although this is a feature, this is urgent. Users need to be able to see at a glance which components may be slowing down their system
   
 == FIXED BUT NOT LOGGED YET ==
 V EcoIND does not correctly compute "catch of mammals, seabirds and reptiles" indicator
@@ -122,6 +63,8 @@ V EcoIND does not correctly compute "catch of mammals, seabirds and reptiles" in
   Monte Carlo: make all entries on settings page permanent (in app settings)
   StepWise fitting: store and retrieve fitted params (vuls, anomaly shape)
   Ecosampler: warn if no autosaving is selected for loaded components (path, sim, space, ..)
+  Database performance boost: when in batch mode, do not get and release writers, but cache them instead! 
+  - Getting a writer obtains the entire remote table. This is incredibly costly re. performance.
  
 == NOT UNASSESSED ==
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
