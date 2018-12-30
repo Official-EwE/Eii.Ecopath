@@ -308,8 +308,8 @@ Public Class cMSEPluginPoint
 
 #Region " UI integration "
 
-    Public ReadOnly Property ControlText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String _
+        Implements EwEPlugin.IPlugin.DisplayName
         Get
             Return My.Resources.CAPTION
         End Get

@@ -63,7 +63,7 @@ Public Class cTransectDefinePlugin
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "Transect input"
+            Return "CosmInsiteTransectInput"
         End Get
     End Property
 
@@ -105,7 +105,7 @@ Public Class cTransectDefinePlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String Implements IGUIPlugin.DisplayName
         Get
             Return My.Resources.CAPTION_IN
         End Get

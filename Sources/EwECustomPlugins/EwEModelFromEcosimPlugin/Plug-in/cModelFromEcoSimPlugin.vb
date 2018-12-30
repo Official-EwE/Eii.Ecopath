@@ -44,6 +44,7 @@ Public Class cModelFromEcosimPluginPoint
     Implements IEcosimRunCompletedPlugin
     Implements IMenuItemPlugin
     Implements IAutoSavePlugin
+    Implements IAutoRunPlugin
 
     ' ToDo: consider what month to generate the models for. Right now, the default is the first month of the year
 
@@ -73,6 +74,12 @@ Public Class cModelFromEcosimPluginPoint
         End Get
     End Property
 
+    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return My.Resources.DISPLAYNAME
+        End Get
+    End Property
+
     Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
         Get
             Return ""
@@ -92,7 +99,7 @@ Public Class cModelFromEcosimPluginPoint
 
     Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "ndSaveEcopathModelFromEcosim"
+            Return "SaveEcopathModelFromEcosim"
         End Get
     End Property
 
@@ -112,21 +119,15 @@ Public Class cModelFromEcosimPluginPoint
         End Get
     End Property
 
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
-        Get
-            Return My.Resources.CONTROL_TEXT
-        End Get
-    End Property
-
     Public ReadOnly Property ControlTooltipText() As String _
         Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
-            Return "Generate Ecopath models from Ecosim time steps"
+            Return My.Resources.DISPLAY_TOOLTIP
         End Get
     End Property
 
-    Public Sub OnControlClick(ByVal sender As Object, _
-                              ByVal e As System.EventArgs, _
+    Public Sub OnControlClick(ByVal sender As Object,
+                              ByVal e As System.EventArgs,
                               ByRef frmPlugin As System.Windows.Forms.Form) _
                               Implements EwEPlugin.IGUIPlugin.OnControlClick
         If (Me.m_uic IsNot Nothing) Then
@@ -168,11 +169,6 @@ Public Class cModelFromEcosimPluginPoint
         End Set
     End Property
 
-    Public Function AutoSaveName() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveName
-        Return Me.ControlText
-    End Function
-
     Public Function AutoSaveSubPath() As String _
         Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
         Return Me.m_data.OutputPath
@@ -184,6 +180,23 @@ Public Class cModelFromEcosimPluginPoint
     End Function
 
 #End Region ' Autosaving 
+
+#Region " Auto-run "
+
+    Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
+        Get
+            Return Me.m_data.Enabled
+        End Get
+        Set(value As Boolean)
+            Me.m_data.Enabled = value
+        End Set
+    End Property
+
+    Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
+        Return New eCoreComponentType() {eCoreComponentType.EcoSim}
+    End Function
+
+#End Region ' Auto-run
 
 #Region " Ecosim integration "
 
@@ -262,9 +275,9 @@ Public Class cModelFromEcosimPluginPoint
 
     End Sub
 
-    Public Sub EcosimEndTimeStepPost(ByRef BiomassAtTimestep() As Single, _
-                                     ByVal EcosimDatastructures As Object, _
-                                     ByVal iTime As Integer, _
+    Public Sub EcosimEndTimeStepPost(ByRef BiomassAtTimestep() As Single,
+                                     ByVal EcosimDatastructures As Object,
+                                     ByVal iTime As Integer,
                                      ByVal Ecosimresults As Object) _
                                      Implements EwEPlugin.IEcosimEndTimestepPostPlugin.EcosimEndTimeStepPost
 

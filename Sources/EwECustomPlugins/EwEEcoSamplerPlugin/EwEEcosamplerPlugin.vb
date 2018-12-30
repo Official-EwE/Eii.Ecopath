@@ -70,6 +70,12 @@ Public Class EwEEcosamplerPlugin
         End Get
     End Property
 
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return My.Resources.DISPLAYNAME
+        End Get
+    End Property
+
     Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
         Get
             Return ""
@@ -150,13 +156,6 @@ Public Class EwEEcosamplerPlugin
         Get
             ' Return My.Resources.LED
             Return Nothing
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
-        Get
-            Return My.Resources.TABTEXT
         End Get
     End Property
 

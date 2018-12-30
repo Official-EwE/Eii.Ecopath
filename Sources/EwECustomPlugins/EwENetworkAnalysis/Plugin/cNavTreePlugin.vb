@@ -44,10 +44,10 @@ Public MustInherit Class cNavTreeControlPlugin
         Implements EwEPlugin.IGUIPlugin.ControlImage
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="EwEPlugin.IGUIPlugin.ControlText"/>
+    ''' <inheritdoc cref="EwEPlugin.IPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
-    Public MustOverride ReadOnly Property ControlText() As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
+    Public MustOverride ReadOnly Property DisplayName() As String _
+        Implements EwEPlugin.IPlugin.DisplayName
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IGUIPlugin.ControlTooltipText"/>

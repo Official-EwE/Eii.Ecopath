@@ -165,4 +165,13 @@
   <data name="RASTER_TRANSECT_NAME" xml:space="preserve">
     <value>Transect cells</value>
   </data>
+  <data name="CAPTION_RECORD" xml:space="preserve">
+    <value>Transects recorder</value>
+  </data>
+  <data name="CAPTION_STORAGE" xml:space="preserve">
+    <value>Transects storage</value>
+  </data>
+  <data name="TOOLTIP_OUT" xml:space="preserve">
+    <value>View transect summaries</value>
+  </data>
 </root>

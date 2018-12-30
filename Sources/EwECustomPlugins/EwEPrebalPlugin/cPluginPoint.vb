@@ -64,7 +64,7 @@ Public Class cPluginPoint
     Public ReadOnly Property Author As String _
          Implements IPlugin.Author
         Get
-            Return "Sheila Heymans (SAMS), Jeroen Steenbeek (EII), Marta Coll (EII)"
+            Return "Sheila Heymans, Jeroen Steenbeek, Marta Coll"
         End Get
     End Property
 
@@ -74,7 +74,7 @@ Public Class cPluginPoint
     Public ReadOnly Property Contact As String _
         Implements IPlugin.Contact
         Get
-            Return "Ecopath development team: ewedevteam@gmail.com"
+            Return "mailto:ewedevteam@gmail.com"
         End Get
     End Property
 
@@ -84,7 +84,17 @@ Public Class cPluginPoint
     Public ReadOnly Property Description As String _
         Implements IPlugin.Description
         Get
-            Return "Ecopath pre-balance diagnostics plug-in. This plug-in nests a series of graphs into the Ecopath output tools section, where users can explore biomass, production and consumption trends across the trophic levels in their foodweb. This plug-in is based on theory posed by Jason Link in 'Adding rigor to ecological network models by evaluating a set of pre-balance diagnostics: A plea for PREBAL' (http://www.sciencedirect.com/science/article/pii/S0304380010001468)"
+            Return My.Resources.CONTROL_TOOLTIP
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IPlugin.DisplayName"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property DisplayName As String _
+        Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return My.Resources.DISPLAYNAME
         End Get
     End Property
 
@@ -134,16 +144,6 @@ Public Class cPluginPoint
          Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="IGUIPlugin.ControlText"/>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText As String _
-        Implements IGUIPlugin.ControlText
-        Get
-            Return "Pre-bal"
         End Get
     End Property
 

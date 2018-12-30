@@ -274,7 +274,7 @@ Public Class cENARPlugin
     ''' this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IPlugin.DisplayName
         Get
             Return My.Resources.MENU_SAVE_ENAR
         End Get
@@ -378,10 +378,6 @@ Public Class cENARPlugin
 #End Region ' User Interface plug-in implementation
 
 #Region " Auto-save plug-in implementation "
-
-    Public Function AutoSaveName() As String Implements IAutoSavePlugin.AutoSaveName
-        Return My.Resources.AUTOSAVE_NAME
-    End Function
 
     Public Function AutoSaveType() As eAutosaveTypes Implements IAutoSavePlugin.AutoSaveType
         Return eAutosaveTypes.EcospaceResults

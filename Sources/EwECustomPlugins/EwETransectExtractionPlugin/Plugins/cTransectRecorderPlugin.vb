@@ -43,9 +43,15 @@ Public Class cTransectRecorderPlugin
 
 #End Region ' Private vars
 
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
+        Get
+            Return My.Resources.CAPTION_RECORD
+        End Get
+    End Property
+
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "Transect recorder"
+            Return "CosmInsiteTransectRecorder"
         End Get
     End Property
 

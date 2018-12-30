@@ -57,6 +57,12 @@ Public Class cEwENetworkAnalysisOptionsPlugin
         End Get
     End Property
 
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
+        Get
+            Return "Network Analysis options"
+        End Get
+    End Property
+
     Private ReadOnly Property IPlugin_Name As String Implements IPlugin.Name
         Get
             Return "ndENAOptions"

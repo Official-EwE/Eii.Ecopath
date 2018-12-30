@@ -152,11 +152,18 @@ Public Class cWoRMSPluginPoint
         End Get
     End Property
 
+    Public ReadOnly Property DisplayName As String _
+        Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return My.Resources.DISPLAYNAME
+        End Get
+    End Property
+
     ''' <inheritdocs cref="IPlugin.Name"/>
     Friend ReadOnly Property Name() As String _
         Implements IPlugin.Name
         Get
-            Return My.Resources.ENGINE_NAME
+            Return "WoRMSTaxonSearchEnginePlugin"
         End Get
     End Property
 
@@ -191,7 +198,7 @@ Public Class cWoRMSPluginPoint
     End Function
 
     ''' <inheritdocs cref="IDataProducerPlugin.IsEnabled"/>
-    Friend Function IsEnabled(ByVal typeData As System.Type, _
+    Friend Function IsEnabled(ByVal typeData As System.Type,
                               ByVal runType As EwEUtils.Core.IRunType) As Boolean _
         Implements IDataProducerPlugin.IsEnabled
         Return Me.m_bEnabled

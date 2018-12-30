@@ -50,7 +50,7 @@ Public Class cTransectResultWriterPlugin
         Me.m_data = cTransectDatastructures.Instance(Me.m_core)
     End Sub
 
-    Public Overrides ReadOnly Property DisplayName As String
+    Public Overrides ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
         Get
             Return "Transect CSV summary"
         End Get
@@ -58,7 +58,7 @@ Public Class cTransectResultWriterPlugin
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "Transect result writer"
+            Return "CosmInsiteTransectResultWriter"
         End Get
     End Property
 

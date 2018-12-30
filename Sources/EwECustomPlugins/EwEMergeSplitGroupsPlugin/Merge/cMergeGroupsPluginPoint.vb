@@ -47,8 +47,8 @@ Public Class cMergeGroupsPluginPoint
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String _
+        Implements EwEPlugin.IPlugin.DisplayName
         Get
             Return My.Resources.MENUITEM_MERGE_TEXT
         End Get

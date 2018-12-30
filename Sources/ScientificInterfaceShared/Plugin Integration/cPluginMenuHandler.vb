@@ -208,7 +208,7 @@ Namespace Integration
                 If Not bError Then
                     If (bPlace) Then
                         ' Create menu item and add it
-                        tsi = New ToolStripMenuItem(ip.ControlText, ip.ControlImage, AddressOf OnPluginMenuItemClick)
+                        tsi = New ToolStripMenuItem(ip.DisplayName, ip.ControlImage, AddressOf OnPluginMenuItemClick)
                         ' Set name
                         tsi.Name = ip.Name
                         ' Set tooltip text

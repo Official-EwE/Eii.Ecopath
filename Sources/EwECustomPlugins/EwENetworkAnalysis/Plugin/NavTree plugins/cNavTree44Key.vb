@@ -33,7 +33,7 @@ Public Class cNavTree44Key
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ControlText() As String
+    Public Overrides ReadOnly Property DisplayName() As String
         Get
             Return My.Resources.PAGE_KEYSTONENESS
         End Get

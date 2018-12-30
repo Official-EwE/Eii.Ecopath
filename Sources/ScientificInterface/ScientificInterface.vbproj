@@ -507,6 +507,19 @@
     <Compile Include="Ecobase\dlgEcobaseImport.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Other\Options\AutoRunOptionAssets\ucAutoRunOption.Designer.vb">
+      <DependentUpon>ucAutoRunOption.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\AutoRunOptionAssets\ucAutoRunOption.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Other\Options\AutoRunOptionAssets\cAutoRunItemEngine.vb" />
+    <Compile Include="Other\Options\ucOptionsAutoRun.Designer.vb">
+      <DependentUpon>ucOptionsAutoRun.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\ucOptionsAutoRun.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Other\SplashScreen\frmSplash.Designer.vb">
       <DependentUpon>frmSplash.vb</DependentUpon>
     </Compile>
@@ -1194,6 +1207,12 @@
     <EmbeddedResource Include="Ecobase\dlgEcobaseImport.resx">
       <DependentUpon>dlgEcobaseImport.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\AutoRunOptionAssets\ucAutoRunOption.resx">
+      <DependentUpon>ucAutoRunOption.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\ucOptionsAutoRun.resx">
+      <DependentUpon>ucOptionsAutoRun.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\SplashScreen\frmSplash.resx">
       <DependentUpon>frmSplash.vb</DependentUpon>

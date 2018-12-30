@@ -48,7 +48,7 @@ Public Class EwEImportLayersPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
             Return My.Resources.MENU_ITEM_IMPORT
         End Get

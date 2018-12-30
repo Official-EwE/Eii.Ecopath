@@ -49,8 +49,8 @@ Public Class frmSamples
 
         Me.UIContext = uic
         Me.m_plugin = plugin
-        Me.Text = My.Resources.TABTEXT
-        Me.TabText = My.Resources.TABTEXT
+        Me.Text = My.Resources.DISPLAYNAME
+        Me.TabText = My.Resources.DISPLAYNAME
 
         Me.m_grid.UIContext = uic
 

@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AUTOSAVE_NAME" xml:space="preserve">
+  <data name="DISPLAYNAME" xml:space="preserve">
     <value>Ecospace enaR data files</value>
   </data>
   <data name="MENU_SAVE_ENAR" xml:space="preserve">

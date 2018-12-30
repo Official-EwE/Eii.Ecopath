@@ -29,6 +29,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports System.ComponentModel
 
 #End Region ' Imports
 
@@ -95,8 +96,8 @@ Public Class frmMain
         Dim ndSel As TreeNode = Nothing
         Me.m_bInUpdate = True
 
-        Me.Text = My.Resources.CAPTION
-        Me.TabText = My.Resources.CAPTION
+        Me.Text = My.Resources.DISPLAYNAME
+        Me.TabText = My.Resources.DISPLAYNAME
 
         Me.m_llStatus.UIContext = Me.UIContext
         Me.m_pbStatus.BackgroundImage = ScientificInterfaceShared.My.Resources.Warning
@@ -176,10 +177,6 @@ Public Class frmMain
 
         ' Initialize content of controls
         Me.m_cbAutoSaveCSV.Checked = My.Settings.AutoSaveCSV
-        Me.m_cbRunWithEcopath.Checked = My.Settings.RunWithEcopath
-        Me.m_cbRunWithEcosim.Checked = My.Settings.RunWithEcosim
-        Me.m_cbRunWithEcospace.Checked = My.Settings.RunWithEcospace
-        Me.m_cbRunWithMC.Checked = My.Settings.RunWithMC
         Me.m_cbPlotAtEnd.Checked = My.Settings.PlotAtEnd
         Me.m_sliderNoBins.Value = My.Settings.NunHistBins
 
@@ -195,6 +192,7 @@ Public Class frmMain
 
         ' Start listening to core run state changes
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+        AddHandler Me.m_settings.OnSettingsChanged, AddressOf OnSettingsChanged
 
         ' Start listening to Ecopath, Ecosim, Ecospace and external messages (responses are handled in OnCoreMessage)
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace, eCoreComponentType.Core}
@@ -212,6 +210,7 @@ Public Class frmMain
 
         ' Stop listening to core run state changes
         RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+        RemoveHandler Me.m_settings.OnSettingsChanged, AddressOf OnSettingsChanged
 
         ' Cleanup 
         Me.m_grid.Detach()
@@ -224,6 +223,11 @@ Public Class frmMain
         ' Done
         MyBase.OnFormClosed(e)
 
+    End Sub
+
+    Private Sub OnSettingsChanged(sender As Object, e As EventArgs)
+        If (Me.m_bInUpdate) Then Return
+        Me.UpdateControls()
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -277,19 +281,24 @@ Public Class frmMain
         Dim bHasTaxa As Boolean = (Me.UIContext.Core.nTaxon > 0)
         Dim bIsRunning As Boolean = csm.IsBusy
 
+        Me.m_cbRunWithEcopath.Checked = Me.m_settings.RunWithEcopath
+        Me.m_cbRunWithEcosim.Checked = Me.m_settings.RunWithEcosim
+        Me.m_cbRunWithEcospace.Checked = Me.m_settings.RunWithEcospace
+        Me.m_cbRunWithMC.Checked = Me.m_settings.RunWithMonteCarlo
+
         Select Case Me.SelectedTabComponent
             Case cEwEEcologicalIndicatorsPlugin.eComponentType.Any
                 bCanSave = False
             Case cEwEEcologicalIndicatorsPlugin.eComponentType.Ecopath
-                bCanSave = My.Settings.RunWithEcopath And csm.HasEcopathRan
+                bCanSave = Me.m_settings.RunWithEcopath And csm.HasEcopathRan
             Case cEwEEcologicalIndicatorsPlugin.eComponentType.Ecosim
-                bCanSave = My.Settings.RunWithEcosim And csm.HasEcosimRan
+                bCanSave = Me.m_settings.RunWithEcosim And csm.HasEcosimRan
             Case cEwEEcologicalIndicatorsPlugin.eComponentType.Ecospace
-                bCanSave = My.Settings.RunWithEcospace And csm.HasEcospaceRan
+                bCanSave = Me.m_settings.RunWithEcospace And csm.HasEcospaceRan
             Case cEwEEcologicalIndicatorsPlugin.eComponentType.MonteCarlo
                 ' Unfortunately this cannot be asked from the state monitor. 
                 ' Perhaps we should add this; I added a ToDo to the Core State Monitor file.
-                bCanSave = My.Settings.RunWithMC And Me.m_plugin.HasMonteCarloRan
+                bCanSave = Me.m_settings.RunWithMonteCarlo And Me.m_plugin.HasMonteCarloRan
         End Select
 
         Me.m_btnSaveToCSV.Enabled = bCanSave And Not csm.IsBusy
@@ -307,11 +316,11 @@ Public Class frmMain
         Me.m_rbCustom.Enabled = Not bIsRunning
         Me.m_rbDefault.Enabled = Not bIsRunning
 
-        Me.m_tpEcopath.ImageIndex = If(My.Settings.RunWithEcopath, 1, 0)
-        Me.m_tpEcosim.ImageIndex = If(My.Settings.RunWithEcosim, 1, 0)
-        Me.m_tpEcospace.ImageIndex = If(My.Settings.RunWithEcospace, 1, 0)
-        Me.m_tpMCpath.ImageIndex = If(My.Settings.RunWithMC, 1, 0)
-        Me.m_tpMCsim.ImageIndex = If(My.Settings.RunWithMC, 1, 0)
+        Me.m_tpEcopath.ImageIndex = If(Me.m_settings.RunWithEcopath, 1, 0)
+        Me.m_tpEcosim.ImageIndex = If(Me.m_settings.RunWithEcosim, 1, 0)
+        Me.m_tpEcospace.ImageIndex = If(Me.m_settings.RunWithEcospace, 1, 0)
+        Me.m_tpMCpath.ImageIndex = If(Me.m_settings.RunWithMonteCarlo, 1, 0)
+        Me.m_tpMCsim.ImageIndex = If(Me.m_settings.RunWithMonteCarlo, 1, 0)
 
         Me.m_tbxHistNoBins.Text = CStr(Me.m_mcgraphPath.NumBins)
 
@@ -366,13 +375,10 @@ Public Class frmMain
 
         ' User toggled RunWithEcopath checkbox; update settings
         If Me.m_bInUpdate Then Return
-        My.Settings.RunWithEcopath = Me.m_cbRunWithEcopath.Checked
-        My.Settings.Save()
-        Me.UpdateControls()
+        Me.m_settings.RunWithEcopath = Me.m_cbRunWithEcopath.Checked
 
         ' No longer run with Ecopath?
-        ' - This should be handled by the plugin itself based on settings changes
-        If (Not My.Settings.RunWithEcopath) Then
+        If (Not Me.m_settings.RunWithEcopath) Then
             ' #Yes: clear results
             Me.m_plugin.ClearEcopathIndicators()
         End If
@@ -384,13 +390,11 @@ Public Class frmMain
 
         ' User toggled RunWithEcosim checkbox; update settings
         If Me.m_bInUpdate Then Return
-        My.Settings.RunWithEcosim = Me.m_cbRunWithEcosim.Checked
-        My.Settings.Save()
-        Me.UpdateControls()
+        Me.m_settings.RunWithEcosim = Me.m_cbRunWithEcosim.Checked
 
         ' No longer run with Ecosim?
         ' - This should be handled by the plugin itself based on settings changes
-        If (Not My.Settings.RunWithEcosim) Then
+        If (Not Me.m_settings.RunWithEcosim) Then
             ' #Yes: clear results
             Me.m_plugin.ClearEcosimIndicators()
         End If
@@ -402,13 +406,10 @@ Public Class frmMain
 
         ' User toggled RunWithEcospace checkbox; update settings
         If Me.m_bInUpdate Then Return
-        My.Settings.RunWithEcospace = Me.m_cbRunWithEcospace.Checked
-        My.Settings.Save()
-        Me.UpdateControls()
+        Me.m_settings.RunWithEcospace = Me.m_cbRunWithEcospace.Checked
 
         ' No longer run with Ecospace?
-        ' - This should be handled by the plugin itself based on settings changes
-        If (Not My.Settings.RunWithEcospace) Then
+        If (Not Me.m_settings.RunWithEcospace) Then
             ' #Yes: clear results
             Me.m_plugin.ClearEcospaceIndicators()
         End If
@@ -420,13 +421,10 @@ Public Class frmMain
 
         ' User toggled RunWithMC checkbox; update settings
         If Me.m_bInUpdate Then Return
-        My.Settings.RunWithMC = Me.m_cbRunWithMC.Checked
-        My.Settings.Save()
-        Me.UpdateControls()
+        Me.m_settings.RunWithMonteCarlo = Me.m_cbRunWithMC.Checked
 
         ' No longer run with Ecosim?
-        ' - This should be handled by the plugin itself based on settings changes
-        If (Not My.Settings.RunWithMC) Then
+        If (Not Me.m_settings.RunWithMonteCarlo) Then
             ' #Yes: clear results
             Me.m_plugin.ClearMCIndicators()
         End If

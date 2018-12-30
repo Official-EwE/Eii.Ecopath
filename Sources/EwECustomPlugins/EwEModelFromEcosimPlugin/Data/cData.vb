@@ -189,7 +189,7 @@ Friend Class cData
             '    Return Me.CustomOutputPath
             'End If
             Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim), _
-                                cFileUtils.ToValidFileName(My.Resources.CONTROL_TEXT, False))
+                                cFileUtils.ToValidFileName(My.Resources.DISPLAYNAME, False))
         End Get
     End Property
 

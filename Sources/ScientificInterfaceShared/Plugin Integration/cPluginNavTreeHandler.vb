@@ -183,7 +183,7 @@ Namespace Integration
                     ' Adding or removing an item?
                     If (bPlace) Then
                         ' #Adding: create new node
-                        tn = New TreeNode(ipNavTree.ControlText)
+                        tn = New TreeNode(ipNavTree.DisplayName)
                         ' Set name
                         tn.Name = ipNavTree.Name
                         ' Set tooltip text

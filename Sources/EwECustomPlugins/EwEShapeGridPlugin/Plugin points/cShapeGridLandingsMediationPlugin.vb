@@ -27,7 +27,7 @@ Imports ScientificInterfaceShared.Controls
 Public Class cShapeGridLandingsMediationPlugin
     Inherits cShapeGridPlugin
 
-    Public Overrides ReadOnly Property ControlText() As String
+    Public Overrides ReadOnly Property DisplayName() As String
         Get
             Return My.Resources.GRID_MED_LANDINGS
         End Get
@@ -35,7 +35,7 @@ Public Class cShapeGridLandingsMediationPlugin
 
     Public Overrides ReadOnly Property ControlTooltipText() As String
         Get
-            Return Me.ControlText
+            Return Me.DisplayName
         End Get
     End Property
 

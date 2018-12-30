@@ -33,7 +33,7 @@ Public Class cNavTree32PPR_Harvest
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ControlText() As String
+    Public Overrides ReadOnly Property DisplayName() As String
         Get
             Return My.Resources.PAGE_PPR_HARV
         End Get

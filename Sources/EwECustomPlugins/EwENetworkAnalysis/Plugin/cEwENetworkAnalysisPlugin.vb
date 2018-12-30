@@ -42,6 +42,7 @@ Public Class cEwENetworkAnalysisPlugin
     Implements IDataProducerPlugin
     Implements IUIContextPlugin
     Implements IDisposedPlugin
+    Implements IAutoRunPlugin
 
 #Region " Private vars "
 
@@ -117,7 +118,7 @@ Public Class cEwENetworkAnalysisPlugin
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ControlText() As String
+    Public Overrides ReadOnly Property DisplayName() As String
         Get
             Return My.Resources.NAVITEM_ROOT
         End Get
@@ -523,6 +524,35 @@ Public Class cEwENetworkAnalysisPlugin
     End Property
 
 #End Region ' Autosave
+
+#Region " AutoRun "
+
+    Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
+        Return New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim}
+    End Function
+
+    Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
+        Get
+            Select Case type
+                Case eCoreComponentType.EcoPath
+                    Return Me.m_manager.RunWithEcopath
+                Case eCoreComponentType.EcoSim
+                    Return Me.m_manager.RunWithEcosim
+            End Select
+            Return False
+        End Get
+        Set(value As Boolean)
+            Select Case type
+                Case eCoreComponentType.EcoPath
+                    Me.m_manager.RunWithEcopath = value
+                Case eCoreComponentType.EcoSim
+                    Me.m_manager.RunWithEcosim = value
+            End Select
+        End Set
+    End Property
+
+
+#End Region ' AutoRun
 
 #Region " Internal helpers "
 

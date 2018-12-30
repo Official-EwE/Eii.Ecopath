@@ -115,6 +115,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Transects recorder.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_RECORD() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_RECORD", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Transects storage.
+        '''</summary>
+        Friend ReadOnly Property CAPTION_STORAGE() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_STORAGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property cefas_logo() As System.Drawing.Bitmap
@@ -185,6 +203,15 @@ Namespace My.Resources
         Friend ReadOnly Property RASTER_TRANSECT_NAME() As String
             Get
                 Return ResourceManager.GetString("RASTER_TRANSECT_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to View transect summaries.
+        '''</summary>
+        Friend ReadOnly Property TOOLTIP_OUT() As String
+            Get
+                Return ResourceManager.GetString("TOOLTIP_OUT", resourceCulture)
             End Get
         End Property
         

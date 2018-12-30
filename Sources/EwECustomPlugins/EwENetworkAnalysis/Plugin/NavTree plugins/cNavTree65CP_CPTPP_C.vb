@@ -33,7 +33,7 @@ Public Class cNavTree65CP_CPTPP_C
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ControlText() As String
+    Public Overrides ReadOnly Property DisplayName() As String
         Get
             Return My.Resources.PAGE_CP_CYCLES
         End Get

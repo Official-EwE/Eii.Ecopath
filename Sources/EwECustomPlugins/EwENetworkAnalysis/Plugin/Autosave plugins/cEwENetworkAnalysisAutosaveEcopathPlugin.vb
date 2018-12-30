@@ -79,9 +79,11 @@ Public Class cEwENetworkAnalysisAutosaveEcopathPlugin
         End Set
     End Property
 
-    Public Function AutoSaveName() As String Implements IAutoSavePlugin.AutoSaveName
-        Return My.Resources.CAPTION
-    End Function
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
+        Get
+            Return My.Resources.CAPTION
+        End Get
+    End Property
 
     Public Function AutoSaveType() As eAutosaveTypes Implements IAutoSavePlugin.AutoSaveType
         Return eAutosaveTypes.Ecopath

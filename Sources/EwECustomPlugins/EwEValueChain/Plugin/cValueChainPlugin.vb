@@ -46,6 +46,7 @@ Public Class cValueChainPlugin
     Implements EwEPlugin.ISearchPlugin
     Implements EwEPlugin.IDisposedPlugin
     Implements EwEPlugin.IAutoSavePlugin
+    Implements EwEPlugin.IAutoRunPlugin
 
 #Region " Privates "
 
@@ -114,7 +115,7 @@ Public Class cValueChainPlugin
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ControlText() As String
+    Public Overrides ReadOnly Property DisplayName() As String
         Get
             Return My.Resources.GENERIC_CAPTION
         End Get
@@ -175,9 +176,9 @@ Public Class cValueChainPlugin
                 If (Me.m_syncobj Is Nothing) Then
                     Me.m_syncobj = New SynchronizationContext()
                 End If
-                Me.m_mhEcopath = New cMessageHandler(AddressOf OnEcopathMessage, _
-                                                     eCoreComponentType.EcoPath, _
-                                                     eMessageType.DataValidation, _
+                Me.m_mhEcopath = New cMessageHandler(AddressOf OnEcopathMessage,
+                                                     eCoreComponentType.EcoPath,
+                                                     eMessageType.DataValidation,
                                                      Me.m_syncobj)
 #If DEBUG Then
                 Me.m_mhEcopath.Name = "ValueChain::Ecopath"
@@ -382,9 +383,9 @@ Public Class cValueChainPlugin
     ''' Plug-in point implementation, called at end of every Ecosim timestep.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single, _
-                          ByVal EcosimDatastructures As Object, _
-                          ByVal iTimeStep As Integer, _
+    Sub EcosimEndTimeStep(ByRef BiomassAtTimestep() As Single,
+                          ByVal EcosimDatastructures As Object,
+                          ByVal iTimeStep As Integer,
                           ByVal ecosimresults As Object) _
         Implements IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
@@ -523,7 +524,7 @@ Public Class cValueChainPlugin
 
     End Function
 
-    Public Function GetDataByType(ByVal typeData As System.Type, _
+    Public Function GetDataByType(ByVal typeData As System.Type,
                                   ByRef data As EwEPlugin.Data.IPluginData) As Boolean _
         Implements EwEPlugin.Data.IDataProducerPlugin.GetDataByType
 
@@ -738,14 +739,6 @@ Public Class cValueChainPlugin
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="IAutoSavePlugin.AutoSaveName"/>
-    ''' -----------------------------------------------------------------------
-    Public Function AutoSaveName() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveName
-        Return My.Resources.GENERIC_CAPTION
-    End Function
-
-    ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IAutoSavePlugin.AutoSaveOutputPath"/>
     ''' -----------------------------------------------------------------------
     Public Function AutoSaveSubPath() As String _
@@ -762,5 +755,39 @@ Public Class cValueChainPlugin
     End Function
 
 #End Region ' Autosave
+
+#Region " AutoRun "
+
+    Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
+        Get
+            Dim parms As cParameters = Me.m_data.Parameters
+            Select Case type
+                Case eCoreComponentType.EcoPath
+                    Return parms.RunWithEcopath
+                Case eCoreComponentType.EcoSim
+                    Return parms.RunWithEcosim
+                Case eCoreComponentType.FishingPolicySearch
+                    Return parms.RunWithSearches
+            End Select
+            Return False
+        End Get
+        Set(value As Boolean)
+            Dim parms As cParameters = Me.m_data.Parameters
+            Select Case type
+                Case eCoreComponentType.EcoPath
+                    parms.RunWithEcopath = value
+                Case eCoreComponentType.EcoSim
+                    parms.RunWithEcosim = value
+                Case eCoreComponentType.FishingPolicySearch
+                    parms.RunWithSearches = value
+            End Select
+        End Set
+    End Property
+
+    Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
+        Return New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.FishingPolicySearch}
+    End Function
+
+#End Region ' AutoRun
 
 End Class

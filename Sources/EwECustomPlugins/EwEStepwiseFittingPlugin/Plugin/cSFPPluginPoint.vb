@@ -51,6 +51,13 @@ Public Class cSFPPluginPoint
 
 #Region " Standard bits "
 
+    Public ReadOnly Property DisplayName As String _
+        Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return My.Resources.DISPLAYNAME
+        End Get
+    End Property
+
     Public ReadOnly Property Name As String _
         Implements EwEPlugin.IPlugin.Name
         Get
@@ -114,13 +121,6 @@ Public Class cSFPPluginPoint
         Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return ScientificInterfaceShared.My.Resources.Ecosim_32x32
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
-        Get
-            Return My.Resources.CAPTION
         End Get
     End Property
 
@@ -225,15 +225,10 @@ Public Class cSFPPluginPoint
         End Set
     End Property
 
-    Public Function AutoSaveName() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveName
-        Return Me.ControlText
-    End Function
-
     Public Function AutoSaveOutputPath() As String _
         Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
-        Return System.IO.Path.Combine(Me.m_uic.Core.DefaultOutputPath(Me.AutoSaveType), _
-                                      cFileUtils.ToValidFileName(Me.ControlText, False))
+        Return System.IO.Path.Combine(Me.m_uic.Core.DefaultOutputPath(Me.AutoSaveType),
+                                      cFileUtils.ToValidFileName(Me.DisplayName, False))
     End Function
 
     Public Function AutoSaveType() As EwEUtils.Core.eAutosaveTypes _

@@ -112,7 +112,7 @@ Public Class cEcotrophPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
         Get
             Return "EcoTroph"
         End Get

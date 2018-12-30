@@ -52,13 +52,7 @@ Public Class ucOptionsPluginDetails
 
         Me.UIContext = uic
 
-        ' Name plug-ins by rich text if possible
-        If (TypeOf pi Is IGUIPlugin) Then
-            Dim str As String = DirectCast(pi, IGUIPlugin).ControlText
-            Me.m_tbName.Text = cStringUtils.ControlTextToSentence(str)
-        Else
-            Me.m_tbName.Text = pi.Name
-        End If
+        Me.m_tbName.Text = cStringUtils.ControlTextToSentence(pi.DisplayName)
         Me.m_tbAuthor.Text = pi.Author
         Me.m_llContact.Text = pi.Contact
         Me.m_llContact.Links(0).LinkData = pi.Contact
