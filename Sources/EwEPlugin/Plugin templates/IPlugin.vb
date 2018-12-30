@@ -49,7 +49,16 @@ Public Interface IPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Uniquely describes a plugin.
+    ''' User-friendly display name of a plug-in.
+    ''' </summary>
+    ''' <seealso cref="Name"/>
+    ''' <seealso cref="Description"/>
+    ''' -----------------------------------------------------------------------
+    ReadOnly Property DisplayName() As String
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Description of a plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     ReadOnly Property Description() As String

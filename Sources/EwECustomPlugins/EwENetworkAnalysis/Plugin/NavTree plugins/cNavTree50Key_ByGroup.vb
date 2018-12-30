@@ -33,7 +33,7 @@ Public Class cNavTree50Key_ByGroup
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ControlText() As String
+    Public Overrides ReadOnly Property DisplayName() As String
         Get
             Return My.Resources.PAGE_ASC_GROUP
         End Get

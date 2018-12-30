@@ -393,10 +393,10 @@
   <data name="HEADER_TRIAL" xml:space="preserve">
     <value>Trial</value>
   </data>
-  <data name="CAPTION" xml:space="preserve">
+  <data name="DISPLAYNAME" xml:space="preserve">
     <value>Ecological indicators</value>
   </data>
-  <data name="CAPTION_INFO" xml:space="preserve">
+  <data name="DISPLAYNAME_INFO" xml:space="preserve">
     <value>Computes ecological indicators for Ecopath, Ecosim, Ecospace and Monte Carlo</value>
   </data>
   <data name="HEADER_TRIAL_N" xml:space="preserve">

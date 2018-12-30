@@ -33,7 +33,7 @@ Public Class cNavTree52FlowDet
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ControlText() As String
+    Public Overrides ReadOnly Property DisplayName() As String
         Get
             Return My.Resources.PAGE_FLOWDET
         End Get

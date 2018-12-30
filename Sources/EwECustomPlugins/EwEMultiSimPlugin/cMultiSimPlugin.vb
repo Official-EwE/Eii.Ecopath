@@ -65,6 +65,15 @@ Public Class cMultiSimPlugin
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.DisplayName"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return My.Resources.GENERIC_DISPLAYNAME
+        End Get
+    End Property
+
     Public ReadOnly Property Author As String _
         Implements EwEPlugin.IPlugin.Author
         Get
@@ -110,13 +119,6 @@ Public Class cMultiSimPlugin
         Implements EwEPlugin.IGUIPlugin.OnControlClick
         frmPlugin = Me.UI
     End Sub
-
-    Public ReadOnly Property ControlText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
-        Get
-            Return My.Resources.GENERIC_NAME
-        End Get
-    End Property
 
     Public ReadOnly Property ControlTooltipText As String _
         Implements EwEPlugin.IGUIPlugin.ControlTooltipText
@@ -194,7 +196,7 @@ Public Class cMultiSimPlugin
         If Not bHasUI Then
             Me.m_frmUI = New frmMain()
             Me.m_frmUI.UIContext = Me.m_uic
-            Me.m_frmUI.Text = Me.ControlText
+            Me.m_frmUI.Text = Me.DisplayName
         End If
 
         Return Me.m_frmUI

@@ -63,6 +63,13 @@ Public Class cRemarksPlugin
         End If
     End Sub
 
+    Public ReadOnly Property DisplayName As String _
+        Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return My.Resources.DISPLAYNAME
+        End Get
+    End Property
+
     Public ReadOnly Property Name() As String Implements IPlugin.Name
         Get
             ' The name will (hopefilly) sort the menu item near m_tsmiViewRemarks
@@ -77,18 +84,10 @@ Public Class cRemarksPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlText() As String _
-        Implements IGUIPlugin.ControlText
-        Get
-            Return My.Resources.CAPTION
-        End Get
-    End Property
-
     Public ReadOnly Property ControlTooltipText() As String _
         Implements IGUIPlugin.ControlTooltipText
         Get
-            ' ToDo: globalize this
-            Return "Show all remarks in the model"
+            Return My.Resources.CONTROL_TOOLTIP
         End Get
     End Property
 
@@ -171,8 +170,8 @@ Public Class cRemarksPlugin
     Private Function CreateUI() As Boolean
         If Not Me.HasUI Then
             Me.m_frm = New frmRemarkUI(Me.m_uic)
-            Me.m_frm.Text = My.Resources.CAPTION
-            Me.m_frm.TabText = My.Resources.CAPTION
+            Me.m_frm.Text = My.Resources.DISPLAYNAME
+            Me.m_frm.TabText = My.Resources.DISPLAYNAME
         End If
         Return True
     End Function

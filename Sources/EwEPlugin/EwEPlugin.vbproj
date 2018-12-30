@@ -141,6 +141,7 @@
     <Compile Include="Plugin templates\Ecospace\IEcospaceScenarioAddedOrRemovedPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceResultWriterUtils.vb" />
     <Compile Include="Plugin templates\Ecotracer\IEcotracerScenarioAddedOrRemovedPlugin.vb" />
+    <Compile Include="Plugin templates\GUI\IAutoRunPlugin.vb" />
     <Compile Include="Plugin templates\GUI\ICommandHandlerPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IMenuItemKeyboardShortcutPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IMenuItemTogglePlugin.vb" />

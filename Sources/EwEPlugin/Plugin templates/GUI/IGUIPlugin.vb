@@ -45,13 +45,6 @@ Public Interface IGUIPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the item text to display in the control for this plug-in.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    ReadOnly Property ControlText() As String
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Get the tool tip text to display for the control for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------

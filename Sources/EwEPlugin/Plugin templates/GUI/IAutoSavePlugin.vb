@@ -52,14 +52,6 @@ Public Interface IAutoSavePlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Name to identify the auto-save setting.
-    ''' </summary>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    Function AutoSaveName() As String
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Returns the <see cref="eAutosaveTypes"/> core autosave type that defines the
     ''' output path that this plug-in writes to.
     ''' </summary>

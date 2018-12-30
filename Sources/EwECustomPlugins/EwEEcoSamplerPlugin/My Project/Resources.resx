@@ -134,7 +134,7 @@
     <value>{0} Monte Carlo samples recorded</value>
     <comment>{0} = sample count</comment>
   </data>
-  <data name="TABTEXT" xml:space="preserve">
+  <data name="DISPLAYNAME" xml:space="preserve">
     <value>Ecosampler</value>
   </data>
   <data name="LABEL_LOAD" xml:space="preserve">

@@ -34,6 +34,10 @@ Public Class cIndicatorSettings
 #Region " Private variables "
 
     Private m_lIndicatorGroups As New List(Of cIndicatorInfoGroup)
+    Private m_bRunPath As Boolean = False
+    Private m_bRunSim As Boolean = False
+    Private m_bRunSpace As Boolean = False
+    Private m_bRunMC As Boolean = False
 
 #End Region ' Private variables
 
@@ -47,6 +51,63 @@ Public Class cIndicatorSettings
 
 #Region " Public fields "
 
+    Public Event OnSettingsChanged(sender As Object, args As EventArgs)
+
+    Public Property RunWithEcopath As Boolean
+        Get
+            Return Me.m_bRunPath
+        End Get
+        Set(value As Boolean)
+            If (value <> Me.m_bRunPath) Then
+                Me.m_bRunPath = value
+                NotifyWorld()
+            End If
+        End Set
+    End Property
+
+    Public Property RunWithEcosim As Boolean
+        Get
+            Return Me.m_bRunSim
+        End Get
+        Set(value As Boolean)
+            If (value <> Me.m_bRunSim) Then
+                Me.m_bRunSim = value
+                NotifyWorld()
+            End If
+        End Set
+    End Property
+
+    Public Property RunWithEcospace As Boolean
+        Get
+            Return Me.m_bRunSpace
+        End Get
+        Set(value As Boolean)
+            If (value <> Me.m_bRunSpace) Then
+                Me.m_bRunSpace = value
+                NotifyWorld()
+            End If
+        End Set
+    End Property
+
+    Public Property RunWithMonteCarlo As Boolean
+        Get
+            Return Me.m_bRunMC
+        End Get
+        Set(value As Boolean)
+            If (value <> Me.m_bRunMC) Then
+                Me.m_bRunMC = value
+                NotifyWorld()
+            End If
+        End Set
+    End Property
+
+    Private Sub NotifyWorld()
+        Try
+            RaiseEvent OnSettingsChanged(Me, New EventArgs())
+        Catch ex As Exception
+
+        End Try
+    End Sub
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Add a new group to the settings.

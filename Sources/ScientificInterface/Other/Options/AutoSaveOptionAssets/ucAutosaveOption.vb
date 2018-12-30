@@ -123,7 +123,7 @@ Namespace Other
             Me.UIContext = uic
             Me.m_pi = pi
             Me.m_autosavetype = pi.AutoSaveType
-            Me.m_cbOption.Text = pi.AutoSaveName
+            Me.m_cbOption.Text = pi.DisplayName
             Me.m_iIndent = iIndent
 
         End Sub

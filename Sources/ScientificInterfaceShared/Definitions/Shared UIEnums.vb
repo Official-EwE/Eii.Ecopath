@@ -171,6 +171,8 @@ Namespace Definitions
         Autosave
         ''' <summary>File location options.</summary>
         FileLocations = Autosave
+        ''' <summary>Autorun options.</summary>
+        AutoRun
         ''' <summary>Presentation mode options.</summary>
         PresentationMode
         ''' <summary>EwE main window options.</summary>

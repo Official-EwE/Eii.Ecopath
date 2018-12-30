@@ -3080,4 +3080,7 @@
     <value>Driver value {0}</value>
     <comment>{0} = value</comment>
   </data>
+  <data name="AUTORUN_ALL" xml:space="preserve">
+    <value>Auto-run all</value>
+  </data>
 </root>

@@ -61,6 +61,12 @@ Public Class cEwEMPADynamicsPlugin
         End Get
     End Property
 
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return My.Resources.DISPLAYNAME
+        End Get
+    End Property
+
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
             Return "A plug-in to control MPA open/closed dynamics over time"
@@ -69,7 +75,7 @@ Public Class cEwEMPADynamicsPlugin
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
-            Return "Jeroen Steenbeek"
+            Return "Jeroen Steenbeek, Colette Wabnitz"
         End Get
     End Property
 
@@ -90,12 +96,6 @@ Public Class cEwEMPADynamicsPlugin
     Public ReadOnly Property ControlImage As Image Implements IGUIPlugin.ControlImage
         Get
             Return SharedResources.nav_input
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
-        Get
-            Return My.Resources.PLUGIN_TITLE
         End Get
     End Property
 

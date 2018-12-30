@@ -95,7 +95,7 @@ Public MustInherit Class cShapeGridPlugin
         If Not Me.HasForm Then
             Me.m_ui = New frmShapes(Me.GridType)
             Me.m_ui.UIContext = Me.m_uic
-            Me.m_ui.Text = Me.ControlText
+            Me.m_ui.Text = Me.DisplayName
             AddHandler Me.m_ui.FormClosed, AddressOf OnFormClosed
         End If
         frmPlugin = Me.m_ui
@@ -134,10 +134,10 @@ Public MustInherit Class cShapeGridPlugin
         Implements EwEPlugin.IPlugin.Name
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="IGUIPlugin.ControlText"/>
+    ''' <inheritdocs cref="IPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
-    Public MustOverride ReadOnly Property ControlText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
+    Public MustOverride ReadOnly Property DisplayName As String _
+        Implements IPlugin.DisplayName
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IGUIPlugin.ControlTooltipText"/>

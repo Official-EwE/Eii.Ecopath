@@ -81,7 +81,8 @@ Namespace Other
             Me.m_tvOptions.Nodes.Add(Me.CreateNode("Maps", eApplicationOptionTypes.ReferenceMaps.ToString(), GetType(ucOptionsMap)))
             Me.m_tvOptions.Nodes.Add(Me.CreateNode("Pedigree", eApplicationOptionTypes.Pedigree.ToString(), GetType(ucOptionsPedigree)))
             Me.m_tvOptions.Nodes.Add(Me.CreateNode("Main window", eApplicationOptionTypes.Window.ToString(), GetType(ucOptionsPresentation)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("File management", eApplicationOptionTypes.FileLocations.ToString(), GetType(ucOptionsFileManagement)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Auto-saving", eApplicationOptionTypes.Autosave.ToString(), GetType(ucOptionsFileManagement)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Auto-running", eApplicationOptionTypes.AutoRun.ToString(), GetType(ucOptionsAutoRun)))
             Me.m_tvOptions.Nodes.Add(Me.CreateNode("Plug-ins", eApplicationOptionTypes.Plugins.ToString(), GetType(ucOptionsPlugins)))
             Me.m_tvOptions.Nodes.Add(Me.CreateNode("External data", eApplicationOptionTypes.SpatialTemporal.ToString(), GetType(ucOptionsSpatialTemporal)))
 

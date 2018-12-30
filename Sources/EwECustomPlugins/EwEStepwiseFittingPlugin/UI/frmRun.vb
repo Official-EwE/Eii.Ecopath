@@ -64,7 +64,7 @@ Public Class frmRun
         Me.UIContext = uic
         Me.m_engine = engine
 
-        Me.Text = My.Resources.CAPTION
+        Me.Text = My.Resources.DISPLAYNAME
         Me.TabText = Me.Text
 
         Me.m_runmode = eRunMode.StandAlone

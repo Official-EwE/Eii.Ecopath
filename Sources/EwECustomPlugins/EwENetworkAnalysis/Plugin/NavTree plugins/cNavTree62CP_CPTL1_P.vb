@@ -33,7 +33,7 @@ Public Class cNavTree62CP_CPTL1_P
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ControlText() As String
+    Public Overrides ReadOnly Property DisplayName() As String
         Get
             Return My.Resources.PAGE_CP_PATHWAYS
         End Get

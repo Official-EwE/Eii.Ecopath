@@ -107,9 +107,19 @@ Public Class cTransectStoragePlugin
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IPlugin.DisplayName"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property DisplayName As String _
+        Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return My.Resources.CAPTION_STORAGE
+        End Get
+    End Property
+
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "Transect storage"
+            Return "CosmInsiteTransectStorage"
         End Get
     End Property
 

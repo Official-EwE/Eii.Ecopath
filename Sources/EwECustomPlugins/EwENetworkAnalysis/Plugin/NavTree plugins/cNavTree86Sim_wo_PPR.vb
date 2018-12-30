@@ -33,7 +33,7 @@ Public Class cNavTree86Sim_wo_PPR
         End Get
     End Property
 
-    Public Overrides ReadOnly Property ControlText() As String
+    Public Overrides ReadOnly Property DisplayName() As String
         Get
             Return My.Resources.PAGE_ECOSIM_NA_WO_PPR
         End Get

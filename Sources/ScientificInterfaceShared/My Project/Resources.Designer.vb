@@ -237,6 +237,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Auto-run all.
+        '''</summary>
+        Public ReadOnly Property AUTORUN_ALL() As String
+            Get
+                Return ResourceManager.GetString("AUTORUN_ALL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Auto-save all.
         '''</summary>
         Public ReadOnly Property AUTOSAVE_ALL() As String

@@ -200,13 +200,7 @@ Namespace Other
 
                     For Each p In pa.Plugins(Nothing, True)
 
-                        ' Name plug-ins by rich text if possible
-                        If (TypeOf p Is IGUIPlugin) Then
-                            Dim str As String = DirectCast(p, IGUIPlugin).ControlText
-                            tnP = New TreeNode(cStringUtils.ControlTextToSentence(str))
-                        Else
-                            tnP = New TreeNode(p.Name)
-                        End If
+                        tnP = New TreeNode(cStringUtils.ControlTextToSentence(p.DisplayName))
                         tnP.Tag = p
                         tnP.ImageIndex = cIMAGE_ANYPLUGINPOINT
                         tnP.SelectedImageIndex = cIMAGE_ANYPLUGINPOINT

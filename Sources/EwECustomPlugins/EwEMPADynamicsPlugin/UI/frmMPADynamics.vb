@@ -45,7 +45,7 @@ Public Class frmMPADynamics
 
         Me.InitializeComponent()
 
-        Me.Text = My.Resources.PLUGIN_TITLE
+        Me.Text = My.Resources.DISPLAYNAME
         Me.TabText = Me.Text
         Me.m_tsbnLoadCSV.Image = SharedResources.openHS
 

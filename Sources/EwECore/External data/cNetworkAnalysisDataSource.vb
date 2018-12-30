@@ -193,7 +193,7 @@ Namespace ExternalData
         End Sub
 
         Public ReadOnly Property Name() As String _
-            Implements EwEPlugin.IPlugin.Name
+            Implements EwEPlugin.IPlugin.Name, EwEPlugin.IPlugin.DisplayName
             Get
                 Return cNetworkAnalysisDataSource.InternalName
             End Get

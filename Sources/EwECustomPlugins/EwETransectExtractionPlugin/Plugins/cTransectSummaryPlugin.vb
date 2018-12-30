@@ -63,19 +63,29 @@ Public Class cTransectSummaryPlugin
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "Transect summary"
+            Return "CosmInsiteTransectSummary"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IPlugin.DisplayName"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property DisplayName As String _
+        Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return My.Resources.CAPTION_OUT
         End Get
     End Property
 
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
-            Return "Launch the user interface to view transect summaries"
+            Return My.Resources.TOOLTIP_OUT
         End Get
     End Property
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
-            Return "Jeroen Steenbeek"
+            Return "Jeroen Steenbeek, Chris Lynam"
         End Get
     End Property
 
@@ -105,15 +115,9 @@ Public Class cTransectSummaryPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
-        Get
-            Return My.Resources.CAPTION_OUT
-        End Get
-    End Property
-
     Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
         Get
-            Return ""
+            Return My.Resources.TOOLTIP_OUT
         End Get
     End Property
 

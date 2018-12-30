@@ -61,15 +61,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Stepwise fitting.
-        '''</summary>
-        Friend ReadOnly Property CAPTION() As String
-            Get
-                Return ResourceManager.GetString("CAPTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to An engine that provides a systematic exploration of time series fitting options.
         '''</summary>
         Friend ReadOnly Property DESCRIPTION() As String
@@ -111,6 +102,15 @@ Namespace My.Resources
         Friend ReadOnly Property DETAIL_SUMMARY() As String
             Get
                 Return ResourceManager.GetString("DETAIL_SUMMARY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Stepwise fitting.
+        '''</summary>
+        Friend ReadOnly Property DISPLAYNAME() As String
+            Get
+                Return ResourceManager.GetString("DISPLAYNAME", resourceCulture)
             End Get
         End Property
         

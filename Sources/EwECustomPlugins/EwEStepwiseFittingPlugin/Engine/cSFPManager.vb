@@ -301,7 +301,7 @@ Public Class cSFPManager
 
         Dim iNumSteps As Integer = 1
         Dim iStep As Integer = 0
-        Dim msg As New cMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, My.Resources.CAPTION),
+        Dim msg As New cMessage(cStringUtils.Localize(My.Resources.STATUS_SAVE_SUCCESS, My.Resources.DISPLAYNAME),
                                 eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
         msg.Hyperlink = Me.OutputFolder
         Dim bSuccess As Boolean
@@ -335,7 +335,7 @@ Public Class cSFPManager
 
                     cApplicationStatusNotifier.UpdateProgress(Me.Core,
                                                               cStringUtils.Localize(My.Resources.STATUS_RUNNING,
-                                                                                    My.Resources.CAPTION,
+                                                                                    My.Resources.DISPLAYNAME,
                                                                                     Iteration.Name),
                                                               CSng((iStep + 0.5) / iNumSteps))
 
@@ -385,7 +385,7 @@ Public Class cSFPManager
             'Save results to CSV file
             iStep += 1
             cApplicationStatusNotifier.UpdateProgress(Me.Core,
-                                                      cStringUtils.Localize(My.Resources.STATUS_SAVING, My.Resources.CAPTION),
+                                                      cStringUtils.Localize(My.Resources.STATUS_SAVING, My.Resources.DISPLAYNAME),
                                                       sProgress:=CSng(iStep / iNumSteps))
             SaveResultsToCSV(msg)
 
@@ -407,7 +407,7 @@ Public Class cSFPManager
 
         If (msg IsNot Nothing) Then
             If msg.Importance = eMessageImportance.Critical Then
-                msg.Message = cStringUtils.Localize(My.Resources.STATUS_SAVE_FAILED, My.Resources.CAPTION)
+                msg.Message = cStringUtils.Localize(My.Resources.STATUS_SAVE_FAILED, My.Resources.DISPLAYNAME)
             End If
             Me.Core.Messages.SendMessage(msg)
         End If
@@ -603,7 +603,7 @@ Public Class cSFPManager
     Public ReadOnly Property OutputFolder As String
         Get
             If String.IsNullOrWhiteSpace(Me.Parameters.CustomOutputFolder) Then
-                Return Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.Ecosim), cFileUtils.ToValidFileName(My.Resources.CAPTION, False))
+                Return Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.Ecosim), cFileUtils.ToValidFileName(My.Resources.DISPLAYNAME, False))
             End If
             Return Me.Parameters.CustomOutputFolder
         End Get

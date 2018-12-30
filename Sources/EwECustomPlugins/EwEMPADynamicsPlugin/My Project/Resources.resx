@@ -124,7 +124,7 @@
   <data name="GENERIC_VALUE_INITIAL" xml:space="preserve">
     <value>(initial)</value>
   </data>
-  <data name="PLUGIN_TITLE" xml:space="preserve">
+  <data name="DISPLAYNAME" xml:space="preserve">
     <value>MPA dynamics</value>
   </data>
   <data name="PROMPT_SELECT_FILE_LOAD" xml:space="preserve">
@@ -170,8 +170,5 @@
   <data name="STATUS_CONFIG_SAVE_SUCCESS" xml:space="preserve">
     <value>MPA Dynamics CSV file saved to '{0}'</value>
     <comment>{0}=file name</comment>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value />
   </data>
 </root>

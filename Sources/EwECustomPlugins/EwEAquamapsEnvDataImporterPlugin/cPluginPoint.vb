@@ -32,6 +32,8 @@ Public Class cPluginPoint
     Implements IUIContextPlugin
     Implements IHelpPlugin
 
+    ' ToDo: globalize this
+
     Private m_uic As cUIContext = Nothing
 
     Public Sub UIContext(uic As Object) _
@@ -46,8 +48,8 @@ Public Class cPluginPoint
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String _
-        Implements IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String _
+        Implements IGUIPlugin.DisplayName
         Get
             Return "Import Aquamaps HSPEN Species Envelopes"
         End Get
