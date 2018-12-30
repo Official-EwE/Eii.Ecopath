@@ -3844,6 +3844,114 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Appearance.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_APPEARANCE() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_APPEARANCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Auto-execution.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_AUTORUN() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_AUTORUN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Colors.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_COLORS() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_COLORS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to File management.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_FILEMANAGEMENT() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_FILEMANAGEMENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to General.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_GENERAL() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_GENERAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Graphs and charts.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_GRAPHS() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_GRAPHS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Installed plug-ins.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_INSTALLED() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_INSTALLED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Maps.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_MAPS() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_MAPS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Pedigree.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_PEDIGREE() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_PEDIGREE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Plug-ins.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_PLUGINS() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_PLUGINS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to External data.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_SPATTEMP() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_SPATTEMP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EwE6 application.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_PAGE_WINDOW() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_PAGE_WINDOW", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to License expires {0}.
         '''</summary>
         Public ReadOnly Property PLUGIN_LICENSE_EXPIRATION() As String

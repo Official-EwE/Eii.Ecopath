@@ -13514,4 +13514,40 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
     <value>License expired on {0}</value>
     <comment>{0}=date</comment>
   </data>
+  <data name="OPTIONS_PAGE_APPEARANCE" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="OPTIONS_PAGE_AUTORUN" xml:space="preserve">
+    <value>Auto-execution</value>
+  </data>
+  <data name="OPTIONS_PAGE_COLORS" xml:space="preserve">
+    <value>Colors</value>
+  </data>
+  <data name="OPTIONS_PAGE_FILEMANAGEMENT" xml:space="preserve">
+    <value>File management</value>
+  </data>
+  <data name="OPTIONS_PAGE_GENERAL" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="OPTIONS_PAGE_GRAPHS" xml:space="preserve">
+    <value>Graphs and charts</value>
+  </data>
+  <data name="OPTIONS_PAGE_INSTALLED" xml:space="preserve">
+    <value>Installed plug-ins</value>
+  </data>
+  <data name="OPTIONS_PAGE_MAPS" xml:space="preserve">
+    <value>Maps</value>
+  </data>
+  <data name="OPTIONS_PAGE_PEDIGREE" xml:space="preserve">
+    <value>Pedigree</value>
+  </data>
+  <data name="OPTIONS_PAGE_PLUGINS" xml:space="preserve">
+    <value>Plug-ins</value>
+  </data>
+  <data name="OPTIONS_PAGE_SPATTEMP" xml:space="preserve">
+    <value>External data</value>
+  </data>
+  <data name="OPTIONS_PAGE_WINDOW" xml:space="preserve">
+    <value>EwE6 application</value>
+  </data>
 </root>

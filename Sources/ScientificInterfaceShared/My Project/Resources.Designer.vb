@@ -5886,6 +5886,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Plug-in.
+        '''</summary>
+        Public ReadOnly Property HEADER_PLUGIN() As String
+            Get
+                Return ResourceManager.GetString("HEADER_PLUGIN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Population biomass.
         '''</summary>
         Public ReadOnly Property HEADER_POPULATIONBIOMASS() As String
