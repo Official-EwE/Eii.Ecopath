@@ -3083,4 +3083,7 @@
   <data name="AUTORUN_ALL" xml:space="preserve">
     <value>Auto-run all</value>
   </data>
+  <data name="HEADER_PLUGIN" xml:space="preserve">
+    <value>Plug-in</value>
+  </data>
 </root>

@@ -74,19 +74,23 @@ Namespace Other
             ' Create nodes
             Me.m_tvOptions.Nodes.Clear()
 
-            ' ToDo: globalize this
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("General", eApplicationOptionTypes.General.ToString(), GetType(ucOptionsGeneral)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Colors", eApplicationOptionTypes.Colours.ToString(), GetType(ucOptionsStatusColors)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Graphs and charts", eApplicationOptionTypes.Fonts.ToString(), GetType(ucOptionsGraphs)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Maps", eApplicationOptionTypes.ReferenceMaps.ToString(), GetType(ucOptionsMap)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Pedigree", eApplicationOptionTypes.Pedigree.ToString(), GetType(ucOptionsPedigree)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Main window", eApplicationOptionTypes.Window.ToString(), GetType(ucOptionsPresentation)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Auto-saving", eApplicationOptionTypes.Autosave.ToString(), GetType(ucOptionsFileManagement)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Auto-running", eApplicationOptionTypes.AutoRun.ToString(), GetType(ucOptionsAutoRun)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("Plug-ins", eApplicationOptionTypes.Plugins.ToString(), GetType(ucOptionsPlugins)))
-            Me.m_tvOptions.Nodes.Add(Me.CreateNode("External data", eApplicationOptionTypes.SpatialTemporal.ToString(), GetType(ucOptionsSpatialTemporal)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_GENERAL, eApplicationOptionTypes.General.ToString(), GetType(ucOptionsGeneral)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_FILEMANAGEMENT, eApplicationOptionTypes.Autosave.ToString(), GetType(ucOptionsFileManagement)))
+            Me.m_tvOptions.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_SPATTEMP, eApplicationOptionTypes.SpatialTemporal.ToString(), GetType(ucOptionsSpatialTemporal)))
 
-            ' Add plug-ins
+            Dim tnAppearance As New TreeNode(My.Resources.OPTIONS_PAGE_APPEARANCE)
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_WINDOW, eApplicationOptionTypes.Window.ToString(), GetType(ucOptionsPresentation)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_COLORS, eApplicationOptionTypes.Colours.ToString(), GetType(ucOptionsStatusColors)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_GRAPHS, eApplicationOptionTypes.Fonts.ToString(), GetType(ucOptionsGraphs)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_MAPS, eApplicationOptionTypes.ReferenceMaps.ToString(), GetType(ucOptionsMap)))
+            tnAppearance.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_PEDIGREE, eApplicationOptionTypes.Pedigree.ToString(), GetType(ucOptionsPedigree)))
+            Me.m_tvOptions.Nodes.Add(tnAppearance)
+
+            Dim tnPlugins As New TreeNode(My.Resources.OPTIONS_PAGE_PLUGINS)
+            tnPlugins.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_INSTALLED, eApplicationOptionTypes.Plugins.ToString(), GetType(ucOptionsPlugins)))
+            tnPlugins.Nodes.Add(Me.CreateNode(My.Resources.OPTIONS_PAGE_AUTORUN, eApplicationOptionTypes.AutoRun.ToString(), GetType(ucOptionsAutoRun)))
+
+            ' Add options pages provided by plug-ins
             Dim pm As cPluginManager = Me.m_uic.Core.PluginManager
             If (pm IsNot Nothing) Then
                 ' ToDo: sort
@@ -94,10 +98,12 @@ Namespace Other
                     Dim opt As IEwEOptionsPlugin = DirectCast(pi, IEwEOptionsPlugin)
                     Dim page As Control = opt.GetConfigUI()
                     Me.m_lPages.Add(DirectCast(page, IOptionsPage))
-                    Me.m_tvOptions.Nodes.Add(Me.CreateNode(opt.Label, pi.Name, page.GetType()))
+                    tnPlugins.Nodes.Add(Me.CreateNode(opt.Label, pi.Name, page.GetType()))
                 Next
             End If
+            Me.m_tvOptions.Nodes.Add(tnPlugins)
 
+            ' Done
             Me.m_tvOptions.ExpandAll()
 
             'Me.SelectPage(Me.GetPage(Me.m_strVerb))
@@ -173,9 +179,24 @@ Namespace Other
 
             If (e.Node Is Nothing) Then Return
 
+            Dim n As TreeNode = e.Node
+
             Try
-                Dim strVerb As String = CStr(e.Node.Tag)
-                Dim page As IOptionsPage = Me.GetPage(strVerb)
+                Dim bDone As Boolean = False
+                Dim page As IOptionsPage = Nothing
+
+                ' Select node, or first child node with content
+                While Not bDone
+                    Dim strVerb As String = CStr(n.Tag)
+                    page = Me.GetPage(strVerb)
+                    bDone = True
+                    If (page Is Nothing) Then
+                        If n.Nodes.Count > 0 Then
+                            n = n.Nodes(0)
+                            bDone = False
+                        End If
+                    End If
+                End While
                 Me.SelectPage(page)
 
             Catch ex As Exception
@@ -232,6 +253,8 @@ Namespace Other
         End Function
 
         Private Function GetPage(strVerb As String) As IOptionsPage
+
+            If (String.IsNullOrWhiteSpace(strVerb)) Then Return Nothing
 
             Dim t As Type = GetType(ucOptionsGeneral)
             If (Me.m_dtNodes.ContainsKey(strVerb)) Then

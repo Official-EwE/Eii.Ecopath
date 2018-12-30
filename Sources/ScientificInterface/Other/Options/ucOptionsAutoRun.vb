@@ -40,12 +40,7 @@ Namespace Other
         Implements IOptionsPage
         Implements IUIElement
 
-#Region " Private vars "
-
-        Private m_cbh As cCheckboxHierarchy = Nothing
-        Private m_autorunoptions As cAutoRunItemEngine = Nothing
-
-#End Region ' Private vars
+        Private m_qeh As cQuickEditHandler = Nothing
 
 #Region " Constructors "
 
@@ -54,15 +49,18 @@ Namespace Other
             Me.InitializeComponent()
 
             ' Autosave
-            Me.m_autorunoptions = New cAutoRunItemEngine(Me.UIContext)
-            Me.m_autorunoptions.Attach(Me.m_plAutorun)
+            Me.m_grid.UIContext = uic
+
+            Me.m_qeh = New cQuickEditHandler()
+            Me.m_qeh.Attach(Me.m_grid, uic, Me.m_tsQuickEdit, False)
 
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
+                Me.m_grid.UIContext = Nothing
+                Me.m_qeh.Detach()
                 components.Dispose()
-                Me.m_autorunoptions.Dispose()
             End If
             MyBase.Dispose(disposing)
         End Sub
@@ -109,11 +107,10 @@ Namespace Other
             If Not Me.CanApply Then Return IOptionsPage.eApplyResultType.Failed
 
             Try
-
-                Me.m_autorunoptions.Apply()
+                Me.m_grid.Apply()
 
             Catch ex As Exception
-                cLog.Write(ex, "ucOptionsAutosave::Apply")
+                cLog.Write(ex, "ucOptionsAutoRun::Apply")
                 Return IOptionsPage.eApplyResultType.Failed
             End Try
 
@@ -127,8 +124,9 @@ Namespace Other
         Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
 
             Try
+                Me.m_grid.SetDefaults()
             Catch ex As Exception
-                cLog.Write(ex, "ucOptionsAutosave::SetDefaults")
+                cLog.Write(ex, "ucOptionsAutoRun::SetDefaults")
             End Try
 
         End Sub
@@ -140,6 +138,14 @@ Namespace Other
             Implements IOptionsPage.CanSetDefaults
             Return True
         End Function
+
+        Private Sub OnGridModified() Handles m_grid.OnValueChanged
+            Try
+                RaiseEvent OnOptionsFileManagementChanged(Me, New EventArgs())
+            Catch ex As Exception
+
+            End Try
+        End Sub
 
 #End Region
 
