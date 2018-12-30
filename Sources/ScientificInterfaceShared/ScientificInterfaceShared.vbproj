@@ -754,7 +754,7 @@
     <Compile Include="Style\Localization\cLocalizedCategoryAttribute.vb" />
     <Compile Include="Style\Localization\cLocalizedDisplayNameAttribute.vb" />
     <Compile Include="Style\Localization\cLocalizedDescriptionAttribute.vb" />
-    <Compile Include="Style\Type formatters\cAutosaveTypeFormatter - Copy.vb" />
+    <Compile Include="Style\Type formatters\cAutosaveTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cDiversityIndexTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cBACalcTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cCoreInterfaceFormatter.vb" />
@@ -766,7 +766,7 @@
     <Compile Include="Style\Type formatters\cMonetaryTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cOccurrenceTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cClimateTypeFormatter.vb" />
-    <Compile Include="Style\Type formatters\cCroeComponentTypeFormatter.vb" />
+    <Compile Include="Style\Type formatters\cCoreComponentTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cCharFormatter.vb" />
     <Compile Include="Style\Type formatters\cDatasourceTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cCompatibilityTypeFormatter.vb" />
