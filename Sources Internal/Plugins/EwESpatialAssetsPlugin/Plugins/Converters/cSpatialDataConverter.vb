@@ -71,22 +71,22 @@ Namespace SpatialData
         End Property
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverterPlugin.Name"/>
+        ''' <inheritdocs cref="IPlugin.Name"/>
         ''' -----------------------------------------------------------------------
         Public MustOverride ReadOnly Property PluginName As String _
             Implements EwEPlugin.IPlugin.Name
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.DisplayName"/>
+        ''' <inheritdocs cref="IPlugin.DisplayName"/>
         ''' -----------------------------------------------------------------------
         Public MustOverride ReadOnly Property DisplayName As String _
-            Implements ISpatialDataConverter.DisplayName
+            Implements IPlugin.DisplayName, ISpatialDataConverter.DisplayName
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataConverter.Description"/>
+        ''' <inheritdocs cref="IPlugin.Description"/>
         ''' -----------------------------------------------------------------------
         Public MustOverride ReadOnly Property Description As String _
-            Implements ISpatialDataConverter.Description, EwEPlugin.IPlugin.Description
+            Implements IPlugin.Description, ISpatialDataConverter.Description
 
         Public Overrides Function ToString() As String
             Return Me.DisplayName()
@@ -258,8 +258,8 @@ Namespace SpatialData
         ''' -----------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataConverter.Convert"/>
         ''' -----------------------------------------------------------------------
-        Public MustOverride Function Convert(data As Object, _
-                                             ptfNE As System.Drawing.PointF, ptfSW As System.Drawing.PointF, _
+        Public MustOverride Function Convert(data As Object,
+                                             ptfNE As System.Drawing.PointF, ptfSW As System.Drawing.PointF,
                                              dCellSize As Double, strProjToWkt As String, strFile As String) As ISpatialRaster _
             Implements ISpatialDataConverter.Convert
 
@@ -359,6 +359,7 @@ Namespace SpatialData
 
             End Get
         End Property
+
     End Class
 
 End Namespace

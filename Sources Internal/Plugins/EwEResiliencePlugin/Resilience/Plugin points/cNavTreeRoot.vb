@@ -43,8 +43,7 @@ Public Class cNavTreeRoot
         End Get
     End Property
 
-    Public Overridable ReadOnly Property ControlText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
+    Public Overrides ReadOnly Property DisplayName As String
         Get
             Return My.Resources.NAVTREE_ROOT
         End Get
@@ -75,9 +74,9 @@ Public Class cNavTreeRoot
 
             ' Configure UI
             If (frmPlugin IsNot Nothing) Then
-                frmPlugin.Text = Me.ControlText
+                frmPlugin.Text = Me.DisplayName
                 If (TypeOf frmPlugin Is frmEwE) Then
-                    DirectCast(frmPlugin, frmEwE).TabText = Me.ControlText
+                    DirectCast(frmPlugin, frmEwE).TabText = Me.DisplayName
                 End If
             End If
 

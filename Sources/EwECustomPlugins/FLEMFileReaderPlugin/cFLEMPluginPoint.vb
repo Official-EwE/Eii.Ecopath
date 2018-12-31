@@ -330,13 +330,6 @@ Public Class cFLEMPluginPoint
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
-        Get
-            Return "FLEM reader"
-        End Get
-    End Property
-
     Public ReadOnly Property ControlTooltipText As String _
         Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
@@ -381,7 +374,7 @@ Public Class cFLEMPluginPoint
 
         If bUIMissing Then
             Me.m_frmInterface = New frmFLEMReader(Me.Context, Me)
-            Me.m_frmInterface.Text = Me.ControlText
+            Me.m_frmInterface.Text = Me.DisplayName
         End If
 
         Return Me.m_frmInterface
@@ -425,10 +418,17 @@ Public Class cFLEMPluginPoint
 
     End Sub
 
-    ''' <summary>Generic <see cref="EwEPlugin.IPlugin.Name">IPlugin.Name</see> implementation.</summary>
+    ''' <summary>Generic <see cref="EwEPlugin.IPlugin.Name"/> implementation.</summary>
     Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "FLEM File Reader Plugin"
+            Return "EwEFLEMFileReaderPlugin"
+        End Get
+    End Property
+
+    ''' <summary>Generic <see cref="EwEPlugin.IPlugin.DisplayName"/> implementation.</summary>
+    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return "FLEM reader"
         End Get
     End Property
 

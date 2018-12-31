@@ -416,11 +416,11 @@ Public Class cMonteCarloPlugin
     Public ReadOnly Property Name() As String _
         Implements EwEPlugin.IPlugin.Name
         Get
-            Return "MonteCarlo Sample Plugin"
+            Return "EwEMonteCarloSamplePlugin"
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
             Return "Monte Carlo Sample"
         End Get

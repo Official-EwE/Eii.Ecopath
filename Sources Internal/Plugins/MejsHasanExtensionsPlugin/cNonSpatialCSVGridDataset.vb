@@ -145,7 +145,7 @@ Public Class cNonSpatialCSVGridDataset
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IPlugin.Name"/>
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property PluginName As String
         Get

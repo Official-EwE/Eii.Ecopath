@@ -77,9 +77,10 @@ Public Class cConsWriterPlugin
         Me.m_core = DirectCast(core, cCore)
     End Sub
 
-    Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
+    Public ReadOnly Property Name As String _
+        Implements EwEPlugin.IPlugin.Name
         Get
-            Return "MenuOptionsConsWriter"
+            Return "EwEConsumptionWriterPlugin"
         End Get
     End Property
 
@@ -97,11 +98,6 @@ Public Class cConsWriterPlugin
             My.Settings.Save()
         End Set
     End Property
-
-    Public Function AutoSaveName() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveName
-        Return My.Resources.CONSWR_AUTOSAVE_ITEM
-    End Function
 
     Public Function AutoSaveSubPath() As String _
         Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
@@ -207,7 +203,7 @@ Public Class cConsWriterPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
             Return My.Resources.CONSWR_MENU_ITEM
         End Get

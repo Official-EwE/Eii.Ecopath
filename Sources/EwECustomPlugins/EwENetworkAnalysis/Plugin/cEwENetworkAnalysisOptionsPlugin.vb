@@ -63,7 +63,7 @@ Public Class cEwENetworkAnalysisOptionsPlugin
         End Get
     End Property
 
-    Private ReadOnly Property IPlugin_Name As String Implements IPlugin.Name
+    Private ReadOnly Property Name As String Implements IPlugin.Name
         Get
             Return "ndENAOptions"
         End Get

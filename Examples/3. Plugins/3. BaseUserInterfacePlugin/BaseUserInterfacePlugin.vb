@@ -76,9 +76,9 @@ Public Class BaseUserInterfacePlugin
     ''' this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IPlugin.DisplayName
         Get
-            Return "BaseUserInterfacePlugin"
+            Return "Basic User Interface Plugin"
         End Get
     End Property
 

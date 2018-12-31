@@ -368,7 +368,7 @@ Public Class cEcospaceMonteCarloPluginPoint
     ''' this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
             Return "Ecospace Monte Carlo"
         End Get
@@ -505,7 +505,7 @@ Public Class cEcospaceMonteCarloPluginPoint
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "Base Plugin"
+            Return "EwEEcospaceMonteCarloPlugin"
         End Get
     End Property
 

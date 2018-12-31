@@ -153,7 +153,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IPlugin.Name"/>
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
         Get

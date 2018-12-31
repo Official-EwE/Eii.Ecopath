@@ -63,7 +63,7 @@ Public Class cEwEtoRPluginPoint
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "InvokeR"
+            Return "EwEInvokeENARPlugin"
         End Get
     End Property
 
@@ -77,7 +77,7 @@ Public Class cEwEtoRPluginPoint
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
             Return "Execute NETWRK (R)"
         End Get

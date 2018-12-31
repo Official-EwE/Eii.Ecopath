@@ -264,10 +264,10 @@ Module EcopathDetails
             writer.Write("   " & iTaxon & ": " & taxon.Common & " (" & taxon.Genus & " " & taxon.Species & ")")
             If (taxon.iGroup > 0) Then
                 Dim group As cEcoPathGroupInput = core.EcoPathGroupInputs(taxon.iGroup)
-                writer.WriteLine(", group: " & group.Name & ", prop. B: " & taxon.Proportion & ", prop. catch: " & taxon.ProportionCatch)
+                writer.WriteLine(", group: " & group.Name & ", prop. B: " & taxon.PropB & ", prop. catch: " & taxon.PropC)
             ElseIf ((taxon.iStanza) >= 0) Then
                 Dim stanza As cStanzaGroup = core.StanzaGroups(taxon.iStanza - 1)
-                writer.WriteLine(", stanza: " & stanza.Name & ", prop. B: " & taxon.Proportion & ", prop. catch: " & taxon.ProportionCatch)
+                writer.WriteLine(", stanza: " & stanza.Name & ", prop. B: " & taxon.PropB & ", prop. catch: " & taxon.PropC)
             Else
                 writer.WriteLine()
             End If

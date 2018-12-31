@@ -81,6 +81,8 @@ Public MustInherit Class cResiliencePluginBase
 
     Public MustOverride ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
 
+    Public MustOverride ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+
 #End Region ' Generic plug-in bits
 
     Protected Overridable Sub Dispose() Implements EwEPlugin.IDisposedPlugin.Dispose

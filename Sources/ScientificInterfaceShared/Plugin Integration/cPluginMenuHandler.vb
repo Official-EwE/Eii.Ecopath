@@ -210,7 +210,7 @@ Namespace Integration
                         ' Create menu item and add it
                         tsi = New ToolStripMenuItem(ip.DisplayName, ip.ControlImage, AddressOf OnPluginMenuItemClick)
                         ' Set name
-                        tsi.Name = ip.Name
+                        tsi.Name = ip.DisplayName
                         ' Set tooltip text
                         tsi.ToolTipText = cStringUtils.ToTooltip(ip.ControlTooltipText)
                         ' Add tag
@@ -236,8 +236,8 @@ Namespace Integration
                         tsic.Add(tsi)
                     Else
                         ' Remove menu item
-                        tsic.RemoveByKey(ip.Name)
-                        tsi = DirectCast(tsic.Find(ip.Name, True)(0), ToolStripMenuItem)
+                        tsic.RemoveByKey(ip.DisplayName)
+                        tsi = DirectCast(tsic.Find(ip.DisplayName, True)(0), ToolStripMenuItem)
                         Me.m_lItems.Remove(tsi)
                     End If
                 End If
@@ -276,7 +276,7 @@ Namespace Integration
 
             If Not (TypeOf ip Is IMenuItemPlugin) Then Return
 
-            atsi = tsic.Find(ip.Name, True)
+            atsi = tsic.Find(ip.DisplayName, True)
             For Each tsi As ToolStripItem In atsi
                 If (tsi.Tag Is ip) Then
                     tsi.Enabled = bEnable

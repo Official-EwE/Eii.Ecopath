@@ -69,7 +69,13 @@ Public Class cSCORtoEwEPluginPoint
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "ImportSCOR"
+            Return "EwEImportSCORPlugin"
+        End Get
+    End Property
+
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return "enaR SCOR import"
         End Get
     End Property
 

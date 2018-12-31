@@ -45,12 +45,6 @@ Public Class cAutoSavePlugin
         Me.AutoSave = True
     End Sub
 
-    Public Function AutoSaveName() As String Implements IAutoSavePlugin.AutoSaveName
-        ' This name will be shown to the user in the EwE File Management options panel, 
-        ' Menu > Tools > options > File management
-        Return "AutoSave plugin example"
-    End Function
-
     Public Function AutoSaveType() As eAutosaveTypes Implements IAutoSavePlugin.AutoSaveType
         ' The auto-save UI will nest this plug-in under the main Ecosim category
         Return eAutosaveTypes.Ecosim
@@ -105,6 +99,20 @@ Public Class cAutoSavePlugin
 
 #Region " Generic plug-in functionality "
 
+    Public ReadOnly Property DisplayName() As String _
+        Implements IPlugin.DisplayName, IPlugin.Name
+        Get
+            ' This name will be shown to the user in the EwE File Management options panel, 
+            ' Menu > Tools > options > File management
+
+            ' Note that it may be advisable to implement Name and DisplayName separately
+            ' - Name is meant to be unique and constant
+            ' - DisplayName is meant to be translated into other languages, and cannot be used for coded identification purposes
+            Return "AutoSave plugin example"
+        End Get
+    End Property
+
+
     Public Sub Initialize(ByVal core As Object) _
         Implements IPlugin.Initialize
         Me.m_core = DirectCast(core, cCore)
@@ -130,14 +138,6 @@ Public Class cAutoSavePlugin
             Dim assembly As Assembly = Assembly.GetAssembly(GetType(cAutoSavePlugin))
             Dim descr As AssemblyDescriptionAttribute = CType(assembly.GetCustomAttribute(GetType(AssemblyDescriptionAttribute)), AssemblyDescriptionAttribute)
             Return descr.Description
-        End Get
-    End Property
-
-    Public ReadOnly Property Name() As String _
-        Implements EwEPlugin.IPlugin.Name
-        Get
-            ' Internal unique name identifying the plug-in
-            Return "AutoSave plug-in example"
         End Get
     End Property
 

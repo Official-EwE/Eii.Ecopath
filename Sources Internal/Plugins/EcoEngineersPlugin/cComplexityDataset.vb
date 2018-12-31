@@ -80,6 +80,13 @@ Public Class cComplexityDataset
         End Get
     End Property
 
+    Public ReadOnly Property Name2 As String _
+        Implements IPlugin.DisplayName
+        Get
+            Return "EcoEngineer data set"
+        End Get
+    End Property
+
     Public Property DisplayName As String _
         Implements ISpatialDataSet.DisplayName
 

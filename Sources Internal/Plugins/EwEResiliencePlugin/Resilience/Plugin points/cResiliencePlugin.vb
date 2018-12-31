@@ -75,11 +75,6 @@ Public Class cResiliencePlugin
         End Set
     End Property
 
-    Public Function AutoSaveName() As String _
-        Implements EwEPlugin.IAutoSavePlugin.AutoSaveName
-        Return My.Resources.RESIL_AUTOSAVE_NAME
-    End Function
-
     Public Function AutoSaveSubPath() As String _
         Implements EwEPlugin.IAutoSavePlugin.AutoSaveOutputPath
         ' Default directories
@@ -151,6 +146,12 @@ Public Class cResiliencePlugin
     Public Overrides ReadOnly Property Name As String
         Get
             Return "ndResilience-00-Core"
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property DisplayName As String
+        Get
+            Return "Resilience"
         End Get
     End Property
 

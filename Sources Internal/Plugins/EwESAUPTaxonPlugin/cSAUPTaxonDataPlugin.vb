@@ -137,6 +137,14 @@ Public Class cSAUPTaxonDataPlugin
     Friend ReadOnly Property Name() As String _
         Implements IPlugin.Name
         Get
+            Return "EwESAUPTaxonSearchPlugin"
+        End Get
+    End Property
+
+    ''' <inheritdocs cref="IPlugin.DisplayName"/>
+    Friend ReadOnly Property DisplayName() As String _
+        Implements IPlugin.DisplayName
+        Get
             Return "SAUP taxon search"
         End Get
     End Property

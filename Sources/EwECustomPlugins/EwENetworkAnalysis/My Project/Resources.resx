@@ -3275,4 +3275,10 @@
   <data name="LBL_KEYSTONE3" xml:space="preserve">
     <value>Group rank by keystone index #3 (Valls et al, 2015) </value>
   </data>
+  <data name="WRITER_ECOPATH" xml:space="preserve">
+    <value>Network Analysis Ecopath results</value>
+  </data>
+  <data name="WRITER_ECOSIM" xml:space="preserve">
+    <value>Network Analysis Ecosim results</value>
+  </data>
 </root>

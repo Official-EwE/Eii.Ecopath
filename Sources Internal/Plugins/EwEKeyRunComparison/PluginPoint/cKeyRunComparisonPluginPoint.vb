@@ -196,7 +196,7 @@ Public Class cKeyRunComparisonPluginPoint
     ''' this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
             Return My.Resources.PLUGIN_DISPLAYNAME
         End Get

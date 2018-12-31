@@ -126,10 +126,10 @@ Public Class cEcospaceFitPlugin
 
 #Region "Plugin interface implementation"
 
-    ''' <summary>Generic <see cref="EwEPlugin.IPlugin.Name">IPlugin.Name</see> implementation.</summary>
+    ''' <summary>Generic <see cref="EwEPlugin.IPlugin.Name"/> implementation.</summary>
     Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "EcospaceFit"
+            Return "EwEEcospaceFitPlugin"
         End Get
     End Property
 
@@ -161,7 +161,7 @@ Public Class cEcospaceFitPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
             Return "Ecospace fit"
         End Get

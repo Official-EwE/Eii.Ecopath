@@ -142,13 +142,21 @@ Public Class cOBISPluginPoint
     Friend ReadOnly Property Description() As String _
         Implements IPlugin.Description
         Get
-            Return Me.Name
+            Return Me.DisplayName
         End Get
     End Property
 
     ''' <inheritdocs cref="IPlugin.Name"/>
     Friend ReadOnly Property Name() As String _
         Implements IPlugin.Name
+        Get
+            Return "EwEOBisTaxonSearchPlugin"
+        End Get
+    End Property
+
+    ''' <inheritdocs cref="IPlugin.DisplayName"/>
+    Friend ReadOnly Property DisplayName() As String _
+        Implements IPlugin.DisplayName
         Get
             Return "WoRMS (world register of marine life) taxon search"
         End Get

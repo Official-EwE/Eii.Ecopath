@@ -125,7 +125,7 @@ Public Class cFishMIPPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String Implements IGUIPlugin.DisplayName
         Get
             Return My.Resources.CAPTION
         End Get

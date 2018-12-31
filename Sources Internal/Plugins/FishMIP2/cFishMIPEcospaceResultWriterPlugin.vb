@@ -80,6 +80,12 @@ Public Class cFishMIPEcospaceResultWriterPlugin
         End Get
     End Property
 
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
+        Get
+            Return "Fish-MIP Ecospace result writer"
+        End Get
+    End Property
+
     Public Sub Initialize(core As Object) Implements IPlugin.Initialize
         ' NOP; rely on cFishMipCore instead
     End Sub
@@ -268,14 +274,6 @@ Public Class cFishMIPEcospaceResultWriterPlugin
 #Region " Autosave "
 
     Public Property AutoSave As Boolean Implements IAutoSavePlugin.AutoSave
-
-    Public Function AutoSaveName() As String _
-        Implements IAutoSavePlugin.AutoSaveName
-
-        ' For the UI
-        Return "FishMip results"
-
-    End Function
 
     Public Function AutoSaveType() As eAutosaveTypes _
         Implements IAutoSavePlugin.AutoSaveType

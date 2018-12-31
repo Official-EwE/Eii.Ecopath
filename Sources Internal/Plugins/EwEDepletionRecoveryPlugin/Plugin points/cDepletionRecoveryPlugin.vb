@@ -92,8 +92,8 @@ Public Class cDepletionRecoveryPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlText() As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName() As String _
+        Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
             Return "Depletion/recovery"
         End Get
@@ -125,7 +125,7 @@ Public Class cDepletionRecoveryPlugin
             ' Test if form does not yet exist
             If Not Me.HasInterface() Then
                 Me.m_frmMain = New frmMain(Me.m_uic)
-                Me.m_frmMain.Text = Me.ControlText
+                Me.m_frmMain.Text = Me.DisplayName
             End If
 
             ' Pass form reference back to calling app

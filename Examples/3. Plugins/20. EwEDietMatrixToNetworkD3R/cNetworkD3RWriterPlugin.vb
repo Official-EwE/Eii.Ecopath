@@ -64,9 +64,9 @@ Public Class cNetworkD3RWriterPlugin
         End Get
     End Property
 
-    Public ReadOnly Property Name As String Implements IPlugin.Name
+    Public ReadOnly Property Name As String Implements IPlugin.Name, EwEPlugin.IPlugin.DisplayName
         Get
-            Return "EwEEcopathExportDietToNetworkD3"
+            Return "Export Dietmatrix to NetworkD3"
         End Get
     End Property
 
@@ -101,12 +101,6 @@ Public Class cNetworkD3RWriterPlugin
     Public ReadOnly Property ControlImage As System.Drawing.Image Implements IGUIPlugin.ControlImage
         Get
             Return Nothing
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
-        Get
-            Return "To NetworkD3 network"
         End Get
     End Property
 

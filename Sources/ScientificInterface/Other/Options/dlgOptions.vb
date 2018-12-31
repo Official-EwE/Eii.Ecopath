@@ -98,7 +98,7 @@ Namespace Other
                     Dim opt As IEwEOptionsPlugin = DirectCast(pi, IEwEOptionsPlugin)
                     Dim page As Control = opt.GetConfigUI()
                     Me.m_lPages.Add(DirectCast(page, IOptionsPage))
-                    tnPlugins.Nodes.Add(Me.CreateNode(opt.Label, pi.Name, page.GetType()))
+                    tnPlugins.Nodes.Add(Me.CreateNode(opt.Label, pi.DisplayName, page.GetType()))
                 Next
             End If
             Me.m_tvOptions.Nodes.Add(tnPlugins)

@@ -125,7 +125,7 @@ Public Class cResultsHolder
 
     Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return Me.DisplayName()
+            Return "EwEResultExtractorResultHolderPlugin"
         End Get
     End Property
 

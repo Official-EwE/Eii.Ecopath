@@ -69,7 +69,7 @@ Public Class cEwENoiseShapeFunctionPlugin
     End Property
 
     Public ReadOnly Property DisplayName As String _
-        Implements EwEPlugin.IEcosimShapeFunctionPlugin.DisplayName
+        Implements EwEPlugin.IPlugin.DisplayName
         Get
             Return My.Resources.NAME_NOISE
         End Get

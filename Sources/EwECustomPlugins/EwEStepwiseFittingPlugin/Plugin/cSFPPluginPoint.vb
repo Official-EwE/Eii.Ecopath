@@ -61,7 +61,7 @@ Public Class cSFPPluginPoint
     Public ReadOnly Property Name As String _
         Implements EwEPlugin.IPlugin.Name
         Get
-            Return "StepWiseFittingPlugin"
+            Return "EwEStepWiseFittingPlugin"
         End Get
     End Property
 

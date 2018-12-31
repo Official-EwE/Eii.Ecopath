@@ -188,6 +188,13 @@ Public Class cEwECSVMapDataset
         End Get
     End Property
 
+    Public ReadOnly Property Name2 As String _
+        Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return "CSV Map Dataset"
+        End Get
+    End Property
+
 #End Region ' Information
 
 #Region " Configuration "

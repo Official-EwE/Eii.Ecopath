@@ -57,7 +57,7 @@ Namespace Other
 
             Public Function Compare(x As IAutoSavePlugin, y As IAutoSavePlugin) As Integer _
                 Implements IComparer(Of IAutoSavePlugin).Compare
-                Return String.Compare(x.Name, y.Name)
+                Return String.Compare(x.DisplayName, y.DisplayName)
             End Function
 
         End Class

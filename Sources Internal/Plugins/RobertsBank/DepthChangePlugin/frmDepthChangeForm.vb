@@ -38,8 +38,8 @@ Public Class frmEwEPlugin
     Public Sub New(ByVal plugin As cDepthChangePluginPoint)
         Me.InitializeComponent()
         Me.m_plugin = plugin
-        Me.Text = Me.m_plugin.ControlText
-        Me.TabText = Me.m_plugin.ControlText
+        Me.Text = Me.m_plugin.DisplayName
+        Me.TabText = Me.m_plugin.DisplayName
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)

@@ -35,6 +35,12 @@ Public Class cLifespanPlugin
         End Get
     End Property
 
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
+        Get
+            Return "Framework validation"
+        End Get
+    End Property
+
     Public ReadOnly Property Description As String Implements IPlugin.Description
         Get
             Return "Validates the framework"

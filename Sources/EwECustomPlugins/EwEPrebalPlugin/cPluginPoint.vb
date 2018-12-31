@@ -104,7 +104,7 @@ Public Class cPluginPoint
     Public ReadOnly Property Name As String _
         Implements IPlugin.Name
         Get
-            Return "ndPrebal"
+            Return "EwEPrebalPlugin"
         End Get
     End Property
 

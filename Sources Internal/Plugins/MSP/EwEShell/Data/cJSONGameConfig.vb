@@ -222,7 +222,7 @@ Public Class cJSONGameConfig
     ''' Get the pressure definitions provided in the JSON text.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <JsonIgnoreAttribute()>
+    <JsonIgnore()>
     Public ReadOnly Property Pressures As cPressure()
         Get
             Dim lPressures As New List(Of cPressure)
@@ -245,7 +245,7 @@ Public Class cJSONGameConfig
     ''' Get the outcome definitions provided in the JSON text.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <JsonIgnoreAttribute()>
+    <JsonIgnore()>
     Public ReadOnly Property Outcomes As cGrid()
         Get
             Dim lOutputs As New List(Of cGrid)

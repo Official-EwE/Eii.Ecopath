@@ -270,7 +270,7 @@ Public Class cImportDietsPlugin
     ''' this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
             Return My.Resources.CONTROL_TEXT
         End Get
@@ -425,7 +425,7 @@ Public Class cImportDietsPlugin
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "ImportDiets"
+            Return "EwEImportDietsPlugin"
         End Get
     End Property
 

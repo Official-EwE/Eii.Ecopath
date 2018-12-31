@@ -327,8 +327,13 @@ Public Class cEcospaceResultsWriterICMPlugin
         End Get
     End Property
 
-
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
+        Get
+            Return "EwEICMEcospacePlugin"
+        End Get
+    End Property
+
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
         Get
             Return "ICM Ecospace Results Utilities"
         End Get

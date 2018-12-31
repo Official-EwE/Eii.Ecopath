@@ -99,10 +99,10 @@ Public Class cEwEFlowDiagramPlugin
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="IGUIPlugin.ControlText"/>
+    ''' <inheritdocs cref="IGUIPlugin.DisplayName"/>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText() As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName() As String _
+        Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
             Return "Flow diagram - EwE5 style"
         End Get
@@ -119,7 +119,7 @@ Public Class cEwEFlowDiagramPlugin
         If (Not Me.m_bInitOK) Then Return
 
         If Not Me.HasUI Then
-            Me.m_ui = New frmFlowDiagramPlugin(Me.ControlText, Me)
+            Me.m_ui = New frmFlowDiagramPlugin(Me.DisplayName, Me)
         End If
 
         ' Pass form reference back to calling app
@@ -136,7 +136,7 @@ Public Class cEwEFlowDiagramPlugin
     Public ReadOnly Property ControlTooltipText() As String _
            Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
-            Return Me.ControlText
+            Return ""
         End Get
     End Property
 
@@ -197,7 +197,7 @@ Public Class cEwEFlowDiagramPlugin
     Public ReadOnly Property Name() As String _
         Implements EwEPlugin.IPlugin.Name
         Get
-            Return Me.ControlText()
+            Return "EwEEcopath5FlowDiagramPlugin"
         End Get
     End Property
 

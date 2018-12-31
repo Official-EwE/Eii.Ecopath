@@ -325,7 +325,7 @@ Public Class cEcospaceSensitivityPluginPoint
     ''' this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
             Return "Ecospace Sensitivity"
         End Get
@@ -459,10 +459,9 @@ Public Class cEcospaceSensitivityPluginPoint
         End Get
     End Property
 
-
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "Base Plugin"
+            Return "EwEEcospaceSensitivityPlugin"
         End Get
     End Property
 

@@ -239,6 +239,12 @@ Public Class cBasePluginPoint
 
 #Region "IPlugin implementation"
 
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return "Me"
+        End Get
+    End Property
+
     Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
         Get
             Return "Me"
@@ -256,7 +262,6 @@ Public Class cBasePluginPoint
             Return "Provides a base for building a plugin"
         End Get
     End Property
-
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get

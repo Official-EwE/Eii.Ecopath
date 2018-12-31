@@ -31,7 +31,7 @@ Public Class cSpatialTimeSeries
     Public Class cDataPoint
 
         Public Sub New(core As cCore, lon As Single, lat As Single, value As Single)
-            Me.New(core.EcospaceBasemap.LonToCol(lon), core.EcospaceBasemap.LatToRow(lat), value)
+            Me.New(CInt(Math.Floor(core.EcospaceBasemap.LonToCol(lon))), CInt(Math.Floor(core.EcospaceBasemap.LatToRow(lat))), value)
         End Sub
 
         Public Sub New(col As Integer, row As Integer, value As Single)
@@ -91,8 +91,8 @@ Public Class cSpatialTimeSeries
                 Dim sLat As Single = 0
                 Dim sLon As Single = 0
                 bSucces = bSucces And Single.TryParse(bits(0), sLon) And Single.TryParse(bits(1), sLat)
-                iCol = Me.m_core.EcospaceBasemap.LonToCol(sLon)
-                iRow = Me.m_core.EcospaceBasemap.LatToRow(sLat)
+                iCol = CInt(Math.Floor(Me.m_core.EcospaceBasemap.LonToCol(sLon)))
+                iRow = CInt(Math.Floor(Me.m_core.EcospaceBasemap.LatToRow(sLat)))
             End If
 
             If bSucces Then

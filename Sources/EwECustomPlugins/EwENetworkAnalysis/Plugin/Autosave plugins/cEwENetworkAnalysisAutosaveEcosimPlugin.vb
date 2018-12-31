@@ -78,7 +78,7 @@ Public Class cEwENetworkAnalysisAutosaveEcosimPlugin
 
     Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
-            Return My.Resources.CAPTION
+            Return My.Resources.WRITER_ECOSIM
         End Get
     End Property
 

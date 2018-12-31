@@ -28,6 +28,12 @@ Public Class MSEBatchPlugin
         End Get
     End Property
 
+    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return "MSE batch run"
+        End Get
+    End Property
+
     Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
         Get
             Return "Run the MSE module in batch mode from a command file."
@@ -48,12 +54,6 @@ Public Class MSEBatchPlugin
     Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
-        Get
-            Return "MSE Batch"
         End Get
     End Property
 

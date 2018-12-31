@@ -64,7 +64,7 @@ Public Class cSpatialSSPluginPoint
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String Implements IGUIPlugin.DisplayName
         Get
             Return "Spatial SS"
         End Get
@@ -96,7 +96,7 @@ Public Class cSpatialSSPluginPoint
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "Calculate SS"
+            Return "EwEEcospaceCalcSSPlugin"
         End Get
     End Property
 

@@ -122,7 +122,7 @@ Public Class cMSPEwEPluginPoint
     ''' Plug-in property to report the control text for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String Implements IGUIPlugin.DisplayName
         Get
             Return My.Resources.NODE_CONFIG
         End Get

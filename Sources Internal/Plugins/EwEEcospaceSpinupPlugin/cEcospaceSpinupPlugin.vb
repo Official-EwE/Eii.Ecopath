@@ -459,7 +459,7 @@ Public Class cEcospaceSpinupPlugin
     ''' this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
             Return "Ecospace Spin-Up"
         End Get
@@ -567,7 +567,7 @@ Public Class cEcospaceSpinupPlugin
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "Ecospace_SpinUp"
+            Return "EwEEcospaceSpinUpPlugin"
         End Get
     End Property
 

@@ -826,7 +826,7 @@ Public Class cHabitatCapacityPluginPoint
     ''' this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
             Return "Habitat Capacity Paper"
         End Get
@@ -964,10 +964,9 @@ Public Class cHabitatCapacityPluginPoint
         End Get
     End Property
 
-
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "Habitat Capacity Paper Plugin"
+            Return "EwEHabitatCapacityPaperPlugin"
         End Get
     End Property
 

@@ -70,7 +70,7 @@ Public Class cMPADriver
             Dim nCols As Integer = pressure.Grid.Width
 
             If (data IsNot Nothing) Then
-                Dim map As Boolean(,) = data.MPA(Me.m_mpa.Index)
+                Dim map As Integer(,) = data.MPA(Me.m_mpa.Index)
                 For iRow As Integer = 0 To nRows - 1
                     For iCol As Integer = 0 To nCols - 1
                         map(iRow + 1, iCol + 1) = (pressure.Grid.Cell(iRow, iCol) >= Me.m_game.MPACellClosureRatio)

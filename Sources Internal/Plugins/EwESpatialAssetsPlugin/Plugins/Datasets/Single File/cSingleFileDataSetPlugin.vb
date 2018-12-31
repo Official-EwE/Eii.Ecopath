@@ -466,6 +466,15 @@ Namespace SpatialData
             End Get
         End Property
 
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="EwEPlugin.IPlugin.DisplayName"/>
+        ''' -----------------------------------------------------------------------
+        Public Overrides ReadOnly Property PluginDisplayName As String
+            Get
+                Return "SIngle file dataset"
+            End Get
+        End Property
+
 #End Region ' Plug-in implementation
 
 #Region " Import & export "

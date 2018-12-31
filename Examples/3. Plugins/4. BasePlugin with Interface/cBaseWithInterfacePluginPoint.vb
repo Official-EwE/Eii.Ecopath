@@ -285,9 +285,9 @@ Public Class cBaseWithInterfacePluginPoint
     ''' this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName() As String Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
-            Return "BaseUserInterfacePlugin"
+            Return "Base User Interface Plugin"
         End Get
     End Property
 
@@ -420,10 +420,9 @@ Public Class cBaseWithInterfacePluginPoint
         End Get
     End Property
 
-
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "Base Plugin"
+            Return "EwEBasePlugin"
         End Get
     End Property
 

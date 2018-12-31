@@ -2146,6 +2146,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Ecopath6\Sources\EwECustomPlugins\EwEImportExportLayersPlugin\EwEImportExportLayerDefinitionsPlugin.vbproj">
+      <Project>{ff2c3b42-6872-4841-96ae-b06d88da6f1c}</Project>
+      <Name>EwEImportExportLayerDefinitionsPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Ecopath6\Sources\EwECustomPlugins\EwEMPADynamicsPlugin\EwEMPADynamicsPlugin.vbproj">
+      <Project>{220ff584-9bfa-4872-949a-52c7a6877b65}</Project>
+      <Name>EwEMPADynamicsPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
@@ -2166,21 +2174,9 @@
       <Project>{fef1031b-9933-4364-ad29-c4f8b2e68382}</Project>
       <Name>EwEEcotroph</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEImportExportLayersPlugin\EwEImportExportLayerDefinitionsPlugin.vbproj">
-      <Project>{ff2c3b42-6872-4841-96ae-b06d88da6f1c}</Project>
-      <Name>EwEImportExportLayerDefinitionsPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEMergeSplitGroupsPlugin\EwEMergeSplitGroupsPlugin.vbproj">
-      <Project>{88137892-3068-42b7-bcca-b811d7264b4a}</Project>
-      <Name>EwEMergeSplitGroupsPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEModelFromEcosimPlugin\EwEModelFromEcosimPlugin.vbproj">
       <Project>{243cbcb0-4fd7-43b8-a6d1-27e26e866a99}</Project>
       <Name>EwEModelFromEcosimPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEMPADynamicsPlugin\EwEMPADynamicsPlugin.vbproj">
-      <Project>{220ff584-9bfa-4872-949a-52c7a6877b65}</Project>
-      <Name>EwEMPADynamicsPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEMSEPlugin\EwEMSEPlugin.vbproj">
       <Project>{19b57860-d7c5-479a-8979-e4dfe9a46b50}</Project>

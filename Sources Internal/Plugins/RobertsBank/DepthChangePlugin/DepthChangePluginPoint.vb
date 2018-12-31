@@ -283,18 +283,6 @@ Public Class cDepthChangePluginPoint
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Tell EwE6 what text to display in controls that provide access to 
-    ''' this plug-in.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
-        Get
-            Return "Roberts Bank Spatial data"
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Tell EwE6 what image to show for this plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -423,9 +411,15 @@ Public Class cDepthChangePluginPoint
         End Get
     End Property
 
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return "Roberts Bank depth changes"
+        End Get
+    End Property
+
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return Me.ControlText
+            Return "EwEDepthChangePlugin"
         End Get
     End Property
 

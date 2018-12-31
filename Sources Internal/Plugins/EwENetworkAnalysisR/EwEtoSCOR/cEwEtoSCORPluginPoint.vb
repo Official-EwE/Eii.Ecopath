@@ -43,10 +43,10 @@ Public Class cEwEtoSCORPluginPoint
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String _
-        Implements EwEPlugin.IGUIPlugin.ControlText
+    Public ReadOnly Property DisplayName As String _
+        Implements EwEPlugin.IGUIPlugin.DisplayName
         Get
-            Return "Save SCOR file..."
+            Return "enaR SCOR export"
         End Get
     End Property
 

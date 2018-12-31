@@ -680,6 +680,12 @@ Namespace SpatialData
         Public MustOverride ReadOnly Property PluginName As String _
             Implements EwEPlugin.IPlugin.Name
 
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="EwEPlugin.IPlugin.DisplayName"/>
+        ''' -----------------------------------------------------------------------
+        Public MustOverride ReadOnly Property PluginDisplayName As String _
+            Implements EwEPlugin.IPlugin.DisplayName
+
 #End Region ' Plug-in implementation
 
 #Region " Summary "

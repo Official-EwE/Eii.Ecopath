@@ -61,6 +61,9 @@ Public Class cTransectSummaryPlugin
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IPlugin.Name"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
             Return "CosmInsiteTransectSummary"

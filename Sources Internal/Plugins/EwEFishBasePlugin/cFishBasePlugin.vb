@@ -112,6 +112,13 @@ Public Class cFishBasePlugin
     Public ReadOnly Property Name() As String _
         Implements EwEPlugin.IPlugin.Name
         Get
+            Return "EwEFishBaseTaxonSearchPlugin"
+        End Get
+    End Property
+
+    Public ReadOnly Property DisplayName() As String _
+        Implements EwEPlugin.IPlugin.DisplayName
+        Get
             Return "FishBase taxon search"
         End Get
     End Property

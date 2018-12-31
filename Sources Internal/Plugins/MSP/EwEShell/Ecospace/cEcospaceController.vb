@@ -258,7 +258,18 @@ Public Class cEcospaceController
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "MSP"
+            Return "EwEMSPShellPlugin"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the unique name for this plug-in point.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
+        Get
+            Return "MSP Shell"
         End Get
     End Property
 
