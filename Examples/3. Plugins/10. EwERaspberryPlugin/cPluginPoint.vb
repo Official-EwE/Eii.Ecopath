@@ -36,6 +36,7 @@ Public Class cPluginPoint
     Implements EwEPlugin.IEcosimEndTimestepPlugin
     Implements EwEPlugin.IDisposedPlugin
     Implements EwEPlugin.IMenuItemTogglePlugin
+    Implements EwEPlugin.IAutoRunPlugin
 
 #Region " Private vars "
 
@@ -133,6 +134,19 @@ Public Class cPluginPoint
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdoc cref="EwEPlugin.IPlugin.Initialize"/>
+    ''' <remarks>
+    ''' Implemented to grab a reference to the EwE <see cref="cCore">core</see>.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property DisplayName As String _
+        Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return "Raspberry plugin"
+        End Get
+    End Property
+
 #End Region ' Generic bits
 
 #Region " Public bits "
@@ -161,12 +175,6 @@ Public Class cPluginPoint
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
-        Get
-            Return "&Blow crash-berry"
-        End Get
-    End Property
-
     Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
         Get
             Return "Pfrt"
@@ -177,6 +185,15 @@ Public Class cPluginPoint
         Get
             Return eCoreExecutionState.EcopathLoaded
         End Get
+    End Property
+
+    Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
+        Get
+            Return Me.Enabled
+        End Get
+        Set(value As Boolean)
+            Me.Enabled = value
+        End Set
     End Property
 
     Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As Windows.Forms.Form) _
@@ -317,6 +334,10 @@ Public Class cPluginPoint
 
         End If
     End Sub
+
+    Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
+        Return New eCoreComponentType() {eCoreComponentType.EcoSim}
+    End Function
 
 #End Region ' Internals
 

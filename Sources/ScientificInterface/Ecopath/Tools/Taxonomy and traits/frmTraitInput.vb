@@ -74,7 +74,7 @@ Namespace Ecopath.Input
                         If (TypeOf dpi Is IGUIPlugin) Then
                             img = DirectCast(dpi, IGUIPlugin).ControlImage
                         End If
-                        Dim tsi As ToolStripItem = Me.m_tscmbUpdate.DropDownItems.Add(dpi.Name, img, AddressOf OnClickEngine)
+                        Dim tsi As ToolStripItem = Me.m_tscmbUpdate.DropDownItems.Add(dpi.DisplayName, img, AddressOf OnClickEngine)
                         tsi.Tag = dpi
                         Me.m_bHasSearchEngines = True
                     End If

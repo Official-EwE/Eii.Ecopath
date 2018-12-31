@@ -108,7 +108,7 @@ Public Class cPluginPoint
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "ndAquamapsImport"
+            Return "EwEquamapsImportPlugin"
         End Get
     End Property
 

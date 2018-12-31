@@ -581,10 +581,10 @@ Public Class cPluginManager
 
                                 Try
                                     ' Stick it up
-                                    plugAssem.Plugin(ip.Name) = ip
+                                    plugAssem.Plugin(ip.DisplayName) = ip
                                 Catch ex As cPluginException
 #If DEBUG Then
-                                    Console.WriteLine("PluginManager: assembly '{0}' contained a plug-in with invalid or duplicate name {1}. {2}", strFileName, ip.Name, ex.Message)
+                                    Console.WriteLine("PluginManager: assembly '{0}' contained a plug-in with invalid or duplicate name {1}. {2}", strFileName, ip.DisplayName, ex.Message)
                                     Debug.Assert(False)
 #End If
                                     cLog.Write(ex, eVerboseLevel.Standard, "LoadPluginAssembly " & strFileName)
@@ -731,7 +731,7 @@ Public Class cPluginManager
                 Try
                     DirectCast(ipc.Plugin, IDisposedPlugin).Dispose()
                 Catch ex As Exception
-                    cLog.Write(ex, "cPluginManager.UnloadPluginAssembly " & ipc.Plugin.Name)
+                    cLog.Write(ex, "cPluginManager.UnloadPluginAssembly " & ipc.Plugin.DisplayName)
                     Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "Dispose", ex)
                 End Try
             Next
@@ -2156,7 +2156,7 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Returns a collection of <see cref="cPluginContext">plug-in definitions</see>
-    ''' of a given <see cref="IPlugin.Name">name</see>.
+    ''' of a given <see cref="IPlugin.DisplayName">name</see>.
     ''' </summary>
     ''' <param name="strName">The <see cref="Type">Type</see> of the plugins to retrieve.</param>
     ''' <param name="pa">The <see cref="cPluginAssembly">plug-in assembly</see> to search.
@@ -2405,7 +2405,7 @@ Public Class cPluginManager
         End If
 
         If (plugin IsNot Nothing) Then
-            strPlugin = plugin.Name
+            strPlugin = plugin.DisplayName
         End If
 
         Me.RaisePluginException(New cPluginException(assembly, String.Format(My.Resources.PLUGIN_ERROR_POINT, strAssembly, strPlugin, strMethodName, ex.Message), ex))

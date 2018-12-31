@@ -99,7 +99,7 @@ Public Class cModelFromEcosimPluginPoint
 
     Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "SaveEcopathModelFromEcosim"
+            Return "EwESaveEcopathModelFromEcosimPlugin"
         End Get
     End Property
 

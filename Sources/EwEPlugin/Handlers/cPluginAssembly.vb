@@ -43,7 +43,7 @@ Public Class cPluginAssembly
 
         Public Function Compare(ByVal x As IPlugin, ByVal y As IPlugin) As Integer _
             Implements IComparer(Of IPlugin).Compare
-            Return String.Compare(x.Name, y.Name)
+            Return String.Compare(x.DisplayName, y.DisplayName)
         End Function
 
     End Class
@@ -90,7 +90,7 @@ Public Class cPluginAssembly
     ''' <summary>
     ''' Get/set a named <see cref="IPlugin">plugin</see>.
     ''' </summary>
-    ''' <param name="strName">The <see cref="IPlugin.Name">name</see>
+    ''' <param name="strName">The <see cref="IPlugin.DisplayName">name</see>
     ''' of the plugin.</param>
     ''' <param name="bAllowDisabled">Flag stating if plug-ins from disabled 
     ''' assemblies can be aquired as well.</param>

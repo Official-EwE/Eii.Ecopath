@@ -51,4 +51,10 @@ Public Class cSkeletonPlugin
         End Get
     End Property
 
+    Public ReadOnly Property DisplayName As String Implements EwEPlugin.IPlugin.DisplayName
+        Get
+            Return "Skeleton Plugin"
+        End Get
+    End Property
+
 End Class

@@ -81,7 +81,7 @@ Public Class cEwENetworkAnalysisAutosaveEcopathPlugin
 
     Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
         Get
-            Return My.Resources.CAPTION
+            Return My.Resources.WRITER_ECOPATH
         End Get
     End Property
 

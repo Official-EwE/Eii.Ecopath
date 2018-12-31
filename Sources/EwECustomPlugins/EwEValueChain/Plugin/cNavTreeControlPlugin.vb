@@ -34,7 +34,8 @@ Public MustInherit Class cNavTreeControlPlugin
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IPlugin.Name"/>
     ''' -----------------------------------------------------------------------
-    Public MustOverride ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+    Public MustOverride ReadOnly Property Name() As String _
+        Implements EwEPlugin.IPlugin.Name
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IPlugin.DisplayName"/>

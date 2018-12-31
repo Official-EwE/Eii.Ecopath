@@ -102,7 +102,7 @@ Public Class cEcotrophPlugin
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "ET plug-in"
+            Return "EwEEcotrophPlugin"
         End Get
     End Property
 

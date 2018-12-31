@@ -153,7 +153,7 @@ Namespace ExternalData
         Public Function ProducerNames() As String()
             Dim lstrNames As New List(Of String)
             For Each dp As IDataProducerPlugin In s_core.PluginManager.DataProducers(GetType(ITaxonSearchData))
-                lstrNames.Add(dp.Name)
+                lstrNames.Add(dp.DisplayName)
             Next
             Return lstrNames.ToArray
         End Function
@@ -171,7 +171,7 @@ Namespace ExternalData
                 If String.Compare(value, Me.m_strProviderName, True) = 0 Then Return
                 Me.m_strProviderName = value
                 For Each dp As IDataProducerPlugin In s_core.PluginManager.DataProducers(GetType(ITaxonSearchData))
-                    dp.SetEnabled(String.Compare(dp.Name, Me.m_strProviderName, True) = 0)
+                    dp.SetEnabled(String.Compare(dp.DisplayName, Me.m_strProviderName, True) = 0)
                 Next
             End Set
 

@@ -71,7 +71,7 @@ Public Class cEcosimPlugin
     End Property
 
     Public ReadOnly Property Name() As String _
-        Implements EwEPlugin.IPlugin.Name
+        Implements EwEPlugin.IPlugin.Name, EwEPlugin.IPlugin.DisplayName
         Get
             Return "Ecosim plug-in example"
         End Get

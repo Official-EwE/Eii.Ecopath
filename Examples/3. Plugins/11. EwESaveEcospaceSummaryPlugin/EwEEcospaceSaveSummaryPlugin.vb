@@ -75,9 +75,16 @@ Public Class EwEEcospaceSaveSummaryPlugin
     End Sub
 
     Public ReadOnly Property Name As String _
-        Implements EwEPlugin.IPlugin.Name
+        Implements IPlugin.Name
         Get
-            Return "mapaverages_csv"
+            Return "EwEEcospaceSummaryWriterPlugin"
+        End Get
+    End Property
+
+    Public ReadOnly Property DisplayName As String _
+        Implements IPlugin.DisplayName, IResultsWriter.DisplayName
+        Get
+            Return "Ecospace map averages (csv file)"
         End Get
     End Property
 
@@ -189,18 +196,15 @@ Public Class EwEEcospaceSaveSummaryPlugin
 
     End Function
 
-    Public ReadOnly Property DataName As String _
-        Implements  IEcospaceResultWriterPlugin.DisplayName
-        Get
-            ' ToDo: globalize this method
-            Return "Ecospace map averages (csv file)"
-        End Get
-    End Property
-
     Private Function DataPath() As String
         Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), "summary")
     End Function
 
     Public Property Enabled As Boolean Implements EwEUtils.Core.IEcospaceResultsWriter.Enabled
 
+    Public ReadOnly Property OutputPath As String Implements IResultsWriter.OutputPath
+        Get
+            Return Me.DataPath()
+        End Get
+    End Property
 End Class

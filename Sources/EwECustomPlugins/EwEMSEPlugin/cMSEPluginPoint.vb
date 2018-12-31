@@ -360,7 +360,7 @@ Public Class cMSEPluginPoint
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "ndCefasMSE"
+            Return "EwECEfasMSEPlugin"
         End Get
     End Property
 

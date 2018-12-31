@@ -86,7 +86,7 @@ Public Class dlgDefineTaxonomy
         End Property
 
         Public Overrides Function ToString() As String
-            If Me.m_prod IsNot Nothing Then Return Me.m_prod.Name
+            If Me.m_prod IsNot Nothing Then Return Me.m_prod.DisplayName
             Return SharedResources.GENERIC_VALUE_NOSEARCHENGINES
         End Function
 
@@ -642,7 +642,7 @@ Public Class dlgDefineTaxonomy
         Try
             ' Has a search key for this specific producer?
             If (Not String.IsNullOrEmpty(term.SourceKey)) And _
-               (String.Compare(term.Source, Me.SelectedDataProducer.Name, True) = 0) Then
+               (String.Compare(term.Source, Me.SelectedDataProducer.DisplayName, True) = 0) Then
                 ' #Yes: Start searching (expected to return only one result)
                 Me.SelectedDataProducer.StartSearch(Me.m_gridGroups.GetSearchTerm(term), 100)
             End If

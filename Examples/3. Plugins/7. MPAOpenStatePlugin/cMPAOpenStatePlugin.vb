@@ -109,7 +109,7 @@ Public Class cMPAOpenStatePlugin
         ' Extra feature: notify the world of the MPA change
         If (iTime = CInt(Me.m_core.nEcospaceTimeSteps / 2)) Then
             ' This message will appear in the EwE6 status panel
-            Dim msg As New cMessage(Me.Name & ": MPA " & MPA.Name & " activated at time step " & iTime & ", " & AbsoluteDateForTimeStep.ToShortDateString, _
+            Dim msg As New cMessage(Me.Name & ": MPA " & MPA.Name & " activated at time step " & iTime & ", " & AbsoluteDateForTimeStep.ToShortDateString,
                                     eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
             Me.m_core.Messages.SendMessage(msg)
         End If
@@ -166,6 +166,12 @@ Public Class cMPAOpenStatePlugin
     Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
         Get
             Return "MPAOpenStatePlugin"
+        End Get
+    End Property
+
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
+        Get
+            Return "MPA open state plug-in"
         End Get
     End Property
 

@@ -185,7 +185,7 @@ Namespace Integration
                         ' #Adding: create new node
                         tn = New TreeNode(ipNavTree.DisplayName)
                         ' Set name
-                        tn.Name = ipNavTree.Name
+                        tn.Name = ipNavTree.DisplayName
                         ' Set tooltip text
                         tn.ToolTipText = cStringUtils.ToTooltip(ipNavTree.ControlTooltipText)
                         ' Attach plugin info to node tag
@@ -217,7 +217,7 @@ Namespace Integration
                         If (Not bAdded) Then tnc.Add(tn)
                     Else
                         ' #Removing: try to remove the node
-                        tn = tnc.Item(ipNavTree.Name)
+                        tn = tnc.Item(ipNavTree.DisplayName)
                         If (tn IsNot Nothing) Then tnc.Remove(tn)
                     End If
                 End If

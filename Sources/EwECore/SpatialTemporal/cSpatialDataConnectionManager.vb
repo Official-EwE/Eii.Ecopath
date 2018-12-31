@@ -66,8 +66,8 @@ Namespace SpatialData
                 Dim strX As String = x.DisplayName
                 Dim strY As String = y.DisplayName
 
-                If (TypeOf x Is IPlugin) Then strX = DirectCast(x, IPlugin).Name
-                If (TypeOf y Is IPlugin) Then strY = DirectCast(y, IPlugin).Name
+                If (TypeOf x Is IPlugin) Then strX = DirectCast(x, IPlugin).DisplayName
+                If (TypeOf y Is IPlugin) Then strY = DirectCast(y, IPlugin).DisplayName
 
                 Return String.Compare(strX, strY, True)
             End Function
@@ -83,8 +83,8 @@ Namespace SpatialData
                 Dim strX As String = x.DisplayName
                 Dim strY As String = y.DisplayName
 
-                If (TypeOf x Is IPlugin) Then strX = DirectCast(x, IPlugin).Name
-                If (TypeOf y Is IPlugin) Then strY = DirectCast(y, IPlugin).Name
+                If (TypeOf x Is IPlugin) Then strX = DirectCast(x, IPlugin).DisplayName
+                If (TypeOf y Is IPlugin) Then strY = DirectCast(y, IPlugin).DisplayName
 
                 Return String.Compare(strX, strY, True)
             End Function

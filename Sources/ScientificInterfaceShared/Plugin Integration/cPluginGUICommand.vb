@@ -129,7 +129,7 @@ Public Class cPluginGUICommand
         Try
             Me.m_ip.OnControlClick(Me.m_sender, Me.m_e, Me.Form)
         Catch ex As Exception
-            Debug.Assert(False, String.Format("Error {0} occurred while running plugin {1}", ex.Message, Me.m_ip.Name))
+            Debug.Assert(False, String.Format("Error {0} occurred while running plugin {1}", ex.Message, Me.m_ip.DisplayName))
         Finally
             Me.m_bHasRun = True
         End Try

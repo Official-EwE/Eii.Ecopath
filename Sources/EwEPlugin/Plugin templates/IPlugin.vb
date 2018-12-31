@@ -51,7 +51,7 @@ Public Interface IPlugin
     ''' <summary>
     ''' User-friendly display name of a plug-in.
     ''' </summary>
-    ''' <seealso cref="Name"/>
+    ''' <seealso cref="DisplayName"/>
     ''' <seealso cref="Description"/>
     ''' -----------------------------------------------------------------------
     ReadOnly Property DisplayName() As String
