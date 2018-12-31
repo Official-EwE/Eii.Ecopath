@@ -144,7 +144,7 @@ Public Class cMergeGroupsPluginPoint
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "Z04MergeGroups"
+            Return "EwEMergeGroupsPlugin"
         End Get
     End Property
 
