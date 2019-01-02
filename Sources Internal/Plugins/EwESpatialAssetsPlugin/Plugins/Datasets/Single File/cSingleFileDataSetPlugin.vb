@@ -71,9 +71,9 @@ Namespace SpatialData
 #Region " Information "
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.DisplayName" />
+        ''' <inheritdocs cref="cFileDataSetPlugin.CustomName" />
         ''' -------------------------------------------------------------------
-        Public Overrides Property DisplayName As String
+        Public Overrides Property CustomName As String
             Get
                 If (Not String.IsNullOrWhiteSpace(Me.m_strName)) Then
                     Return Me.m_strName
@@ -217,7 +217,7 @@ Namespace SpatialData
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Description")
-            xn.InnerText = Me.DataDescription
+            xn.InnerText = Me.CustomDescription
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Variable")
@@ -273,7 +273,7 @@ Namespace SpatialData
                             Me.m_strName = xn.InnerText
 
                         Case "Description"
-                            Me.DataDescription = xn.InnerText
+                            Me.CustomDescription = xn.InnerText
 
                         Case "Variable"
                             Me.VarName = cin.GetVarName(xn.InnerText)
@@ -489,7 +489,7 @@ Namespace SpatialData
 
             ' Export file content to a folder in strPath that is identified by the current GUID
             ' Note that the exported dataset will inherit the same GUID. It makes sense but may cause confusion...
-            Dim strFolder As String = cFileUtils.ToValidFileName(Me.DisplayName, False)
+            Dim strFolder As String = cFileUtils.ToValidFileName(Me.CustomName, False)
             Dim strAbsPath As String = Path.Combine(strPath, strFolder)
             Dim strAbsFile As String = Path.Combine(strAbsPath, Path.GetFileName(Me.Source))
 

@@ -122,8 +122,8 @@ Namespace SpatialData
 
             Me.m_strSource = Me.m_dataset.Source
 
-            Me.m_tbxName.Text = Me.m_dataset.DisplayName
-            Me.m_tbxDescription.Text = Me.m_dataset.DataDescription
+            Me.m_tbxName.Text = Me.m_dataset.CustomName
+            Me.m_tbxDescription.Text = Me.m_dataset.CustomDescription
 
             Me.m_cbSeasonal.Checked = Me.m_dataset.IsSeasonal
             Me.m_mtbSeasonalEnd.ValidatingType = GetType(Date)
@@ -519,8 +519,8 @@ Namespace SpatialData
 
         Private Sub DoApply()
 
-            Me.m_dataset.DisplayName = Me.m_tbxName.Text
-            Me.m_dataset.DataDescription = Me.m_tbxDescription.Text
+            Me.m_dataset.CustomName = Me.m_tbxName.Text
+            Me.m_dataset.CustomDescription = Me.m_tbxDescription.Text
             Me.m_dataset.Source = Me.m_strSource
             Me.m_dataset.VarName = DirectCast(Me.m_cmbVarName.SelectedItem, eVarNameFlags)
             Me.m_dataset.IsSeasonal = Me.m_cbSeasonal.Checked

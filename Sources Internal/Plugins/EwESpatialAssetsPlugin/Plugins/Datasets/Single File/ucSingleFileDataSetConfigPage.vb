@@ -45,8 +45,8 @@ Friend Class ucSingleFileDataSetConfigPage
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_tbxName.Text = Me.m_dataset.DisplayName
-        Me.m_tbxDescription.Text = Me.m_dataset.DataDescription
+        Me.m_tbxName.Text = Me.m_dataset.CustomName
+        Me.m_tbxDescription.Text = Me.m_dataset.CustomDescription
         Me.m_tbxFile.Text = Me.m_dataset.Source
 
         If (Me.m_dataset.TimeStart = Me.m_dataset.TimeEnd) Then
@@ -185,8 +185,8 @@ Friend Class ucSingleFileDataSetConfigPage
 
     Private Sub DoApply()
 
-        Me.m_dataset.DisplayName = Me.m_tbxName.Text
-        Me.m_dataset.DataDescription = Me.m_tbxDescription.Text
+        Me.m_dataset.CustomName = Me.m_tbxName.Text
+        Me.m_dataset.CustomDescription = Me.m_tbxDescription.Text
         Me.m_dataset.Source = Me.m_tbxFile.Text
         Me.m_dataset.VarName = DirectCast(Me.m_cmbVarName.SelectedItem, eVarNameFlags)
 

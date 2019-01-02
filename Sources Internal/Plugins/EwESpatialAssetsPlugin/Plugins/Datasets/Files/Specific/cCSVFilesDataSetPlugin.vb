@@ -41,7 +41,7 @@ Namespace SpatialData
             MyBase.New()
             ' Default name and description
             Me.m_strName = My.Resources.DATASET_CSV_NAME
-            Me.DataDescription = My.Resources.DATASET_CSV_DESCRIPTION
+            Me.CustomDescription = My.Resources.DATASET_CSV_DESCRIPTION
         End Sub
 
 #Region " Overrides "

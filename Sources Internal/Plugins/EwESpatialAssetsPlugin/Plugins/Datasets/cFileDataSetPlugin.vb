@@ -99,16 +99,16 @@ Namespace SpatialData
             Implements ISpatialDataSet.GUID
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataSet.DisplayName" />
+        ''' <inheritdocs cref="ISpatialDataSet.CustomName" />
         ''' -------------------------------------------------------------------
-        Public MustOverride Property DisplayName As String _
-            Implements ISpatialDataSet.DisplayName
+        Public MustOverride Property CustomName As String _
+            Implements ISpatialDataSet.CustomName
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="ISpatialDataSet.DataDescription" />
+        ''' <inheritdocs cref="ISpatialDataSet.CustomDescription" />
         ''' -------------------------------------------------------------------
-        Public Overridable Property DataDescription As String _
-            Implements ISpatialDataSet.DataDescription
+        Public Overridable Property CustomDescription As String _
+            Implements ISpatialDataSet.CustomDescription
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IPlugin.Description" />
@@ -137,13 +137,13 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.DialogReadFilter"/>"
         ''' -------------------------------------------------------------------
-        Public MustOverride ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean, _
-                                                               ByVal bImage As Boolean, _
+        Public MustOverride ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean,
+                                                               ByVal bImage As Boolean,
                                                                ByVal bVector As Boolean) As String _
              Implements ISpatialDataSet.DialogReadFilter
 
         Public Overrides Function ToString() As String
-            Return Me.DisplayName()
+            Return Me.CustomName()
         End Function
 
         ''' -------------------------------------------------------------------

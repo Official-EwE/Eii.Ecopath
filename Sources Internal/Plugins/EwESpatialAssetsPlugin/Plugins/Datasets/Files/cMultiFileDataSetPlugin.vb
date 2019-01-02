@@ -118,9 +118,9 @@ Namespace SpatialData
 #Region " Information "
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cFileDataSetPlugin.DisplayName" />
+        ''' <inheritdocs cref="cFileDataSetPlugin.CustomName" />
         ''' -------------------------------------------------------------------
-        Public Overrides Property DisplayName As String
+        Public Overrides Property CustomName As String
             Get
                 Return Me.m_strName
             End Get
@@ -353,11 +353,11 @@ Namespace SpatialData
             xnMaster = doc.CreateElement("Configuration")
 
             xn = doc.CreateElement("Name")
-            xn.InnerText = Me.DisplayName
+            xn.InnerText = Me.CustomName
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Description")
-            xn.InnerText = Me.DataDescription
+            xn.InnerText = Me.CustomDescription
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Variable")
@@ -436,7 +436,7 @@ Namespace SpatialData
                         Case "Name"
                             Me.m_strName = xn.InnerText
                         Case "Description"
-                            Me.DataDescription = xn.InnerText
+                            Me.CustomDescription = xn.InnerText
                         Case "Source"
                             Me.Source = xn.InnerText
                             Me.IsSourceRelative = False
@@ -694,7 +694,7 @@ Namespace SpatialData
             Debug.Assert(Not Convert.Equals(Guid.Empty, Me.DBID), "Dataset has no valid ID yet")
 
             ' Clone DS
-            Dim strFolder As String = cFileUtils.ToValidFileName(Me.DisplayName, False)
+            Dim strFolder As String = cFileUtils.ToValidFileName(Me.CustomName, False)
             Dim strAbsPath As String = Path.Combine(strPath, strFolder)
 
             ' Make sure that the path exists
@@ -721,7 +721,7 @@ Namespace SpatialData
 
                 Catch exd As DirectoryNotFoundException
                     If Not bIgnoreFileErrors Then
-                        Dim msg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_EXPORT_ERROR_NOPATH, Me.Source, Me.DisplayName), _
+                        Dim msg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_EXPORT_ERROR_NOPATH, Me.Source, Me.CustomName), _
                                                         eCoreComponentType.External, eMessageType.DataExport, _
                                                         eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                         msg.Reply = eMessageReply.NO
@@ -734,7 +734,7 @@ Namespace SpatialData
                     End If
                 Catch exf As FileNotFoundException
                     If Not bIgnoreFileErrors Then
-                        Dim msg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_EXPORT_ERROR_NOFILES, Me.DisplayName), _
+                        Dim msg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_EXPORT_ERROR_NOFILES, Me.CustomName), _
                                                         eCoreComponentType.External, eMessageType.DataExport, _
                                                         eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                         msg.Reply = eMessageReply.NO
