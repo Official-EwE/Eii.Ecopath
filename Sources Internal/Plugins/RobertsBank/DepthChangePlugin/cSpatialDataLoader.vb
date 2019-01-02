@@ -202,7 +202,7 @@ Friend Class cSpatialDataLoader
     Private Function getDataSetByName(name As String) As EwEUtils.SpatialData.ISpatialDataSet
 
         For Each ds As EwEUtils.SpatialData.ISpatialDataSet In Plugin.Core.SpatialDataConnectionManager.DatasetManager
-            If String.Compare(ds.DisplayName, name) = 0 Then
+            If String.Compare(ds.CustomName, name) = 0 Then
                 Return ds
             End If
         Next ds

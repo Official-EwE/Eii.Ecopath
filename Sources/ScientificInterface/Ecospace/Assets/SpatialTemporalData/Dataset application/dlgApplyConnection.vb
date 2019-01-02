@@ -687,7 +687,7 @@ Namespace Ecospace.Controls
             If (conn IsNot Nothing) Then
 
                 Try
-                    Me.m_lblDatasetInfo.Text = conn.Dataset.DisplayName
+                    Me.m_lblDatasetInfo.Text = conn.Dataset.CustomName
 
                     Dim comp As cDatasetCompatilibity = Me.m_manSets.Compatibility(conn.Dataset)
                     Dim fmt As New cSpatialDatasetCompatibilityFormatter()

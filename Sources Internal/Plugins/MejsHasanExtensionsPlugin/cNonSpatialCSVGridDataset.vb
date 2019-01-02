@@ -37,7 +37,7 @@ Public Class cNonSpatialCSVGridDataset
     Public Sub New()
         MyBase.New()
         Me.m_strName = "Non-spatial CSV grids"
-        Me.DataDescription = "A collection of non-spatial CSV grids that match the width and height of an Ecospace scenario."
+        Me.CustomDescription = "A collection of non-spatial CSV grids that match the width and height of an Ecospace scenario."
     End Sub
 
 #Region " Overrides "

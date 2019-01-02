@@ -223,7 +223,7 @@ Namespace Ecospace
                 If (conn IsNot Nothing) Then
                     Dim ds As ISpatialDataSet = conn.Dataset()
                     If (ds IsNot Nothing) Then
-                        strText = ds.DisplayName
+                        strText = ds.CustomName
                     End If
                 End If
 

@@ -55,7 +55,7 @@ Namespace Ecospace.Controls
                 Implements System.Collections.Generic.IComparer(Of EwEUtils.SpatialData.ISpatialDataSet).Compare
                 Dim iOrder As Integer = String.Compare(Me.m_fmt.GetDescriptor(x.VarName), Me.m_fmt.GetDescriptor(y.VarName))
                 If (iOrder = 0) Then
-                    iOrder = String.Compare(x.DisplayName, y.DisplayName)
+                    iOrder = String.Compare(x.CustomName, y.CustomName)
                 End If
                 Return iOrder
             End Function
@@ -215,7 +215,7 @@ Namespace Ecospace.Controls
 
                 iRow = Me.AddRow()
                 Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iDS))
-                Me(iRow, eColumnTypes.Name) = New EwECell(ds.DisplayName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Name) = New EwECell(ds.CustomName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.Name).VisualModel = vizKiddo
                 Me(iRow, eColumnTypes.Applied) = New EwECheckboxCell(Me.m_man.IsApplied(ds), cStyleGuide.eStyleFlags.NotEditable)
                 cell = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
@@ -228,7 +228,7 @@ Namespace Ecospace.Controls
                         cell.Image = SharedResources.OK
                 End Select
                 Me(iRow, eColumnTypes.Status) = cell
-                Me(iRow, eColumnTypes.Description) = New EwECell(ds.DataDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, eColumnTypes.Description) = New EwECell(ds.CustomDescription, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.Description).VisualModel = Me.m_vmDescriptionCell
                 Me(iRow, eColumnTypes.DateFrom) = New EwECell(strTStart, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                 Me(iRow, eColumnTypes.DateTo) = New EwECell(strTEnd, GetType(String), cStyleGuide.eStyleFlags.NotEditable)

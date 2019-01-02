@@ -278,6 +278,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Configure which EwE plug-ins can automatically run with EwE core components.
+        '''</summary>
+        Public ReadOnly Property COMMAND_AUTORUN() As String
+            Get
+                Return ResourceManager.GetString("COMMAND_AUTORUN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Configure which EwE components can automatically save results to file.
         '''</summary>
         Public ReadOnly Property COMMAND_AUTOSAVE() As String

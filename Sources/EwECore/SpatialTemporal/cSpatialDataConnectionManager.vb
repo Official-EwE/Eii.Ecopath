@@ -63,8 +63,8 @@ Namespace SpatialData
             Public Function Compare(x As ISpatialDataSet, y As ISpatialDataSet) As Integer _
                 Implements IComparer(Of ISpatialDataSet).Compare
 
-                Dim strX As String = x.DisplayName
-                Dim strY As String = y.DisplayName
+                Dim strX As String = x.CustomName
+                Dim strY As String = y.CustomName
 
                 If (TypeOf x Is IPlugin) Then strX = DirectCast(x, IPlugin).DisplayName
                 If (TypeOf y Is IPlugin) Then strY = DirectCast(y, IPlugin).DisplayName

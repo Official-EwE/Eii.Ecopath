@@ -70,10 +70,10 @@ Public Class cEwECSVMapDataset
         Implements ISpatialDataSet.GUID
 
     ''' -------------------------------------------------------------------
-    ''' <inheritdocs cref="ISpatialDataSet.DisplayName" />
+    ''' <inheritdocs cref="ISpatialDataSet.CustomName" />
     ''' -------------------------------------------------------------------
-    Public Property DisplayName As String _
-        Implements ISpatialDataSet.DisplayName
+    Public Property CustomName As String _
+        Implements ISpatialDataSet.CustomName
         Get
             If (Not String.IsNullOrWhiteSpace(Me.m_strName)) Then
                 Return Me.m_strName
@@ -89,10 +89,10 @@ Public Class cEwECSVMapDataset
     End Property
 
     ''' -------------------------------------------------------------------
-    ''' <inheritdocs cref="ISpatialDataSet.DataDescription" />
+    ''' <inheritdocs cref="ISpatialDataSet.CustomDescription" />
     ''' -------------------------------------------------------------------
-    Public Property DataDescription As String _
-        Implements ISpatialDataSet.DataDescription
+    Public Property CustomDescription As String _
+        Implements ISpatialDataSet.CustomDescription
 
     ''' -------------------------------------------------------------------
     ''' <inheritdocs cref="IPlugin.Description" />
@@ -139,7 +139,7 @@ Public Class cEwECSVMapDataset
     End Property
 
     Public Overrides Function ToString() As String
-        Return Me.DisplayName()
+        Return Me.CustomName()
     End Function
 
     ''' -------------------------------------------------------------------
@@ -409,11 +409,11 @@ Public Class cEwECSVMapDataset
         xnMaster = doc.CreateElement("Configuration")
 
         xn = doc.CreateElement("Name")
-        xn.InnerText = Me.DisplayName
+        xn.InnerText = Me.CustomName
         xnMaster.AppendChild(xn)
 
         xn = doc.CreateElement("Description")
-        xn.InnerText = Me.DataDescription
+        xn.InnerText = Me.CustomDescription
         xnMaster.AppendChild(xn)
 
         xn = doc.CreateElement("Variable")
@@ -454,10 +454,10 @@ Public Class cEwECSVMapDataset
             For Each xn In node.ChildNodes
                 Select Case xn.Name
                     Case "Name"
-                        Me.DisplayName = xn.InnerText
+                        Me.CustomName = xn.InnerText
 
                     Case "Description"
-                        Me.DataDescription = xn.InnerText
+                        Me.CustomDescription = xn.InnerText
 
                     Case "Variable"
                         Me.VarName = cin.GetVarName(xn.InnerText)

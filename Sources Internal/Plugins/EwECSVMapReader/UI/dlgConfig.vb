@@ -43,8 +43,8 @@ Public Class dlgConfig
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_tbxName.Text = Me.m_ds.DisplayName
-        Me.m_tbxDescription.Text = Me.m_ds.DataDescription
+        Me.m_tbxName.Text = Me.m_ds.CustomName
+        Me.m_tbxDescription.Text = Me.m_ds.CustomDescription
         Me.m_tbxFolder.Text = Me.m_ds.Source
         Me.UpdateFileList(Me.m_ds.Files.ToArray())
 
@@ -53,8 +53,8 @@ Public Class dlgConfig
     Public Function Apply() As IOptionsPage.eApplyResultType _
         Implements IOptionsPage.Apply
 
-        Me.m_ds.DisplayName = Me.m_tbxName.Text
-        Me.m_ds.DataDescription = Me.m_tbxDescription.Text
+        Me.m_ds.CustomName = Me.m_tbxName.Text
+        Me.m_ds.CustomDescription = Me.m_tbxDescription.Text
         Me.m_ds.Source = Me.m_tbxFolder.Text
         Return IOptionsPage.eApplyResultType.Success
 

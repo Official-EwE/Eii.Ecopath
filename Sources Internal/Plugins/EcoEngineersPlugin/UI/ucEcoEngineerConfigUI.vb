@@ -92,8 +92,8 @@ Public Class ucEcoEngineerConfigUI
 
         Me.m_bInUpdate = True
 
-        Me.m_tbxName.Text = Me.m_ds.DisplayName
-        Me.m_tbxDescription.Text = Me.m_ds.DataDescription
+        Me.m_tbxName.Text = Me.m_ds.CustomName
+        Me.m_tbxDescription.Text = Me.m_ds.CustomDescription
 
         ReDim Me.m_rules(Me.UIContext.Core.nGroups)
 
@@ -201,8 +201,8 @@ Public Class ucEcoEngineerConfigUI
     Public Function Apply() As IOptionsPage.eApplyResultType _
         Implements IOptionsPage.Apply
 
-        Me.m_ds.DisplayName = Me.m_tbxName.Text
-        Me.m_ds.DataDescription = Me.m_tbxDescription.Text
+        Me.m_ds.CustomName = Me.m_tbxName.Text
+        Me.m_ds.CustomDescription = Me.m_tbxDescription.Text
         Me.m_ds.Rules.Clear()
         For Each i As Integer In Me.m_clbGroups.CheckedIndices
             Me.m_ds.Rules.Add(Me.m_rules(i + 1))

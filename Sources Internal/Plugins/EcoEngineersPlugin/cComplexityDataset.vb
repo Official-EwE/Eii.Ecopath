@@ -39,8 +39,8 @@ Public Class cComplexityDataset
 #Region " Construction "
 
     Public Sub New()
-        Me.DisplayName = "EcoEngineer driver"
-        Me.DataDescription = "An engine that calculates a habitat complexity map from various ecosystem engineer biomasses."
+        Me.CustomName = "EcoEngineer driver"
+        Me.CustomDescription = "An engine that calculates a habitat complexity map from various ecosystem engineer biomasses."
     End Sub
 
     Public Sub Initialize(core As Object) _
@@ -87,11 +87,11 @@ Public Class cComplexityDataset
         End Get
     End Property
 
-    Public Property DisplayName As String _
-        Implements ISpatialDataSet.DisplayName
+    Public Property CustomName As String _
+        Implements ISpatialDataSet.CustomName
 
-    Public Property DataDescription As String _
-        Implements ISpatialDataSet.DataDescription
+    Public Property CustomDescription As String _
+        Implements ISpatialDataSet.CustomDescription
 
     Public ReadOnly Property Summary As String _
         Implements ISummarizable.Summary
@@ -212,11 +212,11 @@ Public Class cComplexityDataset
         xnMaster = doc.CreateElement("Configuration")
 
         xn = doc.CreateElement("Name")
-        xn.InnerText = Me.DisplayName
+        xn.InnerText = Me.CustomName
         xnMaster.AppendChild(xn)
 
         xn = doc.CreateElement("Description")
-        xn.InnerText = Me.DataDescription
+        xn.InnerText = Me.CustomDescription
         xnMaster.AppendChild(xn)
 
         For Each r As cComplexityRule In Me.m_lRules
@@ -261,7 +261,7 @@ Public Class cComplexityDataset
     ''' True if successful.
     ''' </returns>
     ''' -------------------------------------------------------------------
-    Private Function FromXML(ByVal doc As XmlDocument, _
+    Private Function FromXML(ByVal doc As XmlDocument,
                              ByVal node As XmlNode) As Boolean
 
         Dim xn As XmlNode = Nothing
@@ -277,10 +277,10 @@ Public Class cComplexityDataset
             For Each xn In node.ChildNodes
                 Select Case xn.Name.ToLower()
                     Case "name"
-                        Me.DisplayName = xn.InnerText
+                        Me.CustomName = xn.InnerText
 
                     Case "description"
-                        Me.DataDescription = xn.InnerText
+                        Me.CustomDescription = xn.InnerText
 
                     Case "rule"
                         Dim r As New cComplexityRule()

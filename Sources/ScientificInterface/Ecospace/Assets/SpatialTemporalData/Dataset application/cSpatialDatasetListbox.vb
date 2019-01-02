@@ -127,9 +127,9 @@ Namespace Ecospace.Controls
 
                 If (Not String.IsNullOrWhiteSpace(Me.TextFilter) And bUseDataset) Then
                     If (Me.IsTextFilterCaseSensitive) Then
-                        bUseDataset = (ds.DisplayName.IndexOf(Me.TextFilter, StringComparison.CurrentCulture) > -1)
+                        bUseDataset = (ds.CustomName.IndexOf(Me.TextFilter, StringComparison.CurrentCulture) > -1)
                     Else
-                        bUseDataset = (ds.DisplayName.IndexOf(Me.TextFilter, StringComparison.CurrentCultureIgnoreCase) > -1)
+                        bUseDataset = (ds.CustomName.IndexOf(Me.TextFilter, StringComparison.CurrentCultureIgnoreCase) > -1)
                     End If
                 End If
 
@@ -182,7 +182,7 @@ Namespace Ecospace.Controls
             ' Render default text, bumped to the right by 22 pixels
             Using br As New SolidBrush(clrText)
                 Dim rcText As New Rectangle(e.Bounds.X + 22, e.Bounds.Y, e.Bounds.Width - 22, e.Bounds.Height)
-                e.Graphics.DrawString(ds.DisplayName, e.Font, br, rcText, fmt)
+                e.Graphics.DrawString(ds.CustomName, e.Font, br, rcText, fmt)
             End Using
 
             ' Render default focus rectangle

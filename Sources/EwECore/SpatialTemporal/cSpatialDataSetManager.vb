@@ -553,7 +553,7 @@ Namespace SpatialData
             End If
 
             For Each ds As ISpatialDataSet In Me.m_lAvailable
-                If (String.Compare(ds.DisplayName, strName, True) = 0) Then Return ds
+                If (String.Compare(ds.CustomName, strName, True) = 0) Then Return ds
             Next
             Return Nothing
         End Function
@@ -802,7 +802,7 @@ Namespace SpatialData
                         ds.Configuration(doc, "") = xnData
 
                         ' Try to find Dataset by name 
-                        Dim ds2 As ISpatialDataSet = Me.Find(ds.DisplayName)
+                        Dim ds2 As ISpatialDataSet = Me.Find(ds.CustomName)
                         If (ds2 IsNot Nothing) Then
                             ' Ok, use that one
                             ds = ds2

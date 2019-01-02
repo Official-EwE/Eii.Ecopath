@@ -87,7 +87,7 @@ Public Class frmEwEPlugin
 
             Me.m_lstDatasets.Items.Clear()
             For Each ds In Me.m_plugin.SpatialDataLoader.DataSets
-                Me.m_lstDatasets.Items.Add(ds.DisplayName)
+                Me.m_lstDatasets.Items.Add(ds.CustomName)
             Next ds
         Catch ex As Exception
 

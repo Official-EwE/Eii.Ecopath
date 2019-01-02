@@ -50,7 +50,7 @@ Namespace Style
                 If (value IsNot Nothing) Then
 
                     Dim obj As ISpatialDataSet = DirectCast(value, ISpatialDataSet)
-                    strResult = obj.DisplayName
+                    strResult = obj.CustomName
 
                     Select Case descriptor
 
@@ -64,7 +64,7 @@ Namespace Style
                                         ' Has upper range set?
                                         If (obj.TimeEnd < DateTime.MaxValue) Then
                                             ' #Yes: Return <inf,upper] range
-                                            strResult = String.Format(My.Resources.LABEL_VALUE_UPTO, obj.DisplayName, obj.TimeEnd.ToShortDateString)
+                                            strResult = String.Format(My.Resources.LABEL_VALUE_UPTO, obj.CustomName, obj.TimeEnd.ToShortDateString)
                                         End If
 
                                     Case DateTime.MaxValue
@@ -73,23 +73,23 @@ Namespace Style
 
                                     Case obj.TimeEnd
                                         ' Start = end, and neither is inf: show a single date
-                                        strResult = String.Format(My.Resources.LABEL_VALUE_AT, obj.DisplayName, obj.TimeStart.ToShortDateString)
+                                        strResult = String.Format(My.Resources.LABEL_VALUE_AT, obj.CustomName, obj.TimeStart.ToShortDateString)
 
                                     Case Else
                                         ' Has upper range set?
                                         If (obj.TimeEnd < DateTime.MaxValue) Then
                                             ' #Yes: show [lower, upper] range
-                                            strResult = String.Format(My.Resources.LABEL_VALUE_RANGE, obj.DisplayName, obj.TimeStart.ToShortDateString, obj.TimeEnd.ToShortDateString)
+                                            strResult = String.Format(My.Resources.LABEL_VALUE_RANGE, obj.CustomName, obj.TimeStart.ToShortDateString, obj.TimeEnd.ToShortDateString)
                                         Else
                                             ' #No: show [lower, inf> range
-                                            strResult = String.Format(My.Resources.LABEL_VALUE_FROM, obj.DisplayName, obj.TimeStart.ToShortDateString)
+                                            strResult = String.Format(My.Resources.LABEL_VALUE_FROM, obj.CustomName, obj.TimeStart.ToShortDateString)
                                         End If
 
                                 End Select
                             End If
 
                         Case eDescriptorTypes.Description
-                            strResult = obj.DataDescription
+                            strResult = obj.CustomDescription
                     End Select
                 Else
                     strResult = My.Resources.GENERIC_VALUE_NONE

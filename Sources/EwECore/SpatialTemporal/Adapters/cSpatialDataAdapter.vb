@@ -236,7 +236,7 @@ Namespace SpatialData
 
                                 ' Internal log, no need to translate
                                 strMsg = "cSpatialDataAdapter::Populate({0}.{1}) dataset {2} trying to load data for T{3}, ext({4},{5}) to ({6},{7})"
-                                cLog.Write(cStringUtils.Localize(strMsg, Me.ToString, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
+                                cLog.Write(cStringUtils.Localize(strMsg, Me.ToString, layer.ToString(), ds.CustomName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
 
                                 ' #Yes: Can lock that data?
                                 If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight, bm.ProjectionString)) Then
@@ -287,7 +287,7 @@ Namespace SpatialData
                                         dataExternal = Nothing
 
                                     Else
-                                        strMsg = cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOAD, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize)
+                                        strMsg = cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOAD, layer.ToString(), ds.CustomName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize)
                                         Me.m_core.SpatialOperationLog.LogOperation(strMsg, eStatusFlags.MissingParameter)
                                         cLog.Write(strMsg)
                                         bSuccess = False
@@ -299,7 +299,7 @@ Namespace SpatialData
                                     ' Done logging
                                     Me.m_core.SpatialOperationLog.EndLayerLog()
                                 Else
-                                    strMsg = cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOCK, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize)
+                                    strMsg = cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_POP_FAILED_LOCK, layer.ToString(), ds.CustomName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize)
                                     cLog.Write(strMsg)
                                     bSuccess = False
                                 End If

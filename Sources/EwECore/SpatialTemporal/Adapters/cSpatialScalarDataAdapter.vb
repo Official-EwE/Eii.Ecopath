@@ -171,8 +171,8 @@ Namespace SpatialData
                 For i As Integer = 0 To ldtData.Count - 1
 
                     Dim dt As DateTime = ldtData(i)
-                    msg = New cProgressMessage(eProgressState.Running, 1.0!, CSng((i + 1) / ldtData.Count), _
-                                               String.Format(My.Resources.CoreMessages.STATUS_SPATIALTERMPORAL_CALCULATING, strLayerName, ds.DisplayName, ""), _
+                    msg = New cProgressMessage(eProgressState.Running, 1.0!, CSng((i + 1) / ldtData.Count),
+                                               String.Format(My.Resources.CoreMessages.STATUS_SPATIALTERMPORAL_CALCULATING, strLayerName, ds.CustomName, ""),
                                                eMessageType.Progress, eDataTypes.EcospaceSpatialDataConnection)
                     Me.m_core.Messages.SendMessage(msg)
 
@@ -202,7 +202,7 @@ Namespace SpatialData
                 Next
             Catch ex As Exception
                 ' Log error
-                cLog.Write(ex, eVerboseLevel.Detailed, "Failed to calculate scaling factor for dataset " & ds.DisplayName)
+                cLog.Write(ex, eVerboseLevel.Detailed, "Failed to calculate scaling factor for dataset " & ds.CustomName)
             End Try
             Me.m_core.Messages.SendMessage(New cProgressMessage(eProgressState.Finished, 1.0!, 1.0!, "", eMessageType.Progress))
 
