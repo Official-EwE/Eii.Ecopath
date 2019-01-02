@@ -233,7 +233,7 @@ Namespace SpatialData
                         c = ds.Cache
 
                         Try
-                            strMessage = cStringUtils.Localize(My.Resources.CoreMessages.STATUS_INDEXING_DATASET, ds.DisplayName)
+                            strMessage = cStringUtils.Localize(My.Resources.CoreMessages.STATUS_INDEXING_DATASET, ds.CustomName)
                             Me.OnSpatialIndexUpdated(strMessage, eProgressState.Start, 0)
 
                             While Not bDone
@@ -262,7 +262,7 @@ Namespace SpatialData
                         Catch ex As Threading.ThreadAbortException
                             ' NOP
                         Catch ex As Exception
-                            cLog.Write(ex, "cSpatialDatasetIndexer::IndexDatasetThread(" & ds.DisplayName & ")")
+                            cLog.Write(ex, "cSpatialDatasetIndexer::IndexDatasetThread(" & ds.CustomName & ")")
                             'Console.WriteLine(ex.Message)
                         Finally
                             ' Cleanup: restore cache

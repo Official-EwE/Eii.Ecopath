@@ -9375,7 +9375,7 @@ Public Class cCore
                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning)
             For Each conn As ISpatialDataSet In problems
                 Dim vs As New cVariableStatus(eStatusFlags.MissingParameter,
-                                              cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_MISSINGDATA_DETAIL, conn.DisplayName),
+                                              cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_MISSINGDATA_DETAIL, conn.CustomName),
                                               eVarNameFlags.Name, eDataTypes.External, eCoreComponentType.External, 0)
                 fmsg.AddVariable(vs)
             Next

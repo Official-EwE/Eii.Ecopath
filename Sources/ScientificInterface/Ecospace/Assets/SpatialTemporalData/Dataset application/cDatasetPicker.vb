@@ -90,7 +90,7 @@ Public Class cDatasetPicker
         Public Function Compare(x As EwEUtils.SpatialData.ISpatialDataSet, _
                                 y As EwEUtils.SpatialData.ISpatialDataSet) As Integer _
                             Implements System.Collections.Generic.IComparer(Of EwEUtils.SpatialData.ISpatialDataSet).Compare
-            Return String.Compare(x.DisplayName, y.DisplayName)
+            Return String.Compare(x.CustomName, y.CustomName)
         End Function
 
     End Class
@@ -212,9 +212,9 @@ Public Class cDatasetPicker
                         tsiNew = New ToolStripMenuItem(My.Resources.HEADER_SPATTEMP_CREATE_CONNECTION)
                         Array.Sort(datasetsSorted, New cDatasetSorter())
                         For Each dsTempl As ISpatialDataSet In datasetsSorted
-                            tsi = New ToolStripMenuItem(dsTempl.DisplayName, Nothing, AddressOf OnCreateDataset)
+                            tsi = New ToolStripMenuItem(dsTempl.CustomName, Nothing, AddressOf OnCreateDataset)
                             tsi.Tag = dsTempl
-                            tsi.ToolTipText = dsTempl.DataDescription
+                            tsi.ToolTipText = dsTempl.CustomDescription
                             tsiNew.DropDownItems.Add(tsi)
                         Next
                         Me.m_cmsData.Items.Add(tsiNew)
@@ -234,9 +234,9 @@ Public Class cDatasetPicker
                     End If
 
                     For Each ds As ISpatialDataSet In datasetsSorted
-                        tsi = New ToolStripMenuItem(ds.DisplayName, Nothing, AddressOf OnUseDataset)
+                        tsi = New ToolStripMenuItem(ds.CustomName, Nothing, AddressOf OnUseDataset)
                         tsi.Tag = ds
-                        tsi.ToolTipText = ds.DataDescription
+                        tsi.ToolTipText = ds.CustomDescription
                         tsi.Checked = ds.Equals(datasetCurrent)
                         Me.m_cmsData.Items.Add(tsi)
                     Next
@@ -306,7 +306,7 @@ Public Class cDatasetPicker
         If (TypeOf ds Is IConfigurable) Then
 
             Dim cfg As IConfigurable = DirectCast(ds, IConfigurable)
-            Dim strTitle As String = ds.DisplayName
+            Dim strTitle As String = ds.CustomName
 
             Try
                 Dim dlg As New ScientificInterfaceShared.Controls.dlgConfig(Me.m_uic)

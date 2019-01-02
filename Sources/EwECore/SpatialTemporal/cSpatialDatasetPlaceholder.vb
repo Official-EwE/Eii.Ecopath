@@ -44,11 +44,11 @@ Friend NotInheritable Class cSpatialDatasetPlaceholder
 
 #Region " Implementation "
 
-    ''' <inheritdocs cref="ISpatialDataSet.DisplayName"/>
-    Public Property DisplayName As String Implements ISpatialDataSet.DisplayName
+    ''' <inheritdocs cref="ISpatialDataSet.CustomName"/>
+    Public Property CustomName As String Implements ISpatialDataSet.CustomName
 
-    ''' <inheritdocs cref="ISpatialDataSet.DataDescription"/>
-    Public Property DataDescription As String Implements ISpatialDataSet.DataDescription
+    ''' <inheritdocs cref="ISpatialDataSet.CustomDescription"/>
+    Public Property CustomDescription As String Implements ISpatialDataSet.CustomDescription
 
     ''' <inheritdocs cref="ISpatialDataSet.Source"/>
     Public Property Source As String Implements ISpatialDataSet.Source
@@ -242,9 +242,9 @@ Friend NotInheritable Class cSpatialDatasetPlaceholder
             For Each xn In node.ChildNodes
                 Select Case xn.Name
                     Case "Name"
-                        Me.DisplayName = xn.InnerText
+                        Me.CustomName = xn.InnerText
                     Case "Description"
-                        Me.DataDescription = xn.InnerText
+                        Me.CustomDescription = xn.InnerText
                     Case "Variable"
                         Me.VarName = cin.GetVarName(xn.InnerText)
                 End Select

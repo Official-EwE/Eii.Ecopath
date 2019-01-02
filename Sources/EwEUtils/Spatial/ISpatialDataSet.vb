@@ -46,14 +46,14 @@ Namespace SpatialData
         ''' Legible name of the dataset.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Property DisplayName As String
+        Property CustomName As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Description of the data in the dataset.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Property DataDescription As String
+        Property CustomDescription As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>

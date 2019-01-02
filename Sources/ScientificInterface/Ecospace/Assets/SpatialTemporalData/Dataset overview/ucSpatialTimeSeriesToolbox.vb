@@ -317,22 +317,22 @@ Namespace Ecospace.Controls
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
                          cDatasetCompatilibity.eCompatibilityTypes.NotSet
-                        strText = pos.m_ds.DisplayName
+                        strText = pos.m_ds.CustomName
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.Errors
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_MISSING, pos.m_ds.DisplayName, iStep, strDate)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_MISSING, pos.m_ds.CustomName, iStep, strDate)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_NOSPATIAL, pos.m_ds.DisplayName, iStep, strDate)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_NOSPATIAL, pos.m_ds.CustomName, iStep, strDate)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_PARTIALSPATIAL, pos.m_ds.DisplayName, iStep, strDate)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_PARTIALSPATIAL, pos.m_ds.CustomName, iStep, strDate)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_FULLSPATIAL, pos.m_ds.DisplayName, iStep, strDate)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_FULLSPATIAL, pos.m_ds.CustomName, iStep, strDate)
 
                     Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
-                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_UNKNOWN, pos.m_ds.DisplayName, iStep, strDate)
+                        strText = String.Format(My.Resources.SPATIALTEMP_STATUS_T_UNKNOWN, pos.m_ds.CustomName, iStep, strDate)
 
                 End Select
             End If
@@ -626,7 +626,7 @@ Namespace Ecospace.Controls
             ' Draw text within bar area, but as much on-screen as possible
             Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
                 rcLabel.Width = rcBack.Width
-                g.DrawString(pos.m_ds.DisplayName, ft, SystemBrushes.ControlText, Math.Max(rcBack.X, rcLabel.X), rcLabel.Y)
+                g.DrawString(pos.m_ds.CustomName, ft, SystemBrushes.ControlText, Math.Max(rcBack.X, rcLabel.X), rcLabel.Y)
             End Using
 
             For i As Integer = 0 To pos.m_liData.Count - 1
