@@ -1348,7 +1348,7 @@
     <value>m_menuMain</value>
   </data>
   <data name="&gt;&gt;m_menuMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEMenustrip, ScientificInterfaceShared, Version=6.6.15813.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEMenustrip, ScientificInterfaceShared, Version=6.6.15853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_menuMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1420,7 +1420,13 @@
   <data name="m_tsbSave.Text" xml:space="preserve">
     <value>Save changes</value>
   </data>
-  <data name="m_tsbnAutosaveResults.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <metadata name="ToolStripSeparator6.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <data name="ToolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 24</value>
+  </data>
+  <data name="m_tsbnAutosaveConfig.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIRSURBVDhPrZLbS9RBFMd//0LvvgQ9+OxP6kFRFhZ+oCzF
@@ -1435,14 +1441,38 @@
         JQK+djVLCs4bBIbcrCjKIRxoWI8tFqlJAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="m_tsbnAutosaveResults.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsbnAutosaveConfig.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="m_tsbnAutosaveResults.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_tsbnAutosaveConfig.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 21</value>
   </data>
-  <data name="m_tsbnAutosaveResults.Text" xml:space="preserve">
-    <value>Autosave results</value>
+  <data name="m_tsbnAutosaveConfig.Text" xml:space="preserve">
+    <value>Configure Autosave</value>
+  </data>
+  <data name="m_tsbnAutorunConfig.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="m_tsbnAutorunConfig.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnAutorunConfig.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 21</value>
+  </data>
+  <data name="m_tsbnAutorunConfig.Text" xml:space="preserve">
+    <value>Configure Autorun</value>
   </data>
   <data name="m_tsbEcopath.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1621,36 +1651,36 @@
   <data name="m_tsbEcotracer.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
-        fwGqL09tVRfVygAAAABJRU5ErkJggg==
+        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
+        AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="m_tsbEcotracer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -1726,7 +1756,7 @@
     <value>m_tsModel</value>
   </data>
   <data name="&gt;&gt;m_tsModel.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cModelPathToolStrip, ScientificInterfaceShared, Version=6.6.15813.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cModelPathToolStrip, ScientificInterfaceShared, Version=6.6.15853.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsModel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1750,7 +1780,7 @@
     <value>m_ssMain</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Type" xml:space="preserve">
-    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.6.15813.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.6.15853.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -7407,10 +7437,10 @@
   <data name="&gt;&gt;m_tsbSave.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsbnAutosaveResults.Name" xml:space="preserve">
-    <value>m_tsbnAutosaveResults</value>
+  <data name="&gt;&gt;m_tsbnAutosaveConfig.Name" xml:space="preserve">
+    <value>m_tsbnAutosaveConfig</value>
   </data>
-  <data name="&gt;&gt;m_tsbnAutosaveResults.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_tsbnAutosaveConfig.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsbEcopath.Name" xml:space="preserve">
@@ -7454,6 +7484,18 @@
   </data>
   <data name="&gt;&gt;m_bgw.Type" xml:space="preserve">
     <value>System.ComponentModel.BackgroundWorker, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ToolStripSeparator6.Name" xml:space="preserve">
+    <value>ToolStripSeparator6</value>
+  </data>
+  <data name="&gt;&gt;ToolStripSeparator6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnAutorunConfig.Name" xml:space="preserve">
+    <value>m_tsbnAutorunConfig</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnAutorunConfig.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmEwE6</value>
