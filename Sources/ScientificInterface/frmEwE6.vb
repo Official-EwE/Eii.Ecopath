@@ -246,7 +246,8 @@ Public Class frmEwE6
     Private WithEvents m_cmdViewModelBar As cCommand = Nothing
     Private WithEvents m_cmdViewStatusbar As cCommand = Nothing
     Private WithEvents m_cmdViewPresentationMode As cCommand = Nothing
-    Private WithEvents m_cmdAutosaveResults As cCommand = Nothing
+    Private WithEvents m_cmdAutosaveConfig As cCommand = Nothing
+    Private WithEvents m_cmdAutorunConfig As cCommand = Nothing
     Private WithEvents m_cmdEditGroups As cCommand = Nothing
     Private WithEvents m_cmdEditMultiStanza As cCommand = Nothing
     Private WithEvents m_cmdEditFleets As cCommand = Nothing
@@ -616,9 +617,13 @@ Public Class frmEwE6
         'Create and configure 'edit reference map' command
         Me.m_cmdEditReferenceMap = New cCommand(cmdh, "EditRefMap")
 
-        'Create and configure 'Autosave results' command
-        Me.m_cmdAutosaveResults = New cCommand(cmdh, "AutosaveResults", My.Resources.COMMAND_AUTOSAVE)
-        Me.m_cmdAutosaveResults.AddControl(Me.m_tsbnAutosaveResults)
+        'Create and configure 'Autosave config' command
+        Me.m_cmdAutosaveConfig = New cCommand(cmdh, "AutosaveConfig", My.Resources.COMMAND_AUTOSAVE)
+        Me.m_cmdAutosaveConfig.AddControl(Me.m_tsbnAutosaveConfig)
+
+        'Create and configure 'Autorun config' command
+        Me.m_cmdAutorunConfig = New cCommand(cmdh, "AutorunConfig", My.Resources.COMMAND_AUTOSAVE)
+        Me.m_cmdAutorunConfig.AddControl(Me.m_tsbnAutorunConfig)
 
         'Create and configure EditGroups command
         Me.m_cmdEditGroups = New cCommand(cmdh, "EditGroups")
@@ -3310,30 +3315,59 @@ Public Class frmEwE6
     ''' <summary>
     ''' Command handler; toggles auto save results
     ''' </summary>
-    Private Sub OnAutosaveResults(ByVal cmd As cCommand) Handles m_cmdAutosaveResults.OnInvoke
+    Private Sub OnAutosaveResults(ByVal cmd As cCommand) Handles m_cmdAutosaveConfig.OnInvoke
         Me.m_cmdShowOptions.Invoke(eApplicationOptionTypes.Autosave)
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the <see cref="m_cmdAutosaveResults">Auto save results command</see>.
+    ''' Command update handler; enables and disables the <see cref="m_cmdAutosaveConfig">Auto save results command</see>.
     ''' </summary>
-    Private Sub OnUpdateAutosaveResults(ByVal cmd As cCommand) Handles m_cmdAutosaveResults.OnUpdate
+    Private Sub OnUpdateAutosaveResults(ByVal cmd As cCommand) Handles m_cmdAutosaveConfig.OnUpdate
         ' Check if any autosave option set
-        Dim nAutoSaving As Integer = 0
-        Dim nodes As eAutosaveTypes() = New eAutosaveTypes() {eAutosaveTypes.Ecosim, eAutosaveTypes.Ecospace}
+        Dim bAutoSaving As Boolean = False
+        Dim nodes As eAutosaveTypes() = New eAutosaveTypes() {eAutosaveTypes.Ecopath, eAutosaveTypes.Ecosim, eAutosaveTypes.Ecospace}
         For Each setting As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
             ' Exclude nodes
             If Me.Core.Autosave(setting) And Array.IndexOf(nodes, setting) = -1 Then
-                nAutoSaving += 1
+                bAutoSaving = True
+                Exit For
             End If
         Next
-        If (Me.m_pluginManager IsNot Nothing) Then
+        If (Me.m_pluginManager IsNot Nothing) And Not bAutoSaving Then
             For Each pi As IAutoSavePlugin In Me.m_pluginManager.GetPlugins(GetType(IAutoSavePlugin))
-                If pi.AutoSave Then nAutoSaving += 1
+                If pi.AutoSave Then
+                    bAutoSaving = True
+                    Exit For
+                End If
             Next
         End If
-        cmd.Checked = (nAutoSaving > 0)
-        ' cmd.Status = cStringUtils.Localize("{0} EwE component(s) are auto-saving results", nAutoSaving)
+        cmd.Checked = bAutoSaving
+    End Sub
+
+    ''' <summary>
+    ''' Command handler; toggles auto run results
+    ''' </summary>
+    Private Sub OnAutorunConfig(ByVal cmd As cCommand) Handles m_cmdAutorunConfig.OnInvoke
+        Me.m_cmdShowOptions.Invoke(eApplicationOptionTypes.AutoRun)
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdAutorunConfig">Auto run results command</see>.
+    ''' </summary>
+    Private Sub OnUpdateAutorunConfig(ByVal cmd As cCommand) Handles m_cmdAutorunConfig.OnUpdate
+        ' Check if any autosave option set
+        Dim bAutoRunning As Boolean = False
+        If (Me.m_pluginManager IsNot Nothing) Then
+            For Each pi As IAutoRunPlugin In Me.m_pluginManager.GetPlugins(GetType(IAutoRunPlugin))
+                For Each comp As eCoreComponentType In pi.AutoRunTypes
+                    If pi.AutoRun(comp) Then
+                        bAutoRunning = True
+                        Exit For
+                    End If
+                Next
+            Next
+        End If
+        cmd.Checked = bAutoRunning
     End Sub
 
     ''' <summary>
