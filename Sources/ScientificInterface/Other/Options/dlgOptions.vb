@@ -216,19 +216,29 @@ Namespace Other
         End Function
 
         Private Sub SelectNode(strVerb As String)
-            Dim nDefault As TreeNode = Nothing
-            For Each n As TreeNode In Me.m_tvOptions.Nodes
-                If (TypeOf n.Tag Is String) Then
-                    If nDefault Is Nothing Then nDefault = n
-                    If (CStr(n.Tag) = strVerb) Then
-                        Me.m_tvOptions.SelectedNode = n
-                        Return
-                    End If
-                End If
-            Next
-            Me.m_tvOptions.SelectedNode = nDefault
+
+            If (Me.m_tvOptions.GetNodeCount(False) = 0) Then Return
+
+            Dim n As TreeNode = FindNodeByVerb(strVerb)
+            If (n Is Nothing) Then n = Me.m_tvOptions.Nodes(0)
+            Me.m_tvOptions.SelectedNode = n
 
         End Sub
+
+        Private Function FindNodeByVerb(strVerb As String, Optional nStart As TreeNode = Nothing) As TreeNode
+
+            Dim nodes As TreeNodeCollection = If(nStart Is Nothing, Me.m_tvOptions.Nodes, nStart.Nodes)
+            For Each n As TreeNode In nodes
+                If (TypeOf n.Tag Is String) Then
+                    If (String.Compare(CStr(n.Tag), strVerb, True) = 0) Then Return n
+                End If
+                If (n.Nodes.Count > 0) Then
+                    Dim n2 As TreeNode = FindNodeByVerb(strVerb, n)
+                    If (n2 IsNot Nothing) Then Return n2
+                End If
+            Next
+            Return Nothing
+        End Function
 
         Private Function CreatePage(ByVal t As Type) As IOptionsPage
 
