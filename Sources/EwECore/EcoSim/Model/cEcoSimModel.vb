@@ -2295,6 +2295,8 @@ Namespace Ecosim
                 'use for stock recruitment
                 For ist = 1 To m_stanza.Nsplit
                     For iLf As Integer = 1 To m_stanza.Nstanza(ist) - 1
+                        'Brec() is number * weight for the first monthly age group of this ecopath group
+                        'this is the biomass that recruited into this ecopath group
                         BrecYear(m_stanza.EcopathCode(ist, iLf)) = BrecYear(m_stanza.EcopathCode(ist, iLf)) + Brec(m_stanza.EcopathCode(ist, iLf))
                     Next
                 Next
@@ -2305,11 +2307,12 @@ Namespace Ecosim
                     ia = m_stanza.EcopathCode(ist, m_stanza.Nstanza(ist))
 
                     'relative biomass of the adult life stage stored over time
+                    'Srec() contains BB(igroup) at the current time step
                     Bstore(ia, iTime) = Srec(ia) / m_Data.StartBiomass(ia)
                     m_Results.hasSRData = False
 
                     If imonth = 12 Then
-                        'if the month = 12 then send the sr data to the interface
+                        'if the month = 12 then send the Stock/Recruitment data to the interface
 
                         m_Results.hasSRData = True
 

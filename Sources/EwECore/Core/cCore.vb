@@ -5086,7 +5086,7 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get the zero-based stanza index for a group index, or <see cref="NULL_VALUE"/>
-    ''' if the group does not belong to a stanza..
+    ''' if the group does not belong to a stanza.
     ''' </summary>
     ''' <param name="iGroup">The one-based group index to get the stanza for.</param>
     ''' <returns>Gets Stanza index if this group is a stanza group, or
