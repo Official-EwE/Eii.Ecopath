@@ -66,7 +66,7 @@ Public Class frmTransectSummary
         Me.m_tsbnPlay.Image = SharedResources.PlayHS
         Me.m_tsbnStop.Image = SharedResources.StopHS
         Me.m_tsbnSaveToCSV.Image = SharedResources.saveHS
-        Me.m_tsbnAutosave.Image = SharedResources.saveOutputHS
+        Me.m_tsbnAutosave.Image = SharedResources.AutoSaveHS
 
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_graph, 4)

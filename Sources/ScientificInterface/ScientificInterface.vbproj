@@ -2146,11 +2146,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Ecopath6\Sources\EwECustomPlugins\EwEImportExportLayersPlugin\EwEImportExportLayerDefinitionsPlugin.vbproj">
+    <ProjectReference Include="..\EwECustomPlugins\EwEImportExportLayersPlugin\EwEImportExportLayerDefinitionsPlugin.vbproj">
       <Project>{ff2c3b42-6872-4841-96ae-b06d88da6f1c}</Project>
       <Name>EwEImportExportLayerDefinitionsPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Ecopath6\Sources\EwECustomPlugins\EwEMPADynamicsPlugin\EwEMPADynamicsPlugin.vbproj">
+    <ProjectReference Include="..\EwECustomPlugins\EwEMergeSplitGroupsPlugin\EwEMergeSplitGroupsPlugin.vbproj">
+      <Project>{88137892-3068-42b7-bcca-b811d7264b4a}</Project>
+      <Name>EwEMergeSplitGroupsPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEMPADynamicsPlugin\EwEMPADynamicsPlugin.vbproj">
       <Project>{220ff584-9bfa-4872-949a-52c7a6877b65}</Project>
       <Name>EwEMPADynamicsPlugin</Name>
     </ProjectReference>
