@@ -33,6 +33,7 @@ Public Class cMPAOpenStatePlugin
     Implements IEcospaceBeginTimestepPostPlugin
     Implements IEcospaceInitRunCompletedPlugin
     Implements IEcospaceRunCompletedPlugin
+    Implements IAutoRunPlugin
 
     ''' <summary>Reference to the core</summary>
     Private m_core As cCore = Nothing
@@ -40,6 +41,8 @@ Public Class cMPAOpenStatePlugin
     Private m_MPAClosed(12) As Boolean
     ''' <summary>Preserve whether EwE had pending changes.</summary>
     Private m_EwEIsChanged As Boolean = False
+
+    Public Property Enabled As Boolean = False
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -97,6 +100,7 @@ Public Class cMPAOpenStatePlugin
         ' Sanity checks
         If (Me.m_core Is Nothing) Then Return
         If (Me.m_core.nMPAs = 0) Then Return
+        If (Not Me.Enabled) Then Return
 
         Dim MPA As cEcospaceMPA = Me.m_core.EcospaceMPAs(1)
         Dim IsHalfWay As Boolean = iTime > Me.m_core.nEcospaceTimeSteps / 2
@@ -128,6 +132,7 @@ Public Class cMPAOpenStatePlugin
         ' Santiy checks
         If (Me.m_core Is Nothing) Then Return
         If (Me.m_core.nMPAs = 0) Then Return
+        If (Not Me.Enabled) Then Return
 
         Dim MPA = Me.m_core.EcospaceMPAs(1)
 
@@ -143,6 +148,10 @@ Public Class cMPAOpenStatePlugin
 
     End Sub
 
+    Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
+        Return New eCoreComponentType() {eCoreComponentType.EcoSpace}
+    End Function
+
 #Region " Generic plug-in bits "
 
     Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
@@ -153,7 +162,7 @@ Public Class cMPAOpenStatePlugin
 
     Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
         Get
-            Return "mailto:ewedevteam@gmail.com"
+            Return "ewedevteam@gmail.com"
         End Get
     End Property
 
@@ -173,6 +182,15 @@ Public Class cMPAOpenStatePlugin
         Get
             Return "MPA open state plug-in"
         End Get
+    End Property
+
+    Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
+        Get
+            Return Me.Enabled
+        End Get
+        Set(value As Boolean)
+            Me.Enabled = value
+        End Set
     End Property
 
 #End Region ' Generic plug-in bits
