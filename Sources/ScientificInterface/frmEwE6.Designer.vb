@@ -157,6 +157,7 @@ Partial Public Class frmEwE6
         Me.m_tsbnPreview = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnAutosaveConfig = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton()
@@ -165,7 +166,6 @@ Partial Public Class frmEwE6
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
         Me.m_bgw = New System.ComponentModel.BackgroundWorker()
-        Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -381,6 +381,11 @@ Partial Public Class frmEwE6
         '
         sep2.Name = "sep2"
         resources.ApplyResources(sep2, "sep2")
+        '
+        'ToolStripSeparator6
+        '
+        ToolStripSeparator6.Name = "ToolStripSeparator6"
+        resources.ApplyResources(ToolStripSeparator6, "ToolStripSeparator6")
         '
         'm_tsmiHelpContents
         '
@@ -799,6 +804,12 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsbnAutosaveConfig, "m_tsbnAutosaveConfig")
         Me.m_tsbnAutosaveConfig.Name = "m_tsbnAutosaveConfig"
         '
+        'm_tsbnAutorunConfig
+        '
+        Me.m_tsbnAutorunConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnAutorunConfig, "m_tsbnAutorunConfig")
+        Me.m_tsbnAutorunConfig.Name = "m_tsbnAutorunConfig"
+        '
         'm_tsbEcopath
         '
         Me.m_tsbEcopath.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -849,17 +860,6 @@ Partial Public Class frmEwE6
         '
         'm_bgw
         '
-        '
-        'ToolStripSeparator6
-        '
-        ToolStripSeparator6.Name = "ToolStripSeparator6"
-        resources.ApplyResources(ToolStripSeparator6, "ToolStripSeparator6")
-        '
-        'm_tsbnAutorunConfig
-        '
-        Me.m_tsbnAutorunConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tsbnAutorunConfig, "m_tsbnAutorunConfig")
-        Me.m_tsbnAutorunConfig.Name = "m_tsbnAutorunConfig"
         '
         'frmEwE6
         '

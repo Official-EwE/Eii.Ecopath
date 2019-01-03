@@ -759,6 +759,9 @@ Public Class frmEwE6
         Me.m_tslbReadOnly.Image = SharedResources.ProtectFormHS
         Me.m_tslbReadOnly.Enabled = False
 
+        Me.m_tsbnAutosaveConfig.Image = SharedResources.AutoSaveHS
+        Me.m_tsbnAutorunConfig.Image = SharedResources.AutoPlayHS
+
         ' Listen to application Idle events to update command states
         AddHandler Application.Idle, AddressOf cmdh.OnIdle
         AddHandler Application.Idle, AddressOf Me.m_pluginMenuHandler.OnIdle

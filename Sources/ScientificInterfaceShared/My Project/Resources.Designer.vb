@@ -237,6 +237,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property AutoPlayHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("AutoPlayHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Auto-run all.
         '''</summary>
         Public ReadOnly Property AUTORUN_ALL() As String
@@ -350,6 +360,16 @@ Namespace My.Resources
         Public ReadOnly Property AUTOSAVE_MSY() As String
             Get
                 Return ResourceManager.GetString("AUTOSAVE_MSY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property AutoSaveHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("AutoSaveHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -3376,16 +3396,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("glyph_vl_med_dblue", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        '''</summary>
-        Public ReadOnly Property google() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("google", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
         
@@ -8000,16 +8010,6 @@ Namespace My.Resources
         Public ReadOnly Property SaveModified() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("SaveModified", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property saveOutputHS() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("saveOutputHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

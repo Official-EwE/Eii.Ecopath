@@ -2110,9 +2110,6 @@
   <data name="openOutputHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\openOutputHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="saveOutputHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\saveOutputHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="OK" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OK.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -2182,9 +2179,6 @@
   </data>
   <data name="Computer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Computer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="google" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\google.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Habitat" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Habitat.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -3085,5 +3079,11 @@
   </data>
   <data name="HEADER_PLUGIN" xml:space="preserve">
     <value>Plug-in</value>
+  </data>
+  <data name="AutoPlayHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AutoPlayHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AutoSaveHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AutoSaveHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
