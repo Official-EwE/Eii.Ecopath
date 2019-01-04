@@ -35,7 +35,15 @@ Namespace Other
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsAutoRun))
             Me.m_hdrMain = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tsQuickEdit = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnQuickHelp = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbnAll = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnNone = New System.Windows.Forms.ToolStripButton()
             Me.m_grid = New ScientificInterface.gridAutoRun()
+            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_lblInfo = New System.Windows.Forms.Label()
+            Me.m_tsQuickEdit.SuspendLayout()
+            Me.TableLayoutPanel1.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_hdrMain
@@ -48,9 +56,34 @@ Namespace Other
             '
             'm_tsQuickEdit
             '
-            Me.m_tsQuickEdit.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             resources.ApplyResources(Me.m_tsQuickEdit, "m_tsQuickEdit")
+            Me.m_tsQuickEdit.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsQuickEdit.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnQuickHelp, Me.ToolStripSeparator1, Me.m_tsbnAll, Me.m_tsbnNone})
             Me.m_tsQuickEdit.Name = "m_tsQuickEdit"
+            '
+            'm_tsbnQuickHelp
+            '
+            Me.m_tsbnQuickHelp.AutoToolTip = False
+            Me.m_tsbnQuickHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnQuickHelp, "m_tsbnQuickHelp")
+            Me.m_tsbnQuickHelp.Name = "m_tsbnQuickHelp"
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            '
+            'm_tsbnAll
+            '
+            Me.m_tsbnAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnAll, "m_tsbnAll")
+            Me.m_tsbnAll.Name = "m_tsbnAll"
+            '
+            'm_tsbnNone
+            '
+            Me.m_tsbnNone.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnNone, "m_tsbnNone")
+            Me.m_tsbnNone.Name = "m_tsbnNone"
             '
             'm_grid
             '
@@ -84,21 +117,42 @@ Namespace Other
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
+            'TableLayoutPanel1
+            '
+            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+            Me.TableLayoutPanel1.Controls.Add(Me.m_lblInfo, 0, 2)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_hdrMain, 0, 0)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_grid, 0, 3)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_tsQuickEdit, 0, 1)
+            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            '
+            'm_lblInfo
+            '
+            resources.ApplyResources(Me.m_lblInfo, "m_lblInfo")
+            Me.m_lblInfo.Name = "m_lblInfo"
+            '
             'ucOptionsAutoRun
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-            Me.Controls.Add(Me.m_grid)
-            Me.Controls.Add(Me.m_tsQuickEdit)
-            Me.Controls.Add(Me.m_hdrMain)
+            Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Name = "ucOptionsAutoRun"
+            Me.m_tsQuickEdit.ResumeLayout(False)
+            Me.m_tsQuickEdit.PerformLayout()
+            Me.TableLayoutPanel1.ResumeLayout(False)
+            Me.TableLayoutPanel1.PerformLayout()
             Me.ResumeLayout(False)
-            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_hdrMain As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_tsQuickEdit As cEwEToolstrip
         Private WithEvents m_grid As gridAutoRun
+        Private WithEvents m_tsbnAll As ToolStripButton
+        Private WithEvents m_tsbnNone As ToolStripButton
+        Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+        Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
+        Private WithEvents m_lblInfo As Label
+        Private WithEvents m_tsbnQuickHelp As ToolStripButton
     End Class
 
 End Namespace

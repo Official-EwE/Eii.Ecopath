@@ -71,10 +71,30 @@ Namespace Other
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
-
+            Me.m_tsbnQuickHelp.Image = SharedResources.Info
+            Me.m_lblInfo.Visible = False
         End Sub
 
 #End Region ' Overrides
+
+#Region " Events "
+
+        Private Sub OnShowQuickHelp(sender As Object, e As EventArgs) Handles m_tsbnQuickHelp.MouseDown
+            Me.m_lblInfo.Visible = True
+        End Sub
+
+        Private Sub OnHideQuickHelp(sender As Object, e As EventArgs) Handles m_tsbnQuickHelp.MouseUp
+            Me.m_lblInfo.Visible = False
+        End Sub
+
+        Private Sub OnSelectAll(sender As Object, e As EventArgs) Handles m_tsbnAll.Click
+            Me.m_grid.CheckAll()
+        End Sub
+
+        Private Sub OnSelectNone(sender As Object, e As EventArgs) Handles m_tsbnNone.Click
+            Me.m_grid.ClearAll()
+        End Sub
+#End Region ' Events
 
 #Region " interface implementation "
 

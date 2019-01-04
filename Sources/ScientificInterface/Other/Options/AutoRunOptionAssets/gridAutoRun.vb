@@ -140,6 +140,14 @@ Public Class gridAutoRun
         Return MyBase.OnCellValueChanged(p, cell)
     End Function
 
+    Public Sub CheckAll()
+        CheckAll(True)
+    End Sub
+
+    Public Sub ClearAll()
+        CheckAll(False)
+    End Sub
+
     Public Sub SetDefaults()
 
         Dim cols As eColumnTypes() = CType([Enum].GetValues(GetType(eColumnTypes)), eColumnTypes())
@@ -186,5 +194,21 @@ Public Class gridAutoRun
         Next
 
     End Function
+
+    Private Sub CheckAll(bCheck As Boolean)
+        Dim cols As eColumnTypes() = CType([Enum].GetValues(GetType(eColumnTypes)), eColumnTypes())
+        For iRow As Integer = 1 To Me.RowsCount - 1
+            For j As Integer = 0 To cols.Length - 1
+                Select Case cols(j)
+                    Case eColumnTypes.Index, eColumnTypes.Plugin
+                        ' NOP
+                    Case Else
+                        If (TypeOf Me(iRow, j) Is EwECheckboxCell) Then
+                            Me(iRow, j).Value = bCheck
+                        End If
+                End Select
+            Next
+        Next
+    End Sub
 
 End Class
