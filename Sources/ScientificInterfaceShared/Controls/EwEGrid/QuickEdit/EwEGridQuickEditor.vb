@@ -127,8 +127,8 @@ Namespace Controls.EwEGrid
             AddHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
 
             ' Create import button (input grids only)
-            If Not Me.m_bIsOutputGrid Then
-                Me.m_btnImport = New ToolStripButton(My.Resources.ImportXMLHS)
+            If Not bIsOutputGrid Then
+                Me.m_btnImport = New ToolStripButton(My.Resources.ImportHS)
                 Me.m_btnImport.ToolTipText = My.Resources.TOOLTIP_LOADFROMCSV
                 AddHandler Me.m_btnImport.Click, AddressOf OnImportGrid
             End If
