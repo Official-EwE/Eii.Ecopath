@@ -622,7 +622,7 @@ Public Class frmEwE6
         Me.m_cmdAutosaveConfig.AddControl(Me.m_tsbnAutosaveConfig)
 
         'Create and configure 'Autorun config' command
-        Me.m_cmdAutorunConfig = New cCommand(cmdh, "AutorunConfig", My.Resources.COMMAND_AUTOSAVE)
+        Me.m_cmdAutorunConfig = New cCommand(cmdh, "AutorunConfig", My.Resources.COMMAND_AUTORUN)
         Me.m_cmdAutorunConfig.AddControl(Me.m_tsbnAutorunConfig)
 
         'Create and configure EditGroups command
