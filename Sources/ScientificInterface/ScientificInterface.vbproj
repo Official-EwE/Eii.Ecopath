@@ -2255,6 +2255,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(TargetDir)Resources\InsertIcons.exe" "$(TargetDir)$(TargetFileName)" "$(TargetDir)Resources\ExtraIcons.txt" "$(ProjectDir)ScientificInterface.snk"</PostBuildEvent>
+    <PostBuildEvent>$(TargetDir)Resources\InsertIcons.exe $(TargetDir)$(TargetFileName) $(TargetDir)Resources\ExtraIcons.txt $(ProjectDir)ScientificInterface.snk</PostBuildEvent>
   </PropertyGroup>
 </Project>
