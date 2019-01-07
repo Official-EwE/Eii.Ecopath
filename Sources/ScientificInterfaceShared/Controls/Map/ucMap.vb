@@ -458,10 +458,8 @@ Namespace Controls.Map
 
             Dim ptfTL As PointF = Me.PointToColRowExact(rcClip.Location)
             Dim ptfBR As PointF = Me.PointToColRowExact(New Point(rcClip.Right, rcClip.Bottom))
-            Dim rcRast As New Rectangle(CInt(Math.Floor(Math.Max(1, ptfTL.X))),
-                                        CInt(Math.Floor(Math.Max(1, ptfTL.Y))),
-                                        CInt(Math.Ceiling(Math.Min(bm.InCol, ptfBR.X - ptfTL.X))),
-                                        CInt(Math.Ceiling(Math.Min(bm.InRow, ptfBR.Y - ptfTL.Y))))
+            Dim ptDrawTL As New Point(CInt(Math.Floor(Math.Max(1, ptfTL.X))), CInt(Math.Floor(Math.Max(1, ptfTL.Y))))
+            Dim ptDrawBR As New Point(CInt(Math.Ceiling(Math.Min(bm.InCol, ptfBR.X))), CInt(Math.Ceiling(Math.Min(bm.InRow, ptfBR.Y))))
 
             Dim layers As New List(Of cDisplayLayer)
             Dim displayDepth As cDisplayLayer = Nothing
@@ -529,8 +527,8 @@ Namespace Controls.Map
 
                         If (rl.HasData) Then
 
-                            For X As Integer = rcRast.Left To rcRast.Right
-                                For Y As Integer = rcRast.Top To rcRast.Bottom
+                            For X As Integer = ptDrawTL.X To ptDrawBR.X
+                                For Y As Integer = ptDrawTL.Y To ptDrawTL.Y
 
                                     ptCell = New Point(X, Y)
                                     Dim rcCell As RectangleF = Me.GetCellRect(ptCell)
