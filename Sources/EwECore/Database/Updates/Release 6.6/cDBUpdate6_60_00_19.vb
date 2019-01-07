@@ -57,10 +57,12 @@ Friend Class cDBUpdate6_60_00_19
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
+        ' This may fail, no worries
+        db.Execute("ALTER TABLE EcopathTaxon DROP COLUMN CodeTaxon")
+        ' But this has to work!
         Return db.Execute("ALTER TABLE EcopathTaxon ADD COLUMN CodeAquaMaps TEXT(255)") And
                db.Execute("ALTER TABLE EcopathTaxon ADD COLUMN CodeAphia TEXT(255)") And
-               db.Execute("ALTER TABLE EcopathTaxon ADD COLUMN CodeOBIS LONG") And
-               db.Execute("ALTER TABLE EcopathTaxon DROP COLUMN CodeTaxon")
+               db.Execute("ALTER TABLE EcopathTaxon ADD COLUMN CodeOBIS LONG")
 
     End Function
 
