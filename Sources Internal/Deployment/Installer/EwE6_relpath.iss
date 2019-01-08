@@ -2,19 +2,19 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 #include <idp.iss>
 #define Compile64Bit 0
-#define Spinup 1
-#define SpatTemp 1
+#define Spinup 0
+#define SpatTemp 0
 #define FISHMIP 0
 #define MSPTools 0
 #define SAFENET 0
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6 preview"
+  #define MyAppVersion "6.6 Beta"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6 preview 64-bit"
+  #define MyAppVersion "6.6 Beta 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -30,7 +30,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.15813.0
+  VersionInfoVersion=6.6.15915.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
