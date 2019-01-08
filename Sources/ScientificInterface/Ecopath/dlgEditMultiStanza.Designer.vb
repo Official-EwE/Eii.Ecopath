@@ -62,6 +62,15 @@ Namespace Ecopath
             Me.m_hdrEcospace = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrEcosim = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_grid = New ScientificInterface.gridEditMultiStanza()
+            Me.m_splitMain = New System.Windows.Forms.SplitContainer()
+            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plControls = New System.Windows.Forms.Panel()
+            CType(Me.m_splitMain, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_splitMain.Panel1.SuspendLayout()
+            Me.m_splitMain.Panel2.SuspendLayout()
+            Me.m_splitMain.SuspendLayout()
+            Me.TableLayoutPanel1.SuspendLayout()
+            Me.m_plControls.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnCalculate
@@ -137,15 +146,14 @@ Namespace Ecopath
             'm_zgc
             '
             resources.ApplyResources(Me.m_zgc, "m_zgc")
-            Me.m_zgc.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_zgc.Name = "m_zgc"
-            Me.m_zgc.ScrollGrace = 0.0R
-            Me.m_zgc.ScrollMaxX = 0.0R
-            Me.m_zgc.ScrollMaxY = 0.0R
-            Me.m_zgc.ScrollMaxY2 = 0.0R
-            Me.m_zgc.ScrollMinX = 0.0R
-            Me.m_zgc.ScrollMinY = 0.0R
-            Me.m_zgc.ScrollMinY2 = 0.0R
+            Me.m_zgc.ScrollGrace = 0R
+            Me.m_zgc.ScrollMaxX = 0R
+            Me.m_zgc.ScrollMaxY = 0R
+            Me.m_zgc.ScrollMaxY2 = 0R
+            Me.m_zgc.ScrollMinX = 0R
+            Me.m_zgc.ScrollMinY = 0R
+            Me.m_zgc.ScrollMinY2 = 0R
             Me.m_zgc.TabStop = False
             '
             'm_cbFFecun
@@ -194,7 +202,6 @@ Namespace Ecopath
             'm_grid
             '
             Me.m_grid.AllowBlockSelect = True
-            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -202,10 +209,11 @@ Namespace Ecopath
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
             Me.m_grid.DataName = "grid content"
+            resources.ApplyResources(Me.m_grid, "m_grid")
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
@@ -213,17 +221,58 @@ Namespace Ecopath
             Me.m_grid.IsOutputGrid = True
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.StanzaGroup = Nothing
             Me.m_grid.TabStop = True
             Me.m_grid.UIContext = Nothing
+            '
+            'm_splitMain
+            '
+            resources.ApplyResources(Me.m_splitMain, "m_splitMain")
+            Me.m_splitMain.Name = "m_splitMain"
+            '
+            'm_splitMain.Panel1
+            '
+            Me.m_splitMain.Panel1.Controls.Add(Me.TableLayoutPanel1)
+            '
+            'm_splitMain.Panel2
+            '
+            Me.m_splitMain.Panel2.Controls.Add(Me.m_grid)
+            '
+            'TableLayoutPanel1
+            '
+            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+            Me.TableLayoutPanel1.Controls.Add(Me.m_zgc, 1, 0)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_plControls, 0, 0)
+            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            '
+            'm_plControls
+            '
+            Me.m_plControls.Controls.Add(Me.m_lblStanzaGroups)
+            Me.m_plControls.Controls.Add(Me.m_cbEggAtSpawn)
+            Me.m_plControls.Controls.Add(Me.m_lblK)
+            Me.m_plControls.Controls.Add(Me.m_hdrEcospace)
+            Me.m_plControls.Controls.Add(Me.m_lblRecPwr)
+            Me.m_plControls.Controls.Add(Me.m_hdrEcosim)
+            Me.m_plControls.Controls.Add(Me.m_lblBAB)
+            Me.m_plControls.Controls.Add(Me.m_cmbFF)
+            Me.m_plControls.Controls.Add(Me.m_lblWmatWinf)
+            Me.m_plControls.Controls.Add(Me.m_cmbStanzaGroups)
+            Me.m_plControls.Controls.Add(Me.m_lblFF)
+            Me.m_plControls.Controls.Add(Me.m_cbFFecun)
+            Me.m_plControls.Controls.Add(Me.m_txtK)
+            Me.m_plControls.Controls.Add(Me.m_txtWmatWinf)
+            Me.m_plControls.Controls.Add(Me.m_txtRecPwr)
+            Me.m_plControls.Controls.Add(Me.m_txtBAB)
+            resources.ApplyResources(Me.m_plControls, "m_plControls")
+            Me.m_plControls.Name = "m_plControls"
             '
             'EditMultiStanza
             '
@@ -231,24 +280,7 @@ Namespace Ecopath
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.m_btnCancel
             Me.ControlBox = False
-            Me.Controls.Add(Me.m_cbEggAtSpawn)
-            Me.Controls.Add(Me.m_hdrEcospace)
-            Me.Controls.Add(Me.m_hdrEcosim)
-            Me.Controls.Add(Me.m_cmbFF)
-            Me.Controls.Add(Me.m_cmbStanzaGroups)
-            Me.Controls.Add(Me.m_cbFFecun)
-            Me.Controls.Add(Me.m_zgc)
-            Me.Controls.Add(Me.m_txtWmatWinf)
-            Me.Controls.Add(Me.m_txtBAB)
-            Me.Controls.Add(Me.m_txtRecPwr)
-            Me.Controls.Add(Me.m_txtK)
-            Me.Controls.Add(Me.m_lblFF)
-            Me.Controls.Add(Me.m_lblWmatWinf)
-            Me.Controls.Add(Me.m_lblBAB)
-            Me.Controls.Add(Me.m_lblRecPwr)
-            Me.Controls.Add(Me.m_lblK)
-            Me.Controls.Add(Me.m_lblStanzaGroups)
-            Me.Controls.Add(Me.m_grid)
+            Me.Controls.Add(Me.m_splitMain)
             Me.Controls.Add(Me.m_btnCancel)
             Me.Controls.Add(Me.m_btnOK)
             Me.Controls.Add(Me.m_btnCalculate)
@@ -256,8 +288,14 @@ Namespace Ecopath
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
+            Me.m_splitMain.Panel1.ResumeLayout(False)
+            Me.m_splitMain.Panel2.ResumeLayout(False)
+            CType(Me.m_splitMain, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_splitMain.ResumeLayout(False)
+            Me.TableLayoutPanel1.ResumeLayout(False)
+            Me.m_plControls.ResumeLayout(False)
+            Me.m_plControls.PerformLayout()
             Me.ResumeLayout(False)
-            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_cmbStanzaGroups As System.Windows.Forms.ComboBox
@@ -281,6 +319,9 @@ Namespace Ecopath
         Private WithEvents m_hdrEcosim As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_hdrEcospace As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_cbEggAtSpawn As System.Windows.Forms.CheckBox
+        Private WithEvents m_splitMain As SplitContainer
+        Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
+        Private WithEvents m_plControls As Panel
     End Class
 
 End Namespace
