@@ -146,6 +146,7 @@ Namespace Ecopath
             'm_zgc
             '
             resources.ApplyResources(Me.m_zgc, "m_zgc")
+            Me.m_zgc.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_zgc.Name = "m_zgc"
             Me.m_zgc.ScrollGrace = 0R
             Me.m_zgc.ScrollMaxX = 0R
