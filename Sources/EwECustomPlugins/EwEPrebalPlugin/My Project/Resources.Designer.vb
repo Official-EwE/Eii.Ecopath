@@ -79,7 +79,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Pre-balance diagostics.
+        '''  Looks up a localized string similar to Pre-balance diagnostics.
         '''</summary>
         Friend ReadOnly Property HEADER_PLOT() As String
             Get
