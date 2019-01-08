@@ -440,12 +440,12 @@ Namespace Ecospace.Basemap.Layers
                 Me.m_layerOriginal.Name = CStr(Me.m_fpName.Value)
             End If
 
-            If TypeOf Me.m_layerOriginal.Source Is cEcospaceLayerDriver Then
+            If (TypeOf src Is cEcospaceLayerDriver) Then
                 src.SetVariable(eVarNameFlags.UnitEnvDriver, Me.m_fpUnits.Value)
                 src.SetVariable(eVarNameFlags.Description, Me.m_fpDescription.Value)
             End If
 
-            If TypeOf Me.m_layerOriginal.Source Is cEcospaceLayerImportance Then
+            If (TypeOf src Is cEcospaceLayerImportance) Then
                 src.SetVariable(eVarNameFlags.ImportanceWeight, Me.m_fpWeight.Value)
                 src.SetVariable(eVarNameFlags.Description, Me.m_fpDescription.Value)
             End If

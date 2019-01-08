@@ -134,29 +134,14 @@ Public Class cEcospaceLayerDriver
         End Set
     End Property
 
-    Public Property MapUnits As String
-        Get
-            Return Me.m_metadata.Units
-        End Get
-        Set(value As String)
-            Me.m_metadata.Units = value
-        End Set
-    End Property
-
     Public Overrides Property Units(Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name) As String
         Get
-            If (varName = eVarNameFlags.UnitEnvDriver) Then
-                Return Me.MapUnits
-            End If
-            Return MyBase.Units(varName)
+            Return CStr(Me.GetVariable(eVarNameFlags.UnitEnvDriver))
         End Get
         Set(value As String)
-            If (varName = eVarNameFlags.UnitEnvDriver) Then
-                Me.MapUnits = value
-            End If
+            Me.SetVariable(eVarNameFlags.UnitEnvDriver, value)
         End Set
     End Property
-
 
 #End Region ' Properties by dot (.) operator
 
