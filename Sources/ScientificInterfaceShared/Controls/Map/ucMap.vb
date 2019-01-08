@@ -528,7 +528,7 @@ Namespace Controls.Map
                         If (rl.HasData) Then
 
                             For X As Integer = ptDrawTL.X To ptDrawBR.X
-                                For Y As Integer = ptDrawTL.Y To ptDrawTL.Y
+                                For Y As Integer = ptDrawTL.Y To ptDrawBR.Y
 
                                     ptCell = New Point(X, Y)
                                     Dim rcCell As RectangleF = Me.GetCellRect(ptCell)

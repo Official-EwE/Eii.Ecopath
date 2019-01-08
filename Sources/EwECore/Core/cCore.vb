@@ -10650,7 +10650,7 @@ Public Class cCore
             dest.Index = i
             dest.Name = Me.m_EcoSpaceData.EnvironmentalLayerName(i)
             dest.Description = Me.m_EcoSpaceData.EnvironmentalLayerDescription(i)
-            dest.MapUnits = Me.m_EcoSpaceData.EnvironmentalLayerUnits(i)
+            dest.Units = Me.m_EcoSpaceData.EnvironmentalLayerUnits(i)
             dest.AllowValidation = True
 
         Next i
@@ -10709,7 +10709,7 @@ Public Class cCore
             src = Me.m_EcospaceBasemap.LayerDriver(i)
             Me.m_EcoSpaceData.EnvironmentalLayerName(i) = src.Name
             Me.m_EcoSpaceData.EnvironmentalLayerDescription(i) = src.Description
-            Me.m_EcoSpaceData.EnvironmentalLayerUnits(i) = src.MapUnits
+            Me.m_EcoSpaceData.EnvironmentalLayerUnits(i) = src.Units
         Next i
 
     End Sub
