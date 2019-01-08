@@ -96,7 +96,9 @@ Namespace Ecopath
             Me.m_fpRecPwr = New cEwEFormatProvider(Me.m_uic, Me.m_txtRecPwr, GetType(Single))
             Me.m_fpBab = New cEwEFormatProvider(Me.m_uic, Me.m_txtBAB, GetType(Single))
             Me.m_fpWmatWinf = New cEwEFormatProvider(Me.m_uic, Me.m_txtWmatWinf, GetType(Single))
+            Me.m_zgh.ShowHoverMenu = False
 
+            ' -- Ecosim -- 
             ' Gather forcing functions
             Me.m_cmbFF.Enabled = (bEcosimLoaded)
             If bEcosimLoaded Then
@@ -107,6 +109,7 @@ Namespace Ecopath
                 Next
             End If
 
+            ' -- Ecospace -- 
             Me.m_cbEggAtSpawn.Enabled = bEcospaceLoaded
 
             Me.UpdateControls()
