@@ -86,6 +86,7 @@ Namespace Ecospace.Basemap
             Me.m_zoomContainer.BackColor = System.Drawing.SystemColors.ButtonShadow
             Me.m_zoomContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_zoomContainer.Name = "m_zoomContainer"
+            Me.m_zoomContainer.UIContext = Nothing
             '
             'm_tlpControls
             '
@@ -117,8 +118,6 @@ Namespace Ecospace.Basemap
             '
             'm_plEditor
             '
-            Me.m_plEditor.BackColor = System.Drawing.SystemColors.Window
-            Me.m_plEditor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             resources.ApplyResources(Me.m_plEditor, "m_plEditor")
             Me.m_plEditor.Name = "m_plEditor"
             '
