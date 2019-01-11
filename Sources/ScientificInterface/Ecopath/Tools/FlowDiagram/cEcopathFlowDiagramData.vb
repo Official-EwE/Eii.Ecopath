@@ -191,7 +191,7 @@ Namespace Ecopath.Controls.FlowDiagram
                 iPred -= c.nGroups
                 If (iPrey <= c.nGroups) Then
                     Dim fleet As cEcopathFleetInput = c.EcopathFleetInputs(iPred)
-                    Return (fleet.Landings(iPrey) + fleet.Discards(iPrey)) / m_catch_all(iPred)
+                    Return (fleet.Landings(iPrey) + fleet.Discards(iPrey)) / (m_catch_all(iPred) + 1.0E-20F)
                 End If
                 Return 0
             End Get
@@ -345,6 +345,7 @@ Namespace Ecopath.Controls.FlowDiagram
                     Dim sDiet As Single = Me.LinkValue(i + c.nGroups, j)
                     Me.m_sDietMax = Math.Max(Me.m_sDietMax, sDiet)
                     Me.m_sDietMin = Math.Min(Me.m_sDietMin, sDiet)
+                    'Debug.Assert(Not Single.IsNaN(sDiet))
                     link_all(i, c.nFleets + j) = sDiet
                 Next j
 
