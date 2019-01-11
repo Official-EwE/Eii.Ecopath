@@ -110,13 +110,21 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Sub DrawFlowDiagram(ByVal g As Graphics, ByVal rc As Rectangle)
 
-            Me.m_tree.DrawBackground(g, rc)
-            Me.m_tree.DrawTitle(g, rc)
-            Me.m_tree.DrawLegend(g, New Point(5, 5))
+            Try
 
-            For Each hl As IFlowDiagramRenderer.eFDHighlightType In s_draworder
-                DrawFlow(g, rc, hl)
-            Next
+                Me.m_tree.DrawBackground(g, rc)
+                Me.m_tree.DrawTitle(g, rc)
+                Me.m_tree.DrawLegend(g, New Point(5, 5))
+
+                For Each hl As IFlowDiagramRenderer.eFDHighlightType In s_draworder
+                    DrawFlow(g, rc, hl)
+                Next
+
+            Catch ex As Exception
+                Dim msg As String = "Exception in " + Me.ToString + ".DrawFlowDiagram(): " + ex.Message
+                'Debug.Assert(False, msg)
+                cLog.Write(ex, msg)
+            End Try
 
         End Sub
 
