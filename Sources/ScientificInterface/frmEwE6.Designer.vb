@@ -156,6 +156,8 @@ Partial Public Class frmEwE6
         Me.m_tsModel = New ScientificInterfaceShared.Controls.cModelPathToolStrip()
         Me.m_tsbnPreview = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnAutosaveConfig = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton()
@@ -164,8 +166,6 @@ Partial Public Class frmEwE6
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
         Me.m_bgw = New System.ComponentModel.BackgroundWorker()
-        Me.m_tsbnAutosaveConfig = New System.Windows.Forms.ToolStripButton()
-        Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -780,7 +780,6 @@ Partial Public Class frmEwE6
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.Path = ""
-        Me.m_tsModel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.m_tsModel.Stretch = True
         '
         'm_tsbnPreview
@@ -796,6 +795,18 @@ Partial Public Class frmEwE6
         Me.m_tsbSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbSave, "m_tsbSave")
         Me.m_tsbSave.Name = "m_tsbSave"
+        '
+        'm_tsbnAutosaveConfig
+        '
+        Me.m_tsbnAutosaveConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnAutosaveConfig, "m_tsbnAutosaveConfig")
+        Me.m_tsbnAutosaveConfig.Name = "m_tsbnAutosaveConfig"
+        '
+        'm_tsbnAutorunConfig
+        '
+        Me.m_tsbnAutorunConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnAutorunConfig, "m_tsbnAutorunConfig")
+        Me.m_tsbnAutorunConfig.Name = "m_tsbnAutorunConfig"
         '
         'm_tsbEcopath
         '
@@ -847,18 +858,6 @@ Partial Public Class frmEwE6
         '
         'm_bgw
         '
-        '
-        'm_tsbnAutosaveConfig
-        '
-        Me.m_tsbnAutosaveConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tsbnAutosaveConfig, "m_tsbnAutosaveConfig")
-        Me.m_tsbnAutosaveConfig.Name = "m_tsbnAutosaveConfig"
-        '
-        'm_tsbnAutorunConfig
-        '
-        Me.m_tsbnAutorunConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tsbnAutorunConfig, "m_tsbnAutorunConfig")
-        Me.m_tsbnAutorunConfig.Name = "m_tsbnAutorunConfig"
         '
         'frmEwE6
         '
