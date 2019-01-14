@@ -1366,8 +1366,8 @@ Namespace UI
                                         msg.Message = cStringUtils.Localize(My.Resources.STATUS_TESTSET_LOAD_FAILED, testset.Name)
                                         vs = New cVariableStatus(eStatusFlags.ErrorEncountered, cStringUtils.Localize(My.Resources.STATUS_TESTDATA_MAP_REJECTED, p.Name, data),
                                                                  eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSpace, 0)
+                                        msg.AddVariable(vs)
                                     End If
-                                    msg.AddVariable(vs)
                                 Case cPressure.eDataTypes.Scalar
                                     If Double.TryParse(data, p.Scalar) Then
                                         pressures.Add(p)
