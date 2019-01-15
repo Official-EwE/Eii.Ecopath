@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{47067ab1-424a-4acb-8dd5-f38666499c64}</ProjectGuid>
+    <SHFBSchemaVersion>2015.6.5.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>Documentation</AssemblyName>
+    <RootNamespace>Documentation</RootNamespace>
+    <Name>Documentation</Name>
+    <!-- SHFB properties -->
+    <OutputPath>Help\</OutputPath>
+    <HtmlHelpName>EwE6_API</HtmlHelpName>
+    <CopyrightText>Copyright %28c%29 UBC Centre of Oceans and Fisheries &amp;amp%3b Ecopath International Initiative</CopyrightText>
+    <HelpTitle>EwE6 API documentation</HelpTitle>
+    <HelpFileVersion>6.6.0.0</HelpFileVersion>
+    <SandcastlePath>
+    </SandcastlePath>
+    <WorkingPath>Temp\</WorkingPath>
+    <HtmlHelp1xCompilerPath>C:\Program Files (x86)\HTML Help Workshop\</HtmlHelp1xCompilerPath>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\..\Sources\EwECore\EwECore.vbproj" platform="x86" />
+      <DocumentationSource sourceFile="..\..\Sources\EwEPlugin\EwEPlugin.vbproj" platform="x86" />
+      <DocumentationSource sourceFile="..\..\Sources\EwEUtils\EwEUtils.vbproj" platform="x86" />
+      <DocumentationSource sourceFile="..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj" platform="x86" />
+    </DocumentationSources>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="(global)" isDocumented="True">EwE API Code Documentation</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore" isDocumented="True">Namespace containing all elements essential to the functioning of the EwE computational engine.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.Auxiliary" isDocumented="True">Namespace containing loose-typed, auxillary elements for EwE.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.Database" isDocumented="True">Namespace containing all elements required  for implementing model data persistence, and keeping model storage systems up to date to the latest EwE data requirements.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEPlugin" isDocumented="True">Namespace containing all elements required when implementing or accessing EwE plug-ins.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils" isDocumented="True">Namespace containing shared definitions and helper classes for EwE applications.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.Commands" isDocumented="True">Namespace containing all elements required for EwE applications to fire and handle generic commands.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.Core" isDocumented="True">Namspace containing EwE core utility classes and definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.Database" isDocumented="True">Namspace containing database utility classes and definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.Drawing" isDocumented="True">Namspace containing drawing and rendering utility classes and definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.NetUtilities" isDocumented="True">Namspace containing networking utility classes and definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.Utilities" isDocumented="True">Namespace with generic utility classes and definitions.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.Win32Api" isDocumented="True">Namespace containing interfaces to the Win32 API.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.Ecopath" isDocumented="True">Namespace containing all elements essential to the functioning of the Ecopath model.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.Ecosim" isDocumented="True">Namespace containing all elements essential to the functioning of the Ecosim model.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.FitToTimeSeries" isDocumented="True">Namespace containing fit to time series search logic.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.MSE" isDocumented="True">Namespace containing elements for implementing Searches in the EwE computational core.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.SearchObjectives" isDocumented="True">Namespace containing elements for implementing Searches in the EwE computational core.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.DataSources" isDocumented="True">Namespace containing elements for creating data sources.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.FishingPolicy" isDocumented="True">Namespace containing elements for managing fishing policy runs.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.ValueWrapper" isDocumented="True">Namespace containing elements for wraping variables and associated data.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEPlugin.Data" isDocumented="True">Namespace containing functionlity for accesssing plugin data</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwEUtils.SystemUtilities" isDocumented="True">Namespace containing elements for accessing assembly information.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="EwECore.EcoSeed" isDocumented="True">Namespace containing all elements essential to the functioning of Ecospace MPA optimizations and Ecoseed</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared" isDocumented="True">Namespace containing all reusable components for implementing user interfaces in EwE6.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared.Controls" isDocumented="True">Namespace containing all reusable controls for implementing user interfaces in EwE6.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared.Controls.EwEGrid" isDocumented="True">Namespace containing all reusable components for implementing grids with pre-formatted grid cells in EwE6.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared.Controls.Wizard" isDocumented="True">Namespace containing all components for implementing step-by-step wizards in EwE6.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared.Definitions" isDocumented="True">Namespace containing common definitions for the EwE6 shared interface assembly.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared.Properties" isDocumented="True">Namespace offering observer-pattern based data monitors or 'properties' to simplify the process of synchronizing data between interfaces and the EwE6 core.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="ScientificInterfaceShared.Style" isDocumented="True">Namespace containing style and style distribution logic for EwE6 interfaces.</NamespaceSummaryItem>
+    </NamespaceSummaries>
+    <ProjectSummary>API documentation for the Ecopath with Ecosim version 6 food web modelling approach.</ProjectSummary>
+    <FeedbackEMailAddress>ewedevteam%40gmail.com</FeedbackEMailAddress>
+    <FeedbackEMailLinkText>EwE development team</FeedbackEMailLinkText>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <IncludeFavorites>True</IncludeFavorites>
+    <CollectionTocStyle>Hierarchical</CollectionTocStyle>
+    <HelpFileFormat>Website</HelpFileFormat>
+    <FrameworkVersion>.NET Framework 4.5</FrameworkVersion>
+    <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
+    <BuildAssemblerVerbosity>AllMessages</BuildAssemblerVerbosity>
+    <IndentHtml>False</IndentHtml>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <CleanIntermediates>True</CleanIntermediates>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <NamespaceGrouping>False</NamespaceGrouping>
+    <SyntaxFilters>C#, Visual Basic, F#</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <PresentationStyle>VS2013</PresentationStyle>
+    <Preliminary>False</Preliminary>
+    <NamingMethod>Guid</NamingMethod>
+    <Language>en-US</Language>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
+  </PropertyGroup>
+  <!-- There are no properties for these two groups but they need to appear in
+       order for Visual Studio to perform the build. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  </PropertyGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>
