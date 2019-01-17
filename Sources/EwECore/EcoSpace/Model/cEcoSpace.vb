@@ -5643,14 +5643,15 @@ exitline:
 
         For ip = 1 To EcoSpaceData.NGroups
 
-            If EcoSpaceData.IsMigratory(ip) Or EcoSpaceData.Kmovefit(ip) > 0 Then
+            'If EcoSpaceData.IsMigratory(ip) Or EcoSpaceData.Kmovefit(ip) > 0 Then
+            If EcoSpaceData.IsMigratory(ip) Then
 
                 'calculate relative emigration rate from each cell as function
                 'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
                 For i = 0 To EcoSpaceData.InRow + 1
                     For j = 0 To EcoSpaceData.InCol + 1
 
-                        RelMoveFit(i, j) = (EcoSpaceData.Kmovefit(ip) + 1.0F) / (1.0F + RelFitness(i, j, ip) * EcoSpaceData.Kmovefit(ip))
+                        RelMoveFit(i, j) = 1.0F ' (EcoSpaceData.Kmovefit(ip) + 1.0F) / (1.0F + RelFitness(i, j, ip) * EcoSpaceData.Kmovefit(ip))
                     Next
                 Next
 
@@ -5685,11 +5686,12 @@ exitline:
                                 End If
 
                                 nvar2 = EcoSpaceData.NGroups
+                                ir = IecoCode(ip)
                                 If ieco > 0 Then
-                                    ir = IecoCode(ip)
                                     e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
                                     d(i, j, nvar2 + ir) = d(i, j, ip)
                                 End If
+
                             End If ' If m_Data.Depth(i, j + 1) > 0 Then check depth on right face of this cell
 
                             'then check depths on bottom face of this cell
@@ -5712,6 +5714,8 @@ exitline:
                                     Bcw(i + 1, j, ip) = 0
                                 End If
 
+                                nvar2 = EcoSpaceData.NGroups
+                                ir = IecoCode(ip)
                                 If ieco > 0 Then
                                     ir = ieco
                                     Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
