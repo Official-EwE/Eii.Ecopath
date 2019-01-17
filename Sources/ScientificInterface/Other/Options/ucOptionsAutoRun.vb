@@ -144,7 +144,7 @@ Namespace Other
         Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
 
             Try
-                Me.m_grid.SetDefaults()
+                Me.m_grid.ClearAll()
             Catch ex As Exception
                 cLog.Write(ex, "ucOptionsAutoRun::SetDefaults")
             End Try
