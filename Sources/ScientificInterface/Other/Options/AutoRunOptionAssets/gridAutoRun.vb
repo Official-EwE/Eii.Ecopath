@@ -111,7 +111,7 @@ Public Class gridAutoRun
                     Case Else
                         Dim comp As eCoreComponentType = DirectCast(Me(0, j).Tag, eCoreComponentType)
                         If features.Contains(comp) Then
-                            Me(iRow, j) = New EwECheckboxCell(False)
+                            Me(iRow, j) = New EwECheckboxCell(pi.AutoRun(comp) = True)
                             Me(iRow, j).Behaviors.Add(Me.EwEEditHandler)
                         Else
                             Me(iRow, j) = New EwECell("", styleNA)
@@ -126,9 +126,8 @@ Public Class gridAutoRun
         MyBase.FinishStyle()
 
         If (Me.UIContext Is Nothing) Then Return
-
         Me.FixedColumnWidths = True
-        Me.SetDefaults()
+
     End Sub
 
     Protected Overrides Function OnCellValueChanged(p As Position, cell As ICellVirtual) As Boolean
@@ -146,29 +145,6 @@ Public Class gridAutoRun
 
     Public Sub ClearAll()
         CheckAll(False)
-    End Sub
-
-    Public Sub SetDefaults()
-
-        Dim cols As eColumnTypes() = CType([Enum].GetValues(GetType(eColumnTypes)), eColumnTypes())
-
-        For iRow As Integer = 1 To Me.RowsCount - 1
-            Dim pi As IAutoRunPlugin = DirectCast(Me(iRow, eColumnTypes.Plugin).Tag, IAutoRunPlugin)
-            Dim features As eCoreComponentType() = pi.AutoRunTypes
-
-            For j As Integer = 0 To cols.Length - 1
-                Select Case cols(j)
-                    Case eColumnTypes.Index, eColumnTypes.Plugin
-                        ' NOP
-                    Case Else
-                        Dim comp As eCoreComponentType = DirectCast(Me(0, j).Tag, eCoreComponentType)
-                        If features.Contains(comp) Then
-                            Debug.Assert(TypeOf Me(iRow, j) Is EwECheckboxCell)
-                            Me(iRow, j).Value = (pi.AutoRun(comp) = True)
-                        End If
-                End Select
-            Next
-        Next
     End Sub
 
     Public Function Apply() As Boolean
