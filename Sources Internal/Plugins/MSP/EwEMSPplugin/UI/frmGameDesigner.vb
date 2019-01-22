@@ -24,8 +24,8 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwECore.DataSources
-Imports EwEMSPPlugin
-Imports EwEMSPPlugin.Emulator
+Imports EwEMSPToolsPlugin
+Imports EwEMSPToolsPlugin.Emulator
 Imports EwEShell
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils

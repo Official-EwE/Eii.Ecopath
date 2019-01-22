@@ -22,7 +22,7 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEMSPPlugin.Emulator
+Imports EwEMSPToolsPlugin.Emulator
 Imports EwEShell
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls

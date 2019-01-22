@@ -430,7 +430,7 @@
     <value>m_lblCheckSimFishing</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimFishing.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPToolsPlugin.UI.cImageLabel, EwEMSPToolsPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimFishing.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -469,7 +469,7 @@
     <value>m_lblCheckSimForcing</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimForcing.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPToolsPlugin.UI.cImageLabel, EwEMSPToolsPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimForcing.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -508,7 +508,7 @@
     <value>m_lblCheckGame</value>
   </data>
   <data name="&gt;&gt;m_lblCheckGame.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPToolsPlugin.UI.cImageLabel, EwEMSPToolsPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckGame.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -547,7 +547,7 @@
     <value>m_lblCheckSpaceTimeSeries</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSpaceTimeSeries.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPToolsPlugin.UI.cImageLabel, EwEMSPToolsPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSpaceTimeSeries.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -586,7 +586,7 @@
     <value>m_lblCheckSimTimeSeries</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimTimeSeries.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.cImageLabel, EwEMSPPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPToolsPlugin.UI.cImageLabel, EwEMSPToolsPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_lblCheckSimTimeSeries.Parent" xml:space="preserve">
     <value>m_tpEwESettings</value>
@@ -925,7 +925,7 @@
     <value>m_gridPressureMappings</value>
   </data>
   <data name="&gt;&gt;m_gridPressureMappings.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.gridDrivers, EwEMSPPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPToolsPlugin.UI.gridDrivers, EwEMSPToolsPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gridPressureMappings.Parent" xml:space="preserve">
     <value>m_tpPressures</value>
@@ -1204,7 +1204,7 @@
     <value>m_gridOutcome</value>
   </data>
   <data name="&gt;&gt;m_gridOutcome.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.gridOutcomes, EwEMSPPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPToolsPlugin.UI.gridOutcomes, EwEMSPToolsPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gridOutcome.Parent" xml:space="preserve">
     <value>m_scOutputs.Panel2</value>
@@ -1863,7 +1863,7 @@
     <value>m_gridEmulTestset</value>
   </data>
   <data name="&gt;&gt;m_gridEmulTestset.Type" xml:space="preserve">
-    <value>EwEMSPPlugin.UI.gridEmulator, EwEMSPPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>EwEMSPToolsPlugin.UI.gridEmulator, EwEMSPToolsPlugin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;m_gridEmulTestset.Parent" xml:space="preserve">
     <value>m_tpEmulator</value>

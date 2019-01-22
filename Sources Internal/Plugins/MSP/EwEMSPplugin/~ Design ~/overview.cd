@@ -97,7 +97,7 @@
     <TypeIdentifier />
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="EwEMSPPlugin.Emulator.cTestSetData" Collapsed="true">
+  <Class Name="EwEMSPToolsPlugin.Emulator.cTestSetData" Collapsed="true">
     <Position X="12.75" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
@@ -107,7 +107,7 @@
       <FileName>Test sets\cTestSetData.vb</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="EwEMSPPlugin.Emulator.cTestset" Collapsed="true">
+  <Class Name="EwEMSPToolsPlugin.Emulator.cTestset" Collapsed="true">
     <Position X="12.75" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAAAAAAAAAAAEAEAAAAAAQAAAAAAAIAAAAAAgAAAAA=</HashCode>
@@ -115,13 +115,13 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="EwEMSPPlugin.UI.frmGameDesigner" Collapsed="true">
+  <Class Name="EwEMSPToolsPlugin.UI.frmGameDesigner" Collapsed="true">
     <Position X="9" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Properties" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="m_testdata" Type="EwEMSPPlugin.Emulator.cTestSetData">
+    <AssociationLine Name="m_testdata" Type="EwEMSPToolsPlugin.Emulator.cTestSetData">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.318" Y="-0.109" />
       </MemberNameLabel>
@@ -131,7 +131,7 @@
         <Position X="0.424" Y="-0.079" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="m_gridEmulTestset" Type="EwEMSPPlugin.UI.gridEmulator" FixedFromPoint="true" FixedToPoint="true">
+    <AssociationLine Name="m_gridEmulTestset" Type="EwEMSPToolsPlugin.UI.gridEmulator" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="10.5" Y="1" />
         <Point X="11.344" Y="1" />
@@ -141,12 +141,12 @@
         <Position X="-0.671" Y="0.498" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="m_gridPressureMappings" Type="EwEMSPPlugin.UI.gridDrivers">
+    <AssociationLine Name="m_gridPressureMappings" Type="EwEMSPToolsPlugin.UI.gridDrivers">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-0.817" Y="0.498" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="m_gridOutcome" Type="EwEMSPPlugin.UI.gridOutcomes">
+    <AssociationLine Name="m_gridOutcome" Type="EwEMSPToolsPlugin.UI.gridOutcomes">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="-0.588" Y="0.498" />
       </MemberNameLabel>
@@ -163,10 +163,10 @@
       <Property Name="Shell" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="EwEMSPPlugin.UI.gridDrivers" Collapsed="true">
+  <Class Name="EwEMSPToolsPlugin.UI.gridDrivers" Collapsed="true">
     <Position X="7.25" Y="2.25" Width="1.5" />
     <NestedTypes>
-      <Enum Name="EwEMSPPlugin.UI.gridDrivers.eColumnTypes" Collapsed="true">
+      <Enum Name="EwEMSPToolsPlugin.UI.gridDrivers.eColumnTypes" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>UI\Controls\gridDrivers.vb</NewMemberFileName>
         </TypeIdentifier>
@@ -177,14 +177,14 @@
       <FileName>UI\Controls\gridDrivers.vb</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="EwEMSPPlugin.UI.gridEmulator" Collapsed="true">
+  <Class Name="EwEMSPToolsPlugin.UI.gridEmulator" Collapsed="true">
     <Position X="10.75" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EIABAUAAIQAAAAAAAAAAAAAAAAgAAAAIAAAACgAAAAQ=</HashCode>
       <FileName>UI\Controls\gridEmulator.vb</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="EwEMSPPlugin.UI.gridOutcomes" Collapsed="true">
+  <Class Name="EwEMSPToolsPlugin.UI.gridOutcomes" Collapsed="true">
     <Position X="9" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAUAAAIAAAAAAAIAIAAAEAAAAAAAIAAAACAAAAIA=</HashCode>

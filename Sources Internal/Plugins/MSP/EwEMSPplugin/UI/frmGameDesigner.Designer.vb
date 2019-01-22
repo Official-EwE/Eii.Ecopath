@@ -59,11 +59,11 @@ Namespace UI
             Me.m_tbxSpinupYears = New System.Windows.Forms.TextBox()
             Me.m_lblRunYears = New System.Windows.Forms.Label()
             Me.m_lblSpinupYears = New System.Windows.Forms.Label()
-            Me.m_lblCheckSimFishing = New EwEMSPPlugin.UI.cImageLabel()
-            Me.m_lblCheckSimForcing = New EwEMSPPlugin.UI.cImageLabel()
-            Me.m_lblCheckGame = New EwEMSPPlugin.UI.cImageLabel()
-            Me.m_lblCheckSpaceTimeSeries = New EwEMSPPlugin.UI.cImageLabel()
-            Me.m_lblCheckSimTimeSeries = New EwEMSPPlugin.UI.cImageLabel()
+            Me.m_lblCheckSimFishing = New EwEMSPToolsPlugin.UI.cImageLabel()
+            Me.m_lblCheckSimForcing = New EwEMSPToolsPlugin.UI.cImageLabel()
+            Me.m_lblCheckGame = New EwEMSPToolsPlugin.UI.cImageLabel()
+            Me.m_lblCheckSpaceTimeSeries = New EwEMSPToolsPlugin.UI.cImageLabel()
+            Me.m_lblCheckSimTimeSeries = New EwEMSPToolsPlugin.UI.cImageLabel()
             Me.m_tpInformation = New System.Windows.Forms.TabPage()
             Me.m_tbxInfoDescription = New System.Windows.Forms.TextBox()
             Me.m_tbxInfoContact = New System.Windows.Forms.TextBox()
@@ -75,7 +75,7 @@ Namespace UI
             Me.m_lblInfoVersion = New System.Windows.Forms.Label()
             Me.m_tpPressures = New System.Windows.Forms.TabPage()
             Me.m_cmbPressureTypes = New System.Windows.Forms.ComboBox()
-            Me.m_gridPressureMappings = New EwEMSPPlugin.UI.gridDrivers()
+            Me.m_gridPressureMappings = New EwEMSPToolsPlugin.UI.gridDrivers()
             Me.m_btnPressureDefaults = New System.Windows.Forms.Button()
             Me.m_btnPressureDelete = New System.Windows.Forms.Button()
             Me.m_btnPressureRename = New System.Windows.Forms.Button()
@@ -85,7 +85,7 @@ Namespace UI
             Me.m_tpOutcomes = New System.Windows.Forms.TabPage()
             Me.m_scOutputs = New System.Windows.Forms.SplitContainer()
             Me.m_lbOutputs = New System.Windows.Forms.ListBox()
-            Me.m_gridOutcome = New EwEMSPPlugin.UI.gridOutcomes()
+            Me.m_gridOutcome = New EwEMSPToolsPlugin.UI.gridOutcomes()
             Me.m_tsOutcome = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_cmbOutputTypes = New System.Windows.Forms.ComboBox()
             Me.m_btnOutcomeDelete = New System.Windows.Forms.Button()
@@ -107,7 +107,7 @@ Namespace UI
             Me.m_btnEmulViewOutputFolder = New System.Windows.Forms.Button()
             Me.m_btnEmulStop = New System.Windows.Forms.Button()
             Me.m_lblEmulTestSets = New System.Windows.Forms.Label()
-            Me.m_gridEmulTestset = New EwEMSPPlugin.UI.gridEmulator()
+            Me.m_gridEmulTestset = New EwEMSPToolsPlugin.UI.gridEmulator()
             Me.m_cmbEmulTestsets = New System.Windows.Forms.ComboBox()
             Me.m_cbSaveOutputMaps = New System.Windows.Forms.CheckBox()
             Me.m_cbEmulPauseSpace = New System.Windows.Forms.CheckBox()
@@ -379,28 +379,28 @@ Namespace UI
             'm_btnPressureDefaults
             '
             resources.ApplyResources(Me.m_btnPressureDefaults, "m_btnPressureDefaults")
-            Me.m_btnPressureDefaults.Image = Global.EwEMSPPlugin.My.Resources.Resources.defaults
+            Me.m_btnPressureDefaults.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.defaults
             Me.m_btnPressureDefaults.Name = "m_btnPressureDefaults"
             Me.m_btnPressureDefaults.UseVisualStyleBackColor = True
             '
             'm_btnPressureDelete
             '
             resources.ApplyResources(Me.m_btnPressureDelete, "m_btnPressureDelete")
-            Me.m_btnPressureDelete.Image = Global.EwEMSPPlugin.My.Resources.Resources.delete
+            Me.m_btnPressureDelete.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.delete
             Me.m_btnPressureDelete.Name = "m_btnPressureDelete"
             Me.m_btnPressureDelete.UseVisualStyleBackColor = True
             '
             'm_btnPressureRename
             '
             resources.ApplyResources(Me.m_btnPressureRename, "m_btnPressureRename")
-            Me.m_btnPressureRename.Image = Global.EwEMSPPlugin.My.Resources.Resources.change
+            Me.m_btnPressureRename.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.change
             Me.m_btnPressureRename.Name = "m_btnPressureRename"
             Me.m_btnPressureRename.UseVisualStyleBackColor = True
             '
             'm_btnPressureAdd
             '
             resources.ApplyResources(Me.m_btnPressureAdd, "m_btnPressureAdd")
-            Me.m_btnPressureAdd.Image = Global.EwEMSPPlugin.My.Resources.Resources.add
+            Me.m_btnPressureAdd.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.add
             Me.m_btnPressureAdd.Name = "m_btnPressureAdd"
             Me.m_btnPressureAdd.UseVisualStyleBackColor = True
             '
@@ -500,21 +500,21 @@ Namespace UI
             'm_btnOutcomeDelete
             '
             resources.ApplyResources(Me.m_btnOutcomeDelete, "m_btnOutcomeDelete")
-            Me.m_btnOutcomeDelete.Image = Global.EwEMSPPlugin.My.Resources.Resources.delete
+            Me.m_btnOutcomeDelete.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.delete
             Me.m_btnOutcomeDelete.Name = "m_btnOutcomeDelete"
             Me.m_btnOutcomeDelete.UseVisualStyleBackColor = True
             '
             'm_btnOutcomeRename
             '
             resources.ApplyResources(Me.m_btnOutcomeRename, "m_btnOutcomeRename")
-            Me.m_btnOutcomeRename.Image = Global.EwEMSPPlugin.My.Resources.Resources.change
+            Me.m_btnOutcomeRename.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.change
             Me.m_btnOutcomeRename.Name = "m_btnOutcomeRename"
             Me.m_btnOutcomeRename.UseVisualStyleBackColor = True
             '
             'm_btnOutcomeAdd
             '
             resources.ApplyResources(Me.m_btnOutcomeAdd, "m_btnOutcomeAdd")
-            Me.m_btnOutcomeAdd.Image = Global.EwEMSPPlugin.My.Resources.Resources.add
+            Me.m_btnOutcomeAdd.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.add
             Me.m_btnOutcomeAdd.Name = "m_btnOutcomeAdd"
             Me.m_btnOutcomeAdd.UseVisualStyleBackColor = True
             '
@@ -561,14 +561,14 @@ Namespace UI
             'm_btnTestsetDelete
             '
             resources.ApplyResources(Me.m_btnTestsetDelete, "m_btnTestsetDelete")
-            Me.m_btnTestsetDelete.Image = Global.EwEMSPPlugin.My.Resources.Resources.delete
+            Me.m_btnTestsetDelete.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.delete
             Me.m_btnTestsetDelete.Name = "m_btnTestsetDelete"
             Me.m_btnTestsetDelete.UseVisualStyleBackColor = True
             '
             'm_btnTestsetRename
             '
             resources.ApplyResources(Me.m_btnTestsetRename, "m_btnTestsetRename")
-            Me.m_btnTestsetRename.Image = Global.EwEMSPPlugin.My.Resources.Resources.change
+            Me.m_btnTestsetRename.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.change
             Me.m_btnTestsetRename.Name = "m_btnTestsetRename"
             Me.m_btnTestsetRename.UseVisualStyleBackColor = True
             '
@@ -580,7 +580,7 @@ Namespace UI
             'm_btnTestsetAdd
             '
             resources.ApplyResources(Me.m_btnTestsetAdd, "m_btnTestsetAdd")
-            Me.m_btnTestsetAdd.Image = Global.EwEMSPPlugin.My.Resources.Resources.add
+            Me.m_btnTestsetAdd.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.add
             Me.m_btnTestsetAdd.Name = "m_btnTestsetAdd"
             Me.m_btnTestsetAdd.UseVisualStyleBackColor = True
             '
@@ -727,21 +727,21 @@ Namespace UI
             '
             'm_pbBUAS
             '
-            Me.m_pbBUAS.BackgroundImage = Global.EwEMSPPlugin.My.Resources.Resources.buas
+            Me.m_pbBUAS.BackgroundImage = Global.EwEMSPToolsPlugin.My.Resources.Resources.buas
             resources.ApplyResources(Me.m_pbBUAS, "m_pbBUAS")
             Me.m_pbBUAS.Name = "m_pbBUAS"
             Me.m_pbBUAS.TabStop = False
             '
             'm_pbRWS
             '
-            Me.m_pbRWS.BackgroundImage = Global.EwEMSPPlugin.My.Resources.Resources.rijkswaterstaat
+            Me.m_pbRWS.BackgroundImage = Global.EwEMSPToolsPlugin.My.Resources.Resources.rijkswaterstaat
             resources.ApplyResources(Me.m_pbRWS, "m_pbRWS")
             Me.m_pbRWS.Name = "m_pbRWS"
             Me.m_pbRWS.TabStop = False
             '
             'm_pbMSPC2050
             '
-            Me.m_pbMSPC2050.BackgroundImage = Global.EwEMSPPlugin.My.Resources.Resources.MSPChallenge2050
+            Me.m_pbMSPC2050.BackgroundImage = Global.EwEMSPToolsPlugin.My.Resources.Resources.MSPChallenge2050
             resources.ApplyResources(Me.m_pbMSPC2050, "m_pbMSPC2050")
             Me.m_pbMSPC2050.Name = "m_pbMSPC2050"
             Me.m_pbMSPC2050.TabStop = False
@@ -786,7 +786,7 @@ Namespace UI
             'm_btnGameAdd
             '
             resources.ApplyResources(Me.m_btnGameAdd, "m_btnGameAdd")
-            Me.m_btnGameAdd.Image = Global.EwEMSPPlugin.My.Resources.Resources.add
+            Me.m_btnGameAdd.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.add
             Me.m_btnGameAdd.Name = "m_btnGameAdd"
             Me.m_btnGameAdd.UseVisualStyleBackColor = True
             '
@@ -803,21 +803,21 @@ Namespace UI
             'm_btnGameRename
             '
             resources.ApplyResources(Me.m_btnGameRename, "m_btnGameRename")
-            Me.m_btnGameRename.Image = Global.EwEMSPPlugin.My.Resources.Resources.change
+            Me.m_btnGameRename.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.change
             Me.m_btnGameRename.Name = "m_btnGameRename"
             Me.m_btnGameRename.UseVisualStyleBackColor = True
             '
             'm_btnGameDelete
             '
             resources.ApplyResources(Me.m_btnGameDelete, "m_btnGameDelete")
-            Me.m_btnGameDelete.Image = Global.EwEMSPPlugin.My.Resources.Resources.delete
+            Me.m_btnGameDelete.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.delete
             Me.m_btnGameDelete.Name = "m_btnGameDelete"
             Me.m_btnGameDelete.UseVisualStyleBackColor = True
             '
             'm_btnGameAddFromJSON
             '
             resources.ApplyResources(Me.m_btnGameAddFromJSON, "m_btnGameAddFromJSON")
-            Me.m_btnGameAddFromJSON.Image = Global.EwEMSPPlugin.My.Resources.Resources.logo_json
+            Me.m_btnGameAddFromJSON.Image = Global.EwEMSPToolsPlugin.My.Resources.Resources.logo_json
             Me.m_btnGameAddFromJSON.Name = "m_btnGameAddFromJSON"
             Me.m_btnGameAddFromJSON.UseVisualStyleBackColor = True
             '

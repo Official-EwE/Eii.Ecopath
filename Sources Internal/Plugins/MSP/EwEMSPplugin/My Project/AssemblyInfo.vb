@@ -27,10 +27,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("EwEMSPPlugin")>
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("EwEMSPPlugin")>
+<Assembly: AssemblyTitle("EwEMSPToolsPlugin")>
+<Assembly: AssemblyDescription("Toolkit for preparing EwE models for integration into the Maritime Spatial Planning Challenge 2050 serious game")>
+<Assembly: AssemblyCompany("Ecopath International Initiative")>
+<Assembly: AssemblyProduct("EwEMSPToolsPlugin")>
 <Assembly: AssemblyCopyright("Copyright © 2016 Ecopath International Initiative Research Association, Barcelona, Spain")>
 <Assembly: AssemblyTrademark("")> 
 

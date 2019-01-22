@@ -26,7 +26,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports EwEShell
 Imports EwECore
-Imports EwEMSPPlugin.UI
+Imports EwEMSPToolsPlugin.UI
 
 #End Region ' Imports
 
