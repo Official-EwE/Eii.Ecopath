@@ -274,14 +274,14 @@ Namespace Controls
             Try
                 Dim rc As Rectangle = ctrl.ClientRectangle()
 
-                settings.SaveSetting("Global", "NumGroups", Me.m_data.NumItems)
-                settings.SaveSetting("Global", "Width", rc.Width)
-                settings.SaveSetting("Global", "Height", rc.Height)
+                settings.WriteSetting("Global", "NumGroups", Me.m_data.NumItems)
+                settings.WriteSetting("Global", "Width", rc.Width)
+                settings.WriteSetting("Global", "Height", rc.Height)
                 For i As Integer = 1 To Me.m_data.NumItems
-                    settings.SaveSetting("Locations", i.ToString + "x", cStringUtils.FormatNumber(Me.m_tree.NodeLocation(i, rc).X))
-                    settings.SaveSetting("Locations", i.ToString + "y", cStringUtils.FormatNumber(Me.m_tree.NodeLocation(i, rc).Y))
-                    settings.SaveSetting("Locations", i.ToString + "xlabel", cStringUtils.FormatNumber(Me.m_tree.LabelLocation(i, rc).X))
-                    settings.SaveSetting("Locations", i.ToString + "ylabel", cStringUtils.FormatNumber(Me.m_tree.LabelLocation(i, rc).Y))
+                    settings.WriteSetting("Locations", i.ToString + "x", cStringUtils.FormatNumber(Me.m_tree.NodeLocation(i, rc).X))
+                    settings.WriteSetting("Locations", i.ToString + "y", cStringUtils.FormatNumber(Me.m_tree.NodeLocation(i, rc).Y))
+                    settings.WriteSetting("Locations", i.ToString + "xlabel", cStringUtils.FormatNumber(Me.m_tree.LabelLocation(i, rc).X))
+                    settings.WriteSetting("Locations", i.ToString + "ylabel", cStringUtils.FormatNumber(Me.m_tree.LabelLocation(i, rc).Y))
                 Next i
                 settings.Flush()
 
@@ -306,16 +306,16 @@ Namespace Controls
             Try
 
                 Dim ptf As PointF
-                Dim iNumGroups As Integer = Math.Min(CInt(settings.GetSetting("Global", "NumGroups", "0")), Me.m_data.NumItems)
-                ctrl.ClientSize = New Size(CInt(settings.GetSetting("Global", "Width", "100")), CInt(settings.GetSetting("Global", "Height", "100")))
+                Dim iNumGroups As Integer = Math.Min(CInt(settings.ReadSetting("Global", "NumGroups", "0")), Me.m_data.NumItems)
+                ctrl.ClientSize = New Size(CInt(settings.ReadSetting("Global", "Width", "100")), CInt(settings.ReadSetting("Global", "Height", "100")))
                 Dim rc As Rectangle = ctrl.ClientRectangle()
 
                 For i As Integer = 1 To iNumGroups
-                    ptf.X = cStringUtils.ConvertToSingle(settings.GetSetting("Locations", i.ToString + "x", "0"))
-                    ptf.Y = cStringUtils.ConvertToSingle(settings.GetSetting("Locations", i.ToString + "y", "0"))
+                    ptf.X = cStringUtils.ConvertToSingle(settings.ReadSetting("Locations", i.ToString + "x", "0"))
+                    ptf.Y = cStringUtils.ConvertToSingle(settings.ReadSetting("Locations", i.ToString + "y", "0"))
                     Me.m_tree.NodeLocation(i, rc) = ptf
-                    ptf.X = cStringUtils.ConvertToSingle(settings.GetSetting("Locations", i.ToString + "xlabel", "10"))
-                    ptf.Y = cStringUtils.ConvertToSingle(settings.GetSetting("Locations", i.ToString + "ylabel", "10"))
+                    ptf.X = cStringUtils.ConvertToSingle(settings.ReadSetting("Locations", i.ToString + "xlabel", "10"))
+                    ptf.Y = cStringUtils.ConvertToSingle(settings.ReadSetting("Locations", i.ToString + "ylabel", "10"))
                     Me.m_tree.LabelLocation(i, rc) = ptf
                 Next i
 

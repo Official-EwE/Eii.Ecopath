@@ -115,29 +115,11 @@ Namespace SystemUtilities
         ''' left empty.</param>
         ''' <param name="strKey">Name of the key to write to. Cannot be left
         ''' empty.</param>
-        ''' <param name="objNewValue">The value to write.</param>
+        ''' <param name="value">The  value to write.</param>
         ''' -------------------------------------------------------------------
-        Public Sub SaveSetting(ByVal strSection As String, _
-                               ByVal strKey As String, _
-                               ByVal objNewValue As Object)
-            Dim strValue As String = ""
-            If (objNewValue IsNot Nothing) Then strValue = Convert.ToString(objNewValue)
-            Me.SaveSetting(strSection, strKey, strValue)
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Save a setting to the configuration file.
-        ''' </summary>
-        ''' <param name="strSection">Name of the section to write to. Cannot be
-        ''' left empty.</param>
-        ''' <param name="strKey">Name of the key to write to. Cannot be left
-        ''' empty.</param>
-        ''' <param name="strNewValue">The string value to write.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub SaveSetting(ByVal strSection As String, _
-                               ByVal strKey As String, _
-                               ByVal strNewValue As String)
+        Public Sub WriteSetting(Of T)(ByVal strSection As String,
+                               ByVal strKey As String,
+                               ByVal value As T)
 
             ' Sanity checks
             Debug.Assert(Not String.IsNullOrWhiteSpace(strSection))
@@ -145,6 +127,7 @@ Namespace SystemUtilities
 
             Dim node As XmlNode = Nothing
             Dim keynode As XmlNode = Nothing
+            Dim val As String = Convert.ToString(value)
 
             Me.EnsureHasDoc()
 
@@ -179,15 +162,15 @@ Namespace SystemUtilities
                     att.Value = strKey
                     newnode.Attributes.Append(att)
                     att = m_doc.CreateAttribute("value")
-                    att.Value = strNewValue
+                    att.Value = val
                     newnode.Attributes.Append(att)
                     node.AppendChild(newnode)
 
                     RaiseEvent OnSettingsChanged(Me, New EventArgs())
                 Else
                     ' Just update key value
-                    If (String.Compare(keynode.Attributes("value").Value, strNewValue, False) <> 0) Then
-                        keynode.Attributes("value").Value = strNewValue
+                    If (String.Compare(keynode.Attributes("value").Value, val, False) <> 0) Then
+                        keynode.Attributes("value").Value = val
                         RaiseEvent OnSettingsChanged(Me, New EventArgs())
                     End If
                 End If
@@ -203,29 +186,32 @@ Namespace SystemUtilities
         ''' left empty.</param>
         ''' <param name="strKey">Name of the key to read from. Cannot be left
         ''' empty.</param>
-        ''' <param name="strDefaultValue">Default value to return if the indicated
+        ''' <param name="defaultValue">Default value to return if the indicated
         ''' key could not be found in the indicated section.</param>
         ''' -------------------------------------------------------------------
-        Public Function GetSetting(ByVal strSection As String, _
-                                   ByVal strKey As String, _
-                                   ByVal strDefaultValue As String) As String
+        Public Function ReadSetting(Of T)(ByVal strSection As String,
+                                    ByVal strKey As String,
+                                    ByVal defaultValue As T) As T
 
             ' Sanity checks
             Debug.Assert(Not String.IsNullOrWhiteSpace(strSection))
             Debug.Assert(Not String.IsNullOrWhiteSpace(strKey))
 
-            If (Me.m_doc Is Nothing) Then Return strDefaultValue
+            If (Me.m_doc Is Nothing) Then Return defaultValue
 
             Dim node As XmlNode = Nothing
 
             Try
                 node = m_doc.SelectSingleNode("/sections/section[@name='" & strSection & "']/item[@key='" & strKey & "']")
                 If (node IsNot Nothing) Then
-                    Return node.Attributes("value").Value
+                    If (GetType(T).IsEnum) Then
+                        Return cEnumUtils.EnumParse(node.Attributes("value").Value, defaultValue)
+                    End If
+                    Return CType(Convert.ChangeType(node.Attributes("value").Value, GetType(T)), T)
                 End If
             Catch ex As Exception
             End Try
-            Return strDefaultValue
+            Return defaultValue
 
         End Function
 

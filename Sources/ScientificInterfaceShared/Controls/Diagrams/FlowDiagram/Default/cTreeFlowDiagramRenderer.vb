@@ -831,18 +831,18 @@ Namespace Controls
 
             Try
 
-                settings.SaveSetting("Appearance", "ShowTitle", Me.ShowTitle.ToString())
-                settings.SaveSetting("Appearance", "ShowLegend", Me.ShowLegend.ToString())
-                settings.SaveSetting("Appearance", "ShowHiddenNodes", Me.ShowHiddenMode.ToString())
-                settings.SaveSetting("Appearance", "NumTL", CStr(Me.NumberOfTrophicLevels))
-                settings.SaveSetting("Appearance", "ColorUsage", Me.AutoColorUsage.ToString())
-                settings.SaveSetting("Appearance", "NodeType", Me.NodeType.ToString())
-                settings.SaveSetting("Appearance", "NodeColor", CStr(cColorUtils.ColorToInt(Me.CustomNodeColor)))
-                settings.SaveSetting("Appearance", "NodeAutosize", Me.AutoNodeSize.ToString())
-                settings.SaveSetting("Appearance", "NodeSize", Me.CustomNodeSize.ToString())
-                settings.SaveSetting("Appearance", "LineAutowidth", Me.AutoLineWidth.ToString())
-                settings.SaveSetting("Appearance", "LineWidth", Me.CustomLineWidth.ToString())
-                settings.SaveSetting("Appearance", "LineColor", CStr(cColorUtils.ColorToInt(Me.CustomLineColor)))
+                settings.WriteSetting("Appearance", "ShowTitle", Me.ShowTitle.ToString())
+                settings.WriteSetting("Appearance", "ShowLegend", Me.ShowLegend.ToString())
+                settings.WriteSetting("Appearance", "ShowHiddenNodes", Me.ShowHiddenMode.ToString())
+                settings.WriteSetting("Appearance", "NumTL", CStr(Me.NumberOfTrophicLevels))
+                settings.WriteSetting("Appearance", "ColorUsage", Me.AutoColorUsage.ToString())
+                settings.WriteSetting("Appearance", "NodeType", Me.NodeType.ToString())
+                settings.WriteSetting("Appearance", "NodeColor", CStr(cColorUtils.ColorToInt(Me.CustomNodeColor)))
+                settings.WriteSetting("Appearance", "NodeAutosize", Me.AutoNodeSize.ToString())
+                settings.WriteSetting("Appearance", "NodeSize", Me.CustomNodeSize.ToString())
+                settings.WriteSetting("Appearance", "LineAutowidth", Me.AutoLineWidth.ToString())
+                settings.WriteSetting("Appearance", "LineWidth", Me.CustomLineWidth.ToString())
+                settings.WriteSetting("Appearance", "LineColor", CStr(cColorUtils.ColorToInt(Me.CustomLineColor)))
 
                 settings.Flush()
 
@@ -869,18 +869,18 @@ Namespace Controls
 
             Try
 
-                Boolean.TryParse(settings.GetSetting("Appearance", "ShowTitle", CStr(True)), Me.ShowTitle)
-                [Enum].TryParse(settings.GetSetting("Appearance", "ShowLegend", CStr(TriState.UseDefault)), Me.ShowLegend)
-                [Enum].TryParse(settings.GetSetting("Appearance", "ShowHiddenNodes", CStr(eFDShowHiddenType.Invisible)), Me.ShowHiddenMode)
-                Integer.TryParse(settings.GetSetting("Appearance", "NumTL", "5"), Me.NumberOfTrophicLevels)
-                [Enum].TryParse(settings.GetSetting("Appearance", "ColorUsage", CStr(eFDColorUsageTypes.EwE)), Me.AutoColorUsage)
-                [Enum].TryParse(settings.GetSetting("Appearance", "NodeType", CStr(eFDNodeTypes.Circle)), Me.NodeType)
-                Me.CustomNodeColor = cColorUtils.IntToColor(CInt(settings.GetSetting("Appearance", "NodeColor", CStr(cColorUtils.ColorToInt(Color.Blue)))))
-                Boolean.TryParse(settings.GetSetting("Appearance", "NodeAutosize", CStr(True)), Me.AutoNodeSize)
-                Integer.TryParse(settings.GetSetting("Appearance", "NodeSize", CStr(25)), Me.CustomNodeSize)
-                Boolean.TryParse(settings.GetSetting("Appearance", "LineAutowidth", CStr(True)), Me.AutoLineWidth)
-                Single.TryParse(settings.GetSetting("Appearance", "LineWidth", CStr(2)), Me.CustomLineWidth)
-                Me.CustomLineColor = cColorUtils.IntToColor(CInt(settings.GetSetting("Appearance", "LineColor", CStr(cColorUtils.ColorToInt(Color.Silver)))))
+                Boolean.TryParse(settings.ReadSetting("Appearance", "ShowTitle", CStr(True)), Me.ShowTitle)
+                [Enum].TryParse(settings.ReadSetting("Appearance", "ShowLegend", CStr(TriState.UseDefault)), Me.ShowLegend)
+                [Enum].TryParse(settings.ReadSetting("Appearance", "ShowHiddenNodes", CStr(eFDShowHiddenType.Invisible)), Me.ShowHiddenMode)
+                Integer.TryParse(settings.ReadSetting("Appearance", "NumTL", "5"), Me.NumberOfTrophicLevels)
+                [Enum].TryParse(settings.ReadSetting("Appearance", "ColorUsage", CStr(eFDColorUsageTypes.EwE)), Me.AutoColorUsage)
+                [Enum].TryParse(settings.ReadSetting("Appearance", "NodeType", CStr(eFDNodeTypes.Circle)), Me.NodeType)
+                Me.CustomNodeColor = cColorUtils.IntToColor(CInt(settings.ReadSetting("Appearance", "NodeColor", CStr(cColorUtils.ColorToInt(Color.Blue)))))
+                Boolean.TryParse(settings.ReadSetting("Appearance", "NodeAutosize", CStr(True)), Me.AutoNodeSize)
+                Integer.TryParse(settings.ReadSetting("Appearance", "NodeSize", CStr(25)), Me.CustomNodeSize)
+                Boolean.TryParse(settings.ReadSetting("Appearance", "LineAutowidth", CStr(True)), Me.AutoLineWidth)
+                Single.TryParse(settings.ReadSetting("Appearance", "LineWidth", CStr(2)), Me.CustomLineWidth)
+                Me.CustomLineColor = cColorUtils.IntToColor(CInt(settings.ReadSetting("Appearance", "LineColor", CStr(cColorUtils.ColorToInt(Color.Silver)))))
 
             Catch ex As Exception
                 ' ToDo: send an error message
