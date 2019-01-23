@@ -867,6 +867,7 @@ Partial Public Class frmEwE6
         Me.Controls.Add(Me.m_ssMain)
         Me.Controls.Add(Me.m_tsModel)
         Me.Controls.Add(Me.m_menuMain)
+        Me.DoubleBuffered = True
         Me.IsMdiContainer = True
         Me.MainMenuStrip = Me.m_menuMain
         Me.Name = "frmEwE6"

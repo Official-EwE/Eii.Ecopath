@@ -9876,14 +9876,15 @@ Namespace DataSources
                     drow("LayerName") = ecospaceDS.EnvironmentalLayerName(iLayer)
                     drow("LayerDescription") = ecospaceDS.EnvironmentalLayerDescription(iLayer)
                     drow("LayerUnits") = ecospaceDS.EnvironmentalLayerUnits(iLayer)
-                    drow("LayerMap") = cStringUtils.ArrayToString(ecospaceDS.EnvironmentalLayerMap(iLayer),
-                                                                  ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
+                    drow("LayerMap") = cStringUtils.ArrayToString(ecospaceDS.EnvironmentalLayerMap(iLayer), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput)
 
                     If bNewRow Then
                         writer.AddRow(drow)
                     Else
                         drow.EndEdit()
                     End If
+
+                    bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerDriver, ecospaceDS.EnvironmentalLayerDBID(iLayer))
 
                 Next iLayer
 
@@ -10703,6 +10704,13 @@ Namespace DataSources
 
         End Function
 
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="idm"></param>
+        ''' <param name="dt"></param>
+        ''' <param name="iDBID">Original database ID to duplicate</param>
+        ''' <returns></returns>
         Private Function DuplicateAuxillaryData(ByVal idm As cIDMappings,
                                                 ByVal dt As eDataTypes,
                                                 ByVal iDBID As Integer) As Boolean

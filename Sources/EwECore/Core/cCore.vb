@@ -14743,10 +14743,11 @@ Public Class cCore
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' The enabled state of an Economic plugin has changed (e.g. ValueChain)
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Private Sub OnEconomicDataPluginEnabled()
         'ToDo_jb cCore.onEconomicPluginEnabled() we still need to find a way for the core to know when Plugin Enabled states have changed
 
