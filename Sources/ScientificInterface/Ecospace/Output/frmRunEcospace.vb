@@ -684,8 +684,10 @@ Namespace Ecospace
                         bShowItem = True
                     Case eShowItemType.ShowSingle
                         bShowItem = (iLayer = Me.ItemToShow)
-                        'Case eShowItemType.ShowNonHidden
-                        '    bShowItem = Me.StyleGuide.GroupVisible(iGroup)
+                    Case eShowItemType.ShowCustom
+                        If (varname = eVarNameFlags.LayerHabitatCapacity) Then
+                            bShowItem = Me.StyleGuide.GroupVisible(iLayer)
+                        End If
                 End Select
 
                 If bShowItem Then
