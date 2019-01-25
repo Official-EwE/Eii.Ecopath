@@ -8,6 +8,8 @@
 # Ecospace map cursor does not change size when changing zoom level. Maintain cursor in map instead of in layer editors?
 # Opening old model: show which old EwE version last used the model in upgrade message
 # EcoInd histogram shows no variaton where MCMC does: Ecopath does not calc stats when in Sensitivity run
+# Need AutoRUn system (just like AutoSave) where plug-ins can register and be controlled to run with Path, Sim, and Space
+   - Although this is a feature, this is urgent. Users need to be able to see at a glance which components may be slowing down their system
 
 == BUGS ==
 ! Sometimes biomass plot stay empty when re-running MC? 
@@ -36,8 +38,6 @@
 ! Apply foraging responses: X-axis on application plot does not properly show X axis!!!
 ? Apply foraging responses - new UI is (too) slow when applying. Perhaps something is wrong?
   Run Ecospace shows excluded cells in red, regardless of the customized colour
-  Need AutoRUn system (just like AutoSave) where plug-ins can register and be controlled to run with Path, Sim, and Space
-   - Although this is a feature, this is urgent. Users need to be able to see at a glance which components may be slowing down their system
   
 == FIXED BUT NOT LOGGED YET ==
 V EcoIND does not correctly compute "catch of mammals, seabirds and reptiles" indicator
