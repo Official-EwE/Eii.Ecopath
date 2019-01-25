@@ -1679,6 +1679,10 @@ Namespace Ecospace
 
         End Sub
 
+        Private Sub CheckRefreshCustomItemDropdown()
+
+        End Sub
+
         Private Sub RefreshMap()
 
             If Me.Core Is Nothing Then Return
