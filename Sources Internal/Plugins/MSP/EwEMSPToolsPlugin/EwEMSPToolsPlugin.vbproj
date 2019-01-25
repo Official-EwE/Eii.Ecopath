@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DDC5D15F-63F4-4B9D-AD24-A69D1D91C243}</ProjectGuid>
+    <ProjectGuid>{5E75A493-7980-4D12-B03C-2844322FCD6B}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EwEShell</RootNamespace>
-    <AssemblyName>EwEShell</AssemblyName>
+    <RootNamespace>EwEMSPToolsPlugin</RootNamespace>
+    <AssemblyName>EwEMSPToolsPlugin</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -19,7 +19,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>EwEShell.xml</DocumentationFile>
+    <DocumentationFile>EwEMSPToolsPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -28,7 +28,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>EwEShell.xml</DocumentationFile>
+    <DocumentationFile>EwEMSPToolsPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -48,7 +48,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DocumentationFile>EwEShell.xml</DocumentationFile>
+    <DocumentationFile>EwEMSPToolsPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -57,7 +57,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DocumentationFile>EwEShell.xml</DocumentationFile>
+    <DocumentationFile>EwEMSPToolsPlugin.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -69,7 +69,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DocumentationFile>EwEShell.xml</DocumentationFile>
+    <DocumentationFile>EwEMSPToolsPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -78,38 +78,37 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DocumentationFile>EwEShell.xml</DocumentationFile>
+    <DocumentationFile>EwEMSPToolsPlugin.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>EwEShell.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=50e4b0ace04e9d3f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Includes\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="SourceGrid2">
+      <HintPath>..\..\..\..\..\Ecopath6_Internal\Ecopath6\Sources\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
+    </Reference>
+    <Reference Include="SourceLibrary">
+      <HintPath>..\..\..\..\..\Ecopath6_Internal\Ecopath6\Sources\ScientificInterfaceShared\Includes\SourceLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
+      <HintPath>..\..\..\..\..\Ecopath6_Internal\Ecopath6\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph">
+      <HintPath>..\..\..\..\..\Ecopath6_Internal\Ecopath6\Sources\ScientificInterfaceShared\Includes\ZedGraph.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
@@ -120,23 +119,29 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cEwEShell.vb" />
-    <Compile Include="Converters\cEcospaceImportExportBitmap.vb" />
-    <Compile Include="Data\cJSONGameConfig.vb" />
-    <Compile Include="Data\cGame.vb" />
-    <Compile Include="Data\Elementals\cGrid.vb" />
-    <Compile Include="Data\Elementals\IMELItem.vb" />
-    <Compile Include="Data\Elementals\cScalar.vb" />
-    <Compile Include="Data\Pressures\cPressure.vb" />
-    <Compile Include="Data\Drivers\cDriver.vb" />
-    <Compile Include="Data\Drivers\cDriverFactory.vb" />
-    <Compile Include="Data\Outcomes\cOutcome.vb" />
-    <Compile Include="Data\Drivers\Implemented\cHabitatDriver.vb" />
-    <Compile Include="Data\Drivers\Implemented\cEnvironmentalDriver.vb" />
-    <Compile Include="Data\Drivers\Implemented\cEffortDriver.vb" />
-    <Compile Include="Data\Drivers\Implemented\cMPADriver.vb" />
-    <Compile Include="Ecospace\cEcospaceController.vb" />
-    <Compile Include="Exceptions\cMELException.vb" />
+    <Compile Include="cMSPEwEPluginPoint.vb" />
+    <Compile Include="My Project\Settings.vb" />
+    <Compile Include="UI\Controls\gridEmulator.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Requirements\cEcosimForcingChecker.vb" />
+    <Compile Include="UI\Requirements\cEcosimFishingChecker.vb" />
+    <Compile Include="UI\Requirements\cEcosimTimeSeriesChecker.vb" />
+    <Compile Include="UI\Requirements\cEcospaceTimeSeriesChecker.vb" />
+    <Compile Include="Test sets\cTestSetData.vb" />
+    <Compile Include="UI\Controls\cImageLabel.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Requirements\cRequirementChecker.vb" />
+    <Compile Include="UI\frmGameDesigner.Designer.vb">
+      <DependentUpon>frmGameDesigner.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmGameDesigner.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\gridOutcomes.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -152,8 +157,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="UI\Controls\gridDrivers.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Test sets\cTestset.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="UI\frmGameDesigner.resx">
+      <DependentUpon>frmGameDesigner.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -165,8 +177,10 @@
     <None Include="..\Eii.licenseheader">
       <Link>Eii.licenseheader</Link>
     </None>
-    <Compile Include="Data\cShellData.vb" />
-    <None Include="EwEShell.snk" />
+    <None Include="app.config" />
+    <None Include="Documentation\EwE tools for MSP user guide.docx" />
+    <None Include="UserGuide\EwE tools for MSP user guide.pdf" />
+    <None Include="~ Design ~\Overview.cd" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -176,11 +190,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="~ Design ~\northsee.json" />
-    <None Include="~ Design ~\Overview.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Includes\Newtonsoft.Json.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Sources\EwECore\EwECore.vbproj">
@@ -195,6 +204,48 @@
       <Project>{5c331318-c23e-4eeb-ad1e-2edef85e0205}</Project>
       <Name>EwEUtils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Sources\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
+      <Project>{70af596e-7d27-4d39-bde7-89d4525bd60f}</Project>
+      <Name>ScientificInterfaceShared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwEMSPShell\EwEMSPShell.vbproj">
+      <Project>{ddc5d15f-63f4-4b9d-ad24-a69d1d91c243}</Project>
+      <Name>EwEMSPShell</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EII.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rijkswaterstaat.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\change.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\defaults.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MSPChallenge2050.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Deployment\EwE6_MSP.iss" />
+    <Content Include="Documentation\EwE tools for MSP change list.txt" />
+    <Content Include="Documentation\sandcastle.shfbproj" />
+    <Content Include="Resources\buas.png" />
+    <None Include="Resources\CopyHS.png" />
+    <None Include="Resources\block.wav" />
+    <None Include="Resources\logo-json.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
