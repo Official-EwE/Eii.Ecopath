@@ -82,8 +82,6 @@ Public Class frmEwE6
     ''' <summary>Status messages stack.</summary>
     Private m_lstrStatus As New List(Of String)
 
-    Private m_mode As eReleaseMode
-
 #If BETA = 1 Then
     Private m_bExpirationChecked As Boolean = False
 #End If
@@ -340,9 +338,7 @@ Public Class frmEwE6
 
 #Region " Constructors "
 
-    Public Sub New(mode As eReleaseMode)
-
-        Me.m_mode = mode
+    Public Sub New()
 
 #If 0 Then
         ' Uncomment to torture EwE and see if all decimal comma / point issues have been solved
@@ -366,6 +362,8 @@ Public Class frmEwE6
         ' Prepare Icon
         Me.Icon = cEwEIcon.Current()
 
+        ' Write diagnostics info
+        cLog.Write("RenderWithVisualStyles", CStr(Application.RenderWithVisualStyles))
 
     End Sub
 
@@ -808,7 +806,7 @@ Public Class frmEwE6
         End If
 
         Dim core As New cCore()
-        Dim sg As New cStyleGuide(core, Me.m_mode)
+        Dim sg As New cStyleGuide(core, My.Application.ReleaseMode)
         Dim cmdh As New cCommandHandler()
         Dim pm As New cPropertyManager(core, so)
         Dim fps As New cFormSettings()

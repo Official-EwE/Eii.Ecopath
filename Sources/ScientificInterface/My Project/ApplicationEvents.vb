@@ -60,13 +60,11 @@ Namespace My
             Return MyBase.OnUnhandledException(e)
         End Function
 
-        Protected Overrides Function OnInitialize(ByVal commandLineArgs As System.Collections.ObjectModel.ReadOnlyCollection(Of String)) As Boolean
-            Me.MinimumSplashScreenDisplayTime = 5000
-            Me.MainForm = New Global.ScientificInterface.frmEwE6(Me.ReleaseMode)
-            Me.SplashScreen = New Global.ScientificInterface.frmSplash(Me.ReleaseMode)
-            Return MyBase.OnInitialize(commandLineArgs)
-        End Function
-
+        Protected Overrides Sub OnCreateSplashScreen()
+            If My.Settings.ShowSplash Then
+                My.Application.SplashScreen = New frmSplash()
+            End If
+        End Sub
     End Class
 
 End Namespace
