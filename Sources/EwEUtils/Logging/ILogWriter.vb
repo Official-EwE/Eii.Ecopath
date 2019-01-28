@@ -90,4 +90,6 @@ Public Interface ILogWriter
     ''' -----------------------------------------------------------------------
     Sub Write(ByVal msg As String)
 
+    Sub Write(ByVal key As String, ByVal value As String)
+
 End Interface

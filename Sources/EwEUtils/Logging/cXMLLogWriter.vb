@@ -424,6 +424,22 @@ Namespace Core
 
         End Sub
 
+        Public Sub Write(key As String, value As String) Implements ILogWriter.Write
+
+            Try
+                If Me.Open() Then
+                    Me.WriteStartElement("Entry")
+                    Me.WriteElementString(key, value)
+                    Me.WriteEndElement() 'Log_Message
+                    Me.WriteEndDocument()
+                    Me.Close()
+                End If
+            Catch ex As Exception
+                Console.WriteLine("cXMLLogWriter.Write() Exception: " & ex.Message)
+                Me.Close()
+            End Try
+        End Sub
+
         ''' <summary>
         ''' Delete log files greater than MAX_LOG_SIZE (1mb).
         ''' </summary>
