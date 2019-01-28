@@ -164,8 +164,8 @@ Partial Public Class frmEwE6
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
-        Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
         Me.m_bgw = New System.ComponentModel.BackgroundWorker()
+        Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -776,7 +776,7 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
         Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnPreview, sep1, Me.m_tsbSave, ToolStripSeparator6, Me.m_tsbnAutosaveConfig, Me.m_tsbnAutorunConfig, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, Me.m_tsbnFeedback, Me.m_tslbReadOnly})
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnPreview, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, Me.m_tsbnFeedback, Me.m_tslbReadOnly, ToolStripSeparator6, Me.m_tsbnAutosaveConfig, Me.m_tsbnAutorunConfig})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.Path = ""
@@ -850,14 +850,14 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tslbReadOnly, "m_tslbReadOnly")
         Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
         '
+        'm_bgw
+        '
+        '
         'm_ssMain
         '
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
-        '
-        'm_bgw
-        '
         '
         'frmEwE6
         '
@@ -867,7 +867,6 @@ Partial Public Class frmEwE6
         Me.Controls.Add(Me.m_ssMain)
         Me.Controls.Add(Me.m_tsModel)
         Me.Controls.Add(Me.m_menuMain)
-        Me.DoubleBuffered = True
         Me.IsMdiContainer = True
         Me.MainMenuStrip = Me.m_menuMain
         Me.Name = "frmEwE6"
