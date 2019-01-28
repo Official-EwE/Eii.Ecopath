@@ -164,6 +164,17 @@ Namespace Core
 
         End Sub
 
+        Public Shared Sub Write(key As String, value As String, Optional level As eVerboseLevel = eVerboseLevel.Standard)
+            If (level > cLog.VerboseLevel) Then Return
+            If Not AcquireWriterLock() Then Return
+            Try
+                GetWriter().Write(key, value)
+            Catch ex As Exception
+
+            End Try
+            ReleaseWriterLock()
+        End Sub
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Write a string to the application log.
