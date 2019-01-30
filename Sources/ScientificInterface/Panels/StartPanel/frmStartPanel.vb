@@ -30,6 +30,8 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ' JS 09Oct18: Traditionally, the embedded web view control uses the Internet Explorer engine.
 '             It will soon be necessary to switch to a newer engine where available. 
 '             See https : //blogs.windows.com/msedgedev/2018/05/09/modern-webview-winforms-wpf-apps/
+' JS 30Jan19: Perhaps it's just silly to keep the nested browser windows around.
+'             We might as well always launch links in an external browser? Let's do a user poll
 
 ''' ===========================================================================
 ''' <summary>
