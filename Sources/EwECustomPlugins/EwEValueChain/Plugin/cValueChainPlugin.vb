@@ -761,6 +761,7 @@ Public Class cValueChainPlugin
     Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
         Get
             Dim parms As cParameters = Me.m_data.Parameters
+            If (parms Is Nothing) Then Return False
             Select Case type
                 Case eCoreComponentType.EcoPath
                     Return parms.RunWithEcopath

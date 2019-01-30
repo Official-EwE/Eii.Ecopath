@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -27,7 +28,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 #End Region ' Imports
 
 ' JS 09Oct18: Traditionally, the embedded web view control uses the Internet Explorer engine.
-'             It may be necessary to switch to a newer engine where available. 
+'             It will soon be necessary to switch to a newer engine where available. 
 '             See https : //blogs.windows.com/msedgedev/2018/05/09/modern-webview-winforms-wpf-apps/
 
 ''' ===========================================================================
@@ -74,7 +75,14 @@ Public Class frmStartPanel
             Try
                 If String.IsNullOrWhiteSpace(strURL) Then
                     Dim link As New cWebLinks(Me.UIContext.Core)
-                    strURL = link.GetURL(cWebLinks.eLinkType.Start)
+                    Dim ver As String = cCore.Version(False)
+                    If (String.Compare(ver, My.Settings.LastRunVersion, True) <> 0) Then
+                        strURL = link.GetURL(cWebLinks.eLinkType.PostInstall)
+                        My.Settings.LastRunVersion = ver
+                        My.Settings.Save()
+                    Else
+                        strURL = link.GetURL(cWebLinks.eLinkType.Start)
+                    End If
                 End If
 
                 If (strURL <> Me.m_strURL) Then

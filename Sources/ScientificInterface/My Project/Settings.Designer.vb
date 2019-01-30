@@ -1042,6 +1042,18 @@ Partial Friend NotInheritable Class Settings
             Me("ShowEffortMortalityInRunSim") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property LastRunVersion() As String
+        Get
+            Return CType(Me("LastRunVersion"),String)
+        End Get
+        Set
+            Me("LastRunVersion") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

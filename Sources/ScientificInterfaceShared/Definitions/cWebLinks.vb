@@ -35,6 +35,7 @@ Imports EwEUtils.Utilities
 ''' </remarks>
 Public Class cWebLinks
 
+    Private Const g_PostInstall As String = "http://www.ecopath.org/post-install"
     Private Const g_Start As String = "http://www.ecopath.org/ewestart"
     Private Const g_Home As String = "http://www.ecopath.org"
     Private Const g_UsersRSS As String = "https://groups.google.com/forum/feed/eweusers/msgs/rss.xml?num=15"
@@ -53,6 +54,7 @@ Public Class cWebLinks
 
     Public Enum eLinkType As Integer
         NotSet = 0
+        PostInstall
         Start
         Home
         UsersRSS
@@ -67,7 +69,8 @@ Public Class cWebLinks
     Public Function GetURL(type As eLinkType) As String
 
         Select Case type
-            Case eLinkType.Start : Return Me.EwEHomeURL()
+            Case eLinkType.PostInstall : Return Me.EwEHomeURL(True)
+            Case eLinkType.Start : Return Me.EwEHomeURL(False)
             Case eLinkType.Home : Return cWebLinks.g_Home
             Case eLinkType.UsersRSS : Return cWebLinks.g_UsersRSS
             Case eLinkType.Trac : Return cWebLinks.g_Trac
@@ -88,11 +91,11 @@ Public Class cWebLinks
     ''' </summary>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function EwEHomeURL() As String
+    Private Function EwEHomeURL(bPostInstall As Boolean) As String
 
         Dim pm As cPluginManager = Me.m_core.PluginManager
         Dim aAssemblyNames As AssemblyName() = cAssemblyUtils.GetSummary(cAssemblyUtils.eSummaryFlags.EwECore)
-        Dim ub As New cUriBuilder(g_Start)
+        Dim ub As New cUriBuilder(If(bPostInstall, g_PostInstall, g_Start))
 
         For Each an As AssemblyName In aAssemblyNames
             ' Keep ewe component list really short; it's the plug-ins we're interested in
