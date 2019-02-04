@@ -203,7 +203,7 @@ Namespace Controls.Map
             Me.m_layer.Renderer.RenderPreview(e.Graphics, rcPreview)
 
             ' - Render border
-            ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Sunken,
+            ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Adjust Or Border3DStyle.Flat,
                 Border3DSide.Bottom Or Border3DSide.Left Or Border3DSide.Top Or Border3DSide.Right)
 
             If (prop IsNot Nothing) Then
