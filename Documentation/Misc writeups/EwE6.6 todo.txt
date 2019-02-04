@@ -10,6 +10,7 @@
 # EcoInd histogram shows no variaton where MCMC does: Ecopath does not calc stats when in Sensitivity run
 # Need AutoRUn system (just like AutoSave) where plug-ins can register and be controlled to run with Path, Sim, and Space
    - Although this is a feature, this is urgent. Users need to be able to see at a glance which components may be slowing down their system
+# EwE first launch (or post-upgrade) shows "thank you" page in the start screen
 
 == BUGS ==
 ! Sometimes biomass plot stay empty when re-running MC? 
@@ -38,6 +39,7 @@
 ! Apply foraging responses: X-axis on application plot does not properly show X axis!!!
 ? Apply foraging responses - new UI is (too) slow when applying. Perhaps something is wrong?
   Run Ecospace shows excluded cells in red, regardless of the customized colour
+  Add Sequence to Sim, Space, and tracer scenario DB tables to ensure that scenarios are always loaded up in the same order. This could also allow users to reorganize scenarios
   
 == FIXED BUT NOT LOGGED YET ==
 V EcoIND does not correctly compute "catch of mammals, seabirds and reptiles" indicator
@@ -65,6 +67,7 @@ V EcoIND does not correctly compute "catch of mammals, seabirds and reptiles" in
   Ecosampler: warn if no autosaving is selected for loaded components (path, sim, space, ..)
   Database performance boost: when in batch mode, do not get and release writers, but cache them instead! 
   - Getting a writer obtains the entire remote table. This is incredibly costly re. performance.
+  Ecospace time series are requested, where each time series remembers which external datasets are applied to which layers
  
 == NOT UNASSESSED ==
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
