@@ -28,6 +28,7 @@ Imports System.Globalization
 Imports System.IO
 Imports System.Text
 Imports System.Threading
+Imports System.Windows.Forms.VisualStyles
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
@@ -225,7 +226,21 @@ Namespace Style
             Me.m_dtShapeColors.Clear()
         End Sub
 
-#End Region ' Public interfaces
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' For styled rendering of custom controls.
+        ''' </summary>
+        ''' <param name="element"></param>
+        ''' <returns>True if visual styles are enabled for the given element.</returns>
+        ''' <remarks>
+        ''' See https://docs.microsoft.com/en-us/dotnet/framework/winforms/controls/how-to-render-a-visual-style-element
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Function IsVisualStylesEnabled(element As VisualStyleElement) As Boolean
+            Return Application.RenderWithVisualStyles And VisualStyleRenderer.IsElementDefined(element)
+        End Function
+
+#End Region ' Public methods
 
 #Region " Public access "
 
