@@ -21,6 +21,7 @@
 
 Option Strict On
 Imports EwEUtils.Utilities
+Imports System.Threading
 
 #End Region ' Imports
 
@@ -36,6 +37,8 @@ Public Class cEwEIcon
 
     Private Shared m_ico As Icon = Nothing
     Private Shared m_bTried As Boolean = False
+    Private Shared m_syncroot As New Object()
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Returns the current icon for EwE.
@@ -44,17 +47,21 @@ Public Class cEwEIcon
     ''' -----------------------------------------------------------------------
     Public Shared Function Current() As Icon
 
-        If Not cEwEIcon.m_bTried Then
+        SyncLock m_syncroot
+            If Not cEwEIcon.m_bTried Then
 
-            Dim tf As String = cFileUtils.MakeTempFile(".ico")
-            Try
-                My.Computer.Network.DownloadFile(New Uri("http://ecopath.org/EwE/current.ico"), tf)
-                cEwEIcon.m_ico = New Icon(tf)
-            Catch ex As Exception
-                ' OK
-            End Try
-            cEwEIcon.m_bTried = True
-        End If
+                Dim tf As String = cFileUtils.MakeTempFile(".ico")
+                Try
+                    My.Computer.Network.DownloadFile(New Uri("http://ecopath.org/EwE/current.ico"), tf)
+                    cEwEIcon.m_ico = New Icon(tf)
+                Catch ex As Exception
+                    ' OK
+                Finally
+
+                End Try
+                cEwEIcon.m_bTried = True
+            End If
+        End SyncLock
 
         If (cEwEIcon.m_ico IsNot Nothing) Then
             Return cEwEIcon.m_ico
