@@ -1101,6 +1101,7 @@ Public Class cEIIXMLDataSource
         ecosimDS.RedimTime()
 
         Me.m_core.m_MSEData.redimTime()
+        Me.m_core.m_EcoSim.setDefaultCatchabilities()
 
         ' Set active scenario
         ecopathDS.ActiveEcosimScenario = Array.IndexOf(ecopathDS.EcosimScenarioDBID, iScenarioID)
@@ -1602,7 +1603,7 @@ Public Class cEIIXMLDataSource
             shapeParms.ShapeFunctionParams = cStringUtils.StringToParamArray(CStr(Me.ReadSafe(drow, "FunctionParams", "")))
 
             ' Read z-scale
-            astrZScale = Me.SplitNumberString(CStr(drow("Zscale")))
+            astrZScale = Me.SplitNumberString(CStr(Me.ReadSafe(drow, "Zscale", "")))
             ' Write points
             For ipt As Integer = 1 To Math.Min(medData.NMedPoints, astrZScale.Length)
                 medData.Medpoints(ipt, iMediationShape) = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
