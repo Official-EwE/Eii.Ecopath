@@ -397,7 +397,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).Clear"/>
         ''' -------------------------------------------------------------------
-        Private Sub Clear() _
+        Public Sub Clear() _
             Implements ICollection(Of ISpatialDataSet).Clear
             Me.m_lAvailable.Clear()
             Me.m_lVirtual.Clear()
