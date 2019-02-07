@@ -90,9 +90,9 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' <param name="ts">The ToolStrip to connect to, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Attach(ByVal grid As EwEGrid, _
-                          ByVal uic As cUIContext, _
-                          ByVal ts As ToolStrip, _
+        Public Sub Attach(ByVal grid As EwEGrid,
+                          ByVal uic As cUIContext,
+                          ByVal ts As ToolStrip,
                           Optional ByVal bIsOutputGrid As Boolean = True)
 
             ' Sanity checks
@@ -139,29 +139,27 @@ Namespace Controls.EwEGrid
             AddHandler Me.m_btnExport.Click, AddressOf OnExportGrid
 
             ' Add items to the toolstrip
-            If (cSystemUtils.IsRightToLeft) Then
-                If (Me.m_btnImport IsNot Nothing) Then
-                    Me.m_btnImport.Alignment = ToolStripItemAlignment.Left
-                    Me.m_ts.Items.Add(Me.m_btnImport)
-                End If
-                Me.m_btnExport.Alignment = ToolStripItemAlignment.Left
-                Me.m_sep.Alignment = ToolStripItemAlignment.Left
-                Me.m_lblSet.Alignment = ToolStripItemAlignment.Left
-                Me.m_ctrlValue.Alignment = ToolStripItemAlignment.Left
-                Me.m_btnSet.Alignment = ToolStripItemAlignment.Left
-                Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_btnExport, Me.m_sep, Me.m_lblSet, Me.m_ctrlValue, Me.m_btnSet})
-            Else
-                If (Me.m_btnImport IsNot Nothing) Then
-                    Me.m_btnImport.Alignment = ToolStripItemAlignment.Right
-                    Me.m_ts.Items.Add(Me.m_btnImport)
-                End If
-                Me.m_btnExport.Alignment = ToolStripItemAlignment.Right
-                Me.m_sep.Alignment = ToolStripItemAlignment.Right
-                Me.m_lblSet.Alignment = ToolStripItemAlignment.Right
-                Me.m_ctrlValue.Alignment = ToolStripItemAlignment.Right
-                Me.m_btnSet.Alignment = ToolStripItemAlignment.Right
-                Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_btnExport, Me.m_sep, Me.m_btnSet, Me.m_ctrlValue, Me.m_lblSet})
+            Dim align As ToolStripItemAlignment = If(cSystemUtils.IsRightToLeft, ToolStripItemAlignment.Left, ToolStripItemAlignment.Right)
+
+            Me.m_btnExport.Alignment = align
+            Me.m_ts.Items.Add(Me.m_btnExport)
+
+            If (Me.m_btnImport IsNot Nothing) Then
+                Me.m_btnImport.Alignment = align
+                Me.m_ts.Items.Add(Me.m_btnImport)
             End If
+
+            Me.m_sep.Alignment = align
+            Me.m_ts.Items.Add(Me.m_sep)
+
+            Me.m_lblSet.Alignment = align
+            Me.m_ts.Items.Add(Me.m_lblSet)
+
+            Me.m_ctrlValue.Alignment = align
+            Me.m_ts.Items.Add(Me.m_ctrlValue)
+
+            Me.m_btnSet.Alignment = align
+            Me.m_ts.Items.Add(Me.m_btnSet)
 
             Me.m_iValuePos = Me.m_ts.Items.IndexOf(Me.m_ctrlValue)
 
