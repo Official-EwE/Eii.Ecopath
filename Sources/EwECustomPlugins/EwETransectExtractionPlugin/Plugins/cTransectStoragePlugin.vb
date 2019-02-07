@@ -119,7 +119,7 @@ Public Class cTransectStoragePlugin
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "CosmInsiteTransectStorage"
+            Return "zCosmInsiteTransectStorage"
         End Get
     End Property
 

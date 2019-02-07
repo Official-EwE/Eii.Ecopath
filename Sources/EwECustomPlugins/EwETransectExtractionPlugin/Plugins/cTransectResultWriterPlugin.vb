@@ -58,7 +58,7 @@ Public Class cTransectResultWriterPlugin
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "CosmInsiteTransectResultWriter"
+            Return "zCosmInsiteTransectResultWriter"
         End Get
     End Property
 

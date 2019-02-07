@@ -66,7 +66,7 @@ Public Class cTransectSummaryPlugin
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "CosmInsiteTransectSummary"
+            Return "zCosmInsiteTransectSummary"
         End Get
     End Property
 
