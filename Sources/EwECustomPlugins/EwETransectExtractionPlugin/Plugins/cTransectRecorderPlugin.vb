@@ -51,7 +51,7 @@ Public Class cTransectRecorderPlugin
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "CosmInsiteTransectRecorder"
+            Return "zCosmInsiteTransectRecorder"
         End Get
     End Property
 

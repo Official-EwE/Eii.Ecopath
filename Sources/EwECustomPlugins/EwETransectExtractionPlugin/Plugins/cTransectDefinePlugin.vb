@@ -63,7 +63,7 @@ Public Class cTransectDefinePlugin
 
     Public ReadOnly Property Name As String Implements IPlugin.Name
         Get
-            Return "CosmInsiteTransectInput"
+            Return "zCosmInsiteTransectInput"
         End Get
     End Property
 
