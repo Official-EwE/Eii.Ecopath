@@ -38,6 +38,10 @@ Imports SharedRecources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
+' TODO: Crashes happen when opening MSP tools UI during an Ecospace run, when outcomes have not been calibrated
+' Change: move time step control from form to MSP Tools plug-in, and handle pausing there.
+' --- THIS IS JUST A UI ISSUE, AND DOES NOT AFFECT LIVE GAMES ---
+
 Namespace UI
 
     ''' <summary>
@@ -1459,8 +1463,8 @@ Namespace UI
                 Dim bPause As Boolean = False
                 Select Case Me.m_cmbEmulPauseOptions.SelectedIndex
                     Case 0 : bPause = True
-                    Case 1 : bPause = (data.iTimeStep Mod parms.NumberOfTimeStepsPerYear) = 0
-                    Case 2 : bPause = (data.iTimeStep Mod (5 * parms.NumberOfTimeStepsPerYear)) = 0
+                    Case 1 : bPause = (data.iTimeStep Mod Math.Round(parms.NumberOfTimeStepsPerYear)) = 0
+                    Case 2 : bPause = (data.iTimeStep Mod Math.Round(5 * parms.NumberOfTimeStepsPerYear)) = 0
                 End Select
                 If (bPause = True) Then
                     cSoundUtilities.PlaySound(My.Resources.block)
