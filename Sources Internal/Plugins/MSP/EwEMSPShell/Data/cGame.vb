@@ -548,7 +548,7 @@ Public Class cGame
         For Each grid As cGrid In outcomelayers
             Dim output As cOutcome = Me.Output(grid)
             If (output IsNot Nothing) Then
-                Debug.WriteLine("@@ Loading output " & output.Name & " into outcome " & grid.Name)
+                Debug.WriteLine("@@ " & results.TimeStepinYears & ": loading output " & output.Name & " into outcome " & grid.Name)
                 bOK = bOK And output.Populate(grid, results, Me.OutcomeRange)
             Else
                 cEwEShell.RaiseException("Outcome mismatch; grid '" & grid.Name & "' is not configured to receive EwE outputs.", False)
