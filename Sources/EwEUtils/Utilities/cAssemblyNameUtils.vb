@@ -262,7 +262,7 @@ Namespace Utilities
         ''' The array of assembly names will be sorted by name.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Private Shared Function GetSummary(ByVal entry As Assembly, _
+        Private Shared Function GetSummary(ByVal entry As Assembly,
                                            Optional flags As eSummaryFlags = eSummaryFlags.EwECore Or eSummaryFlags.EwEExtended) As AssemblyName()
 
             ' List to hold collected summary data
