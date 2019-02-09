@@ -117,7 +117,7 @@ Public Class cEcospaceController
     ''' </summary>
     ''' <param name="pressures">The pressures to apply to the time step.</param>
     ''' <param name="outcomes">The outcomes to fill during the time step.</param>
-    ''' <seealso cref="Start(cPressure(), cGrid())"/>
+    ''' <seealso cref="Start"/>
     ''' <seealso cref="[Stop]()"/>
     ''' -----------------------------------------------------------------------
     Public Sub [Continue](pressures As cPressure(), outcomes As cGrid())
@@ -131,7 +131,7 @@ Public Class cEcospaceController
         Me.m_outcomes = outcomes
 
         If (Me.m_pressures IsNot Nothing) Then
-            Me.m_game.ApplyPressures(Me.m_pressures.ToArray())
+            Me.m_game.ApplyPressures(Me.m_pressures.ToArray(), Me.m_spaceDS)
         End If
 
         Try
