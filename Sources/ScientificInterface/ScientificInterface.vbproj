@@ -328,6 +328,12 @@
     <Compile Include="Ecospace\Input\Capacity\Settings\gridCapacityCalcType.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecospace\Input\frmEcospaceComputedCapacity.Designer.vb">
+      <DependentUpon>frmEcospaceComputedCapacity.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\frmEcospaceComputedCapacity.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\frmEcospaceHabitatFishery.Designer.vb">
       <DependentUpon>frmEcospaceHabitatFishery.vb</DependentUpon>
     </Compile>
@@ -1071,6 +1077,9 @@
     <EmbeddedResource Include="Ecospace\Input\Capacity\Settings\frmCapacityCalcType.resx">
       <DependentUpon>frmCapacityCalcType.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\frmEcospaceComputedCapacity.resx">
+      <DependentUpon>frmEcospaceComputedCapacity.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\frmEcospaceHabitatFishery.resx">
       <DependentUpon>frmEcospaceHabitatFishery.vb</DependentUpon>
     </EmbeddedResource>
@@ -1304,6 +1313,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\InsertIcons.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\InsertIcons64.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\splash_01.png" />
@@ -2258,6 +2270,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(TargetDir)Resources\InsertIcons.exe $(TargetDir)$(TargetFileName) $(TargetDir)Resources\ExtraIcons.txt $(ProjectDir)ScientificInterface.snk</PostBuildEvent>
+    <PostBuildEvent>IF $(PlatformName) == x86 (
+   $(TargetDir)Resources\InsertIcons.exe $(TargetDir)$(TargetFileName) $(TargetDir)Resources\ExtraIcons.txt $(ProjectDir)ScientificInterface.snk
+) ELSE (
+   REM ** 64 bit build insert icons does not work yet. Disabled for now
+   REM ** $(TargetDir)Resources\InsertIcons64.exe $(TargetDir)$(TargetFileName) $(TargetDir)Resources\ExtraIcons.txt $(ProjectDir)ScientificInterface.snk
+)</PostBuildEvent>
   </PropertyGroup>
 </Project>

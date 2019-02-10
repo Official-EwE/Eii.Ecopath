@@ -200,6 +200,12 @@
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitat.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacityComputed.Designer.vb">
+      <DependentUpon>ucLayerEditorHabitatCapacityComputed.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacityComputed.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorMonthVelocity.Designer.vb">
       <DependentUpon>ucLayerEditorMonthVelocity.vb</DependentUpon>
     </Compile>
@@ -835,6 +841,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitat.resx">
       <DependentUpon>ucLayerEditorHabitat.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacityComputed.resx">
+      <DependentUpon>ucLayerEditorHabitatCapacityComputed.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\Raster\UI\ucLayerEditorHabitatCapacity.resx">

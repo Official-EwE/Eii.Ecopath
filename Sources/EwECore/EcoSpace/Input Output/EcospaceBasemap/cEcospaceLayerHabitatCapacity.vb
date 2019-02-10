@@ -56,6 +56,24 @@ Public Class cEcospaceLayerHabitatCapacity
 
 #End Region ' Cell interaction
 
+    Public Overrides Sub Reset()
+        Try
+            ' JS: Oof, this is harsh
+            If (Me.VarName = eVarNameFlags.LayerHabitatCapacity) Then
+                Me.m_core.m_EcoSpaceData.isCapacityChanged = True
+                For i As Integer = 1 To Me.m_core.nGroups
+                    Me.m_core.m_EcoSpaceData.isGroupHabCapChanged(i) = True
+                Next
+                Me.m_core.m_Ecospace.SetHabCap()
+                Me.Invalidate()
+            Else
+                MyBase.Reset()
+            End If
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
     Protected Overrides Function DefaultName() As String
         Return Me.m_core.EcoPathGroupInputs(Me.Index).Name
     End Function

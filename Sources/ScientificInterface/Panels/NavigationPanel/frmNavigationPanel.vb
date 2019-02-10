@@ -295,6 +295,7 @@ Public Class frmNavigationPanel
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_HABCAPMODEL, "ndHabCapModel", eCoreExecutionState.EcospaceLoaded, GetType(frmCapacityCalcType), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_HABITATPREFS, "ndHabitatPrefs", eCoreExecutionState.EcospaceLoaded, GetType(gridHabitatPreference), eNodeImages.Input, nodeFolder, "Assign habitats.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_HABCAPAPPLY, "ndHabCapApply", eCoreExecutionState.EcospaceLoaded, GetType(frmApplyForagingResponses), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
+        Me.m_nodecontroller.Add("Computed foraging capacity", "ndHabCapComputed", eCoreExecutionState.EcospaceLoaded, GetType(Basemap.frmEcospaceComputedCapacity), eNodeImages.Input, nodeFolder) ' ToDo: connect to help
 
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_DISPERSAL, "ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(gridEcospaceDispersal), eNodeImages.Input, nodeInput, "Dispersal.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOSPACE_INPUT_ADVECTION, "ndAdvection", eCoreExecutionState.EcospaceLoaded, GetType(Advection.frmAdvection), eNodeImages.Input, nodeInput)
