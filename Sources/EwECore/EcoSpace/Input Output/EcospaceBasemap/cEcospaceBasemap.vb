@@ -226,7 +226,8 @@ Public Class cEcospaceBasemap
             ' Habitat capacity output layer
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.NGroups
-                llayers.Add(New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerHabitatCapacityInput, eVarNameFlags.LayerHabitatCapacity, i))
+                ' Hmm, does settings the datatype 'properly' screw up things?
+                llayers.Add(New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerHabitatCapacity, eVarNameFlags.LayerHabitatCapacity, i))
             Next
             Me.m_dictLayers(eVarNameFlags.LayerHabitatCapacity) = llayers.ToArray
 

@@ -1411,6 +1411,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Habitat foraging capacity.
+        '''</summary>
+        Public ReadOnly Property ECOSPACE_LAYERGROUP_CAPACITYINPUT() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_CAPACITYINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Computed habitat capacity.
+        '''</summary>
+        Public ReadOnly Property ECOSPACE_LAYERGROUP_COMPUTEDCAPACITY() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_COMPUTEDCAPACITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Environmental drivers.
         '''</summary>
         Public ReadOnly Property ECOSPACE_LAYERGROUP_ENVDRIVERS() As String
@@ -1429,15 +1447,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Group dynamics.
-        '''</summary>
-        Public ReadOnly Property ECOSPACE_LAYERGROUP_GROUP() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_GROUP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Habitats.
         '''</summary>
         Public ReadOnly Property ECOSPACE_LAYERGROUP_HABITATS() As String
@@ -1452,6 +1461,24 @@ Namespace My.Resources
         Public ReadOnly Property ECOSPACE_LAYERGROUP_IMPORTANCE() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_IMPORTANCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Other mortality forcing.
+        '''</summary>
+        Public ReadOnly Property ECOSPACE_LAYERGROUP_M0() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_M0", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Migration.
+        '''</summary>
+        Public ReadOnly Property ECOSPACE_LAYERGROUP_MIGRATION() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_MIGRATION", resourceCulture)
             End Get
         End Property
         

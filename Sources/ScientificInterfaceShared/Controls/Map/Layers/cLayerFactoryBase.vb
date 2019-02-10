@@ -104,7 +104,8 @@ Namespace Controls.Map
 
                     Next iHabitat
 
-                Case eVarNameFlags.LayerHabitatCapacityInput
+                Case eVarNameFlags.LayerHabitatCapacity,
+                     eVarNameFlags.LayerHabitatCapacityInput
 
                     If (core.nGroups > 0) Then
 
@@ -116,13 +117,16 @@ Namespace Controls.Map
                         renderer.ScaleMin = 0
                         renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
-                        editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
-                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacityInput),
-                                                renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerHabitatCapacityInput)
+                        If (varName = eVarNameFlags.LayerHabitatCapacity) Then
+                            editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacityComputed))
+                        Else
+                            editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
+                        End If
 
-                        lLayers.Add(layer)
+                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(varName),
+                                                renderer, editor, eCoreCounterTypes.nGroups, bmd, varName)
+                            lLayers.Add(layer)
                     End If
-
 
                 Case eVarNameFlags.LayerM0MultInput
 
@@ -136,6 +140,7 @@ Namespace Controls.Map
                         renderer.ScaleMin = 0
                         renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
+                        ' Reuse identical editor here
                         editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
                         layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerM0MultInput),
                                                 renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerM0MultInput)
@@ -395,12 +400,17 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerHabitat
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_HABITATS
 
-                Case eVarNameFlags.LayerHabitatCapacityInput,
-                     eVarNameFlags.LayerM0MultInput
-                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_GROUP
+                Case eVarNameFlags.LayerHabitatCapacityInput
+                    Return My.Resources.ECOSPACE_LAYERGROUP_CAPACITYINPUT
+
+                Case eVarNameFlags.LayerHabitatCapacity
+                    Return My.Resources.ECOSPACE_LAYERGROUP_COMPUTEDCAPACITY
+
+                Case eVarNameFlags.LayerM0MultInput
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_M0
 
                 Case eVarNameFlags.LayerMigration
-                    strGroup = "Migration"
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_MIGRATION
 
                 Case eVarNameFlags.LayerRegion
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_REGIONS
