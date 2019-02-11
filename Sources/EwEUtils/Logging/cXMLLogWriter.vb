@@ -26,6 +26,7 @@ Imports System.IO
 Imports System.Xml
 Imports EwEUtils.Utilities
 Imports EwEUtils.SystemUtilities
+Imports System.Reflection
 
 Namespace Core
 
@@ -62,7 +63,6 @@ Namespace Core
         'when inheriting from an XmlWriter it does not supply much through the base class so we have to encapsulte the underlying writer to get functionality
         Private m_XMLwriter As XmlWriter
         Private m_filestream As FileStream
-        Private m_strLogFileName As String = ""
         Private m_strModelName As String = ""
 
         Private m_stringstrm As StringWriter
@@ -82,8 +82,10 @@ Namespace Core
 
 #Region "Overridden Methods"
 
+        Private Property LogFileName As String = ""
+
         Public Function Location() As String Implements ILogWriter.Location
-            Return m_strLogFileName
+            Return Me.LogFileName
         End Function
 
         ''' <summary>
@@ -102,7 +104,7 @@ Namespace Core
 
                 m_stringstrm = New StringWriter 'memory buffer the XmlWriter will use
 
-                m_filestream = File.Open(m_strLogFileName, FileMode.OpenOrCreate)
+                m_filestream = File.Open(LogFileName, FileMode.OpenOrCreate)
                 m_textwriter = New StreamWriter(m_filestream)
 
                 'create a new xml stream that can be managed by the writer
@@ -140,8 +142,8 @@ Namespace Core
         Private Sub CreateNew()
             Dim settings As New XmlWriterSettings
             Try
-                If Not File.Exists(m_strLogFileName) Then
-                    m_filestream = File.Open(m_strLogFileName, FileMode.CreateNew)
+                If Not File.Exists(LogFileName) Then
+                    m_filestream = File.Open(LogFileName, FileMode.CreateNew)
                     m_textwriter = New StreamWriter(m_filestream)
 
                     settings.Indent = True
@@ -155,7 +157,7 @@ Namespace Core
                     m_XMLwriter.WriteStartElement("doc")
                     m_XMLwriter.WriteElementString("Platform", cSystemUtils.OSVersion())
                     m_XMLwriter.WriteElementString("Is64BitOS", If(cSystemUtils.Is64BitOS(), "True", "False"))
-                    m_XMLwriter.WriteElementString("Is64BitEwE", If(cSystemUtils.Is64BitProcess(), "True", "False"))
+                    m_XMLwriter.WriteElementString("Is64BitExe", If(cSystemUtils.Is64BitProcess(), "True", "False"))
                     m_XMLwriter.WriteElementString("CultureOS", Threading.Thread.CurrentThread.CurrentCulture.DisplayName)
                     m_XMLwriter.WriteElementString("CultureUI", Threading.Thread.CurrentThread.CurrentUICulture.DisplayName)
                     m_XMLwriter.WriteElementString("DecimalSeparator", Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator)
@@ -286,11 +288,17 @@ Namespace Core
 
             If Not String.IsNullOrWhiteSpace(strModelPath) Then
                 Me.m_strModelName = cFileUtils.ToValidFileName(Path.GetFileNameWithoutExtension(strModelPath), False)
-                Me.m_strLogFileName = Path.Combine(Path.GetDirectoryName(strModelPath), m_strModelName & "_log.xml")
+                Me.LogFileName = Path.Combine(Path.GetDirectoryName(strModelPath), m_strModelName & "_log.xml")
             Else
+                Dim asm As Assembly = Assembly.GetEntryAssembly()
+                Dim name As String = asm.FullName
+                If (name.IndexOf(","c) > 0) Then
+                    name = name.Substring(0, name.IndexOf(","c))
+                End If
                 Me.m_strModelName = ""
-                Me.m_strLogFileName = Path.Combine(cSystemUtils.ApplicationSettingsPath(), "EwELog.xml")
+                Me.LogFileName = Path.Combine(cSystemUtils.ApplicationSettingsPath(), name & "_log.xml")
             End If
+            Console.WriteLine("Log opened at " & Me.LogFileName)
             Return True
 
         End Function
@@ -319,7 +327,7 @@ Namespace Core
                     Me.WriteStartElement("Session_Started")
                     Me.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
                     Me.WriteElementString("Model", Me.m_strModelName)
-                    Me.WriteElementString("LogFile", Me.m_strLogFileName)
+                    Me.WriteElementString("LogFile", Me.LogFileName)
                     Me.WriteEndElement() 'Session_Started
                     Me.WriteEndDocument()
 
@@ -447,11 +455,11 @@ Namespace Core
         Private Sub DeleteLargeLogFiles()
             Try
 
-                Dim fn As String = Me.m_strLogFileName
-                If File.Exists(cFileUtils.ToValidFileName(Me.m_strLogFileName, True)) Then
+                Dim fn As String = Me.LogFileName
+                If File.Exists(cFileUtils.ToValidFileName(Me.LogFileName, True)) Then
                     Dim fi As FileInfo = New FileInfo(fn)
                     If fi.Length > MAX_LOG_SIZE Then
-                        Console.WriteLine("cLog.DeleteLargeLogFiles() Deleting log file " & Me.m_strLogFileName)
+                        Console.WriteLine("cLog.DeleteLargeLogFiles() Deleting log file " & Me.LogFileName)
                         File.Delete(fn)
                     End If 'fi.Length > MAX_LOG_SIZE
                 End If 'File.Exists(cFileUtils.ToValidFileName(fn, True))
