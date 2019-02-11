@@ -45,12 +45,7 @@ Namespace SpatialData
         Friend Sub New()
         End Sub
 
-        Public Sub New(ByVal strFile As String, _
-                       ByVal strName As String, _
-                       ByVal strDescription As String, _
-                       ByVal strSource As String, _
-                       ByVal strAuthor As String, _
-                       ByVal strContact As String)
+        Public Sub New(strFile As String, strName As String, strDescription As String, strSource As String, strAuthor As String, strContact As String)
             Me.m_strFileName = strFile
             Me.DatasetName = strName
             Me.Description = strDescription
@@ -75,7 +70,7 @@ Namespace SpatialData
 
         Public Property DatasetName As String
             Get
-                If (String.IsNullOrWhiteSpace(Me.m_strDatasetName)) And _
+                If (String.IsNullOrWhiteSpace(Me.m_strDatasetName)) And
                    (Not String.IsNullOrWhiteSpace(Me.m_strFileName)) Then
                     Return Path.GetFileNameWithoutExtension(Me.m_strFileName)
                 End If
@@ -112,11 +107,11 @@ Namespace SpatialData
 
 #Region " Internals "
 
-        Friend Function Create(ByVal strFile As String) As Boolean
+        Friend Function Create(strFile As String) As Boolean
             Me.FileName = strFile
         End Function
 
-        Friend Function Initialize(ByVal strFile As String) As Boolean
+        Friend Function Initialize(strFile As String) As Boolean
 
             ' Clear properties just to be sure in case of re-initializing
             Me.DatasetName = ""
@@ -137,26 +132,30 @@ Namespace SpatialData
             Dim xa As XmlAttribute = Nothing
 
             ' Load datasets
-            doc.Load(strFile)
+            Try
+                Me.m_nDatasets = 0
+                doc.Load(strFile)
 
-            Me.m_nDatasets = 0
-
-            For Each xnRoot In doc.GetElementsByTagName("Datasets")
-                For Each xa In xnRoot.Attributes
-                    Select Case xa.Name
-                        Case "Name" : Me.DatasetName = xa.InnerText
-                        Case "Author" : Me.Author = xa.InnerText
-                        Case "Contact" : Me.Contact = xa.InnerText
-                        Case "Source", "Station" : Me.Station = xa.InnerText
-                        Case "Description" : Me.Description = xa.InnerText
-                    End Select
+                For Each xnRoot In doc.GetElementsByTagName("Datasets")
+                    For Each xa In xnRoot.Attributes
+                        Select Case xa.Name
+                            Case "Name" : Me.DatasetName = xa.InnerText
+                            Case "Author" : Me.Author = xa.InnerText
+                            Case "Contact" : Me.Contact = xa.InnerText
+                            Case "Source", "Station" : Me.Station = xa.InnerText
+                            Case "Description" : Me.Description = xa.InnerText
+                        End Select
+                    Next
                 Next
-            Next
 
-            ' Update number of datasets
-            Me.m_nDatasets = doc.GetElementsByTagName("Dataset").Count
+                ' Update number of datasets
+                Me.m_nDatasets = doc.GetElementsByTagName("Dataset").Count
+                Return True
 
-            Return True
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+            Return False
 
         End Function
 
@@ -168,8 +167,8 @@ Namespace SpatialData
         ''' <returns>False if the config file is corrupted, True otherwise.</returns>
         ''' <remarks>This method can also be used to import extra datasets.</remarks>
         ''' -------------------------------------------------------------------
-        Friend Function Load(ByVal core As cCore, _
-                             ByVal man As cSpatialDataSetManager) As Boolean
+        Friend Function Load(core As cCore,
+                             man As cSpatialDataSetManager) As Boolean
 
             Dim strFile As String = Me.FileName
             Dim strRoot As String = Path.GetDirectoryName(Me.FileName)
@@ -225,7 +224,7 @@ Namespace SpatialData
                             Dim bAdd As Boolean = False
                             If (ds IsNot Nothing) Then
                                 bAdd = True
-                                If (Not (ds.GUID.Equals(GUID.Empty))) Then
+                                If (Not (ds.GUID.Equals(Guid.Empty))) Then
                                     bAdd = (man.Find(ds.GUID) Is Nothing)
                                 End If
                             End If
@@ -254,10 +253,10 @@ Namespace SpatialData
         ''' <para>Note that this method can also be used to export datasets.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Friend Function Save(ByVal core As cCore, _
-                             ByVal man As cSpatialDataSetManager, _
-                             ByVal datasets As ISpatialDataSet(), _
-                             ByVal bExporting As Boolean) As Boolean
+        Friend Function Save(core As cCore,
+                             man As cSpatialDataSetManager,
+                             datasets As ISpatialDataSet(),
+                             bExporting As Boolean) As Boolean
 
             Dim strFile As String = Me.FileName
             Dim strPath As String = Path.GetDirectoryName(Me.FileName)
@@ -267,7 +266,6 @@ Namespace SpatialData
             Dim xnDataset As XmlNode = Nothing
             Dim xnDetails As XmlNode = Nothing
             Dim xaDataset As XmlAttribute = Nothing
-            Dim bChanged As Boolean = False
             Dim nExported As Integer = 0
             Dim msg As cMessage = Nothing
             Dim bSuccess As Boolean = True
@@ -360,7 +358,6 @@ Namespace SpatialData
 
                         ' Add dataset nodes
                         xnRoot.AppendChild(xnDataset)
-                        bChanged = True
 
                     End If
                 Else
@@ -370,18 +367,16 @@ Namespace SpatialData
 
             ' Save
             Try
-                If bChanged Or Not File.Exists(strFile) Then
-                    doc.Save(strFile)
-                End If
+                doc.Save(strFile)
 
                 If (bExporting) Then
                     ' Send export status message
                     If bSuccess Then
-                        msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_SUCCESS, nExported, strPath), _
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_SUCCESS, nExported, strPath),
                                            eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                         msg.Hyperlink = strPath
                     Else
-                        msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_ERROR, strPath), _
+                        msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_ERROR, strPath),
                                            eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
                     End If
                 End If
@@ -389,7 +384,7 @@ Namespace SpatialData
             Catch ex As Exception
                 bSuccess = False
 
-                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_EXCEPTION, strPath), _
+                msg = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.SPATIALTEMPORAL_EXPORT_EXCEPTION, strPath),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 If (bExporting) Then
                     msg.Importance = eMessageImportance.Critical
