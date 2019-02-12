@@ -192,10 +192,35 @@ namespace MEL
 
 			WaitForThreads();
 
-			//Console.WriteLine("all threads are cleared");
+            // JS 12Feb19: Put a band-aid on a conceptual problem here. EwE is an interative model that cannot 'skip' time steps. 
+            // The ecosystem evolves based on its previous state, and changes thus occur gradually over time in one-month 
+            // time intervals. Skipping months will make the ecosystem seem to respond sluggish and slow. 
 
-			//update pressure layers where needed
-			UpdatePressureLayers();
+            // As a temporary solution, I have added a 'catch up' loop below with constant pressure data until the next desired time 
+            // step. Once the 'current' month isreached, new pressures are obtained and the tick is stored.
+
+            // This solutoin is a band-aid that will need to go. 'Time skipping' also creates gaps in the ecosystem trends that the 
+            // MSP UI used to show! MEL *should* record the intermitted ticks for display in the UI, to allow MSP players to properly
+            // see what has been happening in the Ecosystem during the time gaps.
+
+            // To fix the issue properly, MEL should compute every month, not skip, and record outcomes for all months even when
+            // pressures did not change. There is no other way.
+
+            // JS: Let EwE catch up with previous pressure states
+            for (int i = this.lastupdatedmonth; i < nextmonth - 1; i++)
+            {
+                this.shell.Tick(this.pressures, this.outputs);
+                // JS: MEL must record the outcomes of intermediate time steps. Not sure how this is supposed to work.
+                //StoreTick();
+                //WaitForThreads(); 
+            }
+            // JS: now fix time
+            this.lastupdatedmonth = nextmonth;
+            
+            //Console.WriteLine("all threads are cleared");
+
+            //update pressure layers where needed
+            UpdatePressureLayers();
 
 			//Console.WriteLine("updated pressure layers");
 			
@@ -204,16 +229,10 @@ namespace MEL
 			UpdateFishing();
 			RasterizeLayers();
 
-            // JS 12 Feb 19: EwE cannot skip months; it's an interative, evolving model. This is not how we designed MEL!
-            for (int i = this.lastupdatedmonth; i<nextmonth; i++)
-            {
-                // Make EwE tick over for every missing month
-                this.shell.Tick(this.pressures, this.outputs);
-            }
+            // JS: execute the actual tick with updated pressures
+            this.shell.Tick(this.pressures, this.outputs);
 
             StoreTick();
-
-            this.lastupdatedmonth = nextmonth;
 
             KPI();
 			TickDone();
