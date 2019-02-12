@@ -123,10 +123,11 @@ namespace MEL
 		/// </summary>
 		public virtual void LoadConfig() {
 			WebClient webClient = new WebClient();
-			//file name should probably be obtained from the server
-			this.configstring = MEL.HttpGet(webClient, "/api/mel/config");
+            //file name should probably be obtained from the server
+            //this.configstring = MEL.HttpGet(webClient, "/api/mel/config");
+            this.configstring = File.ReadAllText("config\\BS_basic.json");
 
-			this.config = JsonConvert.DeserializeObject<Config>(this.configstring);
+            this.config = JsonConvert.DeserializeObject<Config>(this.configstring);
 
 			this.cellsize = this.config.cellsize;
 			MEL.x_res = this.config.columns;
@@ -185,10 +186,9 @@ namespace MEL
 			string request = MEL.HttpGet(new WebClient(), "/api/mel/ShouldUpdate/" + this.lastupdatedmonth);
 
 			if(request == "-1") return;
+            int nextmonth = int.Parse(request);
 
-			this.lastupdatedmonth = int.Parse(request);
-
-			Console.WriteLine("Executing month: " + this.lastupdatedmonth);
+			Console.WriteLine("Executing months {0} to {1}", this.lastupdatedmonth, nextmonth);
 
 			WaitForThreads();
 
@@ -204,11 +204,18 @@ namespace MEL
 			UpdateFishing();
 			RasterizeLayers();
 
-			//Start EwE tick
-			this.shell.Tick(this.pressures, this.outputs);
+            // JS 12 Feb 19: EwE cannot skip months; it's an interative, evolving model. This is not how we designed MEL!
+            for (int i = this.lastupdatedmonth; i<nextmonth; i++)
+            {
+                // Make EwE tick over for every missing month
+                this.shell.Tick(this.pressures, this.outputs);
+            }
 
-			StoreTick();
-			KPI();
+            StoreTick();
+
+            this.lastupdatedmonth = nextmonth;
+
+            KPI();
 			TickDone();
 
 			WaitForThreads();
