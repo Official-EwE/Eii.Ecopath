@@ -580,7 +580,7 @@ Public Class cDotSpatialUtils
                 g_bValid = g_lic.IsLicensed()
             End If
 #Else
-            g_bValid = (cDateUtils.StartTime < cDotSpatialUtils.ValidDate)
+            g_bValid = (cDateUtils.StartTime < cDotSpatialUtils.ExpiryDate)
 #End If
             g_bValidated = True
         End If
