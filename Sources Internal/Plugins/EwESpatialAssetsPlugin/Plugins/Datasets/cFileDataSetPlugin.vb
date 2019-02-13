@@ -243,7 +243,7 @@ Namespace SpatialData
         ''' relative to the current configuration file.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Friend Property IsSourceRelative As Boolean
+        Public Property IsSourceRelative As Boolean
             Get
                 Return Me.m_bRelative
             End Get

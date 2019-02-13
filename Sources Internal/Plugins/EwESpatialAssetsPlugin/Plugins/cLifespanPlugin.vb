@@ -72,11 +72,11 @@ Public Class cLifespanPlugin
     End Sub
 
     Public Sub Validate() Implements ILicensePlugin.Validate
-        cDotSpatialUtils.Valid(Me.m_core)
+        cDotSpatialUtils.IsLicensed(Me.m_core)
     End Sub
 
     Public Sub Expiry(ByRef dt As Date) Implements ILicensePlugin.Expiry
-        dt = cDotSpatialUtils.ValidDate
+        dt = cDotSpatialUtils.ExpiryDate
     End Sub
 
 End Class

@@ -51,16 +51,11 @@ Namespace SpatialData
 #Region " Private classes "
 
         Private Class cFileEntry
-            Private m_strFileName As String
             Public Sub New(strFileName As String, dt As Date)
                 Me.FileDate = dt
-                Me.m_strFileName = strFileName
+                Me.FileName = strFileName
             End Sub
             Public ReadOnly Property FileName As String
-                Get
-                    Return Me.m_strFileName
-                End Get
-            End Property
             Public Property FileDate As DateTime
         End Class
 
@@ -78,7 +73,7 @@ Namespace SpatialData
 #Region " Constructor / destructor "
 
         Public Sub New()
-            If (Not cDotSpatialUtils.Valid()) Then Throw New Exception("Plug-in license expired")
+            If (Not cDotSpatialUtils.IsLicensed()) Then Throw New Exception("Plug-in license expired")
             Me.InitializeComponent()
         End Sub
 

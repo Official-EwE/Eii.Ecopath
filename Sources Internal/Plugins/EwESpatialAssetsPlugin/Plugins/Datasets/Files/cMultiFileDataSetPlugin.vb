@@ -217,7 +217,7 @@ Namespace SpatialData
         ''' <inheritdocs cref="cFileDataSetPlugin.GetConfigUI"/>
         ''' -------------------------------------------------------------------
         Public Overrides Function GetConfigUI() As Windows.Forms.Control
-            If (cDotSpatialUtils.Valid(Me.m_core)) Then
+            If (cDotSpatialUtils.IsLicensed(Me.m_core)) Then
                 Try
                     Dim pg As New ucMultiFileDatasetConfigPage()
                     pg.Dataset = Me
