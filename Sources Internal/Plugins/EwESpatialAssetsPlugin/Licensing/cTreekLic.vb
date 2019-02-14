@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports TreeksLicensingLibrary2.EasyIntegration
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -43,7 +44,7 @@ Friend Class cTreekLic
             Dim lic As TreeksLicensingLibrary2.License = Me.License
             If (lic Is Nothing) Then
                 Try
-                    If Me.m_lic.ShowRegistrationForm(Nothing, "EwE Pro") = Windows.Forms.DialogResult.OK Then
+                    If Me.m_lic.ShowRegistrationForm(Nothing, "EwE Pro", Icon:=SharedResources.Ecopath_install) = Windows.Forms.DialogResult.OK Then
                     End If
                 Catch ex As Exception
 

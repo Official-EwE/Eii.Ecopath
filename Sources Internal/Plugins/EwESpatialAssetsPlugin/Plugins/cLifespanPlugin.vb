@@ -76,7 +76,7 @@ Public Class cLifespanPlugin
     End Sub
 
     Public Sub Expiry(ByRef dt As Date) Implements ILicensePlugin.Expiry
-        dt = cDotSpatialUtils.ExpiryDate
+        dt = cDotSpatialUtils.ExpiryDate(Me.m_core)
     End Sub
 
 End Class

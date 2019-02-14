@@ -37,8 +37,8 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-' For internal use only. Set to non-zero to enable license validation using whichever plug-in we decide to use
-#Const USE_LICENSE = 0
+' Set to non-zero to enable license validation using whichever plug-in we decide to use
+#Const USE_LICENSE = 1
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -572,7 +572,8 @@ Public Class cDotSpatialUtils
     Private Shared g_bValid As Boolean = False
     Private Shared g_lic As cTreekLic = Nothing
 
-    Public Shared Function IsLicensed(Optional core As cCore = Nothing) As Boolean
+    Public Shared Function IsLicensed(core As cCore) As Boolean
+
         If Not g_bValidated Then
 #If USE_LICENSE Then
             g_lic = New cTreekLic()
@@ -584,6 +585,7 @@ Public Class cDotSpatialUtils
 #End If
             g_bValidated = True
         End If
+
         If (g_bValid = False) And (core IsNot Nothing) Then
             Dim msg As New cFeedbackMessage(My.Resources.LICENSE_EXPIRED, eCoreComponentType.External, eMessageType.DataExport, eMessageImportance.Warning, eMessageReplyStyle.OK)
             core.Messages.SendMessage(msg)
@@ -591,12 +593,12 @@ Public Class cDotSpatialUtils
         Return g_bValid
     End Function
 
-    Public Shared ReadOnly Property ExpiryDate As DateTime
+    Public Shared ReadOnly Property ExpiryDate(core As cCore) As DateTime
         Get
 #If USE_LICENSE Then
+            If (g_lic Is Nothing) Then IsLicensed(core)
             Return g_lic.Expiry
 #Else
-            ' Return New Date(2014, 1, 1)
             Return cAssemblyUtils.GetCompileDate(System.Reflection.Assembly.GetAssembly(GetType(cLifespanPlugin))).AddYears(1)
 #End If
         End Get
