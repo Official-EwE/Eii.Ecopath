@@ -654,11 +654,16 @@ Namespace SpatialData
 
             Dim cfg As cSpatialDataConfigFile = Nothing
 
+            Dim n As Integer = -1
             ' Check if file name does not exist
-            For Each cfg In Me.m_lConfigFiles
+            For i As Integer = 0 To Me.m_lConfigFiles.Count - 1
                 ' Do something smart here
-                If String.Compare(cfg.FileName, strFile, True) = 0 Then Return Nothing
+                If String.Compare(Me.m_lConfigFiles(i).FileName, strFile, True) = 0 Then
+                    n = i
+                    Exit For
+                End If
             Next
+            If (n >= 0) Then Me.m_lConfigFiles.RemoveAt(n)
 
             cfg = New cSpatialDataConfigFile(strFile, strName, strDescription,
                                              cSystemUtils.GetHostName(),
