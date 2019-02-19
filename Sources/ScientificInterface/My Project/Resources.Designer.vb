@@ -387,16 +387,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property EcoBase1() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("EcoBase1", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Failed to add stanza configuration &apos;{0}&apos;.
         '''</summary>
         Public ReadOnly Property ECOPATH_ADDSTANZA_ERROR() As String
@@ -474,16 +464,6 @@ Namespace My.Resources
         Public ReadOnly Property ECOPATH_GRAPH_LEGEND_STANZA_SEP() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_GRAPH_LEGEND_STANZA_SEP", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Public ReadOnly Property Ecopath_install() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecopath_install", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -4976,7 +4956,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Failed to export one or more models to {0}.
+        '''  Looks up a localized string similar to Failed to export model to {0}.
         '''</summary>
         Public ReadOnly Property STATUS_EXPORT_FAILURE() As String
             Get
@@ -4985,7 +4965,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Models(s) exported successfully to {0}.
+        '''  Looks up a localized string similar to Models exported successfully to {0}.
         '''</summary>
         Public ReadOnly Property STATUS_EXPORT_SUCCESS() As String
             Get

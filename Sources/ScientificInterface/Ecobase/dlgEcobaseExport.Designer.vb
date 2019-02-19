@@ -375,7 +375,7 @@ Partial Class dlgEcobaseExport
         '
         'PictureBox1
         '
-        Me.PictureBox1.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.EcoBase1
+        Me.PictureBox1.BackgroundImage = ScientificInterfaceShared.My.Resources.Resources.EcoBase1
         resources.ApplyResources(Me.PictureBox1, "PictureBox1")
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.TabStop = False

@@ -3244,7 +3244,7 @@ Public Class frmEwE6
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(strFileName)
             Else
-                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXPORT_SUCCESS, strFileName),
+                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXPORT_FAILURE, strFileName),
                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             End If
             Me.Core.Messages.SendMessage(msg)
