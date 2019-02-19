@@ -532,7 +532,7 @@ Partial Class dlgEcobaseImport
         'm_tsllShow
         '
         Me.m_tsllShow.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.m_tsllShow.Image = Global.ScientificInterface.My.Resources.Resources.EcoBase1
+        Me.m_tsllShow.Image = ScientificInterfaceShared.My.Resources.Resources.EcoBase1
         Me.m_tsllShow.Name = "m_tsllShow"
         resources.ApplyResources(Me.m_tsllShow, "m_tsllShow")
         '
@@ -590,7 +590,7 @@ Partial Class dlgEcobaseImport
         '
         'm_pbLogo
         '
-        Me.m_pbLogo.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.EcoBase1
+        Me.m_pbLogo.BackgroundImage = ScientificInterfaceShared.My.Resources.Resources.EcoBase1
         resources.ApplyResources(Me.m_pbLogo, "m_pbLogo")
         Me.m_pbLogo.Name = "m_pbLogo"
         Me.m_pbLogo.TabStop = False

@@ -1201,6 +1201,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property EcoBase1() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("EcoBase1", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Bathydemersal.
         '''</summary>
         Public ReadOnly Property ECOLOGY_BATHYDEMERSAL() As String
@@ -1296,6 +1306,16 @@ Namespace My.Resources
         Public ReadOnly Property Ecopath_32x32() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ecopath_32x32", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Public ReadOnly Property Ecopath_install() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecopath_install", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

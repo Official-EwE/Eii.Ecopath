@@ -1094,6 +1094,8 @@
     <Content Include="Resources\ConnectHS.png" />
     <Content Include="Resources\DisconnectHS.png" />
     <None Include="Resources\DownloadHS.png" />
+    <None Include="Resources\ecobase.png" />
+    <None Include="Resources\Ecopath_install.png" />
     <Content Include="Resources\ExportDatabaseHS.PNG" />
     <None Include="Resources\FilterHS off.png" />
     <None Include="Resources\ExportHS.png" />
