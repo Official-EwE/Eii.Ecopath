@@ -38,7 +38,7 @@ Imports EwEUtils.Utilities
 #End Region ' Imports
 
 ' Set to non-zero to enable license validation using whichever plug-in we decide to use
-#Const USE_LICENSE = 1
+#Const USE_LICENSE = 0
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -581,7 +581,7 @@ Public Class cDotSpatialUtils
                 g_bValid = g_lic.IsLicensed()
             End If
 #Else
-            g_bValid = (cDateUtils.StartTime < cDotSpatialUtils.ExpiryDate)
+            g_bValid = (cDateUtils.StartTime < cDotSpatialUtils.ExpiryDate(core))
 #End If
             g_bValidated = True
         End If
