@@ -3227,14 +3227,24 @@ Public Class frmEwE6
         If Not Me.Core.SaveChanges(False) Then Return
 
         Try
-            Dim strPath As String = Path.ChangeExtension(dbds.ToString, ".eiixml")
+            Dim strFileName As String = Path.ChangeExtension(dbds.ToString, ".eiixml")
+
+            If (File.Exists(strFileName)) Then
+                Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName),
+                                                 eCoreComponentType.DataSource, eMessageType.DataValidation,
+                                                 eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                fmsg.Reply = eMessageReply.NO
+                Me.Core.Messages.SendMessage(fmsg)
+                If fmsg.Reply = eMessageReply.NO Then Return
+            End If
+
             ds = cDataSourceFactory.Create(eDataSourceTypes.EIIXML)
-            If DirectCast(ds, cEIIXMLDataSource).SaveFromDB(db, strPath) Then
-                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXPORT_SUCCESS, strPath),
+            If DirectCast(ds, cEIIXMLDataSource).SaveFromDB(db, strFileName) Then
+                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXPORT_SUCCESS, strFileName),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                msg.Hyperlink = Path.GetDirectoryName(strPath)
+                msg.Hyperlink = Path.GetDirectoryName(strFileName)
             Else
-                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXPORT_SUCCESS, strPath),
+                msg = New cMessage(cStringUtils.Localize(My.Resources.STATUS_EXPORT_SUCCESS, strFileName),
                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             End If
             Me.Core.Messages.SendMessage(msg)
