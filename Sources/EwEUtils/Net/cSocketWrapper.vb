@@ -190,18 +190,12 @@ Namespace NetUtilities
 
             ' Configure socket for use with IPv6
             If Socket.OSSupportsIPv6 Then
-                s = New Socket(AddressFamily.InterNetwork, _
-                               SocketType.Stream, _
-                               ProtocolType.Tcp)
+                s = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
 
                 ' After http://forum.soft32.com/windows/Socket-problem-migrating-Vista-ftopict363802.html
-                s.SetSocketOption(SocketOptionLevel.IPv6, _
-                                  DirectCast(27, SocketOptionName), _
-                                  0)
+                s.SetSocketOption(SocketOptionLevel.IPv6, DirectCast(27, SocketOptionName), 0)
             Else
-                s = New Socket(AddressFamily.InterNetwork, _
-                               SocketType.Stream, _
-                               ProtocolType.Tcp)
+                s = New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
             End If
             Return s
 
