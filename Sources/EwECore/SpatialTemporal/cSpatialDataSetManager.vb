@@ -975,6 +975,7 @@ Namespace SpatialData
             Dim xnDetails As XmlNode = Nothing
             Dim xaDataset As XmlAttribute = Nothing
             Dim bMustSave As Boolean = bExport
+            Dim nDataset As Integer = 0
             Dim bSuccess As Boolean = True
 
             ' Create directory
@@ -987,7 +988,10 @@ Namespace SpatialData
 
             For Each ds As ISpatialDataSet In Me.m_lAvailable
 
+                nDataset += 1
+
                 If (bExport) Then
+                    Me.SendProgress(cStringUtils.Localize(My.Resources.CoreMessages.EXPORT_PROGRESS_DATASET, ds.CustomName), CInt(100 * nDataset / Me.m_lAvailable.Count))
                     ds = ds.ExportTo(Path.GetDirectoryName(strFile))
                 ElseIf Me.IsVirtual(ds) Then
                     ds = Nothing
@@ -1026,6 +1030,10 @@ Namespace SpatialData
 
             Next
 
+            If (bExport) Then
+                Me.SendProgress("", 100)
+            End If
+
             ' Save
             'Me.m_fswSpy.EnableRaisingEvents = False
             Try
@@ -1040,6 +1048,19 @@ Namespace SpatialData
             Return bSuccess
 
         End Function
+
+        Private Sub SendProgress(strMessage As String, nProgress As Integer)
+            Dim state As eProgressState = eProgressState.Running
+            If (nProgress = 0) Then state = eProgressState.Start
+            If (nProgress = 100) Then state = eProgressState.Finished
+            Dim msg As New cProgressMessage(state, 100.0!, CSng(nProgress), strMessage)
+            msg.Source = eCoreComponentType.External
+            Try
+                Me.m_core.Messages.SendMessage(msg)
+            Catch ex As Exception
+
+            End Try
+        End Sub
 
 #End Region ' Internals
 

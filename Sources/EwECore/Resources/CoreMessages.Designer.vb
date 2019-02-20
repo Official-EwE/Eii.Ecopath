@@ -1409,6 +1409,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Exporting dataset {0}.
+        '''</summary>
+        Public Shared ReadOnly Property EXPORT_PROGRESS_DATASET() As String
+            Get
+                Return ResourceManager.GetString("EXPORT_PROGRESS_DATASET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fit to Time Series aborted..
         '''</summary>
         Public Shared ReadOnly Property F2TS_ABORTED() As String

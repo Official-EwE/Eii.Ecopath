@@ -1415,4 +1415,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="VARIABLE_VALIDATION_FAILED_TOOLONG" xml:space="preserve">
     <value>Text cannot exceed {0} characters</value>
   </data>
+  <data name="EXPORT_PROGRESS_DATASET" xml:space="preserve">
+    <value>Exporting dataset {0}</value>
+  </data>
 </root>

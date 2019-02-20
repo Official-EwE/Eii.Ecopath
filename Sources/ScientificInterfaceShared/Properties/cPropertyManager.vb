@@ -72,7 +72,7 @@ Namespace Properties
         ''' <param name="core">Core instance providing property data.</param>
         ''' <param name="so">Threading <see cref="SynchronizationContext"/>.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, _
+        Public Sub New(ByVal core As cCore,
                        ByVal so As SynchronizationContext)
 
             'Sanity checks
