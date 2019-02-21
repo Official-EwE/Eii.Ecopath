@@ -116,20 +116,31 @@ Namespace SystemUtilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Returns if an internet connection can be detected.
         ''' </summary>
         ''' <returns>True if an internet connection has been detected.</returns>
         ''' <remarks>
+        ''' <para>
+        ''' This code checks a few popular and predictable domains. The moment one can be
+        ''' contacted, the function returns true. If all fail, alas, you'll have to do 
+        ''' momentarily without the big bad world out there.
+        ''' </para>
+        ''' <para>
         ''' For original article, see http://stackoverflow.com/questions/8800119/check-internet-connectivity.
+        ''' </para>
         ''' </remarks>
         ''' -----------------------------------------------------------------------
         Public Shared Function IsConnectedToInternet() As Boolean
             Try
-                Using client As New WebClient()
-                    Using stream As IDisposable = client.OpenRead("http://www.google.com")
-                        Return True
+                If My.Computer.Network.IsAvailable Then
+                    Using client As New WebClient()
+                        For Each uri As String In New String() {"http://google.com", "http://ecopath.org", "http://noaa.gov", "http://gov.cn"}
+                            Using stream As IDisposable = client.OpenRead(uri)
+                                Return True
+                            End Using
+                        Next
                     End Using
-                End Using
+                End If
             Catch
                 Return False
             End Try
