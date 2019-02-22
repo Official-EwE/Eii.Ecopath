@@ -143,7 +143,7 @@ Namespace DataSources
 
                 Case eDataSourceTypes.EcoBase
 
-                    If cSystemUtils.IsConnectedToInternet Then
+                    If cSystemUtils.IsConnectedToInternet("http://ecobase.ecopath.org") Then
                         comp = cEwEDatabase.eCompatibilityTypes.Importable
                         access = eDatasourceAccessType.Success
                     Else

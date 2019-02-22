@@ -44,7 +44,7 @@ Namespace Controls.Map.Layers
         Private Sub InitializeComponent()
             Me.m_cmbGroups = New System.Windows.Forms.ComboBox()
             Me.m_lblFleet = New System.Windows.Forms.Label()
-            Me.m_btnLayerDefault = New System.Windows.Forms.Button()
+            Me.m_btnComputeCap = New System.Windows.Forms.Button()
             Me.Label1 = New System.Windows.Forms.Label()
             Me.SuspendLayout()
             '
@@ -70,16 +70,16 @@ Namespace Controls.Map.Layers
             Me.m_lblFleet.TabIndex = 7
             Me.m_lblFleet.Text = "&Group:"
             '
-            'm_btnLayerDefault
+            'm_btnComputeCap
             '
-            Me.m_btnLayerDefault.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_btnComputeCap.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnLayerDefault.Location = New System.Drawing.Point(68, 178)
-            Me.m_btnLayerDefault.Name = "m_btnLayerDefault"
-            Me.m_btnLayerDefault.Size = New System.Drawing.Size(127, 23)
-            Me.m_btnLayerDefault.TabIndex = 11
-            Me.m_btnLayerDefault.Text = "&Refresh"
-            Me.m_btnLayerDefault.UseVisualStyleBackColor = True
+            Me.m_btnComputeCap.Location = New System.Drawing.Point(68, 178)
+            Me.m_btnComputeCap.Name = "m_btnComputeCap"
+            Me.m_btnComputeCap.Size = New System.Drawing.Size(127, 23)
+            Me.m_btnComputeCap.TabIndex = 11
+            Me.m_btnComputeCap.Text = "&Recompute"
+            Me.m_btnComputeCap.UseVisualStyleBackColor = True
             '
             'Label1
             '
@@ -93,7 +93,7 @@ Namespace Controls.Map.Layers
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-            Me.Controls.Add(Me.m_btnLayerDefault)
+            Me.Controls.Add(Me.m_btnComputeCap)
             Me.Controls.Add(Me.Label1)
             Me.Controls.Add(Me.m_cmbGroups)
             Me.Controls.Add(Me.m_lblFleet)
@@ -102,7 +102,7 @@ Namespace Controls.Map.Layers
             Me.Controls.SetChildIndex(Me.m_lblFleet, 0)
             Me.Controls.SetChildIndex(Me.m_cmbGroups, 0)
             Me.Controls.SetChildIndex(Me.Label1, 0)
-            Me.Controls.SetChildIndex(Me.m_btnLayerDefault, 0)
+            Me.Controls.SetChildIndex(Me.m_btnComputeCap, 0)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -110,7 +110,7 @@ Namespace Controls.Map.Layers
         Private WithEvents m_cmbGroups As System.Windows.Forms.ComboBox
         Private WithEvents m_lblFleet As System.Windows.Forms.Label
         Friend WithEvents Label1 As System.Windows.Forms.Label
-        Private WithEvents m_btnLayerDefault As System.Windows.Forms.Button
+        Private WithEvents m_btnComputeCap As System.Windows.Forms.Button
     End Class
 
 End Namespace

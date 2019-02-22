@@ -21,6 +21,7 @@
 
 Option Strict On
 Imports System
+Imports System.Collections.Generic
 Imports System.Diagnostics
 Imports System.Globalization
 Imports System.IO
@@ -118,6 +119,7 @@ Namespace SystemUtilities
         ''' <summary>
         ''' Returns if an internet connection can be detected.
         ''' </summary>
+        ''' <param name="url">The URL to test.</param>
         ''' <returns>True if an internet connection has been detected.</returns>
         ''' <remarks>
         ''' <para>
@@ -130,11 +132,17 @@ Namespace SystemUtilities
         ''' </para>
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function IsConnectedToInternet() As Boolean
+        Public Shared Function IsConnectedToInternet(Optional url As String = "") As Boolean
             Try
+                Dim links As New List(Of String)
+                If (String.IsNullOrWhiteSpace(url)) Then
+                    links.AddRange(New String() {"http://google.com", "http://ecopath.org", "http://noaa.gov", "http://gov.cn"})
+                Else
+                    links.Add(url)
+                End If
                 If My.Computer.Network.IsAvailable Then
                     Using client As New WebClient()
-                        For Each uri As String In New String() {"http://google.com", "http://ecopath.org", "http://noaa.gov", "http://gov.cn"}
+                        For Each uri As String In links
                             Using stream As IDisposable = client.OpenRead(uri)
                                 Return True
                             End Using
