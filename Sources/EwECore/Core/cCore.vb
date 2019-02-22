@@ -7725,7 +7725,6 @@ Public Class cCore
 
     End Property
 
-
     Public ReadOnly Property CapacityMapInteractionManager() As cEcospaceEnviroResponseManager
         Get
             Return Me.m_mapInteractionManager
@@ -11732,6 +11731,33 @@ Public Class cCore
 
 #End Region ' Advection
 
+#Region " Foraging Capacity "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Recalculate Ecospace foraging capacity.
+    ''' </summary>
+    ''' <param name="iGroup">The group to calculate capacity for. Set this value to 0 or less to 
+    ''' calculate capacity for all groups.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub RecomputeEcospaceForagingCapacity(Optional iGroup As Integer = -1)
+        If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return
+        Try
+            Dim iMin As Integer = If(iGroup <= 0, 1, Math.Min(1, Math.Max(Me.nLivingGroups, iGroup)))
+            Dim iMax As Integer = If(iGroup <= 0, Me.nLivingGroups, Math.Min(1, Math.Max(Me.nLivingGroups, iGroup)))
+            For iGroup = iMin To iMax
+                Me.m_EcoSpaceData.isGroupHabCapChanged(iGroup) = True
+            Next
+            Me.m_EcoSpaceData.isCapacityChanged = True
+            Me.m_Ecospace.SetHabCap()
+            Me.onChanged(Me.EcospaceBasemap.LayerHabitatCapacity(1))
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+#End Region ' Foraging Capacity
+
 #End Region ' Ecospace
 
 #Region " Stanza "
@@ -14414,10 +14440,16 @@ Public Class cCore
                     Me.m_publisher.AddMessage(New cMessage("Ecospace basemap changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerDepth))
                     Me.m_publisher.AddMessage(New cMessage("Ecospace habitats changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceHabitat))
 
-                    ' Depth layer changes invalidate all layer stats
-                    For Each l As cEcospaceLayer In Me.EcospaceBasemap.Layers
-                        l.Invalidate()
-                    Next
+                    If (obj.DataType = eDataTypes.EcospaceLayerDepth) Then
+                        ' Depth layer changes invalidate all layer stats
+                        For Each l As cEcospaceLayer In Me.EcospaceBasemap.Layers
+                            l.Invalidate()
+                        Next
+                    Else
+                        For Each l As cEcospaceLayer In Me.EcospaceBasemap.Layers(eVarNameFlags.LayerHabitat)
+                            l.Invalidate()
+                        Next
+                    End If
 
                 Case eDataTypes.EcospaceLayerMPA,
                      eDataTypes.EcospaceLayerImportance,
@@ -14550,6 +14582,12 @@ Public Class cCore
                         l.Invalidate()
                     Next
                     Me.m_publisher.AddMessage(New cMessage("Ecospace wind maps changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerWind))
+
+                Case eDataTypes.EcospaceLayerHabitatCapacity
+                    For Each l As cEcospaceLayer In Me.EcospaceBasemap.Layers(eVarNameFlags.LayerHabitatCapacity)
+                        l.Invalidate()
+                    Next
+                    Me.m_publisher.AddMessage(New cMessage("Ecospace computed capacity changed.", eMessageType.DataModified, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceLayerHabitatCapacity))
 
             End Select
 
