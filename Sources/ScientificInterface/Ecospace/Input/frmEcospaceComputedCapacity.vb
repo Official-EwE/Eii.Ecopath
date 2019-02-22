@@ -25,9 +25,9 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -69,6 +69,8 @@ Namespace Ecospace.Basemap
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
+
+            Me.m_tsbnRecompute.Image = SharedResources.CalculatorHS
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim pm As cPropertyManager = Me.PropertyManager
@@ -147,8 +149,15 @@ Namespace Ecospace.Basemap
             End If
         End Sub
 
-#End Region ' Events
+        Private Sub OnRecomputeCapacity(sender As Object, e As EventArgs) Handles m_tsbnRecompute.Click
+            Try
+                Me.Core.RecomputeEcospaceForagingCapacity()
+            Catch ex As Exception
 
+            End Try
+        End Sub
+
+#End Region ' Events
 
 #Region " Load Core Helpers "
 
