@@ -119,7 +119,7 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Private Sub OnSetDefaultThis(sender As System.Object, e As System.EventArgs) Handles m_btnLayerDefault.Click
+        Private Sub OnSetDefaultThis(sender As System.Object, e As System.EventArgs) Handles m_btnComputeCap.Click
             Try
                 Dim capManager As EwECore.cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
                 capManager.LayerHabitatCapacity(Me.GroupIndex).Reset()
