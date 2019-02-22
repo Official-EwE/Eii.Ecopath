@@ -59,17 +59,7 @@ Public Class cEcospaceLayerHabitatCapacity
     Public Overrides Sub Reset()
         ' JS: Oof, this is harsh
         If (Me.VarName = eVarNameFlags.LayerHabitatCapacity) Then
-            Try
-                Dim ds As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-                Dim space As cEcoSpace = Me.m_core.m_Ecospace
-                ' Invalidate all habcap information
-                ds.setHabCapGroupIsChanged(True)
-                ds.isCapacityChanged = True
-                ' Tell Ecospace to recompute invalidated habcap
-                space.SetHabCap()
-            Catch ex As Exception
-                cLog.Write(ex)
-            End Try
+            Me.m_core.RecomputeEcospaceForagingCapacity()
             ' Invalidate this layer
             Me.Invalidate()
         Else
