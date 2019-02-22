@@ -1,6 +1,8 @@
 ; Inno Setup install script for Ecopath with Ecosim
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 #include <idp.iss>
+
+; Adjust #defines in this section to select which components to include in an installer
 #define Compile64Bit 0
 #define Spinup 0
 #define SpatTemp 0
@@ -10,11 +12,11 @@
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6 Beta"
+  #define MyAppVersion "6.6 Beta 3"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6 Beta 64-bit"
+  #define MyAppVersion "6.6 Beta 3 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -30,7 +32,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.15915.0
+  VersionInfoVersion=6.6.16054.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -258,7 +260,7 @@ Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_netCDF.dll"; D
 #endif
 #if MSPTools == 1
 Source: "{#DefRoot}{#DefSrc}\EwEShell.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
-Source: "{#DefRoot}{#DefSrc}\EwEMSPPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
+Source: "{#DefRoot}{#DefSrc}\EwEMSPToolsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
 #endif
 #if FISHMIP == 1
 Source: "{#DefRoot}{#DefSrc}\GOMplugin.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -330,6 +332,7 @@ UseRelativePaths=True
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Flags: postinstall skipifsilent; Description: "Run {#MyAppName}"
+
 
 [Code]
 // https://stackoverflow.com/questions/4104011/inno-setup-verify-that-net-4-0-is-installed

@@ -414,5 +414,15 @@ namespace MEL
 		}
 
 		#endregion
-	}
+
+        public void TestPressureXfer()
+        {
+            // JS testing
+            PressureLayer p = this.pressurelayers["Artificial substrate"];
+            p.pressure.Grid.Cell[50, 40] = 42;
+            // Now see what happens in Ecospace
+            this.shell.Tick(this.pressures, this.outputs);
+
+        }
+    }
 }

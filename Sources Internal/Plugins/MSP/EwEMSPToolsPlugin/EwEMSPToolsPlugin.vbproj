@@ -208,10 +208,6 @@
       <Project>{70af596e-7d27-4d39-bde7-89d4525bd60f}</Project>
       <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwEMSPShell\EwEMSPShell.vbproj">
-      <Project>{ddc5d15f-63f4-4b9d-ad24-a69d1d91c243}</Project>
-      <Name>EwEMSPShell</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\EII.png" />
