@@ -914,8 +914,6 @@ Public Class cEcospaceBasemap
             Case eVarNameFlags.LayerHabitat
                 Return Me.m_core.m_EcoSpaceData.PHabType
             Case eVarNameFlags.LayerHabitatCapacity
-                ' Just in case, may not be needed
-                Me.m_core.m_Ecospace.SetHabCap()
                 Return Me.m_core.m_EcoSpaceData.HabCap
             Case eVarNameFlags.LayerHabitatCapacityInput
                 Return Me.m_core.m_EcoSpaceData.HabCapInput
