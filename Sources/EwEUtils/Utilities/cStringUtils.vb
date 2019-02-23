@@ -32,6 +32,7 @@ Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports Microsoft.VisualBasic
 
 #End Region ' Imports
 
@@ -849,7 +850,7 @@ Namespace Utilities
             'regular expression pattern for valid email
             'addresses, allows for the following domains:
             'com,edu,info,gov,int,mil,net,org,biz,name,museum,coop,aero,pro,tv
-            Dim strPattern As String = "^[-a-zA-Z0-9][-.a-zA-Z0-9]*@[-.a-zA-Z0-9]+(\.[-.a-zA-Z0-9]+)*\." & _
+            Dim strPattern As String = "^[-a-zA-Z0-9][-.a-zA-Z0-9]*@[-.a-zA-Z0-9]+(\.[-.a-zA-Z0-9]+)*\." &
                                        "(com|edu|info|gov|int|mil|net|org|biz|name|museum|coop|aero|pro|tv|xxx|[a-zA-Z]{2})$"
             Dim regexCheck As New Regex(strPattern, RegexOptions.IgnorePatternWhitespace)
             Dim bIsEmailAddress As Boolean = False
@@ -936,7 +937,7 @@ Namespace Utilities
 
         End Function
 
-        Private Shared CSV_SEPARATORCHARS As Char() = New Char() {","c, " "c}
+        Private Shared CSV_SEPARATORCHARS As Char() = New Char() {","c, " "c, ControlChars.Tab}
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -1575,6 +1576,29 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a scientific name to genus + species, taking into account that 
+        ''' some species classifiers may contain spaces.
+        ''' </summary>
+        ''' <param name="scientificName">The scientific name to split.</param>
+        ''' <param name="genus">The genus part to split into.</param>
+        ''' <param name="species">The species part to split into.</param>
+        ''' -------------------------------------------------------------------
+        Public Shared Sub ScientificNameToGenusSpecies(scientificName As String, ByRef genus As String, ByRef species As String)
+
+            scientificName = scientificName.Trim()
+
+            Dim i As Integer = scientificName.IndexOfAny(CSV_SEPARATORCHARS)
+            If i > 1 Then
+                genus = scientificName.Substring(0, i)
+                species = scientificName.Substring(i + 1).Trim ' Just in case there are multiple spaces
+            Else
+                genus = scientificName
+                species = ""
+            End If
+
+        End Sub
 
 #Region " Date parsing "
 
