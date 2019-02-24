@@ -173,11 +173,12 @@ Namespace Ecospace.Basemap
             ' Clean-up
             Me.RemoveAllLayers()
 
-            Me.AddData(eVarNameFlags.LayerHabitatCapacity)
-            Me.AddData(eVarNameFlags.LayerDepth)
-            Me.AddData(eVarNameFlags.LayerHabitatCapacityInput)
-            Me.AddData(eVarNameFlags.LayerDriver)
-            Me.AddData(eVarNameFlags.LayerHabitat)
+            Me.AddData(eVarNameFlags.LayerHabitatCapacity, False)
+            Me.AddData(eVarNameFlags.LayerDepth, False)
+            Me.AddData(eVarNameFlags.LayerExclusion, False)
+            Me.AddData(eVarNameFlags.LayerHabitatCapacityInput, False)
+            Me.AddData(eVarNameFlags.LayerDriver, False)
+            Me.AddData(eVarNameFlags.LayerHabitat, False)
 
             Me.m_ucLayers.UnlockUpdates()
 
