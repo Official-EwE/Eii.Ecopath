@@ -297,9 +297,18 @@ Public Class cEcosimMonteCarlo
 
             'set if a parameter can be varied
             'redimVariables() needs m_isVariable(group,parameter) to be set before it is called
+            ReDim m_isEnabled(Me.NumParams())
+            Me.m_isEnabled(eMCParams.Biomass) = True
+            Me.m_isEnabled(eMCParams.BA) = True
+            Me.m_isEnabled(eMCParams.BaBi) = True
+            Me.m_isEnabled(eMCParams.PB) = True
+            Me.m_isEnabled(eMCParams.QB) = True
+            Me.m_isEnabled(eMCParams.EE) = True
+            Me.m_isEnabled(eMCParams.Landings) = False
+            Me.m_isEnabled(eMCParams.Discards) = False
+            Me.m_isEnabled(eMCParams.Diets) = False
 
             Me.maxEcopathTries = MAX_ECOPATH_TRIES
-            Me.setIsVariable()
 
             Me.redimVariables()
             m_pluginmanager = Me.m_core.PluginManager
@@ -370,35 +379,8 @@ Public Class cEcosimMonteCarlo
     ''' Set the isVariable(group,parameter) boolean flag
     ''' </summary>
     ''' <remarks>Can the MonteCarlo vary an Ecopath parameter </remarks>
-    Private Sub setIsVariable()
-
-        ReDim m_isEnabled(Me.NumParams())
-        Me.m_isEnabled(eMCParams.Biomass) = True
-        Me.m_isEnabled(eMCParams.BA) = True
-        Me.m_isEnabled(eMCParams.BaBi) = True
-        Me.m_isEnabled(eMCParams.PB) = True
-        Me.m_isEnabled(eMCParams.QB) = True
-        Me.m_isEnabled(eMCParams.EE) = True
-        Me.m_isEnabled(eMCParams.Landings) = False
-        Me.m_isEnabled(eMCParams.Discards) = False
-        Me.m_isEnabled(eMCParams.Diets) = False
-
-        ReDim m_isVariableItem(m_core.nGroups, Me.NumParams())
-
-        For iGrp As Integer = 1 To m_core.nGroups
-
-            Me.m_isVariableItem(iGrp, eMCParams.Biomass) = Not (Me.m_ecopath.missing(iGrp, 1) Or Me.isStanzaGroupVariable(iGrp, eMCParams.Biomass))
-            Me.m_isVariableItem(iGrp, eMCParams.BA) = (Me.m_epdata.BAInput(iGrp) <> 0) ' Can vary BA on estimated biomasses!
-            Me.m_isVariableItem(iGrp, eMCParams.BaBi) = (Me.m_epdata.BaBi(iGrp) <> 0)
-            Me.m_isVariableItem(iGrp, eMCParams.PB) = Not Me.m_ecopath.missing(iGrp, 2)
-            Me.m_isVariableItem(iGrp, eMCParams.QB) = (Me.m_epdata.QBinput(iGrp) > 0) And (Not Me.isStanzaGroupVariable(iGrp, eMCParams.QB))
-            Me.m_isVariableItem(iGrp, eMCParams.EE) = (Not Me.m_ecopath.missing(iGrp, 4)) And (iGrp <= Me.m_epdata.NumLiving)
-
-        Next
-
-        ' Not necessary to remember isVariable for Catches, just check PMeanLandings / PMeanDiscards when enabled
-        ' Not necessary to remember isVariable for Diets, always perturb diets when enabled
-
+    Public Sub SetIsVariable(iGrp As Integer, parm As eMCParams, isVariable As Boolean)
+        Me.m_isVariableItem(iGrp, parm) = isVariable
     End Sub
 
     Public Sub Clear()
@@ -1220,7 +1202,9 @@ Public Class cEcosimMonteCarlo
 
     End Function
 
-    Private Sub NormalizeDiet(ByRef DietMatrix(,) As Single)
+    Private Sub NormalizeDiet(ByRef dcRef(,) As Single)
+
+
         Dim dietsum As Single
         Dim tol As Single = 0.001
         Dim bwarning As Boolean = False
@@ -1230,13 +1214,16 @@ Public Class cEcosimMonteCarlo
             If m_epdata.PP(iPred) < 1 Then
                 dietsum = 0
                 For iPrey As Integer = 0 To m_epdata.NumGroups
-                    dietsum = dietsum + DietMatrix(iPred, iPrey)
+                    dietsum = dietsum + dcRef(iPred, iPrey)
                 Next
                 'If dietsum <> 0 And Math.Abs(dietsum - 1) > tol Then
                 If dietsum <> 0 Then
                     bwarning = True
                     For iPrey As Integer = 0 To m_epdata.NumGroups
-                        DietMatrix(iPred, iPrey) = DietMatrix(iPred, iPrey) / dietsum
+                        If (PMeanDC(iPred, iPrey) > 0) Then
+                            ' Make sure that original 0 diets stay 0, and that original non-zero diets stay non-zero!
+                            dcRef(iPred, iPrey) = Math.Max(1.0E-10!, dcRef(iPred, iPrey) / dietsum)
+                        End If
                     Next
                     'm_Data.DietsModified = True
                 End If
@@ -1373,6 +1360,8 @@ Public Class cEcosimMonteCarlo
             ReDim ParLimitLanding(1, m_core.nFleets, m_core.nGroups)
             ReDim ParLimitDiscard(1, m_core.nFleets, m_core.nGroups)
             ReDim ParLimitDC(1, m_core.nGroups, m_core.nGroups)
+
+            ReDim m_isVariableItem(m_core.nGroups, Me.NumParams())
 
             For iGroup As Integer = 1 To m_core.nGroups
                 For iVar As Integer = 1 To Me.NumParams
