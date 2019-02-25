@@ -43,7 +43,7 @@ Public Class cMonteCarloManager
 
 #Region "Private variables"
 
-    Private m_lstGrps As List(Of cMonteCarloGroup)
+    Private m_groups As List(Of cMonteCarloGroup)
     Private m_core As cCore
     Private m_mc As cEcosimMonteCarlo
 
@@ -110,12 +110,12 @@ Public Class cMonteCarloManager
 
     Public Sub Clear()
         Try
-            If Me.m_lstGrps Is Nothing Then Exit Sub
-            For Each MCgrp As cMonteCarloGroup In Me.m_lstGrps
+            If Me.m_groups Is Nothing Then Exit Sub
+            For Each MCgrp As cMonteCarloGroup In Me.m_groups
                 MCgrp.Clear()
             Next
-            Me.m_lstGrps.Clear()
-            Me.m_lstGrps = Nothing
+            Me.m_groups.Clear()
+            Me.m_groups = Nothing
 
             Me.m_mc.dlgMonteCarloCompletedHandler = Nothing
             Me.m_mc.dlgEcopathIterationHandler = Nothing
@@ -235,8 +235,28 @@ Public Class cMonteCarloManager
     ''' Load the current data into the MonteCarlo parameters
     ''' </summary>
     Public Sub Load()
+
         m_mc.Init()
         m_mc.initForRun()
+
+        ' Let MC know which variables can be varied
+        ' MC used to figure this out, but the MC manager does a much more thorough job
+        ' Ideally both tools would draw from the same base logic. Using reviously set status 
+        ' flags is not the neatest way to inform core models how to behave, but for now this
+        ' fixes bugs where variables were being varied while they should not have.
+
+        For igroup As Integer = 1 To Me.m_core.nGroups
+            Dim grp As cMonteCarloGroup = Me.Groups(igroup)
+            Me.m_mc.SetIsVariable(igroup, eMCParams.Biomass, IsMCVariable(grp, eVarNameFlags.mcB))
+            Me.m_mc.SetIsVariable(igroup, eMCParams.PB, IsMCVariable(grp, eVarNameFlags.mcPB))
+            Me.m_mc.SetIsVariable(igroup, eMCParams.QB, IsMCVariable(grp, eVarNameFlags.mcQB))
+            Me.m_mc.SetIsVariable(igroup, eMCParams.BA, IsMCVariable(grp, eVarNameFlags.mcBA))
+            Me.m_mc.SetIsVariable(igroup, eMCParams.BaBi, IsMCVariable(grp, eVarNameFlags.mcBaBi))
+            Me.m_mc.SetIsVariable(igroup, eMCParams.EE, IsMCVariable(grp, eVarNameFlags.mcEE))
+            ' Cannot disable diet perturbation per group
+            'Me.m_mc.SetIsVariable(iGroup, eMCParams.Diets, IsMCVariable(grp, eVarNameFlags.mcDC))
+
+        Next
     End Sub
 
 #End Region ' Running
@@ -696,7 +716,7 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Groups(ByVal iGroup As Integer) As cMonteCarloGroup
         Get
-            Return m_lstGrps.Item(iGroup - 1)
+            Return m_groups.Item(iGroup - 1)
         End Get
     End Property
 
@@ -883,7 +903,7 @@ Public Class cMonteCarloManager
             Dim m_esdata As cEcosimDatastructures = m_core.m_EcoSimData
             Dim iGroup As Integer = 0
 
-            For Each grp As cMonteCarloGroup In m_lstGrps
+            For Each grp As cMonteCarloGroup In m_groups
 
                 grp.AllowValidation = False
 
@@ -1084,7 +1104,7 @@ Public Class cMonteCarloManager
         End If
 
         If (var = eVarNameFlags.DietComp) Then
-            status = if(grp.IsConsumer, eStatusFlags.OK, eStatusFlags.NotEditable Or eStatusFlags.Null)
+            status = If(grp.IsConsumer, eStatusFlags.OK, eStatusFlags.NotEditable Or eStatusFlags.Null)
         End If
 
         ' Any null or not editable status flag should be blocked out in the MCMC interface
@@ -1100,14 +1120,19 @@ Public Class cMonteCarloManager
 
     End Function
 
+    Private Function IsMCVariable(grp As cMonteCarloGroup, var As eVarNameFlags) As Boolean
+        Dim status As eStatusFlags = grp.GetStatus(var)
+        Return (status And eStatusFlags.Null) = 0
+    End Function
+
     Private Sub InitGroups()
 
         Try
-            m_lstGrps = Nothing
-            m_lstGrps = New List(Of cMonteCarloGroup)
+            m_groups = Nothing
+            m_groups = New List(Of cMonteCarloGroup)
 
             For igrp As Integer = 1 To m_core.nGroups
-                m_lstGrps.Add(New cMonteCarloGroup(m_core, m_core.m_EcoPathData.GroupDBID(igrp)))
+                m_groups.Add(New cMonteCarloGroup(m_core, m_core.m_EcoPathData.GroupDBID(igrp)))
             Next
 
         Catch ex As Exception
@@ -1126,7 +1151,7 @@ Public Class cMonteCarloManager
 
         Try
 
-            For Each MCGroup As cMonteCarloGroup In m_lstGrps
+            For Each MCGroup As cMonteCarloGroup In m_groups
                 'convert the Database ID into an iGroup
                 MCGroup.Index = Array.IndexOf(m_core.m_EcoPathData.GroupDBID, MCGroup.DBID)
                 MCGroup.Resize()
