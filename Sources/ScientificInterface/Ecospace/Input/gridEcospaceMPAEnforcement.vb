@@ -145,21 +145,29 @@ Namespace Ecospace
         Protected Overrides Function OnCellValueChanged(p As Position, cell As ICellVirtual) As Boolean
 
             If (Me.m_bInUpdate) Then Return True
+            Me.m_bInUpdate = True
 
             Dim fleet As cEcospaceFleetInput = Me.Core.EcospaceFleetInputs(p.Row)
 
-            Select Case p.Column
+            Me.Core.SetBatchLock(cCore.eBatchLockType.Update)
+            Try
+                Select Case p.Column
 
-                Case eColumnTypes.All
-                    For iMPA As Integer = 1 To Me.Core.nMPAs
+                    Case eColumnTypes.All
+                        For iMPA As Integer = 1 To Me.Core.nMPAs
+                            fleet.MPAFishery(iMPA) = (CBool(cell.GetValue(p)) = False)
+                        Next
+
+                    Case Else
+                        Dim iMPA As Integer = p.Column - eColumnTypes.All
                         fleet.MPAFishery(iMPA) = (CBool(cell.GetValue(p)) = False)
-                    Next
 
-                Case Else
-                    Dim iMPA As Integer = p.Column - eColumnTypes.All
-                    fleet.MPAFishery(iMPA) = (CBool(cell.GetValue(p)) = False)
-
-            End Select
+                End Select
+            Catch ex As Exception
+                cLog.Write(ex, "gridEcospaceMPAEnforcement::OnCellValueChanged col " & CStr(p.Column) & ", row " & CStr(p.Row))
+            End Try
+            Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
+            Me.m_bInUpdate = False
 
             Me.UpdateRow(p.Row)
 
