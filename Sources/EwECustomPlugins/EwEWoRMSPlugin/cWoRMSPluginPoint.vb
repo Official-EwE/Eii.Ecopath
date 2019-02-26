@@ -342,7 +342,7 @@ Public Class cWoRMSPluginPoint
 
         If (Me.m_thread IsNot Nothing) Then
             If (Me.m_client IsNot Nothing) Then
-                Me.m_client.Abort()
+                Me.m_client.Close()
                 Me.m_client = Nothing
             End If
             Me.m_thread = Nothing
@@ -382,31 +382,31 @@ Public Class cWoRMSPluginPoint
             ' Search aborted, is ok. 
             ' Do not tinker with searching flag because it may already have been set in the calling thread
             ' Me.m_bSearching = False
-            c.Abort()
+            c.Close()
         Catch exComm As ServiceModel.CommunicationObjectAbortedException
             ' Search was deliberately aborted: ignore this exception
         Catch exCfg As Configuration.ConfigurationException
             ' NOP
-            c.Abort()
+            c.Close()
         Catch exSoap As SoapException
             cLog.Write(exSoap, "cWoRMSPluginPoint.SearchThreaded")
             ' Send message cross-threaded
             Dim msg As New cMessage(String.Format("An error occurred communicating with the WoRMS web service: '{0}'", exSoap.Message), _
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
             Me.m_core.Messages.SendMessage(msg)
-            c.Abort()
+            c.Close()
         Catch exComm As ServiceModel.CommunicationException
             ' Too many results, or no end point (HRESULT -2146233087) ...
-            c.Abort()
+            c.Close()
             cLog.Write(exComm, "cWoRMSPluginPoint.SearchThreaded")
         Catch exTime As TimeoutException
             ' Timeout
-            c.Abort()
+            c.Close()
             cLog.Write(exTime, "cWoRMSPluginPoint.SearchThreaded")
         Catch exGeneral As Exception
             Debug.Assert(False, exGeneral.Message)
             cLog.Write(exGeneral, "cWoRMSPluginPoint.SearchThreaded")
-            c.Abort()
+            c.Close()
         Finally
             Me.m_client = Nothing
         End Try
