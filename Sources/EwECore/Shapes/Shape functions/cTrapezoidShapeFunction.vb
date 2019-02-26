@@ -61,6 +61,8 @@ Public Class cTrapezoidShapeFunction
 
             'Break the line up into segments based on the xpoints the user entered
             'The location of the trapezoid in the response function is determined by its index position in the points array
+            'Note that getIndex will return nonsense if the trapezoid X axis values are not properly ordered. This is likely
+            'to happen when a user is manually entering the four values, starting at LeftBot up to RightBot.
             Dim iSegment() As Integer = New Integer() {
                 0,
                 Me.getIndex(LeftBot, x0, RightBot, nPoints),
@@ -74,7 +76,9 @@ Public Class cTrapezoidShapeFunction
                 xpt = xVal(i)
                 'loop from the start to the end position in this segment
                 'and interpolate the y point on the line
-                For j As Integer = iSegment(i) To iSegment(i + 1) - 1
+
+                ' JS 26Feb19: prevent out of bounds errors whilst editing
+                For j As Integer = Math.Max(0, iSegment(i)) To Math.Min(nPoints - 1, iSegment(i + 1) - 1)
                     Me.m_points(j) = Me.LinearInterp(xpt, xVal(i), xVal(i + 1), yVal(i), yVal(i + 1))
                     xpt += dx
                 Next j
