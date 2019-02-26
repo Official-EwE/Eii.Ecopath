@@ -115,8 +115,10 @@ Namespace Controls
             Dim fs As IShapeFunction = Me.m_controlpanel.SelectedShapeFunction()
             If (fs Is Nothing) Then Return
 
+            Me.m_shape.LockUpdates()
             Me.m_shape.Name = Me.m_tbxName.Text
             fs.Apply(Me.m_shape)
+            Me.m_shape.UnlockUpdates()
 
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
