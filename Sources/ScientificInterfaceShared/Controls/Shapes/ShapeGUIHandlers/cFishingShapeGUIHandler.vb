@@ -35,9 +35,9 @@ Namespace Controls
     ''' handling fishing effort <see cref="cForcingFunction">forcing shapes</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(True)> _
+    <CLSCompliant(True)>
     Public MustInherit Class cFishingBaseShapeGUIHandler
-        : Inherits cForcingShapeGUIHandler
+        Inherits cForcingShapeGUIHandler
 
         Public Sub New(uic As cUIContext)
             MyBase.New(uic)
@@ -52,12 +52,12 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overrides Function SupportCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes) As Boolean
             Select Case cmd
-                Case eShapeCommandTypes.SetToZero, _
-                     eShapeCommandTypes.SetToValue, _
+                Case eShapeCommandTypes.SetToZero,
+                     eShapeCommandTypes.SetToValue,
                      eShapeCommandTypes.SetToEcopathBaseline
                     Return True
 
-                Case eShapeCommandTypes.Reset, _
+                Case eShapeCommandTypes.Reset,
                      eShapeCommandTypes.ResetAll
                     Return True
 
@@ -91,9 +91,9 @@ Namespace Controls
                 Case eShapeCommandTypes.Modify
                     Return bHasSingleSelection
 
-                Case eShapeCommandTypes.Reset, _
-                     eShapeCommandTypes.SetToZero, _
-                     eShapeCommandTypes.SetToValue, _
+                Case eShapeCommandTypes.Reset,
+                     eShapeCommandTypes.SetToZero,
+                     eShapeCommandTypes.SetToValue,
                      eShapeCommandTypes.SetToEcopathBaseline
                     Return bHasSelection
 
@@ -113,8 +113,8 @@ Namespace Controls
         ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shapes</see> to apply the command to.</param>
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes, _
-                    Optional ByVal ashapes As EwECore.cShapeData() = Nothing, _
+        Public Overrides Sub ExecuteCommand(ByVal cmd As cShapeGUIHandler.eShapeCommandTypes,
+                    Optional ByVal ashapes As EwECore.cShapeData() = Nothing,
                     Optional ByVal data As Object = Nothing)
 
             If (ashapes Is Nothing) Then ashapes = Me.SelectedShapes
@@ -137,7 +137,7 @@ Namespace Controls
             End Select
         End Sub
 
-        Protected Overrides Sub ResetShapes(ByVal ashapes As cShapeData(), _
+        Protected Overrides Sub ResetShapes(ByVal ashapes As cShapeData(),
                 Optional ByVal sDefaultValue As Single = 1.0!)
 
             Dim sm As cBaseShapeManager = Nothing

@@ -186,37 +186,37 @@
   <data name="&gt;&gt;m_lblPoolCode.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="m_lblType.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblTSType.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblType.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_lblTSType.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_lblType.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblTSType.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 26</value>
   </data>
-  <data name="m_lblType.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblTSType.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 27</value>
   </data>
-  <data name="m_lblType.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblTSType.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="m_lblType.Text" xml:space="preserve">
+  <data name="m_lblTSType.Text" xml:space="preserve">
     <value>&amp;Type:</value>
   </data>
-  <data name="m_lblType.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_lblTSType.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_lblType.Name" xml:space="preserve">
-    <value>m_lblType</value>
+  <data name="&gt;&gt;m_lblTSType.Name" xml:space="preserve">
+    <value>m_lblTSType</value>
   </data>
-  <data name="&gt;&gt;m_lblType.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblTSType.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblType.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblTSType.Parent" xml:space="preserve">
     <value>m_tlpAll</value>
   </data>
-  <data name="&gt;&gt;m_lblType.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblTSType.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_txtName.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -226,7 +226,7 @@
     <value>79, 3</value>
   </data>
   <data name="m_txtName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 20</value>
+    <value>243, 20</value>
   </data>
   <data name="m_txtName.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -243,28 +243,28 @@
   <data name="&gt;&gt;m_txtName.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_cmbType.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_cmbTSType.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_cmbType.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_cmbTSType.Location" type="System.Drawing.Point, System.Drawing">
     <value>79, 29</value>
   </data>
-  <data name="m_cmbType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 21</value>
+  <data name="m_cmbTSType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>243, 21</value>
   </data>
-  <data name="m_cmbType.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_cmbTSType.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;m_cmbType.Name" xml:space="preserve">
-    <value>m_cmbType</value>
+  <data name="&gt;&gt;m_cmbTSType.Name" xml:space="preserve">
+    <value>m_cmbTSType</value>
   </data>
-  <data name="&gt;&gt;m_cmbType.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbTSType.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_cmbType.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbTSType.Parent" xml:space="preserve">
     <value>m_tlpAll</value>
   </data>
-  <data name="&gt;&gt;m_cmbType.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_cmbTSType.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_cmbPoolCode.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -274,7 +274,7 @@
     <value>79, 56</value>
   </data>
   <data name="m_cmbPoolCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 21</value>
+    <value>243, 21</value>
   </data>
   <data name="m_cmbPoolCode.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -331,7 +331,7 @@
     <value>79, 110</value>
   </data>
   <data name="m_txtWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 20</value>
+    <value>243, 20</value>
   </data>
   <data name="m_txtWeight.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -355,7 +355,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblValues.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 192</value>
+    <value>3, 244</value>
   </data>
   <data name="m_lblValues.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 6, 3, 0</value>
@@ -391,7 +391,7 @@
     <value>Fill</value>
   </data>
   <data name="m_lblNoOfPoints.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 353</value>
+    <value>3, 521</value>
   </data>
   <data name="m_lblNoOfPoints.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 24</value>
@@ -424,7 +424,7 @@
     <value>3, 0</value>
   </data>
   <data name="m_lblNumPoints.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 24</value>
+    <value>168, 24</value>
   </data>
   <data name="m_lblNumPoints.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -460,7 +460,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnSetNoOfYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 0</value>
+    <value>174, 0</value>
   </data>
   <data name="m_btnSetNoOfYears.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -493,7 +493,7 @@
     <value>Fill</value>
   </data>
   <data name="m_tlpNoOfYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>76, 353</value>
+    <value>76, 521</value>
   </data>
   <data name="m_tlpNoOfYears.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -502,7 +502,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpNoOfYears.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 24</value>
+    <value>249, 24</value>
   </data>
   <data name="m_tlpNoOfYears.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -532,7 +532,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_grid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 161</value>
+    <value>243, 277</value>
   </data>
   <data name="m_grid.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -541,7 +541,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.gridShapeValue, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.gridShapeValue, ScientificInterfaceShared, Version=6.6.16067.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>pnlValueGrid</value>
@@ -550,10 +550,10 @@
     <value>0</value>
   </data>
   <data name="pnlValueGrid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>79, 189</value>
+    <value>79, 241</value>
   </data>
   <data name="pnlValueGrid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 161</value>
+    <value>243, 277</value>
   </data>
   <data name="pnlValueGrid.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -580,7 +580,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblViewAs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 159</value>
+    <value>3, 211</value>
   </data>
   <data name="m_lblViewAs.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 27</value>
@@ -616,10 +616,10 @@
     <value>Seasonal</value>
   </data>
   <data name="m_cmbViewAs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>79, 162</value>
+    <value>79, 214</value>
   </data>
   <data name="m_cmbViewAs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 21</value>
+    <value>243, 21</value>
   </data>
   <data name="m_cmbViewAs.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -676,7 +676,7 @@
     <value>79, 136</value>
   </data>
   <data name="m_txtXBase.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 20</value>
+    <value>243, 20</value>
   </data>
   <data name="m_txtXBase.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -733,7 +733,7 @@
     <value>79, 83</value>
   </data>
   <data name="m_cmbPoolCodeSec.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 21</value>
+    <value>243, 21</value>
   </data>
   <data name="m_cmbPoolCodeSec.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -750,14 +750,134 @@
   <data name="&gt;&gt;m_cmbPoolCodeSec.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
+  <data name="m_lblXMin.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblXMin.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_lblXMin.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblXMin.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 159</value>
+  </data>
+  <data name="m_lblXMin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 26</value>
+  </data>
+  <data name="m_lblXMin.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_lblXMin.Text" xml:space="preserve">
+    <value>X axis m&amp;in:</value>
+  </data>
+  <data name="m_lblXMin.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblXMin.Name" xml:space="preserve">
+    <value>m_lblXMin</value>
+  </data>
+  <data name="&gt;&gt;m_lblXMin.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblXMin.Parent" xml:space="preserve">
+    <value>m_tlpAll</value>
+  </data>
+  <data name="&gt;&gt;m_lblXMin.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="m_lblXMax.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblXMax.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_lblXMax.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblXMax.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 185</value>
+  </data>
+  <data name="m_lblXMax.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 26</value>
+  </data>
+  <data name="m_lblXMax.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_lblXMax.Text" xml:space="preserve">
+    <value>X axis m&amp;ax:</value>
+  </data>
+  <data name="m_lblXMax.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_lblXMax.Name" xml:space="preserve">
+    <value>m_lblXMax</value>
+  </data>
+  <data name="&gt;&gt;m_lblXMax.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblXMax.Parent" xml:space="preserve">
+    <value>m_tlpAll</value>
+  </data>
+  <data name="&gt;&gt;m_lblXMax.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="m_txtXMin.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_txtXMin.Location" type="System.Drawing.Point, System.Drawing">
+    <value>79, 162</value>
+  </data>
+  <data name="m_txtXMin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>243, 20</value>
+  </data>
+  <data name="m_txtXMin.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;m_txtXMin.Name" xml:space="preserve">
+    <value>m_txtXMin</value>
+  </data>
+  <data name="&gt;&gt;m_txtXMin.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_txtXMin.Parent" xml:space="preserve">
+    <value>m_tlpAll</value>
+  </data>
+  <data name="&gt;&gt;m_txtXMin.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="m_txtXMax.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_txtXMax.Location" type="System.Drawing.Point, System.Drawing">
+    <value>79, 188</value>
+  </data>
+  <data name="m_txtXMax.Size" type="System.Drawing.Size, System.Drawing">
+    <value>243, 20</value>
+  </data>
+  <data name="m_txtXMax.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;m_txtXMax.Name" xml:space="preserve">
+    <value>m_txtXMax</value>
+  </data>
+  <data name="&gt;&gt;m_txtXMax.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_txtXMax.Parent" xml:space="preserve">
+    <value>m_tlpAll</value>
+  </data>
+  <data name="&gt;&gt;m_txtXMax.ZOrder" xml:space="preserve">
+    <value>21</value>
+  </data>
   <data name="m_tlpAll.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
   </data>
   <data name="m_tlpAll.RowCount" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="m_tlpAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 377</value>
+    <value>325, 545</value>
   </data>
   <data name="m_tlpAll.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -775,13 +895,13 @@
     <value>2</value>
   </data>
   <data name="m_tlpAll.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_txtName" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbType" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblValues" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblType" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblPoolCode" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbPoolCode" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_txtWeight" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblName" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblWeight" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoOfPoints" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpNoOfYears" Row="8" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnlValueGrid" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblViewAs" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbViewAs" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblXBase" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_txtXBase" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblPoolCodeSec" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbPoolCodeSec" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_txtName" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbTSType" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblValues" Row="9" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblTSType" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblPoolCode" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbPoolCode" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_txtWeight" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblName" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblWeight" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoOfPoints" Row="10" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpNoOfYears" Row="10" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnlValueGrid" Row="9" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblViewAs" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbViewAs" Row="8" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblXBase" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_txtXBase" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblPoolCodeSec" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbPoolCodeSec" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblXMin" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblXMax" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_txtXMin" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_txtXMax" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_btnOK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>86, 395</value>
+    <value>183, 563</value>
   </data>
   <data name="m_btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -808,7 +928,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>167, 395</value>
+    <value>264, 563</value>
   </data>
   <data name="m_btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -841,7 +961,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>252, 430</value>
+    <value>349, 598</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -856,6 +976,6 @@
     <value>frmShapeValue</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.14149.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16067.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

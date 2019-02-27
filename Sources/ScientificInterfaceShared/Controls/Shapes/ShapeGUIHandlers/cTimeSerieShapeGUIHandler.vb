@@ -739,6 +739,10 @@ Namespace Controls
             Return True
         End Function
 
+        Public Overrides Function IsResponse() As Boolean
+            Return False
+        End Function
+
     End Class
 
 End Namespace

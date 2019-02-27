@@ -189,6 +189,8 @@ Namespace Controls
         Private Sub UpdateControls()
 
             Dim bHasName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxName.Text)
+
+            Me.m_cbShowExtraData.Visible = Me.m_handler.IsForcing
             Me.m_btnOk.Enabled = bHasName
 
         End Sub
