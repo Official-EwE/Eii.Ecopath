@@ -37,7 +37,7 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
     Public Class cFishingMortalityShapeGUIHandler
-        : Inherits cFishingBaseShapeGUIHandler
+        Inherits cFishingBaseShapeGUIHandler
 
         Public Sub New(uic As cUIContext)
             MyBase.New(uic)

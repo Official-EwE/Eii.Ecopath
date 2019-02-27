@@ -37,11 +37,11 @@ Namespace Controls
     ''' <see cref="cForcingFunction">forcing functions</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    <CLSCompliant(True)> _
+    <CLSCompliant(True)>
     Public Class cForcingShapeGUIHandler
-        : Inherits cShapeGUIHandler
+        Inherits cShapeGUIHandler
 
-          ''' <summary>The FF to distribute.</summary>
+        ''' <summary>The FF to distribute.</summary>
         Private m_lShapes As New List(Of cShapeData)
         ''' <summary>Shape changed core message handler.</summary>
         Private m_mhShapes As cMessageHandler = Nothing
@@ -63,9 +63,9 @@ Namespace Controls
         ''' <param name="sp"><see cref="ucSketchPad">Shape sketch pad control </see> to handle, if any.</param>
         ''' <param name="sptb"><see cref="ucSketchPadToolbar">Shape sketch pad toolbar control </see> to handle, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub Attach(ByVal stb As ucShapeToolbox, _
-                                    ByVal stbtb As ucShapeToolboxToolbar, _
-                                    ByVal sp As ucSketchPad, _
+        Public Overrides Sub Attach(ByVal stb As ucShapeToolbox,
+                                    ByVal stbtb As ucShapeToolboxToolbar,
+                                    ByVal sp As ucSketchPad,
                                     ByVal sptb As ucSketchPadToolbar)
             MyBase.Attach(stb, stbtb, sp, sptb)
             Me.UpdateShapeList()
@@ -122,7 +122,7 @@ Namespace Controls
         ''' <param name="ashapes">The <see cref="cShapeData">shape</see> to affect.</param>
         ''' <param name="sDefaultValue">The value to set.</param>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub ResetShapes(ByVal ashapes As cShapeData(), _
+        Protected Overridable Sub ResetShapes(ByVal ashapes As cShapeData(),
                 Optional ByVal sDefaultValue As Single = 1.0!)
 
             Dim sm As cBaseShapeManager = Nothing
@@ -254,20 +254,20 @@ Namespace Controls
 
             Select Case cmd
 
-                Case eShapeCommandTypes.Add, _
+                Case eShapeCommandTypes.Add,
                      eShapeCommandTypes.ResetAll
                     Return True
 
-                Case eShapeCommandTypes.Duplicate, _
-                     eShapeCommandTypes.Remove, _
+                Case eShapeCommandTypes.Duplicate,
+                     eShapeCommandTypes.Remove,
                      eShapeCommandTypes.Reset
                     Return bHasSelection
 
-                Case eShapeCommandTypes.ChangeShape, _
-                     eShapeCommandTypes.Modify, _
-                     eShapeCommandTypes.DisplayOptions, _
-                     eShapeCommandTypes.SaveAsImage, _
-                     eShapeCommandTypes.Seasonal, _
+                Case eShapeCommandTypes.ChangeShape,
+                     eShapeCommandTypes.Modify,
+                     eShapeCommandTypes.DisplayOptions,
+                     eShapeCommandTypes.SaveAsImage,
+                     eShapeCommandTypes.Seasonal,
                      eShapeCommandTypes.SetMaxValue
                     Return bHasSingleSelection
 
@@ -295,7 +295,7 @@ Namespace Controls
         ''' <param name="ashapes">The <see cref="EwECore.cShapeData">shape</see> to apply the command to.</param>
         ''' <param name="data">Optional data to accompany the command.</param>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub ExecuteCommand(ByVal cmd As eShapeCommandTypes, _
+        Public Overrides Sub ExecuteCommand(ByVal cmd As eShapeCommandTypes,
                  Optional ByVal ashapes As EwECore.cShapeData() = Nothing, Optional ByVal data As Object = Nothing)
 
             Dim cmdX As cCommand = Me.UIContext.CommandHandler.GetCommand("TrimUnusedShapeData")
@@ -612,11 +612,11 @@ Namespace Controls
             Else
                 strMessage = cStringUtils.Localize(My.Resources.PROMPT_SHAPE_DELETE_MULTIPLE, ashapes.Length)
             End If
-            fms = New cFeedbackMessage(strMessage, _
-                                       eCoreComponentType.ShapesManager, _
-                                       eMessageType.Any, _
-                                       eMessageImportance.Warning, _
-                                       eMessageReplyStyle.YES_NO, _
+            fms = New cFeedbackMessage(strMessage,
+                                       eCoreComponentType.ShapesManager,
+                                       eMessageType.Any,
+                                       eMessageImportance.Warning,
+                                       eMessageReplyStyle.YES_NO,
                                        eDataTypes.Forcing, eMessageReply.YES)
             Me.Core.Messages.SendMessage(fms, True)
             If fms.Reply = eMessageReply.NO Then Return
@@ -794,6 +794,10 @@ Namespace Controls
         End Function
 
         Public Overrides Function IsTimeSeries() As Boolean
+            Return False
+        End Function
+
+        Public Overrides Function IsResponse() As Boolean
             Return False
         End Function
 

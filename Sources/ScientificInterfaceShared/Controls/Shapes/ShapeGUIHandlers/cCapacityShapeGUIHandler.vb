@@ -187,6 +187,10 @@ Namespace Controls
 
         End Sub
 
+        Public Overrides Function IsResponse() As Boolean
+            Return True
+        End Function
+
     End Class
 
 End Namespace

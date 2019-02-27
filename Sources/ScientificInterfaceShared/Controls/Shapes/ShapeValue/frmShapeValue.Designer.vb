@@ -43,9 +43,9 @@ Partial Class frmShapeValue
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmShapeValue))
         Me.m_lblName = New System.Windows.Forms.Label()
         Me.m_lblPoolCode = New System.Windows.Forms.Label()
-        Me.m_lblType = New System.Windows.Forms.Label()
+        Me.m_lblTSType = New System.Windows.Forms.Label()
         Me.m_txtName = New System.Windows.Forms.TextBox()
-        Me.m_cmbType = New System.Windows.Forms.ComboBox()
+        Me.m_cmbTSType = New System.Windows.Forms.ComboBox()
         Me.m_cmbPoolCode = New System.Windows.Forms.ComboBox()
         Me.m_lblWeight = New System.Windows.Forms.Label()
         Me.m_txtWeight = New System.Windows.Forms.TextBox()
@@ -65,6 +65,10 @@ Partial Class frmShapeValue
         Me.m_cmbPoolCodeSec = New System.Windows.Forms.ComboBox()
         Me.m_btnOK = New System.Windows.Forms.Button()
         Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_lblXMin = New System.Windows.Forms.Label()
+        Me.m_lblXMax = New System.Windows.Forms.Label()
+        Me.m_txtXMin = New System.Windows.Forms.TextBox()
+        Me.m_txtXMax = New System.Windows.Forms.TextBox()
         Me.m_tlpAll.SuspendLayout()
         Me.m_tlpNoOfYears.SuspendLayout()
         Me.pnlValueGrid.SuspendLayout()
@@ -80,22 +84,22 @@ Partial Class frmShapeValue
         resources.ApplyResources(Me.m_lblPoolCode, "m_lblPoolCode")
         Me.m_lblPoolCode.Name = "m_lblPoolCode"
         '
-        'm_lblType
+        'm_lblTSType
         '
-        resources.ApplyResources(Me.m_lblType, "m_lblType")
-        Me.m_lblType.Name = "m_lblType"
+        resources.ApplyResources(Me.m_lblTSType, "m_lblTSType")
+        Me.m_lblTSType.Name = "m_lblTSType"
         '
         'm_txtName
         '
         resources.ApplyResources(Me.m_txtName, "m_txtName")
         Me.m_txtName.Name = "m_txtName"
         '
-        'm_cmbType
+        'm_cmbTSType
         '
-        resources.ApplyResources(Me.m_cmbType, "m_cmbType")
-        Me.m_cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_cmbType.FormattingEnabled = True
-        Me.m_cmbType.Name = "m_cmbType"
+        resources.ApplyResources(Me.m_cmbTSType, "m_cmbTSType")
+        Me.m_cmbTSType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbTSType.FormattingEnabled = True
+        Me.m_cmbTSType.Name = "m_cmbTSType"
         '
         'm_cmbPoolCode
         '
@@ -133,23 +137,27 @@ Partial Class frmShapeValue
         '
         resources.ApplyResources(Me.m_tlpAll, "m_tlpAll")
         Me.m_tlpAll.Controls.Add(Me.m_txtName, 1, 0)
-        Me.m_tlpAll.Controls.Add(Me.m_cmbType, 1, 1)
-        Me.m_tlpAll.Controls.Add(Me.m_lblValues, 0, 7)
-        Me.m_tlpAll.Controls.Add(Me.m_lblType, 0, 1)
+        Me.m_tlpAll.Controls.Add(Me.m_cmbTSType, 1, 1)
+        Me.m_tlpAll.Controls.Add(Me.m_lblValues, 0, 9)
+        Me.m_tlpAll.Controls.Add(Me.m_lblTSType, 0, 1)
         Me.m_tlpAll.Controls.Add(Me.m_lblPoolCode, 0, 2)
         Me.m_tlpAll.Controls.Add(Me.m_cmbPoolCode, 1, 2)
         Me.m_tlpAll.Controls.Add(Me.m_txtWeight, 1, 4)
         Me.m_tlpAll.Controls.Add(Me.m_lblName, 0, 0)
         Me.m_tlpAll.Controls.Add(Me.m_lblWeight, 0, 4)
-        Me.m_tlpAll.Controls.Add(Me.m_lblNoOfPoints, 0, 8)
-        Me.m_tlpAll.Controls.Add(Me.m_tlpNoOfYears, 1, 8)
-        Me.m_tlpAll.Controls.Add(Me.pnlValueGrid, 1, 7)
-        Me.m_tlpAll.Controls.Add(Me.m_lblViewAs, 0, 6)
-        Me.m_tlpAll.Controls.Add(Me.m_cmbViewAs, 1, 6)
+        Me.m_tlpAll.Controls.Add(Me.m_lblNoOfPoints, 0, 10)
+        Me.m_tlpAll.Controls.Add(Me.m_tlpNoOfYears, 1, 10)
+        Me.m_tlpAll.Controls.Add(Me.pnlValueGrid, 1, 9)
+        Me.m_tlpAll.Controls.Add(Me.m_lblViewAs, 0, 8)
+        Me.m_tlpAll.Controls.Add(Me.m_cmbViewAs, 1, 8)
         Me.m_tlpAll.Controls.Add(Me.m_lblXBase, 0, 5)
         Me.m_tlpAll.Controls.Add(Me.m_txtXBase, 1, 5)
         Me.m_tlpAll.Controls.Add(Me.m_lblPoolCodeSec, 0, 3)
         Me.m_tlpAll.Controls.Add(Me.m_cmbPoolCodeSec, 1, 3)
+        Me.m_tlpAll.Controls.Add(Me.m_lblXMin, 0, 6)
+        Me.m_tlpAll.Controls.Add(Me.m_lblXMax, 0, 7)
+        Me.m_tlpAll.Controls.Add(Me.m_txtXMin, 1, 6)
+        Me.m_tlpAll.Controls.Add(Me.m_txtXMax, 1, 7)
         Me.m_tlpAll.Name = "m_tlpAll"
         '
         'm_tlpNoOfYears
@@ -254,6 +262,26 @@ Partial Class frmShapeValue
         Me.m_btnCancel.Name = "m_btnCancel"
         Me.m_btnCancel.UseVisualStyleBackColor = True
         '
+        'm_lblXMin
+        '
+        resources.ApplyResources(Me.m_lblXMin, "m_lblXMin")
+        Me.m_lblXMin.Name = "m_lblXMin"
+        '
+        'm_lblXMax
+        '
+        resources.ApplyResources(Me.m_lblXMax, "m_lblXMax")
+        Me.m_lblXMax.Name = "m_lblXMax"
+        '
+        'm_txtXMin
+        '
+        resources.ApplyResources(Me.m_txtXMin, "m_txtXMin")
+        Me.m_txtXMin.Name = "m_txtXMin"
+        '
+        'm_txtXMax
+        '
+        resources.ApplyResources(Me.m_txtXMax, "m_txtXMax")
+        Me.m_txtXMax.Name = "m_txtXMax"
+        '
         'frmShapeValue
         '
         Me.AcceptButton = Me.m_btnOK
@@ -278,9 +306,9 @@ Partial Class frmShapeValue
     End Sub
     Private WithEvents m_lblName As System.Windows.Forms.Label
     Private WithEvents m_lblPoolCode As System.Windows.Forms.Label
-    Private WithEvents m_lblType As System.Windows.Forms.Label
+    Private WithEvents m_lblTSType As System.Windows.Forms.Label
     Private WithEvents m_txtName As System.Windows.Forms.TextBox
-    Private WithEvents m_cmbType As System.Windows.Forms.ComboBox
+    Private WithEvents m_cmbTSType As System.Windows.Forms.ComboBox
     Private WithEvents m_cmbPoolCode As System.Windows.Forms.ComboBox
     Private WithEvents m_lblWeight As System.Windows.Forms.Label
     Private WithEvents m_txtWeight As System.Windows.Forms.TextBox
@@ -300,5 +328,9 @@ Partial Class frmShapeValue
     Private WithEvents m_grid As ScientificInterfaceShared.gridShapeValue
     Private WithEvents m_lblPoolCodeSec As Label
     Private WithEvents m_cmbPoolCodeSec As ComboBox
+    Private WithEvents m_lblXMin As Label
+    Private WithEvents m_lblXMax As Label
+    Private WithEvents m_txtXMin As TextBox
+    Private WithEvents m_txtXMax As TextBox
 End Class
 

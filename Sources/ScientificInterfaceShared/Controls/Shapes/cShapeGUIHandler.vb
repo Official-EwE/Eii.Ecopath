@@ -700,6 +700,7 @@ Namespace Controls
         Public MustOverride Function IsForcing() As Boolean
         Public MustOverride Function IsMediation() As Boolean
         Public MustOverride Function IsTimeSeries() As Boolean
+        Public MustOverride Function IsResponse() As Boolean
 
 #End Region ' Public access
 

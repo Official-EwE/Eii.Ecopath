@@ -21,10 +21,9 @@
 
 Option Strict On
 Imports EwECore
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
-Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 

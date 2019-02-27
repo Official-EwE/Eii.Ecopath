@@ -32,6 +32,7 @@ Imports ScientificInterfaceShared.Style
 #End Region ' Imports
 
 ' JS 12/12/17: This dialog has gotten way too cluttered. Needs to be rethought and rebuilt from scratch
+' JS 27/02/19: Perhaps merge the functionality here with the increasingly powerful "Change Shape" UI?
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -108,6 +109,8 @@ Public Class frmShapeValue
 
     Private m_fpWeight As cEwEFormatProvider = Nothing
     Private m_fpXBase As cEwEFormatProvider = Nothing
+    Private m_fpXMin As cEwEFormatProvider = Nothing
+    Private m_fpXMax As cEwEFormatProvider = Nothing
 
 #End Region ' Private vars
 
@@ -130,7 +133,7 @@ Public Class frmShapeValue
 
         If (TypeOf (Me.m_handler) Is cTimeSeriesShapeGUIHandler) Then
             Me.m_editMode = eDialogEditModeType.EditTimeSeries
-            Dim ds As cTimeSeriesDataset = uic.Core.TimeSeriesDataset(Core.ActiveTimeSeriesDatasetIndex)
+            Dim ds As cTimeSeriesDataset = uic.Core.TimeSeriesDataset(Me.Core.ActiveTimeSeriesDatasetIndex)
             Select Case ds.TimeSeriesInterval
                 Case eTSDataSetInterval.Annual
                     Me.m_displayMode = frmShapeValue.eDisplayMode.Yearly
@@ -214,9 +217,22 @@ Public Class frmShapeValue
 
         Me.m_fpWeight = New cEwEFormatProvider(Me.UIContext, Me.m_txtWeight, GetType(Single))
         Me.m_fpXBase = New cEwEFormatProvider(Me.UIContext, Me.m_txtXBase, GetType(Single))
+        Me.m_fpXMin = New cEwEFormatProvider(Me.UIContext, Me.m_txtXMin, GetType(Single))
+        Me.m_fpXMax = New cEwEFormatProvider(Me.UIContext, Me.m_txtXMax, GetType(Single))
 
         Me.FillDataGrid()
         Me.UpdateControls()
+
+    End Sub
+
+    Protected Overrides Sub OnClosed(e As EventArgs)
+
+        Me.m_fpWeight.Release()
+        Me.m_fpXBase.Release()
+        Me.m_fpXMin.Release()
+        Me.m_fpXMax.Release()
+
+        MyBase.OnClosed(e)
 
     End Sub
 
@@ -249,7 +265,7 @@ Public Class frmShapeValue
     End Sub
 
     Private Sub OnTypeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_cmbType.SelectedIndexChanged
+        Handles m_cmbTSType.SelectedIndexChanged
 
         Me.FillPoolCodeComboBoxes()
         Me.UpdateControls()
@@ -257,7 +273,7 @@ Public Class frmShapeValue
     End Sub
 
     Private Sub AnyTextChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles m_txtWeight.TextChanged, m_lblNumPoints.TextChanged, m_txtName.TextChanged, m_txtXBase.TextChanged
+        Handles m_txtWeight.TextChanged, m_lblNumPoints.TextChanged, m_txtName.TextChanged, m_txtXBase.TextChanged, m_txtXMin.TextChanged, m_txtXMax.TextChanged
         'Lazy update
         Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
     End Sub
@@ -313,9 +329,9 @@ Public Class frmShapeValue
     Private Sub LoadForcingDataToGrid()
 
         Dim iOffset As Integer = 0
-        Dim bIsMediation As Boolean = Me.m_handler.IsMediation
-        Dim bIsTimeSeries As Boolean = Me.m_handler.IsTimeSeries
-        Dim bIsCapacity As Boolean = TypeOf Me.m_handler Is cCapacityShapeGUIHandler
+        Dim bIsMediation As Boolean = Me.m_handler.IsMediation()
+        Dim bIsTimeSeries As Boolean = Me.m_handler.IsTimeSeries()
+        Dim bIsResponse As Boolean = Me.m_handler.IsResponse()
 
         'Set the plot title
         Me.Text = My.Resources.HEADER_VALUES
@@ -330,8 +346,8 @@ Public Class frmShapeValue
         Me.m_lblWeight.Visible = False
         Me.m_txtWeight.Visible = False
 
-        Me.m_lblType.Visible = False
-        Me.m_cmbType.Visible = False
+        Me.m_lblTSType.Visible = False
+        Me.m_cmbTSType.Visible = False
 
         Me.m_lblPoolCode.Visible = False
         Me.m_cmbPoolCode.Visible = False
@@ -342,11 +358,28 @@ Public Class frmShapeValue
         Me.m_lblNoOfPoints.Visible = False
         Me.m_tlpNoOfYears.Visible = False
 
-        Me.m_lblXBase.Visible = bIsMediation And Not bIsCapacity ' Ugh
+        Me.m_lblXBase.Visible = bIsMediation And Not bIsResponse ' Ugh
         Me.m_txtXBase.Visible = Me.m_lblXBase.Visible
 
-        If bIsMediation Then
+        Me.m_lblXMin.Visible = bIsResponse
+        Me.m_txtXMin.Visible = Me.m_lblXMin.Visible
+        Me.m_lblXMax.Visible = Me.m_lblXMin.Visible
+        Me.m_txtXMax.Visible = Me.m_lblXMin.Visible
+
+        If (bIsMediation) Then
             Me.m_fpXBase.Value = DirectCast(Me.m_shape, cMediationBaseFunction).XBaseIndex
+        End If
+
+        If (bIsResponse) Then
+            Dim fn As cEnviroResponseFunction = DirectCast(Me.m_shape, cEnviroResponseFunction)
+            Me.m_fpXMin.Value = fn.ResponseLeftLimit
+            Me.m_fpXMax.Value = fn.ResponseRightLimit
+
+            Dim sf As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(fn, Me.Core.PluginManager)
+            If (sf IsNot Nothing) Then
+                Me.m_fpXMin.Enabled = Not sf.IsDistribution
+                Me.m_fpXMax.Enabled = Not sf.IsDistribution
+            End If
         End If
 
         Me.IsSeasonal = Me.m_shape.IsSeasonal
@@ -369,8 +402,8 @@ Public Class frmShapeValue
         Me.m_txtWeight.Visible = True
         Me.m_fpWeight.Value = ts.WtType
 
-        Me.m_lblType.Visible = True
-        Me.m_cmbType.Visible = True
+        Me.m_lblTSType.Visible = True
+        Me.m_cmbTSType.Visible = True
 
         Me.m_lblXBase.Visible = False
         Me.m_txtXBase.Visible = False
@@ -415,10 +448,10 @@ Public Class frmShapeValue
         Me.m_txtWeight.Visible = True
         Me.m_txtWeight.Text = "1.0"
 
-        Me.m_lblType.Visible = True
-        Me.m_cmbType.Visible = True
+        Me.m_lblTSType.Visible = True
+        Me.m_cmbTSType.Visible = True
         Me.FillTSTypeCombo(Nothing)
-        Me.m_cmbType.Text = m_cmbType.Items(0).ToString
+        Me.m_cmbTSType.Text = m_cmbTSType.Items(0).ToString
 
         Me.m_lblPoolCode.Visible = True
         Me.m_cmbPoolCode.Visible = True
@@ -484,6 +517,10 @@ Public Class frmShapeValue
 
     Private Function OnApplyForcing() As Boolean
 
+        Dim bIsMediation As Boolean = Me.m_handler.IsMediation()
+        Dim bIsTimeSeries As Boolean = Me.m_handler.IsTimeSeries()
+        Dim bIsResponse As Boolean = Me.m_handler.IsResponse()
+
         Debug.Assert(Me.m_editMode = eDialogEditModeType.EditForcing)
 
         Dim ff As cForcingFunction = Nothing
@@ -491,13 +528,20 @@ Public Class frmShapeValue
         'Get the time series
         ff = DirectCast(Me.m_shape, cForcingFunction)
 
+        ff.LockUpdates()
+
         ' Update the forcing function
         ff.Name = Me.m_txtName.Text
         ff.IsSeasonal = Me.IsSeasonal
 
-        If TypeOf (ff) Is cMediationBaseFunction Then
+        If (bIsMediation And Not bIsResponse) Then
             ' Parse value using UI number settings
             DirectCast(ff, cMediationBaseFunction).XBaseIndex = CInt(Me.m_fpXBase.Value)
+        End If
+
+        If (bIsResponse) Then
+            DirectCast(ff, cEnviroResponseFunction).ResponseLeftLimit = CSng(Me.m_fpXMin.Value)
+            DirectCast(ff, cEnviroResponseFunction).ResponseRightLimit = CSng(Me.m_fpXMax.Value)
         End If
 
         ' Update the shape
@@ -505,6 +549,7 @@ Public Class frmShapeValue
 
         ' ToDo: apply seasonal pattern
 
+        ff.UnlockUpdates(False)
         Return ff.Update()
 
     End Function
@@ -600,7 +645,7 @@ Public Class frmShapeValue
         Dim itemSelected As cTSTComboBoxItem = Nothing
         Dim t As eTimeSeriesType = eTimeSeriesType.NotSet
 
-        Me.m_cmbType.Items.Clear()
+        Me.m_cmbTSType.Items.Clear()
 
         If (ts IsNot Nothing) Then
             t = ts.TimeSeriesType
@@ -608,7 +653,7 @@ Public Class frmShapeValue
 
         For Each tst As eTimeSeriesType In cTimeSeriesFactory.CompatibleTypes(t)
             itemNew = New cTSTComboBoxItem(tst)
-            m_cmbType.Items.Add(itemNew)
+            m_cmbTSType.Items.Add(itemNew)
             'Find selection
             If (ts IsNot Nothing) Then
                 If (ts.TimeSeriesType = tst) Then
@@ -617,8 +662,8 @@ Public Class frmShapeValue
             End If
         Next tst
 
-        Me.m_cmbType.Sorted = True
-        Me.m_cmbType.SelectedItem = itemSelected
+        Me.m_cmbTSType.Sorted = True
+        Me.m_cmbTSType.SelectedItem = itemSelected
 
     End Sub
 
@@ -683,16 +728,16 @@ Public Class frmShapeValue
 
     Private Property SelectedTimeSeriesType() As eTimeSeriesType
         Get
-            Dim item As cTSTComboBoxItem = DirectCast(Me.m_cmbType.SelectedItem, cTSTComboBoxItem)
+            Dim item As cTSTComboBoxItem = DirectCast(Me.m_cmbTSType.SelectedItem, cTSTComboBoxItem)
             If (item Is Nothing) Then Return eTimeSeriesType.NotSet
             Return item.TimeSeriesType()
         End Get
         Set(ByVal t As eTimeSeriesType)
-            For i As Integer = 0 To Me.m_cmbType.Items.Count - 1
-                Dim item As cTSTComboBoxItem = DirectCast(Me.m_cmbType.Items(i), cTSTComboBoxItem)
-                If item.TimeSeriesType = eTimeSeriesType.TimeForcing Then Me.m_cmbType.SelectedItem = item : Return
+            For i As Integer = 0 To Me.m_cmbTSType.Items.Count - 1
+                Dim item As cTSTComboBoxItem = DirectCast(Me.m_cmbTSType.Items(i), cTSTComboBoxItem)
+                If item.TimeSeriesType = eTimeSeriesType.TimeForcing Then Me.m_cmbTSType.SelectedItem = item : Return
             Next
-            Me.m_cmbType.SelectedItem = Nothing
+            Me.m_cmbTSType.SelectedItem = Nothing
         End Set
     End Property
 
