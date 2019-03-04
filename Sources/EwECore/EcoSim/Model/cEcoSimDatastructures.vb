@@ -1227,6 +1227,15 @@ Public Class cEcosimDatastructures
 
     Public Sub setRelQToT(iTimestep As Integer, Optional bUseNullValues As Integer = True)
         ' Debug.Assert(iTimestep <> 25)
+
+        If iTimestep > Me.NTimes Then
+            'The fishing Policy Search runs Ecosim for an extra 20 years
+            'in this case driving data i.e. Fishing Effort and RelQ 
+            'are set to the last year of the simulation
+            iTimestep = NTimes
+
+        End If
+
         For iflt As Integer = 1 To nGear
             For igrp As Integer = 1 To nGroups
                 If bUseNullValues Then
