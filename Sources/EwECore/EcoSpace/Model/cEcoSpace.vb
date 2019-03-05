@@ -946,7 +946,7 @@ Public Class cEcoSpace
                 Next 'For ip = 1 To m_Data.nvartot
 
 
-                EcoSpaceData.PredictEffort = True
+                'EcoSpaceData.PredictEffort = True
                 If EcoSpaceData.PredictEffort Then
 
                     'Sets proportion of discards landed and discarded 
