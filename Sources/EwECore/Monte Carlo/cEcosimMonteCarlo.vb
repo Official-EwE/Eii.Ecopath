@@ -1204,34 +1204,28 @@ Public Class cEcosimMonteCarlo
 
     Private Sub NormalizeDiet(ByRef dcRef(,) As Single)
 
+        Dim dietsum As Single = 0
 
-        Dim dietsum As Single
-        Dim tol As Single = 0.001
-        Dim bwarning As Boolean = False
+        Const MIN_DIET As Single = 0.000000000000001
 
         For iPred As Integer = 1 To m_epdata.NumLiving
-            bwarning = False
             If m_epdata.PP(iPred) < 1 Then
                 dietsum = 0
                 For iPrey As Integer = 0 To m_epdata.NumGroups
-                    dietsum = dietsum + dcRef(iPred, iPrey)
+                    If (PMeanDC(iPred, iPrey) > 0) Then
+                        ' Prevent diets from getting set to 0
+                        dcRef(iPred, iPred) = Math.Max(MIN_DIET, dcRef(iPred, iPred))
+                    End If
+                    dietsum += dcRef(iPred, iPrey)
                 Next
-                'If dietsum <> 0 And Math.Abs(dietsum - 1) > tol Then
-                If dietsum <> 0 Then
-                    bwarning = True
+                If (dietsum > 0) Then
                     For iPrey As Integer = 0 To m_epdata.NumGroups
-                        If (PMeanDC(iPred, iPrey) > 0) Then
-                            ' Make sure that original 0 diets stay 0, and that original non-zero diets stay non-zero!
-                            dcRef(iPred, iPrey) = Math.Max(1.0E-10!, dcRef(iPred, iPrey) / dietsum)
-                        End If
+                        dcRef(iPred, iPrey) /= dietsum
                     Next
-                    'm_Data.DietsModified = True
                 End If
             End If
         Next
-        If bwarning Then
-            Console.WriteLine("WARNING Normalized Diet after sampling.")
-        End If
+
     End Sub
 
     ''' <summary>
@@ -1544,6 +1538,13 @@ Public Class cEcosimMonteCarlo
 
     End Function
 
+    ''' <summary>
+    ''' Dirichlets resampling
+    ''' </summary>
+    ''' <param name="Diets"></param>
+    ''' <param name="cv"></param>
+    ''' <param name="iPred"></param>
+    ''' <param name="EcopathDiet"></param>
     Private Sub ChooseFeasibleDiet(ByVal Diets(,) As Single, ByVal cv As Single, ByVal iPred As Integer, ByRef EcopathDiet(,) As Single)
 
         Debug.Assert(Me.DietSamplingMethod = eMCDietSamplingMethod.Dirichlets)
