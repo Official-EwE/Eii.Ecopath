@@ -2267,27 +2267,45 @@ Namespace DataSources
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesGroup WHERE (GroupID={0})", iEcopathGroupID))
 
                 ' Remove all Ecosim groups related to this Ecopath group
-                Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT GroupID FROM EcosimScenarioGroup WHERE EcopathGroupID={0}", iEcopathGroupID))
-                If (reader IsNot Nothing) Then
-                    While reader.Read()
-                        bSucces = bSucces And Me.RemoveEcosimGroup(CInt(reader("GroupID")))
-                    End While
-                End If
-                Me.m_db.ReleaseReader(reader)
+                Using reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT GroupID FROM EcosimScenarioGroup WHERE EcopathGroupID={0}", iEcopathGroupID))
+                    If (reader IsNot Nothing) Then
+                        While reader.Read()
+                            bSucces = bSucces And Me.RemoveEcosimGroup(CInt(reader("GroupID")))
+                        End While
+                    End If
+                    Me.m_db.ReleaseReader(reader)
+                End Using
 
-                reader = Me.m_db.GetReader(String.Format("SELECT GroupID FROM EcospaceScenarioGroup WHERE EcopathGroupID={0}", iEcopathGroupID))
-                If (reader IsNot Nothing) Then
-                    While reader.Read()
-                        bSucces = bSucces And Me.RemoveEcospaceGroup(CInt(reader("GroupID")), iEcopathGroupID)
-                    End While
-                End If
-                Me.m_db.ReleaseReader(reader)
+                Using reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT GroupID FROM EcospaceScenarioGroup WHERE EcopathGroupID={0}", iEcopathGroupID))
+                    If (reader IsNot Nothing) Then
+                        While reader.Read()
+                            bSucces = bSucces And Me.RemoveEcospaceGroup(CInt(reader("GroupID")), iEcopathGroupID)
+                        End While
+                    End If
+                    Me.m_db.ReleaseReader(reader)
+                End Using
 
                 ' Now Ecosim and Ecospace are clean, delete the group from Ecopath
                 ' Need manual deletion from all tables that were added through database updates
 
                 ' Taxa
+                ' - First ID all taxa that will become orphaned -
+                Dim ids As New List(Of Integer)
+                Using reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT TaxonID FROM EcopathGroupTaxon WHERE (EcopathGroupID={0})", iEcopathGroupID))
+                    If (reader IsNot Nothing) Then
+                        While reader.Read
+                            ids.Add(CInt(reader("TaxonID")))
+                        End While
+                    End If
+                    Me.m_db.ReleaseReader(reader)
+                End Using
+                ' - Delete taxa assignments -
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupTaxon WHERE (EcopathGroupID={0})", iEcopathGroupID))
+                ' - Delete taxa  -
+                For Each id As Integer In ids
+                    bSucces = bSucces And Me.RemoveTaxon(id)
+                Next
+
                 ' Samples
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupCatchSample WHERE (GroupID={0})", iEcopathGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathDietCompSample WHERE (PredID={0} OR PreyID={0})", iEcopathGroupID))
@@ -8877,17 +8895,6 @@ Namespace DataSources
         Private Function RemoveEcospaceGroup(ByVal iEcospaceGroupID As Integer, ByVal iEcopathGroupID As Integer) As Boolean
             Dim bSucces As Boolean = True
             Try
-                ' Cannot have orphaned taxa
-                Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT TaxonID FROM EcopathGroupTaxon WHERE (GroupID={0})", iEcopathGroupID))
-                Dim ids As New List(Of Integer)
-                While reader.Read
-                    ids.Add(CInt(reader("TaxonID")))
-                End While
-                Me.m_db.ReleaseReader(reader)
-                For Each id As Integer In ids
-                    bSucces = bSucces And Me.RemoveTaxon(id)
-                Next
-
                 ' Delete habitat assignments
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupHabitat WHERE GroupID={0}", iEcospaceGroupID))
 
