@@ -138,7 +138,7 @@ Namespace Controls
                             Optional bIsDefault As Boolean = False) As TreeNode
 
             Dim fmt As New EwECore.Style.cVarnameTypeFormatter()
-            Dim node As New TreeNode(fmt.GetDescriptor(var), imgkey, imgkey)
+            Dim node As New TreeNode(fmt.ToString(var), imgkey, imgkey)
             node.Name = strInternalName
 
             Dim ni As New cNodeInfo(strInternalName, execstate, tClass, strHelpURL)

@@ -372,7 +372,7 @@ Public Class dlgDefineTaxonomy
     Private Sub OnTaxonLevelFormat(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
         Handles m_cmbFilter.Format
         Dim fmt As New cTaxonClassificationTypeFormatter()
-        e.Value = fmt.GetDescriptor(e.ListItem)
+        e.Value = fmt.ToString(e.ListItem)
     End Sub
 
     Private Sub OnTaxonLevelSelected(sender As Object, e As System.EventArgs) _

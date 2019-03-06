@@ -36,8 +36,8 @@ Public Class cUnitTypeFormatter
         Return GetType(cUnitFactory.eUnitType)
     End Function
 
-    Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements _
-        ITypeFormatter.GetDescriptor
+    Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements _
+        ITypeFormatter.ToString
 
         Dim strValue As String = value.ToString
         Dim strDescr As String = cResourceUtils.LoadString("UNIT_TYPE_" & strValue.ToUpper, Me.GetType.Assembly)

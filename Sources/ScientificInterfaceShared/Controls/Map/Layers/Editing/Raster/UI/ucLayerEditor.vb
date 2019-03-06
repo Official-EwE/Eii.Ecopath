@@ -136,7 +136,7 @@ Namespace Controls.Map.Layers
                 If (vn = eVarNameFlags.NotSet) Then
                     strLabel = Layer.DisplayText()
                 Else
-                    strLabel = fmtV.GetDescriptor(vn)
+                    strLabel = fmtV.ToString(vn)
                 End If
 
                 ' Get layer image

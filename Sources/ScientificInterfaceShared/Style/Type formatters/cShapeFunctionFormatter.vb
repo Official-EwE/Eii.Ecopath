@@ -51,17 +51,17 @@ Namespace Style
             Return GetType(IShapeFunction)
         End Function
 
-        ''' <inheritdocs cref="ITypeFormatter.GetDescriptor"/>
-        Public Function GetDescriptor(ByVal value As Object, _
+        ''' <inheritdocs cref="ITypeFormatter.ToString"/>
+        Public Function ToString(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                      Implements ITypeFormatter.ToString
 
             ' Plug-in name discovery takes presedence, as plug-ins may inherit cShapeFunction
             If (TypeOf value Is EwEPlugin.IEcosimShapeFunctionPlugin) Then
                 Return DirectCast(value, EwEPlugin.IEcosimShapeFunctionPlugin).DisplayName
             ElseIf (TypeOf value Is cShapeFunction) Then
                 Dim fmt As New cShapeFunctionTypeFormatter()
-                Return fmt.GetDescriptor(DirectCast(value, cShapeFunction).ShapeFunctionType)
+                Return fmt.ToString(DirectCast(value, cShapeFunction).ShapeFunctionType)
             End If
             ' Hmm
             Return value.ToString

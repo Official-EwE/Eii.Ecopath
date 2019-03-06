@@ -58,7 +58,7 @@ Namespace Ecosim
             For i As Integer = 0 To Me.m_lplots.Count - 1
                 plot = Me.m_lplots(i)
                 ts = plot.TimeSeries
-                m_lbAllPlots.Items.Add(desc.GetDescriptor(ts, eDescriptorTypes.Name))
+                m_lbAllPlots.Items.Add(desc.ToString(ts, eDescriptorTypes.Name))
             Next
 
             If m_lbAllPlots.Items.Count > 0 Then

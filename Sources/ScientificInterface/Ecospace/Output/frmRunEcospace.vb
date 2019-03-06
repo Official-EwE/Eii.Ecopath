@@ -1654,16 +1654,16 @@ Namespace Ecospace
                 Select Case Me.m_mapPlotType
                     Case ePlotTypes.Effort
                         For i As Integer = 1 To Me.Core.nFleets
-                            Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceFleetInputs(i), eDescriptorTypes.Name))
+                            Me.m_cmbDisplayItem.Items.Add(desc.ToString(Me.Core.EcospaceFleetInputs(i), eDescriptorTypes.Name))
                         Next i
                     Case ePlotTypes.Driver
                         Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
                         For i As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
-                            Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(bm.LayerDriver(i), eDescriptorTypes.Name))
+                            Me.m_cmbDisplayItem.Items.Add(desc.ToString(bm.LayerDriver(i), eDescriptorTypes.Name))
                         Next
                     Case Else
                         For i As Integer = 1 To Me.Core.nGroups
-                            Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceGroupInputs(i), eDescriptorTypes.Name))
+                            Me.m_cmbDisplayItem.Items.Add(desc.ToString(Me.Core.EcospaceGroupInputs(i), eDescriptorTypes.Name))
                         Next i
                 End Select
 
@@ -1793,7 +1793,7 @@ Namespace Ecospace
                 Me.PlotMap(g)
                 bmp.Save(strFileName, imgFormat)
 
-                Me.SaveMapLegendImage(strFileName, imgFormat, fmt.GetDescriptor(Me.m_mapPlotType), SharedResources.SCALE_LOG)
+                Me.SaveMapLegendImage(strFileName, imgFormat, fmt.ToString(Me.m_mapPlotType), SharedResources.SCALE_LOG)
 
                 msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, My.Resources.HEADER_MAP_IMAGES, strFileName),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
@@ -1970,7 +1970,7 @@ Namespace Ecospace
 
                         ' Add legend file
                         Me.SaveMapLegendImage(strFileSub, imgFormat,
-                                              String.Format(SharedResources.GENERIC_LABEL_DOUBLE, fmt.GetDescriptor(Me.m_mapPlotType), grp.Name), SharedResources.SCALE_LOG)
+                                              String.Format(SharedResources.GENERIC_LABEL_DOUBLE, fmt.ToString(Me.m_mapPlotType), grp.Name), SharedResources.SCALE_LOG)
 
                     End If
                 Next

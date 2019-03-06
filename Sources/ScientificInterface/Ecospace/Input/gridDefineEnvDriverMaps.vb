@@ -94,7 +94,7 @@ Namespace Ecospace
                 Else
                     ' Fixed description
                     Dim fmt As New cVarnameTypeFormatter()
-                    Me.Description = fmt.GetDescriptor(Layer.VarName, eDescriptorTypes.Description)
+                    Me.Description = fmt.ToString(Layer.VarName, eDescriptorTypes.Description)
                     ' Standard units
                     Me.Units = cVariableMetaData.Get(Layer.VarName).Units
                 End If

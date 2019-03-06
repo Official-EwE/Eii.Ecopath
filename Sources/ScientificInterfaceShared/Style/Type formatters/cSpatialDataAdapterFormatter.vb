@@ -41,15 +41,15 @@ Namespace Style
             Return GetType(cSpatialDataAdapter)
         End Function
 
-        Public Function GetDescriptor(ByVal value As Object, _
+        Public Function ToString(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                      Implements ITypeFormatter.ToString
 
             Try
                 If (value IsNot Nothing) Then
                     Dim fmt As New cVarnameTypeFormatter()
                     Dim obj As cSpatialDataAdapter = DirectCast(value, cSpatialDataAdapter)
-                    Return fmt.GetDescriptor(obj.VarName)
+                    Return fmt.ToString(obj.VarName)
                 End If
 
                 Return My.Resources.GENERIC_VALUE_NONE

@@ -38,7 +38,7 @@ Public Class dlgHarvestControlRule
             Me.m_rule = rule
         End Sub
         Public Overrides Function ToString() As String
-            Return New cCostFunctionTypeFormatter().GetDescriptor(Me.m_rule)
+            Return New cCostFunctionTypeFormatter().ToString(Me.m_rule)
         End Function
         Public ReadOnly Property [Function] As eHCR_Targ_Or_Cons
             Get
@@ -169,7 +169,7 @@ Public Class dlgHarvestControlRule
     Private Sub OnFormatGroupComboItem(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
         Handles m_cmbBiomassGroups.Format, m_cmbFMortGroups.Format
         Dim fmt As New cCoreInterfaceFormatter()
-        e.Value = fmt.GetDescriptor(e.ListItem, eDescriptorTypes.Name)
+        e.Value = fmt.ToString(e.ListItem, eDescriptorTypes.Name)
     End Sub
 
     Private Sub OnGroupSelected(sender As System.Object, e As System.EventArgs) _

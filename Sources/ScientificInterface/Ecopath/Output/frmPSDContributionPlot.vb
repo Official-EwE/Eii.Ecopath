@@ -160,7 +160,7 @@ Namespace Ecopath.Output
                     clrFore = Color.DarkGray
                     clrBack = Me.StyleGuide.GroupColor(Me.Core, iGroup)
                 End If
-                AddCurveToGraphPane(pane, fmt.GetDescriptor(group), resultLists(iGroup - 1), clrBack, clrFore)
+                AddCurveToGraphPane(pane, fmt.ToString(group), resultLists(iGroup - 1), clrBack, clrFore)
             Next
 
             pane.XAxis.Scale.Min = sXMin * 1.1

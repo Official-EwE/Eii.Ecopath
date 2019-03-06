@@ -82,7 +82,7 @@ Namespace Ecopath
                 ' Get descriptor
                 descr = New cVarnameTypeFormatter()
                 ' Add to combo
-                Me.m_cmbVariable.Items.Add(descr.GetDescriptor(var, eDescriptorTypes.Name))
+                Me.m_cmbVariable.Items.Add(descr.ToString(var, eDescriptorTypes.Name))
 
                 If (var = Me.m_varInitial) Then iSelection = iVariable - 1
             Next

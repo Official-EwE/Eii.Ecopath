@@ -812,7 +812,7 @@ Public Class cData
         ' Check for already present link
         If unitSource.HasTarget(unitTarget, group) Then
             Dim fmt As New cCoreInterfaceFormatter()
-            Me.SendMessage(cStringUtils.Localize(My.Resources.ERROR_LINK_DUPLICATE, fmt.GetDescriptor(group)))
+            Me.SendMessage(cStringUtils.Localize(My.Resources.ERROR_LINK_DUPLICATE, fmt.ToString(group)))
             bError = True
             Return Nothing
         End If

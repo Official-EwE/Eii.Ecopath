@@ -87,8 +87,8 @@ Public Class cNetworkAnalysisEcosimResultWriter
             Return GetType(eColTypes)
         End Function
 
-        Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-            Implements ITypeFormatter.GetDescriptor
+        Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+            Implements ITypeFormatter.ToString
 
             Dim strVar As String = value.ToString()
             Dim strCol As String = cResourceUtils.LoadString("COL_HDR_" & strVar.ToUpper, Me.GetType.Assembly)
@@ -172,9 +172,9 @@ Public Class cNetworkAnalysisEcosimResultWriter
                 Case eColTypes.Diversity
                     Dim model As cEwEModel = Me.Manager.Core.EwEModel
                     Dim f As New cDiversityIndexTypeFormatter()
-                    strField = f.GetDescriptor(model.DiversityIndexType)
+                    strField = f.ToString(model.DiversityIndexType)
                 Case Else
-                    strField = fmt.GetDescriptor(cols(j))
+                    strField = fmt.ToString(cols(j))
             End Select
             sb.Append(cStringUtils.ToCSVField(strField))
         Next
@@ -283,7 +283,7 @@ Public Class cNetworkAnalysisEcosimResultWriter
         ' Header line
         For j As Integer = 0 To iNumCols - 1
             If (j > 0) Then sb.Append(",")
-            sb.Append(cStringUtils.ToCSVField(fmt.GetDescriptor(cols(j))))
+            sb.Append(cStringUtils.ToCSVField(fmt.ToString(cols(j))))
         Next
         sb.AppendLine("")
 

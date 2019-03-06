@@ -164,7 +164,7 @@ Public Class dlgSplitGroup
             Dim grp As cEcoPathGroupInput = DirectCast(e.ListItem, cEcoPathGroupInput)
 
             If (Not grp.Disposed) Then
-                e.Value = fmt.GetDescriptor(e.ListItem)
+                e.Value = fmt.ToString(e.ListItem)
             End If
         Catch ex As Exception
             ' mmm
@@ -180,7 +180,7 @@ Public Class dlgSplitGroup
             Dim taxon As cTaxon = DirectCast(e.ListItem, cTaxon)
 
             If (Not taxon.Disposed) Then
-                e.Value = fmt.GetDescriptor(e.ListItem)
+                e.Value = fmt.ToString(e.ListItem)
             End If
         Catch ex As Exception
             ' mmm

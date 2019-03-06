@@ -211,7 +211,7 @@ Namespace Controls
                 If (ff.ShapeFunctionType <> eShapeFunctionType.NotSet) Then
                     Dim fn As IShapeFunction = cShapeFunctionFactory.GetShapeFunction(ff, Me.UIContext.Core.PluginManager)
                     Dim fmt As New cShapeFunctionFormatter()
-                    sb.AppendLine(fmt.GetDescriptor(fn))
+                    sb.AppendLine(fmt.ToString(fn))
                 End If
             End If
 

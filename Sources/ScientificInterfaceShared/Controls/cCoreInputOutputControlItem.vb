@@ -118,7 +118,7 @@ Namespace Controls
             If (Me.m_source Is Nothing) Then
                 Return Me.m_strLabel
             End If
-            Return Me.m_fmt.GetDescriptor(Me.m_source, eDescriptorTypes.Name)
+            Return Me.m_fmt.ToString(Me.m_source, eDescriptorTypes.Name)
         End Function
 
     End Class

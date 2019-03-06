@@ -53,8 +53,8 @@ Namespace HCR_GroupNS
             Return GetType(eHCR_Targ_Or_Cons)
         End Function
 
-        Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-        Implements ITypeFormatter.GetDescriptor
+        Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Implements ITypeFormatter.ToString
 
             Select Case DirectCast(value, eHCR_Targ_Or_Cons)
                 Case eHCR_Targ_Or_Cons.Target
@@ -74,8 +74,8 @@ Namespace HCR_GroupNS
             Return GetType(eHCR_Type)
         End Function
 
-        Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-        Implements ITypeFormatter.GetDescriptor
+        Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Implements ITypeFormatter.ToString
 
             Select Case DirectCast(value, eHCR_Type)
                 Case eHCR_Type.Traditional
@@ -129,9 +129,9 @@ Namespace HCR_GroupNS
             Dim fmt As New cCoreInterfaceFormatter()
             Dim fmtC As New cCostFunctionTypeFormatter()
 
-            sb.AppendLine(String.Format(My.Resources.HCR_GROUP_BIOMASS, fmt.GetDescriptor(Me.GroupB)))
-            sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FISHMORT, fmt.GetDescriptor(Me.GroupF)))
-            sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FUNCTION, fmtC.GetDescriptor(Me.Targ_Or_Cons)))
+            sb.AppendLine(String.Format(My.Resources.HCR_GROUP_BIOMASS, fmt.ToString(Me.GroupB)))
+            sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FISHMORT, fmt.ToString(Me.GroupF)))
+            sb.AppendLine(String.Format(My.Resources.HCR_GROUP_FUNCTION, fmtC.ToString(Me.Targ_Or_Cons)))
 
             Return sb.ToString
 

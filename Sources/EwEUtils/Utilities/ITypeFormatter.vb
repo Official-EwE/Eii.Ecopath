@@ -32,9 +32,9 @@ Namespace Utilities
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Enum eDescriptorTypes As Integer
-        ''' <summary>A single letter; the briefest of representations.</summary>
+        ''' <summary>A symbolic representation, if available; the shortest of representations.</summary>
         Symbol = 0
-        ''' <summary>An abbreviation.</summary>
+        ''' <summary>An abbreviation or acronym.</summary>
         Abbreviation
         ''' <summary>A spelled-out name.</summary>
         Name
@@ -60,8 +60,8 @@ Namespace Utilities
         ''' <param name="descriptor">The <see cref="eDescriptorTypes">representation</see> to provide.</param>
         ''' <returns>A textual representation.</returns>
         ''' -------------------------------------------------------------------
-        Function GetDescriptor(ByVal value As Object, _
-                               Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String
+        Function ToString(value As Object,
+                          Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String
 
     End Interface
 

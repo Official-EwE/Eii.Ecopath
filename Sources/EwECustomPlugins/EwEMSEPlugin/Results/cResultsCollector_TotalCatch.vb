@@ -31,7 +31,7 @@ Public Class cResultsCollector_TotalCatch
     Public Overrides ReadOnly Property DataName As String
         Get
             Dim fmt As New EwECore.Style.cCurrencyUnitFormatter("")
-            Return "Catch Rate (" & fmt.GetDescriptor(eUnitCurrencyType.WetWeight) & "/year)"
+            Return "Catch Rate (" & fmt.ToString(eUnitCurrencyType.WetWeight) & "/year)"
         End Get
     End Property
 

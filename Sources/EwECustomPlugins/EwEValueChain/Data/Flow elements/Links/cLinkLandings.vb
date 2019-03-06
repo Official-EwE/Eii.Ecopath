@@ -54,7 +54,7 @@ Public Class cLinkLandings
 
         Private Function GroupName(ByVal group As cCoreInputOutputBase) As String
             Dim fmt As New cCoreInterfaceFormatter()
-            Return fmt.GetDescriptor(group, eDescriptorTypes.Name)
+            Return fmt.ToString(group, eDescriptorTypes.Name)
         End Function
 
         Private Function GroupList() As List(Of cEcoPathGroupInput)
@@ -172,7 +172,7 @@ Public Class cLinkLandings
             ' ToDo: globalize this
             If (Me.m_group Is Nothing) Then Return "! No group"
             Dim fmt As New cCoreInterfaceFormatter()
-            Return cStringUtils.Localize("Landings of {0}", fmt.GetDescriptor(Me.m_group, eDescriptorTypes.Name))
+            Return cStringUtils.Localize("Landings of {0}", fmt.ToString(Me.m_group, eDescriptorTypes.Name))
         End Get
         Set(ByVal value As String)
             ' NOP
@@ -199,7 +199,7 @@ Public Class cLinkLandings
         Get
             If (Me.m_group Is Nothing) Then Return "! No group"
             Dim fmt As New cCoreInterfaceFormatter()
-            Return fmt.GetDescriptor(Me.m_group, eDescriptorTypes.Name)
+            Return fmt.ToString(Me.m_group, eDescriptorTypes.Name)
         End Get
     End Property
 

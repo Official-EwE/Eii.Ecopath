@@ -41,9 +41,9 @@ Namespace Style
     Public Class cBACalcTypeFormatter
         Implements ITypeFormatter
 
-        Public Function GetDescriptor(ByVal data As Object, _
+        Public Function ToString(ByVal data As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-            Implements ITypeFormatter.GetDescriptor
+            Implements ITypeFormatter.ToString
 
             Dim vn As eBACalcTypes
 

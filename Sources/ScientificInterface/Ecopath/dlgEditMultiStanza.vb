@@ -137,7 +137,7 @@ Namespace Ecopath
         Private Sub OnFormatFFItem(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbFF.Format
             If (TypeOf e.ListItem Is cForcingFunction) Then
                 Dim fmt As New cShapeDataFormatter()
-                e.Value = fmt.GetDescriptor(e.ListItem)
+                e.Value = fmt.ToString(e.ListItem)
             End If
 
         End Sub

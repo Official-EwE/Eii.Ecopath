@@ -52,7 +52,7 @@ Namespace Ecosim
                 Return GetType(ePlot)
             End Function
 
-            Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.GetDescriptor
+            Public Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.ToString
 
                 ' ToDo: globalize this method
 
@@ -533,7 +533,7 @@ Namespace Ecosim
         Private Function GetPlotTitle(ByVal data As ePlot) As String
 
             Dim fmt As New cSimPlotFormatter()
-            Return fmt.GetDescriptor(data)
+            Return fmt.ToString(data)
 
         End Function
 

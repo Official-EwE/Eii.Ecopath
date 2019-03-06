@@ -40,9 +40,9 @@ Namespace Style
             Return GetType(cDatasetCompatilibity)
         End Function
 
-        Public Function GetDescriptor(ByVal value As Object, _
+        Public Function ToString(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                      Implements ITypeFormatter.ToString
 
             Dim comp As cDatasetCompatilibity = Nothing
             Dim strBit As String = ""
@@ -113,7 +113,7 @@ Namespace Style
                      cDatasetCompatilibity.eCompatibilityTypes.Errors, _
                      cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
                      cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                    Return Me.GetDescriptor(comp, eDescriptorTypes.Description)
+                    Return Me.ToString(comp, eDescriptorTypes.Description)
 
                 Case cDatasetCompatilibity.eCompatibilityTypes.TemporalNotIndexed
                     Return cStringUtils.Localize(My.Resources.COMPATIBILITY_SUMMARY_NOINDEX, _

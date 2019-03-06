@@ -40,9 +40,9 @@ Namespace Style
             Return GetType(ISpatialDataSet)
         End Function
 
-        Public Function GetDescriptor(ByVal value As Object, _
+        Public Function ToString(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                      Implements ITypeFormatter.ToString
 
             Dim strResult As String = ""
 

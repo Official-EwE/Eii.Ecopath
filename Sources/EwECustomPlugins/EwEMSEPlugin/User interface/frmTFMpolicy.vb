@@ -465,7 +465,7 @@ Public Class frmTFMpolicy
                     lpts.Add(4, Me.m_HCR.MaxF) ' Max X value?
                 End If
 
-                line = New LineItem(fmt.GetDescriptor(Me.m_HCR.GroupB), lpts, Me.StyleGuide.GroupColor(Me.Core, Me.m_HCR.GroupB.Index), SymbolType.Circle)
+                line = New LineItem(fmt.ToString(Me.m_HCR.GroupB), lpts, Me.StyleGuide.GroupColor(Me.Core, Me.m_HCR.GroupB.Index), SymbolType.Circle)
                 line.Line.Width = 2.0
 
                 lLines.Add(line)

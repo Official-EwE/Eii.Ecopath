@@ -200,7 +200,7 @@ Namespace Ecospace.Controls
                 strVal = cStringUtils.Localize(SharedResources.VALUE_INDEXED_PERCENT, CInt(Math.Ceiling(100 * comp.NumIndexed / (comp.NumOverlappingTimeSteps + 1))))
             Else
                 Dim fmt As New cSpatialDatasetCompatibilityFormatter()
-                strVal = fmt.GetDescriptor(comp, eDescriptorTypes.Abbreviation)
+                strVal = fmt.ToString(comp, eDescriptorTypes.Abbreviation)
             End If
             Me(iRow, eColumnTypes.SpatOverlap).Value = strVal
 

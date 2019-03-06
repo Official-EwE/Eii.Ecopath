@@ -71,7 +71,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
         Debug.Print("Load dialogue " + Me.m_graph.Shape.ToCSVString())
 
         Try
-            Me.Text = cStringUtils.Localize(Me.Text, New cShapeDataFormatter().GetDescriptor(shape))
+            Me.Text = cStringUtils.Localize(Me.Text, New cShapeDataFormatter().ToString(shape))
         Catch ex As Exception
             ' Whoah!
         End Try
@@ -260,7 +260,7 @@ Public NotInheritable Class dlgDefineEcosimFunctionalResponses
                         'add a group node
                         Dim grp As cEcoSimGroupInput = Me.m_uic.Core.EcoSimGroupInputs(igrp)
 
-                        Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.GetDescriptor(grp))
+                        Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.ToString(grp))
                         ndgrp.Tag = grp
 
                         If Not ndApply.IsExpanded Then

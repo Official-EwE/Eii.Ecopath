@@ -36,8 +36,8 @@ Public Class cAggregationModeTypeFormatter
         Return GetType(cParameters.eAggregationModeType)
     End Function
 
-    Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements _
-        ITypeFormatter.GetDescriptor
+    Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements _
+        ITypeFormatter.ToString
 
         Dim strValue As String = value.ToString
         Dim strDescr As String = cResourceUtils.LoadString("AGGREGATION_MODE_" & strValue.ToUpper, Me.GetType.Assembly)

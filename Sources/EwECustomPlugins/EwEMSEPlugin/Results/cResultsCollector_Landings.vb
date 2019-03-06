@@ -32,7 +32,7 @@ Public Class cResultsCollector_Landings
     Public Overrides ReadOnly Property DataName As String
         Get
             Dim fmt As New EwECore.Style.cCurrencyUnitFormatter("")
-            Return "Landings Rate (" & fmt.GetDescriptor(eUnitCurrencyType.WetWeight) & "/year)"
+            Return "Landings Rate (" & fmt.ToString(eUnitCurrencyType.WetWeight) & "/year)"
         End Get
     End Property
 

@@ -81,7 +81,7 @@ Namespace Controls
             For Each fn As cShapeImportData.cFunctionDefinition In Me.m_defs
                 Dim iRow As Integer = Me.AddRow()
                 Me(iRow, 0) = New EwERowHeaderCell(fn.Name)
-                Me(iRow, 1) = New EwECell(fmt.GetDescriptor(fn.ShapeFunction), cStyleGuide.eStyleFlags.NotEditable)
+                Me(iRow, 1) = New EwECell(fmt.ToString(fn.ShapeFunction), cStyleGuide.eStyleFlags.NotEditable)
                 For i As Integer = 0 To 4
                     Dim style As cStyleGuide.eStyleFlags = If(fn.ShapeParameters(i) >= 0, cStyleGuide.eStyleFlags.OK, cStyleGuide.eStyleFlags.Null) Or cStyleGuide.eStyleFlags.NotEditable
                     Me(iRow, 2 + i) = New EwECell(fn.ShapeParameters(i), style)

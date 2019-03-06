@@ -55,7 +55,7 @@ Public Class ucResults
         Public Overrides Function ToString() As String
             If Me.m_source Is Nothing Then Return Me.m_strLabel
             Dim ftm As New cCoreInterfaceFormatter()
-            Return ftm.GetDescriptor(Me.m_source)
+            Return ftm.ToString(Me.m_source)
         End Function
 
         Public ReadOnly Property Source() As cCoreInputOutputBase
@@ -119,7 +119,7 @@ Public Class ucResults
 
         Public Overrides Function ToString() As String
             Dim fmt As New cAggregationModeTypeFormatter()
-            Return fmt.GetDescriptor(Me.m_agg)
+            Return fmt.ToString(Me.m_agg)
         End Function
 
         Public ReadOnly Property AggregationMode As cParameters.eAggregationModeType

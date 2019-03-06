@@ -54,14 +54,14 @@ Namespace Controls.EwEGrid
                     ' #Yes: auto-extract standard values
                     For Each key As Object In [Enum].GetValues(formatter.GetDescribedType)
                         lValues.Add(key)
-                        lRepresentations.Add(formatter.GetDescriptor(key))
+                        lRepresentations.Add(formatter.ToString(key))
                     Next
                 End If
             Else
                 ' #No: add standard values
                 For Each item As Object In standardvalues
                     lValues.Add(item)
-                    lRepresentations.Add(formatter.GetDescriptor(item))
+                    lRepresentations.Add(formatter.ToString(item))
                 Next
             End If
 

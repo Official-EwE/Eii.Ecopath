@@ -103,7 +103,7 @@ Namespace Other
             Me.m_iIndent = iIndent
 
             Dim fmt As New cAutosaveTypeFormatter()
-            Me.m_cbOption.Text = fmt.GetDescriptor(Me.m_autosavetype, eDescriptorTypes.Name)
+            Me.m_cbOption.Text = fmt.ToString(Me.m_autosavetype, eDescriptorTypes.Name)
 
         End Sub
 

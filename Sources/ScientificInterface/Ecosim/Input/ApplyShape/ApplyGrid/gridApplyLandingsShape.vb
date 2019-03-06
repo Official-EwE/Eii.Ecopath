@@ -128,7 +128,7 @@ Namespace Ecosim
             Dim cellBlocked As EwECell = Nothing
             Dim fmt As New cMonetaryTypeFormatter()
             Dim ri As New RegionInfo(CultureInfo.CurrentUICulture.LCID)
-            Dim strSymbol As String = fmt.GetDescriptor(ri, eDescriptorTypes.Symbol)
+            Dim strSymbol As String = fmt.ToString(ri, eDescriptorTypes.Symbol)
 
             If (Me.m_interactionManager Is Nothing) Then Return
 

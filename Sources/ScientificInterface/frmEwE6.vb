@@ -1605,7 +1605,7 @@ Public Class frmEwE6
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED,
                                           Me.Core.TimeSeriesDataset(i).Name,
-                                          fmt.GetDescriptor(Me.Core.TimeSeriesDataset(i).TimeSeriesInterval).ToLower())
+                                          fmt.ToString(Me.Core.TimeSeriesDataset(i).TimeSeriesInterval).ToLower())
                 tsmi.Tag = Me.Core.TimeSeriesDataset(i)
                 tsmi.Checked = (Me.Core.ActiveTimeSeriesDatasetIndex = i)
 

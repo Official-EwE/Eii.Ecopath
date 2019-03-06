@@ -55,7 +55,7 @@ Namespace Ecospace
 
             Public Overrides Function ToString() As String
                 If (Me.m_adt Is Nothing) Then Return ScientificInterfaceShared.My.Resources.GENERIC_VALUE_ALL
-                Return Me.m_fmt.GetDescriptor(Me.m_adt)
+                Return Me.m_fmt.ToString(Me.m_adt)
             End Function
 
             Public ReadOnly Property Adapter As cSpatialDataAdapter

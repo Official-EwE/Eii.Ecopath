@@ -63,8 +63,8 @@ Namespace Ecosim
                 Dim arena As cEcosimArenaShare = Me.m_manager.Arena(k)
                 Me(k, 0) = New EwERowHeaderCell(CStr(arena.iArena))
                 If (ShowPredPreyHeader) Then
-                    Me(k, 1) = New EwERowHeaderCell(fmt.GetDescriptor(Core.EcoPathGroupInputs(arena.Prey)))
-                    Me(k, 2) = New EwERowHeaderCell(fmt.GetDescriptor(Core.EcoPathGroupInputs(arena.Pred)))
+                    Me(k, 1) = New EwERowHeaderCell(fmt.ToString(Core.EcoPathGroupInputs(arena.Prey)))
+                    Me(k, 2) = New EwERowHeaderCell(fmt.ToString(Core.EcoPathGroupInputs(arena.Pred)))
                 End If
                 For j As Integer = 1 To Me.Core.nLivingGroups
                     Me(k, n + j) = New PropertyCell(Me.PropertyManager, arena, eVarNameFlags.EcosimArenaShare, Core.EcoPathGroupInputs(j))

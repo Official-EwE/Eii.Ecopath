@@ -46,9 +46,9 @@ Namespace Style
             Me.m_strNone = strNone
         End Sub
 
-        Public Function GetDescriptor(ByVal value As Object, _
+        Public Function ToString(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                      Implements ITypeFormatter.ToString
 
             If (value Is Nothing) Then Return Me.m_strNone
             If (Not TypeOf value Is cShapeData) Then Return Me.m_strNone

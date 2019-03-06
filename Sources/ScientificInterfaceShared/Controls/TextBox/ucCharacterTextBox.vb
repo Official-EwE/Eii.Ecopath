@@ -111,7 +111,7 @@ Namespace Controls
                 Me.m_iChar = value
 
                 Dim fmt As New cCharFormatter()
-                Me.Text = fmt.GetDescriptor(Me.Character)
+                Me.Text = fmt.ToString(Me.Character)
 
                 'Dim strText As String = ""
                 '' Create texttual representation of the char

@@ -42,13 +42,13 @@ Namespace Style
         Implements ITypeFormatter
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="ITypeFormatter.GetDescriptor"/>
+        ''' <inheritdocs cref="ITypeFormatter.ToString"/>
         ''' <remarks>Note that descriptor <see cref="eDescriptorTypes.Symbol"/>
         ''' will return the file extension for the datasource type.</remarks>
         ''' -------------------------------------------------------------------
-        Public Function GetDescriptor(ByVal value As Object, _
+        Public Function ToString(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                      Implements ITypeFormatter.ToString
 
             Debug.Assert(value.GetType.IsAssignableFrom(Me.GetDescribedType()))
 

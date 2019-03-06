@@ -98,8 +98,8 @@ Namespace Controls
             For Each ci As CultureInfo In CultureInfo.GetCultures(CultureTypes.SpecificCultures)
                 Try
                     Dim ri As New RegionInfo(ci.LCID)
-                    Dim strAbbr As String = fmt.GetDescriptor(ri, eDescriptorTypes.Abbreviation)
-                    Dim strName As String = fmt.GetDescriptor(ri, eDescriptorTypes.Name)
+                    Dim strAbbr As String = fmt.ToString(ri, eDescriptorTypes.Abbreviation)
+                    Dim strName As String = fmt.ToString(ri, eDescriptorTypes.Name)
 
                     If Me.GetUnitIndex(strAbbr) = -1 Then
                         Me.Items.Add(New MonetaryUnitItem(strAbbr, strName))

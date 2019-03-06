@@ -37,9 +37,9 @@ Namespace Style
     Public Class cEcosimResultTypeFormatter
         Implements ITypeFormatter
 
-        Public Function GetDescriptor(ByVal value As Object, _
+        Public Function ToString(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                      Implements ITypeFormatter.ToString
 
             Dim fmt As New cVarnameTypeFormatter()
 
@@ -53,7 +53,7 @@ Namespace Style
                 Case cEcosimResultWriter.eResultTypes.Prey : Return My.Resources.HEADER_PREY_PERCENTAGE
                 Case cEcosimResultWriter.eResultTypes.Value : Return My.Resources.HEADER_VALUE
                 Case cEcosimResultWriter.eResultTypes.Catch : Return My.Resources.HEADER_CATCH
-                Case cEcosimResultWriter.eResultTypes.TL : Return fmt.GetDescriptor(eVarNameFlags.TTLX, eDescriptorTypes.Name)
+                Case cEcosimResultWriter.eResultTypes.TL : Return fmt.ToString(eVarNameFlags.TTLX, eDescriptorTypes.Name)
                 Case cEcosimResultWriter.eResultTypes.FIB : Return My.Resources.HEADER_FIB
                 Case cEcosimResultWriter.eResultTypes.KemptonsQ : Return My.Resources.HEADER_KEMPTONSQ
                 Case cEcosimResultWriter.eResultTypes.ShannonDiversity : Return My.Resources.HEADER_SHANNONDIVERSITY

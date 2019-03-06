@@ -190,7 +190,7 @@ Public Class frmMain
 
         ' Provide text for ecosim run type
         Dim fmt As New cEcosimResultTypeFormatter()
-        e.Value = fmt.GetDescriptor(e.ListItem)
+        e.Value = fmt.ToString(e.ListItem)
 
     End Sub
 

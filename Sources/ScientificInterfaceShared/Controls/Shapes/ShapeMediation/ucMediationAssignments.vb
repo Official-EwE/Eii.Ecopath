@@ -367,7 +367,7 @@ Namespace Controls
                 'lstPts.Add(Xmax, resShape.ShapeData(resShape.XMax))
 
                 'need a way to find the color of the shape
-                Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(resShape)), _
+                Dim il As LineItem = Me.m_zgh.CreateLineItem(cStringUtils.Localize(My.Resources.HEADER_RESPONSE_TARGET, fmt.ToString(resShape)), _
                                                              lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Response)
                 pane.CurveList.Add(il)
 
@@ -420,15 +420,15 @@ Namespace Controls
                     If (medLandings.iFleetIndex > 0) Then
                         Dim sourceSec As cCoreInputOutputBase = Me.m_uic.Core.EcopathFleetInputs(medLandings.iFleetIndex)
                         strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED, _
-                                                 fmt.GetDescriptor(source), _
-                                                 fmt.GetDescriptor(sourceSec))
+                                                 fmt.ToString(source), _
+                                                 fmt.ToString(sourceSec))
                     Else
                         strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE, _
-                                                 fmt.GetDescriptor(source), _
+                                                 fmt.ToString(source), _
                                                  My.Resources.GENERIC_VALUE_ALL)
                     End If
                 Else
-                    strLabel = fmt.GetDescriptor(source)
+                    strLabel = fmt.ToString(source)
                 End If
                 myCurve = pane.AddBar(strLabel, list, clr)
                 myCurve.Bar.Fill = New Fill(clr)
@@ -443,7 +443,7 @@ Namespace Controls
                 ' Get the fleet
                 source = Me.m_uic.Core.EcopathFleetInputs(medFlt.iFleetIndex)
                 clr = sg.FleetColor(Me.m_uic.Core, medFlt.iFleetIndex)
-                strLabel = fmt.GetDescriptor(source)
+                strLabel = fmt.ToString(source)
 
                 myCurve = pane.AddBar(strLabel, list, clr)
                 myCurve.Bar.Fill = New Fill(clr)
@@ -490,8 +490,8 @@ Namespace Controls
                     If (medLandings.iFleetIndex > 0) Then
                         Dim FleetSource As cCoreInputOutputBase = Me.m_uic.Core.EcopathFleetInputs(medLandings.iFleetIndex)
                         strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DETAILED,
-                                                 fmt.GetDescriptor(valSource),
-                                                 fmt.GetDescriptor(FleetSource))
+                                                 fmt.ToString(valSource),
+                                                 fmt.ToString(FleetSource))
 
                         'Ok this is a little strange
                         'set the source of the values to the FleetInput 
@@ -499,12 +499,12 @@ Namespace Controls
                         varname = eVarNameFlags.Landings
                     Else
                         strLabel = cStringUtils.Localize(My.Resources.GENERIC_LABEL_DOUBLE,
-                                                 fmt.GetDescriptor(valSource),
+                                                 fmt.ToString(valSource),
                                                  My.Resources.GENERIC_VALUE_ALL)
                     End If
                 Else
                     'Biomass 
-                    strLabel = fmt.GetDescriptor(valSource)
+                    strLabel = fmt.ToString(valSource)
                     varname = eVarNameFlags.Biomass
                 End If
 
@@ -529,7 +529,7 @@ Namespace Controls
                 ' Get the fleet
                 valSource = Me.m_uic.Core.EcopathFleetInputs(iFleet)
                 clr = sg.FleetColor(core, iFleet)
-                strLabel = fmt.GetDescriptor(valSource)
+                strLabel = fmt.ToString(valSource)
 
                 Dim man As cFishingEffortShapeManger = Me.UIContext.Core.FishingEffortShapeManager
                 Dim effort As cShapeData = man(iFleet)

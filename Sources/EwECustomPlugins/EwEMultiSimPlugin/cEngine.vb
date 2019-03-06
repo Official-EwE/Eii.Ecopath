@@ -858,7 +858,7 @@ Friend Class cEngine
             Dim sbFormat As New Text.StringBuilder()
             For Each output As cEcosimResultWriter.eResultTypes In outputs
                 If sbFormat.Length > 0 Then sbFormat.Append(", ")
-                sbFormat.Append(fmt.GetDescriptor(output))
+                sbFormat.Append(fmt.ToString(output))
             Next
             Me.m_log.Add("- Written Ecosim " & sbFormat.ToString)
         Else

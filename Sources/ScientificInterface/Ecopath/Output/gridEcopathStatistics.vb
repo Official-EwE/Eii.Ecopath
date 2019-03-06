@@ -99,7 +99,7 @@ Namespace Ecopath.Output
 
             Dim model As cEwEModel = Me.Core.EwEModel
             Dim fmt As New cDiversityIndexTypeFormatter()
-            Me.AddRow(fmt.GetDescriptor(model.DiversityIndexType), source, eVarNameFlags.EcopathStatsDiversity)
+            Me.AddRow(fmt.ToString(model.DiversityIndexType), source, eVarNameFlags.EcopathStatsDiversity)
 
         End Sub
 

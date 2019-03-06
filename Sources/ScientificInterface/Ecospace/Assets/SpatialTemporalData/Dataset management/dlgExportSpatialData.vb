@@ -194,7 +194,7 @@ Namespace Ecospace.Controls
             Handles m_clbDatsets.Format
 
             Dim fmt As New cSpatialDatasetFormatter()
-            e.Value = fmt.GetDescriptor(e.ListItem, eDescriptorTypes.Abbreviation)
+            e.Value = fmt.ToString(e.ListItem, eDescriptorTypes.Abbreviation)
 
         End Sub
 

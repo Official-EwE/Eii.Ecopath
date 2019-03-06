@@ -46,9 +46,9 @@ Namespace Style
             Return GetType(eShapeFunctionType)
         End Function
 
-        Public Function GetDescriptor(ByVal value As Object, _
+        Public Function ToString(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                      Implements ITypeFormatter.ToString
 
             Dim strValue As String = DirectCast(value, eShapeFunctionType).ToString
             Dim strDescr As String = cResourceUtils.LoadString("SHAPEFUNCTION_" & strValue.ToUpper, My.Resources.ResourceManager)

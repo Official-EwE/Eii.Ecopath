@@ -41,8 +41,8 @@ Namespace Style
             Return GetType(eVerboseLevel)
         End Function
 
-        Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-            Implements ITypeFormatter.GetDescriptor
+        Public Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+            Implements ITypeFormatter.ToString
 
             Dim strValue As String = value.ToString
             Return cResourceUtils.LoadString("VERBOSE_" & strValue.ToUpper, My.Resources.ResourceManager)
