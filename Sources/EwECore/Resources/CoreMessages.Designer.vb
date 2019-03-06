@@ -833,6 +833,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Multi-stanza calculations do not work correctly with fractional habitat areas. Please set all Ecopath habitat area proportions to 1 for stanza groups, and instead correct the biomass of the leading life stage.
+        '''</summary>
+        Public Shared ReadOnly Property ECOPATH_PROMPT_STANZA_WHOLE_AREA() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_PROMPT_STANZA_WHOLE_AREA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecopath estimates failed to save to &apos;{0}&apos;.
         '''</summary>
         Public Shared ReadOnly Property ECOPATH_RESULTS_SAVED_FAILED() As String
@@ -3286,6 +3295,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property VARIABLE_VALIDATION_FAILED_EVEN() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_VALIDATION_FAILED_EVEN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} must be {1}.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_VALIDATION_FAILED_MUSTBEX() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_VALIDATION_FAILED_MUSTBEX", resourceCulture)
             End Get
         End Property
         

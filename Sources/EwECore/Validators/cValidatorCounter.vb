@@ -49,14 +49,14 @@ Public Class cValidatorCounter
             If MetaData.MinOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), 0) And
              MetaData.MaxOperator.Compare(CSng(ValueObject.Value(iSecondaryIndex)), n) Then
                 'passed validation
-                ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
+                ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.ToString(ValueObject.varName), ValueObject.Value)
                 ValueObject.ValidationStatus = eStatusFlags.OK
                 ValueObject.Status(iSecondaryIndex) = eStatusFlags.OK
                 Return True
             End If
 
             ' JS 09Jan08: If validation failed, set status to Failed Validation at any time.
-            ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), ValueObject.Value)
+            ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.ToString(ValueObject.varName), ValueObject.Value)
             ValueObject.ValidationStatus = eStatusFlags.FailedValidation
             Return True
 

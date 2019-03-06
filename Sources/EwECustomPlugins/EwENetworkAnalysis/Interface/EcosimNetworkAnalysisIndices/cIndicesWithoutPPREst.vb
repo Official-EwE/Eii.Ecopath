@@ -112,7 +112,7 @@ Public Class cIndicesWithoutPPREst
         'Relative sum of catch
         AddCurve(My.Resources.LBL_TOTAL_CATCH, Me.NetworkManager.RelativeSumOfCatch, pane, Color.Red)
         'Relative diversity
-        AddCurve(fmt.GetDescriptor(model.DiversityIndexType), Me.NetworkManager.RelativeDiversity, pane, Color.Blue)
+        AddCurve(fmt.ToString(model.DiversityIndexType), Me.NetworkManager.RelativeDiversity, pane, Color.Blue)
         'TL catch
         AddCurve(My.Resources.LBL_TL_CATCH, Me.NetworkManager.TLCatch, pane, Color.Black)
         'FCI

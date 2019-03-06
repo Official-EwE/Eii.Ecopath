@@ -120,7 +120,7 @@ Namespace SpatialData
             End If
 
             Dim ftm As New Style.cVarnameTypeFormatter()
-            Me.m_msgCurrent = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_LOADING, ftm.GetDescriptor(varname), layer.Name, timestep, dt),
+            Me.m_msgCurrent = New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_LOADING, ftm.ToString(varname), layer.Name, timestep, dt),
                                            eMessageType.GISOperation, eCoreComponentType.External, eMessageImportance.Information)
             Me.m_vn = layer.VarName
             Me.m_iIndex = layer.Index

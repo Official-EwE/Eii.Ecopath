@@ -132,20 +132,20 @@ Public Class gridTimeSeries
             End If
 
             If (selDatTypePrim IsNot Nothing) Then
-                Me(eRowType.PoolPrimary, i + 1) = New EwECell(fmtCore.GetDescriptor(selDatTypePrim), cStyleGuide.eStyleFlags.NotEditable)
+                Me(eRowType.PoolPrimary, i + 1) = New EwECell(fmtCore.ToString(selDatTypePrim), cStyleGuide.eStyleFlags.NotEditable)
             Else
                 Me(eRowType.PoolPrimary, i + 1) = New EwECell("", cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
             End If
 
             If (selDatTypeSec IsNot Nothing) Then
-                Me(eRowType.PoolSecundary, i + 1) = New EwECell(fmtCore.GetDescriptor(selDatTypeSec), cStyleGuide.eStyleFlags.NotEditable)
+                Me(eRowType.PoolSecundary, i + 1) = New EwECell(fmtCore.ToString(selDatTypeSec), cStyleGuide.eStyleFlags.NotEditable)
             Else
                 Me(eRowType.PoolSecundary, i + 1) = New EwECell("", cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable)
             End If
 
-            Me(eRowType.Type, i + 1) = New EwECell(fmtTSType.GetDescriptor(ts.TimeSeriesType), cStyleGuide.eStyleFlags.NotEditable)
+            Me(eRowType.Type, i + 1) = New EwECell(fmtTSType.ToString(ts.TimeSeriesType), cStyleGuide.eStyleFlags.NotEditable)
 
-            cell = New EwECell(fmtInterval.GetDescriptor(ts.Interval), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+            cell = New EwECell(fmtInterval.ToString(ts.Interval), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
             Me(eRowType.Interval, i + 1) = cell
 
             cell = New EwECell(ts.WtType, GetType(Single))

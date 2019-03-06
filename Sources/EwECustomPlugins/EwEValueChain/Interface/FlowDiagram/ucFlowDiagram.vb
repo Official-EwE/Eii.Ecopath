@@ -70,7 +70,7 @@ Public Class ucFlowDiagram
         End Property
         Public Overrides Function ToString() As String
             Dim fmt As New cGraphDataTypeFormatter()
-            Return fmt.GetDescriptor(Me.m_gdt)
+            Return fmt.ToString(Me.m_gdt)
         End Function
     End Class
 

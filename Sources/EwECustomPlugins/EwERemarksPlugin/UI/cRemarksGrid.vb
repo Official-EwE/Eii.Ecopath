@@ -111,7 +111,7 @@ Friend Class cRemarksGrid
             cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names
             Me(iRow, eColumnTypes.Source) = cell
 
-            cell = New EwERowHeaderCell(vfm.GetDescriptor(prop.VarName))
+            cell = New EwERowHeaderCell(vfm.ToString(prop.VarName))
             cell.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Names
             Me(iRow, eColumnTypes.Parameter) = cell
 

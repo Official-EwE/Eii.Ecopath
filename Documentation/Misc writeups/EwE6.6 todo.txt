@@ -8,9 +8,15 @@
 # Ecospace map cursor does not change size when changing zoom level. Maintain cursor in map instead of in layer editors?
 # Opening old model: show which old EwE version last used the model in upgrade message
 # EcoInd histogram shows no variaton where MCMC does: Ecopath does not calc stats when in Sensitivity run
-# Need AutoRUn system (just like AutoSave) where plug-ins can register and be controlled to run with Path, Sim, and Space
-   - Although this is a feature, this is urgent. Users need to be able to see at a glance which components may be slowing down their system
+# Added AutoRun system (just like AutoSave) where plug-ins can register and be controlled to run with Path, Sim, and Space
 # EwE first launch (or post-upgrade) shows "thank you" page in the start screen
+# Change shape - trapezoid no longer loses XAxisMin
+# Change shape - trapezoid now robust to users changing function parameters in any order
+# Monte Carlo diet perturbations no longer lose existing diest interactions (e.g, no longer samples diets to 0)
+# Change shape "show extra data" option only applies to forcing functions
+# Ecosim values dialog does not show Xaxis min and max
+# Groups now delete again with taxa and Ecospace scenarios
+# EwE main interface can be resized on all borders under Windows 10
 
 == BUGS ==
 ! Sometimes biomass plot stay empty when re-running MC? 
@@ -65,8 +71,12 @@ V EcoIND does not correctly compute "catch of mammals, seabirds and reptiles" in
   Monte Carlo: make all entries on settings page permanent (in app settings)
   StepWise fitting: store and retrieve fitted params (vuls, anomaly shape)
   Ecosampler: warn if no autosaving is selected for loaded components (path, sim, space, ..)
-  Database performance boost: when in batch mode, do not get and release writers, but cache them instead! 
+  Database performance boost: when in batch mode (=transaction), do not get and release writers, but cache them instead! 
   - Getting a writer obtains the entire remote table. This is incredibly costly re. performance.
+  Merge shape "Values" and "Change shape" interfaces
+  'Manage items:
+  - Merge all 'manage items' interfaces using a single, shared, inheritable engine
+  - Items to be deleted should shown in grids with crossed-out, red text
   Ecospace time series are requested, where each time series remembers which external datasets are applied to which layers
  
 == NOT UNASSESSED ==

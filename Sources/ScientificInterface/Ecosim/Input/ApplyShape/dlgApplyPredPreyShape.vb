@@ -178,14 +178,14 @@ Namespace Ecosim
             ' Load Prey and predator pair name
             Select Case m_editMode
                 Case eEditMode.PredPrey
-                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
-                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
+                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
+                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
                 Case eEditMode.Prey
-                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
+                    Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
                     Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, SharedResources.GENERIC_VALUE_ALL)
                 Case eEditMode.Predator
                     Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, SharedResources.GENERIC_VALUE_ALL)
-                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
+                    Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
                 Case eEditMode.All
                     Me.m_lblSource.Text = cStringUtils.Localize(Me.m_lblSource.Text, SharedResources.GENERIC_VALUE_ALL)
                     Me.m_lblTarget.Text = cStringUtils.Localize(Me.m_lblTarget.Text, SharedResources.GENERIC_VALUE_ALL)
@@ -538,7 +538,7 @@ Namespace Ecosim
             Dim shape As cForcingFunction = Me.Shape(item)
 
             item.SubItems(1).Tag = appl
-            item.SubItems(1).Text = fmt.GetDescriptor(appl)
+            item.SubItems(1).Text = fmt.ToString(appl)
 
         End Sub
 
@@ -664,7 +664,7 @@ Namespace Ecosim
         Private Sub ConfigureApplicationRadioButton(ByVal rb As RadioButton, ByVal tag As eForcingFunctionApplication)
 
             Dim fmt As New cFFApplicationTargetTypeFormatter()
-            rb.Text = fmt.GetDescriptor(tag)
+            rb.Text = fmt.ToString(tag)
             rb.Tag = tag
             rb.Visible = (tag <> eForcingFunctionApplication.NotSet)
 

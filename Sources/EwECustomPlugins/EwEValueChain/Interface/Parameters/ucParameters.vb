@@ -280,7 +280,7 @@ Public Class ucParameters
         Handles m_clbFleets.Format
         Dim item As ICoreInputOutput = DirectCast(e.ListItem, ICoreInputOutput)
         Dim fmt As New cCoreInterfaceFormatter()
-        e.Value = fmt.GetDescriptor(item)
+        e.Value = fmt.ToString(item)
     End Sub
 
     Private Sub OnFleetSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _

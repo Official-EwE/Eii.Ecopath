@@ -199,7 +199,7 @@ Namespace Controls
             wr.WriteLine("""Function type"",Type,""Param 1"",""Param 2"",""Param 3"",""Param 4"",""Param 5""")
 
             For Each f As IShapeFunction In Me.m_data.ShapeFunctions
-                wr.Write(cStringUtils.ToCSVField(f.ShapeFunctionType) & ", " & cStringUtils.ToCSVField(fmt.GetDescriptor(f.ShapeFunctionType)))
+                wr.Write(cStringUtils.ToCSVField(f.ShapeFunctionType) & ", " & cStringUtils.ToCSVField(fmt.ToString(f.ShapeFunctionType)))
                 For i As Integer = 1 To f.nParameters
                     wr.Write("," & cStringUtils.ToCSVField(f.ParamName(i)))
                 Next

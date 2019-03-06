@@ -115,7 +115,7 @@ Namespace Controls
                     strText = obj.ToString
                     If Me.m_formatter IsNot Nothing Then
                         Try
-                            strText = Me.m_formatter.GetDescriptor(obj, eDescriptorTypes.Name)
+                            strText = Me.m_formatter.ToString(obj, eDescriptorTypes.Name)
                         Catch ex As Exception
                             ' Whoah
                         End Try

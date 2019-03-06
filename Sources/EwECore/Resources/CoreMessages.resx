@@ -1418,4 +1418,10 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="EXPORT_PROGRESS_DATASET" xml:space="preserve">
     <value>Exporting dataset {0}</value>
   </data>
+  <data name="ECOPATH_PROMPT_STANZA_WHOLE_AREA" xml:space="preserve">
+    <value>Multi-stanza calculations do not work correctly with fractional habitat areas. Please set all Ecopath habitat area proportions to 1 for stanza groups, and instead correct the biomass of the leading life stage</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_MUSTBEX" xml:space="preserve">
+    <value>{0} must be {1}</value>
+  </data>
 </root>

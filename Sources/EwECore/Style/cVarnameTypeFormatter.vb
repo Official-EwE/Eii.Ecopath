@@ -40,9 +40,9 @@ Namespace Style
     Public Class cVarnameTypeFormatter
         Implements ITypeFormatter
 
-        Public Function GetDescriptor(ByVal data As Object,
+        Public Function ToString(ByVal data As Object,
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                      Implements ITypeFormatter.ToString
 
             Dim vn As eVarNameFlags = eVarNameFlags.NotSet
 

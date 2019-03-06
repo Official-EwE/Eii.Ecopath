@@ -975,7 +975,7 @@ Public Class plFlow
     Public Function ConvertUnit(ByVal unit As cUnit, ByVal convertTo As cUnitFactory.eUnitType) As Boolean
 
         Dim fmt As New cUnitTypeFormatter()
-        Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_CONVERT_UNIT, unit.Name, fmt.GetDescriptor(unit.UnitType), fmt.GetDescriptor(convertTo)), _
+        Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.PROMPT_CONVERT_UNIT, unit.Name, fmt.ToString(unit.UnitType), fmt.ToString(convertTo)), _
                                          eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
         fmsg.Reply = eMessageReply.YES
         fmsg.Suppressable = True

@@ -142,7 +142,7 @@ Public Class gridWeightTS
         cell = New EwERowHeaderCell(ts.Name)
         Me(iRow, eColumnTypes.Name) = cell
 
-        cell = New EwERowHeaderCell(fmt.GetDescriptor(ts.TimeSeriesType))
+        cell = New EwERowHeaderCell(fmt.ToString(ts.TimeSeriesType))
         Me(iRow, eColumnTypes.Type) = cell
 
         cell = New SourceGrid2.Cells.Real.CheckBox(ts.Enabled)

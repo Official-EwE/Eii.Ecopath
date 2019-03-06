@@ -112,13 +112,13 @@ Namespace Controls
             Dim iCol As Integer = 0
             Dim iRow As Integer = Me.AddRow()
 
-            ewec = New EwERowHeaderCell(fmt.GetDescriptor(obj))
+            ewec = New EwERowHeaderCell(fmt.ToString(obj))
             Me(iRow, iCol) = ewec
             iCol += 1
 
             ' Is landings?
             If Me.m_bLandings Then
-                ewec = New EwERowHeaderCell(fmt.GetDescriptor(objSec))
+                ewec = New EwERowHeaderCell(fmt.ToString(objSec))
                 Me(iRow, iCol) = ewec
                 iCol += 1
             End If

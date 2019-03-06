@@ -66,7 +66,7 @@ Namespace Controls.EwEGrid
         End Sub
 
         Public Sub New(ByVal varname As eVarNameFlags, detail As eDescriptorTypes, Optional bShowUnits As Boolean = True)
-            Me.New(New cVarnameTypeFormatter().GetDescriptor(varname, detail) & "|" & New cVarnameTypeFormatter().GetDescriptor(varname, eDescriptorTypes.Description))
+            Me.New(New cVarnameTypeFormatter().ToString(varname, detail) & "|" & New cVarnameTypeFormatter().ToString(varname, eDescriptorTypes.Description))
             If (bShowUnits) Then
                 Dim md As cVariableMetaData = cVariableMetaData.Get(varname)
                 If (md IsNot Nothing) Then

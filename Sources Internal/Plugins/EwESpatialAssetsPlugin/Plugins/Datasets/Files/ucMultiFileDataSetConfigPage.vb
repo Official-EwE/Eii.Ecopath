@@ -291,7 +291,7 @@ Namespace SpatialData
         Private Sub OnFormatVarname(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
             Handles m_cmbVarName.Format
             Dim fmt As New cVarnameTypeFormatter()
-            e.Value = fmt.GetDescriptor(e.ListItem)
+            e.Value = fmt.ToString(e.ListItem)
         End Sub
 
         Private Sub OnSeasonalCheckChanged(sender As System.Object, e As System.EventArgs) _

@@ -73,7 +73,7 @@ Public Class dlgImportLayerStyles
                     dgVar.CreateCells(Me.m_dgLayers)
                     dgVar.Cells(Me.m_colUsed.Index).Value = CheckState.Unchecked
                     dgVar.Cells(Me.m_colIndex.Index).Value = ""
-                    dgVar.Cells(Me.m_colName.Index).Value = vnf.GetDescriptor(entry.VarName, eDescriptorTypes.Name)
+                    dgVar.Cells(Me.m_colName.Index).Value = vnf.ToString(entry.VarName, eDescriptorTypes.Name)
                     dgVar.Cells(Me.m_colStatus.Index).Value = ""
 
                     Me.m_dgLayers.Rows.Add(dgVar)

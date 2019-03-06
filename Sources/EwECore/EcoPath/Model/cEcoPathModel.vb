@@ -268,8 +268,9 @@ Namespace Ecopath
 
                 If ParameterEstimationType = eEstimateParameterFor.ParameterEstimation Then
 
+                    CheckStanzaHabArea()
                     CheckDetritusFate()
-                    checkForMissingDetritusBiomass()
+                    CheckForMissingDetritusBiomass()
 
                     CheckForImportOnlyGroups()
                     CheckDetritusFateTooBig()
@@ -1274,7 +1275,7 @@ Namespace Ecopath
         ''' Warn the user if detritus has no biomass
         ''' </summary>
         ''' <remarks>In EwE5 this was part of FindMissing()</remarks>
-        Private Sub checkForMissingDetritusBiomass()
+        Private Sub CheckForMissingDetritusBiomass()
             Dim msg As cMessage = Nothing
 
             For i As Integer = m_Data.NumLiving + 1 To m_Data.NumGroups
@@ -1288,6 +1289,31 @@ Namespace Ecopath
             If msg IsNot Nothing Then NotifyCore(msg)
 
         End Sub
+
+        ''' <summary>
+        ''' Warn the user if stanza groups use fractional habitat area proportions
+        ''' </summary>
+        Private Sub CheckStanzaHabArea()
+            Dim msg As cMessage = Nothing
+
+            For i As Integer = 1 To m_Data.NumLiving
+                If m_Data.Area(i) < 1 And m_Data.StanzaGroup(i) Then
+                    If (msg Is Nothing) Then
+                        msg = New cMessage(My.Resources.CoreMessages.ECOPATH_PROMPT_STANZA_WHOLE_AREA,
+                                eMessageType.InvalidModel_Stanza_Area, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                        msg.Suppressable = True
+                    End If
+                    Dim var As eVarNameFlags = eVarNameFlags.HabitatArea
+                    Dim fmt As New EwECore.Style.cVarnameTypeFormatter()
+                    Dim status As String = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_MUSTBEX, fmt.ToString(var), 1)
+                    msg.AddVariable(New cVariableStatus(eStatusFlags.ErrorEncountered, status, var, eDataTypes.EcoPathGroupInput, eCoreComponentType.EcoPath, i))
+                End If
+            Next
+
+            If msg IsNot Nothing Then NotifyCore(msg)
+
+        End Sub
+
 
         Private Sub CheckForImportOnlyGroups()
 

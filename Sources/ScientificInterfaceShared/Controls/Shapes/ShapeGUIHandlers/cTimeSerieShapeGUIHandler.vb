@@ -60,7 +60,7 @@ Namespace Controls
             Public Sub New(ByVal t As eTimeSeriesType)
                 Me.m_type = t
                 Dim fmt As New cTimeSeriesTypeFormatter
-                Me.m_strName = fmt.GetDescriptor(t, eDescriptorTypes.Abbreviation)
+                Me.m_strName = fmt.ToString(t, eDescriptorTypes.Abbreviation)
             End Sub
 
             Public Property NumShapes() As Integer

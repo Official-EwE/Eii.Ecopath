@@ -248,7 +248,7 @@ Public Class dlgManageTimeSeries
     Private Sub OnImportFormatInterval(ByVal sender As System.Object, ByVal e As ListControlConvertEventArgs) _
             Handles m_cmbImportInterval.Format
         Dim fmt As New cTimeSeriesDatasetIntervalTypeFormatter()
-        e.Value = fmt.GetDescriptor(e.ListItem)
+        e.Value = fmt.ToString(e.ListItem)
     End Sub
 
     ' -- DESTINATION --
@@ -422,7 +422,7 @@ Public Class dlgManageTimeSeries
             Else
                 strLoaded = ""
             End If
-            item = New ListViewItem(New String() {ds.Name, strLoaded, fmt.GetDescriptor(ds.TimeSeriesInterval), ds.nTimeSeries.ToString})
+            item = New ListViewItem(New String() {ds.Name, strLoaded, fmt.ToString(ds.TimeSeriesInterval), ds.nTimeSeries.ToString})
             item.Tag = ds
             item.Selected = (String.Compare(ds.Name, Me.DatasetName, False) = 0)
             aitems(iDS - 1) = item

@@ -380,11 +380,11 @@ Namespace Controls
 
             Dim ftm As New cShapeDataFormatter()
             If Me.m_bIsLandingsInteractions Then
-                Me.Text = cStringUtils.Localize(My.Resources.CAPTION_DEFINE_MEDIATING_LANDINGS, ftm.GetDescriptor(Me.m_medfn))
+                Me.Text = cStringUtils.Localize(My.Resources.CAPTION_DEFINE_MEDIATING_LANDINGS, ftm.ToString(Me.m_medfn))
                 Me.m_lblAvailable.Text = My.Resources.HEADER_AVAILABLE_LANDINGS
                 Me.m_lblAssigned.Text = My.Resources.HEADER_ASSIGNED_LANDINGS
             Else
-                Me.Text = cStringUtils.Localize(My.Resources.CAPTION_DEFINE_MEDIATING_GROUPSANDFLEETS, ftm.GetDescriptor(Me.m_medfn))
+                Me.Text = cStringUtils.Localize(My.Resources.CAPTION_DEFINE_MEDIATING_GROUPSANDFLEETS, ftm.ToString(Me.m_medfn))
                 Me.m_lblAvailable.Text = My.Resources.HEADER_AVAILABLE_GROUPS_FLEETS
                 Me.m_lblAssigned.Text = My.Resources.HEADER_ASSIGNED_GROUPS_FLEETS
             End If

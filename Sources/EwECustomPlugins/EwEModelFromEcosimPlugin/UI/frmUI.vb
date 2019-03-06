@@ -228,7 +228,7 @@ Friend Class frmUI
         Handles m_cmbBACalcType.Format
 
         Try
-            e.Value = Me.m_fmtBAType.GetDescriptor(DirectCast(e.ListItem, cEcopathModelFromEcosim.eBACalcTypes))
+            e.Value = Me.m_fmtBAType.ToString(DirectCast(e.ListItem, cEcopathModelFromEcosim.eBACalcTypes))
         Catch ex As Exception
             cLog.Write(ex, "frmUI::OnFormatBACalcType")
         End Try
@@ -239,7 +239,7 @@ Friend Class frmUI
         Handles m_cmbFormat.Format
 
         Try
-            e.Value = Me.m_fmtDatasourceType.GetDescriptor(DirectCast(e.ListItem, eDataSourceTypes))
+            e.Value = Me.m_fmtDatasourceType.ToString(DirectCast(e.ListItem, eDataSourceTypes))
         Catch ex As Exception
             cLog.Write(ex, "frmUI::OnFormatDatabaseType")
         End Try

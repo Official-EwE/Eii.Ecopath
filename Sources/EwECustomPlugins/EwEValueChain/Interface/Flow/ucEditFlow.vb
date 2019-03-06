@@ -321,7 +321,7 @@ Public Class ucEditFlow
             If (Not TypeOf unit Is cProducerUnit) Then
                 For ut As cUnitFactory.eUnitType = cUnitFactory.eUnitType.Processing To cUnitFactory.eUnitType.Consumer
                     If (unit.UnitType <> ut) Then
-                        Dim item As New ToolStripMenuItem(fmt.GetDescriptor(ut), cUnitImageFactory.GetImage(ut), AddressOf OnConvertSelection)
+                        Dim item As New ToolStripMenuItem(fmt.ToString(ut), cUnitImageFactory.GetImage(ut), AddressOf OnConvertSelection)
                         item.Tag = ut
                         Me.m_tssbConvert.DropDownItems.Add(item)
                         bCanConvert = True

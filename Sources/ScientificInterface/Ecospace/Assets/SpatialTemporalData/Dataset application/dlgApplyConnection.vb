@@ -386,9 +386,9 @@ Namespace Ecospace.Controls
 
             Dim fmt As New cSpatialConverterFormatter()
             If e.ListItem.Equals(String.Empty) Then
-                e.Value = fmt.GetDescriptor(Nothing)
+                e.Value = fmt.ToString(Nothing)
             Else
-                e.Value = fmt.GetDescriptor(e.ListItem)
+                e.Value = fmt.ToString(e.ListItem)
             End If
         End Sub
 

@@ -119,7 +119,7 @@ Public Class gridGroupInput
 
         Me.Rows(iRow).Tag = var
 
-        Me(iRow, 0) = New EwERowHeaderCell(Me.m_fmt.GetDescriptor(var))
+        Me(iRow, 0) = New EwERowHeaderCell(Me.m_fmt.ToString(var))
         For i As Integer = 1 To Me.ColumnsCount - 1
             cell = New EwECell("", eStyleFlags.NotEditable)
             cell.SuppressZero() = True

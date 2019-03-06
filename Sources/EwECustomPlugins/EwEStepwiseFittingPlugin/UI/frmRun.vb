@@ -377,7 +377,7 @@ Public Class frmRun
 
         Try
             Dim fmt As New ScientificInterfaceShared.Style.cShapeDataFormatter()
-            e.Value = fmt.GetDescriptor(e.ListItem)
+            e.Value = fmt.ToString(e.ListItem)
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try

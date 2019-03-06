@@ -99,8 +99,8 @@ Public Class cPrebalZedGraphHelper
 
         Me.ShowHoverMenu = True
 
-        Me.m_itemShowHideTL = Me.HoverMenu.AddItem(vnf.GetDescriptor(eVarNameFlags.TL, eDescriptorTypes.Abbreviation), My.Resources.OPTION_SHOWTL, Nothing, AddressOf OnShowHideTrophicLevels)
-        Me.m_itemShowHideName = Me.HoverMenu.AddItem(vnf.GetDescriptor(eVarNameFlags.Name, eDescriptorTypes.Abbreviation), My.Resources.OPTION_SHOWNAME, Nothing, AddressOf OnShowHideNames)
+        Me.m_itemShowHideTL = Me.HoverMenu.AddItem(vnf.ToString(eVarNameFlags.TL, eDescriptorTypes.Abbreviation), My.Resources.OPTION_SHOWTL, Nothing, AddressOf OnShowHideTrophicLevels)
+        Me.m_itemShowHideName = Me.HoverMenu.AddItem(vnf.ToString(eVarNameFlags.Name, eDescriptorTypes.Abbreviation), My.Resources.OPTION_SHOWNAME, Nothing, AddressOf OnShowHideNames)
         Me.m_itemShowHideFormula = Me.HoverMenu.AddItem(SharedResources.FormulaEvaluatorHS, My.Resources.OPTION_SHOWREGFORMULA, Nothing, AddressOf OnShowHideFormula)
 
     End Sub
@@ -330,7 +330,7 @@ Public Class cPrebalZedGraphHelper
 
             If Me.ShowName Then
                 Dim fmt As New cCoreInterfaceFormatter()
-                strLabel = fmt.GetDescriptor(grp, eDescriptorTypes.Name)
+                strLabel = fmt.ToString(grp, eDescriptorTypes.Name)
             Else
                 strLabel = CStr(grp.Index)
             End If

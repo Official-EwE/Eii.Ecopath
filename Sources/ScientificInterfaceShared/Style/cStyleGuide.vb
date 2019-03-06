@@ -668,7 +668,7 @@ Namespace Style
         Public ReadOnly Property CurrencyUnitText(ByVal unit As eUnitCurrencyType) As String
             Get
                 Dim fmt As New cCurrencyUnitFormatter(Me.m_strUnitCurrencyCustom)
-                Return fmt.GetDescriptor(unit)
+                Return fmt.ToString(unit)
             End Get
         End Property
 
@@ -699,7 +699,7 @@ Namespace Style
         Public ReadOnly Property TimeUnitText(ByVal unit As eUnitTimeType) As String
             Get
                 Dim fmt As New cTimeUnitFormatter(Me.m_strUnitTimeCustom)
-                Return fmt.GetDescriptor(unit)
+                Return fmt.ToString(unit)
             End Get
         End Property
 
@@ -761,7 +761,7 @@ Namespace Style
         Public ReadOnly Property AreaUnitText(ByVal unit As eUnitAreaType) As String
             Get
                 Dim fmt As New cAreaUnitFormatter(Me.m_strUnitAreaCustom)
-                Return fmt.GetDescriptor(unit)
+                Return fmt.ToString(unit)
             End Get
         End Property
 

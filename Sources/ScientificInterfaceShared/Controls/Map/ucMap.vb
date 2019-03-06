@@ -304,8 +304,8 @@ Namespace Controls.Map
             Dim strLon As String = Me.UIContext.StyleGuide.FormatNumber(ptCoord.X)
             Dim fmt As New cMapUnitFormatter()
             Dim strUnit As String = If(bm.AssumeSquareCells,
-                                       fmt.GetDescriptor(eUnitMapRefType.m, eDescriptorTypes.Symbol),
-                                       fmt.GetDescriptor(eUnitMapRefType.dd, eDescriptorTypes.Symbol))
+                                       fmt.ToString(eUnitMapRefType.m, eDescriptorTypes.Symbol),
+                                       fmt.ToString(eUnitMapRefType.dd, eDescriptorTypes.Symbol))
 
             If Not String.IsNullOrWhiteSpace(strVal) Then
                 strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE,

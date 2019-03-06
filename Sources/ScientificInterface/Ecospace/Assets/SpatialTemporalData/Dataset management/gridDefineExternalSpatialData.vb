@@ -53,7 +53,7 @@ Namespace Ecospace.Controls
 
             Public Function Compare(x As ISpatialDataSet, y As ISpatialDataSet) As Integer _
                 Implements System.Collections.Generic.IComparer(Of EwEUtils.SpatialData.ISpatialDataSet).Compare
-                Dim iOrder As Integer = String.Compare(Me.m_fmt.GetDescriptor(x.VarName), Me.m_fmt.GetDescriptor(y.VarName))
+                Dim iOrder As Integer = String.Compare(Me.m_fmt.ToString(x.VarName), Me.m_fmt.ToString(y.VarName))
                 If (iOrder = 0) Then
                     iOrder = String.Compare(x.CustomName, y.CustomName)
                 End If
@@ -195,7 +195,7 @@ Namespace Ecospace.Controls
                     If (vnLast = eVarNameFlags.NotSet) Then
                         strVar = "(Generic)"
                     Else
-                        strVar = fmt.GetDescriptor(vnLast)
+                        strVar = fmt.ToString(vnLast)
                     End If
 
                     Me(iRow, 1) = New EwEColumnHeaderCell(strVar)

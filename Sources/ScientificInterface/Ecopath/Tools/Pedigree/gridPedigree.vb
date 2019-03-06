@@ -356,8 +356,8 @@ Namespace Ecopath.Tools
                 ' Get variable
                 var = Me.Core.PedigreeVariable(iVariable)
                 ' Create and configure cell
-                cell = New EwEColumnHeaderCell(descr.GetDescriptor(var, eDescriptorTypes.Name))
-                cell.ToolTipText = descr.GetDescriptor(var, eDescriptorTypes.Description)
+                cell = New EwEColumnHeaderCell(descr.ToString(var, eDescriptorTypes.Name))
+                cell.ToolTipText = descr.ToString(var, eDescriptorTypes.Description)
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 ' Add it
                 Me(0, iVariable + 1) = cell

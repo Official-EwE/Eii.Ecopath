@@ -42,27 +42,27 @@ Namespace Style
             Return GetType(eTaxonClassificationType)
         End Function
 
-        Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-            Implements ITypeFormatter.GetDescriptor
+        Public Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+            Implements ITypeFormatter.ToString
 
             Dim val As eTaxonClassificationType = DirectCast(value, eTaxonClassificationType)
             Dim fmt As New cVarnameTypeFormatter()
 
             Select Case val
                 Case eTaxonClassificationType.Phylum
-                    Return fmt.GetDescriptor(eVarNameFlags.Phylum, eDescriptorTypes.Name)
+                    Return fmt.ToString(eVarNameFlags.Phylum, eDescriptorTypes.Name)
                 Case eTaxonClassificationType.Order
-                    Return fmt.GetDescriptor(eVarNameFlags.Order, eDescriptorTypes.Name)
+                    Return fmt.ToString(eVarNameFlags.Order, eDescriptorTypes.Name)
                 Case eTaxonClassificationType.Class
-                    Return fmt.GetDescriptor(eVarNameFlags.Class, eDescriptorTypes.Name)
+                    Return fmt.ToString(eVarNameFlags.Class, eDescriptorTypes.Name)
                 Case eTaxonClassificationType.Family
-                    Return fmt.GetDescriptor(eVarNameFlags.Family, eDescriptorTypes.Name)
+                    Return fmt.ToString(eVarNameFlags.Family, eDescriptorTypes.Name)
                 Case eTaxonClassificationType.Genus
-                    Return fmt.GetDescriptor(eVarNameFlags.Genus, eDescriptorTypes.Name)
+                    Return fmt.ToString(eVarNameFlags.Genus, eDescriptorTypes.Name)
                 Case eTaxonClassificationType.Species
-                    Return fmt.GetDescriptor(eVarNameFlags.Species, eDescriptorTypes.Name)
+                    Return fmt.ToString(eVarNameFlags.Species, eDescriptorTypes.Name)
                 Case eTaxonClassificationType.Latin
-                    Return fmt.GetDescriptor(eVarNameFlags.Name, eDescriptorTypes.Name)
+                    Return fmt.ToString(eVarNameFlags.Name, eDescriptorTypes.Name)
                 Case Else
                     Debug.Assert(False)
             End Select

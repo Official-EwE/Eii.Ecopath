@@ -122,15 +122,15 @@ Public Class cValidatorDefault
         ' Prepare message
         If ValueObject.ValidationStatus = eStatusFlags.OK Then
             If bCleared Then
-                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_CLEARED, fmt.GetDescriptor(ValueObject.varName))
+                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_CLEARED, fmt.ToString(ValueObject.varName))
             Else
-                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.GetDescriptor(ValueObject.varName), val)
+                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, fmt.ToString(ValueObject.varName), val)
             End If
         Else
             If (String.IsNullOrWhiteSpace(ValueObject.ValidationMessage)) Then
-                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.GetDescriptor(ValueObject.varName), val)
+                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED, fmt.ToString(ValueObject.varName), val)
             Else
-                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_DETAIL, fmt.GetDescriptor(ValueObject.varName), val, ValueObject.ValidationMessage)
+                ValueObject.ValidationMessage = cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_FAILED_DETAIL, fmt.ToString(ValueObject.varName), val, ValueObject.ValidationMessage)
             End If
         End If
 

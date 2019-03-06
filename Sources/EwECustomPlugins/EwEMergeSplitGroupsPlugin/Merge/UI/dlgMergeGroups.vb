@@ -94,7 +94,7 @@ Public Class dlgMergeGroups
             Dim grp As cCoreGroupBase = DirectCast(e.ListItem, cCoreGroupBase)
 
             If (Not grp.Disposed) Then
-                e.Value = fmt.GetDescriptor(e.ListItem)
+                e.Value = fmt.ToString(e.ListItem)
             End If
         Catch ex As Exception
             ' mmm

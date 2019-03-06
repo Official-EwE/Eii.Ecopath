@@ -164,7 +164,7 @@ Namespace Ecosim
             Handles m_cmbNutForcing.Format
             Try
                 Dim fmt As New cShapeDataFormatter()
-                e.Value = fmt.GetDescriptor(e.ListItem)
+                e.Value = fmt.ToString(e.ListItem)
             Catch ex As Exception
                 Debug.Assert(False)
             End Try

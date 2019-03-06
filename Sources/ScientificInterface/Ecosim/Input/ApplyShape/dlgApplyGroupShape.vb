@@ -113,7 +113,7 @@ Namespace Ecosim
             ' Load Prey and predator pair name
             Select Case m_editMode
                 Case eEditMode.Group
-                    Me.m_lblSource.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_MORTOTHER, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelGroup)))
+                    Me.m_lblSource.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_MORTOTHER, fmt.ToString(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelGroup)))
                 Case eEditMode.All
                     Me.m_lblSource.Text = cStringUtils.Localize(My.Resources.FF_APPLICATION_MORTOTHER, SharedResources.GENERIC_VALUE_ALL)
                 Case Else
@@ -430,7 +430,7 @@ Namespace Ecosim
             Dim shape As cForcingFunction = Me.Shape(item)
 
             item.SubItems(1).Tag = appl
-            item.SubItems(1).Text = fmt.GetDescriptor(appl)
+            item.SubItems(1).Text = fmt.ToString(appl)
 
         End Sub
 

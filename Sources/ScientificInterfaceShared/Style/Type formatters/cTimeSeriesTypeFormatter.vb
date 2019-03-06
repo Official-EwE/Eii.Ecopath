@@ -35,9 +35,9 @@ Namespace Style
     Public Class cTimeSeriesTypeFormatter
         Implements ITypeFormatter
 
-        Public Function GetDescriptor(ByVal value As Object, _
+        Public Function ToString(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                      Implements ITypeFormatter.ToString
 
             Dim ts As eTimeSeriesType = DirectCast(value, eTimeSeriesType)
             Dim strType As String = ""

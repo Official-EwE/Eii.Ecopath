@@ -41,7 +41,7 @@ Public Class cSelectionMonitorFormatter
         Return GetType(cSelectionMonitor)
     End Function
 
-    Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.GetDescriptor
+    Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.ToString
 
         Dim strSelection As String = ""
 
@@ -71,13 +71,13 @@ Public Class cSelectionMonitorFormatter
                         ' Format message
                         If props(0).SourceSec IsNot Nothing Then
                             strSelection = String.Format(My.Resources.SELECTION_INDEXEDVAR,
-                                                         fmt.GetDescriptor(props(0).Source),
-                                                         vd.GetDescriptor(var, eDescriptorTypes.Name),
-                                                         fmt.GetDescriptor(props(0).SourceSec))
+                                                         fmt.ToString(props(0).Source),
+                                                         vd.ToString(var, eDescriptorTypes.Name),
+                                                         fmt.ToString(props(0).SourceSec))
                         Else
                             strSelection = String.Format(SharedResources.GENERIC_LABEL_DETAILED,
-                                                         fmt.GetDescriptor(props(0).Source),
-                                                         vd.GetDescriptor(var, eDescriptorTypes.Description))
+                                                         fmt.ToString(props(0).Source),
+                                                         vd.ToString(var, eDescriptorTypes.Description))
                         End If
 
                     Else
@@ -97,7 +97,7 @@ Public Class cSelectionMonitorFormatter
                     If bMixed Then
                         strSelection = My.Resources.SELECTION_MULTIPLE
                     Else
-                        strSelection = String.Format(My.Resources.SELECTION_SINGLEVAR, My.Resources.SELECTION_MULTIPLE, vd.GetDescriptor(var))
+                        strSelection = String.Format(My.Resources.SELECTION_SINGLEVAR, My.Resources.SELECTION_MULTIPLE, vd.ToString(var))
                     End If
             End Select
 

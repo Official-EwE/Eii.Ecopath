@@ -72,7 +72,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
         Debug.Print("Load dialogue " + Me.m_graph.Shape.ToCSVString())
 
         Try
-            Me.Text = cStringUtils.Localize(Me.Text, New cShapeDataFormatter().GetDescriptor(shape))
+            Me.Text = cStringUtils.Localize(Me.Text, New cShapeDataFormatter().ToString(shape))
         Catch ex As Exception
             ' Whoah!
         End Try
@@ -265,7 +265,7 @@ Public NotInheritable Class dlgDefineEcospaceForagingResponse
                             Dim grp As cEcospaceGroupInput = Me.m_uic.Core.EcospaceGroupInputs(igrp)
                             If ((grp.CapacityCalculationType And eEcospaceCapacityCalType.EnvResponses) = eEcospaceCapacityCalType.EnvResponses) Then
 
-                                Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.GetDescriptor(grp))
+                                Dim ndgrp As TreeNode = ndApply.Nodes.Add(fmt.ToString(grp))
                                 ndgrp.Tag = grp
 
                                 If Not ndApply.IsExpanded Then

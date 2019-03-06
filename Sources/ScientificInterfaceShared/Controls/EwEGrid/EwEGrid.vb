@@ -1260,7 +1260,7 @@ Namespace Controls.EwEGrid
 
             If (Me.Core IsNot Nothing) Then
                 Dim fmt As New cCharFormatter()
-                cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste using " & fmt.GetDescriptor(cSplit), eVerboseLevel.Detailed)
+                cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste using " & fmt.ToString(cSplit), eVerboseLevel.Detailed)
             End If
 
             For Each strLine As String In astrLines

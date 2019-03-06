@@ -58,8 +58,8 @@ Public Class gridDistributionParameters
             Return GetType(cMSE.DistributionType)
         End Function
 
-        Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-            Implements ITypeFormatter.GetDescriptor
+        Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+            Implements ITypeFormatter.ToString
             Select Case (DirectCast(value, cMSE.DistributionType))
                 Case cMSE.DistributionType.NotSet
                     Return SharedResources.GENERIC_VALUE_NOTUSED

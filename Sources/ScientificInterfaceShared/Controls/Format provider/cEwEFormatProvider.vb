@@ -998,7 +998,7 @@ Namespace Controls
                 If (Me.m_formatter Is Nothing) Then Return
                 If (Not Me.m_formatter.GetDescribedType().IsAssignableFrom(e.ListItem.GetType())) Then Return
 
-                e.Value = Me.m_formatter.GetDescriptor(e.ListItem, eDescriptorTypes.Name)
+                e.Value = Me.m_formatter.ToString(e.ListItem, eDescriptorTypes.Name)
 
             End Sub
 

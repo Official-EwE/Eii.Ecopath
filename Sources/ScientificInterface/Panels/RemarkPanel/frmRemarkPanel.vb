@@ -333,23 +333,23 @@ Public Class frmRemarkPanel
                         Dim var As eVarNameFlags = prop.VarName
                         Dim fmt As New cCoreInterfaceFormatter()
 
-                        strVarN = vnf.GetDescriptor(var, eDescriptorTypes.Name)
+                        strVarN = vnf.ToString(var, eDescriptorTypes.Name)
 
                         ' Format message
                         If prop.SourceSec IsNot Nothing Then
                             strName = String.Format(My.Resources.SELECTION_INDEXEDVAR, _
-                                                    fmt.GetDescriptor(prop.Source), _
+                                                    fmt.ToString(prop.Source), _
                                                     strVarN, _
-                                                    fmt.GetDescriptor(prop.SourceSec))
+                                                    fmt.ToString(prop.SourceSec))
                         Else
                             strName = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
-                                                    fmt.GetDescriptor(prop.Source), _
+                                                    fmt.ToString(prop.Source), _
                                                     strVarN)
                         End If
 
-                        strDescription = vnf.GetDescriptor(var, eDescriptorTypes.Description)
-                        strDomain = mdf.GetDescriptor(prop.GetVariableMetadata())
-                        strStatus = stf.GetDescriptor(prop.GetStyle(), eDescriptorTypes.Description)
+                        strDescription = vnf.ToString(var, eDescriptorTypes.Description)
+                        strDomain = mdf.ToString(prop.GetVariableMetadata())
+                        strStatus = stf.ToString(prop.GetStyle(), eDescriptorTypes.Description)
                         strRemark = prop.GetRemark()
 
                         bEditable = ((prop.GetStyle() And cStyleGuide.eStyleFlags.NotEditable) = 0)
@@ -365,10 +365,10 @@ Public Class frmRemarkPanel
                     For Each prop In props
                         If (var = eVarNameFlags.NotSet) Then
                             var = prop.VarName
-                            strName = String.Format(My.Resources.SELECTION_SINGLEVAR, My.Resources.SELECTION_MULTIPLE, vnf.GetDescriptor(var))
-                            strDescription = vnf.GetDescriptor(var, eDescriptorTypes.Description)
-                            strDomain = mdf.GetDescriptor(prop.GetVariableMetadata())
-                            strStatus = stf.GetDescriptor(prop.GetStyle())
+                            strName = String.Format(My.Resources.SELECTION_SINGLEVAR, My.Resources.SELECTION_MULTIPLE, vnf.ToString(var))
+                            strDescription = vnf.ToString(var, eDescriptorTypes.Description)
+                            strDomain = mdf.ToString(prop.GetVariableMetadata())
+                            strStatus = stf.ToString(prop.GetStyle())
                         Else
                             bMixed = bMixed Or (var <> prop.VarName)
                         End If

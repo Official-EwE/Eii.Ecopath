@@ -404,7 +404,7 @@ Namespace Ecopath.Controls.FlowDiagram
             End Select
             Dim md As cVariableMetaData = cVariableMetaData.Get(var)
 
-            Me.m_data.DataTitle = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, ftm.GetDescriptor(var), units.ToString(md))
+            Me.m_data.DataTitle = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, ftm.ToString(var), units.ToString(md))
         End Sub
 
         Protected Overrides Sub UpdateControls()

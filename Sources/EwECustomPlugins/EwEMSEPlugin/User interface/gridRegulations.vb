@@ -63,8 +63,8 @@ Public Class gridRegulations
             Return GetType(cRegulations.eRegMethod)
         End Function
 
-        Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-            Implements ITypeFormatter.GetDescriptor
+        Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+            Implements ITypeFormatter.ToString
 
             Dim rm As cRegulations.eRegMethod = cRegulations.eRegMethod.None
             Try

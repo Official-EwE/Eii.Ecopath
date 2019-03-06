@@ -96,7 +96,7 @@ Namespace Controls.Map.Layers
             Handles m_cmbGroups.Format
             Dim io As cCoreInputOutputBase = DirectCast(e.ListItem, cCoreInputOutputBase)
             Dim fmt As New cCoreInterfaceFormatter()
-            e.Value = fmt.GetDescriptor(io)
+            e.Value = fmt.ToString(io)
         End Sub
 
         Private Sub OnSetDefaultAllClick(sender As System.Object, e As System.EventArgs)

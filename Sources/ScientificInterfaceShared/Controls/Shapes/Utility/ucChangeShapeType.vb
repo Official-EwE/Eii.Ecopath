@@ -126,7 +126,7 @@ Namespace Controls
         Private Sub OnFormatShapeFunction(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
             Handles m_lbShapeFunctionTypes.Format
             Dim fmt As New cShapeFunctionFormatter()
-            e.Value = fmt.GetDescriptor(e.ListItem)
+            e.Value = fmt.ToString(e.ListItem)
         End Sub
 
         Private Sub OnShapeFunctionTypeSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _

@@ -567,7 +567,7 @@ Public Class cProducerUnit
                         sbError.Append(",")
                     End If
                     sbError.Append(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DETAILED, _
-                                                 fmt.GetDescriptor(Me.Core.EcoPathGroupInputs(i)), _
+                                                 fmt.ToString(Me.Core.EcoPathGroupInputs(i)), _
                                                  sTotal(i).ToString("R")))
                 End If
             Next

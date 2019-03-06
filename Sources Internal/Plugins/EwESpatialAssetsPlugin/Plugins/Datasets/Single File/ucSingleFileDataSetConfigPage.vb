@@ -107,7 +107,7 @@ Friend Class ucSingleFileDataSetConfigPage
     Private Sub OnFormatVarname(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
         Handles m_cmbVarName.Format
         Dim fmt As New cVarnameTypeFormatter()
-        e.Value = fmt.GetDescriptor(e.ListItem)
+        e.Value = fmt.ToString(e.ListItem)
     End Sub
 
 #End Region ' Events

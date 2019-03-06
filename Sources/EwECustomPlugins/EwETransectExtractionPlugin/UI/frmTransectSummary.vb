@@ -442,7 +442,7 @@ Public Class frmTransectSummary
 
                         gp.CurveList.Add(Me.m_zgh.CreateLineItem(Me.Core.EcoPathGroupInputs(iGroup), ppl, tag:=t))
 
-                        Dim strData As String = If(var = cTransect.eSummaryType.Biomass, vnf.GetDescriptor(eVarNameFlags.Biomass), vnf.GetDescriptor(eVarNameFlags.TotalCatch))
+                        Dim strData As String = If(var = cTransect.eSummaryType.Biomass, vnf.ToString(eVarNameFlags.Biomass), vnf.ToString(eVarNameFlags.TotalCatch))
                         Dim strTime As String = If(t.HasSummaries, cStringUtils.Localize(My.Resources.LABEL_TIMESTEP, Me.m_tick, Me.Core.nEcospaceTimeSteps), My.Resources.LABEL_NODATA)
                         gp.Title.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, strData, strTime.ToLower())
 

@@ -103,7 +103,7 @@ Public Class dlgSelectItems
 
         For Each obj As Integer In [Enum].GetValues(Me.m_tdata)
 
-            Dim iItem As Integer = Me.m_clbItems.Items.Add(New cItem(Me.m_fmt.GetDescriptor(obj), obj))
+            Dim iItem As Integer = Me.m_clbItems.Items.Add(New cItem(Me.m_fmt.ToString(obj), obj))
             Dim bSelect As Boolean = True
 
             If (Me.m_aobjSelection IsNot Nothing) Then

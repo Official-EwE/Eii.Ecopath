@@ -98,7 +98,7 @@ Namespace Controls.Map.Layers
             Handles m_cmbFleet.Format
             Dim io As cCoreInputOutputBase = DirectCast(e.ListItem, cCoreInputOutputBase)
             Dim fmt As New cCoreInterfaceFormatter()
-            e.Value = fmt.GetDescriptor(io)
+            e.Value = fmt.ToString(io)
         End Sub
 
         Private Sub OnFleetSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _

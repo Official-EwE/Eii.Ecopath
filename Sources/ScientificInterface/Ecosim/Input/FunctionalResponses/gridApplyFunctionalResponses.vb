@@ -232,7 +232,7 @@ Namespace Ecosim
                     Dim ishp As Integer = driver.ResponseIndexForGroup(igrp)
                     If ishp > 0 Then
                         ff = Me.m_shapeManager.Item(ishp - 1)
-                        strLabel = fmt.GetDescriptor(ff)
+                        strLabel = fmt.ToString(ff)
                     End If
 
                     cell.Style = style

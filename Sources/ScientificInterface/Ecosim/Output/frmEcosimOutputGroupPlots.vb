@@ -52,7 +52,7 @@ Namespace Ecosim
                 Return GetType(ePlot)
             End Function
 
-            Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.GetDescriptor
+            Public Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.ToString
 
                 Select Case DirectCast(value, ePlot)
                     Case ePlot.AvgWeightOrProdCons : Return SharedResources.HEADER_PRODCONS
@@ -860,7 +860,7 @@ Namespace Ecosim
             End If
 
             Dim fmt As New cSimPlotFormatter()
-            Return fmt.GetDescriptor(data)
+            Return fmt.ToString(data)
 
         End Function
 

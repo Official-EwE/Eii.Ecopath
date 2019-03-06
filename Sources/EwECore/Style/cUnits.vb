@@ -90,27 +90,27 @@ Namespace Style
 
                     Case "currency"
                         Dim fmt As New cCurrencyUnitFormatter(model.UnitCurrencyCustomText)
-                        Return fmt.GetDescriptor(model.UnitCurrency)
+                        Return fmt.ToString(model.UnitCurrency)
 
                     Case "monetary"
                         Return model.UnitMonetary
 
                     Case "time"
                         Dim fmt As New cTimeUnitFormatter(model.UnitTimeCustomText)
-                        Return fmt.GetDescriptor(model.UnitTime)
+                        Return fmt.ToString(model.UnitTime)
 
                     Case "area"
                         Dim fmt As New cAreaUnitFormatter(model.UnitAreaCustomText)
-                        Return fmt.GetDescriptor(model.UnitArea)
+                        Return fmt.ToString(model.UnitArea)
 
                     Case "location"
                         ' ToDo: make dynamic, make respond to AssumeSquareCells setting
                         Dim fmt As New cMapUnitFormatter()
-                        Return fmt.GetDescriptor(eUnitMapRefType.dd)
+                        Return fmt.ToString(eUnitMapRefType.dd)
 
                     Case "depth"
                         Dim fmt As New cMapUnitFormatter()
-                        Return fmt.GetDescriptor(eUnitMapRefType.m)
+                        Return fmt.ToString(eUnitMapRefType.m)
 
                     Case "true"
                         Return True.ToString()

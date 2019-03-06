@@ -83,7 +83,7 @@ Public Class frmShapeValue
         ''' </summary>
         ''' ---------------------------------------------------------------
         Public Overrides Function ToString() As String
-            Return Me.m_desc.GetDescriptor(Me.m_timeSeriesType, eDescriptorTypes.Name)
+            Return Me.m_desc.ToString(Me.m_timeSeriesType, eDescriptorTypes.Name)
         End Function
 
     End Class
@@ -685,13 +685,13 @@ Public Class frmShapeValue
 
                 Me.m_lblPoolCode.Text = cStyleGuide.ToControlLabel(My.Resources.HEADER_FLEET)
                 For i As Integer = 1 To Me.Core.nFleets
-                    m_cmbPoolCode.Items.Add(fmt.GetDescriptor(Me.Core.EcopathFleetInputs(i)))
+                    m_cmbPoolCode.Items.Add(fmt.ToString(Me.Core.EcopathFleetInputs(i)))
                 Next
 
                 If (cat = eTimeSeriesCategoryType.FleetGroup) Then
                     Me.m_lblPoolCodeSec.Text = cStyleGuide.ToControlLabel(My.Resources.HEADER_GROUP)
                     For i As Integer = 1 To Me.Core.nGroups
-                        Me.m_cmbPoolCodeSec.Items.Add(fmt.GetDescriptor(Me.Core.EcoPathGroupInputs(i)))
+                        Me.m_cmbPoolCodeSec.Items.Add(fmt.ToString(Me.Core.EcoPathGroupInputs(i)))
                     Next
                 End If
 
@@ -709,7 +709,7 @@ Public Class frmShapeValue
 
                 Me.m_lblPoolCode.Text = cStyleGuide.ToControlLabel(My.Resources.HEADER_GROUP)
                 For i As Integer = 1 To Me.Core.nGroups
-                    Me.m_cmbPoolCode.Items.Add(fmt.GetDescriptor(Me.Core.EcoPathGroupInputs(i)))
+                    Me.m_cmbPoolCode.Items.Add(fmt.ToString(Me.Core.EcoPathGroupInputs(i)))
                 Next
 
                 If (Me.m_shape IsNot Nothing) Then

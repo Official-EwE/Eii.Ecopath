@@ -100,7 +100,7 @@ Namespace Controls.Map.Layers
             Else
                 Dim io As cCoreInputOutputBase = DirectCast(e.ListItem, cCoreInputOutputBase)
                 Dim fmt As New cCoreInterfaceFormatter()
-                e.Value = fmt.GetDescriptor(io)
+                e.Value = fmt.ToString(io)
             End If
         End Sub
 

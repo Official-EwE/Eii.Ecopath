@@ -41,9 +41,9 @@ Namespace Style
             Return GetType(eClimateTypes)
         End Function
 
-        Public Function GetDescriptor(ByVal value As Object, _
+        Public Function ToString(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+                                      Implements ITypeFormatter.ToString
 
             Dim strValue As String = value.ToString
             Dim strDescr As String = cResourceUtils.LoadString("CLIMATE_" & strValue.ToUpper, My.Resources.ResourceManager)

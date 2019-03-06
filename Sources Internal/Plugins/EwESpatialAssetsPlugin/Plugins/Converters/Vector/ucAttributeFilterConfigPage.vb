@@ -59,7 +59,7 @@ Namespace SpatialData
                 Dim fmt As New cTypeTypeFormatter()
                 Return String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
                                      Me.m_strAttribute, _
-                                     fmt.GetDescriptor(Me.m_type))
+                                     fmt.ToString(Me.m_type))
             End Function
 
             Public ReadOnly Property Attribute As String

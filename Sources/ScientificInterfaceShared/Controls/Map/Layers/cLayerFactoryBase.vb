@@ -249,7 +249,7 @@ Namespace Controls.Map
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorVelocity()
 
-                    Dim wrap As New cEcospaceLayerVelocity(core, fmt.GetDescriptor(eVarNameFlags.LayerAdvection), bmd, eVarNameFlags.LayerAdvection)
+                    Dim wrap As New cEcospaceLayerVelocity(core, fmt.ToString(eVarNameFlags.LayerAdvection), bmd, eVarNameFlags.LayerAdvection)
                     layer = New cDisplayLayerRaster(uic, wrap, renderer, editor, bmd, eVarNameFlags.LayerAdvection)
 
                     lLayers.Add(layer)
@@ -264,7 +264,7 @@ Namespace Controls.Map
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorVelocity()
 
-                    Dim wrap As New cEcospaceLayerVelocity(core, fmt.GetDescriptor(eVarNameFlags.LayerWind), bmd, eVarNameFlags.LayerWind)
+                    Dim wrap As New cEcospaceLayerVelocity(core, fmt.ToString(eVarNameFlags.LayerWind), bmd, eVarNameFlags.LayerWind)
                     layer = New cDisplayLayerRaster(uic, wrap, renderer, editor, bmd, eVarNameFlags.LayerWind)
 
                     lLayers.Add(layer)

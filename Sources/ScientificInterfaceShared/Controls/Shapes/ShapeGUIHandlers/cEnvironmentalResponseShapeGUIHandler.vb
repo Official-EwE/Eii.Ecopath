@@ -82,7 +82,7 @@ Namespace Controls
                 If shape IsNot Nothing Then
                     If shape.Length > 0 Then
                         Dim fmt As New cCoreInterfaceFormatter()
-                        strTitle = cStringUtils.Localize(My.Resources.HEADER_ASSIGNED_ENV_FORCING, fmt.GetDescriptor(shape(0), eDescriptorTypes.Name))
+                        strTitle = cStringUtils.Localize(My.Resources.HEADER_ASSIGNED_ENV_FORCING, fmt.ToString(shape(0), eDescriptorTypes.Name))
                     End If
                 End If
                 Me.MediationAssignments.Title = strTitle

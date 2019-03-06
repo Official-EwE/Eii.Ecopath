@@ -479,7 +479,7 @@ Namespace Ecosim
             Dim fmt As New cFFApplicationTargetTypeFormatter()
             Dim shape As cForcingFunction = Me.Shape(item)
 
-            item.SubItems(1).Text = fmt.GetDescriptor(appl)
+            item.SubItems(1).Text = fmt.ToString(appl)
             item.SubItems(1).Tag = appl
 
         End Sub

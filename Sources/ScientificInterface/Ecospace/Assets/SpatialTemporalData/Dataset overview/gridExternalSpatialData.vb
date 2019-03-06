@@ -139,7 +139,7 @@ Namespace Ecospace
                     (bHasConnections Or (Me.m_bOnlyShowConnected = False))) Then
 
                     ' Get group name for the adapter
-                    strAdapter = fmt.GetDescriptor(adt)
+                    strAdapter = fmt.ToString(adt)
                     ' Get layers for the adapter
                     layers = bm.Layers(adt.VarName)
 

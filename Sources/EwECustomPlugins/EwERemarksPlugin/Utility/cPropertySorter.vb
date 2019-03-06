@@ -138,7 +138,7 @@ Friend Class cPropertySorter
 
             Case ePropertySortOrderTypes.VarName
                 ' Compare variables by name
-                Return String.Compare(Me.m_fmt.GetDescriptor(x.VarName), Me.m_fmt.GetDescriptor(y.VarName))
+                Return String.Compare(Me.m_fmt.ToString(x.VarName), Me.m_fmt.ToString(y.VarName))
 
         End Select
 

@@ -100,7 +100,7 @@ Namespace Ecopath.Tools
 
             For iVariable As Integer = 1 To Me.Core.nPedigreeVariables
                 Dim var As eVarNameFlags = Me.Core.PedigreeVariable(iVariable)
-                Me.m_cmbCategory.Items.Add(desc.GetDescriptor(var, eDescriptorTypes.Description))
+                Me.m_cmbCategory.Items.Add(desc.ToString(var, eDescriptorTypes.Description))
             Next
 
             AddHandler Me.m_psg.OnRenderStyleChanged, AddressOf OnRenderStyleChanged

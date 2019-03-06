@@ -31,7 +31,7 @@ Public Class cResultsCollector_Discards
     Public Overrides ReadOnly Property DataName As String
         Get
             Dim fmt As New EwECore.Style.cCurrencyUnitFormatter("")
-            Return "Discard Rate (" & fmt.GetDescriptor(eUnitCurrencyType.WetWeight) & "/year)"
+            Return "Discard Rate (" & fmt.ToString(eUnitCurrencyType.WetWeight) & "/year)"
         End Get
     End Property
 

@@ -97,7 +97,7 @@ Public Class cFlowDiagramData
             If (value <> Me.m_displayvalue) Then
                 Me.m_displayvalue = value
                 Dim fmt As New cGraphDataTypeFormatter()
-                Me.Title = fmt.GetDescriptor(Me.m_displayvalue, eDescriptorTypes.Name)
+                Me.Title = fmt.ToString(Me.m_displayvalue, eDescriptorTypes.Name)
                 Me.DataTitle = Me.Title
                 Me.m_bValid = False
             End If
