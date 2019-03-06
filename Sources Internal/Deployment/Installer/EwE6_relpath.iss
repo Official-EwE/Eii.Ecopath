@@ -3,9 +3,9 @@
 #include <idp.iss>
 
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 0
-#define Spinup 0
-#define SpatTemp 0
+#define Compile64Bit 1
+#define Spinup 1
+#define SpatTemp 1
 #define FISHMIP 0
 #define MSPTools 0
 #define SAFENET 0
@@ -32,7 +32,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.16054.0
+  VersionInfoVersion=6.6.16086.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
