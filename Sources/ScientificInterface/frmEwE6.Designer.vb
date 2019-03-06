@@ -156,14 +156,14 @@ Partial Public Class frmEwE6
         Me.m_tsModel = New ScientificInterfaceShared.Controls.cModelPathToolStrip()
         Me.m_tsbnPreview = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton()
-        Me.m_tsbnAutosaveConfig = New System.Windows.Forms.ToolStripButton()
-        Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tsbnAutosaveConfig = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_bgw = New System.ComponentModel.BackgroundWorker()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
@@ -796,18 +796,6 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsbSave, "m_tsbSave")
         Me.m_tsbSave.Name = "m_tsbSave"
         '
-        'm_tsbnAutosaveConfig
-        '
-        Me.m_tsbnAutosaveConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tsbnAutosaveConfig, "m_tsbnAutosaveConfig")
-        Me.m_tsbnAutosaveConfig.Name = "m_tsbnAutosaveConfig"
-        '
-        'm_tsbnAutorunConfig
-        '
-        Me.m_tsbnAutorunConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tsbnAutorunConfig, "m_tsbnAutorunConfig")
-        Me.m_tsbnAutorunConfig.Name = "m_tsbnAutorunConfig"
-        '
         'm_tsbEcopath
         '
         Me.m_tsbEcopath.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -850,11 +838,24 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tslbReadOnly, "m_tslbReadOnly")
         Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
         '
+        'm_tsbnAutosaveConfig
+        '
+        Me.m_tsbnAutosaveConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnAutosaveConfig, "m_tsbnAutosaveConfig")
+        Me.m_tsbnAutosaveConfig.Name = "m_tsbnAutosaveConfig"
+        '
+        'm_tsbnAutorunConfig
+        '
+        Me.m_tsbnAutorunConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnAutorunConfig, "m_tsbnAutorunConfig")
+        Me.m_tsbnAutorunConfig.Name = "m_tsbnAutorunConfig"
+        '
         'm_bgw
         '
         '
         'm_ssMain
         '
+        Me.m_ssMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
@@ -931,7 +932,6 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiFileExit As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiFileCompact As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MenuEcosim As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_ssMain As ScientificInterface.cEwEStatusBar
     Private WithEvents m_tsmiTimeSeriesExport As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiViewItems As System.Windows.Forms.ToolStripMenuItem
@@ -987,5 +987,6 @@ Partial Public Class frmEwE6
     Private WithEvents m_bgw As System.ComponentModel.BackgroundWorker
     Private WithEvents m_tsbnAutosaveConfig As ToolStripButton
     Private WithEvents m_tsbnAutorunConfig As ToolStripButton
+    Private WithEvents m_ssMain As cEwEStatusBar
 End Class
 
