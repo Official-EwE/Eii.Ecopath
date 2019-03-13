@@ -225,6 +225,7 @@ Namespace Database
             Debug.Assert(Not Me.IsConnected(), "Connection already open, close first")
 
             Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
+            Dim bTryAgain As Boolean = False
 
             ' Does file exist?
             If Not File.Exists(strDatabase) Then Return eDatasourceAccessType.Failed_FileNotFound
@@ -243,49 +244,59 @@ Namespace Database
 
             Me.m_conn = New OleDbConnection()
 
-            ' Try to assemble connection string
-            Select Case databaseType
-                Case eDataSourceTypes.Access2003
-                    Me.m_conn.ConnectionString = cStringUtils.Localize(m_strConnectionMDB, strDatabase)
-                Case eDataSourceTypes.Access2007
-                    Me.m_conn.ConnectionString = cStringUtils.Localize(m_strConnectionACCDB, strDatabase)
-                Case eDataSourceTypes.NotSet
-                    Me.m_conn.ConnectionString = ""
-                    datResult = eDatasourceAccessType.Failed_UnknownType
-            End Select
+            Do
+                ' Assemble connection string
+                Select Case databaseType
+                    Case eDataSourceTypes.Access2003
+                        Me.m_conn.ConnectionString = cStringUtils.Localize(m_strConnectionMDB, strDatabase)
+                    Case eDataSourceTypes.Access2007
+                        Me.m_conn.ConnectionString = cStringUtils.Localize(m_strConnectionACCDB, strDatabase)
+                    Case eDataSourceTypes.NotSet
+                        Me.m_conn.ConnectionString = ""
+                        datResult = eDatasourceAccessType.Failed_UnknownType
+                End Select
 
-            If Not String.IsNullOrEmpty(Me.m_conn.ConnectionString) Then
+                If Not String.IsNullOrEmpty(Me.m_conn.ConnectionString) Then
 
-                ' Whoah!
-                If bReadOnly Then Me.m_conn.ConnectionString &= "Mode=Read;"
-                ' Remember read-only state
-                Me.IsReadOnly = bReadOnly
+                    ' Whoah!
+                    If bReadOnly Then Me.m_conn.ConnectionString &= "Mode=Read;"
+                    ' Remember read-only state
+                    Me.IsReadOnly = bReadOnly
 
-                Try
+                    Try
 
-                    ' Try to open the connection
-                    Me.m_conn.Open()
-                    ' Set status
-                    datResult = eDatasourceAccessType.Opened
-                    ' All well: store file name
-                    Me.m_strFileName = strDatabase
+                        ' Try to open the connection
+                        Me.m_conn.Open()
+                        ' Set status
+                        datResult = eDatasourceAccessType.Opened
+                        ' All well: store file name
+                        Me.m_strFileName = strDatabase
 
-                Catch ex As OleDbException
-                    ' OleDb got into trouble
-                    datResult = eDatasourceAccessType.Failed_Unknown
-                    cLog.Write(cStringUtils.Localize("Open DB: OleDbException {0}, {1} when opening '{2}'", ex.Message, ex.ErrorCode, Me.m_conn.ConnectionString))
+                    Catch ex As OleDbException
+                        ' OleDb got into trouble
+                        datResult = eDatasourceAccessType.Failed_Unknown
+                        cLog.Write(cStringUtils.Localize("Open DB: OleDbException {0}, {1} when opening '{2}'", ex.Message, ex.ErrorCode, Me.m_conn.ConnectionString))
 
-                Catch ex As InvalidOperationException
-                    datResult = eDatasourceAccessType.Failed_OSUnsupported
-                    cLog.Write(cStringUtils.Localize("Open DB: InvalidOperationException {0} when opening {1}", ex.Message, strDatabase))
+                    Catch ex As InvalidOperationException
+                        datResult = eDatasourceAccessType.Failed_OSUnsupported
+                        cLog.Write(cStringUtils.Localize("Open DB: InvalidOperationException {0} when opening {1}", ex.Message, strDatabase))
 
-                Catch ex As Exception
-                    datResult = eDatasourceAccessType.Failed_Unknown
-                    cLog.Write(cStringUtils.Localize("Open DB: Exception {0} when opening {1}", ex.Message, strDatabase))
+                    Catch ex As Exception
+                        datResult = eDatasourceAccessType.Failed_Unknown
+                        cLog.Write(cStringUtils.Localize("Open DB: Exception {0} when opening {1}", ex.Message, strDatabase))
 
-                End Try
+                    End Try
 
-            End If
+                    If (datResult <> eDatasourceAccessType.Opened) And (databaseType = eDataSourceTypes.Access2003) Then
+                        databaseType = eDataSourceTypes.Access2007
+                        bTryAgain = True
+                    Else
+                        bTryAgain = False
+                    End If
+
+                End If
+
+            Loop Until bTryAgain = False
 
             Return datResult
 
