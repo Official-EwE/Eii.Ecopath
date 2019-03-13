@@ -109,6 +109,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\DotSpatial.Analysis.dll</HintPath>
     </Reference>
+    <Reference Include="DotSpatial.Controls, Version=0.11.9.6, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Includes\DotSpatial.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Data, Version=0.11.9.6, Culture=neutral, PublicKeyToken=c29dbf30e059ca9d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\DotSpatial.Data.dll</HintPath>
@@ -269,6 +273,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Includes\DotSpatial.Analysis.dll" />
+    <Content Include="Includes\DotSpatial.Controls.dll" />
     <Content Include="Includes\DotSpatial.Data.dll" />
     <Content Include="Includes\DotSpatial.Extensions.dll" />
     <Content Include="Includes\DotSpatial.Positioning.dll" />
