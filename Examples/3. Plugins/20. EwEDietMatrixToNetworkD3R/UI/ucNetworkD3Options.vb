@@ -70,9 +70,6 @@ Public Class ucNetworkD3Options
     End Function
 
     Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
-        Return IOptionsPage.eApplyResultType.Success
-
-        ' For some bizarre reason the body of this method is skipped
 
         If Me.InvokeRequired Then
             Me.Invoke(New MethodInvoker(AddressOf ApplySafe))
