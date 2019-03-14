@@ -46,8 +46,10 @@ Partial Class ucNetworkD3Options
         Me.m_hdr = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblGraph = New System.Windows.Forms.Label()
         Me.m_cbUseSymbolicaNames = New System.Windows.Forms.CheckBox()
-        Me.m_cbUseClipboard = New System.Windows.Forms.CheckBox()
         Me.m_cmbNetworkType = New System.Windows.Forms.ComboBox()
+        Me.m_lblExportTo = New System.Windows.Forms.Label()
+        Me.m_rbClipboard = New System.Windows.Forms.RadioButton()
+        Me.m_rbFile = New System.Windows.Forms.RadioButton()
         Me.SuspendLayout()
         '
         'm_hdr
@@ -69,12 +71,6 @@ Partial Class ucNetworkD3Options
         Me.m_cbUseSymbolicaNames.Name = "m_cbUseSymbolicaNames"
         Me.m_cbUseSymbolicaNames.UseVisualStyleBackColor = True
         '
-        'm_cbUseClipboard
-        '
-        resources.ApplyResources(Me.m_cbUseClipboard, "m_cbUseClipboard")
-        Me.m_cbUseClipboard.Name = "m_cbUseClipboard"
-        Me.m_cbUseClipboard.UseVisualStyleBackColor = True
-        '
         'm_cmbNetworkType
         '
         Me.m_cmbNetworkType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -82,12 +78,33 @@ Partial Class ucNetworkD3Options
         resources.ApplyResources(Me.m_cmbNetworkType, "m_cmbNetworkType")
         Me.m_cmbNetworkType.Name = "m_cmbNetworkType"
         '
+        'm_lblExportTo
+        '
+        resources.ApplyResources(Me.m_lblExportTo, "m_lblExportTo")
+        Me.m_lblExportTo.Name = "m_lblExportTo"
+        '
+        'm_rbClipboard
+        '
+        resources.ApplyResources(Me.m_rbClipboard, "m_rbClipboard")
+        Me.m_rbClipboard.Name = "m_rbClipboard"
+        Me.m_rbClipboard.TabStop = True
+        Me.m_rbClipboard.UseVisualStyleBackColor = True
+        '
+        'm_rbFile
+        '
+        resources.ApplyResources(Me.m_rbFile, "m_rbFile")
+        Me.m_rbFile.Name = "m_rbFile"
+        Me.m_rbFile.TabStop = True
+        Me.m_rbFile.UseVisualStyleBackColor = True
+        '
         'ucNetworkD3Options
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.Controls.Add(Me.m_rbFile)
+        Me.Controls.Add(Me.m_rbClipboard)
+        Me.Controls.Add(Me.m_lblExportTo)
         Me.Controls.Add(Me.m_cmbNetworkType)
-        Me.Controls.Add(Me.m_cbUseClipboard)
         Me.Controls.Add(Me.m_cbUseSymbolicaNames)
         Me.Controls.Add(Me.m_lblGraph)
         Me.Controls.Add(Me.m_hdr)
@@ -100,6 +117,8 @@ Partial Class ucNetworkD3Options
     Private WithEvents m_hdr As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_lblGraph As Windows.Forms.Label
     Friend WithEvents m_cbUseSymbolicaNames As Windows.Forms.CheckBox
-    Private WithEvents m_cbUseClipboard As Windows.Forms.CheckBox
     Friend WithEvents m_cmbNetworkType As Windows.Forms.ComboBox
+    Private WithEvents m_lblExportTo As Windows.Forms.Label
+    Private WithEvents m_rbClipboard As Windows.Forms.RadioButton
+    Friend WithEvents m_rbFile As Windows.Forms.RadioButton
 End Class

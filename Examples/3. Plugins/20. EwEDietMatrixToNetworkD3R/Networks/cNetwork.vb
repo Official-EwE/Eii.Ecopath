@@ -70,6 +70,10 @@ Public MustInherit Class cNetwork
         sb.AppendLine("# EwE model: " & Me.Core.EwEModel.Name)
         sb.Append("# EwE file: " & Me.Core.DataSource.ToString())
         If (My.Settings.UseSymbolicNames) Then sb.AppendLine("# !EwE names have been replaced with symbolic names")
+        sb.AppendLine("")
+        sb.AppendLine("# !-- markdown is needed to export NeworkD3 models to a webpage")
+        sb.AppendLine("# !-- if R does not let you install the correct version of markdown, run the following line:")
+        sb.AppendLine("# install.packages(""rmarkdown"", repos = ""https://cran.revolutionanalytics.com"")")
         Return sb.ToString()
     End Function
 

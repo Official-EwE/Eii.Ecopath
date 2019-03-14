@@ -87,14 +87,18 @@ Public Class ucNetworkD3Options
     Private Sub UpdateControls()
 
         Me.m_cbUseSymbolicaNames.Checked = Me.m_plugin.UseSymbolicNames
-        Me.m_cbUseClipboard.Checked = Me.m_plugin.UseClipboard
+        If Me.m_plugin.UseClipboard Then
+            Me.m_rbClipboard.Checked = True
+        Else
+            Me.m_rbFile.Checked = True
+        End If
         Me.m_cmbNetworkType.SelectedItem = Me.m_plugin.NetworkType
 
     End Sub
 
     Private Sub ApplySafe()
         Me.m_plugin.UseSymbolicNames = Me.m_cbUseSymbolicaNames.Checked
-        Me.m_plugin.UseClipboard = Me.m_cbUseClipboard.Checked
+        Me.m_plugin.UseClipboard = Me.m_rbClipboard.Checked
         Me.m_plugin.NetworkType = CType(Me.m_cmbNetworkType.SelectedItem, eNetworkD3DiagramType)
     End Sub
 
