@@ -142,13 +142,13 @@
     <value>m_hdr</value>
   </data>
   <data name="&gt;&gt;m_hdr.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15112.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16096.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdr.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdr.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_lblGraph.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -157,13 +157,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblGraph.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 84</value>
+    <value>0, 59</value>
   </data>
   <data name="m_lblGraph.Size" type="System.Drawing.Size, System.Drawing">
     <value>73, 13</value>
   </data>
   <data name="m_lblGraph.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_lblGraph.Text" xml:space="preserve">
     <value>&amp;Network type:</value>
@@ -178,7 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblGraph.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_cbUseSymbolicaNames.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -187,13 +187,13 @@
     <value>3, 31</value>
   </data>
   <data name="m_cbUseSymbolicaNames.Size" type="System.Drawing.Size, System.Drawing">
-    <value>202, 17</value>
+    <value>309, 17</value>
   </data>
   <data name="m_cbUseSymbolicaNames.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="m_cbUseSymbolicaNames.Text" xml:space="preserve">
-    <value>&amp;Use symbolic names, not EwE names</value>
+    <value>&amp;Use symbolic names isntead of EwE functional group names</value>
   </data>
   <data name="&gt;&gt;m_cbUseSymbolicaNames.Name" xml:space="preserve">
     <value>m_cbUseSymbolicaNames</value>
@@ -205,40 +205,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbUseSymbolicaNames.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_cbUseClipboard.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbUseClipboard.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbUseClipboard.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 54</value>
-  </data>
-  <data name="m_cbUseClipboard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>181, 17</value>
-  </data>
-  <data name="m_cbUseClipboard.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_cbUseClipboard.Text" xml:space="preserve">
-    <value>&amp;Export to the clipboard, not to file</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseClipboard.Name" xml:space="preserve">
-    <value>m_cbUseClipboard</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseClipboard.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseClipboard.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_cbUseClipboard.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="m_cmbNetworkType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>79, 81</value>
+    <value>79, 56</value>
   </data>
   <data name="m_cmbNetworkType.Size" type="System.Drawing.Size, System.Drawing">
     <value>250, 21</value>
@@ -256,6 +226,90 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cmbNetworkType.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_lblExportTo.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblExportTo.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblExportTo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 85</value>
+  </data>
+  <data name="m_lblExportTo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 13</value>
+  </data>
+  <data name="m_lblExportTo.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_lblExportTo.Text" xml:space="preserve">
+    <value>&amp;Destination:</value>
+  </data>
+  <data name="&gt;&gt;m_lblExportTo.Name" xml:space="preserve">
+    <value>m_lblExportTo</value>
+  </data>
+  <data name="&gt;&gt;m_lblExportTo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblExportTo.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblExportTo.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_rbClipboard.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbClipboard.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 107</value>
+  </data>
+  <data name="m_rbClipboard.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 17</value>
+  </data>
+  <data name="m_rbClipboard.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_rbClipboard.Text" xml:space="preserve">
+    <value>&amp;Clipboard</value>
+  </data>
+  <data name="&gt;&gt;m_rbClipboard.Name" xml:space="preserve">
+    <value>m_rbClipboard</value>
+  </data>
+  <data name="&gt;&gt;m_rbClipboard.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbClipboard.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_rbClipboard.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_rbFile.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbFile.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 130</value>
+  </data>
+  <data name="m_rbFile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 17</value>
+  </data>
+  <data name="m_rbFile.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_rbFile.Text" xml:space="preserve">
+    <value>&amp;File</value>
+  </data>
+  <data name="&gt;&gt;m_rbFile.Name" xml:space="preserve">
+    <value>m_rbFile</value>
+  </data>
+  <data name="&gt;&gt;m_rbFile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbFile.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_rbFile.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
