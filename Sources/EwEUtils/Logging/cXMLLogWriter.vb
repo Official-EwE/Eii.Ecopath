@@ -361,6 +361,20 @@ Namespace Core
                         thisEx = thisEx.InnerException
                     Loop
 
+                    ' Special cases
+                    If (TypeOf thisEx Is ReflectionTypeLoadException) Then
+                        For Each ex As Exception In DirectCast(thisEx, ReflectionTypeLoadException).LoaderExceptions
+                            Do While ex IsNot Nothing
+                                Me.WriteStartElement("Exception")
+                                Me.WriteElementString("Type", thisEx.GetType().ToString)
+                                Me.WriteElementString("Source", thisEx.Source)
+                                Me.WriteElementString("Message", thisEx.Message)
+                                Me.WriteEndElement() 'Exception
+                                ex = ex.InnerException
+                            Loop
+                        Next
+                    End If
+
                     ' Stack trace
                     Me.WriteStartElement("StackTrace")
                     For Each frame As StackFrame In trace.GetFrames

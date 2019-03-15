@@ -564,9 +564,6 @@ Public Class cPluginManager
                 types = clsAssembly.GetTypes()
             Catch exl As ReflectionTypeLoadException
                 cLog.Write(exl, "LoadPluginAssembly @ GetTypes")
-                For Each ex2 As Exception In exl.LoaderExceptions
-                    cLog.Write(ex2, "detail")
-                Next
             Catch ex As Exception
                 cLog.Write(ex, "LoadPluginAssembly @ GetTypes")
                 Return False
