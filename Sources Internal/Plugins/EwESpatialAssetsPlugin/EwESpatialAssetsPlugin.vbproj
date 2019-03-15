@@ -117,9 +117,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\DotSpatial.Data.dll</HintPath>
     </Reference>
+    <Reference Include="DotSpatial.Data.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=53ab5a198378d4c1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Includes\DotSpatial.Data.Forms.dll</HintPath>
+    </Reference>
     <Reference Include="DotSpatial.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\DotSpatial.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Modeling.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=712bef29a31a9354, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Includes\DotSpatial.Modeling.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Projections, Version=0.11.9.6, Culture=neutral, PublicKeyToken=272632bddd08a38b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -132,6 +140,10 @@
     <Reference Include="DotSpatial.Symbology, Version=0.11.9.6, Culture=neutral, PublicKeyToken=6178c08da7998387, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\DotSpatial.Symbology.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Symbology.Forms, Version=0.11.9.6, Culture=neutral, PublicKeyToken=0544cdeefb662382, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Includes\DotSpatial.Symbology.Forms.dll</HintPath>
     </Reference>
     <Reference Include="DotSpatial.Tools, Version=0.11.9.6, Culture=neutral, PublicKeyToken=6219d88fb4baf469, processorArchitecture=x86" />
     <Reference Include="DotSpatial.Topology, Version=0.11.9.6, Culture=neutral, PublicKeyToken=a66b5e9434ca3671, processorArchitecture=MSIL">
@@ -275,11 +287,14 @@
     <Content Include="Includes\DotSpatial.Analysis.dll" />
     <Content Include="Includes\DotSpatial.Controls.dll" />
     <Content Include="Includes\DotSpatial.Data.dll" />
+    <Content Include="Includes\DotSpatial.Data.Forms.dll" />
     <Content Include="Includes\DotSpatial.Extensions.dll" />
+    <Content Include="Includes\DotSpatial.Modeling.Forms.dll" />
     <Content Include="Includes\DotSpatial.Positioning.dll" />
     <Content Include="Includes\DotSpatial.Projections.dll" />
     <Content Include="Includes\DotSpatial.Serialization.dll" />
     <Content Include="Includes\DotSpatial.Symbology.dll" />
+    <Content Include="Includes\DotSpatial.Symbology.Forms.dll" />
     <Content Include="Includes\DotSpatial.Tools.dll" />
     <Content Include="Includes\DotSpatial.Topology.dll" />
     <Content Include="Includes\GDAL\win32\cairo.dll">
