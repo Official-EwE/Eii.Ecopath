@@ -274,7 +274,7 @@ Namespace Core
 
 #End Region ' Internals
 
-#Region "Interfaces for writting Debugging files"
+#Region " Interfaces for writting Debugging files "
 
         ''' <summary>
         ''' Writes a load of text to a text file, obliterating anything in it's way.
