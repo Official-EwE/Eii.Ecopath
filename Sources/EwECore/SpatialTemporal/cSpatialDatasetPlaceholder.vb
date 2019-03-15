@@ -95,7 +95,8 @@ Friend NotInheritable Class cSpatialDatasetPlaceholder
     End Property
 
     ''' <inheritdocs cref="ISpatialDataSet.DialogReadFilter"/>
-    Public ReadOnly Property DialogReadFilter(bRaster As Boolean, bImage As Boolean, bVector As Boolean) As String Implements ISpatialDataSet.DialogReadFilter
+    Public ReadOnly Property DialogReadFilter(bRaster As Boolean, bImage As Boolean, bVector As Boolean, bAllFiles As Boolean) As String _
+        Implements ISpatialDataSet.DialogReadFilter
         Get
             Return ""
         End Get
@@ -105,7 +106,8 @@ Friend NotInheritable Class cSpatialDatasetPlaceholder
     Public Property Cache As ISpatialDataCache Implements ISpatialDataSet.Cache
 
     ''' <inheritdocs cref="ISpatialDataSet.EnableData"/>
-    Public Property EnableData(runtype As IRunType) As Boolean Implements IExternalDataSource.EnableData
+    Public Property EnableData(runtype As IRunType) As Boolean _
+        Implements IExternalDataSource.EnableData
         Get
             Return False
         End Get
