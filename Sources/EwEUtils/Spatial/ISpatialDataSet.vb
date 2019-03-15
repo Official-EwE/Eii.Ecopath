@@ -270,8 +270,9 @@ Namespace SpatialData
         ''' <param name="bRaster">Allowed to include raster file types.</param>
         ''' <param name="bImage">Allowed to include image file types.</param>
         ''' <param name="bVector">Allowed to include vector file types.</param>
+        ''' <param name="bAllFiles">Allowed to include 'all files' entry.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean, ByVal bImage As Boolean, ByVal bVector As Boolean) As String
+        ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean, ByVal bImage As Boolean, ByVal bVector As Boolean, ByVal bAllFiles As Boolean) As String
 
 #End Region ' Data
 

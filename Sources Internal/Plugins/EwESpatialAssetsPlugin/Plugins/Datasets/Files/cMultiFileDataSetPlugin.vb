@@ -159,9 +159,10 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean,
                                                             ByVal bImage As Boolean,
-                                                            ByVal bVector As Boolean) As String
+                                                            ByVal bVector As Boolean,
+                                                            ByVal bAllFiles As Boolean) As String
             Get
-                Return cDotSpatialUtils.DialogFilter(True, bRaster, bImage, bVector)
+                Return cDotSpatialUtils.DialogFilter(True, bRaster, bImage, bVector, bAllFiles)
             End Get
         End Property
 

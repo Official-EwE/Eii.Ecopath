@@ -20,12 +20,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing
+Imports System.Text
 Imports DotSpatial.Data
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -51,11 +52,18 @@ Namespace SpatialData
         ''' Get the dialog read filter for files supported by the AAAS reader.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean, _
-                                                            ByVal bImage As Boolean, _
-                                                            ByVal bVector As Boolean) As String
+        Public Overrides ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean,
+                                                            ByVal bImage As Boolean,
+                                                            ByVal bVector As Boolean,
+                                                            ByVal bAllFiles As Boolean) As String
             Get
-                Return cStringUtils.Localize("{0}|*.csv", My.Resources.DIALOGFILTER_CSV)
+                Dim sb As New StringBuilder()
+                sb.Append(SharedResources.FILEFILTER_CSV)
+                If (bAllFiles) Then
+                    sb.Append("|")
+                    sb.Append(SharedResources.FILEFILTER_ALL)
+                End If
+                Return cFileUtils.CleanupExtensions(sb.ToString())
             End Get
         End Property
 

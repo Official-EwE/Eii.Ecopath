@@ -1334,8 +1334,7 @@ Namespace Controls.EwEGrid
                                                     End If
                                                 Catch ex As Exception
                                                     ' Whoah
-                                                    cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste failed on data type " & cell.DataModel.ValueType.ToString,
-                                                           eVerboseLevel.Detailed)
+                                                    cLog.Write(ex, "Grid " & Me.Name & "::OnClipboardPaste failed on data type " & cell.DataModel.ValueType.ToString)
                                                     nErrors += 1
                                                 End Try
                                                 If cell.DataModel.IsValidValue(objValue) Then
@@ -1360,6 +1359,15 @@ Namespace Controls.EwEGrid
 
                 End If ' Row visible
             Next iRow
+
+            If (nErrors >= 10) Then
+                Try
+                    Me.Core.Messages.SendMessage(New cMessage(My.Resources.ERROR_GRID_PASTE, eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Warning))
+                Catch ex As Exception
+                    cLog.Write(ex, "Grid " & Me.Name & "::OnClipboardPaste can'True send message")
+                End Try
+            End If
+
             ' Redraw later
             Me.InvalidateCells()
             Me.EndBatchEdit()

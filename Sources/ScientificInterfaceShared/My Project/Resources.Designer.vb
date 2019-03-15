@@ -1551,6 +1551,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to A number of formatting errors occured when integrating your data, and the attempt was aborted. Please check if your data is compatible with this grid and try again..
+        '''</summary>
+        Public ReadOnly Property ERROR_GRID_PASTE() As String
+            Get
+                Return ResourceManager.GetString("ERROR_GRID_PASTE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Public ReadOnly Property Expanded() As System.Drawing.Bitmap

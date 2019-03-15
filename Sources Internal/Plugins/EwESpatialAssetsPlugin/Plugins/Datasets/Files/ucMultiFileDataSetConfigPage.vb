@@ -347,7 +347,7 @@ Namespace SpatialData
             ofd.Title = cStringUtils.Localize(My.Resources.PROMPT_SELECTFILES, Me.m_tbxName.Text)
             ofd.Multiselect = True
             ofd.InitialDirectory = Me.AbsolutePath()
-            ofd.Filter = Me.m_dataset.DialogReadFilter(True, False, True)
+            ofd.Filter = Me.m_dataset.DialogReadFilter(True, False, True, True)
 
             ' Pre-selecting current files does not work somehow
             'For i As Integer = 0 To Me.m_lFiles.Count - 1

@@ -3101,4 +3101,7 @@
   <data name="Ecopath_install" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Ecopath_install.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ERROR_GRID_PASTE" xml:space="preserve">
+    <value>A number of formatting errors occured when integrating your data, and the attempt was aborted. Please check if your data is compatible with this grid and try again.</value>
+  </data>
 </root>

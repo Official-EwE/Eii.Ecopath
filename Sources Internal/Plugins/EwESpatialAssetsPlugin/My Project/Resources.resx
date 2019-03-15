@@ -175,12 +175,6 @@
   <data name="DATASET_SINGLE_NAME" xml:space="preserve">
     <value>A spatial file</value>
   </data>
-  <data name="DIALOGFILTER_ASCII" xml:space="preserve">
-    <value>Ecospace ASCII files</value>
-  </data>
-  <data name="DIALOGFILTER_CSV" xml:space="preserve">
-    <value>Ecospace CSV files</value>
-  </data>
   <data name="DIALOGFILTER_IMAGE" xml:space="preserve">
     <value>Image files</value>
   </data>

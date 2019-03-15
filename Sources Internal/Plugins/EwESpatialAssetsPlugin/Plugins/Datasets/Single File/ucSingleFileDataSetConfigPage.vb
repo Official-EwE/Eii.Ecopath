@@ -168,9 +168,9 @@ Friend Class ucSingleFileDataSetConfigPage
 
     Private Function DoBrowse() As Boolean
 
-        Dim dlg As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(cStringUtils.Localize(My.Resources.PROMPT_SELECTFILE, Me.m_tbxName.Text), _
-                                                                        Me.m_dataset.Source, _
-                                                                        Me.m_dataset.DialogReadFilter(True, False, True))
+        Dim dlg As OpenFileDialog = cEwEFileDialogHelper.OpenFileDialog(cStringUtils.Localize(My.Resources.PROMPT_SELECTFILE, Me.m_tbxName.Text),
+                                                                        Me.m_dataset.Source,
+                                                                        Me.m_dataset.DialogReadFilter(True, False, True, True))
         If (dlg.ShowDialog(Me) = DialogResult.OK) Then
             Me.m_tbxFile.Text = dlg.FileName
             If (Me.m_dataset.Source Is Nothing) Then

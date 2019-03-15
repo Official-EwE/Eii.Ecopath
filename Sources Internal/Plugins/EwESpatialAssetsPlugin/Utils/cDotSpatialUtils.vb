@@ -61,8 +61,6 @@ Public Class cDotSpatialUtils
     ''' -----------------------------------------------------------------------
     Public Shared Sub InitDotSpatial()
 
-        ' ToDo_JS: place DotSpatial initialization in a separate thread, called as soon as the plug-in initializes instead of on first use
-
         If (cDotSpatialUtils.g_DotSpatialAppMan IsNot Nothing) Then Return
 
         Dim appman As New AppManager()
@@ -83,13 +81,11 @@ Public Class cDotSpatialUtils
         End If
         appman.LoadExtensions()
 
-#If DEBUG Then
-        ' Dump which file extensions are supported by the spatial framework
-        Console.WriteLine("DotSpatial file support (expecting GDAL in '{0}', {1}):", strGDALPath, If(bGDALFound, "found", "missing"))
+        ' Always log this
+        cLog.Write(String.Format("DotSpatial file support (expecting GDAL in '{0}', {1}):", strGDALPath, If(bGDALFound, "found", "missing")), eVerboseLevel.Standard)
         For Each prov As IDataProvider In DataManager.DefaultDataManager.DataProviders
-            Console.WriteLine(" - " & prov.Name & "::" & prov.GetType.ToString & "; " & prov.DialogReadFilter)
+            cLog.Write(String.Format("DotSpatial loaded provider " & prov.Name & "::" & prov.GetType.ToString & "; " & prov.DialogReadFilter), eVerboseLevel.Standard)
         Next
-#End If
         cDotSpatialUtils.g_DotSpatialAppMan = appman
 
     End Sub
@@ -177,10 +173,11 @@ Public Class cDotSpatialUtils
     ''' <param name="bVector">Flag indicating whether <see cref="IVectorProvider">vectors</see> must be supported.</param>
     ''' <returns>A combined <see cref="System.Windows.Forms.FileDialog.Filter">dialog filter</see>.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function DialogFilter(ByVal bRead As Boolean, _
-                                        Optional ByVal bRaster As Boolean = True, _
-                                        Optional ByVal bImage As Boolean = True, _
-                                        Optional ByVal bVector As Boolean = True) As String
+    Public Shared Function DialogFilter(ByVal bRead As Boolean,
+                                        Optional ByVal bRaster As Boolean = True,
+                                        Optional ByVal bImage As Boolean = True,
+                                        Optional ByVal bVector As Boolean = True,
+                                        Optional ByVal bAllFiles As Boolean = True) As String
 
         ' Just to make sure
         cDotSpatialUtils.InitDotSpatial()
@@ -192,9 +189,7 @@ Public Class cDotSpatialUtils
         Dim lFilterNames() As String = New String() {My.Resources.DIALOGFILTER_RASTER, My.Resources.DIALOGFILTER_IMAGE, My.Resources.DIALOGFILTER_VECTOR}
 
         For Each prov In man.DataProviders
-
             Dim astrFilter() As String = If(bRead, prov.DialogReadFilter, prov.DialogWriteFilter).Split("|"c)
-
             If (astrFilter.Length = 2) Then
                 If (TypeOf prov Is IRasterProvider) And bRaster Then lFilters(0) &= (";" & astrFilter(1))
                 If (TypeOf prov Is IImageDataProvider) And bImage Then lFilters(1) &= (";" & astrFilter(1))
@@ -211,6 +206,11 @@ Public Class cDotSpatialUtils
                 sb.Append(cFileUtils.CleanupExtensions(lFilters(i)))
             End If
         Next
+
+        If bAllFiles Then
+            sb.Append("|")
+            sb.Append(ScientificInterfaceShared.My.Resources.FILEFILTER_ALL)
+        End If
 
         Return sb.ToString
 

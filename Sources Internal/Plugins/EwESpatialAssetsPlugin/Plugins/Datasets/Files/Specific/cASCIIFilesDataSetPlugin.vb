@@ -22,12 +22,13 @@
 Option Strict On
 Imports System.Drawing
 Imports System.IO
-Imports System.Windows.Forms
+Imports System.Text
 Imports DotSpatial.Data
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -47,8 +48,8 @@ Namespace SpatialData
 
 #Region " Overrides "
 
-        Public Overrides Function GetExtentAtT(ByVal dt As Date, _
-                                               ByRef ptfTL As System.Drawing.PointF, _
+        Public Overrides Function GetExtentAtT(ByVal dt As Date,
+                                               ByRef ptfTL As System.Drawing.PointF,
                                                ByRef ptfBR As System.Drawing.PointF) As Boolean
 
             Dim bOK As Boolean = MyBase.GetExtentAtT(dt, ptfTL, ptfBR)
@@ -71,11 +72,18 @@ Namespace SpatialData
         ''' Get the dialog read filter for files supported by the AAAS reader.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overrides ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean, _
-                                                            ByVal bImage As Boolean, _
-                                                            ByVal bVector As Boolean) As String
+        Public Overrides ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean,
+                                                            ByVal bImage As Boolean,
+                                                            ByVal bVector As Boolean,
+                                                            ByVal bAllFiles As Boolean) As String
             Get
-                Return cStringUtils.Localize("{0}|*.asc", My.Resources.DIALOGFILTER_ASCII)
+                Dim sb As New StringBuilder()
+                sb.Append(SharedResources.FILEFILTER_ASC)
+                If (bAllFiles) Then
+                    sb.Append("|")
+                    sb.Append(SharedResources.FILEFILTER_ALL)
+                End If
+                Return cFileUtils.CleanupExtensions(sb.ToString())
             End Get
         End Property
 

@@ -232,24 +232,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecospace ASCII files.
-        '''</summary>
-        Friend ReadOnly Property DIALOGFILTER_ASCII() As String
-            Get
-                Return ResourceManager.GetString("DIALOGFILTER_ASCII", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Ecospace CSV files.
-        '''</summary>
-        Friend ReadOnly Property DIALOGFILTER_CSV() As String
-            Get
-                Return ResourceManager.GetString("DIALOGFILTER_CSV", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Image files.
         '''</summary>
         Friend ReadOnly Property DIALOGFILTER_IMAGE() As String

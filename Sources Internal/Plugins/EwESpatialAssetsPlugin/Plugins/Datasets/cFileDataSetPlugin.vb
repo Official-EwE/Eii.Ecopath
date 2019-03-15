@@ -139,7 +139,8 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public MustOverride ReadOnly Property DialogReadFilter(ByVal bRaster As Boolean,
                                                                ByVal bImage As Boolean,
-                                                               ByVal bVector As Boolean) As String _
+                                                               ByVal bVector As Boolean,
+                                                               ByVal bAllFiles As Boolean) As String _
              Implements ISpatialDataSet.DialogReadFilter
 
         Public Overrides Function ToString() As String
