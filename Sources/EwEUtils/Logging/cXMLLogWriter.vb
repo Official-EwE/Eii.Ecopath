@@ -80,7 +80,7 @@ Namespace Core
 
 #End Region ' Construction
 
-#Region "Overridden Methods"
+#Region " Overridden Methods "
 
         Private Property LogFileName As String = ""
 
@@ -157,10 +157,6 @@ Namespace Core
                     m_XMLwriter.WriteStartElement("doc")
                     m_XMLwriter.WriteElementString("Platform", cSystemUtils.OSVersion())
                     m_XMLwriter.WriteElementString("Is64BitOS", If(cSystemUtils.Is64BitOS(), "True", "False"))
-                    m_XMLwriter.WriteElementString("Is64BitExe", If(cSystemUtils.Is64BitProcess(), "True", "False"))
-                    m_XMLwriter.WriteElementString("CultureOS", Threading.Thread.CurrentThread.CurrentCulture.DisplayName)
-                    m_XMLwriter.WriteElementString("CultureUI", Threading.Thread.CurrentThread.CurrentUICulture.DisplayName)
-                    m_XMLwriter.WriteElementString("DecimalSeparator", Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator)
                     m_XMLwriter.WriteElementString("ModelName", m_strModelName)
 
                     m_XMLwriter.WriteElementString("Created", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
@@ -328,6 +324,10 @@ Namespace Core
                     Me.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
                     Me.WriteElementString("Model", Me.m_strModelName)
                     Me.WriteElementString("LogFile", Me.LogFileName)
+                    Me.WriteElementString("Is64BitExe", If(cSystemUtils.Is64BitProcess(), "True", "False"))
+                    Me.WriteElementString("CultureOS", Threading.Thread.CurrentThread.CurrentCulture.DisplayName)
+                    Me.WriteElementString("CultureUI", Threading.Thread.CurrentThread.CurrentUICulture.DisplayName)
+                    Me.WriteElementString("DecimalSeparator", Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator)
                     Me.WriteEndElement() 'Session_Started
                     Me.WriteEndDocument()
 
@@ -470,7 +470,7 @@ Namespace Core
 
         End Sub
 
-#End Region
+#End Region ' Overridden Methods
 
 #Region " Methods with default behavior "
 
