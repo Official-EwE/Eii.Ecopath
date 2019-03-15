@@ -1244,6 +1244,7 @@ Namespace Controls.EwEGrid
             Dim iRowData As Integer = 0
             Dim iColData As Integer = 0
             Dim strValue As String = ""
+            Dim nErrors As Integer = 0
 
             ' Empty or near-empty range?
             If (r.IsEmpty) Then
@@ -1306,7 +1307,7 @@ Namespace Controls.EwEGrid
 
                                 ' Prevent from crashing on irregular grids
                                 ' Is there a cell?
-                                If (cell IsNot Nothing) Then
+                                If (cell IsNot Nothing) And (nErrors < 10) Then
                                     ' #Yes: does it have a datamodel?
                                     If (cell.DataModel IsNot Nothing) Then
                                         ' #Yes: is the cell enabled for editing?
@@ -1335,6 +1336,7 @@ Namespace Controls.EwEGrid
                                                     ' Whoah
                                                     cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste failed on data type " & cell.DataModel.ValueType.ToString,
                                                            eVerboseLevel.Detailed)
+                                                    nErrors += 1
                                                 End Try
                                                 If cell.DataModel.IsValidValue(objValue) Then
                                                     cell.SetValue(pos, objValue)
