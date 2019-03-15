@@ -557,8 +557,23 @@ Public Class cPluginManager
             plugAssem.Compatibility = Me.GetCompatibility(clsAssembly)
             plugAssem.Enabled = bEnabled
 
+            Dim types As ICollection(Of Type) = Nothing
+
+            ' Safe guard dynamic type loading, which may fail for missing dependencies
+            Try
+                types = clsAssembly.GetTypes()
+            Catch exl As ReflectionTypeLoadException
+                cLog.Write(exl, "LoadPluginAssembly @ GetTypes")
+                For Each ex2 As Exception In exl.LoaderExceptions
+                    cLog.Write(ex2, "detail")
+                Next
+            Catch ex As Exception
+                cLog.Write(ex, "LoadPluginAssembly @ GetTypes")
+                Return False
+            End Try
+
             ' Look for appropriate types
-            For Each clsType In clsAssembly.GetTypes()
+            For Each clsType In types
                 ' Only look at types we can create
                 If (clsType.IsPublic = True) Then
                     ' Ignore abstract classes
