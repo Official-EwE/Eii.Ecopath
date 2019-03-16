@@ -6,6 +6,7 @@
 #define Compile64Bit 1
 #define Spinup 1
 #define SpatTemp 1
+#define NetworkD3 0
 #define FISHMIP 0
 #define MSPTools 0
 #define SAFENET 0
@@ -32,7 +33,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.16086.0
+  VersionInfoVersion=6.6.16096.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -142,23 +143,30 @@ Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\P
 Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mpadynamics
 Source: "{#DefRoot}{#DefSrc}\EwEImportExportLayerDefinitionsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\layerimportexport
 Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mergegroups
+; -- Examples --
+#if NetworkD3 == 1
+Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3R.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\networkd3
+#endif
 ; -- Stuff under development --
 #if Spinup == 1
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
 #endif
 #if SpatTemp == 1
 Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
+; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Analysis.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Controls.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Data.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Extensions.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Modeling.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
+; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Positioning.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Projections.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
-Source: "{#DefRoot}{#DefSrc}\DotSpatial.Projections.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Serialization.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.Forms.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
+; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Tools.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Topology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
+Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\cairo.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\cfitsio.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\DotSpatial.Data.Rasters.GdalExtension.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
@@ -299,6 +307,9 @@ Name: "plugin\ui\remarks"; Description: "Remarks collector"; Types: full custom
 Name: "plugin\ui\shapegrid"; Description: "Shape grids"; Types: full custom
 Name: "plugin\input\mergegroups"; Description: "Merge groups"; Types: full
 Name: "plugin\input\mpadynamics"; Description: "MPA dynamics"; Types: full
+#if NetworkD3 == 1
+Name: "plugin\output\networkD3"; Description: "Export diet matrix to NetworkD3"; Types: full
+#endif
 #if SpatTemp == 1
 Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange framework"; Types: full
 #endif
@@ -319,10 +330,10 @@ Name: "quicklaunchicon"; Description: "Add quick launch icon"
 Name: "associatefiles"; Description: "Open EwE models and web links in this version by default"; GroupDescription: "File associations"
 
 [Icons]
-Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
-Name: "{group}\{#MyAppName} {#MyAppVersion}"; Filename: "{app}\{#MyAppExeName}"; IconFilename:  "{app}\{#MyAppExeName}"; Components: userguide
-Name: "{group}\User guide"; Filename: "{app}\UserGuide\EwE6_userguide.chm"; IconFilename: "{app}\UserGuide\EwE6_userguide.chm"; Components: userguide
+Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
+Name: "{group}\{#MyAppName} {#MyAppVersion}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename:  "{app}\{#MyAppExeName}"; Components: userguide
+Name: "{group}\User guide"; Filename: "{app}\UserGuide\EwE6_userguide.chm"; WorkingDir: "{app}\UserGuide"; IconFilename: "{app}\UserGuide\EwE6_userguide.chm"; Components: userguide
 Name: "{group}\Links\Ecopath website"; Filename: "http://www.ecopath.org"
 Name: "{group}\Links\Ecopath on Facebook"; Filename: "http://www.facebook.com/eweconsortium"
 Name: "{group}\Links\User support"; Filename: "http://www.ecopath.org/support"
