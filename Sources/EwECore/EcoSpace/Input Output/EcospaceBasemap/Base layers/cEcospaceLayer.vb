@@ -345,19 +345,26 @@ Public MustInherit Class cEcospaceLayer
     ''' <summary>
     ''' Reset the layer content to its <see cref="[Default]"/> value
     ''' </summary>
-    Public Overridable Sub Reset()
-        If Me.[Default] = cCore.NULL_VALUE Then Return
+    Public Overridable Sub Reset(Optional value As Single = cCore.NULL_VALUE)
+        If (value = cCore.NULL_VALUE) Then
+            value = Me.[Default]
+        End If
+        If (value = cCore.NULL_VALUE) Then
+            Return
+        End If
+
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim iRows As Integer = bm.InRow
         Dim iCols As Integer = bm.InCol
         For iRow As Integer = 1 To iRows
             For iCol As Integer = 1 To iCols
                 If (bm.IsModelledCell(iRow, iCol)) Then
-                    Me.Cell(iRow, iCol) = Me.[Default]
+                    Me.Cell(iRow, iCol) = value
                 End If
             Next iCol
         Next iRow
         Me.Invalidate()
+
     End Sub
 
 #End Region ' Reset
