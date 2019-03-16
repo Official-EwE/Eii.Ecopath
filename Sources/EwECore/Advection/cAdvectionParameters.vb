@@ -51,31 +51,25 @@ Namespace Ecospace.Advection
             Dim val As cValue
 
             ' XVel
-            val = New cValue(New Single, eVarNameFlags.XVelocity, eStatusFlags.Null, eValueTypes.Sng)
-            val.Stored = False
+            val = New cValue(New Single, eVarNameFlags.XVelocity, eStatusFlags.Null, eValueTypes.Sng, bStored:=False)
             Me.m_values.Add(val.varName, val)
 
             ' YVel
-            val = New cValue(New Single, eVarNameFlags.YVelocity, eStatusFlags.Null, eValueTypes.Sng)
-            val.Stored = False
+            val = New cValue(New Single, eVarNameFlags.YVelocity, eStatusFlags.Null, eValueTypes.Sng, bStored:=False)
             Me.m_values.Add(val.varName, val)
 
             ' Coriolis
-            val = New cValue(New Single, eVarNameFlags.Coriolis, eStatusFlags.Null, eValueTypes.Sng)
-            val.Stored = False
+            val = New cValue(New Single, eVarNameFlags.Coriolis, eStatusFlags.Null, eValueTypes.Sng, bStored:=False)
             Me.m_values.Add(val.varName, val)
 
             ' SorWv
-            val = New cValue(New Single, eVarNameFlags.SorWv, eStatusFlags.Null, eValueTypes.Sng)
-            val.Stored = False
+            val = New cValue(New Single, eVarNameFlags.SorWv, eStatusFlags.Null, eValueTypes.Sng, bStored:=False)
             Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingThreshold, eStatusFlags.Null, eValueTypes.Sng)
-            val.Stored = False
+            val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingThreshold, eStatusFlags.Null, eValueTypes.Sng, bStored:=False)
             Me.m_values.Add(val.varName, val)
 
-            val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingPPMultiplier, eStatusFlags.Null, eValueTypes.Sng)
-            val.Stored = False
+            val = New cValue(New Single, eVarNameFlags.AdvectionUpwellingPPMultiplier, eStatusFlags.Null, eValueTypes.Sng, bStored:=False)
             Me.m_values.Add(val.varName, val)
 
             Me.ResetStatusFlags()
