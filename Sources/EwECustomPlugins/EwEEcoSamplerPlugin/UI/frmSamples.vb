@@ -124,6 +124,9 @@ Public Class frmSamples
         If (Me.m_plugin IsNot Nothing) Then
             Me.m_tsbnRecord.Checked = Me.m_plugin.IsRecording
             Me.m_tsbnRecord.Image = If(Me.m_plugin.IsRecording, My.Resources.RecordingHS, My.Resources.RecordHS)
+            Me.m_tsblRecordStatus.Visible = Me.m_plugin.IsRecording
+            ' ToDo: Globalize this
+            Me.m_tsblRecordStatus.Text = If(Me.m_plugin.NumRecordedSamples > 0, cStringUtils.Localize("({0} new)", Me.m_plugin.NumRecordedSamples), "")
         End If
 
         Me.m_tsddImport.Image = SharedResources.ImportHS
@@ -153,6 +156,7 @@ Public Class frmSamples
                 Select Case msg.Type
                     Case eMessageType.DataAddedOrRemoved
                         Me.LoadSamples()
+                        Me.UpdateControls()
                     Case eMessageType.DataModified
                         Me.m_grid.UpdateLoadState()
                         Me.UpdateControls()
