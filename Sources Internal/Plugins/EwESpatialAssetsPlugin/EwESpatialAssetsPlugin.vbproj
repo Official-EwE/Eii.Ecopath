@@ -105,10 +105,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Analysis, Version=0.11.9.6, Culture=neutral, PublicKeyToken=df3f45fb0fe4cb0c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Includes\DotSpatial.Analysis.dll</HintPath>
-    </Reference>
     <Reference Include="DotSpatial.Controls, Version=0.11.9.6, Culture=neutral, PublicKeyToken=4d9e49339a7d240c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Includes\DotSpatial.Controls.dll</HintPath>
