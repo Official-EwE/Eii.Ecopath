@@ -517,7 +517,7 @@ Namespace Properties
             If (msg.Type = eMessageType.DataAddedOrRemoved) Then
                 ' Clear when major changes have happened
                 Me.Clear(msg.Source)
-                ' No need to proceed since all Properties are gone
+                ' No need to proceed refreshing existing properties
                 Return
             End If
 

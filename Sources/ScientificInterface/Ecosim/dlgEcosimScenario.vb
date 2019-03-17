@@ -55,7 +55,7 @@ Namespace Ecosim
         End Sub
 
         Protected Overrides Function GetIcon() As System.Drawing.Icon
-            Return My.Resources.Ecosim
+            Return SharedResources.Ecosim
         End Function
 
         Protected Overrides Function GetAvailableScenarios() As List(Of cEwEScenario)

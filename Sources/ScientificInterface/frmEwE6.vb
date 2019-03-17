@@ -1192,6 +1192,13 @@ Public Class frmEwE6
 
                 Me.m_DockPanel.Dispose()
 
+                ' Clean up
+                If (Me.Icon IsNot Nothing) Then
+                    Dim ico As Icon = Me.Icon
+                    Me.Icon = Nothing
+                    ico.Dispose()
+                End If
+
             Catch ex As Exception
                 cLog.Write(ex, "frmEwE6.OnFormClosed")
             End Try
@@ -1953,19 +1960,7 @@ Public Class frmEwE6
             ' Store nav link
             frmNew.Tag = strNavLink
 
-            ' Set form icon based on core state
-            Select Case state
-                Case eCoreExecutionState.Idle
-                    frmNew.Icon = My.Resources.Ecopath0
-                Case eCoreExecutionState.EcopathLoaded, eCoreExecutionState.EcopathCompleted, eCoreExecutionState.EcopathRunning
-                    frmNew.Icon = My.Resources.Ecopath0
-                Case eCoreExecutionState.EcosimLoaded, eCoreExecutionState.EcosimRunning, eCoreExecutionState.EcosimCompleted
-                    frmNew.Icon = My.Resources.Ecosim
-                Case eCoreExecutionState.EcospaceLoaded, eCoreExecutionState.EcospaceRunning, eCoreExecutionState.EcospaceCompleted
-                    frmNew.Icon = My.Resources.Ecospace
-                Case eCoreExecutionState.EcotracerLoaded
-                    frmNew.Icon = My.Resources.Ecotracer
-            End Select
+            ' JS March 19: Form icons are now handled by frmEwE baseclass to ensure disposal
 
         Catch ex As Exception
             Debug.Assert(False, "Creation of Form was not successful.  Please contact help: '" & strNavLink & "' threw exception " & ex.ToString)
@@ -4819,20 +4814,6 @@ Public Class frmEwE6
             ' if possible.
             If (pgcmd.Form IsNot Nothing) Then
                 ' #Yes: form detected
-
-                ' Set form icon based on core state
-                Select Case pgcmd.CoreExecutionState
-                    Case eCoreExecutionState.Idle
-                        pgcmd.Form.Icon = My.Resources.Ecopath0
-                    Case eCoreExecutionState.EcopathLoaded, eCoreExecutionState.EcopathCompleted, eCoreExecutionState.EcopathRunning
-                        pgcmd.Form.Icon = My.Resources.Ecopath0
-                    Case eCoreExecutionState.EcosimLoaded, eCoreExecutionState.EcosimRunning, eCoreExecutionState.EcosimCompleted
-                        pgcmd.Form.Icon = My.Resources.Ecosim
-                    Case eCoreExecutionState.EcospaceLoaded, eCoreExecutionState.EcospaceRunning, eCoreExecutionState.EcospaceCompleted
-                        pgcmd.Form.Icon = My.Resources.Ecospace
-                    Case eCoreExecutionState.EcotracerLoaded
-                        pgcmd.Form.Icon = My.Resources.Ecotracer
-                End Select
 
                 ' Inherit plug-in execution state if needed
                 If (TypeOf pgcmd.Form Is frmEwE) Then
