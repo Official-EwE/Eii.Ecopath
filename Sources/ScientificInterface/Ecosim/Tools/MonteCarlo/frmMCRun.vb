@@ -32,6 +32,14 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
+' JS 17Mar19: MCMC is fragile as the run state depends on the user interface. This is bad design.
+' Quick fix:
+'  - Buffer time step B trends in the MC manager as Results. The UI no longer has to keep track with time steps, and can come and go
+'  - Make UI sync from MC Results
+'  - Bonus feature: in UI, gather confidence bands 
+' More work:
+'  - Cut UI reliance on delegates that are closely tied to the MCMC run life span. Instead, rely on messages only
+
 Namespace Ecosim
 
     ''' <summary>
@@ -242,6 +250,7 @@ Namespace Ecosim
             If (Me.m_cmbSaveFormat.SelectedIndex = -1) Then Me.m_cmbSaveFormat.SelectedIndex = 0
 
             Me.m_bInUpdate = False
+            Me.UpdateGraphXAxis()
 
             Me.UpdateControls()
 
@@ -794,10 +803,12 @@ Namespace Ecosim
             Dim pane As GraphPane = Me.m_plothelper.GetPane(1)
 
             With pane.XAxis.Scale
-                .Min = Me.Core.EcosimFirstYear
-                .Max = Me.Core.EcoSimModelParameters.NumberYears + Me.Core.EcosimFirstYear
-                .MaxAuto = False
                 .MinAuto = False
+                .Min = Me.Core.EcosimFirstYear
+                .MinGrace = 0
+                .MaxAuto = False
+                .Max = Me.Core.EcoSimModelParameters.NumberYears + Me.Core.EcosimFirstYear
+                .MaxGrace = 0
             End With
 
             Me.m_graph.AxisChange()
@@ -882,7 +893,10 @@ Namespace Ecosim
             If (Me.m_tsbnUpdatePlot.Checked) Then
 
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
-                    Me.m_lpplIteration.Add(New PointPairList())
+                    Dim ppl As New PointPairList()
+                    ' JS 17Mar19: add start value
+                    ppl.Add(New PointPair(Me.Core.EcosimFirstYear, 1))
+                    Me.m_lpplIteration.Add(ppl)
                 Next
 
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
@@ -894,6 +908,7 @@ Namespace Ecosim
 
                     line.IsVisible = Not m_bShowBetterSS Or (Me.m_mcmanager.SS < Me.m_mcmanager.SSorg)
                     lLines.Add(line)
+
                 Next iGroup
 
             End If

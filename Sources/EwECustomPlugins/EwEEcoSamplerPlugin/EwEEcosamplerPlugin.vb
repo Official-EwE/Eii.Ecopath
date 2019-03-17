@@ -47,7 +47,7 @@ Public Class EwEEcosamplerPlugin
     Private m_sampleman As cEcopathSampleManager = Nothing
     Private m_montecarlo As cEcosimMonteCarlo = Nothing
     Private m_esdata As cEcosimDatastructures = Nothing
-    Private m_iNumSamples As Integer = 0
+    Private m_iNumRecordedSamples As Integer = 0
     Private m_ui As frmSamples = Nothing
 
     Private m_strBaseHash As String = ""
@@ -231,7 +231,7 @@ Public Class EwEEcosamplerPlugin
             ' Note that the SS has not been calculated here!!
             Me.m_sampleCurrent = Me.m_sampleman.Record(Me.m_strBaseHash, Me.m_montecarlo)
             If (Me.m_sampleCurrent IsNot Nothing) Then
-                Me.m_iNumSamples += 1
+                Me.m_iNumRecordedSamples += 1
             End If
         Catch ex As Exception
             Dim msg As New cMessage(My.Resources.RECORD_ERROR,
@@ -267,7 +267,7 @@ Public Class EwEEcosamplerPlugin
         Me.m_uic.Core.SaveChanges(True)
 
         Try
-            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.RECORD_REPORT, Me.m_iNumSamples),
+            Dim msg As New cMessage(cStringUtils.Localize(My.Resources.RECORD_REPORT, Me.m_iNumRecordedSamples),
                                     eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
             Me.m_uic.Core.Messages.SendMessage(msg)
         Catch ex As Exception
@@ -293,8 +293,8 @@ Public Class EwEEcosamplerPlugin
 
         If (Not Me.IsRecording) Then Return
 
-        ' Reset # stored sample admin
-        Me.m_iNumSamples = 0
+        ' Reset # newly recorded samples
+        Me.m_iNumRecordedSamples = 0
         ' Grab model hash key that will be stored with recorded samples
         Me.m_strBaseHash = Me.m_sampleman.ModelHash
 
@@ -346,6 +346,12 @@ Public Class EwEEcosamplerPlugin
 #Region " Regional bits "
 
     Friend Property IsRecording As Boolean = False
+
+    Friend ReadOnly Property NumRecordedSamples As Integer
+        Get
+            Return Me.m_iNumRecordedSamples
+        End Get
+    End Property
 
     Friend ReadOnly Property SampleManager As cEcopathSampleManager
         Get

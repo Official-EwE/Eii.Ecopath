@@ -17,6 +17,7 @@
 ' ===============================================================================
 '
 
+Option Strict On
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 
@@ -62,6 +63,7 @@ Partial Class frmSamples
         Me.m_nudNumSamples = New System.Windows.Forms.NumericUpDown()
         Me.m_lblNumSamples = New System.Windows.Forms.Label()
         Me.m_hdrRun = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_tsblRecordStatus = New System.Windows.Forms.ToolStripLabel()
         Me.m_tlpOptions.SuspendLayout()
         Me.m_tlpMain.SuspendLayout()
         Me.m_tsMain.SuspendLayout()
@@ -139,7 +141,7 @@ Partial Class frmSamples
         'm_tsMain
         '
         Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnRecord, Me.m_tsddImport})
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnRecord, Me.m_tsddImport, Me.m_tsblRecordStatus})
         resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
         Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -224,6 +226,11 @@ Partial Class frmSamples
         Me.m_hdrRun.IsCollapsed = False
         Me.m_hdrRun.Name = "m_hdrRun"
         '
+        'm_tsblRecordStatus
+        '
+        Me.m_tsblRecordStatus.Name = "m_tsblRecordStatus"
+        resources.ApplyResources(Me.m_tsblRecordStatus, "m_tsblRecordStatus")
+        '
         'frmSamples
         '
         resources.ApplyResources(Me, "$this")
@@ -265,4 +272,5 @@ Partial Class frmSamples
     Private WithEvents m_rbStartAtNo As System.Windows.Forms.RadioButton
     Private WithEvents m_rbRandom As System.Windows.Forms.RadioButton
     Private WithEvents m_nudStartAt As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_tsblRecordStatus As Windows.Forms.ToolStripLabel
 End Class
