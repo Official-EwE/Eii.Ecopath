@@ -475,9 +475,6 @@ Namespace Wizard
 
 #Region " Event handlers "
 
-        ''' <summary>
-        ''' Event handler when dialog is being loaded.
-        ''' </summary>
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
@@ -531,6 +528,13 @@ Namespace Wizard
 
             Me.SwitchMode(Me.m_mode)
 
+        End Sub
+
+        Protected Overrides Sub OnFormClosed(e As FormClosedEventArgs)
+            If (Me.Icon IsNot Nothing) Then
+                Me.Icon.Dispose()
+            End If
+            MyBase.OnFormClosed(e)
         End Sub
 
         Private Sub tabctrlModes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _

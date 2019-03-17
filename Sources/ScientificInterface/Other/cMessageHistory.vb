@@ -36,6 +36,13 @@ Imports EwEUtils.Utilities
 ''' <item><description>Suppress user prompts.</description></item>
 ''' </list>
 ''' </summary>
+''' <remarks>
+''' Note that the message history does not contain cache actual <see cref="cMessage">
+''' messages</see> and <see cref="cVariableStatus">variable status information</see>,
+''' as caching core I/O classes would generate serious memory leaks. 
+''' Instead, the message history only caches message texts, origin identifiers,
+''' severities, and hyperlinks, and variable status texts and severities.
+''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cMessageHistory
     Implements IUIElement
@@ -102,7 +109,7 @@ Public Class cMessageHistory
         ''' <see cref="cVariableStatus">variable status information</see>.
         ''' </remarks>
         ''' ---------------------------------------------------------------
-        Public Sub New(ByVal pm As cPropertyManager, _
+        Public Sub New(ByVal pm As cPropertyManager,
                        ByVal msg As cMessage)
 
             Me.New(msg.Message, msg.Importance, msg.Hyperlink)
@@ -130,7 +137,7 @@ Public Class cMessageHistory
                                 strReply = My.Resources.GENERIC_REPLY_CANCEL
                         End Select
 
-                    Case eMessageReplyStyle.YES_NO, _
+                    Case eMessageReplyStyle.YES_NO,
                          eMessageReplyStyle.YES_NO_CANCEL
 
                         Select Case fmsg.Reply
@@ -162,8 +169,8 @@ Public Class cMessageHistory
         ''' <param name="vs"><see cref="cVariableStatus">variable status</see>
         ''' to create item for.</param>
         ''' -------------------------------------------------------------------
-        Private Sub New(ByVal pm As cPropertyManager, _
-                        ByVal vs As cVariableStatus, _
+        Private Sub New(ByVal pm As cPropertyManager,
+                        ByVal vs As cVariableStatus,
                         ByVal source As eCoreComponentType)
 
             Me.New(vs.Message, DirectCast(Math.Max(vs.Importance, eMessageImportance.Information), eMessageImportance))
@@ -181,8 +188,8 @@ Public Class cMessageHistory
         ''' inherited from the parent message.</param>
         ''' <param name="strHyperlink">Hyperlink to include in the message.</param>
         ''' -------------------------------------------------------------------
-        Private Sub New(ByVal strMessage As String, _
-                        ByVal imp As eMessageImportance, _
+        Private Sub New(ByVal strMessage As String,
+                        ByVal imp As eMessageImportance,
                         Optional ByVal strHyperlink As String = "")
 
             Me.m_strText = strMessage

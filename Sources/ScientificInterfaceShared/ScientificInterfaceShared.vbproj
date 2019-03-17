@@ -1096,6 +1096,11 @@
     <None Include="Resources\DownloadHS.png" />
     <None Include="Resources\ecobase.png" />
     <None Include="Resources\Ecopath_install.png" />
+    <None Include="Resources\ecobase.ico" />
+    <None Include="Resources\ecopath0.ico" />
+    <None Include="Resources\ecosim.ico" />
+    <None Include="Resources\ecospace.ico" />
+    <None Include="Resources\ecotracer.ico" />
     <Content Include="Resources\ExportDatabaseHS.PNG" />
     <None Include="Resources\FilterHS off.png" />
     <None Include="Resources\ExportHS.png" />

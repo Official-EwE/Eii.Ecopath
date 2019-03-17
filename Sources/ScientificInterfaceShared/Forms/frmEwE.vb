@@ -277,6 +277,21 @@ Namespace Forms
                 End If
             End If
 
+
+            ' Set form icon based on core state
+            Select Case Me.CoreExecutionState
+                Case eCoreExecutionState.EcopathLoaded, eCoreExecutionState.EcopathCompleted, eCoreExecutionState.EcopathRunning
+                    Me.Icon = My.Resources.Ecopath0
+                Case eCoreExecutionState.EcosimLoaded, eCoreExecutionState.EcosimRunning, eCoreExecutionState.EcosimCompleted
+                    Me.Icon = My.Resources.Ecosim
+                Case eCoreExecutionState.EcospaceLoaded, eCoreExecutionState.EcospaceRunning, eCoreExecutionState.EcospaceCompleted
+                    Me.Icon = My.Resources.Ecospace
+                Case eCoreExecutionState.EcotracerLoaded
+                    Me.Icon = My.Resources.Ecotracer
+                Case Else
+                    Me.Icon = My.Resources.Ecopath0
+            End Select
+
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -299,6 +314,10 @@ Namespace Forms
             End If
 
             Me.CoreComponents = Nothing
+            If (Me.Icon IsNot Nothing) Then
+                Me.Icon.Dispose()
+                Me.Icon = Nothing
+            End If
 
             MyBase.OnFormClosed(e)
 

@@ -323,16 +323,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        '''</summary>
-        Public ReadOnly Property EcoBase() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("EcoBase", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to This model cannot be exported to EcoBase because it does not mass-balance.
         '''</summary>
         Public ReadOnly Property ECOBASE_ERROR_BALANCE() As String
@@ -498,16 +488,6 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         '''</summary>
-        Public ReadOnly Property Ecopath0() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecopath0", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        '''</summary>
         Public ReadOnly Property Ecopath1_doc() As System.Drawing.Icon
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ecopath1_doc", resourceCulture)
@@ -551,16 +531,6 @@ Namespace My.Resources
         Public ReadOnly Property Ecopath6_joepie() As System.Drawing.Icon
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ecopath6_joepie", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        '''</summary>
-        Public ReadOnly Property Ecosim() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecosim", resourceCulture)
                 Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
@@ -971,16 +941,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        '''</summary>
-        Public ReadOnly Property Ecospace() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecospace", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to The selected shape file is not compatible with the current Ecospace basemap dimensions. Do you want to use this file anyway?.
         '''</summary>
         Public ReadOnly Property ECOSPACE_BASEMAP_SHAPECOMPATIBLE() As String
@@ -1319,16 +1279,6 @@ Namespace My.Resources
         Public ReadOnly Property ECOSPACE_WARNING_MEMOVERFLOW() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_WARNING_MEMOVERFLOW", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        '''</summary>
-        Public ReadOnly Property Ecotracer() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecotracer", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
         

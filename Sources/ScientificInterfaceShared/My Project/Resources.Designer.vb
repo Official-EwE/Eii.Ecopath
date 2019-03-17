@@ -1201,6 +1201,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        '''</summary>
+        Public ReadOnly Property EcoBase() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("EcoBase", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Public ReadOnly Property EcoBase1() As System.Drawing.Bitmap
@@ -1321,6 +1331,26 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        '''</summary>
+        Public ReadOnly Property Ecopath0() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecopath0", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        '''</summary>
+        Public ReadOnly Property Ecosim() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecosim", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Public ReadOnly Property Ecosim_32x32() As System.Drawing.Bitmap
@@ -1381,6 +1411,16 @@ Namespace My.Resources
         Public ReadOnly Property ECOSIM_DEFAULT_NEWTIMESERIES() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_DEFAULT_NEWTIMESERIES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        '''</summary>
+        Public ReadOnly Property Ecospace() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecospace", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
         
@@ -1517,6 +1557,16 @@ Namespace My.Resources
         Public ReadOnly Property ECOSPACE_LAYERGROUP_REGIONS() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_REGIONS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        '''</summary>
+        Public ReadOnly Property Ecotracer() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecotracer", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
         
