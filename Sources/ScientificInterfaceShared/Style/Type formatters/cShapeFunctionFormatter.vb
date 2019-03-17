@@ -52,9 +52,8 @@ Namespace Style
         End Function
 
         ''' <inheritdocs cref="ITypeFormatter.ToString"/>
-        Public Function ToString(ByVal value As Object, _
-                                      Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.ToString
+        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+            Implements ITypeFormatter.ToString
 
             ' Plug-in name discovery takes presedence, as plug-ins may inherit cShapeFunction
             If (TypeOf value Is EwEPlugin.IEcosimShapeFunctionPlugin) Then

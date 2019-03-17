@@ -40,9 +40,8 @@ Namespace Style
             Return GetType(ISpatialDataConverter)
         End Function
 
-        Public Function ToString(ByVal value As Object, _
-                                      Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.ToString
+        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+            Implements ITypeFormatter.ToString
 
             ' ToDo: globalize this
 

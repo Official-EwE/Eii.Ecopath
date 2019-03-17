@@ -41,14 +41,13 @@ Namespace Style
     Public Class cBACalcTypeFormatter
         Implements ITypeFormatter
 
-        Public Function ToString(ByVal data As Object, _
-                                      Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
             Dim vn As eBACalcTypes
 
             Try
-                vn = DirectCast(data, eBACalcTypes)
+                vn = DirectCast(value, eBACalcTypes)
             Catch ex As Exception
                 Return ""
             End Try
