@@ -43,6 +43,9 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+#Disable Warning IDE0017 ' Suppress "Object initialization can be simplified" 
+#Disable Warning IDE0009 ' Suppress "Add Me qualification" 
+
 ''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Class to handle all interactions between a user interface layer, a 
