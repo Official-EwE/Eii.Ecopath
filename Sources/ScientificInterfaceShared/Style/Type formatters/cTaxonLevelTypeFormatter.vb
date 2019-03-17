@@ -42,7 +42,7 @@ Namespace Style
             Return GetType(eTaxonClassificationType)
         End Function
 
-        Public Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
             Dim val As eTaxonClassificationType = DirectCast(value, eTaxonClassificationType)
