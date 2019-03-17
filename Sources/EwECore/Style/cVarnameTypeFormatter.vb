@@ -46,7 +46,7 @@ Namespace Style
             Dim vn As eVarNameFlags = eVarNameFlags.NotSet
 
             Try
-                vn = DirectCast(Data, eVarNameFlags)
+                vn = DirectCast(value, eVarNameFlags)
             Catch ex As Exception
                 Return ""
             End Try
