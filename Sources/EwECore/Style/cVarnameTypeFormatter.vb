@@ -40,14 +40,13 @@ Namespace Style
     Public Class cVarnameTypeFormatter
         Implements ITypeFormatter
 
-        Public Function ToString(ByVal data As Object,
-                                      Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.ToString
+        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+            Implements ITypeFormatter.ToString
 
             Dim vn As eVarNameFlags = eVarNameFlags.NotSet
 
             Try
-                vn = DirectCast(data, eVarNameFlags)
+                vn = DirectCast(Data, eVarNameFlags)
             Catch ex As Exception
                 Return ""
             End Try

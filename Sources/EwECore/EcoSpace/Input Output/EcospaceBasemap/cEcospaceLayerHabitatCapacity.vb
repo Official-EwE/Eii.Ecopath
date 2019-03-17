@@ -56,7 +56,7 @@ Public Class cEcospaceLayerHabitatCapacity
 
 #End Region ' Cell interaction
 
-    Public Overrides Sub Reset()
+    Public Overrides Sub Reset(Optional value As Single = cCore.NULL_VALUE)
         ' JS: Oof, this is harsh
         If (Me.VarName = eVarNameFlags.LayerHabitatCapacity) Then
             Me.m_core.RecomputeEcospaceForagingCapacity()
