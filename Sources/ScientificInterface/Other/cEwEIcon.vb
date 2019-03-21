@@ -79,7 +79,7 @@ Public Class cEwEIcon
 #If BETA = 1 Then
                 Return My.Resources.Ecopath2_beta
 #Else
-        Return My.Resources.Ecopath0
+        Return ScientificInterfaceShared.My.Resources.Ecopath0
 #End If
 
     End Function
