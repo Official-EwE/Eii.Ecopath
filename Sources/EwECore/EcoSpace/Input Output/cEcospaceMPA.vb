@@ -59,41 +59,6 @@ Public Class cEcospaceMPA
 
 #End Region
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the number of cells in a MPA.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property NumCells() As Integer
-        Get
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Dim l As cEcospaceLayerMPA = bm.LayerMPA(Me.Index)
-            Dim iIndex As Integer = Me.Index
-            Dim iNumCells As Integer = 0
-
-            For iRow As Integer = 1 To bm.InRow
-                For iCol As Integer = 1 To bm.InCol
-                    ' Only include modelled cells in this count
-                    If (CInt(l.Cell(iRow, iCol)) > 0) And (bm.IsModelledCell(iRow, iCol)) Then
-                        iNumCells += 1
-                    End If
-                Next
-            Next
-            Return iNumCells
-
-        End Get
-    End Property
-
-    Public ReadOnly Property IsActive() As Boolean
-        Get
-            Dim bIsClosed As Boolean = False
-            Dim bIsApplied As Boolean = False
-            For i As Integer = 1 To cCore.N_MONTHS : bIsClosed = bIsClosed Or Me.IsClosed(i) : Next
-            For i As Integer = 1 To Me.m_core.nFleets : bIsApplied = bIsApplied Or (Me.m_core.EcospaceFleetInputs(i).MPAFishery(Me.Index) = False) : Next
-            Return bIsClosed And bIsApplied
-        End Get
-    End Property
-
 #Region " Variables by dot '.' operator "
 
     ''' <summary>
@@ -129,6 +94,63 @@ Public Class cEcospaceMPA
 
 #Region " Quick accessors "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the number of cells in a MPA.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property NumCells() As Integer
+        Get
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim l As cEcospaceLayerMPA = bm.LayerMPA(Me.Index)
+            Dim iIndex As Integer = Me.Index
+            Dim iNumCells As Integer = 0
+
+            For iRow As Integer = 1 To bm.InRow
+                For iCol As Integer = 1 To bm.InCol
+                    ' Only include modelled cells in this count
+                    If (CInt(l.Cell(iRow, iCol)) > 0) And (bm.IsModelledCell(iRow, iCol)) Then
+                        iNumCells += 1
+                    End If
+                Next
+            Next
+            Return iNumCells
+
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether the MPA is actually imposing fishing limitations on any fleet.
+    ''' </summary>
+    ''' <param name="iMonth">The month to check the MPA status for, or -1 if the assesment is to be made for an entire year.</param>
+    ''' <returns>True if the MPA is actually imposing fishing limitations on any fleet.</returns>
+    ''' <seealso cref="cEcospaceFleet.MPAFishery(Integer)"/>
+    ''' <seealso cref="cEcospaceMPA.IsOpen(Integer)"/>
+    ''' <seealso cref="cEcospaceMPA.IsClosed(Integer)"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property IsActive(Optional iMonth As Integer = -1) As Boolean
+        Get
+            Dim bIsClosed As Boolean = False
+            Dim bIsApplied As Boolean = False
+            Dim iMin As Integer = If(iMonth < 1 Or iMonth > cCore.N_MONTHS, 1, iMonth)
+            Dim iMax As Integer = If(iMonth < 1 Or iMonth > cCore.N_MONTHS, 1, iMonth)
+            For i As Integer = iMin To iMax : bIsClosed = bIsClosed Or Me.IsClosed(i) : Next
+            For i As Integer = 1 To Me.m_core.nFleets : bIsApplied = bIsApplied Or (Me.m_core.EcospaceFleetInputs(i).MPAFishery(Me.Index) = False) : Next
+            Return bIsClosed And bIsApplied
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether this MPA is open to fishing at a given month.
+    ''' </summary>
+    ''' <param name="iMonth">The month to check.</param>
+    ''' <returns>True if the MPA is not enforced, and fishing is allowed.</returns>
+    ''' <seealso cref="cEcospaceFleet.MPAFishery(Integer)"/>
+    ''' <seealso cref="cEcospaceMPA.IsActive(Integer)"/>
+    ''' <seealso cref="cEcospaceMPA.IsClosed(Integer)"/>
+    ''' -----------------------------------------------------------------------
     Public Property IsOpen(ByVal iMonth As Integer) As Boolean
         Get
             Return Me.MPAMonth(iMonth) = True
@@ -138,6 +160,16 @@ Public Class cEcospaceMPA
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether this MPA is enforced, and imposes fishing limitations at a given month.
+    ''' </summary>
+    ''' <param name="iMonth">The month to check.</param>
+    ''' <returns>True if the MPA is enforced, and some or all fishing is now allowed.</returns>
+    ''' <seealso cref="cEcospaceFleet.MPAFishery(Integer)"/>
+    ''' <seealso cref="cEcospaceMPA.IsOpen(Integer)"/>
+    ''' <seealso cref="cEcospaceMPA.IsActive(Integer)"/>
+    ''' -----------------------------------------------------------------------
     Public Property IsClosed(ByVal iMonth As Integer) As Boolean
         Get
             Return Me.MPAMonth(iMonth) = False
