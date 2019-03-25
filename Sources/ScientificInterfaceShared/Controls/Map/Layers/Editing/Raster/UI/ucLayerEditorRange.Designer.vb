@@ -67,7 +67,7 @@ Namespace Controls.Map.Layers
             'm_btnReset
             '
             resources.ApplyResources(Me.m_btnReset, "m_btnReset")
-            Me.m_btnReset.Image = Global.ScientificInterfaceShared.My.Resources.Resources.ResetHS
+            Me.m_btnReset.Image = Global.ScientificInterfaceShared.My.Resources.Resources.Fill
             Me.m_btnReset.Name = "m_btnReset"
             Me.m_btnReset.UseVisualStyleBackColor = True
             '
