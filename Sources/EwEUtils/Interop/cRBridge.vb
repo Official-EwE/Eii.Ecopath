@@ -47,11 +47,11 @@ Namespace Interop
 #Region " Private vars "
 
         ''' <summary>Input sent to R</summary>
-        Private m_RInput As New List(Of String)
+        Private ReadOnly m_RInput As New List(Of String)
         ''' <summary>Output produced by R</summary>
-        Private m_ROutput As New List(Of String)
+        Private ReadOnly m_ROutput As New List(Of String)
         ''' <summary>Errors produced by R</summary>
-        Private m_RErrors As New List(Of String)
+        Private ReadOnly m_RErrors As New List(Of String)
         ''' <summary>Full path to R</summary>
         Private m_strPathToR As String = ""
         ''' <summary>Disctionary of fields to replace in the script</summary>
