@@ -32,7 +32,7 @@ Public Class cMPAOptParameters
             Me.AllowValidation = False
             m_coreComponent = eCoreComponentType.MPAOptimization
             m_dataType = eDataTypes.MPAOptParameters
-            Dim status As eStatusFlags = eStatusFlags.Null
+            Dim status As eStatusFlags = eStatusFlags.OK
             Dim val As cValue
 
             Me.m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
@@ -202,7 +202,6 @@ Public Class cMPAOptParameters
 
     End Property
 
-
     Public Property StartYear() As Integer
         Get
             Return CInt(GetVariable(eVarNameFlags.MPAOptStartYear))
@@ -215,6 +214,7 @@ Public Class cMPAOptParameters
         End Set
 
     End Property
+
     Public Property EndYear() As Integer
         Get
             Return CInt(GetVariable(eVarNameFlags.MPAOptEndYear))
@@ -228,8 +228,6 @@ Public Class cMPAOptParameters
 
     End Property
 
-
-
     Public Property bUseCellWeightStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.MPAUseCellWeight)
@@ -242,9 +240,6 @@ Public Class cMPAOptParameters
         End Set
 
     End Property
-
-
-
 
     Public Property SearchTypeStatus() As eStatusFlags
         Get
@@ -271,7 +266,6 @@ Public Class cMPAOptParameters
         End Set
 
     End Property
-
 
     Public Property StepSizeStatus() As eStatusFlags
         Get
@@ -312,7 +306,6 @@ Public Class cMPAOptParameters
 
     End Property
 
-
     Public Property MinAreaStatus() As eStatusFlags
         Get
             Return GetStatus(eVarNameFlags.MPAOptMinArea)
@@ -325,7 +318,6 @@ Public Class cMPAOptParameters
         End Set
 
     End Property
-
 
     Public Property iMPAToUseStatus() As eStatusFlags
         Get
