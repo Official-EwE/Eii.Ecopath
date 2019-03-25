@@ -32,22 +32,36 @@ Imports EwEUtils.Core
 Public Class cEcospaceLayerExclusion
     Inherits cEcospaceLayerBoolean
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
+    Public Sub New(theCore As cCore, manager As cEcospaceBasemap)
         MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_EXCLUSION, eVarNameFlags.LayerExclusion, 1)
         Me.m_dataType = eDataTypes.EcospaceLayerExclusion
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' States if a given cell is an excluded cell.
+    ''' States if a given cell is excluded from Ecospace dynamics.
     ''' </summary>
     ''' <param name="iRow">The row of the cell to check.</param>
     ''' <param name="iCol">The column of the cell to check.</param>
     ''' <returns>True if the given cell is an excluded cell.</returns>
+    ''' <seealso cref="IsIncludedCell(Integer, Integer)"/>
     ''' -----------------------------------------------------------------------
-    Public Function IsExcludedCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+    Public Function IsExcludedCell(iRow As Integer, iCol As Integer) As Boolean
         If Not Me.ValidateCellPosition(iRow, iCol) Then Return False
         Return (CBool(Me.Cell(iRow, iCol)) = True)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' States if a given cell is included for Ecospace dynamics.
+    ''' </summary>
+    ''' <param name="iRow">The row of the cell to check.</param>
+    ''' <param name="iCol">The column of the cell to check.</param>
+    ''' <returns>True if the given cell is an excluded cell.</returns>
+    ''' <seealso cref="IsExcludedCell(Integer, Integer)"/>
+    ''' -----------------------------------------------------------------------
+    Public Function IsIncludedCell(iRow As Integer, iCol As Integer) As Boolean
+        Return Not IsExcludedCell(iRow, iCol)
     End Function
 
 End Class
