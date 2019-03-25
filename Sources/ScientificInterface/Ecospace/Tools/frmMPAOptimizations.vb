@@ -1302,10 +1302,8 @@ Namespace Ecospace
             Dim lResults As List(Of cObjectiveResult) = Nothing
             Dim res As cObjectiveResult = Nothing
             Dim cell As cMPACell = Nothing
-            Dim aiCellMPA(Me.m_basemap.InRow, Me.m_basemap.InCol) As Integer
-
-            ' Update map
-            ReDim aiCellMPA(Me.m_basemap.InRow, Me.m_basemap.InCol)
+            Dim map(Me.m_basemap.InRow, Me.m_basemap.InCol) As Integer
+            Dim iMPA As Integer = Me.SelectedMPA
 
             Select Case Me.SearchType
 
@@ -1319,22 +1317,23 @@ Namespace Ecospace
 
             ' Truncate iteration index
             iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
+
             ' Get results
-            If (iIteration < lResults.Count) Then
+            If (iIteration < lResults.Count And iMPA > 0) Then
                 res = lResults(iIteration)
                 For iCell As Integer = 0 To res.Cells.Count - 1
                     cell = res.Cells(iCell)
-                    aiCellMPA(cell.Row, cell.Col) = cell.iMPA
+                    map(cell.Row, cell.Col) = cell.iMPA
                 Next iCell
-            End If
 
-            Me.SetLayer(aiCellMPA, Me.m_basemap.LayerMPA(Me.SelectedMPA()), Me.SelectedMPA())
+                Me.SetLayer(map, Me.m_basemap.LayerMPA(iMPA), iMPA)
 
-            ' Update indicators
-            Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue,
+                ' Update indicators
+                Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue,
                                        res.objFuncMandatedValue, res.objFuncEcologicalValue,
                                        res.objBiomassDiversity, res.objFuncAreaBorder,
                                        res.objFuncTotal, res.PercentageClosed)
+            End If
 
             Me.m_ucZoom.Map.Refresh()
 
