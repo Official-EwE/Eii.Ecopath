@@ -46,10 +46,15 @@ Public Class cEcospaceLayerExclusion
     ''' <returns>True if the given cell is an excluded cell.</returns>
     ''' <seealso cref="IsIncludedCell(Integer, Integer)"/>
     ''' -----------------------------------------------------------------------
-    Public Function IsExcludedCell(iRow As Integer, iCol As Integer) As Boolean
-        If Not Me.ValidateCellPosition(iRow, iCol) Then Return False
-        Return (CBool(Me.Cell(iRow, iCol)) = True)
-    End Function
+    Public Property IsExcludedCell(iRow As Integer, iCol As Integer) As Boolean
+        Get
+            Return (CBool(Me.Cell(iRow, iCol)) = True)
+        End Get
+        Set(value As Boolean)
+            If Not Me.ValidateCellPosition(iRow, iCol) Then Return
+            Me.Cell(iRow, iCol) = value
+        End Set
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -60,8 +65,13 @@ Public Class cEcospaceLayerExclusion
     ''' <returns>True if the given cell is an excluded cell.</returns>
     ''' <seealso cref="IsExcludedCell(Integer, Integer)"/>
     ''' -----------------------------------------------------------------------
-    Public Function IsIncludedCell(iRow As Integer, iCol As Integer) As Boolean
-        Return Not IsExcludedCell(iRow, iCol)
-    End Function
+    Public Property IsIncludedCell(iRow As Integer, iCol As Integer) As Boolean
+        Get
+            Return Not IsExcludedCell(iRow, iCol)
+        End Get
+        Set(value As Boolean)
+            Me.IsExcludedCell(iRow, iCol) = Not value
+        End Set
+    End Property
 
 End Class

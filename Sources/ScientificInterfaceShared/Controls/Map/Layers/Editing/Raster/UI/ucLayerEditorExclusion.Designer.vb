@@ -168,7 +168,7 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_btnSet)
             Me.Controls.Add(Me.m_nudDepth)
             Me.Name = "ucLayerEditorExclusion"
-            Me.Size = New System.Drawing.Size(200, 275)
+            Me.Size = New System.Drawing.Size(200, 273)
             Me.Controls.SetChildIndex(Me.m_nudDepth, 0)
             Me.Controls.SetChildIndex(Me.m_btnSet, 0)
             Me.Controls.SetChildIndex(Me.m_lblDepth, 0)
