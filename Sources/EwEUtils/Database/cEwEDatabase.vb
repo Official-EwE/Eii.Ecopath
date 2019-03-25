@@ -73,7 +73,7 @@ Namespace Database
             Private m_bDisposed As Boolean = False
 
 #If DEBUG Then
-            Private m_ID As Integer = 0
+            Private ReadOnly m_ID As Integer = 0
             Private Shared s_IDnext As Integer = 1
 #End If
 
@@ -1496,7 +1496,7 @@ Namespace Database
             Inherits cOOPStorable
             Implements IList(Of cOOPStorable)
 
-            Private m_list As New List(Of cOOPStorable)
+            Private ReadOnly m_list As New List(Of cOOPStorable)
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -1673,10 +1673,10 @@ Namespace Database
 #Region " Privates "
 
             ''' <summary>The ID for an object in the database</summary>
-            Private m_iDBID As Integer = cOOPStorable.cDBID_INVALID
+            Private ReadOnly m_iDBID As Integer = cOOPStorable.cDBID_INVALID
             ''' <summary>The runtime type that was used to write the
             ''' record in the database with this ID.</summary>
-            Private m_tOriginating As Type = Nothing
+            Private ReadOnly m_tOriginating As Type = Nothing
 
 #End Region ' Privates
 

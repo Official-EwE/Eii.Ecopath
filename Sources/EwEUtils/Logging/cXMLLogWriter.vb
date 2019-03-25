@@ -42,7 +42,7 @@ Namespace Core
         ''' Max size of the log file in bytes. One megabyte
         ''' </summary>
         ''' <remarks></remarks>
-        Private Shared MAX_LOG_SIZE As Integer = CInt(1024 ^ 2)
+        Private Shared ReadOnly MAX_LOG_SIZE As Integer = CInt(1024 ^ 2)
 
         'Inheriting from an XmlWriter
         'most of the methods are declared as MustOverride so the inheritance is kind of bogus 
