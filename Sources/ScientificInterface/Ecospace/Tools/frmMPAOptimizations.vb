@@ -78,19 +78,6 @@ Namespace Ecospace
 
 #Region " Private vars "
 
-        Private Enum eFormModeTypes As Integer
-            ''' <summary>User is entering values for a new search.</summary>
-            Prepare
-            ''' <summary>Search has been started.</summary>
-            Searching
-            ''' <summary>Search is running.</summary>
-            Initializing
-            ''' <summary>Search is stopping.</summary>
-            Stopping
-            ''' <summary>Search is done, results are available.</summary>
-            Results
-        End Enum
-
         ' == Data ==
 
         Private m_manager As cMPAOptManager = Nothing
@@ -137,9 +124,6 @@ Namespace Ecospace
         Private m_zghResults As cZedGraphHelper = Nothing
         ''' <summary>Results graph data.</summary>
         Private m_aptsResults(6) As ResultPoints
-
-        ''' <summary>The mode that this form is in.</summary>
-        Private m_mode As eFormModeTypes = eFormModeTypes.Prepare
 
 #End Region ' Private vars
 
@@ -239,7 +223,7 @@ Namespace Ecospace
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             ' Terminate any run state feedback
-            Me.ExitMode()
+            'Me.ExitMode()
 
             ' -- Sponsors --
             Dim cmd As cCommand = Me.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
@@ -279,6 +263,12 @@ Namespace Ecospace
 
         End Sub
 
+        Public Overrides ReadOnly Property IsRunForm As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
 #End Region ' Form
 
 #Region " Controls "
@@ -290,12 +280,12 @@ Namespace Ecospace
             If Not Me.ValidateInputs Then Return
             ' Start run
             Me.m_manager.Run()
+
         End Sub
 
         Private Sub OnStop(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                 Handles m_btnStop.Click
 
-            Me.RunMode = eFormModeTypes.Stopping
             Me.m_manager.StopRun()
 
         End Sub
@@ -425,11 +415,12 @@ Namespace Ecospace
 
             Dim aiMap As Integer(,) = Nothing
             Dim iNumResults As Integer = 0
+            Dim iMPA As Integer = Me.SelectedMPA()
 
             Select Case Me.SearchType
 
                 Case eMPAOptimizationModels.EcoSeed
-                    Me.SetLayer(Me.m_aiFeedback, Me.m_basemap.LayerMPA(SelectedMPA()), Me.SelectedMPA())
+                    Me.SetLayer(Me.m_aiFeedback, Me.m_basemap.LayerMPA(iMPA), iMPA)
 
                 Case eMPAOptimizationModels.RandomSearch
                     ' Get cell map at 100% best cells
@@ -509,14 +500,8 @@ Namespace Ecospace
             Try
                 Select Case runstate
 
-                    Case cMPAOptManager.eRunStates.Initializing
-                        Me.RunMode = eFormModeTypes.Initializing
-
-                    Case cMPAOptManager.eRunStates.Searching
-                        Me.RunMode = eFormModeTypes.Searching
-
-                    Case cMPAOptManager.eRunStates.Completed
-                        Me.RunMode = eFormModeTypes.Results
+                    Case cMPAOptManager.eRunStates.Initializing, cMPAOptManager.eRunStates.Searching, cMPAOptManager.eRunStates.Completed
+                        Me.UpdateControls()
 
                     Case cMPAOptManager.eRunStates.NewCellSelected
                         Me.HandleNewCellSelected()
@@ -541,12 +526,13 @@ Namespace Ecospace
             Select Case msg.Source
 
                 Case eCoreComponentType.EcoSpace
+                    ' Is a major change?
                     If (msg.Type = eMessageType.DataAddedOrRemoved) Then
-                        ' Reload data
+                        ' #Yes: reload data
                         Me.Reload()
-                        ' Cascade mode down
-                        Me.RunMode = eFormModeTypes.Prepare
                     End If
+                    ' Always refresh form state
+                    Me.UpdateControls()
 
                 Case eCoreComponentType.Core
                     If (msg.Type = eMessageType.GlobalSettingsChanged) Then
@@ -686,28 +672,15 @@ Namespace Ecospace
         ''' The one controller that determines what is displayed in the form.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Property RunMode() As eFormModeTypes
+        Private ReadOnly Property RunMode() As cMPAOptManager.eRunStates
             Get
-                Return Me.m_mode
+                Return Me.m_manager.RunState
             End Get
-            Set(ByVal value As eFormModeTypes)
-                ' Switching?
-                If value <> Me.m_mode Then
-                    ' Exit previous mode
-                    Me.ExitMode()
-                    ' Store mode
-                    Me.m_mode = value
-                    ' Enter new mode
-                    Me.EnterMode()
-                    ' Reflect changes
-                    Me.UpdateControls()
-                End If
-            End Set
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Toggle search type, only valid in <see cref="eFormModeTypes.Prepare">Prepare</see> mode.
+        ''' Toggle search type.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Property SearchType() As eMPAOptimizationModels
@@ -716,7 +689,7 @@ Namespace Ecospace
             End Get
             Set(ByVal value As eMPAOptimizationModels)
                 ' Only valid while preparing a run
-                If (Me.RunMode <> eFormModeTypes.Prepare) Then Return
+                If (Me.RunMode <> cMPAOptManager.eRunStates.Idle) Then Return
 
                 ' Clean up
                 Me.ClearMapFeedback()
@@ -772,68 +745,70 @@ Namespace Ecospace
             Return CInt(Me.m_fpMPA.Value())
         End Function
 
-        Private Sub EnterMode()
+        ' ToDo: reroute this!!
 
-            Select Case Me.m_mode
-                Case eFormModeTypes.Prepare
-                    ' User is about to start entering data
+        'Private Sub EnterMode()
 
-                Case eFormModeTypes.Initializing
-                    ' Set stop delegate
-                    Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.m_manager.StopRun))
-                    ' Set running status text
-                    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_INITIALIZING, -1)
-                    ' Switch to 'Results' page
-                    Me.m_tcResults.SelectedIndex = 0
+        '    Select Case Me.m_mode
+        '        Case eFormModeTypes.Prepare
+        '            ' User is about to start entering data
 
-                Case eFormModeTypes.Searching
-                    ' Set stop delegate
-                    Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.m_manager.StopRun))
-                    ' Set running status text
-                    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_SEARCHING, -1)
+        '        Case eFormModeTypes.Initializing
+        '            ' Set stop delegate
+        '            Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.m_manager.StopRun))
+        '            ' Set running status text
+        '            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_INITIALIZING, -1)
+        '            ' Switch to 'Results' page
+        '            Me.m_tcResults.SelectedIndex = 0
 
-                Case eFormModeTypes.Stopping
-                    ' Set running status text
-                    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_STOPPING, -1)
+        '        Case eFormModeTypes.Searching
+        '            ' Set stop delegate
+        '            Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.m_manager.StopRun))
+        '            ' Set running status text
+        '            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_SEARCHING, -1)
 
-                Case eFormModeTypes.Results
-                    ' Switch to 'Results' page
-                    Me.m_tcResults.SelectedIndex = 1
-                    ' Show results if possible
-                    If Me.m_cmbAreaClosed.Items.Count > 0 Then
-                        Me.m_cmbAreaClosed.SelectedIndex = 0
-                    End If
+        '        Case eFormModeTypes.Stopping
+        '            ' Set running status text
+        '            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_STOPPING, -1)
 
-            End Select
+        '        Case eFormModeTypes.Results
+        '            ' Switch to 'Results' page
+        '            Me.m_tcResults.SelectedIndex = 1
+        '            ' Show results if possible
+        '            If Me.m_cmbAreaClosed.Items.Count > 0 Then
+        '                Me.m_cmbAreaClosed.SelectedIndex = 0
+        '            End If
 
-        End Sub
+        '    End Select
 
-        Private Sub ExitMode()
-            Select Case Me.m_mode
+        'End Sub
 
-                Case eFormModeTypes.Prepare ' Prepare for running mode
+        'Private Sub ExitMode()
+        '    Select Case Me.m_mode
 
-                Case eFormModeTypes.Searching
-                    ' Cancel running status text
-                    Me.Core.SetStopRunDelegate(Nothing)
-                    cApplicationStatusNotifier.EndProgress(Me.Core)
+        '        Case eFormModeTypes.Prepare ' Prepare for running mode
 
-                Case eFormModeTypes.Initializing
-                    ' Cancel running status text
-                    Me.Core.SetStopRunDelegate(Nothing)
-                    cApplicationStatusNotifier.EndProgress(Me.Core)
+        '        Case eFormModeTypes.Searching
+        '            ' Cancel running status text
+        '            Me.Core.SetStopRunDelegate(Nothing)
+        '            cApplicationStatusNotifier.EndProgress(Me.Core)
 
-                Case eFormModeTypes.Stopping
-                    ' Cancel running status text
-                    cApplicationStatusNotifier.EndProgress(Me.Core)
+        '        Case eFormModeTypes.Initializing
+        '            ' Cancel running status text
+        '            Me.Core.SetStopRunDelegate(Nothing)
+        '            cApplicationStatusNotifier.EndProgress(Me.Core)
 
-                Case eFormModeTypes.Results ' Show results
-                    ' Clear results
-                    Me.ClearResults()
+        '        Case eFormModeTypes.Stopping
+        '            ' Cancel running status text
+        '            cApplicationStatusNotifier.EndProgress(Me.Core)
 
-            End Select
+        '        Case eFormModeTypes.Results ' Show results
+        '            ' Clear results
+        '            Me.ClearResults()
 
-        End Sub
+        '    End Select
+
+        'End Sub
 
         Private Sub Reload()
             ' Store ref
@@ -873,19 +848,19 @@ Namespace Ecospace
             ' Get MPA optimization params to connect start MPA to
             Dim MPAOpt As cMPAOptParameters = Me.UIContext.Core.MPAOptimizationManager.MPAOptimizationParamters
             ' Create list of available MPAs
-            Dim alMPAs As New List(Of cCoreInputOutputBase)
+            Dim mpas As New List(Of cCoreInputOutputBase)
 
             ' Build list of MPAs
-            For iMPA As Integer = 1 To Me.UIContext.Core.nMPAs
-                alMPAs.Add(Me.UIContext.Core.EcospaceMPAs(iMPA))
+            For i As Integer = 1 To Me.UIContext.Core.nMPAs
+                mpas.Add(Me.UIContext.Core.EcospaceMPAs(i))
             Next
 
-            Me.m_fpMPA.Items = alMPAs.ToArray
+            Me.m_fpMPA.Items = mpas.ToArray
 
             ' Only one MPA available?
-            If alMPAs.Count = 1 Then
+            If (mpas.Count = 1) Then
                 ' #Yes: select first MPA
-                Me.m_fpMPA.Value = alMPAs(0).Index
+                Me.m_cmbMPA.SelectedIndex = 0
             End If
 
         End Sub
@@ -1042,9 +1017,9 @@ Namespace Ecospace
 
             Dim factory As New cLayerFactoryInternal()
             Dim strGroup As String = factory.GetLayerGroup(varName)
+            Dim strCommand As String = factory.GetLayerEditCommand(varName)
             Dim alayers As cDisplayLayerRaster() = factory.GetLayers(Me.UIContext, varName)
             Dim l As cDisplayLayer = Nothing
-            Dim strCommand As String = ""
 
             If (bEditable) Then strCommand = factory.GetLayerEditCommand(varName)
 
@@ -1628,48 +1603,50 @@ Namespace Ecospace
             ' Added sanity check to prevent premature control handling
             If (Me.m_manager Is Nothing) Then Return
 
-            Dim bIsPreparing As Boolean = (Me.RunMode = eFormModeTypes.Prepare)
-            Dim bIsRunning As Boolean = (Me.RunMode = eFormModeTypes.Searching Or Me.RunMode = eFormModeTypes.Initializing Or Me.RunMode = eFormModeTypes.Stopping)
-            Dim bIsResults As Boolean = (Me.RunMode = eFormModeTypes.Results)
+            Dim bPredictEffort As Boolean = Me.Core.EcospaceModelParameters.PredictEffort
+            Dim bOpenForInput As Boolean = (Me.RunMode = cMPAOptManager.eRunStates.Idle Or Me.RunMode = cMPAOptManager.eRunStates.Completed) And bPredictEffort
+            Dim bHasResults As Boolean = (Me.RunMode = cMPAOptManager.eRunStates.Completed)
+            Dim bIsRunning As Boolean = Not (bOpenForInput Or bHasResults) And bPredictEffort
             Dim bIsEcoseed As Boolean = (Me.SearchType = eMPAOptimizationModels.EcoSeed)
             Dim bIsRandom As Boolean = (Me.SearchType = eMPAOptimizationModels.RandomSearch)
             Dim bMPALayerSelected As Boolean = (Me.SelectedMPA() > 0)
             Dim factory As New cLayerFactoryInternal()
 
             ' Update input controls
-            Me.m_rbEcoseed.Enabled = (bIsPreparing)
-            Me.m_rbRandom.Enabled = (bIsPreparing)
-            Me.m_fpStartYear.Enabled = bIsPreparing
-            Me.m_fpEndYear.Enabled = bIsPreparing
-            Me.m_fpBaseYear.Enabled = bIsPreparing
-            Me.m_fpMinArea.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_fpMaxArea.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_fpStepSize.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_fpDiscRate.Enabled = bIsPreparing
-            Me.m_fpGenDiscRate.Enabled = bIsPreparing
-            Me.m_fpIterations.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_fpMPA.Enabled = bIsPreparing
+            Me.m_rbEcoseed.Enabled = (bOpenForInput)
+            Me.m_rbRandom.Enabled = (bOpenForInput)
+            Me.m_fpStartYear.Enabled = bOpenForInput
+            Me.m_fpEndYear.Enabled = bOpenForInput
+            Me.m_fpBaseYear.Enabled = bOpenForInput
+            Me.m_fpMinArea.Enabled = (bOpenForInput And bIsRandom)
+            Me.m_fpMaxArea.Enabled = (bOpenForInput And bIsRandom)
+            Me.m_fpStepSize.Enabled = (bOpenForInput And bIsRandom)
+            Me.m_fpDiscRate.Enabled = bOpenForInput
+            Me.m_fpGenDiscRate.Enabled = bOpenForInput
+            Me.m_fpIterations.Enabled = (bOpenForInput And bIsRandom)
+            Me.m_fpMPA.Enabled = bOpenForInput
 
-            Me.m_gridObjectives.Enabled = (bIsPreparing)
-            Me.m_gridFleet.Enabled = (bIsPreparing)
-            Me.m_gridGroup.Enabled = (bIsPreparing)
+            Me.m_gridObjectives.Enabled = (bOpenForInput)
+            Me.m_gridFleet.Enabled = (bOpenForInput)
+            Me.m_gridGroup.Enabled = (bOpenForInput)
 
             ' Results
-            Me.m_graphResults.Enabled = bIsResults
-            Me.m_cmbAreaClosed.Enabled = (bIsResults And bIsRandom)
-            Me.m_nudBestPercentile.Enabled = (bIsResults And bIsRandom)
-            Me.m_btnResetMPAs.Enabled = bIsResults
+            Me.m_graphResults.Enabled = bHasResults
+            Me.m_cmbAreaClosed.Enabled = (bHasResults And bIsRandom)
+            Me.m_nudBestPercentile.Enabled = (bHasResults And bIsRandom)
+            Me.m_btnResetMPAs.Enabled = bHasResults
+            Me.m_btnConvertToMpa.Enabled = bMPALayerSelected
 
             ' Update run control buttons
-            Me.m_btnRun.Enabled = (bIsPreparing Or bIsResults) And Not bIsRunning
+            Me.m_btnRun.Enabled = (bOpenForInput Or bHasResults) And Not bIsRunning
             Me.m_btnStop.Enabled = bIsRunning
-            Me.m_btnConvertToMpa.Enabled = bIsResults
-            Me.m_btnSave.Enabled = (bIsResults And bIsRandom)
+            Me.m_btnConvertToMpa.Enabled = bHasResults
+            Me.m_btnSave.Enabled = (bHasResults And bIsRandom)
 
             ' Toggle toolbar controls
-            Me.m_tsbMPA.Enabled = bIsPreparing And bMPALayerSelected
-            Me.m_tsbSeed.Enabled = bIsPreparing And bMPALayerSelected And bIsEcoseed
-            Me.m_tsbEditLayers.Enabled = bIsPreparing And bIsRandom
+            Me.m_tsbMPA.Enabled = bOpenForInput And bMPALayerSelected
+            Me.m_tsbSeed.Enabled = bOpenForInput And bMPALayerSelected And bIsEcoseed
+            Me.m_tsbEditLayers.Enabled = bOpenForInput And bIsRandom
 
             ' Layers enabled state
             Me.EnableLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerDepth), Not bIsRunning)
@@ -1680,7 +1657,7 @@ Namespace Ecospace
             Me.EnableLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerImportance), Not bIsRunning)
 
             ' Update map
-            Me.m_ucZoom.Map.Editable = bIsPreparing
+            Me.m_ucZoom.Map.Editable = bOpenForInput
 
             Me.m_cbAutoSave.Checked = Me.Core.Autosave(eAutosaveTypes.MPAOpt)
 

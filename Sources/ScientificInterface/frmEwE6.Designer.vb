@@ -77,8 +77,6 @@ Partial Public Class frmEwE6
         Me.m_tsmiEcospaceExportLayers = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsmiEcospaceAdvanced = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiEcospaceDefineImportanceMaps = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tssEcospace4 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsmiEcospaceLoadXYRefData = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpContents = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuHelp = New System.Windows.Forms.ToolStripMenuItem()
@@ -338,19 +336,9 @@ Partial Public Class frmEwE6
         '
         'm_tsmiEcospaceAdvanced
         '
-        Me.m_tsmiEcospaceAdvanced.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceDefineImportanceMaps, Me.m_tssEcospace4, Me.m_tsmiEcospaceLoadXYRefData})
+        Me.m_tsmiEcospaceAdvanced.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceLoadXYRefData})
         Me.m_tsmiEcospaceAdvanced.Name = "m_tsmiEcospaceAdvanced"
         resources.ApplyResources(Me.m_tsmiEcospaceAdvanced, "m_tsmiEcospaceAdvanced")
-        '
-        'm_tsmiEcospaceDefineImportanceMaps
-        '
-        Me.m_tsmiEcospaceDefineImportanceMaps.Name = "m_tsmiEcospaceDefineImportanceMaps"
-        resources.ApplyResources(Me.m_tsmiEcospaceDefineImportanceMaps, "m_tsmiEcospaceDefineImportanceMaps")
-        '
-        'm_tssEcospace4
-        '
-        Me.m_tssEcospace4.Name = "m_tssEcospace4"
-        resources.ApplyResources(Me.m_tssEcospace4, "m_tssEcospace4")
         '
         'm_tsmiEcospaceLoadXYRefData
         '
@@ -981,8 +969,6 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsmiEcospaceDefineRegions As ToolStripMenuItem
     Private WithEvents ToolStripSeparator5 As ToolStripSeparator
     Private WithEvents m_tsmiEcospaceAdvanced As ToolStripMenuItem
-    Private WithEvents m_tsmiEcospaceDefineImportanceMaps As ToolStripMenuItem
-    Private WithEvents m_tssEcospace4 As ToolStripSeparator
     Private WithEvents m_tsmiEcospaceLoadXYRefData As ToolStripMenuItem
     Private WithEvents m_bgw As System.ComponentModel.BackgroundWorker
     Private WithEvents m_tsbnAutosaveConfig As ToolStripButton

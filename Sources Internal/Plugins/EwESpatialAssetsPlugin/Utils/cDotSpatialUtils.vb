@@ -65,7 +65,9 @@ Public Class cDotSpatialUtils
 
         Dim appman As New AppManager()
         Dim bitness As String = ""
-        Dim strBasePath As String = Path.GetDirectoryName(Assembly.GetAssembly(GetType(cDotSpatialUtils)).Location)
+
+        ' JS 21Mar19: DotSpatial may reside in plug-ins path, while GDAL is installed in includes\64bit
+        Dim strBasePath As String = Path.GetDirectoryName(Assembly.GetAssembly(GetType(cCore)).Location)
 
         ' Build the path to the correct directory(s) for 32 and 64 bit binary dlls
         If cSystemUtils.Is64BitProcess() Then bitness = "win64" Else bitness = "win32"

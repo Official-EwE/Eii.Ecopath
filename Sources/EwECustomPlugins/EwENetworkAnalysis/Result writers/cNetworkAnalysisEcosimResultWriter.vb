@@ -87,7 +87,7 @@ Public Class cNetworkAnalysisEcosimResultWriter
             Return GetType(eColTypes)
         End Function
 
-        Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
             Dim strVar As String = value.ToString()

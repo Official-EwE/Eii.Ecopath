@@ -1996,9 +1996,6 @@
   <data name="ECOSPACE_LAYERGROUP_HABITATS" xml:space="preserve">
     <value>Habitats</value>
   </data>
-  <data name="ECOSPACE_LAYERGROUP_IMPORTANCE" xml:space="preserve">
-    <value>Importance</value>
-  </data>
   <data name="ECOSPACE_LAYERGROUP_MPAS" xml:space="preserve">
     <value>MPAs</value>
   </data>

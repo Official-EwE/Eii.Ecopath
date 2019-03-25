@@ -53,8 +53,8 @@ Namespace HCR_GroupNS
             Return GetType(eHCR_Targ_Or_Cons)
         End Function
 
-        Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-        Implements ITypeFormatter.ToString
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+            Implements ITypeFormatter.ToString
 
             Select Case DirectCast(value, eHCR_Targ_Or_Cons)
                 Case eHCR_Targ_Or_Cons.Target
@@ -74,7 +74,7 @@ Namespace HCR_GroupNS
             Return GetType(eHCR_Type)
         End Function
 
-        Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
         Implements ITypeFormatter.ToString
 
             Select Case DirectCast(value, eHCR_Type)
