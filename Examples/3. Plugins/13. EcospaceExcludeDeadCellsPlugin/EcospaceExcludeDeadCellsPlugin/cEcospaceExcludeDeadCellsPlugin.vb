@@ -138,7 +138,8 @@ Public Class cEcospaceExcludeDeadCellsPlugin
             ' Mind reversal! row = y, col = x
             excl.IsExcludedCell(pt.Y, pt.X) = True
         Next
-        excl.Invalidate()
+        depth.Invalidate()
+        Me.m_core.onChanged(excl)
 
     End Sub
 
