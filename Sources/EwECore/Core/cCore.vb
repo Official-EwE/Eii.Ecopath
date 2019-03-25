@@ -2396,7 +2396,7 @@ Public Class cCore
         End If
 
         ' Send progress message
-        msg = New cProgressMessage(eProgressState.Start, 0, 0, My.Resources.CoreMessages.STATUS_SAVING_CHANGES, eMessageType.DataExport)
+        msg = New cProgressMessage(eProgressState.Start, 0, -1, My.Resources.CoreMessages.STATUS_SAVING_CHANGES, eMessageType.DataExport)
         Me.Messages.SendMessage(msg, True)
 
         ' Plug-ins

@@ -2146,4 +2146,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="COMMAND_AUTORUN" xml:space="preserve">
     <value>Configure which EwE plug-ins can automatically run with EwE core components</value>
   </data>
+  <data name="ECOSPACE_LAYERGROUP_IMPORTANCE" xml:space="preserve">
+    <value>Importance</value>
+  </data>
 </root>

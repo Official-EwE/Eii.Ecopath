@@ -1193,6 +1193,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Importance.
+        '''</summary>
+        Public ReadOnly Property ECOSPACE_LAYERGROUP_IMPORTANCE() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_IMPORTANCE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Random cells.
         '''</summary>
         Public ReadOnly Property ECOSPACE_LAYERGROUP_MPARANDOM() As String

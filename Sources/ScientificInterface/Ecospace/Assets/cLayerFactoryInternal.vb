@@ -142,6 +142,25 @@ Namespace Ecospace.Basemap.Layers
                         lLayers.Add(layer)
                     End If
 
+                Case eVarNameFlags.LayerImportance
+
+                    For iLayer As Integer = 1 To core.nImportanceLayers
+
+                        Dim src As cEcospaceLayerImportance = core.EcospaceBasemap.LayerImportance(iLayer)
+                        ad = GetAuxillaryData(core, varName, iLayer)
+
+                        vs = ad.VisualStyle
+                        If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+                        renderer = New cLayerRendererValue(vs)
+                        renderer.ScaleMin = 0
+                        renderer.RenderMode = eLayerRenderType.Selected
+                        editor = New cLayerEditorRange()
+                        layer = New cDisplayLayerRaster(uic, src, renderer, editor, src, eVarNameFlags.Name)
+
+                        lLayers.Add(layer)
+
+                    Next iLayer
+
                 Case Else
                     ' Return default
                     lLayers.AddRange(MyBase.GetLayers(uic, varName))
@@ -168,12 +187,23 @@ Namespace Ecospace.Basemap.Layers
                 Case eVarNameFlags.LayerMPARandom
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_MPARANDOM
 
+                Case eVarNameFlags.LayerImportance
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_IMPORTANCE
+
                 Case Else
                     Return MyBase.GetLayerGroup(varName)
 
             End Select
             Return strGroup
 
+        End Function
+
+        Public Overrides Function GetLayerEditCommand(varName As eVarNameFlags) As String
+            Select Case varName
+                Case eVarNameFlags.LayerImportance
+                    Return cEditImportanceLayersCommand.cCOMMAND_NAME
+            End Select
+            Return MyBase.GetLayerEditCommand(varName)
         End Function
 
         ''' -------------------------------------------------------------------

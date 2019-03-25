@@ -58,7 +58,7 @@ Public Class gridDistributionParameters
             Return GetType(cMSE.DistributionType)
         End Function
 
-        Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
             Select Case (DirectCast(value, cMSE.DistributionType))
                 Case cMSE.DistributionType.NotSet

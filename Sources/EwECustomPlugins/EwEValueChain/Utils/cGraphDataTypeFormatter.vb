@@ -36,7 +36,7 @@ Public Class cGraphDataTypeFormatter
         Return GetType(cResults.eGraphDataType)
     End Function
 
-    Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements _
+    Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements _
         ITypeFormatter.ToString
 
         Dim strValue As String = value.ToString

@@ -63,7 +63,7 @@ Public Class gridRegulations
             Return GetType(cRegulations.eRegMethod)
         End Function
 
-        Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
             Dim rm As cRegulations.eRegMethod = cRegulations.eRegMethod.None
@@ -73,7 +73,7 @@ Public Class gridRegulations
                 rm = cRegulations.eRegMethod.None
             End Try
             Return cResourceUtils.LoadString("REGMETHOD_" & rm.ToString().ToUpper, Me.GetType.Assembly)
-  
+
         End Function
 
     End Class

@@ -316,25 +316,6 @@ Namespace Controls.Map
                         lLayers.Add(layer)
                     End If
 
-                Case eVarNameFlags.LayerImportance
-
-                    For iLayer As Integer = 1 To core.nImportanceLayers
-
-                        Dim src As cEcospaceLayerImportance = core.EcospaceBasemap.LayerImportance(iLayer)
-                        ad = GetAuxillaryData(core, varName, iLayer)
-
-                        vs = ad.VisualStyle
-                        If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                        renderer = New cLayerRendererValue(vs)
-                        renderer.ScaleMin = 0
-                        renderer.RenderMode = Definitions.eLayerRenderType.Selected
-                        editor = New cLayerEditorRange()
-                        layer = New cDisplayLayerRaster(uic, src, renderer, editor, src, eVarNameFlags.Name)
-
-                        lLayers.Add(layer)
-
-                    Next iLayer
-
                 Case eVarNameFlags.LayerDriver
 
                     For iLayer As Integer = 1 To core.nEnvironmentalDriverLayers
@@ -421,9 +402,6 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerPort,
                       eVarNameFlags.LayerSail
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_FISHING
-
-                Case eVarNameFlags.LayerImportance
-                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_IMPORTANCE
 
                 Case eVarNameFlags.LayerDriver
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_ENVDRIVERS
