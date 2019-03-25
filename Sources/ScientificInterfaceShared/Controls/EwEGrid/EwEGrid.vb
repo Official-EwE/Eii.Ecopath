@@ -1235,8 +1235,9 @@ Namespace Controls.EwEGrid
 
             If dtObj.GetDataPresent(DataFormats.Text, True) = False Then Return
 
-            Dim strData As String = CStr(dtObj.GetData(DataFormats.Text)).Replace(cStringUtils.vbCrLf, cStringUtils.vbLf)
-            Dim astrLines() As String = strData.Split(New Char() {CChar(cStringUtils.vbCr), CChar(cStringUtils.vbLf)})
+            ' JS 25Mar19: This remains fun. Split by using OS-aware Environment.Newline to make sure things work fine on Mac, too.
+            Dim data As String = CStr(dtObj.GetData(DataFormats.Text))
+            Dim lines() As String = data.Split(New String() {Environment.NewLine}, StringSplitOptions.None)
             Dim cSplit As Char = Convert.ToChar(Keys.Tab)
             Dim r As Range = Me.Selection.GetRange()
             Dim pos As Position = Nothing
@@ -1253,18 +1254,18 @@ Namespace Controls.EwEGrid
             End If
 
             ' Diagnose dimensions of pasted data
-            Dim iDY As Integer = astrLines.Length
+            Dim iDY As Integer = lines.Length
             Dim iDX As Integer = 0
 
             ' Determine most likely delimiter used in text
-            If (iDY > 0) Then cSplit = cStringUtils.FindStringDelimiter(astrLines(0))
+            If (iDY > 0) Then cSplit = cStringUtils.FindStringDelimiter(lines(0))
 
             If (Me.Core IsNot Nothing) Then
                 Dim fmt As New cCharFormatter()
                 cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste using " & fmt.ToString(cSplit), eVerboseLevel.Detailed)
             End If
 
-            For Each strLine As String In astrLines
+            For Each strLine As String In lines
                 ' JS 16dec12: use qualified split
                 Dim astrBits As String() = cStringUtils.SplitQualified(strLine, cSplit)
                 iDX = Math.Max(iDX, astrBits.Length)
@@ -1276,7 +1277,7 @@ Namespace Controls.EwEGrid
             Dim bRepeatCol As Boolean = (r.ColumnsCount Mod iDX = 0) And (iDX > 1)
             Dim bRepeatRow As Boolean = (r.RowsCount Mod iDY = 0) And (iDY > 1)
             Dim iRowFrom As Integer = r.Start.Row
-            Dim iRowTo As Integer = Math.Min(If(bRepeatRow, r.End.Row, r.Start.Row + astrLines.Length - 1), Me.RowsCount - 1)
+            Dim iRowTo As Integer = Math.Min(If(bRepeatRow, r.End.Row, r.Start.Row + lines.Length - 1), Me.RowsCount - 1)
             ' Restrict paste operation to the selection area when repeating data and/or when pasting into a range
             Dim bRestrictToSelection As Boolean = bRepeatRow Or bRepeatCol Or (r.RowsCount > 1) Or (r.ColumnsCount > 1)
 
@@ -1289,9 +1290,9 @@ Namespace Controls.EwEGrid
                 ' Only process visible rows (#1012)
                 If Me.Rows(iRow).Visible Then
 
-                    If Not String.IsNullOrEmpty(astrLines(iRowData)) Then
+                    If Not String.IsNullOrEmpty(lines(iRowData)) Then
 
-                        Dim astrCols() As String = astrLines(iRowData).Split(cSplit)
+                        Dim astrCols() As String = lines(iRowData).Split(cSplit)
                         Dim iColFrom As Integer = r.Start.Column
                         Dim iColTo As Integer = Math.Min(If(bRepeatCol, r.End.Column, r.Start.Column + astrCols.Length - 1), Me.ColumnsCount - 1)
                         iColData = 0
