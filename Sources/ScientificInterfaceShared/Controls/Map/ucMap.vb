@@ -108,14 +108,16 @@ Namespace Controls.Map
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim bm As cEcospaceBasemap = Me.Basemap
             Dim szCellSize As SizeF = Me.GetCellSize()
-            Dim rc As New Rectangle(0, 0, CInt(bm.InCol * szCellSize.Width), CInt(bm.InRow * szCellSize.Height))
+            Dim rc As Rectangle = Me.ClientRectangle
             Dim strFilenameLegend As String = ""
 
             Try
                 Using bmp As Bitmap = sg.GetImage(rc.Width, rc.Height, format, strFileName)
                     Using g As Graphics = Graphics.FromImage(bmp)
                         Me.DrawMap(g, rc)
-                        bmp.Save(strFileName, format)
+                        Using extr As Bitmap = bmp.Clone(Me.m_maprect, bmp.PixelFormat)
+                            extr.Save(strFileName, format)
+                        End Using
                     End Using
                 End Using
 
