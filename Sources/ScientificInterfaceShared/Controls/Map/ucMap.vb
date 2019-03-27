@@ -115,7 +115,9 @@ Namespace Controls.Map
                 Using bmp As Bitmap = sg.GetImage(rc.Width, rc.Height, format, strFileName)
                     Using g As Graphics = Graphics.FromImage(bmp)
                         Me.DrawMap(g, rc)
-                        bmp.Save(strFileName, format)
+                        Using extr As Bitmap = bmp.Clone(Rectangle.Intersect(rc, Me.m_maprect), bmp.PixelFormat)
+                            bmp.Save(strFileName, format)
+                        End Using
                     End Using
                 End Using
 
