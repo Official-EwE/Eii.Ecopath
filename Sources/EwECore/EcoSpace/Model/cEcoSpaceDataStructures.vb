@@ -1987,8 +1987,6 @@ Public Class cEcospaceDataStructures
             Me.CalculateCellWidth()
 
             For i = 1 To InRow
-
-
                 For j = 1 To InCol      'Default Values for new maps
                     Depth(i, j) = 1
                     DepthA(i, j) = Depth(i, j)

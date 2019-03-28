@@ -1235,9 +1235,7 @@ Namespace Controls.EwEGrid
 
             If dtObj.GetDataPresent(DataFormats.Text, True) = False Then Return
 
-            ' JS 25Mar19: This remains fun. Split by using OS-aware Environment.Newline to make sure things work fine on Mac, too.
-            Dim data As String = CStr(dtObj.GetData(DataFormats.Text))
-            Dim lines() As String = data.Split(New String() {Environment.NewLine}, StringSplitOptions.None)
+            Dim lines() As String = cStringUtils.SplitLines(CStr(dtObj.GetData(DataFormats.Text)))
             Dim cSplit As Char = Convert.ToChar(Keys.Tab)
             Dim r As Range = Me.Selection.GetRange()
             Dim pos As Position = Nothing

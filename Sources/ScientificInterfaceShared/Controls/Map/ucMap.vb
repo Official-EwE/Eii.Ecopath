@@ -297,8 +297,12 @@ Namespace Controls.Map
             Dim ptCoord As PointF = Me.PointToLonLat(e.Location)
 
             If (l IsNot Nothing) Then
+                ' Only show values for water cells or actual land cells for the land layer
                 If (TypeOf l Is cDisplayLayerRaster) Then
-                    strVal = l.Renderer.GetDisplayText(DirectCast(l, cDisplayLayerRaster).Value(ptCell.Y, ptCell.X))
+                    Dim dl As cDisplayLayerRaster = DirectCast(l, cDisplayLayerRaster)
+                    If (dl.VarName = eVarNameFlags.LayerDepth) Or (bm.IsModelledCell(ptCell.Y, ptCell.X)) Then
+                        strVal = l.Renderer.GetDisplayText(dl.Value(ptCell.Y, ptCell.X))
+                    End If
                 End If
             End If
 
