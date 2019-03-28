@@ -109,7 +109,6 @@ Namespace Utilities
 
         End Function
 
-
         ''' ---------------------------------------------------------------------------
         ''' <summary>
         ''' Split function that supports text qualifiers.
@@ -128,6 +127,21 @@ Namespace Utilities
                                               ByVal cDelimiter As Char,
                                               Optional ByVal cQualifier As Char = """"c) As String()
             Return cStringUtils.SplitQualified(strExpression, CStr(cDelimiter), CStr(cQualifier))
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Crude splitter method to split text by newlines, working around 
+        ''' how different OS implementations.
+        ''' </summary>
+        ''' <param name="text">The text to split</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function SplitLines(ByVal text As String) As String()
+            If (String.IsNullOrWhiteSpace(text)) Then Return New String() {String.Empty}
+            text = text.Replace(vbCrLf, vbLf)
+            text = text.Replace(vbCr, vbLf)
+            Return text.Split(New String() {vbLf}, StringSplitOptions.None)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1471,7 +1485,7 @@ Namespace Utilities
             For i As Integer = 0 To split.Length - 1
                 Dim strTerm As String = split(i)
                 If sbLine.Length >= iNumChars Then
-                    If (sbBlock.Length > 0) Then sbBlock.Append(EwEUtils.Utilities.cStringUtils.vbCrLf)
+                    If (sbBlock.Length > 0) Then sbBlock.AppendLine()
                     sbBlock.Append(sbLine.ToString())
                     sbLine.Clear()
                 ElseIf (sbLine.Length > 0) Then
@@ -1480,7 +1494,7 @@ Namespace Utilities
                 sbLine.Append(strTerm)
             Next
 
-            If (sbBlock.Length > 0) Then sbBlock.Append(EwEUtils.Utilities.cStringUtils.vbCrLf)
+            If (sbBlock.Length > 0) Then sbBlock.AppendLine()
             sbBlock.Append(sbLine.ToString())
 
             Return sbBlock.ToString()
@@ -1497,7 +1511,7 @@ Namespace Utilities
         ''' -------------------------------------------------------------------
         Public Shared Function Unwrap(strText As String) As String
 
-            Dim pars As String() = strText.Split(New String() {cStringUtils.vbCrLf & cStringUtils.vbCrLf, cStringUtils.vbCr & cStringUtils.vbCr, cStringUtils.vbLf & cStringUtils.vbLf}, StringSplitOptions.None)
+            Dim pars As String() = SplitLines(strText)
             Dim sb As New StringBuilder()
 
             Dim i As Integer = 0
@@ -1506,7 +1520,7 @@ Namespace Utilities
                     sb.AppendLine()
                     sb.AppendLine()
                 End If
-                For Each sentence As String In par.Split(New String() {cStringUtils.vbCrLf, cStringUtils.vbCr, cStringUtils.vbLf}, StringSplitOptions.None)
+                For Each sentence As String In SplitLines(par)
                     sb.Append(sentence)
                 Next
                 i += 1
@@ -2327,6 +2341,12 @@ Namespace Utilities
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Shared ReadOnly Property vbCrLf As String
+            Get
+                Return vbCr & vbLf
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property NewLine As String
             Get
                 Return Environment.NewLine
             End Get
