@@ -123,9 +123,9 @@ Namespace Controls.Map
                             editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
                         End If
 
-                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(varName),
-                                                renderer, editor, eCoreCounterTypes.nGroups, bmd, varName)
-                            lLayers.Add(layer)
+                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(varName), renderer, editor, eCoreCounterTypes.nGroups, bmd, varName)
+                        layer.Editor.IsReadOnly = (varName = eVarNameFlags.LayerHabitatCapacity)
+                        lLayers.Add(layer)
                     End If
 
                 Case eVarNameFlags.LayerM0MultInput
