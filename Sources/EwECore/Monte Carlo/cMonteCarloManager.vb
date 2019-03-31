@@ -614,7 +614,7 @@ Public Class cMonteCarloManager
     ''' the current trial.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property nEcopathIterations() As Single
+    Public ReadOnly Property nEcopathIterations() As Integer
         Get
             If (Me.m_mc Is Nothing) Then Return 0
             Return m_mc.nEcopathIterations

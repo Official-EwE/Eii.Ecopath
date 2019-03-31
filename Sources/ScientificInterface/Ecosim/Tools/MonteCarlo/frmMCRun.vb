@@ -62,6 +62,7 @@ Namespace Ecosim
         Private m_fpNumTrials As cEwEFormatProvider = Nothing
         Private m_fpTrial As cEwEFormatProvider = Nothing
         Private m_fpERun As cEwEFormatProvider = Nothing
+        Private m_fpERunAvg As cEwEFormatProvider = Nothing
         Private m_fpSSorg As cEwEFormatProvider = Nothing
         Private m_fpSS As cEwEFormatProvider = Nothing
         Private m_fpSSBest As cEwEFormatProvider = Nothing
@@ -80,6 +81,7 @@ Namespace Ecosim
         ''' We need to know what run it about to happen before the run so we can store the local data.
         ''' </remarks>
         Private m_nTrials As Integer
+        Private m_nRunsTot As Long
 
         Private m_sYMax As Single = 1.0!
 
@@ -158,6 +160,9 @@ Namespace Ecosim
 
             Me.m_fpERun = New cEwEFormatProvider(Me.UIContext, Me.m_lblERunValue, GetType(Integer))
             Me.m_fpERun.Value = 0
+
+            Me.m_fpERunAvg = New cEwEFormatProvider(Me.UIContext, Me.m_lblERunAvgValue, GetType(Single))
+            Me.m_fpERunAvg.Value = 0
 
             Me.m_fpSSorg = New cEwEFormatProvider(Me.UIContext, Me.m_lblSSorgValue, GetType(Single))
             Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
@@ -312,6 +317,7 @@ Namespace Ecosim
                 Me.m_fpNumTrials.Release()
                 Me.m_fpTrial.Release()
                 Me.m_fpERun.Release()
+                Me.m_fpERunAvg.Release()
                 Me.m_fpSSorg.Release()
                 Me.m_fpSS.Release()
                 Me.m_fpSSBest.Release()
@@ -615,7 +621,11 @@ Namespace Ecosim
         Private Sub MonteCarloEcopathStepHandler()
 
             Try
+                Me.m_nRunsTot += Me.m_mcmanager.nEcopathIterations
+
                 Me.m_fpERun.Value = Me.m_mcmanager.nEcopathIterations
+                Me.m_fpERunAvg.Value = Me.StyleGuide.FormatNumber(Me.m_nRunsTot / Math.Max(1, Me.m_nTrials))
+
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
             End Try
@@ -716,9 +726,11 @@ Namespace Ecosim
             Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg
             Me.m_fpTrial.Value = 0
             Me.m_fpERun.Value = 0
+            Me.m_fpERunAvg.Value = 0
             Me.m_fpSS.Value = 0.0!
             Me.m_fpSSBest.Value = 0.0!
             Me.m_sYMax = 1.0!
+            Me.m_nRunsTot = 0
 
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_INITIALIZING, -1.0)
 

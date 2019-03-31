@@ -538,7 +538,7 @@ Public MustInherit Class cIndicators
     ''' Reset calculated variables
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub Clear()
+    Friend Sub Clear()
 
         Me.IsComputed = False
 

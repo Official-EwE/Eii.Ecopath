@@ -124,6 +124,8 @@ Namespace Ecosim
             Me.m_hdrOutputParam = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel()
             Me.m_cmbSaveFormat = New System.Windows.Forms.ComboBox()
+            Me.m_lblERunAvg = New System.Windows.Forms.Label()
+            Me.m_lblERunAvgValue = New System.Windows.Forms.Label()
             Me.m_tcMain.SuspendLayout()
             Me.m_tbpSettings.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
@@ -979,6 +981,8 @@ Namespace Ecosim
             Me.m_tlpOutputs.Controls.Add(Me.m_lblSSorgValue, 4, 0)
             Me.m_tlpOutputs.Controls.Add(Me.m_lblSSbest, 6, 0)
             Me.m_tlpOutputs.Controls.Add(Me.m_lblSSbestValue, 7, 0)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblERunAvg, 0, 2)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblERunAvgValue, 1, 2)
             Me.m_tlpOutputs.Name = "m_tlpOutputs"
             '
             'm_cmbSaveFormat
@@ -988,6 +992,16 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_cmbSaveFormat, "m_cmbSaveFormat")
             Me.m_cmbSaveFormat.Name = "m_cmbSaveFormat"
             Me.m_cmbSaveFormat.Sorted = True
+            '
+            'm_lblERunAvg
+            '
+            resources.ApplyResources(Me.m_lblERunAvg, "m_lblERunAvg")
+            Me.m_lblERunAvg.Name = "m_lblERunAvg"
+            '
+            'm_lblERunAvgValue
+            '
+            resources.ApplyResources(Me.m_lblERunAvgValue, "m_lblERunAvgValue")
+            Me.m_lblERunAvgValue.Name = "m_lblERunAvgValue"
             '
             'frmMCRun
             '
@@ -1138,6 +1152,8 @@ Namespace Ecosim
         Private WithEvents m_tslblMethodDC As ToolStripLabel
         Private WithEvents m_tscmbMethodDC As ToolStripComboBox
         Private WithEvents m_tssepDC As ToolStripSeparator
+        Private WithEvents m_lblERunAvg As Windows.Forms.Label
+        Private WithEvents m_lblERunAvgValue As Windows.Forms.Label
     End Class
 
 End Namespace

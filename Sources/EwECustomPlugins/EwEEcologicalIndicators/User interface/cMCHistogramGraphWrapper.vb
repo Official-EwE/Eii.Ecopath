@@ -64,10 +64,11 @@ Public Class cMCHistogramGraphWrapper
     ''' <param name="zgc"><see cref="ZedGraphControl"/> to style and interact with.</param>
     ''' <param name="settings"><see cref="cIndicatorSettings"/> defined centrally in the plug-in.</param>
     ''' -------------------------------------------------------------------
-    Public Shadows Sub Attach(ByVal uic As ScientificInterfaceShared.Controls.cUIContext, _
-                                ByVal zgc As ZedGraph.ZedGraphControl, _
-                                ByVal settings As cIndicatorSettings, _
-                                ByVal lind As List(Of cEcopathIndicators))
+    Public Shadows Sub Attach(uic As ScientificInterfaceShared.Controls.cUIContext,
+                              zgc As ZedGraph.ZedGraphControl,
+                              settings As cIndicatorSettings,
+                              lind As List(Of cEcopathIndicators))
+
         MyBase.Attach(uic, zgc, 1)
         ' Store important bits
         Me.m_settings = settings
@@ -89,7 +90,7 @@ Public Class cMCHistogramGraphWrapper
 
 #Region " Refreshing "
 
-    Public Property NumBins As Integer
+    Public Property NumBins(baseline As cEcopathIndicators) As Integer
         Get
             Return Me.m_nBins
         End Get
@@ -97,11 +98,11 @@ Public Class cMCHistogramGraphWrapper
             If (Me.m_settings Is Nothing) Then Return
 
             Me.m_nBins = Math.Max(10, Math.Min(100, value))
-            Me.RefreshContent(Me.m_indCurrent, Me.m_groupCurrent)
+            Me.RefreshContent(Me.m_indCurrent, Me.m_groupCurrent, baseline)
         End Set
     End Property
 
-    Public Sub RefreshContent(indSingle As cIndicatorInfo, indGroup As cIndicatorInfoGroup)
+    Public Sub RefreshContent(indSingle As cIndicatorInfo, indGroup As cIndicatorInfoGroup, baseline As cEcopathIndicators)
 
         If (indSingle Is Nothing) And (indGroup Is Nothing) Then Return
 
@@ -112,7 +113,7 @@ Public Class cMCHistogramGraphWrapper
         Dim strLabelValue As String = ""
         Dim settings As cIndicatorSettings = Me.m_settings
         Dim ind As cEcosimIndicators = Nothing
-        Dim ppl As PointPairList = Nothing
+        Dim pplTrend As PointPairList = Nothing
         Dim sValue As Single = 0
         Dim sXMin As Single = 0
         Dim sXMax As Single = 0
@@ -158,24 +159,40 @@ Public Class cMCHistogramGraphWrapper
             For iPane As Integer = 1 To Me.NumPanes
                 ' Get pane for indicator iInd
                 gp = Me.GetPane(iPane)
+                gp.CurveList.Clear()
+
                 ' Prepare structures for creating point list for indicator
                 info = DirectCast(gp.Tag, cIndicatorInfo)
 
-                ppl = New PointPairList()
+                pplTrend = New PointPairList()
 
                 Dim sBinWidth As Single = 1
                 Dim hist() As Drawing.PointF = Me.Histogram(info, sBinWidth)
+                Dim max As Single = 0
 
                 'The X value in the histogram is the max value of the bin, right hand side of the bin
                 'So an input value of 1.0 will be in the .X = 1.0 bin
                 For ipt As Integer = 1 To hist.Length - 1
-                    ppl.Add(hist(ipt).X - sBinWidth / 2, hist(ipt).Y)
-                    ppl.Add(hist(ipt).X + sBinWidth / 2, hist(ipt).Y)
+                    pplTrend.Add(hist(ipt).X - sBinWidth / 2, hist(ipt).Y)
+                    pplTrend.Add(hist(ipt).X + sBinWidth / 2, hist(ipt).Y)
+                    max = Math.Max(max, hist(ipt).Y)
                 Next
 
-                Dim li As LineItem = Me.CreateLineItem(info.Name, eSketchDrawModeTypes.NotSet, Drawing.Color.Gray, ppl)
+                ' Add baseline (=ecopath indicator)
+                If (baseline IsNot Nothing) Then
+                    If (baseline.IsComputed) Then
+                        Dim pplBaseline As New PointPairList()
+                        Dim baseval As Single = info.GetValue(baseline)
+                        pplBaseline.Add(baseval, 0)
+                        pplBaseline.Add(baseval, max + 1)
+                        Dim liBaseline As LineItem = Me.CreateLineItem(My.Resources.HEADER_BASELINE, eSketchDrawModeTypes.NotSet, Drawing.Color.Orange, pplBaseline)
+                        Me.PlotLines(New LineItem() {liBaseline}, iPane, bClear:=False)
+                    End If
+                End If
+
+                Dim li As LineItem = Me.CreateLineItem(info.Name, eSketchDrawModeTypes.NotSet, Drawing.Color.Gray, pplTrend)
                 li.Line.Fill = New Fill(cColorUtils.GetVariant(li.Color, 0.5))
-                Me.PlotLines(New LineItem() {li}, iPane)
+                Me.PlotLines(New LineItem() {li}, iPane, bClear:=False)
 
                 gp.XAxis.Scale.MinAuto = False
                 gp.XAxis.Scale.MinGrace = 0
@@ -183,6 +200,11 @@ Public Class cMCHistogramGraphWrapper
                 gp.XAxis.Scale.MaxAuto = False
                 gp.XAxis.Scale.MaxGrace = 0
                 gp.XAxis.Scale.Max = hist(hist.Length - 1).X + sBinWidth / 2
+
+                gp.YAxis.Scale.MaxAuto = False
+                gp.YAxis.Scale.MaxGrace = 0
+                gp.YAxis.Scale.Max = max + 1
+
                 gp.AxisChange()
 
             Next iPane
