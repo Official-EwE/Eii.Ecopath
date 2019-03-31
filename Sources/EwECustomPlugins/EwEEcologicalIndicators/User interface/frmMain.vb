@@ -217,6 +217,8 @@ Public Class frmMain
         Me.m_ecosimgraph.Detach()
         Me.m_ecospacemap.Detach()
 
+        Me.Icon.Dispose()
+
         ' Stop listening to any messages
         Me.CoreComponents = Nothing
 
@@ -322,7 +324,7 @@ Public Class frmMain
         Me.m_tpMCpath.ImageIndex = If(Me.m_settings.RunWithMonteCarlo, 1, 0)
         Me.m_tpMCsim.ImageIndex = If(Me.m_settings.RunWithMonteCarlo, 1, 0)
 
-        Me.m_tbxHistNoBins.Text = CStr(Me.m_mcgraphPath.NumBins)
+        Me.m_tbxHistNoBins.Text = CStr(Me.m_mcgraphPath.NumBins(Nothing))
 
     End Sub
 
@@ -516,10 +518,10 @@ Public Class frmMain
             If (Me.m_settings Is Nothing) Then Return
             If (Me.m_mcgraphPath Is Nothing) Then Return
 
-            Me.m_mcgraphPath.NumBins = CInt(Me.m_sliderNoBins.Value)
+            Me.m_mcgraphPath.NumBins(Me.m_plugin.m_indEcopath) = CInt(Me.m_sliderNoBins.Value)
 
             Me.UpdateControls()
-            My.Settings.NunHistBins = Me.m_mcgraphPath.NumBins
+            My.Settings.NunHistBins = Me.m_mcgraphPath.NumBins(Nothing)
             My.Settings.Save()
         Catch ex As Exception
 
@@ -554,7 +556,7 @@ Public Class frmMain
         End If
         If (component = cEwEEcologicalIndicatorsPlugin.eComponentType.Any Or component = cEwEEcologicalIndicatorsPlugin.eComponentType.MonteCarlo) Then
             Me.m_mcgraphSim.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
-            Me.m_mcgraphPath.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup())
+            Me.m_mcgraphPath.RefreshContent(Me.GetSelectedIndicator(), Me.GetSelectedIndicatorGroup(), Me.m_plugin.m_indEcopath)
         End If
 
         ' Update state specific controls as a precaution

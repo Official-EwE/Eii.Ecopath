@@ -42,13 +42,13 @@ Namespace Ecospace.Basemap
         <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcospaceComputedCapacity))
-            Me.ToolStrip1 = New cEwEToolstrip()
+            Me.ToolStrip1 = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnRecompute = New System.Windows.Forms.ToolStripButton()
             Me.m_scMap = New System.Windows.Forms.SplitContainer()
             Me.m_zoomContainer = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
             Me.m_tlpLayers = New System.Windows.Forms.TableLayoutPanel()
             Me.m_ucLayers = New ScientificInterfaceShared.Controls.Map.ucLayersControl()
             Me.m_plEditor = New System.Windows.Forms.Panel()
-            Me.m_tsbnRecompute = New System.Windows.Forms.ToolStripButton()
             Me.ToolStrip1.SuspendLayout()
             CType(Me.m_scMap, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMap.Panel1.SuspendLayout()
@@ -59,12 +59,21 @@ Namespace Ecospace.Basemap
             '
             'ToolStrip1
             '
+            Me.ToolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnRecompute})
             Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
             Me.ToolStrip1.Name = "ToolStrip1"
             Me.ToolStrip1.Size = New System.Drawing.Size(800, 25)
             Me.ToolStrip1.TabIndex = 0
             Me.ToolStrip1.Text = "ToolStrip1"
+            '
+            'm_tsbnRecompute
+            '
+            Me.m_tsbnRecompute.Image = CType(resources.GetObject("m_tsbnRecompute.Image"), System.Drawing.Image)
+            Me.m_tsbnRecompute.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnRecompute.Name = "m_tsbnRecompute"
+            Me.m_tsbnRecompute.Size = New System.Drawing.Size(124, 22)
+            Me.m_tsbnRecompute.Text = "&Compute capacity"
             '
             'm_scMap
             '
@@ -134,14 +143,6 @@ Namespace Ecospace.Basemap
             Me.m_plEditor.Size = New System.Drawing.Size(192, 23)
             Me.m_plEditor.TabIndex = 12
             '
-            'm_tsbnRecompute
-            '
-            Me.m_tsbnRecompute.Image = CType(resources.GetObject("m_tsbnRecompute.Image"), System.Drawing.Image)
-            Me.m_tsbnRecompute.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsbnRecompute.Name = "m_tsbnRecompute"
-            Me.m_tsbnRecompute.Size = New System.Drawing.Size(135, 22)
-            Me.m_tsbnRecompute.Text = "&Recompute capacity"
-            '
             'frmEcospaceComputedCapacity
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -150,6 +151,7 @@ Namespace Ecospace.Basemap
             Me.Controls.Add(Me.m_scMap)
             Me.Controls.Add(Me.ToolStrip1)
             Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+            Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
             Me.Name = "frmEcospaceComputedCapacity"
             Me.TabText = ""
             Me.Text = "Computed foraging capacity"

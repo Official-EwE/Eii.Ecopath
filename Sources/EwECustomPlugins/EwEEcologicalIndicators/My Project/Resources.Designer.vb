@@ -227,6 +227,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Baseline.
+        '''</summary>
+        Friend ReadOnly Property HEADER_BASELINE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_BASELINE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Occurence.
         '''</summary>
         Friend ReadOnly Property HEADER_OCCURRENCE() As String

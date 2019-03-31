@@ -49,19 +49,20 @@ Public Class cMCIndicators
     ''' <param name="stanzaDS">The <see cref="cStanzaDatastructures">Stanza data structures</see> to operate onto.</param>
     ''' <param name="taxonDS">The <see cref="cTaxonDataStructures">Taxonomy data structures</see> to operate onto.</param>
     ''' <param name="ecosimDS">The <see cref="cEcosimDatastructures">Ecosim data structures</see> to operate onto.</param>
+    ''' <param name="iIter">The Monte Carlo iteration to calculate the indicators for.</param>
     ''' <param name="iTime">The Ecosim time to calculate the indicators for.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As cCore, _
-                    ByVal ecopathDS As cEcopathDataStructures, _
-                    ByVal ecosimDS As cEcosimDatastructures, _
-                    ByVal iIter As Integer, _
-                    ByVal iTime As Integer, _
-                    ByVal stanzaDS As cStanzaDatastructures, _
-                    ByVal taxonDS As cTaxonDataStructures, _
+    Public Sub New(ByVal core As cCore,
+                    ByVal ecopathDS As cEcopathDataStructures,
+                    ByVal ecosimDS As cEcosimDatastructures,
+                    ByVal iIter As Integer,
+                    ByVal iTime As Integer,
+                    ByVal stanzaDS As cStanzaDatastructures,
+                    ByVal taxonDS As cTaxonDataStructures,
                     ByVal lookup As cTaxonAnalysis)
 
         MyBase.New(core, ecopathDS, ecosimDS, iTime, stanzaDS, taxonDS, lookup)
-        Me.m_iIteration = iTime
+        Me.m_iIteration = iIter
 
     End Sub
 
@@ -69,15 +70,15 @@ Public Class cMCIndicators
 
 #Region " Core data access and public bits "
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Helper function to access the Ecosim time that this indicator represents.
-    ''' </summary>
-    ''' <returns>The Ecosim time that these indicators represent.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function Iteration() As Integer
-        Return Me.m_iIteration
-    End Function
+    '''' -----------------------------------------------------------------------
+    '''' <summary>
+    '''' Helper function to access the Ecosim time that this indicator represents.
+    '''' </summary>
+    '''' <returns>The Ecosim time that these indicators represent.</returns>
+    '''' -----------------------------------------------------------------------
+    'Public Function Iteration() As Integer
+    '    Return Me.m_iIteration
+    'End Function
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cIndicators.ModelTLCatch"/>
