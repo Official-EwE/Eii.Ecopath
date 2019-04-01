@@ -296,6 +296,8 @@ Public Class cEwEEcologicalIndicatorsPlugin
         If (Me.HasUI) Then
             ' #Yes: Update UI
             Me.m_frm.UpdateIndicators(eComponentType.Ecopath)
+            ' Baseline
+            Me.m_frm.UpdateIndicators(eComponentType.MonteCarlo)
         End If
 
         If (Me.AutoSave And Me.m_settings.RunWithEcopath) Then
