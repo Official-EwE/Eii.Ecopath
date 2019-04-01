@@ -64,9 +64,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.EwEEcospaceExcludeDeadCellsPlugin.My.MySettings
+        Friend ReadOnly Property Settings() As Global.EwEEcospaceExcludeIsolatedCellsPlugin.My.MySettings
             Get
-                Return Global.EwEEcospaceExcludeDeadCellsPlugin.My.MySettings.Default
+                Return Global.EwEEcospaceExcludeIsolatedCellsPlugin.My.MySettings.Default
             End Get
         End Property
     End Module
