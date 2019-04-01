@@ -423,7 +423,9 @@ Public MustInherit Class cIndicators
                 taxon = Me.Core.Taxon(iTaxon)
 
                 If taxon.OrganismType = eOrganismTypes.Fishes Then
-                    sIVIiCi = sIVIiCi + (taxon.VulnerabilityIndex * taxon.PropC * sC)
+                    If (taxon.VulnerabilityIndex > 0) Then
+                        sIVIiCi = sIVIiCi + (taxon.VulnerabilityIndex * taxon.PropC * sC)
+                    End If
 
                     If (taxon.MeanLifespan > 0) Then
                         sMLifeSSC = sMLifeSSC + (taxon.MeanLifespan * taxon.PropC * sC)
