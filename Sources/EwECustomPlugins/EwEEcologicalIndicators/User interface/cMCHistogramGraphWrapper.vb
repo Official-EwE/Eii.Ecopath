@@ -168,15 +168,18 @@ Public Class cMCHistogramGraphWrapper
 
                 Dim sBinWidth As Single = 1
                 Dim hist() As Drawing.PointF = Me.Histogram(info, sBinWidth)
-                Dim max As Single = 0
+                Dim sYMax As Single = 0
 
                 'The X value in the histogram is the max value of the bin, right hand side of the bin
                 'So an input value of 1.0 will be in the .X = 1.0 bin
                 For ipt As Integer = 1 To hist.Length - 1
                     pplTrend.Add(hist(ipt).X - sBinWidth / 2, hist(ipt).Y)
                     pplTrend.Add(hist(ipt).X + sBinWidth / 2, hist(ipt).Y)
-                    max = Math.Max(max, hist(ipt).Y)
+                    sYMax = Math.Max(sYMax, hist(ipt).Y)
                 Next
+
+                sXMin = hist(1).X
+                sXMax = hist(hist.Length - 1).X
 
                 ' Add baseline (=ecopath indicator)
                 If (baseline IsNot Nothing) Then
@@ -184,9 +187,12 @@ Public Class cMCHistogramGraphWrapper
                         Dim pplBaseline As New PointPairList()
                         Dim baseval As Single = info.GetValue(baseline)
                         pplBaseline.Add(baseval, 0)
-                        pplBaseline.Add(baseval, max + 1)
+                        pplBaseline.Add(baseval, sYMax + 1)
                         Dim liBaseline As LineItem = Me.CreateLineItem(My.Resources.HEADER_BASELINE, eSketchDrawModeTypes.NotSet, Drawing.Color.Orange, pplBaseline)
                         Me.PlotLines(New LineItem() {liBaseline}, iPane, bClear:=False)
+
+                        sXMax = Math.Max(baseval, sXMax)
+                        sXMin = Math.Min(baseval, sXMin)
                     End If
                 End If
 
@@ -196,14 +202,14 @@ Public Class cMCHistogramGraphWrapper
 
                 gp.XAxis.Scale.MinAuto = False
                 gp.XAxis.Scale.MinGrace = 0
-                gp.XAxis.Scale.Min = hist(1).X - sBinWidth / 2
+                gp.XAxis.Scale.Min = sXMin - sBinWidth / 2
                 gp.XAxis.Scale.MaxAuto = False
                 gp.XAxis.Scale.MaxGrace = 0
-                gp.XAxis.Scale.Max = hist(hist.Length - 1).X + sBinWidth / 2
+                gp.XAxis.Scale.Max = sXMax + sBinWidth / 2
 
                 gp.YAxis.Scale.MaxAuto = False
                 gp.YAxis.Scale.MaxGrace = 0
-                gp.YAxis.Scale.Max = max + 1
+                gp.YAxis.Scale.Max = sYMax + 1
 
                 gp.AxisChange()
 
@@ -234,7 +240,7 @@ Public Class cMCHistogramGraphWrapper
             Next
         Else
             sMin = 0
-            sMax = 100
+            sMax = 1
         End If
 
         Dim sRange As Single = sMax - sMin
