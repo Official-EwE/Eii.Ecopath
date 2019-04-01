@@ -562,10 +562,8 @@ Public Class cPluginManager
             ' Safe guard dynamic type loading, which may fail for missing dependencies
             Try
                 types = clsAssembly.GetTypes()
-            Catch exl As ReflectionTypeLoadException
-                cLog.Write(exl, "LoadPluginAssembly @ GetTypes")
             Catch ex As Exception
-                cLog.Write(ex, "LoadPluginAssembly @ GetTypes")
+                cLog.Write(ex, "LoadPluginAssembly(" & strFileName & ")")
                 Return False
             End Try
 
