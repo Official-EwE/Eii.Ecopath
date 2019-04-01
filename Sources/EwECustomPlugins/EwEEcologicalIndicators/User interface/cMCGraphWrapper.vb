@@ -53,6 +53,7 @@ Public Class cMCGraphWrapper
     ''' <summary>The MC manager.</summary>
     Private m_man As cMonteCarloManager = Nothing
 
+    ''' <summary>Index of best iteration</summary>
     Private m_iBest As Integer = -1
 
 #End Region ' Private variables
@@ -94,6 +95,14 @@ Public Class cMCGraphWrapper
 
 #Region " Refreshing "
 
+    ' -- in preparation for customization --
+
+    Public Property LineColor As Color = Color.LightGray
+    Public Property LineWidth As Single = 0.5
+
+    Public Property BestColor As Color = Color.Black
+    Public Property BestWidth As Single = 2
+
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Refresh the graph to show a <see cref="cIndicatorSettings.IndicatorGroup">group of indicators</see>.
@@ -113,7 +122,8 @@ Public Class cMCGraphWrapper
         Dim sValue As Single = 0
         Dim sXMin As Single = 0
         Dim sXMax As Single = 0
-        Dim clr As Color = Color.Blue
+        Dim clr As Color
+        Dim sLineWidth As Single
 
         If (indSingle Is Nothing) Then
             ' Group mode
@@ -165,9 +175,11 @@ Public Class cMCGraphWrapper
                 For iTrial As Integer = 0 To Me.m_lind.Count - 1
 
                     If (iTrial = Me.m_iBest) Then
-                        clr = Color.Green
+                        clr = Me.BestColor
+                        sLineWidth = Me.BestWidth
                     Else
-                        clr = Color.Blue
+                        clr = Me.LineColor
+                        sLineWidth = Me.LineWidth
                     End If
 
                     ppl = New PointPairList()
@@ -189,19 +201,27 @@ Public Class cMCGraphWrapper
                     Next
 
                     ' No points added?
-                    If ppl.Count = 0 Then
-                        ' #Oui: clear the list
+                    If (ppl.Count = 0) Then
+                        ' #Yes: clear the list
                         gp.CurveList.Clear()
                     Else
-
-                        ' #Non: plot the line and configure the axis min/max range
-                        Me.PlotLines(New LineItem() {Me.CreateLineItem(String.Format(My.Resources.HEADER_TRIAL_N, (iTrial + 1), info.Name),
-                                                                       eSketchDrawModeTypes.Line, clr, ppl, info)},
-                                     iPane, True, (iTrial = 0))
-                        gp.XAxis.Scale.Min = sXMin
-                        gp.XAxis.Scale.Max = sXMax
+                        ' #No: plot the line and configure the axis min/max range
+                        Dim li As LineItem = Me.CreateLineItem(String.Format(My.Resources.HEADER_TRIAL_N, (iTrial + 1), info.Name), eSketchDrawModeTypes.Line, clr, ppl, info)
+                        li.Line.Width = sLineWidth
+                        Me.PlotLines(New LineItem() {li}, iPane, True, (iTrial = 0))
                     End If
                 Next
+
+                gp.XAxis.Scale.MinAuto = False
+                gp.XAxis.Scale.MinGrace = 0
+                gp.XAxis.Scale.Min = sXMin
+                gp.XAxis.Scale.MaxAuto = False
+                gp.XAxis.Scale.MaxGrace = 0
+                gp.XAxis.Scale.Max = sXMax
+
+                gp.YAxis.Scale.MinAuto = False
+                gp.YAxis.Scale.MinGrace = 0
+                gp.YAxis.Scale.Min = 0
 
                 gp.AxisChange()
 
