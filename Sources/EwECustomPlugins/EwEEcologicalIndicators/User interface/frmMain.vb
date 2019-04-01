@@ -383,6 +383,8 @@ Public Class frmMain
         If (Not Me.m_settings.RunWithEcopath) Then
             ' #Yes: clear results
             Me.m_plugin.ClearEcopathIndicators()
+        Else
+            Me.m_plugin.TryRecomputeEcopathIndicators()
         End If
 
     End Sub

@@ -745,6 +745,15 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
     End Sub
 
+    Friend Sub TryRecomputeEcopathIndicators()
+        If Me.m_core.StateMonitor.HasEcopathRan Then
+            Dim p As Object = Me.m_ecopathDS
+            Dim t As Object = Me.m_taxonDS
+            Dim s As Object = Me.m_stanzaDS
+            Me.EcopathRunCompleted(p, t, s)
+        End If
+    End Sub
+
     Friend Sub ClearEcopathIndicators()
 
         ' Eradicate computed Ecopath indicators
