@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{75141A8F-7232-4BB2-8A71-BF0F2A2D6864}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>EwEEcospaceExcludeDeadCellsPlugin</RootNamespace>
-    <AssemblyName>EwEEcospaceExcludeDeadCellsPlugin</AssemblyName>
+    <RootNamespace>EwEEcospaceExcludeIsolatedCellsPlugin</RootNamespace>
+    <AssemblyName>EwEEcospaceExcludeIsolatedCellsPlugin</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -19,7 +19,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>EwEEcospaceExcludeDeadCellsPlugin.xml</DocumentationFile>
+    <DocumentationFile>EwEEcospaceExcludeIsolatedCellsPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -28,7 +28,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>EwEEcospaceExcludeDeadCellsPlugin.xml</DocumentationFile>
+    <DocumentationFile>EwEEcospaceExcludeIsolatedCellsPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -48,7 +48,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DocumentationFile>EwEEcospaceExcludeDeadCellsPlugin.xml</DocumentationFile>
+    <DocumentationFile>EwEEcospaceExcludeIsolatedCellsPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -57,7 +57,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DocumentationFile>EwEEcospaceExcludeDeadCellsPlugin.xml</DocumentationFile>
+    <DocumentationFile>EwEEcospaceExcludeIsolatedCellsPlugin.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -69,7 +69,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DocumentationFile>EwEEcospaceExcludeDeadCellsPlugin.xml</DocumentationFile>
+    <DocumentationFile>EwEEcospaceExcludeIsolatedCellsPlugin.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -78,7 +78,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DocumentationFile>EwEEcospaceExcludeDeadCellsPlugin.xml</DocumentationFile>
+    <DocumentationFile>EwEEcospaceExcludeIsolatedCellsPlugin.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>pdbonly</DebugType>
