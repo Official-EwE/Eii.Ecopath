@@ -359,11 +359,30 @@ Namespace Ecosim
             End Try
         End Sub
 
-
         Private Sub m_cmbSaveFormat_Format(sender As Object, e As ListControlConvertEventArgs) _
             Handles m_cmbSaveFormat.Format
             Try
                 e.Value = DirectCast(e.ListItem, IMonteCarloResultsWriter).DisplayName
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub OnClearAll(sender As Object, e As EventArgs) Handles m_btnClearAll.Click
+            Try
+                For i As Integer = 0 To Me.m_clbEnabledVariables.Items.Count - 1
+                    Me.m_clbEnabledVariables.SetItemChecked(i, False)
+                Next
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub OnSelectAll(sender As Object, e As EventArgs) Handles m_btnSelectAll.Click
+            Try
+                For i As Integer = 0 To Me.m_clbEnabledVariables.Items.Count - 1
+                    Me.m_clbEnabledVariables.SetItemChecked(i, True)
+                Next
             Catch ex As Exception
 
             End Try
