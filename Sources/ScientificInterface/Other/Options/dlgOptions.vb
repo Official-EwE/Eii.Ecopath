@@ -98,7 +98,7 @@ Namespace Other
                     Dim opt As IEwEOptionsPlugin = DirectCast(pi, IEwEOptionsPlugin)
                     Dim page As Control = opt.GetConfigUI()
                     Me.m_lPages.Add(DirectCast(page, IOptionsPage))
-                    tnPlugins.Nodes.Add(Me.CreateNode(opt.Label, pi.DisplayName, page.GetType()))
+                    tnPlugins.Nodes.Add(Me.CreateNode(opt.Label, pi.Name, page.GetType()))
                 Next
             End If
             Me.m_tvOptions.Nodes.Add(tnPlugins)
@@ -225,6 +225,12 @@ Namespace Other
 
         End Sub
 
+        ''' <summary>
+        ''' Recursively locates a node for the given verb
+        ''' </summary>
+        ''' <param name="strVerb"></param>
+        ''' <param name="nStart"></param>
+        ''' <returns></returns>
         Private Function FindNodeByVerb(strVerb As String, Optional nStart As TreeNode = Nothing) As TreeNode
 
             Dim nodes As TreeNodeCollection = If(nStart Is Nothing, Me.m_tvOptions.Nodes, nStart.Nodes)
