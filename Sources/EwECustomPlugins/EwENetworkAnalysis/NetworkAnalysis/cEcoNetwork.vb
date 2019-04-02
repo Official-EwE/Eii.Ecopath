@@ -2158,9 +2158,16 @@ EndOfImp:
 
     End Sub
 
-
+    ''' <summary>
+    ''' Scary stuff to pass large model deadlocks
+    ''' </summary>
+    Public Property SkipCyclesPathways As Boolean = False
 
     Private Sub FindCycles(ByRef Cons() As Single)
+
+        ' Wow!
+        If Me.SkipCyclesPathways Then Return
+
         'CycDC [previously called CD] contains the proportion
         'of the diet that is the minimum
         'amount in a cycle and should be removed to break the cycle.

@@ -137,6 +137,15 @@ Public Class cNetworkManager
         Me.m_core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf StopNetworkAnalysis))
     End Sub
 
+    Public Property SkipCyclesPathways As Boolean
+        Get
+            Return Me.m_econetwork.SkipCyclesPathways
+        End Get
+        Set(value As Boolean)
+            Me.m_econetwork.SkipCyclesPathways = value
+        End Set
+    End Property
+
 #Region " Main Network Analysis "
 
     ''' -----------------------------------------------------------------------
@@ -169,7 +178,7 @@ Public Class cNetworkManager
 
         If (Me.m_econetwork Is Nothing) Then
             'message of some sort
-            Me.m_publisher.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_INITIALIZE, _
+            Me.m_publisher.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_INITIALIZE,
                                                  eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Warning))
             bSucces = False
         End If
@@ -224,7 +233,7 @@ Public Class cNetworkManager
             End Try
         Else
             ''message of some sort
-            Me.m_publisher.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_ECOPATH, _
+            Me.m_publisher.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_ECOPATH,
                                                  eMessageType.StateNotMet, m_messagesource, eMessageImportance.Warning))
             bSucces = False
         End If
@@ -280,7 +289,7 @@ Public Class cNetworkManager
                     If Not Me.RunMainNetwork() Then
                         'ooopssss........
                         ' ToDo: globalize this
-                        Core.Messages.SendMessage(New cMessage("Required Primary Production could not be run because of a problem in Network Analysis.", _
+                        Core.Messages.SendMessage(New cMessage("Required Primary Production could not be run because of a problem in Network Analysis.",
                                                                  eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
                         Return False
                     End If
@@ -331,7 +340,7 @@ Public Class cNetworkManager
         ' Optimization
         If (Me.m_pathwaystate = ePathways.ToConsumer) And (Me.m_iPathwayToGroup = iToGroup) Then Return True
 
-        cApplicationStatusNotifier.StartProgress(Me.m_core, _
+        cApplicationStatusNotifier.StartProgress(Me.m_core,
                                                  cStringUtils.Localize(My.Resources.STATUS_FINDING_PATHWAYS_CONSUMER, Me.GroupName(iToGroup)))
         Try
             Me.AllowStopNetworkAnalysis()
@@ -361,13 +370,13 @@ Public Class cNetworkManager
         Dim nPaths As Integer, nArrows As Integer
 
         ' Optimization
-        If (Me.m_pathwaystate = ePathways.ToConsumerViaPrey) And _
-           (Me.m_iPathwayToGroup = iToGroup) And _
+        If (Me.m_pathwaystate = ePathways.ToConsumerViaPrey) And
+           (Me.m_iPathwayToGroup = iToGroup) And
            (Me.m_iPathwayViaGroup = iViaGroup) Then Return True
 
-        cApplicationStatusNotifier.StartProgress(Me.m_core, _
-                                                 cStringUtils.Localize(My.Resources.STATUS_FINDING_PATHWAYS_CONSPREY, _
-                                                               Me.GroupName(iToGroup), _
+        cApplicationStatusNotifier.StartProgress(Me.m_core,
+                                                 cStringUtils.Localize(My.Resources.STATUS_FINDING_PATHWAYS_CONSPREY,
+                                                               Me.GroupName(iToGroup),
                                                                Me.GroupName(iViaGroup)))
 
         Try
@@ -397,7 +406,7 @@ Public Class cNetworkManager
         Dim nPaths As Integer, nArrows As Integer
 
         ' Optimization
-        If (Me.m_pathwaystate = ePathways.FromPrey) And _
+        If (Me.m_pathwaystate = ePathways.FromPrey) And
            (Me.m_iPathwayFromGroup = iFromGroup) Then Return True
 
         cApplicationStatusNotifier.StartProgress(Me.m_core, cStringUtils.Localize(My.Resources.STATUS_FINDING_PATHWAYS_PREY, Me.GroupName(iFromGroup)))
@@ -530,7 +539,7 @@ Public Class cNetworkManager
             'If m_runstate < eRunState.EcosimIsLoaded Then
             If Not Core.StateMonitor.HasEcosimLoaded Then
                 'No Ecosim Scenario is loaded this can not be initialized
-                Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_LOAD_ECOSIM, _
+                Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_LOAD_ECOSIM,
                          eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Information))
                 Return False
             End If
@@ -540,7 +549,7 @@ Public Class cNetworkManager
                 'implicitly run the network analysis if it has not been run
                 If Not Me.RunMainNetwork() Then
                     'ooopssss........
-                    Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_ECOSIM_INIT, _
+                    Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_ECOSIM_INIT,
                                                            eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
                     Return False
                 End If
