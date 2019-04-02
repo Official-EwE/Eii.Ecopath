@@ -123,9 +123,11 @@ Namespace Ecosim
             Me.m_hdrInputOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrOutputParam = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_cmbSaveFormat = New System.Windows.Forms.ComboBox()
             Me.m_lblERunAvg = New System.Windows.Forms.Label()
             Me.m_lblERunAvgValue = New System.Windows.Forms.Label()
+            Me.m_cmbSaveFormat = New System.Windows.Forms.ComboBox()
+            Me.m_btnSelectAll = New System.Windows.Forms.Button()
+            Me.m_btnClearAll = New System.Windows.Forms.Button()
             Me.m_tcMain.SuspendLayout()
             Me.m_tbpSettings.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
@@ -194,6 +196,8 @@ Namespace Ecosim
             'm_tbpSettings
             '
             resources.ApplyResources(Me.m_tbpSettings, "m_tbpSettings")
+            Me.m_tbpSettings.Controls.Add(Me.m_btnClearAll)
+            Me.m_tbpSettings.Controls.Add(Me.m_btnSelectAll)
             Me.m_tbpSettings.Controls.Add(Me.m_lblEnabledVariables)
             Me.m_tbpSettings.Controls.Add(Me.m_clbEnabledVariables)
             Me.m_tbpSettings.Controls.Add(Me.m_cbRetainEstimates)
@@ -979,19 +983,11 @@ Namespace Ecosim
             Me.m_tlpOutputs.Controls.Add(Me.m_lblSScurrValue, 4, 1)
             Me.m_tlpOutputs.Controls.Add(Me.m_lblSScurr, 3, 1)
             Me.m_tlpOutputs.Controls.Add(Me.m_lblSSorgValue, 4, 0)
-            Me.m_tlpOutputs.Controls.Add(Me.m_lblSSbest, 6, 0)
-            Me.m_tlpOutputs.Controls.Add(Me.m_lblSSbestValue, 7, 0)
             Me.m_tlpOutputs.Controls.Add(Me.m_lblERunAvg, 0, 2)
             Me.m_tlpOutputs.Controls.Add(Me.m_lblERunAvgValue, 1, 2)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblSSbest, 3, 2)
+            Me.m_tlpOutputs.Controls.Add(Me.m_lblSSbestValue, 4, 2)
             Me.m_tlpOutputs.Name = "m_tlpOutputs"
-            '
-            'm_cmbSaveFormat
-            '
-            Me.m_cmbSaveFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbSaveFormat.FormattingEnabled = True
-            resources.ApplyResources(Me.m_cmbSaveFormat, "m_cmbSaveFormat")
-            Me.m_cmbSaveFormat.Name = "m_cmbSaveFormat"
-            Me.m_cmbSaveFormat.Sorted = True
             '
             'm_lblERunAvg
             '
@@ -1002,6 +998,26 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_lblERunAvgValue, "m_lblERunAvgValue")
             Me.m_lblERunAvgValue.Name = "m_lblERunAvgValue"
+            '
+            'm_cmbSaveFormat
+            '
+            Me.m_cmbSaveFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbSaveFormat.FormattingEnabled = True
+            resources.ApplyResources(Me.m_cmbSaveFormat, "m_cmbSaveFormat")
+            Me.m_cmbSaveFormat.Name = "m_cmbSaveFormat"
+            Me.m_cmbSaveFormat.Sorted = True
+            '
+            'm_btnSelectAll
+            '
+            resources.ApplyResources(Me.m_btnSelectAll, "m_btnSelectAll")
+            Me.m_btnSelectAll.Name = "m_btnSelectAll"
+            Me.m_btnSelectAll.UseVisualStyleBackColor = True
+            '
+            'm_btnClearAll
+            '
+            resources.ApplyResources(Me.m_btnClearAll, "m_btnClearAll")
+            Me.m_btnClearAll.Name = "m_btnClearAll"
+            Me.m_btnClearAll.UseVisualStyleBackColor = True
             '
             'frmMCRun
             '
@@ -1154,6 +1170,8 @@ Namespace Ecosim
         Private WithEvents m_tssepDC As ToolStripSeparator
         Private WithEvents m_lblERunAvg As Windows.Forms.Label
         Private WithEvents m_lblERunAvgValue As Windows.Forms.Label
+        Private WithEvents m_btnClearAll As Button
+        Private WithEvents m_btnSelectAll As Button
     End Class
 
 End Namespace
