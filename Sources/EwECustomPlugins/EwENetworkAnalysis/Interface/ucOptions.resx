@@ -121,12 +121,15 @@
   <data name="m_hdrOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_hdrOptions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_hdrOptions.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 4</value>
   </data>
   <data name="m_hdrOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 18</value>
+    <value>294, 18</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_hdrOptions.TabIndex" type="System.Int32, mscorlib">
@@ -142,13 +145,13 @@
     <value>m_hdrOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15495.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16150.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrOptions.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrOptions.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="m_cbUseTimeout.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -175,7 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbUseTimeout.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="m_lblTimeout.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -202,7 +205,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblTimeout.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="m_nudTimeOut.Location" type="System.Drawing.Point, System.Drawing">
     <value>79, 55</value>
@@ -223,7 +226,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_nudTimeOut.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="m_lblTimeOutUnit.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -250,19 +253,22 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblTimeOutUnit.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="m_hdrAutosave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_hdrAutosave.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_hdrAutosave.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 90</value>
+    <value>3, 122</value>
   </data>
   <data name="m_hdrAutosave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>159, 18</value>
+    <value>292, 18</value>
   </data>
   <data name="m_hdrAutosave.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="m_hdrAutosave.Text" xml:space="preserve">
     <value>Autosave results</value>
@@ -274,25 +280,25 @@
     <value>m_hdrAutosave</value>
   </data>
   <data name="&gt;&gt;m_hdrAutosave.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15495.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16150.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAutosave.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrAutosave.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_cbAutosaveRoot.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_cbAutosaveRoot.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 118</value>
+    <value>6, 150</value>
   </data>
   <data name="m_cbAutosaveRoot.Size" type="System.Drawing.Size, System.Drawing">
     <value>117, 17</value>
   </data>
   <data name="m_cbAutosaveRoot.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="m_cbAutosaveRoot.Text" xml:space="preserve">
     <value>&amp;Enable auto-saving</value>
@@ -307,19 +313,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbAutosaveRoot.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_cbAutosaveEcopath.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_cbAutosaveEcopath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 141</value>
+    <value>25, 173</value>
   </data>
   <data name="m_cbAutosaveEcopath.Size" type="System.Drawing.Size, System.Drawing">
     <value>114, 17</value>
   </data>
   <data name="m_cbAutosaveEcopath.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="m_cbAutosaveEcopath.Text" xml:space="preserve">
     <value>&amp;Ecopath indicators</value>
@@ -334,19 +340,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbAutosaveEcopath.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_cbAutosaveEcosimWoPPR.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_cbAutosaveEcosimWoPPR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 164</value>
+    <value>25, 196</value>
   </data>
   <data name="m_cbAutosaveEcosimWoPPR.Size" type="System.Drawing.Size, System.Drawing">
     <value>107, 17</value>
   </data>
   <data name="m_cbAutosaveEcosimWoPPR.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>10</value>
   </data>
   <data name="m_cbAutosaveEcosimWoPPR.Text" xml:space="preserve">
     <value>&amp;Ecosim w/&amp;o PPR</value>
@@ -361,19 +367,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbAutosaveEcosimWoPPR.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_cbAutosaveEcosimWithPPR.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_cbAutosaveEcosimWithPPR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>25, 187</value>
+    <value>25, 219</value>
   </data>
   <data name="m_cbAutosaveEcosimWithPPR.Size" type="System.Drawing.Size, System.Drawing">
     <value>107, 17</value>
   </data>
   <data name="m_cbAutosaveEcosimWithPPR.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>11</value>
   </data>
   <data name="m_cbAutosaveEcosimWithPPR.Text" xml:space="preserve">
     <value>Ecosim &amp;with PPR</value>
@@ -388,6 +394,63 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbAutosaveEcosimWithPPR.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_cbSkipCyclesPathways.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbSkipCyclesPathways.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 81</value>
+  </data>
+  <data name="m_cbSkipCyclesPathways.Size" type="System.Drawing.Size, System.Drawing">
+    <value>208, 17</value>
+  </data>
+  <data name="m_cbSkipCyclesPathways.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_cbSkipCyclesPathways.Text" xml:space="preserve">
+    <value>&amp;Do not calculate Cycles and Pathways</value>
+  </data>
+  <data name="&gt;&gt;m_cbSkipCyclesPathways.Name" xml:space="preserve">
+    <value>m_cbSkipCyclesPathways</value>
+  </data>
+  <data name="&gt;&gt;m_cbSkipCyclesPathways.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbSkipCyclesPathways.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbSkipCyclesPathways.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lblSkipCyclesPathways.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblSkipCyclesPathways.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Italic</value>
+  </data>
+  <data name="m_lblSkipCyclesPathways.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 104</value>
+  </data>
+  <data name="m_lblSkipCyclesPathways.Size" type="System.Drawing.Size, System.Drawing">
+    <value>270, 13</value>
+  </data>
+  <data name="m_lblSkipCyclesPathways.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_lblSkipCyclesPathways.Text" xml:space="preserve">
+    <value>Note that some indicators will not be computed correctly</value>
+  </data>
+  <data name="&gt;&gt;m_lblSkipCyclesPathways.Name" xml:space="preserve">
+    <value>m_lblSkipCyclesPathways</value>
+  </data>
+  <data name="&gt;&gt;m_lblSkipCyclesPathways.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblSkipCyclesPathways.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblSkipCyclesPathways.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -400,7 +463,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 217</value>
+    <value>300, 243</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ucOptions</value>
