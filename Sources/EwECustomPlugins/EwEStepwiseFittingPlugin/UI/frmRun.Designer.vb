@@ -59,6 +59,7 @@ Partial Class frmRun
         Me.m_plRun = New System.Windows.Forms.Panel()
         Me.m_cmbAutoSave = New System.Windows.Forms.ComboBox()
         Me.m_lblAutoSave = New System.Windows.Forms.Label()
+        Me.m_btnResetFolder = New System.Windows.Forms.Button()
         Me.m_plSettings = New System.Windows.Forms.Panel()
         Me.m_btnExport = New System.Windows.Forms.Button()
         Me.m_cmbAnomalyShape = New System.Windows.Forms.ComboBox()
@@ -330,6 +331,7 @@ Partial Class frmRun
         Me.m_plRun.Controls.Add(Me.m_lblOutputFolder)
         Me.m_plRun.Controls.Add(Me.m_btnRun)
         Me.m_plRun.Controls.Add(Me.m_tbxOutputFolder)
+        Me.m_plRun.Controls.Add(Me.m_btnResetFolder)
         Me.m_plRun.Controls.Add(Me.m_btnChooseFolder)
         Me.m_plRun.Name = "m_plRun"
         '
@@ -345,6 +347,12 @@ Partial Class frmRun
         '
         resources.ApplyResources(Me.m_lblAutoSave, "m_lblAutoSave")
         Me.m_lblAutoSave.Name = "m_lblAutoSave"
+        '
+        'm_btnResetFolder
+        '
+        resources.ApplyResources(Me.m_btnResetFolder, "m_btnResetFolder")
+        Me.m_btnResetFolder.Name = "m_btnResetFolder"
+        Me.m_btnResetFolder.UseVisualStyleBackColor = True
         '
         'm_plSettings
         '
@@ -473,4 +481,5 @@ Partial Class frmRun
     Private WithEvents m_nudK As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblNumVars As System.Windows.Forms.Label
     Private WithEvents m_btnExport As Windows.Forms.Button
+    Private WithEvents m_btnResetFolder As Windows.Forms.Button
 End Class
