@@ -236,8 +236,7 @@ Public Class frmRun
 
         ' -- Iterations panel --
         Me.m_btnSelectAll.Enabled = Not bIsRunning
-        Me.m_btnClearAll.Enabled = Not bIsRunning
-        Me.m_btnClearAll.Enabled = Not bIsRunning
+        Me.m_btnSelectNone.Enabled = Not bIsRunning
         Me.m_btnSelectA.Enabled = Not bIsRunning
         Me.m_btnSelectBaseline.Enabled = Not bIsRunning
         Me.m_btnSelectFishing.Enabled = Not bIsRunning
@@ -476,7 +475,7 @@ Public Class frmRun
     End Sub
 
     Private Sub OnSelectNone(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_btnSelectNone.Click, m_btnClearAll.Click
+        Handles m_btnSelectNone.Click
 
         Try
             ' Disable all iterations for running
@@ -603,22 +602,13 @@ Public Class frmRun
         Handles m_btnChooseFolder.Click
 
         Try
-            Select Case Me.m_runmode
-                Case eRunMode.NotSet
-                    Debug.Assert(False)
-                Case eRunMode.StandAlone
-                    Dim dlg As New FolderBrowserDialog()
-                    dlg.SelectedPath = Me.m_engine.Parameters.CustomOutputFolder
-                    dlg.ShowNewFolderButton = True
-                    If (dlg.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
-                        Me.m_engine.Parameters.CustomOutputFolder = dlg.SelectedPath
-                        Me.UpdateControls()
-                    End If
-                Case eRunMode.Plugin
-                    Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand("AutosaveResults")
-                    cmd.Invoke()
-                    Me.UpdateControls()
-            End Select
+            Dim dlg As New FolderBrowserDialog()
+            dlg.SelectedPath = Me.m_engine.Parameters.CustomOutputFolder
+            dlg.ShowNewFolderButton = True
+            If (dlg.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
+                Me.m_engine.Parameters.CustomOutputFolder = dlg.SelectedPath
+                Me.UpdateControls()
+            End If
         Catch ex As Exception
 
         End Try
