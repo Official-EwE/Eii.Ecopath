@@ -138,7 +138,7 @@ Public Class frmRun
 
         Me.UpdateControls()
 
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MediatedInteractionManager}
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MediatedInteractionManager, eCoreComponentType.TimeSeries}
 
     End Sub
 
@@ -172,6 +172,14 @@ Public Class frmRun
         Select Case msg.Source
             Case eCoreComponentType.MediatedInteractionManager
                 Me.PopulateAnomalyDropdown()
+            Case eCoreComponentType.TimeSeries
+                Try
+                    Dim parms As cSFPParameters = Me.m_engine.Parameters
+                    parms.CalculateParameters(parms.K)
+                    Me.UpdateControls()
+                Catch ex As Exception
+
+                End Try
         End Select
 
     End Sub
