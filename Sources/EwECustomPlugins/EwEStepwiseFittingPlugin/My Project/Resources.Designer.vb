@@ -142,6 +142,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Elapsed.
+        '''</summary>
+        Friend ReadOnly Property HEADER_ELAPSED() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ELAPSED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to K.
         '''</summary>
         Friend ReadOnly Property HEADER_K() As String

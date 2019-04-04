@@ -60,14 +60,13 @@ Partial Class frmRun
         Me.m_cmbAutoSave = New System.Windows.Forms.ComboBox()
         Me.m_lblAutoSave = New System.Windows.Forms.Label()
         Me.m_plSettings = New System.Windows.Forms.Panel()
+        Me.m_btnExport = New System.Windows.Forms.Button()
         Me.m_cmbAnomalyShape = New System.Windows.Forms.ComboBox()
         Me.m_lblAnomalyShape = New System.Windows.Forms.Label()
         Me.m_cbEnableAbsBioforBaseline = New System.Windows.Forms.CheckBox()
         Me.m_btnTS = New System.Windows.Forms.Button()
         Me.m_nudK = New System.Windows.Forms.NumericUpDown()
         Me.m_lblNumVars = New System.Windows.Forms.Label()
-        Me.m_btnClearAll = New System.Windows.Forms.Button()
-        Me.m_btnExport = New System.Windows.Forms.Button()
         CType(Me.m_nudStepSize, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plModel.SuspendLayout()
@@ -365,6 +364,12 @@ Partial Class frmRun
         resources.ApplyResources(Me.m_plSettings, "m_plSettings")
         Me.m_plSettings.Name = "m_plSettings"
         '
+        'm_btnExport
+        '
+        resources.ApplyResources(Me.m_btnExport, "m_btnExport")
+        Me.m_btnExport.Name = "m_btnExport"
+        Me.m_btnExport.UseVisualStyleBackColor = True
+        '
         'm_cmbAnomalyShape
         '
         Me.m_cmbAnomalyShape.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -401,18 +406,6 @@ Partial Class frmRun
         '
         resources.ApplyResources(Me.m_lblNumVars, "m_lblNumVars")
         Me.m_lblNumVars.Name = "m_lblNumVars"
-        '
-        'm_btnClearAll
-        '
-        resources.ApplyResources(Me.m_btnClearAll, "m_btnClearAll")
-        Me.m_btnClearAll.Name = "m_btnClearAll"
-        Me.m_btnClearAll.UseVisualStyleBackColor = True
-        '
-        'm_btnExport
-        '
-        resources.ApplyResources(Me.m_btnExport, "m_btnExport")
-        Me.m_btnExport.Name = "m_btnExport"
-        Me.m_btnExport.UseVisualStyleBackColor = True
         '
         'frmRun
         '

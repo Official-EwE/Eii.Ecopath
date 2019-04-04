@@ -328,38 +328,41 @@ Public Class cSFPManager
 
 
             'Go through each iteration
-            For Each Iteration As ISFPIterations In m_iterations
+            For Each iteration As ISFPIterations In m_iterations
 
                 'Check if iteration is enabled to run
-                If Iteration.Enabled And Not m_bStopRun Then
+                If iteration.Enabled And Not m_bStopRun Then
 
                     cApplicationStatusNotifier.UpdateProgress(Me.Core,
                                                               cStringUtils.Localize(My.Resources.STATUS_RUNNING,
                                                                                     My.Resources.DISPLAYNAME,
-                                                                                    Iteration.Name),
+                                                                                    iteration.Name),
                                                               CSng((iStep + 0.5) / iNumSteps))
 
                     ' Assume the worst
                     bSuccess = False
+                    ' Set timer
+                    Dim sw As New Stopwatch()
+                    sw.Start()
 
                     'Changed Runstate to running instead of error as it confuses the users
-                    Iteration.RunState = ISFPIterations.eRunState.Running
-                    SendIterationUpdated(Iteration)
+                    iteration.RunState = ISFPIterations.eRunState.Running
+                    SendIterationUpdated(iteration)
 
-                    Iteration.Init(Core, m_iTimeSeries, Me.Parameters.PredOrPredPreySSToV, Parameters, m_frmMain)
-                    Iteration.Load()
-                    SendIterationUpdated(Iteration)
+                    iteration.Init(Core, m_iTimeSeries, Me.Parameters.PredOrPredPreySSToV, Parameters, m_frmMain)
+                    iteration.Load()
+                    SendIterationUpdated(iteration)
 
-                    If Iteration.Run() Then
+                    If iteration.Run() Then
                         If (Not m_bStopRun) Then
-                            Debug.WriteLine(Iteration.Name & " SS= " & Iteration.SS & " AIC= " & Iteration.AIC & " AICc= " & Iteration.AICc & ", " & Iteration.RunState)
+                            Debug.WriteLine(iteration.Name & " SS= " & iteration.SS & " AIC= " & iteration.AIC & " AICc= " & iteration.AICc & ", " & iteration.RunState)
 
                             ' Make sure Iteration will save
-                            Iteration.RunState = ISFPIterations.eRunState.Completed
+                            iteration.RunState = ISFPIterations.eRunState.Completed
                             ' Save Ecosim results if requested
-                            SaveIterationResults(Iteration, msg)
+                            SaveIterationResults(iteration, msg)
                             ' Save content of iteration for later reloading
-                            SaveIterationConfiguration(Iteration, msg)
+                            SaveIterationConfiguration(iteration, msg)
                             ' Determine the best fitting iteration
                             DetermineBestFit()
 
@@ -367,18 +370,21 @@ Public Class cSFPManager
                         End If
                     End If
 
+                    sw.Stop()
+                    iteration.Elapsed = sw.Elapsed
+
                     ' Finalize iteration status
                     If Not bSuccess Then
-                        Iteration.RunState = ISFPIterations.eRunState.Error
+                        iteration.RunState = ISFPIterations.eRunState.Error
                     End If
 
-                    Iteration.Clear()
-                    SendIterationUpdated(Iteration)
+                    iteration.Clear()
+                    SendIterationUpdated(iteration)
 
                     iStep += 1
 
                 Else
-                    Debug.WriteLine(Iteration.Name & ", " & Iteration.RunState)
+                    Debug.WriteLine(iteration.Name & ", " & iteration.RunState)
                 End If
             Next
 

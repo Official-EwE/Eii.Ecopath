@@ -49,6 +49,7 @@ Public MustInherit Class cSFPGenericIterations
     Public Property BaseorFish As Boolean Implements ISFPIterations.BaseorFishValue
     Public Property Enabled As Boolean = True Implements ISFPIterations.Enabled
     Public Property RunState As ISFPIterations.eRunState = ISFPIterations.eRunState.Idle Implements ISFPIterations.RunState
+    Public Property Elapsed As TimeSpan Implements ISFPIterations.Elapsed
 
     ''' <summary>Calculated Sum of Squares</summary>
     Protected m_ss As Single = 0
@@ -131,7 +132,6 @@ Public MustInherit Class cSFPGenericIterations
 
         'Store time series SS
         GetTimeSeriesSS()
-
         Return True
 
     End Function

@@ -26,9 +26,9 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style.cStyleGuide
-Imports EwECore
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -55,6 +55,7 @@ Public Class gridRun
         AIC
         AICc
         State
+        Elapsed
     End Enum
 
     Public Sub Initialize(ByVal manager As cSFPManager)
@@ -107,6 +108,7 @@ Public Class gridRun
         Me(0, eColumnTypes.SS) = New EwEColumnHeaderCell(My.Resources.HEADER_SS)
         Me(0, eColumnTypes.AIC) = New EwEColumnHeaderCell(My.Resources.HEADER_AIC)
         Me(0, eColumnTypes.AICc) = New EwEColumnHeaderCell(My.Resources.HEADER_AICc)
+        Me(0, eColumnTypes.Elapsed) = New EwEColumnHeaderCell(My.Resources.HEADER_ELAPSED)
         Me(0, eColumnTypes.State) = New EwEColumnHeaderCell(My.Resources.HEADER_STATE)
 
         Me.AllowBlockSelect = False
@@ -155,6 +157,9 @@ Public Class gridRun
             cell.SuppressZero(0) = True
             Me(iRow, eColumnTypes.AICc) = cell
 
+            cell = New EwECell(cCore.NULL_VALUE, GetType(String), eStyleFlags.NotEditable)
+            Me(iRow, eColumnTypes.Elapsed) = cell
+
             cell = New EwECell("", GetType(String), eStyleFlags.NotEditable)
             Me(iRow, eColumnTypes.State) = cell
 
@@ -192,6 +197,9 @@ Public Class gridRun
 
         Me(iRow, eColumnTypes.AICc).Value = iteration.AICc
         DirectCast(Me(iRow, eColumnTypes.AICc), IEwECell).Style = style Or eStyleFlags.NotEditable
+
+        Me(iRow, eColumnTypes.Elapsed).Value = If(iteration.Elapsed.Milliseconds = 0, "", iteration.Elapsed.ToString())
+        DirectCast(Me(iRow, eColumnTypes.Elapsed), IEwECell).Style = style Or eStyleFlags.NotEditable
 
         Me(iRow, eColumnTypes.State).Value = Me.State(iteration)
         DirectCast(Me(iRow, eColumnTypes.State), IEwECell).Style = style Or eStyleFlags.NotEditable

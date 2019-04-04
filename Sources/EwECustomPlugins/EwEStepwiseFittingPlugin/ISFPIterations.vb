@@ -177,6 +177,13 @@ Public Interface ISFPIterations
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get/set the time it took to complete an iteration.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Property Elapsed As TimeSpan
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Get/set whether an iteration fitted best.
     ''' </summary>
     ''' -----------------------------------------------------------------------
