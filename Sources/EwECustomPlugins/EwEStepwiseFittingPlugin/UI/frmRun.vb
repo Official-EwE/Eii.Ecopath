@@ -95,6 +95,8 @@ Public Class frmRun
 #Else
         Me.m_btnExport.Visible = False
 #End If
+        Me.m_btnResetFolder.Image = ScientificInterfaceShared.My.Resources.ResetHS
+        Me.m_btnResetFolder.Text = ""
 
         ' Populate controls
         Me.m_nudStepSize.Value = Me.m_engine.AnomalySearchSplineStepSize
@@ -252,6 +254,7 @@ Public Class frmRun
 
         ' Update output path entirely to resolve path placeholders
         Me.m_tbxOutputFolder.Text = Me.m_engine.OutputFolder
+        Me.m_btnResetFolder.Enabled = Not bIsRunning
         Me.m_btnChooseFolder.Enabled = Not bIsRunning
 
         'Run button enabled when at least one iteration is enabled, time series are loaded, and anomaly search is set up ok
@@ -609,6 +612,16 @@ Public Class frmRun
                 Me.m_engine.Parameters.CustomOutputFolder = dlg.SelectedPath
                 Me.UpdateControls()
             End If
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub OnResetOutputFolder(ByVal sender As Object, ByVal e As System.EventArgs) _
+        Handles m_btnResetFolder.Click
+        Try
+            Me.m_engine.Parameters.CustomOutputFolder = ""
+            Me.UpdateControls()
         Catch ex As Exception
 
         End Try
