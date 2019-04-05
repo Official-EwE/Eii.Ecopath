@@ -197,7 +197,8 @@ Public Class frmRun
         Dim bHasAnomalyShape As Boolean = (Me.SelectedShape IsNot Nothing)
         Dim bContainsAnomaly As Boolean = False
         Dim bContainsVul As Boolean = False
-        Dim bIsRunning As Boolean = (Me.m_engine.IsRunning)
+        Dim bIsRunning As Boolean = Me.m_engine.IsRunning
+        Dim bIsDefaultPath As Boolean = Me.m_engine.IsDefaultOutputFolder
         Dim parms As cSFPParameters = Me.m_engine.Parameters
 
         ' Running state has not changed? Skip this to reduce flashing in the UI
@@ -270,7 +271,7 @@ Public Class frmRun
 
             ' Update output path entirely to resolve path placeholders
             Me.m_tbxOutputFolder.Text = Me.m_engine.OutputFolder
-            Me.m_btnResetFolder.Enabled = Not bIsRunning
+            Me.m_btnResetFolder.Enabled = Not bIsRunning And bIsDefaultPath
             Me.m_btnChooseFolder.Enabled = Not bIsRunning
 
             'Run button enabled when at least one iteration is enabled, time series are loaded, and anomaly search is set up ok
