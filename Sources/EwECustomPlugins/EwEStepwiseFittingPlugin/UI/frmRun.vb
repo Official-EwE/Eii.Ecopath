@@ -189,9 +189,6 @@ Public Class frmRun
     Public Overloads Sub UpdateControls()
         MyBase.UpdateControls()
 
-        If (Me.m_bInUpdate) Then Return
-        Me.m_bInUpdate = True
-
         Dim bHasTimeSeries As Boolean = (Me.m_engine.TSIndex >= 1)
         Dim bHasEnabledIterations As Boolean = False
         Dim bHasEnabledIterationSelected As Boolean = False
@@ -203,9 +200,12 @@ Public Class frmRun
         Dim bIsRunning As Boolean = (Me.m_engine.IsRunning)
         Dim parms As cSFPParameters = Me.m_engine.Parameters
 
-        ' Running state has not changed? Skip this
+        ' Running state has not changed? Skip this to reduce flashing in the UI
         If bIsRunning And Me.m_bWasRunning Then Return
         Me.m_bWasRunning = bIsRunning
+
+        If (Me.m_bInUpdate) Then Return
+        Me.m_bInUpdate = True
 
         Dim it As ISFPIterations = Nothing
         For Each it In Me.m_engine.Iterations
