@@ -605,6 +605,9 @@ Public Class cSFPManager
     ''' Get the output folder for storing Stepwise Fitting results to.
     ''' <seealso cref="cSFPParameters.CustomOutputFolder"/>
     ''' </summary>
+    ''' <seealso cref="IsDefaultOutputFolder"/>
+    ''' <seealso cref="cCore.DefaultOutputPath(eAutosaveTypes, String)"/>
+    ''' <seealso cref="cCore.OutputPath"/>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property OutputFolder As String
         Get
@@ -612,6 +615,20 @@ Public Class cSFPManager
                 Return Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.Ecosim), cFileUtils.ToValidFileName(My.Resources.DISPLAYNAME, False))
             End If
             Return Me.Parameters.CustomOutputFolder
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get if results will be saved to the default output folder.
+    ''' </summary>
+    ''' <seealso cref="OutputFolder"/>
+    ''' <seealso cref="cCore.DefaultOutputPath(eAutosaveTypes, String)"/>
+    ''' <seealso cref="cCore.OutputPath"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property IsDefaultOutputFolder As Boolean
+        Get
+            Return String.IsNullOrWhiteSpace(Me.Parameters.CustomOutputFolder)
         End Get
     End Property
 
