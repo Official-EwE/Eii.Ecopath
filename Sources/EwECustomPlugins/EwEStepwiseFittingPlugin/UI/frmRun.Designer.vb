@@ -68,6 +68,7 @@ Partial Class frmRun
         Me.m_btnTS = New System.Windows.Forms.Button()
         Me.m_nudK = New System.Windows.Forms.NumericUpDown()
         Me.m_lblNumVars = New System.Windows.Forms.Label()
+        Me.m_btnStop = New System.Windows.Forms.Button()
         CType(Me.m_nudStepSize, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tlpContent.SuspendLayout()
         Me.m_plModel.SuspendLayout()
@@ -329,6 +330,7 @@ Partial Class frmRun
         Me.m_plRun.Controls.Add(Me.m_lblAutoSave)
         Me.m_plRun.Controls.Add(Me.m_hdrOutput)
         Me.m_plRun.Controls.Add(Me.m_lblOutputFolder)
+        Me.m_plRun.Controls.Add(Me.m_btnStop)
         Me.m_plRun.Controls.Add(Me.m_btnRun)
         Me.m_plRun.Controls.Add(Me.m_tbxOutputFolder)
         Me.m_plRun.Controls.Add(Me.m_btnResetFolder)
@@ -415,6 +417,12 @@ Partial Class frmRun
         resources.ApplyResources(Me.m_lblNumVars, "m_lblNumVars")
         Me.m_lblNumVars.Name = "m_lblNumVars"
         '
+        'm_btnStop
+        '
+        resources.ApplyResources(Me.m_btnStop, "m_btnStop")
+        Me.m_btnStop.Name = "m_btnStop"
+        Me.m_btnStop.UseVisualStyleBackColor = True
+        '
         'frmRun
         '
         resources.ApplyResources(Me, "$this")
@@ -482,4 +490,5 @@ Partial Class frmRun
     Private WithEvents m_lblNumVars As System.Windows.Forms.Label
     Private WithEvents m_btnExport As Windows.Forms.Button
     Private WithEvents m_btnResetFolder As Windows.Forms.Button
+    Private WithEvents m_btnStop As Windows.Forms.Button
 End Class

@@ -267,6 +267,7 @@ Public Class frmRun
 
         'Run button enabled when at least one iteration is enabled, time series are loaded, and anomaly search is set up ok
         Me.m_btnRun.Enabled = bHasEnabledIterations And bHasTimeSeries And bAnomalyOk And Not bIsRunning
+        Me.m_btnStop.Enabled = bIsRunning
 
         'Enable Absolute Biomass time series check box when time series are loaded
         Me.m_cbEnableAbsBioforBaseline.Enabled = bHasTimeSeries
@@ -673,6 +674,17 @@ Public Class frmRun
             ' Run the Stepwise Fitting Procedure
             Me.m_engine.RunSFPIterationsThreaded()
             Me.m_grid.UpdateContent()
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+    End Sub
+
+    Private Sub OnStop(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_btnStop.Click
+
+        Try
+            Me.m_engine.StopRun()
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
