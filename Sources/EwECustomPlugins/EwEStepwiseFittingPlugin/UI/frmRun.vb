@@ -207,76 +207,82 @@ Public Class frmRun
         If (Me.m_bInUpdate) Then Return
         Me.m_bInUpdate = True
 
-        Dim it As ISFPIterations = Nothing
-        For Each it In Me.m_engine.Iterations
-            bContainsAnomaly = bContainsAnomaly Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPAnomalySearch)) Or
-                                           (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch))
-            bContainsVul = bContainsVul Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVulnerabilitySearch)) Or
-                                           (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch))
-        Next
+        Try ' Just to make sure that m_bInUpdate is reset at any cost
 
-        it = Me.SelectedIteration
-        If (it IsNot Nothing) Then
-            bHasCompletedIterationSelected = (it.RunState = ISFPIterations.eRunState.Completed)
-            bHasEnabledIterationSelected = it.Enabled
-            bNeedsAnomalyShape = bNeedsAnomalyShape Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPAnomalySearch)) Or
-                                           (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch))
-        End If
+            Dim it As ISFPIterations = Nothing
+            For Each it In Me.m_engine.Iterations
+                bContainsAnomaly = bContainsAnomaly Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPAnomalySearch)) Or
+                                               (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch))
+                bContainsVul = bContainsVul Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVulnerabilitySearch)) Or
+                                               (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch))
+            Next
 
-        Dim bAnomalyOk As Boolean = Not bNeedsAnomalyShape Or bHasAnomalyShape
+            it = Me.SelectedIteration
+            If (it IsNot Nothing) Then
+                bHasCompletedIterationSelected = (it.RunState = ISFPIterations.eRunState.Completed)
+                bHasEnabledIterationSelected = it.Enabled
+                bNeedsAnomalyShape = bNeedsAnomalyShape Or (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPAnomalySearch)) Or
+                                               (it.GetType Is GetType(EwEStepwiseFittingPlugin.cSFPVandASearch))
+            End If
 
-        For Each it In Me.m_engine.Iterations
-            bHasEnabledIterations = bHasEnabledIterations Or it.Enabled
-        Next
+            Dim bAnomalyOk As Boolean = Not bNeedsAnomalyShape Or bHasAnomalyShape
 
-        Try
-            Me.m_nudK.Enabled = (parms.MaxK > parms.MinK)
-            Me.m_nudK.Minimum = parms.MinK
-            Me.m_nudK.Maximum = parms.MaxK
-            Me.m_nudK.Value = parms.K
+            For Each it In Me.m_engine.Iterations
+                bHasEnabledIterations = bHasEnabledIterations Or it.Enabled
+            Next
+
+            Try
+                Me.m_nudK.Enabled = (parms.MaxK > parms.MinK)
+                Me.m_nudK.Minimum = parms.MinK
+                Me.m_nudK.Maximum = parms.MaxK
+                Me.m_nudK.Value = parms.K
+            Catch ex As Exception
+
+            End Try
+
+            ' -- Model panel --
+            Me.m_plModel.Visible = (Me.m_runmode = eRunMode.StandAlone)
+            Me.m_plModel.Enabled = (Me.m_runmode = eRunMode.StandAlone) And Not bIsRunning
+            Me.m_cmbScenario.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
+            Me.m_cmbTimeSeries.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
+
+            ' -- Parameters panel --
+            Me.m_btnSelectA.Enabled = bContainsAnomaly
+            Me.m_btnSelectV.Enabled = bContainsVul
+            Me.m_btnSelectVandA.Enabled = bContainsVul Or bContainsAnomaly
+            Me.m_plSettings.Enabled = Not bIsRunning
+
+            ' -- Iterations panel --
+            Me.m_btnSelectAll.Enabled = Not bIsRunning
+            Me.m_btnSelectNone.Enabled = Not bIsRunning
+            Me.m_btnSelectA.Enabled = Not bIsRunning
+            Me.m_btnSelectBaseline.Enabled = Not bIsRunning
+            Me.m_btnSelectFishing.Enabled = Not bIsRunning
+            Me.m_btnSelectV.Enabled = Not bIsRunning
+            Me.m_btnSelectVandA.Enabled = Not bIsRunning
+            Me.m_btnApply.Enabled = bHasCompletedIterationSelected And bHasEnabledIterationSelected And Not bIsRunning
+            Me.m_btnExport.Enabled = Not bIsRunning
+            Me.m_grid.UpdateRunState()
+
+            ' -- Run panel --
+            Me.m_cmbAutoSave.SelectedIndex = Me.m_engine.Parameters.AutosaveMode
+            Me.m_cmbAutoSave.Enabled = Not bIsRunning
+
+            ' Update output path entirely to resolve path placeholders
+            Me.m_tbxOutputFolder.Text = Me.m_engine.OutputFolder
+            Me.m_btnResetFolder.Enabled = Not bIsRunning
+            Me.m_btnChooseFolder.Enabled = Not bIsRunning
+
+            'Run button enabled when at least one iteration is enabled, time series are loaded, and anomaly search is set up ok
+            Me.m_btnRun.Enabled = bHasEnabledIterations And bHasTimeSeries And bAnomalyOk And Not bIsRunning
+            Me.m_btnStop.Enabled = bIsRunning
+
+            'Enable Absolute Biomass time series check box when time series are loaded
+            Me.m_cbEnableAbsBioforBaseline.Enabled = bHasTimeSeries
+
         Catch ex As Exception
 
         End Try
-
-        ' -- Model panel --
-        Me.m_plModel.Visible = (Me.m_runmode = eRunMode.StandAlone)
-        Me.m_plModel.Enabled = (Me.m_runmode = eRunMode.StandAlone) And Not bIsRunning
-        Me.m_cmbScenario.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
-        Me.m_cmbTimeSeries.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
-
-        ' -- Parameters panel --
-        Me.m_btnSelectA.Enabled = bContainsAnomaly
-        Me.m_btnSelectV.Enabled = bContainsVul
-        Me.m_btnSelectVandA.Enabled = bContainsVul Or bContainsAnomaly
-        Me.m_plSettings.Enabled = Not bIsRunning
-
-        ' -- Iterations panel --
-        Me.m_btnSelectAll.Enabled = Not bIsRunning
-        Me.m_btnSelectNone.Enabled = Not bIsRunning
-        Me.m_btnSelectA.Enabled = Not bIsRunning
-        Me.m_btnSelectBaseline.Enabled = Not bIsRunning
-        Me.m_btnSelectFishing.Enabled = Not bIsRunning
-        Me.m_btnSelectV.Enabled = Not bIsRunning
-        Me.m_btnSelectVandA.Enabled = Not bIsRunning
-        Me.m_btnApply.Enabled = bHasCompletedIterationSelected And bHasEnabledIterationSelected And Not bIsRunning
-        Me.m_btnExport.Enabled = Not bIsRunning
-        Me.m_grid.UpdateRunState()
-
-        ' -- Run panel --
-        Me.m_cmbAutoSave.SelectedIndex = Me.m_engine.Parameters.AutosaveMode
-        Me.m_cmbAutoSave.Enabled = Not bIsRunning
-
-        ' Update output path entirely to resolve path placeholders
-        Me.m_tbxOutputFolder.Text = Me.m_engine.OutputFolder
-        Me.m_btnResetFolder.Enabled = Not bIsRunning
-        Me.m_btnChooseFolder.Enabled = Not bIsRunning
-
-        'Run button enabled when at least one iteration is enabled, time series are loaded, and anomaly search is set up ok
-        Me.m_btnRun.Enabled = bHasEnabledIterations And bHasTimeSeries And bAnomalyOk And Not bIsRunning
-        Me.m_btnStop.Enabled = bIsRunning
-
-        'Enable Absolute Biomass time series check box when time series are loaded
-        Me.m_cbEnableAbsBioforBaseline.Enabled = bHasTimeSeries
 
         Me.m_bInUpdate = False
 
