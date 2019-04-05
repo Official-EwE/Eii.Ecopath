@@ -409,6 +409,8 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.EcospaceUseEcosimBiomassForcing) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.EcospaceIsEcosimDiscardForcingLoaded) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.EcospaceUseEcosimDiscardForcing) = New cVariableMetaData()
+        Me.Metadata(eVarNameFlags.EcospaceMinForagingCapacity) = New cVariableMetaData(cEcoSpace.MIN_HABCAP, 0.1, ge, le, 0.01)
+        Me.Metadata(eVarNameFlags.EcospaceAllowHabCapGradCorrections) = New cVariableMetaData(True)
 
         ' map
         Me.Metadata(eVarNameFlags.InRow) = New cVariableMetaData(1, 10000, ge, le)

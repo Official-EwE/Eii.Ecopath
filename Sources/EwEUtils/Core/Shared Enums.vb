@@ -685,6 +685,9 @@ Namespace Core
         ''' <summary>Ecospace Discards Map</summary>
         EcospaceMapDiscards
 
+        EcospaceMinForagingCapacity
+        EcospaceAllowHabCapGradCorrections
+
         ''''''''''''''''''''''''''''
         ' Ecosim ouput data over time
         '''''''''''''''''''''

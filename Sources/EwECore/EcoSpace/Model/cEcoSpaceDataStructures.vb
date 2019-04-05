@@ -329,6 +329,22 @@ Public Class cEcospaceDataStructures
     Public EnvironmentalLayerMap()(,) As Single
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    'Capacity calculation customization flags
+
+    ''' <summary>
+    ''' If true, Ecospace is allowed to recalculate the habitat 
+    ''' capacity gradient if input capacity contains values less than <see cref="MinHabCap"/> 
+    ''' If false, Ecospace is only allowed to adjust 
+    ''' </summary>
+    Public Property AllowHabCapGradientCorrections As Boolean = True
+
+    ''' <summary>
+    ''' A customizable lowest limit for acceptable habitat 
+    ''' capacity values. 
+    ''' </summary>
+    Public Property MinHabCap As Single = 0.01F
+
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Summary data
 
     ''' <summary>
