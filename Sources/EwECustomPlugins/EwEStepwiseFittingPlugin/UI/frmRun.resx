@@ -685,13 +685,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblOutputFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 24</value>
+    <value>3, 53</value>
   </data>
   <data name="m_lblOutputFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 13</value>
   </data>
   <data name="m_lblOutputFolder.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_lblOutputFolder.Text" xml:space="preserve">
     <value>&amp;Output folder:</value>
@@ -712,13 +712,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxOutputFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 21</value>
+    <value>81, 50</value>
   </data>
   <data name="m_tbxOutputFolder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>452, 20</value>
+    <value>423, 20</value>
   </data>
   <data name="m_tbxOutputFolder.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;m_tbxOutputFolder.Name" xml:space="preserve">
     <value>m_tbxOutputFolder</value>
@@ -739,16 +739,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnChooseFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>568, 19</value>
+    <value>510, 48</value>
   </data>
   <data name="m_btnChooseFolder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
+    <value>23, 23</value>
   </data>
   <data name="m_btnChooseFolder.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_btnChooseFolder.Text" xml:space="preserve">
-    <value>&amp;Choose...</value>
+    <value>..</value>
   </data>
   <data name="&gt;&gt;m_btnChooseFolder.Name" xml:space="preserve">
     <value>m_btnChooseFolder</value>
@@ -1048,13 +1048,13 @@
     <value>Both Ecosim and Aggregated results</value>
   </data>
   <data name="m_cmbAutoSave.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 50</value>
+    <value>81, 21</value>
   </data>
   <data name="m_cmbAutoSave.Size" type="System.Drawing.Size, System.Drawing">
     <value>314, 21</value>
   </data>
   <data name="m_cmbAutoSave.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;m_cmbAutoSave.Name" xml:space="preserve">
     <value>m_cmbAutoSave</value>
@@ -1075,13 +1075,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblAutoSave.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 53</value>
+    <value>3, 24</value>
   </data>
   <data name="m_lblAutoSave.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 13</value>
   </data>
   <data name="m_lblAutoSave.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>1</value>
   </data>
   <data name="m_lblAutoSave.Text" xml:space="preserve">
     <value>&amp;Auto-save:</value>
@@ -1105,7 +1105,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnStop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>462, 48</value>
+    <value>568, 19</value>
   </data>
   <data name="m_btnStop.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -1135,13 +1135,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnResetFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>539, 19</value>
+    <value>539, 48</value>
   </data>
   <data name="m_btnResetFolder.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 23</value>
   </data>
   <data name="m_btnResetFolder.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="m_btnResetFolder.Text" xml:space="preserve">
     <value>X</value>
@@ -1187,6 +1187,9 @@
   </data>
   <data name="m_btnExport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
+  </data>
+  <data name="m_btnExport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_btnExport.Location" type="System.Drawing.Point, System.Drawing">
     <value>568, 48</value>
@@ -1235,6 +1238,9 @@
   </data>
   <data name="m_lblAnomalyShape.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_lblAnomalyShape.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_lblAnomalyShape.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 52</value>
@@ -5956,6 +5962,9 @@
         ////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////8=
 </value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>679, 490</value>

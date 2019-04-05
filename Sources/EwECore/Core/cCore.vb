@@ -10411,7 +10411,6 @@ Public Class cCore
 
             m_EcospaceModelParams.AdjustSpace = m_EcoSpaceData.AdjustSpace
 
-            ' JS 04jun08: Villy wants the summary times in the interface to be treated as integer values
             m_EcospaceModelParams.StartSummaryTime = CInt(m_EcoSpaceData.SumStart(0))
             m_EcospaceModelParams.EndSummaryTime = CInt(m_EcoSpaceData.SumStart(1))
             m_EcospaceModelParams.NumberSummaryTimeSteps = m_EcoSpaceData.NumStep
@@ -10443,14 +10442,14 @@ Public Class cCore
 
             'm_EcospaceModelParams.CapacityCalculationType = m_EcoSpaceData.CapCalType
 
-            ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. 
-            '            Since this value is used during Ecospace calculations, it makes sense to expose it from Ecospace.
             m_EcospaceModelParams.PacketsMultiplier = Me.m_Stanza.NPacketsMultiplier
 
             m_EcospaceModelParams.UseEffortDistThreshold = Me.m_EcoSpaceData.bUseEffortDistThreshold
             m_EcospaceModelParams.EffortDistThreshold = Me.m_EcoSpaceData.EffortDistThreshold
 
             m_EcospaceModelParams.UseLocalMemory = Me.m_EcoSpaceData.bUseLocalMemory
+            m_EcospaceModelParams.AllowHabCapGradientCorrections = Me.m_EcoSpaceData.AllowHabCapGradientCorrections
+            m_EcospaceModelParams.MinForagingCapacity = Me.m_EcoSpaceData.MinHabCap
 
             m_EcospaceModelParams.EcospaceAreaOutputDir = Me.m_EcoSpaceData.EcospaceAreaOutputDir
             m_EcospaceModelParams.EcospaceMapOutputDir = Me.m_EcoSpaceData.EcospaceMapOutputDir
@@ -10509,24 +10508,24 @@ Public Class cCore
 
         m_EcoSpaceData.MovePacketsAtStanzaEntry = m_EcospaceModelParams.IBMMovePacketOnStanza
 
-        ' JS06jun07: There is no generic stanza object to expose the packets multiplier value. 
-        '            Since this value is used during Ecospace calculations, it makes sense to expose it from Ecospace.
-        Me.m_Stanza.NPacketsMultiplier = m_EcospaceModelParams.PacketsMultiplier
+        m_Stanza.NPacketsMultiplier = m_EcospaceModelParams.PacketsMultiplier
 
-        Me.m_tracerData.EcoSpaceConSimOn = m_EcospaceModelParams.ContaminantTracing
+        m_tracerData.EcoSpaceConSimOn = m_EcospaceModelParams.ContaminantTracing
 
-        Me.m_EcoSpaceData.bUseEffortDistThreshold = m_EcospaceModelParams.UseEffortDistThreshold
-        Me.m_EcoSpaceData.EffortDistThreshold = m_EcospaceModelParams.EffortDistThreshold
+        m_EcoSpaceData.bUseEffortDistThreshold = m_EcospaceModelParams.UseEffortDistThreshold
+        m_EcoSpaceData.EffortDistThreshold = m_EcospaceModelParams.EffortDistThreshold
 
-        Me.m_EcoSpaceData.bUseLocalMemory = m_EcospaceModelParams.UseLocalMemory
+        m_EcoSpaceData.bUseLocalMemory = m_EcospaceModelParams.UseLocalMemory
+        m_EcoSpaceData.AllowHabCapGradientCorrections = m_EcospaceModelParams.AllowHabCapGradientCorrections
+        m_EcoSpaceData.MinHabCap = m_EcospaceModelParams.MinForagingCapacity
 
-        Me.m_EcoSpaceData.EcospaceAreaOutputDir = m_EcospaceModelParams.EcospaceAreaOutputDir
-        Me.m_EcoSpaceData.EcospaceMapOutputDir = m_EcospaceModelParams.EcospaceMapOutputDir
+        m_EcoSpaceData.EcospaceAreaOutputDir = m_EcospaceModelParams.EcospaceAreaOutputDir
+        m_EcoSpaceData.EcospaceMapOutputDir = m_EcospaceModelParams.EcospaceMapOutputDir
 
-        Me.m_EcoSpaceData.FirstOutputTimeStep = m_EcospaceModelParams.FirstOutputTimeStep
+        m_EcoSpaceData.FirstOutputTimeStep = m_EcospaceModelParams.FirstOutputTimeStep
 
-        Me.m_EcoSpaceData.UseEcosimBiomassForcing = m_EcospaceModelParams.UseEcosimBiomassForcing
-        Me.m_EcoSpaceData.UseEcosimDiscardForcing = m_EcospaceModelParams.UseEcosimDiscardForcing
+        m_EcoSpaceData.UseEcosimBiomassForcing = m_EcospaceModelParams.UseEcosimBiomassForcing
+        m_EcoSpaceData.UseEcosimDiscardForcing = m_EcospaceModelParams.UseEcosimDiscardForcing
 
         Return True
 

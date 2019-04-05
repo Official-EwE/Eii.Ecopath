@@ -65,6 +65,8 @@ Namespace Ecospace
         Private m_fpFitResponseType As cEwEFormatProvider = Nothing
 
         Private m_fpMovePackets As cEwEFormatProvider = Nothing
+        Private m_fpAllowHabCapGradCalc As cEwEFormatProvider = Nothing
+        Private m_fpMinCapacity As cEwEFormatProvider = Nothing
         Private WithEvents m_bpConTracing As cBooleanProperty = Nothing
 
         ' Ecospace time series
@@ -142,6 +144,8 @@ Namespace Ecospace
             Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, parms, eVarNameFlags.UseExact)
             Me.m_fpAnnualOutput = New cPropertyFormatProvider(Me.UIContext, Me.m_cbAnnualOutput, parms, eVarNameFlags.EcospaceUseAnnualOutput)
             Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, parms, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
+            Me.m_fpMinCapacity = New cPropertyFormatProvider(Me.UIContext, Me.m_tbxMinCap, parms, eVarNameFlags.EcospaceMinForagingCapacity)
+            Me.m_fpAllowHabCapGradCalc = New cPropertyFormatProvider(Me.UIContext, Me.m_cbCalcHabCapGrad, parms, eVarNameFlags.EcospaceAllowHabCapGradCorrections)
 
             Me.UpdateScenarioFormatProviders()
 
@@ -175,6 +179,8 @@ Namespace Ecospace
                 Me.m_fpMaxIterations.Release()
                 Me.m_fpUseExact.Release()
                 Me.m_fpMovePackets.Release()
+                Me.m_fpMinCapacity.Release()
+                Me.m_fpAllowHabCapGradCalc.Release()
                 Me.m_fpUseBiomassForcing.Release()
                 Me.m_fpUseDiscardForcing.Release()
                 Me.m_fpAnnualOutput.Release()

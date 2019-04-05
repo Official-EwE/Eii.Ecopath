@@ -80,6 +80,14 @@ Public Class cEcospaceModelParameters
             val = New cValue(1, eVarNameFlags.UseExact, eStatusFlags.Null, eValueTypes.Bool)
             m_values.Add(val.varName, val)
 
+            val = New cValue(1, eVarNameFlags.EcospaceMinForagingCapacity, eStatusFlags.Null, eValueTypes.Sng)
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
+            val = New cValue(1, eVarNameFlags.EcospaceAllowHabCapGradCorrections, eStatusFlags.Null, eValueTypes.Bool)
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
             'Contaminant tracing
             val = New cValue(New Boolean, eVarNameFlags.ConSimOnEcoSpace, eStatusFlags.Null, eValueTypes.Bool)
             val.Stored = False
@@ -480,6 +488,24 @@ Public Class cEcospaceModelParameters
         End Get
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.UseExact, value)
+        End Set
+    End Property
+
+    Public Property AllowHabCapGradientCorrections As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.EcospaceAllowHabCapGradCorrections))
+        End Get
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcospaceAllowHabCapGradCorrections, value)
+        End Set
+    End Property
+
+    Public Property MinForagingCapacity As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EcospaceMinForagingCapacity))
+        End Get
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.EcospaceMinForagingCapacity, value)
         End Set
     End Property
 

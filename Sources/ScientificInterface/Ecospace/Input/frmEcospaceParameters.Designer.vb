@@ -60,7 +60,11 @@ Namespace Ecospace
             Me.m_gbIMB = New System.Windows.Forms.GroupBox()
             Me.m_cbMovePackets = New System.Windows.Forms.CheckBox()
             Me.m_tbNumPackets = New System.Windows.Forms.TextBox()
-            Me.lbPacketsMultiplier = New System.Windows.Forms.Label()
+            Me.m_lbPacketsMultiplier = New System.Windows.Forms.Label()
+            Me.m_gbCapacity = New System.Windows.Forms.GroupBox()
+            Me.m_lblMinCap = New System.Windows.Forms.Label()
+            Me.m_tbxMinCap = New System.Windows.Forms.TextBox()
+            Me.m_cbCalcHabCapGrad = New System.Windows.Forms.CheckBox()
             Me.m_lbNumThreads = New System.Windows.Forms.Label()
             Me.m_nudNumThreads = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_nudMaxIterations = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
@@ -74,12 +78,12 @@ Namespace Ecospace
             Me.m_tbTolerance = New System.Windows.Forms.TextBox()
             Me.m_tbSOR = New System.Windows.Forms.TextBox()
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox()
+            Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox()
+            Me.m_cbUseExact = New System.Windows.Forms.CheckBox()
             Me.m_cbAnnualOutput = New System.Windows.Forms.CheckBox()
             Me.m_clbAutosave = New System.Windows.Forms.CheckedListBox()
             Me.Label2 = New System.Windows.Forms.Label()
             Me.m_nudFirstTimeStep = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox()
-            Me.m_cbUseExact = New System.Windows.Forms.CheckBox()
             Me.m_tbContact = New System.Windows.Forms.TextBox()
             Me.m_tbAuthor = New System.Windows.Forms.TextBox()
             Me.m_lbContact = New System.Windows.Forms.Label()
@@ -93,6 +97,8 @@ Namespace Ecospace
             Me.m_tlpStuff = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plScenario = New System.Windows.Forms.Panel()
             Me.m_plModel = New System.Windows.Forms.Panel()
+            Me.m_tlpRunTime = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_gbAutoSave = New System.Windows.Forms.GroupBox()
             Me.m_plTimeSeries = New System.Windows.Forms.Panel()
             Me.m_lblOutputResidualsFile = New System.Windows.Forms.Label()
             Me.m_tbxlOutputResidualsFile = New System.Windows.Forms.TextBox()
@@ -103,13 +109,12 @@ Namespace Ecospace
             Me.m_cbUseEcosimDiscardForcing = New System.Windows.Forms.CheckBox()
             Me.m_cbUseEcosimBiomassForcing = New System.Windows.Forms.CheckBox()
             Me.m_hdrTimeSeries = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_tlpRunTime = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_gbAutoSave = New System.Windows.Forms.GroupBox()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
             Me.m_gbMigration.SuspendLayout()
             Me.m_gbIMB.SuspendLayout()
+            Me.m_gbCapacity.SuspendLayout()
             CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gbRunTime.SuspendLayout()
@@ -118,9 +123,9 @@ Namespace Ecospace
             Me.m_tlpStuff.SuspendLayout()
             Me.m_plScenario.SuspendLayout()
             Me.m_plModel.SuspendLayout()
-            Me.m_plTimeSeries.SuspendLayout()
             Me.m_tlpRunTime.SuspendLayout()
             Me.m_gbAutoSave.SuspendLayout()
+            Me.m_plTimeSeries.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_gbModel
@@ -188,6 +193,7 @@ Namespace Ecospace
             Me.m_tlpModelTop.Controls.Add(Me.m_gbMigration, 2, 0)
             Me.m_tlpModelTop.Controls.Add(m_gbModel, 0, 0)
             Me.m_tlpModelTop.Controls.Add(Me.m_gbIMB, 1, 0)
+            Me.m_tlpModelTop.Controls.Add(Me.m_gbCapacity, 3, 0)
             Me.m_tlpModelTop.Name = "m_tlpModelTop"
             '
             'm_gbMigration
@@ -216,7 +222,7 @@ Namespace Ecospace
             '
             Me.m_gbIMB.Controls.Add(Me.m_cbMovePackets)
             Me.m_gbIMB.Controls.Add(Me.m_tbNumPackets)
-            Me.m_gbIMB.Controls.Add(Me.lbPacketsMultiplier)
+            Me.m_gbIMB.Controls.Add(Me.m_lbPacketsMultiplier)
             resources.ApplyResources(Me.m_gbIMB, "m_gbIMB")
             Me.m_gbIMB.Name = "m_gbIMB"
             Me.m_gbIMB.TabStop = False
@@ -232,10 +238,35 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_tbNumPackets, "m_tbNumPackets")
             Me.m_tbNumPackets.Name = "m_tbNumPackets"
             '
-            'lbPacketsMultiplier
+            'm_lbPacketsMultiplier
             '
-            resources.ApplyResources(Me.lbPacketsMultiplier, "lbPacketsMultiplier")
-            Me.lbPacketsMultiplier.Name = "lbPacketsMultiplier"
+            resources.ApplyResources(Me.m_lbPacketsMultiplier, "m_lbPacketsMultiplier")
+            Me.m_lbPacketsMultiplier.Name = "m_lbPacketsMultiplier"
+            '
+            'm_gbCapacity
+            '
+            Me.m_gbCapacity.Controls.Add(Me.m_lblMinCap)
+            Me.m_gbCapacity.Controls.Add(Me.m_tbxMinCap)
+            Me.m_gbCapacity.Controls.Add(Me.m_cbCalcHabCapGrad)
+            resources.ApplyResources(Me.m_gbCapacity, "m_gbCapacity")
+            Me.m_gbCapacity.Name = "m_gbCapacity"
+            Me.m_gbCapacity.TabStop = False
+            '
+            'm_lblMinCap
+            '
+            resources.ApplyResources(Me.m_lblMinCap, "m_lblMinCap")
+            Me.m_lblMinCap.Name = "m_lblMinCap"
+            '
+            'm_tbxMinCap
+            '
+            resources.ApplyResources(Me.m_tbxMinCap, "m_tbxMinCap")
+            Me.m_tbxMinCap.Name = "m_tbxMinCap"
+            '
+            'm_cbCalcHabCapGrad
+            '
+            resources.ApplyResources(Me.m_cbCalcHabCapGrad, "m_cbCalcHabCapGrad")
+            Me.m_cbCalcHabCapGrad.Name = "m_cbCalcHabCapGrad"
+            Me.m_cbCalcHabCapGrad.UseVisualStyleBackColor = True
             '
             'm_lbNumThreads
             '
@@ -324,6 +355,18 @@ Namespace Ecospace
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
             '
+            'm_cbContaminantTracing
+            '
+            resources.ApplyResources(Me.m_cbContaminantTracing, "m_cbContaminantTracing")
+            Me.m_cbContaminantTracing.Name = "m_cbContaminantTracing"
+            Me.m_cbContaminantTracing.UseVisualStyleBackColor = True
+            '
+            'm_cbUseExact
+            '
+            resources.ApplyResources(Me.m_cbUseExact, "m_cbUseExact")
+            Me.m_cbUseExact.Name = "m_cbUseExact"
+            Me.m_cbUseExact.UseVisualStyleBackColor = True
+            '
             'm_cbAnnualOutput
             '
             resources.ApplyResources(Me.m_cbAnnualOutput, "m_cbAnnualOutput")
@@ -352,18 +395,6 @@ Namespace Ecospace
             Me.m_nudFirstTimeStep.Maximum = New Decimal(New Integer() {10000, 0, 0, 0})
             Me.m_nudFirstTimeStep.Name = "m_nudFirstTimeStep"
             Me.m_nudFirstTimeStep.Value = New Decimal(New Integer() {1, 0, 0, 0})
-            '
-            'm_cbContaminantTracing
-            '
-            resources.ApplyResources(Me.m_cbContaminantTracing, "m_cbContaminantTracing")
-            Me.m_cbContaminantTracing.Name = "m_cbContaminantTracing"
-            Me.m_cbContaminantTracing.UseVisualStyleBackColor = True
-            '
-            'm_cbUseExact
-            '
-            resources.ApplyResources(Me.m_cbUseExact, "m_cbUseExact")
-            Me.m_cbUseExact.Name = "m_cbUseExact"
-            Me.m_cbUseExact.UseVisualStyleBackColor = True
             '
             'm_tbContact
             '
@@ -452,6 +483,23 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_plModel, "m_plModel")
             Me.m_plModel.Name = "m_plModel"
             '
+            'm_tlpRunTime
+            '
+            resources.ApplyResources(Me.m_tlpRunTime, "m_tlpRunTime")
+            Me.m_tlpRunTime.Controls.Add(Me.m_gbAutoSave, 1, 0)
+            Me.m_tlpRunTime.Controls.Add(Me.m_gbRunTime, 0, 0)
+            Me.m_tlpRunTime.Name = "m_tlpRunTime"
+            '
+            'm_gbAutoSave
+            '
+            Me.m_gbAutoSave.Controls.Add(Me.m_nudFirstTimeStep)
+            Me.m_gbAutoSave.Controls.Add(Me.m_cbAnnualOutput)
+            Me.m_gbAutoSave.Controls.Add(Me.m_clbAutosave)
+            Me.m_gbAutoSave.Controls.Add(Me.Label2)
+            resources.ApplyResources(Me.m_gbAutoSave, "m_gbAutoSave")
+            Me.m_gbAutoSave.Name = "m_gbAutoSave"
+            Me.m_gbAutoSave.TabStop = False
+            '
             'm_plTimeSeries
             '
             Me.m_plTimeSeries.Controls.Add(Me.m_lblOutputResidualsFile)
@@ -520,23 +568,6 @@ Namespace Ecospace
             Me.m_hdrTimeSeries.IsCollapsed = False
             Me.m_hdrTimeSeries.Name = "m_hdrTimeSeries"
             '
-            'm_tlpRunTime
-            '
-            resources.ApplyResources(Me.m_tlpRunTime, "m_tlpRunTime")
-            Me.m_tlpRunTime.Controls.Add(Me.m_gbAutoSave, 1, 0)
-            Me.m_tlpRunTime.Controls.Add(Me.m_gbRunTime, 0, 0)
-            Me.m_tlpRunTime.Name = "m_tlpRunTime"
-            '
-            'm_gbAutoSave
-            '
-            Me.m_gbAutoSave.Controls.Add(Me.m_nudFirstTimeStep)
-            Me.m_gbAutoSave.Controls.Add(Me.m_cbAnnualOutput)
-            Me.m_gbAutoSave.Controls.Add(Me.m_clbAutosave)
-            Me.m_gbAutoSave.Controls.Add(Me.Label2)
-            resources.ApplyResources(Me.m_gbAutoSave, "m_gbAutoSave")
-            Me.m_gbAutoSave.Name = "m_gbAutoSave"
-            Me.m_gbAutoSave.TabStop = False
-            '
             'frmEcospaceParameters
             '
             resources.ApplyResources(Me, "$this")
@@ -551,6 +582,8 @@ Namespace Ecospace
             Me.m_gbMigration.PerformLayout()
             Me.m_gbIMB.ResumeLayout(False)
             Me.m_gbIMB.PerformLayout()
+            Me.m_gbCapacity.ResumeLayout(False)
+            Me.m_gbCapacity.PerformLayout()
             CType(Me.m_nudNumThreads, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_gbRunTime.ResumeLayout(False)
@@ -562,11 +595,11 @@ Namespace Ecospace
             Me.m_plScenario.ResumeLayout(False)
             Me.m_plScenario.PerformLayout()
             Me.m_plModel.ResumeLayout(False)
-            Me.m_plTimeSeries.ResumeLayout(False)
-            Me.m_plTimeSeries.PerformLayout()
             Me.m_tlpRunTime.ResumeLayout(False)
             Me.m_gbAutoSave.ResumeLayout(False)
             Me.m_gbAutoSave.PerformLayout()
+            Me.m_plTimeSeries.ResumeLayout(False)
+            Me.m_plTimeSeries.PerformLayout()
             Me.ResumeLayout(False)
 
         End Sub
@@ -604,19 +637,17 @@ Namespace Ecospace
         Private WithEvents m_gbMigration As System.Windows.Forms.GroupBox
         Private WithEvents m_lbNumThreads As System.Windows.Forms.Label
         Private WithEvents m_nudNumThreads As ScientificInterfaceShared.Controls.cEwENumericUpDown
-        Friend WithEvents m_gbIMB As System.Windows.Forms.GroupBox
-        Friend WithEvents m_cbMovePackets As System.Windows.Forms.CheckBox
         Private WithEvents m_tbNumPackets As System.Windows.Forms.TextBox
-        Private WithEvents lbPacketsMultiplier As System.Windows.Forms.Label
+        Private WithEvents m_lbPacketsMultiplier As System.Windows.Forms.Label
         Private WithEvents m_plScenario As System.Windows.Forms.Panel
         Private WithEvents m_plModel As System.Windows.Forms.Panel
         Private WithEvents m_tlpStuff As System.Windows.Forms.TableLayoutPanel
         Private WithEvents Label2 As System.Windows.Forms.Label
         Private WithEvents m_nudFirstTimeStep As ScientificInterfaceShared.Controls.cEwENumericUpDown
-        Friend WithEvents m_clbAutosave As System.Windows.Forms.CheckedListBox
-        Friend WithEvents m_cbAnnualOutput As System.Windows.Forms.CheckBox
-        Friend WithEvents m_plTimeSeries As Panel
-        Friend WithEvents m_hdrTimeSeries As cEwEHeaderLabel
+        Private WithEvents m_clbAutosave As System.Windows.Forms.CheckedListBox
+        Private WithEvents m_cbAnnualOutput As System.Windows.Forms.CheckBox
+        Private WithEvents m_plTimeSeries As Panel
+        Private WithEvents m_hdrTimeSeries As cEwEHeaderLabel
         Private WithEvents m_cbUseEcosimBiomassForcing As CheckBox
         Private WithEvents m_btnLoadXYTimeSeries As Button
         Private WithEvents m_btnTimeSeriesOutputFile As Button
@@ -629,6 +660,12 @@ Namespace Ecospace
         Private WithEvents m_rbPredictEffort As RadioButton
         Private WithEvents m_tlpRunTime As TableLayoutPanel
         Private WithEvents m_gbAutoSave As GroupBox
+        Private WithEvents m_gbCapacity As GroupBox
+        Private WithEvents m_cbCalcHabCapGrad As CheckBox
+        Private WithEvents m_gbIMB As GroupBox
+        Private WithEvents m_cbMovePackets As CheckBox
+        Private WithEvents m_lblMinCap As Label
+        Private WithEvents m_tbxMinCap As TextBox
     End Class
 
 End Namespace

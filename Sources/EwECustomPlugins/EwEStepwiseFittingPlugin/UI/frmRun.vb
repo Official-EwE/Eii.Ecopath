@@ -184,6 +184,8 @@ Public Class frmRun
 
     End Sub
 
+    Private m_bWasRunning As Boolean = False
+
     Public Overloads Sub UpdateControls()
         MyBase.UpdateControls()
 
@@ -200,6 +202,10 @@ Public Class frmRun
         Dim bContainsVul As Boolean = False
         Dim bIsRunning As Boolean = (Me.m_engine.IsRunning)
         Dim parms As cSFPParameters = Me.m_engine.Parameters
+
+        ' Running state has not changed? Skip this
+        If bIsRunning And Me.m_bWasRunning Then Return
+        Me.m_bWasRunning = bIsRunning
 
         Dim it As ISFPIterations = Nothing
         For Each it In Me.m_engine.Iterations

@@ -84,11 +84,11 @@ Public Class cEcoSpace
 
 #Region "Private data"
 
-    Private Const MIN_HABCAP As Single = 0.000001F
     Private Const TWO_PI As Double = Math.PI * 2.0#
     Private Const DEG2RAD As Double = TWO_PI / 360.0# 'for converting degrees to radians for functions
 
     Public Const MIN_MIG_PROB As Single = 0.0000000001
+    Public Const MIN_HABCAP As Single = 0.000001F
 
     ''' <summary>To call the plugins</summary>
     Private m_pluginManager As cPluginManager
@@ -5778,7 +5778,7 @@ exitline:
 
     Private Sub TeleportMigrationBiomass(iMonth As Integer)
 
-        System.Console.WriteLine("WOW FUCK Migratory biomass has been magically transported to the new migrating area! YEAH REALLY THIS IS FUCKED UP...")
+        System.Console.WriteLine("WOW F@CK Migratory biomass has been magically transported to the new migrating area! YEAH REALLY THIS IS F@CKED UP...")
 
         Dim imig As Integer
         Dim nMig As Integer
@@ -7824,7 +7824,7 @@ exitline:
 
     Private Sub ClearHabCapGroups(isCapChanged() As Boolean)
 
-        For igrp As Integer = 1 To Me.EcoSpaceData.NGroups
+        For igrp As Integer = 0 To Me.EcoSpaceData.NGroups
 
             If isCapChanged(igrp) Then
 
@@ -7835,11 +7835,9 @@ exitline:
 
                 'm_Data.TotHabCap(igrp) = 0.0F
 
-                For irow As Integer = 1 To Me.EcoSpaceData.InRow
-                    For icol As Integer = 1 To Me.EcoSpaceData.InCol
-
+                For irow As Integer = 0 To Me.EcoSpaceData.InRow + 1
+                    For icol As Integer = 0 To Me.EcoSpaceData.InCol + 1
                         Me.EcoSpaceData.HabCap(igrp)(irow, icol) = 0.0F
-
                     Next icol
                 Next irow
             End If
@@ -7927,7 +7925,7 @@ exitline:
 
             ReDim DistMin(Me.EcoSpaceData.InRow + 1, Me.EcoSpaceData.InCol + 1)
 
-            HabCapMin = 0.01 'minimum allowable value of habcap before adjustment for distance to cell with habcap>habcapmin
+            HabCapMin = Math.Max(Me.EcoSpaceData.MinHabCap, MIN_HABCAP)  'minimum allowable value of habcap before adjustment for distance to cell with habcap>habcapmin
             DistFac = 0.4 'exponential decrease in habcap per cell width distance from cell with habcap>habcapmin
             MaxDist = Math.Max(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)
             'Maxiter = MaxDist / 2 : If Maxiter = 0 Then Maxiter = 1
@@ -7963,7 +7961,7 @@ exitline:
                     For i = 0 To Me.EcoSpaceData.InRow + 1
                         For j = 0 To Me.EcoSpaceData.InCol + 1
                             If Me.EcoSpaceData.Depth(i, j) > 0 Then
-                                If Me.EcoSpaceData.HabCap(k)(i, j) <= HabCapMin Then
+                                If Me.EcoSpaceData.HabCap(k)(i, j) < HabCapMin Then
                                     Me.EcoSpaceData.HabCap(k)(i, j) = HabCapMin
                                     DistMin(i, j) = MaxDist
                                     NumBad = NumBad + 1
@@ -7976,7 +7974,7 @@ exitline:
 
                     'then do dynamic program iteratation to reset distmin for each cell to minimum distance to cell with habcap>habcapmin
                     'skip iteration if numbad=0
-                    If NumBad > 0 Then
+                    If NumBad > 0 And Me.EcoSpaceData.AllowHabCapGradientCorrections Then
                         For iter = 1 To Maxiter
                             For i = 1 To Me.EcoSpaceData.InRow
                                 For j = 1 To Me.EcoSpaceData.InCol
