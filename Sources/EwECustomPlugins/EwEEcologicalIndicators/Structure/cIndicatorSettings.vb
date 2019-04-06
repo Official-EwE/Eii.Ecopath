@@ -209,8 +209,8 @@ Public Class cIndicatorSettings
         grp = Me.AddGroup(My.Resources.GROUP_SIZE, My.Resources.GROUP_SIZE_DESC)
         grp.Add("MLengthB", My.Resources.IND_MLB, My.Resources.IND_MLB_DESC, My.Resources.IND_VALUE_ML, My.Resources.UNIT_LENGTH_CM)
         grp.Add("MLengthC", My.Resources.IND_MLC, My.Resources.IND_MLC_DESC, My.Resources.IND_VALUE_ML, My.Resources.UNIT_LENGTH_CM)
-        grp.Add("MWeightB", My.Resources.IND_MWB, My.Resources.IND_MWB_DESC, My.Resources.IND_VALUE_MW, My.Resources.UNIT_WEIGHT_G)
-        grp.Add("MWeightC", My.Resources.IND_MWC, My.Resources.IND_MWC_DESC, My.Resources.IND_VALUE_MW, My.Resources.UNIT_WEIGHT_G)
+        grp.Add("MWeightB", My.Resources.IND_MWB, My.Resources.IND_MWB_DESC, My.Resources.IND_VALUE_MW, My.Resources.UNIT_WEIGHT_KG)
+        grp.Add("MWeightC", My.Resources.IND_MWC, My.Resources.IND_MWC_DESC, My.Resources.IND_VALUE_MW, My.Resources.UNIT_WEIGHT_KG)
         grp.Add("MLifeSpanB", My.Resources.IND_MLSC, My.Resources.IND_MLSC_DESC, My.Resources.IND_VALUE_AGE, My.Resources.UNIT_TIME_YEAR)
         grp.Add("MLifeSpanC", My.Resources.IND_MLSB, My.Resources.IND_MLSB_DESC, My.Resources.IND_VALUE_AGE, My.Resources.UNIT_TIME_YEAR)
 
