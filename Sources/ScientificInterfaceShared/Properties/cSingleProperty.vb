@@ -134,17 +134,18 @@ Namespace Properties
             Dim meta As cVariableMetaData = Nothing
             Dim s As Single = 0
 
-            If val IsNot Nothing Then
+            If (val IsNot Nothing) Then
                 meta = val.Metadata
                 If meta IsNot Nothing Then
                     s = CSng(meta.NullValue)
                 End If
             End If
 
-            If newValue Is Nothing Then newValue = s
-
             Try
                 ' Try to convert to single
+                If (newValue Is Nothing) Or (Convert.ToSingle(newValue) = cCore.NULL_VALUE) Then
+                    newValue = s
+                End If
                 s = Convert.ToSingle(newValue)
             Catch ex As Exception
                 'Debug.Assert(False, "Unable to convert value to Single")
