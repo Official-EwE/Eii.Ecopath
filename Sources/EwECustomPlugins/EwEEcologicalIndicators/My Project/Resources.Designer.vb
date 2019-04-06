@@ -1092,11 +1092,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to g.
+        '''  Looks up a localized string similar to kg.
         '''</summary>
-        Friend ReadOnly Property UNIT_WEIGHT_G() As String
+        Friend ReadOnly Property UNIT_WEIGHT_KG() As String
             Get
-                Return ResourceManager.GetString("UNIT_WEIGHT_G", resourceCulture)
+                Return ResourceManager.GetString("UNIT_WEIGHT_KG", resourceCulture)
             End Get
         End Property
     End Module

@@ -192,8 +192,8 @@
   <data name="UNIT_TIME_YEAR" xml:space="preserve">
     <value>y</value>
   </data>
-  <data name="UNIT_WEIGHT_G" xml:space="preserve">
-    <value>g</value>
+  <data name="UNIT_WEIGHT_KG" xml:space="preserve">
+    <value>kg</value>
   </data>
   <data name="IND_COMMB" xml:space="preserve">
     <value>Commercial B</value>
