@@ -628,7 +628,16 @@ Namespace Controls.EwEGrid
             If (fs IsNot Nothing) Then
 
                 sr = New StreamReader(fs)
-                Me.m_grid.ReadContent(sr)
+
+                If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Update) Then Return False
+                Me.m_grid.BeginBatchEdit()
+                Try
+                    Me.m_grid.ReadContent(sr)
+                Catch ex As Exception
+
+                End Try
+                Me.m_grid.EndBatchEdit()
+                Me.m_uic.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
                 sr.Close()
                 fs.Close()
 
