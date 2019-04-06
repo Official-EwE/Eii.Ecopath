@@ -139,10 +139,11 @@ Namespace Properties
                 End If
             End If
 
-            If newValue Is Nothing Then newValue = i
 
             Try
-                ' Try to convert to integer
+                If (newValue Is Nothing) Or (Convert.ToInt32(newValue) = cCore.NULL_VALUE) Then
+                    newValue = i
+                End If
                 i = Convert.ToInt32(newValue)
             Catch ex As Exception
                 'Debug.Assert(False, "Unable to convert value to Integer")
