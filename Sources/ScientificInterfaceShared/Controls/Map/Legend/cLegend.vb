@@ -289,12 +289,15 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Add a layer to the legend.
+        ''' Add a <see cref="cDisplayLayer"/> to the legend. Note that the layer
+        ''' needs to be <see cref="cLayerRenderer.IsVisible">visible</see> to be included in the legend.
         ''' </summary>
         ''' <param name="l"></param>
         ''' -------------------------------------------------------------------
         Public Sub AddLayer(l As cDisplayLayer)
-            Me.m_lLayers.Add(New cLayerEntry(l))
+            If l.Renderer.IsVisible Then
+                Me.m_lLayers.Add(New cLayerEntry(l))
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------
