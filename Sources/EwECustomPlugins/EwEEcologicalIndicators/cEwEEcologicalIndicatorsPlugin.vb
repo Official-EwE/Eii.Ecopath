@@ -560,15 +560,15 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
         Me.m_bRunWithEcospace = Me.m_settings.RunWithEcospace
 
+        ' Grab and remember ecosim data structures when provided via the plug-in mechanism
+        Me.m_ecospaceDS = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
+
         ' Calculate only if supposed to run with Ecospace
         If (Me.m_bRunWithEcospace = False) Then Return
         ' Do not calculate during spin-up
         If (Me.m_ecospaceDS.bInSpinUp) Then Return
         ' Do not calculate when Ecospace is running as part of a searches
         If (Me.m_core.StateMonitor.IsSearching()) Then Return
-
-        ' Grab and remember ecosim data structures when provided via the plug-in mechanism
-        Me.m_ecospaceDS = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
 
         ' Create indicators for water cells only
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
