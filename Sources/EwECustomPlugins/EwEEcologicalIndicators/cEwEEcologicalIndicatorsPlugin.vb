@@ -611,7 +611,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         If (Me.m_ecospaceDS.bInSpinUp) Then Me.m_bEcospaceCalculating = False
 
         ' Calculate annual only?
-        If (Me.m_settings.EcospaceAnnualOnly) Then
+        If (Me.m_settings.EcospaceAnnualOnly And Me.m_bEcospaceCalculating) Then
             ' Evaluate time step
             Me.m_bEcospaceCalculating = ((iTime Mod Me.m_ecospaceDS.nTimeStepsPerYear) = 0)
         End If
