@@ -604,7 +604,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         ' Calculate only if supposed to run with Ecospace
         If (Me.m_bRunWithEcospace = False) Then Me.m_bEcospaceCalculating = False
         ' Do not calculate during spin-up
-        If (Me.m_ecospaceDS.bInSpinUp) Then Return
+        If (Me.m_ecospaceDS.bInSpinUp) Then Me.m_bEcospaceCalculating = False
         ' Do not calculate when Ecospace is running as part of a searches
         If (Me.m_core.StateMonitor.IsSearching()) Then Me.m_bEcospaceCalculating = False
         ' Do not calculate during spinup
