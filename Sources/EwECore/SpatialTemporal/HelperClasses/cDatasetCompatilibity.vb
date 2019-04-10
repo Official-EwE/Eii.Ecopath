@@ -23,6 +23,7 @@ Option Strict On
 Imports System.Drawing
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -88,8 +89,6 @@ Namespace SpatialData
 
             If Not core.StateMonitor.HasEcospaceLoaded Then Return
 
-            Me.m_rcfBasemap = Me.ToRect(Me.m_core.EcospaceBasemap.PosTopLeft, Me.m_core.EcospaceBasemap.PosBottomRight)
-
             Me.Refresh()
 
         End Sub
@@ -122,6 +121,8 @@ Namespace SpatialData
         End Sub
 
         Public Sub Refresh()
+
+            Me.m_rcfBasemap = Me.ToRect(Me.m_core.EcospaceBasemap.PosTopLeft, Me.m_core.EcospaceBasemap.PosBottomRight)
 
             Dim iNumTimeSteps As Integer = Me.m_core.nEcospaceTimeSteps
             ' Special case for datasets without temporal range
@@ -199,7 +200,8 @@ Namespace SpatialData
                 Case ISpatialDataSet.eIndexStatus.Indexed
                     If Me.m_ds.GetExtentAtT(tm, ptfMapTL, ptfMapBR) Then
                         rcfMap = Me.ToRect(ptfMapTL, ptfMapBR)
-                        If rcfMap.Contains(Me.m_rcfBasemap) Then
+                        ' ToDo: approximate using a fraction of the Ecospace cell width
+                        If rcfMap.Contains(Me.m_rcfBasemap) Or cNumberUtils.Approximates(rcfMap, Me.m_rcfBasemap, 0.000001) Then
                             Return eCompatibilityTypes.TotalOverlap
                         ElseIf rcfMap.IntersectsWith(Me.m_rcfBasemap) Then
                             Return eCompatibilityTypes.PartialSpatial

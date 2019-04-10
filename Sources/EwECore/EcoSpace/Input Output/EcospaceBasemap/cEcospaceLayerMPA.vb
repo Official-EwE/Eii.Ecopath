@@ -57,4 +57,34 @@ Public Class cEcospaceLayerMPA
         Return Me.m_core.EcospaceMPAs(Me.Index).Name
     End Function
 
+    Protected Overrides Sub RecalcStats()
+
+        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+        Dim iRows As Integer = bm.InRow
+        Dim iCols As Integer = bm.InCol
+
+        Me.m_iMaxValue = Integer.MinValue
+        Me.m_iMinValue = Integer.MaxValue
+        Me.m_iNumValueCells = 0
+
+        For iRow As Integer = 1 To iRows
+            For iCol As Integer = 1 To iCols
+                If (bm.IsModelledCell(iRow, iCol)) Then
+                    Dim i As Integer = CInt(Me.Cell(iRow, iCol))
+                    If i > 0 Then
+                        Me.m_iMaxValue = Math.Max(i, Me.m_iMaxValue)
+                        Me.m_iMinValue = Math.Min(i, Me.m_iMinValue)
+                        Me.m_iNumValueCells += 1
+                    End If
+                End If
+            Next iCol
+        Next iRow
+
+        If (Me.m_iMaxValue = Me.m_iMinValue) Then
+            Me.m_iMinValue = 0
+        End If
+
+        Me.m_bInvalidateStats = False
+
+    End Sub
 End Class
