@@ -1203,7 +1203,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' -----------------------------------------------------------------------
     Private Sub SaveEcospaceCSV()
 
-        Dim iTS As Integer = CInt(Me.m_ecospaceDS.TimeNow * 12 + 1)
+        Dim iTS As Integer = CInt(Me.m_ecospaceDS.TimeNow * Me.m_ecospaceDS.nTimeStepsPerYear + 1)
         Dim strPath As String = Me.OutputFolder(eComponentType.Ecospace)
         Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.Ecospace, CStr(iTS)))
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
