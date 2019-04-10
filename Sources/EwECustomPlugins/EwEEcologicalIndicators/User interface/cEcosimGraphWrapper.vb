@@ -100,8 +100,6 @@ Public Class cEcosimGraphWrapper
         Dim ind As cEcosimIndicators = Nothing
         Dim ppl As PointPairList = Nothing
         Dim sValue As Single = 0
-        Dim sXMin As Single = 0
-        Dim sXMax As Single = 0
 
         If (indSingle Is Nothing) Then
             ' Group mode
@@ -142,12 +140,22 @@ Public Class cEcosimGraphWrapper
         Try
             ' Next populate all panels
             For iPane As Integer = 1 To Me.NumPanes
+
+                Dim sXMin As Single = 0
+                Dim sXMax As Single = 0
+                Dim sYMin As Single = 0
+
                 ' Get pane for indicator iInd
                 gp = Me.GetPane(iPane)
                 ' Prepare for determining axis range
                 sXMin = Single.MaxValue : sXMax = Single.MinValue
                 ' Prepare structures for creating point list for indicator
                 info = DirectCast(gp.Tag, cIndicatorInfo)
+                ' Check metadata
+                sYMin = 0
+                If (info.Metadata IsNot Nothing) Then
+                    If (info.Metadata.Min >= 0) Then sYMin = info.Metadata.Min
+                End If
 
                 ppl = New PointPairList()
                 Try
@@ -176,6 +184,11 @@ Public Class cEcosimGraphWrapper
                         Me.PlotLines(New LineItem() {Me.CreateLineItem(info.Name, eSketchDrawModeTypes.Line, Drawing.Color.Blue, ppl, info)}, iPane)
                         gp.XAxis.Scale.Min = sXMin
                         gp.XAxis.Scale.Max = sXMax
+
+                        gp.YAxis.Scale.Min = sYMin
+                        gp.YAxis.Scale.MinGrace = 0
+                        gp.YAxis.Scale.MinAuto = False
+
                     End If
 
                     gp.AxisChange()

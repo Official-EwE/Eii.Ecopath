@@ -36,17 +36,6 @@ Public Class cIndicatorInfo
 
 #Region " Private fields "
 
-    ''' <summary>The name of the indicator</summary>
-    Private m_strName As String = ""
-    ''' <summary>The description of the indicator</summary>
-    Private m_strDescription As String = ""
-    ''' <summary>The description of the unit of the indicator (for display on axis)</summary>
-    Private m_strValueDescription As String = ""
-    ''' <summary>The units of the indicator</summary>
-    Private m_strUnit As String = ""
-    ''' <summary>The function name of the indicator in the <see cref="cIndicators">indicator</see></summary>
-    Private m_strFunctionName As String = ""
-
 #End Region ' Private fields
 
 #Region " Construction "
@@ -60,19 +49,21 @@ Public Class cIndicatorInfo
     ''' <param name="strDescription">Description to assign to the indicator.</param>
     ''' <param name="strValueDescription">Description of the value of indicator (biomass, catch, etc).</param>
     ''' <param name="strUnits">EwE <see cref="cUnits">units</see> to show for the indicator.</param>
+    ''' <param name="md">Optional <see cref="cVariableMetaData">metadata</see> for plotting etc.</param>
     ''' -------------------------------------------------------------------
-    Public Sub New(ByVal strFunctionName As String,
-                   ByVal strName As String,
-                   ByVal strDescription As String,
-                   ByVal strValueDescription As String,
-                   ByVal strUnits As String)
+    Public Sub New(strFunctionName As String,
+                   strName As String,
+                   strDescription As String,
+                   strValueDescription As String,
+                   strUnits As String,
+                   Optional md As cVariableMetaData = Nothing)
 
-        Me.m_strName = strName
-        Me.m_strFunctionName = strFunctionName
-        Me.m_strValueDescription = strValueDescription
-        Me.m_strUnit = strUnits
-        Me.m_strDescription = strDescription
-
+        Me.Name = strName
+        Me.FunctionName = strFunctionName
+        Me.ValueDescription = strValueDescription
+        Me.Units = strUnits
+        Me.Description = strDescription
+        Me.Metadata = md
     End Sub
 
 #End Region ' Construction
@@ -84,39 +75,35 @@ Public Class cIndicatorInfo
     ''' Get the name of the indicator.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public ReadOnly Property Name As String
-        Get
-            Return Me.m_strName
-        End Get
-    End Property
+    Public ReadOnly Property Name As String = ""
 
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Get the description of the indicator.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public ReadOnly Property Description As String
-        Get
-            Return Me.m_strDescription
-        End Get
-    End Property
+    Public ReadOnly Property Description As String = ""
 
-    Public ReadOnly Property ValueDescription As String
-        Get
-            Return Me.m_strValueDescription
-        End Get
-    End Property
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the Description of the value of indicator (biomass, catch, etc)
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public ReadOnly Property ValueDescription As String = ""
 
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Get the units of the indicator.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Public ReadOnly Property Units As String
-        Get
-            Return Me.m_strUnit
-        End Get
-    End Property
+    Public ReadOnly Property Units As String = ""
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Get any <see cref="cVariableMetaData"/> associated the indicator.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Public ReadOnly Property Metadata As cVariableMetaData = Nothing
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -125,12 +112,12 @@ Public Class cIndicatorInfo
     ''' <param name="indicators">The computed <see cref="cIndicators">indicator</see> to extract information from.</param>
     ''' <returns>A value, or <see cref="cCore.NULL_VALUE"/> if the property was not found.</returns>
     ''' -------------------------------------------------------------------
-    Public Function GetValue(ByVal indicators As cIndicators) As Single
+    Public Function GetValue(indicators As cIndicators) As Single
 
         If (indicators Is Nothing) Then Return 0
 
         ' Try to get property info from the indicator
-        Dim mi As MethodInfo = GetType(cIndicators).GetMethod(Me.m_strFunctionName)
+        Dim mi As MethodInfo = GetType(cIndicators).GetMethod(Me.FunctionName)
         ' Prepare default value
         Dim sValue As Single = cCore.NULL_VALUE
         ' Was property found?
@@ -140,7 +127,7 @@ Public Class cIndicatorInfo
                 sValue = CSng(mi.Invoke(indicators, New Object() {}))
             Catch ex As Exception
                 ' A failure is due to a programming error
-                Debug.Assert(False, "Property " & Me.m_strFunctionName & " cannot be converted to Single")
+                Debug.Assert(False, "Property " & Me.FunctionName & " cannot be converted to Single")
             End Try
         End If
         ' Return value
@@ -149,5 +136,12 @@ Public Class cIndicatorInfo
     End Function
 
 #End Region ' Public access
+
+#Region " Internals "
+
+    ''' <summary>The function name of the indicator in the <see cref="cIndicators">indicator</see></summary>
+    Private ReadOnly Property FunctionName As String = ""
+
+#End Region ' Internals
 
 End Class
