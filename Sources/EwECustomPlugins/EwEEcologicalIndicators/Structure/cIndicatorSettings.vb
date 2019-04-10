@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -130,7 +131,7 @@ Public Class cIndicatorSettings
     ''' <param name="strDescription">Optional description to assign to the group.</param>
     ''' <returns>The new group.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddGroup(ByVal strName As String, _
+    Public Function AddGroup(ByVal strName As String,
                              Optional ByVal strDescription As String = "") As cIndicatorInfoGroup
         Dim grp As New cIndicatorInfoGroup(strName, strDescription)
         Me.m_lIndicatorGroups.Add(grp)
@@ -168,6 +169,9 @@ Public Class cIndicatorSettings
 
         Dim grp As cIndicatorInfoGroup = Nothing
         Dim ind As cIndicatorInfo = Nothing
+        Dim ge As cOperatorBase = cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo)
+        Dim lt As cOperatorBase = cOperatorManager.getOperator(eOperators.LessThan)
+        Dim mdTL As New cVariableMetaData(1, 7, ge, lt)
 
         ' Note that the name an indicator as specified below must match the name of the public function used by
         ' cIndicator to expose the value for that indicator. The function is lookup up at runtime via reflection.
@@ -202,12 +206,12 @@ Public Class cIndicatorSettings
 
         ' 3 trophic-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_TROPHIC, My.Resources.GROUP_TROPHIC_DESC)
-        grp.Add("TLC", My.Resources.IND_TLC, My.Resources.IND_TLC_DESC, My.Resources.IND_VALUE_TL)
-        grp.Add("MTI", My.Resources.IND_MTI, String.Format(My.Resources.IND_MTIX_DESC, 3.25), My.Resources.IND_VALUE_TL)
-        grp.Add("TLco", My.Resources.IND_TLCo, My.Resources.IND_TLCo_DESC, My.Resources.IND_VALUE_TL)
-        grp.Add("TLco2", String.Format(My.Resources.IND_TLCoX, 2), String.Format(My.Resources.IND_TLCoX_DESC, 2), My.Resources.IND_VALUE_TL)
-        grp.Add("TLco325", String.Format(My.Resources.IND_TLCoX, 3.25), String.Format(My.Resources.IND_TLCoX_DESC, 3.25), My.Resources.IND_VALUE_TL)
-        grp.Add("TLco4", String.Format(My.Resources.IND_TLCoX, 4), String.Format(My.Resources.IND_TLCoX_DESC, 4), My.Resources.IND_VALUE_TL)
+        grp.Add("TLC", My.Resources.IND_TLC, My.Resources.IND_TLC_DESC, My.Resources.IND_VALUE_TL, md:=mdTL)
+        grp.Add("MTI", My.Resources.IND_MTI, String.Format(My.Resources.IND_MTIX_DESC, 3.25), My.Resources.IND_VALUE_TL, md:=mdTL)
+        grp.Add("TLco", My.Resources.IND_TLCo, My.Resources.IND_TLCo_DESC, My.Resources.IND_VALUE_TL, md:=mdTL)
+        grp.Add("TLco2", String.Format(My.Resources.IND_TLCoX, 2), String.Format(My.Resources.IND_TLCoX_DESC, 2), My.Resources.IND_VALUE_TL, md:=mdTL)
+        grp.Add("TLco325", String.Format(My.Resources.IND_TLCoX, 3.25), String.Format(My.Resources.IND_TLCoX_DESC, 3.25), My.Resources.IND_VALUE_TL, md:=mdTL)
+        grp.Add("TLco4", String.Format(My.Resources.IND_TLCoX, 4), String.Format(My.Resources.IND_TLCoX_DESC, 4), My.Resources.IND_VALUE_TL, md:=mdTL)
 
         ' 4 species-based indicators
         grp = Me.AddGroup(My.Resources.GROUP_SPECIES, My.Resources.GROUP_SPECIES_DESC)

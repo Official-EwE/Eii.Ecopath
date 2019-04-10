@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -51,7 +52,7 @@ Public Class cIndicatorInfoGroup
     ''' <param name="strName">Name to assign to the indicator group.</param>
     ''' <param name="strDescription">Description to assign to the indicator group.</param>
     ''' -------------------------------------------------------------------
-    Public Sub New(ByVal strName As String, ByVal strDescription As String)
+    Public Sub New(strName As String, strDescription As String)
 
         Me.m_strName = strName
         Me.m_strDescription = strDescription
@@ -93,14 +94,18 @@ Public Class cIndicatorInfoGroup
     ''' exposed by the computed <see cref="cIndicators">indicator</see>.
     ''' This GUI uses reflection to dynamically the correct computed indicator.</param>
     ''' <param name="strDescription">Description to assign to the indicator.</param>
+    ''' <param name="strValueDescription"></param>
+    ''' <param name="strUnits">Optional units to display for the indicator.</param>
+    ''' <param name="md">Optional metadata for scaling indicators.</param>
     ''' <returns>The new indicator info object.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Add(ByVal strPropertyName As String,
-                        ByVal strName As String,
-                        ByVal strDescription As String,
-                        ByVal strValueDescription As String,
-                        Optional ByVal strUnits As String = "") As cIndicatorInfo
-        Dim ind As New cIndicatorInfo(strPropertyName, strName, strDescription, strValueDescription, strUnits)
+    Public Function Add(strPropertyName As String,
+                        strName As String,
+                        strDescription As String,
+                        strValueDescription As String,
+                        Optional strUnits As String = "",
+                        Optional md As cVariableMetaData = Nothing) As cIndicatorInfo
+        Dim ind As New cIndicatorInfo(strPropertyName, strName, strDescription, strValueDescription, strUnits, md)
         Me.m_lIndicators.Add(ind)
         Return ind
     End Function
@@ -122,7 +127,7 @@ Public Class cIndicatorInfoGroup
     ''' </summary>
     ''' <param name="index">The index of the indicator [0, <see cref="NumIndicators"/>-1].</param>
     ''' -------------------------------------------------------------------
-    Public ReadOnly Property Indicator(ByVal index As Integer) As cIndicatorInfo
+    Public ReadOnly Property Indicator(index As Integer) As cIndicatorInfo
         Get
             Return Me.m_lIndicators.Item(index)
         End Get
