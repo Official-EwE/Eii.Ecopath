@@ -287,6 +287,7 @@ Public Class frmMain
         Me.m_cbRunWithEcosim.Checked = Me.m_settings.RunWithEcosim
         Me.m_cbRunWithEcospace.Checked = Me.m_settings.RunWithEcospace
         Me.m_cbRunWithMC.Checked = Me.m_settings.RunWithMonteCarlo
+        Me.m_cbEcospaceAnnualOnly.Checked = Me.m_settings.EcospaceAnnualOnly
 
         Select Case Me.SelectedTabComponent
             Case cEwEEcologicalIndicatorsPlugin.eComponentType.Any
@@ -432,6 +433,15 @@ Public Class frmMain
             ' #Yes: clear results
             Me.m_plugin.ClearMCIndicators()
         End If
+
+    End Sub
+
+    Private Sub OnSpaceAnnualOnlyChanged(sender As Object, e As System.EventArgs) _
+        Handles m_cbEcospaceAnnualOnly.CheckedChanged
+
+        ' User toggled EcospaceAnnualOnly checkbox; update settings
+        If Me.m_bInUpdate Then Return
+        Me.m_settings.EcospaceAnnualOnly = Me.m_cbEcospaceAnnualOnly.Checked
 
     End Sub
 

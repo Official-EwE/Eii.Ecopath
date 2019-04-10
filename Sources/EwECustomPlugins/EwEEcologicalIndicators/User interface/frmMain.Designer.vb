@@ -66,6 +66,7 @@ Partial Class frmMain
         Me.m_cbRunWithMC = New System.Windows.Forms.CheckBox()
         Me.m_cbRunWithEcospace = New System.Windows.Forms.CheckBox()
         Me.m_cbRunWithEcosim = New System.Windows.Forms.CheckBox()
+        Me.m_cbEcospaceAnnualOnly = New System.Windows.Forms.CheckBox()
         Me.m_cbPlotAtEnd = New System.Windows.Forms.CheckBox()
         Me.m_cbRunWithEcopath = New System.Windows.Forms.CheckBox()
         Me.m_hdrExport = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -160,6 +161,7 @@ Partial Class frmMain
         Me.m_tpSettings.Controls.Add(Me.m_cbRunWithMC)
         Me.m_tpSettings.Controls.Add(Me.m_cbRunWithEcospace)
         Me.m_tpSettings.Controls.Add(Me.m_cbRunWithEcosim)
+        Me.m_tpSettings.Controls.Add(Me.m_cbEcospaceAnnualOnly)
         Me.m_tpSettings.Controls.Add(Me.m_cbPlotAtEnd)
         Me.m_tpSettings.Controls.Add(Me.m_cbRunWithEcopath)
         Me.m_tpSettings.Controls.Add(Me.m_hdrExport)
@@ -277,6 +279,12 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_cbRunWithEcosim, "m_cbRunWithEcosim")
         Me.m_cbRunWithEcosim.Name = "m_cbRunWithEcosim"
         Me.m_cbRunWithEcosim.UseVisualStyleBackColor = True
+        '
+        'm_cbEcospaceAnnualOnly
+        '
+        resources.ApplyResources(Me.m_cbEcospaceAnnualOnly, "m_cbEcospaceAnnualOnly")
+        Me.m_cbEcospaceAnnualOnly.Name = "m_cbEcospaceAnnualOnly"
+        Me.m_cbEcospaceAnnualOnly.UseVisualStyleBackColor = True
         '
         'm_cbPlotAtEnd
         '
@@ -558,4 +566,5 @@ Partial Class frmMain
     Private WithEvents m_sliderNoBins As ScientificInterfaceShared.Controls.ucSlider
     Private WithEvents m_lblHistNoBins As Windows.Forms.Label
     Private WithEvents m_tbxHistNoBins As Windows.Forms.TextBox
+    Private WithEvents m_cbEcospaceAnnualOnly As Windows.Forms.CheckBox
 End Class
