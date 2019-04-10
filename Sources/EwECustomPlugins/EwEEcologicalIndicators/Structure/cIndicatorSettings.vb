@@ -38,6 +38,7 @@ Public Class cIndicatorSettings
     Private m_bRunSim As Boolean = False
     Private m_bRunSpace As Boolean = False
     Private m_bRunMC As Boolean = False
+    Private m_bSpaceAnnualOnly As Boolean = True
 
 #End Region ' Private variables
 
@@ -101,6 +102,18 @@ Public Class cIndicatorSettings
         End Set
     End Property
 
+    Public Property EcospaceAnnualOnly As Boolean
+        Get
+            Return Me.m_bSpaceAnnualOnly
+        End Get
+        Set(value As Boolean)
+            If (value <> Me.m_bSpaceAnnualOnly) Then
+                Me.m_bSpaceAnnualOnly = value
+                NotifyWorld()
+            End If
+        End Set
+    End Property
+
     Private Sub NotifyWorld()
         Try
             RaiseEvent OnSettingsChanged(Me, New EventArgs())
@@ -108,6 +121,7 @@ Public Class cIndicatorSettings
 
         End Try
     End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Add a new group to the settings.

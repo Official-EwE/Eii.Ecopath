@@ -50,6 +50,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     Implements EwEPlugin.IEcosimRunInvalidatedPlugin
     Implements EwEPlugin.IEcosimRunInitializedPlugin
     Implements EwEPlugin.IEcospacePlugin
+    Implements EwEPlugin.IEcospaceBeginTimestepPlugin
     Implements EwEPlugin.IEcospaceEndTimestepPostPlugin
     Implements EwEPlugin.IEcospaceRunInvalidatedPlugin
     Implements EwEPlugin.IEcospaceInitRunCompletedPlugin
@@ -587,33 +588,57 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
         ' Preserve old TL calc setting
         Me.m_bCalcExtrasOld = Me.m_ecospaceDS.bCalTrophicLevel
-        ' Enable trophic level calculations when plugin is configured to run with Ecospace
-        Me.m_ecospaceDS.bCalTrophicLevel = True
 
         Me.m_bSavingEcospace = My.Settings.AutoSaveCSV
         If Me.m_bSavingEcospace Then Me.BeginSave(eComponentType.Ecospace)
 
     End Sub
 
-    Public Sub EcospaceEndTimeStepPost(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer) _
-        Implements EwEPlugin.IEcospaceEndTimestepPostPlugin.EcospaceEndTimeStepPost
+    Private m_bEcospaceCalculating As Boolean = False
+
+    Public Sub EcospaceBeginTimeStep(EcospaceDatastructures As Object, iTime As Integer) _
+        Implements IEcospaceBeginTimestepPlugin.EcospaceBeginTimeStep
+
+        Me.m_bEcospaceCalculating = True
 
         ' Calculate only if supposed to run with Ecospace
-        If (Me.m_bRunWithEcospace = False) Then Return
+        If (Me.m_bRunWithEcospace = False) Then Me.m_bEcospaceCalculating = False
         ' Do not calculate during spin-up
         If (Me.m_ecospaceDS.bInSpinUp) Then Return
         ' Do not calculate when Ecospace is running as part of a searches
-        If (Me.m_core.StateMonitor.IsSearching()) Then Return
+        If (Me.m_core.StateMonitor.IsSearching()) Then Me.m_bEcospaceCalculating = False
+        ' Do not calculate during spinup
+        If (Me.m_ecospaceDS.bInSpinUp) Then Me.m_bEcospaceCalculating = False
 
+        ' Calculate annual only?
+        If (Me.m_settings.EcospaceAnnualOnly) Then
+            ' Evaluate time step
+            Me.m_bEcospaceCalculating = ((iTime Mod Me.m_ecospaceDS.nTimeStepsPerYear) = 0)
+        End If
+
+        If (Me.m_bEcospaceCalculating) Then
+            ' Enable trophic level calculations when plugin is configured to run with Ecospace
+            Me.m_ecospaceDS.bCalTrophicLevel = True
+        End If
+
+    End Sub
+
+    Public Sub EcospaceEndTimeStepPost(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer) _
+        Implements EwEPlugin.IEcospaceEndTimestepPostPlugin.EcospaceEndTimeStepPost
+
+        If Not Me.m_bEcospaceCalculating Then Return
         Try
             ' Compute
             For Each ind As cIndicators In Me.m_dtIndEcospace.Values
                 ind.Compute()
             Next
             If Me.m_bSavingEcospace Then Me.PerformSave(eComponentType.Ecospace)
+
         Catch ex As Exception
 
         End Try
+        ' Restore this flag
+        Me.m_ecospaceDS.bCalTrophicLevel = Me.m_bCalcExtrasOld
 
         ' Has UI?
         If (Me.HasUI) Then
