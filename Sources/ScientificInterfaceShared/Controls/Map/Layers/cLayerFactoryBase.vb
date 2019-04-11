@@ -344,9 +344,9 @@ Namespace Controls.Map
 
                     If (vs Is Nothing) Then
                         vs = New cVisualStyle()
-                        vs.ForeColour = Color.Red
-                        vs.BackColour = Color.OrangeRed
-                        vs.HatchStyle = Drawing2D.HatchStyle.DiagonalCross
+                        vs.ForeColour = Color.DarkGray
+                        vs.BackColour = Color.FromArgb(64, 255, 255, 255)
+                        vs.HatchStyle = Drawing2D.HatchStyle.LightUpwardDiagonal
                         ad.AllowValidation = False
                         ad.VisualStyle = vs
                         ad.AllowValidation = True

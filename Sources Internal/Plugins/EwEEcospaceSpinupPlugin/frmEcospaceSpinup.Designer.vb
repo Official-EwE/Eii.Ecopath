@@ -19,7 +19,7 @@
 '
 
 Partial Class frmEcospaceSpinup
-    Inherits ScientificInterfaceShared.Forms.frmEwEGrid
+    Inherits ScientificInterfaceShared.Forms.frmEwE
 
     'Form overrides dispose to clean up the component list.
     <System.Diagnostics.DebuggerNonUserCode()>
@@ -44,10 +44,9 @@ Partial Class frmEcospaceSpinup
         Me.m_tbxSpinUpYears = New System.Windows.Forms.TextBox()
         Me.m_lblSpinUpYears = New System.Windows.Forms.Label()
         Me.m_chkUseBaseBio = New System.Windows.Forms.CheckBox()
-        Me.m_gridSpinUpDif = New EwEEcospaceSpinupPlugin.gridSpinupDiff(Me.components)
         Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
         Me.m_plControls = New System.Windows.Forms.Panel()
-        Me.m_hdr = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_gridSpinUpDif = New EwEEcospaceSpinupPlugin.gridSpinupDiff(Me.components)
         Me.m_tlpContent.SuspendLayout()
         Me.m_plControls.SuspendLayout()
         Me.SuspendLayout()
@@ -75,10 +74,25 @@ Partial Class frmEcospaceSpinup
         Me.m_chkUseBaseBio.TabStop = False
         Me.m_chkUseBaseBio.UseVisualStyleBackColor = True
         '
+        'm_tlpContent
+        '
+        resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
+        Me.m_tlpContent.Controls.Add(Me.m_gridSpinUpDif, 0, 1)
+        Me.m_tlpContent.Controls.Add(Me.m_plControls, 0, 0)
+        Me.m_tlpContent.Name = "m_tlpContent"
+        '
+        'm_plControls
+        '
+        Me.m_plControls.Controls.Add(Me.m_chkUseSpinup)
+        Me.m_plControls.Controls.Add(Me.m_tbxSpinUpYears)
+        Me.m_plControls.Controls.Add(Me.m_chkUseBaseBio)
+        Me.m_plControls.Controls.Add(Me.m_lblSpinUpYears)
+        resources.ApplyResources(Me.m_plControls, "m_plControls")
+        Me.m_plControls.Name = "m_plControls"
+        '
         'm_gridSpinUpDif
         '
         Me.m_gridSpinUpDif.AllowBlockSelect = True
-        resources.ApplyResources(Me.m_gridSpinUpDif, "m_gridSpinUpDif")
         Me.m_gridSpinUpDif.AutoSizeMinHeight = 10
         Me.m_gridSpinUpDif.AutoSizeMinWidth = 10
         Me.m_gridSpinUpDif.AutoStretchColumnsToFitWidth = False
@@ -90,6 +104,7 @@ Partial Class frmEcospaceSpinup
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridSpinUpDif.CustomSort = False
         Me.m_gridSpinUpDif.DataName = "EcospaceSpinUp"
+        resources.ApplyResources(Me.m_gridSpinUpDif, "m_gridSpinUpDif")
         Me.m_gridSpinUpDif.FixedColumnWidths = False
         Me.m_gridSpinUpDif.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_gridSpinUpDif.GridToolTipActive = True
@@ -107,31 +122,6 @@ Partial Class frmEcospaceSpinup
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridSpinUpDif.TrackPropertySelection = False
         Me.m_gridSpinUpDif.UIContext = Nothing
-        '
-        'm_tlpContent
-        '
-        resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
-        Me.m_tlpContent.Controls.Add(Me.m_gridSpinUpDif, 0, 1)
-        Me.m_tlpContent.Controls.Add(Me.m_plControls, 0, 0)
-        Me.m_tlpContent.Name = "m_tlpContent"
-        '
-        'm_plControls
-        '
-        Me.m_plControls.Controls.Add(Me.m_hdr)
-        Me.m_plControls.Controls.Add(Me.m_chkUseSpinup)
-        Me.m_plControls.Controls.Add(Me.m_tbxSpinUpYears)
-        Me.m_plControls.Controls.Add(Me.m_chkUseBaseBio)
-        Me.m_plControls.Controls.Add(Me.m_lblSpinUpYears)
-        resources.ApplyResources(Me.m_plControls, "m_plControls")
-        Me.m_plControls.Name = "m_plControls"
-        '
-        'm_hdr
-        '
-        Me.m_hdr.CanCollapseParent = False
-        Me.m_hdr.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdr, "m_hdr")
-        Me.m_hdr.IsCollapsed = False
-        Me.m_hdr.Name = "m_hdr"
         '
         'frmEcospaceSpinup
         '
@@ -152,9 +142,8 @@ Partial Class frmEcospaceSpinup
     Private WithEvents m_chkUseSpinup As System.Windows.Forms.CheckBox
     Private WithEvents m_tbxSpinUpYears As Windows.Forms.TextBox
     Private WithEvents m_lblSpinUpYears As Windows.Forms.Label
-    Private WithEvents m_gridSpinUpDif As gridSpinupDiff
     Private WithEvents m_tlpContent As Windows.Forms.TableLayoutPanel
     Private WithEvents m_plControls As Windows.Forms.Panel
     Private WithEvents m_chkUseBaseBio As Windows.Forms.CheckBox
-    Friend WithEvents m_hdr As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_gridSpinUpDif As gridSpinupDiff
 End Class

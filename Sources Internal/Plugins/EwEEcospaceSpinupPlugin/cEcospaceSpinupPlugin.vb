@@ -45,6 +45,7 @@ Public Class cEcospaceSpinupPlugin
     Implements EwEPlugin.IEcospaceEndTimestepPlugin
     Implements EwEPlugin.IEcospaceInitRunCompletedPlugin
     Implements EwEPlugin.IEcospaceRunCompletedPlugin
+    Implements EwEPlugin.IAutoRunPlugin
 
     'Implements EwEPlugin.IMenuItemPlugin
 
@@ -77,30 +78,42 @@ Public Class cEcospaceSpinupPlugin
 
     Public Property SpinUpYears As Integer
         Get
-            Return My.Settings.SpinupYears
+            Return CInt(Me.m_core.m_EcoSpaceData.SpinUpYears)
         End Get
         Set(value As Integer)
-            If value >= 0 Then
-                My.Settings.SpinupYears = value
-                My.Settings.Save()
-            End If
+            Try
+                If Me.m_core.StateMonitor.IsBusy Then Return
+                Me.m_core.m_EcoSpaceData.SpinUpYears = Math.Max(0, Math.Min(100, value))
+                If Me.HasMainForm() Then
+                    Me.m_form.SettingsChanged()
+                End If
+            Catch ex As Exception
+                Me.LogMessage(ex)
+            End Try
         End Set
     End Property
 
     Public Property UseSpinUp As Boolean
         Get
-            Return My.Settings.UseSpinup
+            Return Me.m_core.m_EcoSpaceData.UseSpinUp
         End Get
         Set(value As Boolean)
-            My.Settings.UseSpinup = value
-            My.Settings.Save()
+            Try
+                If Me.m_core.StateMonitor.IsBusy Then Return
+                Me.m_core.m_EcoSpaceData.UseSpinUp = value
+                If Me.HasMainForm() Then
+                    Me.m_form.SettingsChanged()
+                End If
+            Catch ex As Exception
+                Me.LogMessage(ex)
+            End Try
         End Set
     End Property
 
     Public Property UseSpinUpBaseBio As Boolean
         Get
             Try
-                Return My.Settings.UseSpinUpBaseBio
+                Return Me.m_core.m_EcoSpaceData.UseSpinUpBase
             Catch ex As Exception
                 Me.LogMessage(ex)
             End Try
@@ -108,8 +121,11 @@ Public Class cEcospaceSpinupPlugin
         End Get
         Set(value As Boolean)
             Try
-                My.Settings.UseSpinUpBaseBio = value
-                My.Settings.Save()
+                If Me.m_core.StateMonitor.IsBusy Then Return
+                Me.m_core.m_EcoSpaceData.UseSpinUpBase = value
+                If Me.HasMainForm() Then
+                    Me.m_form.SettingsChanged()
+                End If
             Catch ex As Exception
                 Me.LogMessage(ex)
             End Try
@@ -433,6 +449,22 @@ Public Class cEcospaceSpinupPlugin
 
 #End Region
 
+#Region " Autorun plug-in implementation "
+
+    Public Function AutoRunTypes() As eCoreComponentType() Implements IAutoRunPlugin.AutoRunTypes
+        Return New eCoreComponentType() {eCoreComponentType.EcoSpace}
+    End Function
+
+    Public Property AutoRun(type As eCoreComponentType) As Boolean Implements IAutoRunPlugin.AutoRun
+        Get
+            Return Me.UseSpinUp
+        End Get
+        Set(value As Boolean)
+            Me.UseSpinUp = value
+        End Set
+    End Property
+
+#End Region
 #Region " User Interface plug-in implementation "
 
     ''' -----------------------------------------------------------------------
@@ -444,13 +476,11 @@ Public Class cEcospaceSpinupPlugin
     ''' <param name="uic">The <see cref="cUIContext"/> to connect to.</param>
     ''' -----------------------------------------------------------------------
     Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
-
         Try
             Me.m_uic = DirectCast(uic, cUIContext)
         Catch ex As Exception
             Me.m_uic = Nothing
         End Try
-
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -497,18 +527,19 @@ Public Class cEcospaceSpinupPlugin
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
-        form = Me.getMainForm
+        form = Me.GetMainForm
     End Sub
 
-
-    Private Function getMainForm() As frmEcospaceSpinup
-        Dim bHasUI As Boolean = False
-
+    Private Function HasMainForm() As Boolean
         If (Me.m_form IsNot Nothing) Then
-            bHasUI = Not Me.m_form.IsDisposed
+            Return Not Me.m_form.IsDisposed
         End If
+        Return False
+    End Function
 
-        If Not bHasUI Then
+    Private Function GetMainForm() As frmEcospaceSpinup
+
+        If Not HasMainForm() Then
             Me.m_form = New frmEcospaceSpinup()
             Me.m_form.UIContext = Me.m_uic
             Me.m_form.Init(Me)
@@ -563,7 +594,6 @@ Public Class cEcospaceSpinupPlugin
             Return "Run Ecospace with a Spin-Up period."
         End Get
     End Property
-
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get

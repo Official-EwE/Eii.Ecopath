@@ -47,7 +47,6 @@ Public Class frmEcospaceSpinup
     Public Sub New()
         MyBase.New()
         Me.InitializeComponent()
-        Me.Grid = Me.m_gridSpinUpDif
         Me.m_gridSpinUpDif.Init(Me.m_plugin)
     End Sub
 
@@ -63,8 +62,8 @@ Public Class frmEcospaceSpinup
         Me.m_fpSpinupYears = New cEwEFormatProvider(Me.UIContext, Me.m_tbxSpinUpYears, GetType(Integer), mdYears)
 
         AddHandler Me.m_plugin.OnEcospaceTimeStep, AddressOf Me.OnTimeStep
-        AddHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
-        AddHandler Me.m_plugin.OnEcospaceRunCompleted, AddressOf Me.OnRunCompleted
+        'AddHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
+        'AddHandler Me.m_plugin.OnEcospaceRunCompleted, AddressOf Me.OnRunCompleted
 
         Me.m_bInitializing = False
 
@@ -75,8 +74,8 @@ Public Class frmEcospaceSpinup
     Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
         RemoveHandler Me.m_plugin.OnEcospaceTimeStep, AddressOf Me.OnTimeStep
-        RemoveHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
-        RemoveHandler Me.m_plugin.OnEcospaceRunCompleted, AddressOf Me.OnRunCompleted
+        'RemoveHandler Me.m_plugin.OnEcospaceRunStarting, AddressOf Me.OnRunStarted
+        'RemoveHandler Me.m_plugin.OnEcospaceRunCompleted, AddressOf Me.OnRunCompleted
 
         Me.m_fpSpinupYears.Release()
 
@@ -87,6 +86,10 @@ Public Class frmEcospaceSpinup
             Return False
         End Get
     End Property
+
+    Public Sub SettingsChanged()
+        Me.UpdateControls()
+    End Sub
 
     Protected Overrides Sub UpdateControls()
 
@@ -119,9 +122,9 @@ Public Class frmEcospaceSpinup
 
 #Region " Events "
 
-    Private Sub OnRunStarted()
-        Me.UpdateCore()
-    End Sub
+    'Private Sub OnRunStarted()
+    '    ' NOP
+    'End Sub
 
     Private Sub OnTimeStep()
         Try
@@ -131,9 +134,9 @@ Public Class frmEcospaceSpinup
         End Try
     End Sub
 
-    Private Sub OnRunCompleted()
-        ' NOP
-    End Sub
+    'Private Sub OnRunCompleted()
+    '    ' NOP
+    'End Sub
 
     Private Sub OnUseSpinupChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_chkUseSpinup.CheckedChanged
@@ -172,21 +175,5 @@ Public Class frmEcospaceSpinup
     End Sub
 
 #End Region ' Events
-
-#Region " Internals "
-
-    Private Sub UpdateCore()
-        If (Me.m_plugin Is Nothing) Then Return
-        Try
-            'Update the Plugin State
-            Me.m_plugin.UseSpinUp = Me.m_chkUseSpinup.Checked
-            Integer.TryParse(Me.m_tbxSpinUpYears.Text, Me.m_plugin.SpinUpYears)
-            Me.m_plugin.UseSpinUpBaseBio = Me.m_chkUseBaseBio.Checked
-        Catch ex As Exception
-            cLog.Write(ex, "frmEwESpinupPlugin.UpdateCore")
-        End Try
-    End Sub
-
-#End Region ' Internals
 
 End Class

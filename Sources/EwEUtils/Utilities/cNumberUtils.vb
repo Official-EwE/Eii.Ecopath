@@ -22,6 +22,7 @@
 Option Strict On
 Imports System
 Imports System.Collections.Generic
+Imports System.Drawing
 Imports System.IO
 Imports System.Security.AccessControl
 
@@ -100,6 +101,17 @@ Namespace Utilities
         ''' -------------------------------------------------------------------
         Public Shared Function Approximates(sVal1 As Single, sVal2 As Single, sThreshold As Single) As Boolean
             Return (Math.Abs(sVal1 - sVal2) <= sThreshold)
+        End Function
+
+        Public Shared Function Approximates(pt1 As PointF, pt2 As PointF, sThreshold As Single) As Boolean
+            Return Approximates(pt1.X, pt2.X, sThreshold) And Approximates(pt1.Y, pt2.Y, sThreshold)
+        End Function
+
+        Public Shared Function Approximates(rc1 As RectangleF, rc2 As RectangleF, sThreshold As Single) As Boolean
+            Return Approximates(rc1.Top, rc2.Top, sThreshold) And
+                   Approximates(rc1.Left, rc2.Left, sThreshold) And
+                   Approximates(rc1.Right, rc2.Right, sThreshold) And
+                   Approximates(rc1.Bottom, rc2.Bottom, sThreshold)
         End Function
 
         ''' -------------------------------------------------------------------
