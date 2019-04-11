@@ -40,6 +40,42 @@ Public Class cTaxonSearchData
         Me.Source = strSource
     End Sub
 
+    Public Sub New(iTaxon As Integer, data As cTaxonDataStructures)
+        Me.New(data.TaxonSource(iTaxon))
+        Me.Class = data.TaxonClass(iTaxon)
+        Me.CodeAphia = data.TaxonCodeAphia(iTaxon)
+        Me.CodeAquaMaps = data.TaxonCodeAquaMaps(iTaxon)
+        Me.CodeFAO = data.TaxonCodeFAO(iTaxon)
+        Me.CodeFB = data.TaxonCodeFB(iTaxon)
+        Me.CodeLSID = data.TaxonCodeLSID(iTaxon)
+        Me.CodeOBIS = data.TaxonCodeOBIS(iTaxon)
+        Me.CodeSAUP = data.TaxonCodeSAUP(iTaxon)
+        Me.CodeSLB = data.TaxonCodeSLB(iTaxon)
+        Me.Common = data.TaxonName(iTaxon)
+        Me.East = data.TaxonEast(iTaxon)
+        Me.EcologyType = data.TaxonEcologyType(iTaxon)
+        Me.ExploitationStatus = data.TaxonExploitationStatus(iTaxon)
+        Me.Family = data.TaxonFamily(iTaxon)
+        Me.Genus = data.TaxonGenus(iTaxon)
+        Me.IUCNConservationStatus = data.TaxonIUCNConservationStatus(iTaxon)
+        Me.LastUpdated = data.TaxonLastUpdated(iTaxon)
+        Me.MaxLength = data.TaxonMaxLength(iTaxon)
+        Me.MeanLength = data.TaxonMeanLength(iTaxon)
+        Me.MeanLifespan = data.TaxonMeanLifeSpan(iTaxon)
+        Me.MeanWeight = data.TaxonMeanWeight(iTaxon)
+        Me.North = data.TaxonNorth(iTaxon)
+        Me.OccurrenceStatus = data.TaxonOccurrenceStatus(iTaxon)
+        Me.Order = data.TaxonOrder(iTaxon)
+        Me.OrganismType = data.TaxonOrganismType(iTaxon)
+        Me.Phylum = ""
+        Me.SourceKey = data.TaxonSourceKey(iTaxon)
+        Me.South = data.TaxonSouth(iTaxon)
+        Me.Species = data.TaxonSpecies(iTaxon)
+        Me.vbgfK = 0
+        Me.VulnerabilityIndex = data.TaxonVulnerabilityIndex(iTaxon)
+        Me.West = data.TaxonWest(iTaxon)
+        Me.Winf = data.TaxonWinf(iTaxon)
+    End Sub
 #End Region ' Constructor
 
 #Region " Properties "

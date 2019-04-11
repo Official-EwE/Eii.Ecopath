@@ -82,15 +82,7 @@ Friend Class cData
     ''' Get/set whether model generation should be enabled.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property Enabled() As Boolean
-        Get
-            Return My.Settings.GenerationEnabled
-        End Get
-        Set(value As Boolean)
-            My.Settings.GenerationEnabled = value
-            My.Settings.Save()
-        End Set
-    End Property
+    Public Property Enabled() As Boolean = False
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

@@ -4557,6 +4557,8 @@ Public Class cCore
                              sPropCatch As Single,
                              ByRef iDBID As Integer) As Boolean
 
+        If (data Is Nothing) Then Return False
+
         Dim bSucces As Boolean = False
         Dim iTargetDBID As Integer = 0
 
@@ -4573,7 +4575,7 @@ Public Class cCore
         ' Increase batch count
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
-        ' Start the actual work. The data source will ensure the new fleet will be added througout models and scenarios
+        ' Start the actual work
         If (DirectCast(DataSource, IEcopathDataSource).AddTaxon(iTargetDBID, bIsStanza, data, sPropBiomass, sPropCatch, iDBID)) Then
             Me.DataAddedOrRemovedMessage("Ecopath number of taxa has changed.", eCoreComponentType.EcoPath, eDataTypes.Taxon)
             bSucces = True
