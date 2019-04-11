@@ -62,7 +62,7 @@ Namespace SpatialData
             Me.m_spaceData = Me.m_core.m_EcoSpaceData
         End Sub
 
-     
+
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialScalarDataAdapter.Adapt"/>
         ''' <remarks>
@@ -72,17 +72,15 @@ Namespace SpatialData
         ''' <see cref="cSpatialScalarDataAdapter.SetCell"/> will scale external data to a the first timestep or a user defined value.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap, _
-                                                  ByVal layer As cEcospaceLayer, _
-                                                  ByVal conn As cSpatialDataConnection, _
-                                                  ByVal iTime As Integer, _
-                                                  ByVal dt As Date, _
-                                                  ByVal dataExternal As ISpatialRaster, _
+        Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap,
+                                                  ByVal layer As cEcospaceLayer,
+                                                  ByVal conn As cSpatialDataConnection,
+                                                  ByVal iTime As Integer,
+                                                  ByVal dt As Date,
+                                                  ByVal dataExternal As ISpatialRaster,
                                                   ByVal dNoData As Double) As Boolean
-            Dim breturnVal As Boolean
 
-            Me.m_spaceData.isCapacityChanged = True
-            breturnVal = MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
+            Dim breturnVal As Boolean = MyBase.Adapt(bm, layer, conn, iTime, dt, dataExternal, dNoData)
 
             'isGroupHabCapChanged(group) tells the habitat capacity model 
             'that the capacity inputs for a group have changed.
@@ -96,11 +94,22 @@ Namespace SpatialData
             'xxxxxxxxxxxxxxxxxxxxxxxx
             'Me.m_spaceData.isGroupHabCapChanged(layer.Index) = breturnVal
             'xxxxxxxxxxxxxxxxxxxxxxxx
+
+            'js 12-April-2019
+            'Setting isGroupHabCapChanged to returnval may erase flags set by other capacity layers
+            'Instead, the flag must be set incrementally
+            'xxxxxxxxxxxxxxxxxxxxxxxx
+            'The same check should be put in place for habitat adapters (which don't exist yet) and 
+            'InputCapacityDrivers (which also do not exist yet)
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+            Me.m_spaceData.isCapacityChanged = Me.m_spaceData.isCapacityChanged Or breturnVal
             For iGroup As Integer = 1 To Me.m_spaceData.NGroups
-                'Ok Turn on the groups that were changed
-                Me.m_spaceData.isGroupHabCapChanged(iGroup) = breturnVal
+                'Turn on all groups that use env responses for drivers
+                ' This is awfully coarse, but detailed checks will be cumbersome here
+                If ((Me.m_spaceData.CapCalType(iGroup) And eEcospaceCapacityCalType.EnvResponses) > 0) Then
+                    Me.m_spaceData.isGroupHabCapChanged(iGroup) = Me.m_spaceData.isGroupHabCapChanged(iGroup) Or breturnVal
+                End If
             Next
 
             Return breturnVal
