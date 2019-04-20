@@ -96,19 +96,27 @@ Namespace SpatialData
             'xxxxxxxxxxxxxxxxxxxxxxxx
 
             'js 12-April-2019
-            'Setting isGroupHabCapChanged to returnval may erase flags set by other capacity layers
-            'Instead, the flag must be set incrementally
-            'xxxxxxxxxxxxxxxxxxxxxxxx
-            'The same check should be put in place for habitat adapters (which don't exist yet) and 
-            'InputCapacityDrivers (which also do not exist yet)
+            'Setting isGroupHabCapChanged to returnval may erase flags set by other capacity layers if Adapt fails
+            'Below a stab at setting the flags incrementally, only for possibly relevant groups
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-            Me.m_spaceData.isCapacityChanged = Me.m_spaceData.isCapacityChanged Or breturnVal
             For iGroup As Integer = 1 To Me.m_spaceData.NGroups
-                'Turn on all groups that use env responses for drivers
-                ' This is awfully coarse, but detailed checks will be cumbersome here
-                If ((Me.m_spaceData.CapCalType(iGroup) And eEcospaceCapacityCalType.EnvResponses) > 0) Then
-                    Me.m_spaceData.isGroupHabCapChanged(iGroup) = Me.m_spaceData.isGroupHabCapChanged(iGroup) Or breturnVal
+                'Turn on all groups that are configured to use this type of data as capacity drivers
+                'This code does not check if the actual layer is used, but that would be too awful to check here
+                Dim bInvalidate As Boolean = False
+                Select Case Me.VarName
+                    Case eVarNameFlags.LayerHabitatCapacityInput
+                        bInvalidate = breturnVal
+                    Case eVarNameFlags.LayerHabitat
+                        bInvalidate = breturnVal And ((Me.m_spaceData.CapCalType(iGroup) And eEcospaceCapacityCalType.Habitat) > 0)
+                    Case eVarNameFlags.LayerDriver
+                        bInvalidate = breturnVal And ((Me.m_spaceData.CapCalType(iGroup) And eEcospaceCapacityCalType.EnvResponses) > 0)
+                    Case Else
+                        Debug.Assert(False, "Capacity driver encountered unexpected layer type " & Me.VarName.ToString())
+                End Select
+                If (bInvalidate) Then
+                    Me.m_spaceData.isGroupHabCapChanged(iGroup) = True
+                    Me.m_spaceData.isCapacityChanged = True
                 End If
             Next
 
