@@ -1557,7 +1557,7 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Bridge, invokes the <see cref="IEcospaceRunInvalidatedPlugin.EcospaceRunInvalidated"/> 
-    ''' plug-in point on any available and responsive <see cref="IEcospaceRunInvalidatedPlugin"/>.
+    ''' plug-in point.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Function EcospaceRunInvalidated() As Boolean
@@ -1567,8 +1567,19 @@ Public Class cPluginManager
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
+    ''' Bridge, invokes the <see cref="IEcospaceInitRunStartedPlugin.EcospaceInitRunStarted(Object)"/> 
+    ''' plug-in point.
+    ''' </summary>
+    ''' <param name="EcospaceDataStructures"></param>
+    ''' ---------------------------------------------------------------------------
+    Public Function EcospaceInitRunStarted(ByVal EcospaceDataStructures As Object) As Boolean
+        Return Me.TryInvokeMethod(GetType(IEcospaceInitRunStartedPlugin), "EcospaceInitRunStarted", New Object() {EcospaceDataStructures})
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
     ''' Bridge, invokes the <see cref="IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted"/> 
-    ''' plug-in point on any available and responsive <see cref="IEcospaceLayerChangePlugin"/>.
+    ''' plug-in point.
     ''' </summary>
     ''' <param name="EcospaceDataStructures"></param>
     ''' ---------------------------------------------------------------------------
@@ -1579,7 +1590,7 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Bridge, invokes the <see cref="IEcospaceLayerChangePlugin.EcospaceBeginLayerChange"/> 
-    ''' plug-in point on any available and responsive <see cref="IEcospaceLayerChangePlugin"/>.
+    ''' plug-in point.
     ''' </summary>
     ''' <param name="iTime"></param>
     ''' <param name="dt"></param>

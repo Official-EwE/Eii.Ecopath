@@ -136,6 +136,7 @@
     <Compile Include="Plugin templates\Ecosim\IEcosimModifyEffort.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimShapeFunctionPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimScenarioAddedOrRemovedPlugin.vb" />
+    <Compile Include="Plugin templates\Ecospace\IEcospaceInitRunStartedPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceLayerChangePlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceInitRunCompletedPlugin.vb" />
     <Compile Include="Plugin templates\Ecospace\IEcospaceScenarioAddedOrRemovedPlugin.vb" />
