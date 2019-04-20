@@ -798,7 +798,7 @@ Public Class cEcoSpace
                 End If
             End If
 
-            'Run initialization has completed Call the plugin point
+            'Run initialization has completed; call the plugin point
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceInitRunCompleted(Me.EcoSpaceData)
             stpwchTotRunTime.Start()
 
@@ -2904,6 +2904,9 @@ Public Class cEcoSpace
     Private Sub InitSpatialTemporalRun()
 
         Try
+            'Run initialization is starting; call the plugin point
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceInitRunStarted(Me.EcoSpaceData)
+
             ' Preserve base RelPP, either loaded or sketched
             Me.EcoSpaceData.setBaseRelPP()
 

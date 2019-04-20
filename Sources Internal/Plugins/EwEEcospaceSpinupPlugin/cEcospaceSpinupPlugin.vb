@@ -43,11 +43,10 @@ Public Class cEcospaceSpinupPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcospaceInitializedPlugin
     Implements EwEPlugin.IEcospaceEndTimestepPlugin
+    Implements EwEPlugin.IEcospaceInitRunStartedPlugin
     Implements EwEPlugin.IEcospaceInitRunCompletedPlugin
     Implements EwEPlugin.IEcospaceRunCompletedPlugin
     Implements EwEPlugin.IAutoRunPlugin
-
-    'Implements EwEPlugin.IMenuItemPlugin
 
 #Region "Events sent out by Plugin to an Interface"
 
@@ -72,18 +71,21 @@ Public Class cEcospaceSpinupPlugin
     Private m_uic As cUIContext = Nothing
     Private m_form As frmEcospaceSpinup = Nothing
 
+    Private m_bUseSpinUp As Boolean = False
+    Private m_bUseSpinUpBase As Boolean = False
+    Private m_nSpinUpYears As Integer = 10
+
 #End Region
 
 #Region " Public Methods and properties "
 
     Public Property SpinUpYears As Integer
         Get
-            Return CInt(Me.m_core.m_EcoSpaceData.SpinUpYears)
+            Return Me.m_nSpinUpYears
         End Get
         Set(value As Integer)
             Try
-                If Me.m_core.StateMonitor.IsBusy Then Return
-                Me.m_core.m_EcoSpaceData.SpinUpYears = Math.Max(0, Math.Min(100, value))
+                Me.m_nSpinUpYears = Math.Max(0, Math.Min(100, value))
                 If Me.HasMainForm() Then
                     Me.m_form.SettingsChanged()
                 End If
@@ -95,12 +97,11 @@ Public Class cEcospaceSpinupPlugin
 
     Public Property UseSpinUp As Boolean
         Get
-            Return Me.m_core.m_EcoSpaceData.UseSpinUp
+            Return Me.m_bUseSpinUp
         End Get
         Set(value As Boolean)
             Try
-                If Me.m_core.StateMonitor.IsBusy Then Return
-                Me.m_core.m_EcoSpaceData.UseSpinUp = value
+                Me.m_bUseSpinUp = value
                 If Me.HasMainForm() Then
                     Me.m_form.SettingsChanged()
                 End If
@@ -113,7 +114,7 @@ Public Class cEcospaceSpinupPlugin
     Public Property UseSpinUpBaseBio As Boolean
         Get
             Try
-                Return Me.m_core.m_EcoSpaceData.UseSpinUpBase
+                Return Me.m_bUseSpinUpBase
             Catch ex As Exception
                 Me.LogMessage(ex)
             End Try
@@ -121,8 +122,7 @@ Public Class cEcospaceSpinupPlugin
         End Get
         Set(value As Boolean)
             Try
-                If Me.m_core.StateMonitor.IsBusy Then Return
-                Me.m_core.m_EcoSpaceData.UseSpinUpBase = value
+                Me.m_bUseSpinUpBase = value
                 If Me.HasMainForm() Then
                     Me.m_form.SettingsChanged()
                 End If
@@ -190,7 +190,7 @@ Public Class cEcospaceSpinupPlugin
 
 #Region "Ecopath, Ecosim and Ecospace events"
 
-    Public Sub OnEcospaceInitRunCompleted(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
+    Public Sub OnEcospaceInitRunStarted(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitRunStartedPlugin.EcospaceInitRunStarted
 
         Try
             ' This is the correct moment to tell Ecospace to start using the SpinUp period
@@ -198,27 +198,26 @@ Public Class cEcospaceSpinupPlugin
             Me.EcoSpaceData.SpinUpYears = Me.SpinUpYears
             Me.EcoSpaceData.UseSpinUpBase = Me.UseSpinUpBaseBio
 
+        Catch ex As Exception
+            LogMessage(ex, "Exception initializing OnEcospaceInitRunStarted.")
+        End Try
+
+    End Sub
+
+    Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) Implements IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
+        Try
             'Me.SS = 0
-            If BtBtMinus1 Is Nothing Then
-                Me.BtBtMinus1 = New Single(Me.EcoSpaceData.NGroups) {}
-                Me.BtB0 = New Single(Me.EcoSpaceData.NGroups) {}
-                Me.BioAtTime = New Single(Me.EcoSpaceData.NGroups) {}
-                Me.BioAtBase = New Single(Me.EcoSpaceData.NGroups) {}
-            Else
-                Array.Clear(Me.BtBtMinus1, 0, Me.BtBtMinus1.Length)
-                Array.Clear(Me.BtB0, 0, Me.BtB0.Length)
-                Array.Clear(Me.BioAtTime, 0, Me.BioAtTime.Length)
-                Array.Clear(Me.BioAtBase, 0, Me.BioAtBase.Length)
-            End If
+            ReDim Me.BtBtMinus1(Me.EcoSpaceData.NGroups)
+            ReDim Me.BtB0(Me.EcoSpaceData.NGroups)
+            ReDim Me.BioAtTime(Me.EcoSpaceData.NGroups)
+            ReDim Me.BioAtBase(Me.EcoSpaceData.NGroups)
 
             Me.fireOnRunStarting()
 
         Catch ex As Exception
             LogMessage(ex, "Exception initializing EcospaceSpinupPlugin.")
         End Try
-
     End Sub
-
 
     Public Sub OnEcospaceEndTimeStep(EcospaceDatastructures As Object, iTime As Integer) Implements EwEPlugin.IEcospaceEndTimestepPlugin.EcospaceEndTimeStep
 
@@ -282,8 +281,6 @@ Public Class cEcospaceSpinupPlugin
         End Try
 
     End Sub
-
-
 
     Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
         Try

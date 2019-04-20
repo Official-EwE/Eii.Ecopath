@@ -47,7 +47,6 @@ Public Class frmEcospaceSpinup
     Public Sub New()
         MyBase.New()
         Me.InitializeComponent()
-        Me.m_gridSpinUpDif.Init(Me.m_plugin)
     End Sub
 
 #Region " Overrides "
@@ -55,6 +54,9 @@ Public Class frmEcospaceSpinup
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
         MyBase.OnLoad(e)
+
+        Me.m_gridSpinUpDif.UIContext = Me.UIContext
+        Me.m_gridSpinUpDif.Init(Me.m_plugin)
 
         Me.m_bInitializing = True
 
@@ -78,6 +80,9 @@ Public Class frmEcospaceSpinup
         'RemoveHandler Me.m_plugin.OnEcospaceRunCompleted, AddressOf Me.OnRunCompleted
 
         Me.m_fpSpinupYears.Release()
+
+        Me.m_gridSpinUpDif.UIContext = Nothing
+        MyBase.OnFormClosed(e)
 
     End Sub
 
