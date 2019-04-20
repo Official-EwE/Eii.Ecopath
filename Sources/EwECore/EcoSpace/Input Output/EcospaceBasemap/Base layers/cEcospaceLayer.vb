@@ -80,12 +80,12 @@ Public MustInherit Class cEcospaceLayer
     ''' <param name="iIndex">Secundary index for obtaining the data.</param>
     ''' <param name="typeValue"><see cref="Type">Type</see> of layer values.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub New(ByVal core As cCore, _
-                      ByVal iDBID As Integer, _
-                      ByVal manager As IEcospaceLayerManager, _
-                      ByVal strName As String, _
-                      ByVal vnData As eVarNameFlags, _
-                      ByVal iIndex As Integer, _
+    Protected Sub New(ByVal core As cCore,
+                      ByVal iDBID As Integer,
+                      ByVal manager As IEcospaceLayerManager,
+                      ByVal strName As String,
+                      ByVal vnData As eVarNameFlags,
+                      ByVal iIndex As Integer,
                       ByVal typeValue As Type)
 
         Me.New(core, iDBID, strName, typeValue, Nothing)
@@ -117,11 +117,11 @@ Public MustInherit Class cEcospaceLayer
     ''' <param name="data">The data to link to this layer.</param>
     ''' <param name="typeValue"><see cref="Type">Type</see> of layer values.</param>
     ''' -----------------------------------------------------------------------
-    Protected Sub New(ByVal core As cCore, _
-                      ByVal data As Object, _
-                      ByVal strName As String, _
-                      ByVal typeValue As Type, _
-                      Optional ByVal meta As cVariableMetaData = Nothing, _
+    Protected Sub New(ByVal core As cCore,
+                      ByVal data As Object,
+                      ByVal strName As String,
+                      ByVal typeValue As Type,
+                      Optional ByVal meta As cVariableMetaData = Nothing,
                       Optional ByVal vn As eVarNameFlags = Nothing)
 
         Me.New(core, cCore.NULL_VALUE, strName, typeValue, meta)
@@ -132,10 +132,10 @@ Public MustInherit Class cEcospaceLayer
 
     End Sub
 
-    Private Sub New(ByVal core As cCore, _
-                    ByVal iDBID As Integer, _
-                    ByVal strName As String, _
-                    ByVal typeValue As Type, _
+    Private Sub New(ByVal core As cCore,
+                    ByVal iDBID As Integer,
+                    ByVal strName As String,
+                    ByVal typeValue As Type,
                     ByVal meta As cVariableMetaData)
 
         MyBase.New(core)
