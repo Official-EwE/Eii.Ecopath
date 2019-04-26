@@ -113,8 +113,8 @@ Namespace Utilities
 
         Private Shared Sub InitSounds()
 
-            If (cSoundUtilities.s_sounds Is Nothing) Then
-                cSoundUtilities.s_sounds = New cSystemSounds() With {
+            'If (cSoundUtilities.s_sounds Is Nothing) Then
+            cSoundUtilities.s_sounds = New cSystemSounds() With {
                     .Asterisk = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemAsterisk\.Current", ""),
                     .Exclamation = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemExclamation\.Current", ""),
                     .Hand = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemHand\.Current", ""),
@@ -122,7 +122,7 @@ Namespace Utilities
                     .Question = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemQuestion\.Current", ""),
                     .[Default] = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\.Default\.Current", "")
                 }
-            End If
+            'End If
         End Sub
 
 #End Region ' Internals
