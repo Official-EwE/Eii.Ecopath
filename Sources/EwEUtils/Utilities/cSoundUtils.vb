@@ -38,48 +38,69 @@ Namespace Utilities
 
 #Region " Private vars "
 
-        Private Shared s_sounds As cSystemSounds = Nothing
-
-        Private Class cSystemSounds
+        Private Class cWindowsSystemSounds
             ''' <summary>SystemAsterisk</summary>
-            Public Property Asterisk As String
+            Public Shared ReadOnly Property Asterisk As String
+                Get
+                    Return cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemAsterisk\.Current", "")
+                End Get
+            End Property
             ''' <summary>SystemExclamation</summary>
-            Public Property Exclamation As String
+            Public Shared ReadOnly Property Exclamation As String
+                Get
+                    Return cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemExclamation\.Current", "")
+                End Get
+            End Property
             ''' <summary>SystemHand</summary>
-            Public Property Hand As String
+            Public Shared ReadOnly Property Hand As String
+                Get
+                    Return cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemHand\.Current", "")
+                End Get
+            End Property
             ''' <summary>SystemNotification</summary>
-            Public Property Notification As String
+            Public Shared ReadOnly Property Notification As String
+                Get
+                    Return cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemNotification\.Current", "")
+                End Get
+            End Property
             ''' <summary>SystemQuestion</summary>
-            Public Property Question As String
+            Public Shared ReadOnly Property Question As String
+                Get
+                    Return cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemQuestion\.Current", "")
+                End Get
+            End Property
             ''' <summary>A default sound</summary>
-            Public Property [Default] As String
+            Public Shared ReadOnly Property [Default] As String
+                Get
+                    Return cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\.Default\.Current", "")
+                End Get
+            End Property
         End Class
 
 #End Region ' Private vars
 
 #Region " Public access "
 
-
         Public Shared Sub PlaySound(ByVal icon As MessageBoxIcon)
 
-            cSoundUtilities.InitSounds()
-
-            Dim strFileName As String = s_sounds.[Default]
+            Dim strFileName As String = ""
 
             Select Case icon
                 Case MessageBoxIcon.Asterisk
-                    strFileName = s_sounds.Asterisk
+                    strFileName = cWindowsSystemSounds.Asterisk
                 Case MessageBoxIcon.Exclamation
-                    strFileName = s_sounds.Exclamation
+                    strFileName = cWindowsSystemSounds.Exclamation
                 Case MessageBoxIcon.Hand,
                      MessageBoxIcon.Stop
-                    strFileName = s_sounds.Hand
+                    strFileName = cWindowsSystemSounds.Hand
                 Case MessageBoxIcon.Information
-                    strFileName = s_sounds.Notification
+                    strFileName = cWindowsSystemSounds.Notification
                 Case MessageBoxIcon.Question
-                    strFileName = s_sounds.Question
+                    strFileName = cWindowsSystemSounds.Question
                 Case MessageBoxIcon.Warning
-                    strFileName = s_sounds.[Default]
+                    strFileName = cWindowsSystemSounds.[Default]
+                Case Else
+                    strFileName = cWindowsSystemSounds.[Default]
             End Select
 
             PlaySound(strFileName)
@@ -108,24 +129,6 @@ Namespace Utilities
         End Sub
 
 #End Region ' Public access
-
-#Region " Internals "
-
-        Private Shared Sub InitSounds()
-
-            'If (cSoundUtilities.s_sounds Is Nothing) Then
-            cSoundUtilities.s_sounds = New cSystemSounds() With {
-                    .Asterisk = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemAsterisk\.Current", ""),
-                    .Exclamation = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemExclamation\.Current", ""),
-                    .Hand = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemHand\.Current", ""),
-                    .Notification = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemNotification\.Current", ""),
-                    .Question = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\SystemQuestion\.Current", ""),
-                    .[Default] = cRegistryUtils.ReadKey(Registry.CurrentUser, "AppEvents\Schemes\Apps\.Default\.Default\.Current", "")
-                }
-            'End If
-        End Sub
-
-#End Region ' Internals
 
     End Class
 
