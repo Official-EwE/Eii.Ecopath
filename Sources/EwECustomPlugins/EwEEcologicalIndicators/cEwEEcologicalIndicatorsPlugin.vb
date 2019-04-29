@@ -579,7 +579,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
             For iCol As Integer = 1 To bm.InCol
                 If (depth.IsWaterCell(iRow, iCol)) Then
                     ptCell = New Point(iCol, iRow)
-                    Me.m_dtIndEcospace(ptCell) = New cEcospaceIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecospaceDS, New Point(iCol, iRow), Me.m_stanzaDS, Me.m_taxonDS, lookup)
+                    Me.m_dtIndEcospace(ptCell) = New cEcospaceIndicators(Me.m_core, Me.m_ecopathDS, Me.m_ecospaceDS, ptCell, Me.m_stanzaDS, Me.m_taxonDS, lookup)
                 End If
             Next iCol
         Next iRow
