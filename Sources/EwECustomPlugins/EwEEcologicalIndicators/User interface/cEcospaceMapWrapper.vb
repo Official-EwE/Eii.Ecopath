@@ -29,6 +29,8 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Style
 Imports System.Threading
+Imports EwEUtils.Utilities
+Imports System.IO
 
 #End Region ' Imports
 
@@ -69,11 +71,11 @@ Public Class cEcospaceMapWrapper
 
 #Region " Attach + detach "
 
-    Public Sub Attach(ByVal uic As cUIContext, _
-                      ByVal indicators As Dictionary(Of Point, cEcospaceIndicators), _
-                      ByVal settings As cIndicatorSettings, _
-                      ByVal picbox As PictureBox, _
-                      ByVal indEcopath As cEcopathIndicators, _
+    Public Sub Attach(ByVal uic As cUIContext,
+                      ByVal indicators As Dictionary(Of Point, cEcospaceIndicators),
+                      ByVal settings As cIndicatorSettings,
+                      ByVal picbox As PictureBox,
+                      ByVal indEcopath As cEcopathIndicators,
                       ByVal colors As List(Of Color))
 
         Me.m_uic = uic
@@ -113,6 +115,12 @@ Public Class cEcospaceMapWrapper
 
 #End Region ' Attach + detach
 
+    Private m_strIndicatorFileName As String = ""
+
+    Public Function MapFileName() As String
+        Return Me.m_strIndicatorFileName
+    End Function
+
     Public Sub RefreshContent(indSingle As cIndicatorInfo, indGroup As cIndicatorInfoGroup)
 
         If (Me.m_uic Is Nothing) Then Return
@@ -129,11 +137,13 @@ Public Class cEcospaceMapWrapper
                 For i As Integer = 0 To Me.m_groupCurrent.NumIndicators - 1
                     lInfo.Add(Me.m_groupCurrent.Indicator(i))
                 Next
+                Me.m_strIndicatorFileName = cFileUtils.ToValidFileName("Ecospace indicators " & indGroup.Name, False)
             End If
         Else
             ' Indicator mode
             Me.m_indCurrent = indSingle
             lInfo.Add(Me.m_indCurrent)
+            Me.m_strIndicatorFileName = cFileUtils.ToValidFileName("Ecospace indicator " & indSingle.Name, False)
         End If
 
         If (lInfo.Count > 0) Then
@@ -151,7 +161,7 @@ Public Class cEcospaceMapWrapper
             Me.m_picbox.BackgroundImage = Me.m_bmp
         End If
 
-            Me.m_picbox.Invalidate()
+        Me.m_picbox.Invalidate()
 
     End Sub
 
@@ -172,91 +182,91 @@ Public Class cEcospaceMapWrapper
 
         Me.m_bmp = New Bitmap(Me.m_picbox.Width, Me.m_picbox.Height, Imaging.PixelFormat.Format32bppArgb)
 
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+        Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
 
-            If (bm Is Nothing) Then Return
+        If (bm Is Nothing) Then Return
 
-            Dim iInRow As Integer = bm.InRow
-            Dim iInCol As Integer = bm.InCol
-            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-            Dim info As cIndicatorInfo = Nothing
-            Dim ind As cEcospaceIndicators = Nothing
-            Dim settings As cIndicatorSettings = Me.m_settings
+        Dim iInRow As Integer = bm.InRow
+        Dim iInCol As Integer = bm.InCol
+        Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+        Dim info As cIndicatorInfo = Nothing
+        Dim ind As cEcospaceIndicators = Nothing
+        Dim settings As cIndicatorSettings = Me.m_settings
 
-            Dim n As Integer = Me.m_drawers.Count
+        Dim n As Integer = Me.m_drawers.Count
 
-            If (n > 0) Then
+        If (n > 0) Then
 
-                ' Ugh!
-                Dim asData(iInRow, iInCol, n) As Single
-                Dim sValue As Single = 0
-                Dim asScaler(n) As Single
-                Dim astrLabels(n) As String
-                Dim astrDescriptions(n) As String
+            ' Ugh!
+            Dim asData(iInRow, iInCol, n) As Single
+            Dim sValue As Single = 0
+            Dim asScaler(n) As Single
+            Dim astrLabels(n) As String
+            Dim astrDescriptions(n) As String
 
-                ' Populate result array from computed indicators
-                For i As Integer = 0 To Me.m_drawers.Count - 1
-                    info = Me.m_drawers(i).Indicator
+            ' Populate result array from computed indicators
+            For i As Integer = 0 To Me.m_drawers.Count - 1
+                info = Me.m_drawers(i).Indicator
 
-                    For Each pt As Point In Me.m_dtIndicators.Keys
-                        ind = Me.m_dtIndicators(pt)
-                        sValue = info.GetValue(ind)
-                        asData(pt.Y, pt.X, i) = sValue
-                    Next
-
-                    asScaler(i) = info.GetValue(Me.m_indPath)
-                    If (asScaler(i) = 0) Then asScaler(i) = 1.0
-                    astrLabels(i) = info.Name
-                    astrDescriptions(i) = info.Description
+                For Each pt As Point In Me.m_dtIndicators.Keys
+                    ind = Me.m_dtIndicators(pt)
+                    sValue = info.GetValue(ind)
+                    asData(pt.Y, pt.X, i) = sValue
                 Next
 
-                Dim iNumPlotsHorz As Integer = 0
-                Dim iNumPlotsVert As Integer = 0
-                Dim originList As New List(Of PointF)
-                Dim rectList As New List(Of Rectangle)
-                Dim mapArgs As New cMapDrawerArgs(cMapDrawerBase.eMapType.RelBiomass, asScaler, 0)
+                asScaler(i) = info.GetValue(Me.m_indPath)
+                If (asScaler(i) = 0) Then asScaler(i) = 1.0
+                astrLabels(i) = info.Name
+                astrDescriptions(i) = info.Description
+            Next
 
-                cMapDrawerBase.CalcMapAreas(Me.m_picbox.ClientRectangle, n, iInRow, iInCol,
+            Dim iNumPlotsHorz As Integer = 0
+            Dim iNumPlotsVert As Integer = 0
+            Dim originList As New List(Of PointF)
+            Dim rectList As New List(Of Rectangle)
+            Dim mapArgs As New cMapDrawerArgs(cMapDrawerBase.eMapType.RelBiomass, asScaler, 0)
+
+            cMapDrawerBase.CalcMapAreas(Me.m_picbox.ClientRectangle, n, iInRow, iInCol,
                                             iNumPlotsHorz, iNumPlotsVert, originList, rectList)
 
-                Using g As Graphics = Graphics.FromImage(Me.m_bmp)
-                    Using br As New SolidBrush(Color.White)
-                        g.FillRectangle(br, 0, 0, Me.m_bmp.Width, Me.m_bmp.Height)
-                    End Using
+            Using g As Graphics = Graphics.FromImage(Me.m_bmp)
+                Using br As New SolidBrush(Color.White)
+                    g.FillRectangle(br, 0, 0, Me.m_bmp.Width, Me.m_bmp.Height)
                 End Using
+            End Using
 
-                For i As Integer = 0 To n - 1
-                    Dim drawer As cEcospaceMapDrawer = Me.m_drawers(i)
+            For i As Integer = 0 To n - 1
+                Dim drawer As cEcospaceMapDrawer = Me.m_drawers(i)
 
-                    'init the drawer to the latest values
-                    drawer.OriginList = originList
-                    drawer.RectList = rectList
+                'init the drawer to the latest values
+                drawer.OriginList = originList
+                drawer.RectList = rectList
 
-                    drawer.StanzaDS = Nothing
+                drawer.StanzaDS = Nothing
 
-                    drawer.InCol = iInCol
-                    drawer.InRow = iInRow
-                    drawer.Month = 0
+                drawer.InCol = iInCol
+                drawer.InRow = iInRow
+                drawer.Month = 0
 
-                    drawer.ClearItems()
-                    drawer.AddItem(i, i)
+                drawer.ClearItems()
+                drawer.AddItem(i, i)
 
-                    drawer.Labels = astrLabels
-                    drawer.Descriptions = astrDescriptions
-                    drawer.Map = asData
-                    drawer.Graphics = Graphics.FromImage(Me.m_bmp)
+                drawer.Labels = astrLabels
+                drawer.Descriptions = astrDescriptions
+                drawer.Map = asData
+                drawer.Graphics = Graphics.FromImage(Me.m_bmp)
 
-                    drawer.AllowedToRun = False
-                    drawer.SignalState.Reset()
-                    ThreadPool.QueueUserWorkItem(AddressOf drawer.Draw, mapArgs)
+                drawer.AllowedToRun = False
+                drawer.SignalState.Reset()
+                ThreadPool.QueueUserWorkItem(AddressOf drawer.Draw, mapArgs)
 
-                Next
+            Next
 
-                For Each drawer In m_drawers
-                    drawer.SignalState.WaitOne()
-                Next
+            For Each drawer In m_drawers
+                drawer.SignalState.WaitOne()
+            Next
 
-            End If
+        End If
 
 
     End Sub
@@ -293,5 +303,20 @@ Public Class cEcospaceMapWrapper
         cToolTipShared.GetInstance().SetToolTip(Me.m_picbox, "")
         Me.m_strTipLast = ""
     End Sub
+
+    Public Function SaveImage(fn As String) As Boolean
+        If (Me.m_bmp IsNot Nothing) Then
+            Dim msg As cMessage = Nothing
+            Try
+                Me.m_bmp.Save(fn)
+                msg = New cMessage(cStringUtils.Localize("Image saved to {0}", fn), eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                msg.Hyperlink = Path.GetFileName(fn)
+            Catch ex As Exception
+                msg = New cMessage(cStringUtils.Localize("Image failed to save to {0}. {1}", fn, ex.Message), eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Critical)
+                msg.Hyperlink = Path.GetFileName(fn)
+            End Try
+            Me.m_uic.Core.Messages.SendMessage(msg)
+        End If
+    End Function
 
 End Class

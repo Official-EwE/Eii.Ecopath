@@ -89,6 +89,9 @@ Partial Class frmMain
         Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
         Me.m_pbStatus = New System.Windows.Forms.PictureBox()
         Me.m_llStatus = New ScientificInterfaceShared.Controls.ucLinkLabel()
+        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.m_tlpEcospace = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_tsbnEcospaceSaveImage = New System.Windows.Forms.ToolStripButton()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -108,6 +111,8 @@ Partial Class frmMain
         Me.m_tlpHistSettings.SuspendLayout()
         Me.m_tpMCsim.SuspendLayout()
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.ToolStrip1.SuspendLayout()
+        Me.m_tlpEcospace.SuspendLayout()
         Me.SuspendLayout()
         '
         'SplitContainer1
@@ -375,8 +380,8 @@ Partial Class frmMain
         'm_tpEcospace
         '
         Me.m_tpEcospace.BackColor = System.Drawing.SystemColors.Control
-        Me.m_tpEcospace.Controls.Add(Me.m_legend)
-        Me.m_tpEcospace.Controls.Add(Me.m_pbEcospaceMap)
+        Me.m_tpEcospace.Controls.Add(Me.m_tlpEcospace)
+        Me.m_tpEcospace.Controls.Add(Me.ToolStrip1)
         resources.ApplyResources(Me.m_tpEcospace, "m_tpEcospace")
         Me.m_tpEcospace.Name = "m_tpEcospace"
         '
@@ -486,6 +491,25 @@ Partial Class frmMain
         Me.m_llStatus.UIContext = Nothing
         Me.m_llStatus.UseCompatibleTextRendering = True
         '
+        'ToolStrip1
+        '
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnEcospaceSaveImage})
+        resources.ApplyResources(Me.ToolStrip1, "ToolStrip1")
+        Me.ToolStrip1.Name = "ToolStrip1"
+        '
+        'm_tlpEcospace
+        '
+        resources.ApplyResources(Me.m_tlpEcospace, "m_tlpEcospace")
+        Me.m_tlpEcospace.Controls.Add(Me.m_pbEcospaceMap, 0, 0)
+        Me.m_tlpEcospace.Controls.Add(Me.m_legend, 1, 0)
+        Me.m_tlpEcospace.Name = "m_tlpEcospace"
+        '
+        'm_tsbnEcospaceSaveImage
+        '
+        Me.m_tsbnEcospaceSaveImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnEcospaceSaveImage, "m_tsbnEcospaceSaveImage")
+        Me.m_tsbnEcospaceSaveImage.Name = "m_tsbnEcospaceSaveImage"
+        '
         'frmMain
         '
         resources.ApplyResources(Me, "$this")
@@ -514,12 +538,16 @@ Partial Class frmMain
         Me.m_tpEcopath.PerformLayout()
         Me.m_tpEcosim.ResumeLayout(False)
         Me.m_tpEcospace.ResumeLayout(False)
+        Me.m_tpEcospace.PerformLayout()
         CType(Me.m_pbEcospaceMap, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_tpMCpath.ResumeLayout(False)
         Me.m_tlpHistSettings.ResumeLayout(False)
         Me.m_tlpHistSettings.PerformLayout()
         Me.m_tpMCsim.ResumeLayout(False)
         CType(Me.m_pbStatus, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ToolStrip1.ResumeLayout(False)
+        Me.ToolStrip1.PerformLayout()
+        Me.m_tlpEcospace.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -567,4 +595,7 @@ Partial Class frmMain
     Private WithEvents m_lblHistNoBins As Windows.Forms.Label
     Private WithEvents m_tbxHistNoBins As Windows.Forms.TextBox
     Private WithEvents m_cbEcospaceAnnualOnly As Windows.Forms.CheckBox
+    Private WithEvents m_tlpEcospace As Windows.Forms.TableLayoutPanel
+    Friend WithEvents ToolStrip1 As Windows.Forms.ToolStrip
+    Private WithEvents m_tsbnEcospaceSaveImage As Windows.Forms.ToolStripButton
 End Class

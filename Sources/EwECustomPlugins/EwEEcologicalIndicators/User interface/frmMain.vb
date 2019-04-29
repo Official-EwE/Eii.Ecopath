@@ -21,15 +21,13 @@
 
 Option Strict On
 
+Imports System.IO
 Imports System.Windows.Forms
-Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Commands
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities
-Imports System.ComponentModel
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -189,6 +187,7 @@ Public Class frmMain
         Me.m_tbxOutputFolder.Text = My.Settings.CustomFolder
 
         Me.Icon = My.Resources.BioDiversityPluginIcon
+        Me.m_tsbnEcospaceSaveImage.Image = SharedResources.saveHS
 
         ' Start listening to core run state changes
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
@@ -538,6 +537,17 @@ Public Class frmMain
         Catch ex As Exception
 
         End Try
+
+    End Sub
+
+    Private Sub OnEcospaceSaveMapImage(sender As Object, e As EventArgs) Handles m_tsbnEcospaceSaveImage.Click
+
+        ' ToDo: globalize this
+        Dim strName As String = Path.Combine(Me.m_plugin.OutputFolder(cEwEEcologicalIndicatorsPlugin.eComponentType.Ecospace), Me.m_ecospacemap.MapFileName)
+        Dim sfd As SaveFileDialog = cEwEFileDialogHelper.SaveFileDialog("Save indicators map", strName, SharedResources.FILEFILTER_IMAGE)
+        If sfd.ShowDialog() = DialogResult.OK Then
+            Me.m_ecospacemap.SaveImage(sfd.FileName)
+        End If
 
     End Sub
 
