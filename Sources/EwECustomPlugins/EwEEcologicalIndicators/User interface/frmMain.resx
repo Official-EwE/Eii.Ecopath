@@ -142,7 +142,7 @@
     <value>m_tvIndicators</value>
   </data>
   <data name="&gt;&gt;m_tvIndicators.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.6.16173.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cThemedTreeView, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tvIndicators.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -796,7 +796,7 @@
     <value>m_hdrExport</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16173.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExport.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
@@ -829,7 +829,7 @@
     <value>m_hdrExecution</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16173.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Parent" xml:space="preserve">
     <value>m_tpSettings</value>
@@ -883,7 +883,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEEcologicalIndicatorsPlugin.gridEcopath, EwEEcologicalIndicatorsPlugin, Version=6.6.16173.0, Culture=neutral, PublicKeyToken=04cd55d5998388f6</value>
+    <value>EwEEcologicalIndicatorsPlugin.gridEcopath, EwEEcologicalIndicatorsPlugin, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=04cd55d5998388f6</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tpEcopath</value>
@@ -963,6 +963,39 @@
   <data name="&gt;&gt;m_tpEcosim.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="m_tlpEcospace.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_pbEcospaceMap.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_pbEcospaceMap.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_pbEcospaceMap.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_pbEcospaceMap.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_pbEcospaceMap.Size" type="System.Drawing.Size, System.Drawing">
+    <value>511, 454</value>
+  </data>
+  <data name="m_pbEcospaceMap.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_pbEcospaceMap.Name" xml:space="preserve">
+    <value>m_pbEcospaceMap</value>
+  </data>
+  <data name="&gt;&gt;m_pbEcospaceMap.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbEcospaceMap.Parent" xml:space="preserve">
+    <value>m_tlpEcospace</value>
+  </data>
+  <data name="&gt;&gt;m_pbEcospaceMap.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_legend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Right</value>
   </data>
@@ -988,7 +1021,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_legend.Size" type="System.Drawing.Size, System.Drawing">
-    <value>30, 479</value>
+    <value>30, 454</value>
   </data>
   <data name="m_legend.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -997,42 +1030,93 @@
     <value>m_legend</value>
   </data>
   <data name="&gt;&gt;m_legend.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.6.16173.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLegendBar, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_legend.Parent" xml:space="preserve">
-    <value>m_tpEcospace</value>
+    <value>m_tlpEcospace</value>
   </data>
   <data name="&gt;&gt;m_legend.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
-  <data name="m_pbEcospaceMap.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="m_tlpEcospace.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="m_pbEcospaceMap.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_tlpEcospace.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
   </data>
-  <data name="m_pbEcospaceMap.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="m_tlpEcospace.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="m_pbEcospaceMap.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+  <data name="m_tlpEcospace.Size" type="System.Drawing.Size, System.Drawing">
+    <value>541, 454</value>
   </data>
-  <data name="m_pbEcospaceMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>511, 479</value>
+  <data name="m_tlpEcospace.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="m_pbEcospaceMap.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;m_tlpEcospace.Name" xml:space="preserve">
+    <value>m_tlpEcospace</value>
   </data>
-  <data name="&gt;&gt;m_pbEcospaceMap.Name" xml:space="preserve">
-    <value>m_pbEcospaceMap</value>
+  <data name="&gt;&gt;m_tlpEcospace.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_pbEcospaceMap.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbEcospaceMap.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpEcospace.Parent" xml:space="preserve">
     <value>m_tpEcospace</value>
   </data>
-  <data name="&gt;&gt;m_pbEcospaceMap.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_tlpEcospace.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpEcospace.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbEcospaceMap" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_legend" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,AutoSize,0" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <metadata name="ToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="m_tsbnEcospaceSaveImage.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="m_tsbnEcospaceSaveImage.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnEcospaceSaveImage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="m_tsbnEcospaceSaveImage.Text" xml:space="preserve">
+    <value>Save image</value>
+  </data>
+  <data name="ToolStrip1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="ToolStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>541, 25</value>
+  </data>
+  <data name="ToolStrip1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ToolStrip1.Text" xml:space="preserve">
+    <value>ToolStrip1</value>
+  </data>
+  <data name="&gt;&gt;ToolStrip1.Name" xml:space="preserve">
+    <value>ToolStrip1</value>
+  </data>
+  <data name="&gt;&gt;ToolStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ToolStrip1.Parent" xml:space="preserve">
+    <value>m_tpEcospace</value>
+  </data>
+  <data name="&gt;&gt;ToolStrip1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_tpEcospace.Location" type="System.Drawing.Point, System.Drawing">
@@ -1105,7 +1189,7 @@
     <value>m_sliderNoBins</value>
   </data>
   <data name="&gt;&gt;m_sliderNoBins.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.6.16173.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucSlider, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sliderNoBins.Parent" xml:space="preserve">
     <value>m_tlpHistSettings</value>
@@ -1420,7 +1504,7 @@
     <value>m_llStatus</value>
   </data>
   <data name="&gt;&gt;m_llStatus.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.6.16173.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucLinkLabel, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_llStatus.Parent" xml:space="preserve">
     <value>$this</value>
@@ -5960,10 +6044,16 @@
   <data name="$this.Text" xml:space="preserve">
     <value> </value>
   </data>
+  <data name="&gt;&gt;m_tsbnEcospaceSaveImage.Name" xml:space="preserve">
+    <value>m_tsbnEcospaceSaveImage</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnEcospaceSaveImage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmMain</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16173.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.6.16199.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
