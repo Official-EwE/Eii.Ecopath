@@ -254,6 +254,7 @@ Namespace Controls.Map
             Dim bm As cEcospaceBasemap = Me.Basemap
 
             If (Me.CanEdit = False) Then Return
+            If (Not Me.m_maprect.Contains(e.Location)) Then Return
 
             Dim edt As cLayerEditor = Me.m_layerSelected.Editor
 
