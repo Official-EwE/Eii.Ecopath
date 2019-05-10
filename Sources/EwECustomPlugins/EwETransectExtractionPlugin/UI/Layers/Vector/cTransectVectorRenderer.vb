@@ -23,6 +23,7 @@ Option Strict On
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports EwECore.Auxiliary
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Style.cStyleGuide
@@ -41,9 +42,9 @@ Public Class cTransectVectorRenderer
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub New(sg As cStyleGuide)
-        MyBase.New(Nothing, cVisualStyle.eVisualStyleTypes.NotSet)
-        Me.m_sg = sg
+    Public Sub New(uic As cUIContext)
+        MyBase.New(uic, Nothing, cVisualStyle.eVisualStyleTypes.NotSet)
+        Me.m_sg = uic.StyleGuide
     End Sub
 
 #End Region ' Construction / destruction

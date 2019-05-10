@@ -79,6 +79,8 @@ Namespace Style
         Private m_strUnitAreaCustom As String = ""
 
         ' -- internal management --
+        ' ToDo: Allow users to select system color ramps in EwE options UI
+
         ''' <summary>States whether the StyleGuide contains unsaved changes</summary>
         Private m_bChanged As Boolean = False
         ''' <summary>Application colour scheme.</summary>
@@ -1887,82 +1889,91 @@ Namespace Style
 
 #Region " Visual Styles "
 
-        Private m_abrDefaultGlyphs As Image() = { _
-            My.Resources.glyph_blue1, _
-            My.Resources.glyph_blue2, _
-            My.Resources.glyph_blue3, _
-            My.Resources.glyph_blue4, _
-            My.Resources.glyph_blue5, _
-            My.Resources.glyph_blue6, _
-            My.Resources.glyph_blue7, _
-            My.Resources.glyph_blue8, _
-            My.Resources.glyph_blue9, _
-            My.Resources.glyph_blue10, _
-            My.Resources.glyph_deep_beige, _
-            My.Resources.glyph_deep_blue, _
-            My.Resources.glyph_deep_brown, _
-            My.Resources.glyph_deep_bw, _
-            My.Resources.glyph_deep_green, _
-            My.Resources.glyph_muddy_blue, _
-            My.Resources.glyph_muddy_brown, _
-            My.Resources.glyph_muddy_bw, _
-            My.Resources.glyph_muddy_green, _
-            My.Resources.glyph_rubble_blue, _
-            My.Resources.glyph_rubble_lightblue, _
-            My.Resources.glyph_rubble_brown, _
-            My.Resources.glyph_rubble_bw, _
-            My.Resources.glyph_rubble_sand, _
-            My.Resources.glyph_rubble_green, _
-            My.Resources.glyph_seagrass_brown, _
-            My.Resources.glyph_seagrass_bw, _
-            My.Resources.glyph_seagrass_dark, _
-            My.Resources.glyph_seagrass_red, _
-            My.Resources.glyph_arrows_down, _
-            My.Resources.glyph_arrows_up, _
-            My.Resources.glyph_hl_fine_dblue, _
-            My.Resources.glyph_hl_fine_blue, _
-            My.Resources.glyph_hl_fine_lblue, _
-            My.Resources.glyph_hl_fine_lgreen, _
-            My.Resources.glyph_hl_fine_dgreen, _
-            My.Resources.glyph_hl_fine_pink, _
-            My.Resources.glyph_hl_fine_lorange, _
-            My.Resources.glyph_hl_fine_orange, _
-            My.Resources.glyph_hl_fine_red, _
-            My.Resources.glyph_hl_med_blue, _
-            My.Resources.glyph_hl_med_dblue, _
-            My.Resources.glyph_vl_fine_dblue, _
-            My.Resources.glyph_vl_fine_blue, _
-            My.Resources.glyph_vl_fine_lblue, _
-            My.Resources.glyph_vl_fine_lgreen, _
-            My.Resources.glyph_vl_fine_dgreen, _
-            My.Resources.glyph_vl_fine_pink, _
-            My.Resources.glyph_vl_fine_lorange, _
-            My.Resources.glyph_vl_fine_orange, _
-            My.Resources.glyph_vl_fine_red, _
-            My.Resources.glyph_vl_med_blue, _
-            My.Resources.glyph_vl_med_dblue, _
-            My.Resources.glyph_blocks_large, _
-            My.Resources.glyph_blocks_small, _
-            My.Resources.glyph_squares_large, _
-            My.Resources.glyph_squares_small, _
-            My.Resources.glyph_dots_large, _
-            My.Resources.glyph_dots_small, _
-            My.Resources.glyph_circles_large, _
-            My.Resources.glyph_circles_small _
+        Private DefaultGlyphs As Image() = {
+            My.Resources.glyph_blue1,
+            My.Resources.glyph_blue2,
+            My.Resources.glyph_blue3,
+            My.Resources.glyph_blue4,
+            My.Resources.glyph_blue5,
+            My.Resources.glyph_blue6,
+            My.Resources.glyph_blue7,
+            My.Resources.glyph_blue8,
+            My.Resources.glyph_blue9,
+            My.Resources.glyph_blue10,
+            My.Resources.glyph_deep_beige,
+            My.Resources.glyph_deep_blue,
+            My.Resources.glyph_deep_brown,
+            My.Resources.glyph_deep_bw,
+            My.Resources.glyph_deep_green,
+            My.Resources.glyph_muddy_blue,
+            My.Resources.glyph_muddy_brown,
+            My.Resources.glyph_muddy_bw,
+            My.Resources.glyph_muddy_green,
+            My.Resources.glyph_rubble_blue,
+            My.Resources.glyph_rubble_lightblue,
+            My.Resources.glyph_rubble_brown,
+            My.Resources.glyph_rubble_bw,
+            My.Resources.glyph_rubble_sand,
+            My.Resources.glyph_rubble_green,
+            My.Resources.glyph_seagrass_brown,
+            My.Resources.glyph_seagrass_bw,
+            My.Resources.glyph_seagrass_dark,
+            My.Resources.glyph_seagrass_red,
+            My.Resources.glyph_arrows_down,
+            My.Resources.glyph_arrows_up,
+            My.Resources.glyph_hl_fine_dblue,
+            My.Resources.glyph_hl_fine_blue,
+            My.Resources.glyph_hl_fine_lblue,
+            My.Resources.glyph_hl_fine_lgreen,
+            My.Resources.glyph_hl_fine_dgreen,
+            My.Resources.glyph_hl_fine_pink,
+            My.Resources.glyph_hl_fine_lorange,
+            My.Resources.glyph_hl_fine_orange,
+            My.Resources.glyph_hl_fine_red,
+            My.Resources.glyph_hl_med_blue,
+            My.Resources.glyph_hl_med_dblue,
+            My.Resources.glyph_vl_fine_dblue,
+            My.Resources.glyph_vl_fine_blue,
+            My.Resources.glyph_vl_fine_lblue,
+            My.Resources.glyph_vl_fine_lgreen,
+            My.Resources.glyph_vl_fine_dgreen,
+            My.Resources.glyph_vl_fine_pink,
+            My.Resources.glyph_vl_fine_lorange,
+            My.Resources.glyph_vl_fine_orange,
+            My.Resources.glyph_vl_fine_red,
+            My.Resources.glyph_vl_med_blue,
+            My.Resources.glyph_vl_med_dblue,
+            My.Resources.glyph_blocks_large,
+            My.Resources.glyph_blocks_small,
+            My.Resources.glyph_squares_large,
+            My.Resources.glyph_squares_small,
+            My.Resources.glyph_dots_large,
+            My.Resources.glyph_dots_small,
+            My.Resources.glyph_circles_large,
+            My.Resources.glyph_circles_small
         }
 
-        Private m_abrDefaultHatchPatterns As HatchStyle() = {HatchStyle.DiagonalCross, _
-                                                  HatchStyle.Cross, _
-                                                  HatchStyle.DiagonalBrick, _
-                                                  HatchStyle.Divot, _
-                                                  HatchStyle.LightHorizontal, _
-                                                  HatchStyle.Shingle, _
-                                                  HatchStyle.ZigZag, _
-                                                  HatchStyle.SmallGrid, _
-                                                  HatchStyle.DashedVertical, _
+        Private DefaultHatchPatterns As HatchStyle() = {HatchStyle.DiagonalCross,
+                                                  HatchStyle.Cross,
+                                                  HatchStyle.DiagonalBrick,
+                                                  HatchStyle.Divot,
+                                                  HatchStyle.LightHorizontal,
+                                                  HatchStyle.Shingle,
+                                                  HatchStyle.ZigZag,
+                                                  HatchStyle.SmallGrid,
+                                                  HatchStyle.DashedVertical,
                                                   HatchStyle.Plaid}
 
-        Private m_agrads As cARGBColorRamp() = {
+        Public Shared SystemColorRamps As cColorRamp() = {
+            New cEwEColorRamp(),
+            New cViridisColorRamp(cViridisColorRamp.eViridisOptions.A),
+            New cViridisColorRamp(cViridisColorRamp.eViridisOptions.B),
+            New cViridisColorRamp(cViridisColorRamp.eViridisOptions.C),
+            New cViridisColorRamp(cViridisColorRamp.eViridisOptions.D),
+            New cViridisColorRamp(cViridisColorRamp.eViridisOptions.E)
+        }
+
+        Public Shared DefaultArgbRamps As cARGBColorRamp() = {
             New cARGBColorRamp(New Color() {Color.FromArgb(250, 230, 230), Color.FromArgb(250, 24, 24)}, New Double() {0, 1}),
             New cARGBColorRamp(New Color() {Color.FromArgb(250, 250, 230), Color.FromArgb(250, 250, 24)}, New Double() {0, 1}),
             New cARGBColorRamp(New Color() {Color.FromArgb(230, 250, 230), Color.FromArgb(24, 250, 24)}, New Double() {0, 1}),
@@ -1995,7 +2006,7 @@ Namespace Style
             Gradient
         End Enum
 
-        Public Function GetVisualStyles(ByVal nBrushes As Integer, _
+        Public Function GetVisualStyles(ByVal nBrushes As Integer,
                                         Optional ByVal brushType As eBrushType = eBrushType.Color) As cVisualStyle()
             Dim avs As cVisualStyle() = Nothing
 
@@ -2006,24 +2017,35 @@ Namespace Style
                     Me.GetColors(avs)
 
                 Case eBrushType.Glyphs
-                    If (nBrushes <= 0) Then nBrushes = m_abrDefaultGlyphs.Length
+                    If (nBrushes <= 0) Then nBrushes = DefaultGlyphs.Length
                     ReDim avs(nBrushes)
-                    Me.GetGlyphs(avs, m_abrDefaultGlyphs)
+                    Me.GetGlyphs(avs, DefaultGlyphs)
 
                 Case eBrushType.HatchPattern
-                    If (nBrushes <= 0) Then nBrushes = m_abrDefaultHatchPatterns.Length
+                    If (nBrushes <= 0) Then nBrushes = DefaultHatchPatterns.Length
                     ReDim avs(nBrushes)
-                    Me.GetPatterns(avs, m_abrDefaultHatchPatterns)
+                    Me.GetPatterns(avs, DefaultHatchPatterns)
 
                 Case eBrushType.Gradient
-                    If (nBrushes <= 0) Then nBrushes = m_agrads.Length
+                    If (nBrushes <= 0) Then nBrushes = DefaultArgbRamps.Length
                     ReDim avs(nBrushes - 1)
-                    Me.GetGradients(avs, m_agrads)
+                    Me.GetGradients(avs, DefaultArgbRamps)
 
             End Select
 
             ' ok, done
             Return avs
+        End Function
+
+        Public Function GetColorRamp(vs As cVisualStyle) As cColorRamp
+            If (vs.ColorRampBreaks IsNot Nothing) And (vs.ColorRampColors IsNot Nothing) Then
+                Return New cARGBColorRamp(vs.ColorRampColors, vs.ColorRampBreaks)
+            Else
+                For Each r As cColorRamp In SystemColorRamps
+                    If r.ID = vs.ColorRampID Then Return r
+                Next
+            End If
+            Return Nothing
         End Function
 
 #Region " Internal implementation "
@@ -2093,8 +2115,8 @@ Namespace Style
             For i As Integer = 0 To avs.Length - 1
 
                 vs = New cVisualStyle()
-                vs.GradientColors = ramps(i).GradientColors
-                vs.GradientBreaks = ramps(i).GradientBreaks
+                vs.ColorRampColors = ramps(i).GradientColors
+                vs.ColorRampBreaks = ramps(i).GradientBreaks
 
                 avs(i) = vs
 

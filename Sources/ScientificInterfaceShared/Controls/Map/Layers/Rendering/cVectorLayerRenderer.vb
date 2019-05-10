@@ -46,9 +46,9 @@ Namespace Controls.Map.Layers
         ''' <param name="vs"></param>
         ''' <param name="layerStyleFlags"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal vs As cVisualStyle, _
-                       Optional ByVal layerStyleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet)
-            MyBase.New(vs, layerStyleFlags)
+        Public Sub New(uic As cUIContext, vs As cVisualStyle,
+                       Optional layerStyleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet)
+            MyBase.New(uic, vs, layerStyleFlags)
         End Sub
 
 #End Region ' Construction / destruction

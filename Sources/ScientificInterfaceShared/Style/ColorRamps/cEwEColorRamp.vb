@@ -32,6 +32,19 @@ Namespace Style
     Public Class cEwEColorRamp
         Inherits cColorRamp
 
+        Public Sub New()
+            MyBase.New(0, True)
+        End Sub
+
+        Public Overrides Property Name As String
+            Get
+                Return My.Resources.COLORRAMP_EWE
+            End Get
+            Set(value As String)
+                ' NOP
+            End Set
+        End Property
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Return an ARGB colour for a given value.

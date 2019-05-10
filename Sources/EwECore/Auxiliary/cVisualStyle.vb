@@ -42,6 +42,7 @@ Namespace Auxiliary
         ''' Helper class, stores custom visualization information for data entities.
         ''' </summary>
         ''' -----------------------------------------------------------------------
+        <Flags>
         Public Enum eVisualStyleTypes As Integer
             NotSet = 0
             ForeColor = 1
@@ -59,8 +60,11 @@ Namespace Auxiliary
         Private m_strFontName As String = "Arial"
         Private m_sFontSize As Single = 8.0!
         Private m_fontstyle As FontStyle = FontStyle.Regular
+        ''' <summary>To identify stock gradients</summary>
+        Private m_gradientID As Integer = 0
         Private m_gradientColors As Color() = Nothing
         Private m_gradientBreaks As Double() = Nothing
+        Private m_gradientName As String = ""
         <NonSerialized()> _
         Private m_container As cAuxiliaryData = Nothing
 
@@ -100,8 +104,10 @@ Namespace Auxiliary
                 Else
                     vs.Image = Nothing
                 End If
-                vs.GradientBreaks = Me.GradientBreaks
-                vs.GradientColors = Me.GradientColors
+                vs.ColorRampID = Me.ColorRampID
+                vs.ColorRampBreaks = Me.ColorRampBreaks
+                vs.ColorRampColors = Me.ColorRampColors
+                vs.ColorRampName = Me.ColorRampName
 
             End SyncLock
 
@@ -121,8 +127,10 @@ Namespace Auxiliary
             Else
                 Me.Image = Nothing
             End If
-            Me.GradientBreaks = vs.GradientBreaks
-            Me.GradientColors = vs.GradientColors
+            Me.ColorRampID = vs.ColorRampID
+            Me.ColorRampBreaks = vs.ColorRampBreaks
+            Me.ColorRampColors = vs.ColorRampColors
+            Me.ColorRampName = vs.ColorRampName
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -249,11 +257,11 @@ Namespace Auxiliary
         ''' Get/set the break values for a gradient.
         ''' </summary>
         ''' <remarks>
-        ''' The number of gradient breaks should match the number of <see cref="GradientColors">
+        ''' The number of gradient breaks should match the number of <see cref="ColorRampColors">
         ''' gradient colours</see>.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Property GradientBreaks As Double()
+        Public Property ColorRampBreaks As Double()
             Get
                 Return Me.m_gradientBreaks
             End Get
@@ -268,16 +276,46 @@ Namespace Auxiliary
         ''' Get/set the color values for a gradient.
         ''' </summary>
         ''' <remarks>
-        ''' The number of gradient colours should match the number of <see cref="GradientBreaks">
+        ''' The number of gradient colours should match the number of <see cref="ColorRampBreaks">
         ''' gradient breaks</see>.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Property GradientColors As Color()
+        Public Property ColorRampColors As Color()
             Get
                 Return Me.m_gradientColors
             End Get
             Set(ByVal value As Color())
                 Me.m_gradientColors = value
+                Me.Update()
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the EwE stock gradient ID, where 0 is the standard EwE gradient.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property ColorRampID As Integer
+            Get
+                Return Me.m_gradientID
+            End Get
+            Set(ByVal value As Integer)
+                Me.m_gradientID = value
+                Me.Update()
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the EwE gradient name.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property ColorRampName As String
+            Get
+                Return Me.m_gradientName
+            End Get
+            Set(ByVal value As String)
+                Me.m_gradientName = value
                 Me.Update()
             End Set
         End Property
@@ -303,11 +341,13 @@ Namespace Auxiliary
                 If vs.Image Is Nothing Then Return False
                 Return Me.Image.Equals(vs.Image)
             End If
-            If Me.GradientColors IsNot Nothing Then
-                If Not Me.GradientColors.EqualsArray(vs.GradientColors) Then Return False
+            If Me.ColorRampID <> vs.ColorRampID Then Return False
+            If Me.ColorRampName <> vs.ColorRampName Then Return False
+            If Me.ColorRampColors IsNot Nothing Then
+                If Not Me.ColorRampColors.EqualsArray(vs.ColorRampColors) Then Return False
             End If
-            If Me.GradientBreaks IsNot Nothing Then
-                If Not Me.GradientBreaks.EqualsArray(vs.GradientBreaks) Then Return False
+            If Me.ColorRampBreaks IsNot Nothing Then
+                If Not Me.ColorRampBreaks.EqualsArray(vs.ColorRampBreaks) Then Return False
             End If
             Return True
         End Function

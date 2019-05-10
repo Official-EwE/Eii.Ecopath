@@ -38,8 +38,8 @@ Namespace Controls.Map.Layers
     Public Class cLayerRendererExclusion
         Inherits cLayerRendererHatch
 
-        Public Sub New(ByVal vs As cVisualStyle)
-            MyBase.New(vs)
+        Public Sub New(uic As cUIContext, ByVal vs As cVisualStyle)
+            MyBase.New(uic, vs)
         End Sub
 
         ''' -------------------------------------------------------------------

@@ -38,8 +38,8 @@ Namespace Controls.Map.Layers
     Public Class cLayerRendererUpwelling
         Inherits cRasterLayerRenderer
 
-        Public Sub New(ByVal vs As cVisualStyle)
-            MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor)
+        Public Sub New(uic As cUIContext, vs As cVisualStyle)
+            MyBase.New(uic, vs, cVisualStyle.eVisualStyleTypes.ForeColor)
         End Sub
 
         Public Overrides Sub RenderCell(ByVal g As Graphics,

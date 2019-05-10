@@ -39,8 +39,8 @@ Namespace Controls.Map.Layers
     Public Class cLayerRendererBitmap
         Inherits cRasterLayerRenderer
 
-        Public Sub New(ByVal vs As cVisualStyle)
-            MyBase.New(vs, cVisualStyle.eVisualStyleTypes.Image)
+        Public Sub New(uic As cUIContext, vs As cVisualStyle)
+            MyBase.New(uic, vs, cVisualStyle.eVisualStyleTypes.Image)
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics,

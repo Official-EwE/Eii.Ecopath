@@ -3116,4 +3116,11 @@
   <data name="Ecotracer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ecotracer.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="COLORRAMP_EWE" xml:space="preserve">
+    <value>Standard EwE colour scheme</value>
+  </data>
+  <data name="COLORRAMP_VIRIDIS" xml:space="preserve">
+    <value>Viridis color blind {0}</value>
+    <comment>{0}=option</comment>
+  </data>
 </root>

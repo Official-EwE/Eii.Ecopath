@@ -46,9 +46,9 @@ Namespace Controls.Map.Layers
         ''' <param name="vs"></param>
         ''' <param name="layerStyleFlags"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal vs As cVisualStyle,
-                       Optional ByVal layerStyleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet)
-            MyBase.New(vs, layerStyleFlags)
+        Public Sub New(uic As cUIContext, vs As cVisualStyle,
+                       Optional layerStyleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet)
+            MyBase.New(uic, vs, layerStyleFlags)
         End Sub
 
 #End Region ' Construction / destruction
@@ -63,12 +63,12 @@ Namespace Controls.Map.Layers
         ''' <param name="ptfTL">Top-left corner (lon, lat) represented by <paramref name="rc"/>.</param>
         ''' <param name="ptfBR">Bottom-right corner (lon, lat) represented by <paramref name="rc"/>.</param>
         ''' -----------------------------------------------------------------------
-        Public Overrides Sub Render(ByVal g As Graphics,
-                                       ByVal layer As cDisplayLayer,
-                                       ByVal rc As RectangleF,
-                                       ByVal ptfTL As PointF,
-                                       ByVal ptfBR As PointF,
-                                       ByVal style As cStyleGuide.eStyleFlags)
+        Public Overrides Sub Render(g As Graphics,
+                                    layer As cDisplayLayer,
+                                    rc As RectangleF,
+                                    ptfTL As PointF,
+                                    ptfBR As PointF,
+                                    style As cStyleGuide.eStyleFlags)
 
             If (Not TypeOf layer Is cDisplayLayerImage) Then Return
 
@@ -87,8 +87,8 @@ Namespace Controls.Map.Layers
 
         End Sub
 
-        Public Overrides Sub RenderPreview(ByVal g As Graphics,
-                                           ByVal rc As RectangleF,
+        Public Overrides Sub RenderPreview(g As Graphics,
+                                           rc As RectangleF,
                                            Optional iSymbol As Integer = 0)
             g.DrawImage(My.Resources.map, rc)
         End Sub

@@ -19,6 +19,7 @@
 
 Option Strict On
 Imports System.Drawing
+Imports EwECore
 
 Namespace Style
 
@@ -38,11 +39,11 @@ Namespace Style
         Inherits cColorRamp
 
         ''' <summary>Gradient break colours</summary>
-        Private m_aclr() As Color
+        Private m_colors() As Color
         ''' <summary>Gradient break values - ABSOLUTE</summary>
-        Private m_adBreakAbs() As Double
+        Private m_absbreaks() As Double
         ''' <summary>Gradient break values - RELATIVE</summary>
-        Private m_adBreakRel() As Double
+        Private m_relbreaks() As Double
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -78,7 +79,7 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal aColors() As Color, ByVal adPositions() As Double)
 
-            MyBase.New()
+            MyBase.New(cCore.NULL_VALUE, False)
 
             Dim clr As Color = Nothing
             Dim dTotalPos As Double = 0.0
@@ -104,7 +105,7 @@ Namespace Style
         Public Overrides Function GetColor(ByVal dValue As Double, Optional ByVal dValueMax As Double = 1.0) As Color
 
             ' Pre
-            Debug.Assert(Me.m_adBreakRel.Length = Me.m_aclr.Length)
+            Debug.Assert(Me.m_relbreaks.Length = Me.m_colors.Length)
 
             ' Normalize nValue to nValueMax
             Dim nIndex As Integer = 0
@@ -115,27 +116,27 @@ Namespace Style
             dValueMax = 1.0
 
             ' Find first index
-            bFound = (dValue <= Me.m_adBreakAbs(0))
+            bFound = (dValue <= Me.m_absbreaks(0))
             While Not bFound
                 nIndex += 1
-                bFound = (nIndex = Me.m_adBreakAbs.Length)
+                bFound = (nIndex = Me.m_absbreaks.Length)
                 If Not bFound Then
-                    bFound = (dValue <= Me.m_adBreakAbs(nIndex))
+                    bFound = (dValue <= Me.m_absbreaks(nIndex))
                 End If
             End While
 
             ' Below first level? Return first colour without interpolating
-            If (nIndex = 0) Then Return Me.m_aclr(0)
+            If (nIndex = 0) Then Return Me.m_colors(0)
             ' Past last level? Return formar-last level without interpolating
-            If (nIndex = Me.m_adBreakAbs.Length) Then Return Me.m_aclr(nIndex - 1)
+            If (nIndex = Me.m_absbreaks.Length) Then Return Me.m_colors(nIndex - 1)
             ' Exactly at a known level? Return the level colour withour interpolating
-            If dValue = Me.m_adBreakAbs(nIndex) Then Return Me.m_aclr(nIndex)
+            If dValue = Me.m_absbreaks(nIndex) Then Return Me.m_colors(nIndex)
 
             ' must interpolate
-            Dim c1 As Color = Me.m_aclr(nIndex - 1)
-            Dim c2 As Color = Me.m_aclr(nIndex)
-            Dim dX As Double = Me.m_adBreakAbs(nIndex) - Me.m_adBreakAbs(nIndex - 1)
-            Dim dPosX As Double = dValue - Me.m_adBreakAbs(nIndex - 1)
+            Dim c1 As Color = Me.m_colors(nIndex - 1)
+            Dim c2 As Color = Me.m_colors(nIndex)
+            Dim dX As Double = Me.m_absbreaks(nIndex) - Me.m_absbreaks(nIndex - 1)
+            Dim dPosX As Double = dValue - Me.m_absbreaks(nIndex - 1)
 
             Dim dRatio As Double = (dPosX / dX)
 
@@ -143,19 +144,11 @@ Namespace Style
                 dRatio = 1.0
             End If
 
-            Return Color.FromArgb(Me.Interpolate(c1.A, c2.A, dRatio), _
-                                  Me.Interpolate(c1.R, c2.R, dRatio), _
-                                  Me.Interpolate(c1.G, c2.G, dRatio), _
+            Return Color.FromArgb(Me.Interpolate(c1.A, c2.A, dRatio),
+                                  Me.Interpolate(c1.R, c2.R, dRatio),
+                                  Me.Interpolate(c1.G, c2.G, dRatio),
                                   Me.Interpolate(c1.B, c2.B, dRatio))
 
-        End Function
-
-        Private Function Interpolate(ByVal nVal1 As Integer, ByVal nVal2 As Integer, ByVal dRatio As Double) As Integer
-            Try
-                Return CInt(Math.Round(nVal1 + (nVal2 - nVal1) * dRatio))
-            Catch ex As Exception
-                Return 0
-            End Try
         End Function
 
         ''' -------------------------------------------------------------------
@@ -169,10 +162,10 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Property GradientColors As Color()
             Get
-                Return Me.m_aclr
+                Return Me.m_colors
             End Get
             Set(ByVal value As Color())
-                Me.m_aclr = value
+                Me.m_colors = value
             End Set
         End Property
 
@@ -187,19 +180,21 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Property GradientBreaks() As Double()
             Get
-                Return Me.m_adBreakRel
+                Return Me.m_relbreaks
             End Get
             Set(ByVal value As Double())
-                ReDim Me.m_adBreakAbs(value.Length - 1)
-                ReDim Me.m_adBreakRel(value.Length - 1)
+                ReDim Me.m_absbreaks(value.Length - 1)
+                ReDim Me.m_relbreaks(value.Length - 1)
                 Dim dTotalPos As Double = 0.0#
                 For i As Integer = 0 To value.Length - 1
                     dTotalPos += CDbl(Math.Abs(value(i)))
-                    Me.m_adBreakAbs(i) = dTotalPos
-                    Me.m_adBreakRel(i) = value(i)
+                    Me.m_absbreaks(i) = dTotalPos
+                    Me.m_relbreaks(i) = value(i)
                 Next
             End Set
         End Property
+
+        Public Overrides Property Name As String = ""
 
     End Class
 

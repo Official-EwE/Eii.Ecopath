@@ -1844,7 +1844,7 @@ Namespace Ecospace
             Next iRow
 
             Dim lgd As New cLegend(Me.UIContext, strValueName)
-            Dim r As cLayerRenderer = New cLayerRendererValue(New cVisualStyle())
+            Dim r As cLayerRenderer = New cLayerRendererValue(Me.UIContext, New cVisualStyle())
             Dim data As New cEcospaceLayerSingle(Me.Core, sdummy, strDataName)
             Dim l As New cDisplayLayerRaster(Me.UIContext, data, r, Nothing)
 
