@@ -36,7 +36,7 @@ Namespace Controls.Map.Layers
         Inherits cDisplayLayer
 
         Public Sub New(uic As cUIContext, Optional img As Image = Nothing)
-            MyBase.New(uic, New cImageLayerRenderer(Nothing))
+            MyBase.New(uic, New cImageLayerRenderer(uic, Nothing))
             Me.Image = img
             Me.m_editor = Nothing
         End Sub

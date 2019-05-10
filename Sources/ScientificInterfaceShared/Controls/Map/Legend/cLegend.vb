@@ -68,7 +68,7 @@ Namespace Controls.Map
             ''' <param name="strLabelMax"></param>
             ''' <param name="breaks">Optional gradient color breaks</param>
             ''' <param name="colors">Optional gradient color breaks</param>
-            Public Sub New(strName As String, strUnits As String, strLabelMin As String, strLabelMax As String,
+            Public Sub New(uic As cUIContext, strName As String, strUnits As String, strLabelMin As String, strLabelMax As String,
                            Optional breaks As Double() = Nothing, Optional colors() As Color = Nothing)
 
                 If String.IsNullOrWhiteSpace(strUnits) Then
@@ -81,10 +81,10 @@ Namespace Controls.Map
 
                 Dim vs As New Auxiliary.cVisualStyle()
                 If (breaks IsNot Nothing And colors IsNot Nothing) Then
-                    vs.GradientBreaks = breaks
-                    vs.GradientColors = colors
+                    vs.ColorRampBreaks = breaks
+                    vs.ColorRampColors = colors
                 End If
-                Me.Renderer = New cLayerRendererValue(vs)
+                Me.Renderer = New cLayerRendererValue(uic, vs)
                 Me.Renderer.LabelMin = strLabelMin
                 Me.Renderer.LabelMax = strLabelMax
 
@@ -314,7 +314,7 @@ Namespace Controls.Map
         Public Sub AddGradient(strName As String, strLabelMin As String, strLabelMax As String,
                                Optional strUnits As String = "",
                                Optional breaks As Double() = Nothing, Optional colors() As Color = Nothing)
-            Me.m_lLayers.Add(New cStaticEntry(strName, strUnits, strLabelMin, strLabelMax, breaks, colors))
+            Me.m_lLayers.Add(New cStaticEntry(Me.m_uic, strName, strUnits, strLabelMin, strLabelMax, breaks, colors))
         End Sub
 
         ''' -------------------------------------------------------------------

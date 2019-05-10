@@ -81,7 +81,7 @@ Namespace Ecospace.Basemap.Layers
                     vs.ForeColour = Color.CornflowerBlue
 
                     ' Represent MPA seeds as a solid colour
-                    renderer = New cLayerRendererSymbol(vs)
+                    renderer = New cLayerRendererSymbol(uic, vs)
                     renderer.RenderMode = eLayerRenderType.Always
 
                     editor = New cLayerEditorTwoState()
@@ -98,7 +98,7 @@ Namespace Ecospace.Basemap.Layers
                     vs.ForeColour = Color.LightGreen
 
                     ' Represent MPA seeds as a solid colour
-                    renderer = New cLayerRendererSymbol(vs)
+                    renderer = New cLayerRendererSymbol(uic, vs)
                     renderer.RenderMode = eLayerRenderType.Always
                     editor = New cLayerEditorTwoState()
                     layer = New cDisplayLayerRaster(uic, layerData, renderer, editor, Nothing, eVarNameFlags.LayerMPASeedCurrent, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
@@ -116,7 +116,7 @@ Namespace Ecospace.Basemap.Layers
                     vs.BackColour = Color.Transparent
 
                     ' Represent MPA seeds as a solid colour
-                    renderer = New cLayerRendererSymbol(vs)
+                    renderer = New cLayerRendererSymbol(uic, vs)
                     renderer.RenderMode = eLayerRenderType.Always
                     editor = New cLayerEditorTwoState()
                     layer = New cDisplayLayerRaster(uic, layerData, renderer, editor, Nothing, eVarNameFlags.LayerMPASeedBest, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
@@ -132,7 +132,7 @@ Namespace Ecospace.Basemap.Layers
                         vs.ForeColour = Color.Black
                         vs.BackColour = Color.Blue
 
-                        renderer = New cLayerRendererValue(vs)
+                        renderer = New cLayerRendererValue(uic, vs)
                         renderer.RenderMode = eLayerRenderType.Always
                         editor = New cLayerEditorRange()
                         layer = New cDisplayLayerRaster(uic, layerData, renderer, editor)
@@ -151,7 +151,7 @@ Namespace Ecospace.Basemap.Layers
 
                         vs = ad.VisualStyle
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                        renderer = New cLayerRendererValue(vs)
+                        renderer = New cLayerRendererValue(uic, vs)
                         renderer.ScaleMin = 0
                         renderer.RenderMode = eLayerRenderType.Selected
                         editor = New cLayerEditorRange()

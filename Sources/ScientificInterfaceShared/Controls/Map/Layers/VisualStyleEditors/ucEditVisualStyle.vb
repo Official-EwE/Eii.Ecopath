@@ -32,7 +32,7 @@ Namespace Controls
     ''' Base class for implementing a <see cref="cVisualStyle"/> editor.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public MustInherit Class ucEditVisualStyle
+    Public Class ucEditVisualStyle
         Inherits UserControl
         Implements IUIElement
 
@@ -76,9 +76,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         <Obsolete("Do not use this constructor, it's for the VS editor only")>
         Public Sub New()
-            If Not Me.DesignMode Then
-                Debug.Assert(False, "Please do not use this constructor!")
-            End If
+            ' NOP
         End Sub
 
         ''' -------------------------------------------------------------------

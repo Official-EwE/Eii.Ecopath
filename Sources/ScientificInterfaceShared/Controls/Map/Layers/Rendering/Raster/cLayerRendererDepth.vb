@@ -39,8 +39,8 @@ Namespace Controls.Map.Layers
     Public Class cLayerRendererDepth
         Inherits cLayerRendererValue
 
-        Public Sub New(ByVal vs As cVisualStyle)
-            MyBase.New(vs)
+        Public Sub New(uic As cUIContext, vs As cVisualStyle)
+            MyBase.New(uic, vs)
         End Sub
 
         'Public Overrides Sub RenderPreview(ByVal g As Graphics, _

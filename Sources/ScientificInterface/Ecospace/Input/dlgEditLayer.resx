@@ -295,13 +295,10 @@
     <value>Fill</value>
   </data>
   <data name="m_tbNameValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 3</value>
-  </data>
-  <data name="m_tbNameValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>84, 3</value>
   </data>
   <data name="m_tbNameValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>238, 20</value>
+    <value>232, 20</value>
   </data>
   <data name="m_tbNameValue.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -364,7 +361,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>ScientificInterface.gridLayerData, EwE6, Version=6.6.15801.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.gridLayerData, EwE6, Version=6.6.16210.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>m_tpData</value>
@@ -375,6 +372,102 @@
   <metadata name="m_tsGrid.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="m_tsmiImportCSV.Size" type="System.Drawing.Size, System.Drawing">
+    <value>166, 22</value>
+  </data>
+  <data name="m_tsmiImportCSV.Text" xml:space="preserve">
+    <value>From CSV...</value>
+  </data>
+  <data name="m_tsmiImportXYZ.Size" type="System.Drawing.Size, System.Drawing">
+    <value>166, 22</value>
+  </data>
+  <data name="m_tsmiImportXYZ.Text" xml:space="preserve">
+    <value>From XYZ...</value>
+  </data>
+  <data name="m_tsmiImportAsc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>166, 22</value>
+  </data>
+  <data name="m_tsmiImportAsc.Text" xml:space="preserve">
+    <value>From ASCII grid...</value>
+  </data>
+  <data name="m_tsddImport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="m_tsddImport.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsddImport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 22</value>
+  </data>
+  <data name="m_tsddImport.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="m_tsmiExportCSV.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="m_tsmiExportCSV.Text" xml:space="preserve">
+    <value>To CSV...</value>
+  </data>
+  <data name="m_tsmiExportXYZ.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="m_tsmiExportXYZ.Text" xml:space="preserve">
+    <value>To XYZ...</value>
+  </data>
+  <data name="m_tsmiExportAsc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>148, 22</value>
+  </data>
+  <data name="m_tsmiExportAsc.Text" xml:space="preserve">
+    <value>To Ascii grid...</value>
+  </data>
+  <data name="m_tsddExport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="m_tsddExport.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsddExport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 22</value>
+  </data>
+  <data name="m_tsddExport.Text" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="m_tscmbVectorData.Items" xml:space="preserve">
+    <value>X velocity</value>
+  </data>
+  <data name="m_tscmbVectorData.Items1" xml:space="preserve">
+    <value>Y velocity</value>
+  </data>
+  <data name="m_tscmbVectorData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 25</value>
+  </data>
   <data name="m_tsGrid.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -388,7 +481,7 @@
     <value>m_tsGrid</value>
   </data>
   <data name="&gt;&gt;m_tsGrid.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.15801.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.6.16210.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsGrid.Parent" xml:space="preserve">
     <value>m_tpData</value>
@@ -423,168 +516,6 @@
   <data name="&gt;&gt;m_tpData.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_scAppearance.Name" xml:space="preserve">
-    <value>m_scAppearance</value>
-  </data>
-  <data name="&gt;&gt;m_scAppearance.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scAppearance.Parent" xml:space="preserve">
-    <value>m_tpAppearance</value>
-  </data>
-  <data name="&gt;&gt;m_scAppearance.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tpAppearance.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="m_tpAppearance.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_tpAppearance.Size" type="System.Drawing.Size, System.Drawing">
-    <value>748, 512</value>
-  </data>
-  <data name="m_tpAppearance.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_tpAppearance.Text" xml:space="preserve">
-    <value>Description and Appearance</value>
-  </data>
-  <data name="&gt;&gt;m_tpAppearance.Name" xml:space="preserve">
-    <value>m_tpAppearance</value>
-  </data>
-  <data name="&gt;&gt;m_tpAppearance.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tpAppearance.Parent" xml:space="preserve">
-    <value>m_tcLayerView</value>
-  </data>
-  <data name="&gt;&gt;m_tpAppearance.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tcLayerView.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 12</value>
-  </data>
-  <data name="m_tcLayerView.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_tcLayerView.Padding" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tcLayerView.Size" type="System.Drawing.Size, System.Drawing">
-    <value>756, 538</value>
-  </data>
-  <data name="m_tcLayerView.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tcLayerView.Name" xml:space="preserve">
-    <value>m_tcLayerView</value>
-  </data>
-  <data name="&gt;&gt;m_tcLayerView.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tcLayerView.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tcLayerView.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tsddImport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
-        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
-        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
-        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
-        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
-        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
-        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
-        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
-        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
-        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="m_tsddImport.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsddImport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 22</value>
-  </data>
-  <data name="m_tsddImport.Text" xml:space="preserve">
-    <value>Import</value>
-  </data>
-  <data name="m_tsmiImportCSV.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 22</value>
-  </data>
-  <data name="m_tsmiImportCSV.Text" xml:space="preserve">
-    <value>From CSV...</value>
-  </data>
-  <data name="m_tsmiImportXYZ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 22</value>
-  </data>
-  <data name="m_tsmiImportXYZ.Text" xml:space="preserve">
-    <value>From XYZ...</value>
-  </data>
-  <data name="m_tsmiImportAsc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>166, 22</value>
-  </data>
-  <data name="m_tsmiImportAsc.Text" xml:space="preserve">
-    <value>From ASCII grid...</value>
-  </data>
-  <data name="m_tsddExport.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
-        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
-        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
-        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
-        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
-        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
-        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
-        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
-        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
-        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="m_tsddExport.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsddExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 22</value>
-  </data>
-  <data name="m_tsddExport.Text" xml:space="preserve">
-    <value>Export</value>
-  </data>
-  <data name="m_tsmiExportCSV.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="m_tsmiExportCSV.Text" xml:space="preserve">
-    <value>To CSV...</value>
-  </data>
-  <data name="m_tsmiExportXYZ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="m_tsmiExportXYZ.Text" xml:space="preserve">
-    <value>To XYZ...</value>
-  </data>
-  <data name="m_tsmiExportAsc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>148, 22</value>
-  </data>
-  <data name="m_tsmiExportAsc.Text" xml:space="preserve">
-    <value>To Ascii grid...</value>
-  </data>
-  <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="m_tscmbVectorData.Items" xml:space="preserve">
-    <value>X velocity</value>
-  </data>
-  <data name="m_tscmbVectorData.Items1" xml:space="preserve">
-    <value>Y velocity</value>
-  </data>
-  <data name="m_tscmbVectorData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 25</value>
-  </data>
   <data name="m_scAppearance.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -616,7 +547,7 @@
     <value>m_zoommap</value>
   </data>
   <data name="&gt;&gt;m_zoommap.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.6.15801.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.6.16210.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_zoommap.Parent" xml:space="preserve">
     <value>m_scAppearance.Panel1</value>
@@ -638,123 +569,6 @@
   </data>
   <data name="m_tlpBits.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDescription.Name" xml:space="preserve">
-    <value>m_hdrDescription</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDescription.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15801.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDescription.Parent" xml:space="preserve">
-    <value>m_tlpBits</value>
-  </data>
-  <data name="&gt;&gt;m_hdrDescription.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tlpDetails.Name" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_tlpDetails.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpDetails.Parent" xml:space="preserve">
-    <value>m_tlpBits</value>
-  </data>
-  <data name="&gt;&gt;m_tlpDetails.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tlpDetails.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblName" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbNameValue" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbDescription" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblWeight" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblDescription" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_nudWeight" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblUnits" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbUnits" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMaxValue" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMinValue" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMeanValue" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoCellsValue" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxMaxValue" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxMeanValue" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxMinValue" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxNoCellsValue" Row="8" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_hdrAppearance.Name" xml:space="preserve">
-    <value>m_hdrAppearance</value>
-  </data>
-  <data name="&gt;&gt;m_hdrAppearance.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15801.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrAppearance.Parent" xml:space="preserve">
-    <value>m_tlpBits</value>
-  </data>
-  <data name="&gt;&gt;m_hdrAppearance.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_tlpImportStyle.Name" xml:space="preserve">
-    <value>m_tlpImportStyle</value>
-  </data>
-  <data name="&gt;&gt;m_tlpImportStyle.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpImportStyle.Parent" xml:space="preserve">
-    <value>m_tlpBits</value>
-  </data>
-  <data name="&gt;&gt;m_tlpImportStyle.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_tlpImportStyle.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblCopyFrom" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbCopyStyleFrom" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_tlpBits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_tlpBits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tlpBits.RowCount" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="m_tlpBits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>319, 512</value>
-  </data>
-  <data name="m_tlpBits.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_tlpBits.Name" xml:space="preserve">
-    <value>m_tlpBits</value>
-  </data>
-  <data name="&gt;&gt;m_tlpBits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpBits.Parent" xml:space="preserve">
-    <value>m_scAppearance.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_tlpBits.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tlpBits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_hdrDescription" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpDetails" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plAppearance" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrAppearance" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpImportStyle" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,AutoSize,0,Absolute,23,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="&gt;&gt;m_scAppearance.Panel2.Name" xml:space="preserve">
-    <value>m_scAppearance.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_scAppearance.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scAppearance.Panel2.Parent" xml:space="preserve">
-    <value>m_scAppearance</value>
-  </data>
-  <data name="&gt;&gt;m_scAppearance.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_scAppearance.Size" type="System.Drawing.Size, System.Drawing">
-    <value>748, 512</value>
-  </data>
-  <data name="m_scAppearance.SplitterDistance" type="System.Int32, mscorlib">
-    <value>425</value>
-  </data>
-  <data name="m_scAppearance.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_scAppearance.Name" xml:space="preserve">
-    <value>m_scAppearance</value>
-  </data>
-  <data name="&gt;&gt;m_scAppearance.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_scAppearance.Parent" xml:space="preserve">
-    <value>m_tpAppearance</value>
-  </data>
-  <data name="&gt;&gt;m_scAppearance.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="m_hdrDescription.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -781,7 +595,7 @@
     <value>m_hdrDescription</value>
   </data>
   <data name="&gt;&gt;m_hdrDescription.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15801.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16210.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDescription.Parent" xml:space="preserve">
     <value>m_tlpBits</value>
@@ -792,221 +606,17 @@
   <data name="m_tlpDetails.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_tbDescription.Name" xml:space="preserve">
-    <value>m_tbDescription</value>
-  </data>
-  <data name="&gt;&gt;m_tbDescription.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbDescription.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_tbDescription.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_lblWeight.Name" xml:space="preserve">
-    <value>m_lblWeight</value>
-  </data>
-  <data name="&gt;&gt;m_lblWeight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblWeight.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lblWeight.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_lblDescription.Name" xml:space="preserve">
-    <value>m_lblDescription</value>
-  </data>
-  <data name="&gt;&gt;m_lblDescription.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblDescription.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lblDescription.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_nudWeight.Name" xml:space="preserve">
-    <value>m_nudWeight</value>
-  </data>
-  <data name="&gt;&gt;m_nudWeight.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15801.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudWeight.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_nudWeight.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnits.Name" xml:space="preserve">
-    <value>m_lblUnits</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnits.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lblUnits.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;m_tbUnits.Name" xml:space="preserve">
-    <value>m_tbUnits</value>
-  </data>
-  <data name="&gt;&gt;m_tbUnits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbUnits.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_tbUnits.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxValue.Name" xml:space="preserve">
-    <value>m_lblMaxValue</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxValue.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxValue.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;m_lblMinValue.Name" xml:space="preserve">
-    <value>m_lblMinValue</value>
-  </data>
-  <data name="&gt;&gt;m_lblMinValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMinValue.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lblMinValue.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;m_lblMeanValue.Name" xml:space="preserve">
-    <value>m_lblMeanValue</value>
-  </data>
-  <data name="&gt;&gt;m_lblMeanValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMeanValue.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lblMeanValue.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoCellsValue.Name" xml:space="preserve">
-    <value>m_lblNoCellsValue</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoCellsValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoCellsValue.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_lblNoCellsValue.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMaxValue.Name" xml:space="preserve">
-    <value>m_tbxMaxValue</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMaxValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMaxValue.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMaxValue.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMeanValue.Name" xml:space="preserve">
-    <value>m_tbxMeanValue</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMeanValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMeanValue.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMeanValue.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMinValue.Name" xml:space="preserve">
-    <value>m_tbxMinValue</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMinValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMinValue.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_tbxMinValue.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNoCellsValue.Name" xml:space="preserve">
-    <value>m_tbxNoCellsValue</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNoCellsValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNoCellsValue.Parent" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_tbxNoCellsValue.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="m_tlpDetails.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_tlpDetails.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 18</value>
-  </data>
-  <data name="m_tlpDetails.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_tlpDetails.RowCount" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="m_tlpDetails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>319, 430</value>
-  </data>
-  <data name="m_tlpDetails.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_tlpDetails.Name" xml:space="preserve">
-    <value>m_tlpDetails</value>
-  </data>
-  <data name="&gt;&gt;m_tlpDetails.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpDetails.Parent" xml:space="preserve">
-    <value>m_tlpBits</value>
-  </data>
-  <data name="&gt;&gt;m_tlpDetails.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tlpDetails.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblName" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbNameValue" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbDescription" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblWeight" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblDescription" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_nudWeight" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblUnits" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbUnits" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMaxValue" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMinValue" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMeanValue" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoCellsValue" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxMaxValue" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxMeanValue" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxMinValue" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxNoCellsValue" Row="8" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
   <data name="m_tbDescription.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="m_tbDescription.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 81</value>
-  </data>
-  <data name="m_tbDescription.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>84, 81</value>
   </data>
   <data name="m_tbDescription.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_tbDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>238, 65</value>
+    <value>232, 65</value>
   </data>
   <data name="m_tbDescription.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1099,13 +709,10 @@
     <value>Fill</value>
   </data>
   <data name="m_nudWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 55</value>
-  </data>
-  <data name="m_nudWeight.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>84, 55</value>
   </data>
   <data name="m_nudWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>238, 20</value>
+    <value>232, 20</value>
   </data>
   <data name="m_nudWeight.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1114,7 +721,7 @@
     <value>m_nudWeight</value>
   </data>
   <data name="&gt;&gt;m_nudWeight.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.15801.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.6.16210.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudWeight.Parent" xml:space="preserve">
     <value>m_tlpDetails</value>
@@ -1162,13 +769,10 @@
     <value>Fill</value>
   </data>
   <data name="m_tbUnits.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 29</value>
-  </data>
-  <data name="m_tbUnits.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>84, 29</value>
   </data>
   <data name="m_tbUnits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>238, 20</value>
+    <value>232, 20</value>
   </data>
   <data name="m_tbUnits.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1330,13 +934,10 @@
     <value>Fill</value>
   </data>
   <data name="m_tbxMaxValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 152</value>
-  </data>
-  <data name="m_tbxMaxValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>84, 152</value>
   </data>
   <data name="m_tbxMaxValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>238, 20</value>
+    <value>232, 20</value>
   </data>
   <data name="m_tbxMaxValue.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1357,13 +958,10 @@
     <value>Fill</value>
   </data>
   <data name="m_tbxMeanValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 178</value>
-  </data>
-  <data name="m_tbxMeanValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>84, 178</value>
   </data>
   <data name="m_tbxMeanValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>238, 20</value>
+    <value>232, 20</value>
   </data>
   <data name="m_tbxMeanValue.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1384,13 +982,10 @@
     <value>Fill</value>
   </data>
   <data name="m_tbxMinValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 204</value>
-  </data>
-  <data name="m_tbxMinValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>84, 204</value>
   </data>
   <data name="m_tbxMinValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>238, 20</value>
+    <value>232, 20</value>
   </data>
   <data name="m_tbxMinValue.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -1411,13 +1006,10 @@
     <value>Fill</value>
   </data>
   <data name="m_tbxNoCellsValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>81, 230</value>
-  </data>
-  <data name="m_tbxNoCellsValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
+    <value>84, 230</value>
   </data>
   <data name="m_tbxNoCellsValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>238, 20</value>
+    <value>232, 20</value>
   </data>
   <data name="m_tbxNoCellsValue.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -1433,6 +1025,39 @@
   </data>
   <data name="&gt;&gt;m_tbxNoCellsValue.ZOrder" xml:space="preserve">
     <value>15</value>
+  </data>
+  <data name="m_tlpDetails.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_tlpDetails.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 18</value>
+  </data>
+  <data name="m_tlpDetails.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tlpDetails.RowCount" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_tlpDetails.Size" type="System.Drawing.Size, System.Drawing">
+    <value>319, 430</value>
+  </data>
+  <data name="m_tlpDetails.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_tlpDetails.Name" xml:space="preserve">
+    <value>m_tlpDetails</value>
+  </data>
+  <data name="&gt;&gt;m_tlpDetails.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpDetails.Parent" xml:space="preserve">
+    <value>m_tlpBits</value>
+  </data>
+  <data name="&gt;&gt;m_tlpDetails.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tlpDetails.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblName" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbNameValue" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbDescription" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblWeight" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblDescription" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_nudWeight" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblUnits" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbUnits" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMaxValue" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMinValue" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMeanValue" Row="7" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblNoCellsValue" Row="8" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxMaxValue" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxMeanValue" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxMinValue" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_tbxNoCellsValue" Row="8" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_hdrAppearance.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1459,7 +1084,7 @@
     <value>m_hdrAppearance</value>
   </data>
   <data name="&gt;&gt;m_hdrAppearance.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.15801.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.6.16210.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAppearance.Parent" xml:space="preserve">
     <value>m_tlpBits</value>
@@ -1469,6 +1094,33 @@
   </data>
   <data name="m_tlpImportStyle.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="m_lblCopyFrom.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblCopyFrom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_lblCopyFrom.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblCopyFrom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="m_lblCopyFrom.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="m_lblCopyFrom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 21</value>
+  </data>
+  <data name="m_lblCopyFrom.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_lblCopyFrom.Text" xml:space="preserve">
+    <value>&amp;Copy from:</value>
+  </data>
+  <data name="m_lblCopyFrom.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="&gt;&gt;m_lblCopyFrom.Name" xml:space="preserve">
     <value>m_lblCopyFrom</value>
@@ -1481,6 +1133,18 @@
   </data>
   <data name="&gt;&gt;m_lblCopyFrom.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_cmbCopyStyleFrom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_cmbCopyStyleFrom.Location" type="System.Drawing.Point, System.Drawing">
+    <value>66, 3</value>
+  </data>
+  <data name="m_cmbCopyStyleFrom.Size" type="System.Drawing.Size, System.Drawing">
+    <value>250, 21</value>
+  </data>
+  <data name="m_cmbCopyStyleFrom.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;m_cmbCopyStyleFrom.Name" xml:space="preserve">
     <value>m_cmbCopyStyleFrom</value>
@@ -1525,73 +1189,124 @@
     <value>4</value>
   </data>
   <data name="m_tlpImportStyle.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblCopyFrom" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbCopyStyleFrom" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblCopyFrom" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbCopyStyleFrom" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="m_lblCopyFrom.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblCopyFrom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_tlpBits.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_lblCopyFrom.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_tlpBits.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="m_lblCopyFrom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
+  <data name="m_tlpBits.RowCount" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="m_lblCopyFrom.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 10, 0</value>
+  <data name="m_tlpBits.Size" type="System.Drawing.Size, System.Drawing">
+    <value>319, 512</value>
   </data>
-  <data name="m_lblCopyFrom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 23</value>
+  <data name="m_tlpBits.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="m_lblCopyFrom.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;m_tlpBits.Name" xml:space="preserve">
+    <value>m_tlpBits</value>
+  </data>
+  <data name="&gt;&gt;m_tlpBits.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpBits.Parent" xml:space="preserve">
+    <value>m_scAppearance.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_tlpBits.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_lblCopyFrom.Text" xml:space="preserve">
-    <value>&amp;Copy from:</value>
+  <data name="m_tlpBits.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_hdrDescription" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpDetails" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plAppearance" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_hdrAppearance" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tlpImportStyle" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,AutoSize,0,Absolute,23,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="m_lblCopyFrom.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
+  <data name="&gt;&gt;m_scAppearance.Panel2.Name" xml:space="preserve">
+    <value>m_scAppearance.Panel2</value>
   </data>
-  <data name="&gt;&gt;m_lblCopyFrom.Name" xml:space="preserve">
-    <value>m_lblCopyFrom</value>
+  <data name="&gt;&gt;m_scAppearance.Panel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_lblCopyFrom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_scAppearance.Panel2.Parent" xml:space="preserve">
+    <value>m_scAppearance</value>
   </data>
-  <data name="&gt;&gt;m_lblCopyFrom.Parent" xml:space="preserve">
-    <value>m_tlpImportStyle</value>
+  <data name="&gt;&gt;m_scAppearance.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="&gt;&gt;m_lblCopyFrom.ZOrder" xml:space="preserve">
+  <data name="m_scAppearance.Size" type="System.Drawing.Size, System.Drawing">
+    <value>748, 512</value>
+  </data>
+  <data name="m_scAppearance.SplitterDistance" type="System.Int32, mscorlib">
+    <value>425</value>
+  </data>
+  <data name="m_scAppearance.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_cmbCopyStyleFrom.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="&gt;&gt;m_scAppearance.Name" xml:space="preserve">
+    <value>m_scAppearance</value>
   </data>
-  <data name="m_cmbCopyStyleFrom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>70, 0</value>
+  <data name="&gt;&gt;m_scAppearance.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="m_cmbCopyStyleFrom.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="&gt;&gt;m_scAppearance.Parent" xml:space="preserve">
+    <value>m_tpAppearance</value>
+  </data>
+  <data name="&gt;&gt;m_scAppearance.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tpAppearance.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tpAppearance.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_cmbCopyStyleFrom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>249, 21</value>
+  <data name="m_tpAppearance.Size" type="System.Drawing.Size, System.Drawing">
+    <value>748, 512</value>
   </data>
-  <data name="m_cmbCopyStyleFrom.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tpAppearance.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_tpAppearance.Text" xml:space="preserve">
+    <value>Description and Appearance</value>
+  </data>
+  <data name="&gt;&gt;m_tpAppearance.Name" xml:space="preserve">
+    <value>m_tpAppearance</value>
+  </data>
+  <data name="&gt;&gt;m_tpAppearance.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tpAppearance.Parent" xml:space="preserve">
+    <value>m_tcLayerView</value>
+  </data>
+  <data name="&gt;&gt;m_tpAppearance.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_cmbCopyStyleFrom.Name" xml:space="preserve">
-    <value>m_cmbCopyStyleFrom</value>
+  <data name="m_tcLayerView.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 12</value>
   </data>
-  <data name="&gt;&gt;m_cmbCopyStyleFrom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_tcLayerView.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
-  <data name="&gt;&gt;m_cmbCopyStyleFrom.Parent" xml:space="preserve">
-    <value>m_tlpImportStyle</value>
+  <data name="m_tcLayerView.Padding" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="&gt;&gt;m_cmbCopyStyleFrom.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="m_tcLayerView.Size" type="System.Drawing.Size, System.Drawing">
+    <value>756, 538</value>
+  </data>
+  <data name="m_tcLayerView.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tcLayerView.Name" xml:space="preserve">
+    <value>m_tcLayerView</value>
+  </data>
+  <data name="&gt;&gt;m_tcLayerView.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tcLayerView.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tcLayerView.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

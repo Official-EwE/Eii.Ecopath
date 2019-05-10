@@ -30,7 +30,7 @@ Public Class cTransectVectorDisplay
     Inherits cDisplayLayer
 
     Public Sub New(uic As cUIContext)
-        MyBase.New(uic, New cTransectVectorRenderer(uic.StyleGuide))
+        MyBase.New(uic, New cTransectVectorRenderer(uic))
         Me.m_editor = New cTransectVectorEditor()
         Me.RenderMode = eLayerRenderType.Always
     End Sub

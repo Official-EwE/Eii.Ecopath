@@ -48,8 +48,8 @@ Namespace Controls.Map
         ''' <param name="varName">Name of the core variable to wrap</param>
         ''' <returns>An array of layers</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetLayers(ByVal uic As cUIContext,
-                                              ByVal varName As eVarNameFlags) As cDisplayLayerRaster()
+        Public Overridable Function GetLayers(uic As cUIContext,
+                                              varName As eVarNameFlags) As cDisplayLayerRaster()
 
             Dim lLayers As New List(Of cDisplayLayerRaster)
 
@@ -71,7 +71,7 @@ Namespace Controls.Map
 
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererDepth(vs)
+                    renderer = New cLayerRendererDepth(uic, vs)
                     editor = New cLayerEditorDepth()
                     layer = New cDisplayLayerRaster(uic, bmd.LayerDepth, renderer, editor, bmd, varName)
                     lLayers.Add(layer)
@@ -95,7 +95,7 @@ Namespace Controls.Map
                         End If
 
                         ' Create layer
-                        renderer = New cLayerRendererBitmap(vs)
+                        renderer = New cLayerRendererBitmap(uic, vs)
                         renderer.RenderMode = Definitions.eLayerRenderType.Grouped
 
                         editor = New cLayerEditorHabitat()
@@ -113,7 +113,7 @@ Namespace Controls.Map
                         vs = ad.VisualStyle
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
 
-                        renderer = New cLayerRendererValue(vs)
+                        renderer = New cLayerRendererValue(uic, vs)
                         renderer.ScaleMin = 0
                         renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
@@ -136,7 +136,7 @@ Namespace Controls.Map
                         vs = ad.VisualStyle
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
 
-                        renderer = New cLayerRendererValue(vs)
+                        renderer = New cLayerRendererValue(uic, vs)
                         renderer.ScaleMin = 0
                         renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
@@ -153,7 +153,7 @@ Namespace Controls.Map
                     ad = GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererValue(vs)
+                    renderer = New cLayerRendererValue(uic, vs)
                     renderer.ScaleMin = 0
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
@@ -181,7 +181,7 @@ Namespace Controls.Map
                         End If
 
                         ' Create layer
-                        renderer = New cLayerRendererHatch(vs)
+                        renderer = New cLayerRendererHatch(uic, vs)
                         renderer.RenderMode = Definitions.eLayerRenderType.Always
 
                         editor = New cLayerEditorTwoState()
@@ -197,7 +197,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
 
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererValue(vs)
+                    renderer = New cLayerRendererValue(uic, vs)
                     'renderer.ScaleMin = 0
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
@@ -212,7 +212,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
 
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererValue(vs)
+                    renderer = New cLayerRendererValue(uic, vs)
                     renderer.ScaleMin = 0
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
@@ -230,7 +230,7 @@ Namespace Controls.Map
                             ad = Me.GetAuxillaryData(core, varName, iLayer)
                             vs = ad.VisualStyle
                             If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                            renderer = New cLayerRendererValue(vs)
+                            renderer = New cLayerRendererValue(uic, vs)
                             renderer.RenderMode = Definitions.eLayerRenderType.Selected
                             DirectCast(renderer, cLayerRendererValue).SuppressZero = True
                             editor = New cLayerEditorMigration()
@@ -245,7 +245,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
 
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererWindEwE5(vs)
+                    renderer = New cLayerRendererWindEwE5(uic, vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorVelocity()
 
@@ -260,7 +260,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
 
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererWindEwE5(vs)
+                    renderer = New cLayerRendererWindEwE5(uic, vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorVelocity()
 
@@ -277,7 +277,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
 
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                    renderer = New cLayerRendererUpwelling(vs)
+                    renderer = New cLayerRendererUpwelling(uic, vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorUpwelling()
                     layer = New cDisplayLayerRaster(uic, bmd.LayerUpwelling, renderer, editor, bmd, eVarNameFlags.LayerUpwelling)
@@ -292,7 +292,7 @@ Namespace Controls.Map
                         vs = ad.VisualStyle
 
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                        renderer = New cLayerRendererSymbol(vs)
+                        renderer = New cLayerRendererSymbol(uic, vs)
                         renderer.RenderMode = Definitions.eLayerRenderType.Always
                         editor = New cLayerEditorPorts(GetType(ucLayerEditorPort))
                         layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerPort), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerPort, CSng(True), CSng(False))
@@ -307,7 +307,7 @@ Namespace Controls.Map
                         vs = ad.VisualStyle
 
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                        renderer = New cLayerRendererValue(vs)
+                        renderer = New cLayerRendererValue(uic, vs)
                         renderer.ScaleMin = 0
                         renderer.RenderMode = Definitions.eLayerRenderType.Selected
                         editor = New cLayerEditorSailCost(GetType(ucLayerEditorSailCost))
@@ -325,7 +325,7 @@ Namespace Controls.Map
                         vs = ad.VisualStyle
 
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
-                        renderer = New cLayerRendererValue(vs)
+                        renderer = New cLayerRendererValue(uic, vs)
                         'renderer.ScaleMin = 0
                         renderer.RenderMode = Definitions.eLayerRenderType.Selected
                         editor = New cLayerEditorRange()
@@ -351,7 +351,7 @@ Namespace Controls.Map
                         ad.VisualStyle = vs
                         ad.AllowValidation = True
                     End If
-                    renderer = New cLayerRendererExclusion(vs)
+                    renderer = New cLayerRendererExclusion(uic, vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorTwoState(GetType(ucLayerEditorExclusion), False)
                     layer = New cDisplayLayerRaster(uic, src, renderer, editor, src, eVarNameFlags.Name, CSng(True), CSng(False))

@@ -48,12 +48,10 @@ Namespace Controls.Map.Layers
             [Error] = 2
         End Enum
 
-
-        Public Sub New(ByVal vs As cVisualStyle)
-            MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor Or
-                    cVisualStyle.eVisualStyleTypes.Font Or
-                    cVisualStyle.eVisualStyleTypes.Gradient)
-
+        Public Sub New(uic As cUIContext, vs As cVisualStyle)
+            MyBase.New(uic, vs, cVisualStyle.eVisualStyleTypes.ForeColor Or
+                               cVisualStyle.eVisualStyleTypes.Font Or
+                               cVisualStyle.eVisualStyleTypes.Gradient)
         End Sub
 
         Protected Property Font As Font
@@ -170,11 +168,7 @@ Namespace Controls.Map.Layers
                 If (Me.Font IsNot Nothing) Then Me.Font.Dispose()
                 Me.Font = New Font(vs.FontName, Me.VisualStyle.FontSize, Me.VisualStyle.FontStyle)
 
-                If (vs.GradientBreaks IsNot Nothing) And (vs.GradientColors IsNot Nothing) Then
-                    Me.ColorRamp = New cARGBColorRamp(vs.GradientColors, vs.GradientBreaks)
-                Else
-                    Me.ColorRamp = New cEwEColorRamp()
-                End If
+                Me.ColorRamp = Me.UIContext.StyleGuide.GetColorRamp(vs)
             End If
 
         End Sub

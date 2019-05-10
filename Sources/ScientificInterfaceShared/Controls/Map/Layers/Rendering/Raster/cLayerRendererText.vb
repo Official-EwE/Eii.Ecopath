@@ -40,9 +40,9 @@ Namespace Controls.Map.Layers
         Private m_brFore As Brush = Nothing
         Private m_ft As Font = Nothing
 
-        Public Sub New(ByVal vs As cVisualStyle)
-            MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor Or _
-                    cVisualStyle.eVisualStyleTypes.Font Or _
+        Public Sub New(uic As cUIContext, vs As cVisualStyle)
+            MyBase.New(uic, vs, cVisualStyle.eVisualStyleTypes.ForeColor Or
+                    cVisualStyle.eVisualStyleTypes.Font Or
                     cVisualStyle.eVisualStyleTypes.Gradient)
         End Sub
 

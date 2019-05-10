@@ -19,6 +19,8 @@
 
 Option Strict On
 Imports System.Drawing
+Imports EwECore
+Imports EwEUtils.Core
 
 Namespace Style
 
@@ -29,10 +31,19 @@ Namespace Style
     ''' -------------------------------------------------------------------
     Public MustInherit Class cColorRamp
 
-        ''' <summary>Colour offset start [0..1]</summary>
-        Private m_sColorOffsetStart As Single = 0.0
-        ''' <summary>Colour offset end [0..1]</summary>
-        Private m_sColorOffsetEnd As Single = 1.0
+        Public Sub New(id As Integer, bIsSystemRamp As Boolean)
+            Me.ID = id
+            Me.IsSystemRamp = bIsSystemRamp
+        End Sub
+
+        ''' <summary>
+        ''' Stock gradient ID, loosely maintained by the gradient classes in this assembly.
+        ''' </summary>
+        Public ReadOnly Property ID As Integer = 0
+
+        Public MustOverride Property Name As String
+
+        Public ReadOnly Property IsSystemRamp() As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -42,14 +53,7 @@ Namespace Style
         ''' If the start offset exceeds than the end offset, the entire color scheme is reversed.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property ColorOffsetStart() As Single
-            Get
-                Return Me.m_sColorOffsetStart
-            End Get
-            Set(ByVal s As Single)
-                Me.m_sColorOffsetStart = s
-            End Set
-        End Property
+        Public Property ColorOffsetStart() As Single = 0.0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -59,14 +63,7 @@ Namespace Style
         ''' If the start offset exceeds than the end offset, the entire color scheme is reversed.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property ColorOffsetEnd() As Single
-            Get
-                Return Me.m_sColorOffsetEnd
-            End Get
-            Set(ByVal s As Single)
-                Me.m_sColorOffsetEnd = s
-            End Set
-        End Property
+        Public Property ColorOffsetEnd() As Single = 1.0
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -104,6 +101,14 @@ Namespace Style
 
             Return dValue
 
+        End Function
+
+        Protected Function Interpolate(ByVal nVal1 As Integer, ByVal nVal2 As Integer, ByVal dRatio As Double) As Integer
+            Try
+                Return CInt(Math.Round(nVal1 + (nVal2 - nVal1) * dRatio))
+            Catch ex As Exception
+                Return 0
+            End Try
         End Function
 
     End Class

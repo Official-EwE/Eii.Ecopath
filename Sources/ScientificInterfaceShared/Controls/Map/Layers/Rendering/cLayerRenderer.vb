@@ -38,6 +38,7 @@ Namespace Controls.Map.Layers
     ''' -----------------------------------------------------------------------
     Public MustInherit Class cLayerRenderer
         Implements IDisposable
+        Implements IUIElement
 
 #Region " Helper classes "
 
@@ -106,8 +107,10 @@ Namespace Controls.Map.Layers
         ''' <param name="vs"></param>
         ''' <param name="layerStyleFlags"></param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal vs As cVisualStyle,
+        Public Sub New(uic As cUIContext,
+                       vs As cVisualStyle,
                        Optional ByVal layerStyleFlags As cVisualStyle.eVisualStyleTypes = cVisualStyle.eVisualStyleTypes.NotSet)
+            Me.UIContext = uic
             Me.m_vs = vs
             Me.VisualStyleFlags = layerStyleFlags
             Me.Update()
@@ -135,6 +138,8 @@ Namespace Controls.Map.Layers
 #End Region ' IDisposable support
 
 #End Region ' Construction / destruction
+
+        Public Property UIContext As cUIContext Implements IUIElement.UIContext
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -230,7 +235,7 @@ Namespace Controls.Map.Layers
             Dim minime As cRasterLayerRenderer = Nothing
             Dim vs As cVisualStyle = Me.VisualStyle.Clone()
 
-            minime = DirectCast(Activator.CreateInstance(Me.GetType(), New Object() {vs}), cRasterLayerRenderer)
+            minime = DirectCast(Activator.CreateInstance(Me.GetType(), New Object() {Me.UIContext, vs}), cRasterLayerRenderer)
             minime.VisualStyleFlags = Me.VisualStyleFlags
 
             Return minime
