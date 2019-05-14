@@ -160,6 +160,7 @@ Public Class cEcospaceMapWrapper
             Me.DrawMapBitmap()
             Me.m_picbox.BackgroundImage = Me.m_bmp
 
+#If 0 Then
             Dim p As String = Me.m_uic.Core.DefaultOutputPath(eAutosaveTypes.Ecospace)
             Dim n As String = "ecoind.png"
             If lInfo.Count = 1 Then n = "ind_" & lInfo(0).Name.Replace(" "c, "_").ToLower() & "_2016.png"
@@ -169,6 +170,7 @@ Public Class cEcospaceMapWrapper
             Catch ex As Exception
 
             End Try
+#End If
         End If
 
         Me.m_picbox.Invalidate()
