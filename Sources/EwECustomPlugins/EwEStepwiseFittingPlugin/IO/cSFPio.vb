@@ -273,7 +273,7 @@ Public Class cSFPio
             Me.m_man.Refresh(nK)
 
         Next
-
+        Return True
 
     End Function
 

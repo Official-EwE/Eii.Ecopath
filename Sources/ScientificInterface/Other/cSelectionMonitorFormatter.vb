@@ -41,7 +41,7 @@ Public Class cSelectionMonitorFormatter
         Return GetType(cSelectionMonitor)
     End Function
 
-    Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.ToString
+    Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String Implements ITypeFormatter.ToString
 
         Dim strSelection As String = ""
 
