@@ -87,12 +87,6 @@ Namespace Style
         Private m_dtApplicationColors As New Dictionary(Of cStyleGuide.eApplicationColorType, Color)
         ''' <summary>Shape colour scheme.</summary>
         Private m_dtShapeColors As New Dictionary(Of eDataTypes, Color)
-        ''' <summary>Color ramp for obtaining EwE5 group colors</summary>
-        Private m_colorrampGroups As New cEwEColorRamp()
-        ''' <summary>Color ramp for obtaining fleet colors</summary>
-        Private m_colorrampFleets As New cARGBColorRamp(New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#})
-        ''' <summary>Color ramp for obtaining pedigree colors</summary>
-        Private m_colorrampPedigree As New cEwEColorRamp()
         ''' <summary>Start offset for colour ramp.</summary>
         Private Const c_sRampOffsetStart As Single = 0.15!
         ''' <summary>End offset for colour ramp.</summary>
@@ -168,11 +162,11 @@ Namespace Style
             Me.m_mode = mode
 
             ' Control how colour ramp delivers its colours
-            Me.m_colorrampGroups.ColorOffsetStart = c_sRampOffsetStart
-            Me.m_colorrampGroups.ColorOffsetEnd = c_sRampOffsetEnd
+            Me.GroupColorRamp.ColorOffsetStart = c_sRampOffsetStart
+            Me.GroupColorRamp.ColorOffsetEnd = c_sRampOffsetEnd
 
-            Me.m_colorrampPedigree.ColorOffsetStart = c_sRampOffsetStart
-            Me.m_colorrampPedigree.ColorOffsetEnd = c_sRampOffsetEnd
+            Me.PedigreeColorRamp.ColorOffsetStart = c_sRampOffsetStart
+            Me.PedigreeColorRamp.ColorOffsetEnd = c_sRampOffsetEnd
 
             ' Load up
             Me.ResetApplicationColors()
@@ -1059,6 +1053,13 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set the color ramp for obtaining group colors.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property GroupColorRamp As New cEwEColorRamp()
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Get/set the color to represent a group.
         ''' </summary>
         ''' <remarks>
@@ -1101,7 +1102,7 @@ Namespace Style
         ''' Default group colours are picked from the Ecopath 5 group colour scheme.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function GroupColorDefault(ByVal core As cCore, _
+        Public Function GroupColorDefault(ByVal core As cCore,
                                           ByVal iGroup As Integer) As Color
             If (iGroup = 0) Then Return Color.Gray
             Return Me.GroupColorDefault(iGroup, core.nGroups)
@@ -1117,14 +1118,17 @@ Namespace Style
         ''' Default group colours are picked from the Ecopath 5 group colour scheme.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function GroupColorDefault(ByVal iGroup As Integer, _
+        Public Function GroupColorDefault(ByVal iGroup As Integer,
                                           ByVal nGroups As Integer) As Color
-            Return Me.m_colorrampGroups.GetColor(iGroup, nGroups)
+            Return Me.GroupColorRamp.GetColor(iGroup, nGroups)
         End Function
 
 #End Region ' Group
 
 #Region " Fleet "
+
+        ''' <summary>Color ramp for obtaining fleet colors</summary>
+        Public Property FleetColorRamp As New cARGBColorRamp(New Color() {Color.Green, Color.LightGreen, Color.LightBlue, Color.Blue, Color.DarkBlue}, New Double() {0.0#, 0.4#, 0.3#, 0.2#, 0.1#})
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1172,10 +1176,10 @@ Namespace Style
         ''' green to blue.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function FleetColorDefault(ByVal iFleet As Integer, _
+        Public Function FleetColorDefault(ByVal iFleet As Integer,
                                           ByVal nFleets As Integer) As Color
             If (iFleet = 0) Then Return Color.Gray
-            Return Me.m_colorrampFleets.GetColor(iFleet, nFleets)
+            Return Me.FleetColorRamp.GetColor(iFleet, nFleets)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1189,7 +1193,7 @@ Namespace Style
         ''' green to blue.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function FleetColorDefault(ByVal core As cCore, _
+        Public Function FleetColorDefault(ByVal core As cCore,
                                           ByVal iFleet As Integer) As Color
             Return FleetColorDefault(iFleet, core.nFleets)
         End Function
@@ -1197,6 +1201,9 @@ Namespace Style
 #End Region ' Fleet 
 
 #Region " Pedigree "
+
+        ''' <summary>Color ramp for obtaining pedigree colors</summary>
+        Public Property PedigreeColorRamp As New cEwEColorRamp()
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1272,9 +1279,9 @@ Namespace Style
         ''' Default pedigree colours are picked from a SAUP/EwE5 colour ramp.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function PedigreeColorDefault(ByVal iLevel As Integer, _
+        Public Function PedigreeColorDefault(ByVal iLevel As Integer,
                                              ByVal nLevels As Integer) As Color
-            Return Me.m_colorrampPedigree.GetColor(iLevel - 1, nLevels)
+            Return Me.PedigreeColorRamp.GetColor(iLevel - 1, nLevels)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -1289,8 +1296,8 @@ Namespace Style
         ''' green to blue.
         ''' </returns>
         ''' -------------------------------------------------------------------
-        Public Function PedigreeColorDefault(ByVal core As cCore, _
-                                             ByVal iLevel As Integer, _
+        Public Function PedigreeColorDefault(ByVal core As cCore,
+                                             ByVal iLevel As Integer,
                                              ByVal vn As eVarNameFlags) As Color
             Debug.Assert(core.IsPedigreeVariableSupported(vn))
             Return PedigreeColorDefault(iLevel, core.GetPedigreeManager(vn).NumLevels)
@@ -1369,8 +1376,8 @@ Namespace Style
         ''' mere informational style flags.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub GetStyleColors(ByVal eStatus As cStyleGuide.eStyleFlags, _
-                                  ByRef colorText As Color, _
+        Public Sub GetStyleColors(ByVal eStatus As cStyleGuide.eStyleFlags,
+                                  ByRef colorText As Color,
                                   ByRef colorBackground As Color)
 
             ' Default priorities, used when the provided priorities did not yield
@@ -1517,7 +1524,7 @@ Namespace Style
         Public Function GetEwE5ColorRamp(ByVal iNumLevels As Integer) As List(Of Color)
             Dim lColors As New List(Of Color)
             For i As Integer = 0 To iNumLevels
-                Dim clr As Color = Me.m_colorrampGroups.GetColor(i, iNumLevels)
+                Dim clr As Color = Me.GroupColorRamp.GetColor(i, iNumLevels)
                 lColors.Add(clr)
             Next
             Return lColors
@@ -1556,10 +1563,10 @@ Namespace Style
         ''' <param name="iValueRange"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function CalculateAlternatingColors(ByVal i As Integer, _
-                                                          ByVal iLen As Integer, _
-                                                          Optional ByVal iHueScale As Integer = 9, _
-                                                          Optional ByVal iSaturationRange As Integer = 240, _
+        Public Shared Function CalculateAlternatingColors(ByVal i As Integer,
+                                                          ByVal iLen As Integer,
+                                                          Optional ByVal iHueScale As Integer = 9,
+                                                          Optional ByVal iSaturationRange As Integer = 240,
                                                           Optional ByVal iValueRange As Integer = 200) As HSV
 
             Dim nCount As Integer = CInt(Math.Ceiling(Math.Sqrt(iLen / iHueScale)))
@@ -2186,7 +2193,7 @@ Namespace Style
         ''' PNG images are 
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Function GetImage(width As Integer, height As Integer, format As ImageFormat, _
+        Public Function GetImage(width As Integer, height As Integer, format As ImageFormat,
                                  Optional ByRef strFileName As String = "") As Bitmap
 
             Try
@@ -2269,8 +2276,8 @@ Namespace Style
         ''' <remarks>Windows Forms control labels are formatted to sentence case.</remarks>
         ''' <returns>A string that can be used as a Windows Forms Control label.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToControlLabel(ByVal strLabel As String, _
-                                              Optional ByVal parent As Control = Nothing, _
+        Public Shared Function ToControlLabel(ByVal strLabel As String,
+                                              Optional ByVal parent As Control = Nothing,
                                               Optional ByVal bAssignShortcut As Boolean = True) As String
 
             Dim sb As New StringBuilder()
@@ -2303,8 +2310,8 @@ Namespace Style
         ''' <remarks>Windows Forms menu labels are formatted to title case.</remarks>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToMenuLabel(ByVal strLabel As String, _
-                                           Optional ByVal parent As MenuItem = Nothing, _
+        Public Shared Function ToMenuLabel(ByVal strLabel As String,
+                                           Optional ByVal parent As MenuItem = Nothing,
                                            Optional ByVal bAssignShortcut As Boolean = True) As String
 
             Dim sb As New StringBuilder()
@@ -2384,8 +2391,8 @@ Namespace Style
         Private Function DefaultEcosystemTypes() As StringCollection
 
             ' Do NOT localize these strings; they serve as keys to EcoBase
-            Dim names() As String = New String() {"Estuary", "Open ocean", "Coral reef", "Channel/strait", "Terrestrial", _
-                                                  "Reservoir", "River", "Continental shelf", "Bay/fjord", _
+            Dim names() As String = New String() {"Estuary", "Open ocean", "Coral reef", "Channel/strait", "Terrestrial",
+                                                  "Reservoir", "River", "Continental shelf", "Bay/fjord",
                                                   "Coastal lagoon", "Upwelling", "Beach", "Fish farm", "Lake"}
             Dim sc As New StringCollection()
             sc.AddRange(names)
