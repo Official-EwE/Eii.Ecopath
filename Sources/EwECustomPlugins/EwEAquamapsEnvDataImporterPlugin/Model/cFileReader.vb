@@ -97,15 +97,18 @@ Public Class cFileReader
                     If Not String.IsNullOrWhiteSpace(strName) Then
                         Try
                             If (astrBits(1).StartsWith("1")) And bSuccess Then
-                                bSuccess = bSuccess And _
-                                    Single.TryParse(astrBits(2), sMin) And _
-                                    Single.TryParse(astrBits(3), sMinPref) And _
-                                    Single.TryParse(astrBits(4), sMaxPref) And _
-                                    Single.TryParse(astrBits(5), sMax)
+                                Try
+                                    sMin = cStringUtils.ConvertToSingle(astrBits(2), strDecimalSeparator:=".")
+                                    sMinPref = cStringUtils.ConvertToSingle(astrBits(3), strDecimalSeparator:=".")
+                                    sMaxPref = cStringUtils.ConvertToSingle(astrBits(4), strDecimalSeparator:=".")
+                                    sMax = cStringUtils.ConvertToSingle(astrBits(5), strDecimalSeparator:=".")
+                                Catch ex As Exception
+                                    bSuccess = False
+                                End Try
                                 bUsed = bSuccess
 
                                 If (bUsed = False) Then
-                                    Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_FILE_INVALID, Path.GetFileName(strFile)), eMessageImportance.Warning, _
+                                    Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_FILE_INVALID, Path.GetFileName(strFile)), eMessageImportance.Warning,
                                                    cStringUtils.Localize(My.Resources.PROMPT_IMPORT_DETAIL_LINEERROR, strLine))
                                 End If
                             End If
