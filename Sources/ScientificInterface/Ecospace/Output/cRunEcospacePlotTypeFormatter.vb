@@ -35,7 +35,7 @@ Namespace Ecospace
             Return GetType(frmRunEcospace.ePlotTypes)
         End Function
 
-        Public Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+        Public Overloads Function ToString(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.ToString
 
             ' ToDo: globalize this properly
