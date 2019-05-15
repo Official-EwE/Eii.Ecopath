@@ -63,6 +63,7 @@ Namespace Forms
                 Return MyBase.Icon
             End Get
             Set(value As Icon)
+                If (Me.IsDisposed) Then Return
                 Try
                     MyBase.Icon = value
                     If (Me.Pane IsNot Nothing) Then
