@@ -860,7 +860,7 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function HasEcosimLoaded() As Boolean
-        Return Me.m_iEcosimState <> eCoreExecutionState.Idle
+        Return Me.m_iEcosimState >= eCoreExecutionState.EcosimLoaded
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -906,7 +906,7 @@ Public Class cCoreStateMonitor
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function HasEcospaceLoaded() As Boolean
-        Return Me.m_iEcospaceState <> eCoreExecutionState.Idle
+        Return Me.m_iEcospaceState >= eCoreExecutionState.EcospaceLoaded
     End Function
 
     ''' -----------------------------------------------------------------------
