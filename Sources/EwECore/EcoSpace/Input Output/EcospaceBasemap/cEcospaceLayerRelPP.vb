@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore.Style
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -36,7 +37,8 @@ Public Class cEcospaceLayerRelPP
     End Sub
 
     Protected Overrides Function DefaultName() As String
-        Return My.Resources.CoreDefaults.CORE_DEFAULT_RELPP
+        Dim vnf As New cVarnameTypeFormatter()
+        Return vnf.ToString(eVarNameFlags.LayerRelPP)
     End Function
 
 End Class
