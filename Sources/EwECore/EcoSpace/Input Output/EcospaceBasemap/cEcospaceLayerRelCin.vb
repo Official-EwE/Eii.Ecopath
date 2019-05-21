@@ -20,6 +20,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore.Style
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -36,7 +37,8 @@ Public Class cEcospaceLayerRelCin
     End Sub
 
     Protected Overrides Function DefaultName() As String
-        Return My.Resources.CoreDefaults.CORE_DEFAULT_RELCIN
+        Dim vnf As New cVarnameTypeFormatter()
+        Return vnf.ToString(eVarNameFlags.LayerRelCin) ' My.Resources.CoreDefaults.CORE_DEFAULT_RELCIN
     End Function
 
 End Class

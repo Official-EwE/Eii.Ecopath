@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class CoreDefaults
@@ -241,24 +241,6 @@ Namespace My.Resources
         Public Shared ReadOnly Property CORE_DEFAULT_REGION() As String
             Get
                 Return ResourceManager.GetString("CORE_DEFAULT_REGION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Contaminants.
-        '''</summary>
-        Public Shared ReadOnly Property CORE_DEFAULT_RELCIN() As String
-            Get
-                Return ResourceManager.GetString("CORE_DEFAULT_RELCIN", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Relative PP.
-        '''</summary>
-        Public Shared ReadOnly Property CORE_DEFAULT_RELPP() As String
-            Get
-                Return ResourceManager.GetString("CORE_DEFAULT_RELPP", resourceCulture)
             End Get
         End Property
         
@@ -4169,7 +4151,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biomass forcing.
+        '''  Looks up a localized string similar to Biomass (abs)||Absolute biomass forcing.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERBIOMASSFORCING() As String
             Get
@@ -4178,7 +4160,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biomass (rel)||Relative Biomass forcing|Relative Biomass forcing map.
+        '''  Looks up a localized string similar to Biomass (rel)||Relative Biomass forcing.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERBIOMASSRELATIVEFORCING() As String
             Get
@@ -4187,7 +4169,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Depth|||Depth map (bathymetry).
+        '''  Looks up a localized string similar to Depth|||Depth (bathymetry).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERDEPTH() As String
             Get
@@ -4196,7 +4178,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Driver||Environmental driver|Environmental driver map.
+        '''  Looks up a localized string similar to Driver||Environmental driver|Spatial distribution and intensity of an environmental driver.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERDRIVER() As String
             Get
@@ -4205,7 +4187,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Exclusion||Exclusion map|Map with cells to exclude from computations.
+        '''  Looks up a localized string similar to Exclusion||Excluded cells|Cells to exclude from computations.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYEREXCLUSION() As String
             Get
@@ -4214,7 +4196,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Habitat||Habitat map.
+        '''  Looks up a localized string similar to Habitat||Spatial distribution of a habitat.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERHABITAT() As String
             Get
@@ -4223,7 +4205,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Hab cap (out)||Habitat capacity map (computed).
+        '''  Looks up a localized string similar to Hab. cap. (out)||Habitat capacity (computed).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERHABITATCAPACITY() As String
             Get
@@ -4232,7 +4214,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Hab cap||Habitat capacity map (entered).
+        '''  Looks up a localized string similar to Hab. cap.||Habitat capacity (entered).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERHABITATCAPACITYINPUT() As String
             Get
@@ -4250,7 +4232,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to M0 mult (out)|Other mort. mult. map|Other mortality multiplier map (computed).
+        '''  Looks up a localized string similar to M0 mult (out)|Other mort. mult. (out)|Other mortality multiplier (computed).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERM0MULT() As String
             Get
@@ -4259,7 +4241,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to M0 mult|Other mort. mult. map|Other mortality multiplier map (entered).
+        '''  Looks up a localized string similar to M0 mult|Other mort. mult.|Other mortality multiplier (entered).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERM0MULTINPUT() As String
             Get
@@ -4268,7 +4250,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Migration||Migration map.
+        '''  Looks up a localized string similar to Migration.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERMIGRATION() As String
             Get
@@ -4277,7 +4259,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MLD||Mixed layer depth map.
+        '''  Looks up a localized string similar to MLD||Mixed layer depth.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERMLD() As String
             Get
@@ -4286,7 +4268,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MPA||Marine Protected Area map.
+        '''  Looks up a localized string similar to MPA||Marine Protected Area.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERMPA() As String
             Get
@@ -4349,7 +4331,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to C (rel)||Relative C map|Relative contaminants map.
+        '''  Looks up a localized string similar to Contaminants.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERRELCIN() As String
             Get
@@ -4358,7 +4340,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to PP (rel)||Relative PP map|Relative Primary Production map.
+        '''  Looks up a localized string similar to PP||Primary Production.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERRELPP() As String
             Get
@@ -4367,7 +4349,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Sailing cost||Sailing cost map.
+        '''  Looks up a localized string similar to Sailing cost|||Spatial distribution of sailing costs.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERSAIL() As String
             Get
@@ -4376,7 +4358,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Upwelling||Upwelling map.
+        '''  Looks up a localized string similar to Upwelling.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERUPWELLING() As String
             Get
@@ -4385,7 +4367,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Wind||Wind map.
+        '''  Looks up a localized string similar to Wind.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERWIND() As String
             Get
