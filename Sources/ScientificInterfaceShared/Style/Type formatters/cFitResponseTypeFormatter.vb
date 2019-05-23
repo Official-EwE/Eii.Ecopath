@@ -42,9 +42,8 @@ Namespace Style
             Return GetType(eFitResponseType)
         End Function
 
-        Public Function GetDescriptor(ByVal value As Object,
-                                      Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
-                                      Implements ITypeFormatter.GetDescriptor
+        Public Overloads Function ToString(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+            Implements ITypeFormatter.ToString
 
             Dim resp As eFitResponseType = eFitResponseType.None
             Try

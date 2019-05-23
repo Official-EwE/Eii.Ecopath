@@ -3,21 +3,22 @@
 #include <idp.iss>
 
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 1
-#define Spinup 1
-#define SpatTemp 1
+#define Compile64Bit 0
+#define Spinup 0
+#define SpatTemp 0
 #define NetworkD3 0
+#define ExcludeDeadCells 0
 #define FISHMIP 0
 #define MSPTools 0
 #define SAFENET 0
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6 Beta 3"
+  #define MyAppVersion "6.6 Beta 4"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6 Beta 3 64-bit"
+  #define MyAppVersion "6.6 Beta 4 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -33,12 +34,12 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.16096.0
+  VersionInfoVersion=6.6.16228.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
 ;   <full path to signtool.exe> /f <cert file> /p <password> /t <path to timestamp server> $f
-;   "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /a /f "D:\Dropbox\EII_cert.p12" /p <muahaha> /t http://timestamp.comodoca.com/authenticode $f
+;   "C:\Program Files (x86)\Windows Kits\10\bin\x86\signtool.exe" sign /a /f "D:\Cloud\Dropbox\EII_cert.p12" /p <muahaha> /t http://timestamp.comodoca.com/authenticode $f
 SignTool=codesign /d $q{#MyAppName}$q $f
 WizardImageFile=EwE5Logo.bmp
 WizardSmallImageFile=EwE6Header.bmp
@@ -147,6 +148,9 @@ Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plu
 #if NetworkD3 == 1
 Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3R.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\networkd3
 #endif
+#if ExcludeDeadCells == 1
+Source: "{#DefRoot}{#DefSrc}\EwEEcospaceExcludeIsolatedCellsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\excldeadcells
+#endif
 ; -- Stuff under development --
 #if Spinup == 1
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
@@ -167,6 +171,7 @@ Source: "{#DefRoot}{#DefSrc}\DotSpatial.Symbology.Forms.dll"; DestDir: "{app}\Pl
 ; -- Source: "{#DefRoot}{#DefSrc}\DotSpatial.Tools.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\DotSpatial.Topology.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\TreeksLicensingLibrary2.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
+#if Compile64Bit == 0
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\cairo.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\cfitsio.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\DotSpatial.Data.Rasters.GdalExtension.dll"; DestDir: "{app}\Includes\GDAL\win32\"; Flags: ignoreversion; Components: plugin\input\spattemp
@@ -216,6 +221,7 @@ Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_HDF5.dll"; Des
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_HDF5Image.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_MrSID.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win32\gdalplugins\gdal_netCDF.dll"; DestDir: "{app}\Includes\GDAL\win32\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
+#else
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\cairo.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\cfitsio.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\DotSpatial.Data.Rasters.GdalExtension.dll"; DestDir: "{app}\Includes\GDAL\win64\"; Flags: ignoreversion; Components: plugin\input\spattemp
@@ -266,6 +272,7 @@ Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_HDF5Image.dll"
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_MrSID.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 Source: "{#DefRoot}{#DefSrc}\Includes\GDAL\win64\gdalplugins\gdal_netCDF.dll"; DestDir: "{app}\Includes\GDAL\win64\gdalplugins\"; Flags: ignoreversion; Components: plugin\input\spattemp
 #endif
+#endif
 #if MSPTools == 1
 Source: "{#DefRoot}{#DefSrc}\EwEShell.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
 Source: "{#DefRoot}{#DefSrc}\EwEMSPToolsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\ui\msptools
@@ -307,13 +314,15 @@ Name: "plugin\ui\remarks"; Description: "Remarks collector"; Types: full custom
 Name: "plugin\ui\shapegrid"; Description: "Shape grids"; Types: full custom
 Name: "plugin\input\mergegroups"; Description: "Merge groups"; Types: full
 Name: "plugin\input\mpadynamics"; Description: "MPA dynamics"; Types: full
+Name: "plugin\output\transects"; Description: "Transects extraction"; Types: full
 #if NetworkD3 == 1
 Name: "plugin\output\networkD3"; Description: "Export diet matrix to NetworkD3"; Types: full
+#endif#if ExcludeDeadCells == 1
+Name: "plugin\input\excldeadcells"; Description: "Exclude isolated cells"; Types: full
 #endif
 #if SpatTemp == 1
 Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange framework"; Types: full
 #endif
-Name: "plugin\output\transects"; Description: "Transects extraction"; Types: full
 #if Spinup == 1
 Name: "plugin\output\spinup"; Description: "Ecospace spin-up"; Types: full
 #endif
