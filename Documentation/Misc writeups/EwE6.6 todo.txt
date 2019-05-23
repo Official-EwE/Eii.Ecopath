@@ -12,11 +12,18 @@
 # EwE first launch (or post-upgrade) shows "thank you" page in the start screen
 # Change shape - trapezoid no longer loses XAxisMin
 # Change shape - trapezoid now robust to users changing function parameters in any order
-# Monte Carlo diet perturbations no longer lose existing diest interactions (e.g, no longer samples diets to 0)
+# Monte Carlo diet perturbations no longer lose existing diet interactions (e.g, no longer samples diets to 0)
+# Monte Carlo now shows start biomass (e.g., 1) in plot
 # Change shape "show extra data" option only applies to forcing functions
 # Ecosim values dialog does not show Xaxis min and max
 # Groups now delete again with taxa and Ecospace scenarios
 # EwE main interface can be resized on all borders under Windows 10
+# EcoIND fixed units
+# EcoIND can now be stopped on main screen
+# EcoIND shows elapsed time for iteration
+# EcoIND output path can be customized and reset
+# Ecospace save map image does not orient image well after map logic rewrite
+# EcoIND does not correctly compute "catch of mammals, seabirds and reptiles" indicator
 
 == BUGS ==
 ! Sometimes biomass plot stay empty when re-running MC? 
@@ -46,10 +53,8 @@
 ? Apply foraging responses - new UI is (too) slow when applying. Perhaps something is wrong?
   Run Ecospace shows excluded cells in red, regardless of the customized colour
   Add Sequence to Sim, Space, and tracer scenario DB tables to ensure that scenarios are always loaded up in the same order. This could also allow users to reorganize scenarios
-  
-== FIXED BUT NOT LOGGED YET ==
-V EcoIND does not correctly compute "catch of mammals, seabirds and reptiles" indicator
-
+  Ecospace save map image does not use Ecopath no. decimal digits for legend scales 
+  Tools dialog config pages must be able to report if they are enabled or disabled based on EwE run state. UI should incorporate this
 == FEATURES ==
   Warning if there are no water cells on pre-run
   Computed cap 0 when no migration targets set :-> assume whole map as migration target? message?

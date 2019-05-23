@@ -7,6 +7,7 @@ namespace ViridisTableToArray
 {
     class Program
     {
+        // Utility to convert Villy's R dump of Viridis colour ramps to a VB array
         static void Main(string[] args)
         {
             using (StreamWriter sw = new StreamWriter("ramparrays.txt"))
