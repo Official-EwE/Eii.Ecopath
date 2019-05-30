@@ -228,7 +228,7 @@ Module EcopathDetails
         writer.WriteLine("# fleets: " & core.nFleets)
         For iFleet As Integer = 1 To core.nFleets
 
-            Dim fleet As cFleetInput = core.FleetInputs(iFleet)
+            Dim fleet As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
             writer.WriteLine("   " & iFleet & ": " & fleet.Name)
 
             For iGroup As Integer = 1 To core.nGroups
