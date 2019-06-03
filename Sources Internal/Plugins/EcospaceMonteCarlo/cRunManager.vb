@@ -306,6 +306,7 @@ Public Class cRunManager
     Public Sub configMonteCarlo()
 
         Dim MC As cMonteCarloManager = Me.core.EcosimMonteCarlo
+        MC.Load()
         'For now set BA to 0 for all groups
         'until we sort out how to deal with the 
         'BA BA/B variation
