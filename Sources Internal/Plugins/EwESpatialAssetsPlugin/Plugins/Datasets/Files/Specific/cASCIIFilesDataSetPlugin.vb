@@ -83,7 +83,10 @@ Namespace SpatialData
                     sb.Append("|")
                     sb.Append(SharedResources.FILEFILTER_ALL)
                 End If
-                Return cFileUtils.CleanupExtensions(sb.ToString())
+                'Just return the string as created above
+                'cFileUtils.CleanupExtensions(sb.ToString()) is messing up the filter order 
+                Return sb.ToString
+                'Return cFileUtils.CleanupExtensions(sb.ToString())
             End Get
         End Property
 
