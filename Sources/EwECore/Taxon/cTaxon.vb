@@ -191,6 +191,10 @@ Public Class cTaxon
 
     End Function
 
+    Public Overrides Function ToString() As String
+        Return String.Format("{0} {1}", Me.Genus, Me.Species)
+    End Function
+
 #End Region ' Overrides
 
 #Region " Variables via dot (.) operator "
