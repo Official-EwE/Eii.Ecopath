@@ -13,6 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -78,6 +79,19 @@ Namespace Ecospace
 
 #Region " Private vars "
 
+        Private Enum eFormModeTypes As Integer
+            ''' <summary>User is entering values for a new search.</summary>
+            Prepare
+            ''' <summary>Search has been started.</summary>
+            Searching
+            ''' <summary>Search is running.</summary>
+            Initializing
+            ''' <summary>Search is stopping.</summary>
+            Stopping
+            ''' <summary>Search is done, results are available.</summary>
+            Results
+        End Enum
+
         ' == Data ==
 
         Private m_manager As cMPAOptManager = Nothing
@@ -124,6 +138,9 @@ Namespace Ecospace
         Private m_zghResults As cZedGraphHelper = Nothing
         ''' <summary>Results graph data.</summary>
         Private m_aptsResults(6) As ResultPoints
+
+        ''' <summary>The mode that this form is in.</summary>
+        Private m_mode As eFormModeTypes = eFormModeTypes.Prepare
 
 #End Region ' Private vars
 
@@ -223,7 +240,7 @@ Namespace Ecospace
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             ' Terminate any run state feedback
-            'Me.ExitMode()
+            Me.ExitMode()
 
             ' -- Sponsors --
             Dim cmd As cCommand = Me.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME)
@@ -256,18 +273,13 @@ Namespace Ecospace
             Me.m_fpIterations.Release()
             Me.m_fpMaxArea.Release()
             Me.m_fpMinArea.Release()
+            Me.m_fpMPA.Release()
             Me.m_fpStartYear.Release()
             Me.m_fpStepSize.Release()
 
             MyBase.OnFormClosed(e)
 
         End Sub
-
-        Public Overrides ReadOnly Property IsRunForm As Boolean
-            Get
-                Return True
-            End Get
-        End Property
 
 #End Region ' Form
 
@@ -280,12 +292,12 @@ Namespace Ecospace
             If Not Me.ValidateInputs Then Return
             ' Start run
             Me.m_manager.Run()
-
         End Sub
 
         Private Sub OnStop(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                 Handles m_btnStop.Click
 
+            Me.RunMode = eFormModeTypes.Stopping
             Me.m_manager.StopRun()
 
         End Sub
@@ -372,6 +384,13 @@ Namespace Ecospace
 
         End Sub
 
+        Private Sub OnReset(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+
+            Me.RunMode = eFormModeTypes.Prepare
+
+        End Sub
+
         Private Sub OnSelectAreaClosed(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbAreaClosed.SelectedIndexChanged
 
@@ -415,16 +434,15 @@ Namespace Ecospace
 
             Dim aiMap As Integer(,) = Nothing
             Dim iNumResults As Integer = 0
-            Dim iMPA As Integer = Me.SelectedMPA()
 
             Select Case Me.SearchType
 
                 Case eMPAOptimizationModels.EcoSeed
-                    Me.SetLayer(Me.m_aiFeedback, Me.m_basemap.LayerMPA(iMPA), iMPA)
+                    Me.SetLayer(Me.m_aiFeedback, Me.m_basemap.LayerMPA(SelectedMPA()), Me.SelectedMPA())
 
                 Case eMPAOptimizationModels.RandomSearch
                     ' Get cell map at 100% best cells
-                    aiMap = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile(),
+                    aiMap = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile(), _
                                                          Me.SelectedClosedPercentage(), iNumResults)
                     ' Convert to MPA
                     Me.ConvertToMPA(aiMap, Me.SelectedClosedPercentage, Me.SelectedMPA())
@@ -459,8 +477,8 @@ Namespace Ecospace
                 ' Get area closed
                 iAreaClosed = CInt(Me.m_cmbAreaClosed.Items(iLevel))
                 ' Wrap this in a core map layer to handle projections
-                ldataTmp = New cEcospaceLayerInteger(Me.UIContext.Core,
-                                                     Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults),
+                ldataTmp = New cEcospaceLayerInteger(Me.UIContext.Core, _
+                                                     Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults), _
                                                      cStringUtils.Localize(My.Resources.ECOSPACE_LAYER_MPABESTCOUNT, iAreaClosed))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
                 layerTmp = New cDisplayLayerRaster(Me.UIContext, ldataTmp, Nothing, Nothing)
@@ -500,8 +518,14 @@ Namespace Ecospace
             Try
                 Select Case runstate
 
-                    Case cMPAOptManager.eRunStates.Initializing, cMPAOptManager.eRunStates.Searching, cMPAOptManager.eRunStates.Completed
-                        Me.UpdateControls()
+                    Case cMPAOptManager.eRunStates.Initializing
+                        Me.RunMode = eFormModeTypes.Initializing
+
+                    Case cMPAOptManager.eRunStates.Searching
+                        Me.RunMode = eFormModeTypes.Searching
+
+                    Case cMPAOptManager.eRunStates.Completed
+                        Me.RunMode = eFormModeTypes.Results
 
                     Case cMPAOptManager.eRunStates.NewCellSelected
                         Me.HandleNewCellSelected()
@@ -526,13 +550,12 @@ Namespace Ecospace
             Select Case msg.Source
 
                 Case eCoreComponentType.EcoSpace
-                    ' Is a major change?
                     If (msg.Type = eMessageType.DataAddedOrRemoved) Then
-                        ' #Yes: reload data
+                        ' Reload data
                         Me.Reload()
+                        ' Cascade mode down
+                        Me.RunMode = eFormModeTypes.Prepare
                     End If
-                    ' Always refresh form state
-                    Me.UpdateControls()
 
                 Case eCoreComponentType.Core
                     If (msg.Type = eMessageType.GlobalSettingsChanged) Then
@@ -550,7 +573,7 @@ Namespace Ecospace
         Private m_bInUpdate As Boolean = False
 
         Private Sub OnSearchTypeChanged(ByVal prop As cProperty, ByVal change As cProperty.eChangeFlags)
-            Debug.Assert(ReferenceEquals(prop, Me.m_propSearchType))
+            Debug.Assert(Object.ReferenceEquals(prop, Me.m_propSearchType))
 
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
@@ -672,15 +695,28 @@ Namespace Ecospace
         ''' The one controller that determines what is displayed in the form.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private ReadOnly Property RunMode() As cMPAOptManager.eRunStates
+        Private Property RunMode() As eFormModeTypes
             Get
-                Return Me.m_manager.RunState
+                Return Me.m_mode
             End Get
+            Set(ByVal value As eFormModeTypes)
+                ' Switching?
+                If value <> Me.m_mode Then
+                    ' Exit previous mode
+                    Me.ExitMode()
+                    ' Store mode
+                    Me.m_mode = value
+                    ' Enter new mode
+                    Me.EnterMode()
+                    ' Reflect changes
+                    Me.UpdateControls()
+                End If
+            End Set
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Toggle search type.
+        ''' Toggle search type, only valid in <see cref="eFormModeTypes.Prepare">Prepare</see> mode.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Property SearchType() As eMPAOptimizationModels
@@ -689,7 +725,7 @@ Namespace Ecospace
             End Get
             Set(ByVal value As eMPAOptimizationModels)
                 ' Only valid while preparing a run
-                If (Me.RunMode <> cMPAOptManager.eRunStates.Idle) Then Return
+                If (Me.RunMode <> eFormModeTypes.Prepare) Then Return
 
                 ' Clean up
                 Me.ClearMapFeedback()
@@ -704,11 +740,11 @@ Namespace Ecospace
                 Me.InitMapFeedback()
 
                 ' Update visible state of existing layers
-                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPASeed),
+                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPASeed), _
                     SearchType = eMPAOptimizationModels.EcoSeed, SearchType = eMPAOptimizationModels.EcoSeed)
-                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPARandom),
+                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPARandom), _
                     SearchType = eMPAOptimizationModels.RandomSearch, SearchType = eMPAOptimizationModels.RandomSearch)
-                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerImportance),
+                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerImportance), _
                      SearchType = eMPAOptimizationModels.RandomSearch, SearchType = eMPAOptimizationModels.RandomSearch)
 
                 ' Update graph labels
@@ -745,70 +781,68 @@ Namespace Ecospace
             Return CInt(Me.m_fpMPA.Value())
         End Function
 
-        ' ToDo: reroute this!!
+        Private Sub EnterMode()
 
-        'Private Sub EnterMode()
+            Select Case Me.m_mode
+                Case eFormModeTypes.Prepare
+                    ' User is about to start entering data
 
-        '    Select Case Me.m_mode
-        '        Case eFormModeTypes.Prepare
-        '            ' User is about to start entering data
+                Case eFormModeTypes.Initializing
+                    ' Set stop delegate
+                    Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.m_manager.StopRun))
+                    ' Set running status text
+                    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_INITIALIZING, -1)
+                    ' Switch to 'Results' page
+                    Me.m_tcResults.SelectedIndex = 0
 
-        '        Case eFormModeTypes.Initializing
-        '            ' Set stop delegate
-        '            Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.m_manager.StopRun))
-        '            ' Set running status text
-        '            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_INITIALIZING, -1)
-        '            ' Switch to 'Results' page
-        '            Me.m_tcResults.SelectedIndex = 0
+                Case eFormModeTypes.Searching
+                    ' Set stop delegate
+                    Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.m_manager.StopRun))
+                    ' Set running status text
+                    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_SEARCHING, -1)
 
-        '        Case eFormModeTypes.Searching
-        '            ' Set stop delegate
-        '            Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.m_manager.StopRun))
-        '            ' Set running status text
-        '            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_SEARCHING, -1)
+                Case eFormModeTypes.Stopping
+                    ' Set running status text
+                    cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_STOPPING, -1)
 
-        '        Case eFormModeTypes.Stopping
-        '            ' Set running status text
-        '            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_STOPPING, -1)
+                Case eFormModeTypes.Results
+                    ' Switch to 'Results' page
+                    Me.m_tcResults.SelectedIndex = 1
+                    ' Show results if possible
+                    If Me.m_cmbAreaClosed.Items.Count > 0 Then
+                        Me.m_cmbAreaClosed.SelectedIndex = 0
+                    End If
 
-        '        Case eFormModeTypes.Results
-        '            ' Switch to 'Results' page
-        '            Me.m_tcResults.SelectedIndex = 1
-        '            ' Show results if possible
-        '            If Me.m_cmbAreaClosed.Items.Count > 0 Then
-        '                Me.m_cmbAreaClosed.SelectedIndex = 0
-        '            End If
+            End Select
 
-        '    End Select
+        End Sub
 
-        'End Sub
+        Private Sub ExitMode()
+            Select Case Me.m_mode
 
-        'Private Sub ExitMode()
-        '    Select Case Me.m_mode
+                Case eFormModeTypes.Prepare ' Prepare for running mode
 
-        '        Case eFormModeTypes.Prepare ' Prepare for running mode
+                Case eFormModeTypes.Searching
+                    ' Cancel running status text
+                    Me.Core.SetStopRunDelegate(Nothing)
+                    cApplicationStatusNotifier.EndProgress(Me.Core)
 
-        '        Case eFormModeTypes.Searching
-        '            ' Cancel running status text
-        '            Me.Core.SetStopRunDelegate(Nothing)
-        '            cApplicationStatusNotifier.EndProgress(Me.Core)
+                Case eFormModeTypes.Initializing
+                    ' Cancel running status text
+                    Me.Core.SetStopRunDelegate(Nothing)
+                    cApplicationStatusNotifier.EndProgress(Me.Core)
 
-        '        Case eFormModeTypes.Initializing
-        '            ' Cancel running status text
-        '            Me.Core.SetStopRunDelegate(Nothing)
-        '            cApplicationStatusNotifier.EndProgress(Me.Core)
+                Case eFormModeTypes.Stopping
+                    ' Cancel running status text
+                    cApplicationStatusNotifier.EndProgress(Me.Core)
 
-        '        Case eFormModeTypes.Stopping
-        '            ' Cancel running status text
-        '            cApplicationStatusNotifier.EndProgress(Me.Core)
+                Case eFormModeTypes.Results ' Show results
+                    ' Clear results
+                    Me.ClearResults()
 
-        '        Case eFormModeTypes.Results ' Show results
-        '            ' Clear results
-        '            Me.ClearResults()
+            End Select
 
-        '    End Select
-
-        'End Sub
+        End Sub
 
         Private Sub Reload()
             ' Store ref
@@ -848,19 +882,19 @@ Namespace Ecospace
             ' Get MPA optimization params to connect start MPA to
             Dim MPAOpt As cMPAOptParameters = Me.UIContext.Core.MPAOptimizationManager.MPAOptimizationParamters
             ' Create list of available MPAs
-            Dim mpas As New List(Of cCoreInputOutputBase)
+            Dim alMPAs As New List(Of cCoreInputOutputBase)
 
             ' Build list of MPAs
-            For i As Integer = 1 To Me.UIContext.Core.nMPAs
-                mpas.Add(Me.UIContext.Core.EcospaceMPAs(i))
+            For iMPA As Integer = 1 To Me.UIContext.Core.nMPAs
+                alMPAs.Add(Me.UIContext.Core.EcospaceMPAs(iMPA))
             Next
 
-            Me.m_fpMPA.Items = mpas.ToArray
+            Me.m_fpMPA.Items = alMPAs.ToArray
 
             ' Only one MPA available?
-            If (mpas.Count = 1) Then
+            If alMPAs.Count = 1 Then
                 ' #Yes: select first MPA
-                Me.m_cmbMPA.SelectedIndex = 0
+                Me.m_fpMPA.Value = alMPAs(0).Index
             End If
 
         End Sub
@@ -904,9 +938,9 @@ Namespace Ecospace
 
                     End Try
 
-                    Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue,
-                                                output.MandatedValue, output.EcologicalValue,
-                                                output.BiomassDiversityValue, output.AreaBoundaryValue,
+                    Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue, _
+                                                output.MandatedValue, output.EcologicalValue, _
+                                                output.BiomassDiversityValue, output.AreaBoundaryValue, _
                                                 output.TotalValue, output.PercentageClosed)
 
                 Case eMPAOptimizationModels.RandomSearch
@@ -914,9 +948,9 @@ Namespace Ecospace
                     ' MPA layout has changed
                     Me.m_ucZoom.Map.Refresh()
 
-                    Me.LogProgress(output.EconomicValue, output.SocialValue,
-                                   output.MandatedValue, output.EcologicalValue,
-                                   output.BiomassDiversityValue, output.AreaBoundaryValue,
+                    Me.LogProgress(output.EconomicValue, output.SocialValue, _
+                                   output.MandatedValue, output.EcologicalValue, _
+                                   output.BiomassDiversityValue, output.AreaBoundaryValue, _
                                    output.TotalValue, output.PercentageClosed)
 
             End Select
@@ -944,9 +978,9 @@ Namespace Ecospace
                         ' Redraw MPA map
                         Me.m_ucZoom.Map.Refresh()
                         ' Show this in the graph
-                        Me.LogProgress(output.EconomicValue, output.SocialValue,
-                                            output.MandatedValue, output.EcologicalValue,
-                                            output.BiomassDiversityValue, output.AreaBoundaryValue,
+                        Me.LogProgress(output.EconomicValue, output.SocialValue, _
+                                            output.MandatedValue, output.EcologicalValue, _
+                                            output.BiomassDiversityValue, output.AreaBoundaryValue, _
                                             output.TotalValue, output.PercentageClosed)
 
                     Case eMPAOptimizationModels.RandomSearch
@@ -1016,15 +1050,15 @@ Namespace Ecospace
         Private Function AddBaseLayers(ByVal varName As eVarNameFlags, bEditable As Boolean) As cDisplayLayerRaster()
 
             Dim factory As New cLayerFactoryInternal()
-            Dim strGroup As String = factory.GetLayerGroup(varName)
+            Dim strGroup As String = ""
             Dim strCommand As String = factory.GetLayerEditCommand(varName)
             Dim alayers As cDisplayLayerRaster() = factory.GetLayers(Me.UIContext, varName)
             Dim l As cDisplayLayer = Nothing
 
-            If (bEditable) Then strCommand = factory.GetLayerEditCommand(varName)
+            If (bEditable) Then strCommand = factory.GetLayerGroup(varName)
 
             ' Add group, and collapse and hide habitat layers
-            Me.m_ucLayers.AddGroup(strGroup, strCommand, True, False)
+            Me.m_ucLayers.AddGroup(strGroup, strCommand, varName <> eVarNameFlags.LayerHabitat)
 
             ' Add individual layers
             For iLayer As Integer = 0 To alayers.Length - 1
@@ -1140,8 +1174,8 @@ Namespace Ecospace
                 Case eMPAOptimizationModels.RandomSearch
 
                     Dim iNumResults As Integer = 0
-                    Dim aiCells(,) As Integer = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile,
-                                                                             Me.SelectedClosedPercentage,
+                    Dim aiCells(,) As Integer = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile, _
+                                                                             Me.SelectedClosedPercentage, _
                                                                              iNumResults)
 
                     For iRow As Integer = 1 To Me.m_basemap.InRow
@@ -1164,9 +1198,9 @@ Namespace Ecospace
 
 #Region " Progress "
 
-        Private Sub LogProgress(ByVal sEconomicValue As Single, ByVal sSocialValue As Single,
-                                     ByVal sMandatedValue As Single, ByVal sEcologicalValue As Single,
-                                     ByVal sBiomassDiversityValue As Single, ByVal sBoundaryWeightValue As Single,
+        Private Sub LogProgress(ByVal sEconomicValue As Single, ByVal sSocialValue As Single, _
+                                     ByVal sMandatedValue As Single, ByVal sEcologicalValue As Single, _
+                                     ByVal sBiomassDiversityValue As Single, ByVal sBoundaryWeightValue As Single, _
                                      ByVal sTotalValue As Single, ByVal sAreaPercentageClosed As Single)
 
             ' Show this in the graph
@@ -1190,9 +1224,9 @@ Namespace Ecospace
 
             Me.m_zghProgress.RescaleAndRedraw()
 
-            Me.m_gridProgress.LogResult(sEconomicValue, sSocialValue,
-                                        sMandatedValue, sEcologicalValue,
-                                        sBiomassDiversityValue, sBoundaryWeightValue,
+            Me.m_gridProgress.LogResult(sEconomicValue, sSocialValue, _
+                                        sMandatedValue, sEcologicalValue, _
+                                        sBiomassDiversityValue, sBoundaryWeightValue, _
                                         sTotalValue, sAreaPercentageClosed)
 
             If (Me.m_cmbAreaClosed.FindStringExact(strPerc) = -1) Then
@@ -1216,7 +1250,7 @@ Namespace Ecospace
             ''' <param name="y"></param>
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
-            Public Function Compare(ByVal x As EwECore.cObjectiveResult,
+            Public Function Compare(ByVal x As EwECore.cObjectiveResult, _
                                     ByVal y As EwECore.cObjectiveResult) As Integer _
                                     Implements IComparer(Of EwECore.cObjectiveResult).Compare
                 ' DESCENDING ORDER! < 1, = 0, > -1 (instead of customary ascending order < -1, = 0, > 1)
@@ -1277,8 +1311,10 @@ Namespace Ecospace
             Dim lResults As List(Of cObjectiveResult) = Nothing
             Dim res As cObjectiveResult = Nothing
             Dim cell As cMPACell = Nothing
-            Dim map(Me.m_basemap.InRow, Me.m_basemap.InCol) As Integer
-            Dim iMPA As Integer = Me.SelectedMPA
+            Dim aiCellMPA(Me.m_basemap.InRow, Me.m_basemap.InCol) As Integer
+
+            ' Update map
+            ReDim aiCellMPA(Me.m_basemap.InRow, Me.m_basemap.InCol)
 
             Select Case Me.SearchType
 
@@ -1292,23 +1328,22 @@ Namespace Ecospace
 
             ' Truncate iteration index
             iIteration = Math.Max(0, Math.Min(lResults.Count - 1, iIteration))
-
             ' Get results
-            If (iIteration < lResults.Count And iMPA > 0) Then
+            If (iIteration < lResults.Count) Then
                 res = lResults(iIteration)
                 For iCell As Integer = 0 To res.Cells.Count - 1
                     cell = res.Cells(iCell)
-                    map(cell.Row, cell.Col) = cell.iMPA
+                    aiCellMPA(cell.Row, cell.Col) = cell.iMPA
                 Next iCell
-
-                Me.SetLayer(map, Me.m_basemap.LayerMPA(iMPA), iMPA)
-
-                ' Update indicators
-                Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue,
-                                       res.objFuncMandatedValue, res.objFuncEcologicalValue,
-                                       res.objBiomassDiversity, res.objFuncAreaBorder,
-                                       res.objFuncTotal, res.PercentageClosed)
             End If
+
+            Me.SetLayer(aiCellMPA, Me.m_basemap.LayerMPA(Me.SelectedMPA()), Me.SelectedMPA())
+
+            ' Update indicators
+            Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue, _
+                                       res.objFuncMandatedValue, res.objFuncEcologicalValue, _
+                                       res.objBiomassDiversity, res.objFuncAreaBorder, _
+                                       res.objFuncTotal, res.PercentageClosed)
 
             Me.m_ucZoom.Map.Refresh()
 
@@ -1318,7 +1353,7 @@ Namespace Ecospace
             Me.UpdateBestCountMap()
         End Sub
 
-        Private Function FilteredResults(ByVal lIn As List(Of cObjectiveResult),
+        Private Function FilteredResults(ByVal lIn As List(Of cObjectiveResult), _
                                          Optional ByVal iPercAreaClosed As Integer = -1) As List(Of cObjectiveResult)
 
             If iPercAreaClosed = -1 Then Return lIn
@@ -1387,7 +1422,7 @@ Namespace Ecospace
         ''' to, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> to 
         ''' directly copy the values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub SetLayer(ByVal src As Integer(,), ByVal lDest As cEcospaceLayer,
+        Private Sub SetLayer(ByVal src As Integer(,), ByVal lDest As cEcospaceLayer, _
             Optional ByVal iConvertTo As Integer = cCore.NULL_VALUE)
 
             Dim iValue As Integer = 0
@@ -1400,33 +1435,10 @@ Namespace Ecospace
                     ' Must convert?
                     If iConvertTo <> cCore.NULL_VALUE Then
                         ' #Yes: transmogrify non-zero values
-                        iValue = If(iValue = 0, iValue, iConvertTo)
+                        iValue = if(iValue = 0, iValue, iConvertTo)
                     End If
                     ' Apply!
                     lDest.Cell(iRow, iCol) = iValue
-                Next iCol
-            Next iRow
-
-            ' Invalidate min/max
-            lDest.Invalidate()
-
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Sets a layer to a grid of values.
-        ''' </summary>
-        ''' <param name="src">NxN array of integer to copy from.</param>
-        ''' <param name="lDest">Layer to copy to.</param>
-        ''' -------------------------------------------------------------------
-        Private Sub SetLayer(ByVal src As Boolean(,), ByVal lDest As cEcospaceLayer)
-
-            Dim iValue As Integer = 0
-            ' For all rows
-            For iRow As Integer = 1 To Me.m_basemap.InRow
-                ' For all cols
-                For iCol As Integer = 1 To Me.m_basemap.InCol
-                    lDest.Cell(iRow, iCol) = src(iRow, iCol)
                 Next iCol
             Next iRow
 
@@ -1445,7 +1457,7 @@ Namespace Ecospace
         ''' to, or <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> to 
         ''' directly copy the values.</param>
         ''' -------------------------------------------------------------------
-        Private Sub SetLayer(ByVal src As Single(,), ByVal lDest As cEcospaceLayer,
+        Private Sub SetLayer(ByVal src As Single(,), ByVal lDest As cEcospaceLayer, _
             Optional ByVal iConvertTo As Integer = cCore.NULL_VALUE)
 
             Dim sValue As Single = 0
@@ -1458,7 +1470,7 @@ Namespace Ecospace
                     ' Must convert?
                     If iConvertTo <> cCore.NULL_VALUE Then
                         ' #Yes: ognotrizarp non-zero values
-                        sValue = CInt(If(sValue = 0, sValue, iConvertTo))
+                        sValue = CInt(if(sValue = 0, sValue, iConvertTo))
                     End If
                     ' Apply!
                     lDest.Cell(iRow, iCol) = sValue
@@ -1482,8 +1494,8 @@ Namespace Ecospace
         ''' convertable cells left.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Function ConvertToMPA(ByVal aiMap As Integer(,),
-                                      ByVal iAreaPercentToClose As Integer,
+        Private Function ConvertToMPA(ByVal aiMap As Integer(,), _
+                                      ByVal iAreaPercentToClose As Integer, _
                                       ByVal iMPA As Integer) As Boolean
 
             ' Ecospace MPA layer
@@ -1601,52 +1613,50 @@ Namespace Ecospace
 
             ' The %^@#$^#@$ check boxes throw events even before the form OnLoad has been called. Nice.
             ' Added sanity check to prevent premature control handling
-            If (Me.m_manager Is Nothing) Then Return
+            If (Object.ReferenceEquals(Me.m_manager, Nothing)) Then Return
 
-            Dim bPredictEffort As Boolean = Me.Core.EcospaceModelParameters.PredictEffort
-            Dim bOpenForInput As Boolean = (Me.RunMode = cMPAOptManager.eRunStates.Idle Or Me.RunMode = cMPAOptManager.eRunStates.Completed) And bPredictEffort
-            Dim bHasResults As Boolean = (Me.RunMode = cMPAOptManager.eRunStates.Completed)
-            Dim bIsRunning As Boolean = Not (bOpenForInput Or bHasResults) And bPredictEffort
+            Dim bIsPreparing As Boolean = (Me.RunMode = eFormModeTypes.Prepare)
+            Dim bIsRunning As Boolean = (Me.RunMode = eFormModeTypes.Searching Or Me.RunMode = eFormModeTypes.Initializing Or Me.RunMode = eFormModeTypes.Stopping)
+            Dim bIsResults As Boolean = (Me.RunMode = eFormModeTypes.Results)
             Dim bIsEcoseed As Boolean = (Me.SearchType = eMPAOptimizationModels.EcoSeed)
             Dim bIsRandom As Boolean = (Me.SearchType = eMPAOptimizationModels.RandomSearch)
             Dim bMPALayerSelected As Boolean = (Me.SelectedMPA() > 0)
             Dim factory As New cLayerFactoryInternal()
 
             ' Update input controls
-            Me.m_rbEcoseed.Enabled = (bOpenForInput)
-            Me.m_rbRandom.Enabled = (bOpenForInput)
-            Me.m_fpStartYear.Enabled = bOpenForInput
-            Me.m_fpEndYear.Enabled = bOpenForInput
-            Me.m_fpBaseYear.Enabled = bOpenForInput
-            Me.m_fpMinArea.Enabled = (bOpenForInput And bIsRandom)
-            Me.m_fpMaxArea.Enabled = (bOpenForInput And bIsRandom)
-            Me.m_fpStepSize.Enabled = (bOpenForInput And bIsRandom)
-            Me.m_fpDiscRate.Enabled = bOpenForInput
-            Me.m_fpGenDiscRate.Enabled = bOpenForInput
-            Me.m_fpIterations.Enabled = (bOpenForInput And bIsRandom)
-            Me.m_fpMPA.Enabled = bOpenForInput
+            Me.m_rbEcoseed.Enabled = (bIsPreparing)
+            Me.m_rbRandom.Enabled = (bIsPreparing)
+            Me.m_fpStartYear.Enabled = bIsPreparing
+            Me.m_fpEndYear.Enabled = bIsPreparing
+            Me.m_fpBaseYear.Enabled = bIsPreparing
+            Me.m_fpMinArea.Enabled = (bIsPreparing And bIsRandom)
+            Me.m_fpMaxArea.Enabled = (bIsPreparing And bIsRandom)
+            Me.m_fpStepSize.Enabled = (bIsPreparing And bIsRandom)
+            Me.m_fpDiscRate.Enabled = bIsPreparing
+            Me.m_fpGenDiscRate.Enabled = bIsPreparing
+            Me.m_fpIterations.Enabled = (bIsPreparing And bIsRandom)
+            Me.m_fpMPA.Enabled = bIsPreparing
 
-            Me.m_gridObjectives.Enabled = (bOpenForInput)
-            Me.m_gridFleet.Enabled = (bOpenForInput)
-            Me.m_gridGroup.Enabled = (bOpenForInput)
+            Me.m_gridObjectives.Enabled = (bIsPreparing)
+            Me.m_gridFleet.Enabled = (bIsPreparing)
+            Me.m_gridGroup.Enabled = (bIsPreparing)
 
             ' Results
-            Me.m_graphResults.Enabled = bHasResults
-            Me.m_cmbAreaClosed.Enabled = (bHasResults And bIsRandom)
-            Me.m_nudBestPercentile.Enabled = (bHasResults And bIsRandom)
-            Me.m_btnResetMPAs.Enabled = bHasResults
-            Me.m_btnConvertToMpa.Enabled = bMPALayerSelected
+            Me.m_graphResults.Enabled = bIsResults
+            Me.m_cmbAreaClosed.Enabled = (bIsResults And bIsRandom)
+            Me.m_nudBestPercentile.Enabled = (bIsResults And bIsRandom)
+            Me.m_btnResetMPAs.Enabled = bIsResults
 
             ' Update run control buttons
-            Me.m_btnRun.Enabled = (bOpenForInput Or bHasResults) And Not bIsRunning
+            Me.m_btnRun.Enabled = (bIsPreparing Or bIsResults) And Not bIsRunning
             Me.m_btnStop.Enabled = bIsRunning
-            Me.m_btnConvertToMpa.Enabled = bHasResults
-            Me.m_btnSave.Enabled = (bHasResults And bIsRandom)
+            Me.m_btnConvertToMpa.Enabled = bIsResults
+            Me.m_btnSave.Enabled = (bIsResults And bIsRandom)
 
             ' Toggle toolbar controls
-            Me.m_tsbMPA.Enabled = bOpenForInput And bMPALayerSelected
-            Me.m_tsbSeed.Enabled = bOpenForInput And bMPALayerSelected And bIsEcoseed
-            Me.m_tsbEditLayers.Enabled = bOpenForInput And bIsRandom
+            Me.m_tsbMPA.Enabled = bIsPreparing And bMPALayerSelected
+            Me.m_tsbSeed.Enabled = bIsPreparing And bMPALayerSelected And bIsEcoseed
+            Me.m_tsbEditLayers.Enabled = bIsPreparing And bIsRandom
 
             ' Layers enabled state
             Me.EnableLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerDepth), Not bIsRunning)
@@ -1657,7 +1667,7 @@ Namespace Ecospace
             Me.EnableLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerImportance), Not bIsRunning)
 
             ' Update map
-            Me.m_ucZoom.Map.Editable = bOpenForInput
+            Me.m_ucZoom.Map.Editable = bIsPreparing
 
             Me.m_cbAutoSave.Checked = Me.Core.Autosave(eAutosaveTypes.MPAOpt)
 
@@ -1670,8 +1680,8 @@ Namespace Ecospace
 
             ' Check MPA selection
             If Me.m_cmbMPA.SelectedIndex = -1 Then
-                Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_MPAOPT_SELECTION,
-                                                                    eMessageType.Any, eCoreComponentType.MPAOptimization,
+                Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_MPAOPT_SELECTION, _
+                                                                    eMessageType.Any, eCoreComponentType.MPAOptimization, _
                                                                     eMessageImportance.Warning))
                 Return False
             End If
@@ -1684,8 +1694,8 @@ Namespace Ecospace
                     bOk = bOk Or (CSng(source.GetVariable(eVarNameFlags.FPSGroupMandRelBiom)) > 0.0)
                 Next
                 If bOk = False Then
-                    Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_MPAOPT_MANDATEDB,
-                                                                        eMessageType.Any, eCoreComponentType.MPAOptimization,
+                    Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_MPAOPT_MANDATEDB, _
+                                                                        eMessageType.Any, eCoreComponentType.MPAOptimization, _
                                                                         eMessageImportance.Warning))
                     Return False
                 End If

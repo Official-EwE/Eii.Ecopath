@@ -13,6 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and 
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -243,10 +244,10 @@ Namespace EcoSeed
                             m_EcoSpace.Run()
                             If m_data.StopRun Then Exit Do
 
-                            CurSum = 0 + m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_search.totval / TotValBase + _
-                                m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_search.Employ / EmployBase + _
-                                m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_search.manvalue / ManValueBase + _
-                                m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_search.ecovalue / EcoValueBase + _
+                            CurSum = 0 + m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue) * m_search.totval / TotValBase +
+                                m_search.ValWeight(eSearchCriteriaResultTypes.Employment) * m_search.Employ / EmployBase +
+                                m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb) * m_search.manvalue / ManValueBase +
+                                m_search.ValWeight(eSearchCriteriaResultTypes.Ecological) * m_search.ecovalue / EcoValueBase +
                                 m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * m_search.DiversityIndex / DiversityBase
 
                             'Calculate boundary length/area ratio
@@ -304,7 +305,7 @@ Namespace EcoSeed
                         'set the MPA cell to the selected Seed cell
                         'm_SpaceData.MPA(m_data.bestrow, m_data.bestcol) = m_data.MPASeed(m_data.bestrow, m_data.bestcol)
                         Dim iMPA As Integer = m_data.MPASeed(m_data.bestrow, m_data.bestcol)
-                        m_SpaceData.MPA(iMPA)(m_data.bestrow, m_data.bestcol) = If(iMPA > 0, 1, 0)
+                        m_SpaceData.MPA(iMPA)(m_data.bestrow, m_data.bestcol) = iMPA
                         m_data.MPASeed(m_data.bestrow, m_data.bestcol) = 0
 
                         SeedSumMax = Single.MinValue
@@ -379,7 +380,7 @@ Namespace EcoSeed
                                         'MPASeed(row,col) was set in SetSeedCellsAdjacentToMPAs()
                                         'MPA() will need to be cleared at the end of this iteration
                                         'm_SpaceData.MPA(i, j) = m_data.MPASeed(ir, ic)
-                                        m_SpaceData.MPA(m_data.MPASeed(ir, ic))(i, j) = If(m_data.MPASeed(ir, ic) > 0, 1, 0)
+                                        m_SpaceData.MPA(m_data.MPASeed(ir, ic))(i, j) = m_data.MPASeed(ir, ic)
 
                                     End If ' If m_esData.Depth(i, j) > 0 Then
                                 End If ' If i >= 0 And i <= m_esData.Inrow And j >= 0 And j <= m_esData.InCol Then
@@ -548,7 +549,7 @@ Namespace EcoSeed
                         'find the first mpa in this cell
                         For impa As Integer = 1 To Me.m_SpaceData.MPAno
                             If m_SpaceData.MPA(impa)(iro, ico) > 0 Then
-                                iTemp = impa
+                                iTemp = m_SpaceData.MPA(impa)(iro, ico)
                                 Exit For
                             End If
                         Next
