@@ -108,16 +108,18 @@ Namespace Controls
         Public Overrides Function Apply(ByVal vs As cVisualStyle) As Boolean
 
             Dim ramp As cColorRamp = DirectCast(Me.m_cmbGradient.SelectedItem, cColorRamp)
-
-            vs.ColorRampID = ramp.ID
-            If (TypeOf ramp Is cARGBColorRamp) Then
-                Dim argb As cARGBColorRamp = DirectCast(ramp, cARGBColorRamp)
-                vs.ColorRampBreaks = argb.GradientBreaks
-                vs.ColorRampColors = argb.GradientColors
-            Else
-                vs.ColorRampBreaks = Nothing
-                vs.ColorRampColors = Nothing
-            End If
+			
+			If (ramp isnot nothing) then
+				vs.ColorRampID = ramp.ID
+				If (TypeOf ramp Is cARGBColorRamp) Then
+					Dim argb As cARGBColorRamp = DirectCast(ramp, cARGBColorRamp)
+					vs.ColorRampBreaks = argb.GradientBreaks
+					vs.ColorRampColors = argb.GradientColors
+				Else
+					vs.ColorRampBreaks = Nothing
+					vs.ColorRampColors = Nothing
+				End If
+			End If
 
             Return True
 

@@ -1557,34 +1557,35 @@ Namespace Controls.EwEGrid
                     For iCol = 0 To Math.Min(Me.ColumnsCount, values.Length) - 1
                         cell = Me(iRow, iCol)
                         If cell IsNot Nothing Then
-                            If (cell.DataModel.EnableEdit = True) And
-                               (cell.DataModel.EditableMode <> SourceGrid2.EditableMode.None) Then
-                                If (cell.DataModel.ValueType Is GetType(String)) Then
-                                    cell.Value = values(iCol)
-                                Else
-                                    values(iCol) = values(iCol).Trim()
-                                    If Not Me.InterceptNewValue(values(iCol), New Position(iRow, iCol), cell) Then
-                                        If String.IsNullOrEmpty(values(iCol)) Then
-                                            values(iCol) = CStr(cCore.NULL_VALUE)
-                                        End If
-                                        If (cell.DataModel.ValueType Is GetType(Single)) Then
-                                            ' Parse using UI default number formatting
-                                            cell.Value = Single.Parse(values(iCol), nfi)
-                                        ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
-                                            ' Parse using UI default number formatting
-                                            cell.Value = Double.Parse(values(iCol), nfi)
-                                        ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
-                                            ' Parse using UI default number formatting
-                                            cell.Value = Integer.Parse(values(iCol), nfi)
-                                        ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
-                                            ' Booleans can occur as string or integer representations, 
-                                            ' which both require separate conversion strategies
-                                            Dim strVal As String = values(iCol).Trim
-                                            Dim iValTest As Integer
-                                            If Integer.TryParse(strVal, iValTest) Then
-                                                cell.Value = Convert.ToBoolean(iValTest)
-                                            Else
-                                                cell.Value = Boolean.Parse(strVal)
+                            If cell.DataModel IsNot Nothing Then
+                                If (cell.DataModel.EnableEdit = True) And (cell.DataModel.EditableMode <> SourceGrid2.EditableMode.None) Then
+                                    If (cell.DataModel.ValueType Is GetType(String)) Then
+                                        cell.Value = values(iCol)
+                                    Else
+                                        values(iCol) = values(iCol).Trim()
+                                        If Not Me.InterceptNewValue(values(iCol), New Position(iRow, iCol), cell) Then
+                                            If String.IsNullOrEmpty(values(iCol)) Then
+                                                values(iCol) = CStr(cCore.NULL_VALUE)
+                                            End If
+                                            If (cell.DataModel.ValueType Is GetType(Single)) Then
+                                                ' Parse using UI default number formatting
+                                                cell.Value = Single.Parse(values(iCol), nfi)
+                                            ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
+                                                ' Parse using UI default number formatting
+                                                cell.Value = Double.Parse(values(iCol), nfi)
+                                            ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
+                                                ' Parse using UI default number formatting
+                                                cell.Value = Integer.Parse(values(iCol), nfi)
+                                            ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
+                                                ' Booleans can occur as string or integer representations, 
+                                                ' which both require separate conversion strategies
+                                                Dim strVal As String = values(iCol).Trim
+                                                Dim iValTest As Integer
+                                                If Integer.TryParse(strVal, iValTest) Then
+                                                    cell.Value = Convert.ToBoolean(iValTest)
+                                                Else
+                                                    cell.Value = Boolean.Parse(strVal)
+                                                End If
                                             End If
                                         End If
                                     End If
@@ -1615,6 +1616,7 @@ Namespace Controls.EwEGrid
 
             Dim cell As ICell = Nothing
             Dim cellValue As Object = Nothing
+            Dim cellType As Type = Nothing
             Dim strValue As String = ""
 
             Try
@@ -1625,13 +1627,16 @@ Namespace Controls.EwEGrid
                                 cell = Me(iRow, iCol)
                                 If (cell IsNot Nothing) Then
                                     cellValue = cell.Value
+                                    cellType = cell.Value.GetType
                                     If (cellValue IsNot Nothing) Then
                                         Try
-                                            If TypeOf (cellValue) Is String Then
-                                                sw.Write(cStringUtils.ToCSVField(cell.DisplayText))
-                                            Else
-                                                strValue = cStringUtils.FormatNumber(cell.GetValue(New SourceGrid2.Position(iRow, iCol)))
-                                                sw.Write(strValue)
+                                            If cellType.IsValueType Or cellType.IsPrimitive Then
+                                                If TypeOf (cellValue) Is String Then
+                                                    sw.Write(cStringUtils.ToCSVField(cell.DisplayText))
+                                                Else
+                                                    strValue = cStringUtils.FormatNumber(cell.GetValue(New SourceGrid2.Position(iRow, iCol)))
+                                                    sw.Write(strValue)
+                                                End If
                                             End If
                                         Catch ex As Exception
                                             ' Ignore value graciously
