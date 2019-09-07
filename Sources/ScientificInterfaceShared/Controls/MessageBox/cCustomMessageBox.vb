@@ -40,17 +40,17 @@ Namespace Controls
             Return cCustomMessageBox.Show(uic, strText, "")
         End Function
 
-        Public Shared Function Show(ByVal uic As cUIContext, _
-                                    ByVal strText As String, _
+        Public Shared Function Show(ByVal uic As cUIContext,
+                                    ByVal strText As String,
                                     ByVal strCaption As String) As DialogResult
-            Return cCustomMessageBox.Show(uic, strText, strCaption, _
+            Return cCustomMessageBox.Show(uic, strText, strCaption,
                                           MessageBoxButtons.OK, MessageBoxIcon.Information)
         End Function
 
-        Public Shared Function Show(ByVal uic As cUIContext, _
-                                    ByVal strText As String, _
-                                    ByVal strCaption As String, _
-                                    ByVal mbb As MessageBoxButtons, _
+        Public Shared Function Show(ByVal uic As cUIContext,
+                                    ByVal strText As String,
+                                    ByVal strCaption As String,
+                                    ByVal mbb As MessageBoxButtons,
                                     ByVal mbi As MessageBoxIcon) As DialogResult
 
             Dim frm As frmCustomMessageBox = Nothing
@@ -66,29 +66,29 @@ Namespace Controls
 
         End Function
 
-        Public Shared Function Show(ByVal uic As cUIContext, _
-                                    ByVal strText As String, _
-                                    ByRef bIsChecked As Boolean, _
+        Public Shared Function Show(ByVal uic As cUIContext,
+                                    ByVal strText As String,
+                                    ByRef bIsChecked As Boolean,
                                     ByVal strCheckPrompt As String) As DialogResult
             Return cCustomMessageBox.Show(uic, strText, "", bIsChecked, strCheckPrompt)
         End Function
 
-        Public Shared Function Show(ByVal uic As cUIContext, _
-                                    ByVal strText As String, _
-                                    ByVal strCaption As String, _
-                                    ByRef bIsChecked As Boolean, _
+        Public Shared Function Show(ByVal uic As cUIContext,
+                                    ByVal strText As String,
+                                    ByVal strCaption As String,
+                                    ByRef bIsChecked As Boolean,
                                     ByVal strCheckPrompt As String) As DialogResult
-            Return cCustomMessageBox.Show(uic, strText, strCaption, _
-                                          MessageBoxButtons.OK, MessageBoxIcon.Information, _
+            Return cCustomMessageBox.Show(uic, strText, strCaption,
+                                          MessageBoxButtons.OK, MessageBoxIcon.Information,
                                           bIsChecked, strCheckPrompt)
         End Function
 
-        Public Shared Function Show(ByVal uic As cUIContext, _
-                                    ByVal strText As String, _
-                                    ByVal strCaption As String, _
-                                    ByVal mbb As MessageBoxButtons, _
-                                    ByVal mbi As MessageBoxIcon, _
-                                    ByRef bIsChecked As Boolean, _
+        Public Shared Function Show(ByVal uic As cUIContext,
+                                    ByVal strText As String,
+                                    ByVal strCaption As String,
+                                    ByVal mbb As MessageBoxButtons,
+                                    ByVal mbi As MessageBoxIcon,
+                                    ByRef bIsChecked As Boolean,
                                     ByVal strCheckPrompt As String) As DialogResult
 
             Dim frm As frmCustomMessageBox = Nothing
