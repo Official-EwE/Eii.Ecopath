@@ -34,7 +34,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.16228.0
+  VersionInfoVersion=6.6.16230.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -55,8 +55,8 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL=http://ecopathinternational.org
 AppSupportURL=mailto:support@ecopath.org
 MinVersion=0,5.01sp3
-DefaultDirName={pf}\{#MyAppName}
-DefaultGroupName={#MyAppName}
+DefaultDirName={pf}\{#MyAppName} {#MyAppVersion}
+DefaultGroupName={#MyAppName}\{#MyAppVersion}
 AlwaysShowGroupOnReadyPage=True
 AlwaysShowDirOnReadyPage=True
 SolidCompression=True

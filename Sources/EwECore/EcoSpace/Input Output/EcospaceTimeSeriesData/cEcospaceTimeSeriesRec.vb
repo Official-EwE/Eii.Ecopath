@@ -67,7 +67,7 @@ Namespace EcospaceTimeSeries
 
             Dim tempTimeStamp As Date
             Try
-                If Me.PaserString(strRec, data) Then
+                If Me.Parse(strRec, data) Then
                     Me.Row = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.Row))
                     Me.Col = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.Col))
                     Me.iGroupID = EwEUtils.Utilities.cStringUtils.ConvertToInteger(data(eDataCols.GroupID))
@@ -148,7 +148,7 @@ Namespace EcospaceTimeSeries
 
 #Region "Private Methods"
 
-        Private Function PaserString(recString As String, ByRef data() As String) As Boolean
+        Private Function Parse(recString As String, ByRef data() As String) As Boolean
             Dim bReturn As Boolean = True
             data = EwEUtils.Utilities.cStringUtils.SplitQualified(recString, ",")
             If data.Length < 5 Then
