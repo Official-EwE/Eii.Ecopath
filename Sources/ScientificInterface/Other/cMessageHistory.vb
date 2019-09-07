@@ -666,14 +666,10 @@ Public Class cMessageHistory
 
                 If (Not Me.m_msh.IsSuppressed(msg.Source, msg.Type)) Then
                     ' #No: Good, prepare to show message
-                    ' Assume message will not be suppressed
-                    Dim bSuppress As Boolean = False
-                    ' Invoke the special message box
-                    cCustomMessageBox.Show(Me.UIContext, strMessage, frmEwE6.GetInstance().Text, _
-                                           mbb, mbi, _
-                                           bSuppress, My.Resources.PROMPT_MESSAGE_HIDE)
-                    ' Set suppressed state in administration
-                    Me.m_msh.IsSuppressed(msg.Source, msg.Type) = bSuppress
+                    ' JS 06Sep19: Message display now centralized in EwE
+                    Dim cmd As cShowMessageCommand = CType(Me.UIContext.CommandHandler.GetCommand(cShowMessageCommand.COMMAND_NAME), cShowMessageCommand)
+                    ' Centrally show the message 
+                    cmd.Invoke(strMessage, mbb, mbi, Me.m_msh.IsSuppressed(msg.Source, msg.Type))
                 End If
                 ' Set message suppressed state
                 msg.Suppressed = Me.m_msh.IsSuppressed(msg.Source, msg.Type)
