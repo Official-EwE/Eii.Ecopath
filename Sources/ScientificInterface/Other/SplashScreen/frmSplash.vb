@@ -65,7 +65,11 @@ Friend Class frmSplash
         Me.m_lblReleaseMode.Text = cStringUtils.Localize(strMask, dt.ToShortDateString)
 
         Me.CenterToScreen()
+#If DEBUG Then
+        Me.TopMost = False
+#Else
         Me.TopMost = True
+#End If
 
     End Sub
 

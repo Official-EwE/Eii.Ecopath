@@ -13,6 +13,7 @@
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
 ' Copyright 1991- 
+'    UBC Institute for the Oceans and Fisheries, Vancouver BC, Canada, and
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
@@ -36,13 +37,6 @@ Imports EwEUtils.Utilities
 ''' <item><description>Suppress user prompts.</description></item>
 ''' </list>
 ''' </summary>
-''' <remarks>
-''' Note that the message history does not contain cache actual <see cref="cMessage">
-''' messages</see> and <see cref="cVariableStatus">variable status information</see>,
-''' as caching core I/O classes would generate serious memory leaks. 
-''' Instead, the message history only caches message texts, origin identifiers,
-''' severities, and hyperlinks, and variable status texts and severities.
-''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cMessageHistory
     Implements IUIElement
@@ -483,7 +477,7 @@ Public Class cMessageHistory
                             Me.ShowMessageBox(msg)
 
                         Case eMessageImportance.Warning
-                            ' Only show warning messages when core is not busy
+                            ' Only show wanring messages when core is not busy
                             Dim sm As cCoreStateMonitor = Me.UIContext.Core.StateMonitor
                             If (Not sm.IsBusy) Then Me.ShowMessageBox(msg)
 
@@ -584,8 +578,12 @@ Public Class cMessageHistory
                 ' Assume to repeat the question
                 Dim bChecked As Boolean = False
                 ' Show dialog
-                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, frmEwE6.GetInstance().Text, _
-                                             mbb, mbi, _
+
+                ' Yuck, this should be centralized somehow
+                frmSplash.BuggerOff()
+
+                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, frmEwE6.GetInstance().Text,
+                                             mbb, mbi,
                                              bChecked, My.Resources.PROMPT_MESSAGE_HIDE)
                 ' Auto-reply requested?
                 If bChecked Then
@@ -597,6 +595,9 @@ Public Class cMessageHistory
             '' Invoke message box
             'cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_WAITING)
             Try
+                ' Yuck, this should be centralized somehow
+                frmSplash.BuggerOff()
+
                 dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, frmEwE6.GetInstance().Text, mbb, mbi)
             Catch ex As Exception
                 cLog.Write(ex, "cMessageHistory::HandleFeedbackMessage")
@@ -664,12 +665,19 @@ Public Class cMessageHistory
                 ' Sanity check
                 Debug.Assert(msg.Type <> eMessageType.NotSet, "Message not propery configured for suppression: messagetype not set")
 
+                ' Yuck, this should be centralized somehow
+                frmSplash.BuggerOff()
+
                 If (Not Me.m_msh.IsSuppressed(msg.Source, msg.Type)) Then
                     ' #No: Good, prepare to show message
-                    ' JS 06Sep19: Message display now centralized in EwE
-                    Dim cmd As cShowMessageCommand = CType(Me.UIContext.CommandHandler.GetCommand(cShowMessageCommand.COMMAND_NAME), cShowMessageCommand)
-                    ' Centrally show the message 
-                    cmd.Invoke(strMessage, mbb, mbi, Me.m_msh.IsSuppressed(msg.Source, msg.Type))
+                    ' Assume message will not be suppressed
+                    Dim bSuppress As Boolean = False
+                    ' Invoke the special message box
+                    cCustomMessageBox.Show(Me.UIContext, strMessage, frmEwE6.GetInstance().Text,
+                                           mbb, mbi,
+                                           bSuppress, My.Resources.PROMPT_MESSAGE_HIDE)
+                    ' Set suppressed state in administration
+                    Me.m_msh.IsSuppressed(msg.Source, msg.Type) = bSuppress
                 End If
                 ' Set message suppressed state
                 msg.Suppressed = Me.m_msh.IsSuppressed(msg.Source, msg.Type)
@@ -678,6 +686,7 @@ Public Class cMessageHistory
                 ' The one and only static popup message box in EwE
                 MessageBox.Show(strMessage, frmEwE6.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
             End If
+
         End If
 
         Return bError

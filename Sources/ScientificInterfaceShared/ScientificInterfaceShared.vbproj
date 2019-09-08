@@ -138,7 +138,6 @@
     <Compile Include="Commands\cEditRegionsCommand.vb" />
     <Compile Include="Commands\cEditSpatialDatasetCommand.vb" />
     <Compile Include="Commands\cPickColorCommand.vb" />
-    <Compile Include="Commands\cShowMessageCommand.vb" />
     <Compile Include="Commands\Foundation\cCommand.vb" />
     <Compile Include="Commands\Foundation\cCommandHandler.vb" />
     <Compile Include="Commands\Foundation\cControlHandler.vb" />

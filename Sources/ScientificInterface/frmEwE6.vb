@@ -282,7 +282,6 @@ Public Class frmEwE6
     Private WithEvents m_cmdEcosimTrimShapes As cCommand = Nothing
     Private WithEvents m_cmdEcosimChangeShape As cCommand = Nothing
     Private WithEvents m_cmdPickColor As cPickColorCommand = Nothing
-    Private WithEvents m_cmdShowMessage As cShowMessageCommand = Nothing
 
     Private WithEvents m_cmdEcospaceLoadXYRefData As cCommand = Nothing
 
@@ -706,7 +705,6 @@ Public Class frmEwE6
         Me.m_cmdHelpFeedback = New cCommand(cmdh, "HelpFeedback")
 
         Me.m_cmdPickColor = New cPickColorCommand(cmdh)
-        Me.m_cmdShowMessage = New cShowMessageCommand(cmdh)
 
 #If BETA = 1 Then
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsbnPreview)
@@ -2786,17 +2784,6 @@ Public Class frmEwE6
         Catch ex As Exception
 
         End Try
-
-    End Sub
-
-    Private Sub ShowMessage(ByVal cmd As cCommand) Handles m_cmdShowMessage.OnInvoke
-
-        ' Just in case
-        frmSplash.BuggerOff()
-
-        cCustomMessageBox.Show(Me.UIContext, Me.m_cmdShowMessage.Message, Me.Text,
-                               Me.m_cmdShowMessage.Buttons, Me.m_cmdShowMessage.Icon,
-                               Me.m_cmdShowMessage.Suppress, My.Resources.PROMPT_MESSAGE_HIDE)
 
     End Sub
 
