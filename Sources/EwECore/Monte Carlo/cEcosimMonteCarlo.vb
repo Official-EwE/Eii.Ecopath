@@ -1020,6 +1020,12 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="iter"></param>
+    ''' <param name="maxEcopathIterations"></param>
+    ''' <returns>Returns True if a balanced model was resampled</returns>
     Private Function BalanceEcopathWithNewPars(ByRef iter As Integer,
                                                ByVal maxEcopathIterations As Integer) As Boolean
         'EwE5 StartEcosimWithNewPars(ByVal Pstartup(,) As Single, ByVal CVpar(,) As Single, ByVal iter As Long)
@@ -1136,7 +1142,9 @@ Public Class cEcosimMonteCarlo
                 Next igrp
 
                 If Me.IsEnabled(eMCParams.Diets) And (Me.DietSamplingMethod <> eMCDietSamplingMethod.Dirichlets) Then
-                    Me.NormalizeDiet(Me.m_epdata.DC)
+                    If Not Me.NormalizeDiet(Me.m_epdata.DC) Then
+                        Return False
+                    End If
                 End If
 
                 Me.m_ecosim.InitStanza()
@@ -1202,31 +1210,37 @@ Public Class cEcosimMonteCarlo
 
     End Function
 
-    Private Sub NormalizeDiet(ByRef dcRef(,) As Single)
+    ''' <summary>
+    ''' Normalize diets to 1
+    ''' </summary>
+    ''' <param name="dcRef"></param>
+    ''' <returns>True if normalization is correct, false if a diet is lost by becoming zero</returns>
+    Private Function NormalizeDiet(ByRef dcRef(,) As Single) As Boolean
 
         Dim dietsum As Single = 0
-
-        Const MIN_DIET As Single = 0.000000000000001
 
         For iPred As Integer = 1 To m_epdata.NumLiving
             If m_epdata.PP(iPred) < 1 Then
                 dietsum = 0
                 For iPrey As Integer = 0 To m_epdata.NumGroups
-                    If (PMeanDC(iPred, iPrey) > 0) Then
-                        ' Prevent diets from getting set to 0
-                        dcRef(iPred, iPred) = Math.Max(MIN_DIET, dcRef(iPred, iPred))
-                    End If
                     dietsum += dcRef(iPred, iPrey)
                 Next
                 If (dietsum > 0) Then
                     For iPrey As Integer = 0 To m_epdata.NumGroups
                         dcRef(iPred, iPrey) /= dietsum
+                        If (PMeanDC(iPred, iPrey) > 0) Then
+                            ' Fail normalization if a diet got lost
+                            If dcRef(iPred, iPrey) < 1.0E-20 Then
+                                Return False
+                            End If
+                        End If
                     Next
                 End If
             End If
         Next
+        Return True
 
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Determines whether the given variable depends on other stanza.
