@@ -562,7 +562,12 @@ Namespace SpatialData
             Me.Clear()
 
             Me.AddAdapter(New cRelPPDataAdapter(Me.m_core, eVarNameFlags.LayerRelPP, eCoreCounterTypes.NotSet))
-            Me.AddAdapter(New cSpatialScalarDataAdapter(Me.m_core, eVarNameFlags.LayerRelCin, eCoreCounterTypes.NotSet))
+            Me.AddAdapter(New cSpatialScalarDataAdapter(Me.m_core, eVarNameFlags.LayerContaminantRelativeDistribution, eCoreCounterTypes.NotSet))
+
+            ' As Ecotracer is initialized when needed during InitSpatialEquelibrium, the ccell array (Ecotracer contaminants, source layer 
+            ' For contaminant forcing) cannot be preserved and restored by the spat temp system. And does not need to.
+            Me.AddAdapter(New cSpatialScalarNonRestoringDataAdapter(Me.m_core, eVarNameFlags.LayerContaminantForcingAbsolute, eCoreCounterTypes.NotSet))
+
             Me.AddAdapter(New cCapacityDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput, eCoreCounterTypes.nGroups))
             Me.AddAdapter(New cCapacityDataAdapter(Me.m_core, eVarNameFlags.LayerDriver, eCoreCounterTypes.nEnvironmentalDriverLayers))
             Me.AddAdapter(New cCapacityDataAdapter(Me.m_core, eVarNameFlags.LayerHabitat, eCoreCounterTypes.nHabitats))

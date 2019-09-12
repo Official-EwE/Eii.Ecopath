@@ -119,6 +119,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Environment.
+        '''</summary>
+        Public Shared ReadOnly Property CORE_DEFAULT_ENVIRONMENT() As String
+            Get
+                Return ResourceManager.GetString("CORE_DEFAULT_ENVIRONMENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Excluded cells.
         '''</summary>
         Public Shared ReadOnly Property CORE_DEFAULT_EXCLUSION() As String
@@ -952,6 +961,15 @@ Namespace My.Resources
         Public Shared ReadOnly Property UNIT_METER() As String
             Get
                 Return ResourceManager.GetString("UNIT_METER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to multiplier.
+        '''</summary>
+        Public Shared ReadOnly Property UNIT_MULTIPLIER() As String
+            Get
+                Return ResourceManager.GetString("UNIT_MULTIPLIER", resourceCulture)
             End Get
         End Property
         
@@ -4169,6 +4187,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Abs. C||Contaminant forcing.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERCONTAMINANTFORCINGABSOLUTE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERCONTAMINANTFORCINGABSOLUTE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Rel. C||Rel. contaminant distribution.
+        '''</summary>
+        Public Shared ReadOnly Property VARIABLE_LAYERCONTAMINANTRELATIVEDISTRIBUTION() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERCONTAMINANTRELATIVEDISTRIBUTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Depth|||Depth (bathymetry).
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERDEPTH() As String
@@ -4196,7 +4232,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Habitat||Spatial distribution of a habitat.
+        '''  Looks up a localized string similar to Habitat|||Spatial distribution of a habitat.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERHABITAT() As String
             Get
@@ -4214,7 +4250,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Hab. cap.||Habitat capacity (entered).
+        '''  Looks up a localized string similar to Hab. cap.||Habitat capacity.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERHABITATCAPACITYINPUT() As String
             Get
@@ -4223,7 +4259,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Importance||Importance map for spatial optimizations.
+        '''  Looks up a localized string similar to Importance|||Importance map for spatial optimizations.
         '''</summary>
         Public Shared ReadOnly Property VARIABLE_LAYERIMPORTANCE() As String
             Get
@@ -4327,15 +4363,6 @@ Namespace My.Resources
         Public Shared ReadOnly Property VARIABLE_LAYERREGION() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_LAYERREGION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Contaminants.
-        '''</summary>
-        Public Shared ReadOnly Property VARIABLE_LAYERRELCIN() As String
-            Get
-                Return ResourceManager.GetString("VARIABLE_LAYERRELCIN", resourceCulture)
             End Get
         End Property
         

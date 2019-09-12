@@ -28,17 +28,17 @@ Imports EwEUtils.Core
 ''' <summary>
 ''' Layer providing access to Ecospace relative contaminants data.
 ''' </summary>
-Public Class cEcospaceLayerRelCin
+Public Class cEcospaceLayerContaminantRelativeDistribution
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, manager, "", eVarNameFlags.LayerRelCin, 1)
-        Me.m_dataType = eDataTypes.EcospaceLayerRelCin
+        MyBase.New(theCore, manager, "", eVarNameFlags.LayerContaminantRelativeDistribution, 1)
+        Me.m_dataType = eDataTypes.EcospaceLayerContaminantRelativeDistribution
     End Sub
 
     Protected Overrides Function DefaultName() As String
         Dim vnf As New cVarnameTypeFormatter()
-        Return vnf.ToString(eVarNameFlags.LayerRelCin) ' My.Resources.CoreDefaults.CORE_DEFAULT_RELCIN
+        Return vnf.ToString(eVarNameFlags.LayerContaminantRelativeDistribution) ' My.Resources.CoreDefaults.CORE_DEFAULT_RELCIN
     End Function
 
 End Class

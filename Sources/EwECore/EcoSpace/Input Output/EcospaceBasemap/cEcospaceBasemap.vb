@@ -100,8 +100,13 @@ Public Class cEcospaceBasemap
             val.Stored = False
             m_values.Add(val.varName, val)
 
-            ' LayerRelCin
-            val = New cValue(0, eVarNameFlags.LayerRelCin, eStatusFlags.Null, eValueTypes.Sng)
+            ' LayerContaminantForcingRelative (was LayerRelCin)
+            val = New cValue(0, eVarNameFlags.LayerContaminantRelativeDistribution, eStatusFlags.Null, eValueTypes.Sng)
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
+            ' LayerContaminantForcingAbsolute
+            val = New cValue(0, eVarNameFlags.LayerContaminantForcingAbsolute, eStatusFlags.Null, eValueTypes.Sng)
             val.Stored = False
             m_values.Add(val.varName, val)
 
@@ -258,8 +263,11 @@ Public Class cEcospaceBasemap
             ' RelPP layer
             Me.m_dictLayers(eVarNameFlags.LayerRelPP) = New cEcospaceLayer() {New cEcospaceLayerRelPP(theCore, Me)}
 
-            ' RelCin layer
-            Me.m_dictLayers(eVarNameFlags.LayerRelCin) = New cEcospaceLayer() {New cEcospaceLayerRelCin(theCore, Me)}
+            ' Relative contaminant forcing layer (RelCin)
+            Me.m_dictLayers(eVarNameFlags.LayerContaminantRelativeDistribution) = New cEcospaceLayer() {New cEcospaceLayerContaminantRelativeDistribution(theCore, Me)}
+
+            ' Absolute contaminant forcing layer
+            Me.m_dictLayers(eVarNameFlags.LayerContaminantForcingAbsolute) = New cEcospaceLayer() {New cEcospaceLayerContaminantForcingAbsolute(theCore, Me)}
 
             ' MPA Seed
             Me.m_dictLayers(eVarNameFlags.LayerMPASeed) = New cEcospaceLayer() {New cEcospaceLayerMPASeed(theCore, Me)}
@@ -807,9 +815,20 @@ Public Class cEcospaceBasemap
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerRelCin() As cEcospaceLayerRelCin
+    Public ReadOnly Property LayerRelCin() As cEcospaceLayerContaminantRelativeDistribution
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerRelCin)(0), cEcospaceLayerRelCin)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerContaminantRelativeDistribution)(0), cEcospaceLayerContaminantRelativeDistribution)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerContaminantForcingAbsolute() As cEcospaceLayerContaminantForcingAbsolute
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerContaminantForcingAbsolute)(0), cEcospaceLayerContaminantForcingAbsolute)
         End Get
     End Property
 
@@ -923,8 +942,10 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.Region
             Case eVarNameFlags.LayerRelPP
                 Return Me.m_core.m_EcoSpaceData.RelPP
-            Case eVarNameFlags.LayerRelCin
+            Case eVarNameFlags.LayerContaminantRelativeDistribution
                 Return Me.m_core.m_EcoSpaceData.RelCin
+            Case eVarNameFlags.LayerContaminantForcingAbsolute
+                Return Me.m_core.m_EcoSpaceData.Ccell
             Case eVarNameFlags.LayerMPASeed
                 Return Me.m_core.MPAOptData.MPASeed
             Case eVarNameFlags.LayerAdvection

@@ -540,7 +540,6 @@ Public Class cEcoSpace
                 Me.initSpatialEquilibrium()
                 'Run Ecospace
                 Me.FindSpatialEquilibrium()
-
                 'Cleanup the Spatial Temporal data
                 Me.EndSpatialTemporalRun()
 

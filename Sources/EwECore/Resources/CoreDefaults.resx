@@ -553,13 +553,13 @@
     <value>Exclusion||Excluded cells|Cells to exclude from computations</value>
   </data>
   <data name="VARIABLE_LAYERHABITAT" xml:space="preserve">
-    <value>Habitat||Spatial distribution of a habitat</value>
+    <value>Habitat|||Spatial distribution of a habitat</value>
   </data>
   <data name="VARIABLE_LAYERHABITATCAPACITY" xml:space="preserve">
     <value>Hab. cap. (out)||Habitat capacity (computed)</value>
   </data>
   <data name="VARIABLE_LAYERHABITATCAPACITYINPUT" xml:space="preserve">
-    <value>Hab. cap.||Habitat capacity (entered)</value>
+    <value>Hab. cap.||Habitat capacity</value>
   </data>
   <data name="VARIABLE_LAYERMIGRATION" xml:space="preserve">
     <value>Migration</value>
@@ -576,8 +576,8 @@
   <data name="VARIABLE_LAYERREGION" xml:space="preserve">
     <value>Regions||Map of statistical regions</value>
   </data>
-  <data name="VARIABLE_LAYERRELCIN" xml:space="preserve">
-    <value>Contaminants</value>
+  <data name="VARIABLE_LAYERCONTAMINANTRELATIVEDISTRIBUTION" xml:space="preserve">
+    <value>Rel. C||Rel. contaminant distribution</value>
   </data>
   <data name="VARIABLE_LAYERRELPP" xml:space="preserve">
     <value>PP||Primary Production</value>
@@ -1615,7 +1615,7 @@
     <value>Latitude</value>
   </data>
   <data name="VARIABLE_LAYERIMPORTANCE" xml:space="preserve">
-    <value>Importance||Importance map for spatial optimizations</value>
+    <value>Importance|||Importance map for spatial optimizations</value>
   </data>
   <data name="VARIABLE_LAYERMPARANDOM" xml:space="preserve">
     <value>Random MPA||Random MPA map</value>
@@ -2837,5 +2837,14 @@
   </data>
   <data name="VARIABLE_CODEOBIS" xml:space="preserve">
     <value>OBIS id|||Taxonomy number in OBIS</value>
+  </data>
+  <data name="CORE_DEFAULT_ENVIRONMENT" xml:space="preserve">
+    <value>Environment</value>
+  </data>
+  <data name="UNIT_MULTIPLIER" xml:space="preserve">
+    <value>multiplier</value>
+  </data>
+  <data name="VARIABLE_LAYERCONTAMINANTFORCINGABSOLUTE" xml:space="preserve">
+    <value>Abs. C||Contaminant forcing</value>
   </data>
 </root>

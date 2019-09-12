@@ -184,7 +184,7 @@ Namespace Utilities
         ''' https://stackoverflow.com/questions/6435099/how-to-get-datetime-from-the-internet
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetNetworkTime(Optional server As String = "http://www.google.com") As Boolean
+        Public Shared Function GetNetworkTime(Optional server As String = "http://www.ecopath.org") As Boolean
 
             Try
                 Using response As WebResponse = WebRequest.Create(server).GetResponse()

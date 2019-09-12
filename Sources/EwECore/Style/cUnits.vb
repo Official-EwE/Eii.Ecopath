@@ -148,6 +148,7 @@ Namespace Style
         Public Shared ReadOnly Property CurrencyOverArea As String = "[currency]/[area]"
         Public Shared ReadOnly Property MonetaryOverBiomass As String = "[monetary]/[biomass]"
         Public Shared ReadOnly Property Proportion As String = "[proportion]"
+        Public Shared ReadOnly Property Multiplier As String = "[multiplier]"
         Public Shared ReadOnly Property ProportionOverTime As String = "[proportion]/[time]"
         Public Shared ReadOnly Property Mapping As String = "[location]"
         Public Shared ReadOnly Property Depth As String = "[depth]"

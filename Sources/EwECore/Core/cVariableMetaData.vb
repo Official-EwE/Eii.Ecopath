@@ -423,7 +423,8 @@ Public Class cVariableMetaData
 
         ' layers
         Me.Metadata(eVarNameFlags.LayerRelPP) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Proportion)
-        Me.Metadata(eVarNameFlags.LayerRelCin) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Proportion)
+        Me.Metadata(eVarNameFlags.LayerContaminantRelativeDistribution) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Proportion)
+        Me.Metadata(eVarNameFlags.LayerContaminantForcingAbsolute) = New cVariableMetaData(0, Single.MaxValue, ge, lt, 0, cUnits.Multiplier)
         Me.Metadata(eVarNameFlags.LayerDepth) = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, gt, lt, 0, cUnits.Depth)
         Me.Metadata(eVarNameFlags.LayerHabitat) = New cVariableMetaData(0, 1, ge, le, 1, cUnits.Proportion)
         Me.Metadata(eVarNameFlags.LayerHabitatCapacityInput) = New cVariableMetaData(0, 1, ge, le, 1, cUnits.Proportion)

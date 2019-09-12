@@ -222,7 +222,7 @@ Namespace Ecospace.Basemap.Layers
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerHabitat))
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerHabitatCapacityInput))
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerRelPP))
-            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerRelCin))
+            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerContaminantRelativeDistribution))
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerImportance))
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerSail))
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerPort))
