@@ -1507,6 +1507,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Contaminants.
+        '''</summary>
+        Public ReadOnly Property ECOSPACE_LAYERGROUP_CONTAMINANTS() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_CONTAMINANTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Environmental drivers.
         '''</summary>
         Public ReadOnly Property ECOSPACE_LAYERGROUP_ENVDRIVERS() As String

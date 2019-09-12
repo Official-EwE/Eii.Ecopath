@@ -8167,7 +8167,7 @@ Namespace DataSources
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerDepth, iActiveScenarioID)
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerRegion, iActiveScenarioID)
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerRelPP, iActiveScenarioID)
-                bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerRelCin, iActiveScenarioID)
+                bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerContaminantRelativeDistribution, iActiveScenarioID)
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerMigration, iActiveScenarioID)
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerAdvection, iActiveScenarioID)
                 bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceLayerPort, iActiveScenarioID)

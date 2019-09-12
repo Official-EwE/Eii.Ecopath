@@ -482,8 +482,10 @@ Namespace Core
         LayerMPA
         ''' <summary>Ecospace cell relative primary production</summary>
         LayerRelPP
-        ''' <summary>Ecospace cell relative level of contaminants</summary>
-        LayerRelCin
+        ''' <summary>Ecospace cell contaminant concentrations weight</summary>
+        LayerContaminantRelativeDistribution
+        ''' <summary>Ecospace cell absolute contaminant contenctrations</summary>
+        LayerContaminantForcingAbsolute
         ''' <summary>Ecospace cell region assignments</summary>
         LayerRegion
         ''' <summary>Ecospace cell migration assignments</summary>
@@ -1898,6 +1900,8 @@ Namespace Core
         RelQt
         EcosimArenaShare
 
+        <Obsolete("Use LayerRelativeContaminants instead")>
+        LayerRelCin = LayerContaminantRelativeDistribution
     End Enum
 
 #End Region ' Variable names
@@ -2284,9 +2288,9 @@ Namespace Core
         EcospaceLayerRelPP = 69
 
         ''' <summary>
-        ''' Data belongs to the Ecospace relative contaminant layer.
+        ''' Data belongs to the Ecospace contaminant relative distribution weight layer (formerly RelCin).
         '''</summary>
-        EcospaceLayerRelCin = 70
+        EcospaceLayerContaminantRelativeDistribution = 70
 
         ''' <summary>
         ''' Data belongs to Management Strategy Evaluation results for a single group.
@@ -2458,6 +2462,11 @@ Namespace Core
         EcospaceLayerOtherMortInput = 121
 
         EcosimArenaShare = 122
+
+        ''' <summary>
+        ''' Data belongs to the Ecospace absolute contaminant layer forcing.
+        '''</summary>
+        EcospaceLayerContaminantForcingAbs = 123
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

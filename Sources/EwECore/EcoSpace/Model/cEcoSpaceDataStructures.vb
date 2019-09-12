@@ -292,9 +292,6 @@ Public Class cEcospaceDataStructures
     ''' Sailing cost (fleet x row x col)
     ''' </summary>
     Public Sail()(,) As Single
-    'Public Sail(,,) As Single 'effort to fish a map cell, used as a multiplier with effort, Scaled to Ecopath ScaleSailingToUnity() in InitSpatialEqulibrium()
-    'Public Port(,,) As Boolean
-
     Public Port()(,) As Boolean
 
     Public EffPower() As Single
@@ -359,8 +356,6 @@ Public Class cEcospaceDataStructures
     ''' Used in cEcospace.summarySetTimeStep() to set the index to store the summary data in. The first or second summary period.
     ''' </remarks>
     Public SumStart(1) As Single
-
-    Public lstRegions As New List(Of Single(,,))
 
     ''' <summary>ResultsCatchRegionGearGroup( nRegions, nFleets, nGroups, nTimesteps)</summary>
     Public ResultsCatchRegionGearGroup(,,,) As Single

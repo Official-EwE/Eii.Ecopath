@@ -30,7 +30,6 @@ Public Class cEcospaceASCMapContaminants
 
     Public Sub New()
         MyBase.New()
-
         Me.vars = New eVarNameFlags() {eVarNameFlags.Concentration}
     End Sub
 

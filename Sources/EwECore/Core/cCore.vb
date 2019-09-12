@@ -14458,7 +14458,7 @@ Public Class cCore
                 Case eDataTypes.EcospaceLayerMPA,
                      eDataTypes.EcospaceLayerImportance,
                      eDataTypes.EcospaceLayerRegion,
-                     eDataTypes.EcospaceLayerRelCin,
+                     eDataTypes.EcospaceLayerContaminantRelativeDistribution,
                      eDataTypes.EcospaceLayerRelPP,
                      eDataTypes.EcospaceLayerPort,
                      eDataTypes.EcospaceLayerSail,

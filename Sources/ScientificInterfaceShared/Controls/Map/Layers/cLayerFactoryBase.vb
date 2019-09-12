@@ -143,7 +143,7 @@ Namespace Controls.Map
                         ' Reuse identical editor here
                         editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
                         layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerM0MultInput),
-                                                renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerM0MultInput)
+                                                renderer, editor, eCoreCounterTypes.nGroups, bmd, varName)
 
                         lLayers.Add(layer)
                     End If
@@ -159,7 +159,7 @@ Namespace Controls.Map
 
                     editor = New cLayerEditorRegion()
 
-                    layer = New cDisplayLayerRaster(uic, bmd.LayerRegion, renderer, editor, bmd, eVarNameFlags.LayerRegion)
+                    layer = New cDisplayLayerRaster(uic, bmd.LayerRegion, renderer, editor, bmd, varName)
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerMPA
@@ -202,11 +202,11 @@ Namespace Controls.Map
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
                     editor = New cLayerEditorRange()
-                    layer = New cDisplayLayerRaster(uic, bmd.LayerRelPP, renderer, editor, bmd, eVarNameFlags.LayerRelPP)
+                    layer = New cDisplayLayerRaster(uic, bmd.LayerRelPP, renderer, editor, bmd, varName)
 
                     lLayers.Add(layer)
 
-                Case eVarNameFlags.LayerRelCin
+                Case eVarNameFlags.LayerContaminantRelativeDistribution
 
                     ad = GetAuxillaryData(core, varName)
                     vs = ad.VisualStyle
@@ -217,7 +217,22 @@ Namespace Controls.Map
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
 
                     editor = New cLayerEditorRange()
-                    layer = New cDisplayLayerRaster(uic, bmd.LayerRelCin, renderer, editor, bmd, eVarNameFlags.LayerRelCin)
+                    layer = New cDisplayLayerRaster(uic, bmd.LayerRelCin, renderer, editor, bmd, varName)
+
+                    lLayers.Add(layer)
+
+                Case eVarNameFlags.LayerContaminantForcingAbsolute
+
+                    ad = GetAuxillaryData(core, varName)
+                    vs = ad.VisualStyle
+
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+                    renderer = New cLayerRendererValue(uic, vs)
+                    'renderer.ScaleMin = 0
+                    renderer.RenderMode = Definitions.eLayerRenderType.Selected
+
+                    editor = New cLayerEditorRange()
+                    layer = New cDisplayLayerRaster(uic, bmd.LayerContaminantForcingAbsolute, renderer, editor, bmd, varName)
 
                     lLayers.Add(layer)
 
@@ -249,8 +264,8 @@ Namespace Controls.Map
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorVelocity()
 
-                    Dim wrap As New cEcospaceLayerVelocity(core, fmt.ToString(eVarNameFlags.LayerAdvection), bmd, eVarNameFlags.LayerAdvection)
-                    layer = New cDisplayLayerRaster(uic, wrap, renderer, editor, bmd, eVarNameFlags.LayerAdvection)
+                    Dim wrap As New cEcospaceLayerVelocity(core, fmt.ToString(eVarNameFlags.LayerAdvection), bmd, varName)
+                    layer = New cDisplayLayerRaster(uic, wrap, renderer, editor, bmd, varName)
 
                     lLayers.Add(layer)
 
@@ -264,8 +279,8 @@ Namespace Controls.Map
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorVelocity()
 
-                    Dim wrap As New cEcospaceLayerVelocity(core, fmt.ToString(eVarNameFlags.LayerWind), bmd, eVarNameFlags.LayerWind)
-                    layer = New cDisplayLayerRaster(uic, wrap, renderer, editor, bmd, eVarNameFlags.LayerWind)
+                    Dim wrap As New cEcospaceLayerVelocity(core, fmt.ToString(eVarNameFlags.LayerWind), bmd, varName)
+                    layer = New cDisplayLayerRaster(uic, wrap, renderer, editor, bmd, varName)
 
                     lLayers.Add(layer)
 
@@ -280,7 +295,7 @@ Namespace Controls.Map
                     renderer = New cLayerRendererUpwelling(uic, vs)
                     renderer.RenderMode = Definitions.eLayerRenderType.Selected
                     editor = New cLayerEditorUpwelling()
-                    layer = New cDisplayLayerRaster(uic, bmd.LayerUpwelling, renderer, editor, bmd, eVarNameFlags.LayerUpwelling)
+                    layer = New cDisplayLayerRaster(uic, bmd.LayerUpwelling, renderer, editor, bmd, varName)
                     layer.Name = "Upwelling"
 
                     lLayers.Add(layer)
@@ -295,7 +310,7 @@ Namespace Controls.Map
                         renderer = New cLayerRendererSymbol(uic, vs)
                         renderer.RenderMode = Definitions.eLayerRenderType.Always
                         editor = New cLayerEditorPorts(GetType(ucLayerEditorPort))
-                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerPort), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerPort, CSng(True), CSng(False))
+                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerPort), renderer, editor, eCoreCounterTypes.nFleets, bmd, varName, CSng(True), CSng(False))
                         lLayers.Add(layer)
                     End If
 
@@ -311,7 +326,7 @@ Namespace Controls.Map
                         renderer.ScaleMin = 0
                         renderer.RenderMode = Definitions.eLayerRenderType.Selected
                         editor = New cLayerEditorSailCost(GetType(ucLayerEditorSailCost))
-                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerSail), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerSail)
+                        layer = New cDisplayLayerRasterBundle(uic, bmd.Layers(eVarNameFlags.LayerSail), renderer, editor, eCoreCounterTypes.nFleets, bmd, varName)
 
                         lLayers.Add(layer)
                     End If
@@ -374,9 +389,12 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerDepth,
                      eVarNameFlags.LayerExclusion,
-                     eVarNameFlags.LayerRelPP,
-                     eVarNameFlags.LayerRelCin
+                     eVarNameFlags.LayerRelPP
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_BASEMAP
+
+                Case eVarNameFlags.LayerContaminantRelativeDistribution,
+                     eVarNameFlags.LayerContaminantForcingAbsolute
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_CONTAMINANTS
 
                 Case eVarNameFlags.LayerHabitat
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_HABITATS

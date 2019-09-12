@@ -3123,4 +3123,7 @@
     <value>Viridis color blind {0}</value>
     <comment>{0}=option</comment>
   </data>
+  <data name="ECOSPACE_LAYERGROUP_CONTAMINANTS" xml:space="preserve">
+    <value>Contaminants</value>
+  </data>
 </root>
