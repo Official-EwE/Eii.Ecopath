@@ -31,6 +31,7 @@ Public Delegate Sub EcoSpaceTimeStepDelegate(ByVal iTime As Integer)
 
 Public Delegate Sub EcoSpaceRunCompletedDelegate(ByVal Succeeded As Boolean)
 
+
 Public Class cEcoSpace
     Inherits cThreadWaitBase
 
@@ -38,6 +39,9 @@ Public Class cEcoSpace
 
     Private Shared m_ThreadIncrementCount As Integer
     Private Const THREAD_TIMEOUT As Integer = 5 * 60 * 1000 '5 minutes
+
+    Public Const W_RELAX_FITNESS As Single = 0.5F
+    Public Const MAX_FITNESSMOVEMENT As Single = 5
 
     ''' <summary>
     ''' Arguments for PredictEffortDistributionThreaded()
@@ -84,11 +88,11 @@ Public Class cEcoSpace
 
 #Region "Private data"
 
+    Public Const MIN_HABCAP As Single = 0.000001F
     Private Const TWO_PI As Double = Math.PI * 2.0#
     Private Const DEG2RAD As Double = TWO_PI / 360.0# 'for converting degrees to radians for functions
 
     Public Const MIN_MIG_PROB As Single = 0.0000000001
-    Public Const MIN_HABCAP As Single = 0.000001F
 
     ''' <summary>To call the plugins</summary>
     Private m_pluginManager As cPluginManager
@@ -139,6 +143,7 @@ Public Class cEcoSpace
     Private RelMoveFit(,) As Single 'populated in SetKmove()
     Private RelFitness(,,) As Single
 
+
     Friend FtimeCell(,,) As Single 'feeding time???
     Private HdenCell(,,) As Single
 
@@ -163,6 +168,10 @@ Public Class cEcoSpace
     Private Basebiomass() As Single
 
     Private Flowin() As Single
+
+    ''' <summary>
+    ''' Loss as a rate loss/biomass
+    ''' </summary>
     Private FlowoutRate() As Single
 
     'A() searchrate modifer one if in prefered habitate < 1 otherwise used in derivRed() to calculate effective search rate
@@ -171,6 +180,10 @@ Public Class cEcoSpace
     '   'V() modifier used in the same way as EatEff() to modfy effective vulnerability in derivtRed()
     Private VulPred() As Single
 
+    ''' <summary>
+    ''' Tstanza() Proportion of year for a stanza age class ([number of months in age class] / 12)
+    ''' used to scale annual rates to monthly
+    ''' </summary>
     Private Tstanza() As Single
     ' Private conSplit() As Single ' pred()/NstanzaBase()
     Private NstanzaBase() As Single
@@ -721,6 +734,7 @@ Public Class cEcoSpace
             HdenCell = Nothing
             HabAreaUsed = Nothing
             RelFitness = Nothing
+            Me.EcoSpaceData.RelFitnessBase = Nothing
             Bcw = Nothing '(,,) As Single
             C = Nothing '(,,) As Single
             d = Nothing '(,,) As Single
@@ -797,7 +811,7 @@ Public Class cEcoSpace
                 End If
             End If
 
-            'Run initialization has completed; call the plugin point
+            'Run initialization has completed Call the plugin point
             If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceInitRunCompleted(Me.EcoSpaceData)
             stpwchTotRunTime.Start()
 
@@ -945,7 +959,7 @@ Public Class cEcoSpace
                 Next 'For ip = 1 To m_Data.nvartot
 
 
-                'EcoSpaceData.PredictEffort = True
+                EcoSpaceData.PredictEffort = True
                 If EcoSpaceData.PredictEffort Then
 
                     'Sets proportion of discards landed and discarded 
@@ -1008,6 +1022,9 @@ Public Class cEcoSpace
                 Next 'For ip = 1 To m_Data.nvartot
 
 
+                'Me.UpdateMultiStanza()
+
+
                 'now solve the spatial grid
                 stpwchGrid.Start()
                 runGridSolverThreads()
@@ -1044,44 +1061,48 @@ Public Class cEcoSpace
                 '    End If
                 'Next
 
-                Dim tbio() As Single
+
 
                 'update total age structure over space for multistanza groups if new method is used
                 If EcoSpaceData.NewMultiStanza Then
-                    SpaceSplitUpdate()  'update overall population age structure using total loss, consumption added over grid cells
-                    'then distribute updated biomasses over the spatial grid
-                    'The following code (for isp...next isp) is real Rambo shit, really should be put
-                    'in its own subroutine called 'DistributeMultiStanzaBiomass' so we
-                    'can improve it later with more complex spatial redistribution
-                    'rules eg running an IBM to predict movement among cells
-                    Dim ieco As Integer
+
+                    Me.UpdateMultiStanza()
+
+                    'SpaceSplitUpdate()  'update overall population age structure using total loss, consumption added over grid cells
+                    ''then distribute updated biomasses over the spatial grid
+                    ''The following code (for isp...next isp) is real Rambo shit, really should be put
+                    ''in its own subroutine called 'DistributeMultiStanzaBiomass' so we
+                    ''can improve it later with more complex spatial redistribution
+                    ''rules eg running an IBM to predict movement among cells
+                    'Dim ieco As Integer
+                    'Dim tbio() As Single
 
 
-                    ReDim tbio(Me.EcoSpaceData.NGroups)
-                    For isp As Integer = 1 To StanzaData.Nsplit
-                        For ist As Integer = 1 To StanzaData.Nstanza(isp)
-                            ieco = StanzaData.EcopathCode(isp, ist)
-                            '***WARNING**** FOLLOWING CALCULATION WILL FAIL IF ADJUSTSPACEPARS HAS NOT BEEN CALLED
-                            'SINCE CALCTOTAREA WILL NOT HAVE BEEN CALLED AND NEITHER THABAREA OR HABAREAUSED WILL HAVE BEEN
-                            'SET
-                            Tbiom = EcoSpaceData.ThabArea * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
-                            Tpred = EcoSpaceData.ThabArea * EcoSimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
+                    'ReDim tbio(Me.EcoSpaceData.NGroups)
+                    'For isp As Integer = 1 To StanzaData.Nsplit
+                    '    For ist As Integer = 1 To StanzaData.Nstanza(isp)
+                    '        ieco = StanzaData.EcopathCode(isp, ist)
+                    '        '***WARNING**** FOLLOWING CALCULATION WILL FAIL IF ADJUSTSPACEPARS HAS NOT BEEN CALLED
+                    '        'SINCE CALCTOTAREA WILL NOT HAVE BEEN CALLED AND NEITHER THABAREA OR HABAREAUSED WILL HAVE BEEN
+                    '        'SET
+                    '        Tbiom = EcoSpaceData.ThabArea * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
+                    '        Tpred = EcoSpaceData.ThabArea * EcoSimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
 
-                            'Tbiom = Me.m_Data.TotHabCap(ieco) * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
-                            'Tpred = Me.m_Data.TotHabCap(ieco) * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
-                            For i = 1 To EcoSpaceData.InRow
-                                For j = 1 To EcoSpaceData.InCol
-                                    If EcoSpaceData.Depth(i, j) > 0 Then
-                                        Wcell = EcoSpaceData.IFDweight(i, j, ieco) / TotIFDweight(ieco)
-                                        EcoSpaceData.Bcell(i, j, ieco) = Tbiom * Wcell
-                                        ' Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ieco)))
-                                        tbio(ieco) = tbio(ieco) + EcoSpaceData.Bcell(i, j, ieco)
-                                        EcoSpaceData.PredCell(i, j, ieco) = Tpred * Wcell
-                                    End If
-                                Next j
-                            Next i
-                        Next ist
-                    Next isp
+                    '        'Tbiom = Me.m_Data.TotHabCap(ieco) * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
+                    '        'Tpred = Me.m_Data.TotHabCap(ieco) * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
+                    '        For i = 1 To EcoSpaceData.InRow
+                    '            For j = 1 To EcoSpaceData.InCol
+                    '                If EcoSpaceData.Depth(i, j) > 0 Then
+                    '                    Wcell = EcoSpaceData.IFDweight(i, j, ieco) / TotIFDweight(ieco)
+                    '                    EcoSpaceData.Bcell(i, j, ieco) = Tbiom * Wcell
+                    '                    ' Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ieco)))
+                    '                    tbio(ieco) = tbio(ieco) + EcoSpaceData.Bcell(i, j, ieco)
+                    '                    EcoSpaceData.PredCell(i, j, ieco) = Tpred * Wcell
+                    '                End If
+                    '            Next j
+                    '        Next i
+                    '    Next ist
+                    'Next isp
 
                 ElseIf EcoSpaceData.UseIBM Then
                     'IBM model
@@ -2588,9 +2609,9 @@ Public Class cEcoSpace
                 Next i
                 Btime(ip) = Btime(ip) / EcoSpaceData.nWaterCells
                 'For Debugging
-                'If ip > 0 Then
-                '    System.Console.WriteLine(Me.EcoPathData.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.EcoPathData.B(ip)).ToString)
-                'End If
+                If ip > 0 Then
+                    System.Console.WriteLine(Me.EcoPathData.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.EcoPathData.B(ip)).ToString)
+                End If
             Next ip
 
             Dim isc As Integer, ieco As Integer
@@ -2903,9 +2924,6 @@ Public Class cEcoSpace
     Private Sub InitSpatialTemporalRun()
 
         Try
-            'Run initialization is starting; call the plugin point
-            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceInitRunStarted(Me.EcoSpaceData)
-
             ' Preserve base RelPP, either loaded or sketched
             Me.EcoSpaceData.setBaseRelPP()
 
@@ -2967,6 +2985,8 @@ Public Class cEcoSpace
 
             Me.EcoSpaceData.allocate(Cper, EcoSpaceData.InRow + 1, EcoSpaceData.InCol + 1, EcoSpaceData.NGroups)
             Me.EcoSpaceData.allocate(RelFitness, EcoSpaceData.InRow + 1, EcoSpaceData.InCol + 1, EcoSpaceData.NGroups)
+            Me.EcoSpaceData.allocate(Me.EcoSpaceData.RelFitnessBase, EcoSpaceData.InRow + 1, EcoSpaceData.InCol + 1, EcoSpaceData.NGroups)
+
             Me.EcoSpaceData.allocate(F, EcoSpaceData.InRow + 1, EcoSpaceData.InCol + 1, EcoSpaceData.nvartot)
             Me.EcoSpaceData.allocate(AMm, EcoSpaceData.InRow + 1, EcoSpaceData.InCol + 1, EcoSpaceData.nvartot)
             Me.EcoSpaceData.allocate(BcwNomig, EcoSpaceData.InRow + 1, EcoSpaceData.InCol + 1, EcoSpaceData.nvartot)
@@ -3178,6 +3198,10 @@ Public Class cEcoSpace
         Next igrp
 
 
+
+    End Sub
+
+    Private Sub setRelFitnessBase()
 
     End Sub
 
@@ -5634,34 +5658,32 @@ exitline:
         For i = 1 To EcoSpaceData.NGroups
             If EcoSpaceData.IsMigratory(i) Then
                 'just the migrating groups
-                'this is because MigGrad() is only calculated on
-                'migrating groups
+                'this is because MigGrad() dimensioned by the number of migrating groups
                 iMig += 1
                 MigToEcopath(iMig) = i
                 EcopathToMig(i) = iMig
-
             End If
         Next
 
+        'normalizeRelFitness()
+
         For ip = 1 To EcoSpaceData.NGroups
 
-            'If EcoSpaceData.IsMigratory(ip) Or EcoSpaceData.Kmovefit(ip) > 0 Then
-            If EcoSpaceData.IsMigratory(ip) Then
+            If EcoSpaceData.IsMigratory(ip) Or EcoSpaceData.Kmovefit(ip) > 0 Then
 
                 'calculate relative emigration rate from each cell as function
                 'of fitness, scaling parameter KmoveFit(ip) set in setKmove routine
                 For i = 0 To EcoSpaceData.InRow + 1
                     For j = 0 To EcoSpaceData.InCol + 1
-
-                        RelMoveFit(i, j) = 1.0F ' (EcoSpaceData.Kmovefit(ip) + 1.0F) / (1.0F + RelFitness(i, j, ip) * EcoSpaceData.Kmovefit(ip))
-                    Next
-                Next
+                        RelMoveFit(i, j) = (EcoSpaceData.Kmovefit(ip) + 1.0F) / (1.0F + RelFitness(i, j, ip) * EcoSpaceData.Kmovefit(ip))
+                    Next j
+                Next i
 
                 For i = 0 To EcoSpaceData.InRow
                     For j = 0 To EcoSpaceData.InCol
                         If EcoSpaceData.Depth(i, j) > 0 Then
 
-                            ' Debug.Assert(Not (ip = 23 And i > 0 And j > 0))
+                            'Debug.Assert(Not (i > 0 And j > 0))
 
                             'check depth on right face of this cell
                             'can there be movement to or from the cell to the right for this cell
@@ -5679,7 +5701,7 @@ exitline:
                                     e(i, j + 1, ip) = Enomig(i, j + 1, ip) * RelMoveFit(i, j + 1)
                                     'Movement from this cell into the cell to the right
                                     d(i, j, ip) = dNomig(i, j, ip) * RelMoveFit(i, j)
-
+                                    'System.Console.WriteLine("grp=" & ip.ToString & ", i=" & i.ToString & ", j=" & j.ToString & ", RelFitness=" & RelFitness(i, j + 1, ip).ToString & ", RelMoveFit=" & RelMoveFit(i, j + 1).ToString & ", e=" & e(i, j + 1, ip).ToString)
                                 End If
 
                                 If j = 0 Or j = EcoSpaceData.InCol Then
@@ -5687,9 +5709,17 @@ exitline:
                                     d(i, j, ip) = 0
                                 End If
 
+                                'nvar2 = EcoSpaceData.NGroups
+                                'If ieco > 0 Then
+                                '    ir = IecoCode(ip)
+                                '    e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
+                                '    d(i, j, nvar2 + ir) = d(i, j, ip)
+                                'End If
+
                                 nvar2 = EcoSpaceData.NGroups
                                 ir = IecoCode(ip)
-                                If ieco > 0 Then
+                                If ir > 0 Then
+                                    'ir = IecoCode(ip)
                                     e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
                                     d(i, j, nvar2 + ir) = d(i, j, ip)
                                 End If
@@ -5716,10 +5746,15 @@ exitline:
                                     Bcw(i + 1, j, ip) = 0
                                 End If
 
+                                'If ieco > 0 Then
+                                '    ir = ieco
+                                '    Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
+                                '    C(i, j, nvar2 + ir) = C(i, j, ip)
+                                'End If
                                 nvar2 = EcoSpaceData.NGroups
                                 ir = IecoCode(ip)
-                                If ieco > 0 Then
-                                    ir = ieco
+                                If ir > 0 Then
+                                    ' ir = ieco
                                     Bcw(i + 1, j, nvar2 + ir) = Bcw(i + 1, j, ip)
                                     C(i, j, nvar2 + ir) = C(i, j, ip)
                                 End If
@@ -5738,6 +5773,40 @@ exitline:
         'Me.debugDumpFlowRates(Bcw, 23, "VaryMigMovementParameters b " + imonth.ToString)
 
     End Sub
+
+
+    'Private Sub normalizeRelFitness()
+
+    '    For ip As Integer = 1 To EcoSpaceData.NGroups
+
+    '        If EcoSpaceData.IsMigratory(ip) Or EcoSpaceData.Kmovefit(ip) > 0 Then
+    '            Dim rfMax As Single = 0
+    '            For i As Integer = 1 To EcoSpaceData.InRow
+    '                For j As Integer = 1 To EcoSpaceData.InCol
+    '                    If EcoSpaceData.Depth(i, j) > 0 Then
+    '                        rfMax = Math.Max(rfMax, RelFitness(i, j, ip))
+
+    '                    End If
+    '                Next j
+    '            Next i
+
+    '            If rfMax > 1 Then
+    '                For i As Integer = 1 To EcoSpaceData.InRow
+    '                    For j As Integer = 1 To EcoSpaceData.InCol
+    '                        If EcoSpaceData.Depth(i, j) > 0 Then
+    '                            'RelFitness(i, j, ip) = 1 + Math.Log(RelFitness(i, j, ip))
+    '                            RelFitness(i, j, ip) = (RelFitness(i, j, ip) / rfMax) * 1.1
+    '                        End If
+    '                    Next j
+    '                Next i
+
+    '                System.Console.WriteLine("Group = " & ip.ToString & " max = " & rfMax.ToString)
+    '            End If
+
+    '        End If
+    '    Next ip
+
+    'End Sub
 
     ''' <summary>
     ''' Calculate the directional flow rate (Bcw,c,d,e) dependant on migratory movement. 
@@ -5780,7 +5849,7 @@ exitline:
 
     Private Sub TeleportMigrationBiomass(iMonth As Integer)
 
-        System.Console.WriteLine("WOW F@CK Migratory biomass has been magically transported to the new migrating area! YEAH REALLY THIS IS F@CKED UP...")
+        System.Console.WriteLine("WOW FUCK Migratory biomass has been magically transported to the new migrating area! YEAH REALLY THIS IS FUCKED UP...")
 
         Dim imig As Integer
         Dim nMig As Integer
@@ -7175,6 +7244,50 @@ exitline:
 
 #Region " New Multistanza Stuff"
 
+
+
+    Private Sub UpdateMultiStanza()
+        Dim i As Integer, j As Integer
+
+        If EcoSpaceData.NewMultiStanza Then
+            SpaceSplitUpdate()  'update overall population age structure using total loss, consumption added over grid cells
+            'then distribute updated biomasses over the spatial grid
+            'The following code (for isp...next isp) is real Rambo shit, really should be put
+            'in its own subroutine called 'DistributeMultiStanzaBiomass' so we
+            'can improve it later with more complex spatial redistribution
+            'rules eg running an IBM to predict movement among cells
+            Dim ieco As Integer
+
+            Dim tbio() As Single
+            ReDim tbio(Me.EcoSpaceData.NGroups)
+            For isp As Integer = 1 To StanzaData.Nsplit
+                For ist As Integer = 1 To StanzaData.Nstanza(isp)
+                    ieco = StanzaData.EcopathCode(isp, ist)
+                    '***WARNING**** FOLLOWING CALCULATION WILL FAIL IF ADJUSTSPACEPARS HAS NOT BEEN CALLED
+                    'SINCE CALCTOTAREA WILL NOT HAVE BEEN CALLED AND NEITHER THABAREA OR HABAREAUSED WILL HAVE BEEN
+                    'SET
+                    Tbiom = EcoSpaceData.ThabArea * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
+                    Tpred = EcoSpaceData.ThabArea * EcoSimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
+
+                    'Tbiom = Me.m_Data.TotHabCap(ieco) * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
+                    'Tpred = Me.m_Data.TotHabCap(ieco) * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
+                    For i = 1 To EcoSpaceData.InRow
+                        For j = 1 To EcoSpaceData.InCol
+                            If EcoSpaceData.Depth(i, j) > 0 Then
+                                Wcell = EcoSpaceData.IFDweight(i, j, ieco) / TotIFDweight(ieco)
+                                EcoSpaceData.Bcell(i, j, ieco) = Tbiom * Wcell
+                                ' Debug.Assert(Not Single.IsNaN(Me.m_Data.Bcell(i, j, ieco)))
+                                tbio(ieco) = tbio(ieco) + EcoSpaceData.Bcell(i, j, ieco)
+                                EcoSpaceData.PredCell(i, j, ieco) = Tpred * Wcell
+                            End If
+                        Next j
+                    Next i
+                Next ist
+            Next isp
+        End If
+
+    End Sub
+
     ''' <summary>
     '''  updates numbers, weight, and biomass for multiple stanza species using information 
     '''  on average performance (eatenby, loss) over ecospace grid cells used by the species
@@ -7826,7 +7939,7 @@ exitline:
 
     Private Sub ClearHabCapGroups(isCapChanged() As Boolean)
 
-        For igrp As Integer = 0 To Me.EcoSpaceData.NGroups
+        For igrp As Integer = 1 To Me.EcoSpaceData.NGroups
 
             If isCapChanged(igrp) Then
 
@@ -7837,9 +7950,11 @@ exitline:
 
                 'm_Data.TotHabCap(igrp) = 0.0F
 
-                For irow As Integer = 0 To Me.EcoSpaceData.InRow + 1
-                    For icol As Integer = 0 To Me.EcoSpaceData.InCol + 1
+                For irow As Integer = 1 To Me.EcoSpaceData.InRow
+                    For icol As Integer = 1 To Me.EcoSpaceData.InCol
+
                         Me.EcoSpaceData.HabCap(igrp)(irow, icol) = 0.0F
+
                     Next icol
                 Next irow
             End If
@@ -7927,7 +8042,7 @@ exitline:
 
             ReDim DistMin(Me.EcoSpaceData.InRow + 1, Me.EcoSpaceData.InCol + 1)
 
-            HabCapMin = Math.Max(Me.EcoSpaceData.MinHabCap, MIN_HABCAP)  'minimum allowable value of habcap before adjustment for distance to cell with habcap>habcapmin
+            HabCapMin = 0.01 'minimum allowable value of habcap before adjustment for distance to cell with habcap>habcapmin
             DistFac = 0.4 'exponential decrease in habcap per cell width distance from cell with habcap>habcapmin
             MaxDist = Math.Max(Me.EcoSpaceData.InRow, Me.EcoSpaceData.InCol)
             'Maxiter = MaxDist / 2 : If Maxiter = 0 Then Maxiter = 1
@@ -7963,7 +8078,7 @@ exitline:
                     For i = 0 To Me.EcoSpaceData.InRow + 1
                         For j = 0 To Me.EcoSpaceData.InCol + 1
                             If Me.EcoSpaceData.Depth(i, j) > 0 Then
-                                If Me.EcoSpaceData.HabCap(k)(i, j) < HabCapMin Then
+                                If Me.EcoSpaceData.HabCap(k)(i, j) <= HabCapMin Then
                                     Me.EcoSpaceData.HabCap(k)(i, j) = HabCapMin
                                     DistMin(i, j) = MaxDist
                                     NumBad = NumBad + 1
@@ -7976,7 +8091,7 @@ exitline:
 
                     'then do dynamic program iteratation to reset distmin for each cell to minimum distance to cell with habcap>habcapmin
                     'skip iteration if numbad=0
-                    If NumBad > 0 And Me.EcoSpaceData.AllowHabCapGradientCorrections Then
+                    If NumBad > 0 Then
                         For iter = 1 To Maxiter
                             For i = 1 To Me.EcoSpaceData.InRow
                                 For j = 1 To Me.EcoSpaceData.InCol

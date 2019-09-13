@@ -796,8 +796,9 @@ Public Class cEcospaceDataStructures
 
     Public bENA As Boolean
 
-
     Public Kmovefit() As Single
+
+    Public RelFitnessBase(,,) As Single
 
 #End Region
 
@@ -2616,6 +2617,8 @@ Public Class cEcospaceDataStructures
             Return New Integer() {0, 1}
         End Get
     End Property
+
+
 
 #End Region
 
