@@ -1248,6 +1248,7 @@
     <None Include="Resources\ZoomHS.png" />
     <None Include="Resources\Web.png" />
     <None Include="Resources\saveHS.png" />
+    <None Include="Resources\SaveAllHS.png" />
     <None Include="Resources\ProtectFormHS.png" />
     <None Include="Resources\PrintPreviewHS.png" />
     <None Include="Resources\PrintHS.png" />

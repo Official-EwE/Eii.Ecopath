@@ -8690,7 +8690,8 @@ Namespace DataSources
                     drow("BarrierAvoidanceWeight") = ecospaceDS.barrierAvoidanceWeight(iGroup)
                     drow("CapacityCalType") = ecospaceDS.CapCalType(iGroup)
                     drow("CapacityMap") = cStringUtils.ArrayToString(ecospaceDS.HabCapInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
-                    '    drow("OtherMortMap") = cStringUtils.ArrayToString(ecospaceDS.M0MultInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+
+                    'drow("OtherMortMap") = cStringUtils.ArrayToString(ecospaceDS.M0MultInput(iGroup), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
 
                     If bNewRow Then
                         writer.AddRow(drow)

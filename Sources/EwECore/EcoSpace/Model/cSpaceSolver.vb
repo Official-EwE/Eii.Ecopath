@@ -22,6 +22,10 @@ Option Strict On
 Imports System.Threading
 Imports EwEUtils.Core
 
+
+
+
+
 Public Class cSpaceSolver
 
     ''' <summary>
@@ -196,6 +200,10 @@ Public Class cSpaceSolver
 
     Private TotFisheriesDiscards As Single
 
+    Private m_bFitnessSet(,) As Boolean
+
+
+
     Public Sub Init()
         'local spatial variables
         ReDim loss(m_Data.NGroups)
@@ -254,6 +262,7 @@ Public Class cSpaceSolver
         m_ConTracer.Init(m_TracerData, m_PathData, m_SimData, m_Stanza)
         m_ConTracer.CInitialize()
 
+        m_bFitnessSet = New Boolean(m_Data.InRow, m_Data.InCol) {}
         Me.m_stpWatch = New Stopwatch
 
     End Sub
@@ -554,18 +563,28 @@ Public Class cSpaceSolver
                 m_ConTracer.ConDeriv(BB, Derivcon, Cintotal, Closs, m_Data.RelCin(i, j), True)
             End If
 
+            If Not Me.m_bFitnessSet(i, j) Then
+                Me.setRelFitnessBase(i, j)
+            End If
+
+            Dim minMovement As Single = 1 / cEcoSpace.MAX_FITNESSMOVEMENT
             'jb now populate the spatial matrixes with the data computed by derivtRed() for this cell across all groups
             For iGrp = 1 To m_Data.NGroups
                 HdenCell(i, j, iGrp) = Hden(iGrp)
-                'Debug.Assert(Not Single.IsNaN(BB(iGrp)))
-                ' Debug.Assert(Not Single.IsNaN(loss(iGrp)))
 
-                RelFitness(i, j, iGrp) = 1.0
-                If m_Data.Kmovefit(iGrp) > 0 Then
-                    RelFitness(i, j, iGrp) = (m_SimData.SimGE(iGrp) * Eatenby(iGrp)) / (loss(iGrp) + 1.0E-10F)
-                    If Single.IsNaN(RelFitness(i, j, iGrp)) Then RelFitness(i, j, iGrp) = 1.0
-                    If RelFitness(i, j, iGrp) < 0.5 Then RelFitness(i, j, iGrp) = 0.5
-                    If RelFitness(i, j, iGrp) > 2 Then RelFitness(i, j, iGrp) = 2
+                If (m_Data.Kmovefit(iGrp) > 0) And Me.m_bFitnessSet(i, j) Then
+                    'RelFitness(i, j, iGrp) = (m_SimData.SimGE(iGrp) * Eatenby(iGrp)) / (loss(iGrp) + 1.0E-10F)
+                    Dim FCatch As Single = FishTime(iGrp) * BB(iGrp)
+                    Dim PredFitness As Single = ((m_SimData.SimGE(iGrp) * Eatenby(iGrp)) / (loss(iGrp) - FCatch + 1.0E-10F)) / Me.m_Data.RelFitnessBase(i, j, iGrp)
+
+                    If Single.IsNaN(PredFitness) Then PredFitness = 1.0
+
+                    If PredFitness < minMovement Then PredFitness = minMovement
+                    If PredFitness > cEcoSpace.MAX_FITNESSMOVEMENT Then PredFitness = cEcoSpace.MAX_FITNESSMOVEMENT
+
+                    RelFitness(i, j, iGrp) = CSng((1 - cEcoSpace.W_RELAX_FITNESS) * RelFitness(i, j, iGrp) + cEcoSpace.W_RELAX_FITNESS * PredFitness)
+                Else
+                        RelFitness(i, j, iGrp) = 1.0
                 End If '
 
                 Me.ResultsByGroup(eSpaceResultsGroups.FishingMort, iGrp) += FishTime(iGrp)
@@ -677,9 +696,6 @@ Public Class cSpaceSolver
                     AMm(i, j, nvar2 + isc) = -FlowoutRate(ieco) - Bcw(i + 1, j, ieco) - C(i - 1, j, ieco) - d(i, j, ieco) - e(i, j, ieco)
                     If AMm(i, j, nvar2 + isc) >= 0 Then AMm(i, j, nvar2 + isc) = -1.0E+30
 
-                    'm_Data.deriv2(i, j, nvar2 + isc) = m_Data.deriv(i, j, nvar2 + isc)
-                    'm_Data.deriv(i, j, nvar2 + isc) = AMm(i, j, nvar2 + isc) * m_Data.Bcell(i, j, nvar2 + isc) + F(i, j, nvar2 + isc) + Bcw(i, j, nvar2 + isc) * m_Data.Bcell(i - 1, j, nvar2 + isc) + C(i, j, nvar2 + isc) * m_Data.Bcell(i + 1, j, nvar2 + isc) + d(i, j - 1, nvar2 + isc) * m_Data.Bcell(i, j - 1, nvar2 + isc) + e(i, j + 1, nvar2 + isc) * m_Data.Bcell(i, j + 1, nvar2 + isc)
-
                     If m_Data.SpaceTime Then
                         F(i, j, nvar2 + isc) = F(i, j, nvar2 + isc) + (1.3333F * m_Data.Bcell(i, j, nvar2 + isc) - 0.3333F * m_Data.Blast(i, j, nvar2 + isc)) / TimeStep2
                         'F(i, j, nvar2 + isc) = F(i, j, nvar2 + isc) + m_Data.Bcell(i, j, nvar2 + isc) / m_Data.TimeStep
@@ -695,6 +711,7 @@ Public Class cSpaceSolver
             '                    'Bclose = -Bcell(i,j,ip) * AMm(i,j,ip) / (AMm(i,j,p) - Ftime(i,j,ip))
             '                    'This is the long-term predicted biomass in the cell from not fishing there
             '                    '   If AMm(i, j, ip) > 0 Then Bclose(i, j, ip) = -Bcell(i, j, ip) * AMm(i, j, ip) / (AMm(i, j, P) - Ftime(i, j, ip))
+
 
             Return True
 
@@ -1112,7 +1129,7 @@ Public Class cSpaceSolver
 
             Select Case m_SimData.BioMedData.ApplicationType(i, j, K)
                 'SearchRate, Production and ImportedDetritus are all applied to the A multiplier
-                Case eForcingFunctionApplication.SearchRate, _
+                Case eForcingFunctionApplication.SearchRate,
                      eForcingFunctionApplication.ProductionRate
                     A = A * Mult
                 Case eForcingFunctionApplication.Vulnerability
@@ -1271,7 +1288,7 @@ Public Class cSpaceSolver
             For igrp As Integer = 1 To m_Data.NGroups
                 m_Data.TL(iRow, iCol, igrp) = TLs(igrp)
                 fCatch += Me.m_Data.CatchMap(iRow, iCol, igrp)
-                totalTL +=TLs(igrp) * Me.m_Data.CatchMap(iRow, iCol, igrp)
+                totalTL += TLs(igrp) * Me.m_Data.CatchMap(iRow, iCol, igrp)
             Next
 
             If (fCatch > 0) Then
@@ -1372,6 +1389,35 @@ Public Class cSpaceSolver
         Dim enaRCellData As cENACellData = Me.m_Data.dctENACells(cENACellData.getHash(Ir, ic))
         'Populate its data with values from this cell at this time  step
         enaRCellData.Populate(Me.itt, Me.m_Data, Biomass, Production, consumpt, FishingMort, Me.Eatenof, FlowToDertitus, DetritusFlowByGroup, TotFisheriesDiscards)
+    End Sub
+
+
+    Private Sub setRelFitnessBase(i As Integer, j As Integer)
+        Dim relFit As Single
+        If Me.itt > 5 And (Me.m_bFitnessSet(i, j) = False) Then
+
+            Dim minMovement As Single = 1 / cEcoSpace.MAX_FITNESSMOVEMENT
+            For iGrp As Integer = 1 To m_Data.NGroups
+
+                RelFitness(i, j, iGrp) = 1.0
+
+                If (m_Data.Kmovefit(iGrp) > 0) Then
+                    Dim FCatch As Single = FishTime(iGrp) * BB(iGrp)
+                    relFit = (m_SimData.SimGE(iGrp) * Eatenby(iGrp)) / (loss(iGrp) - FCatch + 1.0E-10F)
+
+                    If Single.IsNaN(relFit) Then relFit = 1.0
+
+                    If relFit < minMovement Then relFit = minMovement
+                    If relFit > cEcoSpace.MAX_FITNESSMOVEMENT Then relFit = cEcoSpace.MAX_FITNESSMOVEMENT
+                    Me.m_Data.RelFitnessBase(i, j, iGrp) = relFit
+                End If '
+
+            Next iGrp
+
+            Me.m_bFitnessSet(i, j) = True
+
+        End If 'Me.itt > 5 And (Me.m_bFitnessSet(i, j) = False)
+
     End Sub
 
 
