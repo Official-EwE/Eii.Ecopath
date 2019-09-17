@@ -153,12 +153,8 @@ Namespace Controls.Map
             If (TypeOf Me.m_layer Is cDisplayLayerRaster) Then
                 Dim rl As cDisplayLayerRaster = DirectCast(Me.m_layer, cDisplayLayerRaster)
                 ' Draw editable indicator (only when selected or hovering)
-                If (rl.IsExternal) Then
-                    If (rl.IsExternalEnabled) Then
-                        img = g_imgData
-                    Else
-                        img = g_imgDataDisabled
-                    End If
+                If (rl.IsExternal And rl.IsExternalEnabled) Then
+                    img = g_imgData
                 ElseIf (rl.Editor.IsReadOnly) Then
                     img = g_imgLock
                 Else
