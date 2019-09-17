@@ -8609,11 +8609,14 @@ Namespace DataSources
                     If (iGroup = -1) Then
                         Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
                     Else
-                        Debug.Assert(ecospaceDS.IsMigratory(iGroup))
-
                         ' Read only water cells 
                         Dim strMap As String = CStr(Me.m_db.ReadSafe(reader, "Map", ""))
-                        cStringUtils.StringToArray(strMap, ecospaceDS.MigMaps(iGroup, iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                        ' JS 190916: migration maps are stored and reloaded for any group that was migratory at some point
+                        If Not String.IsNullOrWhiteSpace(strMap) Then
+                            Dim map(ecospaceDS.InRow + 1, ecospaceDS.InCol + 1) As Single
+                            cStringUtils.StringToArray(strMap, map, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
+                            ecospaceDS.MigMaps(iGroup, iMonth) = map
+                        End If
                     End If
 
                 End While
@@ -8777,27 +8780,46 @@ Namespace DataSources
             Dim iGroupID As Integer = 0
             Dim iGroup As Integer = 0
             Dim iHabitat As Integer = 0
-
+            Dim objKeys(2) As Object
+            Dim dt As DataTable = Nothing
             Dim bSucces As Boolean = True
 
-            ' No incremental save for now
-            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupMigration WHERE ScenarioID={0}", iScenarioID))
-
+            ' JS 190916: migration maps are stored and reloaded for any group that was migratory at some point
             writer = Me.m_db.GetWriter("EcospaceScenarioGroupMigration")
             Try
+                dt = writer.GetDataTable()
                 For iGroup = 1 To ecopathDS.NumGroups
-                    ' We can decide to save all maps that have once been defined...
-                    If ecospaceDS.IsMigratory(iGroup) Then
-                        iGroupID = idm.GetID(eDataTypes.EcospaceGroup, ecopathDS.GroupDBID(iGroup))
-                        For iMonth As Integer = 1 To 12
-                            drow = writer.NewRow()
-                            drow("ScenarioID") = iScenarioID
-                            drow("GroupID") = iGroupID
-                            drow("MonthID") = iMonth
+
+                    iGroupID = idm.GetID(eDataTypes.EcospaceGroup, ecopathDS.GroupDBID(iGroup))
+                    For iMonth As Integer = 1 To 12
+
+                        If ecospaceDS.MigMaps(iGroup, iMonth) IsNot Nothing Then
+
+                            objKeys(0) = iScenarioID
+                            objKeys(1) = iGroupID
+                            objKeys(2) = iMonth
+
+                            drow = dt.Rows.Find(objKeys)
+                            ' Check wheter a new row or an existing row
+                            Dim bNewRow As Boolean = (drow Is Nothing)
+
+                            If bNewRow Then
+                                drow = writer.NewRow()
+                                drow("ScenarioID") = iScenarioID
+                                drow("GroupID") = iGroupID
+                                drow("MonthID") = iMonth
+                            Else
+                                drow.BeginEdit()
+                            End If
                             drow("Map") = cStringUtils.ArrayToString(ecospaceDS.MigMaps(iGroup, iMonth), ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.DepthInput, True)
-                            writer.AddRow(drow)
-                        Next iMonth
-                    End If
+                            If bNewRow Then
+                                writer.AddRow(drow)
+                            Else
+                                drow.EndEdit()
+                            End If
+                        End If
+
+                    Next iMonth
                 Next iGroup
 
             Catch ex As Exception
