@@ -216,6 +216,7 @@ Friend Class cStyleGuideUpdater
             .ShowMapsMPAs = My.Settings.MapShowMPAs
             .ShowMapLabels = My.Settings.MapShowLabels
             .ShowMapsDateInLabels = My.Settings.MapShowLabelDate
+            .ShowMapsIndexInLabels = My.Settings.MapShowLabelIndex
             .InvertMapLabelColor = My.Settings.MapShowLabelInvertedColor
             .MapLabelPosHorizontal = CType(My.Settings.MapLabelPosHorz, StringAlignment)
             .MapLabelPosVertical = CType(My.Settings.MapLabelPosVert, StringAlignment)
@@ -275,6 +276,7 @@ Friend Class cStyleGuideUpdater
             My.Settings.MapShowMPAs = .ShowMapsMPAs
             My.Settings.MapShowLabels = .ShowMapLabels
             My.Settings.MapShowLabelDate = .ShowMapsDateInLabels
+            My.Settings.MapShowLabelIndex = .ShowMapsIndexInLabels
             My.Settings.MapLabelPosHorz = .MapLabelPosHorizontal
             My.Settings.MapLabelPosVert = .MapLabelPosVertical
             My.Settings.MapShowLabelInvertedColor = .InvertMapLabelColor

@@ -131,6 +131,7 @@ Namespace Style
         ''' <summary>Show labels on maps.</summary>
         Private m_bShowMapLabels As Boolean = True
         Private m_bShowMapLabelDate As Boolean = True
+        Private m_bShowMapLabelIndex As Boolean = True
         Private m_bInvertMapLabelColor As Boolean = False
         Private m_posMapLabelHorz As StringAlignment = StringAlignment.Near
         Private m_posMapLabelVert As StringAlignment = StringAlignment.Near
@@ -965,7 +966,7 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set if maps should show datas in labels.
+        ''' Get/set if maps should show dates in labels.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property ShowMapsDateInLabels() As Boolean
@@ -978,6 +979,20 @@ Namespace Style
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set if maps should show group/fleet indexes in labels.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property ShowMapsIndexInLabels() As Boolean
+            Get
+                Return Me.m_bShowMapLabelIndex
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bShowMapLabelIndex = value
+                Me.MapStyleChanged()
+            End Set
+        End Property
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set if maps labels should be drawn in inverted colours.

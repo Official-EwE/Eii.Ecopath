@@ -23,6 +23,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -63,10 +64,10 @@ Namespace Controls.Map
                 For i As Integer = 1 To Me.InRow
                     For j As Integer = 1 To Me.InCol
 
-                        Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol), _
-                                                                           CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow), _
-                                                                           CSng(rcPos.Width() / Me.InCol), _
-                                                                           CSng(rcPos.Height() / Me.InRow))
+                        Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol),
+                                                                   CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow),
+                                                                   CSng(rcPos.Width() / Me.InCol),
+                                                                   CSng(rcPos.Height() / Me.InRow))
                         Dim brCell As Brush = Nothing
 
                         'If it is water
@@ -153,9 +154,9 @@ Namespace Controls.Map
 
                                     If CBool(excl.Cell(CInt(Math.Floor(sy)), CInt(Math.Floor(sx)))) = False Then
                                         Dim ptfCell As New PointF(CSng(rcPos.Left + (sx - 1) * rcPos.Width() / Me.InCol),
-                                                                      CSng(rcPos.Top + (sy - 1) * rcPos.Height() / Me.InRow))
+                                                                  CSng(rcPos.Top + (sy - 1) * rcPos.Height() / Me.InRow))
                                         Dim rcF As New RectangleF(ptfCell.X, ptfCell.Y, 1, 1)
-
+                                        ' ToDo: scale packet color to map value intesity
                                         Me.Graphics.DrawEllipse(Pens.Black, rcF)
                                     End If
 
@@ -177,10 +178,18 @@ Namespace Controls.Map
             If Me.m_sg.ShowMapLabels Then
 
                 Dim strLabel As String = ""
-                If Me.m_sg.ShowMapsDateInLabels Then
-                    strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, Me.m_core.EcospaceGroupInputs(iItem).Name, Me.Date)
+                Dim strName As String = ""
+
+                If (Me.m_sg.ShowMapsIndexInLabels) Then
+                    strName = cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, iItem, Me.m_core.EcospaceGroupInputs(iItem).Name)
                 Else
-                    strLabel = Me.m_core.EcospaceGroupInputs(iItem).Name
+                    strName = Me.m_core.EcospaceGroupInputs(iItem).Name
+                End If
+
+                If Me.m_sg.ShowMapsDateInLabels Then
+                    strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, strName, Me.Date)
+                Else
+                    strLabel = strName
                 End If
                 Dim br As Brush = Brushes.Black
                 Dim fmt As New StringFormat()
