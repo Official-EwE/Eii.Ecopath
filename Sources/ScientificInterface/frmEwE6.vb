@@ -2193,6 +2193,10 @@ Public Class frmEwE6
         If Me.Core.LoadModel(ds) Then
             ' Set core paths
             Me.UpdateCorePaths(True)
+
+            Me.m_propModelName = Me.PropertyManager.GetProperty(Me.Core.EwEModel, eVarNameFlags.Name)
+            AddHandler Me.m_propModelName.PropertyChanged, AddressOf OnModelNameChanged
+
             ' Remember last used model directory
             My.Settings.LastSelectedDirectory = Path.GetDirectoryName(strFileName)
             My.Settings.Save()
@@ -2205,6 +2209,8 @@ Public Class frmEwE6
         End If
 
     End Function
+
+    Private m_propModelName As cProperty = Nothing
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -2347,6 +2353,9 @@ Public Class frmEwE6
                 ' #Not allowed: abort
                 Return False
             End If
+
+            RemoveHandler Me.m_propModelName.PropertyChanged, AddressOf OnModelNameChanged
+            Me.m_propModelName = Nothing
 
             ' Close all open documents
             Me.CloseAllDocuments()
@@ -4866,7 +4875,7 @@ Public Class frmEwE6
 
 #End Region ' Command handlers 
 
-#Region " Big and evil event handlers "
+#Region " Event handlers "
 
     Private Sub OnModelMRUItemClicked(ByVal sender As Object, ByVal e As System.EventArgs)
         Try
@@ -5178,6 +5187,10 @@ Public Class frmEwE6
         End Try
     End Sub
 
-#End Region  ' Big and evil event handlers
+    Private Sub OnModelNameChanged(prop As cProperty, cf As cProperty.eChangeFlags)
+        Me.UpdateModelControls()
+    End Sub
+
+#End Region  ' Event handlers
 
 End Class
