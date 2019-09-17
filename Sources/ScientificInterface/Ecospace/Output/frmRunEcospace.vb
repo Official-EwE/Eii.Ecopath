@@ -902,10 +902,19 @@ Namespace Ecospace
             If Me.StyleGuide.ShowMapLabels Then
 
                 Dim strLabel As String = ""
-                If Me.StyleGuide.ShowMapsDateInLabels Then
-                    strLabel = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, Core.EcospaceFleetInputs(iFleet).Name, strDate)
+                Dim strName As String = ""
+
+                If Me.StyleGuide.ShowMapsIndexInLabels Then
+                    strName = cStringUtils.Localize(SharedResources.GENERIC_LABEL_INDEXED, iFleet, Core.EcospaceFleetInputs(iFleet).Name)
                 Else
-                    strLabel = Core.EcospaceFleetInputs(iFleet).Name
+                    strName = Core.EcospaceFleetInputs(iFleet).Name
+                End If
+
+
+                If Me.StyleGuide.ShowMapsDateInLabels Then
+                    strLabel = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, strName, strDate)
+                Else
+                    strLabel = strName
                 End If
 
                 Dim br As Brush = Brushes.Black
@@ -1089,12 +1098,22 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnShowLabelTimeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub ShowDateInLabelChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbShowDateInLabel.CheckedChanged
 
             If (Me.m_bInUpdate) Then Return
 
             Me.StyleGuide.ShowMapsDateInLabels = Me.m_cbShowDateInLabel.Checked
+            Me.RefreshMap()
+
+        End Sub
+
+        Private Sub OnShowIndexInLabelChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cbShowIndexInLabel.CheckedChanged
+
+            If (Me.m_bInUpdate) Then Return
+
+            Me.StyleGuide.ShowMapsIndexInLabels = Me.m_cbShowIndexInLabel.Checked
             Me.RefreshMap()
 
         End Sub
@@ -1608,6 +1627,7 @@ Namespace Ecospace
 
             Me.m_cbShowLabels.Checked = Me.StyleGuide.ShowMapLabels
             Me.m_cbShowDateInLabel.Checked = Me.StyleGuide.ShowMapsDateInLabels
+            Me.m_cbShowIndexInLabel.Checked = Me.StyleGuide.ShowMapsIndexInLabels
             Me.m_cbInvertColor.Checked = Me.StyleGuide.InvertMapLabelColor
             Me.m_cmbLabelPos.SelectedIndex = Me.StyleGuide.MapLabelPosVertical * 3 + Me.StyleGuide.MapLabelPosHorizontal
 

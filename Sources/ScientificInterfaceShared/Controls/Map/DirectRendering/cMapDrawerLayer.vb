@@ -24,6 +24,7 @@ Option Explicit On
 
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -126,10 +127,17 @@ Namespace Controls.Map
             If Me.m_sg.ShowMapLabels Then
 
                 Dim strLabel As String = ""
-                If Me.m_sg.ShowMapsDateInLabels Then
-                    strLabel = String.Format(SharedResources.Resources.GENERIC_LABEL_DOUBLE, bm.Layer(Me.m_vn, iItem).Name, Me.Date)
+                Dim strName As String = ""
+
+                If (Me.m_sg.ShowMapsIndexInLabels) Then
+                    strName = cStringUtils.Localize(My.Resources.GENERIC_LABEL_INDEXED, iItem, bm.Layer(Me.m_vn, iItem).Name)
                 Else
-                    strLabel = Me.m_core.EcospaceGroupInputs(iItem).Name
+                    strName = bm.Layer(Me.m_vn, iItem).Name
+                End If
+                If Me.m_sg.ShowMapsDateInLabels Then
+                    strLabel = String.Format(SharedResources.Resources.GENERIC_LABEL_DOUBLE, strName, Me.Date)
+                Else
+                    strLabel = strName
                 End If
                 Dim br As Brush = Brushes.Black
                 Dim fmt As New StringFormat()

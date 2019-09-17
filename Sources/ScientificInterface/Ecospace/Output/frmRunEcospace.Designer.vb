@@ -100,6 +100,7 @@ Namespace Ecospace
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
             Me.m_tabMap = New System.Windows.Forms.TabPage()
             Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
+            Me.m_cbShowIndexInLabel = New System.Windows.Forms.CheckBox()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
@@ -230,6 +231,7 @@ Namespace Ecospace
             '
             'm_plMapLabels
             '
+            Me.m_plMapLabels.Controls.Add(Me.m_cbShowIndexInLabel)
             Me.m_plMapLabels.Controls.Add(Me.m_cbInvertColor)
             Me.m_plMapLabels.Controls.Add(Me.m_cmbLabelPos)
             Me.m_plMapLabels.Controls.Add(Me.m_cbShowDateInLabel)
@@ -551,6 +553,14 @@ Namespace Ecospace
             Me.m_legend.Name = "m_legend"
             Me.m_legend.UIContext = Nothing
             '
+            'm_cbShowIndexInLabel
+            '
+            resources.ApplyResources(Me.m_cbShowIndexInLabel, "m_cbShowIndexInLabel")
+            Me.m_cbShowIndexInLabel.Checked = True
+            Me.m_cbShowIndexInLabel.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbShowIndexInLabel.Name = "m_cbShowIndexInLabel"
+            Me.m_cbShowIndexInLabel.UseVisualStyleBackColor = True
+            '
             'frmRunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -638,6 +648,7 @@ Namespace Ecospace
         Private WithEvents m_rbDisplayDiscards As RadioButton
         Private WithEvents m_rbDisplayComputedHabitatCapacity As RadioButton
         Private WithEvents m_rbFishMortGraph As RadioButton
+        Private WithEvents m_cbShowIndexInLabel As CheckBox
     End Class
 
 End Namespace
