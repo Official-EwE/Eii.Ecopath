@@ -781,7 +781,7 @@
     <value>12</value>
   </data>
   <data name="m_cbShowIBMPackets.Text" xml:space="preserve">
-    <value>Show &amp;IMB packets</value>
+    <value>Show &amp;IBM packets</value>
   </data>
   <data name="&gt;&gt;m_cbShowIBMPackets.Name" xml:space="preserve">
     <value>m_cbShowIBMPackets</value>
