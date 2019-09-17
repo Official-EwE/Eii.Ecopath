@@ -60,6 +60,7 @@ Namespace Ecospace
             Me.m_cbAutoSavePNG = New System.Windows.Forms.CheckBox()
             Me.m_hdrAutosave = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plMapLabels = New System.Windows.Forms.Panel()
+            Me.m_cbShowIndexInLabel = New System.Windows.Forms.CheckBox()
             Me.m_cbInvertColor = New System.Windows.Forms.CheckBox()
             Me.m_cmbLabelPos = New System.Windows.Forms.ComboBox()
             Me.m_cbShowDateInLabel = New System.Windows.Forms.CheckBox()
@@ -100,7 +101,6 @@ Namespace Ecospace
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
             Me.m_tabMap = New System.Windows.Forms.TabPage()
             Me.m_legend = New ScientificInterfaceShared.Controls.ucLegendBar()
-            Me.m_cbShowIndexInLabel = New System.Windows.Forms.CheckBox()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
@@ -239,6 +239,14 @@ Namespace Ecospace
             Me.m_plMapLabels.Controls.Add(Me.m_hdrLabelOptions)
             resources.ApplyResources(Me.m_plMapLabels, "m_plMapLabels")
             Me.m_plMapLabels.Name = "m_plMapLabels"
+            '
+            'm_cbShowIndexInLabel
+            '
+            resources.ApplyResources(Me.m_cbShowIndexInLabel, "m_cbShowIndexInLabel")
+            Me.m_cbShowIndexInLabel.Checked = True
+            Me.m_cbShowIndexInLabel.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbShowIndexInLabel.Name = "m_cbShowIndexInLabel"
+            Me.m_cbShowIndexInLabel.UseVisualStyleBackColor = True
             '
             'm_cbInvertColor
             '
@@ -552,14 +560,6 @@ Namespace Ecospace
             Me.m_legend.LabelLow = "Low"
             Me.m_legend.Name = "m_legend"
             Me.m_legend.UIContext = Nothing
-            '
-            'm_cbShowIndexInLabel
-            '
-            resources.ApplyResources(Me.m_cbShowIndexInLabel, "m_cbShowIndexInLabel")
-            Me.m_cbShowIndexInLabel.Checked = True
-            Me.m_cbShowIndexInLabel.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_cbShowIndexInLabel.Name = "m_cbShowIndexInLabel"
-            Me.m_cbShowIndexInLabel.UseVisualStyleBackColor = True
             '
             'frmRunEcospace
             '
