@@ -94,4 +94,12 @@ Public Class cItemVisibilityPreset
         Return ((Me.m_lHiddenFleets.Count + Me.m_lHiddenGroups.Count) > 0)
     End Function
 
+    Friend Function HiddenGroups() As Integer()
+        Return Me.m_lHiddenGroups.ToArray()
+    End Function
+
+    Friend Function HiddenFleets() As Integer()
+        Return Me.m_lHiddenFleets.ToArray()
+    End Function
+
 End Class

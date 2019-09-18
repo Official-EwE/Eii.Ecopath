@@ -14,11 +14,11 @@
 
 #if Compile64Bit == 0
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6 Beta 4"
+  #define MyAppVersion "6.6 Beta 5"
   #define DefSrc "Sources\ScientificInterface\bin\x86\Release"
 #else
   #define MyAppName "Ecopath with Ecosim"
-  #define MyAppVersion "6.6 Beta 4 64-bit"
+  #define MyAppVersion "6.6 Beta 5 64-bit"
   #define DefSrc "Sources\ScientificInterface\bin\x64\Release"
 #endif
 
@@ -34,7 +34,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.16230.0
+  VersionInfoVersion=6.6.16275.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:

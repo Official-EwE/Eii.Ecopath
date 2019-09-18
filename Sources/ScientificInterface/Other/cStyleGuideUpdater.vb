@@ -21,10 +21,15 @@
 
 Imports System.Text
 Imports EwECore
+Imports EwECore.Auxiliary
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
+
+' ToDo: make item visibiity settings persistent in AuxillaryData
+' - Listen to styleguide visibility changed events
+' - Update changes in AuxillaryData, store in model
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
@@ -32,6 +37,7 @@ Imports EwEUtils.Utilities
 ''' </summary>
 ''' -----------------------------------------------------------------------
 Friend Class cStyleGuideUpdater
+    Implements IDisposable
 
 #Region " Private vars "
 
@@ -57,9 +63,25 @@ Friend Class cStyleGuideUpdater
         Me.m_uic = uic
         Me.m_sm = Me.m_uic.Core.StateMonitor
 
-        AddHandler m_sm.CoreExecutionStateEvent, AddressOf OnCoreStateEvent
+        AddHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreStateEvent
+        AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
 
     End Sub
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+
+        If (Me.m_uic IsNot Nothing) Then
+
+            RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            RemoveHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreStateEvent
+
+            Me.m_uic = Nothing
+            Me.m_sm = Nothing
+
+        End If
+    End Sub
+
+#Region " Private vars "
 
     Private Sub OnCoreStateEvent(ByVal csm As cCoreStateMonitor)
         If Me.m_bIsEcopathLoaded <> csm.HasEcopathLoaded Then
@@ -85,6 +107,7 @@ Friend Class cStyleGuideUpdater
         Dim pm As cPropertyManager = Me.m_uic.PropertyManager
 
         Me.StyleGuide.SuspendEvents()
+        Me.StyleGuide.ResetVisibleFlags(False)
 
         If Me.m_bIsEcopathLoaded Then
 
@@ -111,6 +134,10 @@ Friend Class cStyleGuideUpdater
             Me.OnMonetaryUnitChanged(m_propUnitMonetary, cProperty.eChangeFlags.All)
             Me.OnNumberFormatChanged(m_propNumDigits, cProperty.eChangeFlags.All)
 
+            ' Load item visibility settings from model
+            Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("StyleGuide")
+            Me.StyleGuide.Load(ad.Settings)
+
         Else
 
             RemoveHandler Me.m_propNumDigits.PropertyChanged, AddressOf OnNumberFormatChanged
@@ -133,7 +160,6 @@ Friend Class cStyleGuideUpdater
 
         End If
 
-        Me.StyleGuide.ResetVisibleFlags(False)
         Me.StyleGuide.ResumeEvents()
 
     End Sub
@@ -171,6 +197,18 @@ Friend Class cStyleGuideUpdater
             .GroupDigits = CBool(Me.m_propGroupDigits.GetValue())
             .ResumeEvents()
         End With
+    End Sub
+
+    Private Sub OnStyleGuideChanged(ByVal cf As cStyleGuide.eChangeType)
+
+        If ((cf And (cStyleGuide.eChangeType.GroupVisibility Or cStyleGuide.eChangeType.FleetVisibility)) > 0) Then
+
+            If (Me.Core.StateMonitor.HasEcopathLoaded) Then
+                Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("StyleGuide")
+                Me.StyleGuide.Save(ad.Settings)
+            End If
+        End If
+
     End Sub
 
     ''' <summary>
@@ -334,6 +372,8 @@ Friend Class cStyleGuideUpdater
         Return sb.ToString()
 
     End Function
+
+#End Region
 
 End Class
 
