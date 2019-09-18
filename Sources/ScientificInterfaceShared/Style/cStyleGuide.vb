@@ -28,6 +28,7 @@ Imports System.Globalization
 Imports System.IO
 Imports System.Text
 Imports System.Threading
+Imports System.Linq
 Imports System.Windows.Forms.VisualStyles
 Imports EwECore
 Imports EwECore.Auxiliary
@@ -109,10 +110,8 @@ Namespace Style
         Private m_bTransparentBackgrounds As Boolean = False
 
         ' -- group visibility --
-        ''' <summary>List of indexes of groups to hide.</summary>
-        Private m_lHiddenGroups As New List(Of Integer)
-        ''' <summary>List of indexes of fleets to hide.</summary>
-        Private m_lHiddenFleets As New List(Of Integer)
+        Private m_dtGroupFleetVizPresets As New Dictionary(Of String, cItemVisibilityPreset)
+        Private m_strActiveGroupFleetVizPreset As String = ""
         Private m_bHideTotalCatch As Boolean = False
         Private m_bHideTotalValue As Boolean = False
 
@@ -1750,57 +1749,51 @@ Namespace Style
 
 #Region " Item visibility "
 
-        Public Property GroupVisible(ByVal iGroup As Integer) As Boolean
+        Public Function ItemVisibilityPresets() As String()
+            Return Me.m_dtGroupFleetVizPresets.Keys.ToArray()
+        End Function
+
+        Public Property SelectedItemVisibility As String = ""
+
+        Private Function Preset(str As String) As cItemVisibilityPreset
+            If String.IsNullOrWhiteSpace(str) Then str = "~default~"
+            If Not Me.m_dtGroupFleetVizPresets.ContainsKey(str) Then
+                Me.m_dtGroupFleetVizPresets(str) = New cItemVisibilityPreset()
+            End If
+            Return Me.m_dtGroupFleetVizPresets(str)
+        End Function
+
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="iGroupID">To allow persistent storage of presets, this system must
+        ''' start using DBIDs instead of Indices</param>
+        ''' <returns></returns>
+        Public Property GroupVisible(ByVal iGroupID As Integer) As Boolean
             Get
-                ' Return whether group is not hidden
-                Return (Me.m_lHiddenGroups.IndexOf(iGroup) = -1)
+                Return Me.Preset(SelectedItemVisibility).GroupVisible(iGroupID)
             End Get
             Set(ByVal bVisible As Boolean)
-
-                Dim bChanged As Boolean = False
-
-                If bVisible Then
-                    ' Remove group from hidden list, if applicable
-                    If (Me.m_lHiddenGroups.IndexOf(iGroup) <> -1) Then
-                        Me.m_lHiddenGroups.Remove(iGroup)
-                        bChanged = True
-                    End If
-                Else
-                    ' Add group to hidden list, if applicable
-                    If (Me.m_lHiddenGroups.IndexOf(iGroup) = -1) Then
-                        Me.m_lHiddenGroups.Add(iGroup)
-                        bChanged = True
-                    End If
-                End If
-
-                If bChanged Then Me.FireChangeEvent(eChangeType.GroupVisibility)
+                Dim pr As cItemVisibilityPreset = Me.Preset(SelectedItemVisibility)
+                pr.GroupVisible(iGroupID) = bVisible
+                If pr.IsChanged Then Me.FireChangeEvent(eChangeType.GroupVisibility)
             End Set
         End Property
 
-        Public Property FleetVisible(ByVal iFleet As Integer) As Boolean
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="iFleetID">To allow persistent storage of presets, this system must
+        ''' start using DBIDs instead of Indices</param>
+        ''' <returns></returns>
+        Public Property FleetVisible(ByVal iFleetID As Integer) As Boolean
             Get
-                ' Return whether fleet is not hidden
-                Return (Me.m_lHiddenFleets.IndexOf(iFleet) = -1)
+                Return Me.Preset(SelectedItemVisibility).FleetVisible(iFleetID)
             End Get
             Set(ByVal bVisible As Boolean)
-
-                Dim bChanged As Boolean = False
-
-                If bVisible Then
-                    ' Remove fleet from hidden list, if applicable
-                    If (Me.m_lHiddenFleets.IndexOf(iFleet) <> -1) Then
-                        Me.m_lHiddenFleets.Remove(iFleet)
-                        bChanged = True
-                    End If
-                Else
-                    ' Add fleet to hidden list, if applicable
-                    If (Me.m_lHiddenFleets.IndexOf(iFleet) = -1) Then
-                        Me.m_lHiddenFleets.Add(iFleet)
-                        bChanged = True
-                    End If
-                End If
-
-                If bChanged Then Me.FireChangeEvent(eChangeType.FleetVisibility)
+                Dim pr As cItemVisibilityPreset = Me.Preset(SelectedItemVisibility)
+                pr.FleetVisible(iFleetID) = bVisible
+                If pr.IsChanged Then Me.FireChangeEvent(eChangeType.FleetVisibility)
             End Set
         End Property
 
@@ -1822,9 +1815,9 @@ Namespace Style
             End Set
         End Property
 
-        Public Sub ResetVisibleFlags(Optional ByVal bFireChangeEvent As Boolean = True)
-            Me.m_lHiddenGroups.Clear()
-            Me.m_lHiddenFleets.Clear()
+        Public Sub ResetVisibleFlags(Optional ByVal bFireChangeEvent As Boolean = True, Optional strPreset As String = "")
+            Dim pr As cItemVisibilityPreset = Me.Preset(strPreset)
+            pr.Reset()
             Me.m_bHideTotalCatch = False
             Me.m_bHideTotalValue = False
 
@@ -1851,7 +1844,7 @@ Namespace Style
         ''' <returns>True if any groups or fleets are hidden.</returns>
         ''' -------------------------------------------------------------------
         Public Function HasHiddenItems() As Boolean
-            Return ((Me.m_lHiddenFleets.Count + Me.m_lHiddenGroups.Count) > 0)
+            Return Me.Preset(SelectedItemVisibility).HasHiddenItems
         End Function
 
 #End Region ' Item visibility
