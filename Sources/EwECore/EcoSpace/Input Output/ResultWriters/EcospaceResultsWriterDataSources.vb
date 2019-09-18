@@ -21,11 +21,6 @@
 
 Option Strict On
 
-Imports System.IO
-Imports System.Text
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-
 #End Region ' Imports
 
 #Region "Must inherit Base class"

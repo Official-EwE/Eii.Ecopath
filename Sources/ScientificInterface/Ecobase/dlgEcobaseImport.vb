@@ -650,16 +650,17 @@ Public Class dlgEcobaseImport
             For Each str As String In My.Settings.EcosystemTypes : lEcoTyp.Add(str) : Next
         End If
 
-        Dim sgu As New cStyleGuideUpdater(Me.UIContext)
-        sgu.Save()
+        Using sgu As New cStyleGuideUpdater(Me.UIContext)
+            sgu.Save()
 
-        My.Settings.CountryNames.Clear()
-        My.Settings.CountryNames.AddRange(lCountry.Distinct(StringComparer.OrdinalIgnoreCase).ToArray())
+            My.Settings.CountryNames.Clear()
+            My.Settings.CountryNames.AddRange(lCountry.Distinct(StringComparer.OrdinalIgnoreCase).ToArray())
 
-        My.Settings.EcosystemTypes.Clear()
-        My.Settings.EcosystemTypes.AddRange(lEcoTyp.Distinct(StringComparer.OrdinalIgnoreCase).ToArray())
+            My.Settings.EcosystemTypes.Clear()
+            My.Settings.EcosystemTypes.AddRange(lEcoTyp.Distinct(StringComparer.OrdinalIgnoreCase).ToArray())
 
-        sgu.Load()
+            sgu.Load()
+        End Using
 
         Me.StyleGuide.EcoBaseFieldsChanged()
 

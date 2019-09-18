@@ -287,7 +287,7 @@ Namespace Controls
 
             Catch ex As Exception
                 ' ToDo: send an error message
-                cLog.Write(ex, "FlowDiagram.SaveToFile")
+                cLog.Write(ex, "cFlowDiagramManager.Save")
                 Return False
             End Try
             Return True
@@ -321,7 +321,7 @@ Namespace Controls
 
             Catch ex As Exception
                 ' ToDo: send an error message
-                cLog.Write(ex, "FlowDiagram.SaveToFile")
+                cLog.Write(ex, "cFlowDiagramManager.Load")
                 Return False
             End Try
             Return True

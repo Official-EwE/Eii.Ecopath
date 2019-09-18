@@ -110,7 +110,7 @@ Namespace Style
         Private m_bTransparentBackgrounds As Boolean = False
 
         ' -- group visibility --
-        Private m_dtGroupFleetVizPresets As New Dictionary(Of String, cItemVisibilityPreset)
+        Private m_dtItemVisibilityPresets As New Dictionary(Of String, cItemVisibilityPreset)
         Private m_strActiveGroupFleetVizPreset As String = ""
         Private m_bHideTotalCatch As Boolean = False
         Private m_bHideTotalValue As Boolean = False
@@ -1749,18 +1749,20 @@ Namespace Style
 
 #Region " Item visibility "
 
-        Public Function ItemVisibilityPresets() As String()
-            Return Me.m_dtGroupFleetVizPresets.Keys.ToArray()
+        Private Const DefaultItemVisibilityPresetName As String = "Default"
+
+        Public Function SelectedItemVisibilityPresets() As String()
+            Return Me.m_dtItemVisibilityPresets.Keys.ToArray()
         End Function
 
         Public Property SelectedItemVisibility As String = ""
 
         Private Function Preset(str As String) As cItemVisibilityPreset
-            If String.IsNullOrWhiteSpace(str) Then str = "~default~"
-            If Not Me.m_dtGroupFleetVizPresets.ContainsKey(str) Then
-                Me.m_dtGroupFleetVizPresets(str) = New cItemVisibilityPreset()
+            If String.IsNullOrWhiteSpace(str) Then str = DefaultItemVisibilityPresetName
+            If Not Me.m_dtItemVisibilityPresets.ContainsKey(str) Then
+                Me.m_dtItemVisibilityPresets(str) = New cItemVisibilityPreset()
             End If
-            Return Me.m_dtGroupFleetVizPresets(str)
+            Return Me.m_dtItemVisibilityPresets(str)
         End Function
 
         ''' <summary>
@@ -1769,12 +1771,14 @@ Namespace Style
         ''' <param name="iGroupID">To allow persistent storage of presets, this system must
         ''' start using DBIDs instead of Indices</param>
         ''' <returns></returns>
-        Public Property GroupVisible(ByVal iGroupID As Integer) As Boolean
+        Public Property GroupVisible(ByVal iGroupID As Integer, Optional preset As String = "") As Boolean
             Get
-                Return Me.Preset(SelectedItemVisibility).GroupVisible(iGroupID)
+                If String.IsNullOrWhiteSpace(preset) Then preset = Me.SelectedItemVisibility
+                Return Me.Preset(preset).GroupVisible(iGroupID)
             End Get
             Set(ByVal bVisible As Boolean)
-                Dim pr As cItemVisibilityPreset = Me.Preset(SelectedItemVisibility)
+                If String.IsNullOrWhiteSpace(preset) Then preset = Me.SelectedItemVisibility
+                Dim pr As cItemVisibilityPreset = Me.Preset(preset)
                 pr.GroupVisible(iGroupID) = bVisible
                 If pr.IsChanged Then Me.FireChangeEvent(eChangeType.GroupVisibility)
             End Set
@@ -1786,12 +1790,14 @@ Namespace Style
         ''' <param name="iFleetID">To allow persistent storage of presets, this system must
         ''' start using DBIDs instead of Indices</param>
         ''' <returns></returns>
-        Public Property FleetVisible(ByVal iFleetID As Integer) As Boolean
+        Public Property FleetVisible(ByVal iFleetID As Integer, Optional preset As String = "") As Boolean
             Get
-                Return Me.Preset(SelectedItemVisibility).FleetVisible(iFleetID)
+                If String.IsNullOrWhiteSpace(preset) Then preset = Me.SelectedItemVisibility
+                Return Me.Preset(preset).FleetVisible(iFleetID)
             End Get
             Set(ByVal bVisible As Boolean)
-                Dim pr As cItemVisibilityPreset = Me.Preset(SelectedItemVisibility)
+                If String.IsNullOrWhiteSpace(preset) Then preset = Me.SelectedItemVisibility
+                Dim pr As cItemVisibilityPreset = Me.Preset(preset)
                 pr.FleetVisible(iFleetID) = bVisible
                 If pr.IsChanged Then Me.FireChangeEvent(eChangeType.FleetVisibility)
             End Set
@@ -1845,6 +1851,82 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Function HasHiddenItems() As Boolean
             Return Me.Preset(SelectedItemVisibility).HasHiddenItems
+        End Function
+
+        Public Function Load(ByVal settings As cXMLSettings) As Boolean
+
+            Me.SuspendEvents()
+            Try
+
+                Me.m_dtItemVisibilityPresets.Clear()
+
+                ' Read name string for all presets, comma separated, quoted (split qualified)
+                Dim presets() As String = cStringUtils.SplitQualified(settings.ReadSetting("Global", "Presets", ""), ",")
+
+                ' For each preset, read group ID string, read Fleet ID string, config preset
+                For Each preset As String In presets
+                    If String.IsNullOrWhiteSpace(preset) Then preset = DefaultItemVisibilityPresetName
+                    Dim groups() As String = cStringUtils.SplitQualified(settings.ReadSetting(preset, "HiddenGroups", ""), ",")
+
+                    For Each group As String In groups
+                        If Not String.IsNullOrWhiteSpace(group) Then
+                            Me.GroupVisible(CInt(group), preset) = False
+                        End If
+                    Next
+
+                    Dim fleets() As String = cStringUtils.SplitQualified(settings.ReadSetting(preset, "HiddenFleets", ""), ",")
+                    For Each fleet As String In fleets
+                        If Not String.IsNullOrWhiteSpace(fleet) Then
+                            Me.FleetVisible(CInt(fleet), preset) = False
+                        End If
+                    Next
+                Next
+
+            Catch ex As Exception
+                ' ToDo: send an error message
+                cLog.Write(ex, "cStyleGuide.Load")
+                Me.ResumeEvents()
+                Return False
+            End Try
+            Me.ResumeEvents()
+            Return True
+
+        End Function
+
+        Public Function Save(ByVal settings As cXMLSettings) As Boolean
+
+            Try
+                Dim sbNames As New StringBuilder()
+                For Each name As String In Me.m_dtItemVisibilityPresets.Keys
+                    If sbNames.Length > 0 Then sbNames.Append(",")
+                    sbNames.Append(cStringUtils.ToCSVField(name))
+
+                    Dim preset As cItemVisibilityPreset = Me.Preset(name)
+                    Dim sbItems As New StringBuilder()
+                    For Each group As Integer In preset.HiddenGroups
+                        If (sbItems.Length > 0) Then sbItems.Append(",")
+                        sbItems.Append(CStr(group))
+                    Next
+                    settings.WriteSetting(name, "HiddenGroups", sbItems.ToString())
+
+                    sbItems.Clear()
+                    For Each fleet As Integer In preset.HiddenFleets
+                        If (sbItems.Length > 0) Then sbItems.Append(",")
+                        sbItems.Append(CStr(fleet))
+                    Next
+                    settings.WriteSetting(name, "HiddenFleets", sbItems.ToString())
+
+                Next
+                settings.WriteSetting("Global", "Presets", sbNames.ToString())
+                settings.Flush()
+
+            Catch ex As Exception
+                ' ToDo: send an error message
+                cLog.Write(ex, "cStyleGuide.Save")
+                Return False
+            End Try
+            Return True
+
         End Function
 
 #End Region ' Item visibility
