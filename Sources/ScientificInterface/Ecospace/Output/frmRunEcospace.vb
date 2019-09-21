@@ -334,7 +334,7 @@ Namespace Ecospace
             Me.m_zgh.Attach(Me.UIContext, Me.m_zgPlotLarge)
             Me.m_zgh.ShowPointValue = True
 
-            Me.m_cmdDisplayGroups = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            Me.m_cmdDisplayGroups = Me.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
             If (Me.m_cmdDisplayGroups IsNot Nothing) Then
                 Me.m_cmdDisplayGroups.AddControl(Me.m_btnDisplayGroups1)
                 AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked

@@ -64,6 +64,7 @@ Namespace Ecosim
         Private m_iTimeSteps As Integer = 0
         Private m_sChangeTrackSize As Single = 0.1!
         Private m_zgp As cEcosimOutputPlotHelper = Nothing
+        Private m_showhideui As cShowHideItemsUI = Nothing
 
         Private m_simStats As cEcosimStats
 
@@ -108,9 +109,6 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmd As cCommand = Nothing
-
             Me.m_params = Core.EcoSimModelParameters()
             Me.m_simStats = Me.Core.EcosimStats
 
@@ -127,6 +125,9 @@ Namespace Ecosim
             Me.m_zgp.YScaleMin = 0.0!
             Me.m_zgp.ShowPointValue = True
 
+            Me.m_showhideui = New cShowHideItemsUI(Me.UIContext)
+            Me.m_showhideui.Attach(Me.m_tsddShowHideItems)
+
             ' Set the axis
             Me.m_graph.GraphPane.XAxis.Scale.Min = Core.EcosimFirstYear
             Me.m_graph.GraphPane.XAxis.Scale.Max = Core.EcoSimModelParameters.NumberYears + Core.EcosimFirstYear
@@ -138,12 +139,6 @@ Namespace Ecosim
             Me.m_scPlots.Panel2Collapsed = (Not My.Settings.ShowEffortMortalityInRunSim)
 
             Me.UpdateControls()
-
-            ' Display Groups
-            cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-            If cmd IsNot Nothing Then
-                cmd.AddControl(Me.m_tsbtnShowHideGroups)
-            End If
 
             ' Track core monitor changes
             AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
@@ -172,12 +167,7 @@ Namespace Ecosim
                 Me.m_shapeGUIHandler = Nothing
             End If
 
-            ' Show/Hide Groups
-            Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-            If cmd IsNot Nothing Then
-                cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
-            End If
+            Me.m_showhideui.Detach()
 
             RemoveHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
             RemoveHandler Me.m_graph.GraphPane.AxisChangeEvent, AddressOf OnAxisChanged

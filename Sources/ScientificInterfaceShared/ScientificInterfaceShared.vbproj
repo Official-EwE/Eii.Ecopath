@@ -255,6 +255,7 @@
     <Compile Include="Controls\Shapes\Utility\gridShapeFunctionParameters.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ShowItemsUI\cShowHideItemsUI.vb" />
     <Compile Include="Controls\SysConfig\cSysConfig.vb" />
     <Compile Include="Controls\TabControl\ucTabControlEx.vb">
       <SubType>Component</SubType>
@@ -267,7 +268,7 @@
     </Compile>
     <Compile Include="Definitions\cWebLinks.vb" />
     <Compile Include="Commands\cDirectoryOpenCommand.vb" />
-    <Compile Include="Commands\cDisplayGroupsCommand.vb" />
+    <Compile Include="Commands\cShowHideItemsCommand.vb" />
     <Compile Include="Commands\cEditPedigreeCommand.vb" />
     <Compile Include="Commands\cExecuteCommand.vb" />
     <Compile Include="Commands\cFileOpenCommand.vb" />

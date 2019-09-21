@@ -65,9 +65,17 @@ Namespace Ecosim
             Me.m_cbSyncViaFishing = New System.Windows.Forms.CheckBox()
             Me.m_cbSyncViaPredation = New System.Windows.Forms.CheckBox()
             Me.m_lblSyncSelections = New System.Windows.Forms.Label()
+            Me.m_tlpPresets = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tbxName = New System.Windows.Forms.TextBox()
+            Me.m_btnAdd = New System.Windows.Forms.Button()
+            Me.m_btnDelete = New System.Windows.Forms.Button()
+            Me.m_cmbPresets = New System.Windows.Forms.ComboBox()
+            Me.m_btnRename = New System.Windows.Forms.Button()
+            Me.m_lblPresets = New System.Windows.Forms.Label()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plGroups.SuspendLayout()
             Me.m_plFleets.SuspendLayout()
+            Me.m_tlpPresets.SuspendLayout()
             Me.SuspendLayout()
             '
             'OK_Button
@@ -230,6 +238,52 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblSyncSelections, "m_lblSyncSelections")
             Me.m_lblSyncSelections.Name = "m_lblSyncSelections"
             '
+            'm_tlpPresets
+            '
+            resources.ApplyResources(Me.m_tlpPresets, "m_tlpPresets")
+            Me.m_tlpPresets.Controls.Add(Me.m_tbxName, 1, 0)
+            Me.m_tlpPresets.Controls.Add(Me.m_btnAdd, 2, 0)
+            Me.m_tlpPresets.Controls.Add(Me.m_btnDelete, 5, 0)
+            Me.m_tlpPresets.Controls.Add(Me.m_cmbPresets, 4, 0)
+            Me.m_tlpPresets.Controls.Add(Me.m_btnRename, 3, 0)
+            Me.m_tlpPresets.Controls.Add(Me.m_lblPresets, 0, 0)
+            Me.m_tlpPresets.Name = "m_tlpPresets"
+            '
+            'm_tbxName
+            '
+            resources.ApplyResources(Me.m_tbxName, "m_tbxName")
+            Me.m_tbxName.Name = "m_tbxName"
+            '
+            'm_btnAdd
+            '
+            resources.ApplyResources(Me.m_btnAdd, "m_btnAdd")
+            Me.m_btnAdd.Name = "m_btnAdd"
+            Me.m_btnAdd.UseVisualStyleBackColor = True
+            '
+            'm_btnDelete
+            '
+            resources.ApplyResources(Me.m_btnDelete, "m_btnDelete")
+            Me.m_btnDelete.Name = "m_btnDelete"
+            Me.m_btnDelete.UseVisualStyleBackColor = True
+            '
+            'm_cmbPresets
+            '
+            resources.ApplyResources(Me.m_cmbPresets, "m_cmbPresets")
+            Me.m_cmbPresets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbPresets.FormattingEnabled = True
+            Me.m_cmbPresets.Name = "m_cmbPresets"
+            '
+            'm_btnRename
+            '
+            resources.ApplyResources(Me.m_btnRename, "m_btnRename")
+            Me.m_btnRename.Name = "m_btnRename"
+            Me.m_btnRename.UseVisualStyleBackColor = True
+            '
+            'm_lblPresets
+            '
+            resources.ApplyResources(Me.m_lblPresets, "m_lblPresets")
+            Me.m_lblPresets.Name = "m_lblPresets"
+            '
             'dlgShowHideItems
             '
             Me.AcceptButton = Me.OK_Button
@@ -237,6 +291,7 @@ Namespace Ecosim
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.CancelButton = Me.Cancel_Button
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_tlpPresets)
             Me.Controls.Add(Me.m_lblSyncSelections)
             Me.Controls.Add(Me.m_tlpContent)
             Me.Controls.Add(Me.m_cbSyncViaPredation)
@@ -253,6 +308,8 @@ Namespace Ecosim
             Me.m_tlpContent.ResumeLayout(False)
             Me.m_plGroups.ResumeLayout(False)
             Me.m_plFleets.ResumeLayout(False)
+            Me.m_tlpPresets.ResumeLayout(False)
+            Me.m_tlpPresets.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -282,6 +339,13 @@ Namespace Ecosim
         Private WithEvents m_cbSyncViaFishing As CheckBox
         Private WithEvents m_cbSyncViaPredation As CheckBox
         Private WithEvents m_lblSyncSelections As Label
+        Private WithEvents m_tlpPresets As TableLayoutPanel
+        Private WithEvents m_tbxName As TextBox
+        Private WithEvents m_btnAdd As Button
+        Private WithEvents m_btnDelete As Button
+        Private WithEvents m_cmbPresets As ComboBox
+        Private WithEvents m_btnRename As Button
+        Private WithEvents m_lblPresets As Label
     End Class
 
 End Namespace

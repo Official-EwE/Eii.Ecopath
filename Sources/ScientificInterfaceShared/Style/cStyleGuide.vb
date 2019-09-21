@@ -171,6 +171,8 @@ Namespace Style
             ' Load up
             Me.ResetApplicationColors()
 
+            Me.Load(Nothing)
+
         End Sub
 
         Public Sub Dispose() _
@@ -1749,18 +1751,49 @@ Namespace Style
 
 #Region " Item visibility "
 
-        Private Const DefaultItemVisibilityPresetName As String = "Default"
+        Private Function DefaultItemVisibilityPresetName() As String
+            Return My.Resources.GENERIC_VALUE_DEFAULT
+        End Function
 
-        Public Function SelectedItemVisibilityPresets() As String()
+        Private Function AllItemVisibilityPresetName() As String
+            Return My.Resources.GENERIC_VALUE_ALL
+        End Function
+
+        Public Function ItemVisibilityPresetNames() As String()
             Return Me.m_dtItemVisibilityPresets.Keys.ToArray()
         End Function
 
-        Public Property SelectedItemVisibility As String = ""
+        Private m_strPreset As String = ""
 
-        Private Function Preset(str As String) As cItemVisibilityPreset
-            If String.IsNullOrWhiteSpace(str) Then str = DefaultItemVisibilityPresetName
+        Public Property SelectedItemVisibilityPresetName As String
+            Get
+                Return Me.m_strPreset
+            End Get
+            Set(value As String)
+                If (value <> Me.m_strPreset) Then
+                    Me.m_strPreset = value
+                    Preset(value)
+                    Me.FireChangeEvent(eChangeType.GroupVisibility Or eChangeType.FleetVisibility)
+                End If
+            End Set
+        End Property
+
+        Public Sub ClearItemVisibilityPresets()
+            Me.m_dtItemVisibilityPresets.Clear()
+            Me.m_dtItemVisibilityPresets(Me.AllItemVisibilityPresetName) = Nothing
+        End Sub
+
+        Public Sub DeletePreset(strPreset As String)
+            If (Me.m_dtItemVisibilityPresets.ContainsKey(strPreset)) Then
+                Me.m_dtItemVisibilityPresets.Remove(strPreset)
+            End If
+            Me.SelectedItemVisibilityPresetName = Me.DefaultItemVisibilityPresetName
+        End Sub
+
+        Public Function Preset(str As String) As cItemVisibilityPreset
+            If String.IsNullOrWhiteSpace(str) Then str = Me.DefaultItemVisibilityPresetName()
             If Not Me.m_dtItemVisibilityPresets.ContainsKey(str) Then
-                Me.m_dtItemVisibilityPresets(str) = New cItemVisibilityPreset()
+                Me.m_dtItemVisibilityPresets(str) = New cItemVisibilityPreset(Me.m_dtItemVisibilityPresets.Count < 2)
             End If
             Return Me.m_dtItemVisibilityPresets(str)
         End Function
@@ -1771,16 +1804,20 @@ Namespace Style
         ''' <param name="iGroupID">To allow persistent storage of presets, this system must
         ''' start using DBIDs instead of Indices</param>
         ''' <returns></returns>
-        Public Property GroupVisible(ByVal iGroupID As Integer, Optional preset As String = "") As Boolean
+        Public Property GroupVisible(ByVal iGroupID As Integer, Optional strPreset As String = "") As Boolean
             Get
-                If String.IsNullOrWhiteSpace(preset) Then preset = Me.SelectedItemVisibility
-                Return Me.Preset(preset).GroupVisible(iGroupID)
+                If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
+                Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
+                If (preset Is Nothing) Then Return True
+                Return preset.GroupVisible(iGroupID)
             End Get
             Set(ByVal bVisible As Boolean)
-                If String.IsNullOrWhiteSpace(preset) Then preset = Me.SelectedItemVisibility
-                Dim pr As cItemVisibilityPreset = Me.Preset(preset)
-                pr.GroupVisible(iGroupID) = bVisible
-                If pr.IsChanged Then Me.FireChangeEvent(eChangeType.GroupVisibility)
+                If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
+                Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
+                If (preset IsNot Nothing) Then
+                    preset.GroupVisible(iGroupID) = bVisible
+                    If preset.IsChanged Then Me.FireChangeEvent(eChangeType.GroupVisibility)
+                End If
             End Set
         End Property
 
@@ -1790,34 +1827,20 @@ Namespace Style
         ''' <param name="iFleetID">To allow persistent storage of presets, this system must
         ''' start using DBIDs instead of Indices</param>
         ''' <returns></returns>
-        Public Property FleetVisible(ByVal iFleetID As Integer, Optional preset As String = "") As Boolean
+        Public Property FleetVisible(ByVal iFleetID As Integer, Optional strPreset As String = "") As Boolean
             Get
-                If String.IsNullOrWhiteSpace(preset) Then preset = Me.SelectedItemVisibility
-                Return Me.Preset(preset).FleetVisible(iFleetID)
+                If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
+                Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
+                If (preset Is Nothing) Then Return True
+                Return preset.FleetVisible(iFleetID)
             End Get
             Set(ByVal bVisible As Boolean)
-                If String.IsNullOrWhiteSpace(preset) Then preset = Me.SelectedItemVisibility
-                Dim pr As cItemVisibilityPreset = Me.Preset(preset)
-                pr.FleetVisible(iFleetID) = bVisible
-                If pr.IsChanged Then Me.FireChangeEvent(eChangeType.FleetVisibility)
-            End Set
-        End Property
-
-        Public Property TotalCatchVisible() As Boolean
-            Get
-                Return (Me.m_bHideTotalCatch = False)
-            End Get
-            Set(ByVal bShow As Boolean)
-                Me.m_bHideTotalCatch = (bShow = False)
-            End Set
-        End Property
-
-        Public Property TotalValueVisible() As Boolean
-            Get
-                Return (Me.m_bHideTotalValue = False)
-            End Get
-            Set(ByVal bShow As Boolean)
-                Me.m_bHideTotalValue = (bShow = False)
+                If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
+                Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
+                If (preset IsNot Nothing) Then
+                    preset.FleetVisible(iFleetID) = bVisible
+                    If preset.IsChanged Then Me.FireChangeEvent(eChangeType.FleetVisibility)
+                End If
             End Set
         End Property
 
@@ -1850,7 +1873,9 @@ Namespace Style
         ''' <returns>True if any groups or fleets are hidden.</returns>
         ''' -------------------------------------------------------------------
         Public Function HasHiddenItems() As Boolean
-            Return Me.Preset(SelectedItemVisibility).HasHiddenItems
+            Dim preset As cItemVisibilityPreset = Me.Preset(SelectedItemVisibilityPresetName)
+            If (preset Is Nothing) Then Return False
+            Return preset.HasHiddenItems
         End Function
 
         Public Function Load(ByVal settings As cXMLSettings) As Boolean
@@ -1858,29 +1883,32 @@ Namespace Style
             Me.SuspendEvents()
             Try
 
-                Me.m_dtItemVisibilityPresets.Clear()
+                Me.ClearItemVisibilityPresets()
 
-                ' Read name string for all presets, comma separated, quoted (split qualified)
-                Dim presets() As String = cStringUtils.SplitQualified(settings.ReadSetting("Global", "Presets", ""), ",")
+                If (settings IsNot Nothing) Then
 
-                ' For each preset, read group ID string, read Fleet ID string, config preset
-                For Each preset As String In presets
-                    If String.IsNullOrWhiteSpace(preset) Then preset = DefaultItemVisibilityPresetName
-                    Dim groups() As String = cStringUtils.SplitQualified(settings.ReadSetting(preset, "HiddenGroups", ""), ",")
+                    ' Read name string for all presets, comma separated, quoted (split qualified)
+                    Dim presets() As String = cStringUtils.SplitQualified(settings.ReadSetting("Global", "Presets", ""), ",")
 
-                    For Each group As String In groups
-                        If Not String.IsNullOrWhiteSpace(group) Then
-                            Me.GroupVisible(CInt(group), preset) = False
-                        End If
+                    ' For each preset, read group ID string, read Fleet ID string, config preset
+                    For Each preset As String In presets
+                        If String.IsNullOrWhiteSpace(preset) Then preset = DefaultItemVisibilityPresetName
+                        Dim groups() As String = cStringUtils.SplitQualified(settings.ReadSetting(preset, "HiddenGroups", ""), ",")
+
+                        For Each group As String In groups
+                            If Not String.IsNullOrWhiteSpace(group) Then
+                                Me.GroupVisible(CInt(group), preset) = False
+                            End If
+                        Next
+
+                        Dim fleets() As String = cStringUtils.SplitQualified(settings.ReadSetting(preset, "HiddenFleets", ""), ",")
+                        For Each fleet As String In fleets
+                            If Not String.IsNullOrWhiteSpace(fleet) Then
+                                Me.FleetVisible(CInt(fleet), preset) = False
+                            End If
+                        Next
                     Next
-
-                    Dim fleets() As String = cStringUtils.SplitQualified(settings.ReadSetting(preset, "HiddenFleets", ""), ",")
-                    For Each fleet As String In fleets
-                        If Not String.IsNullOrWhiteSpace(fleet) Then
-                            Me.FleetVisible(CInt(fleet), preset) = False
-                        End If
-                    Next
-                Next
+                End If
 
             Catch ex As Exception
                 ' ToDo: send an error message
@@ -1898,23 +1926,26 @@ Namespace Style
             Try
                 Dim sbNames As New StringBuilder()
                 For Each name As String In Me.m_dtItemVisibilityPresets.Keys
-                    If sbNames.Length > 0 Then sbNames.Append(",")
-                    sbNames.Append(cStringUtils.ToCSVField(name))
+                    If (name <> Me.AllItemVisibilityPresetName) Then
 
-                    Dim preset As cItemVisibilityPreset = Me.Preset(name)
-                    Dim sbItems As New StringBuilder()
-                    For Each group As Integer In preset.HiddenGroups
-                        If (sbItems.Length > 0) Then sbItems.Append(",")
-                        sbItems.Append(CStr(group))
-                    Next
-                    settings.WriteSetting(name, "HiddenGroups", sbItems.ToString())
+                        If sbNames.Length > 0 Then sbNames.Append(",")
+                        sbNames.Append(cStringUtils.ToCSVField(name))
 
-                    sbItems.Clear()
-                    For Each fleet As Integer In preset.HiddenFleets
-                        If (sbItems.Length > 0) Then sbItems.Append(",")
-                        sbItems.Append(CStr(fleet))
-                    Next
-                    settings.WriteSetting(name, "HiddenFleets", sbItems.ToString())
+                        Dim preset As cItemVisibilityPreset = Me.Preset(name)
+                        Dim sbItems As New StringBuilder()
+                        For Each group As Integer In preset.HiddenGroups
+                            If (sbItems.Length > 0) Then sbItems.Append(",")
+                            sbItems.Append(CStr(group))
+                        Next
+                        settings.WriteSetting(name, "HiddenGroups", sbItems.ToString())
+
+                        sbItems.Clear()
+                        For Each fleet As Integer In preset.HiddenFleets
+                            If (sbItems.Length > 0) Then sbItems.Append(",")
+                            sbItems.Append(CStr(fleet))
+                        Next
+                        settings.WriteSetting(name, "HiddenFleets", sbItems.ToString())
+                    End If
 
                 Next
                 settings.WriteSetting("Global", "Presets", sbNames.ToString())
@@ -1928,6 +1959,24 @@ Namespace Style
             Return True
 
         End Function
+
+        Public Property TotalCatchVisible() As Boolean
+            Get
+                Return (Me.m_bHideTotalCatch = False)
+            End Get
+            Set(ByVal bShow As Boolean)
+                Me.m_bHideTotalCatch = (bShow = False)
+            End Set
+        End Property
+
+        Public Property TotalValueVisible() As Boolean
+            Get
+                Return (Me.m_bHideTotalValue = False)
+            End Get
+            Set(ByVal bShow As Boolean)
+                Me.m_bHideTotalValue = (bShow = False)
+            End Set
+        End Property
 
 #End Region ' Item visibility
 

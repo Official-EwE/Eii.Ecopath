@@ -59,6 +59,7 @@ Partial Public Class frmEwE6
         Dim m_tssTools1 As System.Windows.Forms.ToolStripSeparator
         Dim sep2 As System.Windows.Forms.ToolStripSeparator
         Dim ToolStripSeparator6 As System.Windows.Forms.ToolStripSeparator
+        Dim PlaceholderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Me.m_tsmiEcospaceNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceLoad = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceClose = New System.Windows.Forms.ToolStripMenuItem()
@@ -182,6 +183,7 @@ Partial Public Class frmEwE6
         m_tssTools1 = New System.Windows.Forms.ToolStripSeparator()
         sep2 = New System.Windows.Forms.ToolStripSeparator()
         ToolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator()
+        PlaceholderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_menuMain.SuspendLayout()
         Me.m_tsModel.SuspendLayout()
         Me.SuspendLayout()
@@ -626,6 +628,7 @@ Partial Public Class frmEwE6
         '
         'm_tsmiViewItems
         '
+        Me.m_tsmiViewItems.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {PlaceholderToolStripMenuItem})
         Me.m_tsmiViewItems.Name = "m_tsmiViewItems"
         resources.ApplyResources(Me.m_tsmiViewItems, "m_tsmiViewItems")
         '
@@ -847,6 +850,11 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
+        '
+        'PlaceholderToolStripMenuItem
+        '
+        PlaceholderToolStripMenuItem.Name = "PlaceholderToolStripMenuItem"
+        resources.ApplyResources(PlaceholderToolStripMenuItem, "PlaceholderToolStripMenuItem")
         '
         'frmEwE6
         '

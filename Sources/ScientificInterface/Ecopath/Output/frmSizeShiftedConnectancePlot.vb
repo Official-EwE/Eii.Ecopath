@@ -54,7 +54,7 @@ Namespace Ecopath.Output
             Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
             Me.m_zgh.ShowPointValue = True
 
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
             If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_btnShowHideGroups)
 
             Me.CoreExecutionState = eCoreExecutionState.EcopathCompleted
@@ -70,7 +70,7 @@ Namespace Ecopath.Output
 
             Me.m_zgh.Detach()
 
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
             If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_btnShowHideGroups)
 
             MyBase.OnFormClosed(e)

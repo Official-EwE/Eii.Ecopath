@@ -195,7 +195,7 @@ Namespace Ecosim
             Me.m_tree.Title = Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).Name
 
             ' Display Groups
-            cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            cmd = cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
             If cmd IsNot Nothing Then
                 cmd.AddControl(Me.m_tsbtnShowHideGroups)
             End If
@@ -217,7 +217,7 @@ Namespace Ecosim
             Dim cmd As cCommand = Nothing
 
             ' Display Groups
-            cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            cmd = cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
             If cmd IsNot Nothing Then
                 cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
             End If

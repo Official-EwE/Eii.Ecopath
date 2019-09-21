@@ -26,6 +26,7 @@ Imports System.Collections.Generic
 Imports System.Diagnostics
 Imports EwEUtils.Core
 Imports System.Text
+Imports System.Linq
 
 #End Region ' Imports
 
@@ -39,6 +40,7 @@ Namespace Commands
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cCommand
+        Implements ICommand
 
 #Region " Private vars "
 
@@ -59,6 +61,8 @@ Namespace Commands
         ''' <summary>Entirely disable a command.</summary>
         Private m_bAvailable As Boolean = True
 
+        Private m_dicParms As New Dictionary(Of String, Object)
+
 #End Region ' Private vars
 
 #Region " Construction "
@@ -71,8 +75,8 @@ Namespace Commands
         ''' <param name="cmdh">The <see cref="cCommandHandler"/> to associate this command with.</param>
         ''' 
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal cmdh As cCommandHandler, _
-                       ByVal strName As String, _
+        Public Sub New(ByVal cmdh As cCommandHandler,
+                       ByVal strName As String,
                        Optional ByVal strDescription As String = "")
 
             ' Store ref to the handler
@@ -199,6 +203,34 @@ Namespace Commands
 
 #End Region ' Adding and removing GUI controls 
 
+#Region " Parameterization "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ICommand.Parameters"/>
+        ''' -------------------------------------------------------------------
+        Public Function Parameters() As String() Implements ICommand.Parameters
+            Return Me.m_dicParms.Keys.ToArray()
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ICommand.Parameter(String)"/>
+        ''' -------------------------------------------------------------------
+        Public Property Parameter(name As String) As Object _
+            Implements ICommand.Parameter
+            Get
+                If (String.IsNullOrWhiteSpace(name)) Then Return "?"
+                name = name.ToLower()
+                If Not Me.m_dicParms.ContainsKey(name) Then Return "?"
+                Return Me.m_dicParms(name)
+            End Get
+            Set(value As Object)
+                If (String.IsNullOrWhiteSpace(name)) Then Return
+                Me.m_dicParms(name.ToLower()) = value
+            End Set
+        End Property
+
+#End Region ' Parameterization 
+
 #Region " Execution and updating "
 
         ''' -----------------------------------------------------------------------
@@ -247,6 +279,11 @@ Namespace Commands
 
             ' Command enabled?
             If Me.Enabled Then
+
+                If (cLog.VerboseLevel >= eVerboseLevel.Detailed) Then
+                    cLog.Write(Me, eVerboseLevel.Detailed)
+                End If
+
                 ' Set invoking flag
                 Me.m_bInvoking = True
 
@@ -262,6 +299,7 @@ Namespace Commands
                         RaiseEvent OnPreInvoke(Me)
                     Catch ex As Exception
                         ' NOP
+                        cLog.Write(ex, eVerboseLevel.Standard, "PreInvoke " & Me.Name)
                     End Try
 
                     Try
@@ -269,6 +307,7 @@ Namespace Commands
                         RaiseEvent OnInvoke(Me)
                     Catch ex As Exception
                         ' NOP
+                        cLog.Write(ex, eVerboseLevel.Standard, "Invoke " & Me.Name)
                     End Try
 
                     Try
@@ -276,12 +315,15 @@ Namespace Commands
                         RaiseEvent OnPostInvoke(Me)
                     Catch ex As Exception
                         ' NOP
+                        cLog.Write(ex, eVerboseLevel.Standard, "PostInvoke " & Me.Name)
                     End Try
 
                 End If
 
                 ' Clear invoking flag
                 Me.m_bInvoking = False
+                ' Clear parameters
+                Me.m_dicParms.Clear()
                 ' Update associated user controls
                 Me.Update()
             End If
@@ -379,7 +421,8 @@ Namespace Commands
         ''' Get the command name.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Name() As String
+        Public ReadOnly Property Name() As String _
+            Implements ICommand.Name
             Get
                 Return Me.m_strName
             End Get
@@ -406,6 +449,13 @@ Namespace Commands
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Property Tag() As Object
+            Get
+                Return Me.Parameter("Tag")
+            End Get
+            Set(value As Object)
+                Me.Parameter("Tag") = value
+            End Set
+        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

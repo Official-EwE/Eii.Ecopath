@@ -164,6 +164,17 @@ Namespace Core
 
         End Sub
 
+        Public Shared Sub Write(command As ICommand, Optional level As eVerboseLevel = eVerboseLevel.Standard)
+            If (level > cLog.VerboseLevel) Then Return
+            If Not AcquireWriterLock() Then Return
+            Try
+                GetWriter().Write(command)
+            Catch ex As Exception
+
+            End Try
+            ReleaseWriterLock()
+        End Sub
+
         Public Shared Sub Write(key As String, value As String, Optional level As eVerboseLevel = eVerboseLevel.Standard)
             If (level > cLog.VerboseLevel) Then Return
             If Not AcquireWriterLock() Then Return
@@ -277,7 +288,7 @@ Namespace Core
 #Region " Interfaces for writting Debugging files "
 
         ''' <summary>
-        ''' Writes a load of text to a text file, obliterating anything in it's way.
+        ''' Writes a load of text to a text file, obliterating anything in its way.
         ''' </summary>
         ''' <param name="strFilename"></param>
         ''' <param name="sb"></param>

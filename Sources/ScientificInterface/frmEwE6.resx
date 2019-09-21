@@ -146,19 +146,19 @@
     <value>False</value>
   </metadata>
   <data name="m_tssView1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 6</value>
+    <value>204, 6</value>
   </data>
   <metadata name="m_tssEcosim1.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
   <data name="m_tssEcosim1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 6</value>
+    <value>229, 6</value>
   </data>
   <metadata name="m_tssEcosim2.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
   </metadata>
   <data name="m_tssEcosim2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 6</value>
+    <value>229, 6</value>
   </data>
   <metadata name="m_tssEcospace1.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -401,7 +401,7 @@
     <value>260, 6</value>
   </data>
   <data name="m_tsmiEcospaceLoadXYRefData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 22</value>
+    <value>243, 22</value>
   </data>
   <data name="m_tsmiEcospaceLoadXYRefData.Text" xml:space="preserve">
     <value>Load &amp;XY Reference Time Series...</value>
@@ -440,7 +440,7 @@
     <value>False</value>
   </metadata>
   <data name="m_tssTools1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 6</value>
+    <value>151, 6</value>
   </data>
   <metadata name="sep2.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -637,7 +637,7 @@
 </value>
   </data>
   <data name="m_tsmiOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="m_tsmiOptions.Text" xml:space="preserve">
     <value>&amp;Options...</value>
@@ -755,13 +755,13 @@
     <value>&amp;Import Model</value>
   </data>
   <data name="m_tsmiEcobaseExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 22</value>
+    <value>141, 22</value>
   </data>
   <data name="m_tsmiEcobaseExport.Text" xml:space="preserve">
     <value>To &amp;EcoBase...</value>
   </data>
   <data name="m_tsmiEIIXMLExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 22</value>
+    <value>141, 22</value>
   </data>
   <data name="m_tsmiEIIXMLExport.Text" xml:space="preserve">
     <value>To &amp;XML...</value>
@@ -840,31 +840,31 @@
     <value>17, 17</value>
   </metadata>
   <data name="m_tsmiViewStartPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 22</value>
+    <value>207, 22</value>
   </data>
   <data name="m_tsmiViewStartPage.Text" xml:space="preserve">
     <value>Start Pa&amp;ge</value>
   </data>
   <data name="m_tsmiViewNavigation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 22</value>
+    <value>207, 22</value>
   </data>
   <data name="m_tsmiViewNavigation.Text" xml:space="preserve">
     <value>&amp;Navigator</value>
   </data>
   <data name="m_tsmiViewStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 22</value>
+    <value>207, 22</value>
   </data>
   <data name="m_tsmiViewStatus.Text" xml:space="preserve">
     <value>Sta&amp;tus</value>
   </data>
   <data name="m_tsmiViewRemarks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 22</value>
+    <value>207, 22</value>
   </data>
   <data name="m_tsmiViewRemarks.Text" xml:space="preserve">
     <value>&amp;Remarks</value>
   </data>
   <data name="m_tsmiViewMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 22</value>
+    <value>207, 22</value>
   </data>
   <data name="m_tsmiViewMenu.Text" xml:space="preserve">
     <value>&amp;Menu</value>
@@ -873,19 +873,19 @@
     <value>Show and hide the main menu</value>
   </data>
   <data name="m_tsmiViewModelBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 22</value>
+    <value>207, 22</value>
   </data>
   <data name="m_tsmiViewModelBar.Text" xml:space="preserve">
     <value>M&amp;odel Bar</value>
   </data>
   <data name="m_tsmiViewStatusBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 22</value>
+    <value>207, 22</value>
   </data>
   <data name="m_tsmiViewStatusBar.Text" xml:space="preserve">
     <value>&amp;Status Bar</value>
   </data>
   <data name="ToolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 6</value>
+    <value>204, 6</value>
   </data>
   <data name="m_tsmiPresentation.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -907,7 +907,7 @@
     <value>F11</value>
   </data>
   <data name="m_tsmiPresentation.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 22</value>
+    <value>207, 22</value>
   </data>
   <data name="m_tsmiPresentation.Text" xml:space="preserve">
     <value>&amp;Presentation mode</value>
@@ -916,10 +916,19 @@
     <value>Shows the application in Presentation mode for display on low screen resolutions and overhead projectors</value>
   </data>
   <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 6</value>
+    <value>204, 6</value>
+  </data>
+  <metadata name="PlaceholderToolStripMenuItem.GenerateMember" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
+  <data name="PlaceholderToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="PlaceholderToolStripMenuItem.Text" xml:space="preserve">
+    <value>&lt;placeholder&gt;</value>
   </data>
   <data name="m_tsmiViewItems.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 22</value>
+    <value>207, 22</value>
   </data>
   <data name="m_tsmiViewItems.Text" xml:space="preserve">
     <value>&amp;Items To Show On Plots...</value>
@@ -999,7 +1008,7 @@
 </value>
   </data>
   <data name="m_tsmiEcosimNew.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 22</value>
+    <value>232, 22</value>
   </data>
   <data name="m_tsmiEcosimNew.Text" xml:space="preserve">
     <value>&amp;New Scenario...</value>
@@ -1022,19 +1031,19 @@
 </value>
   </data>
   <data name="m_tsmiEcosimLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 22</value>
+    <value>232, 22</value>
   </data>
   <data name="m_tsmiEcosimLoad.Text" xml:space="preserve">
     <value>&amp;Load Scenario...</value>
   </data>
   <data name="m_tsmiEcosimClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 22</value>
+    <value>232, 22</value>
   </data>
   <data name="m_tsmiEcosimClose.Text" xml:space="preserve">
     <value>&amp;Close Scenario</value>
   </data>
   <data name="m_tsmiEcosimSave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 22</value>
+    <value>232, 22</value>
   </data>
   <data name="m_tsmiEcosimSave.Text" xml:space="preserve">
     <value>&amp;Save Scenario</value>
@@ -1059,7 +1068,7 @@
 </value>
   </data>
   <data name="m_tsmiEcosimSaveAs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 22</value>
+    <value>232, 22</value>
   </data>
   <data name="m_tsmiEcosimSaveAs.Text" xml:space="preserve">
     <value>Save Scenario &amp;As...</value>
@@ -1081,7 +1090,7 @@
 </value>
   </data>
   <data name="m_tsmiEcosimDelete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 22</value>
+    <value>232, 22</value>
   </data>
   <data name="m_tsmiEcosimDelete.Text" xml:space="preserve">
     <value>&amp;Delete Scenario...</value>
@@ -1104,7 +1113,7 @@
 </value>
   </data>
   <data name="m_tsmiTimeSeriesImport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 22</value>
+    <value>232, 22</value>
   </data>
   <data name="m_tsmiTimeSeriesImport.Text" xml:space="preserve">
     <value>Import &amp;Time Series...</value>
@@ -1126,19 +1135,19 @@
 </value>
   </data>
   <data name="m_tsmiTimeSeriesExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 22</value>
+    <value>232, 22</value>
   </data>
   <data name="m_tsmiTimeSeriesExport.Text" xml:space="preserve">
     <value>E&amp;xport time series to .csv file...</value>
   </data>
   <data name="m_tsmiTimeSeriesLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 22</value>
+    <value>232, 22</value>
   </data>
   <data name="m_tsmiTimeSeriesLoad.Text" xml:space="preserve">
     <value>L&amp;oad Time Series...</value>
   </data>
   <data name="m_tsmiTimeSeriesEditWeights.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 22</value>
+    <value>232, 22</value>
   </data>
   <data name="m_tsmiTimeSeriesEditWeights.Text" xml:space="preserve">
     <value>Edit Time Series &amp;Weights...</value>
@@ -1318,13 +1327,13 @@
     <value>Eco&amp;tracer</value>
   </data>
   <data name="m_tsmiExternalTools.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 22</value>
+    <value>154, 22</value>
   </data>
   <data name="m_tsmiExternalTools.Text" xml:space="preserve">
     <value>&amp;External tools...</value>
   </data>
   <data name="MenuTools.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 20</value>
+    <value>46, 20</value>
   </data>
   <data name="MenuTools.Text" xml:space="preserve">
     <value>&amp;Tools</value>
@@ -1345,7 +1354,7 @@
     <value>m_menuMain</value>
   </data>
   <data name="&gt;&gt;m_menuMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEMenustrip, ScientificInterfaceShared, Version=6.6.16126.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEMenustrip, ScientificInterfaceShared, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_menuMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1594,34 +1603,34 @@
   <data name="m_tsbEcotracer.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        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
 </value>
   </data>
   <data name="m_tsbEcotracer.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -1739,7 +1748,7 @@
     <value>m_tsModel</value>
   </data>
   <data name="&gt;&gt;m_tsModel.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cModelPathToolStrip, ScientificInterfaceShared, Version=6.6.16126.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cModelPathToolStrip, ScientificInterfaceShared, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsModel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1766,7 +1775,7 @@
     <value>m_ssMain</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Type" xml:space="preserve">
-    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.6.16126.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.cEwEStatusBar, EwE6, Version=6.6.16278.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_ssMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -7464,6 +7473,12 @@
   </data>
   <data name="&gt;&gt;m_bgw.Type" xml:space="preserve">
     <value>System.ComponentModel.BackgroundWorker, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PlaceholderToolStripMenuItem.Name" xml:space="preserve">
+    <value>PlaceholderToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;PlaceholderToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmEwE6</value>

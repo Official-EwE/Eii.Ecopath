@@ -274,7 +274,7 @@ Public Class frmEwE6
     Private WithEvents m_cmdHelpRequestCodeAccess As cCommand
     Private WithEvents m_cmdHelpFeedback As cCommand = Nothing
     Private WithEvents m_cmdPropertySelection As cPropertySelectionCommand = Nothing
-    Private WithEvents m_cmdShowHideItems As cDisplayGroupsCommand = Nothing
+    Private WithEvents m_cmdShowHideItems As cShowHideItemsCommand = Nothing
     Private WithEvents m_cmdEnableEcotracer As cCommand = Nothing
     Private WithEvents m_cmdEstimateVs As cCommand = Nothing
     Private WithEvents m_cmdExportEcosimResultsToCSV As cEcosimSaveDataCommand = Nothing
@@ -724,7 +724,7 @@ Public Class frmEwE6
 
         Me.m_cmdPropertySelection = New cPropertySelectionCommand(cmdh)
 
-        Me.m_cmdShowHideItems = New cDisplayGroupsCommand(cmdh)
+        Me.m_cmdShowHideItems = New cShowHideItemsCommand(cmdh)
         Me.m_cmdShowHideItems.AddControl(Me.m_tsmiViewItems)
 
         Me.m_cmdEnableEcotracer = New cCommand(cmdh, "EnableEcotracer")
@@ -3716,7 +3716,7 @@ Public Class frmEwE6
 
     Private Sub OnDisplayShowHideItems(ByVal cmd As cCommand) _
         Handles m_cmdShowHideItems.OnInvoke
-        Dim dlg As New dlgShowHideItems(Me.UIContext, Me.m_cmdShowHideItems.GroupDisplayOptions)
+        Dim dlg As New dlgShowHideItems(Me.UIContext)
         dlg.ShowDialog()
         cmd.Checked = Me.UIContext.StyleGuide.HasHiddenItems()
     End Sub
@@ -4936,6 +4936,25 @@ Public Class frmEwE6
         Me.m_cmdLoadEcotracerScenario.Tag = Nothing
     End Sub
 
+    Private Sub OnViewItemsDropDownOpening(sender As Object, e As EventArgs) Handles m_tsmiViewItems.DropDownOpening
+
+        Me.m_tsmiViewItems.DropDownItems.Clear()
+        If Me.Core.StateMonitor.HasEcopathLoaded Then
+            For Each preset As String In StyleGuide.ItemVisibilityPresetNames
+                Me.m_tsmiViewItems.DropDownItems.Add(preset, Nothing, AddressOf OnClickItemVisibilityPreset)
+            Next
+        End If
+
+    End Sub
+
+    Private Sub OnClickItemVisibilityPreset(sender As Object, args As EventArgs)
+        Try
+            Me.StyleGuide.SelectedItemVisibilityPresetName = DirectCast(sender, ToolStripMenuItem).Text
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
 #Region " Settings handling "
 
     Private Sub OnSettingsLoaded(ByVal sender As Object, ByVal e As System.Configuration.SettingsLoadedEventArgs)
@@ -5190,6 +5209,7 @@ Public Class frmEwE6
     Private Sub OnModelNameChanged(prop As cProperty, cf As cProperty.eChangeFlags)
         Me.UpdateModelControls()
     End Sub
+
 
 #End Region  ' Event handlers
 

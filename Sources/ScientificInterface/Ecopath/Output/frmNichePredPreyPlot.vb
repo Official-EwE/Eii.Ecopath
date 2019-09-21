@@ -101,7 +101,7 @@ Namespace Ecopath.Output
             Me.m_nudCutOff.Minimum = CDec(0.0)
             Me.m_nudCutOff.Increment = CDec(0.1)
 
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
             If (cmd IsNot Nothing) Then
                 cmd.AddControl(Me.m_btnShowHideGroups)
             End If
@@ -122,7 +122,7 @@ Namespace Ecopath.Output
 
             If Me.UIContext Is Nothing Then Return
 
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
             If (cmd IsNot Nothing) Then
                 cmd.RemoveControl(Me.m_btnShowHideGroups)
             End If

@@ -91,6 +91,13 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Prompt() As String
+            Get
+                Return CStr(Me.Parameter("Prompt"))
+            End Get
+            Set(value As String)
+                Me.Parameter("Prompt") = value
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -98,14 +105,28 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Directory() As String
-           
+            Get
+                Return CStr(Me.Parameter("Directory"))
+            End Get
+            Set(value As String)
+                Me.Parameter("Directory") = value
+            End Set
+        End Property
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' The result that the dialog closed with.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Result() As DialogResult
-           
+            Get
+                Return DirectCast(Me.Parameter("Result"), DialogResult)
+            End Get
+            Set(value As DialogResult)
+                Me.Parameter("Result") = value
+            End Set
+        End Property
+
     End Class
 
 End Namespace

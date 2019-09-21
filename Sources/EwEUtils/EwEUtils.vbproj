@@ -137,6 +137,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ICommand.vb" />
     <Compile Include="Core\IResultsWriter.vb" />
     <Compile Include="Core\IMonteCarloResultsWriter.vb" />
     <Compile Include="Core\ITaxonSearchCapabilities.vb" />

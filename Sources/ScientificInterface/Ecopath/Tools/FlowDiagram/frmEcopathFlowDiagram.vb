@@ -119,7 +119,7 @@ Namespace Ecopath.Controls.FlowDiagram
             AddHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
 
             ' Display Groups
-            cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            cmd = cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
             If cmd IsNot Nothing Then
                 cmd.AddControl(Me.m_tsbtnShowHideGroups)
             End If
@@ -146,7 +146,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim cmd As cCommand = Nothing
 
             ' Display Groups
-            cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            cmd = cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
             If cmd IsNot Nothing Then
                 cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
             End If
