@@ -82,6 +82,8 @@ Public Interface ILogWriter
     ''' -----------------------------------------------------------------------
     Sub Write(ByVal message As IMessage, ByVal strDetails As String)
 
+    Sub Write(ByVal command As ICommand)
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Write a string to the log.

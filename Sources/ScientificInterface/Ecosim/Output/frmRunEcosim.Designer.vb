@@ -63,7 +63,6 @@ Namespace Ecosim
             Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad()
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
             Me.m_tslblSSValue = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsblbSS = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsddGraphOptions = New System.Windows.Forms.ToolStripDropDownButton()
@@ -97,6 +96,7 @@ Namespace Ecosim
             Me.m_lbRuns = New System.Windows.Forms.ListBox()
             Me.m_hdrRuns = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnStop = New System.Windows.Forms.Button()
+            Me.m_tsddShowHideItems = New System.Windows.Forms.ToolStripDropDownButton()
             sep1 = New System.Windows.Forms.ToolStripSeparator()
             sep2 = New System.Windows.Forms.ToolStripSeparator()
             sep4 = New System.Windows.Forms.ToolStripSeparator()
@@ -260,15 +260,10 @@ Namespace Ecosim
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tslblSSValue, Me.m_tsblbSS, Me.m_tsddGraphOptions, sep1, Me.m_tsdrpdnbtnContent, Me.m_tsbnShowMultipleRuns, sep2, Me.m_tsbnExplore, sep3, Me.m_tsbnSaveOutput})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsddShowHideItems, Me.m_tslblSSValue, Me.m_tsblbSS, Me.m_tsddGraphOptions, sep1, Me.m_tsdrpdnbtnContent, Me.m_tsbnShowMultipleRuns, sep2, Me.m_tsbnExplore, sep3, Me.m_tsbnSaveOutput})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'm_tsbtnShowHideGroups
-            '
-            resources.ApplyResources(Me.m_tsbtnShowHideGroups, "m_tsbtnShowHideGroups")
-            Me.m_tsbtnShowHideGroups.Name = "m_tsbtnShowHideGroups"
             '
             'm_tslblSSValue
             '
@@ -313,8 +308,8 @@ Namespace Ecosim
             'm_tstbMax
             '
             Me.m_tstbMax.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_tstbMax.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
             resources.ApplyResources(Me.m_tstbMax, "m_tstbMax")
+            Me.m_tstbMax.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
             Me.m_tstbMax.Name = "m_tstbMax"
             '
             'm_tsmiMin
@@ -326,8 +321,8 @@ Namespace Ecosim
             'm_tstbMin
             '
             Me.m_tstbMin.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_tstbMin.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
             resources.ApplyResources(Me.m_tstbMin, "m_tstbMin")
+            Me.m_tstbMin.Margin = New System.Windows.Forms.Padding(50, -21, 1, 1)
             Me.m_tstbMin.Name = "m_tstbMin"
             '
             'm_tsmiShowEffortAndMortalities
@@ -356,8 +351,8 @@ Namespace Ecosim
             'm_tstbChangeAmount
             '
             Me.m_tstbChangeAmount.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_tstbChangeAmount.Margin = New System.Windows.Forms.Padding(110, -21, 1, 1)
             resources.ApplyResources(Me.m_tstbChangeAmount, "m_tstbChangeAmount")
+            Me.m_tstbChangeAmount.Margin = New System.Windows.Forms.Padding(110, -21, 1, 1)
             Me.m_tstbChangeAmount.Name = "m_tstbChangeAmount"
             '
             'm_tsdrpdnbtnContent
@@ -501,6 +496,11 @@ Namespace Ecosim
             Me.m_btnStop.Name = "m_btnStop"
             Me.m_btnStop.UseVisualStyleBackColor = True
             '
+            'm_tsddShowHideItems
+            '
+            resources.ApplyResources(Me.m_tsddShowHideItems, "m_tsddShowHideItems")
+            Me.m_tsddShowHideItems.Name = "m_tsddShowHideItems"
+            '
             'frmRunEcosim
             '
             Me.AcceptButton = Me.m_btnRun
@@ -538,7 +538,6 @@ Namespace Ecosim
         Private WithEvents m_tsbnSetToValue As System.Windows.Forms.ToolStripButton
         Private WithEvents m_scPlots As System.Windows.Forms.SplitContainer
         Private WithEvents m_ts As cEwEToolstrip
-        Private WithEvents m_tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tslblSSValue As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tsblbSS As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tsddGraphOptions As System.Windows.Forms.ToolStripDropDownButton
@@ -576,6 +575,7 @@ Namespace Ecosim
         Private WithEvents m_tlpControls As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_btnStop As System.Windows.Forms.Button
         Private WithEvents m_tsmiShowEffortAndMortalities As ToolStripMenuItem
+        Private WithEvents m_tsddShowHideItems As ToolStripDropDownButton
     End Class
 End Namespace
 

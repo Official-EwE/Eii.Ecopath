@@ -428,6 +428,33 @@ Namespace Core
 
         End Sub
 
+
+        Public Sub Write(cmd As ICommand) Implements ILogWriter.Write
+            Try
+                If Me.Open() Then
+
+                    Me.WriteStartElement("Command")
+                    Me.WriteAttributeString("Date", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
+                    Me.WriteAttributeString("Name", cmd.Name)
+                    For Each param As String In cmd.Parameters
+                        Dim val As Object = cmd.Parameter(param)
+                        If (val IsNot Nothing) Then
+                            Me.WriteElementString(param, val.ToString)
+                        End If
+                    Next
+                    Me.WriteEndElement()
+                    Me.WriteEndDocument()
+
+                    Me.Close()
+                End If
+
+            Catch ex As Exception
+                Console.WriteLine("cXMLLogWriter.Write() Exception: " + ex.Message)
+                Me.Close()
+            End Try
+
+        End Sub
+
         Public Sub Write(msg As String) Implements ILogWriter.Write
 
             Try

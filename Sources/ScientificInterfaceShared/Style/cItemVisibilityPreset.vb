@@ -23,83 +23,93 @@ Option Strict On
 
 #End Region ' Imports
 
-Public Class cItemVisibilityPreset
+Namespace Style
 
-    ' -- group visibility --
-    ''' <summary>List of indexes of groups to hide.</summary>
-    Private m_lHiddenGroups As New List(Of Integer)
-    ''' <summary>List of indexes of fleets to hide.</summary>
-    Private m_lHiddenFleets As New List(Of Integer)
+    Public Class cItemVisibilityPreset
 
-    Public Property GroupVisible(ByVal iEcopathGroupID As Integer) As Boolean
-        Get
-            ' Return whether group is not hidden
-            Return (Me.m_lHiddenGroups.IndexOf(iEcopathGroupID) = -1)
-        End Get
-        Set(ByVal bVisible As Boolean)
+        ' -- group visibility --
+        ''' <summary>List of indexes of groups to hide.</summary>
+        Private m_lHiddenGroups As New List(Of Integer)
+        ''' <summary>List of indexes of fleets to hide.</summary>
+        Private m_lHiddenFleets As New List(Of Integer)
 
-            Me.IsChanged = False
+        Public Sub New(bIsDefault As Boolean)
+            Me.IsDefault = bIsDefault
+        End Sub
 
-            If bVisible Then
-                ' Remove group from hidden list, if applicable
-                If (Me.m_lHiddenGroups.IndexOf(iEcopathGroupID) <> -1) Then
-                    Me.m_lHiddenGroups.Remove(iEcopathGroupID)
-                    Me.IsChanged = True
+        Public Property IsDefault As Boolean
+
+        Public Property GroupVisible(ByVal iEcopathGroupID As Integer) As Boolean
+            Get
+                ' Return whether group is not hidden
+                Return (Me.m_lHiddenGroups.IndexOf(iEcopathGroupID) = -1)
+            End Get
+            Set(ByVal bVisible As Boolean)
+
+                Me.IsChanged = False
+
+                If bVisible Then
+                    ' Remove group from hidden list, if applicable
+                    If (Me.m_lHiddenGroups.IndexOf(iEcopathGroupID) <> -1) Then
+                        Me.m_lHiddenGroups.Remove(iEcopathGroupID)
+                        Me.IsChanged = True
+                    End If
+                Else
+                    ' Add group to hidden list, if applicable
+                    If (Me.m_lHiddenGroups.IndexOf(iEcopathGroupID) = -1) Then
+                        Me.m_lHiddenGroups.Add(iEcopathGroupID)
+                        Me.IsChanged = True
+                    End If
                 End If
-            Else
-                ' Add group to hidden list, if applicable
-                If (Me.m_lHiddenGroups.IndexOf(iEcopathGroupID) = -1) Then
-                    Me.m_lHiddenGroups.Add(iEcopathGroupID)
-                    Me.IsChanged = True
+
+            End Set
+        End Property
+
+        Public Property FleetVisible(ByVal iEcopathFleetID As Integer) As Boolean
+            Get
+                ' Return whether fleet is not hidden
+                Return (Me.m_lHiddenFleets.IndexOf(iEcopathFleetID) = -1)
+            End Get
+            Set(ByVal bVisible As Boolean)
+
+                Me.IsChanged = False
+
+                If bVisible Then
+                    ' Remove fleet from hidden list, if applicable
+                    If (Me.m_lHiddenFleets.IndexOf(iEcopathFleetID) <> -1) Then
+                        Me.m_lHiddenFleets.Remove(iEcopathFleetID)
+                        Me.IsChanged = True
+                    End If
+                Else
+                    ' Add fleet to hidden list, if applicable
+                    If (Me.m_lHiddenFleets.IndexOf(iEcopathFleetID) = -1) Then
+                        Me.m_lHiddenFleets.Add(iEcopathFleetID)
+                        Me.IsChanged = True
+                    End If
                 End If
-            End If
 
-        End Set
-    End Property
+            End Set
+        End Property
 
-    Public Property FleetVisible(ByVal iEcopathFleetID As Integer) As Boolean
-        Get
-            ' Return whether fleet is not hidden
-            Return (Me.m_lHiddenFleets.IndexOf(iEcopathFleetID) = -1)
-        End Get
-        Set(ByVal bVisible As Boolean)
+        Public Sub Reset()
+            Me.m_lHiddenFleets.Clear()
+            Me.m_lHiddenGroups.Clear()
+        End Sub
 
-            Me.IsChanged = False
+        Public Property IsChanged As Boolean = False
 
-            If bVisible Then
-                ' Remove fleet from hidden list, if applicable
-                If (Me.m_lHiddenFleets.IndexOf(iEcopathFleetID) <> -1) Then
-                    Me.m_lHiddenFleets.Remove(iEcopathFleetID)
-                    Me.IsChanged = True
-                End If
-            Else
-                ' Add fleet to hidden list, if applicable
-                If (Me.m_lHiddenFleets.IndexOf(iEcopathFleetID) = -1) Then
-                    Me.m_lHiddenFleets.Add(iEcopathFleetID)
-                    Me.IsChanged = True
-                End If
-            End If
+        Public Function HasHiddenItems() As Boolean
+            Return ((Me.m_lHiddenFleets.Count + Me.m_lHiddenGroups.Count) > 0)
+        End Function
 
-        End Set
-    End Property
+        Friend Function HiddenGroups() As Integer()
+            Return Me.m_lHiddenGroups.ToArray()
+        End Function
 
-    Public Sub Reset()
-        Me.m_lHiddenFleets.Clear()
-        Me.m_lHiddenGroups.Clear()
-    End Sub
+        Friend Function HiddenFleets() As Integer()
+            Return Me.m_lHiddenFleets.ToArray()
+        End Function
 
-    Public Property IsChanged As Boolean = False
+    End Class
 
-    Public Function HasHiddenItems() As Boolean
-        Return ((Me.m_lHiddenFleets.Count + Me.m_lHiddenGroups.Count) > 0)
-    End Function
-
-    Friend Function HiddenGroups() As Integer()
-        Return Me.m_lHiddenGroups.ToArray()
-    End Function
-
-    Friend Function HiddenFleets() As Integer()
-        Return Me.m_lHiddenFleets.ToArray()
-    End Function
-
-End Class
+End Namespace

@@ -86,7 +86,7 @@ Public Class frmNetworkAnalysis
     ''' <summary>Update feedback loop prevention.</summary>
     Private m_bInUpdate As Boolean = False
     ''' <summary></summary>
-    Private m_cmdDisplayGroups As cDisplayGroupsCommand = Nothing
+    Private m_cmdDisplayGroups As cShowHideItemsCommand = Nothing
     ''' <summary>UI context for UI to use.</summary>
     Private m_uic As cUIContext = Nothing
 
@@ -122,7 +122,7 @@ Public Class frmNetworkAnalysis
         Me.m_tlpInfo.Dock = DockStyle.Fill
 
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-        Me.m_cmdDisplayGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
+        Me.m_cmdDisplayGroups = DirectCast(cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME), cShowHideItemsCommand)
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
             ' JS 02Feb13: This one is tricky. For some views the 'display groups' button must be hidden, which happens 
             '             through the content manager that sets the button visible style. Connecting the button to the 

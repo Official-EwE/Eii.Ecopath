@@ -133,7 +133,7 @@ Namespace Ecosim
             Me.m_fpNumSteps = New cEwEFormatProvider(Me.UIContext, Me.m_nudNumSteps, GetType(Integer))
             Me.m_fpNumSteps.Value = CInt(1 / Me.m_parms.EquilibriumStepSize)
 
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
             cmd.AddControl(Me.m_tsbnShowHide)
 
             Me.PopulateSelectionComboBox()
@@ -152,7 +152,7 @@ Namespace Ecosim
 
                 RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
-                Dim cmd As cCommand = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+                Dim cmd As cCommand = Me.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
                 cmd.RemoveControl(Me.m_tsbnShowHide)
 
                 Me.m_fpNumTrialYears.Release()

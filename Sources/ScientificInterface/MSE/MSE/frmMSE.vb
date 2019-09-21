@@ -92,7 +92,7 @@ Public Class frmMSE
         Me.m_coreMessage = New cMSEEventSource()
 
         ' Display Groups
-        Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
         If cmd IsNot Nothing Then
             cmd.AddControl(Me.m_btnShowHide)
         End If
@@ -132,7 +132,7 @@ Public Class frmMSE
 
         ' Show/Hide Groups
         Dim cmdh As cCommandHandler = Me.CommandHandler
-        Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        Dim cmd As cCommand = cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
         If cmd IsNot Nothing Then
             cmd.RemoveControl(Me.m_btnShowHide)
         End If

@@ -53,7 +53,7 @@ Namespace Ecopath.Output
         ''' <summary>Flag stating whether the current Ecopath results have been plotted.</summary>
         Private m_bEcopathResultsPlotted As Boolean = False
 
-        Private m_cmdShowGroups As cDisplayGroupsCommand = Nothing
+        Private m_cmdShowGroups As cShowHideItemsCommand = Nothing
 
 #End Region ' Variables
 
@@ -88,7 +88,7 @@ Namespace Ecopath.Output
             Me.m_zgh.Attach(Me.UIContext, Me.m_zedgraph)
 
             ' Connect to show/hide groups command
-            Me.m_cmdShowGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
+            Me.m_cmdShowGroups = DirectCast(cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME), cShowHideItemsCommand)
             If Me.m_cmdShowGroups IsNot Nothing Then
                 Me.m_cmdShowGroups.AddControl(Me.m_bntShowGroups)
                 AddHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf OnAfterShowGroups

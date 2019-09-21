@@ -35,11 +35,6 @@ Namespace Commands
     Public Class cBrowserCommand
         Inherits cCommand
 
-        ''' <summary>URL to show.</summary>
-        Private m_strURL As String = ""
-        ''' <summary>URL alias to show.</summary>
-        Private m_type As cWebLinks.eLinkType = cWebLinks.eLinkType.NotSet
-
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
         ''' <example>
@@ -74,9 +69,8 @@ Namespace Commands
         ''' <param name="strURL">URL to navigate to.</param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strURL As String)
-            Me.m_strURL = strURL
+            Me.Parameter("URL") = strURL
             MyBase.Invoke()
-            Me.m_strURL = ""
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -87,18 +81,20 @@ Namespace Commands
         ''' <param name="link">Symbolic <see cref="cWebLinks.eLinkType"/> to navigate to.</param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(link As cWebLinks.eLinkType)
-            Me.m_type = link
+            Me.Parameter("Weblink") = link
             MyBase.Invoke()
-            Me.m_type = cWebLinks.eLinkType.NotSet
         End Sub
 
         ''' <summary>
-        ''' Get the <see cref="m_strURL">URL</see> to navigate to.
+        ''' Get the URL to navigate to.
         ''' </summary>
         Public ReadOnly Property URL(decoder As cWebLinks) As String
             Get
-                If (Me.m_type = cWebLinks.eLinkType.NotSet) Then Return Me.m_strURL
-                Return decoder.GetURL(Me.m_type)
+                Dim strURL As String = CStr(Me.Parameter("URL"))
+                If (String.IsNullOrWhiteSpace(strURL)) Then
+                    strURL = decoder.GetURL(DirectCast(Me.Parameter("Weblink"), cWebLinks.eLinkType))
+                End If
+                Return strURL
             End Get
         End Property
 

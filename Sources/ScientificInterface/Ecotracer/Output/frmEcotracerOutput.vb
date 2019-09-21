@@ -296,7 +296,7 @@ Public Class frmEcotracerOutput
 
     Private Sub OnDisplayGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnShowHideGroups.Click
-        Dim cmd As cCommand = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        Dim cmd As cCommand = Me.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
         Debug.Assert(cmd IsNot Nothing, Me.ToString & ".OnDisplayGroups() DisplayGroups Command could not be found.")
         cmd.Invoke()
     End Sub

@@ -37,24 +37,6 @@ Namespace Commands
     Public Class cNavigationCommand
         Inherits cCommand
 
-        ''' <summary>A human readable name for the page to open. This text may be
-        ''' used in tabs, in tooltips and other user interface elements.</summary>
-        Private m_strPageName As String = ""
-
-        ''' <summary>A unique ID for the page to open. This ID is used internally
-        ''' in the GUI to manage opened pages.</summary>
-        Private m_strPageID As String = ""
-
-        ''' <summary>The core state that this page requires to display its
-        ''' content.</summary>
-        Private m_coreExecutionState As eCoreExecutionState = eCoreExecutionState.Idle
-
-        ''' <summary>The Type of the Form to invoke.</summary>
-        Private m_typeClass As Type = Nothing
-
-        ''' <summary>Help URL for this form</summary>
-        Private m_strHelpURL As String = ""
-
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
         ''' <example>
@@ -101,71 +83,71 @@ Namespace Commands
         ''' interface that is to be created.</param>
         ''' <param name="strHelpURL">Help URL for this page.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal strPageName As String, ByVal strPageID As String, _
-                ByVal coreExecutionState As eCoreExecutionState, _
-                ByVal typeClass As Type, _
-                Optional ByVal strHelpURL As String = "")
+        Public Overloads Sub Invoke(strPageName As String,
+                                    strPageID As String,
+                                    coreExecutionState As eCoreExecutionState,
+                                    typeClass As Type,
+                                    Optional strHelpURL As String = "")
 
-            Me.m_strPageName = strPageName
-            Me.m_strPageID = strPageID
-            Me.m_coreExecutionState = coreExecutionState
-            Me.m_typeClass = typeClass
-            Me.m_strHelpURL = strHelpURL
+            Me.Parameter("Pagename") = strPageName
+            Me.Parameter("PageID") = strPageID
+            Me.Parameter("CoreExecState") = coreExecutionState
+            Me.Parameter("TypeClass") = typeClass
+            Me.Parameter("HelpURL") = strHelpURL
 
             MyBase.Invoke()
         End Sub
 
         ''' <summary>
-        ''' Get the <see cref="m_strPageName">Page name</see>.
+        ''' Get the Page name.
         ''' </summary>
         Public ReadOnly Property PageName() As String
             Get
-                Return Me.m_strPageName
+                Return CStr(Me.Parameter("Pagename"))
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="m_strPageID">Page ID</see>.
+        ''' Get the Page ID.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property PageID() As String
             Get
-                Return Me.m_strPageID
+                Return CStr(Me.Parameter("PageID"))
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="m_coreExecutionState">Core execution state</see>.
+        ''' Get the Core execution state.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property CoreExecutionState() As eCoreExecutionState
             Get
-                Return Me.m_coreExecutionState
+                Return DirectCast(Me.Parameter("CoreExecState"), eCoreExecutionState)
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="Type">Type</see> of the <see cref="m_typeClass">Form</see>
-        ''' to create for this command.
+        ''' Get the <see cref="Type">Type</see> of the Form to launch for this command.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property ClassType() As Type
             Get
-                Return Me.m_typeClass
+                Return DirectCast(Me.Parameter("TypeClass"), Type)
             End Get
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="m_strHelpURL">help URL</see> for this page.
+        ''' Get the help URL for this page.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property HelpURL() As String
             Get
-                Return Me.m_strHelpURL
+                Return CStr(Me.Parameter("HelpURL"))
             End Get
         End Property
 
