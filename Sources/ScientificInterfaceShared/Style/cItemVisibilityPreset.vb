@@ -102,12 +102,12 @@ Namespace Style
             Return ((Me.m_lHiddenFleets.Count + Me.m_lHiddenGroups.Count) > 0)
         End Function
 
-        Friend Function HiddenGroups() As Integer()
-            Return Me.m_lHiddenGroups.ToArray()
+        Friend Function HiddenGroups() As List(Of Integer)
+            Return Me.m_lHiddenGroups
         End Function
 
-        Friend Function HiddenFleets() As Integer()
-            Return Me.m_lHiddenFleets.ToArray()
+        Friend Function HiddenFleets() As List(Of Integer)
+            Return Me.m_lHiddenFleets
         End Function
 
     End Class
