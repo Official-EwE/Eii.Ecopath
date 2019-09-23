@@ -1895,30 +1895,40 @@ Namespace Style
 
                 If (settings IsNot Nothing) Then
 
-                    ' Read name string for all presets, comma separated, quoted (split qualified)
+                    ' Read names of saved presets
                     Dim presets() As String = cStringUtils.SplitQualified(settings.ReadSetting("Global", "Presets", ""), ",")
                     Dim nameDef As String = settings.ReadSetting("Global", "Default", "")
-                    ' For each preset, read group ID string, read Fleet ID string, config preset
+
+                    Me.SelectedItemVisibilityPresetName = settings.ReadSetting("Global", "Selected", "")
+
+                    ' Read presets
                     For Each preset As String In presets
                         If Not String.IsNullOrWhiteSpace(preset) Then
+                            ' Define preset
+                            Dim pr As cItemVisibilityPreset = Me.Preset(preset)
+
+                            ' Load hidden groups
                             Dim groups() As String = cStringUtils.SplitQualified(settings.ReadSetting(preset, "HiddenGroups", ""), ",")
                             For Each group As String In groups
                                 If Not String.IsNullOrWhiteSpace(group) Then
-                                    Me.GroupVisible(CInt(group), preset) = False
+                                    pr.HiddenGroups.Add(CInt(group))
                                 End If
                             Next
+
+                            ' Load hidden fleets
                             Dim fleets() As String = cStringUtils.SplitQualified(settings.ReadSetting(preset, "HiddenFleets", ""), ",")
                             For Each fleet As String In fleets
                                 If Not String.IsNullOrWhiteSpace(fleet) Then
-                                    Me.FleetVisible(CInt(fleet), preset) = False
+                                    pr.HiddenFleets.Add(CInt(fleet))
                                 End If
                             Next
+
+                            ' Set default
                             If (String.Compare(nameDef, preset, True) = 0) Then
                                 Me.m_dtItemVisibilityPresets(preset).IsDefault = True
                             End If
                         End If
                     Next
-                    Me.SelectedItemVisibilityPresetName = settings.ReadSetting("Global", "Selected", "")
 
                     ' This call creates a default if not present
                     Me.HasHiddenItems()
@@ -1954,7 +1964,7 @@ Namespace Style
                         settings.WriteSetting(name, "HiddenGroups", sbItems.ToString())
 
                         sbItems.Clear()
-                        For Each fleet As Integer In preset.HiddenFleets
+                        For Each fleet As Integer In preset.HiddenGroups
                             If (sbItems.Length > 0) Then sbItems.Append(",")
                             sbItems.Append(CStr(fleet))
                         Next
