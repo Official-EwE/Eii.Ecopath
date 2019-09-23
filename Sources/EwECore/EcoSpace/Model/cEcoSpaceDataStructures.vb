@@ -2053,7 +2053,27 @@ Public Class cEcospaceDataStructures
 
     Public Sub RedimConSimVars()
 
-        ReDim Ccell(InRow + 1, InCol + 1, NGroups)
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'HACK Warning
+        'Contaminant Tracing arrays are only initialized if Contaminant Tracing is turned on 
+        'and get re-allocated  for each run.
+        'This causes a problem for the Spatial Temporal forcing 
+        'because it uses the Ecospace Basemap Layers which only get initialized once with a reference to the current data in memory
+        'which will be different for each run
+        If Me.Ccell Is Nothing Then
+            'not allocated yet so create it
+            ReDim Ccell(InRow + 1, InCol + 1, NGroups)
+        End If
+
+        'check the size incase this is a new model/basemap
+        Dim size As Integer = (InRow + 2) * (InCol + 2) * (NGroups + 1)
+        If Ccell.Length <> size Then
+            ReDim Ccell(InRow + 1, InCol + 1, NGroups)
+        End If
+        'Clear out any old data
+        Array.Clear(Ccell, 0, size)
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
         ReDim Clast(InRow + 1, InCol + 1, NGroups)
         ReDim AMmTr(InRow + 1, InCol + 1, NGroups)
         ReDim Ftr(InRow + 1, InCol + 1, NGroups)
