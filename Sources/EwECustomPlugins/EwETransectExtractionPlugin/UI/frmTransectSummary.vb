@@ -23,16 +23,14 @@ Option Strict On
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
+Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
 Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore.Style
-Imports ScientificInterfaceShared.Commands
-Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -59,9 +57,6 @@ Public Class frmTransectSummary
 
         If (Me.UIContext Is Nothing) Then Return
 
-        Dim cmdh As cCommandHandler = Me.CommandHandler
-        Dim cmd As cCommand = Nothing
-
         ' Make pretty
         Me.m_tsbnPlay.Image = SharedResources.PlayHS
         Me.m_tsbnStop.Image = SharedResources.StopHS
@@ -79,12 +74,6 @@ Public Class frmTransectSummary
             AddHandler Me.m_zgh.GetPane(i).XAxis.ScaleFormatEvent, AddressOf OnFormatXScale
         Next
 
-        ' Display Groups
-        cmd = cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
-        If cmd IsNot Nothing Then
-            cmd.AddControl(Me.m_tsbtnShowHideGroups)
-        End If
-
         AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
         Me.FillTransectBox()
         Me.UpdateGraph()
@@ -99,13 +88,6 @@ Public Class frmTransectSummary
         Me.m_data = Nothing
         Me.m_timerPlay.Enabled = False
         Me.m_zgh.Detach()
-
-        ' Show/Hide Groups
-        Dim cmdh As cCommandHandler = Me.CommandHandler
-        Dim cmd As cCommand = cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
-        If cmd IsNot Nothing Then
-            cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
-        End If
 
         Me.CoreComponents = Nothing
         MyBase.OnFormClosed(e)

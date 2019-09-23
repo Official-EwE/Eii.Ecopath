@@ -25,6 +25,9 @@ Option Strict On
 
 Namespace Core
 
+    ''' <summary>
+    ''' A generic command to centralized trigger executions in EwE.
+    ''' </summary>
     Public Interface ICommand
 
         ReadOnly Property Name As String

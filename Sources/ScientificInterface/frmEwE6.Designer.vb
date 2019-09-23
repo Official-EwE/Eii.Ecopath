@@ -161,6 +161,8 @@ Partial Public Class frmEwE6
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbnFeedback = New System.Windows.Forms.ToolStripButton()
         Me.m_tslbReadOnly = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tsddViewItems = New System.Windows.Forms.ToolStripSplitButton()
+        Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnAutosaveConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_bgw = New System.ComponentModel.BackgroundWorker()
@@ -376,6 +378,11 @@ Partial Public Class frmEwE6
         '
         ToolStripSeparator6.Name = "ToolStripSeparator6"
         resources.ApplyResources(ToolStripSeparator6, "ToolStripSeparator6")
+        '
+        'PlaceholderToolStripMenuItem
+        '
+        PlaceholderToolStripMenuItem.Name = "PlaceholderToolStripMenuItem"
+        resources.ApplyResources(PlaceholderToolStripMenuItem, "PlaceholderToolStripMenuItem")
         '
         'm_tsmiHelpContents
         '
@@ -767,7 +774,7 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
         Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnPreview, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, Me.m_tsbnFeedback, Me.m_tslbReadOnly, ToolStripSeparator6, Me.m_tsbnAutosaveConfig, Me.m_tsbnAutorunConfig})
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnPreview, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, Me.m_tsbnFeedback, Me.m_tslbReadOnly, ToolStripSeparator6, Me.m_tsddViewItems, Me.ToolStripSeparator7, Me.m_tsbnAutosaveConfig, Me.m_tsbnAutorunConfig})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.Path = ""
@@ -829,6 +836,17 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_tslbReadOnly, "m_tslbReadOnly")
         Me.m_tslbReadOnly.Name = "m_tslbReadOnly"
         '
+        'm_tsddViewItems
+        '
+        Me.m_tsddViewItems.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsddViewItems, "m_tsddViewItems")
+        Me.m_tsddViewItems.Name = "m_tsddViewItems"
+        '
+        'ToolStripSeparator7
+        '
+        Me.ToolStripSeparator7.Name = "ToolStripSeparator7"
+        resources.ApplyResources(Me.ToolStripSeparator7, "ToolStripSeparator7")
+        '
         'm_tsbnAutosaveConfig
         '
         Me.m_tsbnAutosaveConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -850,11 +868,6 @@ Partial Public Class frmEwE6
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
-        '
-        'PlaceholderToolStripMenuItem
-        '
-        PlaceholderToolStripMenuItem.Name = "PlaceholderToolStripMenuItem"
-        resources.ApplyResources(PlaceholderToolStripMenuItem, "PlaceholderToolStripMenuItem")
         '
         'frmEwE6
         '
@@ -982,5 +995,7 @@ Partial Public Class frmEwE6
     Private WithEvents m_tsbnAutosaveConfig As ToolStripButton
     Private WithEvents m_tsbnAutorunConfig As ToolStripButton
     Private WithEvents m_ssMain As cEwEStatusBar
+    Private WithEvents m_tsddViewItems As ToolStripSplitButton
+    Friend WithEvents ToolStripSeparator7 As ToolStripSeparator
 End Class
 

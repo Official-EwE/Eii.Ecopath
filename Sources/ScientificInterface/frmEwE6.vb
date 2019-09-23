@@ -726,6 +726,7 @@ Public Class frmEwE6
 
         Me.m_cmdShowHideItems = New cShowHideItemsCommand(cmdh)
         Me.m_cmdShowHideItems.AddControl(Me.m_tsmiViewItems)
+        Me.m_cmdShowHideItems.AddControl(Me.m_tsddViewItems)
 
         Me.m_cmdEnableEcotracer = New cCommand(cmdh, "EnableEcotracer")
 
@@ -755,6 +756,8 @@ Public Class frmEwE6
         Me.m_tslbReadOnly.Image = SharedResources.ProtectFormHS
         Me.m_tslbReadOnly.Enabled = False
 
+        ' ToDo: make button image responsive to actual section: open, gray, closed
+        Me.m_tsddViewItems.Image = SharedResources.Eye_open
         Me.m_tsbnAutosaveConfig.Image = SharedResources.AutoSaveHS
         Me.m_tsbnAutorunConfig.Image = SharedResources.AutoPlayHS
 
@@ -4936,12 +4939,23 @@ Public Class frmEwE6
         Me.m_cmdLoadEcotracerScenario.Tag = Nothing
     End Sub
 
-    Private Sub OnViewItemsDropDownOpening(sender As Object, e As EventArgs) Handles m_tsmiViewItems.DropDownOpening
+    Private Sub OnViewItemsMenuOpening(sender As Object, e As EventArgs) Handles m_tsmiViewItems.DropDownOpening
 
         Me.m_tsmiViewItems.DropDownItems.Clear()
         If Me.Core.StateMonitor.HasEcopathLoaded Then
             For Each preset As String In StyleGuide.ItemVisibilityPresetNames
                 Me.m_tsmiViewItems.DropDownItems.Add(preset, Nothing, AddressOf OnClickItemVisibilityPreset)
+            Next
+        End If
+
+    End Sub
+
+    Private Sub OnViewItemsDropDownOpening(sender As Object, e As EventArgs) Handles m_tsddViewItems.DropDownOpening
+
+        Me.m_tsddViewItems.DropDownItems.Clear()
+        If Me.Core.StateMonitor.HasEcopathLoaded Then
+            For Each preset As String In StyleGuide.ItemVisibilityPresetNames
+                Me.m_tsddViewItems.DropDownItems.Add(preset, Nothing, AddressOf OnClickItemVisibilityPreset)
             Next
         End If
 

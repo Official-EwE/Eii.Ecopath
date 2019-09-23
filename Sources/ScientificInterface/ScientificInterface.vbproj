@@ -2254,7 +2254,7 @@
       <Name>EwEUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
-      <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
+      <Project>{70af596e-7d27-4d39-bde7-89d4525bd60f}</Project>
       <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
   </ItemGroup>

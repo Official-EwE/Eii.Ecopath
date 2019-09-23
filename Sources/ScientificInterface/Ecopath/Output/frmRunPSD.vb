@@ -90,7 +90,6 @@ Namespace Ecopath.Output
             ' Connect to show/hide groups command
             Me.m_cmdShowGroups = DirectCast(cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME), cShowHideItemsCommand)
             If Me.m_cmdShowGroups IsNot Nothing Then
-                Me.m_cmdShowGroups.AddControl(Me.m_bntShowGroups)
                 AddHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf OnAfterShowGroups
             End If
 
@@ -129,7 +128,6 @@ Namespace Ecopath.Output
             ' Detach from show/hide groups command
             If Me.m_cmdShowGroups IsNot Nothing Then
                 RemoveHandler Me.m_cmdShowGroups.OnPostInvoke, AddressOf OnAfterShowGroups
-                Me.m_cmdShowGroups.RemoveControl(Me.m_bntShowGroups)
             End If
 
             ' Detach from core state monitor events

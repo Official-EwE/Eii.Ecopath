@@ -55,7 +55,6 @@ Namespace Ecopath.Controls.FlowDiagram
         Private WithEvents m_pgFlowDiagram As System.Windows.Forms.PropertyGrid
         Private WithEvents m_tsmiSaveToImage As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tss1 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents m_tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tss2 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsmiSettings As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiResetLayout As System.Windows.Forms.ToolStripButton
@@ -118,12 +117,6 @@ Namespace Ecopath.Controls.FlowDiagram
 
             AddHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
 
-            ' Display Groups
-            cmd = cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
-            If cmd IsNot Nothing Then
-                cmd.AddControl(Me.m_tsbtnShowHideGroups)
-            End If
-
             ' Fonts
             cmd = cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME)
             If cmd IsNot Nothing Then
@@ -144,12 +137,6 @@ Namespace Ecopath.Controls.FlowDiagram
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = Nothing
-
-            ' Display Groups
-            cmd = cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
-            If cmd IsNot Nothing Then
-                cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
-            End If
 
             ' Fonts
             cmd = cmdh.GetCommand(cShowOptionsCommand.cCOMMAND_NAME)
@@ -418,17 +405,16 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_scContent = New System.Windows.Forms.SplitContainer()
             Me.m_pgFlowDiagram = New System.Windows.Forms.PropertyGrid()
             Me.m_tsFlowDiagram = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiSettings = New System.Windows.Forms.ToolStripButton()
             Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator()
-            Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
+            Me.m_tslData = New System.Windows.Forms.ToolStripLabel()
+            Me.m_tscmbData = New System.Windows.Forms.ToolStripComboBox()
             Me.m_tss1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
+            Me.m_tss3 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsmiFont = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiCenterLabels = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiResetLayout = New System.Windows.Forms.ToolStripButton()
-            Me.m_tslData = New System.Windows.Forms.ToolStripLabel()
-            Me.m_tscmbData = New System.Windows.Forms.ToolStripComboBox()
-            Me.m_tss3 = New System.Windows.Forms.ToolStripSeparator()
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scContent.Panel1.SuspendLayout()
@@ -465,15 +451,10 @@ Namespace Ecopath.Controls.FlowDiagram
             'm_tsFlowDiagram
             '
             Me.m_tsFlowDiagram.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss2, Me.m_tslData, Me.m_tscmbData, Me.m_tss1, Me.m_tsmiSaveToImage, Me.m_tss3, Me.m_tsmiFont, Me.m_tsmiCenterLabels, Me.m_tsmiResetLayout})
+            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSettings, Me.m_tss2, Me.m_tslData, Me.m_tscmbData, Me.m_tss1, Me.m_tsmiSaveToImage, Me.m_tss3, Me.m_tsmiFont, Me.m_tsmiCenterLabels, Me.m_tsmiResetLayout})
             resources.ApplyResources(Me.m_tsFlowDiagram, "m_tsFlowDiagram")
             Me.m_tsFlowDiagram.Name = "m_tsFlowDiagram"
             Me.m_tsFlowDiagram.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'm_tsbtnShowHideGroups
-            '
-            resources.ApplyResources(Me.m_tsbtnShowHideGroups, "m_tsbtnShowHideGroups")
-            Me.m_tsbtnShowHideGroups.Name = "m_tsbtnShowHideGroups"
             '
             'm_tsmiSettings
             '
@@ -487,15 +468,31 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_tss2.Name = "m_tss2"
             resources.ApplyResources(Me.m_tss2, "m_tss2")
             '
-            'm_tsmiSaveToImage
+            'm_tslData
             '
-            resources.ApplyResources(Me.m_tsmiSaveToImage, "m_tsmiSaveToImage")
-            Me.m_tsmiSaveToImage.Name = "m_tsmiSaveToImage"
+            Me.m_tslData.Name = "m_tslData"
+            resources.ApplyResources(Me.m_tslData, "m_tslData")
+            '
+            'm_tscmbData
+            '
+            Me.m_tscmbData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_tscmbData.Name = "m_tscmbData"
+            resources.ApplyResources(Me.m_tscmbData, "m_tscmbData")
             '
             'm_tss1
             '
             Me.m_tss1.Name = "m_tss1"
             resources.ApplyResources(Me.m_tss1, "m_tss1")
+            '
+            'm_tsmiSaveToImage
+            '
+            resources.ApplyResources(Me.m_tsmiSaveToImage, "m_tsmiSaveToImage")
+            Me.m_tsmiSaveToImage.Name = "m_tsmiSaveToImage"
+            '
+            'm_tss3
+            '
+            Me.m_tss3.Name = "m_tss3"
+            resources.ApplyResources(Me.m_tss3, "m_tss3")
             '
             'm_tsmiFont
             '
@@ -514,22 +511,6 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_tsmiResetLayout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsmiResetLayout, "m_tsmiResetLayout")
             Me.m_tsmiResetLayout.Name = "m_tsmiResetLayout"
-            '
-            'm_tslData
-            '
-            Me.m_tslData.Name = "m_tslData"
-            resources.ApplyResources(Me.m_tslData, "m_tslData")
-            '
-            'm_tscmbData
-            '
-            Me.m_tscmbData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_tscmbData.Name = "m_tscmbData"
-            resources.ApplyResources(Me.m_tscmbData, "m_tscmbData")
-            '
-            'm_tss3
-            '
-            Me.m_tss3.Name = "m_tss3"
-            resources.ApplyResources(Me.m_tss3, "m_tss3")
             '
             'frmEcopathFlowDiagram
             '

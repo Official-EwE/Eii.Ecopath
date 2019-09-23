@@ -85,7 +85,6 @@ Public Class frmNetworkAnalysis
     Private m_iSelectedGroup2 As Integer = 0
     ''' <summary>Update feedback loop prevention.</summary>
     Private m_bInUpdate As Boolean = False
-    ''' <summary></summary>
     Private m_cmdDisplayGroups As cShowHideItemsCommand = Nothing
     ''' <summary>UI context for UI to use.</summary>
     Private m_uic As cUIContext = Nothing
@@ -153,18 +152,6 @@ Public Class frmNetworkAnalysis
         RemoveHandler Me.m_networkmanager.OnRunStateChanged, AddressOf OnRunStateChanged
 
         MyBase.OnFormClosed(e)
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Re-run Network Analysis bit.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub OnDisplayGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles tsmiDisplayGroups.Click
-        If (Me.m_cmdDisplayGroups IsNot Nothing) Then
-            Me.m_cmdDisplayGroups.Invoke()
-        End If
     End Sub
 
     ''' -----------------------------------------------------------------------

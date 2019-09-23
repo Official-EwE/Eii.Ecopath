@@ -171,7 +171,7 @@ Namespace Style
             ' Load up
             Me.ResetApplicationColors()
 
-            Me.Load(Nothing)
+            Me.LoadPeristentSettings(Nothing)
 
         End Sub
 
@@ -1751,7 +1751,15 @@ Namespace Style
 
 #Region " Item visibility "
 
-        Private Function DefaultItemVisibilityPresetName() As String
+        Private Function FindDefaultPresetName() As String
+            ' First check for existing preset; the user may have renamed the default
+            For Each name As String In Me.m_dtItemVisibilityPresets.Keys
+                Dim pr As cItemVisibilityPreset = Me.m_dtItemVisibilityPresets(name)
+                If (pr IsNot Nothing) Then
+                    If (pr.IsDefault) Then Return name
+                End If
+            Next
+            ' Nothing found? Return the ultimate default name
             Return My.Resources.GENERIC_VALUE_DEFAULT
         End Function
 
@@ -1787,11 +1795,11 @@ Namespace Style
             If (Me.m_dtItemVisibilityPresets.ContainsKey(strPreset)) Then
                 Me.m_dtItemVisibilityPresets.Remove(strPreset)
             End If
-            Me.SelectedItemVisibilityPresetName = Me.DefaultItemVisibilityPresetName
+            Me.SelectedItemVisibilityPresetName = Me.FindDefaultPresetName
         End Sub
 
         Public Function Preset(str As String) As cItemVisibilityPreset
-            If String.IsNullOrWhiteSpace(str) Then str = Me.DefaultItemVisibilityPresetName()
+            If String.IsNullOrWhiteSpace(str) Then str = Me.FindDefaultPresetName()
             If Not Me.m_dtItemVisibilityPresets.ContainsKey(str) Then
                 Me.m_dtItemVisibilityPresets(str) = New cItemVisibilityPreset(Me.m_dtItemVisibilityPresets.Count < 2)
             End If
@@ -1878,7 +1886,7 @@ Namespace Style
             Return preset.HasHiddenItems
         End Function
 
-        Public Function Load(ByVal settings As cXMLSettings) As Boolean
+        Public Function LoadPeristentSettings(ByVal settings As cXMLSettings) As Boolean
 
             Me.SuspendEvents()
             Try
@@ -1889,25 +1897,30 @@ Namespace Style
 
                     ' Read name string for all presets, comma separated, quoted (split qualified)
                     Dim presets() As String = cStringUtils.SplitQualified(settings.ReadSetting("Global", "Presets", ""), ",")
-
+                    Dim nameDef As String = settings.ReadSetting("Global", "Default", "")
                     ' For each preset, read group ID string, read Fleet ID string, config preset
                     For Each preset As String In presets
-                        If String.IsNullOrWhiteSpace(preset) Then preset = DefaultItemVisibilityPresetName
-                        Dim groups() As String = cStringUtils.SplitQualified(settings.ReadSetting(preset, "HiddenGroups", ""), ",")
-
-                        For Each group As String In groups
-                            If Not String.IsNullOrWhiteSpace(group) Then
-                                Me.GroupVisible(CInt(group), preset) = False
-                            End If
-                        Next
-
-                        Dim fleets() As String = cStringUtils.SplitQualified(settings.ReadSetting(preset, "HiddenFleets", ""), ",")
-                        For Each fleet As String In fleets
-                            If Not String.IsNullOrWhiteSpace(fleet) Then
-                                Me.FleetVisible(CInt(fleet), preset) = False
-                            End If
-                        Next
+                        If Not String.IsNullOrWhiteSpace(preset) Then
+                            Dim groups() As String = cStringUtils.SplitQualified(settings.ReadSetting(preset, "HiddenGroups", ""), ",")
+                            For Each group As String In groups
+                                If Not String.IsNullOrWhiteSpace(group) Then
+                                    Me.GroupVisible(CInt(group), preset) = False
+                                End If
+                            Next
+                            Dim fleets() As String = cStringUtils.SplitQualified(settings.ReadSetting(preset, "HiddenFleets", ""), ",")
+                            For Each fleet As String In fleets
+                                If Not String.IsNullOrWhiteSpace(fleet) Then
+                                    Me.FleetVisible(CInt(fleet), preset) = False
+                                End If
+                            Next
+                        End If
+                        If (String.Compare(nameDef, preset, True) = 0) Then
+                            Me.m_dtItemVisibilityPresets(preset).IsDefault = True
+                        End If
                     Next
+
+                    Me.SelectedItemVisibilityPresetName = settings.ReadSetting("Global", "Selected", "")
+
                 End If
 
             Catch ex As Exception
@@ -1921,7 +1934,7 @@ Namespace Style
 
         End Function
 
-        Public Function Save(ByVal settings As cXMLSettings) As Boolean
+        Public Function SavePeristentSettings(ByVal settings As cXMLSettings) As Boolean
 
             Try
                 Dim sbNames As New StringBuilder()
@@ -1949,6 +1962,8 @@ Namespace Style
 
                 Next
                 settings.WriteSetting("Global", "Presets", sbNames.ToString())
+                settings.WriteSetting("Global", "Selected", Me.SelectedItemVisibilityPresetName)
+                settings.WriteSetting("Global", "Default", Me.FindDefaultPresetName)
                 settings.Flush()
 
             Catch ex As Exception

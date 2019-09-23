@@ -27,7 +27,7 @@ Namespace Ecosim
         Inherits frmEwE
 
         'UserControl overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -41,7 +41,7 @@ Namespace Ecosim
         'NOTE: The following procedure is required by the Windows Form Designer
         'It can be modified using the Windows Form Designer.  
         'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
             Dim sep1 As System.Windows.Forms.ToolStripSeparator
@@ -96,7 +96,6 @@ Namespace Ecosim
             Me.m_lbRuns = New System.Windows.Forms.ListBox()
             Me.m_hdrRuns = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnStop = New System.Windows.Forms.Button()
-            Me.m_tsddShowHideItems = New System.Windows.Forms.ToolStripDropDownButton()
             sep1 = New System.Windows.Forms.ToolStripSeparator()
             sep2 = New System.Windows.Forms.ToolStripSeparator()
             sep4 = New System.Windows.Forms.ToolStripSeparator()
@@ -260,7 +259,7 @@ Namespace Ecosim
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsddShowHideItems, Me.m_tslblSSValue, Me.m_tsblbSS, Me.m_tsddGraphOptions, sep1, Me.m_tsdrpdnbtnContent, Me.m_tsbnShowMultipleRuns, sep2, Me.m_tsbnExplore, sep3, Me.m_tsbnSaveOutput})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblSSValue, Me.m_tsblbSS, Me.m_tsddGraphOptions, sep1, Me.m_tsdrpdnbtnContent, Me.m_tsbnShowMultipleRuns, sep2, Me.m_tsbnExplore, sep3, Me.m_tsbnSaveOutput})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -496,11 +495,6 @@ Namespace Ecosim
             Me.m_btnStop.Name = "m_btnStop"
             Me.m_btnStop.UseVisualStyleBackColor = True
             '
-            'm_tsddShowHideItems
-            '
-            resources.ApplyResources(Me.m_tsddShowHideItems, "m_tsddShowHideItems")
-            Me.m_tsddShowHideItems.Name = "m_tsddShowHideItems"
-            '
             'frmRunEcosim
             '
             Me.AcceptButton = Me.m_btnRun
@@ -575,7 +569,6 @@ Namespace Ecosim
         Private WithEvents m_tlpControls As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_btnStop As System.Windows.Forms.Button
         Private WithEvents m_tsmiShowEffortAndMortalities As ToolStripMenuItem
-        Private WithEvents m_tsddShowHideItems As ToolStripDropDownButton
     End Class
 End Namespace
 

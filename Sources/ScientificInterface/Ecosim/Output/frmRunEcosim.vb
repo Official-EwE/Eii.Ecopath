@@ -64,7 +64,6 @@ Namespace Ecosim
         Private m_iTimeSteps As Integer = 0
         Private m_sChangeTrackSize As Single = 0.1!
         Private m_zgp As cEcosimOutputPlotHelper = Nothing
-        Private m_showhideui As cShowHideItemsUI = Nothing
 
         Private m_simStats As cEcosimStats
 
@@ -125,9 +124,6 @@ Namespace Ecosim
             Me.m_zgp.YScaleMin = 0.0!
             Me.m_zgp.ShowPointValue = True
 
-            Me.m_showhideui = New cShowHideItemsUI(Me.UIContext)
-            Me.m_showhideui.Attach(Me.m_tsddShowHideItems)
-
             ' Set the axis
             Me.m_graph.GraphPane.XAxis.Scale.Min = Core.EcosimFirstYear
             Me.m_graph.GraphPane.XAxis.Scale.Max = Core.EcoSimModelParameters.NumberYears + Core.EcosimFirstYear
@@ -166,8 +162,6 @@ Namespace Ecosim
                 Me.m_shapeGUIHandler.Detach()
                 Me.m_shapeGUIHandler = Nothing
             End If
-
-            Me.m_showhideui.Detach()
 
             RemoveHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
             RemoveHandler Me.m_graph.GraphPane.AxisChangeEvent, AddressOf OnAxisChanged

@@ -136,7 +136,7 @@ Friend Class cStyleGuideUpdater
 
             ' Load item visibility settings from model
             Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("StyleGuide")
-            Me.StyleGuide.Load(ad.Settings)
+            Me.StyleGuide.LoadPeristentSettings(ad.Settings)
 
         Else
 
@@ -205,7 +205,7 @@ Friend Class cStyleGuideUpdater
 
             If (Me.Core.StateMonitor.HasEcopathLoaded) Then
                 Dim ad As cAuxiliaryData = Me.Core.AuxillaryData("StyleGuide")
-                Me.StyleGuide.Save(ad.Settings)
+                Me.StyleGuide.SavePeristentSettings(ad.Settings)
             End If
         End If
 

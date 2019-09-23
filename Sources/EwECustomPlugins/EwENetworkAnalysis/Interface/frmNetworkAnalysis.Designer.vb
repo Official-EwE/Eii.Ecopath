@@ -45,9 +45,8 @@ Partial Class frmNetworkAnalysis
     'Do not modify it using the code editor.
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ts3 As System.Windows.Forms.ToolStripSeparator
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNetworkAnalysis))
         Dim ts1 As System.Windows.Forms.ToolStripSeparator
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNetworkAnalysis))
         Dim ts2 As System.Windows.Forms.ToolStripSeparator
         Me.m_scNetworkAnalysis = New System.Windows.Forms.SplitContainer()
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
@@ -61,7 +60,6 @@ Partial Class frmNetworkAnalysis
         Me.m_toolstrip = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.tsmiRun = New System.Windows.Forms.ToolStripButton()
         Me.tsbtnOptions = New System.Windows.Forms.ToolStripButton()
-        Me.tsmiDisplayGroups = New System.Windows.Forms.ToolStripButton()
         Me.tslblSelection1 = New System.Windows.Forms.ToolStripLabel()
         Me.tscmbSelection1 = New System.Windows.Forms.ToolStripComboBox()
         Me.tslblSelection2 = New System.Windows.Forms.ToolStripLabel()
@@ -70,7 +68,6 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnOutputGraphEMF = New System.Windows.Forms.ToolStripButton()
         Me.tsbnFonts = New System.Windows.Forms.ToolStripButton()
         Me.m_hdrPage = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        ts3 = New System.Windows.Forms.ToolStripSeparator()
         ts1 = New System.Windows.Forms.ToolStripSeparator()
         ts2 = New System.Windows.Forms.ToolStripSeparator()
         CType(Me.m_scNetworkAnalysis, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -85,11 +82,6 @@ Partial Class frmNetworkAnalysis
         CType(Me.m_datagrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_toolstrip.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'ts3
-        '
-        ts3.Name = "ts3"
-        resources.ApplyResources(ts3, "ts3")
         '
         'ts1
         '
@@ -185,7 +177,7 @@ Partial Class frmNetworkAnalysis
         'm_toolstrip
         '
         Me.m_toolstrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_toolstrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiRun, ts3, Me.tsbtnOptions, Me.tsmiDisplayGroups, ts1, Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, ts2, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.tsbnFonts})
+        Me.m_toolstrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmiRun, Me.tsbtnOptions, ts1, Me.tslblSelection1, Me.tscmbSelection1, Me.tslblSelection2, Me.tscmbSelection2, ts2, Me.tsbtnOutputIndicesCSV, Me.tsbtnOutputGraphEMF, Me.tsbnFonts})
         resources.ApplyResources(Me.m_toolstrip, "m_toolstrip")
         Me.m_toolstrip.Name = "m_toolstrip"
         Me.m_toolstrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -201,12 +193,6 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnOptions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         resources.ApplyResources(Me.tsbtnOptions, "tsbtnOptions")
         Me.tsbtnOptions.Name = "tsbtnOptions"
-        '
-        'tsmiDisplayGroups
-        '
-        Me.tsmiDisplayGroups.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        resources.ApplyResources(Me.tsmiDisplayGroups, "tsmiDisplayGroups")
-        Me.tsmiDisplayGroups.Name = "tsmiDisplayGroups"
         '
         'tslblSelection1
         '
@@ -296,7 +282,6 @@ Partial Class frmNetworkAnalysis
     Private WithEvents m_graph As ZedGraph.ZedGraphControl
     Private WithEvents m_tlpInfo As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_plot As ucPlot
-    Private WithEvents tsmiDisplayGroups As System.Windows.Forms.ToolStripButton
     Private WithEvents tsmiRun As System.Windows.Forms.ToolStripButton
     Private WithEvents m_hdrPage As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents tsbtnOptions As System.Windows.Forms.ToolStripButton

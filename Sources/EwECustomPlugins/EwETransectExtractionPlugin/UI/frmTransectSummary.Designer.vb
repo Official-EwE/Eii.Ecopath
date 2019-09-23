@@ -51,8 +51,6 @@ Partial Class frmTransectSummary
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTransectSummary))
         Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-        Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
-        Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tslblTransect = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmbTransect = New System.Windows.Forms.ToolStripComboBox()
         Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
@@ -69,20 +67,10 @@ Partial Class frmTransectSummary
         'm_ts
         '
         Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_sep1, Me.m_tslblTransect, Me.m_tscmbTransect, Me.m_sep2, Me.m_tsbnPlay, Me.m_tsbnStop, Me.m_sep3, Me.m_tsbnSaveToCSV, Me.m_tsbnAutosave})
+        Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblTransect, Me.m_tscmbTransect, Me.m_sep2, Me.m_tsbnPlay, Me.m_tsbnStop, Me.m_sep3, Me.m_tsbnSaveToCSV, Me.m_tsbnAutosave})
         resources.ApplyResources(Me.m_ts, "m_ts")
         Me.m_ts.Name = "m_ts"
         Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        '
-        'm_tsbtnShowHideGroups
-        '
-        resources.ApplyResources(Me.m_tsbtnShowHideGroups, "m_tsbtnShowHideGroups")
-        Me.m_tsbtnShowHideGroups.Name = "m_tsbtnShowHideGroups"
-        '
-        'm_sep1
-        '
-        Me.m_sep1.Name = "m_sep1"
-        resources.ApplyResources(Me.m_sep1, "m_sep1")
         '
         'm_tslblTransect
         '
@@ -167,8 +155,6 @@ Partial Class frmTransectSummary
     Private WithEvents m_sep2 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbnSaveToCSV As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tslblTransect As System.Windows.Forms.ToolStripLabel
-    Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_sep3 As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents m_tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnAutosave As System.Windows.Forms.ToolStripButton
 End Class
