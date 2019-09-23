@@ -65,7 +65,6 @@ Namespace Ecopath.Output
             Me.m_lblNoWtClasses = New System.Windows.Forms.Label()
             Me.m_hdrInputs = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.Panel1 = New System.Windows.Forms.Panel()
-            Me.m_bntShowGroups = New System.Windows.Forms.Button()
             Me.m_btnRun = New System.Windows.Forms.Button()
             Me.m_hdrRun = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -85,13 +84,13 @@ Namespace Ecopath.Output
             '
             resources.ApplyResources(Me.m_zedgraph, "m_zedgraph")
             Me.m_zedgraph.Name = "m_zedgraph"
-            Me.m_zedgraph.ScrollGrace = 0.0R
-            Me.m_zedgraph.ScrollMaxX = 0.0R
-            Me.m_zedgraph.ScrollMaxY = 0.0R
-            Me.m_zedgraph.ScrollMaxY2 = 0.0R
-            Me.m_zedgraph.ScrollMinX = 0.0R
-            Me.m_zedgraph.ScrollMinY = 0.0R
-            Me.m_zedgraph.ScrollMinY2 = 0.0R
+            Me.m_zedgraph.ScrollGrace = 0R
+            Me.m_zedgraph.ScrollMaxX = 0R
+            Me.m_zedgraph.ScrollMaxY = 0R
+            Me.m_zedgraph.ScrollMaxY2 = 0R
+            Me.m_zedgraph.ScrollMinX = 0R
+            Me.m_zedgraph.ScrollMinY = 0R
+            Me.m_zedgraph.ScrollMinY2 = 0R
             '
             'm_scContent
             '
@@ -211,17 +210,10 @@ Namespace Ecopath.Output
             '
             'Panel1
             '
-            Me.Panel1.Controls.Add(Me.m_bntShowGroups)
             Me.Panel1.Controls.Add(Me.m_btnRun)
             Me.Panel1.Controls.Add(Me.m_hdrRun)
             resources.ApplyResources(Me.Panel1, "Panel1")
             Me.Panel1.Name = "Panel1"
-            '
-            'm_bntShowGroups
-            '
-            resources.ApplyResources(Me.m_bntShowGroups, "m_bntShowGroups")
-            Me.m_bntShowGroups.Name = "m_bntShowGroups"
-            Me.m_bntShowGroups.UseVisualStyleBackColor = True
             '
             'm_btnRun
             '
@@ -276,7 +268,6 @@ Namespace Ecopath.Output
         Friend WithEvents Panel1 As System.Windows.Forms.Panel
         Friend WithEvents m_btnRun As System.Windows.Forms.Button
         Friend WithEvents m_hdrRun As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Friend WithEvents m_bntShowGroups As System.Windows.Forms.Button
         Friend WithEvents m_lblMeanLat As System.Windows.Forms.Label
         Private WithEvents m_cmbMeanLat As System.Windows.Forms.ComboBox
         Friend WithEvents m_nudNoWtClasses As ScientificInterfaceShared.Controls.cEwENumericUpDown

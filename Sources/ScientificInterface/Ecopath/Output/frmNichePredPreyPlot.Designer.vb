@@ -52,7 +52,6 @@ Namespace Ecopath.Output
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_cbLabels = New System.Windows.Forms.CheckBox()
             Me.m_lblColours = New System.Windows.Forms.Label()
-            Me.m_btnShowHideGroups = New System.Windows.Forms.Button()
             Me.m_rbNone = New System.Windows.Forms.RadioButton()
             Me.m_rbOverlap = New System.Windows.Forms.RadioButton()
             Me.m_rbPrey = New System.Windows.Forms.RadioButton()
@@ -71,13 +70,13 @@ Namespace Ecopath.Output
             '
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0.0R
-            Me.m_graph.ScrollMaxX = 0.0R
-            Me.m_graph.ScrollMaxY = 0.0R
-            Me.m_graph.ScrollMaxY2 = 0.0R
-            Me.m_graph.ScrollMinX = 0.0R
-            Me.m_graph.ScrollMinY = 0.0R
-            Me.m_graph.ScrollMinY2 = 0.0R
+            Me.m_graph.ScrollGrace = 0R
+            Me.m_graph.ScrollMaxX = 0R
+            Me.m_graph.ScrollMaxY = 0R
+            Me.m_graph.ScrollMaxY2 = 0R
+            Me.m_graph.ScrollMinX = 0R
+            Me.m_graph.ScrollMinY = 0R
+            Me.m_graph.ScrollMinY2 = 0R
             '
             'm_scMain
             '
@@ -89,7 +88,6 @@ Namespace Ecopath.Output
             '
             Me.m_scMain.Panel1.Controls.Add(Me.m_cbLabels)
             Me.m_scMain.Panel1.Controls.Add(Me.m_lblColours)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_btnShowHideGroups)
             Me.m_scMain.Panel1.Controls.Add(Me.m_rbNone)
             Me.m_scMain.Panel1.Controls.Add(Me.m_rbOverlap)
             Me.m_scMain.Panel1.Controls.Add(Me.m_rbPrey)
@@ -112,12 +110,6 @@ Namespace Ecopath.Output
             '
             resources.ApplyResources(Me.m_lblColours, "m_lblColours")
             Me.m_lblColours.Name = "m_lblColours"
-            '
-            'm_btnShowHideGroups
-            '
-            resources.ApplyResources(Me.m_btnShowHideGroups, "m_btnShowHideGroups")
-            Me.m_btnShowHideGroups.Name = "m_btnShowHideGroups"
-            Me.m_btnShowHideGroups.UseVisualStyleBackColor = True
             '
             'm_rbNone
             '
@@ -190,7 +182,6 @@ Namespace Ecopath.Output
         Private WithEvents m_rbPredator As System.Windows.Forms.RadioButton
         Private WithEvents m_rbNone As System.Windows.Forms.RadioButton
         Private WithEvents m_lblColours As System.Windows.Forms.Label
-        Private WithEvents m_btnShowHideGroups As System.Windows.Forms.Button
         Private WithEvents m_hdrDisplay As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_cbLabels As System.Windows.Forms.CheckBox
         Private WithEvents m_nudCutOff As ScientificInterfaceShared.Controls.cEwENumericUpDown

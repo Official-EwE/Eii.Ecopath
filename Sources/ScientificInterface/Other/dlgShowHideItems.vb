@@ -178,11 +178,13 @@ Namespace Ecosim
 
 #Region " Events "
 
-        Private Sub OnPresetSelected(sender As Object, e As EventArgs) Handles m_cmbPresets.SelectedIndexChanged
+        Private Sub OnPresetNameChanged(sender As Object, e As EventArgs) Handles m_tbxName.TextChanged
+            Me.UpdateControls()
+        End Sub
 
+        Private Sub OnPresetSelected(sender As Object, e As EventArgs) Handles m_cmbPresets.SelectedIndexChanged
             Me.LoadPreset()
             Me.UpdateControls()
-
         End Sub
 
         Private Sub OnAddPreset(sender As Object, e As EventArgs) Handles m_btnAdd.Click
@@ -191,6 +193,12 @@ Namespace Ecosim
             Me.m_lPresets.Add(pr)
             Me.UpdatePresetsDropdown(pr)
 
+        End Sub
+
+        Private Sub OnRenamePreset(sender As Object, e As EventArgs) Handles m_btnRename.Click
+            Dim pr As cPresetData = DirectCast(Me.m_cmbPresets.SelectedItem, cPresetData)
+            pr.Name = Me.m_tbxName.Text
+            Me.UpdatePresetsDropdown(pr)
         End Sub
 
         Private Sub OnDeletePreset(sender As Object, e As EventArgs) Handles m_btnDelete.Click
@@ -227,16 +235,16 @@ Namespace Ecosim
         Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles OK_Button.Click
 
-            ' ToDo: rebuild styleguide preset structure
             Dim core As cCore = Me.m_uic.Core
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+            Dim pr As cPresetData = Nothing
 
             sg.SuspendEvents()
 
             ' Rebuild presets
             sg.ClearItemVisibilityPresets()
             For i As Integer = 0 To Me.m_lPresets.Count - 1
-                Dim pr As cPresetData = Me.m_lPresets(i)
+                pr = Me.m_lPresets(i)
                 For iGroup As Integer = 1 To core.nGroups
                     Dim grp As cCoreGroupBase = core.EcoPathGroupInputs(iGroup)
                     sg.GroupVisible(grp.DBID, pr.Name) = pr.GroupVisible(iGroup - 1)
@@ -247,6 +255,10 @@ Namespace Ecosim
                     sg.FleetVisible(flt.DBID, pr.Name) = pr.FleetVisible(iFleet - 1)
                 Next
             Next
+
+            ' Select the current preset in the StyleGuide
+            pr = DirectCast(Me.m_cmbPresets.SelectedItem, cPresetData)
+            sg.SelectedItemVisibilityPresetName = pr.Name
 
             sg.ResumeEvents()
             sg.ItemVisibilityChanged()
@@ -578,6 +590,9 @@ Namespace Ecosim
             Me.m_hdrFleets.Text = strLabel
 
             Dim pr As cPresetData = DirectCast(Me.m_cmbPresets.SelectedItem, cPresetData)
+            Dim bValidName As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxName.Text)
+            Me.m_btnAdd.Enabled = bValidName
+            Me.m_btnRename.Enabled = bValidName
             Me.m_btnDelete.Enabled = Not pr.IsDefault
 
         End Sub
@@ -687,6 +702,7 @@ Namespace Ecosim
             If Not TypeOf cci.Source Is cCoreGroupBase Then Return Nothing
             Return DirectCast(cci.Source, cCoreGroupBase)
         End Function
+
 
 #End Region ' Internals
 

@@ -61,7 +61,6 @@ Namespace Ecosim
         Private WithEvents m_tsmiLoad As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiSaveToImage As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tss1 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents m_tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tslLayout As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tss2 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsmiSettings As System.Windows.Forms.ToolStripButton
@@ -146,9 +145,6 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmd As cCommand = Nothing
-
             Me.m_data = New cEcosimFlowDiagramData(Me.UIContext)
             Me.m_tree = New cEcosimTreeFlowDiagramRenderer(Me.m_data)
             Me.m_doodler = New cFlowDiagramManager(Me.m_data, Me.m_tree)
@@ -194,12 +190,6 @@ Namespace Ecosim
             Me.m_tree.NodeDrawValue = True
             Me.m_tree.Title = Me.Core.EcosimScenarios(Me.Core.ActiveEcosimScenarioIndex).Name
 
-            ' Display Groups
-            cmd = cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
-            If cmd IsNot Nothing Then
-                cmd.AddControl(Me.m_tsbtnShowHideGroups)
-            End If
-
         End Sub
 
         Protected Overrides Sub OnFormClosing(e As System.Windows.Forms.FormClosingEventArgs)
@@ -212,15 +202,6 @@ Namespace Ecosim
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-
-            Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmd As cCommand = Nothing
-
-            ' Display Groups
-            cmd = cmdh.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
-            If cmd IsNot Nothing Then
-                cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
-            End If
 
             RemoveHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
 
@@ -755,9 +736,8 @@ Namespace Ecosim
             Dim fs As FileStream = Nothing
             Dim hdc As IntPtr = Nothing ' :)
             Dim mf As Metafile = Nothing
-            Dim bmp As Bitmap = New Bitmap(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, PixelFormat.Format32bppArgb)
-            Dim s As Size = Me.Size
-            Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
+            Dim bmp As Bitmap = New Bitmap(Me.m_pbFlowDiagram.Width * 2, Me.m_pbFlowDiagram.Height * 2, PixelFormat.Format32bppArgb)
+            Dim rc As New Rectangle(0, 0, Me.m_pbFlowDiagram.ClientRectangle.Width * 2, Me.m_pbFlowDiagram.ClientRectangle.Height * 2)
             Dim bSuccess As Boolean = True
 
             ' JS 03Mar15: Changed to a single message with variable statuses
@@ -792,7 +772,7 @@ Namespace Ecosim
 
                     CurrentTimestep = currTimeStep
 
-                    'Calcualting Year and Month for timestep
+                    'Calculating Year and Month for timestep
                     Dim currentYear As Integer = m_EcosimFirstYear + CInt(Math.Truncate(CurrentTimestep / m_noofTimeSlicesPerYear))
                     Dim month As Integer = (CurrentTimestep Mod m_noofTimeSlicesPerYear) + 1
                     'Redraw the flow diagram with updated biomass values. 
@@ -1096,7 +1076,6 @@ Namespace Ecosim
             Me.m_slider = New ScientificInterfaceShared.Controls.ucSlider()
             Me.m_pgFlowDiagram = New System.Windows.Forms.PropertyGrid()
             Me.m_tsFlowDiagram = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiSettings = New System.Windows.Forms.ToolStripButton()
             Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
@@ -1232,15 +1211,10 @@ Namespace Ecosim
             'm_tsFlowDiagram
             '
             Me.m_tsFlowDiagram.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tsmiSaveToBatchImage, Me.m_tss3, Me.m_tslLayout, Me.m_tsmiLoad, Me.m_tsmiSave, Me.m_tsmiResetLayout})
+            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tsmiSaveToBatchImage, Me.m_tss3, Me.m_tslLayout, Me.m_tsmiLoad, Me.m_tsmiSave, Me.m_tsmiResetLayout})
             resources.ApplyResources(Me.m_tsFlowDiagram, "m_tsFlowDiagram")
             Me.m_tsFlowDiagram.Name = "m_tsFlowDiagram"
             Me.m_tsFlowDiagram.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'm_tsbtnShowHideGroups
-            '
-            resources.ApplyResources(Me.m_tsbtnShowHideGroups, "m_tsbtnShowHideGroups")
-            Me.m_tsbtnShowHideGroups.Name = "m_tsbtnShowHideGroups"
             '
             'm_tsmiSettings
             '
@@ -1299,13 +1273,13 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tsmiResetLayout, "m_tsmiResetLayout")
             Me.m_tsmiResetLayout.Name = "m_tsmiResetLayout"
             '
-            'frmEcosimFD
+            'frmEcosimFlowDiagram
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
             Me.Controls.Add(Me.m_tsFlowDiagram)
             Me.Controls.Add(Me.m_scContent)
-            Me.Name = "frmEcosimFD"
+            Me.Name = "frmEcosimFlowDiagram"
             Me.TabText = ""
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scContent.Panel1.ResumeLayout(False)

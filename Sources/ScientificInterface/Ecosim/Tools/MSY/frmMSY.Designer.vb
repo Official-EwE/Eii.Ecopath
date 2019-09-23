@@ -48,8 +48,6 @@ Namespace Ecosim
             Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSY))
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-            Me.m_tsbnShowHide = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnSaveOutput = New System.Windows.Forms.ToolStripButton()
             Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_sc = New System.Windows.Forms.SplitContainer()
             Me.m_tlp = New System.Windows.Forms.TableLayoutPanel()
@@ -74,6 +72,7 @@ Namespace Ecosim
             Me.m_btnRunFMSY = New System.Windows.Forms.Button()
             Me.m_btnTest = New System.Windows.Forms.Button()
             Me.m_plRun = New System.Windows.Forms.Panel()
+            Me.m_cbRunToDepletion = New System.Windows.Forms.CheckBox()
             Me.m_nudNumSteps = New System.Windows.Forms.NumericUpDown()
             Me.m_nudNumTrialYears = New System.Windows.Forms.NumericUpDown()
             Me.m_lblNumTrialYears = New System.Windows.Forms.Label()
@@ -81,7 +80,7 @@ Namespace Ecosim
             Me.m_btnRun = New System.Windows.Forms.Button()
             Me.m_lblMaxRelF = New System.Windows.Forms.Label()
             Me.m_lblNumSteps = New System.Windows.Forms.Label()
-            Me.m_cbRunToDepletion = New System.Windows.Forms.CheckBox()
+            Me.m_tsbnSaveOutput = New System.Windows.Forms.ToolStripButton()
             Me.m_ts.SuspendLayout()
             CType(Me.m_sc, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_sc.Panel1.SuspendLayout()
@@ -101,23 +100,10 @@ Namespace Ecosim
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnShowHide, Me.m_tsbnSaveOutput})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnSaveOutput})
             resources.ApplyResources(Me.m_ts, "m_ts")
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            '
-            'm_tsbnShowHide
-            '
-            Me.m_tsbnShowHide.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnShowHide, "m_tsbnShowHide")
-            Me.m_tsbnShowHide.Name = "m_tsbnShowHide"
-            '
-            'm_tsbnSaveOutput
-            '
-            Me.m_tsbnSaveOutput.CheckOnClick = True
-            Me.m_tsbnSaveOutput.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            resources.ApplyResources(Me.m_tsbnSaveOutput, "m_tsbnSaveOutput")
-            Me.m_tsbnSaveOutput.Name = "m_tsbnSaveOutput"
             '
             'm_graph
             '
@@ -316,6 +302,12 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_plRun, "m_plRun")
             Me.m_plRun.Name = "m_plRun"
             '
+            'm_cbRunToDepletion
+            '
+            resources.ApplyResources(Me.m_cbRunToDepletion, "m_cbRunToDepletion")
+            Me.m_cbRunToDepletion.Name = "m_cbRunToDepletion"
+            Me.m_cbRunToDepletion.UseVisualStyleBackColor = True
+            '
             'm_nudNumSteps
             '
             resources.ApplyResources(Me.m_nudNumSteps, "m_nudNumSteps")
@@ -360,11 +352,12 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblNumSteps, "m_lblNumSteps")
             Me.m_lblNumSteps.Name = "m_lblNumSteps"
             '
-            'm_cbRunToDepletion
+            'm_tsbnSaveOutput
             '
-            resources.ApplyResources(Me.m_cbRunToDepletion, "m_cbRunToDepletion")
-            Me.m_cbRunToDepletion.Name = "m_cbRunToDepletion"
-            Me.m_cbRunToDepletion.UseVisualStyleBackColor = True
+            Me.m_tsbnSaveOutput.CheckOnClick = True
+            Me.m_tsbnSaveOutput.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            resources.ApplyResources(Me.m_tsbnSaveOutput, "m_tsbnSaveOutput")
+            Me.m_tsbnSaveOutput.Name = "m_tsbnSaveOutput"
             '
             'frmMSY
             '
@@ -402,9 +395,7 @@ Namespace Ecosim
 
         End Sub
         Private WithEvents m_ts As cEwEToolstrip
-        Private WithEvents m_tsbnShowHide As System.Windows.Forms.ToolStripButton
         Private WithEvents m_graph As ZedGraphControl
-        Private WithEvents m_tsbnSaveOutput As System.Windows.Forms.ToolStripButton
         Private WithEvents m_sc As System.Windows.Forms.SplitContainer
         Private WithEvents m_tlp As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_plData As System.Windows.Forms.Panel
@@ -436,6 +427,7 @@ Namespace Ecosim
         Private WithEvents m_plRun As System.Windows.Forms.Panel
         Private WithEvents m_nudNumSteps As System.Windows.Forms.NumericUpDown
         Private WithEvents m_cbRunToDepletion As CheckBox
+        Private WithEvents m_tsbnSaveOutput As ToolStripButton
     End Class
 
 End Namespace

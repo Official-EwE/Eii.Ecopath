@@ -63,10 +63,8 @@ Public Class frmMSEPlots
         ' Display Groups
         Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
         If cmd IsNot Nothing Then
-            cmd.AddControl(Me.m_btnShowHide)
+            AddHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
         End If
-
-        AddHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
 
         Me.m_rbHisto.Tag = eMSEPlotTypes.Histogram
         Me.m_rbValues.Tag = eMSEPlotTypes.Values
@@ -101,10 +99,9 @@ Public Class frmMSEPlots
         ' Show/Hide Groups
         Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cShowHideItemsCommand.COMMAND_NAME)
         If cmd IsNot Nothing Then
-            cmd.RemoveControl(Me.m_btnShowHide)
+            RemoveHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
         End If
 
-        RemoveHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
         MyBase.OnFormClosed(e)
 
     End Sub
@@ -203,8 +200,8 @@ Public Class frmMSEPlots
     End Sub
 
     Private Sub onDataTypeCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-                Handles m_rbGroupBiomass.CheckedChanged, m_rbGroupCatch.CheckedChanged, _
-                        m_rbFleetValue.CheckedChanged, m_rbEffort.CheckedChanged, m_rbBioEst.CheckedChanged, _
+                Handles m_rbGroupBiomass.CheckedChanged, m_rbGroupCatch.CheckedChanged,
+                        m_rbFleetValue.CheckedChanged, m_rbEffort.CheckedChanged, m_rbBioEst.CheckedChanged,
                         m_rbTotFleetValue.CheckedChanged, m_rbFComparison.CheckedChanged
 
         ' Ignore creation-time events
