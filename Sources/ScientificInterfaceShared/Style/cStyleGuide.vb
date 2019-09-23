@@ -1913,14 +1913,15 @@ Namespace Style
                                     Me.FleetVisible(CInt(fleet), preset) = False
                                 End If
                             Next
-                        End If
-                        If (String.Compare(nameDef, preset, True) = 0) Then
-                            Me.m_dtItemVisibilityPresets(preset).IsDefault = True
+                            If (String.Compare(nameDef, preset, True) = 0) Then
+                                Me.m_dtItemVisibilityPresets(preset).IsDefault = True
+                            End If
                         End If
                     Next
-
                     Me.SelectedItemVisibilityPresetName = settings.ReadSetting("Global", "Selected", "")
 
+                    ' This call creates a default if not present
+                    Me.HasHiddenItems()
                 End If
 
             Catch ex As Exception
