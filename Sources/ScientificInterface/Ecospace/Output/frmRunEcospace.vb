@@ -293,7 +293,10 @@ Namespace Ecospace
                 Me.RefreshPlot()
             End If
             If ((changeType And cStyleGuide.eChangeType.GroupVisibility) = cStyleGuide.eChangeType.GroupVisibility) Then
+                Me.ShowItemMode = If(Not Me.StyleGuide.HasHiddenItems, eShowItemType.ShowAll, eShowItemType.ShowCustom)
                 Me.RefreshPlot()
+                Me.RefreshMap()
+                Me.UpdateControls()
             End If
         End Sub
 
@@ -467,7 +470,6 @@ Namespace Ecospace
         Private Sub OnDisplayGroupsInvoked(ByVal cmd As cCommand)
             Me.m_showitemMode = eShowItemType.ShowCustom
             Me.UpdateControls()
-            Me.RefreshMap()
         End Sub
 
 #End Region ' Events 

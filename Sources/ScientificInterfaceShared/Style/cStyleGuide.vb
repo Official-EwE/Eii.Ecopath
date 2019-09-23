@@ -1778,11 +1778,9 @@ Namespace Style
                 Return Me.m_strPreset
             End Get
             Set(value As String)
-                If (value <> Me.m_strPreset) Then
-                    Me.m_strPreset = value
-                    Preset(value)
-                    Me.FireChangeEvent(eChangeType.GroupVisibility Or eChangeType.FleetVisibility)
-                End If
+                Me.m_strPreset = value
+                Preset(value)
+                Me.ItemVisibilityChanged()
             End Set
         End Property
 
