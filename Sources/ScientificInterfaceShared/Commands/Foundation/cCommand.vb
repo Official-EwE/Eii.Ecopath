@@ -218,9 +218,9 @@ Namespace Commands
         Public Property Parameter(name As String) As Object _
             Implements ICommand.Parameter
             Get
-                If (String.IsNullOrWhiteSpace(name)) Then Return "?"
+                If (String.IsNullOrWhiteSpace(name)) Then Return Nothing
                 name = name.ToLower()
-                If Not Me.m_dicParms.ContainsKey(name) Then Return "?"
+                If Not Me.m_dicParms.ContainsKey(name) Then Return Nothing
                 Return Me.m_dicParms(name)
             End Get
             Set(value As Object)
