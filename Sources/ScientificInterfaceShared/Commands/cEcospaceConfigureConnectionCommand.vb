@@ -36,9 +36,6 @@ Namespace Commands
     Public Class cEcospaceConfigureConnectionCommand
         Inherits cCommand
 
-        Private m_layer As cEcospaceLayer = Nothing
-        Private m_conn As SpatialData.cSpatialDataConnection = Nothing
-
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
         ''' -----------------------------------------------------------------------
@@ -61,9 +58,11 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal layer As cEcospaceLayer, _
                                     Optional ByVal conn As SpatialData.cSpatialDataConnection = Nothing)
-            Me.m_layer = layer
+            Me.Layer = layer
+            Me.Connection = conn
             MyBase.Invoke()
-            Me.m_layer = Nothing
+            Me.Layer = Nothing
+            Me.Connection = Nothing
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -72,10 +71,13 @@ Namespace Commands
         ''' if any.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Layer() As cEcospaceLayer
+        Public Property Layer() As cEcospaceLayer
             Get
-                Return Me.m_layer
+                Return DirectCast(Me.Parameter("Layer"), cEcospaceLayer)
             End Get
+            Set(value As cEcospaceLayer)
+                Me.Parameter("Layer") = value
+            End Set
         End Property
 
         ''' -------------------------------------------------------------------
@@ -83,10 +85,13 @@ Namespace Commands
         ''' Get the <see cref="SpatialData.cSpatialDataConnection"/> to edit, if any.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Connection As SpatialData.cSpatialDataConnection
+        Public Property Connection As SpatialData.cSpatialDataConnection
             Get
-                Return Me.m_conn
+                Return DirectCast(Me.Parameter("Connection"), SpatialData.cSpatialDataConnection)
             End Get
+            Private Set(value As SpatialData.cSpatialDataConnection)
+                Me.Parameter("Connection") = value
+            End Set
         End Property
 
     End Class

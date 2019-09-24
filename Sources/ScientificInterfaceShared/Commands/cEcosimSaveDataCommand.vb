@@ -37,8 +37,6 @@ Namespace Commands
     Public Class cEcosimSaveDataCommand
         Inherits cCommand
 
-        Private m_results As cEcosimResultWriter.eResultTypes() = Nothing
-
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
         ''' <example>
@@ -71,9 +69,8 @@ Namespace Commands
         ''' <param name="results">Optional array of results to output.</param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(Optional ByVal results As cEcosimResultWriter.eResultTypes() = Nothing)
-            Me.m_results = results
+            Me.Results = results
             MyBase.Invoke()
-            Me.m_results = Nothing
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -85,10 +82,13 @@ Namespace Commands
         ''' Note that the value returned here is only valid while the command is invoking.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Results() As cEcosimResultWriter.eResultTypes()
+        Public Property Results() As cEcosimResultWriter.eResultTypes()
             Get
-                Return Me.m_results
+                Return DirectCast(Me.Parameter("Results"), cEcosimResultWriter.eResultTypes())
             End Get
+            Private Set(value As cEcosimResultWriter.eResultTypes())
+                Me.Parameter("Results") = value
+            End Set
         End Property
 
     End Class
