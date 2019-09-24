@@ -51,6 +51,97 @@ Namespace Style
     Public Class cStyleGuide
         Implements IDisposable
 
+#Region " Private classes "
+
+        Private Class cItemVisibilityPreset
+
+            ' -- group visibility --
+            ''' <summary>List of indexes of groups to hide.</summary>
+            Private m_lHiddenGroups As New List(Of Integer)
+            ''' <summary>List of indexes of fleets to hide.</summary>
+            Private m_lHiddenFleets As New List(Of Integer)
+
+            Public Sub New(bIsDefault As Boolean)
+                Me.IsDefault = bIsDefault
+            End Sub
+
+            Public Property IsDefault As Boolean
+
+            Public Property GroupVisible(ByVal iEcopathGroupID As Integer) As Boolean
+                Get
+                    ' Return whether group is not hidden
+                    Return (Me.m_lHiddenGroups.IndexOf(iEcopathGroupID) = -1)
+                End Get
+                Set(ByVal bVisible As Boolean)
+
+                    Me.IsChanged = False
+
+                    If bVisible Then
+                        ' Remove group from hidden list, if applicable
+                        If (Me.m_lHiddenGroups.IndexOf(iEcopathGroupID) <> -1) Then
+                            Me.m_lHiddenGroups.Remove(iEcopathGroupID)
+                            Me.IsChanged = True
+                        End If
+                    Else
+                        ' Add group to hidden list, if applicable
+                        If (Me.m_lHiddenGroups.IndexOf(iEcopathGroupID) = -1) Then
+                            Me.m_lHiddenGroups.Add(iEcopathGroupID)
+                            Me.IsChanged = True
+                        End If
+                    End If
+
+                End Set
+            End Property
+
+            Public Property FleetVisible(ByVal iEcopathFleetID As Integer) As Boolean
+                Get
+                    ' Return whether fleet is not hidden
+                    Return (Me.m_lHiddenFleets.IndexOf(iEcopathFleetID) = -1)
+                End Get
+                Set(ByVal bVisible As Boolean)
+
+                    Me.IsChanged = False
+
+                    If bVisible Then
+                        ' Remove fleet from hidden list, if applicable
+                        If (Me.m_lHiddenFleets.IndexOf(iEcopathFleetID) <> -1) Then
+                            Me.m_lHiddenFleets.Remove(iEcopathFleetID)
+                            Me.IsChanged = True
+                        End If
+                    Else
+                        ' Add fleet to hidden list, if applicable
+                        If (Me.m_lHiddenFleets.IndexOf(iEcopathFleetID) = -1) Then
+                            Me.m_lHiddenFleets.Add(iEcopathFleetID)
+                            Me.IsChanged = True
+                        End If
+                    End If
+
+                End Set
+            End Property
+
+            Public Sub Reset()
+                Me.m_lHiddenFleets.Clear()
+                Me.m_lHiddenGroups.Clear()
+            End Sub
+
+            Public Property IsChanged As Boolean = False
+
+            Public Function HasHiddenItems() As Boolean
+                Return ((Me.m_lHiddenFleets.Count + Me.m_lHiddenGroups.Count) > 0)
+            End Function
+
+            Friend Function HiddenGroups() As List(Of Integer)
+                Return Me.m_lHiddenGroups
+            End Function
+
+            Friend Function HiddenFleets() As List(Of Integer)
+                Return Me.m_lHiddenFleets
+            End Function
+
+        End Class
+
+#End Region ' Private clases 
+
 #Region " Private bits "
 
         Private m_core As cCore = Nothing
@@ -1767,11 +1858,19 @@ Namespace Style
             Return My.Resources.GENERIC_VALUE_ALL
         End Function
 
+        Private m_strPreset As String = ""
+
+        Private Function Preset(str As String) As cItemVisibilityPreset
+            If String.IsNullOrWhiteSpace(str) Then str = Me.FindDefaultPresetName()
+            If Not Me.m_dtItemVisibilityPresets.ContainsKey(str) Then
+                Me.m_dtItemVisibilityPresets(str) = New cItemVisibilityPreset(Me.m_dtItemVisibilityPresets.Count < 2)
+            End If
+            Return Me.m_dtItemVisibilityPresets(str)
+        End Function
+
         Public Function ItemVisibilityPresetNames() As String()
             Return Me.m_dtItemVisibilityPresets.Keys.ToArray()
         End Function
-
-        Private m_strPreset As String = ""
 
         Public ReadOnly Property IsItemVisibilityPresetDefault(name As String) As Boolean
             Get
@@ -1804,14 +1903,6 @@ Namespace Style
             End If
             Me.SelectedItemVisibilityPresetName = Me.FindDefaultPresetName
         End Sub
-
-        Public Function Preset(str As String) As cItemVisibilityPreset
-            If String.IsNullOrWhiteSpace(str) Then str = Me.FindDefaultPresetName()
-            If Not Me.m_dtItemVisibilityPresets.ContainsKey(str) Then
-                Me.m_dtItemVisibilityPresets(str) = New cItemVisibilityPreset(Me.m_dtItemVisibilityPresets.Count < 2)
-            End If
-            Return Me.m_dtItemVisibilityPresets(str)
-        End Function
 
         ''' <summary>
         ''' 
