@@ -34,17 +34,6 @@ Namespace Commands
     Public Class cExecuteCommand
         Inherits cCommand
 
-#Region " Private vars "
-
-        ' ToDo: use eCoreComponentType, eMessageImportance here?
-
-        ''' <summary>Command to execute.</summary>
-        Private m_strCommand As String = ""
-        ''' <summary>Dictionary of execution parameters.</summary>
-        Private m_dictParams As New Dictionary(Of String, String)
-
-#End Region ' Private vars
-
         Public Sub New(ByVal cmdh As cCommandHandler)
             MyBase.New(cmdh, COMMAND_NAME)
         End Sub
@@ -62,34 +51,12 @@ Namespace Commands
         ''' </summary>
         ''' <remarks>The command string is converted to LOWER CASE.</remarks>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Command() As String
+        Public Property Command() As String
             Get
-                Return Me.m_strCommand
+                Return CStr(Me.Parameter("Command"))
             End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set parameters in for this command.
-        ''' </summary>
-        ''' <param name="strName">Name of the parameter.</param>
-        ''' <remarks>Parameter names and values are converted to LOWER CASE.</remarks>
-        ''' -----------------------------------------------------------------------
-        Public Property Parameter(ByVal strName As String) As String
-            Get
-                strName = strName.ToLower()
-                If Me.m_dictParams.ContainsKey(strName) Then
-                    Return Me.m_dictParams(strName)
-                End If
-                Return ""
-            End Get
-            Set(ByVal strValue As String)
-                strName = strName.ToLower()
-                If Me.m_dictParams.ContainsKey(strName) Then
-                    Me.m_dictParams(strName) = strValue
-                Else
-                    Me.m_dictParams.Add(strName, strValue)
-                End If
+            Private Set(value As String)
+                Me.Parameter("Command") = value
             End Set
         End Property
 
@@ -105,14 +72,11 @@ Namespace Commands
             Debug.Assert(Not String.IsNullOrEmpty(strCommand))
 
             ' Store command
-            Me.m_strCommand = strCommand.ToLower()
+            Me.Command = strCommand.ToLower()
             ' Invoke!
             MyBase.Invoke()
-
             ' Clear command values to prepare it for next usage
-            Me.m_strCommand = ""
-            Me.m_dictParams.Clear()
-
+            Me.Command = ""
         End Sub
 
 #End Region ' Public interfaces

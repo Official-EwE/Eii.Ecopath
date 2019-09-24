@@ -119,22 +119,19 @@ Namespace Ecosim
             Dim names As String() = sg.ItemVisibilityPresetNames
             Dim prSel As cPresetData = Nothing
 
-            For i As Integer = 0 To names.Count - 1
-                Dim pr As cItemVisibilityPreset = sg.Preset(names(i))
-                If (pr IsNot Nothing) Then
-                    ' Create snapshot of preset
-                    Dim prNew As New cPresetData(names(i), pr.IsDefault)
-                    For j As Integer = 1 To core.nGroups
-                        prNew.GroupVisible(j - 1) = pr.GroupVisible(core.EcoPathGroupInputs(j).DBID)
-                    Next
-                    For j As Integer = 1 To core.nFleets
-                        prNew.FleetVisible(j - 1) = pr.FleetVisible(core.EcopathFleetInputs(j).DBID)
-                    Next
-                    Me.m_lPresets.Add(prNew)
-                    ' Is selected?
-                    If (names(i) = sg.SelectedItemVisibilityPresetName) Then
-                        prSel = prNew
-                    End If
+            For i As Integer = 1 To names.Count - 1
+                ' Create snapshot of preset
+                Dim prNew As New cPresetData(names(i), sg.IsItemVisibilityPresetDefault(names(i)))
+                For j As Integer = 1 To core.nGroups
+                    prNew.GroupVisible(j - 1) = sg.GroupVisible(j)
+                Next
+                For j As Integer = 1 To core.nFleets
+                    prNew.FleetVisible(j - 1) = sg.FleetVisible(j)
+                Next
+                Me.m_lPresets.Add(prNew)
+                ' Is selected?
+                If (names(i) = sg.SelectedItemVisibilityPresetName) Then
+                    prSel = prNew
                 End If
             Next
             If (prSel Is Nothing) Then prSel = Me.m_lPresets(0)
@@ -247,12 +244,12 @@ Namespace Ecosim
                 pr = Me.m_lPresets(i)
                 For iGroup As Integer = 1 To core.nGroups
                     Dim grp As cCoreGroupBase = core.EcoPathGroupInputs(iGroup)
-                    sg.GroupVisible(grp.DBID, pr.Name) = pr.GroupVisible(iGroup - 1)
+                    sg.GroupVisible(iGroup, pr.Name) = pr.GroupVisible(iGroup - 1)
                 Next
 
                 For iFleet As Integer = 1 To core.nFleets
                     Dim flt As cEcopathFleetInput = core.EcopathFleetInputs(iFleet)
-                    sg.FleetVisible(flt.DBID, pr.Name) = pr.FleetVisible(iFleet - 1)
+                    sg.FleetVisible(iFleet, pr.Name) = pr.FleetVisible(iFleet - 1)
                 Next
             Next
 
