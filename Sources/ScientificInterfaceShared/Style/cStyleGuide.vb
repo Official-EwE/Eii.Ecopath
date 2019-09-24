@@ -1773,6 +1773,15 @@ Namespace Style
 
         Private m_strPreset As String = ""
 
+        Public ReadOnly Property IsItemVisibilityPresetDefault(name As String) As Boolean
+            Get
+                If Me.m_dtItemVisibilityPresets.ContainsKey(name) Then
+                    Return Me.m_dtItemVisibilityPresets(name).IsDefault
+                End If
+                Return False
+            End Get
+        End Property
+
         Public Property SelectedItemVisibilityPresetName As String
             Get
                 Return Me.m_strPreset
@@ -1807,21 +1816,20 @@ Namespace Style
         ''' <summary>
         ''' 
         ''' </summary>
-        ''' <param name="iGroupID">To allow persistent storage of presets, this system must
-        ''' start using DBIDs instead of Indices</param>
+        ''' <param name="iGroup">One-based group index</param>
         ''' <returns></returns>
-        Public Property GroupVisible(ByVal iGroupID As Integer, Optional strPreset As String = "") As Boolean
+        Public Property GroupVisible(ByVal iGroup As Integer, Optional strPreset As String = "") As Boolean
             Get
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
                 Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
                 If (preset Is Nothing) Then Return True
-                Return preset.GroupVisible(iGroupID)
+                Return preset.GroupVisible(Me.m_core.EcoPathGroupInputs(iGroup).DBID)
             End Get
             Set(ByVal bVisible As Boolean)
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
                 Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
                 If (preset IsNot Nothing) Then
-                    preset.GroupVisible(iGroupID) = bVisible
+                    preset.GroupVisible(Me.m_core.EcoPathGroupInputs(iGroup).DBID) = bVisible
                     If preset.IsChanged Then Me.FireChangeEvent(eChangeType.GroupVisibility)
                 End If
             End Set
@@ -1830,21 +1838,20 @@ Namespace Style
         ''' <summary>
         ''' 
         ''' </summary>
-        ''' <param name="iFleetID">To allow persistent storage of presets, this system must
-        ''' start using DBIDs instead of Indices</param>
+        ''' <param name="iFleet">One-based fleet index.</param>
         ''' <returns></returns>
-        Public Property FleetVisible(ByVal iFleetID As Integer, Optional strPreset As String = "") As Boolean
+        Public Property FleetVisible(ByVal iFleet As Integer, Optional strPreset As String = "") As Boolean
             Get
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
                 Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
                 If (preset Is Nothing) Then Return True
-                Return preset.FleetVisible(iFleetID)
+                Return preset.FleetVisible(Me.m_core.EcopathFleetInputs(iFleet).DBID)
             End Get
             Set(ByVal bVisible As Boolean)
                 If String.IsNullOrWhiteSpace(strPreset) Then strPreset = Me.SelectedItemVisibilityPresetName
                 Dim preset As cItemVisibilityPreset = Me.Preset(strPreset)
                 If (preset IsNot Nothing) Then
-                    preset.FleetVisible(iFleetID) = bVisible
+                    preset.FleetVisible(Me.m_core.EcopathFleetInputs(iFleet).DBID) = bVisible
                     If preset.IsChanged Then Me.FireChangeEvent(eChangeType.FleetVisibility)
                 End If
             End Set
