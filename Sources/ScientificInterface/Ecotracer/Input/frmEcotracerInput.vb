@@ -42,7 +42,6 @@ Namespace Ecotracer
         Private m_fpCInflowEnv As cEwEFormatProvider = Nothing
         Private m_fpCOutflowEnv As cEwEFormatProvider = Nothing
         Private m_fpCDecayEnv As cEwEFormatProvider = Nothing
-        Private m_fpInflowForceNumberEnv As cEwEFormatProvider = Nothing
 
         Private m_fpMAxTS As cEwEFormatProvider = Nothing
 
@@ -66,9 +65,8 @@ Namespace Ecotracer
 
             Debug.Assert(Me.UIContext IsNot Nothing)
 
-            Dim ecotracerModelParams As cEcotracerModelParameters = Me.UIContext.Core.EcotracerModelParameters()
+            Dim ecotracerModelParams As cEcotracerModelParameters = Me.Core.EcotracerModelParameters()
 
-            Me.m_fpInflowForceNumberEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbEnvInflowFF, ecotracerModelParams, eVarNameFlags.ConForceNumber)
             Me.m_fpCZeroEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCZeroEnv, ecotracerModelParams, eVarNameFlags.CZero)
             Me.m_fpCDecayEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCDecayRateEnv, ecotracerModelParams, eVarNameFlags.CPhysicalDecayRate)
             Me.m_fpCInflowEnv = New cPropertyFormatProvider(Me.UIContext, Me.m_tbCInflowEnv, ecotracerModelParams, eVarNameFlags.CInflow)
@@ -78,7 +76,7 @@ Namespace Ecotracer
             Me.m_grid.UIContext = Me.UIContext
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.ShapesManager}
-            Me.UpdateFFFormatProviders()
+            Me.UpdateForcingControls()
 
         End Sub
 
@@ -88,7 +86,6 @@ Namespace Ecotracer
             Me.m_fpCInflowEnv.Release()
             Me.m_fpCOutflowEnv.Release()
             Me.m_fpCZeroEnv.Release()
-            Me.m_fpInflowForceNumberEnv.Release()
             Me.m_fpMAxTS.Release()
 
             Me.m_grid.UIContext = Nothing
@@ -98,23 +95,26 @@ Namespace Ecotracer
         End Sub
 
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
-            Me.UpdateFFFormatProviders()
+            Me.UpdateForcingControls()
         End Sub
 
 #End Region ' Events
 
 #Region " Internals "
 
-        Private Sub UpdateFFFormatProviders()
-            ' Assemble list of FFs
-            Dim ffm As cForcingFunctionShapeManager = Me.UIContext.Core.ForcingShapeManager()
-            Dim aItems(ffm.Count) As Object
+        Private Sub UpdateForcingControls()
 
-            aItems(0) = SHaredResources.GENERIC_VALUE_NONE
+            Dim ecotracerModelParams As cEcotracerModelParameters = Me.Core.EcotracerModelParameters()
+            Dim ffm As cForcingFunctionShapeManager = Me.Core.ForcingShapeManager()
+            Dim sel As Integer = 0
+
+            Me.m_cmbEnvInflowFF.Items.Clear()
+            Me.m_cmbEnvInflowFF.Items.Add(SharedResources.GENERIC_VALUE_NONE)
             For iFF As Integer = 0 To ffm.Count - 1
-                aItems(iFF + 1) = ffm(iFF)
+                Dim ff As cForcingFunction = ffm(iFF)
+                Me.m_cmbEnvInflowFF.Items.Add(ff)
             Next
-            Me.m_fpInflowForceNumberEnv.Items = aItems
+            Me.m_cmbEnvInflowFF.SelectedIndex = ecotracerModelParams.ConForceNumber
         End Sub
 
         Private Sub m_btSelectFile_Click(sender As Object, e As EventArgs) Handles m_btSelectFile.Click
@@ -134,6 +134,18 @@ Namespace Ecotracer
         Private Sub m_btClearFile_Click(sender As Object, e As EventArgs) Handles m_btClearFile.Click
             Me.Core.EcospaceTimeSeriesManager.Clear()
             Me.m_lbConcentrationFile.Text = ""
+        End Sub
+
+        Private Sub m_cmbEnvInflowFF_Format(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbEnvInflowFF.Format
+            If (TypeOf e.ListItem Is cForcingFunction) Then
+                Dim fmt As New cShapeDataFormatter()
+                e.Value = fmt.ToString(e.ListItem)
+            End If
+        End Sub
+
+        Private Sub m_cmbEnvInflowFF_SelectedIndexChanged(sender As Object, e As EventArgs) Handles m_cmbEnvInflowFF.SelectedIndexChanged
+            Dim ecotracerModelParams As cEcotracerModelParameters = Me.Core.EcotracerModelParameters()
+            ecotracerModelParams.ConForceNumber = Me.m_cmbEnvInflowFF.SelectedIndex
         End Sub
 
 #End Region ' Internals
