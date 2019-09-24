@@ -57,11 +57,9 @@ Namespace Ecosim
         Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
         Private WithEvents m_tsFlowDiagram As cEwEToolstrip
         Private WithEvents m_pgFlowDiagram As System.Windows.Forms.PropertyGrid
-        Private WithEvents m_tsmiSave As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tsmiLoad As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnExport As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnImport As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiSaveToImage As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tss1 As System.Windows.Forms.ToolStripSeparator
-        Private WithEvents m_tslLayout As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tss2 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsmiSettings As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tbxTimeStep As TextBox
@@ -144,6 +142,10 @@ Namespace Ecosim
             MyBase.OnLoad(e)
 
             If (Me.UIContext Is Nothing) Then Return
+
+            Me.m_tsbnImport.Image = SharedResources.ImportHS
+            Me.m_tsbnExport.Image = SharedResources.ExportHS
+            Me.m_tsmiResetLayout.Image = SharedResources.ResetHS
 
             Me.m_data = New cEcosimFlowDiagramData(Me.UIContext)
             Me.m_tree = New cEcosimTreeFlowDiagramRenderer(Me.m_data)
@@ -593,7 +595,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnLoadLayout(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiLoad.Click
+            Handles m_tsbnImport.Click
 
             Dim ifData As cXMLSettings = Nothing
             Dim cmdh As cCommandHandler = Me.CommandHandler
@@ -617,7 +619,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub OnSaveLayout(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsmiSave.Click
+            Handles m_tsbnExport.Click
 
             Dim ifData As cXMLSettings = Nothing
             Dim cmdh As cCommandHandler = Me.CommandHandler
@@ -1079,12 +1081,10 @@ Namespace Ecosim
             Me.m_tsmiSettings = New System.Windows.Forms.ToolStripButton()
             Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
-            Me.m_tss1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsmiSaveToBatchImage = New System.Windows.Forms.ToolStripButton()
             Me.m_tss3 = New System.Windows.Forms.ToolStripSeparator()
-            Me.m_tslLayout = New System.Windows.Forms.ToolStripLabel()
-            Me.m_tsmiLoad = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsmiSave = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnImport = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiResetLayout = New System.Windows.Forms.ToolStripButton()
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1211,7 +1211,7 @@ Namespace Ecosim
             'm_tsFlowDiagram
             '
             Me.m_tsFlowDiagram.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tsmiSaveToBatchImage, Me.m_tss3, Me.m_tslLayout, Me.m_tsmiLoad, Me.m_tsmiSave, Me.m_tsmiResetLayout})
+            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSettings, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tsmiSaveToBatchImage, Me.m_tss3, Me.m_tsbnImport, Me.m_tsbnExport, Me.m_tsmiResetLayout})
             resources.ApplyResources(Me.m_tsFlowDiagram, "m_tsFlowDiagram")
             Me.m_tsFlowDiagram.Name = "m_tsFlowDiagram"
             Me.m_tsFlowDiagram.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -1234,11 +1234,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tsmiSaveToImage, "m_tsmiSaveToImage")
             Me.m_tsmiSaveToImage.Name = "m_tsmiSaveToImage"
             '
-            'm_tss1
-            '
-            Me.m_tss1.Name = "m_tss1"
-            resources.ApplyResources(Me.m_tss1, "m_tss1")
-            '
             'm_tsmiSaveToBatchImage
             '
             Me.m_tsmiSaveToBatchImage.AutoToolTip = False
@@ -1250,22 +1245,17 @@ Namespace Ecosim
             Me.m_tss3.Name = "m_tss3"
             resources.ApplyResources(Me.m_tss3, "m_tss3")
             '
-            'm_tslLayout
+            'm_tsbnImport
             '
-            Me.m_tslLayout.Name = "m_tslLayout"
-            resources.ApplyResources(Me.m_tslLayout, "m_tslLayout")
+            Me.m_tsbnImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnImport, "m_tsbnImport")
+            Me.m_tsbnImport.Name = "m_tsbnImport"
             '
-            'm_tsmiLoad
+            'm_tsbnExport
             '
-            Me.m_tsmiLoad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            resources.ApplyResources(Me.m_tsmiLoad, "m_tsmiLoad")
-            Me.m_tsmiLoad.Name = "m_tsmiLoad"
-            '
-            'm_tsmiSave
-            '
-            Me.m_tsmiSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            resources.ApplyResources(Me.m_tsmiSave, "m_tsmiSave")
-            Me.m_tsmiSave.Name = "m_tsmiSave"
+            Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
+            Me.m_tsbnExport.Name = "m_tsbnExport"
             '
             'm_tsmiResetLayout
             '

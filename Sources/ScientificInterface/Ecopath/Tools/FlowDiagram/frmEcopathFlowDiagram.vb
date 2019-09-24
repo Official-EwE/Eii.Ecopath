@@ -26,6 +26,7 @@ Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwECore.Style
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -54,14 +55,17 @@ Namespace Ecopath.Controls.FlowDiagram
         Private WithEvents m_tsFlowDiagram As cEwEToolstrip
         Private WithEvents m_pgFlowDiagram As System.Windows.Forms.PropertyGrid
         Private WithEvents m_tsmiSaveToImage As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tss1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tss2 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tss1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsmiSettings As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiResetLayout As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiFont As ToolStripButton
         Private WithEvents m_tslData As ToolStripLabel
         Friend WithEvents m_tscmbData As ToolStripComboBox
-        Friend WithEvents m_tss3 As ToolStripSeparator
+        Private WithEvents m_tss3 As ToolStripSeparator
+        Private WithEvents m_tss4 As ToolStripSeparator
+        Private WithEvents m_tsbnImport As ToolStripButton
+        Private WithEvents m_tsbnExport As ToolStripButton
         Private WithEvents m_tsmiCenterLabels As ToolStripButton
 
 #End Region ' Private variables
@@ -93,6 +97,9 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+
+            Me.m_tsbnImport.Image = SharedResources.ImportHS
+            Me.m_tsbnExport.Image = SharedResources.ExportHS
 
             Me.m_tsmiFont.Image = SharedResources.CaseSensitive
             Me.m_tsmiResetLayout.Image = SharedResources.ResetHS
@@ -252,6 +259,52 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Commands "
 
+        Private Sub OnLoadFromFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnImport.Click
+
+            Dim ifData As cXMLSettings = Nothing
+            Dim cmdh As cCommandHandler = Me.CommandHandler
+            Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+
+            ' ToDo: Globalize this
+            cmdFO.Invoke(Me.FileName, SharedResources.FILEFILTER_FLOWDIAGRAM, 1, "Select flow diagram layout to load")
+
+            If (cmdFO.Result = DialogResult.OK) Then
+                Try
+                    ifData = New cXMLSettings()
+                    ifData.LoadFromFile(cmdFO.FileName)
+                    m_doodler.Load(ifData, Me.m_pbFlowDiagram)
+                Catch ex As Exception
+                    Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message),
+                                            eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+                    Me.Core.Messages.SendMessage(msg)
+                End Try
+            End If
+
+        End Sub
+
+        Private Sub OnSaveToFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnExport.Click
+
+            Dim ifData As cXMLSettings = Nothing
+            Dim cmdh As cCommandHandler = Me.CommandHandler
+            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+
+            cmdFS.Invoke(Me.FileName, SharedResources.FILEFILTER_FLOWDIAGRAM, 1)
+
+            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
+                Try
+                    ifData = New cXMLSettings()
+                    ifData.LoadFromFile(cmdFS.FileName)
+                    m_doodler.Save(ifData, Me.m_pbFlowDiagram)
+                Catch ex As Exception
+                    Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message),
+                                            eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+                    Me.Core.Messages.SendMessage(msg)
+                End Try
+            End If
+        End Sub
+
         Private Sub OnCenterLabels(sender As Object, e As EventArgs) _
             Handles m_tsmiCenterLabels.Click
 
@@ -406,12 +459,15 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_pgFlowDiagram = New System.Windows.Forms.PropertyGrid()
             Me.m_tsFlowDiagram = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsmiSettings = New System.Windows.Forms.ToolStripButton()
-            Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tss1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tslData = New System.Windows.Forms.ToolStripLabel()
             Me.m_tscmbData = New System.Windows.Forms.ToolStripComboBox()
-            Me.m_tss1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
             Me.m_tss3 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbnImport = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
+            Me.m_tss4 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsmiFont = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiCenterLabels = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiResetLayout = New System.Windows.Forms.ToolStripButton()
@@ -451,7 +507,7 @@ Namespace Ecopath.Controls.FlowDiagram
             'm_tsFlowDiagram
             '
             Me.m_tsFlowDiagram.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSettings, Me.m_tss2, Me.m_tslData, Me.m_tscmbData, Me.m_tss1, Me.m_tsmiSaveToImage, Me.m_tss3, Me.m_tsmiFont, Me.m_tsmiCenterLabels, Me.m_tsmiResetLayout})
+            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiSettings, Me.m_tss1, Me.m_tslData, Me.m_tscmbData, Me.m_tss2, Me.m_tsmiSaveToImage, Me.m_tss3, Me.m_tsbnImport, Me.m_tsbnExport, Me.m_tss4, Me.m_tsmiFont, Me.m_tsmiCenterLabels, Me.m_tsmiResetLayout})
             resources.ApplyResources(Me.m_tsFlowDiagram, "m_tsFlowDiagram")
             Me.m_tsFlowDiagram.Name = "m_tsFlowDiagram"
             Me.m_tsFlowDiagram.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -463,10 +519,10 @@ Namespace Ecopath.Controls.FlowDiagram
             resources.ApplyResources(Me.m_tsmiSettings, "m_tsmiSettings")
             Me.m_tsmiSettings.Name = "m_tsmiSettings"
             '
-            'm_tss2
+            'm_tss1
             '
-            Me.m_tss2.Name = "m_tss2"
-            resources.ApplyResources(Me.m_tss2, "m_tss2")
+            Me.m_tss1.Name = "m_tss1"
+            resources.ApplyResources(Me.m_tss1, "m_tss1")
             '
             'm_tslData
             '
@@ -479,13 +535,14 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_tscmbData.Name = "m_tscmbData"
             resources.ApplyResources(Me.m_tscmbData, "m_tscmbData")
             '
-            'm_tss1
+            'm_tss2
             '
-            Me.m_tss1.Name = "m_tss1"
-            resources.ApplyResources(Me.m_tss1, "m_tss1")
+            Me.m_tss2.Name = "m_tss2"
+            resources.ApplyResources(Me.m_tss2, "m_tss2")
             '
             'm_tsmiSaveToImage
             '
+            Me.m_tsmiSaveToImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsmiSaveToImage, "m_tsmiSaveToImage")
             Me.m_tsmiSaveToImage.Name = "m_tsmiSaveToImage"
             '
@@ -493,6 +550,23 @@ Namespace Ecopath.Controls.FlowDiagram
             '
             Me.m_tss3.Name = "m_tss3"
             resources.ApplyResources(Me.m_tss3, "m_tss3")
+            '
+            'm_tsbnImport
+            '
+            Me.m_tsbnImport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnImport, "m_tsbnImport")
+            Me.m_tsbnImport.Name = "m_tsbnImport"
+            '
+            'm_tsbnExport
+            '
+            Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnExport, "m_tsbnExport")
+            Me.m_tsbnExport.Name = "m_tsbnExport"
+            '
+            'm_tss4
+            '
+            Me.m_tss4.Name = "m_tss4"
+            resources.ApplyResources(Me.m_tss4, "m_tss4")
             '
             'm_tsmiFont
             '
