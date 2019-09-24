@@ -165,6 +165,9 @@ Public Class cEcotracerModelParameters
         End Set
     End Property
 
+    ''' <summary>
+    ''' Concentration forcing function number
+    ''' </summary>
     Public Property ConForceNumber() As Integer
         Get
             Return CInt(GetVariable(eVarNameFlags.ConForceNumber))
