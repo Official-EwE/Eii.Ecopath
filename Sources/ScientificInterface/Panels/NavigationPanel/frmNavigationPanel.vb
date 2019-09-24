@@ -155,7 +155,7 @@ Public Class frmNavigationPanel
         nodeModel = Me.m_nodecontroller.Add(SharedResources.HEADER_ECOPATH, "ndParameterization", eCoreExecutionState.EcopathLoaded, Nothing, eNodeImages.Ecopath)
         nodeInput = Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_INPUT, "ndEcopathInput", eCoreExecutionState.EcopathLoaded, Nothing, eNodeImages.Input, nodeModel)
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_INPUT_PARAMETERS, "ndModelParameters", eCoreExecutionState.EcopathLoaded, GetType(frmModelParameters), eNodeImages.Input, nodeInput, "Model description.htm")
-        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_INPUT_BASICINPUT, "ndBasicInput", eCoreExecutionState.EcopathLoaded, GetType(frmBasicInput), eNodeImages.Input, nodeInput, "Basic input.htm.htm", True)
+        Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_INPUT_BASICINPUT, "ndBasicInput", eCoreExecutionState.EcopathLoaded, GetType(frmBasicInput), eNodeImages.Input, nodeInput, "Basic input.htm", True)
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_INPUT_DIETCOMP, "ndDietComposition", eCoreExecutionState.EcopathLoaded, GetType(frmDietComp), eNodeImages.Input, nodeInput, "Diet composition.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_INPUT_DETRITUSFATE, "ndDetritusFate", eCoreExecutionState.EcopathLoaded, GetType(gridDetritusFate), eNodeImages.Input, nodeInput, "Detritus fate.htm")
         Me.m_nodecontroller.Add(My.Resources.LABEL_NAV_ECOPATH_INPUT_OTHERPRODUCTION, "ndOtherProduction", eCoreExecutionState.EcopathLoaded, GetType(gridOtherProduction), eNodeImages.Input, nodeInput, "Other production.htm")
