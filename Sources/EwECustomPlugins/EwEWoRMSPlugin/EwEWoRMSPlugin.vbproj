@@ -235,6 +235,10 @@
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
       <Name>EwEUtils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\ScientificInterfaceShared\ScientificInterfaceShared.vbproj">
+      <Project>{70af596e-7d27-4d39-bde7-89d4525bd60f}</Project>
+      <Name>ScientificInterfaceShared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
