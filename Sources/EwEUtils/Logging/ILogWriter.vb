@@ -71,7 +71,7 @@ Public Interface ILogWriter
     ''' <param name="theException">The exception to write</param>
     ''' <param name="strDetails">A detail providing context to the exception.</param>
     ''' -----------------------------------------------------------------------
-    Sub Write(ByVal theException As Exception, ByVal strDetails As String)
+    Sub Write(theException As Exception, strDetails As String)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -80,9 +80,9 @@ Public Interface ILogWriter
     ''' <param name="message">The message to write</param>
     ''' <param name="strDetails">A detail providing context to the message.</param>
     ''' -----------------------------------------------------------------------
-    Sub Write(ByVal message As IMessage, ByVal strDetails As String)
+    Sub Write(message As IMessage, strDetails As String)
 
-    Sub Write(ByVal command As ICommand)
+    Sub Write(command As ICommand)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -90,8 +90,8 @@ Public Interface ILogWriter
     ''' </summary>
     ''' <param name="msg">Message string to write.</param>
     ''' -----------------------------------------------------------------------
-    Sub Write(ByVal msg As String)
+    Sub Write(msg As String)
 
-    Sub Write(ByVal key As String, ByVal value As String)
+    Sub Write(nodename As String, key As String, value As String)
 
 End Interface

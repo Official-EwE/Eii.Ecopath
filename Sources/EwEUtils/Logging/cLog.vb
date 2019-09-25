@@ -175,11 +175,11 @@ Namespace Core
             ReleaseWriterLock()
         End Sub
 
-        Public Shared Sub Write(key As String, value As String, Optional level As eVerboseLevel = eVerboseLevel.Standard)
+        Public Shared Sub Write(key As String, value As String, Optional nodename As String = "Entry", Optional level As eVerboseLevel = eVerboseLevel.Standard)
             If (level > cLog.VerboseLevel) Then Return
             If Not AcquireWriterLock() Then Return
             Try
-                GetWriter().Write(key, value)
+                GetWriter().Write(nodename, key, value)
             Catch ex As Exception
 
             End Try

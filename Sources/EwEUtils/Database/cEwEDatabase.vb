@@ -3399,7 +3399,16 @@ Namespace Database
                     While reader.Read()
                         Me.m_strEwEversion = CStr(Me.ReadSafe(reader, "EwEVersion", ""))
                     End While
-                    If String.IsNullOrWhiteSpace(Me.m_strEwEversion) Then Me.m_strEwEversion = My.Resources.VERSION_ANCIENT
+
+                    ' If that didn't work
+                    If String.IsNullOrWhiteSpace(Me.m_strEwEversion) Then
+                        If (sVersion > 6.0 And sVersion < 7) Then
+                            ' ToDo: globalize this
+                            Me.m_strEwEversion = cStringUtils.Localize("db {0}", cStringUtils.FormatNumber(sVersion))
+                        Else
+                            Me.m_strEwEversion = My.Resources.VERSION_ANCIENT
+                        End If
+                    End If
 
                 Catch ex As Exception
                     Me.m_strEwEversion = "?"

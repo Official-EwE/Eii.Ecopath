@@ -864,7 +864,11 @@ Namespace Controls
                     ' Other data case
                     If (Not Me.m_lItems.Contains(objValue) And (Me.m_formatter Is Nothing)) Then
                         Me.m_lItems.Add(objValue)
-                        Me.m_lItems.Sort()
+                        Try
+                            Me.m_lItems.Sort()
+                        Catch ex As Exception
+                            Debug.Assert(False, ex.Message)
+                        End Try
                         ' Hmm
                         Me.Items = Me.Items
                     End If
