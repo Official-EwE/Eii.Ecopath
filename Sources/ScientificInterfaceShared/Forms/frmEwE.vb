@@ -292,6 +292,7 @@ Namespace Forms
                     Me.Icon = My.Resources.Ecopath0
             End Select
 
+            cLog.Write("Opening", Me.Text, "FormState", eVerboseLevel.Detailed)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -318,6 +319,8 @@ Namespace Forms
                 Me.Icon.Dispose()
                 Me.Icon = Nothing
             End If
+
+            cLog.Write("Closed", Me.Text, "FormState", eVerboseLevel.Detailed)
 
             MyBase.OnFormClosed(e)
 
