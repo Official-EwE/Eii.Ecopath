@@ -1917,6 +1917,8 @@ Public Class frmEwE6
         If t Is Nothing Then Return Nothing
 
         Try
+
+            Throw New Exception("PloP")
             classObject = Activator.CreateInstance(t)
 
             If TypeOf classObject Is DockContent Then
@@ -1964,10 +1966,11 @@ Public Class frmEwE6
             ' JS March 19: Form icons are now handled by frmEwE baseclass to ensure disposal
 
         Catch ex As Exception
-            Debug.Assert(False, "Creation of Form was not successful.")
             cLog.Write(ex, "frmEwE6.LoadFormFromType(" & t.ToString & ", " & strNavLink & ")")
 
-            ' ToDo: escalate to user
+            ' ToDo: localize this message
+            Me.SendMessage("An unexpected error occurred launching a requested interface. " & ex.Message,
+                           strHyperlink:="command:" & cBrowserCommand.COMMAND_NAME & "?URL=" & cLog.LogFile)
         End Try
 
         Return frmNew
@@ -3428,9 +3431,19 @@ Public Class frmEwE6
         ElseIf cStringUtils.BeginsWith(strURL, "command:", True) Then
             ' #No: Is command?
             Dim strCommand As String = strURL.Substring(8)
-            cmd = Me.UIContext.CommandHandler.GetCommand(strCommand)
-            ' Invoke command without any parameters
+            Dim bits() As String = strCommand.Split("?"c)
+            ' Get command name
+            cmd = Me.UIContext.CommandHandler.GetCommand(bits(0))
+            ' Did this work?
             If (cmd IsNot Nothing) Then
+                If (bits.Count = 2) Then
+                    For Each pv As String In bits(1).Split("&"c)
+                        Dim parm() As String = pv.Split("="c)
+                        If (parm.Count = 2) Then
+                            cmd.Parameter(parm(0)) = parm(1)
+                        End If
+                    Next
+                End If
                 cmd.Invoke()
             End If
         ElseIf cStringUtils.BeginsWith(strURL, "ewe-ecobase:", True) Then

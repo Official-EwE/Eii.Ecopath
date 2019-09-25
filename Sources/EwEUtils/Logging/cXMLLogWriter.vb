@@ -473,11 +473,11 @@ Namespace Core
 
         End Sub
 
-        Public Sub Write(key As String, value As String) Implements ILogWriter.Write
+        Public Sub Write(nodename As String, key As String, value As String) Implements ILogWriter.Write
 
             Try
                 If Me.Open() Then
-                    Me.WriteStartElement("Entry")
+                    Me.WriteStartElement(nodename)
                     Me.WriteElementString(key, value)
                     Me.WriteEndElement() 'Log_Message
                     Me.WriteEndDocument()
