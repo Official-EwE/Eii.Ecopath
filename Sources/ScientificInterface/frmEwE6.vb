@@ -1964,7 +1964,10 @@ Public Class frmEwE6
             ' JS March 19: Form icons are now handled by frmEwE baseclass to ensure disposal
 
         Catch ex As Exception
-            Debug.Assert(False, "Creation of Form was not successful.  Please contact help: '" & strNavLink & "' threw exception " & ex.ToString)
+            Debug.Assert(False, "Creation of Form was not successful.")
+            cLog.Write(ex, "frmEwE6.LoadFormFromType(" & t.ToString & ", " & strNavLink & ")")
+
+            ' ToDo: escalate to user
         End Try
 
         Return frmNew
