@@ -124,6 +124,12 @@
     <value>or</value>
   </data>
   <data name="VERSION_ANCIENT" xml:space="preserve">
-    <value>5 or older</value>
+    <value>version 5 or older</value>
+  </data>
+  <data name="VERSION_NO" xml:space="preserve">
+    <value>version {0}</value>
+  </data>
+  <data name="VERSION_PREVIOUS" xml:space="preserve">
+    <value>a previous version</value>
   </data>
 </root>
