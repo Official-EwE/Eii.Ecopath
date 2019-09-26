@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Public Class CoreMessages
@@ -200,7 +200,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Model &apos;{0}&apos; was last accessed by EwE version {1}  and will be updated. Do you wish to create a backup copy of this model?.
+        '''  Looks up a localized string similar to Model &apos;{0}&apos; was last accessed by {1}  and will be updated. Do you wish to create a backup copy of this model?.
         '''</summary>
         Public Shared ReadOnly Property DATABASE_BACKUP_PROMPT() As String
             Get

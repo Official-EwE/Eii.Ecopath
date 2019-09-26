@@ -231,7 +231,7 @@ Description: {2}</value>
     <value>Run Ecosim</value>
   </data>
   <data name="PROMPT_DRIVERERROR" xml:space="preserve">
-    <value>This system does not have to required drivers installed to work with files of this type</value>
+    <value>This system does not have the required drivers installed to work with files of this type</value>
   </data>
   <data name="STATUS_ECOSPACE_RUNNING" xml:space="preserve">
     <value>Running Ecospace...</value>

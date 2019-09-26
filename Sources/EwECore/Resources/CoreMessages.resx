@@ -793,7 +793,7 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <comment>No Quota options have been selected</comment>
   </data>
   <data name="DATABASE_BACKUP_PROMPT" xml:space="preserve">
-    <value>Model '{0}' was last accessed by EwE version {1}  and will be updated. Do you wish to create a backup copy of this model?</value>
+    <value>Model '{0}' was last accessed by {1}  and will be updated. Do you wish to create a backup copy of this model?</value>
     <comment>{0}=file name; {1}=last used version</comment>
   </data>
   <data name="IMPORT_PROGRESS_ECOSIMFLEETS" xml:space="preserve">
