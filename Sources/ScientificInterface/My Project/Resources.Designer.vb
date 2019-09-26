@@ -3970,9 +3970,9 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PROMPT_DELETE_ECOSPACE_DATASET", resourceCulture)
             End Get
         End Property
-        
+
         '''<summary>
-        '''  Looks up a localized string similar to This system does not have to required drivers installed to work with files of this type.
+        '''  Looks up a localized string similar to This system does not have the required drivers installed to work with files of this type.
         '''</summary>
         Public ReadOnly Property PROMPT_DRIVERERROR() As String
             Get
