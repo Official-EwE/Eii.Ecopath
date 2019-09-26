@@ -1918,7 +1918,6 @@ Public Class frmEwE6
 
         Try
 
-            Throw New Exception("PloP")
             classObject = Activator.CreateInstance(t)
 
             If TypeOf classObject Is DockContent Then
