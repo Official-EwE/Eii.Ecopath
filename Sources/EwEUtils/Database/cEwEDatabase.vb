@@ -3397,14 +3397,13 @@ Namespace Database
                     ' Try EwE6 version first
                     Dim reader As IDataReader = Me.GetReader("SELECT EwEVersion FROM UpdateLog WHERE Version=" & sVersion)
                     While reader.Read()
-                        Me.m_strEwEversion = CStr(Me.ReadSafe(reader, "EwEVersion", ""))
+                        Me.m_strEwEversion = cStringUtils.Localize(My.Resources.VERSION_NO, CStr(Me.ReadSafe(reader, "EwEVersion", "")))
                     End While
 
                     ' If that didn't work
                     If String.IsNullOrWhiteSpace(Me.m_strEwEversion) Then
                         If (sVersion > 6.0 And sVersion < 7) Then
-                            ' ToDo: globalize this
-                            Me.m_strEwEversion = cStringUtils.Localize("db {0}", cStringUtils.FormatNumber(sVersion))
+                            Me.m_strEwEversion = My.Resources.VERSION_PREVIOUS
                         Else
                             Me.m_strEwEversion = My.Resources.VERSION_ANCIENT
                         End If

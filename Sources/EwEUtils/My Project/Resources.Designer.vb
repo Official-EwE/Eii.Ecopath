@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -79,11 +79,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to 5 or older.
+        '''  Looks up a localized string similar to version 5 or older.
         '''</summary>
         Friend ReadOnly Property VERSION_ANCIENT() As String
             Get
                 Return ResourceManager.GetString("VERSION_ANCIENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to version {0}.
+        '''</summary>
+        Friend ReadOnly Property VERSION_NO() As String
+            Get
+                Return ResourceManager.GetString("VERSION_NO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to a previous version.
+        '''</summary>
+        Friend ReadOnly Property VERSION_PREVIOUS() As String
+            Get
+                Return ResourceManager.GetString("VERSION_PREVIOUS", resourceCulture)
             End Get
         End Property
     End Module
