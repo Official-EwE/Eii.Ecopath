@@ -124,12 +124,12 @@
     <value>or</value>
   </data>
   <data name="VERSION_ANCIENT" xml:space="preserve">
-    <value>version 5 or older</value>
+    <value>Ecopath 5 or older</value>
   </data>
   <data name="VERSION_NO" xml:space="preserve">
-    <value>version {0}</value>
+    <value>EwE version {0}</value>
   </data>
   <data name="VERSION_PREVIOUS" xml:space="preserve">
-    <value>a previous version</value>
+    <value>a previous version of EwE 6</value>
   </data>
 </root>
