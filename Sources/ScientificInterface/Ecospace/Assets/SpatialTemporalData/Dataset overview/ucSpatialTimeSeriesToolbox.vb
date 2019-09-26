@@ -70,8 +70,9 @@ Namespace Ecospace.Controls
         Private m_iSelectedIndex As Integer = -1
         Private m_iSelectedTimeStep As Integer = -1
 
+        Private m_mhPath As cMessageHandler = Nothing
+        Private m_mhSim As cMessageHandler = Nothing
         Private m_mhSpace As cMessageHandler = Nothing
-        Private m_mhSpatial As cMessageHandler = Nothing
 
         Private m_manSets As cSpatialDataSetManager = Nothing
 
@@ -90,7 +91,7 @@ Namespace Ecospace.Controls
         End Sub
 
         'UserControl overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Try
                 If disposing AndAlso components IsNot Nothing Then
@@ -121,6 +122,10 @@ Namespace Ecospace.Controls
 
                 ' Clean up
                 If (Me.m_uic IsNot Nothing) Then
+                    Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhPath)
+                    Me.m_mhPath = Nothing
+                    Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhSim)
+                    Me.m_mhSim = Nothing
                     Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhSpace)
                     Me.m_mhSpace = Nothing
                 End If
@@ -130,9 +135,15 @@ Namespace Ecospace.Controls
 
                 ' Config
                 If (Me.m_uic IsNot Nothing) Then
+                    Me.m_mhPath = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_uic.SyncObject)
+                    Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhPath)
+                    Me.m_mhSim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_uic.SyncObject)
+                    Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhSim)
                     Me.m_mhSpace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.Any, Me.m_uic.SyncObject)
                     Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhSpace)
 #If DEBUG Then
+                    Me.m_mhPath.Name = "ucSpatialTimeSeriesToolbox::m_mhPath"
+                    Me.m_mhSim.Name = "ucSpatialTimeSeriesToolbox::m_mhSim"
                     Me.m_mhSpace.Name = "ucSpatialTimeSeriesToolbox::m_mhSpace"
 #End If
 
@@ -386,15 +397,21 @@ Namespace Ecospace.Controls
 
         Private Sub OnCoreMessage(ByRef msg As cMessage)
 
-            If (msg.Source <> eCoreComponentType.EcoSpace) Then Return
-
             Select Case msg.DataType
+                Case eDataTypes.EwEModel
+                    ' Respond to Ecopath first year changes
+                    If (msg.Type = eMessageType.DataValidation) Then
+                        Me.RefreshContent()
+                    End If
+                Case eDataTypes.TimeSeriesDataset
+                    ' Respond to Ecosim start year changes
+                    If (msg.Type = eMessageType.DataAddedOrRemoved) Then
+                        Me.Invalidate()
+                    End If
                 Case eDataTypes.EcospaceSpatialDataConnection
-                    If (msg.Type = eMessageType.DataModified) Then
+                    If (msg.Type = eMessageType.Progress) Then
                         Me.Invalidate()
-                    ElseIf (msg.Type = eMessageType.Progress) Then
-                        Me.Invalidate()
-                    ElseIf (msg.Type = eMessageType.DataAddedOrRemoved) Then
+                    Else
                         Me.RefreshContent()
                     End If
                 Case eDataTypes.EcoSpaceScenario, eDataTypes.EcospaceModelParameter
