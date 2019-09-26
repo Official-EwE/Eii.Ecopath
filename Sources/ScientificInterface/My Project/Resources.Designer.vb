@@ -22,7 +22,7 @@ Namespace My.Resources
     '''<summary>
     '''  A strongly-typed resource class, for looking up localized strings, etc.
     '''</summary>
-    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0"),  _
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
      Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
@@ -5497,6 +5497,15 @@ Namespace My.Resources
         Public ReadOnly Property TS_CONSTANTTOTALMORTALITY_REMARKS() As String
             Get
                 Return ResourceManager.GetString("TS_CONSTANTTOTALMORTALITY_REMARKS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EwE could not complete your request. If the problem persists, please email the EwE development team and attach the EwE log file.
+        '''</summary>
+        Public ReadOnly Property UI_ERROR_LAUNCHFORM() As String
+            Get
+                Return ResourceManager.GetString("UI_ERROR_LAUNCHFORM", resourceCulture)
             End Get
         End Property
         

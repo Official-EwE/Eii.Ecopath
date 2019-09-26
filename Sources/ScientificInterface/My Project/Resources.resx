@@ -2149,4 +2149,7 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="ECOSPACE_LAYERGROUP_IMPORTANCE" xml:space="preserve">
     <value>Importance</value>
   </data>
+  <data name="UI_ERROR_LAUNCHFORM" xml:space="preserve">
+    <value>EwE could not complete your request. If the problem persists, please email the EwE development team and attach the EwE log file</value>
+  </data>
 </root>

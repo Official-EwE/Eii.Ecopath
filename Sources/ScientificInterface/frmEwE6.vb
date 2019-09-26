@@ -1967,10 +1967,8 @@ Public Class frmEwE6
 
         Catch ex As Exception
             cLog.Write(ex, "frmEwE6.LoadFormFromType(" & t.ToString & ", " & strNavLink & ")")
-
-            ' ToDo: localize this message
-            Me.SendMessage("An unexpected error occurred launching a requested interface. " & ex.Message,
-                           strHyperlink:="command:" & cBrowserCommand.COMMAND_NAME & "?URL=" & cLog.LogFile)
+            ' Notify user
+            Me.SendMessage(My.Resources.UI_ERROR_LAUNCHFORM, eMessageImportance.Warning, strHyperlink:="command:" & cBrowserCommand.COMMAND_NAME & "?URL=" & cLog.LogFile)
         End Try
 
         Return frmNew
