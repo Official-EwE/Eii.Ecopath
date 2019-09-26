@@ -79,7 +79,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to version 5 or older.
+        '''  Looks up a localized string similar to Ecopath 5 or older.
         '''</summary>
         Friend ReadOnly Property VERSION_ANCIENT() As String
             Get
@@ -88,7 +88,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to version {0}.
+        '''  Looks up a localized string similar to EwE version {0}.
         '''</summary>
         Friend ReadOnly Property VERSION_NO() As String
             Get
@@ -97,7 +97,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to a previous version.
+        '''  Looks up a localized string similar to a previous version of EwE 6.
         '''</summary>
         Friend ReadOnly Property VERSION_PREVIOUS() As String
             Get
