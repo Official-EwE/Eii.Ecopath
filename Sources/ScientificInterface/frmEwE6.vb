@@ -1551,8 +1551,8 @@ Public Class frmEwE6
         Dim model As cEwEModel = Me.Core.EwEModel
         Dim bIsReadOnly As Boolean = False
 
-        If (Not String.IsNullOrWhiteSpace(Me.UIContext.Registration)) Then
-            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, cStringUtils.Localize(My.Resources.GENERIC_REGISTRATION, Me.UIContext.Registration))
+        If (Not String.IsNullOrWhiteSpace(Me.UIContext.Owner)) Then
+            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, cStringUtils.Localize(My.Resources.GENERIC_REGISTRATION, Me.UIContext.Owner))
         End If
 
         Me.m_tsModel.Path = Me.SelectedFileName

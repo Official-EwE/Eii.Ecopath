@@ -67,6 +67,12 @@ Friend Class cTreekLic
         Return lic.ExpirationDate
     End Function
 
+    Public Function Owner() As String
+        Dim lic As TreeksLicensingLibrary2.License = Me.License
+        If (lic Is Nothing) Then Return ""
+        Return lic.OwnerName
+    End Function
+
 #Region " Internals "
 
     Private ReadOnly Property License As TreeksLicensingLibrary2.License

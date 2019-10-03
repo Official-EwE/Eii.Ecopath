@@ -198,7 +198,7 @@ Namespace Controls
         ''' Get/set the name this version of EwE is registered to.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Registration As String = ""
+        Public Property Owner As String = ""
 
     End Class
 

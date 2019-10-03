@@ -34,6 +34,7 @@ Imports EwESpatialAssetsPlugin.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -47,12 +48,23 @@ Imports EwEUtils.Utilities
 ''' ---------------------------------------------------------------------------
 Public Class cDotSpatialUtils
 
+    Private Shared g_uic As cUIContext = Nothing
+
     ''' <summary>Threshold factor to determine if two values can be considered equal.</summary>
     Public Shared EQUALS_FACTOR As Double = 1 / 100
 
 #Region " Singleton "
 
     Private Shared g_DotSpatialAppMan As AppManager = Nothing
+
+    Friend Shared Property UIContext As cUIContext
+        Get
+            Return g_uic
+        End Get
+        Set(value As cUIContext)
+            g_uic = value
+        End Set
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -230,9 +242,9 @@ Public Class cDotSpatialUtils
     ''' -----------------------------------------------------------------------
     Public Shared Function Approximates(ext1 As IExtent, ext2 As IExtent, dThreshold As Double) As Boolean
 
-        Return cNumberUtils.Approximates(ext1.MinX, ext2.MinX, dThreshold) And _
-               cNumberUtils.Approximates(ext1.MaxX, ext2.MaxX, dThreshold) And _
-               cNumberUtils.Approximates(ext1.MinY, ext2.MinY, dThreshold) And _
+        Return cNumberUtils.Approximates(ext1.MinX, ext2.MinX, dThreshold) And
+               cNumberUtils.Approximates(ext1.MaxX, ext2.MaxX, dThreshold) And
+               cNumberUtils.Approximates(ext1.MinY, ext2.MinY, dThreshold) And
                cNumberUtils.Approximates(ext1.MaxY, ext2.MaxY, dThreshold)
 
     End Function
@@ -310,7 +322,7 @@ Public Class cDotSpatialUtils
     ''' </summary>
     ''' <param name="bnds"></param>
     ''' -----------------------------------------------------------------------
-    <Obsolete("Get rid of this horrendous fix as soon as DotSpatial RasterBounds behave properly")> _
+    <Obsolete("Get rid of this horrendous fix as soon as DotSpatial RasterBounds behave properly")>
     Private Shared Sub CorrectBounds(ByVal bnds As IRasterBounds)
         ' This is awful
         bnds.X += bnds.CellWidth * 0.5
@@ -318,9 +330,9 @@ Public Class cDotSpatialUtils
     End Sub
 
     Public Shared Function CreateRaster(ptfTL As PointF, ptfBR As PointF, dCellSize As Double,
-                                        datatype As Type, dNoDataValue As Double, strFile As String, _
-                                        Optional ByRef iNumRow As Integer = Nothing, _
-                                        Optional ByRef iNumCol As Integer = Nothing, _
+                                        datatype As Type, dNoDataValue As Double, strFile As String,
+                                        Optional ByRef iNumRow As Integer = Nothing,
+                                        Optional ByRef iNumCol As Integer = Nothing,
                                         Optional ByVal proj As ProjectionInfo = Nothing) As IRaster
 
         If (iNumRow = Nothing) Then iNumRow = New Integer
@@ -422,10 +434,10 @@ Public Class cDotSpatialUtils
     ''' <returns>A formatted string.</returns>
     ''' -----------------------------------------------------------------------
     Public Shared Function FormatRaster(rs As cSpatialRaster) As String
-        Return String.Format(My.Resources.FORMAT_RASTER, _
-                             cDotSpatialUtils.FormatExtent(rs.Ext), _
-                             cDotSpatialUtils.FormatRasterGrid(rs.Raster), _
-                             rs.ProjectionString, _
+        Return String.Format(My.Resources.FORMAT_RASTER,
+                             cDotSpatialUtils.FormatExtent(rs.Ext),
+                             cDotSpatialUtils.FormatRasterGrid(rs.Raster),
+                             rs.ProjectionString,
                              cDotSpatialUtils.FormatRasterStats(rs))
     End Function
 
@@ -444,8 +456,8 @@ Public Class cDotSpatialUtils
     ''' <param name="strFile"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function ResampleToEcospace(rsSource As IRaster, _
-                                              ptfTL As PointF, ptfBR As PointF, dCellSize As Double, _
+    Public Shared Function ResampleToEcospace(rsSource As IRaster,
+                                              ptfTL As PointF, ptfBR As PointF, dCellSize As Double,
                                               strFile As String) As IRaster
 
         If (rsSource Is Nothing) Then Return Nothing
@@ -581,9 +593,12 @@ Public Class cDotSpatialUtils
             g_lic = New cTreekLic()
             If (g_lic.IsRegistered) Then
                 g_bValid = g_lic.IsLicensed()
+                g_uic.Owner = g_lic.Owner
             End If
 #Else
             g_bValid = (cDateUtils.StartTime < cDotSpatialUtils.ExpiryDate(core))
+            ' For now, set owner name here
+            g_uic.Owner = "Dr. Yun-Ho Kang"
 #End If
             g_bValidated = True
         End If

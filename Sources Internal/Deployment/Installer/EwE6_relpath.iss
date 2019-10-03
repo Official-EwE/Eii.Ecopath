@@ -4,8 +4,8 @@
 
 ; Adjust #defines in this section to select which components to include in an installer
 #define Compile64Bit 0
-#define Spinup 0
-#define SpatTemp 0
+#define Spinup 1
+#define SpatTemp 1
 #define NetworkD3 0
 #define ExcludeDeadCells 0
 #define FISHMIP 0
@@ -34,7 +34,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.16275.0
+  VersionInfoVersion=6.6.16309.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
