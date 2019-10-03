@@ -195,10 +195,19 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the name this version of EwE is registered to.
+        ''' Get/set the name this version of EwE is registered to. This is for
+        ''' display purposes only.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Owner As String = ""
+        Public Property RegisteredOwner As String = ""
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the date that this registered EwE version expires. This is for
+        ''' display purposes only.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property RegisteredExpiration As DateTime = Nothing
 
     End Class
 

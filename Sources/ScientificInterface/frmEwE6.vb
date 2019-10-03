@@ -934,6 +934,8 @@ Public Class frmEwE6
 
         ' Auto-launch plugins
         Me.AutolaunchPlugins()
+        ' Just in case some licensed plug-in updated itself upon launch
+        Me.UpdateModelControls()
 
     End Sub
 
@@ -1551,8 +1553,8 @@ Public Class frmEwE6
         Dim model As cEwEModel = Me.Core.EwEModel
         Dim bIsReadOnly As Boolean = False
 
-        If (Not String.IsNullOrWhiteSpace(Me.UIContext.Owner)) Then
-            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, cStringUtils.Localize(My.Resources.GENERIC_REGISTRATION, Me.UIContext.Owner))
+        If (Not String.IsNullOrWhiteSpace(Me.UIContext.RegisteredOwner)) Then
+            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, cStringUtils.Localize(My.Resources.GENERIC_REGISTRATION, Me.UIContext.RegisteredOwner))
         End If
 
         Me.m_tsModel.Path = Me.SelectedFileName
