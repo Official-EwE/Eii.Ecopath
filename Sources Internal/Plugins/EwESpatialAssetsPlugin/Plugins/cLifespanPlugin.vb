@@ -26,6 +26,7 @@ Imports EwECore
 
 Public Class cLifespanPlugin
     Implements ILicensePlugin
+    Implements IUIContextPlugin
 
     Private m_core As cCore = Nothing
 
@@ -77,6 +78,14 @@ Public Class cLifespanPlugin
 
     Public Sub Expiry(ByRef dt As Date) Implements ILicensePlugin.Expiry
         dt = cDotSpatialUtils.ExpiryDate(Me.m_core)
+    End Sub
+
+    Public Sub UIContext(uic As Object) Implements IUIContextPlugin.UIContext
+        Try
+            cDotSpatialUtils.UIContext = CType(uic, ScientificInterfaceShared.Controls.cUIContext)
+        Catch ex As Exception
+
+        End Try
     End Sub
 
 End Class

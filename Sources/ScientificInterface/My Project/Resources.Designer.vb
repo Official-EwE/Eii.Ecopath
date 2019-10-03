@@ -97,15 +97,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Version {0} Pro - {1}.
-        '''</summary>
-        Public ReadOnly Property ABOUT_VERSION_PRO() As String
-            Get
-                Return ResourceManager.GetString("ABOUT_VERSION_PRO", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang2057\deflangfe2057\themelang3082\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
         '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\f40\fbidi \fswiss\fcharset134\fprq2{\*\panose 00000000000000000000}Microsoft YaHei;}{\f41 [rest of string was truncated]&quot;;.
         '''</summary>
@@ -1676,6 +1667,15 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_PROMPT_USEANSWERAGAIN() As String
             Get
                 Return ResourceManager.GetString("GENERIC_PROMPT_USEANSWERAGAIN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Registered to {0}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_REGISTRATION() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_REGISTRATION", resourceCulture)
             End Get
         End Property
         
@@ -3970,7 +3970,7 @@ Namespace My.Resources
                 Return ResourceManager.GetString("PROMPT_DELETE_ECOSPACE_DATASET", resourceCulture)
             End Get
         End Property
-
+        
         '''<summary>
         '''  Looks up a localized string similar to This system does not have the required drivers installed to work with files of this type.
         '''</summary>

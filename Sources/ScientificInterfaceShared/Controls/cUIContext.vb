@@ -75,13 +75,13 @@ Namespace Controls
         ''' <param name="help">The <see cref="cHelp">EwE help provider</see>, if available.</param>
         ''' <param name="syncObj">The <see cref="SynchronizationContext"/> for marshalling calls to the main EwE thread, if available.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, _
-                       ByVal sg As cStyleGuide, _
-                       Optional ByVal propman As cPropertyManager = Nothing, _
-                       Optional ByVal cmdhandler As cCommandHandler = Nothing, _
-                       Optional ByVal frmMain As Form = Nothing, _
-                       Optional ByVal formpos As cFormSettings = Nothing, _
-                       Optional ByVal help As cHelp = Nothing, _
+        Public Sub New(ByVal core As cCore,
+                       ByVal sg As cStyleGuide,
+                       Optional ByVal propman As cPropertyManager = Nothing,
+                       Optional ByVal cmdhandler As cCommandHandler = Nothing,
+                       Optional ByVal frmMain As Form = Nothing,
+                       Optional ByVal formpos As cFormSettings = Nothing,
+                       Optional ByVal help As cHelp = Nothing,
                        Optional ByVal syncObj As SynchronizationContext = Nothing)
 
             Debug.Assert(core IsNot Nothing)
@@ -192,6 +192,13 @@ Namespace Controls
                 Return Me.m_syncObj
             End Get
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the name this version of EwE is registered to.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property Registration As String = ""
 
     End Class
 

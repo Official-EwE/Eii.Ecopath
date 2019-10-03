@@ -82,7 +82,7 @@ Namespace Controls.Wizard
             ' Sanity checks
             Debug.Assert(nav IsNot Nothing)
 
-            Me.m_uic = uic
+            Me.UIContext = uic
 
             Me.m_parent = parent
             Me.m_content = content
@@ -160,6 +160,15 @@ Namespace Controls.Wizard
 
             End If
         End Sub
+
+        Public Property UIContext As cUIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Private Set(value As cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
 
 #End Region ' Public access
 
