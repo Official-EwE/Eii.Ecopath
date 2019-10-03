@@ -2165,10 +2165,6 @@
       <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
       <Name>EwEEcospaceSpinupPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
-      <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
-      <Name>EwESpatialAssetsPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEImportExportLayersPlugin\EwEImportExportLayerDefinitionsPlugin.vbproj">
       <Project>{ff2c3b42-6872-4841-96ae-b06d88da6f1c}</Project>
       <Name>EwEImportExportLayerDefinitionsPlugin</Name>
