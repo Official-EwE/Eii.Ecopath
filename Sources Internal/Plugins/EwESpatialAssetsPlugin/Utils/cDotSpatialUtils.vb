@@ -598,7 +598,7 @@ Public Class cDotSpatialUtils
 #Else
             g_bValid = (cDateUtils.StartTime < cDotSpatialUtils.ExpiryDate(core))
             ' For now, set owner name here
-            g_uic.Owner = "Dr. Yun-Ho Kang"
+            'g_uic.Owner = "Dr. Yun-Ho Kang"
 #End If
             g_bValidated = True
         End If
