@@ -92,7 +92,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>BETA=1</DefineConstants>
+    <DefineConstants>BETA=0</DefineConstants>
     <DocumentationFile>EwE6.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>None</DebugType>
@@ -2161,6 +2161,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwEEcospaceSpinupPlugin\EwEEcospaceSpinupPlugin.vbproj">
+      <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
+      <Name>EwEEcospaceSpinupPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Sources Internal\Plugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
+      <Project>{c1081265-6a9d-4087-8bb5-e907d86fd719}</Project>
+      <Name>EwESpatialAssetsPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEImportExportLayersPlugin\EwEImportExportLayerDefinitionsPlugin.vbproj">
       <Project>{ff2c3b42-6872-4841-96ae-b06d88da6f1c}</Project>
       <Name>EwEImportExportLayerDefinitionsPlugin</Name>

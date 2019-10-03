@@ -582,7 +582,7 @@ Public Class cMessageHistory
                 ' Yuck, this should be centralized somehow
                 frmSplash.BuggerOff()
 
-                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, frmEwE6.GetInstance().Text,
+                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, Me.UIContext.FormMain.Text,
                                              mbb, mbi,
                                              bChecked, My.Resources.PROMPT_MESSAGE_HIDE)
                 ' Auto-reply requested?
@@ -598,7 +598,7 @@ Public Class cMessageHistory
                 ' Yuck, this should be centralized somehow
                 frmSplash.BuggerOff()
 
-                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, frmEwE6.GetInstance().Text, mbb, mbi)
+                dlr = cCustomMessageBox.Show(Me.UIContext, strMessage, Me.UIContext.FormMain.Text, mbb, mbi)
             Catch ex As Exception
                 cLog.Write(ex, "cMessageHistory::HandleFeedbackMessage")
             End Try
@@ -673,7 +673,7 @@ Public Class cMessageHistory
                     ' Assume message will not be suppressed
                     Dim bSuppress As Boolean = False
                     ' Invoke the special message box
-                    cCustomMessageBox.Show(Me.UIContext, strMessage, frmEwE6.GetInstance().Text,
+                    cCustomMessageBox.Show(Me.UIContext, strMessage, Me.UIContext.FormMain.Text,
                                            mbb, mbi,
                                            bSuppress, My.Resources.PROMPT_MESSAGE_HIDE)
                     ' Set suppressed state in administration
@@ -684,7 +684,7 @@ Public Class cMessageHistory
             Else
                 ' #No: show the message
                 ' The one and only static popup message box in EwE
-                MessageBox.Show(strMessage, frmEwE6.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
+                MessageBox.Show(strMessage, Me.UIContext.FormMain.Text, mbb, mbi, MessageBoxDefaultButton.Button1)
             End If
 
         End If

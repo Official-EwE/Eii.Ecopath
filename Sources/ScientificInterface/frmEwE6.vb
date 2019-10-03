@@ -329,10 +329,6 @@ Public Class frmEwE6
 
     Private Shared __inst__ As frmEwE6 = Nothing
 
-    Public Shared Function GetInstance() As frmEwE6
-        Return frmEwE6.__inst__
-    End Function
-
 #End Region ' Singleton
 
 #Region " Constructors "
@@ -1555,6 +1551,10 @@ Public Class frmEwE6
         Dim model As cEwEModel = Me.Core.EwEModel
         Dim bIsReadOnly As Boolean = False
 
+        If (Not String.IsNullOrWhiteSpace(Me.UIContext.Registration)) Then
+            strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, cStringUtils.Localize(My.Resources.GENERIC_REGISTRATION, Me.UIContext.Registration))
+        End If
+
         Me.m_tsModel.Path = Me.SelectedFileName
         If Me.Core.StateMonitor.HasEcopathLoaded Then
             bIsReadOnly = Me.Core.DataSource.IsReadOnly
@@ -1562,7 +1562,7 @@ Public Class frmEwE6
             If (bIsReadOnly) Then
                 ' Explicitly show read-only status in the caption text
                 ' ToDo: Globalize this
-                strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, "read only")
+                strCaption = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, strCaption, "(read only)")
             End If
         End If
 

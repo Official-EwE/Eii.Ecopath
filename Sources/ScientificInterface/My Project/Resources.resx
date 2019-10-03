@@ -1573,10 +1573,6 @@ Location: {1}</value>
   <data name="HABITAT_DELETE_CONFIRMATION" xml:space="preserve">
     <value>You are about to delete the selected habitat. This action cannot be undone. Are you sure you want to do this?</value>
   </data>
-  <data name="ABOUT_VERSION_PRO" xml:space="preserve">
-    <value>Version {0} Pro - {1}</value>
-    <comment>{0}=core version, {1}=32 / 64 bit indicator</comment>
-  </data>
   <data name="LABEL_NAV_ECOPATH_INPUT_DIETCOMP" xml:space="preserve">
     <value>Diet composition</value>
   </data>
@@ -2151,5 +2147,9 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   </data>
   <data name="UI_ERROR_LAUNCHFORM" xml:space="preserve">
     <value>EwE could not complete your request. If the problem persists, please email the EwE development team and attach the EwE log file</value>
+  </data>
+  <data name="GENERIC_REGISTRATION" xml:space="preserve">
+    <value>Registered to {0}</value>
+    <comment>{0}=name</comment>
   </data>
 </root>
