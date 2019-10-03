@@ -593,12 +593,14 @@ Public Class cDotSpatialUtils
             g_lic = New cTreekLic()
             If (g_lic.IsRegistered) Then
                 g_bValid = g_lic.IsLicensed()
-                g_uic.Owner = g_lic.Owner
+                g_uic.RegisteredOwner = g_lic.Owner
+                g_uic.RegisteredExpiration = g_lic.Expiry
             End If
 #Else
             g_bValid = (cDateUtils.StartTime < cDotSpatialUtils.ExpiryDate(core))
             ' For now, set owner name here
-            'g_uic.Owner = "Dr. Yun-Ho Kang"
+            g_uic.RegisteredOwner = "EwE developer"
+            g_uic.RegisteredExpiration = cDotSpatialUtils.ExpiryDate(core)
 #End If
             g_bValidated = True
         End If
