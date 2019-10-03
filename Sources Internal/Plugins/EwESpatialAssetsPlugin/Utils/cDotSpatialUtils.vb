@@ -598,9 +598,11 @@ Public Class cDotSpatialUtils
             End If
 #Else
             g_bValid = (cDateUtils.StartTime < cDotSpatialUtils.ExpiryDate(core))
-            ' For now, set owner name here
+#If Not DEBUG Then
+            ' Set owner name here
             g_uic.RegisteredOwner = "EwE developer"
             g_uic.RegisteredExpiration = cDotSpatialUtils.ExpiryDate(core)
+#End If
 #End If
             g_bValidated = True
         End If
