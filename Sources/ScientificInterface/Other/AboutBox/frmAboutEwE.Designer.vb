@@ -71,6 +71,7 @@ Namespace Other
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblDatabase = New System.Windows.Forms.Label()
             Me.m_gridDatabase = New ScientificInterface.gridDatabase()
+            Me.m_lbRegistation = New System.Windows.Forms.Label()
             Me.m_tlpGeneral.SuspendLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpDetails.SuspendLayout()
@@ -101,17 +102,19 @@ Namespace Other
             '
             'm_pbFish0
             '
-            Me.m_pbFish0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_pbFish0.Image = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
+            Me.m_pbFish0.BackColor = System.Drawing.Color.White
+            Me.m_pbFish0.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
             resources.ApplyResources(Me.m_pbFish0, "m_pbFish0")
+            Me.m_pbFish0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_pbFish0.Name = "m_pbFish0"
             Me.m_pbFish0.TabStop = False
             '
             'm_tlpDetails
             '
             resources.ApplyResources(Me.m_tlpDetails, "m_tlpDetails")
-            Me.m_tlpDetails.Controls.Add(Me.m_rtbDisclaimer, 0, 6)
-            Me.m_tlpDetails.Controls.Add(Me.m_rtbDistribution, 0, 8)
+            Me.m_tlpDetails.Controls.Add(Me.m_lbRegistation, 0, 5)
+            Me.m_tlpDetails.Controls.Add(Me.m_rtbDisclaimer, 0, 7)
+            Me.m_tlpDetails.Controls.Add(Me.m_rtbDistribution, 0, 9)
             Me.m_tlpDetails.Controls.Add(Me.m_lbVersion, 0, 1)
             Me.m_tlpDetails.Controls.Add(Me.m_lbTitle, 0, 0)
             Me.m_tlpDetails.Controls.Add(Me.m_lbCopyright, 0, 4)
@@ -349,6 +352,11 @@ Namespace Other
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDatabase.UIContext = Nothing
             '
+            'm_lbRegistation
+            '
+            resources.ApplyResources(Me.m_lbRegistation, "m_lbRegistation")
+            Me.m_lbRegistation.Name = "m_lbRegistation"
+            '
             'frmAboutEwE
             '
             Me.AcceptButton = Me.m_btnOK
@@ -413,6 +421,7 @@ Namespace Other
         Private WithEvents m_lbTitle As System.Windows.Forms.Label
         Private WithEvents m_lblNetVersion As System.Windows.Forms.Label
         Private WithEvents m_lblExpiry As Label
+        Private WithEvents m_lbRegistation As Label
     End Class
 End Namespace
 

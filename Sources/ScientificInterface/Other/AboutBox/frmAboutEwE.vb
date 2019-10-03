@@ -65,6 +65,7 @@ Namespace Other
             cmd.AddControl(Me.m_rtbDisclaimer)
             cmd.AddControl(Me.m_rtbDistribution)
             cmd.AddControl(Me.m_rtbLicense)
+            cmd.AddControl(Me.m_lblExpiry, "http://ecopath.org/downloads")
 
             ' Format generic page
             Me.Text = cStringUtils.Localize(My.Resources.ABOUT_CAPTION, strTitle)
@@ -84,6 +85,19 @@ Namespace Other
                         Me.m_lblExpiry.Visible = False
             End Select
             Me.m_lbCopyright.Text = cStringUtils.Localize(My.Resources.ABOUT_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
+
+            If (Not String.IsNullOrWhiteSpace(Me.m_uic.RegisteredOwner)) Then
+                Dim label As String = cStringUtils.Localize(My.Resources.GENERIC_REGISTRATION, Me.m_uic.RegisteredOwner)
+                Dim dt As DateTime = Me.m_uic.RegisteredExpiration
+                If (dt <> Nothing) Then
+                    Dim exp As String = cStringUtils.Localize(If(dt < cDateUtils.StartTime, My.Resources.PLUGIN_LICENSE_EXPIRED, My.Resources.PLUGIN_LICENSE_EXPIRATION), dt.ToShortDateString)
+                    label = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DETAILED, label, exp)
+                End If
+                Me.m_lbRegistation.Text = label
+                Me.m_lbRegistation.Visible = True
+            Else
+                Me.m_lbRegistation.Visible = False
+            End If
 
             ' Format RTF content pages
             Me.m_rtbTeam.Rtf = StyleRTF(My.Resources.team)
@@ -115,9 +129,11 @@ Namespace Other
             cmd.RemoveControl(Me.m_rtbDisclaimer)
             cmd.RemoveControl(Me.m_rtbDistribution)
             cmd.RemoveControl(Me.m_rtbLicense)
+            cmd.RemoveControl(Me.m_lblExpiry)
 
             Me.m_qehTech.Detach()
             MyBase.OnClosed(e)
+
         End Sub
 
         Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _

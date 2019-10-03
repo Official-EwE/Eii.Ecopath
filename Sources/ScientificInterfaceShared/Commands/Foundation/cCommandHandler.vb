@@ -59,6 +59,7 @@ Namespace Commands
             Me.AddControlHandlerType("System.Windows.Forms.ToolStripDropDownButton", GetType(ToolStripButtonDropDownControlHandler))
             Me.AddControlHandlerType("System.Windows.Forms.ToolStripSplitButton", GetType(cToolStripSplitButtonHandler))
             Me.AddControlHandlerType("System.Windows.Forms.RichTextBox", GetType(cRichTextBoxControlHandler))
+            Me.AddControlHandlerType("System.Windows.Forms.Label", GetType(cButtonControlHandler))
         End Sub
 
 #End Region ' Construction
