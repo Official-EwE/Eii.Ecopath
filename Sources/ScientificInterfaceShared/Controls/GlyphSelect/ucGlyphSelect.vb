@@ -17,26 +17,6 @@
 ' ===============================================================================
 '
 
-'==============================================================================
-'
-' $Log: ucGlyphSelect.vb,v $
-' Revision 1.1  2008/09/26 07:31:17  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.1  2008/06/01 23:45:09  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.3  2007/12/02 03:33:01  jeroens
-' + Selection scrolled into view
-'
-' Revision 1.2  2007/12/01 22:07:47  jeroens
-' * Added selection optimization
-'
-' Revision 1.1  2007/12/01 19:39:00  jeroens
-' Initial version
-'
-'==============================================================================
-
 Option Strict On
 
 Imports System
