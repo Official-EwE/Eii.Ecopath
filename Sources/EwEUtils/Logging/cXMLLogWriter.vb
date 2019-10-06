@@ -415,6 +415,12 @@ Namespace Core
                     Me.WriteElementString("Message_Type", message.Type.ToString)
                     Me.WriteElementString("Message_Source", message.Source.ToString)
                     Me.WriteElementString("Message_DataType", message.DataType.ToString)
+                    If (TypeOf message Is IFeedbackMessage) Then
+                        Dim fms As IFeedbackMessage = DirectCast(message, IFeedbackMessage)
+                        Me.WriteElementString("Message_Reply", fms.Reply.ToString)
+                        Me.WriteElementString("Message_Suppressable", fms.Suppressable.ToString)
+                        Me.WriteElementString("Message_Suppressed", fms.Suppressed.ToString)
+                    End If
                     Me.WriteEndElement() 'Msg
                     Me.WriteEndDocument()
 
