@@ -27,10 +27,6 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
-' ToDo: make item visibiity settings persistent in AuxillaryData
-' - Listen to styleguide visibility changed events
-' - Update changes in AuxillaryData, store in model
-
 ''' -----------------------------------------------------------------------
 ''' <summary>
 ''' On-board helper class that actively updates model-derived settings in the style guide.
@@ -160,7 +156,7 @@ Friend Class cStyleGuideUpdater
 
         End If
 
-        Me.StyleGuide.ResumeEvents()
+        Me.StyleGuide.ResumeEvents(False)
 
     End Sub
 
@@ -269,7 +265,6 @@ Friend Class cStyleGuideUpdater
         Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)
         Me.StringToFontSetting(My.Settings.FontSubtitle, cStyleGuide.eApplicationFontType.SubTitle)
         Me.StringToFontSetting(My.Settings.FontLegend, cStyleGuide.eApplicationFontType.Legend)
-
         Me.StringToFontSetting(My.Settings.FontScale, cStyleGuide.eApplicationFontType.Scale)
 
         Me.StyleGuide.ResumeEvents()

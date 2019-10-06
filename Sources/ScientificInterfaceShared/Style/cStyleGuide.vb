@@ -482,12 +482,14 @@ Namespace Style
         ''' Unlocks broadcasting of StyleGuide change events.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub ResumeEvents()
+        Public Sub ResumeEvents(Optional bNotifyWorld As Boolean = True)
             Me.m_nEventLock -= 1
             ' Did this clear the event lock?
             If (Me.m_nEventLock <= 0) And (m_pendingChangeEventTypes <> eChangeType.None) Then
                 ' Fire remaining event(s)
-                FireChangeEvent(Me.m_pendingChangeEventTypes)
+                If (bNotifyWorld) Then
+                    FireChangeEvent(Me.m_pendingChangeEventTypes)
+                End If
                 ' Clear cache
                 Me.m_pendingChangeEventTypes = eChangeType.None
             End If
