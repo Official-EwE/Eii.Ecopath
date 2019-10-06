@@ -355,7 +355,6 @@ Namespace Controls
         Private Sub SelectCustomControl(ByVal selType As eSelectionType)
 
             Dim dlg As New ColorDialog()
-
             If (Me.m_selectionType <> selType) Then
                 Me.m_selectionType = selType
                 Me.UpdateControls()
@@ -370,14 +369,17 @@ Namespace Controls
                     dlg.Color = Me.m_clrFore
             End Select
 
+            Dim a As Byte = dlg.Color.A
+
             If dlg.ShowDialog(Me) <> DialogResult.OK Then Return
 
+            ' JS 06Oct19: retain alpha when switching colours
             Select Case selType
                 Case eSelectionType.BackColor
-                    Me.m_clrBack = dlg.Color
+                    Me.m_clrBack = Color.FromArgb(a, dlg.Color.R, dlg.Color.G, dlg.Color.B)
 
                 Case eSelectionType.ForeColor
-                    Me.m_clrFore = dlg.Color
+                    Me.m_clrFore = Color.FromArgb(a, dlg.Color.R, dlg.Color.G, dlg.Color.B)
             End Select
 
             Me.UpdateControls()
