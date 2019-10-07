@@ -714,11 +714,19 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Use a "Spin-Up" period for Ecospace
     ''' </summary>
-    ''' <remarks>Only Accessible from code at this time</remarks>
     Public UseSpinUp As Boolean
 
-    ''' <summary>Are we in a Spin-Up period </summary>   
-    Public bInSpinUp As Boolean
+    Private m_bInSpinup As Boolean = False
+
+    ''' <summary>Are we in a Spin-Up period?</summary>   
+    Public Property bInSpinUp As Boolean
+        Get
+            Return Me.m_bInSpinup
+        End Get
+        Friend Set(value As Boolean)
+            Me.m_bInSpinup = value
+        End Set
+    End Property
 
     Public UseSpinUpPlot As Boolean
 
