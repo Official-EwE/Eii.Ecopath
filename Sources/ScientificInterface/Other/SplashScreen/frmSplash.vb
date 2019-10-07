@@ -47,7 +47,8 @@ Friend Class frmSplash
         Me.m_pbIcon.BackgroundImage = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current())
         Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Zoom
 
-        Me.m_lblEwE.Text = cStringUtils.Localize(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, cCore.Version(False))
+        Dim strBitApp As String = If(cSystemUtils.Is64BitProcess, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
+        Me.m_lblEwE.Text = cStringUtils.Localize(My.Resources.ABOUT_VERSION, cCore.Version(False), strBitApp)
 
         Dim dt As DateTime = cAssemblyUtils.GetCompileDate(System.Reflection.Assembly.GetAssembly(GetType(cCore)))
         Dim strMask As String = ""
