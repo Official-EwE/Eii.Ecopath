@@ -16,6 +16,10 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
+#Region " Imports "
+
+Option Strict On
+
 Imports System.Windows.Forms
 Imports System.Drawing
 Imports EwECore
@@ -23,6 +27,12 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Definitions
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+
+#End Region ' Imports
+
+' Todo: make fluid
+' - Parameterize choice of drivers, functions, and application manager
+' - Listen for changes in FF details, applications, drivers, and respond accordingly
 
 Public Class frmApplyResponses
 
@@ -72,16 +82,15 @@ Public Class frmApplyResponses
 
 #Region " Events "
 
+#Region " Filter "
 
     Private Sub OnFilterChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_tstbFilter.TextChanged
-
         Try
             Me.LoadAvailableShapes()
         Catch ex As Exception
 
         End Try
-
     End Sub
 
     Private Sub OnCaseSensitiveFilterChanged(sender As System.Object, e As System.EventArgs) _
@@ -97,9 +106,21 @@ Public Class frmApplyResponses
 
     End Sub
 
+#End Region ' Filter
+
+#Region " Drag and drop "
+
     Private Sub OnShapesDrag(sender As Object, e As ItemDragEventArgs) Handles m_lvShapes.ItemDrag
-        Me.m_lvShapes.DoDragDrop(e.Item, DragDropEffects.Move)
+        Dim item As ListViewItem = DirectCast(e.Item, ListViewItem)
+        If (item Is Nothing) Then Return
+        Dim shp As cForcingFunction = DirectCast(item.Tag, cForcingFunction)
+        If (shp Is Nothing) Then Return
+        Me.m_lvShapes.DoDragDrop(shp, DragDropEffects.Move)
     End Sub
+
+#End Region ' Drag and drop
+
+#Region " Shape editing "
 
     Private Sub OnShapeDoubleClick(sender As Object, e As EventArgs) Handles m_lvShapes.DoubleClick, m_lvShapes.KeyDown
         If (Me.m_lvShapes.SelectedItems.Count = 0) Then Return
@@ -112,6 +133,8 @@ Public Class frmApplyResponses
             Me.EditSelectedShape()
         End If
     End Sub
+
+#End Region ' Shape editing
 
     Private Sub OnDriverSelectionChanged() Handles m_gridDrivers.OnSelectionChanged
         Me.UpdateControls()
