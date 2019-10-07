@@ -787,6 +787,7 @@ Public Class cEcoSpace
             Dim CoutVals() As String
             ReDim CoutVals(3 + m_Data.NGroups)
 #End If
+
             ReDim Fgear(EcoPathData.NumFleet)
             ReDim RelFopt(1)
             'stanza counters
@@ -2869,6 +2870,7 @@ Public Class cEcoSpace
             EcoSpaceData.nIBMGroupsPerThread = (StanzaData.Nsplit + EcoSpaceData.nGridSolverThreads - 1) \ EcoSpaceData.nGridSolverThreads
 
             'Spin-up Initialization
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceInitRunStarted(Me.EcoSpaceData)
 
             'Does the current run use a Spin-Up period
             Me.EcoSpaceData.bInSpinUp = Me.EcoSpaceData.UseSpinUp
