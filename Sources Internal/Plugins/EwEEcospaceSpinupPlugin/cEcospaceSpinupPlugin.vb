@@ -21,14 +21,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.IO
 Imports EwECore
 Imports EwECore.DataSources
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
 Imports EwEPlugin
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 
 #End Region
@@ -462,6 +460,7 @@ Public Class cEcospaceSpinupPlugin
     End Property
 
 #End Region
+
 #Region " User Interface plug-in implementation "
 
     ''' -----------------------------------------------------------------------
