@@ -19,8 +19,10 @@
 
 Imports EwECore
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports System.Windows.Forms
 
 Public Class gridApplyShape
     Inherits EwEGrid
@@ -72,18 +74,102 @@ Public Class gridApplyShape
         If (Me.m_driver Is Nothing) Then Return
 
         Me(0, eColumnTypes.Response).Value = cStringUtils.Localize("Response to {0}", Me.m_driver.Name)
+        Dim styleNull As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.NotEditable
 
         For i As Integer = 1 To Me.Core.nGroups
-            Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
             Dim iRow As Integer = Me.AddRow()
+            Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
             Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(i))
             Me(iRow, eColumnTypes.Group) = New PropertyRowHeaderCell(Me.PropertyManager, group, EwEUtils.Core.eVarNameFlags.Name)
-            Me(iRow, eColumnTypes.Response) = New EwECell("<function name>")
-            Me(iRow, eColumnTypes.Thumbnail) = New EwECell("<thmb>")
-            Me(iRow, eColumnTypes.Type) = New EwECell("<type>")
-            Me(iRow, eColumnTypes.Min) = New EwECell("0")
-            Me(iRow, eColumnTypes.Max) = New EwECell("42")
+            Me(iRow, eColumnTypes.Response) = New EwECell("", styleNull)
+            Me(iRow, eColumnTypes.Thumbnail) = New EwECell("", styleNull)
+            Me(iRow, eColumnTypes.Type) = New EwECell("", styleNull)
+            Me(iRow, eColumnTypes.Min) = New EwECell("", styleNull)
+            Me(iRow, eColumnTypes.Max) = New EwECell("", styleNull)
         Next
+    End Sub
+
+    Protected Overrides Sub OnDragEnter(e As DragEventArgs)
+
+        If (e.Data.GetDataPresent(GetType(cEnviroResponseFunction))) Then
+            e.Effect = DragDropEffects.Move
+        End If
+        MyBase.OnDragEnter(e)
+    End Sub
+
+    Protected Overrides Sub OnDragDrop(e As DragEventArgs)
+        Dim fn As cEnviroResponseFunction = e.Data.GetData(GetType(cEnviroResponseFunction))
+        Dim pt As New Drawing.Point(e.X, e.Y)
+        Dim pos As SourceGrid2.Position = Me.PositionAtPoint(Me.PointToClient(pt))
+        If (pos.Row >= 1) Then
+            Me.Rows(pos.Row).Tag = fn
+            Me.UpdateRow(pos.Row)
+        End If
+        'MyBase.OnDragDrop(e)
+    End Sub
+
+    Private Sub UpdateRow(iRow As Integer)
+
+        Dim styleOK As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
+        Dim styleNull As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.Null Or cStyleGuide.eStyleFlags.Null
+        Dim styleRO As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable
+
+        Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iRow)
+        Dim fn As cEnviroResponseFunction = DirectCast(Me.Rows(iRow).Tag, cEnviroResponseFunction)
+        Dim shp As cShapeFunction = cShapeFunctionFactory.GetShapeFunction(fn, Me.UIContext.Core.PluginManager)
+        Dim fmt As New cShapeFunctionTypeFormatter()
+
+        Dim bIsFN As Boolean = (fn IsNot Nothing)
+        Dim bIsDistr As Boolean = False
+        If (shp IsNot Nothing) Then bIsDistr = shp.IsDistribution
+
+        Dim ewec As EwECell = Nothing
+
+        ewec = Me(iRow, eColumnTypes.Response)
+        If (bIsFN) Then
+            ewec.Value = fn.Name
+            ewec.Style = styleRO
+        Else
+            ewec.Value = ""
+            ewec.Style = styleNull
+        End If
+
+        ewec = Me(iRow, eColumnTypes.Thumbnail)
+        If (bIsFN) Then
+            ewec.Value = "<pic>"
+            ewec.Style = styleRO
+        Else
+            ewec.Value = ""
+            ewec.Style = styleNull
+        End If
+
+        ewec = Me(iRow, eColumnTypes.Type)
+        If (bIsFN) Then
+            ewec.Value = fmt.ToString(fn.ShapeFunctionType)
+            ewec.Style = styleRO
+        Else
+            ewec.Value = ""
+            ewec.Style = styleNull
+        End If
+
+        ewec = Me(iRow, eColumnTypes.Min)
+        If (bIsFN) Then
+            ewec.Value = "?"
+            ewec.Style = If(bIsDistr, styleRO, styleOK)
+        Else
+            ewec.Value = ""
+            ewec.Style = styleNull
+        End If
+
+        ewec = Me(iRow, eColumnTypes.Max)
+        If (bIsFN) Then
+            ewec.Value = "?"
+            ewec.Style = If(bIsDistr, styleRO, styleOK)
+        Else
+            ewec.Value = ""
+            ewec.Style = styleNull
+        End If
+
     End Sub
 
 End Class

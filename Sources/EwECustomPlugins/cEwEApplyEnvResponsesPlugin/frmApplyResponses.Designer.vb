@@ -51,6 +51,8 @@ Partial Class frmApplyResponses
         Me.m_tsDrivers = New System.Windows.Forms.SplitContainer()
         Me.m_gridDrivers = New EwEApplyEnvResponsesPlugin.gridDrivers()
         Me.m_gridApply = New EwEApplyEnvResponsesPlugin.gridApplyShape()
+        Me.m_hdrDrivers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrApplied = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tsFilter.SuspendLayout()
         CType(Me.m_tsMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tsMain.Panel1.SuspendLayout()
@@ -122,6 +124,7 @@ Partial Class frmApplyResponses
         Me.m_lvShapes.HideSelection = False
         Me.m_lvShapes.HoverSelection = True
         Me.m_lvShapes.Location = New System.Drawing.Point(0, 0)
+        Me.m_lvShapes.MultiSelect = False
         Me.m_lvShapes.Name = "m_lvShapes"
         Me.m_lvShapes.Size = New System.Drawing.Size(198, 425)
         Me.m_lvShapes.TabIndex = 0
@@ -138,10 +141,12 @@ Partial Class frmApplyResponses
         'm_tsDrivers.Panel1
         '
         Me.m_tsDrivers.Panel1.Controls.Add(Me.m_gridDrivers)
+        Me.m_tsDrivers.Panel1.Controls.Add(Me.m_hdrDrivers)
         '
         'm_tsDrivers.Panel2
         '
         Me.m_tsDrivers.Panel2.Controls.Add(Me.m_gridApply)
+        Me.m_tsDrivers.Panel2.Controls.Add(Me.m_hdrApplied)
         Me.m_tsDrivers.Size = New System.Drawing.Size(598, 425)
         Me.m_tsDrivers.SplitterDistance = 117
         Me.m_tsDrivers.TabIndex = 1
@@ -166,9 +171,9 @@ Partial Class frmApplyResponses
         Me.m_gridDrivers.GridToolTipActive = True
         Me.m_gridDrivers.IsLayoutSuspended = False
         Me.m_gridDrivers.IsOutputGrid = False
-        Me.m_gridDrivers.Location = New System.Drawing.Point(0, 0)
+        Me.m_gridDrivers.Location = New System.Drawing.Point(0, 18)
         Me.m_gridDrivers.Name = "m_gridDrivers"
-        Me.m_gridDrivers.Size = New System.Drawing.Size(598, 117)
+        Me.m_gridDrivers.Size = New System.Drawing.Size(598, 99)
         Me.m_gridDrivers.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -202,10 +207,10 @@ Partial Class frmApplyResponses
         Me.m_gridApply.GridToolTipActive = True
         Me.m_gridApply.IsLayoutSuspended = False
         Me.m_gridApply.IsOutputGrid = False
-        Me.m_gridApply.Location = New System.Drawing.Point(0, 0)
+        Me.m_gridApply.Location = New System.Drawing.Point(0, 18)
         Me.m_gridApply.Name = "m_gridApply"
         Me.m_gridApply.SelectedDriver = Nothing
-        Me.m_gridApply.Size = New System.Drawing.Size(598, 304)
+        Me.m_gridApply.Size = New System.Drawing.Size(598, 286)
         Me.m_gridApply.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -218,6 +223,32 @@ Partial Class frmApplyResponses
         Me.m_gridApply.TabIndex = 0
         Me.m_gridApply.UIContext = Nothing
         '
+        'm_hdrDrivers
+        '
+        Me.m_hdrDrivers.CanCollapseParent = False
+        Me.m_hdrDrivers.CollapsedParentHeight = 0
+        Me.m_hdrDrivers.Dock = System.Windows.Forms.DockStyle.Top
+        Me.m_hdrDrivers.IsCollapsed = False
+        Me.m_hdrDrivers.Location = New System.Drawing.Point(0, 0)
+        Me.m_hdrDrivers.Name = "m_hdrDrivers"
+        Me.m_hdrDrivers.Size = New System.Drawing.Size(598, 18)
+        Me.m_hdrDrivers.TabIndex = 0
+        Me.m_hdrDrivers.Text = "Drivers"
+        Me.m_hdrDrivers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'm_hdrApplied
+        '
+        Me.m_hdrApplied.CanCollapseParent = False
+        Me.m_hdrApplied.CollapsedParentHeight = 0
+        Me.m_hdrApplied.Dock = System.Windows.Forms.DockStyle.Top
+        Me.m_hdrApplied.IsCollapsed = False
+        Me.m_hdrApplied.Location = New System.Drawing.Point(0, 0)
+        Me.m_hdrApplied.Name = "m_hdrApplied"
+        Me.m_hdrApplied.Size = New System.Drawing.Size(598, 18)
+        Me.m_hdrApplied.TabIndex = 0
+        Me.m_hdrApplied.Text = "Applied responses"
+        Me.m_hdrApplied.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'frmApplyResponses
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -229,7 +260,7 @@ Partial Class frmApplyResponses
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "frmApplyResponses"
         Me.TabText = ""
-        Me.Text = "frmApplyResponses"
+        Me.Text = "Apply functional responses tryout)"
         Me.m_tsFilter.ResumeLayout(False)
         Me.m_tsFilter.PerformLayout()
         Me.m_tsMain.Panel1.ResumeLayout(False)
@@ -254,4 +285,6 @@ Partial Class frmApplyResponses
     Private WithEvents m_tsDrivers As Windows.Forms.SplitContainer
     Private WithEvents m_gridDrivers As gridDrivers
     Private WithEvents m_gridApply As gridApplyShape
+    Private WithEvents m_hdrDrivers As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_hdrApplied As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 End Class
