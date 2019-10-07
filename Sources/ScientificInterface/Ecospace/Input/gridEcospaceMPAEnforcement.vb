@@ -101,7 +101,7 @@ Namespace Ecospace
 
             For i As Integer = 1 To Me.Core.nMPAs
                 source = Me.Core.EcospaceMPAs(i)
-                Me(0, eColumnTypes.All + i) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(0, eColumnTypes.All + i) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
             Next
 
         End Sub
