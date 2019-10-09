@@ -27,7 +27,7 @@ Imports SourceGrid2.DataModels
 
 Namespace Controls.EwEGrid
 
-    <CLSCompliant(False)> _
+    <CLSCompliant(False)>
     Public Class EwEComboBoxCellEditor
         Inherits EditorComboBox
 
