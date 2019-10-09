@@ -72,8 +72,7 @@ Namespace Controls.Map.Layers
         Public Overrides Function Clone() As cRasterLayerRenderer
             Dim objClone As Object = Nothing
             Dim vs As cVisualStyle = Me.VisualStyle.Clone()
-
-            objClone = Activator.CreateInstance(Me.GetType(), New Object() {vs})
+            objClone = Activator.CreateInstance(Me.GetType(), New Object() {Me.UIContext, vs})
             Return DirectCast(objClone, cRasterLayerRenderer)
         End Function
 
