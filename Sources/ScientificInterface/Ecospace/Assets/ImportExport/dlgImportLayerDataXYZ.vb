@@ -103,6 +103,7 @@ Namespace Ecospace.Basemap
             If (Not String.IsNullOrWhiteSpace(Me.File)) Then
                 If (System.IO.File.Exists(Me.File)) Then
                     Me.m_tbInput.Text = Me.File
+                    Me.ReadCSVFields()
                     Me.ReadCSVFile()
                 End If
             End If
