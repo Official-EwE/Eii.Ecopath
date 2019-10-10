@@ -46,13 +46,14 @@ Public Class cEnviroInputMap
     Private m_binWidth As Single
     Private m_manager As IEnvironmentalResponseManager
     Private m_iLayerIndex As Integer
+    Private m_bInvalid As Boolean = True
 
 #End Region ' Private vars
 
 #Region "Construction Initialization"
 
     Friend Sub New(ByVal theManager As IEnvironmentalResponseManager, ByVal source As cEcospaceLayer)
-        Me.new(theManager, source, cCore.NULL_VALUE)
+        Me.New(theManager, source, cCore.NULL_VALUE)
     End Sub
 
 
@@ -77,7 +78,7 @@ Public Class cEnviroInputMap
 
         ReDim Me.m_GrpToShape(Me.nGroups)
 
-        Me.computeMinMax()
+        Me.m_bInvalid = True
 
     End Function
 
@@ -87,15 +88,8 @@ Public Class cEnviroInputMap
 
     ''' <inheritdocs cref="IEnviroInputData.Update"/>
     Public Function Update() As Boolean Implements IEnviroInputData.Update
-        Dim bReturn As Boolean = False
-        Try
-            Me.computeMinMax()
-            bReturn = True
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".Update() Exception: " & ex.Message)
-        End Try
-        Return bReturn
-
+        Me.m_bInvalid = True
+        Return True
     End Function
 
     ''' <inheritdocs cref="IEnviroInputData.setManager"/>
@@ -112,7 +106,10 @@ Public Class cEnviroInputMap
         Dim pts() As Drawing.PointF
         Dim ncells As Integer
         ReDim pts(nBins)
+
+        ' Just in case
         Me.computeMinMax()
+
         Dim range As Single = Me.Max - Me.Min
         'Make sure there is data in the map
         If range > 0 Then
@@ -179,6 +176,7 @@ Public Class cEnviroInputMap
     Public ReadOnly Property Max() As Single _
         Implements IEnviroInputData.Max
         Get
+            If (Me.m_bInvalid) Then Me.computeMinMax()
             Return Me.m_max
         End Get
     End Property
@@ -188,6 +186,7 @@ Public Class cEnviroInputMap
     Public ReadOnly Property Mean() As Single _
         Implements IEnviroInputData.Mean
         Get
+            If (Me.m_bInvalid) Then Me.computeMinMax()
             Return Me.m_mean
         End Get
     End Property
@@ -195,6 +194,7 @@ Public Class cEnviroInputMap
     ''' <inheritdocs cref="IEnviroInputData.Min"/>
     Public ReadOnly Property Min() As Single Implements IEnviroInputData.Min
         Get
+            If (Me.m_bInvalid) Then Me.computeMinMax()
             Return Me.m_min
         End Get
     End Property
@@ -288,6 +288,8 @@ Public Class cEnviroInputMap
 
     Private Sub computeMinMax()
 
+        If (Me.m_bInvalid = False) Then Return
+
         m_min = Single.MaxValue
         m_max = Single.MinValue
 
@@ -310,6 +312,7 @@ Public Class cEnviroInputMap
         End Try
 
         Me.m_mean = (Me.m_min + Me.m_max) * 0.5F
+        Me.m_bInvalid = False
 
     End Sub
 
@@ -332,7 +335,6 @@ Public Class cEnviroInputMap
     End Property
 
 #Region "Overloaded Ecosim methods"
-
 
     Public Function EcosimInit(MediationData As cMediationDataStructures, EcosimData As cEcosimDatastructures) As Boolean Implements IEnviroInputData.Init
         Debug.Assert(False, Me.ToString + ".EcosimInit() not implemented for this implementation.")
