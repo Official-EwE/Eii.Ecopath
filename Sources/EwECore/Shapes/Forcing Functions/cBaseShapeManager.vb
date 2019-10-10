@@ -334,7 +334,6 @@ Public MustInherit Class cBaseShapeManager
 
     End Function
 
-
 #End Region ' Protected methods
 
 #Region " Public Properties "
@@ -345,7 +344,13 @@ Public MustInherit Class cBaseShapeManager
         End Get
     End Property
 
-#End Region
+    Public ReadOnly Property Shapes As IEnumerable(Of cShapeData)
+        Get
+            Return Me.m_shapes.ToArray()
+        End Get
+    End Property
+
+#End Region ' Public properties
 
 #Region " ICoreInterface Implementation "
 
