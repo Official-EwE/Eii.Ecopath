@@ -158,6 +158,12 @@ Namespace Ecospace
 
 #Region " Form "
 
+        Public Overrides ReadOnly Property IsRunForm As Boolean
+            Get
+                Return True
+            End Get
+        End Property
+
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
@@ -593,7 +599,9 @@ Namespace Ecospace
 #Region " Map "
 
         Private Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal changeFlags As cDisplayLayer.eChangeFlags)
-            If ((changeFlags And cDisplayLayer.eChangeFlags.Selected) > 0) Then Me.UpdateControls()
+            If ((changeFlags And cDisplayLayer.eChangeFlags.Selected) > 0) Then
+                Me.UpdateControls()
+            End If
         End Sub
 
 #End Region ' Map
@@ -859,7 +867,7 @@ Namespace Ecospace
 
             Me.m_ucZoom.Map.Clear()
 
-            Me.m_alayerMPA = Me.AddBaseLayers(eVarNameFlags.LayerMPA, True)
+            Me.m_alayerMPA = Me.AddBaseLayers(eVarNameFlags.LayerMPA, False)
             Me.m_layerSeed = Me.AddBaseLayers(eVarNameFlags.LayerMPASeed, True)(0)
             Me.AddBaseLayers(eVarNameFlags.LayerMPARandom, True)
             Me.AddBaseLayers(eVarNameFlags.LayerImportance, False)
@@ -976,7 +984,7 @@ Namespace Ecospace
                     Case eMPAOptimizationModels.EcoSeed
                         ' A new MPA cell has been selected out of the seed cells
                         ' Redraw MPA map
-                        Me.m_ucZoom.Map.Refresh()
+                        Me.m_ucZoom.Map.Invalidate()
                         ' Show this in the graph
                         Me.LogProgress(output.EconomicValue, output.SocialValue, _
                                             output.MandatedValue, output.EcologicalValue, _
@@ -1024,7 +1032,7 @@ Namespace Ecospace
                         End If
 
                         ' Make the map redraw itself
-                        Me.m_ucZoom.Map.Refresh()
+                        Me.m_ucZoom.Map.Invalidate()
 
                     Case eMPAOptimizationModels.RandomSearch
                         ' NOP
@@ -1050,12 +1058,10 @@ Namespace Ecospace
         Private Function AddBaseLayers(ByVal varName As eVarNameFlags, bEditable As Boolean) As cDisplayLayerRaster()
 
             Dim factory As New cLayerFactoryInternal()
-            Dim strGroup As String = ""
-            Dim strCommand As String = factory.GetLayerEditCommand(varName)
+            Dim strGroup As String = factory.GetLayerGroup(varName)
+            Dim strCommand As String = If(bEditable, factory.GetLayerEditCommand(varName), "")
             Dim alayers As cDisplayLayerRaster() = factory.GetLayers(Me.UIContext, varName)
             Dim l As cDisplayLayer = Nothing
-
-            If (bEditable) Then strCommand = factory.GetLayerGroup(varName)
 
             ' Add group, and collapse and hide habitat layers
             Me.m_ucLayers.AddGroup(strGroup, strCommand, varName <> eVarNameFlags.LayerHabitat)
@@ -1345,7 +1351,7 @@ Namespace Ecospace
                                        res.objBiomassDiversity, res.objFuncAreaBorder, _
                                        res.objFuncTotal, res.PercentageClosed)
 
-            Me.m_ucZoom.Map.Refresh()
+            Me.m_ucZoom.Map.Invalidate()
 
         End Sub
 
