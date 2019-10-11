@@ -960,8 +960,12 @@ Public Class cEwEEcologicalIndicatorsPlugin
     ''' value can be left empty.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Private Function FileName(ByVal component As eComponentType, ByVal strStep As String) As String
+    Private Function CSVFileName(ByVal component As eComponentType, ByVal strStep As String) As String
         Return cFileUtils.ToValidFileName(String.Format("biodiv_ind_{0}{1}.csv", Me.ComponentName(component), strStep), False)
+    End Function
+
+    Private Function ASCFileName(strIndicator As String, ByVal strStep As String) As String
+        Return cFileUtils.ToValidFileName(String.Format("biodiv_ind_{0}-{1}.asc", strIndicator, strStep), False)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -995,7 +999,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Debug.Assert(Me.m_indEcopath.IsComputed, "Application flow error, ecopath indicators not calculated yet")
 
         Dim strPath As String = Me.OutputFolder(eComponentType.Ecopath)
-        Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.Ecopath, ""))
+        Dim strFile As String = Path.Combine(strPath, Me.CSVFileName(eComponentType.Ecopath, ""))
         Dim sw As New StreamWriter(strFile)
 
         If Me.m_core.SaveWithFileHeader Then
@@ -1031,7 +1035,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
     Private Sub SaveEcosimCSV()
 
         Dim strPath As String = Me.OutputFolder(eComponentType.Ecosim)
-        Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.Ecosim, ""))
+        Dim strFile As String = Path.Combine(strPath, Me.CSVFileName(eComponentType.Ecosim, ""))
         Dim sw As New StreamWriter(strFile)
         Dim sb As New StringBuilder()
 
@@ -1093,7 +1097,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
         Dim core As cCore = Me.m_uic.Core
         Dim strPath As String = Me.OutputFolder(eComponentType.MonteCarlo)
-        Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.MonteCarlo, "_uncertainty"))
+        Dim strFile As String = Path.Combine(strPath, Me.CSVFileName(eComponentType.MonteCarlo, "_uncertainty"))
         Dim sw As New StreamWriter(strFile)
 
         If core.SaveWithFileHeader Then
@@ -1138,7 +1142,7 @@ Public Class cEwEEcologicalIndicatorsPlugin
 
         Dim core As cCore = Me.m_uic.Core
         Dim strPath As String = Me.OutputFolder(eComponentType.MonteCarlo)
-        Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.MonteCarlo, ""))
+        Dim strFile As String = Path.Combine(strPath, Me.CSVFileName(eComponentType.MonteCarlo, ""))
         Dim sw As New StreamWriter(strFile)
         Dim sb As New StringBuilder()
 
@@ -1202,20 +1206,20 @@ Public Class cEwEEcologicalIndicatorsPlugin
     Private Sub SaveEcospaceCSV()
 
         Dim iTS As Integer = CInt(Me.m_ecospaceDS.TimeNow * Me.m_ecospaceDS.nTimeStepsPerYear + 1)
-        Dim strPath As String = Me.OutputFolder(eComponentType.Ecospace)
-        Dim strFile As String = Path.Combine(strPath, Me.FileName(eComponentType.Ecospace, CStr(iTS)))
+        Dim pout As String = Me.OutputFolder(eComponentType.Ecospace)
+        Dim fout As String = Path.Combine(pout, Me.CSVFileName(eComponentType.Ecospace, CStr(iTS)))
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-        Dim astrFields As New List(Of String)
+        Dim fields As New List(Of String)
 
         For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
             Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
             For iInfo As Integer = 0 To grp.NumIndicators - 1
                 Dim info As cIndicatorInfo = grp.Indicator(iInfo)
-                astrFields.Add(info.Name)
+                fields.Add(info.Name)
             Next
         Next
 
-        Dim exp As New cEcospaceImportExportXYData(Me.m_core, astrFields.ToArray())
+        Dim exp As New cEcospaceImportExportXYData(Me.m_core, fields.ToArray())
         ' Write line for cell
         For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
             If (ind.IsComputed) Then
@@ -1230,9 +1234,39 @@ Public Class cEwEEcologicalIndicatorsPlugin
         Next ind
 
         ' Done
-        exp.WriteXYFile(strFile, SharedResources.HEADER_COL, SharedResources.HEADER_ROW)
+        exp.WriteXYFile(fout, SharedResources.HEADER_COL, SharedResources.HEADER_ROW)
 
-        Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.Ecospace), strFile), eStatusFlags.OK)
+        Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.Ecospace), fout), eStatusFlags.OK)
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Save calculated Ecospace indicators to a CSV file.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub SaveEcospaceMaps()
+
+        Dim iTS As Integer = CInt(Me.m_ecospaceDS.TimeNow * Me.m_ecospaceDS.nTimeStepsPerYear + 1)
+        Dim pout As String = Me.OutputFolder(eComponentType.Ecospace)
+        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+
+        For iGrp As Integer = 0 To Me.m_settings.NumIndicatorGroups - 1
+            Dim grp As cIndicatorInfoGroup = Me.m_settings.IndicatorGroup(iGrp)
+            For iInfo As Integer = 0 To grp.NumIndicators - 1
+                Dim info As cIndicatorInfo = grp.Indicator(iInfo)
+                Dim fout As String = Path.Combine(pout, Me.ASCFileName(info.Name, iTS.ToString("D4")))
+                Dim exp As New cEcospaceImportExportASCIIData(Me.m_core)
+                For Each ind As cEcospaceIndicators In Me.m_dtIndEcospace.Values
+                    If (ind.IsComputed) Then
+                        exp.Value(ind.Location.Y, ind.Location.X) = info.GetValue(ind)
+                    End If
+                Next
+                exp.Save(fout)
+            Next iInfo
+        Next iGrp
+
+        Me.ReportStatus(String.Format(My.Resources.STATUS_SAVE_SUCCESS, Me.ComponentName(eComponentType.Ecospace), pout), eStatusFlags.OK)
 
     End Sub
 
