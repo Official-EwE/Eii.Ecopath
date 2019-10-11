@@ -38,6 +38,7 @@ Public Class frmApplyResponses
 
     Private m_ilShapes As New ImageList()
     Private m_lFFs As New List(Of cForcingFunction)
+    Private m_mapManager As IEnvironmentalResponseManager
 
     Public Sub New()
         MyBase.New()
@@ -49,11 +50,19 @@ Public Class frmApplyResponses
 
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
+
+        Me.m_mapManager = Me.Core.CapacityMapInteractionManager
+
         Me.m_gridDrivers.UIContext = Me.UIContext
+        Me.m_gridDrivers.Manager = Me.m_mapManager
+        Me.m_gridDrivers.RefreshContent()
+
+        Me.m_gridApply.Manager = Me.m_mapManager
+        Me.m_gridApply.RefreshContent()
 
         Me.m_lvShapes.View = View.SmallIcon
-        Me.m_lvShapes.SmallImageList = m_ilShapes
-        Me.m_lvShapes.LargeImageList = m_ilShapes
+        Me.m_lvShapes.SmallImageList = Me.m_ilShapes
+        Me.m_lvShapes.LargeImageList = Me.m_ilShapes
 
         Me.RefreshShapeList()
         Me.LoadAvailableShapes()
@@ -178,11 +187,13 @@ Public Class frmApplyResponses
             bmp = New Bitmap(rc.Width, rc.Height)
             ' Get graphics content
             Using g As Graphics = Graphics.FromImage(bmp)
-                cShapeImage.DrawShape(Me.UIContext, shape, rc, g, dtHandlers(shape.DataType).Color, eSketchDrawModeTypes.Line)
+                cShapeImage.DrawShape(Me.UIContext, shape, rc, g, dtHandlers(shape.DataType).Color, eSketchDrawModeTypes.Fill)
             End Using
             ' Add image
             Me.m_ilShapes.Images.Add(bmp)
         Next
+        Me.m_lvShapes.Invalidate()
+
         ' Forget
         dtHandlers.Clear()
 
