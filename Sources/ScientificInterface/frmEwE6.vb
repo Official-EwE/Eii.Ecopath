@@ -810,6 +810,7 @@ Public Class frmEwE6
         Dim help As New cHelp(Me, "UserGuide\EwE6_userguide.chm", "User Interface.htm", "EWE_UsersGuide")
 
         Me.UIContext = New cUIContext(core, sg, pm, cmdh, Me, fps, help, so)
+        Me.UIContext.RegisteredOwner = ""
 
         ' Configure state monitor
         Me.Core.StateMonitor.SyncObject = Me
@@ -2853,7 +2854,7 @@ Public Class frmEwE6
                     ' Load instance of form for selected node
                     frm = Me.LoadFormFromType(strNavPageName, tNavClassType, iNavCoreState)
                     ' Was a form created?
-                    If frm IsNot Nothing Then
+                    If (frm IsNot Nothing) Then
                         ' #Yes
                         If frm.WindowState = FormWindowState.Minimized Then frm.WindowState = FormWindowState.Normal
                         ' Is this a dockable form? 
@@ -2867,9 +2868,12 @@ Public Class frmEwE6
                         End If
                         ' Switch help
                         Me.Help.HelpTopic(frm) = strNavHelpURL
+                    Else
+                        cLog.Write("Form cannot be resolved", "frmEwE6 cmdNavigate OnInvoke",)
                     End If
                 Catch ex As Exception
                     ' Whoah!
+                    cLog.Write(ex, "frmEwE6 cmdNavigate OnInvoke")
                 End Try
 
                 'cApplicationStatusNotifier.EndProgress(Me.Core)

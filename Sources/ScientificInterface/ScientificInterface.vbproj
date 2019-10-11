@@ -81,7 +81,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>BETA=1</DefineConstants>
+    <DefineConstants>BETA=0</DefineConstants>
     <DocumentationFile>EwE6.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -106,7 +106,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>BETA=1</DefineConstants>
+    <DefineConstants>BETA=0</DefineConstants>
     <DocumentationFile>EwE6.xml</DocumentationFile>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
@@ -2193,9 +2193,9 @@
       <Project>{22ed1c02-0c01-460b-9305-0a6fef0032d9}</Project>
       <Name>EwEEcoSamplerPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEEcotroph\EwEEcotroph.vbproj">
+    <ProjectReference Include="..\EwECustomPlugins\EwEEcotroph\EwEEcoTrophPlugin.vbproj">
       <Project>{fef1031b-9933-4364-ad29-c4f8b2e68382}</Project>
-      <Name>EwEEcotroph</Name>
+      <Name>EwEEcoTrophPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEModelFromEcosimPlugin\EwEModelFromEcosimPlugin.vbproj">
       <Project>{243cbcb0-4fd7-43b8-a6d1-27e26e866a99}</Project>
@@ -2237,9 +2237,9 @@
       <Project>{86d3251d-678f-4ab3-9c95-3d29d8fa7797}</Project>
       <Name>EwETransectExtractionPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
+    <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChainPlugin.vbproj">
       <Project>{e87e552b-c82f-4984-9249-631dac727633}</Project>
-      <Name>EwEValueChain</Name>
+      <Name>EwEValueChainPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEWoRMSPlugin\EwEWoRMSPlugin.vbproj">
       <Project>{4b88bf52-04a7-476b-b2f5-153758a62935}</Project>
