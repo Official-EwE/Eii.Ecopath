@@ -151,7 +151,7 @@ Public Class cEcospaceImportExportASCIIData
     ''' </summary>
     ''' <param name="iRow">One-based row index to access a value for.</param>
     ''' <param name="iCol">One-based column index to access a value for.</param>
-    ''' <param name="strField">Optional field to access a value for.</param>
+    ''' <param name="strField">This parameter is ignored by this class</param>
     ''' -------------------------------------------------------------------
     Public Property Value(ByVal iRow As Integer, ByVal iCol As Integer, Optional ByVal strField As String = "") As Object _
         Implements IEcospaceImportExport.Value
