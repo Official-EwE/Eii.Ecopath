@@ -23,7 +23,7 @@ Option Strict On
 Imports EwECore
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Core
+Imports EwECore.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region  ' Imports
@@ -44,6 +44,8 @@ Public Class gridDrivers
 
     End Sub
 
+    Public Property Manager As IEnvironmentalResponseManager = Nothing
+
     Protected Overrides Sub InitStyle()
         MyBase.InitStyle()
 
@@ -60,31 +62,60 @@ Public Class gridDrivers
 
     Protected Overrides Sub FillData()
 
+        If (Me.Manager Is Nothing) Then Return
+
         Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
 
-        Me.AddDriver(bm.LayerDepth)
-        For i As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
-            Me.AddDriver(bm.LayerDriver(i))
+        For i As Integer = 1 To Me.Manager.nEnviroData
+            Me.AddDriver(Me.Manager.EnviroData(i))
         Next
 
     End Sub
 
-    Private Sub AddDriver(driver As cEcospaceLayerSingle)
+    Private Sub AddDriver(driver As IEnviroInputData)
+
         Dim iRow As Integer = Me.AddRow()
-        Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(driver.Index))
-        ' Hmm, how does the Depth layer get its units?
-        Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, driver, eVarNameFlags.Name)
-        Me(iRow, eColumnTypes.Units) = New EwECell(driver.Units, cStyleGuide.eStyleFlags.NotEditable)
-        Me(iRow, eColumnTypes.Min) = New EwECell(driver.MinValue, cStyleGuide.eStyleFlags.NotEditable)
-        Me(iRow, eColumnTypes.Max) = New EwECell(driver.MaxValue, cStyleGuide.eStyleFlags.NotEditable)
-        Me(iRow, eColumnTypes.Mean) = New EwECell(driver.MeanValue, cStyleGuide.eStyleFlags.NotEditable)
+
+        Me(iRow, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iRow))
+        Me(iRow, eColumnTypes.Name) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
+        Me(iRow, eColumnTypes.Units) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
+        Me(iRow, eColumnTypes.Min) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
+        Me(iRow, eColumnTypes.Max) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
+        Me(iRow, eColumnTypes.Mean) = New EwECell("", cStyleGuide.eStyleFlags.NotEditable)
         Me.Rows(iRow).Tag = driver
+
+        Me.UpdateDriver(iRow)
+
     End Sub
 
-    Public ReadOnly Property SelectedDriver As cEcospaceLayer
+    Private Sub UpdateDriver(iRow As Integer)
+
+        Dim driver As IEnviroInputData = DirectCast(Me.Rows(iRow).Tag, IEnviroInputData)
+
+        Dim u As New cUnits(Me.Core)
+        Dim units As String = ""
+        Dim md As cVariableMetaData = Nothing
+
+        If TypeOf driver Is cMediationBaseFunction Then
+            md = Nothing
+        ElseIf TypeOf driver Is cEnviroInputMap Then
+            Dim layer As cEcospaceLayer = DirectCast(driver, cEnviroInputMap).Layer
+            units = layer.Units
+            If String.IsNullOrEmpty(units) Then units = u.ToString(cVariableMetaData.Get(layer.VarName))
+        End If
+
+        Me(iRow, eColumnTypes.Name).Value = driver.Name
+        Me(iRow, eColumnTypes.Units).Value = units
+        Me(iRow, eColumnTypes.Min).Value = driver.Min
+        Me(iRow, eColumnTypes.Max).Value = driver.Max
+        Me(iRow, eColumnTypes.Mean).Value = driver.Mean
+
+    End Sub
+
+    Public ReadOnly Property SelectedDriver As IEnviroInputData
         Get
             If Me.SelectedRow < 1 Then Return Nothing
-            Return DirectCast(Me.Rows(Me.SelectedRow).Tag, cEcospaceLayer)
+            Return DirectCast(Me.Rows(Me.SelectedRow).Tag, IEnviroInputData)
         End Get
     End Property
 

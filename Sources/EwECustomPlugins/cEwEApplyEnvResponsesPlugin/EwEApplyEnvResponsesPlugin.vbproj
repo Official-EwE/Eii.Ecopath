@@ -90,6 +90,10 @@
     <Reference Include="SourceGrid2">
       <HintPath>..\..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
+    <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ScientificInterfaceShared\Includes\SourceLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
