@@ -1,0 +1,432 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="m_tsmiHelpSearch.Text" xml:space="preserve">
+    <value>&amp;Buscar</value>
+  </data>
+  <data name="m_tsmiOptions.Text" xml:space="preserve">
+    <value>&amp; Opciones ...</value>
+  </data>
+  <data name="m_tsbEcosim.Text" xml:space="preserve">
+    <value>Ecosim</value>
+  </data>
+  <data name="MenuWindows.Text" xml:space="preserve">
+    <value>Y ventanas</value>
+  </data>
+  <data name="m_tsmiEcospaceDefineMPAs.Text" xml:space="preserve">
+    <value>Definir y AMP ...</value>
+  </data>
+  <data name="m_tsmiEcotracerSave.Text" xml:space="preserve">
+    <value>&amp; Guardar escenario</value>
+  </data>
+  <data name="m_tsmiEcospaceSave.Text" xml:space="preserve">
+    <value>&amp; Guardar escenario</value>
+  </data>
+  <data name="m_tsmiEcosimSave.Text" xml:space="preserve">
+    <value>&amp; Guardar escenario</value>
+  </data>
+  <data name="MenuHelp.Text" xml:space="preserve">
+    <value>&amp;Ayuda</value>
+  </data>
+  <data name="m_tsmiHelpViewReports.Text" xml:space="preserve">
+    <value>Ver problemas</value>
+  </data>
+  <data name="m_tsbSave.Text" xml:space="preserve">
+    <value>Guardar cambios</value>
+  </data>
+  <data name="ExportModel.Text" xml:space="preserve">
+    <value>Y modelo de exportación</value>
+  </data>
+  <data name="m_tsmiFileExit.Text" xml:space="preserve">
+    <value>Salida</value>
+  </data>
+  <data name="m_tsmiHelpRequestSourceCodeAccess.Text" xml:space="preserve">
+    <value>Solicitar acceso al código fuente ...</value>
+  </data>
+  <data name="m_tsmiTimeSeriesLoad.Text" xml:space="preserve">
+    <value>Serie de tiempo de L &amp; oad ...</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>&lt;caption&gt;</value>
+  </data>
+  <data name="m_tsbEcotracer.Text" xml:space="preserve">
+    <value>Ecotracer</value>
+  </data>
+  <data name="m_tsbEcospace.Text" xml:space="preserve">
+    <value>Ecospace</value>
+  </data>
+  <data name="m_tsmiFileCompact.Text" xml:space="preserve">
+    <value>Y base de datos de modelo compacto ...</value>
+  </data>
+  <data name="MenuEcopath.Text" xml:space="preserve">
+    <value>Y Ecopath</value>
+  </data>
+  <data name="m_tsmiEcospaceDefineRegions.Text" xml:space="preserve">
+    <value>Definir y Regiones ...</value>
+  </data>
+  <data name="MenuView.Text" xml:space="preserve">
+    <value>&amp;Ver</value>
+  </data>
+  <data name="m_tsmiExternalTools.Text" xml:space="preserve">
+    <value>&amp; Herramientas externas ...</value>
+  </data>
+  <data name="ImportModel.Text" xml:space="preserve">
+    <value>Y modelo de importación</value>
+  </data>
+  <data name="m_tslbReadOnly.Text" xml:space="preserve">
+    <value>Solo lectura</value>
+  </data>
+  <data name="m_tsModel.Text" xml:space="preserve">
+    <value>{barra modelo}</value>
+  </data>
+  <data name="MenuEcospaceImport.Text" xml:space="preserve">
+    <value>&amp;Importar</value>
+  </data>
+  <data name="m_tsbnFeedback.Text" xml:space="preserve">
+    <value>¡Dinos qué piensas!</value>
+  </data>
+  <data name="m_tsmiEcosimDelete.Text" xml:space="preserve">
+    <value>&amp; Eliminar escenario ...</value>
+  </data>
+  <data name="m_tsmiEcotracerDelete.Text" xml:space="preserve">
+    <value>&amp; Eliminar escenario ...</value>
+  </data>
+  <data name="m_tsmiEcospaceDelete.Text" xml:space="preserve">
+    <value>&amp; Eliminar escenario ...</value>
+  </data>
+  <data name="MenuEcotracer.Text" xml:space="preserve">
+    <value>Eco y trazador</value>
+  </data>
+  <data name="PlaceholderToolStripMenuItem.Text" xml:space="preserve">
+    <value>&lt;placeholder&gt;</value>
+  </data>
+  <data name="m_tsmiViewMenu.ToolTipText" xml:space="preserve">
+    <value>Mostrar y ocultar el menú principal.</value>
+  </data>
+  <data name="m_tsmiViewItems.Text" xml:space="preserve">
+    <value>&amp; Artículos para mostrar en parcelas ...</value>
+  </data>
+  <data name="MenuEcospace.Text" xml:space="preserve">
+    <value>Ecos y ritmo</value>
+  </data>
+  <data name="MenuEcosim.Text" xml:space="preserve">
+    <value>Eco y sim</value>
+  </data>
+  <data name="m_tsmiHelpIndex.Text" xml:space="preserve">
+    <value>&amp;Índice</value>
+  </data>
+  <data name="m_tsmiViewLog.Text" xml:space="preserve">
+    <value>Ver EwE6 y archivo de registro ...</value>
+  </data>
+  <data name="m_tsmiFileRecent.Text" xml:space="preserve">
+    <value>Modelo abierto y reciente</value>
+  </data>
+  <data name="m_tsmiEcospaceSaveAs.Text" xml:space="preserve">
+    <value>Guardar escenario y como ...</value>
+  </data>
+  <data name="m_tsmiEcosimSaveAs.Text" xml:space="preserve">
+    <value>Guardar escenario y como ...</value>
+  </data>
+  <data name="m_tsmiEcotracerSaveAs.Text" xml:space="preserve">
+    <value>Guardar escenario y como ...</value>
+  </data>
+  <data name="m_tsmiHelpReportIssue.Text" xml:space="preserve">
+    <value>Informar un problema con EwE ...</value>
+  </data>
+  <data name="m_tsmiEcospaceInputMaps.Text" xml:space="preserve">
+    <value>Definir y mapas de controladores ambientales ...</value>
+  </data>
+  <data name="m_tsmiEcopathDefinePedigree.Text" xml:space="preserve">
+    <value>Definir y pedigrí ...</value>
+  </data>
+  <data name="m_tsmiWindowsCloseAll.Text" xml:space="preserve">
+    <value>Cierra todo</value>
+  </data>
+  <data name="m_tsmiTimeSeriesExport.Text" xml:space="preserve">
+    <value>E y xport series temporales a archivo .csv ...</value>
+  </data>
+  <data name="m_tsmiHelpFeedback.Text" xml:space="preserve">
+    <value>Complete la encuesta de usuarios de Ecopath</value>
+  </data>
+  <data name="m_tsmiTimeSeriesImport.Text" xml:space="preserve">
+    <value>Importar y series temporales ...</value>
+  </data>
+  <data name="m_tsmiEcosimLoad.Text" xml:space="preserve">
+    <value>&amp; Cargar escenario ...</value>
+  </data>
+  <data name="m_tsmiEcotracerLoad.Text" xml:space="preserve">
+    <value>&amp; Cargar escenario ...</value>
+  </data>
+  <data name="m_tsmiEcospaceLoad.Text" xml:space="preserve">
+    <value>&amp; Cargar escenario ...</value>
+  </data>
+  <data name="m_tsbnPreview.Text" xml:space="preserve">
+    <value>Beta</value>
+  </data>
+  <data name="m_tsmiPrint.Text" xml:space="preserve">
+    <value>Impresión...</value>
+  </data>
+  <data name="m_tsmiEcopathDefineMultiStanza.Text" xml:space="preserve">
+    <value>Edición y grupos multi-estrofas ...</value>
+  </data>
+  <data name="m_tsmiEcobaseImport.Text" xml:space="preserve">
+    <value>Desde y EcoBase ...</value>
+  </data>
+  <data name="m_tsmiViewModelBar.Text" xml:space="preserve">
+    <value>Bar M &amp; Odel</value>
+  </data>
+  <data name="m_tsmiEcobaseExport.Text" xml:space="preserve">
+    <value>Para y EcoBase ...</value>
+  </data>
+  <data name="m_tsmiPresentation.Text" xml:space="preserve">
+    <value>&amp;Modo presentación</value>
+  </data>
+  <data name="m_tsmiFileNew.Text" xml:space="preserve">
+    <value>&amp;Nuevo modelo...</value>
+  </data>
+  <data name="m_tsbEcopath.Text" xml:space="preserve">
+    <value>Ecopath</value>
+  </data>
+  <data name="m_tsmiFileSaveAs.Text" xml:space="preserve">
+    <value>Guardar modelo y como ...</value>
+  </data>
+  <data name="m_tsmiHelpViewMainSite.Text" xml:space="preserve">
+    <value>Visita Ecopath.org</value>
+  </data>
+  <data name="m_tsmiEcospaceNew.Text" xml:space="preserve">
+    <value>&amp; Nuevo escenario ...</value>
+  </data>
+  <data name="m_tsmiEcosimNew.Text" xml:space="preserve">
+    <value>&amp; Nuevo escenario ...</value>
+  </data>
+  <data name="m_tsmiEcotracerNew.Text" xml:space="preserve">
+    <value>&amp; Nuevo escenario ...</value>
+  </data>
+  <data name="m_tsmiHelpViewFacebook.Text" xml:space="preserve">
+    <value>Visita Ecopath en &amp; Facebook</value>
+  </data>
+  <data name="m_tsmiFileSave.Text" xml:space="preserve">
+    <value>&amp; Guardar modelo</value>
+  </data>
+  <data name="m_tsmiTimeSeriesEditWeights.Text" xml:space="preserve">
+    <value>Editar series de tiempo y pesos ...</value>
+  </data>
+  <data name="m_tsmiHelpContents.Text" xml:space="preserve">
+    <value>&amp;Contenido</value>
+  </data>
+  <data name="m_tsmiNone.Text" xml:space="preserve">
+    <value>(ninguna)</value>
+  </data>
+  <data name="MenuEcospaceExport.Text" xml:space="preserve">
+    <value>&amp;Exportar</value>
+  </data>
+  <data name="MenuFile.Text" xml:space="preserve">
+    <value>&amp;Expediente</value>
+  </data>
+  <data name="m_tsmiEcospaceDatasets.Text" xml:space="preserve">
+    <value>Definir datos externos y conexiones ...</value>
+  </data>
+  <data name="m_tsmiEcosimClose.Text" xml:space="preserve">
+    <value>&amp; Cerrar escenario</value>
+  </data>
+  <data name="m_tsmiEcospaceClose.Text" xml:space="preserve">
+    <value>&amp; Cerrar escenario</value>
+  </data>
+  <data name="m_tsmiEcospaceAdvanced.Text" xml:space="preserve">
+    <value>&amp;Mas opciones</value>
+  </data>
+  <data name="m_tsmiViewMenu.Text" xml:space="preserve">
+    <value>&amp;Menú</value>
+  </data>
+  <data name="m_tsmiEcopathDefineTraits.Text" xml:space="preserve">
+    <value>Definir y taxonomía ...</value>
+  </data>
+  <data name="m_tsmiFileClose.Text" xml:space="preserve">
+    <value>Y modelo cercano</value>
+  </data>
+  <data name="MenuTools.Text" xml:space="preserve">
+    <value>&amp;Herramientas</value>
+  </data>
+  <data name="m_tsbnFeedback.ToolTipText" xml:space="preserve">
+    <value>Complete esta breve encuesta en línea para proporcionarnos comentarios sobre su experiencia Beta.</value>
+  </data>
+  <data name="m_tsmiEcospaceExportLayers.Text" xml:space="preserve">
+    <value>&amp; Exportar capas a CSV ...</value>
+  </data>
+  <data name="m_tsmiEcopathDefineGroups.Text" xml:space="preserve">
+    <value>Definir y grupos ...</value>
+  </data>
+  <data name="m_tsmiViewStatus.Text" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="m_tsmiEIIXMLExport.Text" xml:space="preserve">
+    <value>Para y XML ...</value>
+  </data>
+  <data name="m_tsbnPreview.ToolTipText" xml:space="preserve">
+    <value>Informar un problema de vista previa de EwE</value>
+  </data>
+  <data name="m_tsmiEcospaceEditMap.Text" xml:space="preserve">
+    <value>Editar y mapa base ...</value>
+  </data>
+  <data name="m_tslbReadOnly.ToolTipText" xml:space="preserve">
+    <value>Este modelo se abre en modo de solo lectura y no se puede guardar</value>
+  </data>
+  <data name="m_tsmiOpenOutput.Text" xml:space="preserve">
+    <value>Abrir ubicación de salida ...</value>
+  </data>
+  <data name="m_tsmiPresentation.ToolTipText" xml:space="preserve">
+    <value>Muestra la aplicación en modo Presentación para mostrar en resoluciones de pantalla bajas y proyectores</value>
+  </data>
+  <data name="m_tsmiEcospaceDefineHabitats.Text" xml:space="preserve">
+    <value>Definir y hábitats ...</value>
+  </data>
+  <data name="m_tsmiEcospaceLoadXYRefData.Text" xml:space="preserve">
+    <value>Series de tiempo de referencia de carga y XY ...</value>
+  </data>
+  <data name="m_tsmiFileOpen.Text" xml:space="preserve">
+    <value>Y modelo abierto ...</value>
+  </data>
+  <data name="m_tsmiViewNavigation.Text" xml:space="preserve">
+    <value>&amp;Navegador</value>
+  </data>
+  <data name="m_tsmiViewStartPage.Text" xml:space="preserve">
+    <value>Página de inicio</value>
+  </data>
+  <data name="m_tsmiEcospaceImportLayers.Text" xml:space="preserve">
+    <value>&amp; Importar capas desde CSV ...</value>
+  </data>
+  <data name="m_tsddViewItems.Text" xml:space="preserve">
+    <value>Seleccione grupos y flotas para mostrar en parcelas</value>
+  </data>
+  <data name="m_tsmiViewStatusBar.Text" xml:space="preserve">
+    <value>&amp;Barra de estado</value>
+  </data>
+  <data name="m_tsmiWindowsClose.Text" xml:space="preserve">
+    <value>&amp;Cerrar</value>
+  </data>
+  <data name="m_tsmiEcopathDefineFleets.Text" xml:space="preserve">
+    <value>Definir y flotas ...</value>
+  </data>
+  <data name="m_tsmiHelpAbout.Text" xml:space="preserve">
+    <value>&amp;Acerca de...</value>
+  </data>
+  <data name="m_tsmiViewRemarks.Text" xml:space="preserve">
+    <value>Y observaciones</value>
+  </data>
+</root>

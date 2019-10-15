@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UNIT_TYPE_CONSUMER" xml:space="preserve">
+    <value>Consumidor</value>
+  </data>
+  <data name="NAVTREE_INPUT_FLOW" xml:space="preserve">
+    <value>Fluir</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_LANDINGLINKS" xml:space="preserve">
+    <value>Aterrizajes</value>
+  </data>
+  <data name="UNIT_TYPE_PRODUCER" xml:space="preserve">
+    <value>Productor</value>
+  </data>
+  <data name="NAVTREE_INPUT_DEFAULTS" xml:space="preserve">
+    <value>Valores predeterminados</value>
+  </data>
+  <data name="GENERIC_TOOLTIP" xml:space="preserve">
+    <value>Complemento de cadena de valor</value>
+  </data>
+  <data name="CORE_DEFAULT_DISTRIBUTION" xml:space="preserve">
+    <value>Distribución {0}</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_PROCESSORS" xml:space="preserve">
+    <value>Procesadores</value>
+  </data>
+  <data name="PROMPT_CONVERT_UNIT" xml:space="preserve">
+    <value>¿Está seguro de que desea convertir {0} del tipo '{1}' al tipo '{2}'?</value>
+  </data>
+  <data name="STATUS_SAVING" xml:space="preserve">
+    <value>Guardando el modelo de cadena de valor, espere ...</value>
+  </data>
+  <data name="ERROR_LINK_NOTALLOWED" xml:space="preserve">
+    <value>Este tipo de enlace no está permitido</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_DISTRIBUTORS" xml:space="preserve">
+    <value>Distribuidores</value>
+  </data>
+  <data name="STATUS_PROGRESS_EQUILIBIRUM" xml:space="preserve">
+    <value>Ejecución de la flota de equilibrio de la cadena de valor {0}, esfuerzo {1}</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_REVENUE" xml:space="preserve">
+    <value>Ingresos</value>
+  </data>
+  <data name="HEADER_REVENUE" xml:space="preserve">
+    <value>Ingresos</value>
+  </data>
+  <data name="HEADER_COST" xml:space="preserve">
+    <value>Costo</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_COST" xml:space="preserve">
+    <value>Costo</value>
+  </data>
+  <data name="HEADER_JOBS" xml:space="preserve">
+    <value>Trabajos</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_JOBS" xml:space="preserve">
+    <value>Trabajos</value>
+  </data>
+  <data name="NAVTREE_INPUT_PARAMETERS" xml:space="preserve">
+    <value>Parámetros</value>
+  </data>
+  <data name="PROMPT_AUTOLAYOUT" xml:space="preserve">
+    <value>¿Estás seguro de que deseas organizar el diseño del diagrama?</value>
+  </data>
+  <data name="GENERIC_CAPTION" xml:space="preserve">
+    <value>Cadena de valor</value>
+  </data>
+  <data name="CORE_DEFAULT_WHOLESALER" xml:space="preserve">
+    <value>Mayorista {0}</value>
+  </data>
+  <data name="PROMPT_DELETELINK" xml:space="preserve">
+    <value>¿Desea eliminar el enlace '{0}'? Esta acción no se puede deshacer.</value>
+  </data>
+  <data name="PROMPT_DELETEUNIT" xml:space="preserve">
+    <value>¿Desea eliminar la unidad '{0}'? Esta acción no se puede deshacer.</value>
+  </data>
+  <data name="ERROR_LINK_LOOP" xml:space="preserve">
+    <value>Esto creará un bucle que no está permitido.</value>
+  </data>
+  <data name="ERROR_LINK_NEEDUNITS" xml:space="preserve">
+    <value>Un enlace necesita una fuente y un objetivo</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_WHOLESALERS" xml:space="preserve">
+    <value>Mayoristas</value>
+  </data>
+  <data name="ERROR_LINK_NEEDFLEET" xml:space="preserve">
+    <value>Primero conecte este productor a una flota de Ecopath</value>
+  </data>
+  <data name="STATUS_RUNNING_ECOSIM" xml:space="preserve">
+    <value>Ejecutando cadena de valor para Ecosim, por favor espere ...</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLES" xml:space="preserve">
+    <value>Componentes</value>
+  </data>
+  <data name="PROMPT_SAVERESULTS_SUCCESS" xml:space="preserve">
+    <value>Los resultados de la cadena de valor se guardan en '{0}'</value>
+  </data>
+  <data name="UNIT_TYPE_WHOLESALER" xml:space="preserve">
+    <value>Mayorista</value>
+  </data>
+  <data name="HEADER_CATEGORIES" xml:space="preserve">
+    <value>Categorías</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_RETAILERS" xml:space="preserve">
+    <value>Minoristas</value>
+  </data>
+  <data name="AGGREGATION_MODE_FULLMODEL" xml:space="preserve">
+    <value>Desagregados</value>
+  </data>
+  <data name="CORE_DEFAULT_CONSUMER" xml:space="preserve">
+    <value>Consumidor {0}</value>
+  </data>
+  <data name="AGGREGATION_MODE_BYGROUP" xml:space="preserve">
+    <value>Resultados por grupo</value>
+  </data>
+  <data name="AGGREGATION_MODE_BYFLEET" xml:space="preserve">
+    <value>Resultados por flota</value>
+  </data>
+  <data name="NAVTREE_OUTPUT_FLOWDIAGRAM" xml:space="preserve">
+    <value>Diagrama de flujo</value>
+  </data>
+  <data name="STATUS_LOADING" xml:space="preserve">
+    <value>Cargando modelo de cadena de valor, espere ...</value>
+  </data>
+  <data name="NAVTREE_OUTPUT_RUN" xml:space="preserve">
+    <value>Ejecutar cadena de valor</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_PRODUCERS" xml:space="preserve">
+    <value>Productores</value>
+  </data>
+  <data name="HEADER_REV_COST" xml:space="preserve">
+    <value>Ingresos y costos</value>
+  </data>
+  <data name="STATUS_RUNNING_EQUILIBRIUM" xml:space="preserve">
+    <value>Ejecutando la búsqueda de equilibrio de la cadena de valor, espere ...</value>
+  </data>
+  <data name="UNIT_TYPE_RETAILER" xml:space="preserve">
+    <value>Detallista</value>
+  </data>
+  <data name="STATUS_RUNNING_ECOPATH" xml:space="preserve">
+    <value>Ejecutando cadena de valor para Ecopath, espere ...</value>
+  </data>
+  <data name="PROMPT_SAVERESULTS_FAILED" xml:space="preserve">
+    <value>Los resultados de la cadena de valor no se pudieron guardar en '{0}'. {1}</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_CONSUMERS" xml:space="preserve">
+    <value>Los consumidores</value>
+  </data>
+  <data name="CORE_DEFAULT_RETAILER" xml:space="preserve">
+    <value>Minorista {0}</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_LINKS" xml:space="preserve">
+    <value>Enlaces</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_COSTREVENUE" xml:space="preserve">
+    <value>Costo e ingresos</value>
+  </data>
+  <data name="CORE_DEFAULT_PROCESSING" xml:space="preserve">
+    <value>Procesando {0}</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_DEPENDENTS" xml:space="preserve">
+    <value>Dependientes</value>
+  </data>
+  <data name="HEADER_DEPENDENTS" xml:space="preserve">
+    <value>Dependientes</value>
+  </data>
+  <data name="ERROR_LINK_DUPLICATE" xml:space="preserve">
+    <value>Enlace ya presente para el grupo '{0}'</value>
+  </data>
+  <data name="UNIT_TYPE_PROCESSING" xml:space="preserve">
+    <value>Tratamiento</value>
+  </data>
+  <data name="UNIT_TYPE_DISTRIBUTION" xml:space="preserve">
+    <value>Distribución</value>
+  </data>
+  <data name="STATUS_MERGED" xml:space="preserve">
+    <value>El archivo de datos de la cadena de valor '{0}' se fusionó con el modelo Ecopath '{1}'</value>
+  </data>
+  <data name="PROMPT_SAVERESULT_DETAIL" xml:space="preserve">
+    <value>Guardado '{0}'</value>
+  </data>
+</root>

@@ -1,0 +1,1215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PLUGIN_PROMPT_DISABLE" xml:space="preserve">
+    <value>Se produjo el siguiente error en un '{0}' {1} {1} ¿Desea deshabilitar este complemento la próxima vez que se inicie EwE?</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_QB0_GENERIC" xml:space="preserve">
+    <value>El programa ha estimado que la relación consumo / biomasa (Q / B) para uno o más grupos es 0. Edite sus datos.</value>
+  </data>
+  <data name="F2TS_ERROR_ESTIMATION" xml:space="preserve">
+    <value>Ajustar a la estimación de la serie temporal Error '{0}', los valores de los parámetros originales se han restaurado.</value>
+  </data>
+  <data name="STATUS_PLUGIN_UNLOADED" xml:space="preserve">
+    <value>Complemento {0} descargado</value>
+  </data>
+  <data name="DETIMP_RANGE" xml:space="preserve">
+    <value>Los detritos importados deben ser mayores o iguales a cero.</value>
+  </data>
+  <data name="IMPORT_PROPRESS_ECOSPACEHABITATS" xml:space="preserve">
+    <value>Importando hábitats Ecospace</value>
+  </data>
+  <data name="ECOPATH_RESULTS_SAVED_SUCCESS" xml:space="preserve">
+    <value>Estimaciones de Ecopath guardadas en '{0}'</value>
+  </data>
+  <data name="PROMPT_DISCARD_CHANGES" xml:space="preserve">
+    <value>Su modelo ha cambiado pero la base de datos es de solo lectura. Si continúa, sus cambios pueden perderse. ¿Desea continuar?</value>
+  </data>
+  <data name="FORCING_DATA_CHANGED" xml:space="preserve">
+    <value>Forzar datos de forma ha cambiado.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING" xml:space="preserve">
+    <value>La rutina de estimación de parámetros solo puede funcionar con uno de B, P / B y EE desconocido por grupo. Aquí, más de uno de estos son desconocidos para el grupo '{0}'. {1} {1} Además, el Q / B puede ser desconocido para un depredador dado, es decir, SI: B, PB, QB y EE son conocido por una de sus presas e IF: todos los grupos que se aprovechan de estos dos grupos han conocido B y QB. {1} {1} Vuelva a editar los parámetros de entrada.</value>
+  </data>
+  <data name="MSY_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Resultados de MSY guardados en '{0}'</value>
+  </data>
+  <data name="IMPORT_PROGRESS_TIMESERIES" xml:space="preserve">
+    <value>Importar series temporales de Ecosim</value>
+  </data>
+  <data name="ECOSIM_LOAD_SUCCESS" xml:space="preserve">
+    <value>Escenario de Ecosim '{0}' cargado.</value>
+  </data>
+  <data name="IMPORT_WARNING_TIMESERIESTYPE" xml:space="preserve">
+    <value>Las series temporales {0} ({1}) no se importan porque su tipo {2} no es compatible.</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_SAVED" xml:space="preserve">
+    <value>Registro de operaciones espaciales guardado en '{0}'</value>
+  </data>
+  <data name="ECOSIM_RESPONSE_DIET" xml:space="preserve">
+    <value>Este grupo contiene una dieta importada que no se verá afectada por la respuesta funcional aplicada.</value>
+  </data>
+  <data name="CORE_INIT_CRITICAL_GENERIC" xml:space="preserve">
+    <value>El núcleo EwE6 no se pudo inicializar. Se produjo el siguiente error crítico: {0}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_CVFORMAT" xml:space="preserve">
+    <value>Uno o más valores cv no se pueden leer</value>
+  </data>
+  <data name="ECOPATH_LOADED" xml:space="preserve">
+    <value>Modelo cargado '{0}'</value>
+  </data>
+  <data name="F2TS_ERROR_INTERACTIONS" xml:space="preserve">
+    <value>Fit to Time Series no encontró nada que estimar, saliendo de la búsqueda. Dibuje interacciones antes de buscar nuevamente.</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_PASSED" xml:space="preserve">
+    <value>{0} establecido en {1}</value>
+  </data>
+  <data name="F2TS_PROMPT_ITERATIONS" xml:space="preserve">
+    <value>¿Más iteraciones ajustadas a series temporales?</value>
+  </data>
+  <data name="STANZA_LEADINGB_ADJUSTED" xml:space="preserve">
+    <value>B inicial ajustado para la estrofa {0}.</value>
+  </data>
+  <data name="ECOPATH_NEGATIVE_RESPIR_WARNING" xml:space="preserve">
+    <value>La respiración no puede ser negativa. Se suprimen las estadísticas de resumen para el sistema. Verifique los parámetros y vuelva a ejecutar el programa.</value>
+  </data>
+  <data name="IMPORT_FIX_CREATEECOSIMGROUP" xml:space="preserve">
+    <value>Creando el grupo faltante {0} ({1}) para el escenario Ecosim {2} con valores predeterminados, revise.</value>
+  </data>
+  <data name="ECOSPACE_INIT_ERROR" xml:space="preserve">
+    <value>Ecospace no podrá ejecutarse debido a un error durante la inicialización.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DIETIMPORTONLY_GROUP" xml:space="preserve">
+    <value>El grupo '{0}' tiene una dieta de solo importación</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_RESULTS_SAVED" xml:space="preserve">
+    <value>Residuos de la serie temporal de Ecospace guardados en el archivo {0}</value>
+  </data>
+  <data name="MEDIATION_ZERO_BASE_DETAIL" xml:space="preserve">
+    <value>La función de mediación trófica '{0}' tiene valor cero en la base de Ecopath.</value>
+  </data>
+  <data name="ECOTRACER_LOAD_SUCCESS" xml:space="preserve">
+    <value>Ecotracerscenario '{0}' cargado.</value>
+  </data>
+  <data name="PB_RANGE" xml:space="preserve">
+    <value>PB debe ser mayor que cero.</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_SAMPLE" xml:space="preserve">
+    <value>Muestra de ejecución de Ecosampler {0}</value>
+  </data>
+  <data name="SHAPE_IMPORT_SUCCESS" xml:space="preserve">
+    <value>Formas de tipo {0} importadas exitosamente</value>
+  </data>
+  <data name="MODELFROMSIM_GENERATED" xml:space="preserve">
+    <value>Modelos Ecopath generados a partir de Ecosim.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_POOLFORMAT" xml:space="preserve">
+    <value>Uno o más valores de código de grupo no se pueden leer</value>
+  </data>
+  <data name="QB_CLEARED" xml:space="preserve">
+    <value>QB despejado.</value>
+  </data>
+  <data name="ECOSPACE_EXPORT_CSV_SUCCESS" xml:space="preserve">
+    <value>Los archivos .csv de resultados de Ecospace se han escrito en {0}.</value>
+  </data>
+  <data name="MPAOPT_ERROR" xml:space="preserve">
+    <value>Error de optimización: {0}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_INVALIDFLEET" xml:space="preserve">
+    <value>Número de flota no válido {0}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_INVALIDGROUP" xml:space="preserve">
+    <value>Número de grupo no válido {0}</value>
+  </data>
+  <data name="F2TS_ABORTED" xml:space="preserve">
+    <value>Ajustar a series temporales abortado.</value>
+  </data>
+  <data name="DATA_INVALID" xml:space="preserve">
+    <value>La validación de datos para '{0}' no fue exitosa.</value>
+  </data>
+  <data name="STANZA_LEADING_MISSING" xml:space="preserve">
+    <value>Grupo principal no especificado para '{0}'</value>
+  </data>
+  <data name="COMPUTATION_ALREADY_RUNNING" xml:space="preserve">
+    <value>Solo se puede ejecutar un cálculo a la vez.</value>
+  </data>
+  <data name="STATUS_PLUGIN_LOADED" xml:space="preserve">
+    <value>Complemento {0} cargado</value>
+  </data>
+  <data name="ECOPATH_MISSINGPARAM_CATCH_GENERIC" xml:space="preserve">
+    <value>Falta información de captura (Desembarco + Descarte) para una o más flotas.</value>
+  </data>
+  <data name="IMPORT_WARNING_TIMESERIESFLEET" xml:space="preserve">
+    <value>Las series temporales {0} ({1}) no se importaron porque el número de flota {2} no se pudo resolver</value>
+  </data>
+  <data name="EE_CLEARED" xml:space="preserve">
+    <value>EE despejado.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DFLARGERTHANONE" xml:space="preserve">
+    <value>Su modelo tiene {0} grupo (s) para los cuales el destino de Detritus (DF) suma más de 1. Debería volver a sus datos de entrada y asegurarse de que la suma del DF sea solo 1 máximo.</value>
+  </data>
+  <data name="ECOSPACE_RUNNING" xml:space="preserve">
+    <value>Ecospace ya se está ejecutando, debe detener la ejecución actual o esperar a que se complete antes de comenzar otra ejecución.</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_BASELINE" xml:space="preserve">
+    <value>Línea base de ejecución de lote de Ecosampler</value>
+  </data>
+  <data name="RELOAD_ECOSPACE" xml:space="preserve">
+    <value>Debe volver a cargar Ecospace para que sus cambios surtan efecto.</value>
+  </data>
+  <data name="IMPORT_PROGRESS_COMPLETE" xml:space="preserve">
+    <value>Importación completada</value>
+  </data>
+  <data name="GS_CLEARED" xml:space="preserve">
+    <value>GS despejado.</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOTRACER" xml:space="preserve">
+    <value>Importar escenarios de Ecotracer</value>
+  </data>
+  <data name="IMPORT_FIX_CREATEECOSPACEFLEET" xml:space="preserve">
+    <value>Creación de la flota faltante {0} ({1}) para el escenario Ecospace {2} con valores predeterminados, revise.</value>
+  </data>
+  <data name="IMPORT_FIX_CREATEECOSPACEGROUP" xml:space="preserve">
+    <value>Creación del grupo faltante {0} ({1}) para el escenario Ecospace {2} con valores predeterminados, por favor revise.</value>
+  </data>
+  <data name="STANZA_CALCULATEPARMS_TOOMANYMISSING" xml:space="preserve">
+    <value>Faltan parámetros B, CB o Mortalidad para el grupo de estrofas {0}. El cálculo de la estrofa no se puede hacer.</value>
+  </data>
+  <data name="SPATIALTEMPORAL_LOAD_ERROR_GENERIC" xml:space="preserve">
+    <value>Error al recargar una o más conexiones de datos espacio-temporales externas. ¿Te falta un complemento requerido?</value>
+  </data>
+  <data name="ECOPATH_SAVE_FAILED" xml:space="preserve">
+    <value>El modelo Ecopath '{0}' no se pudo guardar</value>
+  </data>
+  <data name="ECOPATH_MODEL_UPDATE_SUCCESS" xml:space="preserve">
+    <value>El modelo se actualizó a la versión EwE {0}.</value>
+  </data>
+  <data name="SPATIALTEMPORAL_MISSINGDATA" xml:space="preserve">
+    <value>Algunas conexiones externas de datos espacio-temporales no podrán acceder a sus datos. ¿Quieres continuar?</value>
+  </data>
+  <data name="F2TS_PROMPT_CONVERGED" xml:space="preserve">
+    <value>Las estimaciones de Fit to Time Series han convergido. ¿Quieres hacer más iteraciones?</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET" xml:space="preserve">
+    <value>Falta la flota '{0}' Descartar destino</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_MAP_EXTENTS" xml:space="preserve">
+    <value>Extensiones de mapa de la serie temporal de Ecospace fuera del mapa de carga actual.</value>
+  </data>
+  <data name="IMPORT_WARNING_PAIRSNOTSUPPORTED" xml:space="preserve">
+    <value>Los pares de Ecosim ya no son compatibles. Deberá traducir uno o más pares de EwE5 a una configuración de múltiples estrofas EwE6.</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED" xml:space="preserve">
+    <value>Se estimaron las siguientes variables:</value>
+  </data>
+  <data name="GENERIC_PROMPT_ESTIMATED" xml:space="preserve">
+    <value>Se estimaron las siguientes variables:</value>
+  </data>
+  <data name="BIOMASSAREA_RANGE" xml:space="preserve">
+    <value>El área de biomasa debe ser mayor que cero.</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_DETAIL" xml:space="preserve">
+    <value>{0} no puede ser {1}. {2}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FLEET" xml:space="preserve">
+    <value>Importar flotas de Ecopath</value>
+  </data>
+  <data name="IMPORT_PROGRESS_MODEL" xml:space="preserve">
+    <value>Importando modelo {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_CATCH" xml:space="preserve">
+    <value>Importar capturas de Ecopath</value>
+  </data>
+  <data name="PSD_RUN_SUCCESS" xml:space="preserve">
+    <value>Distribución de tamaño de partícula completada.</value>
+  </data>
+  <data name="IMPORT_NO_DESCRIPTION" xml:space="preserve">
+    <value>No hay descripción disponible.</value>
+  </data>
+  <data name="UPDATE_NEED_REVIEW" xml:space="preserve">
+    <value>¡El proceso de actualización identificó algunos posibles problemas que debería revisar!</value>
+  </data>
+  <data name="PLUGIN_SAVE_PROMPT" xml:space="preserve">
+    <value>Uno o más complementos contienen cambios que no se han guardado. Si continúa, estos cambios pueden perderse. \ N \ n Sí - guardar cambios \ nNo - posiblemente cambios sueltos \ nCancelar - cancelar esta operación.</value>
+  </data>
+  <data name="IMPORT_WARNING_PAIRDETAILS" xml:space="preserve">
+    <value>Par {0} no convertido: {1}, {2}</value>
+  </data>
+  <data name="B_MISSING_GROUP" xml:space="preserve">
+    <value>Falta B para el grupo '{0}'</value>
+  </data>
+  <data name="DLLFACTORY_FILENOTFOUND" xml:space="preserve">
+    <value>No se pudo encontrar el archivo '{0}'.</value>
+  </data>
+  <data name="ECOPATH_GS_WARNING" xml:space="preserve">
+    <value>ADVERTENCIA: compruebe sus datos El consumo no asimilado (GS) no puede ser mayor que uno. ¡Sus datos han sido modificados!</value>
+  </data>
+  <data name="MONTECARLO_ECOPATH_TOOMANYMISSING" xml:space="preserve">
+    <value>Monte Carlo ha encontrado demasiados parámetros faltantes para ejecutar Ecopath. Verifique sus parámetros de entrada.</value>
+  </data>
+  <data name="IMPORT_POGRESS_DIETCOMP" xml:space="preserve">
+    <value>Importando dietas</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECORANGER" xml:space="preserve">
+    <value>Ecoranger de importación</value>
+  </data>
+  <data name="OUTPUT_NOT_EDITABLE" xml:space="preserve">
+    <value>Los datos de salida no son editables.</value>
+  </data>
+  <data name="ECOPATH_RUN_SUCCESS" xml:space="preserve">
+    <value>Carrera de Ecopath completada.</value>
+  </data>
+  <data name="TIMESERIES_EXPORT_SUCCESS" xml:space="preserve">
+    <value>Conjunto de datos de series temporales '{0}' exportado a '{1}'.</value>
+  </data>
+  <data name="SHAPE_IMPORT_FAILED" xml:space="preserve">
+    <value>Error al importar formas del tipo {0}, verifique los datos.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE" xml:space="preserve">
+    <value>Su modelo tiene {0} engranajes para los cuales no se especifica el destino de descarte. Debería volver a sus datos de entrada y asegurarse de especificar qué sucede con los descartes. Los descartes deben dirigirse a un grupo de detritos; si este no es el caso en su caso, tal vez debería tratar los descartes de la flota dada como aterrizajes con valor cero.</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGDUPLICATE" xml:space="preserve">
+    <value>La forma forzada {0} no se pudo importar como {1}; forma definida más de una vez debido a un error interno.</value>
+  </data>
+  <data name="PSD_RUN_ERROR" xml:space="preserve">
+    <value>La distribución del tamaño de partícula no se pudo ejecutar.</value>
+  </data>
+  <data name="EE_RANGE" xml:space="preserve">
+    <value>EE debe estar entre cero y uno.</value>
+  </data>
+  <data name="SPATIALTEMPORAL_MISSINGDATA_DETAIL" xml:space="preserve">
+    <value>La conexión de datos {0} no puede localizar sus datos</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC" xml:space="preserve">
+    <value>Ecopath no pudo estimar uno o más parámetros.</value>
+  </data>
+  <data name="MONTECARLO_ECOPATH_ERROR" xml:space="preserve">
+    <value>Se produjo un error en Ecopath. Las pruebas de Monte Carlo no se pudieron ejecutar.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_B_FISHERIY" xml:space="preserve">
+    <value>Ecopath ha estimado que la biomasa para el grupo {0} ({1}) es ({2}). Esto se debe a que se estima que la acumulación pesquería + migración + biomasa suma un valor negativo. Edite sus datos, permitiendo, por ejemplo, la acumulación de biomasa para este grupo.</value>
+  </data>
+  <data name="TIMESERIES_EXPORT_FAILED" xml:space="preserve">
+    <value>Error al exportar la serie temporal '{0}' a '{1}': {2}</value>
+  </data>
+  <data name="ECOSEED_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Error al guardar los resultados de optimización espacial '{1}' en '{0}'</value>
+  </data>
+  <data name="MSE_DISCARD_TIMESERIES_WARNING" xml:space="preserve">
+    <value>La aplicación de series temporales {0} podría dar resultados erróneos en las Evaluaciones de la estrategia de gestión. ¿Estás seguro de que quieres seguir corriendo?</value>
+  </data>
+  <data name="IMPORT_PROGRESS_PEDIGREE" xml:space="preserve">
+    <value>Importar pedigrí</value>
+  </data>
+  <data name="ASCII_READ_ERROR_MISSINGFIELD" xml:space="preserve">
+    <value>Error al leer el archivo ASCII con campos de encabezado faltantes</value>
+  </data>
+  <data name="ECOPATH_DIETCOMP_NOTSUMTOONE" xml:space="preserve">
+    <value>DC no suma a uno para el grupo {0}.</value>
+  </data>
+  <data name="PSD_REQ_LW" xml:space="preserve">
+    <value>Falta 'L en el infinito' o 'W en el infinito' para el grupo {0}</value>
+  </data>
+  <data name="STATUS_DATABASE_UPDATE" xml:space="preserve">
+    <value>Ejecutando la actualización de la base de datos {0}: '{1}'</value>
+  </data>
+  <data name="TIMESERIES_ERROR_MISSING" xml:space="preserve">
+    <value>Falta la fila de datos para {0}</value>
+  </data>
+  <data name="SHAPE_IMPORT_DETAIL" xml:space="preserve">
+    <value>Forma {0} importada</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED_EMIGRATION" xml:space="preserve">
+    <value>Emigración para el grupo '{0}'</value>
+  </data>
+  <data name="ECOTRACER_SAVE_SUCCES" xml:space="preserve">
+    <value>El escenario Ecotracer '{0}' se ha guardado.</value>
+  </data>
+  <data name="PSD_MISSING_INPUT" xml:space="preserve">
+    <value>La rutina de estimación de PSD solo puede funcionar con 'L en el infinito' o 'W en el infinito' como desconocido por grupo. 'K en VBGF' debe ser conocido para cada grupo. Aquí, uno o más de estos son desconocidos:</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_OUTOFRANGE" xml:space="preserve">
+    <value>El valor está fuera de rango.</value>
+  </data>
+  <data name="IMPORT_FIX_CREATEFISHMORTSHAPE" xml:space="preserve">
+    <value>Creando la forma de mortalidad de peces faltante {0} para el grupo ecosim {1}, escenario ecosim {2} con valores predeterminados, por favor revise.</value>
+  </data>
+  <data name="TIMESERIES_LOAD_SUCCESS" xml:space="preserve">
+    <value>Conjunto de datos de series temporales '{0}' cargado.</value>
+  </data>
+  <data name="ECOSIM_RESPONSE_NO_OVERLAP" xml:space="preserve">
+    <value>Advertencia: compruebe su respuesta funcional y forzar datos. La respuesta funcional aplicada no se superpone con forzar datos en el paso de tiempo 1.</value>
+  </data>
+  <data name="ECOTRACER_SAVE_PROMPT" xml:space="preserve">
+    <value>El escenario de Ecotracer '{0}' ha cambiado desde la última vez que guardó. Si continúa, estos cambios pueden perderse. \ N \ n Sí - guardar cambios \ nNo - volver al último escenario guardado \ nCancelar - cancelar esta operación.</value>
+  </data>
+  <data name="STANZA_CALCULATEPARMS_DATAERROR" xml:space="preserve">
+    <value>Se ha producido un error de datos críticos al calcular los parámetros de stanza: {0}</value>
+  </data>
+  <data name="DIETCOMP_RANGE" xml:space="preserve">
+    <value>Diet Comp debe ser mayor o igual a cero.</value>
+  </data>
+  <data name="STANZA_MORT_MISSING" xml:space="preserve">
+    <value>Falta de mortalidad (Z) para '{0}'</value>
+  </data>
+  <data name="SAMPLES_IMPORT_SUCCESS" xml:space="preserve">
+    <value>{0} muestra (s) importadas</value>
+  </data>
+  <data name="TIMESERIES_ERROR_VALUEFORMAT" xml:space="preserve">
+    <value>Uno o más valores no se pueden leer</value>
+  </data>
+  <data name="ECOSIM_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Error al guardar los resultados de Ecosim '{1}' en '{0}'</value>
+  </data>
+  <data name="MPAOPT_NODATA_RESUME" xml:space="preserve">
+    <value>No se seleccionaron celdas semilla ni se establecieron MPA. La optimización puede producir resultados desconocidos. ¿Te gustaria continuar?</value>
+  </data>
+  <data name="ECOPATH_MODEL_UPDATE_FAILED" xml:space="preserve">
+    <value>¡El modelo no pudo actualizarse a la versión EwE {0}!</value>
+  </data>
+  <data name="TIMESERIES_ERROR_IDENTICALSEPARATORS" xml:space="preserve">
+    <value>El separador decimal y de columna no puede ser el mismo.</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_EVEN" xml:space="preserve">
+    <value>{0} debe ser par y no puede ser {1}</value>
+  </data>
+  <data name="UPDATE_RUNNING" xml:space="preserve">
+    <value>Aplicando la actualización del modelo {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACESCENARIOS" xml:space="preserve">
+    <value>Importar escenarios de Ecospace</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_QB0" xml:space="preserve">
+    <value>QB estimado = 0 para el grupo '{0}'.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_PB0" xml:space="preserve">
+    <value>PB estimado = 0 para el grupo '{0}'.</value>
+  </data>
+  <data name="DATABASE_BACKUP_SUCCESS" xml:space="preserve">
+    <value>Se realizó una copia de seguridad de su modelo en '{0}'</value>
+  </data>
+  <data name="ECOSPACE_SIM_INIT_FAILED" xml:space="preserve">
+    <value>Ecospace no pudo inicializar Ecosim. Intente cargar un escenario de Ecosim diferente y vuelva a ejecutar Ecospace.</value>
+  </data>
+  <data name="PSD_REQ_K_VBGF" xml:space="preserve">
+    <value>Falta 'K en VBGF' para el grupo {0}</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_NOTUNIQUE" xml:space="preserve">
+    <value>La rutina inversa generalizada está tratando de estimar {0} desconocido a partir de {1} ecuaciones. La solución no será única. Verifique los valores estimados cuidadosamente.</value>
+  </data>
+  <data name="GE_CLEARED" xml:space="preserve">
+    <value>GE aclaró.</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_ADAPTERROR" xml:space="preserve">
+    <value>Error al actualizar la celda ({0}, {1}) con el valor {2}. {3}</value>
+  </data>
+  <data name="STATUS_SPATIALTERMPORAL_CALCULATING" xml:space="preserve">
+    <value>Cálculo del factor de escala para '{0}' utilizando el conjunto de datos '{1}', convertidor '{2}'</value>
+  </data>
+  <data name="OUTPUT_DIRECTORY_MISSING" xml:space="preserve">
+    <value>El directorio de salida no existe.</value>
+  </data>
+  <data name="MODELFRIMSIM_BA_ENDYEAR_ADJ" xml:space="preserve">
+    <value>El año pasado para promediar BA se cambió al último año de Ecosim</value>
+  </data>
+  <data name="STATUS_EXCEPTION" xml:space="preserve">
+    <value>Ha ocurrido un error interno. {0}</value>
+  </data>
+  <data name="ICORE_ADD_NULL" xml:space="preserve">
+    <value>Lo sentimos, esta entrada o salida no se puede dejar vacía.</value>
+  </data>
+  <data name="FMSY_STATUS_NOTFOUND" xml:space="preserve">
+    <value>Fmsy no encontrado en el rango F dado</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_READ_FAIL_MESSAGE" xml:space="preserve">
+    <value>Ecospace Time Series no pudo leer</value>
+  </data>
+  <data name="ECOSIM_SAVE_FAILED" xml:space="preserve">
+    <value>El escenario de Ecosim '{0}' no se pudo guardar. {1}</value>
+  </data>
+  <data name="MSY_ERROR_RUN_FMSY" xml:space="preserve">
+    <value>Se produjo un error al ejecutar FMSY. {0}</value>
+  </data>
+  <data name="GENERIC_ABORTING_EDIT_DATA" xml:space="preserve">
+    <value>Anulando, edite sus datos.</value>
+  </data>
+  <data name="STANZA_LEADINGCB_ADJUSTED" xml:space="preserve">
+    <value>CB principal ajustado para la estrofa {0}.</value>
+  </data>
+  <data name="AREA_RANGE" xml:space="preserve">
+    <value>El área debe ser mayor que cero y menor o igual que uno (&gt; 0 y &lt;= 1).</value>
+  </data>
+  <data name="QB_MISSING_GROUP" xml:space="preserve">
+    <value>Falta Q / B para el grupo '{0}'</value>
+  </data>
+  <data name="ADVECTION_ERROR" xml:space="preserve">
+    <value>Se produjo un error al ejecutar los cálculos de advección: {0}</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP" xml:space="preserve">
+    <value>La respiración excede la entrada al detrito para uno o más grupos.</value>
+  </data>
+  <data name="DIETCOMP_PROMPT_CORRECTTO15PERC" xml:space="preserve">
+    <value>El grupo '{0}' obtiene {1}% de su dieta de los grupos con un TL más alto. ¿Quieres reducirlo al 15%? (Hacerlo no cambiará sus datos de entrada)</value>
+  </data>
+  <data name="ECOSPACE_LOWHABITAT_CAP" xml:space="preserve">
+    <value>ADVERTENCIA: Los siguientes grupos tienen una capacidad de hábitat promedio baja. ¿Quieres continuar?</value>
+  </data>
+  <data name="SPATIALTEMPORAL_EXPORT_EXCEPTION" xml:space="preserve">
+    <value>Se produjo un error al exportar. {0}</value>
+  </data>
+  <data name="IMPORT_FIX_GROUPAREA" xml:space="preserve">
+    <value>Área del grupo '{0}' corregida a {1}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TYPELINEMISSING" xml:space="preserve">
+    <value>Encabezado '{0}' no reconocido, esperado 'tipo', 'código' o 'tipo de dat'</value>
+  </data>
+  <data name="PB_CLEARED" xml:space="preserve">
+    <value>PB despejado</value>
+  </data>
+  <data name="MSY_WARNING_TIMESERIES" xml:space="preserve">
+    <value>MSY no producirá resultados confiables cuando hay series de tiempo cargadas. Se recomienda descargar series temporales antes de ejecutar el MSY. ¿Desea continuar la ejecución de MSY?</value>
+  </data>
+  <data name="ECOTRACER_SAVE_FAILED" xml:space="preserve">
+    <value>El escenario Ecotracer '{0}' no se pudo guardar. {1}</value>
+  </data>
+  <data name="MIGRATION_MISSING_MAPS" xml:space="preserve">
+    <value>ADVERTENCIA: Los patrones de migración mensual no se han establecido para los siguientes grupos. ¿Quieres continuar?</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TYPEVALUEMISSING" xml:space="preserve">
+    <value>Falta el valor del código de tipo</value>
+  </data>
+  <data name="FMSY_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Error al guardar resultados MSY '{1}' en '{0}'</value>
+  </data>
+  <data name="MSY_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Error al guardar resultados MSY '{1}' en '{0}'</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FAILED" xml:space="preserve">
+    <value>La importación del modelo {0} falló en {1}</value>
+  </data>
+  <data name="MSY_ERROR_RUN" xml:space="preserve">
+    <value>Se produjo un error al ejecutar MSY. {0}</value>
+  </data>
+  <data name="ECOPATH_PROMPT_STANZA_WHOLE_AREA" xml:space="preserve">
+    <value>Los cálculos de múltiples estrofas no funcionan correctamente con áreas de hábitat fraccionales. Establezca todas las proporciones del área de hábitat de Ecopath en 1 para los grupos de estrofas y, en su lugar, corrija la biomasa de la etapa de vida principal</value>
+  </data>
+  <data name="ECOPATH_GROUPSPLIT_SUCCESS" xml:space="preserve">
+    <value>Los grupos {0} se han dividido en {1} y {2}</value>
+  </data>
+  <data name="ECOPATH_GROUPMERGE_SUCCESS" xml:space="preserve">
+    <value>Los grupos {0} y {1} se han fusionado en {2}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FORCINGAPPLICATIONS" xml:space="preserve">
+    <value>Importación de aplicaciones de forzamiento y mediación de Ecosim</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEMPAS" xml:space="preserve">
+    <value>Importación de áreas marinas protegidas de Ecospace</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMFLEETS_AT" xml:space="preserve">
+    <value>Importar flota de Ecosim {0} - {1}</value>
+  </data>
+  <data name="ECOSPACE_LOWHABITAT_CAP_GROUP" xml:space="preserve">
+    <value>Capacidad promedio del grupo '{0}' por celda {1}%</value>
+  </data>
+  <data name="ECOPATH_ERROR_NOMODEL" xml:space="preserve">
+    <value>No se pudo ejecutar EcoPath, un modelo aún no se ha inicializado.</value>
+  </data>
+  <data name="STANZA_APPLY_DATAERROR" xml:space="preserve">
+    <value>Se ha producido un error de datos críticos al aplicar nuevos datos de stanza: {0}</value>
+  </data>
+  <data name="ECOSPACE_SAVE_FAILED" xml:space="preserve">
+    <value>Escenario del ecosistema '{0}' no se pudo guardar. {1}</value>
+  </data>
+  <data name="GENERIC_STATUS_INITIALIZING" xml:space="preserve">
+    <value>Inicializando ...</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGTYPEMISSING" xml:space="preserve">
+    <value>No se puede determinar el tipo de datos forzados {0}, datos no importados</value>
+  </data>
+  <data name="ECOPATH_RUN_ERROR_EXCEPTION" xml:space="preserve">
+    <value>Ecopath no pudo correr. {0}</value>
+  </data>
+  <data name="MONTECARLO_RESTORE_FAILED" xml:space="preserve">
+    <value>Advertencia: Monte Carlo no pudo restablecer Ecopath a su estado original. Es posible que deba cerrar el modelo sin guardar para restaurar sus datos originales.</value>
+  </data>
+  <data name="MODELFRIMSIM_BA_STARTYEAR_ADJ" xml:space="preserve">
+    <value>El año de inicio para promediar BA se ha cambiado al primer año de Ecosim</value>
+  </data>
+  <data name="TIMESERIES_ERROR_GROUP_NOTFISHED" xml:space="preserve">
+    <value>El grupo '{0}' no se pesca</value>
+  </data>
+  <data name="MONTECARLO_RESULTS_SAVED_SUCCESS" xml:space="preserve">
+    <value>Los resultados de Monte Carlo se guardaron en {0}</value>
+  </data>
+  <data name="ECOPATH_DIETCOMP_NOTSUMTOONE_GENERIC" xml:space="preserve">
+    <value>La composición de la dieta (DC) no suma uno para uno o más grupos.</value>
+  </data>
+  <data name="IMPORT_ERROR_CANNOTCREATE" xml:space="preserve">
+    <value>No se puede crear una nueva base de datos en la ubicación {0}</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_COMPLETED" xml:space="preserve">
+    <value>Ejecución por lotes de Ecosampler completada</value>
+  </data>
+  <data name="ECOSIM_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Resultados de Ecosim guardados en '{0}'</value>
+  </data>
+  <data name="TIMESERIES_UNLOAD_SUCCESS" xml:space="preserve">
+    <value>Series temporales descargadas correctamente</value>
+  </data>
+  <data name="MONTECARLO_RESULTS_SAVED_ERROR" xml:space="preserve">
+    <value>Error al guardar los resultados de Monte Carlo en {0}</value>
+  </data>
+  <data name="SCENARIO_DELETE_LOADED" xml:space="preserve">
+    <value>No puede eliminar un escenario cargado.</value>
+  </data>
+  <data name="MONTECARLO_SAVE_FAILED" xml:space="preserve">
+    <value>Error al guardar los datos de Monte Carlo en el archivo. {0}</value>
+  </data>
+  <data name="MONTECARLO_ECOSIM_MISSING" xml:space="preserve">
+    <value>Cargue un escenario Ecosim antes de ejecutar Monte Carlo.</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_LOADING" xml:space="preserve">
+    <value>Acceso a datos externos en {0} ({1}) en el paso {2} ({3: aaaa / MM})</value>
+  </data>
+  <data name="TIMESERIES_ERROR_VALUEMISSING" xml:space="preserve">
+    <value>Faltan valores para la fila {0}</value>
+  </data>
+  <data name="F2TS_ERROR_SENSITIVITY_SETBLOCKS" xml:space="preserve">
+    <value>La rutina de sensibilidad no se ha ejecutado. Los bloques no se pueden configurar.</value>
+  </data>
+  <data name="QB_RANGE" xml:space="preserve">
+    <value>QB debe ser mayor que cero.</value>
+  </data>
+  <data name="IMPORT_ERROR_CANNOTACCESS" xml:space="preserve">
+    <value>No se puede acceder a la base de datos recién creada en la ubicación {0}</value>
+  </data>
+  <data name="TRACER_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Resultados del marcador de contaminantes guardados en '{0}'</value>
+  </data>
+  <data name="CORE_INIT_CRITICAL_VALIDATORS" xml:space="preserve">
+    <value>El núcleo EwE6 no se pudo inicializar. Se produjo el siguiente error crítico al crear validadores: {0}</value>
+  </data>
+  <data name="ECOSPACE_SAVE_SUCCES" xml:space="preserve">
+    <value>Se ha guardado el escenario del ecosistema '{0}'.</value>
+  </data>
+  <data name="IMPORT_WARNING_ECORANGER" xml:space="preserve">
+    <value>Ecoranger ya no es compatible con EwE6. Los datos existentes de Ecoranger no se importan.</value>
+  </data>
+  <data name="DATA_VALID" xml:space="preserve">
+    <value>La validación de datos para '{0}' fue exitosa.</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_ABORT_NOBALANCE" xml:space="preserve">
+    <value>La línea de base no se equilibra. Ejecución por lotes de Ecosampler abortada</value>
+  </data>
+  <data name="MEDIATION_ZERO_BASE" xml:space="preserve">
+    <value>No se pueden usar una o más formas de mediación. Por favor edite sus datos.</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGNOTIMPORTED" xml:space="preserve">
+    <value>Los datos forzados {0} no se pudieron importar como {1}</value>
+  </data>
+  <data name="ECOPATH_MISSINGPARAM_LANDING" xml:space="preserve">
+    <value>Falta información de aterrizaje para la flota {0}, grupo {1}.</value>
+  </data>
+  <data name="DIETCOMP_PROMPT_MISSING" xml:space="preserve">
+    <value>No se han introducido dietas para uno o más grupos.</value>
+  </data>
+  <data name="IMPORT_PROGRESS_QUOTES" xml:space="preserve">
+    <value>Importando cotizaciones</value>
+  </data>
+  <data name="MIGRATION_MISSING_GROUPS" xml:space="preserve">
+    <value>Establecer patrones de migración mensuales para el grupo {0}</value>
+  </data>
+  <data name="STATUS_SAVING_CHANGES" xml:space="preserve">
+    <value>Guardando cambios, por favor espere ...</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_B0_FISHERY" xml:space="preserve">
+    <value>Ecopath ha estimado que la biomasa para el grupo {0} ({1}) es 0. Esto se debe a que la pesquería + migración + acumulación de biomasa se estima en 0. Edite sus datos, permitiendo, por ejemplo, la acumulación de biomasa para este grupo.</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_ODD" xml:space="preserve">
+    <value>{0} debe ser impar y no puede ser {1}</value>
+  </data>
+  <data name="IMPORT_ERROR_COMMIT" xml:space="preserve">
+    <value>No se pueden almacenar datos para '{0}', la base de datos rechazó los valores importados. Esto indica un error de programación. Notifique al equipo de desarrollo de EwE</value>
+  </data>
+  <data name="SPATIALTEMPORAL_TOOMANYTIMESTEPS" xml:space="preserve">
+    <value>Ecospace está configurado para ejecutarse con más de doce pasos de tiempo por año, mientras que los datos externos solo pueden entregarse el primer día de un mes. Es posible que su modelo no pueda obtener los datos correctos para cada paso de tiempo. ¿Quieres continuar?</value>
+  </data>
+  <data name="DIETCOMP_PROMPT_SUMTOONE" xml:space="preserve">
+    <value>La dieta para uno o más grupos no suma 1. ¿Desea normalizar las dietas a 1 para TODOS los grupos de depredadores?</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TYPEFORMAT" xml:space="preserve">
+    <value>Uno o más valores de código de tipo no se pueden leer</value>
+  </data>
+  <data name="ECOSPACE_LOAD_FAILED" xml:space="preserve">
+    <value>No se pudo cargar el escenario del ecosistema '{0}'. {1}</value>
+  </data>
+  <data name="GENERIC_SAVE_RESOLUTION" xml:space="preserve">
+    <value>Intenta guardar tu modelo con un nuevo nombre.</value>
+  </data>
+  <data name="DATABASE_UPDATE_FAILED" xml:space="preserve">
+    <value>La actualización del modelo {0} falló</value>
+  </data>
+  <data name="MSE_FIXF_FIXESC_FAILEDVALIDATION" xml:space="preserve">
+    <value>Error al establecer el valor. Fix F y Fixed escapement no pueden contener un valor.</value>
+  </data>
+  <data name="GS_RANGE" xml:space="preserve">
+    <value>El consumo no asimilado debe estar entre cero y uno.</value>
+  </data>
+  <data name="DIETCOMP_NOT_SUM_ONE" xml:space="preserve">
+    <value>La composición de la dieta no suma uno para uno o más depredadores</value>
+  </data>
+  <data name="GE_RANGE" xml:space="preserve">
+    <value>GE debe ser mayor que cero y menor o igual que 1.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_NO_DATE" xml:space="preserve">
+    <value>La fecha del modelo EwE no se ha establecido. Debe configurar esto para usar datos de series temporales de Ecospace.</value>
+  </data>
+  <data name="IMPORT_WARNING_TIMESIERIESGROUP" xml:space="preserve">
+    <value>Las series temporales {0} ({1}) no se importaron porque el número de grupo {2} no se pudo resolver</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEREGIONS" xml:space="preserve">
+    <value>Importando regiones Ecospace</value>
+  </data>
+  <data name="ECOSPACE_EXPORT_ASCII_SUCCESS" xml:space="preserve">
+    <value>Los archivos .asc de resultados de Ecospace se han escrito en {0}.</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGMULTIPLEASSIGNMENTS" xml:space="preserve">
+    <value>Los datos forzados {0} se utilizan para impulsar la producción de huevos y otra función. Importado solo como {1}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_STANZA" xml:space="preserve">
+    <value>Importar configuraciones de múltiples estrofas</value>
+  </data>
+  <data name="IMPORT_PROGRESS_SUCCES" xml:space="preserve">
+    <value>Importación del modelo {0} completada con éxito en {1}</value>
+  </data>
+  <data name="ECOSPACE_NO_SIM_SCENARIO" xml:space="preserve">
+    <value>Un escenario de Ecosim y Ecospace debe cargarse antes de poder ejecutar Ecospace.</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEFLEETS" xml:space="preserve">
+    <value>Importando flotas Ecospace</value>
+  </data>
+  <data name="MONTECARLO_RUN_ERROR" xml:space="preserve">
+    <value>Error al ejecutar las pruebas de Monte Carlo. {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOTRACERGROUPS" xml:space="preserve">
+    <value>Importar grupos Ecotracer</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_EE" xml:space="preserve">
+    <value>No se pudieron estimar las Eficiencias ecotróficas (EE) para el grupo {0}.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_PB" xml:space="preserve">
+    <value>La relación producción / biomasa (PB) no se pudo estimar para el grupo {0}.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_QB" xml:space="preserve">
+    <value>No se pudo estimar la relación consumo / biomasa (QB) para el grupo {0}.</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEGROUPS" xml:space="preserve">
+    <value>Importar grupos de Ecospace</value>
+  </data>
+  <data name="DLLFACTORY_TYPE_NOT_FOUND" xml:space="preserve">
+    <value>El componente '{0}' no se pudo encontrar en '{1}'.</value>
+  </data>
+  <data name="ECOPATH_LOAD_FAILED" xml:space="preserve">
+    <value>El modelo Ecopath '{0}' no se pudo cargar. {1}</value>
+  </data>
+  <data name="SPATIALTEMPORAL_LOAD_ERROR_DETAIL" xml:space="preserve">
+    <value>No se puede cargar el complemento '{0}'</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED_IMMIGRATION" xml:space="preserve">
+    <value>Inmigración para el grupo '{0}'</value>
+  </data>
+  <data name="SPATIALTEMPORAL_EXPORT_ERROR" xml:space="preserve">
+    <value>Error al exportar los conjuntos de datos a {0}</value>
+  </data>
+  <data name="UPDATE_600007_ERROR" xml:space="preserve">
+    <value>La configuración de la pesquería de AMP puede contener errores en los escenarios de Ecospace {0}</value>
+  </data>
+  <data name="TIMESERIES_UNLOAD_FAILED" xml:space="preserve">
+    <value>Serie temporal no se pudo descargar. {0}</value>
+  </data>
+  <data name="FMSY_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Resultados de Fmsy guardados en '{0}'</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ENTER_B_BEFORE_PROCEEDING" xml:space="preserve">
+    <value>Ingrese Biomasa para todos los grupos de detritos antes de proceder a Ecosim.</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_QB_EE" xml:space="preserve">
+    <value>Se ingresan biomasa, PB, QB y EE para '{0}'. ¿Quieres estimar la acumulación de biomasa?</value>
+  </data>
+  <data name="ECOSIM_RUN_ERROR_MISSINGPREDATION" xml:space="preserve">
+    <value>La depredación total en la presa {0} por el depredador {1} no se tiene en cuenta. Ecosim se ha detenido.</value>
+  </data>
+  <data name="ECOSIM_ERROR_FEEDARENA" xml:space="preserve">
+    <value>Las proporciones de alimentación por arenas no están configuradas correctamente</value>
+  </data>
+  <data name="IMPORT_WARNING_MULTISTANZASHAPE" xml:space="preserve">
+    <value>No se puede determinar la producción de huevos y / o los datos de inventario de criadero en los escenarios de Ecosim para la configuración de la estrofa {0}. Deberá seleccionar y reasignar estos datos en la interfaz EwE6.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_B" xml:space="preserve">
+    <value>No se pudo estimar la biomasa para el grupo {0}.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_LINEMISSING" xml:space="preserve">
+    <value>Fila de datos esperada</value>
+  </data>
+  <data name="F2TS_ERROR_NO_TS" xml:space="preserve">
+    <value>No se han cargado series de tiempo; No se puede ejecutar Ajustar a serie temporal.</value>
+  </data>
+  <data name="ECOPATH_SAVETO_FAILED" xml:space="preserve">
+    <value>El modelo de Ecopath no se pudo guardar en '{0}'</value>
+  </data>
+  <data name="ASCII_READ_ERROR_UNKNOWNFIELD" xml:space="preserve">
+    <value>Error al leer el archivo ASCII con un campo de encabezado desconocido {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOPATHGROUPS" xml:space="preserve">
+    <value>Importar grupos de Ecopath</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_TOOLONG" xml:space="preserve">
+    <value>El texto no puede exceder {0} caracteres</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_PRODxEE" xml:space="preserve">
+    <value>Ecopath ha estimado que la producción * EE para el grupo {0} ({1}) es {2}. Esto es menos que el 'canibalismo' estimado para este grupo.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_PB0_GENERIC" xml:space="preserve">
+    <value>El programa ha estimado que la relación producción / biomasa (P / B) para uno o más grupos es 0. Edite sus datos. Tenga en cuenta que para los depredadores superiores no explotados puede que no sea posible estimar P / B (sin mortalidad, sin producción necesaria).</value>
+  </data>
+  <data name="DATABASE_BACKUP_FAILED" xml:space="preserve">
+    <value>Error al hacer una copia de seguridad del modelo en '{0}'</value>
+  </data>
+  <data name="IMPORT_PROGRESS_TAXONOMY" xml:space="preserve">
+    <value>Importando taxonomía</value>
+  </data>
+  <data name="DIETCOMP_VALIDATION_ERROR" xml:space="preserve">
+    <value>Error durante la validación de 'DietComp'. 'DietComp' no será válido.</value>
+  </data>
+  <data name="IMPORT_PROGRESS_SCENARIO" xml:space="preserve">
+    <value>Importar escenarios de Ecosim</value>
+  </data>
+  <data name="ECOSIM_SAVE_SUCCESS" xml:space="preserve">
+    <value>El escenario de Ecosim '{0}' se ha guardado.</value>
+  </data>
+  <data name="SPATIALTEMPORAL_POP_FAILED_LOCK" xml:space="preserve">
+    <value>No se pudo acceder a los datos esperados para la capa {0}, tiempo {1}, ext ({2}, {3}) a ({4}, {5}), tamaño de celda {6}</value>
+  </data>
+  <data name="SPATIALTEMPORAL_POP_FAILED_LOAD" xml:space="preserve">
+    <value>Los datos esperados no fueron leídos o convertidos correctamente para la capa {0}, tiempo {1}, ext ({2}, {3}) a ({4}, {5}), tamaño de celda {6}</value>
+  </data>
+  <data name="PSD_ERROR_WEIGHTCLASSES" xml:space="preserve">
+    <value>La rutina de estimación de PSD solo puede funcionar cuando los grupos se dividen en al menos dos clases de peso. Redefina el rango de peso ajustando el número de clases de peso y / o la clase de peso más bajo.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_DATES" xml:space="preserve">
+    <value>Las fechas de la serie temporal de Ecospace {0} a {1} no se superponen con las fechas del modelo actual. Verifique la fecha o las fechas del modelo en el archivo de entrada.</value>
+  </data>
+  <data name="VARIABLE_NOT_SET" xml:space="preserve">
+    <value>No se puede establecer la variable '{0}', Error: {1}</value>
+  </data>
+  <data name="ECOPATH_RUN_ERROR" xml:space="preserve">
+    <value>Ecopath no pudo correr.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_FAILED" xml:space="preserve">
+    <value>Ecospace Time Series no pudo cargar ningún registro del archivo.</value>
+  </data>
+  <data name="SAMPLES_IMPORT_ERROR_NOSAMPLES" xml:space="preserve">
+    <value>El modelo '{0}' no contiene ninguna muestra</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FORCINGMEDIATION" xml:space="preserve">
+    <value>Importación de formas de forzamiento y mediación de Ecosim</value>
+  </data>
+  <data name="SPATIALTEMPORAL_EXPORT_SUCCESS" xml:space="preserve">
+    <value>{0} conjuntos de datos exportados con éxito a {1}. Esta carpeta está lista para ser transferida a otra computadora</value>
+  </data>
+  <data name="MPAOPT_RUNNING" xml:space="preserve">
+    <value>La optimización ya se está ejecutando. Solo se puede ejecutar una evaluación a la vez.</value>
+  </data>
+  <data name="STANZA_LEADING_ADJUSTED" xml:space="preserve">
+    <value>Los principales grupos B y / o CB se han ajustado para uno o más grupos de múltiples estrofas, valide.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_POOLVALUEMISSING" xml:space="preserve">
+    <value>Falta el valor del código de grupo</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_EE_GENERIC" xml:space="preserve">
+    <value>¡Su modelo NO está equilibrado en masa! Eficiencias ecotróficas calculadas (EE) no válidas para uno o más grupos.</value>
+  </data>
+  <data name="ECOSPACE_HABCAP_COMPUTE_ERROR" xml:space="preserve">
+    <value>Ecospace no pudo actualizar los mapas de capacidad. {0}</value>
+  </data>
+  <data name="F2TS_ERROR" xml:space="preserve">
+    <value>Se produjo un error en Fit to Time Series. {0}</value>
+  </data>
+  <data name="DATABASE_UPDATE_FAILED_DETAIL" xml:space="preserve">
+    <value>La actualización del modelo {0} falló: {1}</value>
+  </data>
+  <data name="MONTECARLO_APPLY_ERROR" xml:space="preserve">
+    <value>Monte Carlo no pudo aplicar los mejores ajustes. {0}</value>
+  </data>
+  <data name="STATUS_PLUGIN_USERDISABLED" xml:space="preserve">
+    <value>El complemento {0} deshabilitado para cargar a través de la configuración del usuario</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED_BA" xml:space="preserve">
+    <value>Acumulación de biomasa para el grupo '{0}'</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED_EE" xml:space="preserve">
+    <value>EE para el grupo '{0}'</value>
+  </data>
+  <data name="ECOSEED_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Resultados de optimización espacial guardados en '{0}'</value>
+  </data>
+  <data name="ECOSPACE_SAVEMAP_FAILED" xml:space="preserve">
+    <value>Ecospace no pudo guardar los mapas de resultados. {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMFLEETS" xml:space="preserve">
+    <value>Importar flotas Ecosim</value>
+  </data>
+  <data name="ECOPATH_MERGESPLIT_ERROR_HASECOSIM" xml:space="preserve">
+    <value>No se pueden fusionar o dividir automáticamente grupos para modelos con escenarios Ecosim</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_SAVE_EXCEPTION" xml:space="preserve">
+    <value>Archivo de salida de ahorro de excepción de la serie temporal de Ecospace: {0}</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_APPLIED" xml:space="preserve">
+    <value>Aplicado {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEBASEMAP" xml:space="preserve">
+    <value>Importar mapa base de Ecospace</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_EE" xml:space="preserve">
+    <value>Se ingresan biomasa, PB y EE para '{0}'. ¿Quieres estimar la acumulación de biomasa?</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_SAMPLE_NOBALANCE" xml:space="preserve">
+    <value>La muestra de Ecosampler {0} no se equilibra</value>
+  </data>
+  <data name="BIOACCUM_RANGE" xml:space="preserve">
+    <value>BioAccum debe ser mayor o igual que cero.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_EXCEPTION" xml:space="preserve">
+    <value>Ecospace no pudo cargar datos de series temporales debido a un error: {0}</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DFLARGERTHANONE_GROUP" xml:space="preserve">
+    <value>El grupo '{0}' tiene un Detritus Fate mayor que uno.</value>
+  </data>
+  <data name="DIETCOMP_MISSING" xml:space="preserve">
+    <value>No se han introducido dietas para el grupo {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMGROUPS" xml:space="preserve">
+    <value>Importando grupos Ecosim</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_EE" xml:space="preserve">
+    <value>El valor EE calculado {1} no es válido para el grupo '{0}'</value>
+  </data>
+  <data name="MSE_VALIDATION_QUOTAS" xml:space="preserve">
+    <value>No se han establecido tipos de control reglamentario. ¿Quieres cancelar la carrera?</value>
+  </data>
+  <data name="BIOMASS_RANGE" xml:space="preserve">
+    <value>La biomasa debe ser mayor o igual a cero.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_WEIGHTFORMAT" xml:space="preserve">
+    <value>Uno o más valores de peso no se pueden leer</value>
+  </data>
+  <data name="ECOSPACE_EXPORT_FAILED" xml:space="preserve">
+    <value>Ecospace no pudo guardar el archivo {0}. {1}</value>
+  </data>
+  <data name="ECOSPACE_RUN_COMPLETED" xml:space="preserve">
+    <value>Ecospace ha completado una ejecución modelo.</value>
+  </data>
+  <data name="ECOSPACE_GENERIC_ERROR" xml:space="preserve">
+    <value>Se produjo un error en Ecospace. {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_STARTED" xml:space="preserve">
+    <value>La importación del modelo {0} comenzó en {1}</value>
+  </data>
+  <data name="PROMPT_SAVE_CHANGES" xml:space="preserve">
+    <value>Los datos del modelo han cambiado desde la última vez que guardó. ¿Desea guardar estos cambios?</value>
+  </data>
+  <data name="PEDIGREE_OUTOFRANGE" xml:space="preserve">
+    <value>El valor genealógico está fuera de rango.</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_ADJUSTED" xml:space="preserve">
+    <value>{0} ha sido corregido</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_MUSTBEX" xml:space="preserve">
+    <value>{0} debe ser {1}</value>
+  </data>
+  <data name="VULNERABILITIES_PROMPT_RESET" xml:space="preserve">
+    <value>¿Restablecer vulnerabilidades a un valor predeterminado de {0}?</value>
+  </data>
+  <data name="ECOPATH_PREDMORT_CANN" xml:space="preserve">
+    <value>Sus datos no son consistentes. En el algoritmo 4, su estimación de: P / Bi * EEi - Q / Bi * DCii es negativa para el grupo '{0}', es decir, 'canibalismo' excede la mortalidad por depredación. ¿Desea que se reduzca el canibalismo (a 20 de la producción usada) para todos los grupos donde se produce este problema? Nota: sus datos de entrada no se cambiarán.</value>
+  </data>
+  <data name="ECOSPACE_LOAD_SUCCESS" xml:space="preserve">
+    <value>Escenario del ecosistema '{0}' cargado.</value>
+  </data>
+  <data name="TRACER_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Error al guardar los resultados del marcador de contaminantes '{1}' a '{0}'</value>
+  </data>
+  <data name="ECOPATH_SAVETO_SUCCESS" xml:space="preserve">
+    <value>El modelo de Ecopath se ha guardado correctamente en '{0}'</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DIETIMPORTONLY" xml:space="preserve">
+    <value>Su modelo tiene {0} grupo (s) que tienen una dieta solo con importaciones. Dichos grupos no están bien definidos, tendrán niveles tróficos de 1 y no mostrarán ningún flujo en las interfaces de descomposición de nivel trófico.</value>
+  </data>
+  <data name="IMPORT_FIX_GROUPUNASSIM" xml:space="preserve">
+    <value>El grupo '{0}' es un productor, Unassim corregido a {1}</value>
+  </data>
+  <data name="ECOSPACE_OUT_OF_MEMORY" xml:space="preserve">
+    <value>El ecosistema se ha quedado sin memoria. Intente reducir el número de regiones y / o pasos de tiempo.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_POOLLINEMISSING" xml:space="preserve">
+    <value>Encabezado '{0}' no reconocido, esperado 'grupo', 'grupo' o 'flota'</value>
+  </data>
+  <data name="STATUS_PLUGIN_SANDBOXED" xml:space="preserve">
+    <value>Plug-in {0} sandboxed</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMGROUPS_AT" xml:space="preserve">
+    <value>Importando el grupo Ecosim {0} - {1}</value>
+  </data>
+  <data name="VARIABLE_NOT_FOUND" xml:space="preserve">
+    <value>No se puede encontrar la variable para '{0}'</value>
+  </data>
+  <data name="DLLFACTORY_LOAD_ERROR" xml:space="preserve">
+    <value>Error al cargar '{0}' desde el archivo '{1}'. Error: {2}</value>
+  </data>
+  <data name="STATUS_INDEXING_DATASET" xml:space="preserve">
+    <value>Indexación de datos externos '{0}'</value>
+  </data>
+  <data name="MAP_INVALID_NOWATERCELLS" xml:space="preserve">
+    <value>Su mapa no tiene celdas de agua.</value>
+  </data>
+  <data name="ECOTRACER_LOAD_FAILED" xml:space="preserve">
+    <value>El escenario Ecotracer '{0}' no se pudo cargar. {1}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_WEIGHTVALUEMISSING" xml:space="preserve">
+    <value>Falta el valor de peso</value>
+  </data>
+  <data name="MSE_VALIDATION_FIXEDESCAPEMENT" xml:space="preserve">
+    <value>Escape fijo, mortalidad por pesca fija y todo se ha configurado para el grupo (s) '{0}' solo se usarán las regulaciones de escape fijo.</value>
+  </data>
+  <data name="ECOSPACE_RUN_ERROR" xml:space="preserve">
+    <value>Ejecutar error de Ecospace. {0}</value>
+  </data>
+  <data name="LOAD_ERROR_MODEL" xml:space="preserve">
+    <value>Se produjo el error '{0}' al cargar el modelo</value>
+  </data>
+  <data name="ECOSIM_LOAD_FAILED" xml:space="preserve">
+    <value>El escenario de Ecosim '{0}' no se pudo cargar. {1}</value>
+  </data>
+  <data name="MSE_VALIDATION_EFFORT" xml:space="preserve">
+    <value>Es posible que sea necesario aumentar el esfuerzo para la (s) flota (s) '{0}' para que las regulaciones de cuotas tengan efecto.</value>
+  </data>
+  <data name="ECOPATH_MISSINGPARAM_DISCARD" xml:space="preserve">
+    <value>Falta información de descarte para la flota {0}, grupo {1}.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_EE_BA" xml:space="preserve">
+    <value>La acumulación estimada de biomasa (BA) es negativa para el grupo {0}, lo que puede estar relacionado con la falta de estimación de EE.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_OUTPUT_SET" xml:space="preserve">
+    <value>Conjunto de archivos de salida de Ecospace Time Series.</value>
+  </data>
+  <data name="STANZA_KinVGBF_MISSING" xml:space="preserve">
+    <value>Falta K de VBGF para el grupo de varias estrofas '{0}'.</value>
+  </data>
+  <data name="MSY_STATUS_RUNNING" xml:space="preserve">
+    <value>Ejecutando MSY {0} ...</value>
+  </data>
+  <data name="PROMPT_SAVE_CHANGES_DETAILED" xml:space="preserve">
+    <value>Los cambios no guardados en {0} se perderán si continúa. ¿Desea guardar estos cambios?</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_NRECORDS_LOADED" xml:space="preserve">
+    <value>Ecospace Time Series {0} registros cargados.</value>
+  </data>
+  <data name="ECOPATH_LOAD_SUCCESS" xml:space="preserve">
+    <value>Modelo de ruta ecológica '{0}' cargado.</value>
+  </data>
+  <data name="DATABASE_BACKUP_PROMPT" xml:space="preserve">
+    <value>{1} accedió por última vez al modelo '{0}' y se actualizará. ¿Desea crear una copia de seguridad de este modelo?</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED" xml:space="preserve">
+    <value>{0} no puede ser {1}</value>
+  </data>
+  <data name="MODEL_READONLY" xml:space="preserve">
+    <value>El modelo '{0}' se abrió en modo de solo lectura y no se puede guardar.</value>
+  </data>
+  <data name="FMSY_STATUS_RUNNING" xml:space="preserve">
+    <value>Ejecutando Fmsy {0}, evaluando {1} ...</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_STARTED" xml:space="preserve">
+    <value>Se inició la ejecución por lotes de Ecosampler</value>
+  </data>
+  <data name="MAP_INVALID_NOPP" xml:space="preserve">
+    <value>Su mapa no tiene ninguna producción primaria.</value>
+  </data>
+  <data name="IMPORT_ERROR_INCOMPATIBLE" xml:space="preserve">
+    <value>La base de datos {0} tiene la versión {1}, que es incompatible con esta versión. Use la última versión de Ecopath 5 para actualizar primero la base de datos.</value>
+  </data>
+  <data name="STANZA_CANCEL_DATAERROR" xml:space="preserve">
+    <value>Se ha producido un error de datos críticos al revertir los datos de stanza: {0}</value>
+  </data>
+  <data name="EXPORT_PROGRESS_DATASET" xml:space="preserve">
+    <value>Exportando conjunto de datos {0}</value>
+  </data>
+  <data name="MSE_LPSOLVER_NONOPTIMAL" xml:space="preserve">
+    <value>La solución de programación lineal de MSE no pudo encontrar una solución óptima para los pasos de tiempo '{0}'. Verifique las tasas de mortalidad por pesca objetivo para asegurarse de que no ha limitado demasiado su modelo.</value>
+  </data>
+  <data name="TIMESERIES_LOAD_FAILED" xml:space="preserve">
+    <value>El conjunto de datos de la serie temporal '{0}' no se pudo cargar. {1}</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_CLEARED" xml:space="preserve">
+    <value>{0} despejado</value>
+  </data>
+  <data name="DATA_VALIDATION" xml:space="preserve">
+    <value>Validación de datos para '{0}'.</value>
+  </data>
+  <data name="ECOSPACE_NO_SPACE_SCENARIO" xml:space="preserve">
+    <value>Se debe cargar un escenario de Ecospace antes de poder ejecutar Ecospace.</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ESTIMATE_NETMIGRATION" xml:space="preserve">
+    <value>¿Desea estimar la migración neta para '{0}'?</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_INSUFFICIENTDATA" xml:space="preserve">
+    <value>Datos insuficientes, edite su modelo.</value>
+  </data>
+  <data name="DIETCOMP_SUMTOONE_PRED" xml:space="preserve">
+    <value>La dieta para el depredador '{0}' no suma 1</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_MISSING_B_QB" xml:space="preserve">
+    <value>Anulando, faltan B y QB para el grupo '{0}'. Por favor edite sus datos.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP_GROUP" xml:space="preserve">
+    <value>El grupo '{0}' tiene un valor de respiración que excede la entrada a los detritos.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_CVVALUEMISSING" xml:space="preserve">
+    <value>Faltan valores de CV</value>
+  </data>
+  <data name="SAMPLES_IMPORT_ERROR_INCOMPATIBLE" xml:space="preserve">
+    <value>El modelo '{0}' es incompatible y no se puede usar para importar muestras de</value>
+  </data>
+  <data name="ECOPATH_MERGESPLIT_ERROR_NOMODEL" xml:space="preserve">
+    <value>Cargue un modelo antes de intentar fusionar grupos</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_READ_FAIL_REASON" xml:space="preserve">
+    <value>{0} registros debido a {1}</value>
+  </data>
+  <data name="ECOPATH_RESULTS_SAVED_FAILED" xml:space="preserve">
+    <value>Las estimaciones de Ecopath no se pudieron guardar en '{0}'</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TOOMANYWEIGHTS" xml:space="preserve">
+    <value>No se pueden especificar tanto el CV como el peso</value>
+  </data>
+  <data name="TIMESERIES_ERROR_VALUENEGATIVE" xml:space="preserve">
+    <value>El valor no puede ser negativo.</value>
+  </data>
+</root>
