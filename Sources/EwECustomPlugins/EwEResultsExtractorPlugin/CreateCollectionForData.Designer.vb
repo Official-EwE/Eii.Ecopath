@@ -17,13 +17,10 @@
 ' ===============================================================================
 '
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class CreateCollectionForData
-    'Inherits System.Windows.Forms.Form
-    Inherits WeifenLuo.WinFormsUI.Docking.DockContent
+    Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -40,7 +37,7 @@ Partial Class CreateCollectionForData
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.lstUnSelected = New System.Windows.Forms.ListBox()
         Me.lstSelected = New System.Windows.Forms.ListBox()
@@ -151,8 +148,6 @@ Partial Class CreateCollectionForData
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.ClientSize = New System.Drawing.Size(631, 554)
-        Me.CloseButton = False
-        Me.CloseButtonVisible = False
         Me.ControlBox = False
         Me.Controls.Add(Me.btnOk)
         Me.Controls.Add(Me.btnAttachNone)

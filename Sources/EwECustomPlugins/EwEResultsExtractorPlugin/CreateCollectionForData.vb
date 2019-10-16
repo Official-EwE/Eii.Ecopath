@@ -22,89 +22,98 @@ Imports EwECore
 
 Public MustInherit Class CreateCollectionForData
 
-    Protected m_SelectionData As cSelectionData
     Private ObjectUnderFocus As cCreatedObjects
-    Protected m_core As cCore
 
+    Protected Property Core As cCore
+    Protected Property SelectionData As cSelectionData
+
+    ''' <summary>
+    ''' For the designer only
+    ''' </summary>
+    Public Sub New()
+        Me.InitializeComponent()
+    End Sub
 
     Public Sub New(ByVal SelectionData As cSelectionData, ByVal Core As cCore)
 
         Me.InitializeComponent()
 
-        ' Set a reference to the singleton instance of cCore
-        Me.m_core = Core
+        Me.Core = Core
+        Me.SelectionData = SelectionData
 
-        If (Core IsNot Nothing) Then
-            ' Store SelectionData sent to object
-            m_SelectionData = SelectionData
+    End Sub
 
-            'Load group names into selected & unselected lists
-            For Each x In SelectionData.UnSelectedNames
-                lstUnSelected.Items.Add(x)
-            Next
-            For Each x In SelectionData.SelectedNames
-                lstSelected.Items.Add(x)
-            Next
+    Protected Overrides Sub OnLoad(e As EventArgs)
+        MyBase.OnLoad(e)
 
-            If lstSelected.Items.Count = 0 Then
-                btnRemoveAll.Enabled = False
-                btnRemoveSelected.Enabled = False
-            End If
-            If lstUnSelected.Items.Count = 0 Then
-                btnAddAll.Enabled = False
-                btnAddSelected.Enabled = False
-            End If
+        If (Me.Core Is Nothing) Then Return
+
+        'Load group names into selected & unselected lists
+        For Each x In Me.SelectionData.UnSelectedNames
+            lstUnSelected.Items.Add(x)
+        Next
+        For Each x In Me.SelectionData.SelectedNames
+            lstSelected.Items.Add(x)
+        Next
+
+        If lstSelected.Items.Count = 0 Then
+            btnRemoveAll.Enabled = False
+            btnRemoveSelected.Enabled = False
+        End If
+        If lstUnSelected.Items.Count = 0 Then
+            btnAddAll.Enabled = False
+            btnAddSelected.Enabled = False
         End If
 
     End Sub
 
-    'Don't use this now because unpredictable - seemed to conflict with SelectedIndexChanged
-    Private Sub lstSelected_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lstSelected.MouseDoubleClick
+    ''Don't use this now because unpredictable - seemed to conflict with SelectedIndexChanged
+    'Private Sub lstSelected_MouseDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles lstSelected.MouseDoubleClick
 
-        'Dim IndexSaved As Integer
+    '    'Dim IndexSaved As Integer
 
-        ''http://msdn.microsoft.com/en-us/library/kfw3x8dc.aspx
-        ''Prevents anything from happening when white space double clicked at bottom of listbox
-        'If lstSelected.IndexFromPoint(e.Location) = -1 Then Exit Sub
+    '    ''http://msdn.microsoft.com/en-us/library/kfw3x8dc.aspx
+    '    ''Prevents anything from happening when white space double clicked at bottom of listbox
+    '    'If lstSelected.IndexFromPoint(e.Location) = -1 Then Exit Sub
 
-        ''Get index of selected item
-        'IndexSaved = lstSelected.SelectedIndex
+    '    ''Get index of selected item
+    '    'IndexSaved = lstSelected.SelectedIndex
 
-        ''Add selected back to unselected
-        'lstUnSelected.Items.Add(lstSelected.SelectedItem)
-        'lstSelected.SelectedIndex = lstSelected.Items.Count - 1
+    '    ''Add selected back to unselected
+    '    'lstUnSelected.Items.Add(lstSelected.SelectedItem)
+    '    'lstSelected.SelectedIndex = lstSelected.Items.Count - 1
 
-        ''Remove from selection object
-        'm_SelectionData.Remove(lstSelected.SelectedItem.ToString)
+    '    ''Remove from selection object
+    '    'm_SelectionData.Remove(lstSelected.SelectedItem.ToString)
 
-        ''Remove from selected
-        'lstSelected.Items.RemoveAt(IndexSaved)
+    '    ''Remove from selected
+    '    'lstSelected.Items.RemoveAt(IndexSaved)
 
-        ''If selection at top of list select 1 less else select same index as began with
-        'If lstSelected.Items.Count = IndexSaved Or IndexSaved = 0 Then
-        '    lstSelected.SelectedIndex = IndexSaved - 1
-        'Else
-        '    lstSelected.SelectedIndex = IndexSaved
-        'End If
+    '    ''If selection at top of list select 1 less else select same index as began with
+    '    'If lstSelected.Items.Count = IndexSaved Or IndexSaved = 0 Then
+    '    '    lstSelected.SelectedIndex = IndexSaved - 1
+    '    'Else
+    '    '    lstSelected.SelectedIndex = IndexSaved
+    '    'End If
 
-        'SetStateAddRemove()
+    '    'SetStateAddRemove()
 
-    End Sub
+    'End Sub
 
     Private Sub lstSelected_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstSelected.SelectedIndexChanged
 
         If lstSelected.SelectedIndex = -1 Then
-            m_SelectionData.SetFocus = Nothing
+            SelectionData.SetFocus = Nothing
             Me.chklstAttached.Items.Clear()
             Exit Sub
         End If
 
         PopulateAttachedList(lstSelected.SelectedItem.ToString)
-        m_SelectionData.SetFocus = lstSelected.SelectedItem.ToString
+        SelectionData.SetFocus = lstSelected.SelectedItem.ToString
 
         ' Ticks childs that are part of current parent
         For x = 0 To chklstAttached.Items.Count - 1
-            For Each i In CType(m_SelectionData.GetFocus, cCreatedObjects).ChildNames
+            For Each i In CType(SelectionData.GetFocus, cCreatedObjects).ChildNames
                 If chklstAttached.Items(x).ToString = i.ToString Then
                     chklstAttached.SetItemChecked(x, True)
                 End If
@@ -126,7 +135,7 @@ Public MustInherit Class CreateCollectionForData
         btnRemoveAll.Enabled = True
 
         ' Add to virtual object current selection
-        m_SelectionData.Add(lstUnSelected.SelectedItem.ToString)
+        SelectionData.Add(lstUnSelected.SelectedItem.ToString)
 
         ' Remove from 1st list box and add to 2nd
         lstSelected.Items.Add(lstUnSelected.SelectedItem)
@@ -168,7 +177,7 @@ Public MustInherit Class CreateCollectionForData
     Private Sub btnAddAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddAll.Click
 
         While lstUnSelected.Items.Count > 0
-            m_SelectionData.Add(lstUnSelected.Items(0).ToString)
+            SelectionData.Add(lstUnSelected.Items(0).ToString)
             lstSelected.Items.Add(lstUnSelected.Items(0))
             lstSelected.SelectedIndex = lstSelected.Items.Count - 1
             lstUnSelected.Items.RemoveAt(0)
@@ -189,7 +198,7 @@ Public MustInherit Class CreateCollectionForData
         btnAddAll.Enabled = True
 
         ' Remove in virtual object current selection
-        m_SelectionData.Remove(lstSelected.SelectedItem.ToString)
+        SelectionData.Remove(lstSelected.SelectedItem.ToString)
 
         ' Remove from 1st list box and add to 2nd
         lstUnSelected.Items.Add(lstSelected.SelectedItem)
@@ -213,7 +222,7 @@ Public MustInherit Class CreateCollectionForData
     Private Sub btnRemoveAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveAll.Click
 
         While lstSelected.Items.Count > 0
-            m_SelectionData.Remove(lstSelected.Items(0).ToString)
+            SelectionData.Remove(lstSelected.Items(0).ToString)
             lstUnSelected.Items.Add(lstSelected.Items(0))
             lstUnSelected.SelectedIndex = lstUnSelected.Items.Count - 1
             lstSelected.Items.RemoveAt(0)
@@ -227,7 +236,7 @@ Public MustInherit Class CreateCollectionForData
         Dim IndexSaved As Integer
 
         'Remove from unselection object
-        m_SelectionData.Add(lstUnSelected.SelectedItem.ToString)
+        SelectionData.Add(lstUnSelected.SelectedItem.ToString)
 
         'http://msdn.microsoft.com/en-us/library/kfw3x8dc.aspx
         'Prevents anything from happening when white space double clicked at bottom of listbox
@@ -260,13 +269,13 @@ Public MustInherit Class CreateCollectionForData
 
         If e.NewValue = System.Windows.Forms.CheckState.Checked Then
             'Attach checked item to currently selected parent
-            temp = m_SelectionData.GetFocus
+            temp = SelectionData.GetFocus
             temp.Add(chklstAttached.Items(e.Index))
         End If
 
         If e.NewValue = System.Windows.Forms.CheckState.Unchecked Then
             'Attach checked item to currently selected parent
-            temp = m_SelectionData.GetFocus
+            temp = SelectionData.GetFocus
             temp.Remove(chklstAttached.Items(e.Index))
         End If
 
