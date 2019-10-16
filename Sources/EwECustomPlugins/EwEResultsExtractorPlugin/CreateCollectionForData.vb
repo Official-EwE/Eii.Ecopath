@@ -29,33 +29,31 @@ Public MustInherit Class CreateCollectionForData
 
     Public Sub New(ByVal SelectionData As cSelectionData, ByVal Core As cCore)
 
-        ' This call is required by the Windows Form Designer.
-        InitializeComponent()
-
-        ' Add any initialization after the InitializeComponent() call.
-
+        Me.InitializeComponent()
 
         ' Set a reference to the singleton instance of cCore
         Me.m_core = Core
 
-        ' Store SelectionData sent to object
-        m_SelectionData = SelectionData
+        If (Core IsNot Nothing) Then
+            ' Store SelectionData sent to object
+            m_SelectionData = SelectionData
 
-        'Load group names into selected & unselected lists
-        For Each x In SelectionData.UnSelectedNames
-            lstUnSelected.Items.Add(x)
-        Next
-        For Each x In SelectionData.SelectedNames
-            lstSelected.Items.Add(x)
-        Next
+            'Load group names into selected & unselected lists
+            For Each x In SelectionData.UnSelectedNames
+                lstUnSelected.Items.Add(x)
+            Next
+            For Each x In SelectionData.SelectedNames
+                lstSelected.Items.Add(x)
+            Next
 
-        If lstSelected.Items.Count = 0 Then
-            btnRemoveAll.Enabled = False
-            btnRemoveSelected.Enabled = False
-        End If
-        If lstUnSelected.Items.Count = 0 Then
-            btnAddAll.Enabled = False
-            btnAddSelected.Enabled = False
+            If lstSelected.Items.Count = 0 Then
+                btnRemoveAll.Enabled = False
+                btnRemoveSelected.Enabled = False
+            End If
+            If lstUnSelected.Items.Count = 0 Then
+                btnAddAll.Enabled = False
+                btnAddSelected.Enabled = False
+            End If
         End If
 
     End Sub
