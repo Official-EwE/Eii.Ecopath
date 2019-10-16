@@ -1,0 +1,1890 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GENERIC_ECOSPACE" xml:space="preserve">
+    <value>EcoSpace</value>
+  </data>
+  <data name="GENERIC_ECOPATH" xml:space="preserve">
+    <value>Ecopath</value>
+  </data>
+  <data name="GENERIC_ECOSIM" xml:space="preserve">
+    <value>Ecosim</value>
+  </data>
+  <data name="GENERIC_CAPTION_SAVEIMAGE" xml:space="preserve">
+    <value>Gem billede</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_FISHERY_DISCARDS" xml:space="preserve">
+    <value>udsmid</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_CATCH" xml:space="preserve">
+    <value>Fangst</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_VALUE" xml:space="preserve">
+    <value>Værdi</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_FUNCT_RESP" xml:space="preserve">
+    <value>Funktionel respons</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWEGGPRODSHAPE" xml:space="preserve">
+    <value>Æggeproduktionsform {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_OFFVESSELPRICE" xml:space="preserve">
+    <value>Prisen uden for skibet</value>
+  </data>
+  <data name="ABOUT_COPYRIGHT" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="ECOSPACE_PAUSE" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="OPTIONS_PAGE_PLUGINS" xml:space="preserve">
+    <value>Plug-ins</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_FLEETS" xml:space="preserve">
+    <value>flåder</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWTIMESERIES" xml:space="preserve">
+    <value>Ny tidsserie {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_FISHINGMORT" xml:space="preserve">
+    <value>Fiskeridødelighed</value>
+  </data>
+  <data name="SELECTION_SINGLEVAR" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_RECRUITMENT" xml:space="preserve">
+    <value>Rekruttering</value>
+  </data>
+  <data name="VALUE_REGION_N" xml:space="preserve">
+    <value>Region {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_FISHINGEFFORT" xml:space="preserve">
+    <value>Fiskeriindsats</value>
+  </data>
+  <data name="STATUS_PLEASE_WAIT" xml:space="preserve">
+    <value>Vent venligst et øjeblik...</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_DELETE" xml:space="preserve">
+    <value>Du er ved at slette tidsserier '{0}'. Denne handling kan ikke fortrydes. Er du sikker på, at du vil gøre dette?</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_TFM" xml:space="preserve">
+    <value>Mål fiskedødelighed</value>
+  </data>
+  <data name="HEADER_MORTALITIES_PBZ" xml:space="preserve">
+    <value>Prod / biom eller Z</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_FISHERY_LANDINGS" xml:space="preserve">
+    <value>landinger</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_TIMESERIES" xml:space="preserve">
+    <value>Tidsserier</value>
+  </data>
+  <data name="OPTIONS_PAGE_APPEARANCE" xml:space="preserve">
+    <value>Udseende</value>
+  </data>
+  <data name="LABEL_NAV_MSE_OUTPUT_RESULTS" xml:space="preserve">
+    <value>MSE-resultater</value>
+  </data>
+  <data name="HEADER_FISH_EVERYWHERE" xml:space="preserve">
+    <value>Fisk overalt</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_DISCARDMORT" xml:space="preserve">
+    <value>Kasser dødelighed</value>
+  </data>
+  <data name="HEADER_MORTALITIES_PROP_NAT_MORT" xml:space="preserve">
+    <value>Andel naturlig død.</value>
+  </data>
+  <data name="ECOSPACE_RESUME" xml:space="preserve">
+    <value>Genoptag</value>
+  </data>
+  <data name="LABEL_NAV_INPUT" xml:space="preserve">
+    <value>Input</value>
+  </data>
+  <data name="LABEL_NAV_ECOTRACER" xml:space="preserve">
+    <value>Ecotracer</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_DISCARSURV" xml:space="preserve">
+    <value>Kassér overlevelse</value>
+  </data>
+  <data name="STATUS_TIMESERIES_UPDATING" xml:space="preserve">
+    <value>Opdaterer tidsserier {0} ...</value>
+  </data>
+  <data name="HEADER_MORTALITIES_FISHMORT_OVER_TOTMORT" xml:space="preserve">
+    <value>Fiskeridød / total død.</value>
+  </data>
+  <data name="HEADER_MORTALITIES_FISHINGMORTRATE" xml:space="preserve">
+    <value>= Fiskeridød sats</value>
+  </data>
+  <data name="LABEL_FLEET" xml:space="preserve">
+    <value>&amp;Flåde:</value>
+  </data>
+  <data name="LABEL_GROUP" xml:space="preserve">
+    <value>&amp;Gruppe:</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_BASICESTIMATES" xml:space="preserve">
+    <value>Grundlæggende skøn</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_CONSUMPTION" xml:space="preserve">
+    <value>Forbrug</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_PREYOVERLAP" xml:space="preserve">
+    <value>Overlappende bytte</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_ELECTIVITY" xml:space="preserve">
+    <value>Electivity</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_ELECTIVITY" xml:space="preserve">
+    <value>Electivity</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_RESPIRATION" xml:space="preserve">
+    <value>Respiration</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_SEARCHRATES" xml:space="preserve">
+    <value>Søgepriser</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_KEYINDICES" xml:space="preserve">
+    <value>Nøgleindekser</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_BASICINPUT" xml:space="preserve">
+    <value>Grundlæggende input</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_DIETCOMP" xml:space="preserve">
+    <value>Diætsammensætning</value>
+  </data>
+  <data name="LABEL_RUN" xml:space="preserve">
+    <value>&amp;Løb</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_RESULTS" xml:space="preserve">
+    <value>Økosim-resultater</value>
+  </data>
+  <data name="LABEL_STOP" xml:space="preserve">
+    <value>&amp;Hold op</value>
+  </data>
+  <data name="LABEL_NAV_OUTPUT" xml:space="preserve">
+    <value>Produktion</value>
+  </data>
+  <data name="GENERIC_TEXT_OPTIONS" xml:space="preserve">
+    <value>Muligheder</value>
+  </data>
+  <data name="LABEL_LOAD" xml:space="preserve">
+    <value>&amp;Belastning</value>
+  </data>
+  <data name="LABEL_NAV_MSE_OUTPUT_RUN" xml:space="preserve">
+    <value>Kør MSE</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_ADVECTION" xml:space="preserve">
+    <value>advektion</value>
+  </data>
+  <data name="HEADER_DIET_MULTIPLIER" xml:space="preserve">
+    <value>Diætmultiplikator</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_HABFISHERY" xml:space="preserve">
+    <value>Habitatfiskeri</value>
+  </data>
+  <data name="ECOSPACE_LAYER_SEEDBEST" xml:space="preserve">
+    <value>Bedste celler</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_FISHERY_DISCARDFATE" xml:space="preserve">
+    <value>Kasser skæbnen</value>
+  </data>
+  <data name="OPTIONS_PAGE_PEDIGREE" xml:space="preserve">
+    <value>stamtavle</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_PEDIGREE" xml:space="preserve">
+    <value>stamtavle</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_ENVIRONMENTALRESPONSE" xml:space="preserve">
+    <value>Miljøresponser</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_HABCAP" xml:space="preserve">
+    <value>Habitatbaseret foderlægning</value>
+  </data>
+  <data name="LABEL_NAV_ECOTRACER_OUTPUT" xml:space="preserve">
+    <value>Ecotracer output</value>
+  </data>
+  <data name="CAPTION_MSEFLEETREF" xml:space="preserve">
+    <value>MSE-flåden ref. niveauer</value>
+  </data>
+  <data name="LABEL_NAV_MSE_OUTPUT_PLOTS" xml:space="preserve">
+    <value>MSE planer</value>
+  </data>
+  <data name="COMMAND_SAVECHANGES" xml:space="preserve">
+    <value>Gem ændringer</value>
+  </data>
+  <data name="STATUS_EXPORT_SUCCESS" xml:space="preserve">
+    <value>Modeller eksporteret med succes til {0}</value>
+  </data>
+  <data name="ECOSIM_LABEL_APPLY_SHAPES_PREY" xml:space="preserve">
+    <value>For alle par med gruppe {0}: {1} som bytte</value>
+  </data>
+  <data name="ECOSIM_LABEL_APPLY_SHAPES_PRED" xml:space="preserve">
+    <value>For alle par med gruppe {0}: {1} som et rovdyr</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MPARANDOM" xml:space="preserve">
+    <value>Tilfældige celler</value>
+  </data>
+  <data name="CAPTION_PRICEELASTICITY_ALL" xml:space="preserve">
+    <value>Anvend priselasticitet på alle landinger</value>
+  </data>
+  <data name="PROMPT_SELECT_REFIMAGE" xml:space="preserve">
+    <value>Vælg referencebillede til kort</value>
+  </data>
+  <data name="ECOSIM_RUN_MODEGROUP" xml:space="preserve">
+    <value>Fiskerihastighed (relativ)</value>
+  </data>
+  <data name="ECOSIM_RUN_MODEFLEET" xml:space="preserve">
+    <value>Fiskeritakt (Y / B)</value>
+  </data>
+  <data name="STATUS_UPDATE_ERROR_CONNECTION" xml:space="preserve">
+    <value>Kan ikke oprette forbindelse til Ecopath-opdateringsserveren</value>
+  </data>
+  <data name="LABEL_NAV_PSD_OUTPUT_RUN" xml:space="preserve">
+    <value>Kør PSD</value>
+  </data>
+  <data name="STATUS_APPLYVALUES" xml:space="preserve">
+    <value>Anvendelse af værdier, vent venligst</value>
+  </data>
+  <data name="STATUS_SEARCH_SEARCHING" xml:space="preserve">
+    <value>Søger...</value>
+  </data>
+  <data name="ECOTRACER_SCENARIO_LOAD_CAPTION" xml:space="preserve">
+    <value>Load Ecotracer-scenarie - Ecopath model {0}</value>
+  </data>
+  <data name="VERSION_BETA" xml:space="preserve">
+    <value>Betaversion, udstedt {0}</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_PREY" xml:space="preserve">
+    <value>Rov / udgående link | Farve for at indikere et bytte eller et udgående link i diagrammer</value>
+  </data>
+  <data name="ECOBASE_SUBMIT_REVIEW" xml:space="preserve">
+    <value>Din model blev sendt til EcoBase og afventer en gennemgang</value>
+  </data>
+  <data name="STATUS_MODEL_ACCESS_READONLY" xml:space="preserve">
+    <value>EwE6 kan ikke skrive til denne model. Kontroller, om du har korrekte tilladelser, eller om databasen ikke er skrivebeskyttet.</value>
+  </data>
+  <data name="ECOSIM_FD_SAVE_FAILURE_DETAIL" xml:space="preserve">
+    <value>Billedet kunne ikke gemmes i tidstrin {0}. {1}</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_TITLE" xml:space="preserve">
+    <value>Titel | Skrifttype til titler på grafer og figurer</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_AXISTITLE" xml:space="preserve">
+    <value>Undertitler | Skrifttype til gengivelse af undertekster i grafer og figurer</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_EXTERNALDATA" xml:space="preserve">
+    <value>Eksterne data</value>
+  </data>
+  <data name="OPTIONS_PAGE_SPATTEMP" xml:space="preserve">
+    <value>Eksterne data</value>
+  </data>
+  <data name="CAPTION_EXTERNAL_DATA" xml:space="preserve">
+    <value>Eksterne data</value>
+  </data>
+  <data name="TAXON_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Du er ved at slette taxa. Denne handling kan ikke fortrydes. Er du sikker på, at du vil gøre dette?</value>
+  </data>
+  <data name="PROMPT_MODELNOTFOUND_REMOVEMRU" xml:space="preserve">
+    <value>Model '{0}' kan ikke findes. Ønsker du at fjerne det fra den nylige filliste?</value>
+  </data>
+  <data name="SCENARIO_CONFIRMDELETE_CAPTION" xml:space="preserve">
+    <value>Slet scenarie</value>
+  </data>
+  <data name="STATUS_MODEL_SAVE_404" xml:space="preserve">
+    <value>Kan ikke gemme din model på lokationen '{0}'.</value>
+  </data>
+  <data name="ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Er du sikker på, at du vil slette habitatet '{0}'? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="SR_PLOT_NO_STANZA_GROUP" xml:space="preserve">
+    <value>Ingen strofer</value>
+  </data>
+  <data name="GENERIC_TOOLTIP_PREDATOR" xml:space="preserve">
+    <value>Rovdyr {0}</value>
+  </data>
+  <data name="GENERIC_TOOLTIP_PREDPREY" xml:space="preserve">
+    <value>Rovdyr {0}, bytte {1}</value>
+  </data>
+  <data name="STATUS_ADVECTION_ITERATION" xml:space="preserve">
+    <value>Forslag til at køre iteration {0}</value>
+  </data>
+  <data name="ECOPATH_GRAPH_LEGEND_STANZA_SEP" xml:space="preserve">
+    <value>Stanza-adskillelse</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_DENDEPCATCHABILITY" xml:space="preserve">
+    <value>Densitet-dep. fangbarhed: Qmax / Qo [&gt; = 1]</value>
+  </data>
+  <data name="FF_APPLICATION_TRAGET" xml:space="preserve">
+    <value>Målgruppe {0}</value>
+  </data>
+  <data name="ECOSPACE_CAPTION_IMPORTLAYERIMAGE" xml:space="preserve">
+    <value>Importer lagbillede</value>
+  </data>
+  <data name="STATUS_TIMESERIES_LOADING" xml:space="preserve">
+    <value>Indlæser tidsserie '{0}' ...</value>
+  </data>
+  <data name="ECOSPACE_EDITREGION_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Er du sikker på, at du vil slette område '{0}'? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWDATASET" xml:space="preserve">
+    <value>Nyt datasæt</value>
+  </data>
+  <data name="PROMPT_CACHE_CLEAR" xml:space="preserve">
+    <value>Den rumlige datacache optager {0} diskplads, hvoraf {1} ikke bruges af denne model. Vil du kun slette ubrugte data?</value>
+  </data>
+  <data name="LEGEND_BYNUM" xml:space="preserve">
+    <value>Efter nummer</value>
+  </data>
+  <data name="CAPTION_TIMESTEP" xml:space="preserve">
+    <value>Tidstrin {0} ({1})</value>
+  </data>
+  <data name="GENERIC_TOOLTIP_PREY" xml:space="preserve">
+    <value>Bytte {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_ALLFITS" xml:space="preserve">
+    <value>Ecosim passer alle sammen</value>
+  </data>
+  <data name="VALUE_REGION_ALL" xml:space="preserve">
+    <value>(Alle regioner)</value>
+  </data>
+  <data name="HABITAT_BATCH_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Vil du slette habitat fra {0} til {1}?</value>
+  </data>
+  <data name="SELECTION_MULTIPLE" xml:space="preserve">
+    <value>(flere emner valgt)</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_NICHEOVERLAPPLOT" xml:space="preserve">
+    <value>Niche overlapper plot</value>
+  </data>
+  <data name="STATUSSTRIP_ECOPATH_TOOLTIP" xml:space="preserve">
+    <value>Ecopath model Navn: {0} Sted: {1}</value>
+  </data>
+  <data name="STATUS_PREVIEW_LOADING" xml:space="preserve">
+    <value>Indlæser preview ...</value>
+  </data>
+  <data name="STATUS_SEARCH_INITIALIZING" xml:space="preserve">
+    <value>Initialiserer søgning ...</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_RUN" xml:space="preserve">
+    <value>Kør Ecosim</value>
+  </data>
+  <data name="STATUSSTRIP_MODIFIED" xml:space="preserve">
+    <value>modificeret</value>
+  </data>
+  <data name="ECOSPACE_SCENARIO_NEW_CAPTION" xml:space="preserve">
+    <value>Nyt Ecospace-scenarie - Ecopath-model {0}</value>
+  </data>
+  <data name="OPTIONS_FEEDBACK_POPUP_AND_STATUS" xml:space="preserve">
+    <value>Som popup-meddelelse og i statuspanel</value>
+  </data>
+  <data name="STATUS_MSE_RUNNNG" xml:space="preserve">
+    <value>Kører MSE ...</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_SUM" xml:space="preserve">
+    <value>Samlede værdier | Celler, der indeholder et resumé af rækker (r) og / eller kolonne (r) i et gitter</value>
+  </data>
+  <data name="VALUE_FILE_CONTENT" xml:space="preserve">
+    <value>(filindhold)</value>
+  </data>
+  <data name="PROMPT_ERROR_IMPORT_EWE6_TOO_NEW" xml:space="preserve">
+    <value>Denne database blev sidst adgang til ved en nyere udgivelse af Ecopath med Ecosim. Det tilrådes at &lt;a href="{0}"&gt;downloade og installere en ny version af EwE&lt;/a&gt; og prøve igen. EwE kan forsøge at fortsætte og indlæse modellen i skrivebeskyttet tilstand. Vær opmærksom på, at vigtige inputparametre muligvis mangler, og at du muligvis får ufuldstændige resultater. Ønsker du at åbne modellen i skrivebeskyttet tilstand?</value>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_UNKNOWN" xml:space="preserve">
+    <value>Rumlige data for {0} på tidspunktet {1}, {2} er ikke verificeret endnu</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_MODEL_MISSINGPARAM" xml:space="preserve">
+    <value>Manglende parameter | Værdier, der kræves af modellen for at køre korrekt.</value>
+  </data>
+  <data name="STATUS_REMARKS_NOT_SUPPORTED" xml:space="preserve">
+    <value>Bemærkninger understøttes ikke til disse data</value>
+  </data>
+  <data name="MPAOPT_AXISLABEL_BESTITERATIONS" xml:space="preserve">
+    <value>Bedste iterationer</value>
+  </data>
+  <data name="FF_APPLICATION_SOURCE" xml:space="preserve">
+    <value>Kildegruppe {0}</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_ASSESSMENTGROUP" xml:space="preserve">
+    <value>Gruppere CV'er</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_ASSESSMENTFLEET" xml:space="preserve">
+    <value>Flåde-cv'er</value>
+  </data>
+  <data name="HABITAT_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Du er ved at slette det valgte habitat. Denne handling kan ikke fortrydes. Er du sikker på, at du vil gøre dette?</value>
+  </data>
+  <data name="ECOSIM_HEADER_BIOMASSGRAPH" xml:space="preserve">
+    <value>Ecopath biomasse værdier</value>
+  </data>
+  <data name="ECOPATH_EDITGROUPSSTANZA_CONFIRMGROUPDELETE_PROMPT" xml:space="preserve">
+    <value>Er du sikker på, at du vil slette gruppe '{0}? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_PARAMS" xml:space="preserve">
+    <value>Økospace-parametre</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_MAPS" xml:space="preserve">
+    <value>Kort</value>
+  </data>
+  <data name="OPTIONS_PAGE_MAPS" xml:space="preserve">
+    <value>Kort</value>
+  </data>
+  <data name="HEADER_MAP_IMAGES" xml:space="preserve">
+    <value>Kortbillede</value>
+  </data>
+  <data name="PROMPT_MPAOPT_MANDATEDB" xml:space="preserve">
+    <value>Ingen specificeret biomasse. Optimering kan ikke fortsætte.</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_SUM_DESCRIPTION" xml:space="preserve">
+    <value>Celler, der indeholder en oversigt over række (r) og / eller kolonne (r) i et gitter</value>
+  </data>
+  <data name="PROMPT_ECOSIM_REQUIRED" xml:space="preserve">
+    <value>Økosim krævet</value>
+  </data>
+  <data name="ECOSPACE_LAYER_MPABESTCOUNT" xml:space="preserve">
+    <value>Bedste antal {0}</value>
+  </data>
+  <data name="PROMPT_DUPLICATE_NAMES" xml:space="preserve">
+    <value>Dine data indeholder duplikatnavne. Ønsker du at bruge disse duplikater?</value>
+  </data>
+  <data name="STATUS_UPDATE_ERROR_WRITE" xml:space="preserve">
+    <value>Kan ikke skrive opdateringen til '{0}' til dens destination. Enten er målfilen i brug, eller så har du ikke tilstrækkelige privilegier</value>
+  </data>
+  <data name="ECOSPACE_LOAD_SCENARIO_CAPTION" xml:space="preserve">
+    <value>Indlæs Ecospace-scenarie - Ecopath-model {0}</value>
+  </data>
+  <data name="ECOSPACE_SCENARIO_LOAD_CAPTION" xml:space="preserve">
+    <value>Indlæs Ecospace-scenarie - Ecopath-model {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_FITTOTIMESERIES" xml:space="preserve">
+    <value>Tilpas til tidsserier</value>
+  </data>
+  <data name="PROMPT_INVALIDMODEL" xml:space="preserve">
+    <value>'{0}' ser ikke ud til at være en gyldig Ecopath-model.</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACTING_FAILED" xml:space="preserve">
+    <value>Kunne ikke komprimere databasen.</value>
+  </data>
+  <data name="ECOSIM_SCENARIO_LOAD_CAPTION" xml:space="preserve">
+    <value>Indlæs Ecosim-scenarie - Ecopath-model {0}</value>
+  </data>
+  <data name="PROMPT_ERROR_CONNECTION" xml:space="preserve">
+    <value>Der opstod en fejl under forsøget på at oprette forbindelse til '{0}': {1}</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_PARAMETERS" xml:space="preserve">
+    <value>Modelparametre</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_PREDATORFEEDINGTIME" xml:space="preserve">
+    <value>Rovdyreffekt på fodringstid [0,1]</value>
+  </data>
+  <data name="STATUS_IMPORTING_MODEL_CANCELLED" xml:space="preserve">
+    <value>Model '{0}' blev ikke importeret.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_GROUPPLOTS" xml:space="preserve">
+    <value>Ecosim-gruppepladser</value>
+  </data>
+  <data name="PLUGIN_LICENSE_EXPIRATION" xml:space="preserve">
+    <value>Licensen udløber {0}</value>
+  </data>
+  <data name="ECOSPACE_EDITHABITAT_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
+    <value>Er du sikker på, at du vil slette {0} habitat (er)? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="PSD_GRAPH_REGRESSION_LABEL_W_STDERR" xml:space="preserve">
+    <value>Hældning = {0} ({1} SE), Y-intercept = {2} ({3} SE), korrelation = {4} Wt. klasseinterval (g) = {5} til {6}, N = {7}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_GROUPS" xml:space="preserve">
+    <value>Gruppeinfo</value>
+  </data>
+  <data name="PROMPT_SEARCH_NORESULTS" xml:space="preserve">
+    <value>Din søgning gav ingen resultater.</value>
+  </data>
+  <data name="PROMPT_DUPLICATE_NAME" xml:space="preserve">
+    <value>Navnet '{0}' er defineret mere end én gang</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_MPAOPT" xml:space="preserve">
+    <value>Rumlige optimeringer</value>
+  </data>
+  <data name="HEADER_MPA_X" xml:space="preserve">
+    <value>MPA. '{0}'</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_SUMMARY_POSITION" xml:space="preserve">
+    <value>{0} lat, {1} lon</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_FEEDINGTIMEADJUSTRATE" xml:space="preserve">
+    <value>Fødetid justeringshastighed [0,1]</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_READONLY" xml:space="preserve">
+    <value>Skrivebeskyttede værdier | Værdier, der ikke kan redigeres af dig, brugeren</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_FLEETDYNAMICS" xml:space="preserve">
+    <value>Flådedynamik</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_COMPUTED" xml:space="preserve">
+    <value>Beregnede værdier | Værdier, der beregnes af programmet</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_ASSESSMENTS" xml:space="preserve">
+    <value>vurderingerne</value>
+  </data>
+  <data name="ECOSIM_PROMPT_SAVEANNUAL" xml:space="preserve">
+    <value>Gemme gennemsnitlige årlige værdier?</value>
+  </data>
+  <data name="OPTIONS_FEEDBACK_STATUS" xml:space="preserve">
+    <value>I statuspanel</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_NAMES" xml:space="preserve">
+    <value>Navne | Farveskema, der skal bruges til navneceller i gitre</value>
+  </data>
+  <data name="PROMPT_MESSAGE_HIDE" xml:space="preserve">
+    <value>Skjul denne type meddelelser, indtil en model er indlæst igen.</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_ERROR" xml:space="preserve">
+    <value>Generiske fejl | Værdier, som modellen ikke kunne beregne på grund af en generel fejl</value>
+  </data>
+  <data name="STATUS_ECOPATH_LOADING" xml:space="preserve">
+    <value>Indlæser model ...</value>
+  </data>
+  <data name="SEARCH_STATUS_COMPLETED" xml:space="preserve">
+    <value>Søgning afsluttet</value>
+  </data>
+  <data name="ECOSIM_APPLYFF_FFTYPE_FORCING" xml:space="preserve">
+    <value>F {0}</value>
+  </data>
+  <data name="STATUS_MODEL_ACCESS_OS" xml:space="preserve">
+    <value>Dit system behøver ikke at have de korrekte drivere installeret for at læse filformatet for modellen '{0}'. Installer 'Microsoft Access Database Engine 2010 Redistributable' fra Microsofts websted for at bruge Access 2010 (ACCDB) databaser.</value>
+  </data>
+  <data name="REGION_BATCH_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Vil du slette område fra {0} til {1}?</value>
+  </data>
+  <data name="HEADER_ECOPATH_MODEL_NAME" xml:space="preserve">
+    <value>Ekopatmodelfilnavn</value>
+  </data>
+  <data name="LABEL_NAV_ECOTRACER_INPUT" xml:space="preserve">
+    <value>Ecotracer input</value>
+  </data>
+  <data name="OPTIONS_PAGE_AUTORUN" xml:space="preserve">
+    <value>Auto-udførelse</value>
+  </data>
+  <data name="STATUS_ECOSIMFD_SAVING" xml:space="preserve">
+    <value>Gemmer flowdiagrambilleder ...</value>
+  </data>
+  <data name="STATUSSTRIP_ECOSPACE_ECOSIMDISCARDFORCING" xml:space="preserve">
+    <value>Ecosim kasseres</value>
+  </data>
+  <data name="PROMPT_PLUGIN_INCOMPATIBLE" xml:space="preserve">
+    <value>Plug-in '{0}' bruger forældede EwE-komponenter og er sandsynligvis ikke kompatibel med denne version af EwE6. Ønsker du at deaktivere dette plug-in?</value>
+  </data>
+  <data name="ABOUT_VERSION_BETA" xml:space="preserve">
+    <value>Version {0} Beta - {1}</value>
+  </data>
+  <data name="STATUS_UPDATE_FAILED" xml:space="preserve">
+    <value>Kontrol af komponentopdatering mislykkedes</value>
+  </data>
+  <data name="GENERIC_DEFAULT_DESCRIPTION" xml:space="preserve">
+    <value>Oprettet: {0} {1}</value>
+  </data>
+  <data name="STATUS_CHECKING_LICENSE" xml:space="preserve">
+    <value>Tjekker licens, vent venligst ...</value>
+  </data>
+  <data name="PROMPT_DRIVERERROR" xml:space="preserve">
+    <value>Dette system har ikke de krævede drivere installeret til at arbejde med filer af denne type</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_NONMARKTEPRICE" xml:space="preserve">
+    <value>Ikke-markedspris</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_FISHERY" xml:space="preserve">
+    <value>Ecospace fiskeri</value>
+  </data>
+  <data name="TS_CONSTANTTOTALMORTALITY_NAME" xml:space="preserve">
+    <value>Z (Konstant total dødelighed)</value>
+  </data>
+  <data name="PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP" xml:space="preserve">
+    <value>Der er ingen rumlig overlapning med dit modelområde og de eksterne data for år {0}. Årligt gennemsnit kunne ikke beregnes.</value>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_PARTIALSPATIAL" xml:space="preserve">
+    <value>Rumlige data for {0} på tidspunktet {1}, {2} overlapper delvist med dit modelområde</value>
+  </data>
+  <data name="PROMPT_SPATIALTEMPORAL_EXPORT" xml:space="preserve">
+    <value>Indtast et mappenavn for disse data</value>
+  </data>
+  <data name="STATUS_UPDATE_ERROR_GENERIC" xml:space="preserve">
+    <value>Der opstod en ukendt fejl under forsøg på at opdatere '{0}'</value>
+  </data>
+  <data name="STATUS_PRINT_PREVIEW_FAILED" xml:space="preserve">
+    <value>Kan ikke vise udskrivningseksempel. {0}</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_LEGEND" xml:space="preserve">
+    <value>Legende | Skrifttype til gengivelse af legender i grafer og figurer</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_QPREY_BPRED" xml:space="preserve">
+    <value>Q bytte / B pred</value>
+  </data>
+  <data name="FR_PLOT_Y_AXS" xml:space="preserve">
+    <value>Q bytte / B pred</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_OTHERMORTFEEDINGTIME" xml:space="preserve">
+    <value>Fraktion af anden dødelighedssens. til ændringer i fodringstid</value>
+  </data>
+  <data name="SCENARIO_CONFIRMOVERWRITE_PROMPT" xml:space="preserve">
+    <value>Er du sikker på, at du vil overskrive scenariet {0}? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="STATUS_SPATIALCOMPATIBILITY" xml:space="preserve">
+    <value>Vurdering fra {0} til {1}, {2}% indekseret: {4} {3}</value>
+  </data>
+  <data name="FORCING_OPTIONS_MEDIATING_GROUPS" xml:space="preserve">
+    <value>Mægling, rel, vægtning</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_REFLEVELS" xml:space="preserve">
+    <value>Referenceniveauer</value>
+  </data>
+  <data name="PROMPT_INVALIDMODEL_REMOVEMRU" xml:space="preserve">
+    <value>'{0}' ser ikke ud til at være en gyldig Ecopath-model. Ønsker du at fjerne dette fra den nylige filliste?</value>
+  </data>
+  <data name="ECOSPACE_CAPTION_EDITLAYER" xml:space="preserve">
+    <value>Rediger lag '{0}'</value>
+  </data>
+  <data name="GENERIC_ECOSPACE_NO_DATA_AVAILABLE" xml:space="preserve">
+    <value>Økospace-data ikke tilgængelig</value>
+  </data>
+  <data name="LABEL_NAV_PSD_OUTPUT_PLOTGROUP" xml:space="preserve">
+    <value>PSD plot efter gruppe</value>
+  </data>
+  <data name="ECOSPACE_HEADER_HABITAT_AREA" xml:space="preserve">
+    <value>Habitat-område</value>
+  </data>
+  <data name="SET_ROW_VUL_MSG" xml:space="preserve">
+    <value>Angiv den nye sårbarhedsindstilling for {0} som bytte</value>
+  </data>
+  <data name="ECOSPACE_LAYER_RANDOMSEARCH" xml:space="preserve">
+    <value>Tilfældig søgning</value>
+  </data>
+  <data name="FILEFILTER_IMAGE_TRANSPARENT" xml:space="preserve">
+    <value>Billeder med gennemsigtighed | * .png; *. Gif; *. Emf; *. Wmf</value>
+  </data>
+  <data name="IMPORT_ERROR_CAPTION" xml:space="preserve">
+    <value>EwE5-databaseimport</value>
+  </data>
+  <data name="GENERIC_PROMPT_SAVEDATATOCSV_CAPTION" xml:space="preserve">
+    <value>Gem data på .csv</value>
+  </data>
+  <data name="HEADER_USE_ENVRESPONSES" xml:space="preserve">
+    <value>Brug miljømæssige reaktioner</value>
+  </data>
+  <data name="STATUS_RESIZING_MAP" xml:space="preserve">
+    <value>Ændre størrelse på kort, vent venligst ...</value>
+  </data>
+  <data name="FPS_FG_TP" xml:space="preserve">
+    <value>Mål rentabilitet</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYFFCONS" xml:space="preserve">
+    <value>Anvend tvang (forbruger)</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYFFPROD" xml:space="preserve">
+    <value>Anvend tvang (producent)</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_HABCAPMODEL" xml:space="preserve">
+    <value>Gruppekapacitetsmodel</value>
+  </data>
+  <data name="STATUS_MSY_RUNNING_STATIONARYSTOCK" xml:space="preserve">
+    <value>Kører MSY stationær bestandsvurdering ...</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_FISHERY" xml:space="preserve">
+    <value>Fiskeri</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_FISHERY" xml:space="preserve">
+    <value>Fiskeri</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_HABCAPAPPLY" xml:space="preserve">
+    <value>Anvend foderbesvar</value>
+  </data>
+  <data name="GENERIC_PROMPT_OVERWRITEFILE" xml:space="preserve">
+    <value>Filen {0} findes allerede. Vil du overskrive det?</value>
+  </data>
+  <data name="STATUS_ECOSPACE_RUNNING" xml:space="preserve">
+    <value>Kører Ecospace ...</value>
+  </data>
+  <data name="PROMPT_DEFINE_PEDIGREE" xml:space="preserve">
+    <value>Stamtavniveauer er ikke defineret for en eller flere værdityper. Vil du definere disse nu?</value>
+  </data>
+  <data name="RUN_ECOSIM_F_VALUE_CAPTION" xml:space="preserve">
+    <value>Skift F</value>
+  </data>
+  <data name="ECOTRACER_SCENARIO_DELETE_CAPTION" xml:space="preserve">
+    <value>Slet Ecotracer-scenarie - Ecopath-model {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_MONTECARLO" xml:space="preserve">
+    <value>Monte Carlo-simulering</value>
+  </data>
+  <data name="GENERIC_LABEL_TRIAL" xml:space="preserve">
+    <value>Prøve {0} - {1}</value>
+  </data>
+  <data name="OPTIONS_PAGE_FILEMANAGEMENT" xml:space="preserve">
+    <value>Filhåndtering</value>
+  </data>
+  <data name="SCENARIO_CONFIRMOVERWRITE_CAPTION" xml:space="preserve">
+    <value>Gem scenarie som</value>
+  </data>
+  <data name="FR_PLOT_X_AXIS" xml:space="preserve">
+    <value>Rovbiomasse i forhold til økopatbiomasse</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM" xml:space="preserve">
+    <value>Rovbiomasse i forhold til økopatbiomasse</value>
+  </data>
+  <data name="HEADER_SPAWNING_AGE" xml:space="preserve">
+    <value>Gydealder</value>
+  </data>
+  <data name="STATUS_ECOSPACE_SAVING" xml:space="preserve">
+    <value>Gemmer Ecospace-scenariet '{0}' ...</value>
+  </data>
+  <data name="VALUE_REGION_UNDEFINED" xml:space="preserve">
+    <value>(Udefineret region)</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_IMPORT_AS_MONTHLY" xml:space="preserve">
+    <value>Ønsker du at importere '{0}' som månedlige tvangsdata?</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_FLEETPLOTS" xml:space="preserve">
+    <value>Ecosim-flådepladser</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_DISPERSAL" xml:space="preserve">
+    <value>spredning</value>
+  </data>
+  <data name="INVALID_VUL_NUM_ENTERED" xml:space="preserve">
+    <value>Værdien skal være&gt; = 1. En lav (~ 1) værdi gør interaktioner donorstyret, mens en stor (&gt;&gt; 1) værdi fører til top-down kontrol og Lotka-Volterra cyklisk dynamik. Mellemværdier (~ 2) fører til blandet kontrol.</value>
+  </data>
+  <data name="STATUSSTRIP_ECOSIM_TOOLTIP" xml:space="preserve">
+    <value>Ecosim-scenarie Navn: {0} Tidsserie: {1} Beskrivelse: {2}</value>
+  </data>
+  <data name="STATUS_IMPORTING_MODEL_FAILED" xml:space="preserve">
+    <value>Model '{0}' kunne ikke konverteres, se importloggen '{1}' for detaljer</value>
+  </data>
+  <data name="ECOBASE_ERROR_NOCONNECTION" xml:space="preserve">
+    <value>EwE kunne ikke kommunikere med EcoBase. Sørg for, at du er tilsluttet internettet og prøv igen. Hvis problemet fortsætter, send os en fejlrapport fra menuen Hjælp</value>
+  </data>
+  <data name="ECOPATH_EDITGROUPSSTANZA_NEEDDETRITUS" xml:space="preserve">
+    <value>Der skal være mindst en detritusgruppe. Rediger dine data.</value>
+  </data>
+  <data name="STATUS_CLEANUP_TEMPFILES" xml:space="preserve">
+    <value>Fjernelse af midlertidige filer</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYOTHERMORT" xml:space="preserve">
+    <value>Anvend tvang (anden dødelighed)</value>
+  </data>
+  <data name="GENERIC_TEXT_CREATE" xml:space="preserve">
+    <value>&amp;Skab</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_MPA" xml:space="preserve">
+    <value>Marine beskyttede områder</value>
+  </data>
+  <data name="PROMPT_ERROR_IMPORT_EWE5_TOO_OLD" xml:space="preserve">
+    <value>Denne database er skrevet af en forældet version af Ecopath 5, som ikke understøttes af EwE6-importprocessen. Download og installer en nylig version af Ecopath 5 for at opdatere din database. Når den er opdateret, kan EwE6 importere databasen til dens nye databaseformat. &lt;a href="{0}"&gt;Ecopath 5 kan downloades fra arkiverne, følg download-linkene&lt;/a&gt; .</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_HIGHLIGHT" xml:space="preserve">
+    <value>Fremhævede værdier | Værdier, der fremhæves af dig, brugeren</value>
+  </data>
+  <data name="GENERIC_TEXT_NODATA" xml:space="preserve">
+    <value>(ingen data)</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYFFDET" xml:space="preserve">
+    <value>Anvend tvang (detritus)</value>
+  </data>
+  <data name="COMMAND_AUTOSAVE" xml:space="preserve">
+    <value>Konfigurer hvilke EwE-komponenter, der automatisk kan gemme resultater til fil</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYEGGPROD" xml:space="preserve">
+    <value>Anvend ægproduktion</value>
+  </data>
+  <data name="STATUS_ECOSPACE_RUNNING_SPINUP" xml:space="preserve">
+    <value>Kører Ecospace spin-up ...</value>
+  </data>
+  <data name="OPTIONS_FEEDBACK_NONE" xml:space="preserve">
+    <value>Vis ikke sådanne meddelelser</value>
+  </data>
+  <data name="CAPTION_NICHEPLOT_XAXIS_LABEL" xml:space="preserve">
+    <value>Predator overlapper indeks</value>
+  </data>
+  <data name="LABEL_SET" xml:space="preserve">
+    <value>&amp;Sæt:</value>
+  </data>
+  <data name="CAPTION_EXTERNAL_DATASET_CONFIGURE" xml:space="preserve">
+    <value>Konfigurer ekstern dataforbindelse</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_AXISSCALE_AND_VALUES" xml:space="preserve">
+    <value>Skalaer og værdier | Skrifttype til gengivelse af skalaer og værdier i grafer og figurer</value>
+  </data>
+  <data name="GENERIC_CAPTION" xml:space="preserve">
+    <value>Ecopath med Ecosim</value>
+  </data>
+  <data name="STATUS_MSY_RUNNING_FULLCOMPENSATION" xml:space="preserve">
+    <value>Kører MSY fuld kompensationsvurdering ...</value>
+  </data>
+  <data name="DATASOURCE_DUPLICATE_ERROR_TARGET" xml:space="preserve">
+    <value>Der opstod en fejl ved forsøg på at duplikere denne model. Prøv at vælge en anden destination, og prøv igen</value>
+  </data>
+  <data name="ECOPATH_EDITGROUPSSTANZA_AGECONFLICT" xml:space="preserve">
+    <value>Grupper '{0}' og '{1}' i strofe '{2}' har samme startalder. Ret dette.</value>
+  </data>
+  <data name="ECOSIM_APPLYFF_FFTYPE_MEDIATION" xml:space="preserve">
+    <value>M {0}</value>
+  </data>
+  <data name="PROMPT_DELETE_ECOSPACE_DATASET" xml:space="preserve">
+    <value>Ønsker du at slette definitionen af det geografiske datasæt '{0}'? Denne handling kan ikke fortrydes. Bemærk, at dette ikke vil påvirke de faktiske rumlige / tidsmæssige data, som denne definition henviser til.</value>
+  </data>
+  <data name="SELECTION_DERIVED" xml:space="preserve">
+    <value>(valgt afledt værdi)</value>
+  </data>
+  <data name="STATUS_ECOTRACER_LOADING" xml:space="preserve">
+    <value>Indlæser Ecotracer-scenarie '{0}' ...</value>
+  </data>
+  <data name="STATUS_UPDATE_SUCCESS" xml:space="preserve">
+    <value>Komponenter opdateret med succes</value>
+  </data>
+  <data name="ECOSPACE_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
+    <value>Gem Ecospace-scenarie - Ecopath-model {0}</value>
+  </data>
+  <data name="UI_ERROR_LAUNCHFORM" xml:space="preserve">
+    <value>EwE kunne ikke fuldføre din anmodning. Hvis problemet fortsætter, skal du e-maile EwE-udviklingsholdet og vedhæfte EwE-logfilen</value>
+  </data>
+  <data name="PROMPT_INVALIDTARGETPATH" xml:space="preserve">
+    <value>Kan ikke oprette EwE6-model ved '{0}'. Kontroller, om du har adgangsrettigheder til at skrive til dette sted, eller om en fil på dette sted stadig er i brug</value>
+  </data>
+  <data name="PROMPT_PLUGIN_UNDETERMINED" xml:space="preserve">
+    <value>Plug-in '{0}' kan ikke diagnosticeres for kompatibilitet med EwE6. Det tilrådes ikke at bruge denne plug-in. Ønsker du at deaktivere dette plug-in?</value>
+  </data>
+  <data name="ECOSIM_FD_SAVE_SUCCESS" xml:space="preserve">
+    <value>Ecosim-flowdiagrambilleder gemt til {0}</value>
+  </data>
+  <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
+    <value>'{0}' er gemt til filen '{1}'.</value>
+  </data>
+  <data name="ECOBASE_SUBMIT_ACCEPTED" xml:space="preserve">
+    <value>Din model blev med succes tilføjet til EcoBase</value>
+  </data>
+  <data name="EDIT_GROUPS_STANZANO" xml:space="preserve">
+    <value>Stanza nr. (yngste = 1)</value>
+  </data>
+  <data name="ECOPATH_MOVEGROUP_ERROR" xml:space="preserve">
+    <value>Kunne ikke flytte gruppe '{0}'</value>
+  </data>
+  <data name="GENERIC_WARNING_EMPTY_NAME" xml:space="preserve">
+    <value>Navne kan ikke være tomme.</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACTING" xml:space="preserve">
+    <value>Komprimerende model ...</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_MORTALITIES" xml:space="preserve">
+    <value>dødelighed</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_FLEETSIZEDYNAMICS" xml:space="preserve">
+    <value>Flådestørrelsesdynamik</value>
+  </data>
+  <data name="SET_VUL_CAPTION" xml:space="preserve">
+    <value>EwE sårbarheder</value>
+  </data>
+  <data name="PROMPT_INVALIDFILE" xml:space="preserve">
+    <value>Denne filtype understøttes ikke af EwE6</value>
+  </data>
+  <data name="HEADER_STATIONARY" xml:space="preserve">
+    <value>Stationært system</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_VULNERABILITES" xml:space="preserve">
+    <value>Sårbarheder</value>
+  </data>
+  <data name="HEADER_SPATTEMP_CREATE_CONNECTION" xml:space="preserve">
+    <value>Opret ny forbindelse</value>
+  </data>
+  <data name="ABOUT_CAPTION" xml:space="preserve">
+    <value>Om {0}</value>
+  </data>
+  <data name="ECOSPACE_HEADER_GROUP_HABITAT" xml:space="preserve">
+    <value>Gruppe \ habitat #</value>
+  </data>
+  <data name="ECOSIM_CAPTION_APPLYMED" xml:space="preserve">
+    <value>Anvend mægling</value>
+  </data>
+  <data name="SET_COL_VUL_MSG" xml:space="preserve">
+    <value>Indtast en ny sårbarhedsindstilling for {0} som rovdyr</value>
+  </data>
+  <data name="ECOPATH_DELETESTANZA_ERROR" xml:space="preserve">
+    <value>Kunne ikke slette strofe-konfiguration '{0}'.</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_QBMAXQBO" xml:space="preserve">
+    <value>QBmax / QBo (til håndteringstid) [&gt; 1]</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_FMSY" xml:space="preserve">
+    <value>FMSY</value>
+  </data>
+  <data name="ECOPATH_UPDATESTANZA_ERROR" xml:space="preserve">
+    <value>Kunne ikke opdatere livsfaser for strofe '{0}'</value>
+  </data>
+  <data name="FR_PLOT_CAPTION" xml:space="preserve">
+    <value>Forbruger '{0}'</value>
+  </data>
+  <data name="HEADER_HABITAT_X" xml:space="preserve">
+    <value>Hab. '{0}'</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYMEDDET" xml:space="preserve">
+    <value>Anvend mægling (detritus)</value>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_NOSPATIAL" xml:space="preserve">
+    <value>Rumlige data for {0} på tidspunktet {1}, {2} overlapper ikke dit modelområde</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_HABITATPREFS" xml:space="preserve">
+    <value>Habitat foraging brug</value>
+  </data>
+  <data name="ECOSPACE_EDITREGION_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
+    <value>Er du sikker på, at du vil slette {0} region (er)? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="SELECT_DEFAULT_LAYOUT_DIRECTORY_MSG" xml:space="preserve">
+    <value>Vælg det bibliotek, du vil gemme dine layoutfiler som standard</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_OPTIONS" xml:space="preserve">
+    <value>MSE-indstillinger</value>
+  </data>
+  <data name="MSE_EFFORT_VALUE" xml:space="preserve">
+    <value>Indsats {0}</value>
+  </data>
+  <data name="ECOSIM_FD_SAVE_SUCCESS_DETAIL" xml:space="preserve">
+    <value>Billedet er gemt til tidstrin {0}</value>
+  </data>
+  <data name="SR_PLOT_X_AXIS" xml:space="preserve">
+    <value>{0} Aktie</value>
+  </data>
+  <data name="STATUS_CACHECLEARED" xml:space="preserve">
+    <value>Datacache ryddet, frigivet {0} kb af data</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACTING_OS" xml:space="preserve">
+    <value>Din Windows-installation har ikke de nødvendige komponenter installeret til at komprimere denne type database.</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_VALUES" xml:space="preserve">
+    <value>Værdier | Skrift til gengivelse af værdier</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_IMG_BACKGROUND_COLOR" xml:space="preserve">
+    <value>Billedbaggrund | Baggrundsfarve, der skal bruges til billeder</value>
+  </data>
+  <data name="STATUS_ECOSPACE_PROGRESS" xml:space="preserve">
+    <value>Beregnet {0} af {1} år</value>
+  </data>
+  <data name="SEARCH_LABEL_TOTAL_WEIGHTED" xml:space="preserve">
+    <value>I alt (vægtet)</value>
+  </data>
+  <data name="ECOTRACER_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
+    <value>Gem Ecotracer-scenarie - Ecopath model {0}</value>
+  </data>
+  <data name="CAPTION_NICHEPLOT_YAXIS_LABEL" xml:space="preserve">
+    <value>Indeks for overlappende bytte</value>
+  </data>
+  <data name="STATUSSTRIP_ECOSPACE_ECOSIMBIOMASSFORCING" xml:space="preserve">
+    <value>Ecosim biomasse</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_ECOSPACE_MAPLOT_BACKGROUND_COLOR" xml:space="preserve">
+    <value>Kortbaggrund | Baggrundsfarve, der skal bruges til kort</value>
+  </data>
+  <data name="GENERIC_PROMPT_USEANSWERAGAIN" xml:space="preserve">
+    <value>Brug dette svar automatisk, indtil modellen er genindlæst</value>
+  </data>
+  <data name="PROMPT_MODELNOTFOUND" xml:space="preserve">
+    <value>Model '{0}' kan ikke findes.</value>
+  </data>
+  <data name="INVALID_VALUE_ENTERED" xml:space="preserve">
+    <value>Indtast en værdi større end {0}</value>
+  </data>
+  <data name="PROMPT_ERROR_IMPORTFAILED" xml:space="preserve">
+    <value>Kunne ikke konvertere Ecopath 5-databasen til EwE6-format.</value>
+  </data>
+  <data name="ECOSIM_SCENARIO_NEW_CAPTION" xml:space="preserve">
+    <value>Nyt Ecosim-scenarie - Ecopath-model {0}</value>
+  </data>
+  <data name="ECOBASE_ERROR_BALANCE" xml:space="preserve">
+    <value>Denne model kan ikke eksporteres til EcoBase, fordi den ikke massebalancerer</value>
+  </data>
+  <data name="MSY_LABEL_FMSY" xml:space="preserve">
+    <value>Fmsy {0}</value>
+  </data>
+  <data name="PROMPT_MODEL_COMPACT" xml:space="preserve">
+    <value>For at komprimere din database skal din model være lukket. Er du sikker på, at du vil komprimere din database?</value>
+  </data>
+  <data name="INVALID_Y_SCALE_NUMBER_ENTERED" xml:space="preserve">
+    <value>Y skala for plot: {0} skal være større end eller lig med {1}</value>
+  </data>
+  <data name="REGION_DELETE_CAPTION" xml:space="preserve">
+    <value>Slet region?</value>
+  </data>
+  <data name="FPS_FG_JOBS" xml:space="preserve">
+    <value>Job / fangstværdi</value>
+  </data>
+  <data name="STATUS_DATA_SAVING_FAILURE" xml:space="preserve">
+    <value>Data kunne ikke gemmes til '{0}': {1}</value>
+  </data>
+  <data name="PROMPT_PLUGIN_CAUTION" xml:space="preserve">
+    <value>Plug-in '{0}' bruger ældre EwE-komponenter og kan være inkompatibel med denne version af EwE6.</value>
+  </data>
+  <data name="TS_CONSTANTTOTALMORTALITY_REMARKS" xml:space="preserve">
+    <value>Tvungen total dødelighed efter gruppe / pool, delvis serie er acceptabel</value>
+  </data>
+  <data name="PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND" xml:space="preserve">
+    <value>Alle detritusgrupper flyttes til slutningen af listen over grupper.</value>
+  </data>
+  <data name="LABEL_NAV_PSD_OUTPUT_GROWTHESTIMATES" xml:space="preserve">
+    <value>Vækstestimater</value>
+  </data>
+  <data name="ECOSIM_CAPTION_APPLYPRICEELASTICITY" xml:space="preserve">
+    <value>Anvend priselasticitet</value>
+  </data>
+  <data name="CAPTION_PRICEELASTICITY_GROUP" xml:space="preserve">
+    <value>Anvend priselasticitet på alle landinger af {0}: {1}</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_IMPORTANCE" xml:space="preserve">
+    <value>Betydning</value>
+  </data>
+  <data name="OPTIONS_PAGE_INSTALLED" xml:space="preserve">
+    <value>Installerede plug-ins</value>
+  </data>
+  <data name="CAPTION_PRICEELASTICITY_FLEET" xml:space="preserve">
+    <value>Anvend priselasticitet på alle landinger med flåden {0}: {1}</value>
+  </data>
+  <data name="ECOSIM_SCENARIO_DELETE_CAPTION" xml:space="preserve">
+    <value>Slet Ecosim-scenarie - Ecopath-model {0}</value>
+  </data>
+  <data name="OPTIONS_PAGE_GRAPHS" xml:space="preserve">
+    <value>Grafer og diagrammer</value>
+  </data>
+  <data name="OPTIONS_PAGE_GENERAL" xml:space="preserve">
+    <value>Generel</value>
+  </data>
+  <data name="GENERIC_REPLY_OK" xml:space="preserve">
+    <value>Du godkendte operationen</value>
+  </data>
+  <data name="GENERIC_REPLY_NO" xml:space="preserve">
+    <value>Du svarede 'nej'</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_REFMSY" xml:space="preserve">
+    <value>MSY</value>
+  </data>
+  <data name="IMPORT_LAYERDATA_FAILED" xml:space="preserve">
+    <value>Fil {0} kunne ikke læses i lag {1}</value>
+  </data>
+  <data name="CAPTION_SIZEWT" xml:space="preserve">
+    <value>Størrelse / Vægt</value>
+  </data>
+  <data name="ECOSPACE_FISHING_EFFORT_CONVERSION_HEADER" xml:space="preserve">
+    <value>Effektkonvertering (visning)</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_FISHMORTRATE" xml:space="preserve">
+    <value>Fiskeridødelighed</value>
+  </data>
+  <data name="STATUS_ECOTRACER_RUNNING" xml:space="preserve">
+    <value>Kører Ecotracer ...</value>
+  </data>
+  <data name="ECOSPACE_HEADER_AREAFISHING" xml:space="preserve">
+    <value>Flåde \ habitat + MPA-brug</value>
+  </data>
+  <data name="GENERIC_ITEMSTATUS_DELETEPENDING" xml:space="preserve">
+    <value>Sådan slettes</value>
+  </data>
+  <data name="MPAOPT_AXISLABEL_OBJECTIVEVALUE" xml:space="preserve">
+    <value>Objektiv værdi</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_PRED" xml:space="preserve">
+    <value>Predator:</value>
+  </data>
+  <data name="OPTIONS_PAGE_COLORS" xml:space="preserve">
+    <value>farver</value>
+  </data>
+  <data name="STATUS_SEARCH_STOPPING" xml:space="preserve">
+    <value>Stop søgning, vent venligst ...</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_MORTALITRATES" xml:space="preserve">
+    <value>Dødelighed</value>
+  </data>
+  <data name="MPAOPT_LEGEND_WEIGHTEDTOTAL" xml:space="preserve">
+    <value>Vægtet total</value>
+  </data>
+  <data name="CAPTION_SPATIALTEMPORAL_EXPORT" xml:space="preserve">
+    <value>Eksporterer {0} datasæt</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDVALIDATION" xml:space="preserve">
+    <value>Modelvalideringsfejl | Værdier, der indikerer, at modellen afviste et nyligt input</value>
+  </data>
+  <data name="HEADER_MAP" xml:space="preserve">
+    <value>Input kort</value>
+  </data>
+  <data name="HEADER_MSY" xml:space="preserve">
+    <value>Vurdering af {0}</value>
+  </data>
+  <data name="ABOUT_VERSION" xml:space="preserve">
+    <value>Version {0} - {1}</value>
+  </data>
+  <data name="HEADER_SPATTEMP_NODRIVER" xml:space="preserve">
+    <value>Ingen eksterne data</value>
+  </data>
+  <data name="STATUS_ECOSIM_CREATING" xml:space="preserve">
+    <value>Oprettelse af Ecosim-scenarie '{0}' ...</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACT_RELOADFAIL" xml:space="preserve">
+    <value>Din database blev komprimeret korrekt, men EwE kunne ikke genindlæse databasen. Kontakt EwE teknisk support</value>
+  </data>
+  <data name="FLOWDIAGRAM_LABEL_BIOMASS" xml:space="preserve">
+    <value>B: {0}</value>
+  </data>
+  <data name="GENERIC_ITEMSTATUS_CREATEPENDING" xml:space="preserve">
+    <value>At skabe</value>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_MISSING" xml:space="preserve">
+    <value>Rumlige data for {0} på tidspunktet {1}, {2} kan ikke findes</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACT_SUCCESS" xml:space="preserve">
+    <value>Din database blev komprimeret med succes.</value>
+  </data>
+  <data name="PROMPT_ERROR_IMPORT_INVALIDDB" xml:space="preserve">
+    <value>Den valgte database ser ikke ud til at være en gyldig EwE5- eller EwE6-database.</value>
+  </data>
+  <data name="LABEL_NAV_PSD" xml:space="preserve">
+    <value>Partikelstørrelsesfordeling</value>
+  </data>
+  <data name="CAPTION_PSD" xml:space="preserve">
+    <value>Partikelstørrelsesfordeling</value>
+  </data>
+  <data name="LABEL_NAV_MSE" xml:space="preserve">
+    <value>Ledelsesprocedurer (MSE)</value>
+  </data>
+  <data name="HEADER_MORTALITIES_PREDMORTRATE" xml:space="preserve">
+    <value>+ Predationsdød. sats</value>
+  </data>
+  <data name="GENERIC_ERROR_IMAGETOOLARGE" xml:space="preserve">
+    <value>Billedet er for stort, vælg et billede med bredde og højde mindre end {0} pixels</value>
+  </data>
+  <data name="ECOPATH_EDITGROUPSSTANZA_STANZAAGECORRECTED" xml:space="preserve">
+    <value>Startalderen for strofe '{0}' er korrigeret.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE" xml:space="preserve">
+    <value>Anvend miljøsvar</value>
+  </data>
+  <data name="STATUS_ECOSIM_RUNNING" xml:space="preserve">
+    <value>Kører Ecosim ...</value>
+  </data>
+  <data name="STATUS_UPDATE_CHECKING" xml:space="preserve">
+    <value>Kontrollerer for opdaterede komponenter ...</value>
+  </data>
+  <data name="LABEL_NAV_PSD_OUTPUT_GROWTHCONTR" xml:space="preserve">
+    <value>PSD-bidrags plot</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_MEDIATION" xml:space="preserve">
+    <value>Mægling</value>
+  </data>
+  <data name="ECOSIM_CAPTION_APPLYFF" xml:space="preserve">
+    <value>Anvend tvangsfunktioner</value>
+  </data>
+  <data name="ECOSIM_PROMPT_DELETE_TSDATASETS" xml:space="preserve">
+    <value>Du er ved at fjerne Time Series-datasæt fra databasen. Denne handling kan ikke fortrydes. Er du sikker på, at du vil gøre dette?</value>
+  </data>
+  <data name="PROMPT_MPA_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Vil du slette den valgte MPA? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="VERSION_RELEASE" xml:space="preserve">
+    <value>Officiel frigivelse, udstedt {0}</value>
+  </data>
+  <data name="PROMPT_ADVECTION_INBALANCED" xml:space="preserve">
+    <value>Tilstrømninger og udstrømme er ikke i balance; Det anbefales ikke at bruge dette hastighedsfelt til simuleringer, hvis økospace viser mærkelig opførsel. Ønsker du at gendanne vejledningsdataene til den forrige tilstand?</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_NICHEOVERLAP" xml:space="preserve">
+    <value>Overlappende niche</value>
+  </data>
+  <data name="CAPTION_NICHEPLOT_HEADER" xml:space="preserve">
+    <value>Overlappende niche</value>
+  </data>
+  <data name="STATUS_UPDATE_DOWNLOADING_COMP" xml:space="preserve">
+    <value>Download "{0}"</value>
+  </data>
+  <data name="STATUS_DATA_SAVING" xml:space="preserve">
+    <value>Gemmer data, vent venligst ...</value>
+  </data>
+  <data name="FLOWDIAGRAM_NODE_TOUCHING" xml:space="preserve">
+    <value>Berøringsnode: {0} ({1})</value>
+  </data>
+  <data name="HEADER_FISHING_EFFORT_MULTIPLIER" xml:space="preserve">
+    <value>Multiplikator for fiskeriindsats</value>
+  </data>
+  <data name="INVALID_NUMBER_ENTERED" xml:space="preserve">
+    <value>Det indtastede nummer er ikke gyldigt</value>
+  </data>
+  <data name="TS_AVERAGEWEIGHT_REMARKS" xml:space="preserve">
+    <value>Kun for stropper er delvise serier acceptable</value>
+  </data>
+  <data name="ECOSPACE_EDITLAYER_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
+    <value>Er du sikker på, at du vil slette {0} lag (er)? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_MSY" xml:space="preserve">
+    <value>MSY-søgning</value>
+  </data>
+  <data name="PROMPT_STANZA_MISSING_LIFESTAGES" xml:space="preserve">
+    <value>En eller flere strofekonfigurationer har ikke tildelt livsfaser. Vil du gøre dette nu?</value>
+  </data>
+  <data name="STATUS_WAITING" xml:space="preserve">
+    <value>Venter på din input ...</value>
+  </data>
+  <data name="ECOSPACE_EDITLAYER_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Er du sikker på, at du vil slette lag '{0}'? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="STATUS_DATASET_REMOVING" xml:space="preserve">
+    <value>Fjernelse af Time Series datasæt '{0}' ...</value>
+  </data>
+  <data name="STATUSSTRIP_ECOSPACE_CONNECTIONS" xml:space="preserve">
+    <value>{0} forbindelse / r</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_STATISTICS" xml:space="preserve">
+    <value>Statistikker</value>
+  </data>
+  <data name="HEADER_DRIVER_ENABLED" xml:space="preserve">
+    <value>Aktivér eksterne data</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_OTHERPRODUCTION" xml:space="preserve">
+    <value>Anden produktion</value>
+  </data>
+  <data name="PROMPT_SPATIALTEMPORAL_CALC_NOINDEX" xml:space="preserve">
+    <value>Det rumlige datasæt er ikke indekseret endnu.</value>
+  </data>
+  <data name="STATUS_IMPORTING_MODEL_SUCCESS" xml:space="preserve">
+    <value>Model '{0}' konverteret med succes til '{1}'</value>
+  </data>
+  <data name="GENERIC_PROMPT_CLEAR_MRU" xml:space="preserve">
+    <value>Er du sikker på, at du vil rydde den nyligt åbne filhistorie? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="PROMPT_FORCING_DELETE" xml:space="preserve">
+    <value>Du er ved at slette tvangsfunktion '{0}'. Denne handling kan ikke fortrydes. Er du sikker på, at du vil gøre dette?</value>
+  </data>
+  <data name="COMMAND_AUTORUN" xml:space="preserve">
+    <value>Konfigurer, hvilke EwE-plug-ins automatisk kan køre med EwE-kernekomponenter</value>
+  </data>
+  <data name="OPTIONS_PAGE_WINDOW" xml:space="preserve">
+    <value>EwE6 ansøgning</value>
+  </data>
+  <data name="MSE_ITERATION_HEADER" xml:space="preserve">
+    <value>Flåde {0} MSY-indsats</value>
+  </data>
+  <data name="STATUS_ECOSIM_SAVING" xml:space="preserve">
+    <value>Gemmer Ecosim-scenariet '{0}' ...</value>
+  </data>
+  <data name="STATUSSTRIP_ECOTRACER_TOOLTIP" xml:space="preserve">
+    <value>Ecotracer-scenarie Navn: {0} Beskrivelse: {1}</value>
+  </data>
+  <data name="PROMPT_TRIM_SHAPES" xml:space="preserve">
+    <value>Ønsker du at kassere data om tvangs- og ægproduktion forbi den aktuelle Ecosim-kørelængde? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="ECOSIM_PLOT_CAPTION_MORT_PROD" xml:space="preserve">
+    <value>P / B, predation.mort., Fishing.mort.</value>
+  </data>
+  <data name="ECOSIM_PLOT_CAPTION_MORT_CONS" xml:space="preserve">
+    <value>Dødelighed: total, fiskeri, predation.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_FLOWDIAGRAM" xml:space="preserve">
+    <value>Ecosim Flow diagram</value>
+  </data>
+  <data name="ECOSPACE_EDITMPA_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
+    <value>Er du sikker på, at du vil slette {0} MPA (r)? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="REGION_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Vil du slette det valgte område?</value>
+  </data>
+  <data name="MSE_ITERATION_LINE" xml:space="preserve">
+    <value>{1} {0} {2}</value>
+  </data>
+  <data name="GENERIC_REPLY_CANCEL" xml:space="preserve">
+    <value>Du annullerede handlingen</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_PRICEELAST" xml:space="preserve">
+    <value>Priselasticitet</value>
+  </data>
+  <data name="STATUS_LOADING" xml:space="preserve">
+    <value>Indlæser vent venligst...</value>
+  </data>
+  <data name="GENERIC_PROMPT_INVALIDPATH" xml:space="preserve">
+    <value>Filen '{0}' kan ikke findes. Sørg for, at stien er korrekt.</value>
+  </data>
+  <data name="ECOSPACE_SCENARIO_DELETE_CAPTION" xml:space="preserve">
+    <value>Slet Ecospace-scenarie - Ecopath-model {0}</value>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_FULLSPATIAL" xml:space="preserve">
+    <value>Rumlige data for {0} på tidspunktet {1}, {2} overlapper helt med dit modelområde</value>
+  </data>
+  <data name="HABITAT_DELETE_CAPTION" xml:space="preserve">
+    <value>Slet habitat</value>
+  </data>
+  <data name="GENERIC_PROMPT_DONOTSHOWMESSAGEAGAIN" xml:space="preserve">
+    <value>Vis ikke denne meddelelse igen, før modellen er genindlæst</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_DEFAULT" xml:space="preserve">
+    <value>Standardtekst | Farveskema, der skal bruges til standardtekst</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACTING_TEMPFILE" xml:space="preserve">
+    <value>Kan ikke oprette en midlertidig fil, mens databasen komprimeres. Kontroller, om du har lav diskplads.</value>
+  </data>
+  <data name="STATUS_ECOSPACE_LOADING" xml:space="preserve">
+    <value>Indlæser Ecospace-scenariet '{0}' ...</value>
+  </data>
+  <data name="ECOSPACE_WARNING_MEMOVERFLOW" xml:space="preserve">
+    <value>Baseret på antallet af celler på dit kort kan denne operation få Ecospace til at løbe tør for hukommelse, når der indsamles statistikker. Er du sikker på, at du vil konvertere alle celler til individuelle regioner?</value>
+  </data>
+  <data name="CAPTION_DATASET" xml:space="preserve">
+    <value>Eksternt datasæt {0}</value>
+  </data>
+  <data name="LABEL_NAV_TOOLS" xml:space="preserve">
+    <value>Værktøj</value>
+  </data>
+  <data name="STATUS_MSY_INITIALIZING" xml:space="preserve">
+    <value>Initialiserer MSY ...</value>
+  </data>
+  <data name="STATUS_ADVECTION_STARTED" xml:space="preserve">
+    <value>Starter Advection beregninger ...</value>
+  </data>
+  <data name="PROMPT_CHANGES_RESTART" xml:space="preserve">
+    <value>Nogle af de ændringer, du har foretaget, vil kun være effektive, når Ecopath med Ecosim er genstartet.</value>
+  </data>
+  <data name="PROMPT_UPDATE_MIGRATION" xml:space="preserve">
+    <value>En nyere Ecopath-plug-in er tilgængelig, der muligvis gælder for '{0}' på dit system, men kopier kan ikke godkendes. Vil du, at EwE6 skal overskrive din lokale fil?</value>
+  </data>
+  <data name="STATUS_UPDATE_ERROR_DOWNLOAD" xml:space="preserve">
+    <value>Kan ikke downloade opdatering til '{0}'</value>
+  </data>
+  <data name="LEGEND_BYBIOMASS" xml:space="preserve">
+    <value>Af biomasse</value>
+  </data>
+  <data name="CAPTION_PRICEELASTICITY_LANDING" xml:space="preserve">
+    <value>Anvend priselasticitet på flåden {0}: {1} landing {2}: {3}</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_FISHERY_DISCARDMORTRATE" xml:space="preserve">
+    <value>Kassér dødeligheden</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_SUITABILITY" xml:space="preserve">
+    <value>Egnethed</value>
+  </data>
+  <data name="IMPORT_FILE_FAILED" xml:space="preserve">
+    <value>Importen af {0} mislykkedes</value>
+  </data>
+  <data name="LABEL_NAV_PSD_OUTPUT_PLOTWEIGHT" xml:space="preserve">
+    <value>Størrelse vægt plot</value>
+  </data>
+  <data name="STATUSSTRIP_ECOSPACE_TOOLTIP" xml:space="preserve">
+    <value>Ecospace-scenarie Navn: {0} Beskrivelse: {1}</value>
+  </data>
+  <data name="OPTIONS_FEEDBACK_POPUP" xml:space="preserve">
+    <value>Som popup-meddelelse</value>
+  </data>
+  <data name="PROMPT_STANZA_MISSING_LIFESTAGES_DETAIL" xml:space="preserve">
+    <value>Stanza-gruppen '{0}' er erklæret, men har ingen livsfaser</value>
+  </data>
+  <data name="FIT2TS_PROGRESS_RUNCOMPLETED" xml:space="preserve">
+    <value>Kørsel afsluttet kl. {0}</value>
+  </data>
+  <data name="STATUS_UPDATE_UPDATED" xml:space="preserve">
+    <value>Komponent '{0}' er blevet opdateret</value>
+  </data>
+  <data name="MONTECARLO_PROMPT_RUNWITHOUTTS" xml:space="preserve">
+    <value>Der er ingen indlæst referencetidsserier. Er du sikker på, at du vil køre Monte Carlo uden referencetidsserier?</value>
+  </data>
+  <data name="GENERIC_REPLY_YES" xml:space="preserve">
+    <value>Du svarede 'Ja'</value>
+  </data>
+  <data name="STATUS_MODEL_IMPORTING" xml:space="preserve">
+    <value>Importerer {0} ...</value>
+  </data>
+  <data name="PROMPT_MPAOPT_SELECTION" xml:space="preserve">
+    <value>En MPA skal vælges. Optimering kan ikke fortsætte.</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_SHRINK_PROMPT" xml:space="preserve">
+    <value>Du er ved at reducere kortets størrelse, værdier uden for det nye kortområde går tabt. Denne handling kan ikke fortrydes. Er du sikker på, at du vil fortsætte?</value>
+  </data>
+  <data name="ECOPATH_EDITFLEET_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Er du sikker på, at du vil slette flåden '{0}'? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_MPAENFORCEMENT" xml:space="preserve">
+    <value>MPA håndhævelse</value>
+  </data>
+  <data name="STATUS_ECOTRACER_CREATING" xml:space="preserve">
+    <value>Oprettelse af ecotracer-scenarie '{0}' ...</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_ECOSEED" xml:space="preserve">
+    <value>EcoSeed</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_ECOSIM_PLOTS_BACKGROUND_COLOR" xml:space="preserve">
+    <value>Tegninger og grafer baggrund | Baggrundsfarve, der skal bruges til diagrammer og grafer</value>
+  </data>
+  <data name="ECOSIM_APPLYFF_FFTYPE_PRICEELASTICITY" xml:space="preserve">
+    <value>{1} {0}</value>
+  </data>
+  <data name="PROMPT_SPATIALTEMPORAL_CALC_NODATA" xml:space="preserve">
+    <value>Der blev ikke fundet nogen geografiske data for år {0}. Gennemsnittet kunne ikke beregnes.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_SUSTPLOT" xml:space="preserve">
+    <value>Egnethed plot</value>
+  </data>
+  <data name="MPAOPT_AXISLABEL_ECOSEED" xml:space="preserve">
+    <value>Antal lukkede celler</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_LANDINGS" xml:space="preserve">
+    <value>Beregnede landinger</value>
+  </data>
+  <data name="LABEL_NAV_PSD_OUTPUT_GROWTHCONTRRESULT" xml:space="preserve">
+    <value>Resultat af PSD-bidrag</value>
+  </data>
+  <data name="ECOSIM_CAPTION_APPLYOTHERMORT" xml:space="preserve">
+    <value>Anvend anden dødelighedstvingning</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_REMARKS" xml:space="preserve">
+    <value>Værdier med bemærkninger | Værdier, der er knyttet en bemærkning. Bemærkninger kan redigeres via panelet Remark.</value>
+  </data>
+  <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
+    <value>'{0}' kunne ikke gemmes til filen '{1}': {2}.</value>
+  </data>
+  <data name="STATUS_MODEL_ACCESS_FAILED" xml:space="preserve">
+    <value>Der opstod en fejl under forsøg på at få adgang til modellen '{0}'.</value>
+  </data>
+  <data name="STATUS_ECOTRACER_SAVING" xml:space="preserve">
+    <value>Gemmer Ecotracer-scenariet '{0}' ...</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_SUMMARY_CELLLENGTH" xml:space="preserve">
+    <value>{0} km</value>
+  </data>
+  <data name="ECOSPACE_EDITMPA_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Er du sikker på, at du vil slette MPA '{0}'? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="PROMPT_MODELCREATED" xml:space="preserve">
+    <value>Ny EwE6-model '{0}' blev oprettet.</value>
+  </data>
+  <data name="FPS_FV_RESULT_COL0" xml:space="preserve">
+    <value>Ved \ Til</value>
+  </data>
+  <data name="PROMPT_FILETYPEDEPRECATED" xml:space="preserve">
+    <value>Denne filtype understøttes ikke længere i EwE6</value>
+  </data>
+  <data name="ECOSPACE_HEADER_RELB" xml:space="preserve">
+    <value>Økospace-relativ biomasse (log10)</value>
+  </data>
+  <data name="FIT2TS_PROGRESS_RUNSTEP" xml:space="preserve">
+    <value>Iteration {0}, SS = {1}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYMEDCONS" xml:space="preserve">
+    <value>Anvend mægling (forbruger)</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYMEDPROD" xml:space="preserve">
+    <value>Anvend mægling (producent)</value>
+  </data>
+  <data name="STATUS_UPDATE_NO_ACTION" xml:space="preserve">
+    <value>Komponent '{0}' er opdateret</value>
+  </data>
+  <data name="RUN_ECOSIM_F_VALUE_MSG" xml:space="preserve">
+    <value>Indtast F ~ -værdi (eller indtast en streng med komma-adskilte F'er for alle flåder)</value>
+  </data>
+  <data name="STATUS_EXPORT_FAILURE" xml:space="preserve">
+    <value>Kunne ikke eksportere modellen til {0}</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_CHECKED" xml:space="preserve">
+    <value>Potentielle problemværdier | Beregnede værdier, der muligvis kræver ekstra opmærksomhed</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_SHAPECOMPATIBLE" xml:space="preserve">
+    <value>Den valgte formfil er ikke kompatibel med de aktuelle Ecospace-basemapdimensioner. Vil du alligevel bruge denne fil?</value>
+  </data>
+  <data name="IMPORT_FILE_SUCCESS" xml:space="preserve">
+    <value>Fil {0} importeret med succes</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_DETRITUSFATE" xml:space="preserve">
+    <value>Detritus skæbne</value>
+  </data>
+  <data name="CAPTION_EXTERNAL_DATA_DETAIL" xml:space="preserve">
+    <value>Eksterne data for '{0}'</value>
+  </data>
+  <data name="ECOSIM_FD_SAVE_FAILURE" xml:space="preserve">
+    <value>Der opstod fejl ved at gemme Ecosim flowdiagrambilleder til {0}</value>
+  </data>
+  <data name="ECOPATH_ADDSTANZA_ERROR" xml:space="preserve">
+    <value>Kunne ikke tilføje strofe-konfiguration '{0}'</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_FLEETWEIGHTS" xml:space="preserve">
+    <value>Flådevægte</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_REGULATORY" xml:space="preserve">
+    <value>Regulatory</value>
+  </data>
+  <data name="INFOPANEL_DESCRIPTION" xml:space="preserve">
+    <value>Beskrivelse: {0}</value>
+  </data>
+  <data name="GENERIC_VALUE_CACHEMEMORY" xml:space="preserve">
+    <value>{0} ({1} ubrugt)</value>
+  </data>
+  <data name="ECOBASE_ERROR_COMMUNICATION" xml:space="preserve">
+    <value>Der opstod en fejl ved indsendelse af din model til EcoBase. {0}</value>
+  </data>
+  <data name="STATUS_MODEL_SAVING" xml:space="preserve">
+    <value>Gemmer model ...</value>
+  </data>
+  <data name="FLOWDIAGRAM_NODE_NOT_TOUCHING" xml:space="preserve">
+    <value>Berører ikke en knude</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_PARAMETERS" xml:space="preserve">
+    <value>Ecosim-parametre</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_SUMMARY_SIZE" xml:space="preserve">
+    <value>{0} rækker x {1} kolonner</value>
+  </data>
+  <data name="STATUS_ECOSPACE_CREATING" xml:space="preserve">
+    <value>Oprettelse af Ecospace-scenarie '{0}' ...</value>
+  </data>
+  <data name="VERSION_EXPIRED" xml:space="preserve">
+    <value>Denne betaversion er udløbet. Download en officiel frigivelse fra http://ecopath.org</value>
+  </data>
+  <data name="STATUS_MSE_INITIALIZING" xml:space="preserve">
+    <value>Initialiserer MSE ...</value>
+  </data>
+  <data name="FF_APPLICATION_MORTOTHER" xml:space="preserve">
+    <value>Anvend dødelighedstvingning til {0}</value>
+  </data>
+  <data name="ECOSIM_PROMPT_SAVEDESTINATION" xml:space="preserve">
+    <value>Vælg destination for at gemme Ecosim-resultater.</value>
+  </data>
+  <data name="SR_PLOT_TITLE" xml:space="preserve">
+    <value>S / R plot</value>
+  </data>
+  <data name="STATUS_IMPORTING_MODEL" xml:space="preserve">
+    <value>Konvertering af model '{0}'</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_TRAITS" xml:space="preserve">
+    <value>Træk</value>
+  </data>
+  <data name="PROMPT_LOCATION_SEARCH" xml:space="preserve">
+    <value>Fundet placering {0} med afgrænsningsfelt N {1}, W {2}, S {3}, E {4}. Vil du bruge dette?</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_PREDMORTRATE" xml:space="preserve">
+    <value>Predationsdødelighed</value>
+  </data>
+  <data name="STATUS_ADDTIMESERIES" xml:space="preserve">
+    <value>Tilføjer tidsserier {0} ...</value>
+  </data>
+  <data name="PSD_GRAPH_REGRESSION_LABEL_WO_STDERR" xml:space="preserve">
+    <value>Hældning = {0}, Y-afskæring = {1}, korrelation = {2} Wt. klasseinterval (g) = {3} til {4}, N = {5}</value>
+  </data>
+  <data name="ECOSPACE_RUN_PROGRESS" xml:space="preserve">
+    <value>{0} af {1} år</value>
+  </data>
+  <data name="SCENARIO_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Du er ved at slette scenariet '{0}'. Dette kan ikke fortrydes. Er du sikker på, at du vil gøre dette?</value>
+  </data>
+  <data name="SELECTION_NONE" xml:space="preserve">
+    <value>(ingen markering)</value>
+  </data>
+  <data name="GENERIC_ERROR_FILEOPEN" xml:space="preserve">
+    <value>Kan ikke åbne filen '{0}'</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_FORCINGFUNCTION" xml:space="preserve">
+    <value>Tvangsfunktion</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_SRPLOT" xml:space="preserve">
+    <value>Aktie rekruttering plot</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDRESULT" xml:space="preserve">
+    <value>Modeludførelsesfejl | Værdier, som modellen ikke var i stand til at beregne korrekt på grund af en modelfejl</value>
+  </data>
+  <data name="HEADER_MORTALITIES_NETMIGRATE" xml:space="preserve">
+    <value>+ Netto migrationsfrekvens</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY" xml:space="preserve">
+    <value>Chessons valgfrihed</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_EGGPROD" xml:space="preserve">
+    <value>Æggeproduktion</value>
+  </data>
+  <data name="ECOPATH_DELETEGROUP_ERROR" xml:space="preserve">
+    <value>Kunne ikke slette gruppen '{0}'</value>
+  </data>
+  <data name="GENERIC_REGISTRATION" xml:space="preserve">
+    <value>Registreret til {0}</value>
+  </data>
+  <data name="ECOSIM_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
+    <value>Gem Ecosim-scenarie - Ecopath-model {0}</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_PEDIGREE" xml:space="preserve">
+    <value>Stamtavle | Stamtavleindikatorfarve i datanet</value>
+  </data>
+  <data name="PROMPT_ERROR_IMPORT_NOSELECTION" xml:space="preserve">
+    <value>Vælg en model, der skal konverteres til EwE6.</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_CALCULATING" xml:space="preserve">
+    <value>Beregner det årlige gennemsnit for lag {0}, dataforbindelse {1} ...</value>
+  </data>
+  <data name="LABEL_NAV_PSD_INPUT_GROWTH" xml:space="preserve">
+    <value>Vækst input</value>
+  </data>
+  <data name="ECOBASE_SUBMIT_DENIED" xml:space="preserve">
+    <value>Din model blev ikke sendt til EcoBase</value>
+  </data>
+  <data name="STATUS_ECOSIM_LOADING" xml:space="preserve">
+    <value>Indlæser Ecosim-scenariet '{0}' ...</value>
+  </data>
+  <data name="ECOSIM_SR_SLOPELABEL" xml:space="preserve">
+    <value>({0}, {1}): hældning = {2}</value>
+  </data>
+  <data name="STATUS_IMPORTING_DATASET" xml:space="preserve">
+    <value>Importerer dataserier fra Time Series {0} ...</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_FISHINGPOLICY" xml:space="preserve">
+    <value>Fiskeripolitisk søgning</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_QUOTASHARE" xml:space="preserve">
+    <value>Kvoteandel</value>
+  </data>
+  <data name="HEADER_USE_HABITAT" xml:space="preserve">
+    <value>Brug habitat</value>
+  </data>
+  <data name="ECOSPACE_LAYER_RANDOMBEST" xml:space="preserve">
+    <value>Bedste tælling</value>
+  </data>
+  <data name="VALUE_PREVIEW" xml:space="preserve">
+    <value>AaBbCcYyZz</value>
+  </data>
+  <data name="ECOSIM_LABEL_APPLY_SHAPES_PREDPREY" xml:space="preserve">
+    <value>For alle rovdyr-rovdyrpar</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_PREDATOROVERLAP" xml:space="preserve">
+    <value>Rovdyr overlapper hinanden</value>
+  </data>
+  <data name="HEADER_MORTALITIES_BIOMACCURATE" xml:space="preserve">
+    <value>+ Biomasse akkumuleret sats</value>
+  </data>
+  <data name="IMPORT_LAYERDATA_SUCCESS" xml:space="preserve">
+    <value>Fil {0} læst med succes i lag {1}</value>
+  </data>
+  <data name="DATASOURCE_DUPLICATE_ERROR_NODATABASE" xml:space="preserve">
+    <value>Kun modeller, der er gemt i databaser, kan duplikeres.</value>
+  </data>
+  <data name="PROMPT_UPDATE_MIGRATION_SUPPRESS" xml:space="preserve">
+    <value>Spørg ikke igen om denne fil.</value>
+  </data>
+  <data name="PROMPT_STATUS_FURTHERDETAILS" xml:space="preserve">
+    <value>(for yderligere oplysninger henvises til statuspanelet)</value>
+  </data>
+  <data name="LABEL_NAV_ECOTRACER_PARAMS" xml:space="preserve">
+    <value>Ecotracer-parametre</value>
+  </data>
+  <data name="ECOTRACER_SCENARIO_NEW_CAPTION" xml:space="preserve">
+    <value>Nyt Ecotracer-scenarie - Ecopath-model {0}</value>
+  </data>
+  <data name="HEADER_ALL_REGULATIONS_APPLY" xml:space="preserve">
+    <value>Alle MPA'er håndhævet</value>
+  </data>
+  <data name="ECOSPACE_HEADER_LOGBREL" xml:space="preserve">
+    <value>Biomasse (log, relativ)</value>
+  </data>
+  <data name="STATUS_DATA_SAVING_SUCCESS" xml:space="preserve">
+    <value>Data er gemt til '{0}'</value>
+  </data>
+  <data name="ECOSPACE_LAYER_SEEDCURRENT" xml:space="preserve">
+    <value>Aktuelle celler</value>
+  </data>
+  <data name="SELECTION_INDEXEDVAR" xml:space="preserve">
+    <value>{0} ({1} af {2})</value>
+  </data>
+  <data name="ECOSIM_HEADER_SS" xml:space="preserve">
+    <value>Summen af kvadrater:</value>
+  </data>
+  <data name="INFOPANEL_DOMAIN" xml:space="preserve">
+    <value>Domæne: {0}</value>
+  </data>
+  <data name="PROMPT_CREATE_GENERICERROR" xml:space="preserve">
+    <value>Der opstod en generisk fejl under forsøg på at oprette en EwE6-model på '{0}'</value>
+  </data>
+  <data name="MPA_BATCH_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Vil du slette MPA fra {0} til {1}? Denne handling kan ikke fortrydes.</value>
+  </data>
+  <data name="HEADER_MORTALITIES_OTHERMORTRATE" xml:space="preserve">
+    <value>+ Anden død. sats</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_PREDATOR" xml:space="preserve">
+    <value>Predation / indgående link | Farve for at indikere predation eller indgående links i diagrammer</value>
+  </data>
+  <data name="MPAOPT_AXISLABEL_RANDOMSEARCH" xml:space="preserve">
+    <value>Antal løb</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_MAXRELFEEDINGTIME" xml:space="preserve">
+    <value>Max rel. fodringstid</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_FIXEDESCAPE" xml:space="preserve">
+    <value>Fast F, escapement, TAC</value>
+  </data>
+  <data name="STATUS_MODEL_ACCESS_404" xml:space="preserve">
+    <value>Kan ikke finde modellen '{0}'.</value>
+  </data>
+  <data name="STATUS_UPDATE_CHECKING_COMP" xml:space="preserve">
+    <value>Kontrollerer '{0}'</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_OUTPUT_RESULTS" xml:space="preserve">
+    <value>Økospace-resultater</value>
+  </data>
+  <data name="FIT2TS_PROGRESS_RUNSTARTED" xml:space="preserve">
+    <value>Søgning startet, base SS = {0}</value>
+  </data>
+  <data name="PROMPT_SHELL_FAILURE" xml:space="preserve">
+    <value>Kunne ikke starte kommandoen. {0}</value>
+  </data>
+  <data name="SEARCH_STATUS_STARTED" xml:space="preserve">
+    <value>Søgningen startede</value>
+  </data>
+  <data name="ADVECTION_FAILED" xml:space="preserve">
+    <value>Kørselsmodelkørsel stod enten under en fejl eller blev afbrudt. Advektionsvektorer opdateres ikke.</value>
+  </data>
+  <data name="HEADER_ECOPATH_NAME" xml:space="preserve">
+    <value>Ecopath model navn</value>
+  </data>
+  <data name="VALUE_NOTEMPLATES" xml:space="preserve">
+    <value>(Ingen skabeloner til rådighed)</value>
+  </data>
+  <data name="PLUGIN_LICENSE_EXPIRED" xml:space="preserve">
+    <value>Licensen udløb den {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_FLOWDIAGRAM" xml:space="preserve">
+    <value>Ecopat flowdiagram</value>
+  </data>
+  <data name="ECOSPACE_HEADER_FRACTION_OF_TOTAL" xml:space="preserve">
+    <value>Fraktion af det samlede antal</value>
+  </data>
+  <data name="VERSION_DEVELOPMENT" xml:space="preserve">
+    <value>Udviklingsversion, samlet {0}</value>
+  </data>
+  <data name="ECOSIM_HEADER_SS_GROUPS" xml:space="preserve">
+    <value>Summen af kvadrater for valgte gruppe (r):</value>
+  </data>
+  <data name="CAPTION_PSD_GROUP_CONTRIB" xml:space="preserve">
+    <value>Partikelstørrelsesfordeling (gruppebidrag)</value>
+  </data>
+  <data name="PROMPT_EMPTY_NAMES" xml:space="preserve">
+    <value>Dine data indeholder blanke navne. Dette er ikke tilladt.</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_GROUP" xml:space="preserve">
+    <value>MSE-gruppe</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_FLEET" xml:space="preserve">
+    <value>MSE-flåde</value>
+  </data>
+  <data name="STATUS_UPDATE_DONE_COMP" xml:space="preserve">
+    <value>Fuldført '{0}'</value>
+  </data>
+  <data name="HEADER_FORCINGNUMBER" xml:space="preserve">
+    <value>Tvinger nummer</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_EFFORTTRACKING" xml:space="preserve">
+    <value>Forsøgsporing</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_OUTPUT_RUN" xml:space="preserve">
+    <value>Kør Ecospace</value>
+  </data>
+</root>

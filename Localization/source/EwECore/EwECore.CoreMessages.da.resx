@@ -1,0 +1,1215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GENERIC_STATUS_INITIALIZING" xml:space="preserve">
+    <value>Initialiserer ...</value>
+  </data>
+  <data name="PLUGIN_PROMPT_DISABLE" xml:space="preserve">
+    <value>Følgende fejl opstod i en '{0}' {1} {1} Ønsker du at deaktivere dette plug-in næste gang EwE startes?</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_QB0_GENERIC" xml:space="preserve">
+    <value>Programmet har estimeret, at forbrug / biomasse (Q / B) -forholdet for en eller flere grupper er 0. Rediger dine data.</value>
+  </data>
+  <data name="F2TS_ERROR_ESTIMATION" xml:space="preserve">
+    <value>Fit to Time Series estimation Error '{0}', originale parameterværdier er gendannet.</value>
+  </data>
+  <data name="STATUS_PLUGIN_UNLOADED" xml:space="preserve">
+    <value>Plug-in {0} unloaded</value>
+  </data>
+  <data name="DETIMP_RANGE" xml:space="preserve">
+    <value>Importeret detritus skal være større end eller lig med nul.</value>
+  </data>
+  <data name="IMPORT_PROPRESS_ECOSPACEHABITATS" xml:space="preserve">
+    <value>Import af økospacehabitater</value>
+  </data>
+  <data name="ECOPATH_RESULTS_SAVED_SUCCESS" xml:space="preserve">
+    <value>Ecopatestimater gemt til '{0}'</value>
+  </data>
+  <data name="PROMPT_DISCARD_CHANGES" xml:space="preserve">
+    <value>Din model er ændret, men databasen er skrivebeskyttet. Hvis du fortsætter, kan dine ændringer gå tabt. Ønsker du at fortsætte?</value>
+  </data>
+  <data name="FORCING_DATA_CHANGED" xml:space="preserve">
+    <value>Tvangsformdata er ændret.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING" xml:space="preserve">
+    <value>Parameterestimeringsrutinen kan kun arbejde med en af B, P / B og EE ukendt pr. Gruppe. Her er mere end en af disse ukendt for gruppe '{0}'. {1} {1} Derudover kan Q / B være ukendt for en given rovdyr, dvs. IF: B, PB, QB og EE er kendt for et af bytterne, og HVIS: alle grupper, der bytter på disse to grupper, har kendt B og QB. {1} {1} Venligst rediger inputparametrene igen.</value>
+  </data>
+  <data name="MSY_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>MSY-resultater gemt til '{0}'</value>
+  </data>
+  <data name="IMPORT_PROGRESS_TIMESERIES" xml:space="preserve">
+    <value>Import af Ecosim tidsserier</value>
+  </data>
+  <data name="ECOSIM_LOAD_SUCCESS" xml:space="preserve">
+    <value>Ecosim-scenariet '{0}' indlæst.</value>
+  </data>
+  <data name="IMPORT_WARNING_TIMESERIESTYPE" xml:space="preserve">
+    <value>Tidsserie {0} ({1}) importeres ikke, fordi dens type {2} ikke understøttes.</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_SAVED" xml:space="preserve">
+    <value>Rumlig handlingslog gemt i '{0}'</value>
+  </data>
+  <data name="ECOSIM_RESPONSE_DIET" xml:space="preserve">
+    <value>Denne gruppe indeholder importeret diæt, som ikke vil blive påvirket af den anvendte funktionelle respons.</value>
+  </data>
+  <data name="CORE_INIT_CRITICAL_GENERIC" xml:space="preserve">
+    <value>EwE6-kernen kunne ikke initialiseres. Følgende kritiske fejl opstod: {0}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_CVFORMAT" xml:space="preserve">
+    <value>En eller flere cv-værdier kan ikke læses</value>
+  </data>
+  <data name="ECOPATH_LOADED" xml:space="preserve">
+    <value>Indlæst model '{0}'</value>
+  </data>
+  <data name="F2TS_ERROR_INTERACTIONS" xml:space="preserve">
+    <value>Fit to Time Series fandt intet at estimere og afsluttede søgningen. Skits interaktioner, før du søger igen.</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_PASSED" xml:space="preserve">
+    <value>{0} indstillet til {1}</value>
+  </data>
+  <data name="F2TS_PROMPT_ITERATIONS" xml:space="preserve">
+    <value>Mere egnet til iterationer i tidsserien?</value>
+  </data>
+  <data name="STANZA_LEADINGB_ADJUSTED" xml:space="preserve">
+    <value>Leading B justeret for strofe {0}.</value>
+  </data>
+  <data name="ECOPATH_NEGATIVE_RESPIR_WARNING" xml:space="preserve">
+    <value>Respiration kan ikke være negativ. Resuméstatistikker for systemet undertrykkes. Kontroller venligst parametre og kør programmet igen.</value>
+  </data>
+  <data name="IMPORT_FIX_CREATEECOSIMGROUP" xml:space="preserve">
+    <value>Oprettelse af manglende gruppe {0} ({1}) til Ecosim-scenarie {2} med standardværdier, bedes du gennemgå.</value>
+  </data>
+  <data name="ECOSPACE_INIT_ERROR" xml:space="preserve">
+    <value>Ecospace kan ikke køre på grund af en fejl under initialiseringen.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DIETIMPORTONLY_GROUP" xml:space="preserve">
+    <value>Gruppen '{0}' har en import-kun diæt</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_RESULTS_SAVED" xml:space="preserve">
+    <value>Rester fra Ecospace Time Series gemt til filen {0}</value>
+  </data>
+  <data name="MEDIATION_ZERO_BASE_DETAIL" xml:space="preserve">
+    <value>Trofisk medieringsfunktion '{0}' har nulværdi ved Ecopatbase.</value>
+  </data>
+  <data name="ECOTRACER_LOAD_SUCCESS" xml:space="preserve">
+    <value>Ecotracerscenario '{0}' indlæst.</value>
+  </data>
+  <data name="PB_RANGE" xml:space="preserve">
+    <value>PB skal være større end nul.</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_SAMPLE" xml:space="preserve">
+    <value>Økosampler, der kører prøve {0}</value>
+  </data>
+  <data name="SHAPE_IMPORT_SUCCESS" xml:space="preserve">
+    <value>Former af typen {0} importeret med succes</value>
+  </data>
+  <data name="MODELFROMSIM_GENERATED" xml:space="preserve">
+    <value>Genererede Ecopath-modeller fra Ecosim.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_POOLFORMAT" xml:space="preserve">
+    <value>En eller flere poolkodeværdier kan ikke læses</value>
+  </data>
+  <data name="QB_CLEARED" xml:space="preserve">
+    <value>QB ryddet.</value>
+  </data>
+  <data name="ECOSPACE_EXPORT_CSV_SUCCESS" xml:space="preserve">
+    <value>Ecospace-resultat .csv-filer er skrevet til {0}.</value>
+  </data>
+  <data name="MPAOPT_ERROR" xml:space="preserve">
+    <value>Optimeringsfejl: {0}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_INVALIDFLEET" xml:space="preserve">
+    <value>Ugyldigt flådenummer {0}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_INVALIDGROUP" xml:space="preserve">
+    <value>Ugyldigt gruppenummer {0}</value>
+  </data>
+  <data name="F2TS_ABORTED" xml:space="preserve">
+    <value>Fit to Time Series afbrudt.</value>
+  </data>
+  <data name="DATA_INVALID" xml:space="preserve">
+    <value>Datavalidering for '{0}' var ikke succesrig.</value>
+  </data>
+  <data name="STANZA_LEADING_MISSING" xml:space="preserve">
+    <value>Førende gruppe ikke angivet for '{0}'</value>
+  </data>
+  <data name="COMPUTATION_ALREADY_RUNNING" xml:space="preserve">
+    <value>Kun en beregning kan køre ad gangen.</value>
+  </data>
+  <data name="STATUS_PLUGIN_LOADED" xml:space="preserve">
+    <value>Plug-in {0} indlæst</value>
+  </data>
+  <data name="ECOPATH_MISSINGPARAM_CATCH_GENERIC" xml:space="preserve">
+    <value>Fangstoplysninger (Landing + Discard) mangler for en af flere flåder.</value>
+  </data>
+  <data name="IMPORT_WARNING_TIMESERIESFLEET" xml:space="preserve">
+    <value>Tidsserie {0} ({1}) ikke importeret, fordi flådenummer {2} ikke kunne løses</value>
+  </data>
+  <data name="EE_CLEARED" xml:space="preserve">
+    <value>EE ryddet.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DFLARGERTHANONE" xml:space="preserve">
+    <value>Din model har {0} gruppe (r), som Detritus-skæbnen (DF) summerer til mere end 1.Du skal gå tilbage til dine inputdata, og sørg for, at DF's sum kun er til maks. 1.</value>
+  </data>
+  <data name="ECOSPACE_RUNNING" xml:space="preserve">
+    <value>Ecospace kører allerede, skal du enten stoppe den aktuelle kørsel eller vente på, at den er færdig, inden du starter et andet kørsel.</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_BASELINE" xml:space="preserve">
+    <value>Ecosampler batch kører baseline</value>
+  </data>
+  <data name="RELOAD_ECOSPACE" xml:space="preserve">
+    <value>Du skal genindlæse Ecospace for at dine ændringer får betydning.</value>
+  </data>
+  <data name="IMPORT_PROGRESS_COMPLETE" xml:space="preserve">
+    <value>Import afsluttet</value>
+  </data>
+  <data name="GS_CLEARED" xml:space="preserve">
+    <value>GS ryddet.</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOTRACER" xml:space="preserve">
+    <value>Importerer ecotracer-scenarier</value>
+  </data>
+  <data name="IMPORT_FIX_CREATEECOSPACEFLEET" xml:space="preserve">
+    <value>Oprettelse af manglende flåde {0} ({1}) til Ecospace-scenarie {2} med standardværdier, bedes du gennemgå.</value>
+  </data>
+  <data name="IMPORT_FIX_CREATEECOSPACEGROUP" xml:space="preserve">
+    <value>Oprettelse af manglende gruppe {0} ({1}) til Ecospace-scenarie {2} med standardværdier, bedes du gennemgå.</value>
+  </data>
+  <data name="STANZA_CALCULATEPARMS_TOOMANYMISSING" xml:space="preserve">
+    <value>Manglende parametre B, CB eller dødelighed for stroffegruppe {0}. Stanza-beregning kan ikke udføres.</value>
+  </data>
+  <data name="SPATIALTEMPORAL_LOAD_ERROR_GENERIC" xml:space="preserve">
+    <value>Kunne ikke indlæse en eller flere eksterne rumlige-tidsmæssige dataforbindelser. Mangler du et påkrævet plug-in?</value>
+  </data>
+  <data name="ECOPATH_SAVE_FAILED" xml:space="preserve">
+    <value>Ecopatmodellen '{0}' kunne ikke gemmes</value>
+  </data>
+  <data name="ECOPATH_MODEL_UPDATE_SUCCESS" xml:space="preserve">
+    <value>Model blev opdateret til EwE version {0}.</value>
+  </data>
+  <data name="SPATIALTEMPORAL_MISSINGDATA" xml:space="preserve">
+    <value>Nogle eksterne rumlige-tidsmæssige dataforbindelser kan ikke få adgang til deres data. Vil du fortsætte?</value>
+  </data>
+  <data name="F2TS_PROMPT_CONVERGED" xml:space="preserve">
+    <value>Fit to Time Series estimater er konvergeret. Vil du gøre flere iterationer?</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET" xml:space="preserve">
+    <value>Flåden '{0}' mangler Kasser skæbnen</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_MAP_EXTENTS" xml:space="preserve">
+    <value>Ecospace Time Series-kort strækker sig uden for det aktuelt indlæste kort.</value>
+  </data>
+  <data name="IMPORT_WARNING_PAIRSNOTSUPPORTED" xml:space="preserve">
+    <value>Ecosim-par understøttes ikke længere. Du bliver nødt til at oversætte et eller flere EwE5-par til en EwE6-multi-strofe-konfiguration.</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED" xml:space="preserve">
+    <value>De følgende variabler blev estimeret:</value>
+  </data>
+  <data name="GENERIC_PROMPT_ESTIMATED" xml:space="preserve">
+    <value>De følgende variabler blev estimeret:</value>
+  </data>
+  <data name="BIOMASSAREA_RANGE" xml:space="preserve">
+    <value>BiomasseArea skal være større end nul.</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_DETAIL" xml:space="preserve">
+    <value>{0} kan ikke være {1}. {2}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FLEET" xml:space="preserve">
+    <value>Import af Ecopath-flåder</value>
+  </data>
+  <data name="IMPORT_PROGRESS_MODEL" xml:space="preserve">
+    <value>Importerer model {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_CATCH" xml:space="preserve">
+    <value>Importerer fangst fra Ecopath</value>
+  </data>
+  <data name="PSD_RUN_SUCCESS" xml:space="preserve">
+    <value>Partikelstørrelsesfordeling afsluttet.</value>
+  </data>
+  <data name="IMPORT_NO_DESCRIPTION" xml:space="preserve">
+    <value>Ingen beskrivelse tilgængelig.</value>
+  </data>
+  <data name="UPDATE_NEED_REVIEW" xml:space="preserve">
+    <value>Opdateringsprocessen identificerede nogle mulige problemer, som du skulle gennemgå!</value>
+  </data>
+  <data name="PLUGIN_SAVE_PROMPT" xml:space="preserve">
+    <value>Et eller flere plug-ins indeholder ændringer, der ikke er gemt. Hvis du fortsætter, kan disse ændringer gå tabt. \ N \ nJa - gem ændringer \ nIngen - muligvis løse ændringer \ n Annuller - afbryd denne handling.</value>
+  </data>
+  <data name="IMPORT_WARNING_PAIRDETAILS" xml:space="preserve">
+    <value>Par {0} konverteres ikke: {1}, {2}</value>
+  </data>
+  <data name="B_MISSING_GROUP" xml:space="preserve">
+    <value>B mangler for gruppe '{0}'</value>
+  </data>
+  <data name="DLLFACTORY_FILENOTFOUND" xml:space="preserve">
+    <value>Filen '{0}' kunne ikke findes.</value>
+  </data>
+  <data name="ECOPATH_GS_WARNING" xml:space="preserve">
+    <value>ADVARSEL: Kontroller dine data Unassimilated Consumption (GS) kan ikke være større end én. Dine data er blevet ændret!</value>
+  </data>
+  <data name="MONTECARLO_ECOPATH_TOOMANYMISSING" xml:space="preserve">
+    <value>Monte Carlo har fundet for mange manglende parametre til at køre Ecopath. Kontroller dine inputparametre.</value>
+  </data>
+  <data name="IMPORT_POGRESS_DIETCOMP" xml:space="preserve">
+    <value>Import af diæter</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECORANGER" xml:space="preserve">
+    <value>Importer Ecoranger</value>
+  </data>
+  <data name="OUTPUT_NOT_EDITABLE" xml:space="preserve">
+    <value>Outputdata kan ikke redigeres.</value>
+  </data>
+  <data name="ECOPATH_RUN_SUCCESS" xml:space="preserve">
+    <value>Ecopatekørsel afsluttet.</value>
+  </data>
+  <data name="TIMESERIES_EXPORT_SUCCESS" xml:space="preserve">
+    <value>Tidsseriedatasæt '{0}' eksporteret til '{1}'.</value>
+  </data>
+  <data name="SHAPE_IMPORT_FAILED" xml:space="preserve">
+    <value>Kunne ikke importere figurer af typen {0}, kontroller dataene.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE" xml:space="preserve">
+    <value>Din model har {0} gear (er), som skabelsen for kasser ikke er angivet for. Du skal gå tilbage til dine inputdata og sørge for at specificere, hvad der sker med udsmid. Bortskaffelse skal rettes til en detritusgruppe, hvis dette ikke er tilfældet i dit tilfælde, skal du måske behandle udsmid fra den givne flåde som landinger med nulværdi.</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGDUPLICATE" xml:space="preserve">
+    <value>Tvingende form {0} kunne ikke importeres som {1}; form defineret mere end én gang på grund af en intern fejl.</value>
+  </data>
+  <data name="PSD_RUN_ERROR" xml:space="preserve">
+    <value>Distribution af partikelstørrelse kunne ikke køres.</value>
+  </data>
+  <data name="EE_RANGE" xml:space="preserve">
+    <value>EE skal være mellem nul og en.</value>
+  </data>
+  <data name="SPATIALTEMPORAL_MISSINGDATA_DETAIL" xml:space="preserve">
+    <value>Dataforbindelse {0} kan ikke finde dens data</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC" xml:space="preserve">
+    <value>Ecopath kunne ikke estimere en eller flere parametre.</value>
+  </data>
+  <data name="MONTECARLO_ECOPATH_ERROR" xml:space="preserve">
+    <value>Der opstod en fejl i Ecopath. Monte Carlo-forsøg kunne ikke køres.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_B_FISHERIY" xml:space="preserve">
+    <value>Ecopath har estimeret biomassen for gruppe {0} ({1}) til at være ({2}). Dette skyldes, at akkumulering af fiskeri + migration + biomasse estimeres til at udgøre en negativ værdi. Rediger dine data, f.eks. Giver mulighed for akkumulering af biomasse for denne gruppe.</value>
+  </data>
+  <data name="TIMESERIES_EXPORT_FAILED" xml:space="preserve">
+    <value>Eksporteret tidsserie '{0}' til '{1}' kunne ikke: {2}</value>
+  </data>
+  <data name="ECOSEED_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Kunne ikke gemme de geografiske optimeringsresultater '{1}' til '{0}'</value>
+  </data>
+  <data name="MSE_DISCARD_TIMESERIES_WARNING" xml:space="preserve">
+    <value>Brug af tidsserier {0} kan give fejlagtige resultater i ledelsesstrategivurderinger. Er du sikker på, at du vil fortsætte med at køre?</value>
+  </data>
+  <data name="IMPORT_PROGRESS_PEDIGREE" xml:space="preserve">
+    <value>Import af stamtavle</value>
+  </data>
+  <data name="ASCII_READ_ERROR_MISSINGFIELD" xml:space="preserve">
+    <value>Kunne ikke læse ASCII-fil med manglende headerfelter</value>
+  </data>
+  <data name="ECOPATH_DIETCOMP_NOTSUMTOONE" xml:space="preserve">
+    <value>DC summerer ikke til en for gruppe {0}.</value>
+  </data>
+  <data name="PSD_REQ_LW" xml:space="preserve">
+    <value>Påkrævet 'L ved uendelighed' eller 'W ved uendelighed' mangler for gruppe {0}</value>
+  </data>
+  <data name="STATUS_DATABASE_UPDATE" xml:space="preserve">
+    <value>Udfører databaseopdatering {0}: '{1}'</value>
+  </data>
+  <data name="TIMESERIES_ERROR_MISSING" xml:space="preserve">
+    <value>Datarække for {0} mangler</value>
+  </data>
+  <data name="SHAPE_IMPORT_DETAIL" xml:space="preserve">
+    <value>Form {0} importeret</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED_EMIGRATION" xml:space="preserve">
+    <value>Emigration for gruppe '{0}'</value>
+  </data>
+  <data name="ECOTRACER_SAVE_SUCCES" xml:space="preserve">
+    <value>Ecotracer-scenariet '{0}' er blevet gemt.</value>
+  </data>
+  <data name="PSD_MISSING_INPUT" xml:space="preserve">
+    <value>PSD-estimeringsrutinen kan kun fungere med enten 'L ved uendelighed' eller 'W ved uendelighed' som ukendt pr. Gruppe. 'K in VBGF' skal være kendt for hver gruppe. Her er en eller flere af disse ukendte:</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_OUTOFRANGE" xml:space="preserve">
+    <value>Værdien er uden for rækkevidde</value>
+  </data>
+  <data name="IMPORT_FIX_CREATEFISHMORTSHAPE" xml:space="preserve">
+    <value>Oprettelse af manglende fiskedødelighedsform {0} for økosimgruppe {1}, økosim-scenarie {2} med standardværdier, bedes du gennemgå.</value>
+  </data>
+  <data name="TIMESERIES_LOAD_SUCCESS" xml:space="preserve">
+    <value>Time Series datasæt '{0}' indlæst.</value>
+  </data>
+  <data name="ECOSIM_RESPONSE_NO_OVERLAP" xml:space="preserve">
+    <value>Advarsel: Kontroller dit funktionelle svar og tvinger data. Den anvendte funktionelle respons overlapper ikke med at tvinge data på tidstrin 1.</value>
+  </data>
+  <data name="ECOTRACER_SAVE_PROMPT" xml:space="preserve">
+    <value>Ecotracer-scenariet '{0}' er ændret siden sidste gang du gemte. Hvis du fortsætter, kan disse ændringer gå tabt. \ N \ nJa - gem ændringer \ nIngen - vende tilbage til sidst gemte scenarie \ nAnnuller - afbryd denne handling.</value>
+  </data>
+  <data name="STANZA_CALCULATEPARMS_DATAERROR" xml:space="preserve">
+    <value>Der opstod en kritisk datafeil under beregning af strofeparametre: {0}</value>
+  </data>
+  <data name="DIETCOMP_RANGE" xml:space="preserve">
+    <value>Diætkomponenter skal være større end eller lig med nul.</value>
+  </data>
+  <data name="STANZA_MORT_MISSING" xml:space="preserve">
+    <value>Manglende dødelighed (Z) for '{0}'</value>
+  </data>
+  <data name="SAMPLES_IMPORT_SUCCESS" xml:space="preserve">
+    <value>{0} prøve (r) importeret</value>
+  </data>
+  <data name="TIMESERIES_ERROR_VALUEFORMAT" xml:space="preserve">
+    <value>En eller flere værdier kan ikke læses</value>
+  </data>
+  <data name="ECOSIM_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Kunne ikke gemme Ecosim-resultater '{1}' til '{0}'</value>
+  </data>
+  <data name="MPAOPT_NODATA_RESUME" xml:space="preserve">
+    <value>Ingen frøceller valgt eller MPA'er er indstillet. Optimering kan give ukendte resultater. Vil du gerne fortsætte?</value>
+  </data>
+  <data name="ECOPATH_MODEL_UPDATE_FAILED" xml:space="preserve">
+    <value>Model kunne ikke opdateres til EwE version {0}!</value>
+  </data>
+  <data name="TIMESERIES_ERROR_IDENTICALSEPARATORS" xml:space="preserve">
+    <value>Decimal- og søjleseparator kan ikke være den samme.</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_EVEN" xml:space="preserve">
+    <value>{0} skal være jævn og kan ikke være {1}</value>
+  </data>
+  <data name="UPDATE_RUNNING" xml:space="preserve">
+    <value>Anvendelse af modelopdatering {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACESCENARIOS" xml:space="preserve">
+    <value>Import af Ecospace-scenarier</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_QB0" xml:space="preserve">
+    <value>Anslået QB = 0 for gruppe '{0}'.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_PB0" xml:space="preserve">
+    <value>Estimeret PB = 0 for gruppe '{0}'.</value>
+  </data>
+  <data name="DATABASE_BACKUP_SUCCESS" xml:space="preserve">
+    <value>En sikkerhedskopi af din model blev lavet til '{0}'</value>
+  </data>
+  <data name="ECOSPACE_SIM_INIT_FAILED" xml:space="preserve">
+    <value>Ecospace kunne ikke initialisere Ecosim. Prøv at indlæse et andet Ecosim-scenarie og køre Ecospace igen.</value>
+  </data>
+  <data name="PSD_REQ_K_VBGF" xml:space="preserve">
+    <value>Påkrævet 'K i VBGF' mangler for gruppe {0}</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_NOTUNIQUE" xml:space="preserve">
+    <value>Den generaliserede inverse rutine forsøger at estimere {0} ukendt fra {1} ligninger. Løsningen vil ikke være unik. Kontroller de anslåede værdier omhyggeligt.</value>
+  </data>
+  <data name="GE_CLEARED" xml:space="preserve">
+    <value>GE ryddet.</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_ADAPTERROR" xml:space="preserve">
+    <value>Kunne ikke opdatere celle ({0}, {1}) med værdien {2}. {3}</value>
+  </data>
+  <data name="STATUS_SPATIALTERMPORAL_CALCULATING" xml:space="preserve">
+    <value>Beregner skaleringsfaktor for '{0}' ved hjælp af datasæt '{1}', konverter '{2}'</value>
+  </data>
+  <data name="OUTPUT_DIRECTORY_MISSING" xml:space="preserve">
+    <value>Outputkatalog findes ikke.</value>
+  </data>
+  <data name="MODELFRIMSIM_BA_ENDYEAR_ADJ" xml:space="preserve">
+    <value>Sidste år for gennemsnitlig BA er blevet ændret til det sidste Ecosim-år</value>
+  </data>
+  <data name="STATUS_EXCEPTION" xml:space="preserve">
+    <value>Der opstod en intern fejl. {0}</value>
+  </data>
+  <data name="ICORE_ADD_NULL" xml:space="preserve">
+    <value>Beklager, denne input eller output kan ikke stå tom.</value>
+  </data>
+  <data name="FMSY_STATUS_NOTFOUND" xml:space="preserve">
+    <value>Fmsy ikke fundet i det givne F-interval</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_READ_FAIL_MESSAGE" xml:space="preserve">
+    <value>Ecospace Time Series kunne ikke læses</value>
+  </data>
+  <data name="ECOSIM_SAVE_FAILED" xml:space="preserve">
+    <value>Ecosim-scenariet '{0}' kunne ikke gemmes. {1}</value>
+  </data>
+  <data name="MSY_ERROR_RUN_FMSY" xml:space="preserve">
+    <value>Der opstod en fejl under kørsel af FMSY. {0}</value>
+  </data>
+  <data name="GENERIC_ABORTING_EDIT_DATA" xml:space="preserve">
+    <value>Afbryder, rediger venligst dine data.</value>
+  </data>
+  <data name="STANZA_LEADINGCB_ADJUSTED" xml:space="preserve">
+    <value>Ledende CB justeret for strofe {0}.</value>
+  </data>
+  <data name="AREA_RANGE" xml:space="preserve">
+    <value>Arealet skal være større end nul og mindre end eller lig med et (&gt; 0 og &lt;= 1).</value>
+  </data>
+  <data name="QB_MISSING_GROUP" xml:space="preserve">
+    <value>Q / B mangler for gruppen '{0}'</value>
+  </data>
+  <data name="ADVECTION_ERROR" xml:space="preserve">
+    <value>Der opstod en fejl under kørsel af advektionsberegninger: {0}</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP" xml:space="preserve">
+    <value>Respiration overskrider input til detritus for en eller flere grupper (r).</value>
+  </data>
+  <data name="DIETCOMP_PROMPT_CORRECTTO15PERC" xml:space="preserve">
+    <value>Gruppe '{0}' får {1}% af sin kost fra højere TL-grupper. Vil du reducere det til 15%? (Dette gøres ikke for at ændre dine inputdata)</value>
+  </data>
+  <data name="ECOSPACE_LOWHABITAT_CAP" xml:space="preserve">
+    <value>ADVARSEL: Følgende gruppe (r) har en lav gennemsnitlig habitatkapacitet. Vil du fortsætte?</value>
+  </data>
+  <data name="SPATIALTEMPORAL_EXPORT_EXCEPTION" xml:space="preserve">
+    <value>Der opstod en fejl under eksporten. {0}</value>
+  </data>
+  <data name="IMPORT_FIX_GROUPAREA" xml:space="preserve">
+    <value>Gruppe '{0}' område korrigeret til {1}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TYPELINEMISSING" xml:space="preserve">
+    <value>Header '{0}' ikke genkendt, forventet 'type', 'kode' eller 'dat type'</value>
+  </data>
+  <data name="PB_CLEARED" xml:space="preserve">
+    <value>PB ryddet</value>
+  </data>
+  <data name="MSY_WARNING_TIMESERIES" xml:space="preserve">
+    <value>MSY giver ikke pålidelige resultater, når der er indlæst tidsserier. Det anbefales at losse tidsserier, før MSY køres. Vil du fortsætte MSY-kørslen?</value>
+  </data>
+  <data name="ECOTRACER_SAVE_FAILED" xml:space="preserve">
+    <value>Ecotracer-scenariet '{0}' kunne ikke gemmes. {1}</value>
+  </data>
+  <data name="MIGRATION_MISSING_MAPS" xml:space="preserve">
+    <value>ADVARSEL: Der er ikke indstillet månedlige migreringsmønstre for følgende gruppe (r). Vil du fortsætte?</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TYPEVALUEMISSING" xml:space="preserve">
+    <value>Type kodeværdi mangler</value>
+  </data>
+  <data name="FMSY_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Kunne ikke gemme MSY-resultater '{1}' til '{0}'</value>
+  </data>
+  <data name="MSY_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Kunne ikke gemme MSY-resultater '{1}' til '{0}'</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FAILED" xml:space="preserve">
+    <value>Import af model {0} mislykkedes ved {1}</value>
+  </data>
+  <data name="MSY_ERROR_RUN" xml:space="preserve">
+    <value>Der opstod en fejl under kørsel af MSY. {0}</value>
+  </data>
+  <data name="ECOPATH_PROMPT_STANZA_WHOLE_AREA" xml:space="preserve">
+    <value>Multi-strofe beregninger fungerer ikke korrekt med fraktionerede habitatområder. Angiv alle økopatiske habitatarealer til 1 for stropper og korriger i stedet biomassen i det førende livsfase</value>
+  </data>
+  <data name="ECOPATH_GROUPSPLIT_SUCCESS" xml:space="preserve">
+    <value>Grupper {0} er opdelt i {1} og {2}</value>
+  </data>
+  <data name="ECOPATH_GROUPMERGE_SUCCESS" xml:space="preserve">
+    <value>Grupper {0} og {1} er slået sammen til {2}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FORCINGAPPLICATIONS" xml:space="preserve">
+    <value>Import af Ecosim-tvangs- og formidlingsapplikationer</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEMPAS" xml:space="preserve">
+    <value>Import af marine beskyttede områder i Ecospace</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMFLEETS_AT" xml:space="preserve">
+    <value>Importerer Ecosim-flåde {0} - {1}</value>
+  </data>
+  <data name="ECOSPACE_LOWHABITAT_CAP_GROUP" xml:space="preserve">
+    <value>Gruppe '{0}' gennemsnitlig kapacitet pr. Celle {1}%</value>
+  </data>
+  <data name="ECOPATH_ERROR_NOMODEL" xml:space="preserve">
+    <value>Kunne ikke køre EcoPath, en model er endnu ikke initialiseret.</value>
+  </data>
+  <data name="STANZA_APPLY_DATAERROR" xml:space="preserve">
+    <value>En kritisk datafeil er opstået under anvendelse af nye strofedata: {0}</value>
+  </data>
+  <data name="ECOSPACE_SAVE_FAILED" xml:space="preserve">
+    <value>Ecospace-scenariet '{0}' kunne ikke gemmes. {1}</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGTYPEMISSING" xml:space="preserve">
+    <value>Kan ikke bestemme type tvangsdata {0}, data ikke importeret</value>
+  </data>
+  <data name="ECOPATH_RUN_ERROR_EXCEPTION" xml:space="preserve">
+    <value>Ecopath kunne ikke løbe. {0}</value>
+  </data>
+  <data name="MONTECARLO_RESTORE_FAILED" xml:space="preserve">
+    <value>Advarsel: Monte Carlo kunne ikke sætte Ecopath tilbage til sin oprindelige tilstand. Det kan være nødvendigt at du lukker modellen uden at gemme for at gendanne dine originale data.</value>
+  </data>
+  <data name="MODELFRIMSIM_BA_STARTYEAR_ADJ" xml:space="preserve">
+    <value>Startår for gennemsnitlig BA er ændret til det første Ecosim-år</value>
+  </data>
+  <data name="TIMESERIES_ERROR_GROUP_NOTFISHED" xml:space="preserve">
+    <value>Gruppen '{0}' fiskes ikke</value>
+  </data>
+  <data name="MONTECARLO_RESULTS_SAVED_SUCCESS" xml:space="preserve">
+    <value>Monte Carlo-resultater gemt til {0}</value>
+  </data>
+  <data name="ECOPATH_DIETCOMP_NOTSUMTOONE_GENERIC" xml:space="preserve">
+    <value>Diætkomposition (DC) summeres ikke til en for en eller flere grupper.</value>
+  </data>
+  <data name="IMPORT_ERROR_CANNOTCREATE" xml:space="preserve">
+    <value>Kan ikke oprette en ny database på lokationen {0}</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_COMPLETED" xml:space="preserve">
+    <value>Ecosampler batchkørsel afsluttet</value>
+  </data>
+  <data name="ECOSIM_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Ecosim-resultater gemt til '{0}'</value>
+  </data>
+  <data name="TIMESERIES_UNLOAD_SUCCESS" xml:space="preserve">
+    <value>Tidsserien blev aflæst med succes</value>
+  </data>
+  <data name="MONTECARLO_RESULTS_SAVED_ERROR" xml:space="preserve">
+    <value>Kunne ikke gemme Monte Carlo-resultaterne til {0}</value>
+  </data>
+  <data name="SCENARIO_DELETE_LOADED" xml:space="preserve">
+    <value>Du kan ikke slette et indlæst scenario.</value>
+  </data>
+  <data name="MONTECARLO_SAVE_FAILED" xml:space="preserve">
+    <value>Kunne ikke gemme Monte Carlo-data til fil. {0}</value>
+  </data>
+  <data name="MONTECARLO_ECOSIM_MISSING" xml:space="preserve">
+    <value>Indlæs et Ecosim-scenarie, før du kører Monte Carlo.</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_LOADING" xml:space="preserve">
+    <value>Adgang til eksterne data til {0} ({1}) i trin {2} ({3: åååå / MM})</value>
+  </data>
+  <data name="TIMESERIES_ERROR_VALUEMISSING" xml:space="preserve">
+    <value>Værdi (er) mangler for række {0}</value>
+  </data>
+  <data name="F2TS_ERROR_SENSITIVITY_SETBLOCKS" xml:space="preserve">
+    <value>Følsomhedsrutinen er ikke kørt. Blokkene kan ikke indstilles.</value>
+  </data>
+  <data name="QB_RANGE" xml:space="preserve">
+    <value>QB skal være større end nul.</value>
+  </data>
+  <data name="IMPORT_ERROR_CANNOTACCESS" xml:space="preserve">
+    <value>Kan ikke få adgang til nyoprettet database på lokationen {0}</value>
+  </data>
+  <data name="TRACER_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Forurenende sporingsresultater gemt i '{0}'</value>
+  </data>
+  <data name="CORE_INIT_CRITICAL_VALIDATORS" xml:space="preserve">
+    <value>EwE6-kernen kunne ikke initialiseres. Følgende kritiske fejl opstod under oprettelse af validatorer: {0}</value>
+  </data>
+  <data name="ECOSPACE_SAVE_SUCCES" xml:space="preserve">
+    <value>Ecospace-scenariet '{0}' er blevet gemt.</value>
+  </data>
+  <data name="IMPORT_WARNING_ECORANGER" xml:space="preserve">
+    <value>Ecoranger understøttes ikke længere i EwE6. Eksisterende Ecoranger-data importeres ikke.</value>
+  </data>
+  <data name="DATA_VALID" xml:space="preserve">
+    <value>Datavalidering for '{0}' var vellykket.</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_ABORT_NOBALANCE" xml:space="preserve">
+    <value>Baseline ikke balance. Ecosampler-batchkørsel blev afbrudt</value>
+  </data>
+  <data name="MEDIATION_ZERO_BASE" xml:space="preserve">
+    <value>En eller flere formidlingsformer kan ikke bruges. Rediger dine data.</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGNOTIMPORTED" xml:space="preserve">
+    <value>Tvingende data {0} kunne ikke importeres som {1}</value>
+  </data>
+  <data name="ECOPATH_MISSINGPARAM_LANDING" xml:space="preserve">
+    <value>Landingsoplysninger mangler for flåden {0}, gruppe {1}.</value>
+  </data>
+  <data name="DIETCOMP_PROMPT_MISSING" xml:space="preserve">
+    <value>Diæter til en eller flere grupper er ikke indtastet</value>
+  </data>
+  <data name="IMPORT_PROGRESS_QUOTES" xml:space="preserve">
+    <value>Importerer tilbud</value>
+  </data>
+  <data name="MIGRATION_MISSING_GROUPS" xml:space="preserve">
+    <value>Angiv månedlige overførselsmønstre for gruppe {0}</value>
+  </data>
+  <data name="STATUS_SAVING_CHANGES" xml:space="preserve">
+    <value>Gemmer ændringer, vent venligst ...</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_B0_FISHERY" xml:space="preserve">
+    <value>Ecopath har estimeret biomassen for gruppe {0} ({1}) til at være 0. Dette skyldes, at fiskeriet + migration + biomasse-akkumulering anslås til at summe til 0. Rediger dine data, f.eks. Tillader akkumulering af biomasse for denne gruppe.</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_ODD" xml:space="preserve">
+    <value>{0} skal være underligt og kan ikke være {1}</value>
+  </data>
+  <data name="IMPORT_ERROR_COMMIT" xml:space="preserve">
+    <value>Data kunne ikke gemmes for '{0}', databasen afviste importerede værdier. Dette indikerer en programmeringsfejl. Underret EwE-udviklingsteamet</value>
+  </data>
+  <data name="SPATIALTEMPORAL_TOOMANYTIMESTEPS" xml:space="preserve">
+    <value>Ecospace er indstillet til at køre med mere end tolv tidstrin om året, mens eksterne data kun kan leveres den første dag i en måned. Din model er muligvis ikke i stand til at få de korrekte data for hvert gangstrin. Vil du fortsætte?</value>
+  </data>
+  <data name="DIETCOMP_PROMPT_SUMTOONE" xml:space="preserve">
+    <value>Diæt til en eller flere grupper summeres ikke til 1. Vil du normalisere diæter til 1 for ALLE rovdyrgrupper?</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TYPEFORMAT" xml:space="preserve">
+    <value>En eller flere typekodeværdier kan ikke læses</value>
+  </data>
+  <data name="ECOSPACE_LOAD_FAILED" xml:space="preserve">
+    <value>Ecospace-scenariet '{0}' kunne ikke indlæses. {1}</value>
+  </data>
+  <data name="GENERIC_SAVE_RESOLUTION" xml:space="preserve">
+    <value>Prøv at gemme din model under et nyt navn.</value>
+  </data>
+  <data name="DATABASE_UPDATE_FAILED" xml:space="preserve">
+    <value>Modelopdatering {0} mislykkedes</value>
+  </data>
+  <data name="MSE_FIXF_FIXESC_FAILEDVALIDATION" xml:space="preserve">
+    <value>Kunne ikke indstille værdien. Fix F og Fast escapement kan ikke begge indeholde en værdi.</value>
+  </data>
+  <data name="GS_RANGE" xml:space="preserve">
+    <value>Uassimileret forbrug skal være mellem nul og et.</value>
+  </data>
+  <data name="DIETCOMP_NOT_SUM_ONE" xml:space="preserve">
+    <value>Diætsammensætning summerer ikke til et for et eller flere rovdyr</value>
+  </data>
+  <data name="GE_RANGE" xml:space="preserve">
+    <value>GE skal være større end nul og mindre end eller lig med 1.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_NO_DATE" xml:space="preserve">
+    <value>EwE-model dato er ikke indstillet. Du skal indstille dette til at bruge Ecospace-tidsseriedata.</value>
+  </data>
+  <data name="IMPORT_WARNING_TIMESIERIESGROUP" xml:space="preserve">
+    <value>Tidsserie {0} ({1}) ikke importeret, fordi gruppenummer {2} ikke kunne løses</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEREGIONS" xml:space="preserve">
+    <value>Importerer Ecospace-regioner</value>
+  </data>
+  <data name="ECOSPACE_EXPORT_ASCII_SUCCESS" xml:space="preserve">
+    <value>Ecospace-resultat .asc-filer er skrevet til {0}.</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGMULTIPLEASSIGNMENTS" xml:space="preserve">
+    <value>Tvinger data {0} brugt til at drive både ægproduktion og en anden funktion. Importeres kun som {1}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_STANZA" xml:space="preserve">
+    <value>Importere konfigurationer med flere stropper</value>
+  </data>
+  <data name="IMPORT_PROGRESS_SUCCES" xml:space="preserve">
+    <value>Import af model {0} afsluttet med succes på {1}</value>
+  </data>
+  <data name="ECOSPACE_NO_SIM_SCENARIO" xml:space="preserve">
+    <value>Et Ecosim og Ecospace-scenarie skal indlæses, før Ecospace kan køres.</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEFLEETS" xml:space="preserve">
+    <value>Import af Ecospace-flåder</value>
+  </data>
+  <data name="MONTECARLO_RUN_ERROR" xml:space="preserve">
+    <value>Fejl ved kørsel af Monte Carlo-forsøgene. {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOTRACERGROUPS" xml:space="preserve">
+    <value>Import af ecotracer-grupper</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_EE" xml:space="preserve">
+    <value>Økotrofiske effektiviteter (EE) kunne ikke estimeres for gruppe {0}.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_PB" xml:space="preserve">
+    <value>Produktions / biomasse-forhold (PB) kunne ikke estimeres for gruppe {0}.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_QB" xml:space="preserve">
+    <value>Forbrug / biomasse-forhold (QB) kunne ikke estimeres for gruppe {0}.</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEGROUPS" xml:space="preserve">
+    <value>Importerer Ecospace-grupper</value>
+  </data>
+  <data name="DLLFACTORY_TYPE_NOT_FOUND" xml:space="preserve">
+    <value>Komponent '{0}' kunne ikke findes i '{1}'.</value>
+  </data>
+  <data name="ECOPATH_LOAD_FAILED" xml:space="preserve">
+    <value>Ecopatmodellen '{0}' kunne ikke indlæses. {1}</value>
+  </data>
+  <data name="SPATIALTEMPORAL_LOAD_ERROR_DETAIL" xml:space="preserve">
+    <value>Kan ikke indlæse plug-in '{0}'</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED_IMMIGRATION" xml:space="preserve">
+    <value>Indvandring for gruppe '{0}'</value>
+  </data>
+  <data name="SPATIALTEMPORAL_EXPORT_ERROR" xml:space="preserve">
+    <value>Kunne ikke eksportere datasæt til {0}</value>
+  </data>
+  <data name="UPDATE_600007_ERROR" xml:space="preserve">
+    <value>MPA-fiskeriindstillinger kan indeholde fejl i Ecospace-scenarierne {0}</value>
+  </data>
+  <data name="TIMESERIES_UNLOAD_FAILED" xml:space="preserve">
+    <value>Tidsserien kunne ikke aflæses. {0}</value>
+  </data>
+  <data name="FMSY_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Fmsy-resultater gemt i '{0}'</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ENTER_B_BEFORE_PROCEEDING" xml:space="preserve">
+    <value>Gå ind i biomasse for alle detritusgrupper, før du fortsætter til Ecosim.</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_QB_EE" xml:space="preserve">
+    <value>Biomasse, PB, QB og EE for '{0}' indtastes. Vil du estimere akkumulering af biomasse?</value>
+  </data>
+  <data name="ECOSIM_RUN_ERROR_MISSINGPREDATION" xml:space="preserve">
+    <value>Samlet predation på byttedyr {0} af rovdyr {1} blev ikke taget højde for. Ecosim er stoppet.</value>
+  </data>
+  <data name="ECOSIM_ERROR_FEEDARENA" xml:space="preserve">
+    <value>Fodringsproportioner efter arenaer er ikke indstillet korrekt</value>
+  </data>
+  <data name="IMPORT_WARNING_MULTISTANZASHAPE" xml:space="preserve">
+    <value>Kan ikke bestemme ægproduktion og / eller rugeredyrdata på tværs af Ecosim-scenarier for strofekonfiguration {0}. Du skal vælge og tildele disse data i EwE6-grænsefladen.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_B" xml:space="preserve">
+    <value>Biomasse kunne ikke estimeres for gruppe {0}.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_LINEMISSING" xml:space="preserve">
+    <value>Datarække forventet</value>
+  </data>
+  <data name="F2TS_ERROR_NO_TS" xml:space="preserve">
+    <value>Der er ikke indlæst nogen tidsserier; Fit to Time Series kan ikke køre.</value>
+  </data>
+  <data name="ECOPATH_SAVETO_FAILED" xml:space="preserve">
+    <value>Ecopatmodellen kunne ikke gemmes til '{0}'</value>
+  </data>
+  <data name="ASCII_READ_ERROR_UNKNOWNFIELD" xml:space="preserve">
+    <value>Kunne ikke læse ASCII-fil med ukendt headerfelt {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOPATHGROUPS" xml:space="preserve">
+    <value>Import af økopatgrupper</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_TOOLONG" xml:space="preserve">
+    <value>Teksten må ikke overstige {0} tegn</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_PRODxEE" xml:space="preserve">
+    <value>Ecopath har anslået produktionen * EE for gruppe {0} ({1}) til at være {2}. Dette er mindre end den anslåede 'kannibalisme' for denne gruppe.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_PB0_GENERIC" xml:space="preserve">
+    <value>Programmet har estimeret produktions / biomasse (P / B) -forholdet for en eller flere grupper til at være 0. Rediger dine data. Bemærk, at for uudnyttede top-rovdyr er det muligvis ikke muligt at estimere P / B (ingen dødelighed, ingen produktion er nødvendig).</value>
+  </data>
+  <data name="DATABASE_BACKUP_FAILED" xml:space="preserve">
+    <value>Kunne ikke lave en sikkerhedskopi af modellen til '{0}'</value>
+  </data>
+  <data name="IMPORT_PROGRESS_TAXONOMY" xml:space="preserve">
+    <value>Import af taksonomi</value>
+  </data>
+  <data name="DIETCOMP_VALIDATION_ERROR" xml:space="preserve">
+    <value>Fejl under validering af 'DietComp'. 'DietComp' er ikke gyldig.</value>
+  </data>
+  <data name="IMPORT_PROGRESS_SCENARIO" xml:space="preserve">
+    <value>Import af Ecosim-scenarier</value>
+  </data>
+  <data name="ECOSIM_SAVE_SUCCESS" xml:space="preserve">
+    <value>Ecosim-scenariet '{0}' er gemt.</value>
+  </data>
+  <data name="SPATIALTEMPORAL_POP_FAILED_LOCK" xml:space="preserve">
+    <value>Der blev ikke adgang til forventede data for lag {0}, tid {1}, ekst ({2}, {3}) til ({4}, {5}), cellestørrelse {6}</value>
+  </data>
+  <data name="SPATIALTEMPORAL_POP_FAILED_LOAD" xml:space="preserve">
+    <value>Forventede data blev ikke læst eller konverteret korrekt for lag {0}, tid {1}, ext ({2}, {3}) til ({4}, {5}), cellestørrelse {6}</value>
+  </data>
+  <data name="PSD_ERROR_WEIGHTCLASSES" xml:space="preserve">
+    <value>PSD-estimeringsrutinen kan kun fungere, når grupper falder i mindst to vægtklasser. Definer venligst vægtområdet ved at justere antallet af vægtklasser og / eller den laveste vægtklasse.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_DATES" xml:space="preserve">
+    <value>Ecospace-tidsseriedatoer {0} til {1} overlapper ikke hinanden med de aktuelle modeldatoer. Kontroller model dato eller datoer i inputfil.</value>
+  </data>
+  <data name="VARIABLE_NOT_SET" xml:space="preserve">
+    <value>Kan ikke indstille variabel '{0}', Fejl: {1}</value>
+  </data>
+  <data name="ECOPATH_RUN_ERROR" xml:space="preserve">
+    <value>Ecopath kunne ikke løbe.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_FAILED" xml:space="preserve">
+    <value>Ecospace Time Series kunne ikke indlæse nogen poster fra filen.</value>
+  </data>
+  <data name="SAMPLES_IMPORT_ERROR_NOSAMPLES" xml:space="preserve">
+    <value>Model '{0}' indeholder ingen prøver</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FORCINGMEDIATION" xml:space="preserve">
+    <value>Import af ecosim-tvangs- og formidlingsformer</value>
+  </data>
+  <data name="SPATIALTEMPORAL_EXPORT_SUCCESS" xml:space="preserve">
+    <value>{0} datasæt (er) blev eksporteret til {1}. Denne mappe er klar til at blive overført til en anden computer</value>
+  </data>
+  <data name="MPAOPT_RUNNING" xml:space="preserve">
+    <value>Optimeringen kører allerede. Kun en evaluering kan køres ad gangen.</value>
+  </data>
+  <data name="STANZA_LEADING_ADJUSTED" xml:space="preserve">
+    <value>Førende B- og / eller CB-grupper er blevet justeret for en eller flere multi-strofe-grupper, venligst bekræft.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_POOLVALUEMISSING" xml:space="preserve">
+    <value>Pool-kodeværdi mangler</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_EE_GENERIC" xml:space="preserve">
+    <value>Din model er IKKE massebalanceret! Beregnede økotrofiske effektiviteter (EE) er ugyldige for en eller flere grupper.</value>
+  </data>
+  <data name="ECOSPACE_HABCAP_COMPUTE_ERROR" xml:space="preserve">
+    <value>Ecospace kunne ikke opdatere kapacitetskort. {0}</value>
+  </data>
+  <data name="F2TS_ERROR" xml:space="preserve">
+    <value>Der opstod en fejl i Fit to Time Series. {0}</value>
+  </data>
+  <data name="DATABASE_UPDATE_FAILED_DETAIL" xml:space="preserve">
+    <value>Modelopdatering {0} mislykkedes: {1}</value>
+  </data>
+  <data name="MONTECARLO_APPLY_ERROR" xml:space="preserve">
+    <value>Monte Carlo anvendte ikke de bedste pasformer. {0}</value>
+  </data>
+  <data name="STATUS_PLUGIN_USERDISABLED" xml:space="preserve">
+    <value>Plug-in {0} er deaktiveret fra indlæsning via brugerindstillinger</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED_BA" xml:space="preserve">
+    <value>Akkumulering af biomasse for gruppe '{0}'</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED_EE" xml:space="preserve">
+    <value>EE for gruppe '{0}'</value>
+  </data>
+  <data name="ECOSEED_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Rumslige optimeringsresultater gemt i '{0}'</value>
+  </data>
+  <data name="ECOSPACE_SAVEMAP_FAILED" xml:space="preserve">
+    <value>Ecospace kunne ikke gemme resultatkort. {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMFLEETS" xml:space="preserve">
+    <value>Import af Ecosim-flåder</value>
+  </data>
+  <data name="ECOPATH_MERGESPLIT_ERROR_HASECOSIM" xml:space="preserve">
+    <value>Kan ikke automatisk flette eller opdele grupper til modeller med Ecosim-scenarier</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_SAVE_EXCEPTION" xml:space="preserve">
+    <value>Ecospace Time Series undtagelsesbesparende outputfil: {0}</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_APPLIED" xml:space="preserve">
+    <value>Anvendt {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEBASEMAP" xml:space="preserve">
+    <value>Import af Ecospace-basiskort</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_EE" xml:space="preserve">
+    <value>Biomasse, PB og EE for '{0}' indtastes. Vil du estimere akkumulering af biomasse?</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_SAMPLE_NOBALANCE" xml:space="preserve">
+    <value>Ecosampler-prøve {0} er ikke i balance</value>
+  </data>
+  <data name="BIOACCUM_RANGE" xml:space="preserve">
+    <value>BioAccum skal være større end eller lig med nul.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_EXCEPTION" xml:space="preserve">
+    <value>Ecospace kunne ikke indlæse tidsseriedata på grund af fejl: {0}</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DFLARGERTHANONE_GROUP" xml:space="preserve">
+    <value>Gruppen '{0}' har Detritus Fate større end en.</value>
+  </data>
+  <data name="DIETCOMP_MISSING" xml:space="preserve">
+    <value>Diæter til gruppe {0} er ikke indtastet</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMGROUPS" xml:space="preserve">
+    <value>Importerer Ecosim-grupper</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_EE" xml:space="preserve">
+    <value>Beregnet EE-værdi {1} ugyldig for gruppen '{0}'</value>
+  </data>
+  <data name="MSE_VALIDATION_QUOTAS" xml:space="preserve">
+    <value>Der er ikke indstillet nogen regulatoriske kontroltyper. Vil du annullere kørslen?</value>
+  </data>
+  <data name="BIOMASS_RANGE" xml:space="preserve">
+    <value>Biomasse skal være større end eller lig med nul.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_WEIGHTFORMAT" xml:space="preserve">
+    <value>En eller flere vægtværdier kan ikke læses</value>
+  </data>
+  <data name="ECOSPACE_EXPORT_FAILED" xml:space="preserve">
+    <value>Ecospace kunne ikke gemme filen {0}. {1}</value>
+  </data>
+  <data name="ECOSPACE_RUN_COMPLETED" xml:space="preserve">
+    <value>Ecospace har afsluttet en modelkørsel.</value>
+  </data>
+  <data name="ECOSPACE_GENERIC_ERROR" xml:space="preserve">
+    <value>Der opstod en fejl i Ecospace. {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_STARTED" xml:space="preserve">
+    <value>Import af model {0} startede kl {1}</value>
+  </data>
+  <data name="PROMPT_SAVE_CHANGES" xml:space="preserve">
+    <value>Modeldata er ændret siden sidste gang du gemte. Ønsker du at gemme disse ændringer?</value>
+  </data>
+  <data name="PEDIGREE_OUTOFRANGE" xml:space="preserve">
+    <value>Stamtavleværdien er uden for rækkevidde</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_ADJUSTED" xml:space="preserve">
+    <value>{0} er korrigeret</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_MUSTBEX" xml:space="preserve">
+    <value>{0} skal være {1}</value>
+  </data>
+  <data name="VULNERABILITIES_PROMPT_RESET" xml:space="preserve">
+    <value>Nulstille sårbarheder til en standardværdi på {0}?</value>
+  </data>
+  <data name="ECOPATH_PREDMORT_CANN" xml:space="preserve">
+    <value>Dine data er ikke ensartede. I algoritme 4 er dit estimat af: P / Bi * EEi - Q / Bi * DCii negativt for gruppe '{0}', dvs. 'kannibalisme' overstiger predationsdødeligheden. Ønsker du at reducere kannibalismen (til 20 af den anvendte produktion) for alle grupper, hvor dette problem opstår? Bemærk: dine inputdata ændres ikke.</value>
+  </data>
+  <data name="ECOSPACE_LOAD_SUCCESS" xml:space="preserve">
+    <value>Ecospace-scenariet '{0}' indlæst.</value>
+  </data>
+  <data name="TRACER_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Kunne ikke gemme forurenende sporingsresultater '{1}' til '{0}'</value>
+  </data>
+  <data name="ECOPATH_SAVETO_SUCCESS" xml:space="preserve">
+    <value>Ecopat-model blev gemt med '{0}'</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DIETIMPORTONLY" xml:space="preserve">
+    <value>Din model har {0} gruppe (r), der kun har en diæt med import. Sådanne grupper er ikke veldefinerede, vil have trofiske niveauer på 1 og vil ikke vise nogen strøm på trofisk niveau dekomponeringsgrænseflader.</value>
+  </data>
+  <data name="IMPORT_FIX_GROUPUNASSIM" xml:space="preserve">
+    <value>Gruppen '{0}' er en producent, Unassim korrigeret til {1}</value>
+  </data>
+  <data name="ECOSPACE_OUT_OF_MEMORY" xml:space="preserve">
+    <value>Ecospace er tom for hukommelse. Prøv at reducere antallet af regioner og / eller tidsbestemmelser.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_POOLLINEMISSING" xml:space="preserve">
+    <value>Header '{0}' ikke genkendt, forventet 'pool', 'gruppe' eller 'flåde'</value>
+  </data>
+  <data name="STATUS_PLUGIN_SANDBOXED" xml:space="preserve">
+    <value>Plug-in {0} sandkasse</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMGROUPS_AT" xml:space="preserve">
+    <value>Importerer Ecosim-gruppe {0} - {1}</value>
+  </data>
+  <data name="VARIABLE_NOT_FOUND" xml:space="preserve">
+    <value>Kan ikke finde variabel for '{0}'</value>
+  </data>
+  <data name="DLLFACTORY_LOAD_ERROR" xml:space="preserve">
+    <value>Fejl ved indlæsning af '{0}' fra filen '{1}'. Fejl: {2}</value>
+  </data>
+  <data name="STATUS_INDEXING_DATASET" xml:space="preserve">
+    <value>Indekserer eksterne data '{0}'</value>
+  </data>
+  <data name="MAP_INVALID_NOWATERCELLS" xml:space="preserve">
+    <value>Dit kort har ingen vandceller.</value>
+  </data>
+  <data name="ECOTRACER_LOAD_FAILED" xml:space="preserve">
+    <value>Ecotracer-scenariet '{0}' kunne ikke indlæses. {1}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_WEIGHTVALUEMISSING" xml:space="preserve">
+    <value>Vægtværdi mangler</value>
+  </data>
+  <data name="MSE_VALIDATION_FIXEDESCAPEMENT" xml:space="preserve">
+    <value>Fast flugt, faste fiskeridødeligheder og er alle indstillet til gruppe (r) '{0}', kun reglerne for fast undslip vil blive brugt.</value>
+  </data>
+  <data name="ECOSPACE_RUN_ERROR" xml:space="preserve">
+    <value>Kør Ecospace Error. {0}</value>
+  </data>
+  <data name="LOAD_ERROR_MODEL" xml:space="preserve">
+    <value>Fejlen '{0}' er opstået under indlæsning af model</value>
+  </data>
+  <data name="ECOSIM_LOAD_FAILED" xml:space="preserve">
+    <value>Ecosim-scenariet '{0}' kunne ikke indlæses. {1}</value>
+  </data>
+  <data name="MSE_VALIDATION_EFFORT" xml:space="preserve">
+    <value>Indsatsen for flåde (r) '{0}' kan muligvis øges for at kvoteringsbestemmelserne kan få effekt.</value>
+  </data>
+  <data name="ECOPATH_MISSINGPARAM_DISCARD" xml:space="preserve">
+    <value>Oplysninger om bortkast mangler for flåde {0}, gruppe {1}.</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_EE_BA" xml:space="preserve">
+    <value>Anslået akkumulering af biomasse (BA) er negativ for gruppe {0}, hvilket kan være relateret til den manglende estimering af EE.</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_OUTPUT_SET" xml:space="preserve">
+    <value>Ecospace Time Series output-fil sæt.</value>
+  </data>
+  <data name="STANZA_KinVGBF_MISSING" xml:space="preserve">
+    <value>Manglende K af VBGF for multistandagruppen '{0}'.</value>
+  </data>
+  <data name="MSY_STATUS_RUNNING" xml:space="preserve">
+    <value>Kører MSY {0} ...</value>
+  </data>
+  <data name="PROMPT_SAVE_CHANGES_DETAILED" xml:space="preserve">
+    <value>Ikke-gemte ændringer i {0} vil gå tabt, hvis du fortsætter. Ønsker du at gemme disse ændringer?</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_NRECORDS_LOADED" xml:space="preserve">
+    <value>Ecospace Time Series {0} poster indlæst.</value>
+  </data>
+  <data name="ECOPATH_LOAD_SUCCESS" xml:space="preserve">
+    <value>Ecopatmodellen '{0}' indlæst.</value>
+  </data>
+  <data name="DATABASE_BACKUP_PROMPT" xml:space="preserve">
+    <value>Model '{0}' blev sidst adgang til af {1} og vil blive opdateret. Ønsker du at oprette en sikkerhedskopi af denne model?</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED" xml:space="preserve">
+    <value>{0} kan ikke være {1}</value>
+  </data>
+  <data name="MODEL_READONLY" xml:space="preserve">
+    <value>Modellen '{0}' blev åbnet i skrivebeskyttet tilstand og kan ikke gemmes.</value>
+  </data>
+  <data name="FMSY_STATUS_RUNNING" xml:space="preserve">
+    <value>Kører Fmsy {0}, vurderer {1} ...</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_STARTED" xml:space="preserve">
+    <value>Ecosampler batchkørsel startede</value>
+  </data>
+  <data name="MAP_INVALID_NOPP" xml:space="preserve">
+    <value>Dit kort har ikke nogen primær produktion.</value>
+  </data>
+  <data name="IMPORT_ERROR_INCOMPATIBLE" xml:space="preserve">
+    <value>Database {0} har version {1}, som er uforenelig med denne version. Brug den seneste version af Ecopath 5 til at opdatere databasen først.</value>
+  </data>
+  <data name="STANZA_CANCEL_DATAERROR" xml:space="preserve">
+    <value>Der er opstået en kritisk datafejl under rullering af strofedata: {0}</value>
+  </data>
+  <data name="EXPORT_PROGRESS_DATASET" xml:space="preserve">
+    <value>Eksporterer datasæt {0}</value>
+  </data>
+  <data name="MSE_LPSOLVER_NONOPTIMAL" xml:space="preserve">
+    <value>MSE Linear Programing Solution kunne ikke finde en optimal løsning til '{0}' tidstrin. Kontroller din målfiskedødelighed for at sikre dig, at du ikke har overdrevent begrænset din model.</value>
+  </data>
+  <data name="TIMESERIES_LOAD_FAILED" xml:space="preserve">
+    <value>Tidsserie-datasættet '{0}' kunne ikke indlæses. {1}</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_CLEARED" xml:space="preserve">
+    <value>{0} ryddet</value>
+  </data>
+  <data name="DATA_VALIDATION" xml:space="preserve">
+    <value>Datavalidering for '{0}'.</value>
+  </data>
+  <data name="ECOSPACE_NO_SPACE_SCENARIO" xml:space="preserve">
+    <value>Et Ecospace-scenarie skal indlæses, før Ecospace kan køres.</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ESTIMATE_NETMIGRATION" xml:space="preserve">
+    <value>Vil du estimere nettomigrationen for '{0}'?</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_INSUFFICIENTDATA" xml:space="preserve">
+    <value>Utilstrækkelige data, rediger din model.</value>
+  </data>
+  <data name="DIETCOMP_SUMTOONE_PRED" xml:space="preserve">
+    <value>Diæt til rovdyr '{0}' beløber sig ikke til 1</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_MISSING_B_QB" xml:space="preserve">
+    <value>Aborterer, mangler B og QB for gruppe '{0}'. Rediger dine data.</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP_GROUP" xml:space="preserve">
+    <value>Gruppen '{0}' har en respirationsværdi, der overskrider input til detritus.</value>
+  </data>
+  <data name="TIMESERIES_ERROR_CVVALUEMISSING" xml:space="preserve">
+    <value>CV-værdi (er) mangler</value>
+  </data>
+  <data name="SAMPLES_IMPORT_ERROR_INCOMPATIBLE" xml:space="preserve">
+    <value>Model '{0}' er inkompatibel og kan ikke bruges til at importere prøver fra</value>
+  </data>
+  <data name="ECOPATH_MERGESPLIT_ERROR_NOMODEL" xml:space="preserve">
+    <value>Indlæs en model, før du forsøger at flette grupper</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_READ_FAIL_REASON" xml:space="preserve">
+    <value>{0} poster på grund af {1}</value>
+  </data>
+  <data name="ECOPATH_RESULTS_SAVED_FAILED" xml:space="preserve">
+    <value>Ecopat estimater kunne ikke gemmes til '{0}'</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TOOMANYWEIGHTS" xml:space="preserve">
+    <value>Kan ikke angive både CV og vægt</value>
+  </data>
+  <data name="TIMESERIES_ERROR_VALUENEGATIVE" xml:space="preserve">
+    <value>Værdien kan ikke være negativ</value>
+  </data>
+</root>

@@ -1,0 +1,2409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FFAPPLICATIONTARGET_DETRITUSIMPORT" xml:space="preserve">
+    <value>Importere</value>
+  </data>
+  <data name="HEADER_IMPORT" xml:space="preserve">
+    <value>Importere</value>
+  </data>
+  <data name="HEADER_SPECIES" xml:space="preserve">
+    <value>Arter</value>
+  </data>
+  <data name="HEADER_ECOSPACE" xml:space="preserve">
+    <value>EcoSpace</value>
+  </data>
+  <data name="AUTOSAVE_ECOSPACE" xml:space="preserve">
+    <value>EcoSpace</value>
+  </data>
+  <data name="HEADER_ECOPATH" xml:space="preserve">
+    <value>Ecopath</value>
+  </data>
+  <data name="HEADER_ECOSIM" xml:space="preserve">
+    <value>Ecosim</value>
+  </data>
+  <data name="AUTOSAVE_ECOSIM" xml:space="preserve">
+    <value>Ecosim</value>
+  </data>
+  <data name="HEADER_MONTECARLO" xml:space="preserve">
+    <value>Monte Carlo</value>
+  </data>
+  <data name="BIODIVERSITY_SHANNON" xml:space="preserve">
+    <value>Shannon diversitetsindeks</value>
+  </data>
+  <data name="HEADER_TRIAL" xml:space="preserve">
+    <value>Forsøg</value>
+  </data>
+  <data name="HEADER_DISCARDS" xml:space="preserve">
+    <value>udsmid</value>
+  </data>
+  <data name="HEADER_CATCH" xml:space="preserve">
+    <value>Fangst</value>
+  </data>
+  <data name="HEADER_BIOMASS" xml:space="preserve">
+    <value>Biomasse</value>
+  </data>
+  <data name="HEADER_AGE" xml:space="preserve">
+    <value>Alder</value>
+  </data>
+  <data name="HEADER_SHANNONDIVERSITY" xml:space="preserve">
+    <value>Shannon mangfoldighed</value>
+  </data>
+  <data name="HEADER_KEMPTONSQ" xml:space="preserve">
+    <value>Kemptons Q</value>
+  </data>
+  <data name="HEADER_VALUE" xml:space="preserve">
+    <value>Værdi</value>
+  </data>
+  <data name="LABEL_PLAY" xml:space="preserve">
+    <value>Spille</value>
+  </data>
+  <data name="LABEL_STOP" xml:space="preserve">
+    <value>Hold op</value>
+  </data>
+  <data name="BUTTON_OK" xml:space="preserve">
+    <value>Okay</value>
+  </data>
+  <data name="BUTTON_CANCEL" xml:space="preserve">
+    <value>Afbestille</value>
+  </data>
+  <data name="GENERIC_ZOOM_OUT" xml:space="preserve">
+    <value>Zoome ud</value>
+  </data>
+  <data name="GENERIC_VALUE_NO" xml:space="preserve">
+    <value>Ingen</value>
+  </data>
+  <data name="BUTTON_NO" xml:space="preserve">
+    <value>Ingen</value>
+  </data>
+  <data name="AUTOSAVE_ECOTRACER" xml:space="preserve">
+    <value>Resultater af ecotracer kørsel</value>
+  </data>
+  <data name="HEADER_MEAN_WEIGHT" xml:space="preserve">
+    <value>Middelvægt (kg)</value>
+  </data>
+  <data name="HEADER_CONSUMPTION_OVER_BIOMASS" xml:space="preserve">
+    <value>Forbrug / biomasse</value>
+  </data>
+  <data name="HEADER_BIOMASS_CUMULATIVE" xml:space="preserve">
+    <value>Kumulativ biomasse</value>
+  </data>
+  <data name="BA_CALC_FROMECOSIMYEARSAVERAGE" xml:space="preserve">
+    <value>Gennemsnitlig økosim biomasse ændres over et antal år</value>
+  </data>
+  <data name="HEADER_AVAILABLE_GROUPS_FLEETS" xml:space="preserve">
+    <value>Tilgængelige grupper og flåder</value>
+  </data>
+  <data name="BA_CALC_SETTOZERO" xml:space="preserve">
+    <value>Ingen akkumulering af biomasse</value>
+  </data>
+  <data name="HEADER_OCCURRENCE_STATUS" xml:space="preserve">
+    <value>Forekomststatus</value>
+  </data>
+  <data name="HEADER_BOUNDARYWEIGHT" xml:space="preserve">
+    <value>Grænsevægt</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWEGGPRODSHAPE" xml:space="preserve">
+    <value>Æggeproduktionsform {0}</value>
+  </data>
+  <data name="GENERIC_VALUE_CREATE_PENDING" xml:space="preserve">
+    <value>(at skabe)</value>
+  </data>
+  <data name="HEADER_PLOT_MEAN" xml:space="preserve">
+    <value>Betyde</value>
+  </data>
+  <data name="HEADER_MEAN" xml:space="preserve">
+    <value>Betyde</value>
+  </data>
+  <data name="TS_TYPE_TOTALMORT" xml:space="preserve">
+    <value>Samlet dødelighed</value>
+  </data>
+  <data name="HEADER_FLEET_GROUP" xml:space="preserve">
+    <value>Fleet\gruppe</value>
+  </data>
+  <data name="VALUE_INDEXED_PERCENT" xml:space="preserve">
+    <value>Indekseret {0}%</value>
+  </data>
+  <data name="HEADER_A_IN_LW" xml:space="preserve">
+    <value>a i LW</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_BASEMAP" xml:space="preserve">
+    <value>Basemap</value>
+  </data>
+  <data name="HEADER_LOWERLIMIT" xml:space="preserve">
+    <value>Nedre grænse</value>
+  </data>
+  <data name="HEADER_CODE_SAUP" xml:space="preserve">
+    <value>SAUP id | Taxonomi-kode i databaserne omkring havet omkring os</value>
+  </data>
+  <data name="HEADER_CODE_LSID" xml:space="preserve">
+    <value>LSID | Taxonomy Life Sciences Identifier, som defineret af Taxonomy Database Working Group</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_NOTEXPLOITED" xml:space="preserve">
+    <value>Ikke udnyttet</value>
+  </data>
+  <data name="STATUS_APPLYVALUES" xml:space="preserve">
+    <value>Anvender værdier, vent venligst ...</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_IN_IMM_B" xml:space="preserve">
+    <value>Konc. i indvandrende biomasse (t / t)</value>
+  </data>
+  <data name="HEADER_QUOTA_SELECTIVEFISHING" xml:space="preserve">
+    <value>Selektiv fiskekvote</value>
+  </data>
+  <data name="HEADER_MESSAGE" xml:space="preserve">
+    <value>Besked</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWMEDIATIONSHAPE" xml:space="preserve">
+    <value>Mæglingsform {0}</value>
+  </data>
+  <data name="HEADER_NONMARKETVALUE" xml:space="preserve">
+    <value>Ikke-markedsværdi</value>
+  </data>
+  <data name="DEFAULT_NEWECOTRACERSCENARIO" xml:space="preserve">
+    <value>Nyt ecotracer-scenarie</value>
+  </data>
+  <data name="HEADER_PRODUCTION_OVER_BIOMASS" xml:space="preserve">
+    <value>Produktion / biomasse</value>
+  </data>
+  <data name="HEADER_SOCIAL_VALUE_EMPLOYMENT" xml:space="preserve">
+    <value>Social værdi (beskæftigelse)</value>
+  </data>
+  <data name="HEADER_NORMALIZED_VALUE" xml:space="preserve">
+    <value>Normaliseret værdi</value>
+  </data>
+  <data name="HEADER_STARTAGE" xml:space="preserve">
+    <value>Alder, start (måneder)</value>
+  </data>
+  <data name="HEADER_HISTOGRAM_TARGET" xml:space="preserve">
+    <value>Histogram for '{0}'</value>
+  </data>
+  <data name="HEADER_ECOSYSTEM_STRUCTURE" xml:space="preserve">
+    <value>Økosystemstruktur</value>
+  </data>
+  <data name="GENERIC_LABEL_A_AT_B" xml:space="preserve">
+    <value>{0} @ {1}</value>
+  </data>
+  <data name="HEADER_SUM_NET_PP" xml:space="preserve">
+    <value>Beregnet samlet primær nettoproduktion</value>
+  </data>
+  <data name="TOOLTIP_MEDIATION_DRIVER_VALUE" xml:space="preserve">
+    <value>Driverværdi {0}</value>
+  </data>
+  <data name="GENERIC_CHAR_PERIOD" xml:space="preserve">
+    <value>. (periode)</value>
+  </data>
+  <data name="GENERIC_VALUE_YES" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="BUTTON_YES" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="GENERIC_VALUE_YOU" xml:space="preserve">
+    <value>(du)</value>
+  </data>
+  <data name="GENERIC_VALUE_ALL" xml:space="preserve">
+    <value>(alle)</value>
+  </data>
+  <data name="HEADER_MAXF_OVER_M" xml:space="preserve">
+    <value>Max F / M</value>
+  </data>
+  <data name="HEADER_PROFIT_PERC" xml:space="preserve">
+    <value>Fortjeneste (%)</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_OFFVESSELPRICE" xml:space="preserve">
+    <value>Prisen uden for skibet</value>
+  </data>
+  <data name="HEADER_MANDATED_BIOMASS_RELATIVE" xml:space="preserve">
+    <value>Mandat rel. BIOM</value>
+  </data>
+  <data name="FILEFILTER_TEXT" xml:space="preserve">
+    <value>Tekstfiler | * .txt</value>
+  </data>
+  <data name="HEADER_MEAN_LENGTH" xml:space="preserve">
+    <value>Gennemsnitlig længde (cm)</value>
+  </data>
+  <data name="TS_TYPE_CATCHESFORCING" xml:space="preserve">
+    <value>Fangster (tvinger)</value>
+  </data>
+  <data name="HEADER_DISCARD_SURVIVAL_BREAKDOWN" xml:space="preserve">
+    <value>Kasser overlevelse (gruppe x flåde)</value>
+  </data>
+  <data name="HEADER_NODE_SCALE" xml:space="preserve">
+    <value>Knudepunkt skala tilstand</value>
+  </data>
+  <data name="GENERIC_LABEL_DOUBLE" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="GENERIC_VALUE_NAMEANDSEQUENCE" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="HEADER_METABOLISMRATE" xml:space="preserve">
+    <value>Metabolisk henfaldshastighed</value>
+  </data>
+  <data name="HEADER_AREA_CLOSED" xml:space="preserve">
+    <value>Område lukket (%)</value>
+  </data>
+  <data name="GENERIC_VALUE_NO_DATA" xml:space="preserve">
+    <value>Ingen data</value>
+  </data>
+  <data name="FILEFILTER_IMAGE_EMF" xml:space="preserve">
+    <value>Forbedrede metafiler | * .emf</value>
+  </data>
+  <data name="FILEFILTER_MODEL_OPEN" xml:space="preserve">
+    <value>Ecopath model databaser | * .mdb; *. Accdb; *. EwEmdb; *. EwEaccdb; *. Eii; *. Eiixml</value>
+  </data>
+  <data name="FILEFILTER_MODEL_SAVE" xml:space="preserve">
+    <value>EwE-database (Access 2003-format) | * .EwEmdb | EwE-database (Access 2007-format) | * .EwEaccdb</value>
+  </data>
+  <data name="GENERIC_VALUE_NOTUSED" xml:space="preserve">
+    <value>(anvendes ikke)</value>
+  </data>
+  <data name="HEADER_TZERO_VBGF" xml:space="preserve">
+    <value>til i VBGF (år)</value>
+  </data>
+  <data name="VERBOSE_DISABLED" xml:space="preserve">
+    <value>Ingen logning</value>
+  </data>
+  <data name="HEADER_STANDARDDEVIATION" xml:space="preserve">
+    <value>SD</value>
+  </data>
+  <data name="GENERIC_LABEL_N_OF_M" xml:space="preserve">
+    <value>{0} af {1}</value>
+  </data>
+  <data name="HEADER_GROSS_EFFICIENCY" xml:space="preserve">
+    <value>Bruttoeffektivitet (fangst / netto pp)</value>
+  </data>
+  <data name="PROMPT_OPTIONS_APPLIED_FAILED" xml:space="preserve">
+    <value>Indstillingerne kunne ikke anvendes.</value>
+  </data>
+  <data name="HEADER_BIOMACCUM_ABBR" xml:space="preserve">
+    <value>Biom. acc.</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_RECOVERING" xml:space="preserve">
+    <value>Gendannelse ||| Fangsterne øges igen efter at være blevet udtømt</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSFORCING" xml:space="preserve">
+    <value>Tvingning af biomasse</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_BIOMASSFORCING" xml:space="preserve">
+    <value>Tvingning af biomasse</value>
+  </data>
+  <data name="HEADER_EFFORT_MIN" xml:space="preserve">
+    <value>Indsats min.</value>
+  </data>
+  <data name="HEADER_EFFORT_MAX" xml:space="preserve">
+    <value>Max. Indsats</value>
+  </data>
+  <data name="HEADER_ASSIGNED_LANDINGS_SHAPE" xml:space="preserve">
+    <value>Tildelt levering til {0}</value>
+  </data>
+  <data name="HEADER_ORGANISM" xml:space="preserve">
+    <value>organisme</value>
+  </data>
+  <data name="STYLEFLAGS_INVALIDMODELRESULT" xml:space="preserve">
+    <value>Modelfejl || Ugyldige modelresultater | Værdien kunne ikke beregnes</value>
+  </data>
+  <data name="LABEL_TITLE" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="LABEL_PAUSE" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_COMPUTEDCAPACITY" xml:space="preserve">
+    <value>Beregnet habitatkapacitet</value>
+  </data>
+  <data name="HEADER_COMPONENTS_EWE" xml:space="preserve">
+    <value>EWE-komponenter</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_CRITICALLYENDANGERED" xml:space="preserve">
+    <value>CR || Kritisk truet</value>
+  </data>
+  <data name="HEADER_CATCH_END" xml:space="preserve">
+    <value>Fangst (slut)</value>
+  </data>
+  <data name="HEADER_CATCH_MIN" xml:space="preserve">
+    <value>Fang min.</value>
+  </data>
+  <data name="HEADER_CATCH_MAX" xml:space="preserve">
+    <value>Fange maks.</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_VULANDAREA" xml:space="preserve">
+    <value>Vul (v) og område (A)</value>
+  </data>
+  <data name="HEADER_DISCARD_MORTALITY_BREAKDOWN" xml:space="preserve">
+    <value>Kasser dødelighed (gruppe x flåde)</value>
+  </data>
+  <data name="HEADER_PLOT_MAX" xml:space="preserve">
+    <value>Plot maks</value>
+  </data>
+  <data name="HEADER_PLOT_MIN" xml:space="preserve">
+    <value>Plot min</value>
+  </data>
+  <data name="HEADER_MODEL_TARGET" xml:space="preserve">
+    <value>Målmodelnavn</value>
+  </data>
+  <data name="HEADER_RHALFB0RATIO" xml:space="preserve">
+    <value>Ratio Bt / Ecopath B til 50% rekruttering</value>
+  </data>
+  <data name="GENERIC_VALUE_NOSEARCHENGINES" xml:space="preserve">
+    <value>(Ingen søgemaskiner installeret)</value>
+  </data>
+  <data name="HEADER_MEAN_LIMIT" xml:space="preserve">
+    <value>Begrænset gennemsnit</value>
+  </data>
+  <data name="HEADER_MSE_UPPERRISK" xml:space="preserve">
+    <value>Maks. biomasse / org. biomasse</value>
+  </data>
+  <data name="HEADER_VALUE_CUMULATIVE" xml:space="preserve">
+    <value>Kumulativ værdi</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_VULNERABLE" xml:space="preserve">
+    <value>VU||Sårbar</value>
+  </data>
+  <data name="FITRESPONSE_GRADIENT" xml:space="preserve">
+    <value>gradient</value>
+  </data>
+  <data name="HEADER_RECRUITMENT_CV" xml:space="preserve">
+    <value>Rekrutterings-CV</value>
+  </data>
+  <data name="HEADER_GROUPNAMEWEIGHT" xml:space="preserve">
+    <value>Gruppenavn \ vægt (g)</value>
+  </data>
+  <data name="HEADER_EFFORT" xml:space="preserve">
+    <value>Indsats</value>
+  </data>
+  <data name="HEADER_QUOTA_EFFORT" xml:space="preserve">
+    <value>Indsats</value>
+  </data>
+  <data name="HEADER_AVGERAGEWEIGHT" xml:space="preserve">
+    <value>Gennemsnitsvægt</value>
+  </data>
+  <data name="HEADER_AVERAGEWEIGHT" xml:space="preserve">
+    <value>Gennemsnitsvægt</value>
+  </data>
+  <data name="TS_TYPE_AVERAGEWEIGHT" xml:space="preserve">
+    <value>Gennemsnitsvægt</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_M0" xml:space="preserve">
+    <value>Anden dødelighedstvingning</value>
+  </data>
+  <data name="HEADER_ENABLE" xml:space="preserve">
+    <value>Aktiver</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_ENDANGERED" xml:space="preserve">
+    <value>EN||Endangered</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_OVER_B" xml:space="preserve">
+    <value>Koncentration / biomasse (kumulativ)</value>
+  </data>
+  <data name="SHAPE_PROMPT_SET_TO_VALUE" xml:space="preserve">
+    <value>Indtast en eller flere værdier adskilt med kommaer for at gentage på tværs af formen.</value>
+  </data>
+  <data name="HEADER_MPA_CLOSED" xml:space="preserve">
+    <value>Lukket for fiskeri</value>
+  </data>
+  <data name="TS_TYPE_DISCARDS" xml:space="preserve">
+    <value>Kasser (reference)</value>
+  </data>
+  <data name="HEADER_EXPORT" xml:space="preserve">
+    <value>Eksport</value>
+  </data>
+  <data name="HEADER_COMPONENTS_PLUGINS" xml:space="preserve">
+    <value>Plug-ins</value>
+  </data>
+  <data name="HEADER_FIELD" xml:space="preserve">
+    <value>Mark</value>
+  </data>
+  <data name="HEADER_FLEET" xml:space="preserve">
+    <value>Flåde</value>
+  </data>
+  <data name="HEADER_GENUS" xml:space="preserve">
+    <value>genus</value>
+  </data>
+  <data name="HEADER_GROUP" xml:space="preserve">
+    <value>Gruppe</value>
+  </data>
+  <data name="HEADER_MONTH" xml:space="preserve">
+    <value>Måned</value>
+  </data>
+  <data name="GENERAL_LABEL_MONTH" xml:space="preserve">
+    <value>Måned</value>
+  </data>
+  <data name="HEADER_COLOR" xml:space="preserve">
+    <value>Farve</value>
+  </data>
+  <data name="HEADER_COUNT" xml:space="preserve">
+    <value>Tælle</value>
+  </data>
+  <data name="HEADER_CLASS" xml:space="preserve">
+    <value>klasse</value>
+  </data>
+  <data name="HEADER_IMAGE" xml:space="preserve">
+    <value>Billede</value>
+  </data>
+  <data name="HEADER_INDEX" xml:space="preserve">
+    <value>Indeks</value>
+  </data>
+  <data name="SHAPE_HEADER_SET_TO_VALUE" xml:space="preserve">
+    <value>Sæt til værdi</value>
+  </data>
+  <data name="HEADER_LAYER" xml:space="preserve">
+    <value>Lag</value>
+  </data>
+  <data name="VERBOSE_STANDARD" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="HEADER_ORDER" xml:space="preserve">
+    <value>Bestille</value>
+  </data>
+  <data name="HEADER_UNITS" xml:space="preserve">
+    <value>Enheder</value>
+  </data>
+  <data name="COLORRAMP_VIRIDIS" xml:space="preserve">
+    <value>Viridis farveblind {0}</value>
+  </data>
+  <data name="HEADER_KALWT" xml:space="preserve">
+    <value>Kalman vægt</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_DATADEFICIENT" xml:space="preserve">
+    <value>DD||Datamangel</value>
+  </data>
+  <data name="HEADER_TOTAL" xml:space="preserve">
+    <value>i alt</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_EXTINCT" xml:space="preserve">
+    <value>EX||Uddøde</value>
+  </data>
+  <data name="HEADER_SHAPE" xml:space="preserve">
+    <value>Form</value>
+  </data>
+  <data name="HEADER_LINE_WIDTH_AUTO" xml:space="preserve">
+    <value>Linjer med automatisk skala</value>
+  </data>
+  <data name="HEADER_X_MIN" xml:space="preserve">
+    <value>X min</value>
+  </data>
+  <data name="HEADER_X_MAX" xml:space="preserve">
+    <value>X maks</value>
+  </data>
+  <data name="HEADER_FAMILY" xml:space="preserve">
+    <value>Familie</value>
+  </data>
+  <data name="HEADER_WITHOUT_FORAGING_TIME" xml:space="preserve">
+    <value>Uden justering af foder tid (FT)</value>
+  </data>
+  <data name="HEADER_FIXEDF" xml:space="preserve">
+    <value>Fast fiskeridødelighed</value>
+  </data>
+  <data name="HEADER_FLEETS" xml:space="preserve">
+    <value>flåder</value>
+  </data>
+  <data name="PROMPT_OPTIONS_APPLIED_SUCCESS" xml:space="preserve">
+    <value>Indstillingerne blev brugt med succes.</value>
+  </data>
+  <data name="GENERIC_VALUE_FLEET_OF_N" xml:space="preserve">
+    <value>Flåde {0} af {1}</value>
+  </data>
+  <data name="LABEL_CHOOSE_FOLDER" xml:space="preserve">
+    <value>Vælg mappe ...</value>
+  </data>
+  <data name="HEADER_LINE_WIDTH" xml:space="preserve">
+    <value>Fast linjebredde</value>
+  </data>
+  <data name="ORGANISM_REPTILES" xml:space="preserve">
+    <value>Krybdyr</value>
+  </data>
+  <data name="HEADER_LINE_COLOR" xml:space="preserve">
+    <value>Linjefarve</value>
+  </data>
+  <data name="HEADER_PREDICTIONVARIANCE" xml:space="preserve">
+    <value>Forudsigelsesvarians</value>
+  </data>
+  <data name="AUTOSAVE_ECOSIMRESULTS" xml:space="preserve">
+    <value>Kør resultater</value>
+  </data>
+  <data name="AUTOSAVE_ECOSPACERESULTS" xml:space="preserve">
+    <value>Kør resultater</value>
+  </data>
+  <data name="STYLEFLAGS_ERRORENCOUNTERED" xml:space="preserve">
+    <value>Ukendt fejl ||| Der opstod en ukendt fejl</value>
+  </data>
+  <data name="HEADER_DIRECT_ABSORPTION_RATE" xml:space="preserve">
+    <value>Direkte absorptionshastighed</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_REGIONS" xml:space="preserve">
+    <value>Regioner</value>
+  </data>
+  <data name="HEADER_SUM_PPB" xml:space="preserve">
+    <value>Samlet primær produktion / samlet biomasse</value>
+  </data>
+  <data name="HEADER_SUM_EXPORTS" xml:space="preserve">
+    <value>Summen af al eksport</value>
+  </data>
+  <data name="HEADER_GROUPS" xml:space="preserve">
+    <value>grupper</value>
+  </data>
+  <data name="HEADER_CONSUMER" xml:space="preserve">
+    <value>Forbruger</value>
+  </data>
+  <data name="GENERIC_VALUE_DEFAULT" xml:space="preserve">
+    <value>(Standard)</value>
+  </data>
+  <data name="HEADER_MODEL_SOURCE" xml:space="preserve">
+    <value>Kildemodel</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWTIMESERIES" xml:space="preserve">
+    <value>Ny tidsserie {0}</value>
+  </data>
+  <data name="HEADER_DRIVER_HISTOGRAM" xml:space="preserve">
+    <value>Driverhistogram</value>
+  </data>
+  <data name="TOOLTIP_MEDIATION_CAPACITY" xml:space="preserve">
+    <value>Driverhistogram</value>
+  </data>
+  <data name="ECOLOGY_BENTHOPELAGIC" xml:space="preserve">
+    <value>Benthopelagic</value>
+  </data>
+  <data name="HEADER_GROUPNAME" xml:space="preserve">
+    <value>Gruppe navn</value>
+  </data>
+  <data name="HEADER_EFFORT_PERC_ABOVE_REF" xml:space="preserve">
+    <value>Indsats% over reference</value>
+  </data>
+  <data name="DEFAULT_NEWHABITAT_NUM" xml:space="preserve">
+    <value>Habitat {0}</value>
+  </data>
+  <data name="FILEFILTER_STYLE" xml:space="preserve">
+    <value>EWE-visuel stil | * .westyle</value>
+  </data>
+  <data name="HEADER_CODE_FAO" xml:space="preserve">
+    <value>FAO id | Taxonomi kode i henhold til FAO</value>
+  </data>
+  <data name="HEADER_METHOD" xml:space="preserve">
+    <value>Metode</value>
+  </data>
+  <data name="FILEFILTER_IMAGE" xml:space="preserve">
+    <value>Bitmap-billede | * .bmp | JPEG-billede | * .jpg; *. Jpeg | GIF-billede | * .gif | PNG-billede | * .png | TIFF-billede | * .tif; *. Tiff</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_NOTUSABLE" xml:space="preserve">
+    <value>Tidsserien '{0}' kan ikke aktiveres. {1}</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_UNDEREXPLOITED" xml:space="preserve">
+    <value>Ikke-udnyttet ||| Uudviklet eller nyt fiskeri. Menes at have et betydeligt potentiale for ekspansion i den samlede produktion</value>
+  </data>
+  <data name="COMMAND_DISPLAYGROUPS" xml:space="preserve">
+    <value>Vælg grupper og flåder, der skal vises</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MIGRATION" xml:space="preserve">
+    <value>Migration</value>
+  </data>
+  <data name="HEADER_VALUE_BREAKDOWN" xml:space="preserve">
+    <value>Værdi (gruppe x flåde)</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_HABITATS" xml:space="preserve">
+    <value>habitatdirektivet</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_DELETE_MULTIPLE" xml:space="preserve">
+    <value>Du er ved at slette {0} tidsserier '. Denne handling kan ikke fortrydes. Er du sikker på, at du vil gøre dette?</value>
+  </data>
+  <data name="HEADER_MINWEIGHT" xml:space="preserve">
+    <value>Min. vægt</value>
+  </data>
+  <data name="HEADER_PROPORTION_CATCH" xml:space="preserve">
+    <value>Andel af fangst</value>
+  </data>
+  <data name="PROMPT_SHOWTITLE" xml:space="preserve">
+    <value>Vis titel</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWFORCINGSHAPE" xml:space="preserve">
+    <value>Tvinge form {0}</value>
+  </data>
+  <data name="HEADER_COMPONENTS_FRAMEWORK" xml:space="preserve">
+    <value>.NET komponenter</value>
+  </data>
+  <data name="HEADER_CVBEST" xml:space="preserve">
+    <value>Biomasse CV</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_MODERATELYEXPLOITED" xml:space="preserve">
+    <value>Moderat udnyttet ||| Udnyttet med et lavt fiskeriindsats. Menes at have et begrænset potentiale for ekspansion i den samlede produktion</value>
+  </data>
+  <data name="HEADER_SUM_FLOW_RESP" xml:space="preserve">
+    <value>Summen af alle åndedrætsstrømme</value>
+  </data>
+  <data name="HEADER_STRUCTURERELATIVEWEIGHT" xml:space="preserve">
+    <value>Struktur rel. vægt</value>
+  </data>
+  <data name="SHAPE_TYPE_TO_SEASONAL_CAPTION" xml:space="preserve">
+    <value>Skift formtype</value>
+  </data>
+  <data name="HEADER_NET_PROD" xml:space="preserve">
+    <value>Netto systemproduktion</value>
+  </data>
+  <data name="GENERIC_SAVE_TO_CSV" xml:space="preserve">
+    <value>Gem data på CSV ...</value>
+  </data>
+  <data name="HEADER_NUMBER" xml:space="preserve">
+    <value>Nummer</value>
+  </data>
+  <data name="GENERIC_VALUE_NOTSET" xml:space="preserve">
+    <value>(ikke specificeret)</value>
+  </data>
+  <data name="ABOUT_NET_VERSION" xml:space="preserve">
+    <value>.NET version {0} ({1})</value>
+  </data>
+  <data name="HEADER_INCOME" xml:space="preserve">
+    <value>Indkomst</value>
+  </data>
+  <data name="HEADER_FMAX" xml:space="preserve">
+    <value>FMAX</value>
+  </data>
+  <data name="HEADER_FLOW" xml:space="preserve">
+    <value>Flyde</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_ADVECTION" xml:space="preserve">
+    <value>Flyde</value>
+  </data>
+  <data name="HEADER_FOPT" xml:space="preserve">
+    <value>F maks.</value>
+  </data>
+  <data name="HEADER_FROM" xml:space="preserve">
+    <value>Fra</value>
+  </data>
+  <data name="HEADER_ADD1" xml:space="preserve">
+    <value>Tilføje</value>
+  </data>
+  <data name="HEADER_ADD" xml:space="preserve">
+    <value>Tilføje</value>
+  </data>
+  <data name="HEADER_DATE" xml:space="preserve">
+    <value>Dato</value>
+  </data>
+  <data name="HEADER_DIET" xml:space="preserve">
+    <value>Kost</value>
+  </data>
+  <data name="HEADER_CODE" xml:space="preserve">
+    <value>Kode</value>
+  </data>
+  <data name="HEADER_NAME" xml:space="preserve">
+    <value>Navn</value>
+  </data>
+  <data name="HEADER_LINK" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="HEADER_LESS" xml:space="preserve">
+    <value>Mindre</value>
+  </data>
+  <data name="HEADER_HIGH" xml:space="preserve">
+    <value>Høj</value>
+  </data>
+  <data name="HEADER_TYPE" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="HEADER_TIME" xml:space="preserve">
+    <value>Tid</value>
+  </data>
+  <data name="HEADER_SLOT" xml:space="preserve">
+    <value>Slot {0}</value>
+  </data>
+  <data name="HEADER_YEAR" xml:space="preserve">
+    <value>År</value>
+  </data>
+  <data name="GENERAL_LABEL_YEAR" xml:space="preserve">
+    <value>År</value>
+  </data>
+  <data name="HEADER_ENABLED_CAPACITY" xml:space="preserve">
+    <value>Drevkapacitet</value>
+  </data>
+  <data name="GENERIC_SHOW_NUMTL" xml:space="preserve">
+    <value>Antal trofiske niveauer</value>
+  </data>
+  <data name="FILEFILTER_SAVE_MDB" xml:space="preserve">
+    <value>EwE-database (Access 2003-format) | * .ewemdb</value>
+  </data>
+  <data name="FILEFILTER_MODEL_ACCESS" xml:space="preserve">
+    <value>Ecopatadatabaser | * .mdb; *. Accdb; *. EwEmdb; *. EwEaccdb</value>
+  </data>
+  <data name="HEADER_MANDATED_REBUILDING" xml:space="preserve">
+    <value>Mandat ombygning</value>
+  </data>
+  <data name="HEADER_SUM_PROD" xml:space="preserve">
+    <value>Summen af al produktion</value>
+  </data>
+  <data name="HEADER_SUM_COST" xml:space="preserve">
+    <value>Udgifter i alt</value>
+  </data>
+  <data name="HEADER_TOTALCOST" xml:space="preserve">
+    <value>Udgifter i alt</value>
+  </data>
+  <data name="HEADER_SUM_COST_FIXED" xml:space="preserve">
+    <value>Samlede faste omkostninger</value>
+  </data>
+  <data name="TOOLTIP_SAVETOIMAGE" xml:space="preserve">
+    <value>Gem til billede</value>
+  </data>
+  <data name="GENERIC_LABEL_SPLIT" xml:space="preserve">
+    <value>{0} - {1}</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_INITIAL" xml:space="preserve">
+    <value>Indledende konc. (t/t)</value>
+  </data>
+  <data name="GENERIC_LABEL_POINT" xml:space="preserve">
+    <value>{0} ({1}, {2})</value>
+  </data>
+  <data name="HEADER_INDICATOR" xml:space="preserve">
+    <value>Indikator</value>
+  </data>
+  <data name="TOOLTIP_GRID_APPLYVALUE" xml:space="preserve">
+    <value>Indstil denne værdi til alle valgte celler</value>
+  </data>
+  <data name="TS_TYPE_CATCHESREL" xml:space="preserve">
+    <value>Relative fangster (reference)</value>
+  </data>
+  <data name="TS_TYPE_CATCHESABS" xml:space="preserve">
+    <value>Fangster (reference)</value>
+  </data>
+  <data name="HEADER_MSE_LOWERRISK" xml:space="preserve">
+    <value>Min. biomasse / org. biomasse</value>
+  </data>
+  <data name="FILEFILTER_FLOWDIAGRAM" xml:space="preserve">
+    <value>Flowdiagramlayoutfiler | * .fdlayout</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_EXTINCTINWILD" xml:space="preserve">
+    <value>EW||Uddød i naturen</value>
+  </data>
+  <data name="GENERIC_LABEL_APPLY" xml:space="preserve">
+    <value>ansøge</value>
+  </data>
+  <data name="HEADER_EFFORTRELATEDCOST" xml:space="preserve">
+    <value>Arbejdsrelaterede omkostninger (%)</value>
+  </data>
+  <data name="GENERIC_SHOW_TROPHIC_LEVELS" xml:space="preserve">
+    <value>Vis trofiske niveauer</value>
+  </data>
+  <data name="HEADER_SOURCEFATE" xml:space="preserve">
+    <value>Kilde / skæbne</value>
+  </data>
+  <data name="HEADER_REGIONS_ALL" xml:space="preserve">
+    <value>Alle regioner</value>
+  </data>
+  <data name="AUTORUN_ALL" xml:space="preserve">
+    <value>Kør alle automatisk</value>
+  </data>
+  <data name="HEADER_PARAMETER" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="HEADER_VALUEES" xml:space="preserve">
+    <value>Værdi (E / S)</value>
+  </data>
+  <data name="GENERIC_VALUE_MAPPOS" xml:space="preserve">
+    <value>række {3}, kol {4}; lon {0} {2}, lat {1} {2}</value>
+  </data>
+  <data name="GENERAL_LABEL_ANNUAL" xml:space="preserve">
+    <value>Årligt</value>
+  </data>
+  <data name="TSDATASETINTERVAL_ANNUAL" xml:space="preserve">
+    <value>Årligt</value>
+  </data>
+  <data name="BA_CALC_FROMECOSIMYEARSWEIGHTEDAVERAGE" xml:space="preserve">
+    <value>Afstandsvejet gennemsnitlig Ecosim-biomasse over år</value>
+  </data>
+  <data name="TS_TYPE_FISHMORTABS" xml:space="preserve">
+    <value>Fiskeridødelighed</value>
+  </data>
+  <data name="TS_TYPE_FISHMORTREL" xml:space="preserve">
+    <value>Relativ fiskeridødelighed</value>
+  </data>
+  <data name="SHAPE_TYPE_TO_SEASONAL_MSG" xml:space="preserve">
+    <value>Ændring af en form fra 'Langsigtet' til 'Sæsonbestemt' vil få dine langvarige data til at blive overskrevet med et sæsonbestemt mønster. Denne handling kan ikke fortrydes. Er du sikker på, at du vil gøre dette?</value>
+  </data>
+  <data name="ERROR_GRID_PASTE" xml:space="preserve">
+    <value>Der opstod en række formateringsfejl ved integrering af dine data, og forsøget blev afbrudt. Kontroller, om dine data er kompatible med dette gitter, og prøv igen.</value>
+  </data>
+  <data name="DEFAULT_NEWECOSPACESCENARIO" xml:space="preserve">
+    <value>Nyt Ecospace-scenarie</value>
+  </data>
+  <data name="FILEFILTER_SAVE_ACCDB" xml:space="preserve">
+    <value>EwE-database (Access 2007-format) | * .eweaccdb</value>
+  </data>
+  <data name="HEADER_OVERLAP_TEMPORAL" xml:space="preserve">
+    <value>Midlertidig. overlapning</value>
+  </data>
+  <data name="DATASOURCE_ACCESS2003" xml:space="preserve">
+    <value>* .ewemdb | Access 2003 (* .ewemdb) || Microsoft Access 2003 (* .ewemdb)</value>
+  </data>
+  <data name="DATASOURCE_ACCESS2007" xml:space="preserve">
+    <value>* .eweaccdb | Access 2007 (* .eweaccdb) || Microsoft Access 2007 (* .eweaccdb)</value>
+  </data>
+  <data name="HEADER_NODE_SIZE_AUTO" xml:space="preserve">
+    <value>Noder i automatisk størrelse</value>
+  </data>
+  <data name="HEADER_K_VBGF" xml:space="preserve">
+    <value>K i VBGF (/ [YEAR})</value>
+  </data>
+  <data name="GENERIC_TEXT_CURSOR" xml:space="preserve">
+    <value>cursoren</value>
+  </data>
+  <data name="LABEL_VALUE_AT" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
+  <data name="GENERIC_LABEL_DETAILED" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
+  <data name="HEADER_REFERENCE" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="HEADER_SUM_FLOW_DET" xml:space="preserve">
+    <value>Summen af alle strømmer ind i detritus</value>
+  </data>
+  <data name="HEADER_SUM_BnonDET" xml:space="preserve">
+    <value>Samlet biomasse (ekskl. Detritus)</value>
+  </data>
+  <data name="GENERIC_LABEL_SAVE" xml:space="preserve">
+    <value>Gemme</value>
+  </data>
+  <data name="HEADER_VALUES" xml:space="preserve">
+    <value>Værdier</value>
+  </data>
+  <data name="HEADER_POTENTIAL_GROWTH" xml:space="preserve">
+    <value>Poten. vækst (Bunf / Bo)</value>
+  </data>
+  <data name="HEADER_VERSION" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="HEADER_SURVIVAL" xml:space="preserve">
+    <value>Overlevelse</value>
+  </data>
+  <data name="HEADER_RECRUITMENT" xml:space="preserve">
+    <value>Rekruttering</value>
+  </data>
+  <data name="HEADER_ASSIGNED_ENV_FORCING" xml:space="preserve">
+    <value>Tildelt miljøkraft til {0}</value>
+  </data>
+  <data name="HEADER_LONGITUDE" xml:space="preserve">
+    <value>Længde</value>
+  </data>
+  <data name="LABEL_SET" xml:space="preserve">
+    <value>Sæt</value>
+  </data>
+  <data name="HEADER_TARGET" xml:space="preserve">
+    <value>Mål</value>
+  </data>
+  <data name="COMPATIBILITY_SUMMARY" xml:space="preserve">
+    <value>{0}% tidsmæssig overlapning med {1}% delvis og {2}% total overlapning.</value>
+  </data>
+  <data name="HEADER_INDEX_ONMIVORY" xml:space="preserve">
+    <value>System Omnivory Index</value>
+  </data>
+  <data name="DEFAULT_NEWREGION_NUM" xml:space="preserve">
+    <value>Region {0}</value>
+  </data>
+  <data name="LABEL_VALUE_FROM" xml:space="preserve">
+    <value>{0} ({1} -)</value>
+  </data>
+  <data name="LABEL_VALUE_UPTO" xml:space="preserve">
+    <value>{0} (- {1})</value>
+  </data>
+  <data name="HEADER_RELATIVEWEIGHT_ABBR" xml:space="preserve">
+    <value>Rel. vægt</value>
+  </data>
+  <data name="GENERIC_VALUE_CUSTOM" xml:space="preserve">
+    <value>(brugerdefinerede)</value>
+  </data>
+  <data name="HEADER_WEIGHT" xml:space="preserve">
+    <value>Vægt</value>
+  </data>
+  <data name="TS_TYPE_FISHINGEFFORT" xml:space="preserve">
+    <value>Fiskeriindsats</value>
+  </data>
+  <data name="HEADER_FISHINGEFFORT" xml:space="preserve">
+    <value>Fiskeriindsats</value>
+  </data>
+  <data name="HEADER_COST_START" xml:space="preserve">
+    <value>Omkostninger (start)</value>
+  </data>
+  <data name="HEADER_REGION" xml:space="preserve">
+    <value>Område</value>
+  </data>
+  <data name="HEADER_REMARK" xml:space="preserve">
+    <value>Bemærkning</value>
+  </data>
+  <data name="HEADER_CB" xml:space="preserve">
+    <value>Cons / BIOM</value>
+  </data>
+  <data name="HEADER_CV" xml:space="preserve">
+    <value>CV</value>
+  </data>
+  <data name="HEADER_ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="HEADER_TO" xml:space="preserve">
+    <value>Til</value>
+  </data>
+  <data name="HEADER_PP" xml:space="preserve">
+    <value>En del af produktionen fra primær produktivitet</value>
+  </data>
+  <data name="HEADER_SS" xml:space="preserve">
+    <value>Summen af firkanter</value>
+  </data>
+  <data name="HEADER_BIOMASS_ABSOLUTE" xml:space="preserve">
+    <value>Absolut biomasse</value>
+  </data>
+  <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
+    <value>{0} gemt i '{1}'.</value>
+  </data>
+  <data name="HEADER_PREDMORT_REL" xml:space="preserve">
+    <value>Predationsdød (rel)</value>
+  </data>
+  <data name="GENERIC_STATUS_BUSY" xml:space="preserve">
+    <value>Vent venligst et øjeblik...</value>
+  </data>
+  <data name="HEADER_ASSIGNED_GROUPS_FLEETS_SHAPE" xml:space="preserve">
+    <value>Grupper og flåder tildelt til {0}</value>
+  </data>
+  <data name="TS_TYPE_LANDINGS" xml:space="preserve">
+    <value>Landinger (reference)</value>
+  </data>
+  <data name="ECOLOGY_BATHYDEMERSAL" xml:space="preserve">
+    <value>Bathydemersal</value>
+  </data>
+  <data name="HEADER_PROFIT" xml:space="preserve">
+    <value>Profit</value>
+  </data>
+  <data name="HEADER_SUM_PROFIT" xml:space="preserve">
+    <value>Profit</value>
+  </data>
+  <data name="HEADER_IUCN_CONSERVATION_STATUS" xml:space="preserve">
+    <value>IUCN-bevaringsstatus</value>
+  </data>
+  <data name="HEADER_COST_END" xml:space="preserve">
+    <value>Omkostninger (slut)</value>
+  </data>
+  <data name="HEADER_PLUGIN" xml:space="preserve">
+    <value>Plug-in</value>
+  </data>
+  <data name="HEADER_PHYLUM" xml:space="preserve">
+    <value>Række</value>
+  </data>
+  <data name="HEADER_OVERLAP_SPATIAL" xml:space="preserve">
+    <value>Spyttede. overlapning</value>
+  </data>
+  <data name="HEADER_CATCH_PERC_ABOVE_REF" xml:space="preserve">
+    <value>Fangst% over reference</value>
+  </data>
+  <data name="HEADER_SUM_BT" xml:space="preserve">
+    <value>Samlet biomasse / total gennemstrømning</value>
+  </data>
+  <data name="HEADER_STATUS" xml:space="preserve">
+    <value>status</value>
+  </data>
+  <data name="GENERIC_FILELOAD_SUCCES" xml:space="preserve">
+    <value>{0} indlæst fra '{1}'.</value>
+  </data>
+  <data name="PROMPT_REQUIRES_RESTART" xml:space="preserve">
+    <value>Du bliver nødt til at genstarte EwE for at gøre dine ændringer effektive.</value>
+  </data>
+  <data name="HEADER_LEADING_BIOMASS" xml:space="preserve">
+    <value>Førende biomasse</value>
+  </data>
+  <data name="STYLEFLAGS_NOTEDITABLE" xml:space="preserve">
+    <value>Ikke redigerbar ||| Værdi kan ikke redigeres</value>
+  </data>
+  <data name="HEADER_SOURCE" xml:space="preserve">
+    <value>Kilde</value>
+  </data>
+  <data name="HEADER_SOCIAL" xml:space="preserve">
+    <value>Social</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_BIOMASSRELATIVEFORCING" xml:space="preserve">
+    <value>Biomasse relativ kraft</value>
+  </data>
+  <data name="HEADER_ECOSYSTEM_STRUCTURE_ABBR" xml:space="preserve">
+    <value>Ecosys.</value>
+  </data>
+  <data name="GENERIC_VALUE_FIRSTTIMESTEP" xml:space="preserve">
+    <value>(første gangstrin)</value>
+  </data>
+  <data name="GENERIC_SHOW_BIOMASS_LEGEND" xml:space="preserve">
+    <value>Vis biomasse-legende</value>
+  </data>
+  <data name="AUTOSAVE_ECOSPACERESULTSREGION" xml:space="preserve">
+    <value>Resultatoversigt pr. Region</value>
+  </data>
+  <data name="HEADER_COMPONENTS_REFERENCED" xml:space="preserve">
+    <value>Referencerede komponenter</value>
+  </data>
+  <data name="GENERIC_VALUE_MAPPOS_VALUE" xml:space="preserve">
+    <value>række {3}, kol {4}; lon {0} {2}, lat {1} {2}; værdi: {5}</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_MISSING" xml:space="preserve">
+    <value>Filen {0} kan ikke findes.</value>
+  </data>
+  <data name="HEADER_MAX_LENGTH" xml:space="preserve">
+    <value>Maksimal længde (cm)</value>
+  </data>
+  <data name="HEADER_SUM_COST_VARIABLE" xml:space="preserve">
+    <value>Samlede variable omkostninger</value>
+  </data>
+  <data name="PROMPT_STYLE_SAVE_SUCCESS" xml:space="preserve">
+    <value>Stil gemt på {0}</value>
+  </data>
+  <data name="HEADER_EXISTENCE_VALUE" xml:space="preserve">
+    <value>Eksistensværdi</value>
+  </data>
+  <data name="DEFAULT_NEWLAYER_NUM" xml:space="preserve">
+    <value>Lag {0}</value>
+  </data>
+  <data name="HEADER_LAYER_INDEXED" xml:space="preserve">
+    <value>Lag {0}</value>
+  </data>
+  <data name="HEADER_PREYPREDATOR" xml:space="preserve">
+    <value>Rov \ rovdyr</value>
+  </data>
+  <data name="FILEFILTER_LOAD_RASTER" xml:space="preserve">
+    <value>Kommaseparerede tekstfiler | * .csv | ESRI ascii-fil | * .asc | ESRI formfil | * .shp | Rumlige rasterfiler | * .asc; *. Csv; *. Shp</value>
+  </data>
+  <data name="GENERIC_SHOW_LABELS" xml:space="preserve">
+    <value>Vis etiketter</value>
+  </data>
+  <data name="HEADER_SHOW_LABELS" xml:space="preserve">
+    <value>Vis etiketter</value>
+  </data>
+  <data name="HEADER_VALUEEND" xml:space="preserve">
+    <value>Værdi (slut)</value>
+  </data>
+  <data name="HEADER_BIOMASS_START" xml:space="preserve">
+    <value>Biomasse (start)</value>
+  </data>
+  <data name="GENERIC_SHOW_LEGEND" xml:space="preserve">
+    <value>Vis legende</value>
+  </data>
+  <data name="HEADER_BIOMASS_UPPER" xml:space="preserve">
+    <value>Øvre biomasse</value>
+  </data>
+  <data name="HEADER_QUOTA_NOTUSED" xml:space="preserve">
+    <value>Intet kontingent</value>
+  </data>
+  <data name="HEADER_INDEX_CONNECTANCE" xml:space="preserve">
+    <value>Tilslutningsindeks</value>
+  </data>
+  <data name="HEADER_RELATIVEWEIGHT" xml:space="preserve">
+    <value>Relativ vægt</value>
+  </data>
+  <data name="HEADER_BIOMASS_LOWER" xml:space="preserve">
+    <value>Biomasse lavere</value>
+  </data>
+  <data name="HEADER_BIOMASS_LIMIT" xml:space="preserve">
+    <value>Biomasse-grænse</value>
+  </data>
+  <data name="HEADER_CONFIDENCEINTERVAL" xml:space="preserve">
+    <value>Conf. interv. (+ / -%)</value>
+  </data>
+  <data name="HEADER_DENDEPCATCHABILITY_ABBR" xml:space="preserve">
+    <value>Dens. dep. catchability</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_FULLYEXPLOITED" xml:space="preserve">
+    <value>Fuldt udnyttet ||| Fiskeriet fungerer på eller tæt på et optimalt udbytteniveau uden forventet plads til yderligere ekspansion</value>
+  </data>
+  <data name="HEADER_VULNERABILITY" xml:space="preserve">
+    <value>Sårbarhed</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLFIELDS" xml:space="preserve">
+    <value>(alle felter)</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLFLEETS" xml:space="preserve">
+    <value>(alle flåder)</value>
+  </data>
+  <data name="STYLEFLAGS_NAMES" xml:space="preserve">
+    <value>Navn ||| Værdi er et navn</value>
+  </data>
+  <data name="HEADER_POPULATIONBIOMASS" xml:space="preserve">
+    <value>Befolkningsbiomasse</value>
+  </data>
+  <data name="HEADER_MEASUREOFFIT" xml:space="preserve">
+    <value>Måling af pasform, t *</value>
+  </data>
+  <data name="CAPTION_DEFINE_MEDIATING_GROUPSANDFLEETS" xml:space="preserve">
+    <value>Definer formidlende grupper og flåder for '{0}'</value>
+  </data>
+  <data name="GENERIC_VAUE_RUN_X" xml:space="preserve">
+    <value>Kør {0}</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_MORTOTHER" xml:space="preserve">
+    <value>Andel dødelighed</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_PRODUCTIONRATE" xml:space="preserve">
+    <value>Produktionshastighed</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLGROUPS" xml:space="preserve">
+    <value>(alle grupper)</value>
+  </data>
+  <data name="HEADER_EFFORT_MEAN" xml:space="preserve">
+    <value>Indsatsmiddel</value>
+  </data>
+  <data name="HEADER_LEFT_LIMIT" xml:space="preserve">
+    <value>Venstre grænse</value>
+  </data>
+  <data name="HEADER_FEEDINGTIME" xml:space="preserve">
+    <value>Fodringstid</value>
+  </data>
+  <data name="HEADER_AGE_FIRST_CAPTURE" xml:space="preserve">
+    <value>Alder første fangst</value>
+  </data>
+  <data name="SHAPEFUNCTION_HYPERBOLIC" xml:space="preserve">
+    <value>hyperbolsk</value>
+  </data>
+  <data name="HEADER_CATCH_PERC_BELOW_REF" xml:space="preserve">
+    <value>Fangst% under reference</value>
+  </data>
+  <data name="HEADER_BIOMASS_MIN" xml:space="preserve">
+    <value>Biomasse min.</value>
+  </data>
+  <data name="HEADER_BIOMASS_MAX" xml:space="preserve">
+    <value>Biomasse max.</value>
+  </data>
+  <data name="ORGANISM_MAMMALS" xml:space="preserve">
+    <value>Pattedyr</value>
+  </data>
+  <data name="ABOUT_OS_VERSION" xml:space="preserve">
+    <value>Operativsystem {0} ({1})</value>
+  </data>
+  <data name="GENERIC_SHOW_HIDDEN" xml:space="preserve">
+    <value>Vis skjulte noder</value>
+  </data>
+  <data name="DEFAULT_NEWMODELNAME" xml:space="preserve">
+    <value>Ny model</value>
+  </data>
+  <data name="SHAPEFUNCTION_LEFTSHOULDER" xml:space="preserve">
+    <value>Venstre skulder</value>
+  </data>
+  <data name="GENERIC_VALUE_DELETE_PENDING" xml:space="preserve">
+    <value>(at slette)</value>
+  </data>
+  <data name="FILEFILTER_SPATTEMPCONFIG" xml:space="preserve">
+    <value>Rumlige tidsmæssige konfigurationsfiler | * .xml</value>
+  </data>
+  <data name="TOOLTIP_VIEWFOLDER" xml:space="preserve">
+    <value>Vis mappe</value>
+  </data>
+  <data name="PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH" xml:space="preserve">
+    <value>Den valgte fil kan ikke bruges til dette formål. Bemærk, at billeder ikke kan overstige 100 pixels i bredde eller højde.</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_NOTASSESSED" xml:space="preserve">
+    <value>Ikke vurderet</value>
+  </data>
+  <data name="HEADER_SHOWALL" xml:space="preserve">
+    <value>Vis alt</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_VULNERABILITY" xml:space="preserve">
+    <value>Sårbarhed (v)</value>
+  </data>
+  <data name="HEADER_BIOMASS_PERC_BELOW_REF" xml:space="preserve">
+    <value>Biomasse% under reference</value>
+  </data>
+  <data name="COMPATIBILITY_NOSPATIAL" xml:space="preserve">
+    <value>Ingen rumlig || Ingen rumlig overlapning | Data overlapper ikke rumligt med scenariet</value>
+  </data>
+  <data name="HEADER_SIZECLASS" xml:space="preserve">
+    <value>Størrelsesklasse</value>
+  </data>
+  <data name="FILE_SAVE_ERROR_DETAIL" xml:space="preserve">
+    <value>Kan ikke gemme i filen '{0}'. {1}</value>
+  </data>
+  <data name="DATASOURCE_EII" xml:space="preserve">
+    <value>* .eii | Ecopath 5 EII (* .eii) || Du god ole Ecopath 5 EII tekstformat (* .eii)</value>
+  </data>
+  <data name="STYLEFLAGS_REMARKS" xml:space="preserve">
+    <value>Bemærkninger ||| Værdien har vedhæftede bemærkninger</value>
+  </data>
+  <data name="GENERIC_VALUE_GRID_CONTENT" xml:space="preserve">
+    <value>gitterindhold</value>
+  </data>
+  <data name="HEADER_TOTALLENGTH" xml:space="preserve">
+    <value>Total længde</value>
+  </data>
+  <data name="GENERIC_LABEL_PERUNIT" xml:space="preserve">
+    <value>(/ {0})</value>
+  </data>
+  <data name="OCCURRENCESTATUS_INTRODUCED" xml:space="preserve">
+    <value>indført</value>
+  </data>
+  <data name="HEADER_ECOSIM_YEARS" xml:space="preserve">
+    <value>Økosim år</value>
+  </data>
+  <data name="HEADER_TOTALVALUE_PERC" xml:space="preserve">
+    <value>Total værdi (%)</value>
+  </data>
+  <data name="STYLEFLAGS_SUM" xml:space="preserve">
+    <value>Sum ||| Værdi er et formelresultat</value>
+  </data>
+  <data name="HEADER_BODYWEIGHT_LOGg" xml:space="preserve">
+    <value>Kropsvægt (log g)</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_CONTAMINANTS" xml:space="preserve">
+    <value>forureninger</value>
+  </data>
+  <data name="COMPATIBILITY_NOTEMPORAL" xml:space="preserve">
+    <value>Ingen tidsmæssig || Ingen tidsmæssig overlapning | Der er ingen data for Ecospace-køringsperioden</value>
+  </data>
+  <data name="AUTOSAVE_MONTECARLO" xml:space="preserve">
+    <value>Monte Carlo-forsøgsresultater</value>
+  </data>
+  <data name="HEADER_SUM_VALUE_MARKET" xml:space="preserve">
+    <value>Samlet markedsværdi</value>
+  </data>
+  <data name="ECOLOGY_PELAGICOCEANIC" xml:space="preserve">
+    <value>Pelagic-oceaniske</value>
+  </data>
+  <data name="GENERIC_FILELOAD_FAILURE" xml:space="preserve">
+    <value>{0} kunne ikke indlæses fra '{1}': {2}.</value>
+  </data>
+  <data name="HEADER_MAX_RECRUITMENT" xml:space="preserve">
+    <value>Maks. rekruttering</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_DELETE" xml:space="preserve">
+    <value>Du er ved at slette tidsserier '{0}'. Denne handling kan ikke fortrydes. Er du sikker på, at du vil gøre dette?</value>
+  </data>
+  <data name="VERBOSE_DETAILED" xml:space="preserve">
+    <value>detaljeret</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MPAS" xml:space="preserve">
+    <value>MPA</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_CAPACITYINPUT" xml:space="preserve">
+    <value>Habitat-foderkapacitet</value>
+  </data>
+  <data name="HEADER_RELATIVE_CATCH" xml:space="preserve">
+    <value>Relativ fangst</value>
+  </data>
+  <data name="UNIT_BYTE" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="HEADER_RELATIVE_VALUE" xml:space="preserve">
+    <value>Relativ værdi</value>
+  </data>
+  <data name="HEADER_COMPARTMENT" xml:space="preserve">
+    <value>Rum</value>
+  </data>
+  <data name="HEADER_CATCH_LOWER" xml:space="preserve">
+    <value>Fang lavere</value>
+  </data>
+  <data name="HEADER_CATCH_START" xml:space="preserve">
+    <value>Fangst (start)</value>
+  </data>
+  <data name="HEADER_CATCH_UPPER" xml:space="preserve">
+    <value>Fang øvre</value>
+  </data>
+  <data name="COLORRAMP_EWE" xml:space="preserve">
+    <value>Standard EwE-farveskema</value>
+  </data>
+  <data name="HEADER_RIGHT_LIMIT" xml:space="preserve">
+    <value>Højre grænse</value>
+  </data>
+  <data name="GENERIC_ZOOM_RESET" xml:space="preserve">
+    <value>Nulstil zoom</value>
+  </data>
+  <data name="HEADER_COMPONENT" xml:space="preserve">
+    <value>Komponent</value>
+  </data>
+  <data name="GENERIC_VALUE_NOTAVAILABLE" xml:space="preserve">
+    <value>(N / a)</value>
+  </data>
+  <data name="METADATA_BOOLEAN" xml:space="preserve">
+    <value>Ja Nej</value>
+  </data>
+  <data name="HEADER_CATCH_CV" xml:space="preserve">
+    <value>Fang cv</value>
+  </data>
+  <data name="OCCURRENCESTATUS_ENDEMIC" xml:space="preserve">
+    <value>endemisk</value>
+  </data>
+  <data name="HEADER_HALF_MAX_RECRUITMENT" xml:space="preserve">
+    <value>Halvdelen maks. rekruttering</value>
+  </data>
+  <data name="HEADER_FIB" xml:space="preserve">
+    <value>FIB-indeks</value>
+  </data>
+  <data name="HEADER_AIC" xml:space="preserve">
+    <value>Akaike informationskriterier</value>
+  </data>
+  <data name="HEADER_MPA" xml:space="preserve">
+    <value>MPA</value>
+  </data>
+  <data name="HEADER_COL" xml:space="preserve">
+    <value>Kolonne</value>
+  </data>
+  <data name="HEADER_LOW" xml:space="preserve">
+    <value>Lav</value>
+  </data>
+  <data name="HEADER_TAC" xml:space="preserve">
+    <value>Samlet tilladt fangst</value>
+  </data>
+  <data name="HEADER_TFM" xml:space="preserve">
+    <value>Mål fiskedødelighed</value>
+  </data>
+  <data name="HEADER_TLC" xml:space="preserve">
+    <value>Trofisk niveau af fangsten</value>
+  </data>
+  <data name="HEADER_ROW" xml:space="preserve">
+    <value>Række</value>
+  </data>
+  <data name="HEADER_PBZ" xml:space="preserve">
+    <value>Prod / biom eller Z</value>
+  </data>
+  <data name="HEADER_SUM" xml:space="preserve">
+    <value>Sum</value>
+  </data>
+  <data name="GENERIC_VALUE_ITERATION" xml:space="preserve">
+    <value>Iteration {0}</value>
+  </data>
+  <data name="FITRESPONSE_NONE" xml:space="preserve">
+    <value>Ingen</value>
+  </data>
+  <data name="BUTTON_NONE" xml:space="preserve">
+    <value>Ingen</value>
+  </data>
+  <data name="HEADER_CODE_SEALIFEBASE" xml:space="preserve">
+    <value>SLB id | Taxonomi kode i SeaLifeBase</value>
+  </data>
+  <data name="HEADER_RESPIRATIONASSIMILATION" xml:space="preserve">
+    <value>Respiration / assimilation</value>
+  </data>
+  <data name="STYLEFLAGS_VALUECOMPUTED" xml:space="preserve">
+    <value>Beregnet ||| Værdi blev beregnet eller estimeret</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_DATA" xml:space="preserve">
+    <value>Filen '{0}' indeholdt ingen data.</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_READ" xml:space="preserve">
+    <value>Filen '{0}' kunne ikke læses.</value>
+  </data>
+  <data name="ORGANISM_ALGAE" xml:space="preserve">
+    <value>Alger</value>
+  </data>
+  <data name="HEADER_NET_ECONOMIC_VALUE_ABBR" xml:space="preserve">
+    <value>Econ.</value>
+  </data>
+  <data name="ORGANISM_OTHER" xml:space="preserve">
+    <value>(Andet)</value>
+  </data>
+  <data name="HEADER_DETRITUS" xml:space="preserve">
+    <value>detritus</value>
+  </data>
+  <data name="ORGANISM_BIRDS" xml:space="preserve">
+    <value>Fugle</value>
+  </data>
+  <data name="HEADER_EXPLOITATION_STATUS" xml:space="preserve">
+    <value>Udnyttelsesstatus</value>
+  </data>
+  <data name="ORGANISM_FUNGI" xml:space="preserve">
+    <value>Svampe</value>
+  </data>
+  <data name="BA_CALC_FROMECOPATH" xml:space="preserve">
+    <value>Ecopath biomasse akkumuleringsværdi</value>
+  </data>
+  <data name="HEADER_FISHING" xml:space="preserve">
+    <value>Fiskeri</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_FISHING" xml:space="preserve">
+    <value>Fiskeri</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
+    <value>Relativ biomasse (reference)</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSABS" xml:space="preserve">
+    <value>Absolut biomasse (reference)</value>
+  </data>
+  <data name="STATUS_TIMESERIES_ADDING" xml:space="preserve">
+    <value>Tilføjer tidsserier {0} ...</value>
+  </data>
+  <data name="PROMPT_REQUIRES_ADMINISTRATOR" xml:space="preserve">
+    <value>EwE bliver nødt til at køre med administratorrettigheder for at gøre dine ændringer effektive.</value>
+  </data>
+  <data name="SHAPEFUNCTION_BETAPDF" xml:space="preserve">
+    <value>Betafunktion</value>
+  </data>
+  <data name="HEADER_LANDINGS" xml:space="preserve">
+    <value>landinger</value>
+  </data>
+  <data name="HEADER_STANZA_AGE" xml:space="preserve">
+    <value>Stanza-alder (i måneder)</value>
+  </data>
+  <data name="HEADER_SUM_CONSUMPTION" xml:space="preserve">
+    <value>Summen af alt forbrug</value>
+  </data>
+  <data name="GENERIC_VALUE_PARTIAL" xml:space="preserve">
+    <value>(delvis)</value>
+  </data>
+  <data name="HEADER_BIOACCUM" xml:space="preserve">
+    <value>Akkumulering af biomasse</value>
+  </data>
+  <data name="HEADER_ECOSPACE_AREA" xml:space="preserve">
+    <value>Ecospace-område</value>
+  </data>
+  <data name="PROMPT_STYLE_SAVE_FAILED" xml:space="preserve">
+    <value>Stil kunne ikke gemmes til {0}. {1}</value>
+  </data>
+  <data name="LABEL_ALL_SUPPORTED_FILES" xml:space="preserve">
+    <value>Alle understøttede filer</value>
+  </data>
+  <data name="GENERIC_LABEL_STEP_SIZE" xml:space="preserve">
+    <value>Trin størrelse</value>
+  </data>
+  <data name="ORGANISM_BACTERIA" xml:space="preserve">
+    <value>Bakterie</value>
+  </data>
+  <data name="HEADER_CC_OVER_B" xml:space="preserve">
+    <value>Bæreevne / Ecopath biomasse</value>
+  </data>
+  <data name="HEADER_TOTALPROFIT" xml:space="preserve">
+    <value>Samlet overskud</value>
+  </data>
+  <data name="HEADER_SUM_VALUE_SHADOW" xml:space="preserve">
+    <value>Samlet skyggeværdi</value>
+  </data>
+  <data name="HEADER_NET_ECONOMIC_VALUE" xml:space="preserve">
+    <value>Netto økonomisk værdi</value>
+  </data>
+  <data name="COMPATIBILITY_ERRORS" xml:space="preserve">
+    <value>{0} fejl (er) ||| Dataene indeholder {0} fejl (er) for Ecospace-køringsperioden. Kontroller venligst</value>
+  </data>
+  <data name="HEADER_TIMESERIES" xml:space="preserve">
+    <value>Tidsserier</value>
+  </data>
+  <data name="HEADER_SCALEDVALUES" xml:space="preserve">
+    <value>Skalerede værdier</value>
+  </data>
+  <data name="COMMAND_DEFINEMPAS" xml:space="preserve">
+    <value>Definer marinebeskyttede områder</value>
+  </data>
+  <data name="GENERIC_LABEL_SCENARIODETAILS" xml:space="preserve">
+    <value>{0} ({1} {2})</value>
+  </data>
+  <data name="HEADER_APPEARANCE" xml:space="preserve">
+    <value>Udseende</value>
+  </data>
+  <data name="ORGANISM_PLANTS" xml:space="preserve">
+    <value>Planter</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_NEARTHREATENED" xml:space="preserve">
+    <value>NT || Nær gevindet</value>
+  </data>
+  <data name="GENERIC_VALUE_NONE" xml:space="preserve">
+    <value>(ingen)</value>
+  </data>
+  <data name="GENERIC_VALUE_FULL" xml:space="preserve">
+    <value>(fuld)</value>
+  </data>
+  <data name="ECOLOGY_BATHYPELAGIC" xml:space="preserve">
+    <value>Bathypelagic</value>
+  </data>
+  <data name="ECOLOGY_BENTHIC" xml:space="preserve">
+    <value>Benthic</value>
+  </data>
+  <data name="HEADER_INDEXVALUE" xml:space="preserve">
+    <value>Indeksværdi</value>
+  </data>
+  <data name="HEADER_OUTPUT_LOCATION" xml:space="preserve">
+    <value>Output placering</value>
+  </data>
+  <data name="HEADER_PROBABILITY" xml:space="preserve">
+    <value>Sandsynlighed</value>
+  </data>
+  <data name="HEADER_LATIN_NAME" xml:space="preserve">
+    <value>Latin navn</value>
+  </data>
+  <data name="PROMPT_SHOWTITLE_DESCR" xml:space="preserve">
+    <value>Vis eller skjul titlen</value>
+  </data>
+  <data name="HEADER_CATCH_E_OVER_S" xml:space="preserve">
+    <value>Fangst (E / S)</value>
+  </data>
+  <data name="HEADER_G" xml:space="preserve">
+    <value>g</value>
+  </data>
+  <data name="SHAPEFUNCTION_EXPONENTIAL" xml:space="preserve">
+    <value>Eksponentiel</value>
+  </data>
+  <data name="HEADER_EFFORT_PERC_BELOW_REF" xml:space="preserve">
+    <value>Indsats% under reference</value>
+  </data>
+  <data name="HEADER_NETEFFICIENCY" xml:space="preserve">
+    <value>Nettoeffektivitet</value>
+  </data>
+  <data name="HEADER_EMPTY_PANEL" xml:space="preserve">
+    <value>Tomt panel</value>
+  </data>
+  <data name="DEFAULT_NEWMAP_NUM" xml:space="preserve">
+    <value>Kapacitetskort {0}</value>
+  </data>
+  <data name="HEADER_COST_E_OVER_S" xml:space="preserve">
+    <value>Omkostning (E / S)</value>
+  </data>
+  <data name="HEADER_BIODIVERSITY" xml:space="preserve">
+    <value>biodiversitet</value>
+  </data>
+  <data name="HEADER_FISHING_EFFORT_MODIFIER" xml:space="preserve">
+    <value>Fiskeriindsats modifikator</value>
+  </data>
+  <data name="HEADER_ECOSPACE_YEARS" xml:space="preserve">
+    <value>Økospaceår</value>
+  </data>
+  <data name="HEADER_NODE_SIZE" xml:space="preserve">
+    <value>Knude størrelse</value>
+  </data>
+  <data name="HEADER_NODE_TYPE" xml:space="preserve">
+    <value>Knudetype</value>
+  </data>
+  <data name="TIMESERIES_WARNING_NOFLEET" xml:space="preserve">
+    <value>Ikke knyttet til en gyldig flåde</value>
+  </data>
+  <data name="HEADER_VULNERABILITY_INDEX" xml:space="preserve">
+    <value>Sårbarhedsindeks [0, 100]</value>
+  </data>
+  <data name="TIMESERIES_WARNING_NOGROUP" xml:space="preserve">
+    <value>Ikke knyttet til en gyldig gruppe</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_DEPLETED" xml:space="preserve">
+    <value>Nedtapede ||| Fangster er langt under de historiske niveauer, uanset hvor meget fiskeriindsats der er udøvet</value>
+  </data>
+  <data name="HEADER_VULNERABILITY_WO_FT" xml:space="preserve">
+    <value>Sårbarhed uden FT</value>
+  </data>
+  <data name="HEADER_ECOLOGY" xml:space="preserve">
+    <value>Økologi</value>
+  </data>
+  <data name="CLIMATE_TEMPORAL" xml:space="preserve">
+    <value>Temporal ||| Temporal (30 til 60 grader)</value>
+  </data>
+  <data name="HEADER_HABITAT" xml:space="preserve">
+    <value>Habitat</value>
+  </data>
+  <data name="TOOLTIP_LOADFROMCSV" xml:space="preserve">
+    <value>Indlæs fra CSV-fil</value>
+  </data>
+  <data name="HEADER_ASSIGNED_FORAGING_RESPONSES" xml:space="preserve">
+    <value>Falser svar til {0}</value>
+  </data>
+  <data name="GENERIC_VALUE_INVALID" xml:space="preserve">
+    <value>Ugyldig</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_DETAIL" xml:space="preserve">
+    <value>Kan ikke indlæses fra filen '{0}'. {1}</value>
+  </data>
+  <data name="CAPACITY_SET_SHAPE_MINMAX" xml:space="preserve">
+    <value>Indstil inputdatainterval for funktion {0}</value>
+  </data>
+  <data name="HEADER_BIOMASS_PERC_ABOVE_REF" xml:space="preserve">
+    <value>Biomasse% over reference</value>
+  </data>
+  <data name="DATASOURCE_EIIXML" xml:space="preserve">
+    <value>* .eiixml | EII-markering (* .eiixml) || XML-formateret EII (* .eiixml)</value>
+  </data>
+  <data name="GENERAL_LABEL_MONTHLY" xml:space="preserve">
+    <value>Månedlige</value>
+  </data>
+  <data name="SHAPEFUNCTION_NOTSET" xml:space="preserve">
+    <value>(Frihånd) ||| Form er ikke en primitiv og er enten tegnet eller data opnået på anden måde</value>
+  </data>
+  <data name="STATUS_UPDATING" xml:space="preserve">
+    <value>Opdaterer, vent venligst ...</value>
+  </data>
+  <data name="SHAPEFUNCTION_NORMAL" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="HEADER_CATCH_CUMULATIVE" xml:space="preserve">
+    <value>Kumulativ fangst</value>
+  </data>
+  <data name="METADATA_TEXT" xml:space="preserve">
+    <value>Maks. {0} tegn</value>
+  </data>
+  <data name="COMPATIBILITY_NOTSET" xml:space="preserve">
+    <value>(Ikke indekseret) ||| Data er ikke indekseret endnu</value>
+  </data>
+  <data name="GENERIC_CURRENCIES" xml:space="preserve">
+    <value>AED | UAE Dirham | AFN | Afghanistan Afghani | ALLE | Albansk Lek | AMD | Armensk dram | ANG | Antillean Guilder | AOR | Angolansk New Kwanza | ARS | Argentinsk peso | AUD | australske dollar | AWG | Aruban Florin | AZM | Aserbajdsjan Manat | BAM | Bosnisk Konvertibilna Marka | BBD | Barbadian Dollar | BDT | Bangladesh Taka | BGN | Bulgarsk Ny Lev | BHD | Bahraini Dinar | BIF | Burundisk Franc | BMD | Bermudan Dollar | BND | Brunei Dollar | BIR | Boliviansk Boliviano | BRL | Brasiliansk real | BSD | Bahamas dollar | BTN | Bhutan Ngultrum | BWP | Botswana Pula | BYB | Hviderussisk rubel | BZD | Belizean Dollar | CAD | Canadisk dollar | CDF | Congolesisk Franc | CHF | Schweizisk frank | CLP | Chilensk peso | CNY | Kinesisk Yuan Renminbi | COP | colombiansk peso | CRC | Costa Rica Colon | CUP | cubansk peso | CVE | Cape Verdean Escudo | CZK | Tjekkisk koruna | DJF | Djiboutian Franc | DKK | Dansk krone | DOP | Dominikanske republik peso | DZD | Algeriet Dinar | ECS | Ecuador Sucre | EEK | Estisk Kroon | EGP | Eqyptian Pound | ETB | Etiopisk Birr | EUR | Euro | FJD | Fijian Dollar | FKP | Falkland Islands Pound | FRF | Fransk Franc | GBP | UK Pound Sterling | GEL | Georgisk Lari | GHC | Ghana Cedi | GIP | Gibraltarian Pound | GMD | Gambian Dalasi | GNF | Guinean Franc | GTQ | Guatemalan Quetzal | GYD | Guyanese Dollar | HKD | Hong Kong Dollar | HNL | Honduran Lempira | HRK | Kroatisk Kuna | HTG | Haitisk Gourde | HUF | Ungarsk Forint | IDR | Indonesisk Rupiah | ILS | Israelsk ny Sheqel | INR | Indian Rupee | IQD | Iraqi Dinar | IRR | Iranian Rial | ISK | Island Krona | JMD | Jamaican Dollar | JOD | Jordanian Dinar | JPY | Japanese Yen | KES | Kenyan Shilling | KGS | Kirgisistan Som | KHR | Cambodjansk Riel | KMF | Comoran Franc | KPW | Korean PR Won (N.Korea) | KRW | Korean Republic Won (S.Korea) | KWD | Kuwaiti Dinar | KYD | Caymanian Dollar | KZT | Kazakhstan Tenge | LAK | Laos Kip | LBP | Libanesisk pund | LKR | Sri Lanka Rupee | LRD | Liberian Dollar | LSL | Lesothian Loti | LTL | Litauisk litas | LVL | Letisk Lat | LYD | Libysk dinar | MAD | Marokkansk Dirham | MAD | Marokkansk Dirham | MDL | Moldovisk Leu | MGF | Malagasy Franc | MKD | Makedonsk Denar | MMK | Myanmar Kyat | MNT | Mongolsk Tugrik | MOP | Macau Pataca | MRO | Mauritansk Ougiya | MUR | Mauritsisk Rupee | MVR | Maldiviske Rufiyaa | MWK | Malawi Kwacha | MXN | Mexicansk ny peso | MYR | Malaysisk ringgit | MZM | Mozamb ique Metical | NAD | Namibia Dollar | NGN | Nigerian Naira | NIO | Nicaraguan Crdoba | NOK | Norwegian Krone | NPR | Nepalese Rupee | NZD | New Zealand Dollar | OMR | Omani Rial | PAB | Panamanian Balboa | PEN | Peruvian New Sol | PGK | Papua Ny Guinea Kina | PHP | Filippinsk Piso | PKR | Pakistansk Rupee | PLN | Polsk Ny Zloty | PYG | Paraguays Guaran | QAR | Qatari Riyal | ROL | Rumænsk Leu | RSD | Serbisk dinar | RUB | Russisk rubel | RWF | Rwandisk Franc | SAR | Saudi Riyal | SBD | Solomon Islands Dollar | SCR | Seychellerne Rupee | SDD | Sudanesisk dinar | SEK | Svensk krone | SGD | Singaporean Dollar | SHP | Saint Helena Pound | SKK | Slovakisk koruna | SLL | Sierra Leone Leone | SOS | Somalisk shilling | SRG | Surinamese guilder | STD | Sáo Tome &amp; Principe Dobra | SVC | Salvadoran Colon | SYP | Syrian Pound | SZL | Swaziland Lilangeni | THB | Thai Baht | TJR | Tadsjikistan Rubel | TMM | Turkmenistan Manat | TND | Tunesisk dinar | TOP | Tonga Pa'anga | TRY | Ny tyrkisk lira | TTD | Trinidadian dollar | TWD | Taiwansk yuan | TZS | Tanzanian shilling | UAH | Ukraine Hryvnias | UGX | Uganda Ny shilling | USD | US Dollar | UYU | Peso Uruguayo | UZS | Usbekistan Sum | VEB | Vene zuelan Bolvar | VND | Vietnamesisk ny Dng | VUV | Vanuatu Vatu | WST | Vestsamoan Tala | XAF | CFA Central Franc | XCD | East Caribbean Dollar | XOF | CFA West Franc | XPF | Fransk Polynesisk CFA Frankrig (CFP) | YER | Yemen Rial | ZAR | Sydafrikansk rand | ZMK | Zambian Kwacha | ZWD | Zimbabwean Dollar</value>
+  </data>
+  <data name="HEADER_DISCARDS_BREAKDOWN" xml:space="preserve">
+    <value>Kasser (gruppe x flåde)</value>
+  </data>
+  <data name="AUTOSAVE_ALL" xml:space="preserve">
+    <value>Gem automatisk alt</value>
+  </data>
+  <data name="AUTOSAVE_MSE" xml:space="preserve">
+    <value>MSE-resultater</value>
+  </data>
+  <data name="AUTOSAVE_MSY" xml:space="preserve">
+    <value>MSY-iterationer</value>
+  </data>
+  <data name="ECOLOGY_PELAGICNERITIC" xml:space="preserve">
+    <value>Pelagic-neritic</value>
+  </data>
+  <data name="CAPTION_SELECT_FILE" xml:space="preserve">
+    <value>Vælg fil</value>
+  </data>
+  <data name="COMMAND_DEFINEREGIONS" xml:space="preserve">
+    <value>Definer antallet af regioner, eller opret regioner til alle MPA'er eller habitater</value>
+  </data>
+  <data name="BUTTON_ABORT" xml:space="preserve">
+    <value>Abort</value>
+  </data>
+  <data name="HEADER_SUM_VALUE" xml:space="preserve">
+    <value>Total værdi</value>
+  </data>
+  <data name="HEADER_TOTALVALUE" xml:space="preserve">
+    <value>Total værdi</value>
+  </data>
+  <data name="HEADER_1_MINUS_SUM" xml:space="preserve">
+    <value>(1 - Sum)</value>
+  </data>
+  <data name="HEADER_BIOMASS_ECOPATH" xml:space="preserve">
+    <value>Ecopath biomasse</value>
+  </data>
+  <data name="HEADER_SUM_CATCH" xml:space="preserve">
+    <value>Samlet fangst</value>
+  </data>
+  <data name="HEADER_TOTALCATCH" xml:space="preserve">
+    <value>Samlet fangst</value>
+  </data>
+  <data name="BUTTON_RETRY" xml:space="preserve">
+    <value>Prøve igen</value>
+  </data>
+  <data name="HEADER_FISHING_ALL" xml:space="preserve">
+    <value>Fisk overalt</value>
+  </data>
+  <data name="HEADER_SCENARIO" xml:space="preserve">
+    <value>Scenarie</value>
+  </data>
+  <data name="FILEFILTER_XML" xml:space="preserve">
+    <value>XML-filer | * .xml</value>
+  </data>
+  <data name="FILEFILTER_XYZ" xml:space="preserve">
+    <value>XYZ-punktdatafil | * .xyz</value>
+  </data>
+  <data name="FILEFILTER_CSV" xml:space="preserve">
+    <value>Kommaseparerede tekstfiler (* .csv) | * .csv</value>
+  </data>
+  <data name="FILEFILTER_ASC" xml:space="preserve">
+    <value>ESRI Asc-filer | * .asc; *. Txt</value>
+  </data>
+  <data name="FILEFILTER_ALL" xml:space="preserve">
+    <value>Alle filer | *. *</value>
+  </data>
+  <data name="TSDATASETINTERVAL_TIMESTEP" xml:space="preserve">
+    <value>timestep</value>
+  </data>
+  <data name="GENERIC_STATUS_RUNNINGPLUGIN" xml:space="preserve">
+    <value>Udfører plug-in ...</value>
+  </data>
+  <data name="HEADER_MAXFISHINGMORTAILITY" xml:space="preserve">
+    <value>Maksimal fiskeridødelighed</value>
+  </data>
+  <data name="CLIMATE_TROPICAL" xml:space="preserve">
+    <value>Tropisk ||| Tropisk (0 til 30 grader)</value>
+  </data>
+  <data name="HEADER_ENABLED" xml:space="preserve">
+    <value>Aktiveret</value>
+  </data>
+  <data name="HEADER_PREDATION" xml:space="preserve">
+    <value>prædation</value>
+  </data>
+  <data name="ECOLOGY_DEMERSAL" xml:space="preserve">
+    <value>demersalt</value>
+  </data>
+  <data name="SHAPEFUNCTION_LINEAR" xml:space="preserve">
+    <value>Lineær</value>
+  </data>
+  <data name="BUTTON_IGNORE" xml:space="preserve">
+    <value>Ignorere</value>
+  </data>
+  <data name="TS_TYPE_DISCARDPROP" xml:space="preserve">
+    <value>Forkast forholdet</value>
+  </data>
+  <data name="TS_TYPE_DISCARDMORT" xml:space="preserve">
+    <value>Kasser dødelighed</value>
+  </data>
+  <data name="HEADER_DISCARD_MORT" xml:space="preserve">
+    <value>Kasser dødelighed</value>
+  </data>
+  <data name="SHAPEFUNCTION_RIGHTSHOULDER" xml:space="preserve">
+    <value>Højre skulder</value>
+  </data>
+  <data name="COMMAND_DEFINEGROUPS" xml:space="preserve">
+    <value>Definer funktionelle grupper</value>
+  </data>
+  <data name="HEADER_TOTALDISCARDS" xml:space="preserve">
+    <value>Samlede udsmid</value>
+  </data>
+  <data name="HEADER_BIOMASSES" xml:space="preserve">
+    <value>Biomasse (E / S)</value>
+  </data>
+  <data name="DEFAULT_NEWFLEET_NUM" xml:space="preserve">
+    <value>Flåde {0}</value>
+  </data>
+  <data name="HEADER_PROP_NAT_MORT" xml:space="preserve">
+    <value>Andel naturlig død.</value>
+  </data>
+  <data name="HEADER_ASSIGNED_GROUPS_FLEETS" xml:space="preserve">
+    <value>Tildelte grupper og flåder</value>
+  </data>
+  <data name="HEADER_HALF_RECRUITMENT_B" xml:space="preserve">
+    <value>Halv rekrutteringsbiomasse</value>
+  </data>
+  <data name="CLIMATE_POLAR" xml:space="preserve">
+    <value>Polar ||| Polar (60 til 90 grader)</value>
+  </data>
+  <data name="GENERIC_VALUE_TIMES" xml:space="preserve">
+    <value>x {0}</value>
+  </data>
+  <data name="LABEL_RESUME" xml:space="preserve">
+    <value>Genoptag</value>
+  </data>
+  <data name="TS_TYPE_CONSTTOTALMORT" xml:space="preserve">
+    <value>Konstant total dødelighed</value>
+  </data>
+  <data name="GENERIC_VALUE_ERROR" xml:space="preserve">
+    <value>(fejl)</value>
+  </data>
+  <data name="SHAPEFUNCTION_SIGMOID" xml:space="preserve">
+    <value>sigmoideum</value>
+  </data>
+  <data name="HEADER_FLEETNAME" xml:space="preserve">
+    <value>Flådens navn</value>
+  </data>
+  <data name="STYLEFLAGS_FAILEDVALIDATION" xml:space="preserve">
+    <value>Inputfejl || Ugyldig input | Indtastet værdi accepteres ikke</value>
+  </data>
+  <data name="HEADER_INDIVIDUAL_WEIGHT" xml:space="preserve">
+    <value>Individuel vægt</value>
+  </data>
+  <data name="ABOUT_64BIT" xml:space="preserve">
+    <value>64 bit</value>
+  </data>
+  <data name="GENERIC_STATUS_APPLYCHANGES" xml:space="preserve">
+    <value>Anvender ændringer ...</value>
+  </data>
+  <data name="ABOUT_32BIT" xml:space="preserve">
+    <value>32 bit</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_OVEREXPLOITED" xml:space="preserve">
+    <value>Overudnyttet ||| Fiskeriet udnyttes på over et niveau, som menes at være bæredygtigt på lang sigt, uden noget potentiale for yderligere ekspansion og en højere risiko for bestandsudtømning / sammenbrud</value>
+  </data>
+  <data name="HEADER_MCTRIALS" xml:space="preserve">
+    <value>Monte carlo forsøg</value>
+  </data>
+  <data name="CAPTION_SELECT_FILES" xml:space="preserve">
+    <value>Vælg filer</value>
+  </data>
+  <data name="HEADER_SWITCHINGPOWER" xml:space="preserve">
+    <value>Skifte strøm</value>
+  </data>
+  <data name="HEADER_SAILINGRELATEDCOST" xml:space="preserve">
+    <value>Sejlerelaterede omkostninger (%)</value>
+  </data>
+  <data name="GENERIC_CHAR_ENTER" xml:space="preserve">
+    <value>(gå ind)</value>
+  </data>
+  <data name="GENERIC_CHAR_COLON" xml:space="preserve">
+    <value>: (kolon)</value>
+  </data>
+  <data name="GENERIC_CHAR_COMMA" xml:space="preserve">
+    <value>, (komma)</value>
+  </data>
+  <data name="HEADER_EFFORT_UPPER" xml:space="preserve">
+    <value>Øverste indsats</value>
+  </data>
+  <data name="GENERIC_LABEL_CAPTION" xml:space="preserve">
+    <value>{1} - {0}</value>
+  </data>
+  <data name="DEFAULT_NEWMPA_NUM" xml:space="preserve">
+    <value>MPA {0}</value>
+  </data>
+  <data name="GENERIC_CHAR_SPACE" xml:space="preserve">
+    <value>(plads)</value>
+  </data>
+  <data name="RESPONSE_GRAPH_TITLE" xml:space="preserve">
+    <value>Driverhistogram &amp; responsfunktion</value>
+  </data>
+  <data name="HEADER_STANZAGROUP_NAME" xml:space="preserve">
+    <value>Multi-strofe gruppenavn</value>
+  </data>
+  <data name="HEADER_EFFORT_CV" xml:space="preserve">
+    <value>Indsats cv</value>
+  </data>
+  <data name="HEADER_EFFORT_LOWER" xml:space="preserve">
+    <value>Indsats lavere</value>
+  </data>
+  <data name="HEADER_MEAN_CATCH_TL" xml:space="preserve">
+    <value>Gennemsnitlig trofisk niveau for fangsten</value>
+  </data>
+  <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
+    <value>{0} kunne ikke gemmes til '{1}': {2}.</value>
+  </data>
+  <data name="OCCURRENCESTATUS_QUESTIONABLE" xml:space="preserve">
+    <value>Tvivlsom</value>
+  </data>
+  <data name="HEADER_QUOTA_STRONGESTSTOCK" xml:space="preserve">
+    <value>Højeste værdi lagerkvote</value>
+  </data>
+  <data name="HEADER_CATCH_WEIGHT" xml:space="preserve">
+    <value>Fangstvægt</value>
+  </data>
+  <data name="PROMPT_SHAPE_DELETE_MULTIPLE" xml:space="preserve">
+    <value>Du er ved at slette {0} tvangs- eller formidlingsfunktioner '. Denne handling kan ikke fortrydes. Er du sikker på, at du vil gøre dette?</value>
+  </data>
+  <data name="HEADER_PROPORTION_B" xml:space="preserve">
+    <value>Andel af biomasse</value>
+  </data>
+  <data name="HEADER_WITH_FORAGING_TIME" xml:space="preserve">
+    <value>Med foder tid justeres</value>
+  </data>
+  <data name="HEADER_OMNIVORYINDEX" xml:space="preserve">
+    <value>Omnivory index</value>
+  </data>
+  <data name="HEADER_ECOPATH_PEDIGREE" xml:space="preserve">
+    <value>Ekopat stambog</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWCAPACITYSHAPE" xml:space="preserve">
+    <value>Miljørespons {0}</value>
+  </data>
+  <data name="GENERIC_VALUE_PERCENTAGE" xml:space="preserve">
+    <value>{0}%</value>
+  </data>
+  <data name="CAPTION_GENERIC_EDIT" xml:space="preserve">
+    <value>Redigerer {0}</value>
+  </data>
+  <data name="STYLEFLAGS_CHECKED" xml:space="preserve">
+    <value>Alert ||| Værdi kræver din opmærksomhed</value>
+  </data>
+  <data name="HEADER_TOTEFFMULTI" xml:space="preserve">
+    <value>Tot. eff. multip.</value>
+  </data>
+  <data name="HEADER_RESPONSE_TARGET" xml:space="preserve">
+    <value>Svarfunktion '{0}'</value>
+  </data>
+  <data name="HEADER_B_OVER_CC" xml:space="preserve">
+    <value>Ecopatisk biomasse / bæreevne</value>
+  </data>
+  <data name="HEADER_MAXWEIGHT" xml:space="preserve">
+    <value>Maks. vægt</value>
+  </data>
+  <data name="GENERIC_CHAR_SEMICOLON" xml:space="preserve">
+    <value>; (semikolon)</value>
+  </data>
+  <data name="HEADER_LATITUDE" xml:space="preserve">
+    <value>Breddegrad</value>
+  </data>
+  <data name="PROMPT_MAPLOAD_MISSING" xml:space="preserve">
+    <value>Data mangler for {0} celle (r)</value>
+  </data>
+  <data name="HEADER_GROUPNUM" xml:space="preserve">
+    <value>Gruppens nummer</value>
+  </data>
+  <data name="TS_TYPE_TIMEFORCING" xml:space="preserve">
+    <value>Tidskraft</value>
+  </data>
+  <data name="HEADER_TIMEFORCING" xml:space="preserve">
+    <value>Tidskraft</value>
+  </data>
+  <data name="HEADER_HABITAT_ABBR" xml:space="preserve">
+    <value>Hab</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_ARENAAREA" xml:space="preserve">
+    <value>Arena-område (A)</value>
+  </data>
+  <data name="HEADER_CATCH_STDDEV" xml:space="preserve">
+    <value>Fang std.</value>
+  </data>
+  <data name="HEADER_LEADING_CB" xml:space="preserve">
+    <value>Førende Q / B</value>
+  </data>
+  <data name="BIODIVERSITY_KEMPTONSQ" xml:space="preserve">
+    <value>Kemptons Q</value>
+  </data>
+  <data name="COMPATIBILITY_TEMPORALNOTINDEXED" xml:space="preserve">
+    <value>Ukendt rumlig || Rumlig overlap ukendt | Rumlig overlapning er endnu ikke bestemt</value>
+  </data>
+  <data name="TOOLTIP_MEDIATION_CAPACITY_MULTIPLIER" xml:space="preserve">
+    <value>Kapacitetsmultiplikator {0}</value>
+  </data>
+  <data name="CAPACITY_XLABEL" xml:space="preserve">
+    <value>Input</value>
+  </data>
+  <data name="STYLEFLAGS_TAXONNAME" xml:space="preserve">
+    <value>Taxon ||| Værdi er et taksonomisk navn</value>
+  </data>
+  <data name="UNIT_TERABYTE" xml:space="preserve">
+    <value>TB</value>
+  </data>
+  <data name="CAPTION_DEFINE_MEDIATING_LANDINGS" xml:space="preserve">
+    <value>Definer levering for '{0}'</value>
+  </data>
+  <data name="HEADER_EXCRETION_RATE" xml:space="preserve">
+    <value>Prop. Af forurenet udskilles</value>
+  </data>
+  <data name="HEADER_CATCH_BREAKDOWN" xml:space="preserve">
+    <value>Fangst (gruppe x flåde)</value>
+  </data>
+  <data name="HEADER_INCREASEQ" xml:space="preserve">
+    <value>Årlig stigning i fangstbarhed</value>
+  </data>
+  <data name="DEFAULT_NEWECOSIMSCENARIO" xml:space="preserve">
+    <value>Nyt Ecosim-scenarie</value>
+  </data>
+  <data name="FILEFILTER_SAVE_RASTER" xml:space="preserve">
+    <value>Kommaseparerede tekstfiler | * .csv | ESRI Asc-filer | Rumlige rasterfiler | * .asc; *. Csv</value>
+  </data>
+  <data name="HEADER_SUM_PP_RESP" xml:space="preserve">
+    <value>Total primær produktion / total åndedræt</value>
+  </data>
+  <data name="HEADER_QUOTA_WEAKESTSTOCK" xml:space="preserve">
+    <value>Svageste lagerkvote + bortfalder kvoten</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_SEARCHRATE" xml:space="preserve">
+    <value>Søgerate (a)</value>
+  </data>
+  <data name="HEADER_LINE_TYPE" xml:space="preserve">
+    <value>Linjetype</value>
+  </data>
+  <data name="HEADER_FMORT_BREAKDOWN" xml:space="preserve">
+    <value>Fiskemontabilitet (gruppe x flåde)</value>
+  </data>
+  <data name="HEADER_ECOTRACER" xml:space="preserve">
+    <value>Ecotracer</value>
+  </data>
+  <data name="ORGANISM_FISHES" xml:space="preserve">
+    <value>fishes</value>
+  </data>
+  <data name="HEADER_FIXEDESCAPE" xml:space="preserve">
+    <value>Fast flugt (t / km2)</value>
+  </data>
+  <data name="OCCURRENCESTATUS_NATIVE" xml:space="preserve">
+    <value>Hjemmehørende</value>
+  </data>
+  <data name="HEADER_FISHINGMORTALITY" xml:space="preserve">
+    <value>F (fiskeridødelighed)</value>
+  </data>
+  <data name="HEADER_OBJECTIVE" xml:space="preserve">
+    <value>Søgemål</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWLANDINGSSHAPE" xml:space="preserve">
+    <value>Priselasticitet på levering {0}</value>
+  </data>
+  <data name="HEADER_CACHESIZE" xml:space="preserve">
+    <value>Cache-størrelse (MB)</value>
+  </data>
+  <data name="GENERIC_LABEL_REMOVE" xml:space="preserve">
+    <value>Fjerne</value>
+  </data>
+  <data name="HEADER_ENVIRONMENT" xml:space="preserve">
+    <value>Miljø</value>
+  </data>
+  <data name="HEADER_NUMPARAMS" xml:space="preserve">
+    <value>Antal parametre</value>
+  </data>
+  <data name="ECOLOGY_PELAGIC" xml:space="preserve">
+    <value>Pelagic</value>
+  </data>
+  <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
+    <value>Ecotracer relativ koncentration</value>
+  </data>
+  <data name="TS_TYPE_TRACER_CONCABS" xml:space="preserve">
+    <value>Ecotracer absolut koncentration</value>
+  </data>
+  <data name="HEADER_NUMCALLS" xml:space="preserve">
+    <value># opkald</value>
+  </data>
+  <data name="HEADER_NUMCELLS" xml:space="preserve">
+    <value># celler</value>
+  </data>
+  <data name="HEADER_CODE_FISHBASE" xml:space="preserve">
+    <value>FB id | Taxonomi kode i FishBase</value>
+  </data>
+  <data name="DEFAULT_NEWGROUP_NUM" xml:space="preserve">
+    <value>Gruppe {0}</value>
+  </data>
+  <data name="GENERIC_LABEL_FINISHED" xml:space="preserve">
+    <value>Færdig</value>
+  </data>
+  <data name="AUTOSAVE_MPAOPT" xml:space="preserve">
+    <value>MPA-optimeringer</value>
+  </data>
+  <data name="UNIT_MEGABYTE" xml:space="preserve">
+    <value>MB</value>
+  </data>
+  <data name="SCALE_LOG" xml:space="preserve">
+    <value>(Log)</value>
+  </data>
+  <data name="COMPATIBILITY_SUMMARY_NOINDEX" xml:space="preserve">
+    <value>{0}% tidsmæssig overlapning, arealoverlapning er endnu ikke bestemt.</value>
+  </data>
+  <data name="HEADER_SUM_THROUGHPUT" xml:space="preserve">
+    <value>Samlet systemgennemstrømning</value>
+  </data>
+  <data name="HEADER_BIOMASSEND" xml:space="preserve">
+    <value>Biomasse (slut)</value>
+  </data>
+  <data name="HEADER_BIOMASS_CV" xml:space="preserve">
+    <value>Biomasse cv</value>
+  </data>
+  <data name="HEADER_MAXRELPB" xml:space="preserve">
+    <value>Max rel. P / B</value>
+  </data>
+  <data name="PROMPT_MEDIATION_CANNOTMIX" xml:space="preserve">
+    <value>Du kan ikke tildele en blanding af grupper og flåder</value>
+  </data>
+  <data name="FITRESPONSE_EMIGRATE" xml:space="preserve">
+    <value>Udvandringsrate</value>
+  </data>
+  <data name="HEADER_EFFORTES" xml:space="preserve">
+    <value>Indsats (E / S)</value>
+  </data>
+  <data name="HEADER_B_IN_LW" xml:space="preserve">
+    <value>b i LW</value>
+  </data>
+  <data name="HEADER_EFFPOWER" xml:space="preserve">
+    <value>Effektiv kraft</value>
+  </data>
+  <data name="CAPACITY_PROMPT" xml:space="preserve">
+    <value>Indstil inputværdier (X-akse) ...</value>
+  </data>
+  <data name="HEADER_DESCRIPTION" xml:space="preserve">
+    <value>Beskrivelse</value>
+  </data>
+  <data name="GENERIC_COLOUR_USAGE" xml:space="preserve">
+    <value>Farvebrug</value>
+  </data>
+  <data name="HEADER_PREY_PERCENTAGE" xml:space="preserve">
+    <value>Bytte (%)</value>
+  </data>
+  <data name="METADATA_INTEGER" xml:space="preserve">
+    <value>n</value>
+  </data>
+  <data name="HEADER_MAXEFFORT" xml:space="preserve">
+    <value>Maksimal indsats</value>
+  </data>
+  <data name="HEADER_AVAILABLE_LANDINGS" xml:space="preserve">
+    <value>Tilgængelige landinger</value>
+  </data>
+  <data name="COMPATIBILITY_TOTALOVERLAP" xml:space="preserve">
+    <value>Fuld || Fuld rumlig overlapning | Dataene dækker fuldt ud Ecospace-området</value>
+  </data>
+  <data name="ECOLOGY_REEFASSOCIATED" xml:space="preserve">
+    <value>Reef-associeret</value>
+  </data>
+  <data name="GENERIC_SHOW_FLOW_RATE_LEGEND" xml:space="preserve">
+    <value>Vis strømningshastighedslegende</value>
+  </data>
+  <data name="HEADER_ASSIGNED_LANDINGS" xml:space="preserve">
+    <value>Tildelte landinger</value>
+  </data>
+  <data name="HEADER_VULNERABILITY_WITH_FT" xml:space="preserve">
+    <value>Sårbarhed w. FT</value>
+  </data>
+  <data name="GENERIC_LABEL_INDEXED" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="HEADER_TROPHIC_LEVEL" xml:space="preserve">
+    <value>Trofisk niveau</value>
+  </data>
+  <data name="HEADER_BIOMASS_STDDEV" xml:space="preserve">
+    <value>Biomasse std.</value>
+  </data>
+  <data name="HEADER_BIOMASS_BASE" xml:space="preserve">
+    <value>Biomasse base</value>
+  </data>
+  <data name="HEADER_BIOMASS_MEAN" xml:space="preserve">
+    <value>Biomasse middelværdi</value>
+  </data>
+  <data name="HEADER_BIOMASS_LOGg" xml:space="preserve">
+    <value>Biomasse (log g)</value>
+  </data>
+  <data name="PROMPT_SHAPE_DELETE" xml:space="preserve">
+    <value>Du er ved at slette tvangs- eller mæglingsfunktion '{0}'. Denne handling kan ikke fortrydes. Er du sikker på, at du vil gøre dette?</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_INCOMPATIBLE_MAP" xml:space="preserve">
+    <value>Indholdet af filen '{0}' er ikke kompatibel med cellestørrelsen på det aktuelle kort.</value>
+  </data>
+  <data name="HEADER_PREDMORT" xml:space="preserve">
+    <value>Predationsdødelighed</value>
+  </data>
+  <data name="HEADER_CONCENTRATION" xml:space="preserve">
+    <value>Koncentration (kumulativ)</value>
+  </data>
+  <data name="UNIT_BIOMASS" xml:space="preserve">
+    <value>enhedsbiomasse</value>
+  </data>
+  <data name="PROMPT_FOLDER_SELECTION" xml:space="preserve">
+    <value>Vælg en mappe</value>
+  </data>
+  <data name="HEADER_PHYSICAL_DECAY_RATE" xml:space="preserve">
+    <value>Fysisk forfaldsfrekvens</value>
+  </data>
+  <data name="ORGANISM_INVERTEBRATES" xml:space="preserve">
+    <value>hvirvelløse</value>
+  </data>
+  <data name="GENERIC_CHAR_ESCAPE" xml:space="preserve">
+    <value>(flugt)</value>
+  </data>
+  <data name="HEADER_PP_ABBR" xml:space="preserve">
+    <value>PP</value>
+  </data>
+  <data name="HEADER_PRODCONS" xml:space="preserve">
+    <value>Produktion / forbrug</value>
+  </data>
+  <data name="HEADER_PRODUCER" xml:space="preserve">
+    <value>Producent</value>
+  </data>
+  <data name="HEADER_PRODRESP" xml:space="preserve">
+    <value>Produktion / åndedræt</value>
+  </data>
+  <data name="METADATA_SINGLE" xml:space="preserve">
+    <value>r</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_NOTEVALUATED" xml:space="preserve">
+    <value>NE || Ikke evalueret</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_ENVDRIVERS" xml:space="preserve">
+    <value>Miljødrivere</value>
+  </data>
+  <data name="HEADER_VALUE_COMPONENT" xml:space="preserve">
+    <value>Værdi komponent</value>
+  </data>
+  <data name="HEADER_CONTRIBUTION_TO_PSD" xml:space="preserve">
+    <value>Bidrag til PSD</value>
+  </data>
+  <data name="HEADER_DISCARD_SURV" xml:space="preserve">
+    <value>Kassér overlevelse</value>
+  </data>
+  <data name="HEADER_SHOW_VALUES" xml:space="preserve">
+    <value>Vis værdier i etiketter</value>
+  </data>
+  <data name="GENERIC_ZOOM_IN" xml:space="preserve">
+    <value>Zoom ind</value>
+  </data>
+  <data name="HEADER_B_IS_FOR_BIOMASS" xml:space="preserve">
+    <value>B = Biomasse</value>
+  </data>
+  <data name="STATUS_TIMESERIES_UPDATING" xml:space="preserve">
+    <value>Opdaterer tidsserier {0} ...</value>
+  </data>
+  <data name="HEADER_MANDATED_ABBR" xml:space="preserve">
+    <value>Mandat.</value>
+  </data>
+  <data name="STYLEFLAGS_HIGHLIGHT" xml:space="preserve">
+    <value>Fremhæv ||| Værdi er fremhævet</value>
+  </data>
+  <data name="TOOLTIP_SAVETOCSV" xml:space="preserve">
+    <value>Gem i en CSV-fil</value>
+  </data>
+  <data name="TOOLTIP_SAVETOMAP" xml:space="preserve">
+    <value>Gem på geografisk refererede kort (er)</value>
+  </data>
+  <data name="HEADER_EFFORT_STDDEV" xml:space="preserve">
+    <value>Indsats std.</value>
+  </data>
+  <data name="HEADER_LESSTHAN" xml:space="preserve">
+    <value>&lt;{0}</value>
+  </data>
+  <data name="RESPONSE_GRAPH_YLABEL" xml:space="preserve">
+    <value>Respons</value>
+  </data>
+  <data name="STYLEFLAGS_NULL" xml:space="preserve">
+    <value>Nul || Ingen værdi | Værdien bruges ikke eller forlades tom</value>
+  </data>
+  <data name="HEADER_MORTALITY" xml:space="preserve">
+    <value>Dødelighed</value>
+  </data>
+  <data name="HEADER_CATCH_MEAN" xml:space="preserve">
+    <value>Fangst middelværdi</value>
+  </data>
+  <data name="HEADER_CATCHVALUE" xml:space="preserve">
+    <value>Fangstværdi</value>
+  </data>
+  <data name="HEADER_ECOPATH_AREA" xml:space="preserve">
+    <value>Ecopath område</value>
+  </data>
+  <data name="GENERIC_CHAR_TAB" xml:space="preserve">
+    <value>(Fane)</value>
+  </data>
+  <data name="HEADER_RELATIVEBIOMASS" xml:space="preserve">
+    <value>Relativ biomasse</value>
+  </data>
+  <data name="HEADER_SWITCHINGPOWER_VALRANGE" xml:space="preserve">
+    <value>Skiftekraftparameter [0,2]</value>
+  </data>
+  <data name="HEADER_FORCASTGAIN" xml:space="preserve">
+    <value>Rekruttering / samlet befolkning</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLRUNS" xml:space="preserve">
+    <value>(alle kørsler)</value>
+  </data>
+  <data name="HEADER_PROPORTION" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="HEADER_FISHMORT_OVER_TOTMORT" xml:space="preserve">
+    <value>Fiskeridød / total død.</value>
+  </data>
+  <data name="LABEL_VALUE_RANGE" xml:space="preserve">
+    <value>{0} ({1} - {2})</value>
+  </data>
+  <data name="GENERIC_VALUE_UNKNOWN" xml:space="preserve">
+    <value>(ukendt)</value>
+  </data>
+  <data name="RESPONSE_GRAPH_XLABEL" xml:space="preserve">
+    <value>Driverværdier</value>
+  </data>
+  <data name="HEADER_REGIONS_UNDEFINED" xml:space="preserve">
+    <value>Udefinerede regioner</value>
+  </data>
+  <data name="COMPATIBILITY_PARTIALSPATIAL" xml:space="preserve">
+    <value>Delvis || Delvis rumlig overlapning | Dataene dækker delvist Ecospace-området</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_LEASTCONCERN" xml:space="preserve">
+    <value>LC || Mindst bekymring</value>
+  </data>
+  <data name="AUTOSAVE_ECOPATH" xml:space="preserve">
+    <value>Ecopat estimerer</value>
+  </data>
+  <data name="UNIT_KILOBYTE" xml:space="preserve">
+    <value>KB</value>
+  </data>
+  <data name="BA_CALC_FROMECOSIMSTART" xml:space="preserve">
+    <value>Ecosim biomasse minus Ecopath biomasse</value>
+  </data>
+  <data name="HEADER_VALUESTART" xml:space="preserve">
+    <value>Værdi (start)</value>
+  </data>
+  <data name="ECOLOGY_LANDBASED" xml:space="preserve">
+    <value>Landbaseret</value>
+  </data>
+  <data name="HEADER_FISHINGMORTRATE" xml:space="preserve">
+    <value>= Fiskeridød sats</value>
+  </data>
+  <data name="HEADER_LASTUPDATED" xml:space="preserve">
+    <value>Sidst opdateret</value>
+  </data>
+  <data name="HEADER_FIXEDCOST" xml:space="preserve">
+    <value>Faste omkostninger (%)</value>
+  </data>
+  <data name="HEADER_UPPERLIMIT" xml:space="preserve">
+    <value>Øverste grænse</value>
+  </data>
+</root>

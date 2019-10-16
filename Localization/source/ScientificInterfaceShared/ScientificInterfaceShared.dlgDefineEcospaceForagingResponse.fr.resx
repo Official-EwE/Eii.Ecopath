@@ -127,12 +127,12 @@
     <value>Réponse de recherche de nourriture pour '{0}'</value>
   </data>
   <data name="m_lblDrivers.Text" xml:space="preserve">
-    <value>&amp; Conducteurs spatio-temporels</value>
+    <value>&amp;Conducteurs spatio-temporels</value>
   </data>
   <data name="m_hdrReponse.Text" xml:space="preserve">
     <value>Réponse à la recherche de nourriture</value>
   </data>
   <data name="m_lblGroups.Text" xml:space="preserve">
-    <value>&amp; Groupes disponibles</value>
+    <value>&amp;Groupes disponibles</value>
   </data>
 </root>

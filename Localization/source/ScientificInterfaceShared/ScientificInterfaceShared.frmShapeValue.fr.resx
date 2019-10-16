@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="m_lblPoolCodeSec.Text" xml:space="preserve">
-    <value>&amp; 2ème cible:</value>
+    <value>&amp;2ème cible:</value>
   </data>
   <data name="m_lblXBase.Text" xml:space="preserve">
-    <value>&amp; Base X:</value>
+    <value>&amp;Base X:</value>
   </data>
   <data name="m_lblViewAs.Text" xml:space="preserve">
     <value>&amp;Voir comme:</value>
@@ -154,10 +154,10 @@
     <value>Long terme</value>
   </data>
   <data name="m_lblXMax.Text" xml:space="preserve">
-    <value>Axe X m &amp; ax:</value>
+    <value>Axe X m&amp;ax:</value>
   </data>
   <data name="m_lblXMin.Text" xml:space="preserve">
-    <value>Axe X m &amp; in:</value>
+    <value>Axe X m&amp;in:</value>
   </data>
   <data name="m_lblWeight.Text" xml:space="preserve">
     <value>&amp;Poids:</value>

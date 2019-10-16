@@ -124,7 +124,7 @@
     <value>Respuesta funcional al forzamiento ambiental para '{0}'</value>
   </data>
   <data name="m_lblDrivers.Text" xml:space="preserve">
-    <value>Y conductores temporales</value>
+    <value>&amp;Conductores temporales</value>
   </data>
   <data name="m_hdrReponse.Text" xml:space="preserve">
     <value>Respuesta funcional</value>
@@ -133,6 +133,6 @@
     <value>Efecto ambiental en grupos</value>
   </data>
   <data name="m_lblGroups.Text" xml:space="preserve">
-    <value>Y grupos</value>
+    <value>&amp;Grupos</value>
   </data>
 </root>

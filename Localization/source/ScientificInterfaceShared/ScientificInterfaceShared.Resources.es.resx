@@ -235,7 +235,7 @@
     <value>Mortalidad total</value>
   </data>
   <data name="HEADER_FLEET_GROUP" xml:space="preserve">
-    <value>Flota \ grupo</value>
+    <value>Flota\grupo</value>
   </data>
   <data name="VALUE_INDEXED_PERCENT" xml:space="preserve">
     <value>Indexado {0}%</value>
@@ -475,7 +475,7 @@
     <value>Valor acumulado</value>
   </data>
   <data name="CONSERVATIONSTATUS_VULNERABLE" xml:space="preserve">
-    <value>VU || Vulnerable</value>
+    <value>VU||Vulnerable</value>
   </data>
   <data name="FITRESPONSE_GRADIENT" xml:space="preserve">
     <value>Gradiente</value>
@@ -508,7 +508,7 @@
     <value>Habilitar</value>
   </data>
   <data name="CONSERVATIONSTATUS_ENDANGERED" xml:space="preserve">
-    <value>EN || En peligro de extinción</value>
+    <value>EN||En peligro de extinción</value>
   </data>
   <data name="HEADER_CONCENTRATION_OVER_B" xml:space="preserve">
     <value>Concentración / Biomasa (acumulativa)</value>
@@ -583,13 +583,13 @@
     <value>Peso de Kalman</value>
   </data>
   <data name="CONSERVATIONSTATUS_DATADEFICIENT" xml:space="preserve">
-    <value>DD || Datos deficientes</value>
+    <value>DD||Datos deficientes</value>
   </data>
   <data name="HEADER_TOTAL" xml:space="preserve">
     <value>Total</value>
   </data>
   <data name="CONSERVATIONSTATUS_EXTINCT" xml:space="preserve">
-    <value>EX || Extinto</value>
+    <value>EX||Extinto</value>
   </data>
   <data name="HEADER_SHAPE" xml:space="preserve">
     <value>Forma</value>
@@ -862,7 +862,7 @@
     <value>{0} - {1}</value>
   </data>
   <data name="HEADER_CONCENTRATION_INITIAL" xml:space="preserve">
-    <value>Conc. Inicial (t / t)</value>
+    <value>Conc. Inicial (t/t)</value>
   </data>
   <data name="GENERIC_LABEL_POINT" xml:space="preserve">
     <value>{0} ({1}, {2})</value>
@@ -886,7 +886,7 @@
     <value>Archivos de diseño de diagrama de flujo | * .fdlayout</value>
   </data>
   <data name="CONSERVATIONSTATUS_EXTINCTINWILD" xml:space="preserve">
-    <value>EW || Extinta en la naturaleza</value>
+    <value>EW||Extinta en la naturaleza</value>
   </data>
   <data name="GENERIC_LABEL_APPLY" xml:space="preserve">
     <value>Aplicar</value>

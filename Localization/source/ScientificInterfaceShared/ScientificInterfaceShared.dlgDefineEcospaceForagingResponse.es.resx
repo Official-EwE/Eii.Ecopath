@@ -127,12 +127,12 @@
     <value>Respuesta de búsqueda para '{0}'</value>
   </data>
   <data name="m_lblDrivers.Text" xml:space="preserve">
-    <value>Y controladores espacio-temporales</value>
+    <value>&amp;Controladores espacio-temporales</value>
   </data>
   <data name="m_hdrReponse.Text" xml:space="preserve">
     <value>Respuesta de búsqueda</value>
   </data>
   <data name="m_lblGroups.Text" xml:space="preserve">
-    <value>Y grupos disponibles</value>
+    <value>&amp;Grupos disponibles</value>
   </data>
 </root>

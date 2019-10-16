@@ -175,13 +175,13 @@
     <value>Configuraciones</value>
   </data>
   <data name="m_lblHistNoBins.Text" xml:space="preserve">
-    <value>&amp; Número de contenedores:</value>
+    <value>&amp;Número de contenedores:</value>
   </data>
   <data name="m_cbEcospaceAnnualOnly.Text" xml:space="preserve">
-    <value>Y cálculos anuales de Ecospace solamente</value>
+    <value>&amp;Cálculos anuales de Ecospace solamente</value>
   </data>
   <data name="m_cbAutoSaveCSV.Text" xml:space="preserve">
-    <value>&amp; Guardar automáticamente archivos CSV</value>
+    <value>&amp;Guardar automáticamente archivos CSV</value>
   </data>
   <data name="m_btnChangeDefault.Text" xml:space="preserve">
     <value>Cambio...</value>
