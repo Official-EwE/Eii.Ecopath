@@ -96,10 +96,6 @@
     <Flag>AutoTranslated</Flag>
     <Comment />
   </Data>
-  <Data Key="ASSIMILATION_UNITS">
-    <Flag>AutoTranslated</Flag>
-    <Comment />
-  </Data>
   <Data Key="PARENT_ONLY">
     <Flag>AutoTranslated</Flag>
     <Comment />
@@ -257,7 +253,7 @@
     <Comment />
   </Data>
   <Data Key="BIOMASS_ACCUM_RATE">
-    <Flag>AutoTranslated</Flag>
+    <Flag>ToReview</Flag>
     <Comment />
   </Data>
   <Data Key="RESIDUALS">
@@ -468,12 +464,8 @@
     <Flag>AutoTranslated</Flag>
     <Comment />
   </Data>
-  <Data Key="BIOMASS_UNITS">
-    <Flag>AutoTranslated</Flag>
-    <Comment />
-  </Data>
   <Data Key="BIOMASS_ACCUM">
-    <Flag>AutoTranslated</Flag>
+    <Flag>ToReview</Flag>
     <Comment />
   </Data>
   <Data Key="FISHING_QUANT">

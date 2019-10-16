@@ -29,6 +29,7 @@ Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -1728,24 +1729,25 @@ Public Class frmResults
 
     Private Sub CreateBasicEstimatesCSV()
 
+        ' This can be reworked through an array of eVarnameflags
+
         Dim ABasicEstimates(10, Core.nGroups) As Object
         Dim BasicEstimates As New cDataSheet
 
         Dim parms As EwECore.cEwEModel = Me.Core.EwEModel
-        Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+        Dim fmt As New cUnitHeaderFormatter(Me.m_uic)
 
         'Setup titles
-        ABasicEstimates(0, 0) = My.Resources.INDEX
-        ABasicEstimates(1, 0) = My.Resources.GROUP_NAME
-        ABasicEstimates(2, 0) = My.Resources.TROPHIC_LEVEL
-        ABasicEstimates(3, 0) = My.Resources.HABITAT_AREA_UNITS
-        ' I changed the resource string to hold the placeholders for receiving the units ({0}/{1}), where {0} reveives 'biomass', and {1} receives 'time'
-        ABasicEstimates(4, 0) = cStringUtils.Localize(My.Resources.BIOMASS_AREA_UNITS, sg.FormatUnitString("[biomass]/[area]")) '  My.Resources.BIOMASS_AREA_UNITS
-        ABasicEstimates(5, 0) = My.Resources.BIOMASS_AREA_UNITS
-        ABasicEstimates(6, 0) = My.Resources.PRODUCTION_BIOMASS_UNITS
-        ABasicEstimates(7, 0) = My.Resources.CONSUMPTION_BIOMASS_UNITS
-        ABasicEstimates(8, 0) = My.Resources.ECOTROPHIC_EFFICIENCY
-        ABasicEstimates(9, 0) = My.Resources.PRODUCTION_CONSUMPTION
+        ABasicEstimates(0, 0) = SharedResources.HEADER_INDEX
+        ABasicEstimates(1, 0) = SharedResources.HEADER_GROUPNAME
+        ABasicEstimates(2, 0) = SharedResources.HEADER_TROPHIC_LEVEL
+        ABasicEstimates(3, 0) = fmt.Format(eVarNameFlags.HabitatArea)
+        ABasicEstimates(4, 0) = fmt.Format(eVarNameFlags.BiomassAreaOutput)  'cStringUtils.Localize(My.Resources.BIOMASS_AREA_UNITS, sg.FormatUnitString("[biomass]/[area]")) '  My.Resources.BIOMASS_AREA_UNITS
+        ABasicEstimates(5, 0) = fmt.Format(eVarNameFlags.Biomass)  'cStringUtils.Localize(My.Resources.BIOMASS_AREA_UNITS, sg.FormatUnitString("[biomass]/[area]")) '  My.Resources.BIOMASS_AREA_UNITS
+        ABasicEstimates(6, 0) = fmt.Format(eVarNameFlags.PBOutput) '  My.Resources.PRODUCTION_BIOMASS_UNITS
+        ABasicEstimates(7, 0) = fmt.Format(eVarNameFlags.QBOutput) ' My.Resources.CONSUMPTION_BIOMASS_UNITS
+        ABasicEstimates(8, 0) = fmt.Format(eVarNameFlags.EEOutput) ' My.Resources.ECOTROPHIC_EFFICIENCY
+        ABasicEstimates(9, 0) = fmt.Format(eVarNameFlags.GEOutput) ' My.Resources.PRODUCTION_CONSUMPTION
 
         'Fill out core data
         For Row = 1 To Core.nGroups
@@ -1773,6 +1775,8 @@ Public Class frmResults
         Dim KeyIndices As New cDataSheet
 
         'Setup titles
+        ' ToDo: use shared resources
+        ' ToDo: use dynamic units
         AKeyIndices(0, 0) = My.Resources.INDEX
         AKeyIndices(1, 0) = My.Resources.GROUP_NAME
         AKeyIndices(2, 0) = My.Resources.BIOMASS_ACCUM
@@ -1806,6 +1810,8 @@ Public Class frmResults
         Dim InitMortCoef As New cDataSheet
 
         'Setup titles
+        ' ToDo: use shared resources
+        ' ToDo: use dynamic units
         AInitMortCoef(0, 0) = My.Resources.INDEX
         AInitMortCoef(1, 0) = My.Resources.GROUP_NAME
         AInitMortCoef(2, 0) = My.Resources.PROD_BIOMASS_Z
@@ -1970,6 +1976,8 @@ Public Class frmResults
         Dim Respiration As New cDataSheet
 
         'Set up titles
+        ' ToDo: use shared resources
+        ' ToDo: use dynamic units
         ARespiration(1, 0) = My.Resources.GROUP_NAME
         ARespiration(2, 0) = My.Resources.RESPIRATION_UNITS
         ARespiration(3, 0) = My.Resources.ASSIMILATION_UNITS
@@ -2684,166 +2692,3 @@ Public Class frmResults
 #End Region
 
 End Class
-
-
-'Public Sub SendToFileTabbed(ByVal data(,) As Single, ByVal GroupNames As List(Of cCreatedObjects), _
-'                  ByVal TabName As String, ByVal FileName As String, _
-'                  ByVal sheet As Excel.Worksheet, ByVal wb As Excel.Workbook)
-
-'    sheet.Name = CheckName(TabName, wb)
-
-'    Dim simYears As Integer = CInt(m_core.nEcosimTimeSteps / cCore.N_MONTHS)
-'    Dim nGroups As Integer = data.GetLength(0) - 1
-'    Dim sum(nGroups) As Single
-
-'    Dim x As Integer = 1, y As Integer = 1 'Hold coordinates of cell underfocus
-
-'    'Create Super Headings
-'    For Each SuperGroup In GroupNames
-'        sheet.Cells(y, x) = SuperGroup.ParentName
-'        x += SuperGroup.CountChild
-'    Next
-
-'    'Move down start of next line
-'    x = 1
-'    y += 1
-'    For Each SuperGroup In GroupNames
-'        For Each SubGroup In SuperGroup.ChildNames
-'            sheet.Cells(y, x) = SubGroup
-'            x += 1
-'        Next
-'    Next
-
-'    For j As Integer = 0 To data.GetLength(1) - 1
-'        For i As Integer = 0 To nGroups
-'            sheet.Cells(j + y + 1, i + 1) = data(i, j)
-'        Next
-'    Next
-
-
-'End Sub
-
-'Public Sub SendToFileTabbed(ByVal data(,) As Single, ByVal strGroupNames As List(Of String), _
-'                      ByVal TabName As String, ByVal FileName As String, _
-'                      ByVal Sheet As Excel.Worksheet, ByVal wb As Excel.Workbook)
-
-'    Sheet.Name = CheckName(TabName, wb)
-
-'    Dim nGroups As Integer = data.GetLength(0) - 1
-
-'    For i = 0 To strGroupNames.Count - 1
-'        Sheet.Cells(1, i + 1) = strGroupNames(i)
-'    Next
-
-'    For j As Integer = 0 To data.GetLength(1) - 1
-'        For i As Integer = 0 To nGroups
-'            Sheet.Cells(j + 2, i + 1) = data(i, j)
-'        Next
-'    Next
-
-'End Sub
-
-'Dim SSgrp As Single
-'Dim SS As Single
-'Dim shape As cForcingFunction = Nothing
-'Dim FuncType As eForcingFunctionApplication
-'Dim ppi As cPredPreyInteraction = Nothing
-'Dim FishMorts() As cForcingFunction
-
-
-''switch off all production terms ------------------------------------------------------------------------------------------------------------
-'For FunctGrp = 1 To m_core.nGroups
-'    If m_core.EcoPathGroupInputs(FunctGrp).IsProducer Then
-
-'        'Get the object that deals with the predator prey interactions for each primary producer
-'        ppi = m_core.PPInteractionManager.Interaction(FunctGrp, FunctGrp)
-
-'        'Lock updates while changing shape settings
-'        ppi.LockUpdates = True
-
-'        For i As Integer = 1 To ppi.MaxNumShapes
-'            If ppi.getShape(i, shape, FuncType) Then
-'                If FuncType = eForcingFunctionApplication.ProductionRate Then
-'                    Exit For
-'                End If
-'            End If
-'        Next
-
-'        For i As Integer = 1 To ppi.MaxNumShapes
-'            ppi.setShape(i, Nothing)
-'        Next
-
-'        'Unlock to allow for updates now changes have been made
-'        ppi.LockUpdates = False
-
-'    End If
-'Next
-
-''Reset vulnerabilities ---------------------------------------------------------------------------------------------------------------------------
-'Dim VulnerabilityForcers(m_core.nGroups, m_core.nGroups, 5) As cForcingFunction
-
-'For iPred As Integer = 1 To m_core.nGroups
-'    For iPrey As Integer = 1 To m_core.nGroups
-'        ppi = m_core.PPInteractionManager.Interaction(iPred, iPrey)
-'        If ppi IsNot Nothing Then
-'            ppi.LockUpdates = True
-'            For i As Integer = 1 To ppi.MaxNumShapes
-'                If (ppi.getShape(i, VulnerabilityForcers(iPred, iPrey, i), FuncType)) Then
-'                    If FuncType = eForcingFunctionApplication.Vulnerability Then
-'                        ppi.setShape(i, Nothing)
-'                    End If
-'                End If
-'            Next
-'            ppi.LockUpdates = False
-'        End If
-'    Next
-'Next
-
-'mEcosimModel.Run()
-'SSgrp = mDataStructure.SSGroup(1)
-'SS = mDataStructure.SS
-
-
-''Switch off all the time series for fishing mortalities ------------------------------------------------------------------------------------------
-'Dim nFishShapes As Integer = m_core.FishMortShapeManager.Count
-'ReDim FishMorts(nFishShapes)
-
-''For iShape As Integer = 1 To nFishShapes
-''    FishMorts(iShape) = m_core.FishMortShapeManager.Item(iShape - 1)
-''    m_core.FishMortShapeManager.Remove(FishMorts(iShape))
-''Next
-'For iTimeSeries As Integer = 1 To mTimeSeries.NdatType
-'    If mTimeSeries.DatType(iTimeSeries) = eTimeSeriesType.FishingMortality Then
-'        mTimeSeries.bEnable(iTimeSeries) = False
-'    End If
-'Next
-
-'mEcosimModel.Run()
-'SSgrp = mDataStructure.SSGroup(1)
-'SS = mDataStructure.SS
-
-
-
-'Dim VulnerabilityVals(m_core.nGroups, m_core.nGroups) As Single
-
-'For iPred As Integer = 1 To m_core.nGroups
-'    For iPrey As Integer = 1 To m_core.nGroups
-'        VulnerabilityVals(iPred, iPrey) = m_core.EcoSimGroupInputs(iPred).VulMult(iPrey)
-'        m_core.EcoSimGroupInputs(iPred).VulMult(iPrey) = 2
-'    Next
-'Next
-
-
-'mEcosimModel.Run()
-'SSgrp = mDataStructure.SSGroup(1)
-'SS = mDataStructure.SS
-
-''Set appropriate shape
-'ppi.LockUpdates = True
-'ppi.setShape(1, shape, eForcingFunctionApplication.ProductionRate)
-'ppi.LockUpdates = False
-
-'mEcosimModel.Run()
-
-'SSgrp = mDataStructure.SSGroup(1)
-'SS = mDataStructure.SS

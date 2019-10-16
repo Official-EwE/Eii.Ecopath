@@ -96,10 +96,6 @@
     <Flag>AutoTranslated</Flag>
     <Comment />
   </Data>
-  <Data Key="ASSIMILATION_UNITS">
-    <Flag>AutoTranslated</Flag>
-    <Comment />
-  </Data>
   <Data Key="PARENT_ONLY">
     <Flag>AutoTranslated</Flag>
     <Comment />
@@ -465,10 +461,6 @@
     <Comment />
   </Data>
   <Data Key="DIET_PROPS">
-    <Flag>AutoTranslated</Flag>
-    <Comment />
-  </Data>
-  <Data Key="BIOMASS_UNITS">
     <Flag>AutoTranslated</Flag>
     <Comment />
   </Data>

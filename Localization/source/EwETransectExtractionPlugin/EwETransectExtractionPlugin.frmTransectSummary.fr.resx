@@ -120,9 +120,6 @@
   <data name="m_tsbnPlay.Text" xml:space="preserve">
     <value>Jouer</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>frmTransectResults</value>
-  </data>
   <data name="m_tsbnStop.Text" xml:space="preserve">
     <value>Arrêtez</value>
   </data>

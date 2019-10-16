@@ -131,6 +131,7 @@
     <Compile Include="cSelectionData.vb" />
     <Compile Include="cTab.vb" />
     <Compile Include="cTrackProgress.vb" />
+    <Compile Include="cUnitHeaderFormatter.vb" />
     <Compile Include="frmResults.Designer.vb">
       <DependentUpon>frmResults.vb</DependentUpon>
     </Compile>
