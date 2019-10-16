@@ -235,7 +235,7 @@
     <value>Mortalité totale</value>
   </data>
   <data name="HEADER_FLEET_GROUP" xml:space="preserve">
-    <value>Flotte \ groupe</value>
+    <value>Flotte\groupe</value>
   </data>
   <data name="VALUE_INDEXED_PERCENT" xml:space="preserve">
     <value>Indexé {0}%</value>
@@ -475,7 +475,7 @@
     <value>Valeur cumulative</value>
   </data>
   <data name="CONSERVATIONSTATUS_VULNERABLE" xml:space="preserve">
-    <value>VU || Vulnérable</value>
+    <value>VU||Vulnérable</value>
   </data>
   <data name="FITRESPONSE_GRADIENT" xml:space="preserve">
     <value>Pente</value>
@@ -508,7 +508,7 @@
     <value>Activer</value>
   </data>
   <data name="CONSERVATIONSTATUS_ENDANGERED" xml:space="preserve">
-    <value>EN || En danger</value>
+    <value>EN||En danger</value>
   </data>
   <data name="HEADER_CONCENTRATION_OVER_B" xml:space="preserve">
     <value>Concentration / Biomasse (cumulatif)</value>
@@ -583,13 +583,13 @@
     <value>Poids de Kalman</value>
   </data>
   <data name="CONSERVATIONSTATUS_DATADEFICIENT" xml:space="preserve">
-    <value>DD || Données insuffisantes</value>
+    <value>DD||Données insuffisantes</value>
   </data>
   <data name="HEADER_TOTAL" xml:space="preserve">
     <value>Total</value>
   </data>
   <data name="CONSERVATIONSTATUS_EXTINCT" xml:space="preserve">
-    <value>EX || Éteint</value>
+    <value>EX||Éteint</value>
   </data>
   <data name="HEADER_SHAPE" xml:space="preserve">
     <value>Forme</value>
@@ -862,7 +862,7 @@
     <value>{0} - {1}</value>
   </data>
   <data name="HEADER_CONCENTRATION_INITIAL" xml:space="preserve">
-    <value>Conc. Initiale (t / t)</value>
+    <value>Conc. Initiale (t/t)</value>
   </data>
   <data name="GENERIC_LABEL_POINT" xml:space="preserve">
     <value>{0} ({1}, {2})</value>

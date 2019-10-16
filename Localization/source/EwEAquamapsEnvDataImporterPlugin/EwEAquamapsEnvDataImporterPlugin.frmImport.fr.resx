@@ -127,7 +127,7 @@
     <value>Importation</value>
   </data>
   <data name="m_lllblExample.Text" xml:space="preserve">
-    <value>&amp; Voir un exemple de fichier ...</value>
+    <value>&amp;Voir un exemple de fichier...</value>
   </data>
   <data name="m_hdrSpecies.Text" xml:space="preserve">
     <value>Espèce</value>

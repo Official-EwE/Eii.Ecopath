@@ -1,0 +1,894 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ROW_HDR_IMPORT" xml:space="preserve">
+    <value>Importere</value>
+  </data>
+  <data name="COL_HDR_IMPORT" xml:space="preserve">
+    <value>Importere</value>
+  </data>
+  <data name="COL_HDR_CATCH" xml:space="preserve">
+    <value>Fangst</value>
+  </data>
+  <data name="COL_HDR_BIOMASS" xml:space="preserve">
+    <value>Biomasse</value>
+  </data>
+  <data name="COL_HDR_VALUE" xml:space="preserve">
+    <value>Værdi</value>
+  </data>
+  <data name="PAGE_CREDITS" xml:space="preserve">
+    <value>credits</value>
+  </data>
+  <data name="ROW_HDR_EXPORT" xml:space="preserve">
+    <value>Eksport</value>
+  </data>
+  <data name="COL_HDR_EXPORT" xml:space="preserve">
+    <value>Eksport</value>
+  </data>
+  <data name="ROW_HDR_TOTAL" xml:space="preserve">
+    <value>i alt</value>
+  </data>
+  <data name="PAGE_ASC_TOTAL" xml:space="preserve">
+    <value>i alt</value>
+  </data>
+  <data name="COL_HDR_GRP_NAME" xml:space="preserve">
+    <value>Gruppe navn</value>
+  </data>
+  <data name="COL_HDR_YEAR" xml:space="preserve">
+    <value>År</value>
+  </data>
+  <data name="COL_HDR_PARAM" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="HEADER_ANNUAL" xml:space="preserve">
+    <value>Årligt</value>
+  </data>
+  <data name="COL_HDR_SOURCE" xml:space="preserve">
+    <value>Kilde</value>
+  </data>
+  <data name="LBL_FIB_INDX" xml:space="preserve">
+    <value>FIB-indeks</value>
+  </data>
+  <data name="ROW_HDR_SUM" xml:space="preserve">
+    <value>Sum</value>
+  </data>
+  <data name="ROW_HDR_DET" xml:space="preserve">
+    <value>detritus</value>
+  </data>
+  <data name="HEADER_MONTHLY" xml:space="preserve">
+    <value>Månedlige</value>
+  </data>
+  <data name="LBL_TOTAL_CATCH" xml:space="preserve">
+    <value>Samlet fangst</value>
+  </data>
+  <data name="LBL_KEMPTONS_Q" xml:space="preserve">
+    <value>Kemptons Q</value>
+  </data>
+  <data name="LBL_INDEXED" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="COL_HDR_TRP_LVL" xml:space="preserve">
+    <value>Trofisk niveau</value>
+  </data>
+  <data name="ROW_HDR_PRODUCER" xml:space="preserve">
+    <value>Producent</value>
+  </data>
+  <data name="COL_HDR_CONSUM" xml:space="preserve">
+    <value>Forbrug</value>
+  </data>
+  <data name="ROW_HDR_RESP" xml:space="preserve">
+    <value>Respiration</value>
+  </data>
+  <data name="COL_HDR_RESP" xml:space="preserve">
+    <value>Respiration</value>
+  </data>
+  <data name="STR_NONE" xml:space="preserve">
+    <value>ingen</value>
+  </data>
+  <data name="PAGE_FLOWDET" xml:space="preserve">
+    <value>Strøm fra detritus</value>
+  </data>
+  <data name="MNU_STYLE_CIRCLES" xml:space="preserve">
+    <value>&amp; Circles</value>
+  </data>
+  <data name="COL_HDR_ASCEND_FLOWBIT" xml:space="preserve">
+    <value>Stigning (flowbits)</value>
+  </data>
+  <data name="COL_HDR_FLOW_DET" xml:space="preserve">
+    <value>Strøm til detritus</value>
+  </data>
+  <data name="LBL_ECOSIM_NA_WO_PPR_EST_PRGR" xml:space="preserve">
+    <value>Ecosim netværksanalyse (uden PPR Est) fremgang:</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS" xml:space="preserve">
+    <value>Finder veje ...</value>
+  </data>
+  <data name="COL_HDR_CAPACITY_PCT" xml:space="preserve">
+    <value>Kapacitet (%)</value>
+  </data>
+  <data name="LBL_NA_PRGR" xml:space="preserve">
+    <value>Fremskridt med netværksanalyse:</value>
+  </data>
+  <data name="PAGE_CP_TOPPRED" xml:space="preserve">
+    <value>Top predation &lt;- bytte</value>
+  </data>
+  <data name="GENERIC_TOOLTIP" xml:space="preserve">
+    <value>Netværksanalyse plug-in</value>
+  </data>
+  <data name="COL_HDR_DET_TE_W" xml:space="preserve">
+    <value>Det. TE (vægtet)</value>
+  </data>
+  <data name="PAGE_FB_FROMCOMBINED" xml:space="preserve">
+    <value>Fra alt sammen</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAY_CYCLES" xml:space="preserve">
+    <value>Finding af banecykler ...</value>
+  </data>
+  <data name="ROW_HDR_THROUGHPUT_CYC_TOTAL" xml:space="preserve">
+    <value>Gennemstrømning cykleret (inklusive detritus)</value>
+  </data>
+  <data name="PROMPT_ERROR_INITIALIZE" xml:space="preserve">
+    <value>Netværksanalyse er ikke initialiseret korrekt</value>
+  </data>
+  <data name="STR_WO_DET" xml:space="preserve">
+    <value>uden detritus</value>
+  </data>
+  <data name="COL_HDR_PATH_NUM" xml:space="preserve">
+    <value>Stienummer</value>
+  </data>
+  <data name="COL_HDR_PATH_LEN" xml:space="preserve">
+    <value>Sti længde</value>
+  </data>
+  <data name="LBL_POSITIVE" xml:space="preserve">
+    <value>Positiv</value>
+  </data>
+  <data name="STR_FROM_PRIM_PRODUCER" xml:space="preserve">
+    <value>Fra primære producenter: {0}%</value>
+  </data>
+  <data name="STR_FROM_DET" xml:space="preserve">
+    <value>Fra detritus: {0}%</value>
+  </data>
+  <data name="LBL_RESP" xml:space="preserve">
+    <value>respiration</value>
+  </data>
+  <data name="LBL_CONS" xml:space="preserve">
+    <value>forbrug</value>
+  </data>
+  <data name="ROW_HDR_TOTAL_THROUGHPUT" xml:space="preserve">
+    <value>Samlet gennemstrømning</value>
+  </data>
+  <data name="PAGE_FB" xml:space="preserve">
+    <value>Strømme og biomasse</value>
+  </data>
+  <data name="STR_PROP_TOTAL_FLOW" xml:space="preserve">
+    <value>Andel af total strømning, der stammer fra detritus:</value>
+  </data>
+  <data name="LBL_RELTOTALIMPACT" xml:space="preserve">
+    <value>Relativ total påvirkning</value>
+  </data>
+  <data name="COL_HDR_RELTOTALIMPACT" xml:space="preserve">
+    <value>Relativ total påvirkning</value>
+  </data>
+  <data name="ROW_HDR_THROUGHPUT_CYC_LIV" xml:space="preserve">
+    <value>Gennemstrømning cykleret (ekskl. Detritus)</value>
+  </data>
+  <data name="PAGE_MTI" xml:space="preserve">
+    <value>Blandet trofisk påvirkning</value>
+  </data>
+  <data name="PAGE_ASC" xml:space="preserve">
+    <value>Overlegenhed</value>
+  </data>
+  <data name="COL_HDR_ASCEND_TOTAL" xml:space="preserve">
+    <value>Overlegenhed</value>
+  </data>
+  <data name="PAGE_PPR" xml:space="preserve">
+    <value>Primær produktion krævet</value>
+  </data>
+  <data name="PROMPT_DISPLAY_ALL_HIDDEN_GROUPS" xml:space="preserve">
+    <value>Viser alle grupper (ja) eller skjulte grupper (Nej)?</value>
+  </data>
+  <data name="STATUS_RUNNING_NA" xml:space="preserve">
+    <value>Kører netværksanalyse ...</value>
+  </data>
+  <data name="STATUS_RUNNING_NETWORKANALYSIS" xml:space="preserve">
+    <value>Kører netværksanalyse ...</value>
+  </data>
+  <data name="PAGE_CYC_LIVING" xml:space="preserve">
+    <value>Cykler (levende)</value>
+  </data>
+  <data name="COL_HDR_CAPACITY_ECOSIM" xml:space="preserve">
+    <value>Kapacitet</value>
+  </data>
+  <data name="PROMPT_COMPUTE_ALL_CYCLES" xml:space="preserve">
+    <value>Beregn alle cyklusser? Dette kan være meget tidskrævende for større modeller.</value>
+  </data>
+  <data name="LBL_TL" xml:space="preserve">
+    <value>TL</value>
+  </data>
+  <data name="COL_HDR_TL" xml:space="preserve">
+    <value>TL</value>
+  </data>
+  <data name="LBL_TE" xml:space="preserve">
+    <value>TE</value>
+  </data>
+  <data name="PAGE_FB_BIOMPMD" xml:space="preserve">
+    <value>Biomasse-pyramide</value>
+  </data>
+  <data name="COL_HDR_THROUGHPUT" xml:space="preserve">
+    <value>gennemløb</value>
+  </data>
+  <data name="PROMPT_SAVE_NOACCESS" xml:space="preserve">
+    <value>Netværksanalyse kan ikke få adgang til destinationen '{0}'</value>
+  </data>
+  <data name="LBL_PREDATION" xml:space="preserve">
+    <value>prædation</value>
+  </data>
+  <data name="PROMPT_FILECREATE_FAILED" xml:space="preserve">
+    <value>Kunne ikke oprette filen '{0}': {1}</value>
+  </data>
+  <data name="MNU_STYLE" xml:space="preserve">
+    <value>Graf &amp; stil</value>
+  </data>
+  <data name="COL_HDR_PSUST_SDLOWER" xml:space="preserve">
+    <value>Psust SD (lavere)</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_FLOW" xml:space="preserve">
+    <value>Ovh flow</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_RESP" xml:space="preserve">
+    <value>Ovh resp</value>
+  </data>
+  <data name="LBL_BIOMASS" xml:space="preserve">
+    <value>biomasse</value>
+  </data>
+  <data name="COL_HDR_PSUST_SDUPPER" xml:space="preserve">
+    <value>Psust SD (øvre)</value>
+  </data>
+  <data name="PAGE_FB_FROMDET" xml:space="preserve">
+    <value>Fra detritus</value>
+  </data>
+  <data name="STR_PCT_THROUGHPUT_LIV" xml:space="preserve">
+    <value>% af gennemstrømning uden detritus</value>
+  </data>
+  <data name="ROW_HDR_FINN_CYC_INDX" xml:space="preserve">
+    <value>Finns cykelindeks</value>
+  </data>
+  <data name="PAGE_MTI_PLOTEWE5" xml:space="preserve">
+    <value>Blandet trofisk påvirkningskurve (EwE5)</value>
+  </data>
+  <data name="STATUS_RUNNING_LINDEMAN" xml:space="preserve">
+    <value>Kører netværksanalyse Lindeman ...</value>
+  </data>
+  <data name="MNU_STYLE_DETRITUS_COLLAPSE" xml:space="preserve">
+    <value>&amp; Skjul detritus</value>
+  </data>
+  <data name="COL_HDR_PPR_U_BIOMASS" xml:space="preserve">
+    <value>PPR / u. BIOM</value>
+  </data>
+  <data name="ROW_HDR_PRED_CYC_INDX" xml:space="preserve">
+    <value>Rovdyr cykelindeks</value>
+  </data>
+  <data name="PAGE_CP_CPTL11" xml:space="preserve">
+    <value>Forbruger &lt;- bytte &lt;- TL1</value>
+  </data>
+  <data name="PAGE_CP_CYCLES" xml:space="preserve">
+    <value>Cykler</value>
+  </data>
+  <data name="COL_HDR_PROP_FLOW_DET" xml:space="preserve">
+    <value>Prop flow det</value>
+  </data>
+  <data name="PROMPT_NETWORK_COMPLEXDIET" xml:space="preserve">
+    <value>Netværksanalyse kan køre langsomt på komplekse diætmatrixer og det kan tage flere timer til dage (!) At gennemføre. Er du sikker på, at du vil fortsætte?</value>
+  </data>
+  <data name="COL_HDR_PPR_CATCH" xml:space="preserve">
+    <value>PPR / catch</value>
+  </data>
+  <data name="STATUS_RUNNING_ULANOW" xml:space="preserve">
+    <value>Kører netværksanalyse Ulanow ...</value>
+  </data>
+  <data name="COL_HDR_DETRITUS_TKM2" xml:space="preserve">
+    <value>Detritus (t / km²)</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_IMPORT" xml:space="preserve">
+    <value>Vis &amp; import</value>
+  </data>
+  <data name="NAVITEM_ROOT" xml:space="preserve">
+    <value>Netværksanalyse</value>
+  </data>
+  <data name="PAGE_CP_PATHWAYS" xml:space="preserve">
+    <value>veje</value>
+  </data>
+  <data name="PAGE_FB_FLOWPMD" xml:space="preserve">
+    <value>Flowpyramide</value>
+  </data>
+  <data name="ROW_HDR_INTN_FLOW" xml:space="preserve">
+    <value>Intern strøm</value>
+  </data>
+  <data name="MNU_CONTENT_KEYSTONE2" xml:space="preserve">
+    <value>Keystone-indeks # &amp; 2 (Power et al., 1996)</value>
+  </data>
+  <data name="MNU_CONTENT_KEYSTONE3" xml:space="preserve">
+    <value>Keystone-indeks # &amp; 3 (Valls et al, 2015)</value>
+  </data>
+  <data name="MNU_CONTENT_KEYSTONE1" xml:space="preserve">
+    <value>Keystone-indeks # &amp; 1 (Libralato et al, 2006)</value>
+  </data>
+  <data name="ROW_HDR_INPUT_TRP_LVL_II_PLUS" xml:space="preserve">
+    <value>Input TL II + (ikke i gennemstrømning)</value>
+  </data>
+  <data name="COL_HDR_PATH" xml:space="preserve">
+    <value>Stier fra den specificerede gruppe til alle øverste rovdyr</value>
+  </data>
+  <data name="COL_HDR_PROD" xml:space="preserve">
+    <value>prod</value>
+  </data>
+  <data name="COL_HDR_UNIT" xml:space="preserve">
+    <value>Enhed</value>
+  </data>
+  <data name="COL_HDR_INFO" xml:space="preserve">
+    <value>Information (bit)</value>
+  </data>
+  <data name="LBL_FLOWDET" xml:space="preserve">
+    <value>strømme fra detritus</value>
+  </data>
+  <data name="PROMPT_ERROR_CYCLING" xml:space="preserve">
+    <value>Rovdyrcykelindeks kan ikke beregnes.</value>
+  </data>
+  <data name="PROMPT_SAVE_FAILED" xml:space="preserve">
+    <value>Netværksanalyse kunne ikke gemme indekser til '{0}'</value>
+  </data>
+  <data name="PAGE_CYCPATH_LEN" xml:space="preserve">
+    <value>Cykler og sti længde</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_EXPORT" xml:space="preserve">
+    <value>Ovh eksport</value>
+  </data>
+  <data name="MNU_STYLE_DETRITUS_EXPAND" xml:space="preserve">
+    <value>&amp; Udvid detritus</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS_CONSUMER" xml:space="preserve">
+    <value>Finding af veje til forbruger '{0}' ...</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS_CONSPREY" xml:space="preserve">
+    <value>Finder veje til '{0}' via '{1}' ...</value>
+  </data>
+  <data name="STR_TRANSFER_EFF" xml:space="preserve">
+    <value>Overføringseffektiviteter (beregnet som geometrisk middelværdi for TL II-IV)</value>
+  </data>
+  <data name="MNU_STYLE_CIRCLES_SCALED" xml:space="preserve">
+    <value>Cirkler, skaleret til &amp; Biomasse</value>
+  </data>
+  <data name="PAGE_FB_CATCHTL" xml:space="preserve">
+    <value>Fangst efter trofisk niveau</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_IMPORT" xml:space="preserve">
+    <value>Ovh-import</value>
+  </data>
+  <data name="PROMPT_ERROR_ECOPATH" xml:space="preserve">
+    <value>Netværksanalyse kan ikke køres før Ecopath</value>
+  </data>
+  <data name="COL_HDR_NONHIDDEN" xml:space="preserve">
+    <value>Ikke-hidden</value>
+  </data>
+  <data name="STATUS_UPDATING_UI" xml:space="preserve">
+    <value>Opdaterer brugergrænsefladen ...</value>
+  </data>
+  <data name="COL_HDR_PATH_VIA_PREY" xml:space="preserve">
+    <value>Stier fra primær producent- eller detritusgrupper til en udvalgt forbruger via et specificeret bytte</value>
+  </data>
+  <data name="COL_HDR_TRP_LVL_FLOW" xml:space="preserve">
+    <value>Trofisk niveau \ Flow</value>
+  </data>
+  <data name="LBL_ECOSIM_NA_W_PPR_EST_PRGR" xml:space="preserve">
+    <value>Ecosim netværksanalyse (med PPR Est) fremgang:</value>
+  </data>
+  <data name="COL_HDR_PSUST" xml:space="preserve">
+    <value>Psust</value>
+  </data>
+  <data name="COL_HDR_PP_TE" xml:space="preserve">
+    <value>Transfer Eff (PP)</value>
+  </data>
+  <data name="PROMPT_SAVE_DESTINATION" xml:space="preserve">
+    <value>Vælg destination for at gemme Resultater af netværksanalyses CSV-fil</value>
+  </data>
+  <data name="PAGE_LINDEX" xml:space="preserve">
+    <value>Tab af produktionsindeks</value>
+  </data>
+  <data name="COL_HDR_TOTAL_TKM2" xml:space="preserve">
+    <value>I alt (t / km²)</value>
+  </data>
+  <data name="PROMPT_ERROR_ECOSIM_INIT" xml:space="preserve">
+    <value>Netværksanalyse til Ecosim kunne ikke initialiseres på grund af et problem i netværksanalyse</value>
+  </data>
+  <data name="ROW_HDR_ALL_FLOWS" xml:space="preserve">
+    <value>Alle strømmer</value>
+  </data>
+  <data name="PAGE_ECOSIM_NA_WO_PPR" xml:space="preserve">
+    <value>Indeks uden primær produktion krævet</value>
+  </data>
+  <data name="LBL_IMPACTED_GP" xml:space="preserve">
+    <value>Påvirket gruppe</value>
+  </data>
+  <data name="PROMPT_SAVE_SUCCESS" xml:space="preserve">
+    <value>Netværksanalyseindekser gemt til '{0}'</value>
+  </data>
+  <data name="COL_HDR_PP_TE_W" xml:space="preserve">
+    <value>PP TE (vægtet)</value>
+  </data>
+  <data name="COL_HDR_PPR_DET" xml:space="preserve">
+    <value>PPR (Det)</value>
+  </data>
+  <data name="COL_HDR_GRP_NAME_TRP_LVL" xml:space="preserve">
+    <value>Gruppenavn / trofisk niveau</value>
+  </data>
+  <data name="LBL_KEYSTONE1" xml:space="preserve">
+    <value>Keystone-indeks nr. 1 (Libralato et al, 2006)</value>
+  </data>
+  <data name="LBL_KEYSTONE2" xml:space="preserve">
+    <value>Keystone-indeks nr. 2 (Power et al., 1996)</value>
+  </data>
+  <data name="LBL_KEYSTONE3" xml:space="preserve">
+    <value>Grupperangering efter keystone-indeks # 3 (Valls et al, 2015)</value>
+  </data>
+  <data name="ROW_HDR_FINN_STR_THRU_PATH_LEN" xml:space="preserve">
+    <value>Finn's lige gennemløbslængde</value>
+  </data>
+  <data name="LBL_PPR_CAL_PRGR" xml:space="preserve">
+    <value>Fremskridt med primær produktionsberegning:</value>
+  </data>
+  <data name="PAGE_KEYSTONENESS" xml:space="preserve">
+    <value>Keystoneness</value>
+  </data>
+  <data name="PAGE_FB_LINDEMAN" xml:space="preserve">
+    <value>Lindeman rygsøjle</value>
+  </data>
+  <data name="COL_HDR_TOTAL_TKM2YR" xml:space="preserve">
+    <value>I alt (t / km² / år)</value>
+  </data>
+  <data name="PAGE_TLDECOMP" xml:space="preserve">
+    <value>Trofisk nedbrydning på niveau</value>
+  </data>
+  <data name="PAGE_FB_BIOMTL" xml:space="preserve">
+    <value>Biomasse efter trofisk niveau</value>
+  </data>
+  <data name="LBL_IMPORT" xml:space="preserve">
+    <value>importere</value>
+  </data>
+  <data name="WRITER_ECOSIM" xml:space="preserve">
+    <value>Netværksanalyse Ecosim-resultater</value>
+  </data>
+  <data name="MNU_CONTENT_MAXTL" xml:space="preserve">
+    <value>&amp; Max. trofisk niveau</value>
+  </data>
+  <data name="LBL_CATCH_DET_REQ" xml:space="preserve">
+    <value>Fangst detritus kræves</value>
+  </data>
+  <data name="LBL_TST" xml:space="preserve">
+    <value>TST (%)</value>
+  </data>
+  <data name="LBL_FCI" xml:space="preserve">
+    <value>FCI</value>
+  </data>
+  <data name="COL_HDR_FCI" xml:space="preserve">
+    <value>FCI</value>
+  </data>
+  <data name="PAGE_FB_FROMPP" xml:space="preserve">
+    <value>Fra primære producenter</value>
+  </data>
+  <data name="ROW_HDR_MEAN_PATH_LEN" xml:space="preserve">
+    <value>Gennemsnits længde af stier = Samlet antal pile / Samlet antal stier</value>
+  </data>
+  <data name="LBL_PATH_FROM" xml:space="preserve">
+    <value>Stier &amp; fra:</value>
+  </data>
+  <data name="LBL_MONTHS" xml:space="preserve">
+    <value>måneder</value>
+  </data>
+  <data name="PAGE_ECOSIM_NA" xml:space="preserve">
+    <value>Ecosim netværksanalyse</value>
+  </data>
+  <data name="PAGE_TL_ABSFLOWS" xml:space="preserve">
+    <value>Absolutte strømme</value>
+  </data>
+  <data name="PAGE_MTI_PLOT" xml:space="preserve">
+    <value>Blandet trofisk påvirkningskurve</value>
+  </data>
+  <data name="WRITER_ECOPATH" xml:space="preserve">
+    <value>Netværksanalyse Ecopath-resultater</value>
+  </data>
+  <data name="PAGE_TL_RELFLOWS" xml:space="preserve">
+    <value>Relative strømme</value>
+  </data>
+  <data name="COL_HDR_THROUGHPUT_UNIT" xml:space="preserve">
+    <value>Gennemstrømning (t / km² / år)</value>
+  </data>
+  <data name="COL_HDR_CONSUM_PREDAT" xml:space="preserve">
+    <value>Forbrug af rovdyr</value>
+  </data>
+  <data name="CAPTION" xml:space="preserve">
+    <value>Netværksanalyse</value>
+  </data>
+  <data name="MNU_CONTENT" xml:space="preserve">
+    <value>Graf c &amp; ontent</value>
+  </data>
+  <data name="ROW_HDR_NO_PATH_FOUND" xml:space="preserve">
+    <value>Ingen veje fundet</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_BIOMASS" xml:space="preserve">
+    <value>Vis &amp; biomasse</value>
+  </data>
+  <data name="PAGE_CYC_ALL" xml:space="preserve">
+    <value>Cykler (alle)</value>
+  </data>
+  <data name="LBL_EXPORT" xml:space="preserve">
+    <value>eksport og fangster</value>
+  </data>
+  <data name="ROW_HDR_NOT_APP" xml:space="preserve">
+    <value>Ikke anvendelig</value>
+  </data>
+  <data name="MNU_CONTENT_TOTIMPACT_OVER_B" xml:space="preserve">
+    <value>Samlet og påvirkning af biomasse</value>
+  </data>
+  <data name="LBL_BACCUM" xml:space="preserve">
+    <value>accum</value>
+  </data>
+  <data name="COL_HDR_CATCH_PPR" xml:space="preserve">
+    <value>Fang PPR</value>
+  </data>
+  <data name="LBL_CATCH_PPR" xml:space="preserve">
+    <value>Fang PPR</value>
+  </data>
+  <data name="PAGE_MTI_IMPACT" xml:space="preserve">
+    <value>Effektdata</value>
+  </data>
+  <data name="COL_HDR_ASCEND_IMPORT" xml:space="preserve">
+    <value>Asc-import</value>
+  </data>
+  <data name="PROMPT_APPLAUNCH_FAILED" xml:space="preserve">
+    <value>Kunne ikke starte applikationen '{0}': {1}</value>
+  </data>
+  <data name="PROMPT_ESTIMATE_PPR" xml:space="preserve">
+    <value>Skal du beregne den primære produktion? Dette kan være meget tidskrævende for større modeller.</value>
+  </data>
+  <data name="COL_HDR_CAPACITY_FLOWBIT" xml:space="preserve">
+    <value>Kapacitet (flowbits)</value>
+  </data>
+  <data name="LBL_PATH_TO" xml:space="preserve">
+    <value>Stier og fører til:</value>
+  </data>
+  <data name="ROW_HDR_TOTAL_NUM_PATH" xml:space="preserve">
+    <value>Samlet antal stier</value>
+  </data>
+  <data name="FILEFILTER_EMF" xml:space="preserve">
+    <value>EMF-billedfiler (* .emf) | * .emf | Alle filer (*. *) | *. *</value>
+  </data>
+  <data name="STR_PCT_TOTAL_THROUGHPUT" xml:space="preserve">
+    <value>% af den samlede gennemstrømning</value>
+  </data>
+  <data name="SAMS_URL" xml:space="preserve">
+    <value>http://www.sams.ac.uk/</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_FLOWBIT" xml:space="preserve">
+    <value>Overhead (flowbits)</value>
+  </data>
+  <data name="LBL_CYC_FIND_PRGR" xml:space="preserve">
+    <value>Fremskridt med cyklusfinding:</value>
+  </data>
+  <data name="PAGE_CP_CTL1" xml:space="preserve">
+    <value>Forbruger &lt;- TL1</value>
+  </data>
+  <data name="PAGE_CYCLES_PATHWAYS" xml:space="preserve">
+    <value>Cykler og stier</value>
+  </data>
+  <data name="COL_HDR_ASCEND_PCT" xml:space="preserve">
+    <value>Stigning (%)</value>
+  </data>
+  <data name="PAGE_FB_CATCHPMD" xml:space="preserve">
+    <value>Fang pyramide</value>
+  </data>
+  <data name="COL_HDR_PCI" xml:space="preserve">
+    <value>PCI</value>
+  </data>
+  <data name="COL_HDR_PPR" xml:space="preserve">
+    <value>PPR</value>
+  </data>
+  <data name="COL_HDR_TLc" xml:space="preserve">
+    <value>TL fangst</value>
+  </data>
+  <data name="LBL_TL_CATCH" xml:space="preserve">
+    <value>TL fangst</value>
+  </data>
+  <data name="COL_HDR_AMI" xml:space="preserve">
+    <value>AMI</value>
+  </data>
+  <data name="COL_HDR_CYC" xml:space="preserve">
+    <value>Cykler er sammenkoblede stier, der starter fra en gruppe og vender tilbage til den</value>
+  </data>
+  <data name="COL_HDR_FIB" xml:space="preserve">
+    <value>FiB-indeks</value>
+  </data>
+  <data name="COL_HDR_PPR_PP" xml:space="preserve">
+    <value>PPR (PP)</value>
+  </data>
+  <data name="COL_HDR_NUM_PATH" xml:space="preserve">
+    <value>Antal stier</value>
+  </data>
+  <data name="COL_HDR_TOT_TE_W" xml:space="preserve">
+    <value>I alt TE (vægtet)</value>
+  </data>
+  <data name="COL_HDR_CATCH_DET_REQ" xml:space="preserve">
+    <value>Fang detritus req</value>
+  </data>
+  <data name="PROMPT_ERROR_ECOSIM" xml:space="preserve">
+    <value>Fejl under kørsel af netværksanalyse til Ecosim: {0}</value>
+  </data>
+  <data name="COL_HDR_TOT_TE" xml:space="preserve">
+    <value>Overføringseffekt (i alt)</value>
+  </data>
+  <data name="COL_HDR_PATH_CONSUM" xml:space="preserve">
+    <value>Stier fra primær producent- eller detritusgrupper til en udvalgt forbruger</value>
+  </data>
+  <data name="PAGE_ECOSIM_NA_WITH_PPR" xml:space="preserve">
+    <value>Indekser med primær produktion krævet</value>
+  </data>
+  <data name="COL_HDR_ASCEND_EXPORT" xml:space="preserve">
+    <value>Asc eksport</value>
+  </data>
+  <data name="STR_W_DET" xml:space="preserve">
+    <value>med detritus</value>
+  </data>
+  <data name="ROW_HDR_EXTRACT_BREAK_CYC" xml:space="preserve">
+    <value>Ekstraheres for at bryde cyklusser</value>
+  </data>
+  <data name="STR_TOTAL" xml:space="preserve">
+    <value>I alt: {0}%</value>
+  </data>
+  <data name="COL_HDR_LIVING_TKM2" xml:space="preserve">
+    <value>Bo (t / km²)</value>
+  </data>
+  <data name="COL_HDR_PRIM_PROD" xml:space="preserve">
+    <value>Prim prod</value>
+  </data>
+  <data name="LBL_LINDEX_REL" xml:space="preserve">
+    <value>Produktionstab (relativ)</value>
+  </data>
+  <data name="PAGE_PPR_CONS" xml:space="preserve">
+    <value>Til forbrug af alle grupper</value>
+  </data>
+  <data name="PAGE_PPR_HARV" xml:space="preserve">
+    <value>Til høst af alle grupper</value>
+  </data>
+  <data name="PAGE_ASC_GROUP" xml:space="preserve">
+    <value>Efter gruppe</value>
+  </data>
+  <data name="COL_HDR_KEYSTONEINDEX1" xml:space="preserve">
+    <value>Keystone-indeks # 1</value>
+  </data>
+  <data name="COL_HDR_KEYSTONEINDEX3" xml:space="preserve">
+    <value>Keystone-indeks # 3</value>
+  </data>
+  <data name="COL_HDR_KEYSTONEINDEX2" xml:space="preserve">
+    <value>Keystone-indeks # 2</value>
+  </data>
+  <data name="PAGE_KEYSTONENESS_GRAPH" xml:space="preserve">
+    <value>Keystoneness-graf</value>
+  </data>
+  <data name="LBL_IMPACTING_GP" xml:space="preserve">
+    <value>Virkende gruppe</value>
+  </data>
+  <data name="PAGE_KEYSTONENESS_TABLE" xml:space="preserve">
+    <value>Keystoneness-tabel</value>
+  </data>
+  <data name="COL_HDR_RESP_ECOSIM" xml:space="preserve">
+    <value>Resp</value>
+  </data>
+  <data name="COL_HDR_LINDEX" xml:space="preserve">
+    <value>L-indeks</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD" xml:space="preserve">
+    <value>Overhead (t / km² / år * bit)</value>
+  </data>
+  <data name="PAGE_FB_TRANSEFF" xml:space="preserve">
+    <value>Overfør effektivitet</value>
+  </data>
+  <data name="COL_HDR_CAPACITY" xml:space="preserve">
+    <value>Kapacitet (t / km² / år * bit)</value>
+  </data>
+  <data name="MNU_STYLE_NUMBERS" xml:space="preserve">
+    <value>&amp; Tal</value>
+  </data>
+  <data name="COL_HDR_ASCEND" xml:space="preserve">
+    <value>Stigning (t / km² / år * bit)</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_TST" xml:space="preserve">
+    <value>Vis &amp; TST (%)</value>
+  </data>
+  <data name="COL_HDR_KEMPTONS" xml:space="preserve">
+    <value>Kemptons Q (relativ)</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_BIOMASSACCUM" xml:space="preserve">
+    <value>Vis biomasse &amp; akkumulering</value>
+  </data>
+  <data name="PROMPT_LOAD_ECOSIM" xml:space="preserve">
+    <value>Indlæs et Ecosim-scenarie, før du kører Netværksanalyse for Ecosim.</value>
+  </data>
+  <data name="STR_T_KM2_YR" xml:space="preserve">
+    <value>t / km² / år</value>
+  </data>
+  <data name="ROW_HDR_FINN_MEAN_PATH_LEN" xml:space="preserve">
+    <value>Finns gennemsnitlige sti-længde</value>
+  </data>
+  <data name="ROW_HDR_PCT" xml:space="preserve">
+    <value>(%)</value>
+  </data>
+  <data name="COL_HDR_DET_TE" xml:space="preserve">
+    <value>Transfer Eff (Det)</value>
+  </data>
+  <data name="LBL_PATH_VIA" xml:space="preserve">
+    <value>&amp; Via:</value>
+  </data>
+  <data name="LBL_NEGATIVE" xml:space="preserve">
+    <value>Negativ</value>
+  </data>
+  <data name="COL_HDR_ENTROPY" xml:space="preserve">
+    <value>Entropi</value>
+  </data>
+  <data name="PROMPT_ERROR_PP" xml:space="preserve">
+    <value>Der er ingen anvendte primære producenter. Netværksanalyse kan ikke fortsætte.</value>
+  </data>
+  <data name="COL_HDR_SOURCE_TRP_LVL" xml:space="preserve">
+    <value>Kilde \ Trofisk niveau</value>
+  </data>
+  <data name="COL_HDR_PPR_U_CATCH" xml:space="preserve">
+    <value>PPR / u. fangst</value>
+  </data>
+  <data name="STATUS_RUNNING_EQPP" xml:space="preserve">
+    <value>Kører netværksanalyse eqPP ...</value>
+  </data>
+  <data name="COL_HDR_PPR_COMSUM" xml:space="preserve">
+    <value>PPR / forbrug</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS_PREY" xml:space="preserve">
+    <value>Finder veje til bytte '{0}' ...</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_PCT" xml:space="preserve">
+    <value>Overhead (%)</value>
+  </data>
+  <data name="LBL_ASCEND_FLOW" xml:space="preserve">
+    <value>Stigning på flow</value>
+  </data>
+  <data name="LBL_NA_INDIC" xml:space="preserve">
+    <value>Netværksanalyseindekser</value>
+  </data>
+  <data name="PROMPT_SAVE_ANNUAL_AVERAGES" xml:space="preserve">
+    <value>Gemme netværksanalyseresultater som årlige gennemsnit?</value>
+  </data>
+  <data name="COL_HDR_ASCEND_RESP" xml:space="preserve">
+    <value>Asc resp</value>
+  </data>
+  <data name="COL_HDR_ASCEND_FLOW" xml:space="preserve">
+    <value>Asc flow</value>
+  </data>
+  <data name="COL_HDR_IMPACTING_IMPACTED" xml:space="preserve">
+    <value>Virkende / påvirket</value>
+  </data>
+  <data name="COL_HDR_PPR_TOTAL_PP" xml:space="preserve">
+    <value>PPR / TotPP (%)</value>
+  </data>
+</root>

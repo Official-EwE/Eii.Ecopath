@@ -133,9 +133,9 @@
     <value>Sélectionner le fichier dans lequel enregistrer les styles de calque</value>
   </data>
   <data name="MENU_ITEM_EXPORT" xml:space="preserve">
-    <value>&amp; Exporter les styles de calque ...</value>
+    <value>&amp;Exporter les styles de calque...</value>
   </data>
   <data name="MENU_ITEM_IMPORT" xml:space="preserve">
-    <value>&amp; Importer les styles de calque ...</value>
+    <value>&amp;Importer les styles de calque...</value>
   </data>
 </root>

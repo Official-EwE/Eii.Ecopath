@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IND_PELC_DESC" xml:space="preserve">
+    <value>Fangst (C) af pelagiske arter</value>
+  </data>
+  <data name="GROUP_BIOMASS" xml:space="preserve">
+    <value>Biomasse-baserede</value>
+  </data>
+  <data name="IND_FISHC_DESC" xml:space="preserve">
+    <value>Fangst (C) af alle fiskearter</value>
+  </data>
+  <data name="IND_INVFISHB_RATIO_DESC" xml:space="preserve">
+    <value>Biomasse (B) af hvirvelløse dyr over fisk</value>
+  </data>
+  <data name="IND_PELB_DESC" xml:space="preserve">
+    <value>Biomasse (B) af pelagiske arter</value>
+  </data>
+  <data name="IND_VALUE_B_RATIO" xml:space="preserve">
+    <value>Biomasse-forhold</value>
+  </data>
+  <data name="IND_INVEB_DESC" xml:space="preserve">
+    <value>Biomasse (B) af hvirvelløse arter</value>
+  </data>
+  <data name="IND_SHANNON_DESC" xml:space="preserve">
+    <value>Shannon diversitetsindeks</value>
+  </data>
+  <data name="GROUP_SPECIES" xml:space="preserve">
+    <value>Arter-baserede</value>
+  </data>
+  <data name="STATUS_INVALID_FOLDER" xml:space="preserve">
+    <value>Ekologiske indikatorer plugin kan ikke skrive til mappen '{0}'</value>
+  </data>
+  <data name="GROUP_SIZE_DESC" xml:space="preserve">
+    <value>Indikatorer baseret på størrelse</value>
+  </data>
+  <data name="DISPLAYNAME" xml:space="preserve">
+    <value>Økologiske indikatorer</value>
+  </data>
+  <data name="STATUS_SAVE_SUCCESS" xml:space="preserve">
+    <value>{0} økologiske indikatorer gemt i '{1}'</value>
+  </data>
+  <data name="HEADER_TRIAL" xml:space="preserve">
+    <value>Forsøg</value>
+  </data>
+  <data name="IND_MTIX_DESC" xml:space="preserve">
+    <value>Marine trofisk indeks eller trofisk niveau (TL) for fangsten inklusive organismer med TL ≥ {0}</value>
+  </data>
+  <data name="IND_TLC" xml:space="preserve">
+    <value>TL fangst</value>
+  </data>
+  <data name="IND_MTI" xml:space="preserve">
+    <value>MTI</value>
+  </data>
+  <data name="IND_MWC" xml:space="preserve">
+    <value>MW fisk C</value>
+  </data>
+  <data name="IND_MWB" xml:space="preserve">
+    <value>MW fiskesamfund</value>
+  </data>
+  <data name="IND_MLB" xml:space="preserve">
+    <value>ML fiskesamfund</value>
+  </data>
+  <data name="IND_MLC" xml:space="preserve">
+    <value>ML fisk C</value>
+  </data>
+  <data name="IND_DIS" xml:space="preserve">
+    <value>udsmid</value>
+  </data>
+  <data name="IND_VALUE_DISCARDS" xml:space="preserve">
+    <value>udsmid</value>
+  </data>
+  <data name="IND_DEMC_DESC" xml:space="preserve">
+    <value>Fangst (C) af demersale arter</value>
+  </data>
+  <data name="IND_DEMB_DESC" xml:space="preserve">
+    <value>Biomasse (B) af demersale arter</value>
+  </data>
+  <data name="GROUP_CATCH" xml:space="preserve">
+    <value>Catch-baserede</value>
+  </data>
+  <data name="IND_VALUE_INTR_VUL_INDEX" xml:space="preserve">
+    <value>Intrisisk sårbarhed</value>
+  </data>
+  <data name="IND_KEMPTONQ_DESC" xml:space="preserve">
+    <value>Kemptons diversitetsindeks (Q)</value>
+  </data>
+  <data name="GROUP_SPECIES_DESC" xml:space="preserve">
+    <value>Indikatorer pr. Art</value>
+  </data>
+  <data name="IND_DEMPELB_RATIO" xml:space="preserve">
+    <value>Demersal / Pelagic B</value>
+  </data>
+  <data name="GROUP_TROPHIC_DESC" xml:space="preserve">
+    <value>Indikatorer filtreret efter trofisk niveau</value>
+  </data>
+  <data name="IND_DEMPELB_RATIO_DESC" xml:space="preserve">
+    <value>Biomasse (B) af demersal over pelagiske arter</value>
+  </data>
+  <data name="IND_TLCoX_DESC" xml:space="preserve">
+    <value>Trofisk niveau (TL) i samfundet inklusive organismer med TL ≥ {0}</value>
+  </data>
+  <data name="IND_MLSB_DESC" xml:space="preserve">
+    <value>Gennemsnitlig levetid (MLS) for fangsten af fisk (C)</value>
+  </data>
+  <data name="HEADER_BASELINE" xml:space="preserve">
+    <value>Baseline</value>
+  </data>
+  <data name="IND_DEMPELC_RATIO" xml:space="preserve">
+    <value>Nedbrydning / pelagisk C</value>
+  </data>
+  <data name="IND_MLSC_DESC" xml:space="preserve">
+    <value>Gennemsnitlig levetid (MLS) af fisk i samfundet</value>
+  </data>
+  <data name="IND_MWC_DESC" xml:space="preserve">
+    <value>Middelvægt (MW) af fisk i fangsten (C)</value>
+  </data>
+  <data name="IND_INVFISHC_DESC" xml:space="preserve">
+    <value>Fangst (C) af hvirvelløse dyr over fisk</value>
+  </data>
+  <data name="IND_MWB_DESC" xml:space="preserve">
+    <value>Middelvægt (MW) af fiskene i samfundet</value>
+  </data>
+  <data name="UNIT_TIME_YEAR" xml:space="preserve">
+    <value>y</value>
+  </data>
+  <data name="STATUS_SAVE_FAILED" xml:space="preserve">
+    <value>Kunne ikke gemme {0} økologiske indikatorer. {1}</value>
+  </data>
+  <data name="IND_VALUE_C" xml:space="preserve">
+    <value>Fangst</value>
+  </data>
+  <data name="IND_VALUE_B" xml:space="preserve">
+    <value>Biomasse</value>
+  </data>
+  <data name="IND_MSRC_DESC" xml:space="preserve">
+    <value>Fangst (C) af havpattedyr, havfugle og krybdyr</value>
+  </data>
+  <data name="IND_MSRB_DESC" xml:space="preserve">
+    <value>Biomasse (B) af havpattedyr, havfugle og krybdyr</value>
+  </data>
+  <data name="IND_TLC_DESC" xml:space="preserve">
+    <value>Fangens trofiske niveau (TL)</value>
+  </data>
+  <data name="DISPLAYNAME_INFO" xml:space="preserve">
+    <value>Beregner økologiske indikatorer for Ecopath, Ecosim, Ecospace og Monte Carlo</value>
+  </data>
+  <data name="PROMPT_OUTPUTFOLDER" xml:space="preserve">
+    <value>Vælg placering til lagring af CSV-output</value>
+  </data>
+  <data name="IND_TOTALC" xml:space="preserve">
+    <value>Samlet C</value>
+  </data>
+  <data name="IND_TOTALB" xml:space="preserve">
+    <value>I alt B</value>
+  </data>
+  <data name="GROUP_MSDF_DESC" xml:space="preserve">
+    <value>Rammedirektiv for havstrategi</value>
+  </data>
+  <data name="HEADER_OCCURRENCE" xml:space="preserve">
+    <value>forekomst</value>
+  </data>
+  <data name="IND_INVFISHB_RATIO" xml:space="preserve">
+    <value>Virvelløse dyr / fisk B</value>
+  </data>
+  <data name="IND_VALUE_C_RATIO" xml:space="preserve">
+    <value>Fangstforhold</value>
+  </data>
+  <data name="GROUP_MSDF" xml:space="preserve">
+    <value>MSDF</value>
+  </data>
+  <data name="GROUP_SIZE" xml:space="preserve">
+    <value>Størrelse-baserede</value>
+  </data>
+  <data name="IND_MLB_DESC" xml:space="preserve">
+    <value>Gennemsnitlig længde (ML) af fisk i samfundet</value>
+  </data>
+  <data name="GROUP_TROPHIC" xml:space="preserve">
+    <value>Trofiske-baserede</value>
+  </data>
+  <data name="IND_MLC_DESC" xml:space="preserve">
+    <value>Gennemsnitlig længde (ML) af fisk i fangsten (C)</value>
+  </data>
+  <data name="IND_INVC_DESC" xml:space="preserve">
+    <value>Fangst (C) af alle hvirvelløse arter</value>
+  </data>
+  <data name="IND_DEMPELC_RATIO_DESC" xml:space="preserve">
+    <value>Fangst (C) af nedbrydning over pelagiske arter</value>
+  </data>
+  <data name="IND_PELB" xml:space="preserve">
+    <value>Pelagisk B</value>
+  </data>
+  <data name="IND_PELC" xml:space="preserve">
+    <value>Pelagisk C</value>
+  </data>
+  <data name="IND_TLCo" xml:space="preserve">
+    <value>TL-samfund</value>
+  </data>
+  <data name="IND_IVIC" xml:space="preserve">
+    <value>Intrinsic Vul. Indeks</value>
+  </data>
+  <data name="IND_INVC" xml:space="preserve">
+    <value>Invertebrate C</value>
+  </data>
+  <data name="IND_MSRC" xml:space="preserve">
+    <value>Pattedyr, fugle og krybdyr C</value>
+  </data>
+  <data name="IND_MSRB" xml:space="preserve">
+    <value>Pattedyr, fugle og krybdyr B</value>
+  </data>
+  <data name="IND_MLSC" xml:space="preserve">
+    <value>MLS fiskesamfund</value>
+  </data>
+  <data name="IND_MLSB" xml:space="preserve">
+    <value>MLS af fisk C</value>
+  </data>
+  <data name="IND_ENDB" xml:space="preserve">
+    <value>Endemik B</value>
+  </data>
+  <data name="IND_ENDC" xml:space="preserve">
+    <value>Endemics C</value>
+  </data>
+  <data name="IND_DEMC" xml:space="preserve">
+    <value>Demersal C</value>
+  </data>
+  <data name="IND_DEMB" xml:space="preserve">
+    <value>Nedbrydning B</value>
+  </data>
+  <data name="HEADER_TRIAL_N" xml:space="preserve">
+    <value>Prøve {0}: {1}</value>
+  </data>
+  <data name="IND_TLCo_DESC" xml:space="preserve">
+    <value>Trofisk niveau (TL) i samfundet</value>
+  </data>
+  <data name="UNIT_WEIGHT_KG" xml:space="preserve">
+    <value>kg</value>
+  </data>
+  <data name="IND_COMMB_DESC" xml:space="preserve">
+    <value>Biomasse (B) af kommercielle arter</value>
+  </data>
+  <data name="IND_TOTALB_DESC" xml:space="preserve">
+    <value>Samlet biomasse (B)</value>
+  </data>
+  <data name="IND_PREDB_DESC" xml:space="preserve">
+    <value>Biomasse (B) af rovdyrorganismer med trofisk niveau ≥ 4</value>
+  </data>
+  <data name="IND_PREDC_DESC" xml:space="preserve">
+    <value>Fangst (C) af rovdyrorganismer med trofisk niveau ≥ 4</value>
+  </data>
+  <data name="GROUP_BIOMASS_DESC" xml:space="preserve">
+    <value>Biomasse-baserede indikatorer</value>
+  </data>
+  <data name="IND_TOTALC_DESC" xml:space="preserve">
+    <value>Samlet fangst (C)</value>
+  </data>
+  <data name="UNIT_LENGTH_CM" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="IND_ENDB_DESC" xml:space="preserve">
+    <value>Biomasse (B) af endemiske arter i samfundet</value>
+  </data>
+  <data name="IND_IUCNC_DESC" xml:space="preserve">
+    <value>Andel af IUCN-truede arter i fangsten (C)</value>
+  </data>
+  <data name="IND_INVFISHC" xml:space="preserve">
+    <value>Virvelløse dyr / fisk C</value>
+  </data>
+  <data name="IND_ENDC_DESC" xml:space="preserve">
+    <value>Endemiske arter i fangsten (C)</value>
+  </data>
+  <data name="IND_VALUE_ML" xml:space="preserve">
+    <value>Gennemsnitlig længde</value>
+  </data>
+  <data name="IND_VALUE_MW" xml:space="preserve">
+    <value>Middelvægt</value>
+  </data>
+  <data name="IND_VALUE_TL" xml:space="preserve">
+    <value>Tropisk niveau</value>
+  </data>
+  <data name="GROUP_CATCH_DESC" xml:space="preserve">
+    <value>Indikatorer baseret på fangst</value>
+  </data>
+  <data name="IND_IUCNB_DESC" xml:space="preserve">
+    <value>Biomasse (B) af IUCN-truede arter i samfundet</value>
+  </data>
+  <data name="IND_IVIC_DESC" xml:space="preserve">
+    <value>Intrinsisk sårbarhedsindeks for fangsten</value>
+  </data>
+  <data name="IND_DIS_DESC" xml:space="preserve">
+    <value>Samlet kasseret fangst</value>
+  </data>
+  <data name="IND_VALUE_AGE" xml:space="preserve">
+    <value>Alder</value>
+  </data>
+  <data name="IND_SHANNON" xml:space="preserve">
+    <value>Shannon mangfoldighed</value>
+  </data>
+  <data name="IND_KEMPTONSQ" xml:space="preserve">
+    <value>Kemptons Q</value>
+  </data>
+  <data name="IND_FISHB_DESC" xml:space="preserve">
+    <value>Biomasse (B) af fiskearter</value>
+  </data>
+  <data name="IND_PREDB" xml:space="preserve">
+    <value>Rovfisk B</value>
+  </data>
+  <data name="IND_PREDC" xml:space="preserve">
+    <value>Rovfisk C</value>
+  </data>
+  <data name="IND_VALUE" xml:space="preserve">
+    <value>Værdi</value>
+  </data>
+  <data name="IND_TLCoX" xml:space="preserve">
+    <value>TL-community {0}</value>
+  </data>
+  <data name="IND_IUCNB" xml:space="preserve">
+    <value>IUCN-art B</value>
+  </data>
+  <data name="IND_IUCNC" xml:space="preserve">
+    <value>IUCN-arter C</value>
+  </data>
+  <data name="IND_INVEB" xml:space="preserve">
+    <value>Virvelløse dyr B</value>
+  </data>
+  <data name="IND_COMMB" xml:space="preserve">
+    <value>Kommerciel B</value>
+  </data>
+  <data name="IND_FISHC" xml:space="preserve">
+    <value>Fisk C</value>
+  </data>
+  <data name="IND_FISHB" xml:space="preserve">
+    <value>Fisk B</value>
+  </data>
+</root>

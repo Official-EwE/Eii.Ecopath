@@ -238,7 +238,7 @@
     <value>Peso medio (MW) de los peces en la comunidad</value>
   </data>
   <data name="UNIT_TIME_YEAR" xml:space="preserve">
-    <value>y</value>
+    <value>a</value>
   </data>
   <data name="STATUS_SAVE_FAILED" xml:space="preserve">
     <value>Error al guardar {0} indicadores ecológicos. {1}</value>

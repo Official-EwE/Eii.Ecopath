@@ -238,7 +238,7 @@
     <value>Poids moyen (MW) du poisson dans la communauté</value>
   </data>
   <data name="UNIT_TIME_YEAR" xml:space="preserve">
-    <value>y</value>
+    <value>a</value>
   </data>
   <data name="STATUS_SAVE_FAILED" xml:space="preserve">
     <value>Échec d'enregistrement des {0} indicateurs écologiques. {1}</value>

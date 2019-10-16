@@ -124,7 +124,7 @@
     <value>Réponse fonctionnelle au forçage environnemental pour '{0}'</value>
   </data>
   <data name="m_lblDrivers.Text" xml:space="preserve">
-    <value>&amp; Pilotes temporels</value>
+    <value>&amp;Pilotes temporels</value>
   </data>
   <data name="m_hdrReponse.Text" xml:space="preserve">
     <value>Réponse fonctionnelle</value>
