@@ -16,13 +16,17 @@
 '    Ecopath International Initiative, Barcelona, Spain
 ' ===============================================================================
 '
-Imports ScientificInterfaceShared.Style
+#Region " Imports "
+
+Option Strict On
 Imports EwECore
 Imports EwECore.Style
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+
+#End Region ' Imports
 
 Public Class cUnitHeaderFormatter
 
