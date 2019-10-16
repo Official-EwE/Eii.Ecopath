@@ -50,19 +50,19 @@ Public Class frmSelectFleetPrey
 
             ' Find the index number to refer to selected fleet
             FleetIndex = 0
-            Do While m_core.EcosimFleetOutput(FleetIndex).Name IsNot Fleet
+            Do While Core.EcosimFleetOutput(FleetIndex).Name IsNot Fleet
                 FleetIndex += 1
             Loop
 
             'Check which functional groups are prey to given fleet and add to prey chklist
             With Me.chklstAttached.Items
-                For i As Integer = 1 To m_core.nGroups
+                For i As Integer = 1 To Core.nGroups
                     TotalCatch = 0
-                    For p = 0 To m_core.nEcosimTimeSteps
-                        TotalCatch += m_core.EcoSimGroupOutputs(i).CatchByFleet(FleetIndex, p)
+                    For p = 0 To Core.nEcosimTimeSteps
+                        TotalCatch += Core.EcoSimGroupOutputs(i).CatchByFleet(FleetIndex, p)
                     Next
                     If TotalCatch > 0 Then
-                        .Add(m_core.EcoSimGroupOutputs(i).Name)
+                        .Add(Core.EcoSimGroupOutputs(i).Name)
                     End If
                 Next
             End With
