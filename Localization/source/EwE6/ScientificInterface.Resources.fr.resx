@@ -1,0 +1,1890 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GENERIC_ECOSPACE" xml:space="preserve">
+    <value>Ecospace</value>
+  </data>
+  <data name="GENERIC_ECOPATH" xml:space="preserve">
+    <value>Ecopath</value>
+  </data>
+  <data name="GENERIC_ECOSIM" xml:space="preserve">
+    <value>Ecosim</value>
+  </data>
+  <data name="GENERIC_CAPTION_SAVEIMAGE" xml:space="preserve">
+    <value>Enregistrer l'image</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_FISHERY_DISCARDS" xml:space="preserve">
+    <value>Les rejets</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_CATCH" xml:space="preserve">
+    <value>Capture</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_VALUE" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_FUNCT_RESP" xml:space="preserve">
+    <value>Réponse fonctionnelle</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWEGGPRODSHAPE" xml:space="preserve">
+    <value>Forme de la production d'oeufs {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_OFFVESSELPRICE" xml:space="preserve">
+    <value>Prix hors navire</value>
+  </data>
+  <data name="ABOUT_COPYRIGHT" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="ECOSPACE_PAUSE" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="OPTIONS_PAGE_PLUGINS" xml:space="preserve">
+    <value>Plug-ins</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_FLEETS" xml:space="preserve">
+    <value>Flottes</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWTIMESERIES" xml:space="preserve">
+    <value>Nouvelle série chronologique {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_FISHINGMORT" xml:space="preserve">
+    <value>Mortalité par pêche</value>
+  </data>
+  <data name="SELECTION_SINGLEVAR" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_RECRUITMENT" xml:space="preserve">
+    <value>Recrutement</value>
+  </data>
+  <data name="VALUE_REGION_N" xml:space="preserve">
+    <value>Région {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_FISHINGEFFORT" xml:space="preserve">
+    <value>Effort de pêche</value>
+  </data>
+  <data name="STATUS_PLEASE_WAIT" xml:space="preserve">
+    <value>Patientez s'il-vous-plait...</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_DELETE" xml:space="preserve">
+    <value>Vous êtes sur le point de supprimer la série temporelle '{0}'. Cette action ne peut pas être annulée. Es-tu sûr de vouloir faire ça?</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_TFM" xml:space="preserve">
+    <value>Mortalité par pêche cible</value>
+  </data>
+  <data name="HEADER_MORTALITIES_PBZ" xml:space="preserve">
+    <value>Prod / biom ou Z</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_FISHERY_LANDINGS" xml:space="preserve">
+    <value>Atterrissage</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_TIMESERIES" xml:space="preserve">
+    <value>Des séries chronologiques</value>
+  </data>
+  <data name="OPTIONS_PAGE_APPEARANCE" xml:space="preserve">
+    <value>Apparence</value>
+  </data>
+  <data name="LABEL_NAV_MSE_OUTPUT_RESULTS" xml:space="preserve">
+    <value>Résultats MSE</value>
+  </data>
+  <data name="HEADER_FISH_EVERYWHERE" xml:space="preserve">
+    <value>Pêcher partout</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_DISCARDMORT" xml:space="preserve">
+    <value>Rejeter la mortalité</value>
+  </data>
+  <data name="HEADER_MORTALITIES_PROP_NAT_MORT" xml:space="preserve">
+    <value>Proportion de mort naturelle.</value>
+  </data>
+  <data name="ECOSPACE_RESUME" xml:space="preserve">
+    <value>CV</value>
+  </data>
+  <data name="LABEL_NAV_INPUT" xml:space="preserve">
+    <value>Contribution</value>
+  </data>
+  <data name="LABEL_NAV_ECOTRACER" xml:space="preserve">
+    <value>Ecotracer</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_DISCARSURV" xml:space="preserve">
+    <value>Jeter la survie</value>
+  </data>
+  <data name="STATUS_TIMESERIES_UPDATING" xml:space="preserve">
+    <value>Mise à jour des séries chronologiques {0} ...</value>
+  </data>
+  <data name="HEADER_MORTALITIES_FISHMORT_OVER_TOTMORT" xml:space="preserve">
+    <value>Mort de pêche. / mort totale.</value>
+  </data>
+  <data name="HEADER_MORTALITIES_FISHINGMORTRATE" xml:space="preserve">
+    <value>= Mort de pêche. taux</value>
+  </data>
+  <data name="LABEL_FLEET" xml:space="preserve">
+    <value>&amp;Flotte:</value>
+  </data>
+  <data name="LABEL_GROUP" xml:space="preserve">
+    <value>&amp;Groupe:</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_BASICESTIMATES" xml:space="preserve">
+    <value>Estimations de base</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_CONSUMPTION" xml:space="preserve">
+    <value>Consommation</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_PREYOVERLAP" xml:space="preserve">
+    <value>Chevauchement des proies</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_ELECTIVITY" xml:space="preserve">
+    <value>Électivité</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_ELECTIVITY" xml:space="preserve">
+    <value>Électivité</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_RESPIRATION" xml:space="preserve">
+    <value>Respiration</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_SEARCHRATES" xml:space="preserve">
+    <value>Taux de recherche</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_KEYINDICES" xml:space="preserve">
+    <value>Indices clés</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_BASICINPUT" xml:space="preserve">
+    <value>Entrée de base</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_DIETCOMP" xml:space="preserve">
+    <value>Composition diététique</value>
+  </data>
+  <data name="LABEL_RUN" xml:space="preserve">
+    <value>&amp;Courir</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_RESULTS" xml:space="preserve">
+    <value>Résultats Ecosim</value>
+  </data>
+  <data name="LABEL_STOP" xml:space="preserve">
+    <value>&amp;Arrêtez</value>
+  </data>
+  <data name="LABEL_NAV_OUTPUT" xml:space="preserve">
+    <value>Sortie</value>
+  </data>
+  <data name="GENERIC_TEXT_OPTIONS" xml:space="preserve">
+    <value>Les options</value>
+  </data>
+  <data name="LABEL_LOAD" xml:space="preserve">
+    <value>&amp;Charge</value>
+  </data>
+  <data name="LABEL_NAV_MSE_OUTPUT_RUN" xml:space="preserve">
+    <value>Exécuter MSE</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_ADVECTION" xml:space="preserve">
+    <value>Advection</value>
+  </data>
+  <data name="HEADER_DIET_MULTIPLIER" xml:space="preserve">
+    <value>Multiplicateur de régime</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_HABFISHERY" xml:space="preserve">
+    <value>Pêche de l'habitat</value>
+  </data>
+  <data name="ECOSPACE_LAYER_SEEDBEST" xml:space="preserve">
+    <value>Meilleures cellules</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_FISHERY_DISCARDFATE" xml:space="preserve">
+    <value>Jeter le destin</value>
+  </data>
+  <data name="OPTIONS_PAGE_PEDIGREE" xml:space="preserve">
+    <value>Pedigree</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_PEDIGREE" xml:space="preserve">
+    <value>Pedigree</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_ENVIRONMENTALRESPONSE" xml:space="preserve">
+    <value>Réponses environnementales</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_HABCAP" xml:space="preserve">
+    <value>Recherche de nourriture dans l'habitat</value>
+  </data>
+  <data name="LABEL_NAV_ECOTRACER_OUTPUT" xml:space="preserve">
+    <value>Sortie Ecotracer</value>
+  </data>
+  <data name="CAPTION_MSEFLEETREF" xml:space="preserve">
+    <value>Flotte MSE réf. les niveaux</value>
+  </data>
+  <data name="LABEL_NAV_MSE_OUTPUT_PLOTS" xml:space="preserve">
+    <value>Parcelles MSE</value>
+  </data>
+  <data name="COMMAND_SAVECHANGES" xml:space="preserve">
+    <value>Sauvegarder les modifications</value>
+  </data>
+  <data name="STATUS_EXPORT_SUCCESS" xml:space="preserve">
+    <value>Modèles exportés avec succès vers {0}</value>
+  </data>
+  <data name="ECOSIM_LABEL_APPLY_SHAPES_PREY" xml:space="preserve">
+    <value>Pour toutes les paires avec le groupe {0}: {1} comme proie</value>
+  </data>
+  <data name="ECOSIM_LABEL_APPLY_SHAPES_PRED" xml:space="preserve">
+    <value>Pour toutes les paires avec le groupe {0}: {1} en tant que prédateur</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MPARANDOM" xml:space="preserve">
+    <value>Cellules aléatoires</value>
+  </data>
+  <data name="CAPTION_PRICEELASTICITY_ALL" xml:space="preserve">
+    <value>Appliquer l'élasticité des prix à tous les débarquements</value>
+  </data>
+  <data name="PROMPT_SELECT_REFIMAGE" xml:space="preserve">
+    <value>Sélectionnez l'image de référence pour les cartes</value>
+  </data>
+  <data name="ECOSIM_RUN_MODEGROUP" xml:space="preserve">
+    <value>Taux de pêche (relatif)</value>
+  </data>
+  <data name="ECOSIM_RUN_MODEFLEET" xml:space="preserve">
+    <value>Taux de pêche (Y / B)</value>
+  </data>
+  <data name="STATUS_UPDATE_ERROR_CONNECTION" xml:space="preserve">
+    <value>Impossible de se connecter au serveur de mise à jour Ecopath</value>
+  </data>
+  <data name="LABEL_NAV_PSD_OUTPUT_RUN" xml:space="preserve">
+    <value>Exécuter PSD</value>
+  </data>
+  <data name="STATUS_APPLYVALUES" xml:space="preserve">
+    <value>Application de valeurs, veuillez patienter</value>
+  </data>
+  <data name="STATUS_SEARCH_SEARCHING" xml:space="preserve">
+    <value>Recherche...</value>
+  </data>
+  <data name="ECOTRACER_SCENARIO_LOAD_CAPTION" xml:space="preserve">
+    <value>Scénario de charge Ecotracer - Modèle Ecopath {0}</value>
+  </data>
+  <data name="VERSION_BETA" xml:space="preserve">
+    <value>Version bêta, publiée le {0}</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_PREY" xml:space="preserve">
+    <value>Proie / lien sortant | Couleur pour indiquer une proie ou un lien sortant dans les diagrammes</value>
+  </data>
+  <data name="ECOBASE_SUBMIT_REVIEW" xml:space="preserve">
+    <value>Votre modèle a été soumis avec succès à EcoBase et est en attente de révision.</value>
+  </data>
+  <data name="STATUS_MODEL_ACCESS_READONLY" xml:space="preserve">
+    <value>EwE6 ne pourra pas écrire sur ce modèle. Veuillez vérifier si vous disposez des autorisations appropriées ou si la base de données n'est pas en lecture seule.</value>
+  </data>
+  <data name="ECOSIM_FD_SAVE_FAILURE_DETAIL" xml:space="preserve">
+    <value>Échec de l'enregistrement de l'image pour le pas de temps {0}. {1}</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_TITLE" xml:space="preserve">
+    <value>Titre | Police pour les titres des graphiques et des figures</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_AXISTITLE" xml:space="preserve">
+    <value>Sous-titres | Police pour le rendu des sous-titres dans les graphiques et les figures</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_EXTERNALDATA" xml:space="preserve">
+    <value>Données externes</value>
+  </data>
+  <data name="OPTIONS_PAGE_SPATTEMP" xml:space="preserve">
+    <value>Données externes</value>
+  </data>
+  <data name="CAPTION_EXTERNAL_DATA" xml:space="preserve">
+    <value>Données externes</value>
+  </data>
+  <data name="TAXON_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Vous êtes sur le point de supprimer les taxons. Cette action ne peut pas être annulée. Es-tu sûr de vouloir faire ça?</value>
+  </data>
+  <data name="PROMPT_MODELNOTFOUND_REMOVEMRU" xml:space="preserve">
+    <value>Le modèle '{0}' est introuvable. Souhaitez-vous le supprimer de la liste des fichiers récents?</value>
+  </data>
+  <data name="SCENARIO_CONFIRMDELETE_CAPTION" xml:space="preserve">
+    <value>Supprimer le scénario</value>
+  </data>
+  <data name="STATUS_MODEL_SAVE_404" xml:space="preserve">
+    <value>Impossible d'enregistrer votre modèle à l'emplacement '{0}'.</value>
+  </data>
+  <data name="ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer l'habitat '{0}'? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="SR_PLOT_NO_STANZA_GROUP" xml:space="preserve">
+    <value>Aucun groupe de strophe</value>
+  </data>
+  <data name="GENERIC_TOOLTIP_PREDATOR" xml:space="preserve">
+    <value>Prédateur {0}</value>
+  </data>
+  <data name="GENERIC_TOOLTIP_PREDPREY" xml:space="preserve">
+    <value>Prédateur {0}, proie {1}</value>
+  </data>
+  <data name="STATUS_ADVECTION_ITERATION" xml:space="preserve">
+    <value>Advection exécutant l'itération {0}</value>
+  </data>
+  <data name="ECOPATH_GRAPH_LEGEND_STANZA_SEP" xml:space="preserve">
+    <value>Séparation de la Stanza</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_DENDEPCATCHABILITY" xml:space="preserve">
+    <value>Densité-dép. capturabilité: Qmax / Qo [&gt; = 1]</value>
+  </data>
+  <data name="FF_APPLICATION_TRAGET" xml:space="preserve">
+    <value>Groupe cible {0}</value>
+  </data>
+  <data name="ECOSPACE_CAPTION_IMPORTLAYERIMAGE" xml:space="preserve">
+    <value>Importer une image de calque</value>
+  </data>
+  <data name="STATUS_TIMESERIES_LOADING" xml:space="preserve">
+    <value>Chargement de la série temporelle '{0}' ...</value>
+  </data>
+  <data name="ECOSPACE_EDITREGION_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer la région '{0}'? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWDATASET" xml:space="preserve">
+    <value>Nouveau jeu de données</value>
+  </data>
+  <data name="PROMPT_CACHE_CLEAR" xml:space="preserve">
+    <value>Le cache de données spatiales occupe {0} de l'espace disque, dont {1} n'est pas utilisé par ce modèle. Voulez-vous effacer uniquement les données inutilisées?</value>
+  </data>
+  <data name="LEGEND_BYNUM" xml:space="preserve">
+    <value>Par nombre</value>
+  </data>
+  <data name="CAPTION_TIMESTEP" xml:space="preserve">
+    <value>Pas de temps {0} ({1})</value>
+  </data>
+  <data name="GENERIC_TOOLTIP_PREY" xml:space="preserve">
+    <value>Prey {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_ALLFITS" xml:space="preserve">
+    <value>Ecosim tout convient</value>
+  </data>
+  <data name="VALUE_REGION_ALL" xml:space="preserve">
+    <value>(Toutes les régions)</value>
+  </data>
+  <data name="HABITAT_BATCH_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Voulez-vous supprimer l'habitat de {0} à {1}?</value>
+  </data>
+  <data name="SELECTION_MULTIPLE" xml:space="preserve">
+    <value>(plusieurs éléments sélectionnés)</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_NICHEOVERLAPPLOT" xml:space="preserve">
+    <value>Intrigue de chevauchement</value>
+  </data>
+  <data name="STATUSSTRIP_ECOPATH_TOOLTIP" xml:space="preserve">
+    <value>Modèle Ecopath Nom: {0} Emplacement: {1}</value>
+  </data>
+  <data name="STATUS_PREVIEW_LOADING" xml:space="preserve">
+    <value>Chargement de l'aperçu ...</value>
+  </data>
+  <data name="STATUS_SEARCH_INITIALIZING" xml:space="preserve">
+    <value>Initialisation de la recherche ...</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_RUN" xml:space="preserve">
+    <value>Exécuter Ecosim</value>
+  </data>
+  <data name="STATUSSTRIP_MODIFIED" xml:space="preserve">
+    <value>modifié</value>
+  </data>
+  <data name="ECOSPACE_SCENARIO_NEW_CAPTION" xml:space="preserve">
+    <value>Nouveau scénario Ecospace - Modèle Ecopath {0}</value>
+  </data>
+  <data name="OPTIONS_FEEDBACK_POPUP_AND_STATUS" xml:space="preserve">
+    <value>En tant que message contextuel et dans le panneau d'état</value>
+  </data>
+  <data name="STATUS_MSE_RUNNNG" xml:space="preserve">
+    <value>Courir MSE ...</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_SUM" xml:space="preserve">
+    <value>Valeurs cumulées | Cellules contenant un résumé des lignes et / ou des colonnes d'une grille</value>
+  </data>
+  <data name="VALUE_FILE_CONTENT" xml:space="preserve">
+    <value>(contenu du fichier)</value>
+  </data>
+  <data name="PROMPT_ERROR_IMPORT_EWE6_TOO_NEW" xml:space="preserve">
+    <value>Cette dernière base de données a été consultée pour la dernière fois par une version plus récente d’Ecopath avec Ecosim. Il est conseillé de &lt;a href="{0}"&gt;télécharger et d'installer une nouvelle version d'EwE&lt;/a&gt; , puis de réessayer. EwE peut tenter de continuer et charger le modèle en mode lecture seule. Sachez que des paramètres d’entrée importants peuvent être manquants et que vous pouvez obtenir des résultats incomplets. Souhaitez-vous ouvrir le modèle en mode lecture seule?</value>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_UNKNOWN" xml:space="preserve">
+    <value>Les données spatiales pour {0} à l'heure {1}, {2} n'ont pas encore été vérifiées</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_MODEL_MISSINGPARAM" xml:space="preserve">
+    <value>Paramètre manquant | Valeurs requises par le modèle pour s'exécuter correctement.</value>
+  </data>
+  <data name="STATUS_REMARKS_NOT_SUPPORTED" xml:space="preserve">
+    <value>Les remarques ne sont pas supportées pour ces données</value>
+  </data>
+  <data name="MPAOPT_AXISLABEL_BESTITERATIONS" xml:space="preserve">
+    <value>Meilleures itérations</value>
+  </data>
+  <data name="FF_APPLICATION_SOURCE" xml:space="preserve">
+    <value>Groupe source {0}</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_ASSESSMENTGROUP" xml:space="preserve">
+    <value>CV de groupe</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_ASSESSMENTFLEET" xml:space="preserve">
+    <value>CV de flotte</value>
+  </data>
+  <data name="HABITAT_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Vous êtes sur le point de supprimer l'habitat sélectionné. Cette action ne peut pas être annulée. Es-tu sûr de vouloir faire ça?</value>
+  </data>
+  <data name="ECOSIM_HEADER_BIOMASSGRAPH" xml:space="preserve">
+    <value>Valeurs de biomasse Ecopath</value>
+  </data>
+  <data name="ECOPATH_EDITGROUPSSTANZA_CONFIRMGROUPDELETE_PROMPT" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer le groupe '{0}? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_PARAMS" xml:space="preserve">
+    <value>Paramètres Ecospace</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_MAPS" xml:space="preserve">
+    <value>Plans</value>
+  </data>
+  <data name="OPTIONS_PAGE_MAPS" xml:space="preserve">
+    <value>Plans</value>
+  </data>
+  <data name="HEADER_MAP_IMAGES" xml:space="preserve">
+    <value>Image de la carte</value>
+  </data>
+  <data name="PROMPT_MPAOPT_MANDATEDB" xml:space="preserve">
+    <value>Aucune biomasse obligatoire spécifiée. L'optimisation ne peut pas continuer.</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_SUM_DESCRIPTION" xml:space="preserve">
+    <value>Cellules contenant un résumé des lignes et / ou des colonnes d'une grille</value>
+  </data>
+  <data name="PROMPT_ECOSIM_REQUIRED" xml:space="preserve">
+    <value>Ecosim requis</value>
+  </data>
+  <data name="ECOSPACE_LAYER_MPABESTCOUNT" xml:space="preserve">
+    <value>Meilleur compte {0}</value>
+  </data>
+  <data name="PROMPT_DUPLICATE_NAMES" xml:space="preserve">
+    <value>Vos données contiennent des noms en double. Souhaitez-vous utiliser ces doublons?</value>
+  </data>
+  <data name="STATUS_UPDATE_ERROR_WRITE" xml:space="preserve">
+    <value>Impossible d'écrire la mise à jour pour '{0}' sur sa destination. Le fichier cible est en cours d'utilisation ou vous ne disposez pas des privilèges suffisants.</value>
+  </data>
+  <data name="ECOSPACE_LOAD_SCENARIO_CAPTION" xml:space="preserve">
+    <value>Scénario de charge Ecospace - Modèle Ecopath {0}</value>
+  </data>
+  <data name="ECOSPACE_SCENARIO_LOAD_CAPTION" xml:space="preserve">
+    <value>Scénario de charge Ecospace - Modèle Ecopath {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_FITTOTIMESERIES" xml:space="preserve">
+    <value>Fit to time series</value>
+  </data>
+  <data name="PROMPT_INVALIDMODEL" xml:space="preserve">
+    <value>'{0}' ne semble pas être un modèle Ecopath valide.</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACTING_FAILED" xml:space="preserve">
+    <value>Impossible de compacter la base de données.</value>
+  </data>
+  <data name="ECOSIM_SCENARIO_LOAD_CAPTION" xml:space="preserve">
+    <value>Scénario de charge Ecosim - Modèle Ecopath {0}</value>
+  </data>
+  <data name="PROMPT_ERROR_CONNECTION" xml:space="preserve">
+    <value>Une erreur s'est produite lors de la tentative de connexion à '{0}': {1}.</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_PARAMETERS" xml:space="preserve">
+    <value>Paramètres du modèle</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_PREDATORFEEDINGTIME" xml:space="preserve">
+    <value>Effet de prédateur sur le temps d'alimentation [0,1]</value>
+  </data>
+  <data name="STATUS_IMPORTING_MODEL_CANCELLED" xml:space="preserve">
+    <value>Le modèle '{0}' n'a pas été importé.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_GROUPPLOTS" xml:space="preserve">
+    <value>Parcelles de groupe Ecosim</value>
+  </data>
+  <data name="PLUGIN_LICENSE_EXPIRATION" xml:space="preserve">
+    <value>La licence expire {0}</value>
+  </data>
+  <data name="ECOSPACE_EDITHABITAT_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer {0} habitat (s)? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="PSD_GRAPH_REGRESSION_LABEL_W_STDERR" xml:space="preserve">
+    <value>Pente = {0} ({1} SE), ordonnée en Y = {2} ({3} SE), corrélation = {4} Wt. plage de classe (g) = {5} à {6}, N = {7}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_GROUPS" xml:space="preserve">
+    <value>Informations sur le groupe</value>
+  </data>
+  <data name="PROMPT_SEARCH_NORESULTS" xml:space="preserve">
+    <value>Votre recherche n'a donné aucun résultat.</value>
+  </data>
+  <data name="PROMPT_DUPLICATE_NAME" xml:space="preserve">
+    <value>Le nom '{0}' est défini plusieurs fois.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_MPAOPT" xml:space="preserve">
+    <value>Optimisations spatiales</value>
+  </data>
+  <data name="HEADER_MPA_X" xml:space="preserve">
+    <value>MPA. '{0}'</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_SUMMARY_POSITION" xml:space="preserve">
+    <value>{0} lat, {1} lon</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_FEEDINGTIMEADJUSTRATE" xml:space="preserve">
+    <value>Temps d'alimentation ajuster le taux [0,1]</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_READONLY" xml:space="preserve">
+    <value>Valeurs en lecture seule | Valeurs qui ne peuvent pas être modifiées par vous, l'utilisateur</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_FLEETDYNAMICS" xml:space="preserve">
+    <value>Dynamique de la flotte</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_COMPUTED" xml:space="preserve">
+    <value>Valeurs calculées | Valeurs calculées par le programme</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_ASSESSMENTS" xml:space="preserve">
+    <value>Évaluations</value>
+  </data>
+  <data name="ECOSIM_PROMPT_SAVEANNUAL" xml:space="preserve">
+    <value>Enregistrer les valeurs annuelles moyennes?</value>
+  </data>
+  <data name="OPTIONS_FEEDBACK_STATUS" xml:space="preserve">
+    <value>Dans le panneau d'état</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_NAMES" xml:space="preserve">
+    <value>Schéma de couleurs à utiliser pour les cellules de nom dans les grilles</value>
+  </data>
+  <data name="PROMPT_MESSAGE_HIDE" xml:space="preserve">
+    <value>Masquer ce type de message jusqu'à ce qu'un modèle soit rechargé.</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_ERROR" xml:space="preserve">
+    <value>Erreurs génériques | Valeurs que le modèle n'a pas pu calculer en raison d'une erreur générique</value>
+  </data>
+  <data name="STATUS_ECOPATH_LOADING" xml:space="preserve">
+    <value>Chargement du modèle ...</value>
+  </data>
+  <data name="SEARCH_STATUS_COMPLETED" xml:space="preserve">
+    <value>Recherche terminée</value>
+  </data>
+  <data name="ECOSIM_APPLYFF_FFTYPE_FORCING" xml:space="preserve">
+    <value>F {0}</value>
+  </data>
+  <data name="STATUS_MODEL_ACCESS_OS" xml:space="preserve">
+    <value>Votre système n'a pas besoin des pilotes appropriés pour lire le format de fichier du modèle '{0}'. Installez le «Microsoft Access Database Engine 2010 Redistributable» du site Web de Microsoft pour utiliser les bases de données Access 2010 (ACCDB).</value>
+  </data>
+  <data name="REGION_BATCH_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Voulez-vous supprimer la région de {0} à {1}?</value>
+  </data>
+  <data name="HEADER_ECOPATH_MODEL_NAME" xml:space="preserve">
+    <value>Nom du fichier de modèle Ecopath</value>
+  </data>
+  <data name="LABEL_NAV_ECOTRACER_INPUT" xml:space="preserve">
+    <value>Entrée Ecotracer</value>
+  </data>
+  <data name="OPTIONS_PAGE_AUTORUN" xml:space="preserve">
+    <value>Exécution automatique</value>
+  </data>
+  <data name="STATUS_ECOSIMFD_SAVING" xml:space="preserve">
+    <value>Enregistrement d'images de diagramme de flux ...</value>
+  </data>
+  <data name="STATUSSTRIP_ECOSPACE_ECOSIMDISCARDFORCING" xml:space="preserve">
+    <value>Ecosim Rejeté</value>
+  </data>
+  <data name="PROMPT_PLUGIN_INCOMPATIBLE" xml:space="preserve">
+    <value>Le plug-in '{0}' utilise des composants EwE obsolètes et est probablement incompatible avec cette version d'EwE6. Souhaitez-vous désactiver ce plug-in?</value>
+  </data>
+  <data name="ABOUT_VERSION_BETA" xml:space="preserve">
+    <value>Version {0} Bêta - {1}</value>
+  </data>
+  <data name="STATUS_UPDATE_FAILED" xml:space="preserve">
+    <value>La vérification de la mise à jour des composants a échoué</value>
+  </data>
+  <data name="GENERIC_DEFAULT_DESCRIPTION" xml:space="preserve">
+    <value>Créé: {0} {1}</value>
+  </data>
+  <data name="STATUS_CHECKING_LICENSE" xml:space="preserve">
+    <value>Vérification de la licence, veuillez patienter ...</value>
+  </data>
+  <data name="PROMPT_DRIVERERROR" xml:space="preserve">
+    <value>Les pilotes requis ne sont pas installés sur ce système pour fonctionner avec des fichiers de ce type.</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_NONMARKTEPRICE" xml:space="preserve">
+    <value>Prix hors marché</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_FISHERY" xml:space="preserve">
+    <value>Pêche Ecospace</value>
+  </data>
+  <data name="TS_CONSTANTTOTALMORTALITY_NAME" xml:space="preserve">
+    <value>Z (mortalité totale constante)</value>
+  </data>
+  <data name="PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP" xml:space="preserve">
+    <value>Il n'y a pas de chevauchement spatial avec votre zone de modèle et les données externes pour l'année {0}. La moyenne annuelle n'a pas pu être calculée.</value>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_PARTIALSPATIAL" xml:space="preserve">
+    <value>Les données spatiales pour {0} à l'heure {1}, {2} chevauchent partiellement la zone de votre modèle.</value>
+  </data>
+  <data name="PROMPT_SPATIALTEMPORAL_EXPORT" xml:space="preserve">
+    <value>Entrez un nom de dossier pour ces données</value>
+  </data>
+  <data name="STATUS_UPDATE_ERROR_GENERIC" xml:space="preserve">
+    <value>Une erreur inconnue s'est produite lors de la tentative de mise à jour de '{0}'.</value>
+  </data>
+  <data name="STATUS_PRINT_PREVIEW_FAILED" xml:space="preserve">
+    <value>Impossible d'afficher l'aperçu avant impression. {0}</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_LEGEND" xml:space="preserve">
+    <value>Légende | Police pour rendre les légendes sous forme de graphiques et de figures</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_QPREY_BPRED" xml:space="preserve">
+    <value>Q proie / B pred</value>
+  </data>
+  <data name="FR_PLOT_Y_AXS" xml:space="preserve">
+    <value>Q proie / B pred</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_OTHERMORTFEEDINGTIME" xml:space="preserve">
+    <value>Fraction d'autres sens de la mortalité. aux changements de temps d'alimentation</value>
+  </data>
+  <data name="SCENARIO_CONFIRMOVERWRITE_PROMPT" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir écraser le scénario {0}? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="STATUS_SPATIALCOMPATIBILITY" xml:space="preserve">
+    <value>Évaluation du {0} au {1}, {2}% indexé: {4} {3}</value>
+  </data>
+  <data name="FORCING_OPTIONS_MEDIATING_GROUPS" xml:space="preserve">
+    <value>Médiation, rel, pondération</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_REFLEVELS" xml:space="preserve">
+    <value>Niveaux de référence</value>
+  </data>
+  <data name="PROMPT_INVALIDMODEL_REMOVEMRU" xml:space="preserve">
+    <value>'{0}' ne semble pas être un modèle Ecopath valide. Souhaitez-vous le supprimer de la liste des fichiers récents?</value>
+  </data>
+  <data name="ECOSPACE_CAPTION_EDITLAYER" xml:space="preserve">
+    <value>Modifier le calque '{0}'</value>
+  </data>
+  <data name="GENERIC_ECOSPACE_NO_DATA_AVAILABLE" xml:space="preserve">
+    <value>Données Ecospace non disponibles</value>
+  </data>
+  <data name="LABEL_NAV_PSD_OUTPUT_PLOTGROUP" xml:space="preserve">
+    <value>Parcelle PSD par groupe</value>
+  </data>
+  <data name="ECOSPACE_HEADER_HABITAT_AREA" xml:space="preserve">
+    <value>Zone d'habitat</value>
+  </data>
+  <data name="SET_ROW_VUL_MSG" xml:space="preserve">
+    <value>Entrez le nouveau paramètre de vulnérabilité pour {0} comme proie</value>
+  </data>
+  <data name="ECOSPACE_LAYER_RANDOMSEARCH" xml:space="preserve">
+    <value>Recherche aléatoire</value>
+  </data>
+  <data name="FILEFILTER_IMAGE_TRANSPARENT" xml:space="preserve">
+    <value>Images avec transparence | * .png; *. Gif; *. Emf; *. Wmf</value>
+  </data>
+  <data name="IMPORT_ERROR_CAPTION" xml:space="preserve">
+    <value>Importation de base de données EwE5</value>
+  </data>
+  <data name="GENERIC_PROMPT_SAVEDATATOCSV_CAPTION" xml:space="preserve">
+    <value>Enregistrer les données au format .csv</value>
+  </data>
+  <data name="HEADER_USE_ENVRESPONSES" xml:space="preserve">
+    <value>Utiliser des réponses environnementales</value>
+  </data>
+  <data name="STATUS_RESIZING_MAP" xml:space="preserve">
+    <value>Redimensionnement de la carte, veuillez patienter ...</value>
+  </data>
+  <data name="FPS_FG_TP" xml:space="preserve">
+    <value>Rentabilité cible</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYFFCONS" xml:space="preserve">
+    <value>Appliquer le forçage (consommateur)</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYFFPROD" xml:space="preserve">
+    <value>Appliquer le forçage (producteur)</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_HABCAPMODEL" xml:space="preserve">
+    <value>Modèle de capacité du groupe</value>
+  </data>
+  <data name="STATUS_MSY_RUNNING_STATIONARYSTOCK" xml:space="preserve">
+    <value>Exécution d'une évaluation de stock stationnaire MSY ...</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_FISHERY" xml:space="preserve">
+    <value>Pêcherie</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_FISHERY" xml:space="preserve">
+    <value>Pêcherie</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_HABCAPAPPLY" xml:space="preserve">
+    <value>Appliquer des réponses de recherche</value>
+  </data>
+  <data name="GENERIC_PROMPT_OVERWRITEFILE" xml:space="preserve">
+    <value>Le fichier '{0}' existe déjà. Voulez-vous l'écraser?</value>
+  </data>
+  <data name="STATUS_ECOSPACE_RUNNING" xml:space="preserve">
+    <value>Courir Ecospace ...</value>
+  </data>
+  <data name="PROMPT_DEFINE_PEDIGREE" xml:space="preserve">
+    <value>Les niveaux de pedigree ne sont pas définis pour un ou plusieurs types de valeur. Voulez-vous définir ces maintenant?</value>
+  </data>
+  <data name="RUN_ECOSIM_F_VALUE_CAPTION" xml:space="preserve">
+    <value>Changer F</value>
+  </data>
+  <data name="ECOTRACER_SCENARIO_DELETE_CAPTION" xml:space="preserve">
+    <value>Scénario de suppression d’Ecotracer - Modèle Ecopath {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_MONTECARLO" xml:space="preserve">
+    <value>Simulation de Monte Carlo</value>
+  </data>
+  <data name="GENERIC_LABEL_TRIAL" xml:space="preserve">
+    <value>Essai {0} - {1}</value>
+  </data>
+  <data name="OPTIONS_PAGE_FILEMANAGEMENT" xml:space="preserve">
+    <value>Gestion de fichiers</value>
+  </data>
+  <data name="SCENARIO_CONFIRMOVERWRITE_CAPTION" xml:space="preserve">
+    <value>Enregistrer le scénario sous</value>
+  </data>
+  <data name="FR_PLOT_X_AXIS" xml:space="preserve">
+    <value>Biomasse de proies par rapport à la biomasse Ecopath</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM" xml:space="preserve">
+    <value>Biomasse de proies par rapport à la biomasse Ecopath</value>
+  </data>
+  <data name="HEADER_SPAWNING_AGE" xml:space="preserve">
+    <value>Âge de frai</value>
+  </data>
+  <data name="STATUS_ECOSPACE_SAVING" xml:space="preserve">
+    <value>Enregistrement du scénario Ecospace '{0}' ...</value>
+  </data>
+  <data name="VALUE_REGION_UNDEFINED" xml:space="preserve">
+    <value>(Région non définie)</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_IMPORT_AS_MONTHLY" xml:space="preserve">
+    <value>Souhaitez-vous importer '{0}' en tant que données de forçage mensuelles?</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_FLEETPLOTS" xml:space="preserve">
+    <value>Parcelles Ecosim</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_DISPERSAL" xml:space="preserve">
+    <value>Dispersion</value>
+  </data>
+  <data name="INVALID_VUL_NUM_ENTERED" xml:space="preserve">
+    <value>La valeur doit être&gt; = 1. Une valeur faible (~ 1) rend les interactions contrôlées par le donneur, alors qu'une valeur élevée (&gt;&gt; 1) conduit au contrôle descendant et à la dynamique cyclique de Lotka-Volterra. Les valeurs intermédiaires (~ 2) conduisent à un contrôle mixte.</value>
+  </data>
+  <data name="STATUSSTRIP_ECOSIM_TOOLTIP" xml:space="preserve">
+    <value>Scénario Ecosim Nom: {0} Séries temporelles: {1} Description: {2}</value>
+  </data>
+  <data name="STATUS_IMPORTING_MODEL_FAILED" xml:space="preserve">
+    <value>Échec de la conversion du modèle '{0}', voir le journal d'importation '{1}' pour plus de détails.</value>
+  </data>
+  <data name="ECOBASE_ERROR_NOCONNECTION" xml:space="preserve">
+    <value>EwE n'a pas pu communiquer avec EcoBase. Assurez-vous d'être connecté à Internet et réessayez. Si le problème persiste, envoyez-nous un rapport de bogue à partir du menu Aide.</value>
+  </data>
+  <data name="ECOPATH_EDITGROUPSSTANZA_NEEDDETRITUS" xml:space="preserve">
+    <value>Il doit y avoir au moins un groupe de détritus. Veuillez modifier vos données.</value>
+  </data>
+  <data name="STATUS_CLEANUP_TEMPFILES" xml:space="preserve">
+    <value>Supprimer des fichiers temporaires</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYOTHERMORT" xml:space="preserve">
+    <value>Appliquer le forçage (autre mortalité)</value>
+  </data>
+  <data name="GENERIC_TEXT_CREATE" xml:space="preserve">
+    <value>&amp;Créer</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_MPA" xml:space="preserve">
+    <value>Aires Marines Protégées</value>
+  </data>
+  <data name="PROMPT_ERROR_IMPORT_EWE5_TOO_OLD" xml:space="preserve">
+    <value>Cette base de données a été écrite par une version obsolète de Ecopath 5, qui n'est pas prise en charge par le processus d'importation EwE6. Téléchargez et installez une version récente de Ecopath 5 pour mettre à jour votre base de données. Une fois mis à jour, EwE6 pourra importer la base de données dans son nouveau format. &lt;a href="{0}"&gt;Ecopath 5 peut être téléchargé à partir des archives, suivez les liens de téléchargement&lt;/a&gt; .</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_HIGHLIGHT" xml:space="preserve">
+    <value>Valeurs en surbrillance | Valeurs mises en surbrillance par vous, l'utilisateur</value>
+  </data>
+  <data name="GENERIC_TEXT_NODATA" xml:space="preserve">
+    <value>(pas de données)</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYFFDET" xml:space="preserve">
+    <value>Appliquer le forçage (détritus)</value>
+  </data>
+  <data name="COMMAND_AUTOSAVE" xml:space="preserve">
+    <value>Configurez quels composants EwE peuvent automatiquement enregistrer les résultats dans un fichier</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYEGGPROD" xml:space="preserve">
+    <value>Appliquer la production d'oeufs</value>
+  </data>
+  <data name="STATUS_ECOSPACE_RUNNING_SPINUP" xml:space="preserve">
+    <value>Lancer spin-up Ecospace ...</value>
+  </data>
+  <data name="OPTIONS_FEEDBACK_NONE" xml:space="preserve">
+    <value>Ne pas montrer de tels messages</value>
+  </data>
+  <data name="CAPTION_NICHEPLOT_XAXIS_LABEL" xml:space="preserve">
+    <value>Indice de chevauchement des prédateurs</value>
+  </data>
+  <data name="LABEL_SET" xml:space="preserve">
+    <value>&amp;Ensemble:</value>
+  </data>
+  <data name="CAPTION_EXTERNAL_DATASET_CONFIGURE" xml:space="preserve">
+    <value>Configurer la connexion de données externe</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_AXISSCALE_AND_VALUES" xml:space="preserve">
+    <value>Échelles et valeurs | Police pour afficher les échelles et les valeurs sous forme de graphiques et de figures</value>
+  </data>
+  <data name="GENERIC_CAPTION" xml:space="preserve">
+    <value>Ecopath avec Ecosim</value>
+  </data>
+  <data name="STATUS_MSY_RUNNING_FULLCOMPENSATION" xml:space="preserve">
+    <value>Exécution de l'évaluation complète de la compensation MSY ...</value>
+  </data>
+  <data name="DATASOURCE_DUPLICATE_ERROR_TARGET" xml:space="preserve">
+    <value>Une erreur s'est produite lors de la tentative de duplication de ce modèle. Essayez de choisir une autre destination et essayez à nouveau</value>
+  </data>
+  <data name="ECOPATH_EDITGROUPSSTANZA_AGECONFLICT" xml:space="preserve">
+    <value>Les groupes '{0}' et '{1}' de la strophe '{2}' ont le même âge de départ. S'il vous plaît corriger cela.</value>
+  </data>
+  <data name="ECOSIM_APPLYFF_FFTYPE_MEDIATION" xml:space="preserve">
+    <value>M {0}</value>
+  </data>
+  <data name="PROMPT_DELETE_ECOSPACE_DATASET" xml:space="preserve">
+    <value>Souhaitez-vous supprimer la définition du jeu de données spatiales '{0}'? Cette action ne peut pas être annulée. Notez que cela n’affectera pas les données spatiales / temporelles auxquelles cette définition se réfère.</value>
+  </data>
+  <data name="SELECTION_DERIVED" xml:space="preserve">
+    <value>(valeur dérivée sélectionnée)</value>
+  </data>
+  <data name="STATUS_ECOTRACER_LOADING" xml:space="preserve">
+    <value>Chargement du scénario Ecotracer '{0}' ...</value>
+  </data>
+  <data name="STATUS_UPDATE_SUCCESS" xml:space="preserve">
+    <value>Composants mis à jour avec succès</value>
+  </data>
+  <data name="ECOSPACE_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
+    <value>Scénario de sauvegarde Ecospace - Modèle Ecopath {0}</value>
+  </data>
+  <data name="UI_ERROR_LAUNCHFORM" xml:space="preserve">
+    <value>EwE n'a pas pu compléter votre demande. Si le problème persiste, veuillez envoyer un courrier électronique à l'équipe de développement d'EwE et joindre le fichier journal EwE.</value>
+  </data>
+  <data name="PROMPT_INVALIDTARGETPATH" xml:space="preserve">
+    <value>Impossible de créer le modèle EwE6 à '{0}'. Veuillez vérifier si vous disposez des droits d'accès pour écrire dans cet emplacement ou si un fichier de cet emplacement est toujours utilisé.</value>
+  </data>
+  <data name="PROMPT_PLUGIN_UNDETERMINED" xml:space="preserve">
+    <value>Le plug-in '{0}' ne peut pas être diagnostiqué pour la compatibilité avec EwE6. Il est conseillé de ne pas utiliser ce plug-in. Souhaitez-vous désactiver ce plug-in?</value>
+  </data>
+  <data name="ECOSIM_FD_SAVE_SUCCESS" xml:space="preserve">
+    <value>Image (s) du diagramme de flux Ecosim enregistrée dans {0}</value>
+  </data>
+  <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
+    <value>'{0}' est enregistré avec succès dans le fichier '{1}'.</value>
+  </data>
+  <data name="ECOBASE_SUBMIT_ACCEPTED" xml:space="preserve">
+    <value>Votre modèle a été ajouté à EcoBase avec succès</value>
+  </data>
+  <data name="EDIT_GROUPS_STANZANO" xml:space="preserve">
+    <value>Stanza no. (le plus jeune = 1)</value>
+  </data>
+  <data name="ECOPATH_MOVEGROUP_ERROR" xml:space="preserve">
+    <value>Échec du déplacement du groupe '{0}'</value>
+  </data>
+  <data name="GENERIC_WARNING_EMPTY_NAME" xml:space="preserve">
+    <value>Les noms ne peuvent pas être vides.</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACTING" xml:space="preserve">
+    <value>Modèle de compactage ...</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_MORTALITIES" xml:space="preserve">
+    <value>Les mortalités</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_FLEETSIZEDYNAMICS" xml:space="preserve">
+    <value>Dynamique de la taille de la flotte</value>
+  </data>
+  <data name="SET_VUL_CAPTION" xml:space="preserve">
+    <value>Vulnérabilités EwE</value>
+  </data>
+  <data name="PROMPT_INVALIDFILE" xml:space="preserve">
+    <value>Ce type de fichier n'est pas supporté par EwE6</value>
+  </data>
+  <data name="HEADER_STATIONARY" xml:space="preserve">
+    <value>Système stationnaire</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_VULNERABILITES" xml:space="preserve">
+    <value>Les vulnérabilités</value>
+  </data>
+  <data name="HEADER_SPATTEMP_CREATE_CONNECTION" xml:space="preserve">
+    <value>Créer une nouvelle connexion</value>
+  </data>
+  <data name="ABOUT_CAPTION" xml:space="preserve">
+    <value>À propos de {0}</value>
+  </data>
+  <data name="ECOSPACE_HEADER_GROUP_HABITAT" xml:space="preserve">
+    <value>Groupe \ habitat #</value>
+  </data>
+  <data name="ECOSIM_CAPTION_APPLYMED" xml:space="preserve">
+    <value>Appliquer la médiation</value>
+  </data>
+  <data name="SET_COL_VUL_MSG" xml:space="preserve">
+    <value>Entrez le nouveau paramètre de vulnérabilité pour {0} en tant que prédateur</value>
+  </data>
+  <data name="ECOPATH_DELETESTANZA_ERROR" xml:space="preserve">
+    <value>Échec de la suppression de la configuration de la strophe '{0}'.</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_QBMAXQBO" xml:space="preserve">
+    <value>QBmax / QBo (pour le temps de traitement) [&gt; 1]</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_FMSY" xml:space="preserve">
+    <value>FMSY</value>
+  </data>
+  <data name="ECOPATH_UPDATESTANZA_ERROR" xml:space="preserve">
+    <value>Échec de la mise à jour des étapes de la vie pour la strophe '{0}'.</value>
+  </data>
+  <data name="FR_PLOT_CAPTION" xml:space="preserve">
+    <value>Consommateur '{0}'</value>
+  </data>
+  <data name="HEADER_HABITAT_X" xml:space="preserve">
+    <value>Hab. '{0}'</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYMEDDET" xml:space="preserve">
+    <value>Appliquer la médiation (détritus)</value>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_NOSPATIAL" xml:space="preserve">
+    <value>Les données spatiales pour {0} à l'heure {1}, {2} ne chevauchent pas votre zone de modèle.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_HABITATPREFS" xml:space="preserve">
+    <value>Utilisation de l'habitat pour l'alimentation</value>
+  </data>
+  <data name="ECOSPACE_EDITREGION_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer {0} région (s)? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="SELECT_DEFAULT_LAYOUT_DIRECTORY_MSG" xml:space="preserve">
+    <value>Sélectionnez le répertoire dans lequel vous souhaitez enregistrer vos fichiers de présentation sous le nom par défaut.</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_OPTIONS" xml:space="preserve">
+    <value>Options MSE</value>
+  </data>
+  <data name="MSE_EFFORT_VALUE" xml:space="preserve">
+    <value>Effort {0}</value>
+  </data>
+  <data name="ECOSIM_FD_SAVE_SUCCESS_DETAIL" xml:space="preserve">
+    <value>Image enregistrée pour le pas de temps {0}</value>
+  </data>
+  <data name="SR_PLOT_X_AXIS" xml:space="preserve">
+    <value>{0} Stock</value>
+  </data>
+  <data name="STATUS_CACHECLEARED" xml:space="preserve">
+    <value>Cache de données effacé, libéré {0} kb de données</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACTING_OS" xml:space="preserve">
+    <value>Les composants nécessaires ne sont pas installés sur votre installation Windows pour compacter ce type de base de données.</value>
+  </data>
+  <data name="OPTIONS_FONTDLG_VALUES" xml:space="preserve">
+    <value>Valeurs | Police pour rendre les valeurs</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_IMG_BACKGROUND_COLOR" xml:space="preserve">
+    <value>Couleur de fond à utiliser pour les images</value>
+  </data>
+  <data name="STATUS_ECOSPACE_PROGRESS" xml:space="preserve">
+    <value>{0} sur {1} années calculées</value>
+  </data>
+  <data name="SEARCH_LABEL_TOTAL_WEIGHTED" xml:space="preserve">
+    <value>Total (pondéré)</value>
+  </data>
+  <data name="ECOTRACER_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
+    <value>Enregistrer le scénario Ecotracer - Modèle Ecopath {0}</value>
+  </data>
+  <data name="CAPTION_NICHEPLOT_YAXIS_LABEL" xml:space="preserve">
+    <value>Indice de chevauchement des proies</value>
+  </data>
+  <data name="STATUSSTRIP_ECOSPACE_ECOSIMBIOMASSFORCING" xml:space="preserve">
+    <value>Biomasse Ecosim</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_ECOSPACE_MAPLOT_BACKGROUND_COLOR" xml:space="preserve">
+    <value>Couleur de fond à utiliser pour les cartes</value>
+  </data>
+  <data name="GENERIC_PROMPT_USEANSWERAGAIN" xml:space="preserve">
+    <value>Utilisez cette réponse automatiquement jusqu'à ce que le modèle ait été rechargé</value>
+  </data>
+  <data name="PROMPT_MODELNOTFOUND" xml:space="preserve">
+    <value>Le modèle '{0}' est introuvable.</value>
+  </data>
+  <data name="INVALID_VALUE_ENTERED" xml:space="preserve">
+    <value>Veuillez entrer une valeur supérieure à {0}.</value>
+  </data>
+  <data name="PROMPT_ERROR_IMPORTFAILED" xml:space="preserve">
+    <value>Impossible de convertir la base de données Ecopath 5 au format EwE6.</value>
+  </data>
+  <data name="ECOSIM_SCENARIO_NEW_CAPTION" xml:space="preserve">
+    <value>Nouveau scénario Ecosim - Modèle Ecopath {0}</value>
+  </data>
+  <data name="ECOBASE_ERROR_BALANCE" xml:space="preserve">
+    <value>Ce modèle ne peut pas être exporté vers EcoBase car il n’effectue pas de bilan massique.</value>
+  </data>
+  <data name="MSY_LABEL_FMSY" xml:space="preserve">
+    <value>Fmsy {0}</value>
+  </data>
+  <data name="PROMPT_MODEL_COMPACT" xml:space="preserve">
+    <value>Pour compacter votre base de données, votre modèle devra être fermé. Êtes-vous sûr de vouloir compacter votre base de données?</value>
+  </data>
+  <data name="INVALID_Y_SCALE_NUMBER_ENTERED" xml:space="preserve">
+    <value>Echelle Y pour le tracé: {0} doit être supérieur ou égal à {1}</value>
+  </data>
+  <data name="REGION_DELETE_CAPTION" xml:space="preserve">
+    <value>Supprimer la région?</value>
+  </data>
+  <data name="FPS_FG_JOBS" xml:space="preserve">
+    <value>Emplois / valeur de capture</value>
+  </data>
+  <data name="STATUS_DATA_SAVING_FAILURE" xml:space="preserve">
+    <value>Les données n'ont pas pu être sauvegardées dans '{0}': {1}</value>
+  </data>
+  <data name="PROMPT_PLUGIN_CAUTION" xml:space="preserve">
+    <value>Le plug-in '{0}' utilise des composants EwE plus anciens et peut être incompatible avec cette version d'EwE6.</value>
+  </data>
+  <data name="TS_CONSTANTTOTALMORTALITY_REMARKS" xml:space="preserve">
+    <value>Mortalité totale forcée par groupe / pool, les séries partielles sont acceptables</value>
+  </data>
+  <data name="PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND" xml:space="preserve">
+    <value>Tous les groupes de détritus seront déplacés à la fin de la liste des groupes.</value>
+  </data>
+  <data name="LABEL_NAV_PSD_OUTPUT_GROWTHESTIMATES" xml:space="preserve">
+    <value>Estimations de croissance</value>
+  </data>
+  <data name="ECOSIM_CAPTION_APPLYPRICEELASTICITY" xml:space="preserve">
+    <value>Appliquer l'élasticité des prix</value>
+  </data>
+  <data name="CAPTION_PRICEELASTICITY_GROUP" xml:space="preserve">
+    <value>Appliquer l'élasticité des prix à tous les débarquements de {0}: {1}</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_IMPORTANCE" xml:space="preserve">
+    <value>Importance</value>
+  </data>
+  <data name="OPTIONS_PAGE_INSTALLED" xml:space="preserve">
+    <value>Plug-ins installés</value>
+  </data>
+  <data name="CAPTION_PRICEELASTICITY_FLEET" xml:space="preserve">
+    <value>Appliquer l'élasticité des prix à tous les débarquements par flotte {0}: {1}</value>
+  </data>
+  <data name="ECOSIM_SCENARIO_DELETE_CAPTION" xml:space="preserve">
+    <value>Supprimer le scénario Ecosim - Modèle Ecopath {0}</value>
+  </data>
+  <data name="OPTIONS_PAGE_GRAPHS" xml:space="preserve">
+    <value>Graphes et graphiques</value>
+  </data>
+  <data name="OPTIONS_PAGE_GENERAL" xml:space="preserve">
+    <value>Général</value>
+  </data>
+  <data name="GENERIC_REPLY_OK" xml:space="preserve">
+    <value>Vous avez approuvé l'opération</value>
+  </data>
+  <data name="GENERIC_REPLY_NO" xml:space="preserve">
+    <value>Vous avez répondu «non»</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_REFMSY" xml:space="preserve">
+    <value>MSY</value>
+  </data>
+  <data name="IMPORT_LAYERDATA_FAILED" xml:space="preserve">
+    <value>Le fichier {0} n'a pas pu être lu dans la couche {1}</value>
+  </data>
+  <data name="CAPTION_SIZEWT" xml:space="preserve">
+    <value>Taille poids</value>
+  </data>
+  <data name="ECOSPACE_FISHING_EFFORT_CONVERSION_HEADER" xml:space="preserve">
+    <value>Conversion d'effort (affichage)</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_FISHMORTRATE" xml:space="preserve">
+    <value>Taux de mortalité par pêche</value>
+  </data>
+  <data name="STATUS_ECOTRACER_RUNNING" xml:space="preserve">
+    <value>Courir Ecotracer ...</value>
+  </data>
+  <data name="ECOSPACE_HEADER_AREAFISHING" xml:space="preserve">
+    <value>Flotte \ habitat + utilisation de la MPA</value>
+  </data>
+  <data name="GENERIC_ITEMSTATUS_DELETEPENDING" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="MPAOPT_AXISLABEL_OBJECTIVEVALUE" xml:space="preserve">
+    <value>Valeur objective</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_PRED" xml:space="preserve">
+    <value>Prédateur:</value>
+  </data>
+  <data name="OPTIONS_PAGE_COLORS" xml:space="preserve">
+    <value>Couleurs</value>
+  </data>
+  <data name="STATUS_SEARCH_STOPPING" xml:space="preserve">
+    <value>Arrêt de la recherche, veuillez patienter ...</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_MORTALITRATES" xml:space="preserve">
+    <value>Les taux de mortalité</value>
+  </data>
+  <data name="MPAOPT_LEGEND_WEIGHTEDTOTAL" xml:space="preserve">
+    <value>Total pondéré</value>
+  </data>
+  <data name="CAPTION_SPATIALTEMPORAL_EXPORT" xml:space="preserve">
+    <value>Exportation de {0} ensemble (s) de données</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDVALIDATION" xml:space="preserve">
+    <value>Erreurs de validation du modèle | Valeurs indiquant que le modèle a rejeté une entrée récente</value>
+  </data>
+  <data name="HEADER_MAP" xml:space="preserve">
+    <value>Carte d'entrée</value>
+  </data>
+  <data name="HEADER_MSY" xml:space="preserve">
+    <value>Évaluation de {0}</value>
+  </data>
+  <data name="ABOUT_VERSION" xml:space="preserve">
+    <value>Version {0} - {1}</value>
+  </data>
+  <data name="HEADER_SPATTEMP_NODRIVER" xml:space="preserve">
+    <value>Aucune donnée externe</value>
+  </data>
+  <data name="STATUS_ECOSIM_CREATING" xml:space="preserve">
+    <value>Création du scénario Ecosim '{0}' ...</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACT_RELOADFAIL" xml:space="preserve">
+    <value>Votre base de données a été compactée correctement, mais EwE n'a pas pu recharger la base de données. Veuillez contacter le support technique EwE</value>
+  </data>
+  <data name="FLOWDIAGRAM_LABEL_BIOMASS" xml:space="preserve">
+    <value>B: {0}</value>
+  </data>
+  <data name="GENERIC_ITEMSTATUS_CREATEPENDING" xml:space="preserve">
+    <value>Créer</value>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_MISSING" xml:space="preserve">
+    <value>Les données spatiales pour {0} au moment {1}, {2} sont introuvables</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACT_SUCCESS" xml:space="preserve">
+    <value>Votre base de données a été compactée avec succès.</value>
+  </data>
+  <data name="PROMPT_ERROR_IMPORT_INVALIDDB" xml:space="preserve">
+    <value>La base de données sélectionnée ne semble pas être une base de données EwE5 ou EwE6 valide.</value>
+  </data>
+  <data name="LABEL_NAV_PSD" xml:space="preserve">
+    <value>Répartition granulométrique</value>
+  </data>
+  <data name="CAPTION_PSD" xml:space="preserve">
+    <value>Répartition granulométrique</value>
+  </data>
+  <data name="LABEL_NAV_MSE" xml:space="preserve">
+    <value>Procédures de gestion (MSE)</value>
+  </data>
+  <data name="HEADER_MORTALITIES_PREDMORTRATE" xml:space="preserve">
+    <value>+ Mort de prédation. taux</value>
+  </data>
+  <data name="GENERIC_ERROR_IMAGETOOLARGE" xml:space="preserve">
+    <value>L'image est trop grande, sélectionnez une image dont la largeur et la hauteur sont inférieures à {0} pixels.</value>
+  </data>
+  <data name="ECOPATH_EDITGROUPSSTANZA_STANZAAGECORRECTED" xml:space="preserve">
+    <value>L'âge de début de la strophe '{0}' a été corrigé.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE" xml:space="preserve">
+    <value>Appliquer des réponses environnementales</value>
+  </data>
+  <data name="STATUS_ECOSIM_RUNNING" xml:space="preserve">
+    <value>Courir Ecosim ...</value>
+  </data>
+  <data name="STATUS_UPDATE_CHECKING" xml:space="preserve">
+    <value>Vérification des composants mis à jour ...</value>
+  </data>
+  <data name="LABEL_NAV_PSD_OUTPUT_GROWTHCONTR" xml:space="preserve">
+    <value>Parcelle de contribution PSD</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_MEDIATION" xml:space="preserve">
+    <value>La médiation</value>
+  </data>
+  <data name="ECOSIM_CAPTION_APPLYFF" xml:space="preserve">
+    <value>Appliquer des fonctions de forçage</value>
+  </data>
+  <data name="ECOSIM_PROMPT_DELETE_TSDATASETS" xml:space="preserve">
+    <value>Vous êtes sur le point de supprimer les jeux de données Time Series de la base de données. Cette action ne peut pas être annulée. Es-tu sûr de vouloir faire ça?</value>
+  </data>
+  <data name="PROMPT_MPA_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Voulez-vous supprimer la MPA sélectionnée? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="VERSION_RELEASE" xml:space="preserve">
+    <value>Version officielle, publiée le {0}</value>
+  </data>
+  <data name="PROMPT_ADVECTION_INBALANCED" xml:space="preserve">
+    <value>Les flux entrants et sortants ne s'équilibrent pas; Il est recommandé de ne pas utiliser ce champ de vélocité pour les simulations si écospace présente un comportement étrange. Souhaitez-vous rétablir les données d'advection à l'état précédent?</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_NICHEOVERLAP" xml:space="preserve">
+    <value>Chevauchement de niche</value>
+  </data>
+  <data name="CAPTION_NICHEPLOT_HEADER" xml:space="preserve">
+    <value>Chevauchement de niche</value>
+  </data>
+  <data name="STATUS_UPDATE_DOWNLOADING_COMP" xml:space="preserve">
+    <value>Téléchargement de '{0}'</value>
+  </data>
+  <data name="STATUS_DATA_SAVING" xml:space="preserve">
+    <value>Sauvegarde des données, veuillez patienter ...</value>
+  </data>
+  <data name="FLOWDIAGRAM_NODE_TOUCHING" xml:space="preserve">
+    <value>Noeud touchant: {0} ({1})</value>
+  </data>
+  <data name="HEADER_FISHING_EFFORT_MULTIPLIER" xml:space="preserve">
+    <value>Multiplicateur d'effort de pêche</value>
+  </data>
+  <data name="INVALID_NUMBER_ENTERED" xml:space="preserve">
+    <value>Le numéro entré n'est pas valide</value>
+  </data>
+  <data name="TS_AVERAGEWEIGHT_REMARKS" xml:space="preserve">
+    <value>Pour les groupes de strophe uniquement, les séries partielles sont acceptables</value>
+  </data>
+  <data name="ECOSPACE_EDITLAYER_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer {0} couche (s)? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_MSY" xml:space="preserve">
+    <value>Recherche MSY</value>
+  </data>
+  <data name="PROMPT_STANZA_MISSING_LIFESTAGES" xml:space="preserve">
+    <value>Une ou plusieurs configurations de strophe n'ont pas d'étapes de vie. Voulez-vous faire cela maintenant?</value>
+  </data>
+  <data name="STATUS_WAITING" xml:space="preserve">
+    <value>En attente de votre contribution ...</value>
+  </data>
+  <data name="ECOSPACE_EDITLAYER_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer le calque '{0}'? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="STATUS_DATASET_REMOVING" xml:space="preserve">
+    <value>Suppression du jeu de données Time Series '{0}' ...</value>
+  </data>
+  <data name="STATUSSTRIP_ECOSPACE_CONNECTIONS" xml:space="preserve">
+    <value>{0} connexion / s</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_STATISTICS" xml:space="preserve">
+    <value>Statistiques</value>
+  </data>
+  <data name="HEADER_DRIVER_ENABLED" xml:space="preserve">
+    <value>Activer les données externes</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_OTHERPRODUCTION" xml:space="preserve">
+    <value>Autre production</value>
+  </data>
+  <data name="PROMPT_SPATIALTEMPORAL_CALC_NOINDEX" xml:space="preserve">
+    <value>L'ensemble de données spatiales n'a pas encore été indexé.</value>
+  </data>
+  <data name="STATUS_IMPORTING_MODEL_SUCCESS" xml:space="preserve">
+    <value>Le modèle '{0}' a été converti avec succès en '{1}'.</value>
+  </data>
+  <data name="GENERIC_PROMPT_CLEAR_MRU" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir effacer l'historique des fichiers récemment accédé? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="PROMPT_FORCING_DELETE" xml:space="preserve">
+    <value>Vous êtes sur le point de supprimer la fonction de forçage '{0}'. Cette action ne peut pas être annulée. Es-tu sûr de vouloir faire ça?</value>
+  </data>
+  <data name="COMMAND_AUTORUN" xml:space="preserve">
+    <value>Configurer les plug-ins EwE pouvant s'exécuter automatiquement avec les composants centraux d'EwE</value>
+  </data>
+  <data name="OPTIONS_PAGE_WINDOW" xml:space="preserve">
+    <value>Application EwE6</value>
+  </data>
+  <data name="MSE_ITERATION_HEADER" xml:space="preserve">
+    <value>Flotte {0} effort MSY</value>
+  </data>
+  <data name="STATUS_ECOSIM_SAVING" xml:space="preserve">
+    <value>Enregistrement du scénario Ecosim '{0}' ...</value>
+  </data>
+  <data name="STATUSSTRIP_ECOTRACER_TOOLTIP" xml:space="preserve">
+    <value>Scénario Ecotracer Nom: {0} Description: {1}</value>
+  </data>
+  <data name="PROMPT_TRIM_SHAPES" xml:space="preserve">
+    <value>Voulez-vous supprimer les données de forçage et de production d'oeufs au-delà de la longueur de cycle actuelle d'Ecosim? Cette opération ne peut pas être annulée.</value>
+  </data>
+  <data name="ECOSIM_PLOT_CAPTION_MORT_PROD" xml:space="preserve">
+    <value>P / B, predation.mort., Fishing.mort.</value>
+  </data>
+  <data name="ECOSIM_PLOT_CAPTION_MORT_CONS" xml:space="preserve">
+    <value>Mortalité: totale, pêche, prédation.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_FLOWDIAGRAM" xml:space="preserve">
+    <value>Diagramme de flux Ecosim</value>
+  </data>
+  <data name="ECOSPACE_EDITMPA_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer {0} MPA (s)? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="REGION_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Voulez-vous supprimer la région sélectionnée?</value>
+  </data>
+  <data name="MSE_ITERATION_LINE" xml:space="preserve">
+    <value>{1} {0} {2}</value>
+  </data>
+  <data name="GENERIC_REPLY_CANCEL" xml:space="preserve">
+    <value>Vous avez annulé l'opération</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_PRICEELAST" xml:space="preserve">
+    <value>L'élasticité des prix</value>
+  </data>
+  <data name="STATUS_LOADING" xml:space="preserve">
+    <value>Chargement, veuillez patienter...</value>
+  </data>
+  <data name="GENERIC_PROMPT_INVALIDPATH" xml:space="preserve">
+    <value>Impossible de trouver le fichier '{0}'. Assurez-vous que le chemin est correct.</value>
+  </data>
+  <data name="ECOSPACE_SCENARIO_DELETE_CAPTION" xml:space="preserve">
+    <value>Supprimer le scénario Ecospace - Modèle Ecopath {0}</value>
+  </data>
+  <data name="SPATIALTEMP_STATUS_T_FULLSPATIAL" xml:space="preserve">
+    <value>Les données spatiales pour {0} à l'heure {1}, {2} chevauchent entièrement la zone de votre modèle.</value>
+  </data>
+  <data name="HABITAT_DELETE_CAPTION" xml:space="preserve">
+    <value>Supprimer l'habitat</value>
+  </data>
+  <data name="GENERIC_PROMPT_DONOTSHOWMESSAGEAGAIN" xml:space="preserve">
+    <value>Ne plus afficher ce message tant que le modèle n'a pas été rechargé</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_DEFAULT" xml:space="preserve">
+    <value>Texte par défaut | Jeu de couleurs à utiliser pour le texte par défaut</value>
+  </data>
+  <data name="STATUS_MODEL_COMPACTING_TEMPFILE" xml:space="preserve">
+    <value>Impossible de créer un fichier temporaire lors du compactage de la base de données. Veuillez vérifier si votre espace disque est faible.</value>
+  </data>
+  <data name="STATUS_ECOSPACE_LOADING" xml:space="preserve">
+    <value>Chargement du scénario Ecospace '{0}' ...</value>
+  </data>
+  <data name="ECOSPACE_WARNING_MEMOVERFLOW" xml:space="preserve">
+    <value>En fonction du nombre de cellules de votre carte, cette opération peut entraîner une insuffisance de mémoire pour Ecospace lors de la collecte de statistiques. Êtes-vous sûr de vouloir convertir toutes les cellules en régions individuelles?</value>
+  </data>
+  <data name="CAPTION_DATASET" xml:space="preserve">
+    <value>Ensemble de données externe {0}</value>
+  </data>
+  <data name="LABEL_NAV_TOOLS" xml:space="preserve">
+    <value>Outils</value>
+  </data>
+  <data name="STATUS_MSY_INITIALIZING" xml:space="preserve">
+    <value>Initialisation de MSY ...</value>
+  </data>
+  <data name="STATUS_ADVECTION_STARTED" xml:space="preserve">
+    <value>Démarrer les calculs d'Advection ...</value>
+  </data>
+  <data name="PROMPT_CHANGES_RESTART" xml:space="preserve">
+    <value>Certaines des modifications que vous avez apportées ne seront effectives qu'après le redémarrage d'Ecopath avec Ecosim.</value>
+  </data>
+  <data name="PROMPT_UPDATE_MIGRATION" xml:space="preserve">
+    <value>Un nouveau plug-in Ecopath est disponible. Il peut s'appliquer à '{0}' sur votre système, mais les copies ne peuvent pas être authentifiées. Voulez-vous que EwE6 écrase votre fichier local?</value>
+  </data>
+  <data name="STATUS_UPDATE_ERROR_DOWNLOAD" xml:space="preserve">
+    <value>Impossible de télécharger la mise à jour pour '{0}'</value>
+  </data>
+  <data name="LEGEND_BYBIOMASS" xml:space="preserve">
+    <value>Par biomasse</value>
+  </data>
+  <data name="CAPTION_PRICEELASTICITY_LANDING" xml:space="preserve">
+    <value>Appliquer l'élasticité des prix à la flotte {0}: {1} atterrissage {2}: {3}</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_FISHERY_DISCARDMORTRATE" xml:space="preserve">
+    <value>Taux de mortalité par rejets</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_SUITABILITY" xml:space="preserve">
+    <value>Pertinence</value>
+  </data>
+  <data name="IMPORT_FILE_FAILED" xml:space="preserve">
+    <value>Échec de l'importation {0}</value>
+  </data>
+  <data name="LABEL_NAV_PSD_OUTPUT_PLOTWEIGHT" xml:space="preserve">
+    <value>Taille poids graphique</value>
+  </data>
+  <data name="STATUSSTRIP_ECOSPACE_TOOLTIP" xml:space="preserve">
+    <value>Scénario Ecospace Nom: {0} Description: {1}</value>
+  </data>
+  <data name="OPTIONS_FEEDBACK_POPUP" xml:space="preserve">
+    <value>Comme message contextuel</value>
+  </data>
+  <data name="PROMPT_STANZA_MISSING_LIFESTAGES_DETAIL" xml:space="preserve">
+    <value>Le groupe de strophes '{0}' est déclaré mais n'a pas d'étapes de vie</value>
+  </data>
+  <data name="FIT2TS_PROGRESS_RUNCOMPLETED" xml:space="preserve">
+    <value>Exécution terminée à {0}</value>
+  </data>
+  <data name="STATUS_UPDATE_UPDATED" xml:space="preserve">
+    <value>Le composant '{0}' a été mis à jour.</value>
+  </data>
+  <data name="MONTECARLO_PROMPT_RUNWITHOUTTS" xml:space="preserve">
+    <value>Il n'y a pas de série chronologique de référence chargée. Êtes-vous sûr de vouloir exécuter Monte Carlo sans série chronologique de référence?</value>
+  </data>
+  <data name="GENERIC_REPLY_YES" xml:space="preserve">
+    <value>Vous avez répondu "oui"</value>
+  </data>
+  <data name="STATUS_MODEL_IMPORTING" xml:space="preserve">
+    <value>Importation {0} ...</value>
+  </data>
+  <data name="PROMPT_MPAOPT_SELECTION" xml:space="preserve">
+    <value>Une MPA doit être sélectionnée. L'optimisation ne peut pas continuer.</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_SHRINK_PROMPT" xml:space="preserve">
+    <value>Vous êtes sur le point de réduire la taille de la carte, les valeurs situées en dehors de la nouvelle zone de carte seront perdues. Cette opération ne peut pas être annulée. Êtes-vous sur de vouloir continuer?</value>
+  </data>
+  <data name="ECOPATH_EDITFLEET_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer la flotte '{0}'? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_INPUT_MPAENFORCEMENT" xml:space="preserve">
+    <value>Application de la MPA</value>
+  </data>
+  <data name="STATUS_ECOTRACER_CREATING" xml:space="preserve">
+    <value>Création du scénario Ecotracer '{0}' ...</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_ECOSEED" xml:space="preserve">
+    <value>EcoSeed</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_ECOSIM_PLOTS_BACKGROUND_COLOR" xml:space="preserve">
+    <value>Tracé de fond et graphiques | Couleur de fond à utiliser pour les tracés et les graphiques</value>
+  </data>
+  <data name="ECOSIM_APPLYFF_FFTYPE_PRICEELASTICITY" xml:space="preserve">
+    <value>{1} {0}</value>
+  </data>
+  <data name="PROMPT_SPATIALTEMPORAL_CALC_NODATA" xml:space="preserve">
+    <value>Aucune donnée spatiale n'a été trouvée pour l'année {0}. La moyenne n'a pas pu être calculée.</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_SUSTPLOT" xml:space="preserve">
+    <value>Parcelle d'aptitude</value>
+  </data>
+  <data name="MPAOPT_AXISLABEL_ECOSEED" xml:space="preserve">
+    <value>Nombre de cellules fermées</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_LANDINGS" xml:space="preserve">
+    <value>Débarquements calculés</value>
+  </data>
+  <data name="LABEL_NAV_PSD_OUTPUT_GROWTHCONTRRESULT" xml:space="preserve">
+    <value>Résultat de la contribution PSD</value>
+  </data>
+  <data name="ECOSIM_CAPTION_APPLYOTHERMORT" xml:space="preserve">
+    <value>Appliquer un autre forçage de la mortalité</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_REMARKS" xml:space="preserve">
+    <value>Valeurs avec remarques | Valeurs auxquelles une remarque est attachée. Les remarques peuvent être éditées via le panneau Remarques.</value>
+  </data>
+  <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
+    <value>"{0}" n'a pas pu être enregistré dans le fichier "{1}": {2}.</value>
+  </data>
+  <data name="STATUS_MODEL_ACCESS_FAILED" xml:space="preserve">
+    <value>Une erreur s'est produite lors de la tentative d'accès au modèle '{0}'.</value>
+  </data>
+  <data name="STATUS_ECOTRACER_SAVING" xml:space="preserve">
+    <value>Enregistrement du scénario Ecotracer '{0}' ...</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_SUMMARY_CELLLENGTH" xml:space="preserve">
+    <value>{0} km</value>
+  </data>
+  <data name="ECOSPACE_EDITMPA_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Êtes-vous sûr de vouloir supprimer MPA '{0}'? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="PROMPT_MODELCREATED" xml:space="preserve">
+    <value>Nouveau modèle EwE6 '{0}' créé avec succès.</value>
+  </data>
+  <data name="FPS_FV_RESULT_COL0" xml:space="preserve">
+    <value>Par \ To</value>
+  </data>
+  <data name="PROMPT_FILETYPEDEPRECATED" xml:space="preserve">
+    <value>Ce type de fichier n'est plus pris en charge dans EwE6</value>
+  </data>
+  <data name="ECOSPACE_HEADER_RELB" xml:space="preserve">
+    <value>Biomasse relative Ecospace (log10)</value>
+  </data>
+  <data name="FIT2TS_PROGRESS_RUNSTEP" xml:space="preserve">
+    <value>Itération {0}, SS = {1}</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYMEDCONS" xml:space="preserve">
+    <value>Appliquer la médiation (consommateur)</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_APPLYMEDPROD" xml:space="preserve">
+    <value>Appliquer la médiation (producteur)</value>
+  </data>
+  <data name="STATUS_UPDATE_NO_ACTION" xml:space="preserve">
+    <value>Le composant '{0}' est à jour</value>
+  </data>
+  <data name="RUN_ECOSIM_F_VALUE_MSG" xml:space="preserve">
+    <value>Entrez F ~ valeur (ou entrez une chaîne de F séparés par des virgules pour toutes les flottes)</value>
+  </data>
+  <data name="STATUS_EXPORT_FAILURE" xml:space="preserve">
+    <value>Échec de l'exportation du modèle vers {0}.</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_CHECKED" xml:space="preserve">
+    <value>Valeurs pouvant poser un problème | Valeurs calculées pouvant nécessiter une attention particulière</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_SHAPECOMPATIBLE" xml:space="preserve">
+    <value>Le fichier de forme sélectionné n'est pas compatible avec les dimensions actuelles du fond de carte Ecospace. Voulez-vous utiliser ce fichier quand même?</value>
+  </data>
+  <data name="IMPORT_FILE_SUCCESS" xml:space="preserve">
+    <value>Fichier {0} importé avec succès</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_DETRITUSFATE" xml:space="preserve">
+    <value>Sort de détritus</value>
+  </data>
+  <data name="CAPTION_EXTERNAL_DATA_DETAIL" xml:space="preserve">
+    <value>Données externes pour '{0}'</value>
+  </data>
+  <data name="ECOSIM_FD_SAVE_FAILURE" xml:space="preserve">
+    <value>Des erreurs se sont produites lors de l’enregistrement d’images de diagramme de flux Ecosim dans {0}.</value>
+  </data>
+  <data name="ECOPATH_ADDSTANZA_ERROR" xml:space="preserve">
+    <value>Échec de l'ajout de la configuration de la strophe '{0}'</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_FLEETWEIGHTS" xml:space="preserve">
+    <value>Poids de la flotte</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_REGULATORY" xml:space="preserve">
+    <value>Réglementaire</value>
+  </data>
+  <data name="INFOPANEL_DESCRIPTION" xml:space="preserve">
+    <value>Description: {0}</value>
+  </data>
+  <data name="GENERIC_VALUE_CACHEMEMORY" xml:space="preserve">
+    <value>{0} ({1} non utilisé)</value>
+  </data>
+  <data name="ECOBASE_ERROR_COMMUNICATION" xml:space="preserve">
+    <value>Une erreur s'est produite lors de l'envoi de votre modèle à EcoBase. {0}</value>
+  </data>
+  <data name="STATUS_MODEL_SAVING" xml:space="preserve">
+    <value>Sauvegarde de modèle ...</value>
+  </data>
+  <data name="FLOWDIAGRAM_NODE_NOT_TOUCHING" xml:space="preserve">
+    <value>Ne pas toucher un noeud</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_PARAMETERS" xml:space="preserve">
+    <value>Paramètres Ecosim</value>
+  </data>
+  <data name="ECOSPACE_BASEMAP_SUMMARY_SIZE" xml:space="preserve">
+    <value>{0} rangées x {1} colonnes</value>
+  </data>
+  <data name="STATUS_ECOSPACE_CREATING" xml:space="preserve">
+    <value>Création du scénario Ecospace '{0}' ...</value>
+  </data>
+  <data name="VERSION_EXPIRED" xml:space="preserve">
+    <value>Cette version bêta a expiré. Veuillez télécharger une version officielle de http://ecopath.org</value>
+  </data>
+  <data name="STATUS_MSE_INITIALIZING" xml:space="preserve">
+    <value>Initialisation de MSE ...</value>
+  </data>
+  <data name="FF_APPLICATION_MORTOTHER" xml:space="preserve">
+    <value>Appliquer le forçage de la mortalité à {0}</value>
+  </data>
+  <data name="ECOSIM_PROMPT_SAVEDESTINATION" xml:space="preserve">
+    <value>Veuillez sélectionner la destination pour enregistrer les résultats Ecosim.</value>
+  </data>
+  <data name="SR_PLOT_TITLE" xml:space="preserve">
+    <value>Parcelle S / R</value>
+  </data>
+  <data name="STATUS_IMPORTING_MODEL" xml:space="preserve">
+    <value>Conversion du modèle '{0}'</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_INPUT_TRAITS" xml:space="preserve">
+    <value>Traits</value>
+  </data>
+  <data name="PROMPT_LOCATION_SEARCH" xml:space="preserve">
+    <value>Emplacement trouvé {0} avec le cadre de sélection N {1}, W {2}, S {3}, E {4}. Voulez-vous l'utiliser?</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_PREDMORTRATE" xml:space="preserve">
+    <value>Taux de mortalité par prédation</value>
+  </data>
+  <data name="STATUS_ADDTIMESERIES" xml:space="preserve">
+    <value>Ajout de séries chronologiques {0} ...</value>
+  </data>
+  <data name="PSD_GRAPH_REGRESSION_LABEL_WO_STDERR" xml:space="preserve">
+    <value>Pente = {0}, ordonnée en Y = {1}, corrélation = {2} Wt. plage de classe (g) = {3} à {4}, N = {5}</value>
+  </data>
+  <data name="ECOSPACE_RUN_PROGRESS" xml:space="preserve">
+    <value>{0} sur {1} ans</value>
+  </data>
+  <data name="SCENARIO_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Vous êtes sur le point de supprimer le scénario '{0}'. Ça ne peut pas être annulé. Es-tu sûr de vouloir faire ça?</value>
+  </data>
+  <data name="SELECTION_NONE" xml:space="preserve">
+    <value>(pas de choix)</value>
+  </data>
+  <data name="GENERIC_ERROR_FILEOPEN" xml:space="preserve">
+    <value>Impossible d'ouvrir le fichier '{0}'</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_FORCINGFUNCTION" xml:space="preserve">
+    <value>Fonction de forçage</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_OUTPUT_SRPLOT" xml:space="preserve">
+    <value>Stock de recrutement</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDRESULT" xml:space="preserve">
+    <value>Erreurs d'exécution du modèle | Valeurs que le modèle n'a pas pu calculer correctement en raison d'une défaillance du modèle</value>
+  </data>
+  <data name="HEADER_MORTALITIES_NETMIGRATE" xml:space="preserve">
+    <value>+ Taux de migration nette</value>
+  </data>
+  <data name="ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY" xml:space="preserve">
+    <value>Électivité de Chesson</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_INPUT_EGGPROD" xml:space="preserve">
+    <value>Production d'oeufs</value>
+  </data>
+  <data name="ECOPATH_DELETEGROUP_ERROR" xml:space="preserve">
+    <value>Échec de la suppression du groupe '{0}'</value>
+  </data>
+  <data name="GENERIC_REGISTRATION" xml:space="preserve">
+    <value>Enregistré à {0}</value>
+  </data>
+  <data name="ECOSIM_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
+    <value>Sauvegarde du scénario Ecosim - Modèle Ecopath {0}</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_PEDIGREE" xml:space="preserve">
+    <value>Couleur de l'indicateur Pedigree | Pedigree dans les grilles de données</value>
+  </data>
+  <data name="PROMPT_ERROR_IMPORT_NOSELECTION" xml:space="preserve">
+    <value>Veuillez sélectionner un modèle à convertir en EwE6.</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_CALCULATING" xml:space="preserve">
+    <value>Calcul de la moyenne annuelle pour la couche {0}, la connexion de données {1} ...</value>
+  </data>
+  <data name="LABEL_NAV_PSD_INPUT_GROWTH" xml:space="preserve">
+    <value>Entrée de croissance</value>
+  </data>
+  <data name="ECOBASE_SUBMIT_DENIED" xml:space="preserve">
+    <value>Votre modèle n'a pas été soumis à EcoBase</value>
+  </data>
+  <data name="STATUS_ECOSIM_LOADING" xml:space="preserve">
+    <value>Chargement du scénario Ecosim '{0}' ...</value>
+  </data>
+  <data name="ECOSIM_SR_SLOPELABEL" xml:space="preserve">
+    <value>({0}, {1}): pente = {2}</value>
+  </data>
+  <data name="STATUS_IMPORTING_DATASET" xml:space="preserve">
+    <value>Importation du jeu de données Time Series {0} ...</value>
+  </data>
+  <data name="LABEL_NAV_ECOSIM_FISHINGPOLICY" xml:space="preserve">
+    <value>Recherche de politique de pêche</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_QUOTASHARE" xml:space="preserve">
+    <value>Part de quota</value>
+  </data>
+  <data name="HEADER_USE_HABITAT" xml:space="preserve">
+    <value>Utiliser l'habitat</value>
+  </data>
+  <data name="ECOSPACE_LAYER_RANDOMBEST" xml:space="preserve">
+    <value>Meilleur compte</value>
+  </data>
+  <data name="VALUE_PREVIEW" xml:space="preserve">
+    <value>AaBbCcYyZz</value>
+  </data>
+  <data name="ECOSIM_LABEL_APPLY_SHAPES_PREDPREY" xml:space="preserve">
+    <value>Pour toutes les paires de prédateurs proie</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_PREDATOROVERLAP" xml:space="preserve">
+    <value>Chevauchement des prédateurs</value>
+  </data>
+  <data name="HEADER_MORTALITIES_BIOMACCURATE" xml:space="preserve">
+    <value>+ Biomasse accum. taux</value>
+  </data>
+  <data name="IMPORT_LAYERDATA_SUCCESS" xml:space="preserve">
+    <value>Fichier {0} lu avec succès dans la couche {1}</value>
+  </data>
+  <data name="DATASOURCE_DUPLICATE_ERROR_NODATABASE" xml:space="preserve">
+    <value>Seuls les modèles stockés dans des bases de données peuvent être dupliqués.</value>
+  </data>
+  <data name="PROMPT_UPDATE_MIGRATION_SUPPRESS" xml:space="preserve">
+    <value>Ne plus demander ce fichier.</value>
+  </data>
+  <data name="PROMPT_STATUS_FURTHERDETAILS" xml:space="preserve">
+    <value>(pour plus de détails, voir le panneau d'état)</value>
+  </data>
+  <data name="LABEL_NAV_ECOTRACER_PARAMS" xml:space="preserve">
+    <value>Paramètres Ecotracer</value>
+  </data>
+  <data name="ECOTRACER_SCENARIO_NEW_CAPTION" xml:space="preserve">
+    <value>Nouveau scénario Ecotracer - Modèle Ecopath {0}</value>
+  </data>
+  <data name="HEADER_ALL_REGULATIONS_APPLY" xml:space="preserve">
+    <value>Toutes les AMP sont appliquées</value>
+  </data>
+  <data name="ECOSPACE_HEADER_LOGBREL" xml:space="preserve">
+    <value>Biomasse (log, relative)</value>
+  </data>
+  <data name="STATUS_DATA_SAVING_SUCCESS" xml:space="preserve">
+    <value>Données enregistrées avec succès dans '{0}'</value>
+  </data>
+  <data name="ECOSPACE_LAYER_SEEDCURRENT" xml:space="preserve">
+    <value>Cellules actuelles</value>
+  </data>
+  <data name="SELECTION_INDEXEDVAR" xml:space="preserve">
+    <value>{0} ({1} sur {2})</value>
+  </data>
+  <data name="ECOSIM_HEADER_SS" xml:space="preserve">
+    <value>Somme des carrés:</value>
+  </data>
+  <data name="INFOPANEL_DOMAIN" xml:space="preserve">
+    <value>Domaine: {0}</value>
+  </data>
+  <data name="PROMPT_CREATE_GENERICERROR" xml:space="preserve">
+    <value>Une erreur générique s'est produite lors de la tentative de création d'un modèle EwE6 à '{0}'.</value>
+  </data>
+  <data name="MPA_BATCH_DELETE_CONFIRMATION" xml:space="preserve">
+    <value>Voulez-vous supprimer MPA de {0} à {1}? Cette action ne peut pas être annulée.</value>
+  </data>
+  <data name="HEADER_MORTALITIES_OTHERMORTRATE" xml:space="preserve">
+    <value>+ Autre mort. taux</value>
+  </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_PREDATOR" xml:space="preserve">
+    <value>Prédation / lien entrant | Couleur pour indiquer la prédation ou les liens entrants dans les diagrammes</value>
+  </data>
+  <data name="MPAOPT_AXISLABEL_RANDOMSEARCH" xml:space="preserve">
+    <value>Nombre de pistes</value>
+  </data>
+  <data name="ECOSIM_GROUPINFO_MAXRELFEEDINGTIME" xml:space="preserve">
+    <value>Max rel. temps d'alimentation</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_FIXEDESCAPE" xml:space="preserve">
+    <value>F fixe, échappement, TAC</value>
+  </data>
+  <data name="STATUS_MODEL_ACCESS_404" xml:space="preserve">
+    <value>Impossible de trouver le modèle '{0}'.</value>
+  </data>
+  <data name="STATUS_UPDATE_CHECKING_COMP" xml:space="preserve">
+    <value>Vérification de '{0}'</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_OUTPUT_RESULTS" xml:space="preserve">
+    <value>Résultats Ecospace</value>
+  </data>
+  <data name="FIT2TS_PROGRESS_RUNSTARTED" xml:space="preserve">
+    <value>Recherche démarrée, base SS = {0}</value>
+  </data>
+  <data name="PROMPT_SHELL_FAILURE" xml:space="preserve">
+    <value>Impossible de lancer la commande. {0}</value>
+  </data>
+  <data name="SEARCH_STATUS_STARTED" xml:space="preserve">
+    <value>Recherche commencée</value>
+  </data>
+  <data name="ADVECTION_FAILED" xml:space="preserve">
+    <value>Le modèle d'Advection exécuté a rencontré une erreur ou a été interrompu. Les vecteurs Advection ne seront pas mis à jour.</value>
+  </data>
+  <data name="HEADER_ECOPATH_NAME" xml:space="preserve">
+    <value>Nom du modèle Ecopath</value>
+  </data>
+  <data name="VALUE_NOTEMPLATES" xml:space="preserve">
+    <value>(Aucun modèle disponible)</value>
+  </data>
+  <data name="PLUGIN_LICENSE_EXPIRED" xml:space="preserve">
+    <value>Licence expirée le {0}</value>
+  </data>
+  <data name="LABEL_NAV_ECOPATH_OUTPUT_FLOWDIAGRAM" xml:space="preserve">
+    <value>Diagramme de flux Ecopath</value>
+  </data>
+  <data name="ECOSPACE_HEADER_FRACTION_OF_TOTAL" xml:space="preserve">
+    <value>Fraction du total</value>
+  </data>
+  <data name="VERSION_DEVELOPMENT" xml:space="preserve">
+    <value>Version de développement, compilée {0}</value>
+  </data>
+  <data name="ECOSIM_HEADER_SS_GROUPS" xml:space="preserve">
+    <value>Somme des carrés pour groupe (s) sélectionné (s):</value>
+  </data>
+  <data name="CAPTION_PSD_GROUP_CONTRIB" xml:space="preserve">
+    <value>Distribution granulométrique (contribution du groupe)</value>
+  </data>
+  <data name="PROMPT_EMPTY_NAMES" xml:space="preserve">
+    <value>Vos données contiennent des noms vides. Ceci n'est pas autorisé</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_GROUP" xml:space="preserve">
+    <value>Groupe MSE</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_FLEET" xml:space="preserve">
+    <value>Flotte MSE</value>
+  </data>
+  <data name="STATUS_UPDATE_DONE_COMP" xml:space="preserve">
+    <value>Terminé '{0}'</value>
+  </data>
+  <data name="HEADER_FORCINGNUMBER" xml:space="preserve">
+    <value>Numéro de forçage</value>
+  </data>
+  <data name="LABEL_NAV_MSE_INPUT_EFFORTTRACKING" xml:space="preserve">
+    <value>Suivi de l'effort</value>
+  </data>
+  <data name="LABEL_NAV_ECOSPACE_OUTPUT_RUN" xml:space="preserve">
+    <value>Courir Ecospace</value>
+  </data>
+</root>
