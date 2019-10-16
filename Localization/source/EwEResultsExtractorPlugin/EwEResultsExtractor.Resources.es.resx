@@ -189,9 +189,6 @@
   <data name="BASIC_ESTIMATES" xml:space="preserve">
     <value>Estimaciones basicas</value>
   </data>
-  <data name="ASSIMILATION_UNITS" xml:space="preserve">
-    <value>Asimilación (t / hm ^ 2 / año)</value>
-  </data>
   <data name="PARENT_ONLY" xml:space="preserve">
     <value>Solo padre</value>
   </data>
@@ -247,7 +244,7 @@
     <value>Mort de pesca / Mort total</value>
   </data>
   <data name="BIOMASS_AREA_UNITS" xml:space="preserve">
-    <value>Biomasa en el área del hábitat ({0} / {1})</value>
+    <value>Biomasa en el área del hábitat ({0}/{1})</value>
   </data>
   <data name="NET_MIGRATION_RATE" xml:space="preserve">
     <value>Tasa neta de migración</value>
@@ -468,11 +465,8 @@
   <data name="DIET_PROPS" xml:space="preserve">
     <value>Proporciones de dieta</value>
   </data>
-  <data name="BIOMASS_UNITS" xml:space="preserve">
-    <value>Biomasa (t / km ^ 2)</value>
-  </data>
   <data name="BIOMASS_ACCUM" xml:space="preserve">
-    <value>Biom. Acumular</value>
+    <value>Biom. Acumul.</value>
   </data>
   <data name="FISHING_QUANT" xml:space="preserve">
     <value>Cantidades de pesca</value>

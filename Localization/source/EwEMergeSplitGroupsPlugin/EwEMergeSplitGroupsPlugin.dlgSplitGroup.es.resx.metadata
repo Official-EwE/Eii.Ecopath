@@ -22,7 +22,7 @@
   </Data>
   <Data Key="$this.Text">
     <Flag>AutoTranslated</Flag>
-    <Comment />
+    <Comment>Should be 'divide group'</Comment>
   </Data>
   <Data Key="m_lblStartAge.Text">
     <Flag>AutoTranslated</Flag>

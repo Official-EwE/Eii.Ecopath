@@ -121,7 +121,7 @@
     <value>All options</value>
   </data>
   <data name="ASSIMILATION_UNITS" xml:space="preserve">
-    <value>Assimilation(t/hm^2/year)</value>
+    <value>Assimilation(t/km^2/year)</value>
   </data>
   <data name="ATTACH_ALL" xml:space="preserve">
     <value>Attach All</value>
@@ -496,9 +496,6 @@ process?</value>
   </data>
   <data name="SS" xml:space="preserve">
     <value>SS</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value />
   </data>
   <data name="SUM" xml:space="preserve">
     <value>Sum</value>

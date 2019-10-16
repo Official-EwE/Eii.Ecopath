@@ -976,7 +976,7 @@ Namespace Utilities
             If (objValue Is Nothing) Then Return strValue
             If (Convert.IsDBNull(objValue)) Then Return strValue
 
-            If (TypeOf (objValue) Is String) Then
+            If (TypeOf (objValue) Is String Or TypeOf (objValue) Is Char) Then
                 strValue = CStr(objValue)
                 If (cStringUtils.StrictCSVFormatting) Then
                     Dim sb As New StringBuilder()

@@ -322,8 +322,6 @@ Namespace Commands
 
                 ' Clear invoking flag
                 Me.m_bInvoking = False
-                ' Clear parameters
-                Me.m_dicParms.Clear()
                 ' Update associated user controls
                 Me.Update()
             End If
