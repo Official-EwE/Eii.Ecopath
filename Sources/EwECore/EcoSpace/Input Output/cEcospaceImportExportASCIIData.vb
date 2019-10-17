@@ -213,6 +213,8 @@ Public Class cEcospaceImportExportASCIIData
         Return Me.m_nCols * Me.m_nRows
     End Function
 
+    Private Shared separators() As String = {" ", cStringUtils.vbTab, ","}
+
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Read the ASCII header from a text reader.
@@ -251,13 +253,7 @@ Public Class cEcospaceImportExportASCIIData
             ' Be nice
             If Not String.IsNullOrWhiteSpace(strLine) Then
 
-                ' Remove all double spaces
-                While strLine.IndexOf("  ") > 0
-                    strLine = strLine.Replace("  ", " ")
-                End While
-
-                ' Split by space
-                Dim astrBits() As String = strLine.Split(" "c)
+                Dim astrBits() As String = strLine.Split(separators, StringSplitOptions.RemoveEmptyEntries)
                 strField = astrBits(0)
                 strValue = astrBits(1)
 
@@ -358,7 +354,6 @@ Public Class cEcospaceImportExportASCIIData
     Protected Function ReadBody(ByVal reader As StreamReader) As Boolean
 
         Dim bSuccess As Boolean = True
-        Dim separators() As String = {" ", cStringUtils.vbTab, ","}
 
         Try
             For ir As Integer = 1 To Me.m_nRows
