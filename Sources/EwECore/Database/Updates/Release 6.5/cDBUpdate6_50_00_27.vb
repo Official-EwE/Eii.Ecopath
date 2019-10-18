@@ -217,7 +217,7 @@ Friend Class cDBUpdate6_50_00_27
             drow = writerShape.NewRow()
             drow("ShapeID") = iShapeID
             ' Shape name field cannot exceed 50 characters
-            drow("Title") = cStringUtils.MaxLength(String.Format("{0} {1} - {2}", strResponse, strGroupName, strScenario), 50)
+            drow("Title") = cStringUtils.SubString(String.Format("{0} {1} - {2}", strResponse, strGroupName, strScenario), 0, 50)
 
             sfn.SDLeft = sStdLeft
             sfn.SDRight = sStdRight
