@@ -149,11 +149,12 @@ Namespace DataSources
         ''' <summary>
         ''' Adds an ecospace habitat to the data source.
         ''' </summary>
-        ''' <param name="strHabitatName">Name to assign to new habitat.</param>
-        ''' <param name="iHabitatID">Database ID assigned to the new habitat.</param>
+        ''' <param name="strName">Name to assign to new habitat.</param>
+        ''' <param name="iIndex">The sequential position of the new habitat.</param>
+        ''' <param name="iDBID">Database ID assigned to the new habitat.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AddEcospaceHabitat(ByVal strHabitatName As String, ByRef iHabitatID As Integer) As Boolean
+        Function AddEcospaceHabitat(ByVal strName As String, iIndex As Integer, ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -182,7 +183,7 @@ Namespace DataSources
         ''' <param name="iPosition">The new position of the MPA in the MPA sequence.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function MoveMPA(ByVal iMPAID As Integer, ByVal iPosition As Integer) As Boolean
+        Function MoveEcospaceMPA(ByVal iMPAID As Integer, ByVal iPosition As Integer) As Boolean
 
 #End Region ' Habitats
 
@@ -192,10 +193,13 @@ Namespace DataSources
         ''' <summary>
         ''' Adds an ecospace MPA to the active scenario in the datasource.
         ''' </summary>
+        ''' <param name="strName">Name to assign to new MPA.</param>
+        ''' <param name="iIndex">The sequential position of the new MPA.</param>
+        ''' <param name="bMPAMonths">Monthly MPA open pattern.</param>
         ''' <param name="iDBID">Database ID assigned to the new MPA.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function AppendEcospaceMPA(ByVal strScenarioName As String, ByVal bMPAMonths() As Boolean, ByRef iDBID As Integer) As Boolean
+        Function AddEcospaceMPA(ByVal strName As String, iIndex As Integer, ByVal bMPAMonths() As Boolean, ByRef iDBID As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

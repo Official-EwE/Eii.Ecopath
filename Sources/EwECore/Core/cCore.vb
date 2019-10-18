@@ -217,7 +217,7 @@ Public Class cCore
     ''' Dim iNumGroups As Integer = core.GetCoreCounter(eCoreCounterTypes.nGroups)
     ''' </code>
     ''' </remarks>
-    Public Function GetCoreCounter(ByVal counterType As eCoreCounterTypes) As Integer
+    Public Function GetCoreCounter(counterType As eCoreCounterTypes) As Integer
         Try
             Select Case counterType
                 Case eCoreCounterTypes.NotSet
@@ -320,7 +320,7 @@ Public Class cCore
     ''' <param name="iIndex"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Friend Function GetCoreCounter(ByVal SizeType As eCoreCounterTypes, ByVal iIndex As Integer) As Integer
+    Friend Function GetCoreCounter(SizeType As eCoreCounterTypes, iIndex As Integer) As Integer
 
         Select Case SizeType
 
@@ -704,7 +704,7 @@ Public Class cCore
     ''' Get the Core assembly version, formatted as a string.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Shared ReadOnly Property Version(Optional ByVal bIncludeCompilationDate As Boolean = False) As String
+    Public Shared ReadOnly Property Version(Optional bIncludeCompilationDate As Boolean = False) As String
         Get
             Try
                 Dim ass As System.Reflection.Assembly = System.Reflection.Assembly.GetAssembly(GetType(cCore))
@@ -767,7 +767,7 @@ Public Class cCore
     ''' <remarks>This will perform a full model save to the temporary data source
     ''' passed to this method.</remarks>
     ''' -----------------------------------------------------------------------
-    Friend Function Export(ByVal ds As IEwEDataSource) As Boolean
+    Friend Function Export(ds As IEwEDataSource) As Boolean
         ' Sanity check
         If ds Is Nothing Then Return False
         If Not TypeOf (ds) Is IEcopathDataSource Then Return False
@@ -840,7 +840,7 @@ Public Class cCore
     ''' <para>End the batch operation by calling <see cref="ReleaseBatchLock">ReleaseBatchLock</see>.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Function SetBatchLock(ByVal batchLockType As eBatchLockType) As Boolean
+    Public Function SetBatchLock(batchLockType As eBatchLockType) As Boolean
 
         If (Me.m_DataSource Is Nothing) Then Return False
 
@@ -882,8 +882,8 @@ Public Class cCore
     ''' This method completes a batch operation initiated via <see cref="SetBatchLock">SetBatchLock</see>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Function ReleaseBatchLock(ByVal batchChangeLevel As eBatchChangeLevelFlags,
-            Optional ByVal bCommit As Boolean = True) As Boolean
+    Public Function ReleaseBatchLock(batchChangeLevel As eBatchChangeLevelFlags,
+            Optional bCommit As Boolean = True) As Boolean
 
         If (Me.m_DataSource Is Nothing) Then Return False
 
@@ -980,7 +980,7 @@ Public Class cCore
     ''' <param name="iGroupID">Database ID assigned to the new group.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddGroup(ByVal strName As String, ByVal sPP As Single, ByVal sVBK As Single,
+    Public Function AddGroup(strName As String, sPP As Single, sVBK As Single,
             ByRef iGroup As Integer, ByRef iGroupID As Integer) As Boolean
 
         Dim bSucces As Boolean = False
@@ -1032,7 +1032,7 @@ Public Class cCore
     ''' the group</see> to remove.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveGroup(ByVal iGroup As Integer) As Boolean
+    Public Function RemoveGroup(iGroup As Integer) As Boolean
 
         Dim bSucces As Boolean = False
         Dim ds As IEcopathDataSource = Nothing
@@ -1076,7 +1076,7 @@ Public Class cCore
     ''' <param name="iIndex">New, one-based position of the group in the group list.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function MoveGroup(ByVal iGroup As Integer, ByVal iIndex As Integer) As Boolean
+    Public Function MoveGroup(iGroup As Integer, iIndex As Integer) As Boolean
         Dim bSucces As Boolean = False
         Dim ds As IEcopathDataSource = Nothing
 
@@ -1124,10 +1124,10 @@ Public Class cCore
     ''' <param name="newDBID"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Friend Function AddShape(ByVal strName As String, ByVal DataType As eDataTypes, ByRef newDBID As Integer,
-                             Optional ByVal asData As Single() = Nothing,
-                             Optional ByVal shapeType As Long = eShapeFunctionType.NotSet,
-                             Optional ByVal parms As Single() = Nothing) As Boolean
+    Friend Function AddShape(strName As String, DataType As eDataTypes, ByRef newDBID As Integer,
+                             Optional asData As Single() = Nothing,
+                             Optional shapeType As Long = eShapeFunctionType.NotSet,
+                             Optional parms As Single() = Nothing) As Boolean
 
         'the data source will allocate space in the EcoSim data arrays
         Dim ds As IEcosimDatasource = Nothing
@@ -1163,7 +1163,7 @@ Public Class cCore
     ''' shape to remove.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function RemoveShape(ByVal iDBID As Integer) As Boolean
+    Friend Function RemoveShape(iDBID As Integer) As Boolean
 
         Dim ds As IEcosimDatasource = Nothing
 
@@ -1375,7 +1375,7 @@ Public Class cCore
     ''' <param name="message">Test of the message</param>
     ''' <param name="dataType">eDataTypes enumerator for the type of data</param>
     ''' <remarks>This is just to wrap the creation and sending of a data added or removed message to clean up the code a bit</remarks>
-    Private Sub DataAddedOrRemovedMessage(ByRef message As String, ByVal messageSource As eCoreComponentType, ByVal dataType As eDataTypes, Optional ByVal vars() As cVariableStatus = Nothing)
+    Private Sub DataAddedOrRemovedMessage(ByRef message As String, messageSource As eCoreComponentType, dataType As eDataTypes, Optional vars() As cVariableStatus = Nothing)
 
         ' Create msg
         Dim msg As New cMessage(message, eMessageType.DataAddedOrRemoved, messageSource, eMessageImportance.Maintenance, dataType)
@@ -1397,7 +1397,7 @@ Public Class cCore
     ''' <param name="message">Test of the message</param>
     ''' <param name="dataType">eDataTypes enumerator for the type of data</param>
     ''' <remarks>This is just to wrap the creation and sending of a data modified message to clean up the code a bit</remarks>
-    Private Sub DataModifiedMessage(ByRef message As String, ByVal messageSource As eCoreComponentType, ByVal dataType As eDataTypes, Optional ByVal vars() As cVariableStatus = Nothing)
+    Private Sub DataModifiedMessage(ByRef message As String, messageSource As eCoreComponentType, dataType As eDataTypes, Optional vars() As cVariableStatus = Nothing)
 
         ' Create msg
         Dim msg As New cMessage(message, eMessageType.DataModified, messageSource, eMessageImportance.Maintenance, dataType)
@@ -1440,7 +1440,7 @@ Public Class cCore
 
     End Function
 
-    Private Function FindObjectByDBID(ByVal lItems As IList, ByVal iDBID As Integer) As cCoreInputOutputBase
+    Private Function FindObjectByDBID(lItems As IList, iDBID As Integer) As cCoreInputOutputBase
         Dim obj As cCoreInputOutputBase = Nothing
 
         For Each objTest As Object In lItems
@@ -1454,7 +1454,7 @@ Public Class cCore
         Return obj
     End Function
 
-    Private Function FindObjectByIndex(ByVal lItems As IList, ByVal iIndex As Integer) As cCoreInputOutputBase
+    Private Function FindObjectByIndex(lItems As IList, iIndex As Integer) As cCoreInputOutputBase
         Dim obj As cCoreInputOutputBase = Nothing
 
         For Each objTest As Object In lItems
@@ -1468,7 +1468,7 @@ Public Class cCore
         Return obj
     End Function
 
-    Private Function FindObjectByName(ByVal lItems As cCoreInputOutputList(Of cCoreInputOutputBase), ByVal strName As String) As cCoreInputOutputBase
+    Private Function FindObjectByName(lItems As cCoreInputOutputList(Of cCoreInputOutputBase), strName As String) As cCoreInputOutputBase
         Dim obj As cCoreInputOutputBase = Nothing
 
         For Each objTest As Object In lItems
@@ -1493,7 +1493,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="ts">The <see cref="cTimeSeries">cTimeSeries-derived</see> object to import.</param>
     ''' <returns>True if successful.</returns>
-    Public Function ImportEcosimTimeSeries(ByVal ts As cTimeSeriesImport, ByVal iDataset As Integer) As Boolean
+    Public Function ImportEcosimTimeSeries(ts As cTimeSeriesImport, iDataset As Integer) As Boolean
 
         Dim bSucces As Boolean = True
 
@@ -1772,7 +1772,7 @@ Public Class cCore
 
 #Region " Validation "
 
-    Private Sub ValidateTimeSeries(ByVal ts As cTimeSeries)
+    Private Sub ValidateTimeSeries(ts As cTimeSeries)
 
         Dim status As eStatusFlags = eStatusFlags.OK
         Dim strStatus As String = ""
@@ -1826,7 +1826,7 @@ Public Class cCore
     ''' <param name="iDatasetIndex">One-based index of the dataset to retrieve [1, <see cref="ActiveTimeSeriesDatasetIndex">#sets</see>].</param>
     ''' <returns>A <see cref="cTimeSeriesDataset">time series dataset</see>.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function TimeSeriesDataset(ByVal iDatasetIndex As Integer) As cTimeSeriesDataset
+    Public Function TimeSeriesDataset(iDatasetIndex As Integer) As cTimeSeriesDataset
         ' Sanity check
         Debug.Assert(iDatasetIndex > 0 And iDatasetIndex <= Me.m_TSData.nDatasets)
         Return DirectCast(Me.m_timeSeriesDatasets(iDatasetIndex), cTimeSeriesDataset)
@@ -1838,7 +1838,7 @@ Public Class cCore
     ''' <param name="strDataset">Name of dataset that was loaded</param>
     ''' <param name="strError"></param>
     ''' <remarks></remarks>
-    Private Sub SendTimeSeriesLoadMessage(ByVal strDataset As String, Optional ByVal strError As String = "")
+    Private Sub SendTimeSeriesLoadMessage(strDataset As String, Optional strError As String = "")
 
         Dim msg As cMessage = Nothing
         Dim strText As String = ""
@@ -1872,8 +1872,8 @@ Public Class cCore
     ''' <param name="bEnable">Flag stating whether loaded time series should be enabled immediately.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function LoadTimeSeries(ByVal tsd As cTimeSeriesDataset,
-                                   Optional ByVal bEnable As Boolean = False) As Boolean
+    Public Function LoadTimeSeries(tsd As cTimeSeriesDataset,
+                                   Optional bEnable As Boolean = False) As Boolean
         Dim iIndex As Integer = 0
         If tsd IsNot Nothing Then iIndex = tsd.Index
         Return Me.LoadTimeSeries(iIndex, bEnable)
@@ -1887,8 +1887,8 @@ Public Class cCore
     ''' <param name="bEnable">Flag stating whether loaded time series should be enabled immediately.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function LoadTimeSeries(ByVal iDataset As Integer,
-                                   Optional ByVal bEnable As Boolean = False) As Boolean
+    Public Function LoadTimeSeries(iDataset As Integer,
+                                   Optional bEnable As Boolean = False) As Boolean
 
         Dim bSucces As Boolean = False
 
@@ -1980,7 +1980,7 @@ Public Class cCore
     ''' </code>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Function EcosimTimeSeries(ByVal iIndex As Integer) As cTimeSeries
+    Public Function EcosimTimeSeries(iIndex As Integer) As cTimeSeries
         ' Ouch, this is suddenly not so straight-forward anymore now TS are stored in two different strong-typed lists...
         Dim bFound As Boolean = False
 
@@ -2002,7 +2002,7 @@ Public Class cCore
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function UpdateTimeSeries(Optional ByVal bDirtyDatasource As Boolean = False) As Boolean
+    Public Function UpdateTimeSeries(Optional bDirtyDatasource As Boolean = False) As Boolean
 
         ' ToDo: merge this functionality with TS handling in OnChanged. We now 
         '       have two separate pathways for processing TS changes which 
@@ -2116,10 +2116,10 @@ Public Class cCore
     ''' <param name="asValues">Initial values to set in the TS.</param>
     ''' <param name="iDBID">Database ID assigned to the new TS.</param>
     ''' -----------------------------------------------------------------------
-    Public Function AddTimeSeries(ByVal strName As String,
-                                  ByVal iPool As Integer, ByVal iPoolSec As Integer,
-                                  ByVal timeSeriesType As eTimeSeriesType,
-                                  ByVal sWeight As Single, ByVal asValues() As Single,
+    Public Function AddTimeSeries(strName As String,
+                                  iPool As Integer, iPoolSec As Integer,
+                                  timeSeriesType As eTimeSeriesType,
+                                  sWeight As Single, asValues() As Single,
                                   ByRef iDBID As Integer) As Boolean
 
         Dim bSucces As Boolean = False
@@ -2153,7 +2153,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="TS"><see cref="cTimeSeries">Time Series instance</see> to remove.</param>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveTimeSeries(ByVal TS As cTimeSeries) As Boolean
+    Public Function RemoveTimeSeries(TS As cTimeSeries) As Boolean
         Return Me.RemoveTimeSeries(TS.DBID)
     End Function
 
@@ -2163,7 +2163,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="DBID">Database ID of the time series to remove.</param>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveTimeSeries(ByVal DBID As Integer) As Boolean
+    Public Function RemoveTimeSeries(DBID As Integer) As Boolean
 
         Dim bSucces As Boolean = False
 
@@ -2205,13 +2205,13 @@ Public Class cCore
     ''' operation completed succesfully.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AppendTimeSeriesDataset(ByVal strName As String,
-                                            ByVal strDescription As String,
-                                            ByVal strAuthor As String,
-                                            ByVal strContact As String,
-                                            ByVal iFirstYear As Integer,
-                                            ByVal iNumPoints As Integer,
-                                            ByVal interval As eTSDataSetInterval,
+    Public Function AppendTimeSeriesDataset(strName As String,
+                                            strDescription As String,
+                                            strAuthor As String,
+                                            strContact As String,
+                                            iFirstYear As Integer,
+                                            iNumPoints As Integer,
+                                            interval As eTSDataSetInterval,
                                             ByRef iDataset As Integer) As Boolean
 
         Dim ds As IEcosimDatasource = Nothing
@@ -2250,11 +2250,11 @@ Public Class cCore
 
     End Function
 
-    Public Function RemoveTimeSeriesDataset(ByVal iDatasetIndex As Integer) As Boolean
+    Public Function RemoveTimeSeriesDataset(iDatasetIndex As Integer) As Boolean
         Return Me.RemoveTimeSeriesDataset(Me.TimeSeriesDataset(iDatasetIndex))
     End Function
 
-    Public Function RemoveTimeSeriesDataset(ByVal dataset As cTimeSeriesDataset) As Boolean
+    Public Function RemoveTimeSeriesDataset(dataset As cTimeSeriesDataset) As Boolean
         Dim bSucces As Boolean = False
 
         ' Safety check
@@ -2289,7 +2289,7 @@ Public Class cCore
     ''' <param name="MessageType">Type of message</param>
     ''' <returns>A new cMessage Object</returns>
     ''' <remarks>Used as a simple way to build a new message instance.</remarks>
-    Private Function CreateMessage(ByVal message As String, ByVal source As eCoreComponentType, ByVal MessageType As eMessageType) As cMessage
+    Private Function CreateMessage(message As String, source As eCoreComponentType, MessageType As eMessageType) As cMessage
         Dim msg As New cMessage
         msg.Message = message
         msg.Source = source
@@ -2309,8 +2309,8 @@ Public Class cCore
     ''' achieve this.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------------
-    Public Function SaveChanges(Optional ByVal bQuiet As Boolean = False,
-                                Optional ByVal savelevel As eBatchChangeLevelFlags = eBatchChangeLevelFlags.Ecopath) As Boolean
+    Public Function SaveChanges(Optional bQuiet As Boolean = False,
+                                Optional savelevel As eBatchChangeLevelFlags = eBatchChangeLevelFlags.Ecopath) As Boolean
 
         Dim fm As cFeedbackMessage = Nothing
         Dim msg As cMessage = Nothing
@@ -2509,7 +2509,7 @@ Public Class cCore
     ''' <param name="strBasePath">The base directory to place the output folder under, 
     ''' if any. if left empty the current <see cref="OutputPath"> is assumed.</see></param>
     ''' -------------------------------------------------------------------------
-    Public ReadOnly Property DefaultOutputPath(ByVal type As eAutosaveTypes,
+    Public ReadOnly Property DefaultOutputPath(type As eAutosaveTypes,
                                                Optional strBasePath As String = "") As String
         Get
             Dim strModel As String = ""
@@ -2619,7 +2619,7 @@ Public Class cCore
             End If
             Return strPath
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Try
                 Dim strPath As String = cFileUtils.ToValidFileName(value, True)
                 If (String.Compare(strPath, Me.m_settings.OutputPath) <> 0) Then
@@ -2703,7 +2703,7 @@ Public Class cCore
     ''' omitted, the <see cref="cCore.EcosimFirstYear"/> will be used.</param>
     ''' <returns>A text block safe for integration in CSV files.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function DefaultFileHeader(ByVal savetype As eAutosaveTypes,
+    Public Function DefaultFileHeader(savetype As eAutosaveTypes,
                                       Optional iStartYear As Integer = cCore.NULL_VALUE) As String
 
         Dim sb As New StringBuilder()
@@ -2766,8 +2766,8 @@ Public Class cCore
     ''' omitted, the <see cref="cCore.EcosimFirstYear"/> will be used.</param>
     ''' <returns>A XML node structure describing the EwE run, safe for integration in XML files.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function DefaultFileHeader(ByVal doc As XmlDocument,
-                                      ByVal savetype As eAutosaveTypes,
+    Public Function DefaultFileHeader(doc As XmlDocument,
+                                      savetype As eAutosaveTypes,
                                       Optional iStartYear As Integer = cCore.NULL_VALUE) As XmlNode
 
         Dim xnEwE As XmlNode = doc.CreateElement("EwE")
@@ -2999,7 +2999,7 @@ Public Class cCore
         Get
             Return Me.m_DataSource
         End Get
-        Private Set(ByVal value As IEwEDataSource)
+        Private Set(value As IEwEDataSource)
             ' Assign new DS
             Me.m_DataSource = value
         End Set
@@ -3009,12 +3009,12 @@ Public Class cCore
         Get
             Return Me.m_settings.BackupFileMask
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Me.m_settings.BackupFileMask = value
         End Set
     End Property
 
-    Private Function UpdateDatasource(ByVal ds As IEwEDataSource) As Boolean
+    Private Function UpdateDatasource(ds As IEwEDataSource) As Boolean
 
         ' Do not update a read-only database
         If (ds.IsReadOnly) Then Return True
@@ -3132,7 +3132,7 @@ Public Class cCore
     ''' <param name="strFileTo">Target database to compact to. Can be left blank.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Compact(ByVal strFileTo As String) As eDatasourceAccessType
+    Public Function Compact(strFileTo As String) As eDatasourceAccessType
 
         Dim strFileFrom As String = Me.DataSource.ToString()
         Dim dst As eDataSourceTypes = cDataSourceFactory.GetSupportedType(strFileFrom)
@@ -3349,7 +3349,7 @@ Public Class cCore
 
 #Region " Model "
 
-    Private Sub SendEcopathLoadMessage(ByVal ds As IEwEDataSource, Optional ByVal strError As String = "")
+    Private Sub SendEcopathLoadMessage(ds As IEwEDataSource, Optional strError As String = "")
         Dim msg As cMessage = Nothing
         Dim strText As String = ""
 
@@ -3394,7 +3394,7 @@ Public Class cCore
     ''' <remarks>The given data source will be remembered here for subsequent 
     ''' <see cref="SaveModel">SaveModel</see> and SaveEcosimScenario calls.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Function LoadModel(ByVal ds As IEwEDataSource) As Boolean
+    Public Function LoadModel(ds As IEwEDataSource) As Boolean
 
         Dim dsEcopath As IEcopathDataSource = Nothing
         Dim bsuccess As Boolean
@@ -3552,7 +3552,7 @@ Public Class cCore
     ''' <param name="bSendMessage"></param>
     ''' <returns>True if the database is editable.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function CanSave(Optional ByVal bSendMessage As Boolean = False) As Boolean
+    Public Function CanSave(Optional bSendMessage As Boolean = False) As Boolean
 
         If (Me.DataSource Is Nothing) Then Return False
         If (Not Me.DataSource.IsReadOnly) Then Return True
@@ -3578,7 +3578,7 @@ Public Class cCore
     ''' modified.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Save(Optional ByVal strFileName As String = "") As Boolean
+    Public Function Save(Optional strFileName As String = "") As Boolean
 
         ' Sanity checks
         If (Not Me.CanSave(True)) Then Return False
@@ -3793,7 +3793,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="IOList">The list to clear, may be NULL.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub ClearIOList(ByVal IOList As cCoreInputOutputList(Of cCoreInputOutputBase))
+    Private Sub ClearIOList(IOList As cCoreInputOutputList(Of cCoreInputOutputBase))
         If (IOList Is Nothing) Then Return
         Try
             For Each ioOb As cCoreInputOutputBase In IOList
@@ -3829,7 +3829,7 @@ Public Class cCore
     '''      prvtGetSetEcoPathInputs.Biomass = 2
     ''' next i 
     ''' </remarks>
-    Public ReadOnly Property EcoPathGroupInputs(ByVal iGroup As Integer) As cEcoPathGroupInput
+    Public ReadOnly Property EcoPathGroupInputs(iGroup As Integer) As cEcoPathGroupInput
         Get
             ' JS 06Jul07: list takes care of group index / item index offset
             Return DirectCast(m_EcoPathInputs(iGroup), cEcoPathGroupInput)
@@ -3891,7 +3891,7 @@ Public Class cCore
 
     End Function
 
-    Private Function LoadEcopathInput(ByVal group As cEcoPathGroupInput) As Boolean
+    Private Function LoadEcopathInput(group As cEcoPathGroupInput) As Boolean
         Dim iGroup As Integer
         Try
 
@@ -3993,7 +3993,7 @@ Public Class cCore
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function UpdateEcopathInput(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcopathInput(iDBID As Integer) As Boolean
 
         Dim iGroup As Integer = Array.IndexOf(m_EcoPathData.GroupDBID, iDBID)
         'jb List of inputs is indexed from zero iGroup is the array index which is indexed from one 
@@ -4093,7 +4093,7 @@ Public Class cCore
     ''' Model.RunEcopath()
     ''' Model.EcoPathGroupOutputs(1)'will get the output (estimated parameters)of the EcoPath model for group 1
     ''' </remarks>
-    Public ReadOnly Property EcoPathGroupOutputs(ByVal iGroup As Integer) As cEcoPathGroupOutput
+    Public ReadOnly Property EcoPathGroupOutputs(iGroup As Integer) As cEcoPathGroupOutput
 
         Get
             ' The list takes care of group index / item index differences
@@ -4474,7 +4474,7 @@ Public Class cCore
 
     End Function
 
-    Private Function UpdateEcopathGroupTaxon(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcopathGroupTaxon(iDBID As Integer) As Boolean
 
         Dim iTaxon As Integer = Array.IndexOf(Me.m_TaxonData.TaxonDBID, iDBID)
         Debug.Assert(iTaxon > 0 And iTaxon <= m_TaxonData.NumTaxon, "Failed to find Taxon index for database ID " & iDBID)
@@ -4530,7 +4530,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iTaxon">The one-based index to obtain the Taxon definition for.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Taxon(ByVal iTaxon As Integer) As cTaxon
+    Public ReadOnly Property Taxon(iTaxon As Integer) As cTaxon
         Get
             ' List will handle index / item index offsets
             Return DirectCast(Me.m_EcopathTaxon(iTaxon), cTaxon)
@@ -4595,7 +4595,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iTaxon">Index of the taxonomy definition to remove.</param>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveTaxon(ByVal iTaxon As Integer) As Boolean
+    Public Function RemoveTaxon(iTaxon As Integer) As Boolean
 
         Dim bSucces As Boolean = False
         Dim ds As IEcopathDataSource = Nothing
@@ -4670,7 +4670,7 @@ Public Class cCore
         End Try
     End Function
 
-    Private Function UpdateFleetInput(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateFleetInput(iDBID As Integer) As Boolean
 
         Dim iFleet As Integer = Array.IndexOf(m_EcoPathData.FleetDBID, iDBID)
         Dim fleet As cEcopathFleetInput = Me.EcopathFleetInputs(iFleet)
@@ -4804,7 +4804,7 @@ Public Class cCore
 
     End Function
 
-    Public ReadOnly Property EcopathFleetInputs(ByVal iFleet As Integer) As cEcopathFleetInput
+    Public ReadOnly Property EcopathFleetInputs(iFleet As Integer) As cEcopathFleetInput
         Get
             Try
                 ' List handles item index offset
@@ -4816,7 +4816,7 @@ Public Class cCore
 
     End Property
 
-    Public ReadOnly Property EcoPathFleetOutputs(ByVal iFleet As Integer) As cEcopathFleetOutput
+    Public ReadOnly Property EcoPathFleetOutputs(iFleet As Integer) As cEcopathFleetOutput
 
         Get
             ' The list takes care of group index / item index differences
@@ -4834,7 +4834,7 @@ Public Class cCore
     ''' <param name="iFleetID">Database ID assigned to the new fleet.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddFleet(ByVal strName As String, ByRef iFleet As Integer, ByRef iFleetID As Integer) As Boolean
+    Public Function AddFleet(strName As String, ByRef iFleet As Integer, ByRef iFleetID As Integer) As Boolean
 
         Dim bSucces As Boolean = False
 
@@ -4866,7 +4866,7 @@ Public Class cCore
 
     End Function
 
-    Public Function RemoveFleet(ByVal iFleet As Integer) As Boolean
+    Public Function RemoveFleet(iFleet As Integer) As Boolean
 
         Dim bSucces As Boolean = False
         Dim ds As IEcopathDataSource = Nothing
@@ -4898,7 +4898,7 @@ Public Class cCore
 
     End Function
 
-    Public Function MoveFleet(ByVal iFleet As Integer, ByVal iIndex As Integer) As Boolean
+    Public Function MoveFleet(iFleet As Integer, iIndex As Integer) As Boolean
         Dim bSucces As Boolean = False
         Dim ds As IEcopathDataSource = Nothing
 
@@ -5088,7 +5088,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iIndex">Zero-based index of the group.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property StanzaGroups(ByVal iIndex As Integer) As cStanzaGroup
+    Public ReadOnly Property StanzaGroups(iIndex As Integer) As cStanzaGroup
         Get
             Return DirectCast(Me.m_stanzaGroups(iIndex), cStanzaGroup)
         End Get
@@ -5104,7 +5104,7 @@ Public Class cCore
     ''' cCore.NULL_VALUE if this group does not belong to a stanza configuration.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Friend Function getStanzaIndexForGroup(ByVal iGroup As Integer) As Integer
+    Friend Function getStanzaIndexForGroup(iGroup As Integer) As Integer
 
         For i As Integer = 1 To m_Stanza.Nsplit
 
@@ -5287,7 +5287,7 @@ Public Class cCore
     ''' <remarks>
     ''' Called by EcoPathMessage_Handler(cMessage) when a message has been sent from EcoPath to the Core
     ''' </remarks>
-    Private Sub ProcessMessageFromModel(ByVal msg As cMessage)
+    Private Sub ProcessMessageFromModel(msg As cMessage)
 
         Dim var As cVariableStatus = Nothing
         Dim i As Integer = 0
@@ -5478,7 +5478,7 @@ Public Class cCore
 
 #Region " Status flags updating "
 
-    Friend Function Set_PP_Flags(ByVal obj As cEcoSimGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_PP_Flags(obj As cEcoSimGroupInput, Optional bSendMessage As Boolean = True) As Boolean
 
         Dim sPP As Single = obj.PP
 
@@ -5513,8 +5513,8 @@ Public Class cCore
     ''' <remarks>This is called by <see cref="PostVariableValidation">PostVariableValidation</see> 
     ''' to set status when a variable has been edited, as well as <see cref="cEcoPathGroupInput.ResetStatusFlags">ResetStatusFlags</see>
     ''' when the object is first created.</remarks>
-    Friend Function Set_PB_QB_GE_BA_Flags(ByVal obj As cEcoPathGroupInput,
-                                          Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_PB_QB_GE_BA_Flags(obj As cEcoPathGroupInput,
+                                          Optional bSendMessage As Boolean = True) As Boolean
 
         'Make the variable(s) un-editable under certain circumstances
         'see EwE5 frmInputData.LockInputFor_PB_QB_GE(...)
@@ -5667,7 +5667,7 @@ Public Class cCore
     ''' <param name="obj"></param>
     ''' <param name="bSendMessage"></param>
     ''' <returns>Always true.</returns>
-    Friend Function Set_GS_Flags(ByVal obj As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_GS_Flags(obj As cEcoPathGroupInput, Optional bSendMessage As Boolean = True) As Boolean
 
         ' See EwE5 frmInputData.LockInputForProducers(..)
         obj.AllowValidation = False
@@ -5692,7 +5692,7 @@ Public Class cCore
         Return True
     End Function
 
-    Friend Function Set_EE_OtherMort_Flags(ByVal obj As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_EE_OtherMort_Flags(obj As cEcoPathGroupInput, Optional bSendMessage As Boolean = True) As Boolean
 
         ' See EwE5 frmInputData.DisplayBasicInput(..), detritus comment
         obj.AllowValidation = False
@@ -5727,7 +5727,7 @@ Public Class cCore
 
     End Function
 
-    Friend Function Set_DetImp_Flags(ByVal obj As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_DetImp_Flags(obj As cEcoPathGroupInput, Optional bSendMessage As Boolean = True) As Boolean
 
         ' See EwE5 frmInputData.ForMatNewGroupBasicInput(..), case 10
         obj.AllowValidation = False
@@ -5776,7 +5776,7 @@ Public Class cCore
     ''' to nonzero values in the other production interface.</para>
     ''' <para>Carl</para>
     ''' </remarks>
-    Friend Function Set_Migration_Flags(ByVal obj As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_Migration_Flags(obj As cEcoPathGroupInput, Optional bSendMessage As Boolean = True) As Boolean
 
         obj.AllowValidation = False
 
@@ -5805,7 +5805,7 @@ Public Class cCore
         Return True
     End Function
 
-    Friend Function Set_IBM_Flags(ByVal obj As cEcospaceModelParameters, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_IBM_Flags(obj As cEcospaceModelParameters, Optional bSendMessage As Boolean = True) As Boolean
 
         obj.AllowValidation = False
 
@@ -5824,7 +5824,7 @@ Public Class cCore
         Return True
     End Function
 
-    Friend Function Set_OffVesselValue_Flags(ByVal obj As cEcopathFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_OffVesselValue_Flags(obj As cEcopathFleetInput, Optional bSendMessage As Boolean = True) As Boolean
 
         obj.AllowValidation = False
 
@@ -5845,7 +5845,7 @@ Public Class cCore
         Return True
     End Function
 
-    Friend Function Set_Quota_Flags(ByVal fleetMSE As cMSEFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_Quota_Flags(fleetMSE As cMSEFleetInput, Optional bSendMessage As Boolean = True) As Boolean
 
         If fleetMSE Is Nothing Then
             'If Ecosim has not been loaded then the cMSEFleetInput objects will be Nothing
@@ -5873,7 +5873,7 @@ Public Class cCore
         Return True
     End Function
 
-    Friend Function Set_DiscardMort_Flags(ByVal fleet As cEcopathFleetInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_DiscardMort_Flags(fleet As cEcopathFleetInput, Optional bSendMessage As Boolean = True) As Boolean
 
         fleet.AllowValidation = False
 
@@ -5896,7 +5896,7 @@ Public Class cCore
         Return True
     End Function
 
-    Friend Function Set_VBK_Flags(ByVal group As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_VBK_Flags(group As cEcoPathGroupInput, Optional bSendMessage As Boolean = True) As Boolean
 
         Dim sg As cStanzaGroup = Nothing
         Dim groupLeading As cEcoPathGroupInput = Nothing
@@ -5935,7 +5935,7 @@ Public Class cCore
         group.AllowValidation = True
     End Function
 
-    Friend Function Set_Tcatch_Flags(ByVal group As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_Tcatch_Flags(group As cEcoPathGroupInput, Optional bSendMessage As Boolean = True) As Boolean
 
         Dim iGroup As Integer = group.Index
         Dim bIsFished As Boolean = False
@@ -6002,7 +6002,7 @@ Public Class cCore
 
     End Function
 
-    Friend Function Set_Tmax_Flags(ByVal group As cEcoPathGroupInput, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_Tmax_Flags(group As cEcoPathGroupInput, Optional bSendMessage As Boolean = True) As Boolean
         group.AllowValidation = False
 
         ' Is a multi-stanza group?
@@ -6022,7 +6022,7 @@ Public Class cCore
         group.AllowValidation = True
     End Function
 
-    Friend Function Set_EconomicAvailable_Flags(ByVal parms As cCoreInputOutputBase, ByVal varname As eVarNameFlags) As Boolean
+    Friend Function Set_EconomicAvailable_Flags(parms As cCoreInputOutputBase, varname As eVarNameFlags) As Boolean
 
         Dim bAllowValidationOrg As Boolean = parms.AllowValidation
         Dim bAvailable As Boolean = False
@@ -6044,7 +6044,7 @@ Public Class cCore
 
     End Function
 
-    Friend Function Set_Taxon_Flags(ByVal t As cTaxon, Optional ByVal bSendMessage As Boolean = True) As Boolean
+    Friend Function Set_Taxon_Flags(t As cTaxon, Optional bSendMessage As Boolean = True) As Boolean
 
         Dim bIsNotFish As Boolean = False
         Dim bIshigherOrganism As Boolean = False
@@ -6126,7 +6126,7 @@ Public Class cCore
 
     End Function
 
-    Friend Function Set_BadHab_Flags(ByVal grp As cEcospaceGroupInput) As Boolean
+    Friend Function Set_BadHab_Flags(grp As cEcospaceGroupInput) As Boolean
 
         'Dim b As Boolean = grp.AllowValidation()
         'Dim s As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
@@ -6148,7 +6148,7 @@ Public Class cCore
 
     End Function
 
-    Friend Function Set_HabPref_Flags(ByVal grp As cEcospaceGroupInput) As Boolean
+    Friend Function Set_HabPref_Flags(grp As cEcospaceGroupInput) As Boolean
 
         Dim b As Boolean = grp.AllowValidation()
         Dim s As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
@@ -6167,7 +6167,7 @@ Public Class cCore
 
     End Function
 
-    Friend Function Set_Migratory_Flags(ByVal grp As cEcospaceGroupInput) As Boolean
+    Friend Function Set_Migratory_Flags(grp As cEcospaceGroupInput) As Boolean
 
         Dim b As Boolean = grp.AllowValidation()
         Dim s As eStatusFlags = eStatusFlags.Null Or eStatusFlags.NotEditable
@@ -6184,7 +6184,7 @@ Public Class cCore
 
     End Function
 
-    Private Function Cascade_Name(ByVal strName As String, ByVal obj As cCoreInputOutputBase, ByVal msg As cMessage) As Boolean
+    Private Function Cascade_Name(strName As String, obj As cCoreInputOutputBase, msg As cMessage) As Boolean
 
         Dim objCascade As cCoreInputOutputBase = Nothing
         Dim bAllowValidationOrg As Boolean = False
@@ -6303,7 +6303,7 @@ Public Class cCore
         End Select
     End Function
 
-    Private Sub Cascade_PP(ByVal sPP As Single, ByVal obj As cCoreGroupBase, ByVal msg As cMessage)
+    Private Sub Cascade_PP(sPP As Single, obj As cCoreGroupBase, msg As cMessage)
 
         Dim objCascade As cCoreGroupBase = Nothing
         Dim bAllowValidationOrg As Boolean = False
@@ -6350,7 +6350,7 @@ Public Class cCore
 
     End Sub
 
-    Private Sub Cascade_VBK(ByVal sVBK As Single, ByVal group As cEcoPathGroupInput, ByVal msg As cMessage)
+    Private Sub Cascade_VBK(sVBK As Single, group As cEcoPathGroupInput, msg As cMessage)
 
         Dim groupCascade As cEcoPathGroupInput = Nothing
         Dim bAllowValidationOrg As Boolean = False
@@ -6404,7 +6404,7 @@ Public Class cCore
 
     End Sub
 
-    Private Sub Update_IsFished(ByVal bSendMessage As Boolean)
+    Private Sub Update_IsFished(bSendMessage As Boolean)
 
         Dim group As cEcoPathGroupInput = Nothing
         Dim fleet As cEcopathFleetInput = Nothing
@@ -6471,7 +6471,7 @@ Public Class cCore
 
     End Sub
 
-    Private Sub Cascade_TCatchInput(ByVal sTCatchInput As Single, ByVal group As cEcoPathGroupInput, ByVal msg As cMessage)
+    Private Sub Cascade_TCatchInput(sTCatchInput As Single, group As cEcoPathGroupInput, msg As cMessage)
 
         Dim groupCascade As cEcoPathGroupInput = Nothing
         Dim bAllowValidationOrg As Boolean = False
@@ -6551,7 +6551,7 @@ Public Class cCore
     ''' <remarks>Added by FG temporarily. For the map plotting
     ''' JJ: Please Update it to the correct core class 
     ''' </remarks>
-    Public ReadOnly Property StartBiomass(ByVal iGroup As Integer) As Single
+    Public ReadOnly Property StartBiomass(iGroup As Integer) As Single
         Get
             Return m_EcoSimData.StartBiomass(iGroup)
         End Get
@@ -6564,7 +6564,7 @@ Public Class cCore
     ''' <param name="iScenario">One-based indexed of the scenario to load
     ''' [1, <see cref="nEcosimScenarios">#scenarios</see>].</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcosimScenarios(ByVal iScenario As Integer) As cEcoSimScenario
+    Public ReadOnly Property EcosimScenarios(iScenario As Integer) As cEcoSimScenario
         Get
             ' JS 06Jul07: list will take care of scenario index/item index offset
             Return DirectCast(m_EcoSimScenarios(iScenario), cEcoSimScenario)
@@ -6831,11 +6831,11 @@ Public Class cCore
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcoSimScenario">Scenario</see> to load.</param>
     ''' <returns>True if successful.</returns>
-    Public Function LoadEcosimScenario(ByVal scenario As cEcoSimScenario) As Boolean
+    Public Function LoadEcosimScenario(scenario As cEcoSimScenario) As Boolean
         Return LoadEcosimScenario(scenario.Index)
     End Function
 
-    Private Sub SendEcosimLoadStateMessage(ByVal strScenarioName As String, Optional ByVal strError As String = "")
+    Private Sub SendEcosimLoadStateMessage(strScenarioName As String, Optional strError As String = "")
         Dim msg As cMessage = Nothing
         Dim strText As String = ""
 
@@ -6851,8 +6851,8 @@ Public Class cCore
         m_publisher.sendAllMessages()
     End Sub
 
-    Private Sub SendEcosimSaveStateMessage(ByVal strScenarioName As String, Optional ByVal bSucces As Boolean = True,
-            Optional ByVal strError As String = "")
+    Private Sub SendEcosimSaveStateMessage(strScenarioName As String, Optional bSucces As Boolean = True,
+            Optional strError As String = "")
 
         Dim msg As cMessage = Nothing
         Dim strText As String = ""
@@ -6875,7 +6875,7 @@ Public Class cCore
     ''' <param name="strName">Name to assign to new scenario.</param>
     ''' <param name="strDescription">Description to assign to new scenario.</param>
     ''' <returns>True if successful.</returns>
-    Public Function NewEcosimScenario(ByVal strName As String, ByVal strDescription As String, ByVal strAuthor As String, ByVal strContact As String) As Boolean
+    Public Function NewEcosimScenario(strName As String, strDescription As String, strAuthor As String, strContact As String) As Boolean
 
         Dim ds As IEcosimDatasource = Nothing
         Dim iScenarioID As Integer = 0
@@ -6922,7 +6922,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iScenario">One-based index of the <see cref="cEcoSimScenario">Scenario</see> in the <see cref="m_EcoSimScenarios">Scenario list</see>.</param>
     ''' <returns>True if successful.</returns>
-    Public Function LoadEcosimScenario(ByVal iScenario As Integer) As Boolean
+    Public Function LoadEcosimScenario(iScenario As Integer) As Boolean
 
         If (iScenario < 1) Then Return False
         If (Me.nEcosimScenarios < iScenario) Then Return False
@@ -7197,7 +7197,7 @@ Public Class cCore
     ''' This will adjust the active scenario index!
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Function SaveEcosimScenarioAs(ByVal strName As String, ByVal strDescription As String) As Boolean
+    Public Function SaveEcosimScenarioAs(strName As String, strDescription As String) As Boolean
 
         Dim epd As cEcopathDataStructures = Me.m_EcoPathData
         Dim iScenarioID As Integer = 0
@@ -7252,7 +7252,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcoSimScenario">Scenario</see> to remove.</param>
     ''' <returns>True if successful.</returns>
-    Public Function RemoveEcosimScenario(ByVal scenario As cCoreInputOutputBase) As Boolean
+    Public Function RemoveEcosimScenario(scenario As cCoreInputOutputBase) As Boolean
         If (scenario Is Nothing) Then Return True
         If (Not TypeOf (scenario) Is cEcoSimScenario) Then Return False
         Return Me.RemoveEcosimScenario(scenario.Index)
@@ -7263,7 +7263,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iScenario">Index of the scenario in the <see cref="m_EcoSimScenarios">Scenario list</see>.</param>
     ''' <returns>True if successful.</returns>
-    Public Function RemoveEcosimScenario(ByVal iScenario As Integer) As Boolean
+    Public Function RemoveEcosimScenario(iScenario As Integer) As Boolean
 
         Dim ds As IEcosimDatasource = Nothing
         Dim iScenarioIDDeleted As Integer = Me.m_EcoPathData.EcosimScenarioDBID(iScenario)
@@ -7394,7 +7394,7 @@ Public Class cCore
     ''' Get a <see cref="cEcoSimGroupInput">Ecosim input group</see> for a given group index.
     ''' </summary>
     ''' <param name="iGroup">The index to obtain the group for.</param>
-    Public ReadOnly Property EcoSimGroupInputs(ByVal iGroup As Integer) As cEcoSimGroupInput
+    Public ReadOnly Property EcoSimGroupInputs(iGroup As Integer) As cEcoSimGroupInput
         Get
             'test that EcoSim has been initialized
             If Not m_bEcoSimIsInit Then
@@ -7411,7 +7411,7 @@ Public Class cCore
     ''' Get a <see cref="cEcoSimGroupOutput">Ecosim output group</see> for a given group index.
     ''' </summary>
     ''' <param name="iGroup">The index to obtain the group for.</param>
-    Public ReadOnly Property EcoSimGroupOutputs(ByVal iGroup As Integer) As cEcosimGroupOutput
+    Public ReadOnly Property EcoSimGroupOutputs(iGroup As Integer) As cEcosimGroupOutput
         Get
 
             Try
@@ -7786,7 +7786,7 @@ Public Class cCore
     ''' Update all the underlying data structures that contain EcoSim scenario data
     ''' </summary>
     ''' <returns>True if successful.</returns>
-    Private Function UpdateEcoSimScenario(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcoSimScenario(iDBID As Integer) As Boolean
 
         Dim iScenario As Integer = Array.IndexOf(Me.m_EcoPathData.EcosimScenarioDBID, iDBID)
         Dim scn As cEcoSimScenario = Me.EcosimScenarios(iScenario)
@@ -7813,7 +7813,7 @@ Public Class cCore
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Friend Function UpdateEcoSimGroup(ByVal iDBID As Integer) As Boolean
+    Friend Function UpdateEcoSimGroup(iDBID As Integer) As Boolean
 
         Dim iGroup As Integer = Array.IndexOf(m_EcoSimData.GroupDBID, iDBID)
         Dim group As cEcoSimGroupInput = Me.EcoSimGroupInputs(iGroup)
@@ -7846,7 +7846,7 @@ Public Class cCore
     ''' Update all the underlying data structures that contain fleet input info for EcoSim
     ''' </summary>
     ''' <param name="iDBID">Database ID of Ecosim fleet to update</param>
-    Private Function UpdateEcoSimFleetInput(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcoSimFleetInput(iDBID As Integer) As Boolean
 
         Dim iFleet As Integer = Array.IndexOf(m_EcoSimData.FleetDBID, iDBID)
         Dim fleet As cEcosimFleetInput = Me.EcosimFleetInputs(iFleet)
@@ -7940,7 +7940,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="newNumberOfYears"></param>
     ''' <remarks>There are two events that can trigger this. User has set the Ecosim run length. User has loaded timeseries data which will set the Ecosim run length to the same as the timeseries data</remarks>
-    Private Sub setEcosimRunLength(ByVal newNumberOfYears As Integer, Optional ByVal bOverwriteNewData As Boolean = True)
+    Private Sub setEcosimRunLength(newNumberOfYears As Integer, Optional bOverwriteNewData As Boolean = True)
         'newNumberOfYears has already passed validation
         'set the number of years the model will run for and resize and reload all the data
 
@@ -8051,9 +8051,9 @@ Public Class cCore
     ''' This gives the ModelInterface a shot at the data before it's passed to the user interface.
     ''' The Completed delegate belongs to the user interface and the ModelInterface will have no chance to modify the call(it shouldn't need to)
     '''</remarks>
-    Public Function RunEcoSimOnThread(ByVal SynchronizingObject As System.ComponentModel.ISynchronizeInvoke,
-                                        ByVal ProgressDelegate As EcoSim.EcoSimTimeStepDelegate,
-                                        ByVal CompletedDelegate As EcoSim.EcoSimCompletedDelegate) As Boolean
+    Public Function RunEcoSimOnThread(SynchronizingObject As System.ComponentModel.ISynchronizeInvoke,
+                                        ProgressDelegate As EcoSim.EcoSimTimeStepDelegate,
+                                        CompletedDelegate As EcoSim.EcoSimCompletedDelegate) As Boolean
 
 
         Try
@@ -8156,7 +8156,7 @@ Public Class cCore
     ''' It must then marshal the data out to the user interface via a reference to a Synchronization Object (mSynEcoSim) that was set in the call to RunEcoSimOnThread(...).
     ''' It is done like this because Windows GUI objects can not be assessed from a thread other then the one they are running on.
     ''' </remarks>
-    Private Sub EcoSimProgressMultiThread_handler(ByVal iTime As Long, ByVal results As cEcoSimResults)
+    Private Sub EcoSimProgressMultiThread_handler(iTime As Long, results As cEcoSimResults)
         Dim args(1) As Object
 
         Try
@@ -8164,7 +8164,7 @@ Public Class cCore
             'set-up the arguments that get passed to the interface delegate
             'arguments get passed to the Syncronization.invoke(...) method as an array of Objects indexed from zero to n-1
             'they must be in the same order as they appear in the declaration of the delegate
-            'EcoSimTimeStepDelegate(ByVal iTime As Long, ByVal data As cEcoSimResults)
+            'EcoSimTimeStepDelegate(iTime As Long, data As cEcoSimResults)
             args(0) = iTime
             args(1) = results
 
@@ -8193,8 +8193,8 @@ Public Class cCore
     ''' <param name="bMultiThreaded">Multi-threaded run flag. Please use with care.</param>
     ''' <returns>True if a run started successfully.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunEcoSim(Optional ByVal TimeStepDelegate As Ecosim.EcoSimTimeStepDelegate = Nothing,
-                              Optional ByVal bMultiThreaded As Boolean = False) As Boolean
+    Public Function RunEcoSim(Optional TimeStepDelegate As Ecosim.EcoSimTimeStepDelegate = Nothing,
+                              Optional bMultiThreaded As Boolean = False) As Boolean
         Dim msg As cMessage
 
         If Me.m_StateMonitor.HasEcosimLoaded() = False Then
@@ -8284,7 +8284,7 @@ Public Class cCore
 
     End Function
 
-    Private Sub onEcoSimRunCompleted(ByVal obj As Object)
+    Private Sub onEcoSimRunCompleted(obj As Object)
         Try
 
             Me.m_TSData.Update()
@@ -8354,7 +8354,7 @@ Public Class cCore
     ''' <value>
     ''' Returns a valid cEcoSimScenario object if nScenario (group index) is in bounds. 
     ''' Null cEcoSimGroupInfo object if iGroup (group index) is out of bounds or an error occurs.</value>
-    Private Property privateEcoSimScenario(ByVal iScenario As Integer) As cEcoSimScenario
+    Private Property privateEcoSimScenario(iScenario As Integer) As cEcoSimScenario
 
         Get
             Try
@@ -8391,7 +8391,7 @@ Public Class cCore
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-        Set(ByVal ParametersIn As cEcoSimScenario)
+        Set(ParametersIn As cEcoSimScenario)
 
             'Set the parameters in the underlying EcoSim data structures to user supplied values
             Try
@@ -8582,7 +8582,7 @@ Public Class cCore
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks>The resulting file can be used to compare results with EwE5 </remarks>
-    Public Function dumpEcosimModelResults(ByVal fileName As String) As Boolean
+    Public Function dumpEcosimModelResults(fileName As String) As Boolean
         Dim strm As System.IO.StreamWriter
         Dim igrp As Integer
         Dim delimiter As String = ", " ' this may have to change to a tab for international formatting
@@ -8643,8 +8643,8 @@ Public Class cCore
     ''' to set vulnerabilties to.</param>
     ''' <returns>True if Ecosim has all default vulnerabilties.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function CheckResetDefaultVulnerabilities(Optional ByVal bQuiet As Boolean = False,
-                                                     Optional ByVal sDefaultValue As Single = 2.0!) As Boolean
+    Public Function CheckResetDefaultVulnerabilities(Optional bQuiet As Boolean = False,
+                                                     Optional sDefaultValue As Single = 2.0!) As Boolean
         Dim fmsg As cFeedbackMessage = Nothing
 
         Try
@@ -8677,7 +8677,7 @@ Public Class cCore
 
     End Function
 
-    Public Function SetVToDefault(Optional ByVal sDefaultValue As Single = 2.0F) As Boolean
+    Public Function SetVToDefault(Optional sDefaultValue As Single = 2.0F) As Boolean
 
         Try
             Dim groupSim As cEcoSimGroupInput = Nothing
@@ -8705,7 +8705,7 @@ Public Class cCore
     ''' <param name="sVulHigh"></param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function ScaleVulnerabilitiesToTL(ByVal sVulLow As Single, ByVal sVulHigh As Single) As Boolean
+    Public Function ScaleVulnerabilitiesToTL(sVulLow As Single, sVulHigh As Single) As Boolean
 
         Try
             If (Me.m_EcoSim.ScaleVulnerabilitiesToTL(sVulLow, sVulHigh)) Then
@@ -8733,7 +8733,7 @@ Public Class cCore
     ''' A 0.01 margin of error is tolerated in this test.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Function HasNonDefaultVulnerabilty(Optional ByVal sValue As Single = 2.0!) As Boolean
+    Private Function HasNonDefaultVulnerabilty(Optional sValue As Single = 2.0!) As Boolean
 
         Dim groupPath As cEcoPathGroupInput = Nothing
         Dim groupSim As cEcoSimGroupInput = Nothing
@@ -8772,26 +8772,26 @@ Public Class cCore
 
     End Sub
 
-    Public Function CalcEcosimVulBo(ByVal BmaxBo As Single,
-                                    ByVal iGroup As Integer,
-                                    ByVal FtimeOn As Boolean) As Single
+    Public Function CalcEcosimVulBo(BmaxBo As Single,
+                                    iGroup As Integer,
+                                    FtimeOn As Boolean) As Single
         Return Me.m_EcoSim.VulBo(BmaxBo, iGroup, FtimeOn)
     End Function
 
-    Public Function CalcEcosimVulFMax(ByVal Fpo As Single,
-                                      ByVal iGroup As Integer,
-                                      ByVal FtimeOn As Boolean) As Single
+    Public Function CalcEcosimVulFMax(Fpo As Single,
+                                      iGroup As Integer,
+                                      FtimeOn As Boolean) As Single
         Return Me.m_EcoSim.VulFmax(Fpo, iGroup, FtimeOn)
     End Function
 
-    Public Function EstimateVulnerabilities(ByVal iGroup As Integer,
+    Public Function EstimateVulnerabilities(iGroup As Integer,
                                             ByRef PotGrowth As Single, ByRef FWMax As Single,
-                                            ByVal estimates As Single()) As Boolean
+                                            estimates As Single()) As Boolean
         Return Me.m_EcoSim.EstimateVulnerabilities(iGroup, PotGrowth, FWMax, estimates)
     End Function
 
 
-    Public Sub SetFtimeFromGear(ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean)
+    Public Sub SetFtimeFromGear(t As Integer, QYear() As Single, PredEffort As Boolean)
         Try
             Me.m_EcoSim.SetFtimeFromGear(t, QYear, PredEffort)
         Catch ex As Exception
@@ -8936,7 +8936,7 @@ Public Class cCore
     ''' <param name="iFleet">The fleet to set the ports for. If not provided,
     ''' all coastal cells for all fleets are set to ports.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub SetEcospaceAllCoastToPort(Optional ByVal iFleet As Integer = cCore.NULL_VALUE)
+    Public Sub SetEcospaceAllCoastToPort(Optional iFleet As Integer = cCore.NULL_VALUE)
 
         Me.m_Ecospace.SetAllCoastsToPorts(iFleet)
         Me.onChanged(Me.EcospaceBasemap.LayerPort(iFleet))
@@ -8950,7 +8950,7 @@ Public Class cCore
     ''' <param name="iFleet">The fleet to clear the ports for. If not provided,
     ''' all ports for all fleets are cleared.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub ClearEcospacePort(Optional ByVal iFleet As Integer = cCore.NULL_VALUE)
+    Public Sub ClearEcospacePort(Optional iFleet As Integer = cCore.NULL_VALUE)
 
         Me.m_Ecospace.ClearPorts(iFleet)
         Me.onChanged(Me.EcospaceBasemap.LayerPort(iFleet))
@@ -8963,7 +8963,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iDepth">The min depth to exclude from computations.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub SetExcludedDepth(ByVal iDepth As Integer)
+    Public Sub SetExcludedDepth(iDepth As Integer)
 
         Me.m_Ecospace.SetExcludedDepth(iDepth)
         Me.onChanged(Me.EcospaceBasemap.LayerExclusion())
@@ -9004,7 +9004,7 @@ Public Class cCore
     ''' which the time represnted by a given time step is added. The resulting 
     ''' date is rounded to the first day of the month.</remarks>
     ''' -------------------------------------------------------------------
-    Public Function EcospaceTimestepToAbsoluteTime(ByVal iTime As Integer) As DateTime
+    Public Function EcospaceTimestepToAbsoluteTime(iTime As Integer) As DateTime
 
         ' Translate ecospace time step to year and month
         Dim sTimeStepYearFraction As Single = CSng((iTime - 1) * Me.m_EcoSpaceData.TimeStep)
@@ -9031,7 +9031,7 @@ Public Class cCore
     ''' <remarks>The resulting time step is calculated from difference in time steps,
     ''' rounded to months, between the given time and the <see cref="EcosimFirstYear"/>.</remarks>
     ''' -------------------------------------------------------------------
-    Public Function AbsoluteTimeToEcospaceTimestep(ByVal dt As DateTime) As Integer
+    Public Function AbsoluteTimeToEcospaceTimestep(dt As DateTime) As Integer
 
         Dim dtStart As New Date(Math.Max(Me.EcosimFirstYear, 1), 1, 1)
         Dim sTime As Single = (dt.Year - dtStart.Year) + CSng((dt.Month - dtStart.Month) / cCore.N_MONTHS)
@@ -9068,7 +9068,7 @@ Public Class cCore
     ''' If RunOnThread = False then True when the run has completed. False otherwise.
     '''  </returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunEcoSpace(Optional ByRef EcospaceTimeStepHandler As EcoSpaceInterfaceDelegate = Nothing, Optional ByVal RunOnThread As Boolean = True) As Boolean
+    Public Function RunEcoSpace(Optional ByRef EcospaceTimeStepHandler As EcoSpaceInterfaceDelegate = Nothing, Optional RunOnThread As Boolean = True) As Boolean
         Dim breturn As Boolean
 
         Debug.Assert(Me.m_StateMonitor.HasEcospaceLoaded, "RunEcospace() You must load an Ecospace scenario first.")
@@ -9192,7 +9192,7 @@ Public Class cCore
     End Property
 
 
-    Private Sub onEcoSpaceRunCompleted(ByVal Succeeded As Boolean)
+    Private Sub onEcoSpaceRunCompleted(Succeeded As Boolean)
 
         Try
             Try
@@ -9251,7 +9251,7 @@ Public Class cCore
             Return Me.m_Ecospace.isPaused
         End Get
 
-        Set(ByVal value As Boolean)
+        Set(value As Boolean)
             Me.m_Ecospace.isPaused = value
             Me.m_StateMonitor.SetIsPaused()
         End Set
@@ -9429,7 +9429,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iTime">Time index of this time step</param>
     ''' <remarks>processEcospaceTimeStep() will populate the cEcospaceTSResults object and send it to an interface</remarks>
-    Private Sub onEcospaceTimeStep(ByVal iTime As Integer)
+    Private Sub onEcospaceTimeStep(iTime As Integer)
         Try
 
             m_spaceresults.InSpinUp = Me.m_EcoSpaceData.bInSpinUp
@@ -9489,7 +9489,7 @@ Public Class cCore
         End Try
     End Sub
 
-    Private Sub SaveEcospaceENA(ByVal SpaceResults As cEcospaceTimestep)
+    Private Sub SaveEcospaceENA(SpaceResults As cEcospaceTimestep)
         Try
 
             If Me.m_EcoSpaceData.bENA Then
@@ -9507,7 +9507,7 @@ Public Class cCore
         End Try
     End Sub
 
-    Private Sub SaveEcospaceResults(ByVal SpaceResults As cEcospaceTimestep)
+    Private Sub SaveEcospaceResults(SpaceResults As cEcospaceTimestep)
 
         Dim st As Double = Me.m_stpwSpaceTimer.Elapsed.TotalSeconds
         Try
@@ -9532,7 +9532,7 @@ Public Class cCore
     ''' <summary>
     ''' Sample code to loop over EcoSpace map of mortality by predation 
     ''' </summary>
-    Private Sub dumpSpaceMortPred(ByVal Core As cCore, ByVal SpaceResults As cEcospaceTimestep)
+    Private Sub dumpSpaceMortPred(Core As cCore, SpaceResults As cEcospaceTimestep)
 
         'loop over all the prey/pred linkages
         For iLink As Integer = 1 To SpaceResults.nPreyPredLinks
@@ -9632,7 +9632,7 @@ Public Class cCore
     ''' <param name="iScenario">One-based indexed of the scenario to load
     ''' [1, <see cref="nEcospaceScenarios">#scenarios</see>].</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceScenarios(ByVal iScenario As Integer) As cEcospaceScenario
+    Public ReadOnly Property EcospaceScenarios(iScenario As Integer) As cEcospaceScenario
         Get
             ' JS 06Jul07: list will handle scenario index / item index offsets
             Return DirectCast(Me.m_EcoSpaceScenarios(iScenario), cEcospaceScenario)
@@ -9680,7 +9680,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iGroup">The index to obtain the Ecospace group for.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceGroupInputs(ByVal iGroup As Integer) As cEcospaceGroupInput
+    Public ReadOnly Property EcospaceGroupInputs(iGroup As Integer) As cEcospaceGroupInput
         Get
             ' JS 06Jul07: list will handle group index / item index offsets
             Return DirectCast(Me.m_EcoSpaceGroups.Item(iGroup), cEcospaceGroupInput)
@@ -9693,7 +9693,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iFleet">The index to obtain the Ecospace fleet for.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceFleetInputs(ByVal iFleet As Integer) As cEcospaceFleetInput
+    Public ReadOnly Property EcospaceFleetInputs(iFleet As Integer) As cEcospaceFleetInput
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
             Return DirectCast(Me.m_EcoSpaceFleets.Item(iFleet), cEcospaceFleetInput)
@@ -9706,7 +9706,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iHabitat">The zero-based index to obtain the Ecospace habitat for.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceHabitats(ByVal iHabitat As Integer) As cEcospaceHabitat
+    Public ReadOnly Property EcospaceHabitats(iHabitat As Integer) As cEcospaceHabitat
         Get
             ' JS 06Jul07: list will handle habitat index / item index offsets
             Return DirectCast(Me.m_EcospaceHabitats(iHabitat), cEcospaceHabitat)
@@ -9719,7 +9719,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iMPA">The index to obtain the Ecospace marine protected area for.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceMPAs(ByVal iMPA As Integer) As cEcospaceMPA
+    Public ReadOnly Property EcospaceMPAs(iMPA As Integer) As cEcospaceMPA
         Get
             ' JS 06Jul07: list will handle MPA index / item index offsets
             Return DirectCast(Me.m_EcospaceMPAs(iMPA), cEcospaceMPA)
@@ -9731,7 +9731,7 @@ Public Class cCore
     ''' Ecosim Fleet inputs.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcosimFleetInputs(ByVal iFleet As Integer) As cEcosimFleetInput
+    Public ReadOnly Property EcosimFleetInputs(iFleet As Integer) As cEcosimFleetInput
         Get
             ' JS 05Nov09: list will handle fleet index / item index offsets
             Return DirectCast(Me.m_EcosimFleetInputs(iFleet), cEcosimFleetInput)
@@ -9743,7 +9743,7 @@ Public Class cCore
     ''' Ecosim Fleet summary results from last Ecosim run.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcosimFleetOutput(ByVal iFleet As Integer) As cEcosimFleetOutput
+    Public ReadOnly Property EcosimFleetOutput(iFleet As Integer) As cEcosimFleetOutput
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
             Return DirectCast(Me.m_EcosimFleetOutputs(iFleet), cEcosimFleetOutput)
@@ -9755,7 +9755,7 @@ Public Class cCore
     ''' Results from last Ecospace run by group
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceGroupOutput(ByVal iGroup As Integer) As cEcospaceGroupOutput
+    Public ReadOnly Property EcospaceGroupOutput(iGroup As Integer) As cEcospaceGroupOutput
         Get
             ' JS 06Jul07: list will handle group index / item index offsets
             Return DirectCast(Me.m_EcospaceGroupOuputs(iGroup), cEcospaceGroupOutput)
@@ -9767,7 +9767,7 @@ Public Class cCore
     ''' Ecospace Fleet summary results from last Ecospace run.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceFleetOutput(ByVal iFleet As Integer) As cEcospaceFleetOutput
+    Public ReadOnly Property EcospaceFleetOutput(iFleet As Integer) As cEcospaceFleetOutput
         Get
             ' JS 06Jul07: list will handle fleet index / item index offsets
             Return DirectCast(Me.m_EcospaceFleetOutputs(iFleet), cEcospaceFleetOutput)
@@ -9779,7 +9779,7 @@ Public Class cCore
     ''' Ecospace region summary results from last Ecospace run.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceRegionOutput(ByVal iRegion As Integer) As cEcospaceRegionOutput
+    Public ReadOnly Property EcospaceRegionOutput(iRegion As Integer) As cEcospaceRegionOutput
         Get
             ' JS 06Jul07: list will handle region index / item index offsets
             Return DirectCast(Me.m_EcospaceRegionSummaries(iRegion), cEcospaceRegionOutput)
@@ -9818,7 +9818,7 @@ Public Class cCore
     ''' Returns a valid <see cref="cEcospaceScenario">cEcospaceScenario</see> object if nScenario,
     ''' the scenario index, is in bounds, or  Null when the index is out of bounds or an error 
     ''' occured.</value>
-    Private Property privateEcospaceScenario(ByVal iScenario As Integer) As cEcospaceScenario
+    Private Property privateEcospaceScenario(iScenario As Integer) As cEcospaceScenario
 
         Get
             Try
@@ -9854,7 +9854,7 @@ Public Class cCore
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-        Set(ByVal ess As cEcospaceScenario)
+        Set(ess As cEcospaceScenario)
 
             'Set the parameters in the underlying EcoSim data structures to user supplied values
             Try
@@ -9874,7 +9874,7 @@ Public Class cCore
 
     End Property
 
-    Private Sub SendEcospaceLoadMessage(ByVal strScenarioName As String, Optional ByVal strError As String = "")
+    Private Sub SendEcospaceLoadMessage(strScenarioName As String, Optional strError As String = "")
         Dim msg As cMessage = Nothing
         Dim strText As String = ""
 
@@ -9891,8 +9891,8 @@ Public Class cCore
 
     End Sub
 
-    Private Sub SendEcospaceSaveStateMessage(ByVal strScenarioName As String, Optional ByVal bSucces As Boolean = True,
-            Optional ByVal strError As String = "")
+    Private Sub SendEcospaceSaveStateMessage(strScenarioName As String, Optional bSucces As Boolean = True,
+            Optional strError As String = "")
 
         Dim msg As cMessage = Nothing
         Dim strText As String = ""
@@ -9922,10 +9922,10 @@ Public Class cCore
     ''' <param name="sLon">Longitude of basemap (TL corner)></param>
     ''' <param name="sCellLength">Cell length, in km. A square grid is assumed.</param>
     ''' <returns>True if successful.</returns>
-    Public Function NewEcospaceScenario(ByVal strName As String, ByVal strDescription As String,
-            ByVal strAuthor As String, ByVal strContact As String,
-            ByVal iNumRows As Integer, ByVal iNumCols As Integer,
-            ByVal sLat As Single, ByVal sLon As Single, ByVal sCellLength As Single) As Boolean
+    Public Function NewEcospaceScenario(strName As String, strDescription As String,
+            strAuthor As String, strContact As String,
+            iNumRows As Integer, iNumCols As Integer,
+            sLat As Single, sLon As Single, sCellLength As Single) As Boolean
 
         Dim ds As IEcospaceDatasource = Nothing
         Dim iScenarioID As Integer = 0
@@ -9982,7 +9982,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcoSpaceScenario">Scenario</see> to load.</param>
     ''' <returns>True if successful.</returns>
-    Public Function LoadEcospaceScenario(ByVal scenario As cEcospaceScenario) As Boolean
+    Public Function LoadEcospaceScenario(scenario As cEcospaceScenario) As Boolean
         Return LoadEcospaceScenario(scenario.Index)
     End Function
 
@@ -9991,7 +9991,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="iScenario">Index of the <see cref="cEcoSpaceScenario">Scenario</see> in the <see cref="m_EcoSpaceScenarios">Scenario list</see>.</param>
     ''' <returns>True if successful.</returns>
-    Public Function LoadEcospaceScenario(ByVal iScenario As Integer) As Boolean
+    Public Function LoadEcospaceScenario(iScenario As Integer) As Boolean
 
         If (iScenario < 1) Then Return False
         If (Me.nEcospaceScenarios < iScenario) Then Return False
@@ -10238,8 +10238,8 @@ Public Class cCore
     ''' <param name="strDescription"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function SaveEcospaceScenarioAs(ByVal strName As String,
-                                           ByVal strDescription As String) As Boolean
+    Public Function SaveEcospaceScenarioAs(strName As String,
+                                           strDescription As String) As Boolean
 
         Dim epd As cEcopathDataStructures = Me.m_EcoPathData
         Dim esd As cEcospaceDataStructures = Me.m_EcoSpaceData
@@ -10294,7 +10294,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="scenario">The <see cref="cEcoSpaceScenario">Scenario</see> to remove.</param>
     ''' <returns>True if successful.</returns>
-    Public Function RemoveEcospaceScenario(ByVal scenario As cCoreInputOutputBase) As Boolean
+    Public Function RemoveEcospaceScenario(scenario As cCoreInputOutputBase) As Boolean
         If (scenario Is Nothing) Then Return True
         If (Not TypeOf (scenario) Is cEcospaceScenario) Then Return False
         Return Me.RemoveEcospaceScenario(scenario.Index)
@@ -10307,7 +10307,7 @@ Public Class cCore
     ''' <param name="iScenario">Index of the scenario in the <see cref="m_EcoSpaceScenarios">Ecospace Scenario list</see>.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveEcospaceScenario(ByVal iScenario As Integer) As Boolean
+    Public Function RemoveEcospaceScenario(iScenario As Integer) As Boolean
 
         Dim ds As IEcospaceDatasource = Nothing
         Dim iScenarioIDDeleted As Integer = Me.m_EcoPathData.EcospaceScenarioDBID(iScenario)
@@ -10361,7 +10361,7 @@ Public Class cCore
     ''' Update all the underlying data structures that contain Ecospace scenario data
     ''' </summary>
     ''' <returns>True if successful.</returns>
-    Private Function UpdateEcospaceScenario(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcospaceScenario(iDBID As Integer) As Boolean
 
         Dim iScenario As Integer = Array.IndexOf(Me.m_EcoPathData.EcospaceScenarioDBID, iDBID)
         Dim scn As cEcospaceScenario = Me.EcospaceScenarios(iScenario)
@@ -10557,7 +10557,7 @@ Public Class cCore
     ''' <param name="InCol"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function ResizeEcospaceBasemap(ByVal InRow As Integer, ByVal InCol As Integer) As Boolean
+    Public Function ResizeEcospaceBasemap(InRow As Integer, InCol As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
         Dim bSucces As Boolean = False
 
@@ -10820,7 +10820,7 @@ Public Class cCore
 
     End Function
 
-    Private Function UpdateEcospaceGroup(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcospaceGroup(iDBID As Integer) As Boolean
 
         Dim grp As cEcospaceGroupInput = Nothing
         Dim iGroup As Integer
@@ -11096,7 +11096,7 @@ Public Class cCore
     ''' <param name="iDBID">Database ID of the Ecospace Habitat to update.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function UpdateEcospaceHabitat(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcospaceHabitat(iDBID As Integer) As Boolean
         Dim objHab As cEcospaceHabitat = Nothing
         Dim iHabitat As Integer = Array.IndexOf(Me.m_EcoSpaceData.HabitatDBID, iDBID)
 
@@ -11124,11 +11124,12 @@ Public Class cCore
     ''' Add an <see cref="cEcospaceHabitat">Ecospace habitat</see> to the current
     ''' <see cref="DataSource">data source</see>.
     ''' </summary>
-    ''' <param name="strHabitatName">Name of habitat to add.</param>
-    ''' <param name="iHabitatID">DBID of the habitat.</param>
+    ''' <param name="strName">Name of habitat to add.</param>
+    ''' <param name="iIndex">Sequential index for the new habitat.</param>
+    ''' <param name="iDBID">DBID of the habitat.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddEcospaceHabitat(ByVal strHabitatName As String, ByRef iHabitatID As Integer) As Boolean
+    Public Function AddEcospaceHabitat(strName As String, iIndex As Integer, ByRef iDBID As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
         Dim bSucces As Boolean = True
 
@@ -11141,9 +11142,9 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
-        If ds.AddEcospaceHabitat(strHabitatName, iHabitatID) Then
+        If ds.AddEcospaceHabitat(strName, iIndex, iDBID) Then
             ' Broadcast update
-            Me.m_publisher.AddMessage(New cMessage(cStringUtils.Localize("Ecospace habitat {0} has been added", strHabitatName),
+            Me.m_publisher.AddMessage(New cMessage(cStringUtils.Localize("Ecospace habitat {0} has been added", strName),
                 eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         Else
             bSucces = False
@@ -11164,7 +11165,8 @@ Public Class cCore
     ''' to remove.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveEcospaceHabitat(ByVal iDBID As Integer) As Boolean
+    Public Function RemoveEcospaceHabitat(iDBID As Integer) As Boolean
+
         Dim bsucces As Boolean = False
         Dim ds As IEcospaceDatasource = Nothing
 
@@ -11194,7 +11196,7 @@ Public Class cCore
         Return bsucces
     End Function
 
-    Public Function MoveEcospaceHabitat(ByVal iHabitatID As Integer, ByVal iIndex As Integer) As Boolean
+    Public Function MoveEcospaceHabitat(iHabitatID As Integer, iIndex As Integer) As Boolean
 
         Dim bSucces As Boolean = False
         Dim ds As IEcospaceDatasource = Nothing
@@ -11285,7 +11287,7 @@ Public Class cCore
         Return True
     End Function
 
-    Private Function UpdateEcospaceMPA(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcospaceMPA(iDBID As Integer) As Boolean
         Dim objMPA As cEcospaceMPA = Nothing
         Dim iMPA As Integer
 
@@ -11318,8 +11320,9 @@ Public Class cCore
     ''' MPA is OPEN for fishing.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddEcospaceMPA(ByVal strMPAName As String,
-                                   ByVal MPAMonths() As Boolean,
+    Public Function AddEcospaceMPA(strMPAName As String,
+                                   iIndex As Integer,
+                                   MPAMonths() As Boolean,
                                    ByRef iDBID As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
         Dim obj As cCoreInputOutputBase = Nothing
@@ -11334,7 +11337,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
-        If ds.AppendEcospaceMPA(strMPAName, MPAMonths, iDBID) Then
+        If ds.AddEcospaceMPA(strMPAName, iIndex, MPAMonths, iDBID) Then
             Me.m_publisher.AddMessage(New cMessage(cStringUtils.Localize("Ecospace MPA {0} has been added", strMPAName),
                 eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
         Else
@@ -11355,7 +11358,7 @@ Public Class cCore
     ''' <param name="iMPADBID">The <see cref="cEcospaceMPA.DBID"/> to remove.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveEcospaceMPA(ByVal iMPADBID As Integer) As Boolean
+    Public Function RemoveEcospaceMPA(iMPADBID As Integer) As Boolean
         Dim bsucces As Boolean = False
         Dim ds As IEcospaceDatasource = Nothing
 
@@ -11382,7 +11385,7 @@ Public Class cCore
         Return bsucces
     End Function
 
-    Public Function MoveEcospaceMPA(ByVal iDBID As Integer, ByVal iIndex As Integer) As Boolean
+    Public Function MoveEcospaceMPA(iDBID As Integer, iIndex As Integer) As Boolean
 
         Dim bSucces As Boolean = False
         Dim ds As IEcospaceDatasource = Nothing
@@ -11396,7 +11399,7 @@ Public Class cCore
         If Not SetBatchLock(eBatchLockType.Restructure) Then Return False
 
         ds = DirectCast(DataSource, IEcospaceDatasource)
-        If ds.MoveMPA(iDBID, iIndex) Then
+        If ds.MoveEcospaceMPA(iDBID, iIndex) Then
 
             Me.DataModifiedMessage("Ecospace MPA order has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcospaceMPA)
             Me.DataModifiedMessage("Ecospace MPA order has changed.", eCoreComponentType.EcoSpace, eDataTypes.EcospaceLayerMPA)
@@ -11486,7 +11489,7 @@ Public Class cCore
         Return True
     End Function
 
-    Private Function UpdateEcospaceFleet(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcospaceFleet(iDBID As Integer) As Boolean
         Dim fleet As cEcospaceFleetInput = Nothing
         Dim iFleet As Integer
 
@@ -11533,7 +11536,7 @@ Public Class cCore
     ''' layer.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddEcospaceImportanceLayer(ByVal strName As String, ByVal strDescription As String, ByVal sWeight As Single, ByRef iID As Integer) As Boolean
+    Public Function AddEcospaceImportanceLayer(strName As String, strDescription As String, sWeight As Single, ByRef iID As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
         Dim bSucces As Boolean = True
 
@@ -11569,7 +11572,7 @@ Public Class cCore
     ''' Ecospace importance layer</see> to remove.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveEcospaceImportanceLayer(ByVal objLayer As cEcospaceLayerImportance) As Boolean
+    Public Function RemoveEcospaceImportanceLayer(objLayer As cEcospaceLayerImportance) As Boolean
         Dim bsucces As Boolean = False
         Dim ds As IEcospaceDatasource = Nothing
 
@@ -11610,7 +11613,7 @@ Public Class cCore
     ''' <param name="strDescription">Description of layer to add.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, ByVal strUnits As String, ByRef iDBID As Integer) As Boolean
+    Public Function AddEcospaceDriverLayer(strName As String, strDescription As String, strUnits As String, ByRef iDBID As Integer) As Boolean
         Dim ds As IEcospaceDatasource = Nothing
         Dim obj As cCoreInputOutputBase = Nothing
         Dim bSucces As Boolean = True
@@ -11647,7 +11650,7 @@ Public Class cCore
     ''' to remove.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveEcospaceDriverLayer(ByVal iDBID As Integer) As Boolean
+    Public Function RemoveEcospaceDriverLayer(iDBID As Integer) As Boolean
         Dim bsucces As Boolean = False
         Dim ds As IEcospaceDatasource = Nothing
 
@@ -11687,7 +11690,7 @@ Public Class cCore
     ''' <param name="iIndex">New, one-based position of the layer in the layer list.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function MoveDriverLayer(ByVal iLayer As Integer, ByVal iIndex As Integer) As Boolean
+    Public Function MoveDriverLayer(iLayer As Integer, iIndex As Integer) As Boolean
         Dim bSucces As Boolean = False
         Dim ds As IEcospaceDatasource = Nothing
 
@@ -11816,7 +11819,7 @@ Public Class cCore
     ''' <param name="stanza">cStanzaGroup object to populate.</param>
     ''' <returns>True is successfull. False otherwise.</returns>
     ''' <remarks>Call to populate a single cStanzaGroup object with the core data from the Ecopath and Stanza data structures</remarks>
-    Friend Function LoadStanza(ByVal stanza As cStanzaGroup) As Boolean
+    Friend Function LoadStanza(stanza As cStanzaGroup) As Boolean
         Try
             Dim iStanza As Integer = 0
             'iStanza is the index in the Ecosim stanza arrays that this cStanzaGroup object belongs to
@@ -11894,7 +11897,7 @@ Public Class cCore
     ''' <returns>True if successfull. False otherwise.</returns>
     ''' <remarks>Calculates Biomass for all non leading stanzas, CB for non leading stanzas, WeightAtAge, NumberAtAge and BiomassAtAge.
     '''  It does not save the values or update the Ecopath variables that were affected. That is done via cStanzaGroup.Apply() </remarks>
-    Friend Function CalculateStanza(ByVal stanza As cStanzaGroup) As Boolean
+    Friend Function CalculateStanza(stanza As cStanzaGroup) As Boolean
         Dim FirstAge() As Integer, SecondAge() As Integer
         Dim Bio() As Single, Z() As Single, cb() As Single, Bat() As Single
         Dim SpawnProp() As Single
@@ -12022,7 +12025,7 @@ Public Class cCore
 
     End Function
 
-    Private Sub updateStanzaLeadingGroups(ByVal stanza As cStanzaGroup)
+    Private Sub updateStanzaLeadingGroups(stanza As cStanzaGroup)
 
         For iLF As Integer = 1 To stanza.nLifeStages
             Dim iEcopath As Integer = stanza.iGroups(iLF)
@@ -12040,7 +12043,7 @@ Public Class cCore
 
     End Sub
 
-    Private Function UpdateStanza(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateStanza(iDBID As Integer) As Boolean
 
         Dim stanza As cStanzaGroup = Nothing
         'core array index of stanza
@@ -12096,7 +12099,7 @@ Public Class cCore
     ''' is defined without having any groups. To avoid this situation, this method
     ''' requires a valid group ID.</remarks>
     ''' -----------------------------------------------------------------------
-    Public Function AppendStanza(ByVal strStanzaName As String, ByVal aiGroupID() As Integer, ByVal aiStartAge() As Integer, ByRef iDBID As Integer) As Boolean
+    Public Function AppendStanza(strStanzaName As String, aiGroupID() As Integer, aiStartAge() As Integer, ByRef iDBID As Integer) As Boolean
 
         Dim bSucces As Boolean = False
         Dim ds As IEcopathDataSource = Nothing
@@ -12161,8 +12164,8 @@ Public Class cCore
     ''' <param name="iAge">The age to assign to this life stage.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddStanzaLifestage(ByVal iStanza As Integer, ByVal iGroupDBID As Integer,
-                                       ByVal iAge As Integer) As Boolean
+    Public Function AddStanzaLifestage(iStanza As Integer, iGroupDBID As Integer,
+                                       iAge As Integer) As Boolean
 
         Dim iStanzaDBID As Integer = Me.m_Stanza.StanzaDBID(iStanza)
         Dim bSucces As Boolean = False
@@ -12191,8 +12194,8 @@ Public Class cCore
     ''' <param name="iGroupDBID">Database ID of group to remove as a life stage.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveStanzaLifestage(ByVal iStanza As Integer,
-                                          ByVal iGroupDBID As Integer) As Boolean
+    Public Function RemoveStanzaLifestage(iStanza As Integer,
+                                          iGroupDBID As Integer) As Boolean
         Dim iStanzaDBID As Integer = Me.m_Stanza.StanzaDBID(iStanza)
         Dim bSucces As Boolean = False
         Dim ds As IEcopathDataSource = Nothing
@@ -12279,7 +12282,7 @@ Public Class cCore
     ''' One-based index of the scenario to obtain [1, <see cref="EcotracerScenarioCount">#scenarios</see>].
     ''' </param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcotracerScenarios(ByVal iScenario As Integer) As cEcotracerScenario
+    Public ReadOnly Property EcotracerScenarios(iScenario As Integer) As cEcotracerScenario
         Get
             Return DirectCast(Me.m_EcotracerScenarios(iScenario), cEcotracerScenario)
         End Get
@@ -12306,10 +12309,10 @@ Public Class cCore
     ''' <param name="strContact">Contact to assign to new scenario.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function NewEcotracerScenario(ByVal strName As String,
-                                         ByVal strDescription As String,
-                                         ByVal strAuthor As String,
-                                         ByVal strContact As String) As Boolean
+    Public Function NewEcotracerScenario(strName As String,
+                                         strDescription As String,
+                                         strAuthor As String,
+                                         strContact As String) As Boolean
 
         Dim ds As IEcotracerDatasource = Nothing
         Dim iScenarioID As Integer = 0
@@ -12371,7 +12374,7 @@ Public Class cCore
     ''' <see cref="m_EcotracerScenarios">Scenario list</see>.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function LoadEcotracerScenario(ByVal iScenario As Integer) As Boolean
+    Public Function LoadEcotracerScenario(iScenario As Integer) As Boolean
 
         If (iScenario < 1) Then Return False
         If (Me.nEcotracerScenarios < iScenario) Then Return False
@@ -12448,7 +12451,7 @@ Public Class cCore
     ''' <param name="scenario">A scenario to overwrite, if any.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function SaveEcotracerScenario(Optional ByVal scenario As cEcotracerScenario = Nothing) As Boolean
+    Public Function SaveEcotracerScenario(Optional scenario As cEcotracerScenario = Nothing) As Boolean
         Dim iScenarioID As Integer = 0
         Dim ds As IEcotracerDatasource = Nothing
 
@@ -12501,8 +12504,8 @@ Public Class cCore
     ''' <param name="strDescription"></param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function SaveEcotracerScenarioAs(ByVal strName As String,
-                                            ByVal strDescription As String) As Boolean
+    Public Function SaveEcotracerScenarioAs(strName As String,
+                                            strDescription As String) As Boolean
 
         Dim epd As cEcopathDataStructures = Me.m_EcoPathData
         Dim ds As IEcotracerDatasource = Nothing
@@ -12559,7 +12562,7 @@ Public Class cCore
     ''' <param name="scenario">The <see cref="cEcotracerScenario">Scenario</see> to remove.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveEcotracerScenario(ByVal scenario As cCoreInputOutputBase) As Boolean
+    Public Function RemoveEcotracerScenario(scenario As cCoreInputOutputBase) As Boolean
         If (scenario Is Nothing) Then Return True
         If (Not TypeOf (scenario) Is cEcotracerScenario) Then Return False
         Return Me.RemoveEcotracerScenario(scenario.Index)
@@ -12574,7 +12577,7 @@ Public Class cCore
     ''' <see cref="m_EcotracerScenarios">Ecotracer Scenario list</see>.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveEcotracerScenario(ByVal iScenario As Integer) As Boolean
+    Public Function RemoveEcotracerScenario(iScenario As Integer) As Boolean
 
         Dim ds As IEcotracerDatasource = Nothing
         Dim iScenarioIDDeleted As Integer = Me.m_EcoPathData.EcotracerScenarioDBID(iScenario)
@@ -12634,7 +12637,7 @@ Public Class cCore
         Return True
     End Function
 
-    Private Function InitEcotracerScenario(ByVal iScenario As Integer) As Boolean
+    Private Function InitEcotracerScenario(iScenario As Integer) As Boolean
 
         Dim ets As cEcotracerScenario = Me.EcotracerScenarios(iScenario)
         Try
@@ -12659,7 +12662,7 @@ Public Class cCore
 
     End Function
 
-    Private Function UpdateEcotracerScenario(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcotracerScenario(iDBID As Integer) As Boolean
 
         Dim iScenario As Integer = Array.IndexOf(Me.m_EcoPathData.EcotracerScenarioDBID, iDBID)
         Dim scn As cEcotracerScenario = Me.EcotracerScenarios(iScenario)
@@ -12697,7 +12700,7 @@ Public Class cCore
         End Get
     End Property
 
-    Private Sub SendEcotracerLoadMessage(ByVal strScenario As String, Optional ByVal strError As String = "")
+    Private Sub SendEcotracerLoadMessage(strScenario As String, Optional strError As String = "")
         Dim msg As cMessage = Nothing
         Dim strText As String = ""
 
@@ -12714,8 +12717,8 @@ Public Class cCore
 
     End Sub
 
-    Private Sub SendEcotracerSaveStateMessage(ByVal strScenarioName As String, Optional ByVal bSucces As Boolean = True,
-            Optional ByVal strError As String = "")
+    Private Sub SendEcotracerSaveStateMessage(strScenarioName As String, Optional bSucces As Boolean = True,
+            Optional strError As String = "")
 
         Dim msg As cMessage = Nothing
         Dim strText As String = ""
@@ -12814,7 +12817,7 @@ Public Class cCore
     ''' <param name="iGroup">One-based index of the group to obtain. This value
     ''' cannot exceed <see cref="nGroups">nGroups</see>.</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcotracerGroupInputs(ByVal iGroup As Integer) As cEcotracerGroupInput
+    Public ReadOnly Property EcotracerGroupInputs(iGroup As Integer) As cEcotracerGroupInput
         Get
             Return DirectCast(Me.m_EcotracerGroupInputs(iGroup), cEcotracerGroupInput)
         End Get
@@ -12902,7 +12905,7 @@ Public Class cCore
 
     End Function
 
-    Private Function UpdateEcotracerGroup(ByVal iDBID As Integer) As Boolean
+    Private Function UpdateEcotracerGroup(iDBID As Integer) As Boolean
 
         Dim grp As cEcotracerGroupInput = Nothing
         Dim iGroup As Integer
@@ -12962,11 +12965,11 @@ Public Class cCore
     ''' <param name="key">The unique <see cref="cValueID">value ID</see>.</param>
     ''' <returns>An cAuxillaryData instance.</returns>
     ''' -------------------------------------------------------------------
-    Public Property AuxillaryData(ByVal key As cValueID) As cAuxiliaryData
+    Public Property AuxillaryData(key As cValueID) As cAuxiliaryData
         Get
             Return Me.AuxillaryData(key.ToString)
         End Get
-        Friend Set(ByVal value As cAuxiliaryData)
+        Friend Set(value As cAuxiliaryData)
             Me.AuxillaryData(key.ToString) = value
         End Set
     End Property
@@ -12979,7 +12982,7 @@ Public Class cCore
     ''' <param name="strValueID">The unique <see cref="cValueID">value ID</see>.</param>
     ''' <returns>An cAuxillaryData instance.</returns>
     ''' -------------------------------------------------------------------
-    Public Property AuxillaryData(ByVal strValueID As String) As cAuxiliaryData
+    Public Property AuxillaryData(strValueID As String) As cAuxiliaryData
 
         Get
             If (String.IsNullOrEmpty(strValueID)) Then Return Nothing
@@ -12991,7 +12994,7 @@ Public Class cCore
             Return Me.m_dtAuxiliaryData(strValueID)
         End Get
 
-        Set(ByVal ad As cAuxiliaryData)
+        Set(ad As cAuxiliaryData)
             If (String.IsNullOrEmpty(strValueID)) Then Return
 
             If (ad Is Nothing) Then
@@ -13020,7 +13023,7 @@ Public Class cCore
     ''' <returns></returns>
     ''' -------------------------------------------------------------------
     Public ReadOnly Property AuxillaryData(source As cCoreInputOutputBase,
-                                           Optional ByVal bIncludeReferrals As Boolean = False) As Dictionary(Of String, cAuxiliaryData)
+                                           Optional bIncludeReferrals As Boolean = False) As Dictionary(Of String, cAuxiliaryData)
         Get
             Return Me.AuxillaryData(source.DataType, source.DBID, bIncludeReferrals)
         End Get
@@ -13042,7 +13045,7 @@ Public Class cCore
     ''' <returns></returns>
     ''' -------------------------------------------------------------------
     Public ReadOnly Property AuxillaryData(dt As eDataTypes, iDBID As Integer,
-                                           Optional ByVal bIncludeReferrals As Boolean = False) As Dictionary(Of String, cAuxiliaryData)
+                                           Optional bIncludeReferrals As Boolean = False) As Dictionary(Of String, cAuxiliaryData)
         Get
             Dim dic As New Dictionary(Of String, cAuxiliaryData)
             For Each strKey As String In Me.m_dtAuxiliaryData.Keys
@@ -13108,7 +13111,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="man">The <see cref="cPedigreeManager">manager</see> to load.</param>
     ''' <returns>True if successful.</returns>
-    Private Function LoadPedigreeLevels(ByVal man As cPedigreeManager) As Boolean
+    Private Function LoadPedigreeLevels(man As cPedigreeManager) As Boolean
         Return man.LoadPedigreeLevels()
     End Function
 
@@ -13129,7 +13132,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="man">The <see cref="cPedigreeManager">manager</see> to load.</param>
     ''' <returns>True if successful.</returns>
-    Private Function LoadPedigree(ByVal man As cPedigreeManager) As Boolean
+    Private Function LoadPedigree(man As cPedigreeManager) As Boolean
         Return man.LoadPedigree()
     End Function
 
@@ -13140,7 +13143,7 @@ Public Class cCore
     ''' <param name="varName"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetPedigreeManager(ByVal varName As eVarNameFlags) As cPedigreeManager
+    Public Function GetPedigreeManager(varName As eVarNameFlags) As cPedigreeManager
         ' Mappings
         If (varName = eVarNameFlags.Discards) Or (varName = eVarNameFlags.Landings) Then
             varName = eVarNameFlags.TCatchInput
@@ -13157,7 +13160,7 @@ Public Class cCore
     ''' <param name="varName">The variable to check.</param>
     ''' <returns>True if the <paramref name="varName">variable</paramref> is supported.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsPedigreeVariableSupported(ByVal varName As eVarNameFlags) As Boolean
+    Public Function IsPedigreeVariableSupported(varName As eVarNameFlags) As Boolean
         Return Me.PedigreeVariableIndex(varName) > -1 And (varName <> eVarNameFlags.NotSet)
     End Function
 
@@ -13170,7 +13173,7 @@ Public Class cCore
     ''' <returns>A one-based index, or -1 if pedigree is not 
     ''' supported for the variable.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function PedigreeVariableIndex(ByVal varName As eVarNameFlags) As Integer
+    Public Function PedigreeVariableIndex(varName As eVarNameFlags) As Integer
         Return Array.IndexOf(cEcopathDataStructures.PedigreeVariables, varName)
     End Function
 
@@ -13181,7 +13184,7 @@ Public Class cCore
     ''' <param name="iIndex">One-based of the variable to retrieve.</param>
     ''' <returns>The variable at the given <see cref="PedigreeVariableIndex">index</see>.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function PedigreeVariable(ByVal iIndex As Integer) As eVarNameFlags
+    Public Function PedigreeVariable(iIndex As Integer) As eVarNameFlags
         If (iIndex < 1 Or iIndex > Me.m_EcoPathData.NumPedigreeVariables) Then Return eVarNameFlags.NotSet
         Try
             Return cEcopathDataStructures.PedigreeVariables(iIndex)
@@ -13194,7 +13197,7 @@ Public Class cCore
 
 #Region " Meta data "
 
-    Public Function GetDataDescription(ByVal dt As eDataTypes, ByVal iDBID As Integer) As String
+    Public Function GetDataDescription(dt As eDataTypes, iDBID As Integer) As String
         If (Me.DataSource IsNot Nothing) Then
             If (TypeOf Me.DataSource Is IEwEDatasourceMetadata) Then
                 Return DirectCast(Me.DataSource, IEwEDatasourceMetadata).GetDescription(dt, iDBID)
@@ -13421,7 +13424,7 @@ Public Class cCore
     ''' <param name="iSecondaryIndex"></param>
     ''' <returns>True if the validation was run. False if the validation routine failed to run</returns>
     ''' <remarks>Ther results of the validation are in the cValue Object</remarks>
-    Friend Function Validate(ByRef ValueObject As cValue, ByRef MetaData As cVariableMetaData, Optional ByVal iSecondaryIndex As Integer = cCore.NULL_VALUE, Optional ByVal iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
+    Friend Function Validate(ByRef ValueObject As cValue, ByRef MetaData As cVariableMetaData, Optional iSecondaryIndex As Integer = cCore.NULL_VALUE, Optional iThirdIndex As Integer = cCore.NULL_VALUE) As Boolean
 
         Dim fmt As New Style.cVarnameTypeFormatter()
 
@@ -13628,7 +13631,7 @@ Public Class cCore
 
     End Sub
 
-    Private Function GetAffectedVariableStatus(ByVal obj As cCoreInputOutputBase, ByVal varName As eVarNameFlags, Optional ByVal iSecIndex As Integer = cCore.NULL_VALUE) As cVariableStatus
+    Private Function GetAffectedVariableStatus(obj As cCoreInputOutputBase, varName As eVarNameFlags, Optional iSecIndex As Integer = cCore.NULL_VALUE) As cVariableStatus
         Dim fmt As New Style.cVarnameTypeFormatter()
         Return New cVariableStatus(obj, eStatusFlags.OK,
                                    cStringUtils.Localize(My.Resources.CoreMessages.VARIABLE_VALIDATION_ADJUSTED, fmt.ToString(varName)),
@@ -13644,7 +13647,7 @@ Public Class cCore
     ''' <param name="obj">The <see cref="cCoreInputOutputBase">Core I/O object</see> that this value belongs to.</param>
     ''' <param name="msg">The <see cref="cMessage">main validation message</see> that this logic can attach
     ''' variables to.</param>
-    Private Sub PostVariableValidation(ByVal value As cValue, ByVal obj As cCoreInputOutputBase, ByVal msg As cMessage)
+    Private Sub PostVariableValidation(value As cValue, obj As cCoreInputOutputBase, msg As cMessage)
 
         Debug.Assert(value.ValidationStatus <> eStatusFlags.FailedValidation, "PostVariableValidation() should not be called if a variable failed validation.")
 
@@ -14309,8 +14312,8 @@ Public Class cCore
     ''' provides a way for these object to comumicate changes to the core.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub onChanged(ByVal obj As ICoreInterface,
-                         Optional ByVal TypeOfChange As eMessageType = eMessageType.NotSet)
+    Public Sub onChanged(obj As ICoreInterface,
+                         Optional TypeOfChange As eMessageType = eMessageType.NotSet)
         Dim manager As cBaseShapeManager = Nothing
 
         Try
@@ -14653,7 +14656,7 @@ Public Class cCore
         Get
             Return Me.m_pluginManager
         End Get
-        Set(ByVal pm As cPluginManager)
+        Set(pm As cPluginManager)
             ' Remember plugin manager
             Me.m_pluginManager = pm
             ' Hand plugin manager to components
@@ -14681,7 +14684,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="paAdded">A loaded <see cref="cPluginAssembly">plug-in assembly</see>.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub m_pluginManager_AssemblyAdded(ByVal paAdded As EwEPlugin.cPluginAssembly) _
+    Private Sub m_pluginManager_AssemblyAdded(paAdded As EwEPlugin.cPluginAssembly) _
         Handles m_pluginManager.AssemblyAdded
 
         If (String.IsNullOrWhiteSpace(paAdded.Sandbox)) Then
@@ -14700,7 +14703,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="paRemoved">A removed <see cref="cPluginAssembly">plug-in assembly</see>.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub m_pluginManager_AssemblyRemoved(ByVal paRemoved As EwEPlugin.cPluginAssembly) _
+    Private Sub m_pluginManager_AssemblyRemoved(paRemoved As EwEPlugin.cPluginAssembly) _
         Handles m_pluginManager.AssemblyRemoved
 
         m_publisher.SendMessage(New cMessage(cStringUtils.Localize(My.Resources.CoreMessages.STATUS_PLUGIN_UNLOADED, Path.GetFileNameWithoutExtension(paRemoved.Filename)),
@@ -14716,7 +14719,7 @@ Public Class cCore
 
     End Sub
 
-    'Private Sub OnPluginAssemblyStateChanged(ByVal pa As cPluginAssembly, ByVal bEnabled As Boolean)
+    'Private Sub OnPluginAssemblyStateChanged(pa As cPluginAssembly, bEnabled As Boolean)
 
     '    If (pa Is Nothing) Then Return
     '    If (pa.Plugins(GetType(IEconomicData)) IsNot Nothing) Then
@@ -14731,7 +14734,7 @@ Public Class cCore
     ''' </summary>
     ''' <param name="ex">The <see cref="cPluginException"/> that was thrown.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnPluginException(ByVal ex As cPluginException) _
+    Private Sub OnPluginException(ex As cPluginException) _
         Handles m_pluginManager.PluginException
 
         If (ex.Assembly Is Nothing) Then
@@ -14766,7 +14769,7 @@ Public Class cCore
     ''' <param name="coreExecutionState">The <see cref="EwEUtils.Core.eCoreExecutionState">Core execution state</see> to test.</param>
     ''' <returns>True if the current core state enables to tested core execution state.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function CanExecutePlugin(ByVal coreExecutionState As eCoreExecutionState) As Boolean
+    Private Function CanExecutePlugin(coreExecutionState As eCoreExecutionState) As Boolean
         Return Me.m_StateMonitor.IsExecutionStateSuperceded(coreExecutionState)
     End Function
 
@@ -14776,7 +14779,7 @@ Public Class cCore
     ''' execution state has changed.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub m_StateMonitor_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
+    Private Sub m_StateMonitor_CoreExecutionStateEvent(csm As cCoreStateMonitor) _
         Handles m_StateMonitor.CoreExecutionStateEvent
 
         If (Me.PluginManager IsNot Nothing) Then
@@ -14896,7 +14899,7 @@ Public Class cCore
         End Try
     End Sub
 
-    Private Sub OnSearchChanged(ByVal searchmode As eSearchModes)
+    Private Sub OnSearchChanged(searchmode As eSearchModes)
         Me.m_StateMonitor.SetIsSearching(searchmode)
     End Sub
 
@@ -15007,13 +15010,13 @@ Public Class cCore
     ''' <param name="iDBID"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function AddPedigreeLevel(ByVal varName As eVarNameFlags,
-                                     ByVal iPosition As Integer,
-                                     ByVal strName As String,
-                                     ByVal iColor As Integer,
-                                     ByVal strDescription As String,
-                                     ByVal sIndexValue As Single,
-                                     ByVal sConfidence As Single,
+    Public Function AddPedigreeLevel(varName As eVarNameFlags,
+                                     iPosition As Integer,
+                                     strName As String,
+                                     iColor As Integer,
+                                     strDescription As String,
+                                     sIndexValue As Single,
+                                     sConfidence As Single,
                                      ByRef iDBID As Integer) As Boolean
 
         Dim ds As IEcopathDataSource = Nothing
@@ -15040,7 +15043,7 @@ Public Class cCore
     ''' <param name="iLevelDBID">The <see cref="cPedigreeLevel.DBID"/> of the level to remove.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RemovePedigreeLevel(ByVal iLevelDBID As Integer) As Boolean
+    Public Function RemovePedigreeLevel(iLevelDBID As Integer) As Boolean
 
         Dim ds As IEcopathDataSource = Nothing
 
@@ -15064,7 +15067,7 @@ Public Class cCore
     ''' <param name="iIndex">The new posiition to move the level to.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function MovePedigreeLevel(ByVal iLevelDBID As Integer, ByVal iIndex As Integer) As Boolean
+    Public Function MovePedigreeLevel(iLevelDBID As Integer, iIndex As Integer) As Boolean
         Dim bSucces As Boolean = False
         Dim ds As IEcopathDataSource = Nothing
 
@@ -15145,7 +15148,7 @@ Public Class cCore
 #Region " Deprecated "
 
     <Obsolete("Use EcopathFleetInputs instead")>
-    Public ReadOnly Property FleetInputs(ByVal iFleet As Integer) As cEcopathFleetInput
+    Public ReadOnly Property FleetInputs(iFleet As Integer) As cEcopathFleetInput
         Get
             Return Me.EcopathFleetInputs(iFleet)
         End Get
@@ -15185,14 +15188,14 @@ Public Class cCore
     End Property
 
     <Obsolete("Use EcospaceGroupInputs instead")>
-    Public ReadOnly Property EcospaceGroups(ByVal iGroup As Integer) As cEcospaceGroupInput
+    Public ReadOnly Property EcospaceGroups(iGroup As Integer) As cEcospaceGroupInput
         Get
             Return Me.EcospaceGroupInputs(iGroup)
         End Get
     End Property
 
     <Obsolete("Use EcospaceFleetInputs instead")>
-    Public ReadOnly Property EcospaceFleets(ByVal iFleet As Integer) As cEcospaceFleetInput
+    Public ReadOnly Property EcospaceFleets(iFleet As Integer) As cEcospaceFleetInput
         Get
             Return Me.EcospaceFleetInputs(iFleet)
         End Get
@@ -15217,10 +15220,10 @@ Public Class cCore
     ''' <param name="iDBID">Database ID assigned to the new TS.</param>
     ''' -----------------------------------------------------------------------
     <Obsolete("Use AddTimeSeries(String, Integer, Integer, eTimeSeriesType, Single, Single(), ByRef Integer) instead")>
-    Public Function AddTimeSeries(ByVal strName As String,
-                                  ByVal iPool As Integer,
-                                  ByVal timeSeriesType As eTimeSeriesType,
-                                  ByVal sWeight As Single, ByVal asValues() As Single,
+    Public Function AddTimeSeries(strName As String,
+                                  iPool As Integer,
+                                  timeSeriesType As eTimeSeriesType,
+                                  sWeight As Single, asValues() As Single,
                                   ByRef iDBID As Integer) As Boolean
         Return Me.AddTimeSeries(strName, iPool, 0, timeSeriesType, sWeight, asValues, iDBID)
     End Function

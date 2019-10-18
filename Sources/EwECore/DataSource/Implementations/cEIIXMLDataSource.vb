@@ -3392,7 +3392,7 @@ Public Class cEIIXMLDataSource
         Return False
     End Function
 
-    Public Function AddEcospaceHabitat(strHabitatName As String, ByRef iHabitatID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AddEcospaceHabitat
+    Public Function AddEcospaceHabitat(strName As String, iIndex As Integer, ByRef iHabitatID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AddEcospaceHabitat
         Return False
     End Function
 
@@ -3400,7 +3400,7 @@ Public Class cEIIXMLDataSource
         Return False
     End Function
 
-    Public Function AppendEcospaceMPA(strScenarioName As String, bMPAMonths() As Boolean, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AppendEcospaceMPA
+    Public Function AddEcospaceMPA(strName As String, iIndex As Integer, bMPAMonths() As Boolean, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AddEcospaceMPA
         Return False
     End Function
 
@@ -3693,7 +3693,7 @@ Public Class cEIIXMLDataSource
         Return strNumberString.Trim().Split(charSeparators, StringSplitOptions.RemoveEmptyEntries)
     End Function
 
-    Public Function MoveMPA(iMPAID As Integer, iPosition As Integer) As Boolean Implements IEcospaceDatasource.MoveMPA
+    Public Function MoveEcospaceMPA(iMPAID As Integer, iPosition As Integer) As Boolean Implements IEcospaceDatasource.MoveEcospaceMPA
         Return False
     End Function
 

@@ -42,7 +42,8 @@ Namespace Ecospace
         ''' <summary>List of active MPAs.</summary>
         Private m_mpas As New List(Of cMPAInfo)
         ''' <summary>List of removed MPAs.</summary>
-        Private m_alMPAsRemoved As New List(Of cMPAInfo)
+        Private m_mpasRemoved As New List(Of cMPAInfo)
+
         ''' <summary>Update lock, used to distinguish between code updates and
         ''' user updates of grid cells. When grid cells are updated from within
         ''' the code, an update lock should be active to prevent edit/update recursion.</summary>
@@ -50,9 +51,9 @@ Namespace Ecospace
 
         ''' <summary>Enumerated type defining the columns in this grid.</summary>
         Private Enum eColumnTypes
-            MPAIndex = 0
-            MPAName
-            MPAStatus
+            Index = 0
+            Name
+            Status
         End Enum
 
 #Region " Helper classes "
@@ -84,7 +85,7 @@ Namespace Ecospace
                 Me.DBID = MPA.DBID
                 Me.Index = MPA.Index
                 Me.Name = MPA.Name
-                Me.m_status = eItemStatusTypes.Original
+                Me.Status = eItemStatusTypes.Original
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -95,7 +96,7 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Sub New(ByVal strName As String)
                 Me.Name = strName
-                Me.m_status = eItemStatusTypes.Added
+                Me.Status = eItemStatusTypes.Added
             End Sub
 
             ''' -------------------------------------------------------------------
@@ -110,14 +111,14 @@ Namespace Ecospace
             ''' Get the <see cref="cEcospaceMPA.DBID"/> of an associated MPA, if any.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property DBID() As Integer = cCore.NULL_VALUE
+            Public ReadOnly Property DBID As Integer
 
             ''' -------------------------------------------------------------------
             ''' <summary>
             ''' Get the <see cref="cEcospaceMPA.Index"/> of an associated MPA, if any.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property Index() As Integer = 0
+            Public ReadOnly Property Index As Integer
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -125,15 +126,21 @@ Namespace Ecospace
             ''' object.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public ReadOnly Property Status() As eItemStatusTypes
+            Public Property Status As eItemStatusTypes
                 Get
                     Return Me.m_status
                 End Get
+                Private Set(value As eItemStatusTypes)
+                    Me.m_status = value
+                End Set
             End Property
 
-            Public Function IsNew() As Boolean
-                Return (Me.DBID <= 0)
-            End Function
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set whether the user has confirmed an action on this object.
+            ''' </summary>
+            ''' -------------------------------------------------------------------
+            Public Property Confirmed As Boolean = False
 
             ''' -------------------------------------------------------------------
             ''' <summary>
@@ -145,7 +152,20 @@ Namespace Ecospace
             ''' -------------------------------------------------------------------
             Public Function IsChanged(ByVal mpa As cEcospaceMPA) As Boolean
                 If Me.IsNew Then Return False
+                If (mpa.DBID <> Me.DBID) Then Return False
                 Return (mpa.Name <> Me.Name)
+            End Function
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' States whether the MPA is to be created.
+            ''' </summary>
+            ''' <returns>
+            ''' True when MPA <see cref="Name">Name</see> value has changed.
+            ''' </returns>
+            ''' -------------------------------------------------------------------
+            Public Function IsNew() As Boolean
+                Return (Me.DBID <= 0)
             End Function
 
             ''' -------------------------------------------------------------------
@@ -161,15 +181,15 @@ Namespace Ecospace
                 Set(ByVal bDelete As Boolean)
                     If Not Me.IsNew() Then
                         If bDelete Then
-                            Me.m_status = eItemStatusTypes.Removed
+                            Me.Status = eItemStatusTypes.Removed
                         Else
-                            Me.m_status = eItemStatusTypes.Original
+                            Me.Status = eItemStatusTypes.Original
                         End If
                     Else
                         If bDelete Then
-                            Me.m_status = eItemStatusTypes.Invalid
+                            Me.Status = eItemStatusTypes.Invalid
                         Else
-                            Me.m_status = eItemStatusTypes.Added
+                            Me.Status = eItemStatusTypes.Added
                         End If
                     End If
                 End Set
@@ -185,10 +205,8 @@ Namespace Ecospace
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Sub New()
-
             MyBase.New()
             Me.FixedColumnWidths = False
-
         End Sub
 
 #Region " Grid interaction "
@@ -204,25 +222,21 @@ Namespace Ecospace
 
             Me.Selection.EnableMultiSelection = False
 
-            ' JS 15Apr07: there will be no context menu item until we have a better idea
             Me.ContextMenu = Nothing
 
             ' Redim columns
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
-            ' MPA index cell
-            Me(0, eColumnTypes.MPAIndex) = New EwEColumnHeaderCell()
-            ' MPA name cell, editable this time
-            Me(0, eColumnTypes.MPAName) = New EwEColumnHeaderCell(SharedResources.HEADER_MPA)
-            ' MPA index cell
-            Me(0, eColumnTypes.MPAStatus) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
+            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell()
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_MPA)
+            Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
             ' Fix index column only; MPA name column cannot be fixed because it must be editable
             Me.FixedColumns = 1
 
-            Me.Columns(eColumnTypes.MPAIndex).AutoSizeMode = SourceGrid2.AutoSizeMode.None
-            Me.Columns(eColumnTypes.MPAName).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
-            Me.Columns(eColumnTypes.MPAStatus).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+            Me.Columns(eColumnTypes.Index).AutoSizeMode = SourceGrid2.AutoSizeMode.None
+            Me.Columns(eColumnTypes.Name).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
+            Me.Columns(eColumnTypes.Status).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
             Me.AutoStretchColumnsToFitWidth = True
 
         End Sub
@@ -236,7 +250,6 @@ Namespace Ecospace
         ''' -----------------------------------------------------------------------
         Protected Overrides Sub FillData()
 
-            ' Get the core reference
             Dim MPA As cEcospaceMPA = Nothing
             Dim mi As cMPAInfo = Nothing
 
@@ -252,18 +265,6 @@ Namespace Ecospace
             ' Brute-force update grid
             UpdateGrid()
 
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Finish the style
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Protected Overrides Sub FinishStyle()
-            MyBase.FinishStyle()
-            Me.AutoSizeColumn(eColumnTypes.MPAIndex, 40)
-            Me.AutoSizeColumn(eColumnTypes.MPAStatus, 80)
-            Me.StretchColumnsToFitWidth()
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -286,12 +287,12 @@ Namespace Ecospace
 
                 ewec = New EwECell(0, GetType(Integer))
                 ewec.Style = cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable
-                Me(iRow, eColumnTypes.MPAIndex) = ewec
+                Me(iRow, eColumnTypes.Index) = ewec
 
-                Me(iRow, eColumnTypes.MPAName) = New Cells.Real.Cell("", GetType(String))
-                Me(iRow, eColumnTypes.MPAName).Behaviors.Add(Me.EwEEditHandler)
+                Me(iRow, eColumnTypes.Name) = New Cells.Real.Cell("", GetType(String))
+                Me(iRow, eColumnTypes.Name).Behaviors.Add(Me.EwEEditHandler)
 
-                Me(iRow, eColumnTypes.MPAStatus) = New EwEStatusCell(eItemStatusTypes.Original)
+                Me(iRow, eColumnTypes.Status) = New EwEStatusCell(eItemStatusTypes.Original)
             Next
 
             ' Delete obsolete rows
@@ -307,6 +308,8 @@ Namespace Ecospace
                 UpdateRow(iRow)
             Next iRow
 
+            Me.StretchColumnsToFitWidth()
+
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -321,9 +324,6 @@ Namespace Ecospace
             Dim ri As RowInfo = Nothing
             Dim aCells() As Cells.ICellVirtual = Nothing
             Dim pos As SourceGrid2.Position = Nothing
-            Dim vm As VisualModels.IVisualModel = Nothing
-            Dim strText As String = ""
-            Dim iNumOpen As Integer = 0
 
             Me.AllowUpdates = False
 
@@ -333,15 +333,14 @@ Namespace Ecospace
             ri.Tag = mi
             aCells = ri.GetCells()
 
-            ' Set index
-            pos = New Position(iRow, eColumnTypes.MPAIndex)
-            aCells(eColumnTypes.MPAIndex).SetValue(pos, CInt(iRow))
+            pos = New Position(iRow, eColumnTypes.Index)
+            aCells(eColumnTypes.Index).SetValue(pos, CInt(iRow))
 
             ' Set name
-            pos = New Position(iRow, eColumnTypes.MPAName)
-            aCells(eColumnTypes.MPAName).SetValue(pos, CStr(mi.Name))
+            pos = New Position(iRow, eColumnTypes.Name)
+            aCells(eColumnTypes.Name).SetValue(pos, CStr(mi.Name))
 
-            aCells(eColumnTypes.MPAStatus).SetValue(pos, mi.Status)
+            aCells(eColumnTypes.Status).SetValue(pos, mi.Status)
 
             Me.AllowUpdates = True
 
@@ -368,10 +367,10 @@ Namespace Ecospace
             Dim mi As cMPAInfo = DirectCast(Me.m_mpas(p.Row - 1), cMPAInfo)
 
             Select Case DirectCast(p.Column, eColumnTypes)
-                Case eColumnTypes.MPAIndex
+                Case eColumnTypes.Index
                     ' Not possible
 
-                Case eColumnTypes.MPAName
+                Case eColumnTypes.Name
                     Dim strName As String = CStr(cell.GetValue(p))
                     ' Check if name is unique
                     For iMPA As Integer = 0 To Me.m_mpas.Count - 1
@@ -393,17 +392,17 @@ Namespace Ecospace
 
         End Function
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Cell click handler, called in response to clicking button-like cells.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
+        '''' -----------------------------------------------------------------------
+        '''' <summary>
+        '''' Cell click handler, called in response to clicking button-like cells.
+        '''' </summary>
+        '''' -----------------------------------------------------------------------
+        'Protected Overrides Sub OnCellClicked(ByVal p As Position, ByVal cell As Cells.ICellVirtual)
 
-            Select Case DirectCast(p.Column, eColumnTypes)
-            End Select
+        '    Select Case DirectCast(p.Column, eColumnTypes)
+        '    End Select
 
-        End Sub
+        'End Sub
 
 #End Region ' Grid interaction
 
@@ -414,7 +413,7 @@ Namespace Ecospace
         ''' Delete a row from the grid
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Sub ToggleDeleteSelected()
+        Public Sub ToggleDeleteRow()
 
             For Each iRow As Integer In Me.SelectedRows
 
@@ -430,15 +429,15 @@ Namespace Ecospace
 
                     Case eItemStatusTypes.Original
                         ' Clear removed status of the MPA
-                        Me.m_alMPAsRemoved.Remove(Me.m_mpas(iMPA))
+                        Me.m_mpasRemoved.Remove(Me.m_mpas(iMPA))
 
                     Case eItemStatusTypes.Added
                         ' Clear removed status of the MPA
-                        Me.m_alMPAsRemoved.Remove(Me.m_mpas(iMPA))
+                        Me.m_mpasRemoved.Remove(Me.m_mpas(iMPA))
 
                     Case eItemStatusTypes.Removed
                         ' Set removed status
-                        Me.m_alMPAsRemoved.Add(Me.m_mpas(iMPA))
+                        Me.m_mpasRemoved.Add(Me.m_mpas(iMPA))
 
                     Case eItemStatusTypes.Invalid
                         ' Set removed status
@@ -481,6 +480,42 @@ Namespace Ecospace
             If Not Me.CanAddRow() Then Return
             Me.CreateMPA()
         End Sub
+
+        ''' <summary>
+        ''' Create a new MPA.
+        ''' </summary>
+        Private Sub CreateMPA()
+            Dim iRow As Integer = -1
+            Dim iMPA As Integer = -1
+            Dim mi As cMPAInfo = Nothing
+            Dim mpas As New List(Of String)
+
+            ' Make fit
+            iRow = Math.Max(iFIRSTMPAROW, Me.RowsCount)
+            iMPA = iRow - iFIRSTMPAROW
+
+            ' Validate
+            If iMPA < 0 Then Return
+
+            ' Collect all current MPA names
+            For Each mi In Me.m_mpas
+                mpas.Add(mi.Name)
+            Next
+
+            mi = New cMPAInfo(cStringUtils.Localize(SharedResources.DEFAULT_NEWMPA_NUM,
+                    cStringUtils.GetNextNumber(mpas.ToArray(), SharedResources.DEFAULT_NEWMPA_NUM)))
+            Me.m_mpas.Insert(iMPA, mi)
+
+            Me.UpdateGrid()
+            Me.SelectRow(mi)
+        End Sub
+
+        ''' <summary>
+        ''' States whether a row can be inserted at the indicated position.
+        ''' </summary>
+        Public Function CanAddRow() As Boolean
+            Return True
+        End Function
 
         ''' <summary>
         ''' Move row up, switching positions with the row above it.
@@ -533,7 +568,7 @@ Namespace Ecospace
         ''' </summary>
         Private Sub MoveRow(ByVal iFromRow As Integer, ByVal iToRow As Integer)
 
-            Dim objTemp As cMPAInfo = Nothing
+            Dim t As cMPAInfo = Nothing
             Dim iStep As Integer = 1
             Dim iFrom As Integer = iFromRow - iFIRSTMPAROW
             Dim iTo As Integer = iToRow - iFIRSTMPAROW
@@ -549,50 +584,14 @@ Namespace Ecospace
 
             ' Swap  
             For i As Integer = iFrom To iTo - iStep Step iStep
-                objTemp = Me.m_mpas(i + iStep)
+                t = Me.m_mpas(i + iStep)
                 Me.m_mpas(i + iStep) = Me.m_mpas(i)
-                Me.m_mpas(i) = objTemp
+                Me.m_mpas(i) = t
                 Me.UpdateRow(i + iFIRSTMPAROW)
                 Me.UpdateRow(i + iFIRSTMPAROW + iStep)
             Next i
 
         End Sub
-
-        ''' <summary>
-        ''' Create a new MPA.
-        ''' </summary>
-        Private Sub CreateMPA()
-            Dim iRow As Integer = -1
-            Dim iMPA As Integer = -1
-            Dim mi As cMPAInfo = Nothing
-            Dim lstrMPAs As New List(Of String)
-
-            ' Make fit
-            iRow = Math.Max(iFIRSTMPAROW, Me.RowsCount)
-            iMPA = iRow - iFIRSTMPAROW
-
-            ' Validate
-            If iMPA < 0 Then Return
-
-            ' Collect all current MPA names
-            For Each mi In Me.m_mpas
-                lstrMPAs.Add(mi.Name)
-            Next
-
-            mi = New cMPAInfo(cStringUtils.Localize(SharedResources.DEFAULT_NEWMPA_NUM,
-                    cStringUtils.GetNextNumber(lstrMPAs.ToArray(), SharedResources.DEFAULT_NEWMPA_NUM)))
-            Me.m_mpas.Insert(iMPA, mi)
-
-            Me.UpdateGrid()
-            Me.SelectRow(mi)
-        End Sub
-
-        ''' <summary>
-        ''' States whether a row can be inserted at the indicated position.
-        ''' </summary>
-        Public Function CanAddRow() As Boolean
-            Return True
-        End Function
 
 #End Region ' Row manipulation 
 
@@ -656,17 +655,17 @@ Namespace Ecospace
             Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.NO)
             Dim bHasDuplicates As Boolean = False
             Dim bHasBlank As Boolean = False
-            Dim lstrHandled As New List(Of String)
+            Dim handled As New List(Of String)
 
             For Each hi As cMPAInfo In Me.m_mpas
                 If String.IsNullOrEmpty(hi.Name) Then
                     bHasBlank = True
                 ElseIf Not Me.IsNameUnique(hi.Name, hi) Then
-                    If Not lstrHandled.Contains(hi.Name) Then
+                    If Not handled.Contains(hi.Name) Then
                         fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation,
                                                              cStringUtils.Localize(My.Resources.PROMPT_DUPLICATE_NAME, hi.Name),
                                                              eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, cCore.NULL_VALUE))
-                        lstrHandled.Add(hi.Name)
+                        handled.Add(hi.Name)
                     End If
                     bHasDuplicates = True
                 End If
@@ -713,15 +712,14 @@ Namespace Ecospace
             Dim strPrompt As String = ""
             Dim bConfigurationChanged As Boolean = False
             Dim bMPAsChanged As Boolean = False
-            Dim mi As cMPAInfo = Nothing
+            Dim info As cMPAInfo = Nothing
             Dim iDBID As Integer = Nothing
             Dim mpa As cEcospaceMPA = Nothing
-            Dim iMPA As Integer = 0
-            Dim iDeleteCount As Integer = 0
+            Dim i As Integer = 0
             Dim MPAMonths(cCore.N_MONTHS) As Boolean
             Dim bSuccess As Boolean = True
 
-            For i As Integer = 1 To cCore.N_MONTHS
+            For i = 1 To cCore.N_MONTHS
                 MPAMonths(i) = False
             Next
 
@@ -729,26 +727,20 @@ Namespace Ecospace
             If Not Me.ValidateContent() Then Return False
 
             ' Assess MPA changes
-            For iMPA = 0 To Me.m_mpas.Count - 1
-                mi = DirectCast(Me.m_mpas(iMPA), cMPAInfo)
-                If mi.IsNew() Then
+            For i = 0 To Me.m_mpas.Count - 1
+                info = DirectCast(Me.m_mpas(i), cMPAInfo)
+
+                If info.IsNew Then
                     bConfigurationChanged = True
                 Else
-                    If ((iMPA + 1) <> mi.Index) Then bConfigurationChanged = True
-                    bMPAsChanged = bMPAsChanged Or mi.IsChanged(Me.Core.EcospaceMPAs(mi.Index))
+                    If ((i + 1) <> info.Index) Then bConfigurationChanged = True
+                    bMPAsChanged = bMPAsChanged Or info.IsChanged(Me.Core.EcospaceMPAs(info.Index))
                 End If
-            Next iMPA
+            Next i
 
-            ' Assess MPAs to remove
-            iDeleteCount = 0
-            For iMPA = 0 To Me.m_alMPAsRemoved.Count - 1
-                mi = DirectCast(Me.m_alMPAsRemoved(iMPA), cMPAInfo)
-                If (Not mi.IsNew()) Then iDeleteCount += 1
-            Next iMPA
+            If (Me.m_mpasRemoved.Count > 1) Then
 
-            If (iDeleteCount > 0) Then
-
-                strPrompt = cStringUtils.Localize(My.Resources.ECOSPACE_EDITMPA_CONFIRMDELETENUM_PROMPT, iDeleteCount)
+                strPrompt = cStringUtils.Localize(My.Resources.ECOSPACE_EDITMPA_CONFIRMDELETENUM_PROMPT, Me.m_mpasRemoved.Count)
                 Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)
 
@@ -756,17 +748,47 @@ Namespace Ecospace
                     Case eMessageReply.CANCEL
                         ' Abort Apply process
                         Return False
-                    Case eMessageReply.NO
-                        ' Do not delete MPAs
-                        iDeleteCount = 0
                     Case eMessageReply.YES
-                        ' Delete MPAs
+                        ' Confirm all regions
+                        For Each info In Me.m_mpasRemoved
+                            info.Confirmed = True
+                        Next
                         bConfigurationChanged = True
+                    Case eMessageReply.NO
+                        ' NOP
                     Case Else
-                        ' Unexpected anwer: assert
+                        ' Unexpected answer: assert
                         Debug.Assert(False)
                 End Select
 
+            Else
+                ' Assess MPAs to remove
+                For i = 0 To Me.m_mpasRemoved.Count - 1
+                    info = Me.m_mpasRemoved(i)
+                    If (Not info.IsNew()) Then
+
+                        strPrompt = cStringUtils.Localize(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT, info.Name)
+                        Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
+                        Me.UIContext.Core.Messages.SendMessage(fmsg)
+
+                        Select Case fmsg.Reply
+                            Case eMessageReply.CANCEL
+                                ' Abort Apply process
+                                Return False
+                            Case eMessageReply.NO
+                                ' Do not delete this Habitat
+                                info.Confirmed = False
+                            Case eMessageReply.YES
+                                ' Delete this Habitat
+                                info.Confirmed = True
+                                bConfigurationChanged = True
+                            Case Else
+                                ' Unexpected answer: assert
+                                Debug.Assert(False)
+                        End Select
+
+                    End If
+                Next i
             End If
 
             ' Handle added and removed items
@@ -776,41 +798,36 @@ Namespace Ecospace
                 cApplicationStatusNotifier.StartProgress(Me.Core, SharedResources.GENERIC_STATUS_APPLYCHANGES)
 
                 ' Add new MPAs
-                For iMPA = 0 To Me.m_mpas.Count - 1
-                    mi = DirectCast(Me.m_mpas(iMPA), cMPAInfo)
-                    If (mi.IsNew()) Then
-                        bSuccess = bSuccess And Me.Core.AddEcospaceMPA(mi.Name, MPAMonths, iDBID)
+                For i = 0 To Me.m_mpas.Count - 1
+                    info = Me.m_mpas(i)
+                    If (info.IsNew) Then
+                        bSuccess = bSuccess And Me.Core.AddEcospaceMPA(info.Name, i, MPAMonths, iDBID)
                     Else
-                        If ((iMPA + 1) <> mi.Index) Then
-                            bSuccess = bSuccess And Me.Core.MoveEcospaceMPA(mi.DBID, iMPA + 1)
+                        If ((i + 1) <> info.Index) Then
+                            bSuccess = bSuccess And Me.Core.MoveEcospaceMPA(info.DBID, i + 1)
                         End If
                     End If
                 Next
 
                 ' Remove MPAs
-                If iDeleteCount > 0 Then
-                    For iMPA = 0 To Me.m_alMPAsRemoved.Count - 1
-                        mi = DirectCast(Me.m_alMPAsRemoved(iMPA), cMPAInfo)
-                        If (Not mi.IsNew()) Then
-                            If (Me.Core.RemoveEcospaceMPA(mi.DBID)) Then
-                                Me.m_mpas.Remove(mi)
-                            Else
-                                bSuccess = False
-                            End If
+                For i = 0 To Me.m_mpasRemoved.Count - 1
+                    info = Me.m_mpasRemoved(i)
+
+                    ' Sanity check
+                    Debug.Assert(Not info.IsNew())
+
+                    If (info.Confirmed) Then
+                        If (Not Me.Core.RemoveEcospaceMPA(info.DBID)) Then
+                            bSuccess = False
                         End If
-                    Next iMPA
-                    If bSuccess Then Me.m_alMPAsRemoved.Clear()
-                End If
+                    End If
+                Next i
+                If bSuccess Then Me.m_mpasRemoved.Clear()
 
                 ' The core will reload now
-                If bSuccess Then
-                    bSuccess = Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, True)
-                    ' Test whether new MPAs were loaded correctly
-                    Debug.Assert(Me.m_mpas.Count = Me.Core.nMPAs, ">> Internal panic: Dialog and core out of sync on MPAs")
-                Else
-                    Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
-                End If
+                bSuccess = Me.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace, bSuccess)
                 cApplicationStatusNotifier.EndProgress(Me.Core)
+
             End If
 
             ' Update core objects
@@ -818,23 +835,23 @@ Namespace Ecospace
 
                 ' Build quick local lookup for locating MPAs by DBID
                 Dim dtMPAs As New Dictionary(Of Integer, cEcospaceMPA)
-                For iMPA = 1 To Me.Core.nMPAs
-                    mpa = Me.Core.EcospaceMPAs(iMPA)
+                For i = 1 To Me.Core.nMPAs
+                    mpa = Me.Core.EcospaceMPAs(i)
                     dtMPAs(mpa.DBID) = mpa
                 Next
 
                 ' For each local MPA admin unit
-                For iMPA = 0 To Me.m_mpas.Count - 1
+                For i = 0 To Me.m_mpas.Count - 1
                     ' Get local admin unit
-                    mi = DirectCast(Me.m_mpas(iMPA), cMPAInfo)
+                    info = DirectCast(Me.m_mpas(i), cMPAInfo)
                     ' Is associated w existing MPA, e.g. could be changed?
-                    If Not mi.IsNew Then
+                    If Not info.IsNew Then
                         ' Get MPA
-                        mpa = dtMPAs(mi.DBID)
+                        mpa = dtMPAs(info.DBID)
                         ' Has user changed the MPA?
-                        If mi.IsChanged(mpa) Then
+                        If info.IsChanged(mpa) Then
                             ' #Yes: update MPA
-                            mpa.Name = mi.Name
+                            mpa.Name = info.Name
                         End If
                     End If
                 Next
