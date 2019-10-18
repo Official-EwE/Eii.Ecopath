@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PLUGIN_DESCRIPTION" xml:space="preserve">
+    <value>EcoTroph（ET）是一种建模方法，其围绕以下思想提出：生态系统可以通过其在营养层中的生物量分布来表示。这样一种方法，其中物种本身就消失了，可以被视为使用营养水平度量进行生态系统建模的最终阶段。通过将生物质流作为准物理过程来集中，它允许探索生态系统功能的各个方面，这些方面与EwE互补。它为用户提供了简单的工具，可以在生态系统规模上量化捕鱼的影响，并提供一种新的生态系统研究方法。因此，它似乎是Ecopath的有用补充。</value>
+  </data>
+  <data name="SAVE_ECOTROPH" xml:space="preserve">
+    <value>保存一个EcoTroph输入数据文件</value>
+  </data>
+  <data name="PROMPT_SAVE_ET" xml:space="preserve">
+    <value>保存一个EcoTroph输入数据文件</value>
+  </data>
+  <data name="PB_DOWNLOAD" xml:space="preserve">
+    <value>无法下载文件。原始错误：</value>
+  </data>
+  <data name="EXCEED_TIME_R" xml:space="preserve">
+    <value>超出R的时间</value>
+  </data>
+  <data name="NO_MODEL_DATA" xml:space="preserve">
+    <value>没有加载模型，我们找不到EcoTroph输入数据”</value>
+  </data>
+  <data name="ERROR_LOAD" xml:space="preserve">
+    <value>无法从磁盘读取文件。原始错误：{0}</value>
+  </data>
+  <data name="ERROR_NO_WS" xml:space="preserve">
+    <value>Web服务现在不可用</value>
+  </data>
+  <data name="ERROR_UNZIP" xml:space="preserve">
+    <value>无法解压缩下载的文件</value>
+  </data>
+  <data name="NOT_ENOUGH_FLEET" xml:space="preserve">
+    <value>机队不足以使用这些参数</value>
+  </data>
+  <data name="PLUGIN_AUTHOR" xml:space="preserve">
+    <value>Agrocampus Ouest-渔业和水产科学中心</value>
+  </data>
+  <data name="NO_OUTPUT_R" xml:space="preserve">
+    <value>该程序没有结果</value>
+  </data>
+  <data name="FILEFILTER_XML_ALL" xml:space="preserve">
+    <value>xml文件（* .xml）| * .xml |所有文件（*。*）| *。*</value>
+  </data>
+  <data name="ERROR_INPUT_FILE" xml:space="preserve">
+    <value>无法从磁盘读取文件。原始错误：</value>
+  </data>
+  <data name="FILEFILTER_XML" xml:space="preserve">
+    <value>xml文件（* .xml）| * .xml</value>
+  </data>
+  <data name="ERROR_NO_MODEL_LOADED" xml:space="preserve">
+    <value>没有加载模型，我们找不到EcoTroph输入数据</value>
+  </data>
+  <data name="NO_SELECTED_FLEET" xml:space="preserve">
+    <value>没有选择感兴趣的舰队！该过程将使用Same.mE参数运行</value>
+  </data>
+  <data name="TOO_SELECTED_FLEET" xml:space="preserve">
+    <value>您无法选择所有舰队!!!，请至少取消选择一个</value>
+  </data>
+  <data name="NO_DB_SERVICES" xml:space="preserve">
+    <value>用于访问模型数据库的Web服务似乎已关闭。</value>
+  </data>
+  <data name="PLUGIN_CONTROLTEXT" xml:space="preserve">
+    <value>生态营养</value>
+  </data>
+  <data name="ERROR_NO_RESULTS" xml:space="preserve">
+    <value>该程序未产生任何结果</value>
+  </data>
+  <data name="NO_R" xml:space="preserve">
+    <value>R不存在</value>
+  </data>
+  <data name="PB_R" xml:space="preserve">
+    <value>R使用中的问题</value>
+  </data>
+</root>

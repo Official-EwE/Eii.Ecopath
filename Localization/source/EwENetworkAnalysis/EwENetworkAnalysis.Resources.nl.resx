@@ -1,0 +1,894 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ROW_HDR_IMPORT" xml:space="preserve">
+    <value>Importeren</value>
+  </data>
+  <data name="COL_HDR_IMPORT" xml:space="preserve">
+    <value>Importeren</value>
+  </data>
+  <data name="COL_HDR_CATCH" xml:space="preserve">
+    <value>Vangst</value>
+  </data>
+  <data name="COL_HDR_BIOMASS" xml:space="preserve">
+    <value>biomassa</value>
+  </data>
+  <data name="COL_HDR_VALUE" xml:space="preserve">
+    <value>Waarde</value>
+  </data>
+  <data name="PAGE_CREDITS" xml:space="preserve">
+    <value>credits</value>
+  </data>
+  <data name="ROW_HDR_EXPORT" xml:space="preserve">
+    <value>Exporteren</value>
+  </data>
+  <data name="COL_HDR_EXPORT" xml:space="preserve">
+    <value>Exporteren</value>
+  </data>
+  <data name="ROW_HDR_TOTAL" xml:space="preserve">
+    <value>Totaal</value>
+  </data>
+  <data name="PAGE_ASC_TOTAL" xml:space="preserve">
+    <value>Totaal</value>
+  </data>
+  <data name="COL_HDR_GRP_NAME" xml:space="preserve">
+    <value>Groepsnaam</value>
+  </data>
+  <data name="COL_HDR_YEAR" xml:space="preserve">
+    <value>Jaar</value>
+  </data>
+  <data name="COL_HDR_PARAM" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="HEADER_ANNUAL" xml:space="preserve">
+    <value>jaar-</value>
+  </data>
+  <data name="COL_HDR_SOURCE" xml:space="preserve">
+    <value>Bron</value>
+  </data>
+  <data name="LBL_FIB_INDX" xml:space="preserve">
+    <value>FIB-index</value>
+  </data>
+  <data name="ROW_HDR_SUM" xml:space="preserve">
+    <value>Som</value>
+  </data>
+  <data name="ROW_HDR_DET" xml:space="preserve">
+    <value>detritus</value>
+  </data>
+  <data name="HEADER_MONTHLY" xml:space="preserve">
+    <value>Maandelijks</value>
+  </data>
+  <data name="LBL_TOTAL_CATCH" xml:space="preserve">
+    <value>Totale vangst</value>
+  </data>
+  <data name="LBL_KEMPTONS_Q" xml:space="preserve">
+    <value>Kemptons Q</value>
+  </data>
+  <data name="LBL_INDEXED" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="COL_HDR_TRP_LVL" xml:space="preserve">
+    <value>Trofisch niveau</value>
+  </data>
+  <data name="ROW_HDR_PRODUCER" xml:space="preserve">
+    <value>Producent</value>
+  </data>
+  <data name="COL_HDR_CONSUM" xml:space="preserve">
+    <value>Consumptie</value>
+  </data>
+  <data name="ROW_HDR_RESP" xml:space="preserve">
+    <value>Ademhaling</value>
+  </data>
+  <data name="COL_HDR_RESP" xml:space="preserve">
+    <value>Ademhaling</value>
+  </data>
+  <data name="STR_NONE" xml:space="preserve">
+    <value>geen</value>
+  </data>
+  <data name="PAGE_FLOWDET" xml:space="preserve">
+    <value>Stroom uit detritus</value>
+  </data>
+  <data name="MNU_STYLE_CIRCLES" xml:space="preserve">
+    <value>&amp; Cirkels</value>
+  </data>
+  <data name="COL_HDR_ASCEND_FLOWBIT" xml:space="preserve">
+    <value>Ascendency (flowbits)</value>
+  </data>
+  <data name="COL_HDR_FLOW_DET" xml:space="preserve">
+    <value>Stroom naar detritus</value>
+  </data>
+  <data name="LBL_ECOSIM_NA_WO_PPR_EST_PRGR" xml:space="preserve">
+    <value>Ecosim netwerkanalyse (zonder PPR Est) voortgang:</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS" xml:space="preserve">
+    <value>Paden zoeken ...</value>
+  </data>
+  <data name="COL_HDR_CAPACITY_PCT" xml:space="preserve">
+    <value>Capaciteit (%)</value>
+  </data>
+  <data name="LBL_NA_PRGR" xml:space="preserve">
+    <value>Netwerk analyse voortgang:</value>
+  </data>
+  <data name="PAGE_CP_TOPPRED" xml:space="preserve">
+    <value>Top predatie &lt;- prooi</value>
+  </data>
+  <data name="GENERIC_TOOLTIP" xml:space="preserve">
+    <value>Plug-in voor netwerkanalyse</value>
+  </data>
+  <data name="COL_HDR_DET_TE_W" xml:space="preserve">
+    <value>Det. TE (gewogen)</value>
+  </data>
+  <data name="PAGE_FB_FROMCOMBINED" xml:space="preserve">
+    <value>Van alles gecombineerd</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAY_CYCLES" xml:space="preserve">
+    <value>Padcycli zoeken ...</value>
+  </data>
+  <data name="ROW_HDR_THROUGHPUT_CYC_TOTAL" xml:space="preserve">
+    <value>Doorvoer gecirculeerd (inclusief detritus)</value>
+  </data>
+  <data name="PROMPT_ERROR_INITIALIZE" xml:space="preserve">
+    <value>Netwerkanalyse is niet correct geïnitialiseerd</value>
+  </data>
+  <data name="STR_WO_DET" xml:space="preserve">
+    <value>zonder detritus</value>
+  </data>
+  <data name="COL_HDR_PATH_NUM" xml:space="preserve">
+    <value>Pad nummer</value>
+  </data>
+  <data name="COL_HDR_PATH_LEN" xml:space="preserve">
+    <value>Pad lengte</value>
+  </data>
+  <data name="LBL_POSITIVE" xml:space="preserve">
+    <value>Positief</value>
+  </data>
+  <data name="STR_FROM_PRIM_PRODUCER" xml:space="preserve">
+    <value>Van primaire producenten: {0}%</value>
+  </data>
+  <data name="STR_FROM_DET" xml:space="preserve">
+    <value>Van detritus: {0}%</value>
+  </data>
+  <data name="LBL_RESP" xml:space="preserve">
+    <value>ademhaling</value>
+  </data>
+  <data name="LBL_CONS" xml:space="preserve">
+    <value>consumptie</value>
+  </data>
+  <data name="ROW_HDR_TOTAL_THROUGHPUT" xml:space="preserve">
+    <value>Totale doorvoer</value>
+  </data>
+  <data name="PAGE_FB" xml:space="preserve">
+    <value>Stromen en biomassa</value>
+  </data>
+  <data name="STR_PROP_TOTAL_FLOW" xml:space="preserve">
+    <value>Aandeel van de totale stroom afkomstig van detritus:</value>
+  </data>
+  <data name="LBL_RELTOTALIMPACT" xml:space="preserve">
+    <value>Relatieve totale impact</value>
+  </data>
+  <data name="COL_HDR_RELTOTALIMPACT" xml:space="preserve">
+    <value>Relatieve totale impact</value>
+  </data>
+  <data name="ROW_HDR_THROUGHPUT_CYC_LIV" xml:space="preserve">
+    <value>Doorvoer gecirculeerd (exclusief detritus)</value>
+  </data>
+  <data name="PAGE_MTI" xml:space="preserve">
+    <value>Gemengde trofische impact</value>
+  </data>
+  <data name="PAGE_ASC" xml:space="preserve">
+    <value>Overwicht</value>
+  </data>
+  <data name="COL_HDR_ASCEND_TOTAL" xml:space="preserve">
+    <value>Overwicht</value>
+  </data>
+  <data name="PAGE_PPR" xml:space="preserve">
+    <value>Primaire productie vereist</value>
+  </data>
+  <data name="PROMPT_DISPLAY_ALL_HIDDEN_GROUPS" xml:space="preserve">
+    <value>Alle groepen weergeven (ja) of alleen verborgen groepen (nee)?</value>
+  </data>
+  <data name="STATUS_RUNNING_NA" xml:space="preserve">
+    <value>Netwerkanalyse uitvoeren ...</value>
+  </data>
+  <data name="STATUS_RUNNING_NETWORKANALYSIS" xml:space="preserve">
+    <value>Netwerkanalyse uitvoeren ...</value>
+  </data>
+  <data name="PAGE_CYC_LIVING" xml:space="preserve">
+    <value>Cycli (levend)</value>
+  </data>
+  <data name="COL_HDR_CAPACITY_ECOSIM" xml:space="preserve">
+    <value>Capaciteit</value>
+  </data>
+  <data name="PROMPT_COMPUTE_ALL_CYCLES" xml:space="preserve">
+    <value>Alle cycli berekenen? Dit kan erg tijdrovend zijn voor grotere modellen.</value>
+  </data>
+  <data name="LBL_TL" xml:space="preserve">
+    <value>TL</value>
+  </data>
+  <data name="COL_HDR_TL" xml:space="preserve">
+    <value>TL</value>
+  </data>
+  <data name="LBL_TE" xml:space="preserve">
+    <value>TE</value>
+  </data>
+  <data name="PAGE_FB_BIOMPMD" xml:space="preserve">
+    <value>Biomassa-piramide</value>
+  </data>
+  <data name="COL_HDR_THROUGHPUT" xml:space="preserve">
+    <value>Doorvoer</value>
+  </data>
+  <data name="PROMPT_SAVE_NOACCESS" xml:space="preserve">
+    <value>Netwerkanalyse heeft geen toegang tot bestemming '{0}'</value>
+  </data>
+  <data name="LBL_PREDATION" xml:space="preserve">
+    <value>predatie</value>
+  </data>
+  <data name="PROMPT_FILECREATE_FAILED" xml:space="preserve">
+    <value>Maken van bestand '{0}': {1} is mislukt</value>
+  </data>
+  <data name="MNU_STYLE" xml:space="preserve">
+    <value>Grafiek &amp; stijl</value>
+  </data>
+  <data name="COL_HDR_PSUST_SDLOWER" xml:space="preserve">
+    <value>Psust SD (lager)</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_FLOW" xml:space="preserve">
+    <value>Ovh stroom</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_RESP" xml:space="preserve">
+    <value>Ovh resp</value>
+  </data>
+  <data name="LBL_BIOMASS" xml:space="preserve">
+    <value>biomassa</value>
+  </data>
+  <data name="COL_HDR_PSUST_SDUPPER" xml:space="preserve">
+    <value>Psust SD (bovenste)</value>
+  </data>
+  <data name="PAGE_FB_FROMDET" xml:space="preserve">
+    <value>Van detritus</value>
+  </data>
+  <data name="STR_PCT_THROUGHPUT_LIV" xml:space="preserve">
+    <value>% van de doorvoer zonder afval</value>
+  </data>
+  <data name="ROW_HDR_FINN_CYC_INDX" xml:space="preserve">
+    <value>Finn's fietsindex</value>
+  </data>
+  <data name="PAGE_MTI_PLOTEWE5" xml:space="preserve">
+    <value>Mixed trophic impact plot (EwE5)</value>
+  </data>
+  <data name="STATUS_RUNNING_LINDEMAN" xml:space="preserve">
+    <value>Lindeman Netwerkanalyse uitvoeren ...</value>
+  </data>
+  <data name="MNU_STYLE_DETRITUS_COLLAPSE" xml:space="preserve">
+    <value>&amp; Samenvouwen detritus</value>
+  </data>
+  <data name="COL_HDR_PPR_U_BIOMASS" xml:space="preserve">
+    <value>PPR / u. biom</value>
+  </data>
+  <data name="ROW_HDR_PRED_CYC_INDX" xml:space="preserve">
+    <value>Roofzuchtige fietsindex</value>
+  </data>
+  <data name="PAGE_CP_CPTL11" xml:space="preserve">
+    <value>Consument &lt;- prooi &lt;- TL1</value>
+  </data>
+  <data name="PAGE_CP_CYCLES" xml:space="preserve">
+    <value>Cycles</value>
+  </data>
+  <data name="COL_HDR_PROP_FLOW_DET" xml:space="preserve">
+    <value>Prop flow det</value>
+  </data>
+  <data name="PROMPT_NETWORK_COMPLEXDIET" xml:space="preserve">
+    <value>Netwerkanalyse kan traag verlopen op complexe dieetmatrices en kan enkele uren tot dagen (!) Duren om te voltooien. Weet je zeker dat je door wilt gaan?</value>
+  </data>
+  <data name="COL_HDR_PPR_CATCH" xml:space="preserve">
+    <value>PPR / catch</value>
+  </data>
+  <data name="STATUS_RUNNING_ULANOW" xml:space="preserve">
+    <value>Netwerkanalyse uitvoeren Ulanow ...</value>
+  </data>
+  <data name="COL_HDR_DETRITUS_TKM2" xml:space="preserve">
+    <value>Detritus (t / km²)</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_IMPORT" xml:space="preserve">
+    <value>Tonen &amp; importeren</value>
+  </data>
+  <data name="NAVITEM_ROOT" xml:space="preserve">
+    <value>Netwerk analyse</value>
+  </data>
+  <data name="PAGE_CP_PATHWAYS" xml:space="preserve">
+    <value>pathways</value>
+  </data>
+  <data name="PAGE_FB_FLOWPMD" xml:space="preserve">
+    <value>Stroom piramide</value>
+  </data>
+  <data name="ROW_HDR_INTN_FLOW" xml:space="preserve">
+    <value>Interne stroom</value>
+  </data>
+  <data name="MNU_CONTENT_KEYSTONE2" xml:space="preserve">
+    <value>Keystone index # &amp; 2 (Power et al, 1996)</value>
+  </data>
+  <data name="MNU_CONTENT_KEYSTONE3" xml:space="preserve">
+    <value>Keystone-index # &amp; 3 (Valls et al, 2015)</value>
+  </data>
+  <data name="MNU_CONTENT_KEYSTONE1" xml:space="preserve">
+    <value>Keystone index # &amp; 1 (Libralato et al, 2006)</value>
+  </data>
+  <data name="ROW_HDR_INPUT_TRP_LVL_II_PLUS" xml:space="preserve">
+    <value>Input TL II + (niet in doorvoer)</value>
+  </data>
+  <data name="COL_HDR_PATH" xml:space="preserve">
+    <value>Paden van de opgegeven groep naar alle toproofdieren</value>
+  </data>
+  <data name="COL_HDR_PROD" xml:space="preserve">
+    <value>por</value>
+  </data>
+  <data name="COL_HDR_UNIT" xml:space="preserve">
+    <value>Eenheid</value>
+  </data>
+  <data name="COL_HDR_INFO" xml:space="preserve">
+    <value>Informatie (bits)</value>
+  </data>
+  <data name="LBL_FLOWDET" xml:space="preserve">
+    <value>vloeien voort uit detritus</value>
+  </data>
+  <data name="PROMPT_ERROR_CYCLING" xml:space="preserve">
+    <value>Roofzuchtige fietsindex kan niet worden berekend.</value>
+  </data>
+  <data name="PROMPT_SAVE_FAILED" xml:space="preserve">
+    <value>Netwerkanalyse kan indices niet opslaan in '{0}'</value>
+  </data>
+  <data name="PAGE_CYCPATH_LEN" xml:space="preserve">
+    <value>Cycli en padlengte</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_EXPORT" xml:space="preserve">
+    <value>Ovh export</value>
+  </data>
+  <data name="MNU_STYLE_DETRITUS_EXPAND" xml:space="preserve">
+    <value>&amp; Detritus uitbreiden</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS_CONSUMER" xml:space="preserve">
+    <value>Paden vinden naar consument '{0}' ...</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS_CONSPREY" xml:space="preserve">
+    <value>Paden zoeken voor '{0}' via '{1}' ...</value>
+  </data>
+  <data name="STR_TRANSFER_EFF" xml:space="preserve">
+    <value>Overdrachtsefficiënties (berekend als geometrisch gemiddelde voor TL II-IV)</value>
+  </data>
+  <data name="MNU_STYLE_CIRCLES_SCALED" xml:space="preserve">
+    <value>Cirkels, geschaald naar &amp; biomassa</value>
+  </data>
+  <data name="PAGE_FB_CATCHTL" xml:space="preserve">
+    <value>Vangst op trofisch niveau</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_IMPORT" xml:space="preserve">
+    <value>Ovh import</value>
+  </data>
+  <data name="PROMPT_ERROR_ECOPATH" xml:space="preserve">
+    <value>Netwerkanalyse kan niet eerder worden uitgevoerd dan Ecopath</value>
+  </data>
+  <data name="COL_HDR_NONHIDDEN" xml:space="preserve">
+    <value>Non-verborgen</value>
+  </data>
+  <data name="STATUS_UPDATING_UI" xml:space="preserve">
+    <value>UI bijwerken ...</value>
+  </data>
+  <data name="COL_HDR_PATH_VIA_PREY" xml:space="preserve">
+    <value>Paden van primaire producent of detritusgroepen naar een geselecteerde consument via een specifieke prooi</value>
+  </data>
+  <data name="COL_HDR_TRP_LVL_FLOW" xml:space="preserve">
+    <value>Trofisch niveau \ Flow</value>
+  </data>
+  <data name="LBL_ECOSIM_NA_W_PPR_EST_PRGR" xml:space="preserve">
+    <value>Ecosim netwerkanalyse (met PPR Est) voortgang:</value>
+  </data>
+  <data name="COL_HDR_PSUST" xml:space="preserve">
+    <value>Psust</value>
+  </data>
+  <data name="COL_HDR_PP_TE" xml:space="preserve">
+    <value>Transfer Eff (PP)</value>
+  </data>
+  <data name="PROMPT_SAVE_DESTINATION" xml:space="preserve">
+    <value>Selecteer bestemming om het CSV-bestand van Network Analysis-resultaten op te slaan</value>
+  </data>
+  <data name="PAGE_LINDEX" xml:space="preserve">
+    <value>Verlies van productie-index</value>
+  </data>
+  <data name="COL_HDR_TOTAL_TKM2" xml:space="preserve">
+    <value>Totaal (t / km²)</value>
+  </data>
+  <data name="PROMPT_ERROR_ECOSIM_INIT" xml:space="preserve">
+    <value>Netwerkanalyse voor Ecosim kon niet worden geïnitialiseerd vanwege een probleem in Netwerkanalyse</value>
+  </data>
+  <data name="ROW_HDR_ALL_FLOWS" xml:space="preserve">
+    <value>Alle stromen</value>
+  </data>
+  <data name="PAGE_ECOSIM_NA_WO_PPR" xml:space="preserve">
+    <value>Indexen zonder primaire productie vereist</value>
+  </data>
+  <data name="LBL_IMPACTED_GP" xml:space="preserve">
+    <value>Betrokken groep</value>
+  </data>
+  <data name="PROMPT_SAVE_SUCCESS" xml:space="preserve">
+    <value>Netwerkanalyse-indices opgeslagen in '{0}'</value>
+  </data>
+  <data name="COL_HDR_PP_TE_W" xml:space="preserve">
+    <value>PP TE (gewogen)</value>
+  </data>
+  <data name="COL_HDR_PPR_DET" xml:space="preserve">
+    <value>PPR (Det)</value>
+  </data>
+  <data name="COL_HDR_GRP_NAME_TRP_LVL" xml:space="preserve">
+    <value>Groepsnaam / Trofisch niveau</value>
+  </data>
+  <data name="LBL_KEYSTONE1" xml:space="preserve">
+    <value>Keystone index # 1 (Libralato et al, 2006)</value>
+  </data>
+  <data name="LBL_KEYSTONE2" xml:space="preserve">
+    <value>Keystone index # 2 (Power et al, 1996)</value>
+  </data>
+  <data name="LBL_KEYSTONE3" xml:space="preserve">
+    <value>Groepsrang volgens keystone-index # 3 (Valls et al, 2015)</value>
+  </data>
+  <data name="ROW_HDR_FINN_STR_THRU_PATH_LEN" xml:space="preserve">
+    <value>De rechte padlengte van Finn</value>
+  </data>
+  <data name="LBL_PPR_CAL_PRGR" xml:space="preserve">
+    <value>Voortgang primaire productieberekening:</value>
+  </data>
+  <data name="PAGE_KEYSTONENESS" xml:space="preserve">
+    <value>Keystoneness</value>
+  </data>
+  <data name="PAGE_FB_LINDEMAN" xml:space="preserve">
+    <value>Lindeman wervelkolom</value>
+  </data>
+  <data name="COL_HDR_TOTAL_TKM2YR" xml:space="preserve">
+    <value>Totaal (t / km² / jaar)</value>
+  </data>
+  <data name="PAGE_TLDECOMP" xml:space="preserve">
+    <value>Trofische niveauontleding</value>
+  </data>
+  <data name="PAGE_FB_BIOMTL" xml:space="preserve">
+    <value>Biomassa op trofisch niveau</value>
+  </data>
+  <data name="LBL_IMPORT" xml:space="preserve">
+    <value>importeren</value>
+  </data>
+  <data name="WRITER_ECOSIM" xml:space="preserve">
+    <value>Netwerkanalyse Ecosim-resultaten</value>
+  </data>
+  <data name="MNU_CONTENT_MAXTL" xml:space="preserve">
+    <value>&amp; Max. trofisch niveau</value>
+  </data>
+  <data name="LBL_CATCH_DET_REQ" xml:space="preserve">
+    <value>Vangstafval vereist</value>
+  </data>
+  <data name="LBL_TST" xml:space="preserve">
+    <value>TST (%)</value>
+  </data>
+  <data name="LBL_FCI" xml:space="preserve">
+    <value>FCI</value>
+  </data>
+  <data name="COL_HDR_FCI" xml:space="preserve">
+    <value>FCI</value>
+  </data>
+  <data name="PAGE_FB_FROMPP" xml:space="preserve">
+    <value>Van primaire producenten</value>
+  </data>
+  <data name="ROW_HDR_MEAN_PATH_LEN" xml:space="preserve">
+    <value>Gemiddelde lengte van paden = Totaal aantal pijlen / Totaal aantal paden</value>
+  </data>
+  <data name="LBL_PATH_FROM" xml:space="preserve">
+    <value>Trajecten &amp; van:</value>
+  </data>
+  <data name="LBL_MONTHS" xml:space="preserve">
+    <value>Maanden</value>
+  </data>
+  <data name="PAGE_ECOSIM_NA" xml:space="preserve">
+    <value>Ecosim netwerkanalyse</value>
+  </data>
+  <data name="PAGE_TL_ABSFLOWS" xml:space="preserve">
+    <value>Absolute stromen</value>
+  </data>
+  <data name="PAGE_MTI_PLOT" xml:space="preserve">
+    <value>Gemengde trofische impact plot</value>
+  </data>
+  <data name="WRITER_ECOPATH" xml:space="preserve">
+    <value>Netwerkanalyse Ecopath-resultaten</value>
+  </data>
+  <data name="PAGE_TL_RELFLOWS" xml:space="preserve">
+    <value>Relatieve stromen</value>
+  </data>
+  <data name="COL_HDR_THROUGHPUT_UNIT" xml:space="preserve">
+    <value>Doorvoer (t / km² / jaar)</value>
+  </data>
+  <data name="COL_HDR_CONSUM_PREDAT" xml:space="preserve">
+    <value>Consumptie door roofdieren</value>
+  </data>
+  <data name="CAPTION" xml:space="preserve">
+    <value>Netwerk analyse</value>
+  </data>
+  <data name="MNU_CONTENT" xml:space="preserve">
+    <value>Grafiek c &amp; ontent</value>
+  </data>
+  <data name="ROW_HDR_NO_PATH_FOUND" xml:space="preserve">
+    <value>Geen paden gevonden</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_BIOMASS" xml:space="preserve">
+    <value>Show &amp; biomassa</value>
+  </data>
+  <data name="PAGE_CYC_ALL" xml:space="preserve">
+    <value>Cycli (alles)</value>
+  </data>
+  <data name="LBL_EXPORT" xml:space="preserve">
+    <value>export en vangsten</value>
+  </data>
+  <data name="ROW_HDR_NOT_APP" xml:space="preserve">
+    <value>Niet toepasbaar</value>
+  </data>
+  <data name="MNU_CONTENT_TOTIMPACT_OVER_B" xml:space="preserve">
+    <value>Totaal en impact op biomassa</value>
+  </data>
+  <data name="LBL_BACCUM" xml:space="preserve">
+    <value>accum</value>
+  </data>
+  <data name="COL_HDR_CATCH_PPR" xml:space="preserve">
+    <value>Vangst PPR</value>
+  </data>
+  <data name="LBL_CATCH_PPR" xml:space="preserve">
+    <value>Vangst PPR</value>
+  </data>
+  <data name="PAGE_MTI_IMPACT" xml:space="preserve">
+    <value>Impactgegevens</value>
+  </data>
+  <data name="COL_HDR_ASCEND_IMPORT" xml:space="preserve">
+    <value>Asc import</value>
+  </data>
+  <data name="PROMPT_APPLAUNCH_FAILED" xml:space="preserve">
+    <value>Kan app '{0}' niet starten: {1}</value>
+  </data>
+  <data name="PROMPT_ESTIMATE_PPR" xml:space="preserve">
+    <value>Schatting primaire productie vereist? Dit kan erg tijdrovend zijn voor grotere modellen.</value>
+  </data>
+  <data name="COL_HDR_CAPACITY_FLOWBIT" xml:space="preserve">
+    <value>Capaciteit (flowbits)</value>
+  </data>
+  <data name="LBL_PATH_TO" xml:space="preserve">
+    <value>Paden &amp; leidend naar:</value>
+  </data>
+  <data name="ROW_HDR_TOTAL_NUM_PATH" xml:space="preserve">
+    <value>Totaal aantal paden</value>
+  </data>
+  <data name="FILEFILTER_EMF" xml:space="preserve">
+    <value>EMF-afbeeldingsbestanden (* .emf) | * .emf | Alle bestanden (*. *) | *. *</value>
+  </data>
+  <data name="STR_PCT_TOTAL_THROUGHPUT" xml:space="preserve">
+    <value>% van totale doorvoer</value>
+  </data>
+  <data name="SAMS_URL" xml:space="preserve">
+    <value>http://www.sams.ac.uk/</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_FLOWBIT" xml:space="preserve">
+    <value>Overhead (flowbits)</value>
+  </data>
+  <data name="LBL_CYC_FIND_PRGR" xml:space="preserve">
+    <value>Voortgang cyclus vinden:</value>
+  </data>
+  <data name="PAGE_CP_CTL1" xml:space="preserve">
+    <value>Consument &lt;- TL1</value>
+  </data>
+  <data name="PAGE_CYCLES_PATHWAYS" xml:space="preserve">
+    <value>Cycli en paden</value>
+  </data>
+  <data name="COL_HDR_ASCEND_PCT" xml:space="preserve">
+    <value>Ascendency (%)</value>
+  </data>
+  <data name="PAGE_FB_CATCHPMD" xml:space="preserve">
+    <value>Vang piramide</value>
+  </data>
+  <data name="COL_HDR_PCI" xml:space="preserve">
+    <value>PCI</value>
+  </data>
+  <data name="COL_HDR_PPR" xml:space="preserve">
+    <value>PPR</value>
+  </data>
+  <data name="COL_HDR_TLc" xml:space="preserve">
+    <value>TL van vangst</value>
+  </data>
+  <data name="LBL_TL_CATCH" xml:space="preserve">
+    <value>TL van vangst</value>
+  </data>
+  <data name="COL_HDR_AMI" xml:space="preserve">
+    <value>AMI</value>
+  </data>
+  <data name="COL_HDR_CYC" xml:space="preserve">
+    <value>Cycli zijn gekoppelde paden, beginnend bij een groep en terugkerend</value>
+  </data>
+  <data name="COL_HDR_FIB" xml:space="preserve">
+    <value>FiB-index</value>
+  </data>
+  <data name="COL_HDR_PPR_PP" xml:space="preserve">
+    <value>PPR (PP)</value>
+  </data>
+  <data name="COL_HDR_NUM_PATH" xml:space="preserve">
+    <value>Aantal paden</value>
+  </data>
+  <data name="COL_HDR_TOT_TE_W" xml:space="preserve">
+    <value>Totaal TE (gewogen)</value>
+  </data>
+  <data name="COL_HDR_CATCH_DET_REQ" xml:space="preserve">
+    <value>Vangst detritus req</value>
+  </data>
+  <data name="PROMPT_ERROR_ECOSIM" xml:space="preserve">
+    <value>Fout tijdens het uitvoeren van Netwerkanalyse voor Ecosim: {0}</value>
+  </data>
+  <data name="COL_HDR_TOT_TE" xml:space="preserve">
+    <value>Overdracht Eff (totaal)</value>
+  </data>
+  <data name="COL_HDR_PATH_CONSUM" xml:space="preserve">
+    <value>Paden van primaire producent of detritusgroepen naar een geselecteerde consument</value>
+  </data>
+  <data name="PAGE_ECOSIM_NA_WITH_PPR" xml:space="preserve">
+    <value>Indexen met primaire productie vereist</value>
+  </data>
+  <data name="COL_HDR_ASCEND_EXPORT" xml:space="preserve">
+    <value>Asc export</value>
+  </data>
+  <data name="STR_W_DET" xml:space="preserve">
+    <value>met detritus</value>
+  </data>
+  <data name="ROW_HDR_EXTRACT_BREAK_CYC" xml:space="preserve">
+    <value>Geëxtraheerd om cycli te breken</value>
+  </data>
+  <data name="STR_TOTAL" xml:space="preserve">
+    <value>Totaal: {0}%</value>
+  </data>
+  <data name="COL_HDR_LIVING_TKM2" xml:space="preserve">
+    <value>Wonen (t / km²)</value>
+  </data>
+  <data name="COL_HDR_PRIM_PROD" xml:space="preserve">
+    <value>Prim Prod</value>
+  </data>
+  <data name="LBL_LINDEX_REL" xml:space="preserve">
+    <value>Productieverlies (relatief)</value>
+  </data>
+  <data name="PAGE_PPR_CONS" xml:space="preserve">
+    <value>Voor consumptie van alle groepen</value>
+  </data>
+  <data name="PAGE_PPR_HARV" xml:space="preserve">
+    <value>Voor de oogst van alle groepen</value>
+  </data>
+  <data name="PAGE_ASC_GROUP" xml:space="preserve">
+    <value>Per groep</value>
+  </data>
+  <data name="COL_HDR_KEYSTONEINDEX1" xml:space="preserve">
+    <value>Keystone-index # 1</value>
+  </data>
+  <data name="COL_HDR_KEYSTONEINDEX3" xml:space="preserve">
+    <value>Keystone-index # 3</value>
+  </data>
+  <data name="COL_HDR_KEYSTONEINDEX2" xml:space="preserve">
+    <value>Keystone-index # 2</value>
+  </data>
+  <data name="PAGE_KEYSTONENESS_GRAPH" xml:space="preserve">
+    <value>Keystoneness grafiek</value>
+  </data>
+  <data name="LBL_IMPACTING_GP" xml:space="preserve">
+    <value>Impacterende groep</value>
+  </data>
+  <data name="PAGE_KEYSTONENESS_TABLE" xml:space="preserve">
+    <value>Keystoneness-tabel</value>
+  </data>
+  <data name="COL_HDR_RESP_ECOSIM" xml:space="preserve">
+    <value>resp</value>
+  </data>
+  <data name="COL_HDR_LINDEX" xml:space="preserve">
+    <value>L-index</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD" xml:space="preserve">
+    <value>Overhead (t / km² / jaar * bits)</value>
+  </data>
+  <data name="PAGE_FB_TRANSEFF" xml:space="preserve">
+    <value>Transfer-efficiëntie</value>
+  </data>
+  <data name="COL_HDR_CAPACITY" xml:space="preserve">
+    <value>Capaciteit (t / km² / jaar * bits)</value>
+  </data>
+  <data name="MNU_STYLE_NUMBERS" xml:space="preserve">
+    <value>&amp; Numbers</value>
+  </data>
+  <data name="COL_HDR_ASCEND" xml:space="preserve">
+    <value>Ascendency (t / km² / jaar * bits)</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_TST" xml:space="preserve">
+    <value>Show &amp; TST (%)</value>
+  </data>
+  <data name="COL_HDR_KEMPTONS" xml:space="preserve">
+    <value>Kemptons Q (relatief)</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_BIOMASSACCUM" xml:space="preserve">
+    <value>Toon biomassa &amp; accumulatie</value>
+  </data>
+  <data name="PROMPT_LOAD_ECOSIM" xml:space="preserve">
+    <value>Laad een Ecosim-scenario voordat u Netwerkanalyse voor Ecosim uitvoert.</value>
+  </data>
+  <data name="STR_T_KM2_YR" xml:space="preserve">
+    <value>t / km² / jaar</value>
+  </data>
+  <data name="ROW_HDR_FINN_MEAN_PATH_LEN" xml:space="preserve">
+    <value>De gemiddelde padlengte van Finn</value>
+  </data>
+  <data name="ROW_HDR_PCT" xml:space="preserve">
+    <value>(%)</value>
+  </data>
+  <data name="COL_HDR_DET_TE" xml:space="preserve">
+    <value>Overdracht Eff (Det)</value>
+  </data>
+  <data name="LBL_PATH_VIA" xml:space="preserve">
+    <value>&amp;via:</value>
+  </data>
+  <data name="LBL_NEGATIVE" xml:space="preserve">
+    <value>Negatief</value>
+  </data>
+  <data name="COL_HDR_ENTROPY" xml:space="preserve">
+    <value>Entropie</value>
+  </data>
+  <data name="PROMPT_ERROR_PP" xml:space="preserve">
+    <value>Er zijn geen gebruikte primaire producenten. Netwerkanalyse kan niet doorgaan.</value>
+  </data>
+  <data name="COL_HDR_SOURCE_TRP_LVL" xml:space="preserve">
+    <value>Bron \ Trofisch niveau</value>
+  </data>
+  <data name="COL_HDR_PPR_U_CATCH" xml:space="preserve">
+    <value>PPR / u. vangst</value>
+  </data>
+  <data name="STATUS_RUNNING_EQPP" xml:space="preserve">
+    <value>Netwerkanalyse eqPP uitvoeren ...</value>
+  </data>
+  <data name="COL_HDR_PPR_COMSUM" xml:space="preserve">
+    <value>PPR / verbruik</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS_PREY" xml:space="preserve">
+    <value>Paden zoeken voor prooi '{0}' ...</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_PCT" xml:space="preserve">
+    <value>Overhead (%)</value>
+  </data>
+  <data name="LBL_ASCEND_FLOW" xml:space="preserve">
+    <value>Ascendency op stroom</value>
+  </data>
+  <data name="LBL_NA_INDIC" xml:space="preserve">
+    <value>Netwerkanalyse-indices</value>
+  </data>
+  <data name="PROMPT_SAVE_ANNUAL_AVERAGES" xml:space="preserve">
+    <value>Resultaten netwerkanalyse opslaan als jaargemiddelden?</value>
+  </data>
+  <data name="COL_HDR_ASCEND_RESP" xml:space="preserve">
+    <value>Asc resp</value>
+  </data>
+  <data name="COL_HDR_ASCEND_FLOW" xml:space="preserve">
+    <value>Asc stroom</value>
+  </data>
+  <data name="COL_HDR_IMPACTING_IMPACTED" xml:space="preserve">
+    <value>Impact / Impact</value>
+  </data>
+  <data name="COL_HDR_PPR_TOTAL_PP" xml:space="preserve">
+    <value>PPR / TotPP (%)</value>
+  </data>
+</root>

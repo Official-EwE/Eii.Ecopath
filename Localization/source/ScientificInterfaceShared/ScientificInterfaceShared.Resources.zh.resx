@@ -1,0 +1,2409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FFAPPLICATIONTARGET_DETRITUSIMPORT" xml:space="preserve">
+    <value>进口</value>
+  </data>
+  <data name="HEADER_IMPORT" xml:space="preserve">
+    <value>进口</value>
+  </data>
+  <data name="HEADER_SPECIES" xml:space="preserve">
+    <value>种类</value>
+  </data>
+  <data name="HEADER_ECOSPACE" xml:space="preserve">
+    <value>生态空间</value>
+  </data>
+  <data name="AUTOSAVE_ECOSPACE" xml:space="preserve">
+    <value>生态空间</value>
+  </data>
+  <data name="HEADER_ECOPATH" xml:space="preserve">
+    <value>生态路径</value>
+  </data>
+  <data name="HEADER_ECOSIM" xml:space="preserve">
+    <value>Ecosim</value>
+  </data>
+  <data name="AUTOSAVE_ECOSIM" xml:space="preserve">
+    <value>Ecosim</value>
+  </data>
+  <data name="HEADER_MONTECARLO" xml:space="preserve">
+    <value>蒙特卡洛</value>
+  </data>
+  <data name="BIODIVERSITY_SHANNON" xml:space="preserve">
+    <value>香农多样性指数</value>
+  </data>
+  <data name="HEADER_TRIAL" xml:space="preserve">
+    <value>试用版</value>
+  </data>
+  <data name="HEADER_DISCARDS" xml:space="preserve">
+    <value>舍弃</value>
+  </data>
+  <data name="HEADER_CATCH" xml:space="preserve">
+    <value>抓住</value>
+  </data>
+  <data name="HEADER_BIOMASS" xml:space="preserve">
+    <value>生物质</value>
+  </data>
+  <data name="HEADER_AGE" xml:space="preserve">
+    <value>年龄</value>
+  </data>
+  <data name="HEADER_SHANNONDIVERSITY" xml:space="preserve">
+    <value>香农多样性</value>
+  </data>
+  <data name="HEADER_KEMPTONSQ" xml:space="preserve">
+    <value>肯普顿的Q</value>
+  </data>
+  <data name="HEADER_VALUE" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="LABEL_PLAY" xml:space="preserve">
+    <value>玩</value>
+  </data>
+  <data name="LABEL_STOP" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="BUTTON_OK" xml:space="preserve">
+    <value>好</value>
+  </data>
+  <data name="BUTTON_CANCEL" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="GENERIC_ZOOM_OUT" xml:space="preserve">
+    <value>缩小</value>
+  </data>
+  <data name="GENERIC_VALUE_NO" xml:space="preserve">
+    <value>没有</value>
+  </data>
+  <data name="BUTTON_NO" xml:space="preserve">
+    <value>没有</value>
+  </data>
+  <data name="AUTOSAVE_ECOTRACER" xml:space="preserve">
+    <value>Ecotracer运行结果</value>
+  </data>
+  <data name="HEADER_MEAN_WEIGHT" xml:space="preserve">
+    <value>平均体重（公斤）</value>
+  </data>
+  <data name="HEADER_CONSUMPTION_OVER_BIOMASS" xml:space="preserve">
+    <value>消费/生物量</value>
+  </data>
+  <data name="HEADER_BIOMASS_CUMULATIVE" xml:space="preserve">
+    <value>累积生物量</value>
+  </data>
+  <data name="BA_CALC_FROMECOSIMYEARSAVERAGE" xml:space="preserve">
+    <value>多年来平均Ecosim生物量变化</value>
+  </data>
+  <data name="HEADER_AVAILABLE_GROUPS_FLEETS" xml:space="preserve">
+    <value>可用的团体和车队</value>
+  </data>
+  <data name="BA_CALC_SETTOZERO" xml:space="preserve">
+    <value>没有生物量积累</value>
+  </data>
+  <data name="HEADER_OCCURRENCE_STATUS" xml:space="preserve">
+    <value>发生状态</value>
+  </data>
+  <data name="HEADER_BOUNDARYWEIGHT" xml:space="preserve">
+    <value>边界重量</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWEGGPRODSHAPE" xml:space="preserve">
+    <value>产蛋形状{0}</value>
+  </data>
+  <data name="GENERIC_VALUE_CREATE_PENDING" xml:space="preserve">
+    <value>（创造）</value>
+  </data>
+  <data name="HEADER_PLOT_MEAN" xml:space="preserve">
+    <value>意思</value>
+  </data>
+  <data name="HEADER_MEAN" xml:space="preserve">
+    <value>意思</value>
+  </data>
+  <data name="TS_TYPE_TOTALMORT" xml:space="preserve">
+    <value>总死亡率</value>
+  </data>
+  <data name="HEADER_FLEET_GROUP" xml:space="preserve">
+    <value>车队\</value>
+  </data>
+  <data name="VALUE_INDEXED_PERCENT" xml:space="preserve">
+    <value>索引了{0}％</value>
+  </data>
+  <data name="HEADER_A_IN_LW" xml:space="preserve">
+    <value>LW中的a</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_BASEMAP" xml:space="preserve">
+    <value>底图</value>
+  </data>
+  <data name="HEADER_LOWERLIMIT" xml:space="preserve">
+    <value>下限</value>
+  </data>
+  <data name="HEADER_CODE_SAUP" xml:space="preserve">
+    <value>SAUP id |我们周围的海洋数据库中的分类法代码</value>
+  </data>
+  <data name="HEADER_CODE_LSID" xml:space="preserve">
+    <value>LSID |分类学生命科学标识符，由分类学数据库工作组定义</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_NOTEXPLOITED" xml:space="preserve">
+    <value>没有被利用</value>
+  </data>
+  <data name="STATUS_APPLYVALUES" xml:space="preserve">
+    <value>正在应用值，请稍候...</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_IN_IMM_B" xml:space="preserve">
+    <value>浓缩迁移生物量（t / t）</value>
+  </data>
+  <data name="HEADER_QUOTA_SELECTIVEFISHING" xml:space="preserve">
+    <value>选择性捕捞配额</value>
+  </data>
+  <data name="HEADER_MESSAGE" xml:space="preserve">
+    <value>信息</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWMEDIATIONSHAPE" xml:space="preserve">
+    <value>调解形状{0}</value>
+  </data>
+  <data name="HEADER_NONMARKETVALUE" xml:space="preserve">
+    <value>非市场价值</value>
+  </data>
+  <data name="DEFAULT_NEWECOTRACERSCENARIO" xml:space="preserve">
+    <value>新的Ecotracer方案</value>
+  </data>
+  <data name="HEADER_PRODUCTION_OVER_BIOMASS" xml:space="preserve">
+    <value>产量/生物量</value>
+  </data>
+  <data name="HEADER_SOCIAL_VALUE_EMPLOYMENT" xml:space="preserve">
+    <value>社会价值（就业）</value>
+  </data>
+  <data name="HEADER_NORMALIZED_VALUE" xml:space="preserve">
+    <value>归一化值</value>
+  </data>
+  <data name="HEADER_STARTAGE" xml:space="preserve">
+    <value>年龄，开始（月）</value>
+  </data>
+  <data name="HEADER_HISTOGRAM_TARGET" xml:space="preserve">
+    <value>“ {0}”的直方图</value>
+  </data>
+  <data name="HEADER_ECOSYSTEM_STRUCTURE" xml:space="preserve">
+    <value>生态系统结构</value>
+  </data>
+  <data name="GENERIC_LABEL_A_AT_B" xml:space="preserve">
+    <value>{0} @ {1}</value>
+  </data>
+  <data name="HEADER_SUM_NET_PP" xml:space="preserve">
+    <value>计算的净初级生产总值</value>
+  </data>
+  <data name="TOOLTIP_MEDIATION_DRIVER_VALUE" xml:space="preserve">
+    <value>驱动程序值{0}</value>
+  </data>
+  <data name="GENERIC_CHAR_PERIOD" xml:space="preserve">
+    <value>。 （期）</value>
+  </data>
+  <data name="GENERIC_VALUE_YES" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="BUTTON_YES" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="GENERIC_VALUE_YOU" xml:space="preserve">
+    <value>（您）</value>
+  </data>
+  <data name="GENERIC_VALUE_ALL" xml:space="preserve">
+    <value>（所有）</value>
+  </data>
+  <data name="HEADER_MAXF_OVER_M" xml:space="preserve">
+    <value>最大F / M</value>
+  </data>
+  <data name="HEADER_PROFIT_PERC" xml:space="preserve">
+    <value>利润（％）</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_OFFVESSELPRICE" xml:space="preserve">
+    <value>船外价格</value>
+  </data>
+  <data name="HEADER_MANDATED_BIOMASS_RELATIVE" xml:space="preserve">
+    <value>强制相关。生物群系</value>
+  </data>
+  <data name="FILEFILTER_TEXT" xml:space="preserve">
+    <value>文本文件| * .txt</value>
+  </data>
+  <data name="HEADER_MEAN_LENGTH" xml:space="preserve">
+    <value>平均长度（厘米）</value>
+  </data>
+  <data name="TS_TYPE_CATCHESFORCING" xml:space="preserve">
+    <value>捕捉（强制）</value>
+  </data>
+  <data name="HEADER_DISCARD_SURVIVAL_BREAKDOWN" xml:space="preserve">
+    <value>舍弃生存（组x舰队）</value>
+  </data>
+  <data name="HEADER_NODE_SCALE" xml:space="preserve">
+    <value>节点比例模式</value>
+  </data>
+  <data name="GENERIC_LABEL_DOUBLE" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="GENERIC_VALUE_NAMEANDSEQUENCE" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="HEADER_METABOLISMRATE" xml:space="preserve">
+    <value>代谢衰减率</value>
+  </data>
+  <data name="HEADER_AREA_CLOSED" xml:space="preserve">
+    <value>封闭面积（％）</value>
+  </data>
+  <data name="GENERIC_VALUE_NO_DATA" xml:space="preserve">
+    <value>没有数据</value>
+  </data>
+  <data name="FILEFILTER_IMAGE_EMF" xml:space="preserve">
+    <value>增强型图元文件| * .emf</value>
+  </data>
+  <data name="FILEFILTER_MODEL_OPEN" xml:space="preserve">
+    <value>Ecopath模型数据库| * .mdb; *。accdb; *。EwEmdb; *。EwEaccdb; *。eii; *。eiixml</value>
+  </data>
+  <data name="FILEFILTER_MODEL_SAVE" xml:space="preserve">
+    <value>EwE数据库（Access 2003格式）| * .EwEmdb | EwE数据库（Access 2007格式）| * .EwEaccdb</value>
+  </data>
+  <data name="GENERIC_VALUE_NOTUSED" xml:space="preserve">
+    <value>（未使用）</value>
+  </data>
+  <data name="HEADER_TZERO_VBGF" xml:space="preserve">
+    <value>至VBGF（年）</value>
+  </data>
+  <data name="VERBOSE_DISABLED" xml:space="preserve">
+    <value>没有记录</value>
+  </data>
+  <data name="HEADER_STANDARDDEVIATION" xml:space="preserve">
+    <value>标清</value>
+  </data>
+  <data name="GENERIC_LABEL_N_OF_M" xml:space="preserve">
+    <value>{1}中的{0}</value>
+  </data>
+  <data name="HEADER_GROSS_EFFICIENCY" xml:space="preserve">
+    <value>总效率（捕获量/净pp）</value>
+  </data>
+  <data name="PROMPT_OPTIONS_APPLIED_FAILED" xml:space="preserve">
+    <value>选项无法应用。</value>
+  </data>
+  <data name="HEADER_BIOMACCUM_ABBR" xml:space="preserve">
+    <value>生物体。符合</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_RECOVERING" xml:space="preserve">
+    <value>|||枯竭后渔获量再次增加</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSFORCING" xml:space="preserve">
+    <value>生物质强迫</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_BIOMASSFORCING" xml:space="preserve">
+    <value>生物质强迫</value>
+  </data>
+  <data name="HEADER_EFFORT_MIN" xml:space="preserve">
+    <value>最小努力</value>
+  </data>
+  <data name="HEADER_EFFORT_MAX" xml:space="preserve">
+    <value>最大努力</value>
+  </data>
+  <data name="HEADER_ASSIGNED_LANDINGS_SHAPE" xml:space="preserve">
+    <value>为{0}分配了货源</value>
+  </data>
+  <data name="HEADER_ORGANISM" xml:space="preserve">
+    <value>生物</value>
+  </data>
+  <data name="STYLEFLAGS_INVALIDMODELRESULT" xml:space="preserve">
+    <value>模型错误||无效的模型结果|值无法计算</value>
+  </data>
+  <data name="LABEL_TITLE" xml:space="preserve">
+    <value>标题</value>
+  </data>
+  <data name="LABEL_PAUSE" xml:space="preserve">
+    <value>暂停</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_COMPUTEDCAPACITY" xml:space="preserve">
+    <value>计算栖息地容量</value>
+  </data>
+  <data name="HEADER_COMPONENTS_EWE" xml:space="preserve">
+    <value>EwE组件</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_CRITICALLYENDANGERED" xml:space="preserve">
+    <value>CR ||极度濒危</value>
+  </data>
+  <data name="HEADER_CATCH_END" xml:space="preserve">
+    <value>抓住（结束）</value>
+  </data>
+  <data name="HEADER_CATCH_MIN" xml:space="preserve">
+    <value>赶上分钟。</value>
+  </data>
+  <data name="HEADER_CATCH_MAX" xml:space="preserve">
+    <value>最高捕获</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_VULANDAREA" xml:space="preserve">
+    <value>Vul（v）和面积（A）</value>
+  </data>
+  <data name="HEADER_DISCARD_MORTALITY_BREAKDOWN" xml:space="preserve">
+    <value>丢弃死亡率（x组）</value>
+  </data>
+  <data name="HEADER_PLOT_MAX" xml:space="preserve">
+    <value>最大绘图</value>
+  </data>
+  <data name="HEADER_PLOT_MIN" xml:space="preserve">
+    <value>最小绘图</value>
+  </data>
+  <data name="HEADER_MODEL_TARGET" xml:space="preserve">
+    <value>目标型号名称</value>
+  </data>
+  <data name="HEADER_RHALFB0RATIO" xml:space="preserve">
+    <value>招聘人数占50％的比率Bt /同情心B</value>
+  </data>
+  <data name="GENERIC_VALUE_NOSEARCHENGINES" xml:space="preserve">
+    <value>（未安装搜索引擎）</value>
+  </data>
+  <data name="HEADER_MEAN_LIMIT" xml:space="preserve">
+    <value>极限均值</value>
+  </data>
+  <data name="HEADER_MSE_UPPERRISK" xml:space="preserve">
+    <value>最高生物量/组织生物质</value>
+  </data>
+  <data name="HEADER_VALUE_CUMULATIVE" xml:space="preserve">
+    <value>累计值</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_VULNERABLE" xml:space="preserve">
+    <value>VU ||易受攻击</value>
+  </data>
+  <data name="FITRESPONSE_GRADIENT" xml:space="preserve">
+    <value>梯度</value>
+  </data>
+  <data name="HEADER_RECRUITMENT_CV" xml:space="preserve">
+    <value>招聘简历</value>
+  </data>
+  <data name="HEADER_GROUPNAMEWEIGHT" xml:space="preserve">
+    <value>组名\重量（克）</value>
+  </data>
+  <data name="HEADER_EFFORT" xml:space="preserve">
+    <value>努力</value>
+  </data>
+  <data name="HEADER_QUOTA_EFFORT" xml:space="preserve">
+    <value>努力</value>
+  </data>
+  <data name="HEADER_AVGERAGEWEIGHT" xml:space="preserve">
+    <value>平均重量</value>
+  </data>
+  <data name="HEADER_AVERAGEWEIGHT" xml:space="preserve">
+    <value>平均重量</value>
+  </data>
+  <data name="TS_TYPE_AVERAGEWEIGHT" xml:space="preserve">
+    <value>平均重量</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_M0" xml:space="preserve">
+    <value>其他致死率</value>
+  </data>
+  <data name="HEADER_ENABLE" xml:space="preserve">
+    <value>启用</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_ENDANGERED" xml:space="preserve">
+    <value>EN ||濒临灭绝</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_OVER_B" xml:space="preserve">
+    <value>浓度/生物量（累计）</value>
+  </data>
+  <data name="SHAPE_PROMPT_SET_TO_VALUE" xml:space="preserve">
+    <value>输入一个或多个用逗号分隔的值，以在形状上重复。</value>
+  </data>
+  <data name="HEADER_MPA_CLOSED" xml:space="preserve">
+    <value>禁止捕鱼</value>
+  </data>
+  <data name="TS_TYPE_DISCARDS" xml:space="preserve">
+    <value>丢弃（参考）</value>
+  </data>
+  <data name="HEADER_EXPORT" xml:space="preserve">
+    <value>出口</value>
+  </data>
+  <data name="HEADER_COMPONENTS_PLUGINS" xml:space="preserve">
+    <value>外挂程式</value>
+  </data>
+  <data name="HEADER_FIELD" xml:space="preserve">
+    <value>领域</value>
+  </data>
+  <data name="HEADER_FLEET" xml:space="preserve">
+    <value>舰队</value>
+  </data>
+  <data name="HEADER_GENUS" xml:space="preserve">
+    <value>属</value>
+  </data>
+  <data name="HEADER_GROUP" xml:space="preserve">
+    <value>组</value>
+  </data>
+  <data name="HEADER_MONTH" xml:space="preserve">
+    <value>月</value>
+  </data>
+  <data name="GENERAL_LABEL_MONTH" xml:space="preserve">
+    <value>月</value>
+  </data>
+  <data name="HEADER_COLOR" xml:space="preserve">
+    <value>颜色</value>
+  </data>
+  <data name="HEADER_COUNT" xml:space="preserve">
+    <value>计数</value>
+  </data>
+  <data name="HEADER_CLASS" xml:space="preserve">
+    <value>类</value>
+  </data>
+  <data name="HEADER_IMAGE" xml:space="preserve">
+    <value>图片</value>
+  </data>
+  <data name="HEADER_INDEX" xml:space="preserve">
+    <value>指数</value>
+  </data>
+  <data name="SHAPE_HEADER_SET_TO_VALUE" xml:space="preserve">
+    <value>设置为值</value>
+  </data>
+  <data name="HEADER_LAYER" xml:space="preserve">
+    <value>层</value>
+  </data>
+  <data name="VERBOSE_STANDARD" xml:space="preserve">
+    <value>标准</value>
+  </data>
+  <data name="HEADER_ORDER" xml:space="preserve">
+    <value>订购</value>
+  </data>
+  <data name="HEADER_UNITS" xml:space="preserve">
+    <value>单位</value>
+  </data>
+  <data name="COLORRAMP_VIRIDIS" xml:space="preserve">
+    <value>Viridis色盲{0}</value>
+  </data>
+  <data name="HEADER_KALWT" xml:space="preserve">
+    <value>卡尔曼重量</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_DATADEFICIENT" xml:space="preserve">
+    <value>DD ||数据不足</value>
+  </data>
+  <data name="HEADER_TOTAL" xml:space="preserve">
+    <value>总</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_EXTINCT" xml:space="preserve">
+    <value>EX ||灭绝</value>
+  </data>
+  <data name="HEADER_SHAPE" xml:space="preserve">
+    <value>形状</value>
+  </data>
+  <data name="HEADER_LINE_WIDTH_AUTO" xml:space="preserve">
+    <value>自动缩放线</value>
+  </data>
+  <data name="HEADER_X_MIN" xml:space="preserve">
+    <value>X分钟</value>
+  </data>
+  <data name="HEADER_X_MAX" xml:space="preserve">
+    <value>最大X</value>
+  </data>
+  <data name="HEADER_FAMILY" xml:space="preserve">
+    <value>家庭</value>
+  </data>
+  <data name="HEADER_WITHOUT_FORAGING_TIME" xml:space="preserve">
+    <value>无需觅食时间调整（FT）</value>
+  </data>
+  <data name="HEADER_FIXEDF" xml:space="preserve">
+    <value>固定捕鱼死亡率</value>
+  </data>
+  <data name="HEADER_FLEETS" xml:space="preserve">
+    <value>舰队</value>
+  </data>
+  <data name="PROMPT_OPTIONS_APPLIED_SUCCESS" xml:space="preserve">
+    <value>选项已成功应用。</value>
+  </data>
+  <data name="GENERIC_VALUE_FLEET_OF_N" xml:space="preserve">
+    <value>{1}的机队{0}</value>
+  </data>
+  <data name="LABEL_CHOOSE_FOLDER" xml:space="preserve">
+    <value>选择文件夹...</value>
+  </data>
+  <data name="HEADER_LINE_WIDTH" xml:space="preserve">
+    <value>固定线宽</value>
+  </data>
+  <data name="ORGANISM_REPTILES" xml:space="preserve">
+    <value>爬虫类</value>
+  </data>
+  <data name="HEADER_LINE_COLOR" xml:space="preserve">
+    <value>线色</value>
+  </data>
+  <data name="HEADER_PREDICTIONVARIANCE" xml:space="preserve">
+    <value>预测方差</value>
+  </data>
+  <data name="AUTOSAVE_ECOSIMRESULTS" xml:space="preserve">
+    <value>运行结果</value>
+  </data>
+  <data name="AUTOSAVE_ECOSPACERESULTS" xml:space="preserve">
+    <value>运行结果</value>
+  </data>
+  <data name="STYLEFLAGS_ERRORENCOUNTERED" xml:space="preserve">
+    <value>未知错误|||发生未知错误</value>
+  </data>
+  <data name="HEADER_DIRECT_ABSORPTION_RATE" xml:space="preserve">
+    <value>直接吸收率</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_REGIONS" xml:space="preserve">
+    <value>地区</value>
+  </data>
+  <data name="HEADER_SUM_PPB" xml:space="preserve">
+    <value>初级生产总量/总生物量</value>
+  </data>
+  <data name="HEADER_SUM_EXPORTS" xml:space="preserve">
+    <value>所有出口的总和</value>
+  </data>
+  <data name="HEADER_GROUPS" xml:space="preserve">
+    <value>团体</value>
+  </data>
+  <data name="HEADER_CONSUMER" xml:space="preserve">
+    <value>消费者</value>
+  </data>
+  <data name="GENERIC_VALUE_DEFAULT" xml:space="preserve">
+    <value>（默认）</value>
+  </data>
+  <data name="HEADER_MODEL_SOURCE" xml:space="preserve">
+    <value>源模型</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWTIMESERIES" xml:space="preserve">
+    <value>新时间序列{0}</value>
+  </data>
+  <data name="HEADER_DRIVER_HISTOGRAM" xml:space="preserve">
+    <value>驾驶员直方图</value>
+  </data>
+  <data name="TOOLTIP_MEDIATION_CAPACITY" xml:space="preserve">
+    <value>驾驶员直方图</value>
+  </data>
+  <data name="ECOLOGY_BENTHOPELAGIC" xml:space="preserve">
+    <value>底栖鱼类</value>
+  </data>
+  <data name="HEADER_GROUPNAME" xml:space="preserve">
+    <value>组名</value>
+  </data>
+  <data name="HEADER_EFFORT_PERC_ABOVE_REF" xml:space="preserve">
+    <value>超出参考的努力百分比</value>
+  </data>
+  <data name="DEFAULT_NEWHABITAT_NUM" xml:space="preserve">
+    <value>栖息地{0}</value>
+  </data>
+  <data name="FILEFILTER_STYLE" xml:space="preserve">
+    <value>视觉效果| * .ewestyle</value>
+  </data>
+  <data name="HEADER_CODE_FAO" xml:space="preserve">
+    <value>FAO ID |根据粮农组织分类法</value>
+  </data>
+  <data name="HEADER_METHOD" xml:space="preserve">
+    <value>方法</value>
+  </data>
+  <data name="FILEFILTER_IMAGE" xml:space="preserve">
+    <value>位图图像| * .bmp | JPEG图像| * .jpg; *。jpeg | GIF图像| * .gif | PNG图像| * .png | TIFF图像| * .tif; *。tiff</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_NOTUSABLE" xml:space="preserve">
+    <value>无法启用时间序列“ {0}”。 {1}</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_UNDEREXPLOITED" xml:space="preserve">
+    <value>未充分开发|||未开发或新的渔业。被认为具有扩大总产量的巨大潜力</value>
+  </data>
+  <data name="COMMAND_DISPLAYGROUPS" xml:space="preserve">
+    <value>选择要显示的组和舰队</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MIGRATION" xml:space="preserve">
+    <value>移民</value>
+  </data>
+  <data name="HEADER_VALUE_BREAKDOWN" xml:space="preserve">
+    <value>价值（组x机队）</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_HABITATS" xml:space="preserve">
+    <value>生境</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_DELETE_MULTIPLE" xml:space="preserve">
+    <value>您将要删除{0}时间序列”。此操作无法撤消。你确定你要这么做吗？</value>
+  </data>
+  <data name="HEADER_MINWEIGHT" xml:space="preserve">
+    <value>最小重量</value>
+  </data>
+  <data name="HEADER_PROPORTION_CATCH" xml:space="preserve">
+    <value>捕捞比例</value>
+  </data>
+  <data name="PROMPT_SHOWTITLE" xml:space="preserve">
+    <value>显示标题</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWFORCINGSHAPE" xml:space="preserve">
+    <value>强制形状{0}</value>
+  </data>
+  <data name="HEADER_COMPONENTS_FRAMEWORK" xml:space="preserve">
+    <value>.NET组件</value>
+  </data>
+  <data name="HEADER_CVBEST" xml:space="preserve">
+    <value>生物质简历</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_MODERATELYEXPLOITED" xml:space="preserve">
+    <value>||||以低水平的捕捞努力进行开采。相信扩大总产量的潜力有限</value>
+  </data>
+  <data name="HEADER_SUM_FLOW_RESP" xml:space="preserve">
+    <value>所有呼吸流量的总和</value>
+  </data>
+  <data name="HEADER_STRUCTURERELATIVEWEIGHT" xml:space="preserve">
+    <value>结构相关。重量</value>
+  </data>
+  <data name="SHAPE_TYPE_TO_SEASONAL_CAPTION" xml:space="preserve">
+    <value>变更形状类型</value>
+  </data>
+  <data name="HEADER_NET_PROD" xml:space="preserve">
+    <value>网络系统生产</value>
+  </data>
+  <data name="GENERIC_SAVE_TO_CSV" xml:space="preserve">
+    <value>将数据保存到CSV ...</value>
+  </data>
+  <data name="HEADER_NUMBER" xml:space="preserve">
+    <value>数</value>
+  </data>
+  <data name="GENERIC_VALUE_NOTSET" xml:space="preserve">
+    <value>（未标明）</value>
+  </data>
+  <data name="ABOUT_NET_VERSION" xml:space="preserve">
+    <value>.NET版本{0}（{1}）</value>
+  </data>
+  <data name="HEADER_INCOME" xml:space="preserve">
+    <value>收入</value>
+  </data>
+  <data name="HEADER_FMAX" xml:space="preserve">
+    <value>最大速度</value>
+  </data>
+  <data name="HEADER_FLOW" xml:space="preserve">
+    <value>流</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_ADVECTION" xml:space="preserve">
+    <value>流</value>
+  </data>
+  <data name="HEADER_FOPT" xml:space="preserve">
+    <value>最大F</value>
+  </data>
+  <data name="HEADER_FROM" xml:space="preserve">
+    <value>从</value>
+  </data>
+  <data name="HEADER_ADD1" xml:space="preserve">
+    <value>加</value>
+  </data>
+  <data name="HEADER_ADD" xml:space="preserve">
+    <value>加</value>
+  </data>
+  <data name="HEADER_DATE" xml:space="preserve">
+    <value>日期</value>
+  </data>
+  <data name="HEADER_DIET" xml:space="preserve">
+    <value>饮食</value>
+  </data>
+  <data name="HEADER_CODE" xml:space="preserve">
+    <value>码</value>
+  </data>
+  <data name="HEADER_NAME" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="HEADER_LINK" xml:space="preserve">
+    <value>链接</value>
+  </data>
+  <data name="HEADER_LESS" xml:space="preserve">
+    <value>减</value>
+  </data>
+  <data name="HEADER_HIGH" xml:space="preserve">
+    <value>高</value>
+  </data>
+  <data name="HEADER_TYPE" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="HEADER_TIME" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="HEADER_SLOT" xml:space="preserve">
+    <value>插槽{0}</value>
+  </data>
+  <data name="HEADER_YEAR" xml:space="preserve">
+    <value>年</value>
+  </data>
+  <data name="GENERAL_LABEL_YEAR" xml:space="preserve">
+    <value>年</value>
+  </data>
+  <data name="HEADER_ENABLED_CAPACITY" xml:space="preserve">
+    <value>驱动能力</value>
+  </data>
+  <data name="GENERIC_SHOW_NUMTL" xml:space="preserve">
+    <value>营养级数</value>
+  </data>
+  <data name="FILEFILTER_SAVE_MDB" xml:space="preserve">
+    <value>EwE数据库（Access 2003格式）| * .ewemdb</value>
+  </data>
+  <data name="FILEFILTER_MODEL_ACCESS" xml:space="preserve">
+    <value>生态路径访问数据库| * .mdb; *。accdb; *。EwEmdb; *。EwEaccdb</value>
+  </data>
+  <data name="HEADER_MANDATED_REBUILDING" xml:space="preserve">
+    <value>强制重建</value>
+  </data>
+  <data name="HEADER_SUM_PROD" xml:space="preserve">
+    <value>所有生产的总和</value>
+  </data>
+  <data name="HEADER_SUM_COST" xml:space="preserve">
+    <value>总消耗</value>
+  </data>
+  <data name="HEADER_TOTALCOST" xml:space="preserve">
+    <value>总消耗</value>
+  </data>
+  <data name="HEADER_SUM_COST_FIXED" xml:space="preserve">
+    <value>总固定成本</value>
+  </data>
+  <data name="TOOLTIP_SAVETOIMAGE" xml:space="preserve">
+    <value>保存到图片</value>
+  </data>
+  <data name="GENERIC_LABEL_SPLIT" xml:space="preserve">
+    <value>{0}-{1}</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_INITIAL" xml:space="preserve">
+    <value>初始浓度（吨/吨）</value>
+  </data>
+  <data name="GENERIC_LABEL_POINT" xml:space="preserve">
+    <value>{0}（{1}，{2}）</value>
+  </data>
+  <data name="HEADER_INDICATOR" xml:space="preserve">
+    <value>指示符</value>
+  </data>
+  <data name="TOOLTIP_GRID_APPLYVALUE" xml:space="preserve">
+    <value>将此值设置为所有选定的单元格</value>
+  </data>
+  <data name="TS_TYPE_CATCHESREL" xml:space="preserve">
+    <value>相对捕获量（参考）</value>
+  </data>
+  <data name="TS_TYPE_CATCHESABS" xml:space="preserve">
+    <value>接缝（参考）</value>
+  </data>
+  <data name="HEADER_MSE_LOWERRISK" xml:space="preserve">
+    <value>最小生物量/组织生物质</value>
+  </data>
+  <data name="FILEFILTER_FLOWDIAGRAM" xml:space="preserve">
+    <value>流程图布局文件| * .fdlayout</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_EXTINCTINWILD" xml:space="preserve">
+    <value>EW ||野外灭绝</value>
+  </data>
+  <data name="GENERIC_LABEL_APPLY" xml:space="preserve">
+    <value>应用</value>
+  </data>
+  <data name="HEADER_EFFORTRELATEDCOST" xml:space="preserve">
+    <value>与工作相关的费用（％）</value>
+  </data>
+  <data name="GENERIC_SHOW_TROPHIC_LEVELS" xml:space="preserve">
+    <value>显示营养级别</value>
+  </data>
+  <data name="HEADER_SOURCEFATE" xml:space="preserve">
+    <value>来源/命运</value>
+  </data>
+  <data name="HEADER_REGIONS_ALL" xml:space="preserve">
+    <value>所有地区</value>
+  </data>
+  <data name="AUTORUN_ALL" xml:space="preserve">
+    <value>自动运行全部</value>
+  </data>
+  <data name="HEADER_PARAMETER" xml:space="preserve">
+    <value>参数</value>
+  </data>
+  <data name="HEADER_VALUEES" xml:space="preserve">
+    <value>价值（E / S）</value>
+  </data>
+  <data name="GENERIC_VALUE_MAPPOS" xml:space="preserve">
+    <value>第{3}行，第{4}行； lon {0} {2}，纬度{1} {2}</value>
+  </data>
+  <data name="GENERAL_LABEL_ANNUAL" xml:space="preserve">
+    <value>年刊</value>
+  </data>
+  <data name="TSDATASETINTERVAL_ANNUAL" xml:space="preserve">
+    <value>年刊</value>
+  </data>
+  <data name="BA_CALC_FROMECOSIMYEARSWEIGHTEDAVERAGE" xml:space="preserve">
+    <value>历年的距离加权平均Ecosim生物量</value>
+  </data>
+  <data name="TS_TYPE_FISHMORTABS" xml:space="preserve">
+    <value>捕捞死亡率</value>
+  </data>
+  <data name="TS_TYPE_FISHMORTREL" xml:space="preserve">
+    <value>相对捕鱼死亡率</value>
+  </data>
+  <data name="SHAPE_TYPE_TO_SEASONAL_MSG" xml:space="preserve">
+    <value>将形状从“长期”更改为“季节性”将导致您的长期数据被季节性模式覆盖。此操作无法撤消。你确定你要这么做吗？</value>
+  </data>
+  <data name="ERROR_GRID_PASTE" xml:space="preserve">
+    <value>集成数据时发生了许多格式化错误，并且尝试被中止。请检查您的数据是否与此网格兼容，然后重试。</value>
+  </data>
+  <data name="DEFAULT_NEWECOSPACESCENARIO" xml:space="preserve">
+    <value>新的生态空间方案</value>
+  </data>
+  <data name="FILEFILTER_SAVE_ACCDB" xml:space="preserve">
+    <value>EwE数据库（Access 2007格式）| * .eweaccdb</value>
+  </data>
+  <data name="HEADER_OVERLAP_TEMPORAL" xml:space="preserve">
+    <value>温度交叠</value>
+  </data>
+  <data name="DATASOURCE_ACCESS2003" xml:space="preserve">
+    <value>* .ewemdb | Access 2003（* .ewemdb）|| Microsoft Access 2003（* .ewemdb）</value>
+  </data>
+  <data name="DATASOURCE_ACCESS2007" xml:space="preserve">
+    <value>* .eweaccdb | Access 2007（* .eweaccdb）|| Microsoft Access 2007（* .eweaccdb）</value>
+  </data>
+  <data name="HEADER_NODE_SIZE_AUTO" xml:space="preserve">
+    <value>自动调整节点大小</value>
+  </data>
+  <data name="HEADER_K_VBGF" xml:space="preserve">
+    <value>VBGF中的K（/ [YEAR}）</value>
+  </data>
+  <data name="GENERIC_TEXT_CURSOR" xml:space="preserve">
+    <value>光标</value>
+  </data>
+  <data name="LABEL_VALUE_AT" xml:space="preserve">
+    <value>{0}（{1}）</value>
+  </data>
+  <data name="GENERIC_LABEL_DETAILED" xml:space="preserve">
+    <value>{0}（{1}）</value>
+  </data>
+  <data name="HEADER_REFERENCE" xml:space="preserve">
+    <value>参考</value>
+  </data>
+  <data name="HEADER_SUM_FLOW_DET" xml:space="preserve">
+    <value>所有流入碎屑的总和</value>
+  </data>
+  <data name="HEADER_SUM_BnonDET" xml:space="preserve">
+    <value>总生物量（不包括碎屑）</value>
+  </data>
+  <data name="GENERIC_LABEL_SAVE" xml:space="preserve">
+    <value>救</value>
+  </data>
+  <data name="HEADER_VALUES" xml:space="preserve">
+    <value>价值观</value>
+  </data>
+  <data name="HEADER_POTENTIAL_GROWTH" xml:space="preserve">
+    <value>波滕。增长（Bunf / Bo）</value>
+  </data>
+  <data name="HEADER_VERSION" xml:space="preserve">
+    <value>版</value>
+  </data>
+  <data name="HEADER_SURVIVAL" xml:space="preserve">
+    <value>生存</value>
+  </data>
+  <data name="HEADER_RECRUITMENT" xml:space="preserve">
+    <value>招募</value>
+  </data>
+  <data name="HEADER_ASSIGNED_ENV_FORCING" xml:space="preserve">
+    <value>将环境强制分配给{0}</value>
+  </data>
+  <data name="HEADER_LONGITUDE" xml:space="preserve">
+    <value>经度</value>
+  </data>
+  <data name="LABEL_SET" xml:space="preserve">
+    <value>组</value>
+  </data>
+  <data name="HEADER_TARGET" xml:space="preserve">
+    <value>目标</value>
+  </data>
+  <data name="COMPATIBILITY_SUMMARY" xml:space="preserve">
+    <value>{0}％的时间重叠与{1}％的局部重叠和{2}％的总面积重叠。</value>
+  </data>
+  <data name="HEADER_INDEX_ONMIVORY" xml:space="preserve">
+    <value>系统杂食性指数</value>
+  </data>
+  <data name="DEFAULT_NEWREGION_NUM" xml:space="preserve">
+    <value>区域{0}</value>
+  </data>
+  <data name="LABEL_VALUE_FROM" xml:space="preserve">
+    <value>{0}（{1}-）</value>
+  </data>
+  <data name="LABEL_VALUE_UPTO" xml:space="preserve">
+    <value>{0}（-{1}）</value>
+  </data>
+  <data name="HEADER_RELATIVEWEIGHT_ABBR" xml:space="preserve">
+    <value>相对重量</value>
+  </data>
+  <data name="GENERIC_VALUE_CUSTOM" xml:space="preserve">
+    <value>（自定义）</value>
+  </data>
+  <data name="HEADER_WEIGHT" xml:space="preserve">
+    <value>重量</value>
+  </data>
+  <data name="TS_TYPE_FISHINGEFFORT" xml:space="preserve">
+    <value>钓鱼努力</value>
+  </data>
+  <data name="HEADER_FISHINGEFFORT" xml:space="preserve">
+    <value>钓鱼努力</value>
+  </data>
+  <data name="HEADER_COST_START" xml:space="preserve">
+    <value>费用（开始）</value>
+  </data>
+  <data name="HEADER_REGION" xml:space="preserve">
+    <value>区域</value>
+  </data>
+  <data name="HEADER_REMARK" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="HEADER_CB" xml:space="preserve">
+    <value>缺点/生物</value>
+  </data>
+  <data name="HEADER_CV" xml:space="preserve">
+    <value>简历</value>
+  </data>
+  <data name="HEADER_ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="HEADER_TO" xml:space="preserve">
+    <value>至</value>
+  </data>
+  <data name="HEADER_PP" xml:space="preserve">
+    <value>部分生产来自初级生产力</value>
+  </data>
+  <data name="HEADER_SS" xml:space="preserve">
+    <value>平方和</value>
+  </data>
+  <data name="HEADER_BIOMASS_ABSOLUTE" xml:space="preserve">
+    <value>绝对生物量</value>
+  </data>
+  <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
+    <value>{0}已保存到“ {1}”。</value>
+  </data>
+  <data name="HEADER_PREDMORT_REL" xml:space="preserve">
+    <value>捕食魔（rel）</value>
+  </data>
+  <data name="GENERIC_STATUS_BUSY" xml:space="preserve">
+    <value>请稍等片刻...</value>
+  </data>
+  <data name="HEADER_ASSIGNED_GROUPS_FLEETS_SHAPE" xml:space="preserve">
+    <value>分配给{0}的团体和车队</value>
+  </data>
+  <data name="TS_TYPE_LANDINGS" xml:space="preserve">
+    <value>着陆点（参考）</value>
+  </data>
+  <data name="ECOLOGY_BATHYDEMERSAL" xml:space="preserve">
+    <value>沉浸式</value>
+  </data>
+  <data name="HEADER_PROFIT" xml:space="preserve">
+    <value>利润</value>
+  </data>
+  <data name="HEADER_SUM_PROFIT" xml:space="preserve">
+    <value>利润</value>
+  </data>
+  <data name="HEADER_IUCN_CONSERVATION_STATUS" xml:space="preserve">
+    <value>自然保护联盟的保护状况</value>
+  </data>
+  <data name="HEADER_COST_END" xml:space="preserve">
+    <value>费用（完）</value>
+  </data>
+  <data name="HEADER_PLUGIN" xml:space="preserve">
+    <value>插入</value>
+  </data>
+  <data name="HEADER_PHYLUM" xml:space="preserve">
+    <value>门</value>
+  </data>
+  <data name="HEADER_OVERLAP_SPATIAL" xml:space="preserve">
+    <value>吐交叠</value>
+  </data>
+  <data name="HEADER_CATCH_PERC_ABOVE_REF" xml:space="preserve">
+    <value>高于参考的百分比</value>
+  </data>
+  <data name="HEADER_SUM_BT" xml:space="preserve">
+    <value>总生物量/总产量</value>
+  </data>
+  <data name="HEADER_STATUS" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="GENERIC_FILELOAD_SUCCES" xml:space="preserve">
+    <value>从“ {1}”加载了{0}。</value>
+  </data>
+  <data name="PROMPT_REQUIRES_RESTART" xml:space="preserve">
+    <value>您将需要重新启动EwE才能使更改生效。</value>
+  </data>
+  <data name="HEADER_LEADING_BIOMASS" xml:space="preserve">
+    <value>领先的生物质</value>
+  </data>
+  <data name="STYLEFLAGS_NOTEDITABLE" xml:space="preserve">
+    <value>不可编辑|||值不可编辑</value>
+  </data>
+  <data name="HEADER_SOURCE" xml:space="preserve">
+    <value>资源</value>
+  </data>
+  <data name="HEADER_SOCIAL" xml:space="preserve">
+    <value>社会的</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_BIOMASSRELATIVEFORCING" xml:space="preserve">
+    <value>生物质相对强迫</value>
+  </data>
+  <data name="HEADER_ECOSYSTEM_STRUCTURE_ABBR" xml:space="preserve">
+    <value>Ecosys。</value>
+  </data>
+  <data name="GENERIC_VALUE_FIRSTTIMESTEP" xml:space="preserve">
+    <value>（第一步）</value>
+  </data>
+  <data name="GENERIC_SHOW_BIOMASS_LEGEND" xml:space="preserve">
+    <value>显示生物量传奇</value>
+  </data>
+  <data name="AUTOSAVE_ECOSPACERESULTSREGION" xml:space="preserve">
+    <value>每个区域的结果摘要</value>
+  </data>
+  <data name="HEADER_COMPONENTS_REFERENCED" xml:space="preserve">
+    <value>参考组件</value>
+  </data>
+  <data name="GENERIC_VALUE_MAPPOS_VALUE" xml:space="preserve">
+    <value>第{3}行，第{4}行； lon {0} {2}，纬度{1} {2}；值：{5}</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_MISSING" xml:space="preserve">
+    <value>找不到文件“ {0}”。</value>
+  </data>
+  <data name="HEADER_MAX_LENGTH" xml:space="preserve">
+    <value>最大长度（厘米）</value>
+  </data>
+  <data name="HEADER_SUM_COST_VARIABLE" xml:space="preserve">
+    <value>总可变成本</value>
+  </data>
+  <data name="PROMPT_STYLE_SAVE_SUCCESS" xml:space="preserve">
+    <value>样式已保存到{0}</value>
+  </data>
+  <data name="HEADER_EXISTENCE_VALUE" xml:space="preserve">
+    <value>存在值</value>
+  </data>
+  <data name="DEFAULT_NEWLAYER_NUM" xml:space="preserve">
+    <value>图层{0}</value>
+  </data>
+  <data name="HEADER_LAYER_INDEXED" xml:space="preserve">
+    <value>图层{0}</value>
+  </data>
+  <data name="HEADER_PREYPREDATOR" xml:space="preserve">
+    <value>猎物\捕食者</value>
+  </data>
+  <data name="FILEFILTER_LOAD_RASTER" xml:space="preserve">
+    <value>逗号分隔的文本文件| * .csv | ESRI ascii文件| * .asc | ESRI形状文件| * .shp |空间栅格文件| * .asc; *。csv; *。shp</value>
+  </data>
+  <data name="GENERIC_SHOW_LABELS" xml:space="preserve">
+    <value>显示标签</value>
+  </data>
+  <data name="HEADER_SHOW_LABELS" xml:space="preserve">
+    <value>显示标签</value>
+  </data>
+  <data name="HEADER_VALUEEND" xml:space="preserve">
+    <value>价值（完）</value>
+  </data>
+  <data name="HEADER_BIOMASS_START" xml:space="preserve">
+    <value>生物量（开始）</value>
+  </data>
+  <data name="GENERIC_SHOW_LEGEND" xml:space="preserve">
+    <value>显示图例</value>
+  </data>
+  <data name="HEADER_BIOMASS_UPPER" xml:space="preserve">
+    <value>生物质鞋面</value>
+  </data>
+  <data name="HEADER_QUOTA_NOTUSED" xml:space="preserve">
+    <value>没有配额</value>
+  </data>
+  <data name="HEADER_INDEX_CONNECTANCE" xml:space="preserve">
+    <value>连接指数</value>
+  </data>
+  <data name="HEADER_RELATIVEWEIGHT" xml:space="preserve">
+    <value>相对重量</value>
+  </data>
+  <data name="HEADER_BIOMASS_LOWER" xml:space="preserve">
+    <value>生物量较低</value>
+  </data>
+  <data name="HEADER_BIOMASS_LIMIT" xml:space="preserve">
+    <value>生物量限制</value>
+  </data>
+  <data name="HEADER_CONFIDENCEINTERVAL" xml:space="preserve">
+    <value>Conf。互动（+ /-％）</value>
+  </data>
+  <data name="HEADER_DENDEPCATCHABILITY_ABBR" xml:space="preserve">
+    <value>窝部门捕捉能力</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_FULLYEXPLOITED" xml:space="preserve">
+    <value>充分利用|||渔业正在以最佳产量或接近最佳产量的水平运行，没有预期进一步扩大的空间</value>
+  </data>
+  <data name="HEADER_VULNERABILITY" xml:space="preserve">
+    <value>脆弱性</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLFIELDS" xml:space="preserve">
+    <value>（所有领域）</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLFLEETS" xml:space="preserve">
+    <value>（所有车队）</value>
+  </data>
+  <data name="STYLEFLAGS_NAMES" xml:space="preserve">
+    <value>名称|||值是一个名称</value>
+  </data>
+  <data name="HEADER_POPULATIONBIOMASS" xml:space="preserve">
+    <value>人口生物量</value>
+  </data>
+  <data name="HEADER_MEASUREOFFIT" xml:space="preserve">
+    <value>拟合度t *</value>
+  </data>
+  <data name="CAPTION_DEFINE_MEDIATING_GROUPSANDFLEETS" xml:space="preserve">
+    <value>为“ {0}”定义中介组和车队</value>
+  </data>
+  <data name="GENERIC_VAUE_RUN_X" xml:space="preserve">
+    <value>运行{0}</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_MORTOTHER" xml:space="preserve">
+    <value>死亡率其他</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_PRODUCTIONRATE" xml:space="preserve">
+    <value>生产率</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLGROUPS" xml:space="preserve">
+    <value>（所有组）</value>
+  </data>
+  <data name="HEADER_EFFORT_MEAN" xml:space="preserve">
+    <value>努力平均值</value>
+  </data>
+  <data name="HEADER_LEFT_LIMIT" xml:space="preserve">
+    <value>左极限</value>
+  </data>
+  <data name="HEADER_FEEDINGTIME" xml:space="preserve">
+    <value>喂食时间</value>
+  </data>
+  <data name="HEADER_AGE_FIRST_CAPTURE" xml:space="preserve">
+    <value>年龄优先捕获</value>
+  </data>
+  <data name="SHAPEFUNCTION_HYPERBOLIC" xml:space="preserve">
+    <value>双曲</value>
+  </data>
+  <data name="HEADER_CATCH_PERC_BELOW_REF" xml:space="preserve">
+    <value>低于参考的捕获百分比</value>
+  </data>
+  <data name="HEADER_BIOMASS_MIN" xml:space="preserve">
+    <value>最低生物量</value>
+  </data>
+  <data name="HEADER_BIOMASS_MAX" xml:space="preserve">
+    <value>最大生物量</value>
+  </data>
+  <data name="ORGANISM_MAMMALS" xml:space="preserve">
+    <value>哺乳动物</value>
+  </data>
+  <data name="ABOUT_OS_VERSION" xml:space="preserve">
+    <value>操作系统{0}（{1}）</value>
+  </data>
+  <data name="GENERIC_SHOW_HIDDEN" xml:space="preserve">
+    <value>显示隐藏的节点</value>
+  </data>
+  <data name="DEFAULT_NEWMODELNAME" xml:space="preserve">
+    <value>新模型</value>
+  </data>
+  <data name="SHAPEFUNCTION_LEFTSHOULDER" xml:space="preserve">
+    <value>左肩</value>
+  </data>
+  <data name="GENERIC_VALUE_DELETE_PENDING" xml:space="preserve">
+    <value>（删除）</value>
+  </data>
+  <data name="FILEFILTER_SPATTEMPCONFIG" xml:space="preserve">
+    <value>空间时态配置文件| * .xml</value>
+  </data>
+  <data name="TOOLTIP_VIEWFOLDER" xml:space="preserve">
+    <value>查看文件夹</value>
+  </data>
+  <data name="PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH" xml:space="preserve">
+    <value>所选文件不能用于此目的。请注意，图像的宽度或高度不能超过100像素。</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_NOTASSESSED" xml:space="preserve">
+    <value>未评估</value>
+  </data>
+  <data name="HEADER_SHOWALL" xml:space="preserve">
+    <value>显示所有</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_VULNERABILITY" xml:space="preserve">
+    <value>漏洞（v）</value>
+  </data>
+  <data name="HEADER_BIOMASS_PERC_BELOW_REF" xml:space="preserve">
+    <value>生物质含量低于参考值</value>
+  </data>
+  <data name="COMPATIBILITY_NOSPATIAL" xml:space="preserve">
+    <value>没有空间||没有空间重叠|数据在场景上没有空间重叠</value>
+  </data>
+  <data name="HEADER_SIZECLASS" xml:space="preserve">
+    <value>尺寸等级</value>
+  </data>
+  <data name="FILE_SAVE_ERROR_DETAIL" xml:space="preserve">
+    <value>无法保存到文件“ {0}”。 {1}</value>
+  </data>
+  <data name="DATASOURCE_EII" xml:space="preserve">
+    <value>* .eii | Ecopath 5 EII（* .eii）||是好的ole Ecopath 5 EII文本格式（* .eii）</value>
+  </data>
+  <data name="STYLEFLAGS_REMARKS" xml:space="preserve">
+    <value>备注|||值已附加备注</value>
+  </data>
+  <data name="GENERIC_VALUE_GRID_CONTENT" xml:space="preserve">
+    <value>网格内容</value>
+  </data>
+  <data name="HEADER_TOTALLENGTH" xml:space="preserve">
+    <value>总长度</value>
+  </data>
+  <data name="GENERIC_LABEL_PERUNIT" xml:space="preserve">
+    <value>（/ {0}）</value>
+  </data>
+  <data name="OCCURRENCESTATUS_INTRODUCED" xml:space="preserve">
+    <value>介绍了</value>
+  </data>
+  <data name="HEADER_ECOSIM_YEARS" xml:space="preserve">
+    <value>Ecosim年</value>
+  </data>
+  <data name="HEADER_TOTALVALUE_PERC" xml:space="preserve">
+    <value>总价值 （％）</value>
+  </data>
+  <data name="STYLEFLAGS_SUM" xml:space="preserve">
+    <value>总和|||值是公式结果</value>
+  </data>
+  <data name="HEADER_BODYWEIGHT_LOGg" xml:space="preserve">
+    <value>体重（log g）</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_CONTAMINANTS" xml:space="preserve">
+    <value>污染物</value>
+  </data>
+  <data name="COMPATIBILITY_NOTEMPORAL" xml:space="preserve">
+    <value>没有时间||没有时间重叠|| Ecospace运行期间没有数据</value>
+  </data>
+  <data name="AUTOSAVE_MONTECARLO" xml:space="preserve">
+    <value>蒙特卡洛审判结果</value>
+  </data>
+  <data name="HEADER_SUM_VALUE_MARKET" xml:space="preserve">
+    <value>总市值</value>
+  </data>
+  <data name="ECOLOGY_PELAGICOCEANIC" xml:space="preserve">
+    <value>远洋海洋</value>
+  </data>
+  <data name="GENERIC_FILELOAD_FAILURE" xml:space="preserve">
+    <value>{0}无法从'{1}'：{2}加载。</value>
+  </data>
+  <data name="HEADER_MAX_RECRUITMENT" xml:space="preserve">
+    <value>最高招募</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_DELETE" xml:space="preserve">
+    <value>您将要删除时间序列'{0}'。此操作无法撤消。你确定你要这么做吗？</value>
+  </data>
+  <data name="VERBOSE_DETAILED" xml:space="preserve">
+    <value>详细</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MPAS" xml:space="preserve">
+    <value>MPA</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_CAPACITYINPUT" xml:space="preserve">
+    <value>栖息地觅食能力</value>
+  </data>
+  <data name="HEADER_RELATIVE_CATCH" xml:space="preserve">
+    <value>相对捕获</value>
+  </data>
+  <data name="UNIT_BYTE" xml:space="preserve">
+    <value>乙</value>
+  </data>
+  <data name="HEADER_RELATIVE_VALUE" xml:space="preserve">
+    <value>相对价值</value>
+  </data>
+  <data name="HEADER_COMPARTMENT" xml:space="preserve">
+    <value>隔间</value>
+  </data>
+  <data name="HEADER_CATCH_LOWER" xml:space="preserve">
+    <value>赶低</value>
+  </data>
+  <data name="HEADER_CATCH_START" xml:space="preserve">
+    <value>赶上（开始）</value>
+  </data>
+  <data name="HEADER_CATCH_UPPER" xml:space="preserve">
+    <value>赶上</value>
+  </data>
+  <data name="COLORRAMP_EWE" xml:space="preserve">
+    <value>标准EwE配色方案</value>
+  </data>
+  <data name="HEADER_RIGHT_LIMIT" xml:space="preserve">
+    <value>权利限制</value>
+  </data>
+  <data name="GENERIC_ZOOM_RESET" xml:space="preserve">
+    <value>重设缩放</value>
+  </data>
+  <data name="HEADER_COMPONENT" xml:space="preserve">
+    <value>零件</value>
+  </data>
+  <data name="GENERIC_VALUE_NOTAVAILABLE" xml:space="preserve">
+    <value>（不适用）</value>
+  </data>
+  <data name="METADATA_BOOLEAN" xml:space="preserve">
+    <value>是/否</value>
+  </data>
+  <data name="HEADER_CATCH_CV" xml:space="preserve">
+    <value>赶上简历</value>
+  </data>
+  <data name="OCCURRENCESTATUS_ENDEMIC" xml:space="preserve">
+    <value>地方性</value>
+  </data>
+  <data name="HEADER_HALF_MAX_RECRUITMENT" xml:space="preserve">
+    <value>最大一半招募</value>
+  </data>
+  <data name="HEADER_FIB" xml:space="preserve">
+    <value>FIB指数</value>
+  </data>
+  <data name="HEADER_AIC" xml:space="preserve">
+    <value>赤池信息标准</value>
+  </data>
+  <data name="HEADER_MPA" xml:space="preserve">
+    <value>MPA</value>
+  </data>
+  <data name="HEADER_COL" xml:space="preserve">
+    <value>柱</value>
+  </data>
+  <data name="HEADER_LOW" xml:space="preserve">
+    <value>低</value>
+  </data>
+  <data name="HEADER_TAC" xml:space="preserve">
+    <value>允许总捕捞量</value>
+  </data>
+  <data name="HEADER_TFM" xml:space="preserve">
+    <value>目标捕捞死亡率</value>
+  </data>
+  <data name="HEADER_TLC" xml:space="preserve">
+    <value>营养水平</value>
+  </data>
+  <data name="HEADER_ROW" xml:space="preserve">
+    <value>行</value>
+  </data>
+  <data name="HEADER_PBZ" xml:space="preserve">
+    <value>Prod / biom或Z</value>
+  </data>
+  <data name="HEADER_SUM" xml:space="preserve">
+    <value>和</value>
+  </data>
+  <data name="GENERIC_VALUE_ITERATION" xml:space="preserve">
+    <value>迭代{0}</value>
+  </data>
+  <data name="FITRESPONSE_NONE" xml:space="preserve">
+    <value>没有</value>
+  </data>
+  <data name="BUTTON_NONE" xml:space="preserve">
+    <value>没有</value>
+  </data>
+  <data name="HEADER_CODE_SEALIFEBASE" xml:space="preserve">
+    <value>SLB id | SeaLifeBase中的分类代码</value>
+  </data>
+  <data name="HEADER_RESPIRATIONASSIMILATION" xml:space="preserve">
+    <value>呼吸/同化</value>
+  </data>
+  <data name="STYLEFLAGS_VALUECOMPUTED" xml:space="preserve">
+    <value>计算|||值已计算或估计</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_DATA" xml:space="preserve">
+    <value>文件'{0}'不包含任何数据。</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_READ" xml:space="preserve">
+    <value>无法读取文件“ {0}”。</value>
+  </data>
+  <data name="ORGANISM_ALGAE" xml:space="preserve">
+    <value>藻类</value>
+  </data>
+  <data name="HEADER_NET_ECONOMIC_VALUE_ABBR" xml:space="preserve">
+    <value>经济。</value>
+  </data>
+  <data name="ORGANISM_OTHER" xml:space="preserve">
+    <value>（其他）</value>
+  </data>
+  <data name="HEADER_DETRITUS" xml:space="preserve">
+    <value>碎屑</value>
+  </data>
+  <data name="ORGANISM_BIRDS" xml:space="preserve">
+    <value>鸟类</value>
+  </data>
+  <data name="HEADER_EXPLOITATION_STATUS" xml:space="preserve">
+    <value>开发状况</value>
+  </data>
+  <data name="ORGANISM_FUNGI" xml:space="preserve">
+    <value>菌类</value>
+  </data>
+  <data name="BA_CALC_FROMECOPATH" xml:space="preserve">
+    <value>生态路径生物量积累值</value>
+  </data>
+  <data name="HEADER_FISHING" xml:space="preserve">
+    <value>钓鱼</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_FISHING" xml:space="preserve">
+    <value>钓鱼</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
+    <value>相对生物量（参考）</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSABS" xml:space="preserve">
+    <value>绝对生物量（参考）</value>
+  </data>
+  <data name="STATUS_TIMESERIES_ADDING" xml:space="preserve">
+    <value>正在添加时间序列{0} ...</value>
+  </data>
+  <data name="PROMPT_REQUIRES_ADMINISTRATOR" xml:space="preserve">
+    <value>EwE将需要以管理员权限运行才能使更改生效。</value>
+  </data>
+  <data name="SHAPEFUNCTION_BETAPDF" xml:space="preserve">
+    <value>Beta功能</value>
+  </data>
+  <data name="HEADER_LANDINGS" xml:space="preserve">
+    <value>着陆</value>
+  </data>
+  <data name="HEADER_STANZA_AGE" xml:space="preserve">
+    <value>节的年龄（以月为单位）</value>
+  </data>
+  <data name="HEADER_SUM_CONSUMPTION" xml:space="preserve">
+    <value>所有消费的总和</value>
+  </data>
+  <data name="GENERIC_VALUE_PARTIAL" xml:space="preserve">
+    <value>（部分）</value>
+  </data>
+  <data name="HEADER_BIOACCUM" xml:space="preserve">
+    <value>生物质积累</value>
+  </data>
+  <data name="HEADER_ECOSPACE_AREA" xml:space="preserve">
+    <value>生态空间区</value>
+  </data>
+  <data name="PROMPT_STYLE_SAVE_FAILED" xml:space="preserve">
+    <value>样式无法保存到{0}。 {1}</value>
+  </data>
+  <data name="LABEL_ALL_SUPPORTED_FILES" xml:space="preserve">
+    <value>所有支持的文件</value>
+  </data>
+  <data name="GENERIC_LABEL_STEP_SIZE" xml:space="preserve">
+    <value>一步的大小</value>
+  </data>
+  <data name="ORGANISM_BACTERIA" xml:space="preserve">
+    <value>菌</value>
+  </data>
+  <data name="HEADER_CC_OVER_B" xml:space="preserve">
+    <value>承载能力/ Ecopath生物量</value>
+  </data>
+  <data name="HEADER_TOTALPROFIT" xml:space="preserve">
+    <value>利润总额</value>
+  </data>
+  <data name="HEADER_SUM_VALUE_SHADOW" xml:space="preserve">
+    <value>总影子值</value>
+  </data>
+  <data name="HEADER_NET_ECONOMIC_VALUE" xml:space="preserve">
+    <value>净经济价值</value>
+  </data>
+  <data name="COMPATIBILITY_ERRORS" xml:space="preserve">
+    <value>{0}个错误||||数据在生态空间运行期间包含{0}个错误。请检查</value>
+  </data>
+  <data name="HEADER_TIMESERIES" xml:space="preserve">
+    <value>时间序列</value>
+  </data>
+  <data name="HEADER_SCALEDVALUES" xml:space="preserve">
+    <value>标定值</value>
+  </data>
+  <data name="COMMAND_DEFINEMPAS" xml:space="preserve">
+    <value>定义海洋保护区</value>
+  </data>
+  <data name="GENERIC_LABEL_SCENARIODETAILS" xml:space="preserve">
+    <value>{0}（{1} {2}）</value>
+  </data>
+  <data name="HEADER_APPEARANCE" xml:space="preserve">
+    <value>出现</value>
+  </data>
+  <data name="ORGANISM_PLANTS" xml:space="preserve">
+    <value>植物</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_NEARTHREATENED" xml:space="preserve">
+    <value>NT ||接近威胁</value>
+  </data>
+  <data name="GENERIC_VALUE_NONE" xml:space="preserve">
+    <value>（没有）</value>
+  </data>
+  <data name="GENERIC_VALUE_FULL" xml:space="preserve">
+    <value>（充分）</value>
+  </data>
+  <data name="ECOLOGY_BATHYPELAGIC" xml:space="preserve">
+    <value>浮游的</value>
+  </data>
+  <data name="ECOLOGY_BENTHIC" xml:space="preserve">
+    <value>本蒂奇</value>
+  </data>
+  <data name="HEADER_INDEXVALUE" xml:space="preserve">
+    <value>指标值</value>
+  </data>
+  <data name="HEADER_OUTPUT_LOCATION" xml:space="preserve">
+    <value>输出位置</value>
+  </data>
+  <data name="HEADER_PROBABILITY" xml:space="preserve">
+    <value>可能性</value>
+  </data>
+  <data name="HEADER_LATIN_NAME" xml:space="preserve">
+    <value>拉丁名</value>
+  </data>
+  <data name="PROMPT_SHOWTITLE_DESCR" xml:space="preserve">
+    <value>显示或隐藏标题</value>
+  </data>
+  <data name="HEADER_CATCH_E_OVER_S" xml:space="preserve">
+    <value>渔获量（E / S）</value>
+  </data>
+  <data name="HEADER_G" xml:space="preserve">
+    <value>G</value>
+  </data>
+  <data name="SHAPEFUNCTION_EXPONENTIAL" xml:space="preserve">
+    <value>指数的</value>
+  </data>
+  <data name="HEADER_EFFORT_PERC_BELOW_REF" xml:space="preserve">
+    <value>努力百分比低于参考</value>
+  </data>
+  <data name="HEADER_NETEFFICIENCY" xml:space="preserve">
+    <value>净效率</value>
+  </data>
+  <data name="HEADER_EMPTY_PANEL" xml:space="preserve">
+    <value>空面板</value>
+  </data>
+  <data name="DEFAULT_NEWMAP_NUM" xml:space="preserve">
+    <value>容量图{0}</value>
+  </data>
+  <data name="HEADER_COST_E_OVER_S" xml:space="preserve">
+    <value>费用（E / S）</value>
+  </data>
+  <data name="HEADER_BIODIVERSITY" xml:space="preserve">
+    <value>生物多样性</value>
+  </data>
+  <data name="HEADER_FISHING_EFFORT_MODIFIER" xml:space="preserve">
+    <value>钓鱼力度修正</value>
+  </data>
+  <data name="HEADER_ECOSPACE_YEARS" xml:space="preserve">
+    <value>生态空间年</value>
+  </data>
+  <data name="HEADER_NODE_SIZE" xml:space="preserve">
+    <value>节点大小</value>
+  </data>
+  <data name="HEADER_NODE_TYPE" xml:space="preserve">
+    <value>节点类型</value>
+  </data>
+  <data name="TIMESERIES_WARNING_NOFLEET" xml:space="preserve">
+    <value>未链接到有效车队</value>
+  </data>
+  <data name="HEADER_VULNERABILITY_INDEX" xml:space="preserve">
+    <value>漏洞指数[0，100]</value>
+  </data>
+  <data name="TIMESERIES_WARNING_NOGROUP" xml:space="preserve">
+    <value>未链接到有效的网上论坛</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_DEPLETED" xml:space="preserve">
+    <value>|||捕捞量远低于历史水平，与捕捞努力程度无关</value>
+  </data>
+  <data name="HEADER_VULNERABILITY_WO_FT" xml:space="preserve">
+    <value>没有FT的漏洞</value>
+  </data>
+  <data name="HEADER_ECOLOGY" xml:space="preserve">
+    <value>生态</value>
+  </data>
+  <data name="CLIMATE_TEMPORAL" xml:space="preserve">
+    <value>时间|||时间（30至60度）</value>
+  </data>
+  <data name="HEADER_HABITAT" xml:space="preserve">
+    <value>栖息地</value>
+  </data>
+  <data name="TOOLTIP_LOADFROMCSV" xml:space="preserve">
+    <value>从CSV文件加载</value>
+  </data>
+  <data name="HEADER_ASSIGNED_FORAGING_RESPONSES" xml:space="preserve">
+    <value>搜寻对{0}的响应</value>
+  </data>
+  <data name="GENERIC_VALUE_INVALID" xml:space="preserve">
+    <value>无效</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_DETAIL" xml:space="preserve">
+    <value>无法从文件“ {0}”加载。 {1}</value>
+  </data>
+  <data name="CAPACITY_SET_SHAPE_MINMAX" xml:space="preserve">
+    <value>设置功能{0}的输入数据范围</value>
+  </data>
+  <data name="HEADER_BIOMASS_PERC_ABOVE_REF" xml:space="preserve">
+    <value>高于参考的生物量％</value>
+  </data>
+  <data name="DATASOURCE_EIIXML" xml:space="preserve">
+    <value>* .eiixml | EII标记（* .eiixml）|| XML格式的EII（* .eiixml）</value>
+  </data>
+  <data name="GENERAL_LABEL_MONTHLY" xml:space="preserve">
+    <value>每月一次</value>
+  </data>
+  <data name="SHAPEFUNCTION_NOTSET" xml:space="preserve">
+    <value>（徒手绘制）|||形状不是原始图元，可以绘制草图或通过其他方式获取数据</value>
+  </data>
+  <data name="STATUS_UPDATING" xml:space="preserve">
+    <value>正在更新，请稍候...</value>
+  </data>
+  <data name="SHAPEFUNCTION_NORMAL" xml:space="preserve">
+    <value>正常</value>
+  </data>
+  <data name="HEADER_CATCH_CUMULATIVE" xml:space="preserve">
+    <value>累计产量</value>
+  </data>
+  <data name="METADATA_TEXT" xml:space="preserve">
+    <value>最高{0}个字符</value>
+  </data>
+  <data name="COMPATIBILITY_NOTSET" xml:space="preserve">
+    <value>（未建立索引）|||数据尚未建立索引</value>
+  </data>
+  <data name="GENERIC_CURRENCIES" xml:space="preserve">
+    <value>AED |阿联酋迪拉姆| AFN |阿富汗阿富汗尼| ALL |阿尔巴尼亚列克| AMD |亚美尼亚德拉姆| ANG |安蒂尔·吉尔吉尔| AOR |安哥拉新宽扎| ARS |阿根廷比索|澳元|澳元| AWG |阿鲁巴弗洛林| AZM |阿塞拜疆马纳特| BAM |波斯尼亚Konvertibilna Marka | BBD |巴巴多斯元| BDT |孟加拉塔卡| BGN |保加利亚新列弗| BHD |巴林第纳尔| BIF |布隆迪法郎| BMD |百慕大美元| BND |文莱| BOB |玻利维亚诺| BRL |巴西雷亚尔| BSD |巴哈马元| BTN |不丹Ngultrum | BWP |博茨瓦纳普拉| BYB |白俄罗斯卢布| BZD |伯利兹元| CAD |加拿大元| CDF |刚果法郎| CHF |瑞士法郎|中电|智利比索| CNY |人民币| COP |哥伦比亚比索| CRC |哥斯达黎加科隆|银联|古巴比索| CVE |佛得角埃斯库多| CZK |捷克克朗| DJF |吉布提法郎| DKK |丹麦克朗| DOP |多米尼加共和国比索| DZD |阿尔及利亚第纳尔| ECS |厄瓜多尔苏克雷| EEK |爱沙尼亚克朗| EGP |埃及镑| ETB |埃塞俄比亚比尔| EUR |欧元| FJD |斐济美元| FKP |福克兰群岛磅| FRF |法国法郎| GBP |英国英镑| GEL |格鲁吉亚拉里| GHC |加纳塞地| GIP |直布罗陀庞德| GMD |冈比亚达拉西| GNF |几内亚法郎| GTQ |危地马拉格查尔| GYD |圭亚那元| HKD |港元| HNL |洪都拉斯伦皮拉| HRK |克罗地亚库纳| HTG |海地古德| HUF |匈牙利福林| IDR |印尼盾| ILS |以色列新谢克尔| INR |印度卢比| IQD |伊拉克第纳尔| IRR |伊朗里亚尔| ISK |冰岛克朗| JMD |牙买加美元| JOD |约旦第纳尔| JPY |日元| KES |肯尼亚先令| KGS |吉尔吉斯斯坦索姆| KHR |柬埔寨瑞尔| KMF |科摩罗法郎| KPW |韩国PR韩元（韩国）| KRW |韩国韩元（韩国）| KWD |科威特第纳尔| KYD |开曼元| KZT |哈萨克斯坦Tenge | LAK |老挝基普| LBP |黎巴嫩镑| LKR |斯里兰卡卢比| LRD |利比里亚元| LSL |莱索托洛蒂| LTL |立陶宛立特| LVL |拉脱维亚拉特| LYD |利比亚第纳尔| MAD |摩洛哥迪拉姆| MAD |摩洛哥迪拉姆| MDL | Moldovan Leu | MGF |马尔加什法郎| MKD |马其顿代纳尔| MMK |缅甸缅元| MNT |蒙古图格里克| MOP |澳门帕塔卡| MRO |毛里塔尼亚Ougiya | MUR |毛里求斯卢比| MVR |马尔代夫鲁菲亚马拉维克瓦查| MXN |墨西哥比索| MYR |马来西亚林吉特| MZM | Mozamb ique Metical | NAD |纳米比亚元| NGN |尼日利亚奈拉| NIO |尼加拉瓜科多巴| NOK |挪威克朗| NPR |尼泊尔卢比| NZD |新西兰元| OMR |阿曼里亚尔| PAB |巴拿马巴波亚| PEN |秘鲁新索尔| PGK |巴布亚新几内亚基那| PHP |菲律宾比索| PKR |巴基斯坦卢比| PLN |波兰新兹罗提| PYG |巴拉圭瓜拉人| QAR |卡塔尔·里亚尔| ROL |罗马尼亚列伊| RSD |塞尔维亚第纳尔| RUB |俄罗斯卢布| RWF |卢旺达法郎|特区|沙特里亚尔| SBD |所罗门群岛元| SCR |塞舌尔卢比| SDD |苏丹第纳尔| SEK |瑞典克朗| SGD |新加坡元| SHP |圣赫勒拿镑| SKK |斯洛伐克克朗| SLL |塞拉利昂利昂| SOS |索马里先令| SRG |苏里南荷兰盾| STD |圣多美和普林西比多布拉| SVC |萨尔瓦多科隆| SYP |叙利亚镑| SZL |斯威士兰利兰尼尼| THB |泰铢| TJR |塔吉克斯坦卢布| TMM |土库曼斯坦马纳特|突尼斯第纳尔| TOP |汤加帕安加| TRY |新土耳其里拉| TTD |特立尼达美元| TWD |台湾元| TZS |坦桑尼亚先令| UAH |乌克兰格里夫尼亚斯| UGX |乌干达新先令| USD |美元| UYU | Peso Uruguayo | UZS |乌兹别克斯坦总和| VEB | Vene zuelan Bolvar | VND |越南新英格兰| VUV |瓦努阿图瓦图| WST |西萨摩亚塔拉| XAF | CFA中央法郎| XCD |东加勒比元| XOF | CFA西法郎| XPF |法属波利尼西亚CFA法国（CFP）| YER |也门里亚尔| ZAR |南非兰特| ZMK |赞比亚克瓦查| ZWD |津巴布韦美元</value>
+  </data>
+  <data name="HEADER_DISCARDS_BREAKDOWN" xml:space="preserve">
+    <value>丢弃（组x机队）</value>
+  </data>
+  <data name="AUTOSAVE_ALL" xml:space="preserve">
+    <value>自动保存所有</value>
+  </data>
+  <data name="AUTOSAVE_MSE" xml:space="preserve">
+    <value>MSE成绩</value>
+  </data>
+  <data name="AUTOSAVE_MSY" xml:space="preserve">
+    <value>MSY迭代</value>
+  </data>
+  <data name="ECOLOGY_PELAGICNERITIC" xml:space="preserve">
+    <value>上浮性</value>
+  </data>
+  <data name="CAPTION_SELECT_FILE" xml:space="preserve">
+    <value>选择文件</value>
+  </data>
+  <data name="COMMAND_DEFINEREGIONS" xml:space="preserve">
+    <value>定义区域数量，或为所有MPA或生境创建区域</value>
+  </data>
+  <data name="BUTTON_ABORT" xml:space="preserve">
+    <value>中止</value>
+  </data>
+  <data name="HEADER_SUM_VALUE" xml:space="preserve">
+    <value>总价值</value>
+  </data>
+  <data name="HEADER_TOTALVALUE" xml:space="preserve">
+    <value>总价值</value>
+  </data>
+  <data name="HEADER_1_MINUS_SUM" xml:space="preserve">
+    <value>（1-总和）</value>
+  </data>
+  <data name="HEADER_BIOMASS_ECOPATH" xml:space="preserve">
+    <value>生态路径生物质</value>
+  </data>
+  <data name="HEADER_SUM_CATCH" xml:space="preserve">
+    <value>总捕捞量</value>
+  </data>
+  <data name="HEADER_TOTALCATCH" xml:space="preserve">
+    <value>总捕捞量</value>
+  </data>
+  <data name="BUTTON_RETRY" xml:space="preserve">
+    <value>重试</value>
+  </data>
+  <data name="HEADER_FISHING_ALL" xml:space="preserve">
+    <value>到处都是鱼</value>
+  </data>
+  <data name="HEADER_SCENARIO" xml:space="preserve">
+    <value>情境</value>
+  </data>
+  <data name="FILEFILTER_XML" xml:space="preserve">
+    <value>XML文件| * .xml</value>
+  </data>
+  <data name="FILEFILTER_XYZ" xml:space="preserve">
+    <value>XYZ点数据文件| * .xyz</value>
+  </data>
+  <data name="FILEFILTER_CSV" xml:space="preserve">
+    <value>逗号分隔的文本文件（* .csv）| * .csv</value>
+  </data>
+  <data name="FILEFILTER_ASC" xml:space="preserve">
+    <value>ESRI Asc文件| * .asc; *。txt</value>
+  </data>
+  <data name="FILEFILTER_ALL" xml:space="preserve">
+    <value>所有文件| *。*</value>
+  </data>
+  <data name="TSDATASETINTERVAL_TIMESTEP" xml:space="preserve">
+    <value>时间步长</value>
+  </data>
+  <data name="GENERIC_STATUS_RUNNINGPLUGIN" xml:space="preserve">
+    <value>正在执行插件...</value>
+  </data>
+  <data name="HEADER_MAXFISHINGMORTAILITY" xml:space="preserve">
+    <value>最大捕捞死亡率</value>
+  </data>
+  <data name="CLIMATE_TROPICAL" xml:space="preserve">
+    <value>热带|||热带（0至30度）</value>
+  </data>
+  <data name="HEADER_ENABLED" xml:space="preserve">
+    <value>已启用</value>
+  </data>
+  <data name="HEADER_PREDATION" xml:space="preserve">
+    <value>捕食</value>
+  </data>
+  <data name="ECOLOGY_DEMERSAL" xml:space="preserve">
+    <value>水下</value>
+  </data>
+  <data name="SHAPEFUNCTION_LINEAR" xml:space="preserve">
+    <value>线性的</value>
+  </data>
+  <data name="BUTTON_IGNORE" xml:space="preserve">
+    <value>忽视</value>
+  </data>
+  <data name="TS_TYPE_DISCARDPROP" xml:space="preserve">
+    <value>丢弃比例</value>
+  </data>
+  <data name="TS_TYPE_DISCARDMORT" xml:space="preserve">
+    <value>丢弃死亡率</value>
+  </data>
+  <data name="HEADER_DISCARD_MORT" xml:space="preserve">
+    <value>丢弃死亡率</value>
+  </data>
+  <data name="SHAPEFUNCTION_RIGHTSHOULDER" xml:space="preserve">
+    <value>右肩</value>
+  </data>
+  <data name="COMMAND_DEFINEGROUPS" xml:space="preserve">
+    <value>定义功能组</value>
+  </data>
+  <data name="HEADER_TOTALDISCARDS" xml:space="preserve">
+    <value>丢弃物总数</value>
+  </data>
+  <data name="HEADER_BIOMASSES" xml:space="preserve">
+    <value>生物质（E / S）</value>
+  </data>
+  <data name="DEFAULT_NEWFLEET_NUM" xml:space="preserve">
+    <value>舰队{0}</value>
+  </data>
+  <data name="HEADER_PROP_NAT_MORT" xml:space="preserve">
+    <value>比例自然死亡。</value>
+  </data>
+  <data name="HEADER_ASSIGNED_GROUPS_FLEETS" xml:space="preserve">
+    <value>分配的团体和车队</value>
+  </data>
+  <data name="HEADER_HALF_RECRUITMENT_B" xml:space="preserve">
+    <value>一半的招聘生物量</value>
+  </data>
+  <data name="CLIMATE_POLAR" xml:space="preserve">
+    <value>极|||极（60至90度）</value>
+  </data>
+  <data name="GENERIC_VALUE_TIMES" xml:space="preserve">
+    <value>x {0}</value>
+  </data>
+  <data name="LABEL_RESUME" xml:space="preserve">
+    <value>恢复</value>
+  </data>
+  <data name="TS_TYPE_CONSTTOTALMORT" xml:space="preserve">
+    <value>总死亡率不变</value>
+  </data>
+  <data name="GENERIC_VALUE_ERROR" xml:space="preserve">
+    <value>（错误）</value>
+  </data>
+  <data name="SHAPEFUNCTION_SIGMOID" xml:space="preserve">
+    <value>乙状结肠</value>
+  </data>
+  <data name="HEADER_FLEETNAME" xml:space="preserve">
+    <value>机队名称</value>
+  </data>
+  <data name="STYLEFLAGS_FAILEDVALIDATION" xml:space="preserve">
+    <value>输入错误||输入无效|输入值不被接受</value>
+  </data>
+  <data name="HEADER_INDIVIDUAL_WEIGHT" xml:space="preserve">
+    <value>个体重量</value>
+  </data>
+  <data name="ABOUT_64BIT" xml:space="preserve">
+    <value>64位</value>
+  </data>
+  <data name="GENERIC_STATUS_APPLYCHANGES" xml:space="preserve">
+    <value>正在套用变更...</value>
+  </data>
+  <data name="ABOUT_32BIT" xml:space="preserve">
+    <value>32位</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_OVEREXPLOITED" xml:space="preserve">
+    <value>过度开采</value>
+  </data>
+  <data name="HEADER_MCTRIALS" xml:space="preserve">
+    <value>蒙特卡洛审判</value>
+  </data>
+  <data name="CAPTION_SELECT_FILES" xml:space="preserve">
+    <value>选择文件</value>
+  </data>
+  <data name="HEADER_SWITCHINGPOWER" xml:space="preserve">
+    <value>开关电源</value>
+  </data>
+  <data name="HEADER_SAILINGRELATEDCOST" xml:space="preserve">
+    <value>航行相关费用（％）</value>
+  </data>
+  <data name="GENERIC_CHAR_ENTER" xml:space="preserve">
+    <value>（输入）</value>
+  </data>
+  <data name="GENERIC_CHAR_COLON" xml:space="preserve">
+    <value>：（冒号）</value>
+  </data>
+  <data name="GENERIC_CHAR_COMMA" xml:space="preserve">
+    <value>，（逗号）</value>
+  </data>
+  <data name="HEADER_EFFORT_UPPER" xml:space="preserve">
+    <value>鞋帮</value>
+  </data>
+  <data name="GENERIC_LABEL_CAPTION" xml:space="preserve">
+    <value>{1}-{0}</value>
+  </data>
+  <data name="DEFAULT_NEWMPA_NUM" xml:space="preserve">
+    <value>MPA {0}</value>
+  </data>
+  <data name="GENERIC_CHAR_SPACE" xml:space="preserve">
+    <value>（空间）</value>
+  </data>
+  <data name="RESPONSE_GRAPH_TITLE" xml:space="preserve">
+    <value>驾驶员直方图和响应功能</value>
+  </data>
+  <data name="HEADER_STANZAGROUP_NAME" xml:space="preserve">
+    <value>多节组名</value>
+  </data>
+  <data name="HEADER_EFFORT_CV" xml:space="preserve">
+    <value>努力简历</value>
+  </data>
+  <data name="HEADER_EFFORT_LOWER" xml:space="preserve">
+    <value>努力降低</value>
+  </data>
+  <data name="HEADER_MEAN_CATCH_TL" xml:space="preserve">
+    <value>渔获物的平均营养水平</value>
+  </data>
+  <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
+    <value>{0}无法保存到'{1}'：{2}。</value>
+  </data>
+  <data name="OCCURRENCESTATUS_QUESTIONABLE" xml:space="preserve">
+    <value>可疑的</value>
+  </data>
+  <data name="HEADER_QUOTA_STRONGESTSTOCK" xml:space="preserve">
+    <value>价值最高的股票配额</value>
+  </data>
+  <data name="HEADER_CATCH_WEIGHT" xml:space="preserve">
+    <value>渔获重量</value>
+  </data>
+  <data name="PROMPT_SHAPE_DELETE_MULTIPLE" xml:space="preserve">
+    <value>您将要删除{0}强制或中介功能。此操作无法撤消。你确定你要这么做吗？</value>
+  </data>
+  <data name="HEADER_PROPORTION_B" xml:space="preserve">
+    <value>生物量比例</value>
+  </data>
+  <data name="HEADER_WITH_FORAGING_TIME" xml:space="preserve">
+    <value>随着觅食时间调整</value>
+  </data>
+  <data name="HEADER_OMNIVORYINDEX" xml:space="preserve">
+    <value>杂食指数</value>
+  </data>
+  <data name="HEADER_ECOPATH_PEDIGREE" xml:space="preserve">
+    <value>Ecopath血统书</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWCAPACITYSHAPE" xml:space="preserve">
+    <value>环境响应{0}</value>
+  </data>
+  <data name="GENERIC_VALUE_PERCENTAGE" xml:space="preserve">
+    <value>{0}％</value>
+  </data>
+  <data name="CAPTION_GENERIC_EDIT" xml:space="preserve">
+    <value>编辑{0}</value>
+  </data>
+  <data name="STYLEFLAGS_CHECKED" xml:space="preserve">
+    <value>警报|||价值需要您的关注</value>
+  </data>
+  <data name="HEADER_TOTEFFMULTI" xml:space="preserve">
+    <value>小孩eff。乘</value>
+  </data>
+  <data name="HEADER_RESPONSE_TARGET" xml:space="preserve">
+    <value>响应函数“ {0}”</value>
+  </data>
+  <data name="HEADER_B_OVER_CC" xml:space="preserve">
+    <value>生态路径生物量/承载能力</value>
+  </data>
+  <data name="HEADER_MAXWEIGHT" xml:space="preserve">
+    <value>最高重量</value>
+  </data>
+  <data name="GENERIC_CHAR_SEMICOLON" xml:space="preserve">
+    <value>; （分号）</value>
+  </data>
+  <data name="HEADER_LATITUDE" xml:space="preserve">
+    <value>纬度</value>
+  </data>
+  <data name="PROMPT_MAPLOAD_MISSING" xml:space="preserve">
+    <value>{0}个单元的数据丢失</value>
+  </data>
+  <data name="HEADER_GROUPNUM" xml:space="preserve">
+    <value>组号</value>
+  </data>
+  <data name="TS_TYPE_TIMEFORCING" xml:space="preserve">
+    <value>时间强迫</value>
+  </data>
+  <data name="HEADER_TIMEFORCING" xml:space="preserve">
+    <value>时间强迫</value>
+  </data>
+  <data name="HEADER_HABITAT_ABBR" xml:space="preserve">
+    <value>哈卜</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_ARENAAREA" xml:space="preserve">
+    <value>竞技场区（A）</value>
+  </data>
+  <data name="HEADER_CATCH_STDDEV" xml:space="preserve">
+    <value>赶上性病。</value>
+  </data>
+  <data name="HEADER_LEADING_CB" xml:space="preserve">
+    <value>领先的Q / B</value>
+  </data>
+  <data name="BIODIVERSITY_KEMPTONSQ" xml:space="preserve">
+    <value>肯普顿Q</value>
+  </data>
+  <data name="COMPATIBILITY_TEMPORALNOTINDEXED" xml:space="preserve">
+    <value>未知空间||空间重叠未知|空间重叠尚未确定</value>
+  </data>
+  <data name="TOOLTIP_MEDIATION_CAPACITY_MULTIPLIER" xml:space="preserve">
+    <value>容量倍增器{0}</value>
+  </data>
+  <data name="CAPACITY_XLABEL" xml:space="preserve">
+    <value>输入项</value>
+  </data>
+  <data name="STYLEFLAGS_TAXONNAME" xml:space="preserve">
+    <value>分类单元|||值是分类名称</value>
+  </data>
+  <data name="UNIT_TERABYTE" xml:space="preserve">
+    <value>结核病</value>
+  </data>
+  <data name="CAPTION_DEFINE_MEDIATING_LANDINGS" xml:space="preserve">
+    <value>定义“ {0}”的供应</value>
+  </data>
+  <data name="HEADER_EXCRETION_RATE" xml:space="preserve">
+    <value>排泄的污染物的比例</value>
+  </data>
+  <data name="HEADER_CATCH_BREAKDOWN" xml:space="preserve">
+    <value>渔获量（组x船队）</value>
+  </data>
+  <data name="HEADER_INCREASEQ" xml:space="preserve">
+    <value>捕捞能力逐年提高</value>
+  </data>
+  <data name="DEFAULT_NEWECOSIMSCENARIO" xml:space="preserve">
+    <value>新的Ecosim方案</value>
+  </data>
+  <data name="FILEFILTER_SAVE_RASTER" xml:space="preserve">
+    <value>逗号分隔的文本文件| * .csv | ESRI Asc文件|空间栅格文件| * .asc; *。csv</value>
+  </data>
+  <data name="HEADER_SUM_PP_RESP" xml:space="preserve">
+    <value>初级总产量/总呼吸</value>
+  </data>
+  <data name="HEADER_QUOTA_WEAKESTSTOCK" xml:space="preserve">
+    <value>最弱的库存配额+丢弃配额</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_SEARCHRATE" xml:space="preserve">
+    <value>搜索率（a）</value>
+  </data>
+  <data name="HEADER_LINE_TYPE" xml:space="preserve">
+    <value>线型</value>
+  </data>
+  <data name="HEADER_FMORT_BREAKDOWN" xml:space="preserve">
+    <value>捕捞尾羽（x组）</value>
+  </data>
+  <data name="HEADER_ECOTRACER" xml:space="preserve">
+    <value>生态示踪剂</value>
+  </data>
+  <data name="ORGANISM_FISHES" xml:space="preserve">
+    <value>鱼</value>
+  </data>
+  <data name="HEADER_FIXEDESCAPE" xml:space="preserve">
+    <value>固定擒纵机构（t / km2）</value>
+  </data>
+  <data name="OCCURRENCESTATUS_NATIVE" xml:space="preserve">
+    <value>本机</value>
+  </data>
+  <data name="HEADER_FISHINGMORTALITY" xml:space="preserve">
+    <value>F（捕捞死亡率）</value>
+  </data>
+  <data name="HEADER_OBJECTIVE" xml:space="preserve">
+    <value>搜索目标</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWLANDINGSSHAPE" xml:space="preserve">
+    <value>供应的价格弹性{0}</value>
+  </data>
+  <data name="HEADER_CACHESIZE" xml:space="preserve">
+    <value>快取大小（MB）</value>
+  </data>
+  <data name="GENERIC_LABEL_REMOVE" xml:space="preserve">
+    <value>去掉</value>
+  </data>
+  <data name="HEADER_ENVIRONMENT" xml:space="preserve">
+    <value>环境</value>
+  </data>
+  <data name="HEADER_NUMPARAMS" xml:space="preserve">
+    <value>参数数量</value>
+  </data>
+  <data name="ECOLOGY_PELAGIC" xml:space="preserve">
+    <value>中上层</value>
+  </data>
+  <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
+    <value>示踪剂相对浓度</value>
+  </data>
+  <data name="TS_TYPE_TRACER_CONCABS" xml:space="preserve">
+    <value>Ecotracer绝对浓度</value>
+  </data>
+  <data name="HEADER_NUMCALLS" xml:space="preserve">
+    <value>＃次通话</value>
+  </data>
+  <data name="HEADER_NUMCELLS" xml:space="preserve">
+    <value>＃ 细胞</value>
+  </data>
+  <data name="HEADER_CODE_FISHBASE" xml:space="preserve">
+    <value>FB id | FishBase中的分类代码</value>
+  </data>
+  <data name="DEFAULT_NEWGROUP_NUM" xml:space="preserve">
+    <value>组{0}</value>
+  </data>
+  <data name="GENERIC_LABEL_FINISHED" xml:space="preserve">
+    <value>已完成</value>
+  </data>
+  <data name="AUTOSAVE_MPAOPT" xml:space="preserve">
+    <value>MPA优化</value>
+  </data>
+  <data name="UNIT_MEGABYTE" xml:space="preserve">
+    <value>兆字节</value>
+  </data>
+  <data name="SCALE_LOG" xml:space="preserve">
+    <value>（日志）</value>
+  </data>
+  <data name="COMPATIBILITY_SUMMARY_NOINDEX" xml:space="preserve">
+    <value>{0}％时间重叠，尚未确定面积重叠。</value>
+  </data>
+  <data name="HEADER_SUM_THROUGHPUT" xml:space="preserve">
+    <value>系统总吞吐量</value>
+  </data>
+  <data name="HEADER_BIOMASSEND" xml:space="preserve">
+    <value>生物量（完）</value>
+  </data>
+  <data name="HEADER_BIOMASS_CV" xml:space="preserve">
+    <value>生物质简历</value>
+  </data>
+  <data name="HEADER_MAXRELPB" xml:space="preserve">
+    <value>最大相对市净率</value>
+  </data>
+  <data name="PROMPT_MEDIATION_CANNOTMIX" xml:space="preserve">
+    <value>您无法分配组和车队的混合</value>
+  </data>
+  <data name="FITRESPONSE_EMIGRATE" xml:space="preserve">
+    <value>移民率</value>
+  </data>
+  <data name="HEADER_EFFORTES" xml:space="preserve">
+    <value>努力（E / S）</value>
+  </data>
+  <data name="HEADER_B_IN_LW" xml:space="preserve">
+    <value>LW中的b</value>
+  </data>
+  <data name="HEADER_EFFPOWER" xml:space="preserve">
+    <value>有效功率</value>
+  </data>
+  <data name="CAPACITY_PROMPT" xml:space="preserve">
+    <value>设定输入值（X轴）...</value>
+  </data>
+  <data name="HEADER_DESCRIPTION" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="GENERIC_COLOUR_USAGE" xml:space="preserve">
+    <value>颜色使用</value>
+  </data>
+  <data name="HEADER_PREY_PERCENTAGE" xml:space="preserve">
+    <value>猎物（％）</value>
+  </data>
+  <data name="METADATA_INTEGER" xml:space="preserve">
+    <value>ñ</value>
+  </data>
+  <data name="HEADER_MAXEFFORT" xml:space="preserve">
+    <value>最大的努力</value>
+  </data>
+  <data name="HEADER_AVAILABLE_LANDINGS" xml:space="preserve">
+    <value>可用降落</value>
+  </data>
+  <data name="COMPATIBILITY_TOTALOVERLAP" xml:space="preserve">
+    <value>完全||完全空间重叠|数据完全覆盖了生态空间区域</value>
+  </data>
+  <data name="ECOLOGY_REEFASSOCIATED" xml:space="preserve">
+    <value>珊瑚礁相关</value>
+  </data>
+  <data name="GENERIC_SHOW_FLOW_RATE_LEGEND" xml:space="preserve">
+    <value>显示流量图例</value>
+  </data>
+  <data name="HEADER_ASSIGNED_LANDINGS" xml:space="preserve">
+    <value>分配的着陆</value>
+  </data>
+  <data name="HEADER_VULNERABILITY_WITH_FT" xml:space="preserve">
+    <value>漏洞w。金融时报</value>
+  </data>
+  <data name="GENERIC_LABEL_INDEXED" xml:space="preserve">
+    <value>{0}：{1}</value>
+  </data>
+  <data name="HEADER_TROPHIC_LEVEL" xml:space="preserve">
+    <value>营养级</value>
+  </data>
+  <data name="HEADER_BIOMASS_STDDEV" xml:space="preserve">
+    <value>生物质标准</value>
+  </data>
+  <data name="HEADER_BIOMASS_BASE" xml:space="preserve">
+    <value>生物质基地</value>
+  </data>
+  <data name="HEADER_BIOMASS_MEAN" xml:space="preserve">
+    <value>生物量均值</value>
+  </data>
+  <data name="HEADER_BIOMASS_LOGg" xml:space="preserve">
+    <value>生物量（log g）</value>
+  </data>
+  <data name="PROMPT_SHAPE_DELETE" xml:space="preserve">
+    <value>您将删除强制或中介功能'{0}'。此操作无法撤消。你确定你要这么做吗？</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_INCOMPATIBLE_MAP" xml:space="preserve">
+    <value>文件'{0}'的内容与当前映射的像元大小不兼容。</value>
+  </data>
+  <data name="HEADER_PREDMORT" xml:space="preserve">
+    <value>捕食死亡率</value>
+  </data>
+  <data name="HEADER_CONCENTRATION" xml:space="preserve">
+    <value>浓度（累计）</value>
+  </data>
+  <data name="UNIT_BIOMASS" xml:space="preserve">
+    <value>单位生物量</value>
+  </data>
+  <data name="PROMPT_FOLDER_SELECTION" xml:space="preserve">
+    <value>请选择一个文件夹</value>
+  </data>
+  <data name="HEADER_PHYSICAL_DECAY_RATE" xml:space="preserve">
+    <value>物理衰减率</value>
+  </data>
+  <data name="ORGANISM_INVERTEBRATES" xml:space="preserve">
+    <value>无脊椎动物</value>
+  </data>
+  <data name="GENERIC_CHAR_ESCAPE" xml:space="preserve">
+    <value>（逃逸）</value>
+  </data>
+  <data name="HEADER_PP_ABBR" xml:space="preserve">
+    <value>聚丙烯</value>
+  </data>
+  <data name="HEADER_PRODCONS" xml:space="preserve">
+    <value>生产/消费</value>
+  </data>
+  <data name="HEADER_PRODUCER" xml:space="preserve">
+    <value>制片人</value>
+  </data>
+  <data name="HEADER_PRODRESP" xml:space="preserve">
+    <value>产生/呼吸</value>
+  </data>
+  <data name="METADATA_SINGLE" xml:space="preserve">
+    <value>[R</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_NOTEVALUATED" xml:space="preserve">
+    <value>NE ||未评估</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_ENVDRIVERS" xml:space="preserve">
+    <value>环境驱动力</value>
+  </data>
+  <data name="HEADER_VALUE_COMPONENT" xml:space="preserve">
+    <value>价值成分</value>
+  </data>
+  <data name="HEADER_CONTRIBUTION_TO_PSD" xml:space="preserve">
+    <value>对PSD的贡献</value>
+  </data>
+  <data name="HEADER_DISCARD_SURV" xml:space="preserve">
+    <value>舍弃生存</value>
+  </data>
+  <data name="HEADER_SHOW_VALUES" xml:space="preserve">
+    <value>在标签中显示值</value>
+  </data>
+  <data name="GENERIC_ZOOM_IN" xml:space="preserve">
+    <value>放大</value>
+  </data>
+  <data name="HEADER_B_IS_FOR_BIOMASS" xml:space="preserve">
+    <value>B =生物量</value>
+  </data>
+  <data name="STATUS_TIMESERIES_UPDATING" xml:space="preserve">
+    <value>正在更新时间序列{0} ...</value>
+  </data>
+  <data name="HEADER_MANDATED_ABBR" xml:space="preserve">
+    <value>曼达</value>
+  </data>
+  <data name="STYLEFLAGS_HIGHLIGHT" xml:space="preserve">
+    <value>突出显示|||值突出显示</value>
+  </data>
+  <data name="TOOLTIP_SAVETOCSV" xml:space="preserve">
+    <value>保存到CSV文件</value>
+  </data>
+  <data name="TOOLTIP_SAVETOMAP" xml:space="preserve">
+    <value>保存到地理参考地图</value>
+  </data>
+  <data name="HEADER_EFFORT_STDDEV" xml:space="preserve">
+    <value>努力标准</value>
+  </data>
+  <data name="HEADER_LESSTHAN" xml:space="preserve">
+    <value>&lt;{0}</value>
+  </data>
+  <data name="RESPONSE_GRAPH_YLABEL" xml:space="preserve">
+    <value>响应</value>
+  </data>
+  <data name="STYLEFLAGS_NULL" xml:space="preserve">
+    <value>空||无值|值未使用或留空</value>
+  </data>
+  <data name="HEADER_MORTALITY" xml:space="preserve">
+    <value>死亡</value>
+  </data>
+  <data name="HEADER_CATCH_MEAN" xml:space="preserve">
+    <value>渔获均值</value>
+  </data>
+  <data name="HEADER_CATCHVALUE" xml:space="preserve">
+    <value>捕获值</value>
+  </data>
+  <data name="HEADER_ECOPATH_AREA" xml:space="preserve">
+    <value>生态路径区</value>
+  </data>
+  <data name="GENERIC_CHAR_TAB" xml:space="preserve">
+    <value>（标签）</value>
+  </data>
+  <data name="HEADER_RELATIVEBIOMASS" xml:space="preserve">
+    <value>相对生物量</value>
+  </data>
+  <data name="HEADER_SWITCHINGPOWER_VALRANGE" xml:space="preserve">
+    <value>开关电源参数[0,2]</value>
+  </data>
+  <data name="HEADER_FORCASTGAIN" xml:space="preserve">
+    <value>招聘/总人口</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLRUNS" xml:space="preserve">
+    <value>（所有运行）</value>
+  </data>
+  <data name="HEADER_PROPORTION" xml:space="preserve">
+    <value>比例</value>
+  </data>
+  <data name="HEADER_FISHMORT_OVER_TOTMORT" xml:space="preserve">
+    <value>钓鱼房。 /总尸体。</value>
+  </data>
+  <data name="LABEL_VALUE_RANGE" xml:space="preserve">
+    <value>{0}（{1}-{2}）</value>
+  </data>
+  <data name="GENERIC_VALUE_UNKNOWN" xml:space="preserve">
+    <value>（未知）</value>
+  </data>
+  <data name="RESPONSE_GRAPH_XLABEL" xml:space="preserve">
+    <value>驱动值</value>
+  </data>
+  <data name="HEADER_REGIONS_UNDEFINED" xml:space="preserve">
+    <value>未定义区域</value>
+  </data>
+  <data name="COMPATIBILITY_PARTIALSPATIAL" xml:space="preserve">
+    <value>部分||部分空间重叠|数据部分覆盖了生态空间区域</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_LEASTCONCERN" xml:space="preserve">
+    <value>LC ||最不关心</value>
+  </data>
+  <data name="AUTOSAVE_ECOPATH" xml:space="preserve">
+    <value>生态路径估计</value>
+  </data>
+  <data name="UNIT_KILOBYTE" xml:space="preserve">
+    <value>KB</value>
+  </data>
+  <data name="BA_CALC_FROMECOSIMSTART" xml:space="preserve">
+    <value>Ecosim生物量减去Ecopath生物量</value>
+  </data>
+  <data name="HEADER_VALUESTART" xml:space="preserve">
+    <value>价值（开始）</value>
+  </data>
+  <data name="ECOLOGY_LANDBASED" xml:space="preserve">
+    <value>陆基</value>
+  </data>
+  <data name="HEADER_FISHINGMORTRATE" xml:space="preserve">
+    <value>=钓鱼宝。率</value>
+  </data>
+  <data name="HEADER_LASTUPDATED" xml:space="preserve">
+    <value>最近更新时间</value>
+  </data>
+  <data name="HEADER_FIXEDCOST" xml:space="preserve">
+    <value>固定成本 （％）</value>
+  </data>
+  <data name="HEADER_UPPERLIMIT" xml:space="preserve">
+    <value>上限</value>
+  </data>
+</root>

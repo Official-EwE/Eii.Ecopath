@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="m_hdrExecution.Text" xml:space="preserve">
+    <value>Ausführung</value>
+  </data>
+  <data name="m_lbScenarioName.Text" xml:space="preserve">
+    <value>&amp;Name:</value>
+  </data>
+  <data name="rbDay.Text" xml:space="preserve">
+    <value>Tag</value>
+  </data>
+  <data name="m_lblNorthUnit.Text" xml:space="preserve">
+    <value>[Standort]</value>
+  </data>
+  <data name="m_lblEastUnit.Text" xml:space="preserve">
+    <value>[Standort]</value>
+  </data>
+  <data name="m_lblWestUnit.Text" xml:space="preserve">
+    <value>[Standort]</value>
+  </data>
+  <data name="m_lblSouthUnit.Text" xml:space="preserve">
+    <value>[Standort]</value>
+  </data>
+  <data name="m_lblCountry.Text" xml:space="preserve">
+    <value>&amp;Land:</value>
+  </data>
+  <data name="m_lblOptions.Text" xml:space="preserve">
+    <value>Allgemeine Optionen</value>
+  </data>
+  <data name="m_lblFirstYear.Text" xml:space="preserve">
+    <value>Model Jahr:</value>
+  </data>
+  <data name="m_lblModelBounds.Text" xml:space="preserve">
+    <value>&amp; Räumliche Ausdehnung:</value>
+  </data>
+  <data name="m_tbContact.Text" xml:space="preserve">
+    <value>1 2</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Modellparameter</value>
+  </data>
+  <data name="rbWetWeight.Text" xml:space="preserve">
+    <value>Nassgewicht ({0})</value>
+  </data>
+  <data name="m_hdrClassification.Text" xml:space="preserve">
+    <value>Einstufung</value>
+  </data>
+  <data name="rbTimeOther.Text" xml:space="preserve">
+    <value>andere Einheit:</value>
+  </data>
+  <data name="m_lblAreaName.Text" xml:space="preserve">
+    <value>&amp;Bereichsname:</value>
+  </data>
+  <data name="m_lblAreaUnit.Text" xml:space="preserve">
+    <value>[km] ²</value>
+  </data>
+  <data name="m_lbAuthor.Text" xml:space="preserve">
+    <value>&amp;Autor:</value>
+  </data>
+  <data name="m_chkPSD.Text" xml:space="preserve">
+    <value>Partikelgrößenverteilungsberechnungen einbeziehen (&amp; PSD)</value>
+  </data>
+  <data name="m_lblWest.Text" xml:space="preserve">
+    <value>Westen:</value>
+  </data>
+  <data name="m_gbCurrencyUnit.Text" xml:space="preserve">
+    <value>Währungseinheiten</value>
+  </data>
+  <data name="m_lblBiodivIndex.Text" xml:space="preserve">
+    <value>&amp; Biodiversitätsindex:</value>
+  </data>
+  <data name="m_lbContact.Text" xml:space="preserve">
+    <value>&amp;Kontakt:</value>
+  </data>
+  <data name="m_lblNoYears.Text" xml:space="preserve">
+    <value>Anzahl &amp; Jahre:</value>
+  </data>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>&amp;Referenz:</value>
+  </data>
+  <data name="m_lblReference.Text" xml:space="preserve">
+    <value>&amp;Referenz:</value>
+  </data>
+  <data name="m_lblEcoType.Text" xml:space="preserve">
+    <value>&amp; Ökosystemtyp:</value>
+  </data>
+  <data name="rbYear.Text" xml:space="preserve">
+    <value>Jahr *)</value>
+  </data>
+  <data name="rbNutrientOther.Text" xml:space="preserve">
+    <value>andere:</value>
+  </data>
+  <data name="rbCurrencyEnergyOther.Text" xml:space="preserve">
+    <value>andere:</value>
+  </data>
+  <data name="m_lblPublicationDOI.Text" xml:space="preserve">
+    <value>&amp; DOI:</value>
+  </data>
+  <data name="m_lblMonetaryUnit.Text" xml:space="preserve">
+    <value>&amp;Einheit:</value>
+  </data>
+  <data name="rbNitrogen.Text" xml:space="preserve">
+    <value>Stickstoff ({0})</value>
+  </data>
+  <data name="m_gbMonetaryUnits.Text" xml:space="preserve">
+    <value>&amp; Währungseinheiten</value>
+  </data>
+  <data name="m_lblEnergyRelated.Text" xml:space="preserve">
+    <value>&amp; Energie bezogen:</value>
+  </data>
+  <data name="rbPhosporus.Text" xml:space="preserve">
+    <value>Phosporus ({0})</value>
+  </data>
+  <data name="rbDryWeight.Text" xml:space="preserve">
+    <value>Trockengewicht ({0})</value>
+  </data>
+  <data name="m_lbDescription.Text" xml:space="preserve">
+    <value>Beschreibung:</value>
+  </data>
+  <data name="m_lblSouth.Text" xml:space="preserve">
+    <value>Süd:</value>
+  </data>
+  <data name="m_cbGroupDigits.Text" xml:space="preserve">
+    <value>&amp; Gruppenziffern</value>
+  </data>
+  <data name="m_tbDescription.Text" xml:space="preserve">
+    <value>1 2 3</value>
+  </data>
+  <data name="m_chkIsCoupled.Text" xml:space="preserve">
+    <value>Ecospace an externes Modell gekoppelt</value>
+  </data>
+  <data name="m_lblNorth.Text" xml:space="preserve">
+    <value>Norden:</value>
+  </data>
+  <data name="m_gbTimeUnits.Text" xml:space="preserve">
+    <value>&amp; Zeiteinheiten</value>
+  </data>
+  <data name="m_hdrPublication.Text" xml:space="preserve">
+    <value>Veröffentlichung</value>
+  </data>
+  <data name="m_lblPublicationURL.Text" xml:space="preserve">
+    <value>&amp; URL:</value>
+  </data>
+  <data name="m_llViewPublication.Text" xml:space="preserve">
+    <value>&amp; DOI online validieren</value>
+  </data>
+  <data name="m_lblModel.Text" xml:space="preserve">
+    <value>Modell</value>
+  </data>
+  <data name="m_btnSearch.Text" xml:space="preserve">
+    <value>&amp;Suche</value>
+  </data>
+  <data name="m_lblEast.Text" xml:space="preserve">
+    <value>Osten:</value>
+  </data>
+  <data name="rbCalorie.Text" xml:space="preserve">
+    <value>Kalorie ({0})</value>
+  </data>
+  <data name="lbNumDigits.Text" xml:space="preserve">
+    <value>Relevante Dezimalstellen:</value>
+  </data>
+  <data name="m_lblNutrientRelated.Text" xml:space="preserve">
+    <value>&amp; Nährstoffbezogen:</value>
+  </data>
+  <data name="rbJoules.Text" xml:space="preserve">
+    <value>Joule ({0})</value>
+  </data>
+  <data name="m_gbNumFormatting.Text" xml:space="preserve">
+    <value>&amp; Zahlenformatierung</value>
+  </data>
+  <data name="m_lblArea.Text" xml:space="preserve">
+    <value>Modell a &amp; rea:</value>
+  </data>
+  <data name="rbCarbon.Text" xml:space="preserve">
+    <value>Kohlenstoff ({0})</value>
+  </data>
+</root>

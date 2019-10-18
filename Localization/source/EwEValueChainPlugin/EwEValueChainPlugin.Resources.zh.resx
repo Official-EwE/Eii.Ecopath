@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="UNIT_TYPE_CONSUMER" xml:space="preserve">
+    <value>消费者</value>
+  </data>
+  <data name="NAVTREE_INPUT_FLOW" xml:space="preserve">
+    <value>流</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_LANDINGLINKS" xml:space="preserve">
+    <value>着陆</value>
+  </data>
+  <data name="UNIT_TYPE_PRODUCER" xml:space="preserve">
+    <value>制片人</value>
+  </data>
+  <data name="NAVTREE_INPUT_DEFAULTS" xml:space="preserve">
+    <value>默认值</value>
+  </data>
+  <data name="GENERIC_TOOLTIP" xml:space="preserve">
+    <value>价值链插件</value>
+  </data>
+  <data name="CORE_DEFAULT_DISTRIBUTION" xml:space="preserve">
+    <value>分布{0}</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_PROCESSORS" xml:space="preserve">
+    <value>处理器</value>
+  </data>
+  <data name="PROMPT_CONVERT_UNIT" xml:space="preserve">
+    <value>您确定要将{0}从类型“ {1}”转换为类型“ {2}”吗？</value>
+  </data>
+  <data name="STATUS_SAVING" xml:space="preserve">
+    <value>正在保存价值链模型，请稍候...</value>
+  </data>
+  <data name="ERROR_LINK_NOTALLOWED" xml:space="preserve">
+    <value>不允许这种类型的链接</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_DISTRIBUTORS" xml:space="preserve">
+    <value>发行人</value>
+  </data>
+  <data name="STATUS_PROGRESS_EQUILIBIRUM" xml:space="preserve">
+    <value>运行价值链均衡车队{0}，努力{1}</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_REVENUE" xml:space="preserve">
+    <value>收入</value>
+  </data>
+  <data name="HEADER_REVENUE" xml:space="preserve">
+    <value>收入</value>
+  </data>
+  <data name="HEADER_COST" xml:space="preserve">
+    <value>成本</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_COST" xml:space="preserve">
+    <value>成本</value>
+  </data>
+  <data name="HEADER_JOBS" xml:space="preserve">
+    <value>工作</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_JOBS" xml:space="preserve">
+    <value>工作</value>
+  </data>
+  <data name="NAVTREE_INPUT_PARAMETERS" xml:space="preserve">
+    <value>参量</value>
+  </data>
+  <data name="PROMPT_AUTOLAYOUT" xml:space="preserve">
+    <value>您确定要布置图布局吗？</value>
+  </data>
+  <data name="GENERIC_CAPTION" xml:space="preserve">
+    <value>价值链</value>
+  </data>
+  <data name="CORE_DEFAULT_WHOLESALER" xml:space="preserve">
+    <value>批发商{0}</value>
+  </data>
+  <data name="PROMPT_DELETELINK" xml:space="preserve">
+    <value>您要删除链接“ {0}”吗？此操作无法撤消。</value>
+  </data>
+  <data name="PROMPT_DELETEUNIT" xml:space="preserve">
+    <value>您是否要删除单元“ {0}”？此操作无法撤消。</value>
+  </data>
+  <data name="ERROR_LINK_LOOP" xml:space="preserve">
+    <value>这将创建一个不允许的循环</value>
+  </data>
+  <data name="ERROR_LINK_NEEDUNITS" xml:space="preserve">
+    <value>链接需要源和目标</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_WHOLESALERS" xml:space="preserve">
+    <value>批发商</value>
+  </data>
+  <data name="ERROR_LINK_NEEDFLEET" xml:space="preserve">
+    <value>请首先将此生产者连接到Ecopath车队</value>
+  </data>
+  <data name="STATUS_RUNNING_ECOSIM" xml:space="preserve">
+    <value>Ecosim的运行价值链，请等待...</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLES" xml:space="preserve">
+    <value>组件</value>
+  </data>
+  <data name="PROMPT_SAVERESULTS_SUCCESS" xml:space="preserve">
+    <value>价值链结果保存到“ {0}”</value>
+  </data>
+  <data name="UNIT_TYPE_WHOLESALER" xml:space="preserve">
+    <value>批发商</value>
+  </data>
+  <data name="HEADER_CATEGORIES" xml:space="preserve">
+    <value>分类目录</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_RETAILERS" xml:space="preserve">
+    <value>零售商</value>
+  </data>
+  <data name="AGGREGATION_MODE_FULLMODEL" xml:space="preserve">
+    <value>未汇总</value>
+  </data>
+  <data name="CORE_DEFAULT_CONSUMER" xml:space="preserve">
+    <value>消费者{0}</value>
+  </data>
+  <data name="AGGREGATION_MODE_BYGROUP" xml:space="preserve">
+    <value>分组结果</value>
+  </data>
+  <data name="AGGREGATION_MODE_BYFLEET" xml:space="preserve">
+    <value>机队结果</value>
+  </data>
+  <data name="NAVTREE_OUTPUT_FLOWDIAGRAM" xml:space="preserve">
+    <value>流程图</value>
+  </data>
+  <data name="STATUS_LOADING" xml:space="preserve">
+    <value>正在加载价值链模型，请稍候...</value>
+  </data>
+  <data name="NAVTREE_OUTPUT_RUN" xml:space="preserve">
+    <value>运营价值链</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_PRODUCERS" xml:space="preserve">
+    <value>生产者</value>
+  </data>
+  <data name="HEADER_REV_COST" xml:space="preserve">
+    <value>收入与成本</value>
+  </data>
+  <data name="STATUS_RUNNING_EQUILIBRIUM" xml:space="preserve">
+    <value>正在运行价值链均衡搜索，请稍候...</value>
+  </data>
+  <data name="UNIT_TYPE_RETAILER" xml:space="preserve">
+    <value>零售商</value>
+  </data>
+  <data name="STATUS_RUNNING_ECOPATH" xml:space="preserve">
+    <value>Ecopath的运行价值链，请等待...</value>
+  </data>
+  <data name="PROMPT_SAVERESULTS_FAILED" xml:space="preserve">
+    <value>价值链结果未能保存到“ {0}”。 {1}</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_CONSUMERS" xml:space="preserve">
+    <value>消费者</value>
+  </data>
+  <data name="CORE_DEFAULT_RETAILER" xml:space="preserve">
+    <value>零售商{0}</value>
+  </data>
+  <data name="NAVTREE_INPUT_TABLE_LINKS" xml:space="preserve">
+    <value>链接</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_COSTREVENUE" xml:space="preserve">
+    <value>成本与收益</value>
+  </data>
+  <data name="CORE_DEFAULT_PROCESSING" xml:space="preserve">
+    <value>处理{0}</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_DEPENDENTS" xml:space="preserve">
+    <value>家属</value>
+  </data>
+  <data name="HEADER_DEPENDENTS" xml:space="preserve">
+    <value>家属</value>
+  </data>
+  <data name="ERROR_LINK_DUPLICATE" xml:space="preserve">
+    <value>组“ {0}”的链接已存在</value>
+  </data>
+  <data name="UNIT_TYPE_PROCESSING" xml:space="preserve">
+    <value>处理中</value>
+  </data>
+  <data name="UNIT_TYPE_DISTRIBUTION" xml:space="preserve">
+    <value>分配</value>
+  </data>
+  <data name="STATUS_MERGED" xml:space="preserve">
+    <value>价值链数据文件“ {0}”已合并到Ecopath模型“ {1}”中</value>
+  </data>
+  <data name="PROMPT_SAVERESULT_DETAIL" xml:space="preserve">
+    <value>已保存“ {0}”</value>
+  </data>
+</root>

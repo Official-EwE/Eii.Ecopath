@@ -1,0 +1,1215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="GENERIC_STATUS_INITIALIZING" xml:space="preserve">
+    <value>初始化中...</value>
+  </data>
+  <data name="PLUGIN_PROMPT_DISABLE" xml:space="preserve">
+    <value>在'{0}'{1} {1}中发生了以下错误，您是否希望在下次启动EwE时禁用此插件？</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_QB0_GENERIC" xml:space="preserve">
+    <value>该程序估计一个或多个组的消耗/生物量（Q / B）比率为0。请编辑您的数据。</value>
+  </data>
+  <data name="F2TS_ERROR_ESTIMATION" xml:space="preserve">
+    <value>适合时间序列估计错误'{0}'，原始参数值已恢复。</value>
+  </data>
+  <data name="STATUS_PLUGIN_UNLOADED" xml:space="preserve">
+    <value>插件{0}已卸载</value>
+  </data>
+  <data name="DETIMP_RANGE" xml:space="preserve">
+    <value>导入的碎屑必须大于或等于零。</value>
+  </data>
+  <data name="IMPORT_PROPRESS_ECOSPACEHABITATS" xml:space="preserve">
+    <value>导入生态空间栖息地</value>
+  </data>
+  <data name="ECOPATH_RESULTS_SAVED_SUCCESS" xml:space="preserve">
+    <value>Ecopath估算值已保存到“ {0}”</value>
+  </data>
+  <data name="PROMPT_DISCARD_CHANGES" xml:space="preserve">
+    <value>您的模型已更改，但是数据库是只读的。如果继续，更改可能会丢失。你要继续吗？</value>
+  </data>
+  <data name="FORCING_DATA_CHANGED" xml:space="preserve">
+    <value>强制形状数据已更改。</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING" xml:space="preserve">
+    <value>参数估计例程只能与每个组中的B，P / B和EE未知之一一起使用。这里，对于组'{0}'，其中不止一个未知。{1} {1}此外，对于给定的捕食者，Q / B可能未知，即IF：B，PB，QB和EE为以其中一个被捕食者和IF闻名：这两个被捕食者的所有小组都知道B和QB。{1} {1}请重新编辑输入参数。</value>
+  </data>
+  <data name="MSY_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>MSY结果已保存到“ {0}”</value>
+  </data>
+  <data name="IMPORT_PROGRESS_TIMESERIES" xml:space="preserve">
+    <value>导入Ecosim时间序列</value>
+  </data>
+  <data name="ECOSIM_LOAD_SUCCESS" xml:space="preserve">
+    <value>Ecosim场景“ {0}”已加载。</value>
+  </data>
+  <data name="IMPORT_WARNING_TIMESERIESTYPE" xml:space="preserve">
+    <value>未导入时间序列{0}（{1}），因为不支持其时间类型{2}。</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_SAVED" xml:space="preserve">
+    <value>空间操作日志已保存到“ {0}”</value>
+  </data>
+  <data name="ECOSIM_RESPONSE_DIET" xml:space="preserve">
+    <value>此组包含进口饮食，不会受到所施加的功能反应的影响。</value>
+  </data>
+  <data name="CORE_INIT_CRITICAL_GENERIC" xml:space="preserve">
+    <value>EwE6核心无法初始化。发生以下严重错误：{0}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_CVFORMAT" xml:space="preserve">
+    <value>无法读取一个或多个简历值</value>
+  </data>
+  <data name="ECOPATH_LOADED" xml:space="preserve">
+    <value>已加载模型“ {0}”</value>
+  </data>
+  <data name="F2TS_ERROR_INTERACTIONS" xml:space="preserve">
+    <value>适合时间序列发现没有要估计的内容，退出搜索。在再次搜索之前，先绘制交互作用的草图。</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_PASSED" xml:space="preserve">
+    <value>{0}设置为{1}</value>
+  </data>
+  <data name="F2TS_PROMPT_ITERATIONS" xml:space="preserve">
+    <value>更适合时间序列迭代吗？</value>
+  </data>
+  <data name="STANZA_LEADINGB_ADJUSTED" xml:space="preserve">
+    <value>前导B已针对节{0}进行了调整。</value>
+  </data>
+  <data name="ECOPATH_NEGATIVE_RESPIR_WARNING" xml:space="preserve">
+    <value>呼吸不能为负。系统的摘要统计信息被抑制。请检查参数并重新运行程序。</value>
+  </data>
+  <data name="IMPORT_FIX_CREATEECOSIMGROUP" xml:space="preserve">
+    <value>使用默认值为Ecosim场景{2}创建缺少的组{0}（{1}），请进行检查。</value>
+  </data>
+  <data name="ECOSPACE_INIT_ERROR" xml:space="preserve">
+    <value>由于初始化期间发生错误，Ecospace将无法运行。</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DIETIMPORTONLY_GROUP" xml:space="preserve">
+    <value>“ {0}”组的饮食仅限进口</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_RESULTS_SAVED" xml:space="preserve">
+    <value>Ecospace时间序列残差已保存到文件{0}</value>
+  </data>
+  <data name="MEDIATION_ZERO_BASE_DETAIL" xml:space="preserve">
+    <value>营养调解功能'{0}'在Ecopath的基础上为零。</value>
+  </data>
+  <data name="ECOTRACER_LOAD_SUCCESS" xml:space="preserve">
+    <value>Ecotracerscenario'{0}'已加载。</value>
+  </data>
+  <data name="PB_RANGE" xml:space="preserve">
+    <value>PB必须大于零。</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_SAMPLE" xml:space="preserve">
+    <value>Ecosampler运行样品{0}</value>
+  </data>
+  <data name="SHAPE_IMPORT_SUCCESS" xml:space="preserve">
+    <value>类型{0}的形状已成功导入</value>
+  </data>
+  <data name="MODELFROMSIM_GENERATED" xml:space="preserve">
+    <value>从Ecosim生成的Ecopath模型。</value>
+  </data>
+  <data name="TIMESERIES_ERROR_POOLFORMAT" xml:space="preserve">
+    <value>无法读取一个或多个池代码值</value>
+  </data>
+  <data name="QB_CLEARED" xml:space="preserve">
+    <value>QB已清除。</value>
+  </data>
+  <data name="ECOSPACE_EXPORT_CSV_SUCCESS" xml:space="preserve">
+    <value>Ecospace结果.csv文件已写入{0}。</value>
+  </data>
+  <data name="MPAOPT_ERROR" xml:space="preserve">
+    <value>优化错误：{0}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_INVALIDFLEET" xml:space="preserve">
+    <value>无效的车队编号{0}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_INVALIDGROUP" xml:space="preserve">
+    <value>无效的组号{0}</value>
+  </data>
+  <data name="F2TS_ABORTED" xml:space="preserve">
+    <value>适合时间序列中止。</value>
+  </data>
+  <data name="DATA_INVALID" xml:space="preserve">
+    <value>“ {0}”的数据验证失败。</value>
+  </data>
+  <data name="STANZA_LEADING_MISSING" xml:space="preserve">
+    <value>未为“ {0}”指定领导小组</value>
+  </data>
+  <data name="COMPUTATION_ALREADY_RUNNING" xml:space="preserve">
+    <value>一次只能运行一次计算。</value>
+  </data>
+  <data name="STATUS_PLUGIN_LOADED" xml:space="preserve">
+    <value>插件{0}已加载</value>
+  </data>
+  <data name="ECOPATH_MISSINGPARAM_CATCH_GENERIC" xml:space="preserve">
+    <value>多个舰队之一的渔获量信息（着陆+丢弃）丢失。</value>
+  </data>
+  <data name="IMPORT_WARNING_TIMESERIESFLEET" xml:space="preserve">
+    <value>未导入时间序列{0}（{1}），因为无法解析车队编号{2}</value>
+  </data>
+  <data name="EE_CLEARED" xml:space="preserve">
+    <value>EE已清除。</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DFLARGERTHANONE" xml:space="preserve">
+    <value>您的模型有{0}个群组，它们的“碎屑”命运（DF）总和大于1。您应该返回到输入数据，并确保DF的总和最大为1。</value>
+  </data>
+  <data name="ECOSPACE_RUNNING" xml:space="preserve">
+    <value>Ecospace已经在运行，您必须停止当前运行或等待其完成才能开始另一运行。</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_BASELINE" xml:space="preserve">
+    <value>Ecosampler批处理运行基准</value>
+  </data>
+  <data name="RELOAD_ECOSPACE" xml:space="preserve">
+    <value>您必须重新加载Ecospace才能使更改生效。</value>
+  </data>
+  <data name="IMPORT_PROGRESS_COMPLETE" xml:space="preserve">
+    <value>汇入完成</value>
+  </data>
+  <data name="GS_CLEARED" xml:space="preserve">
+    <value>GS已清除。</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOTRACER" xml:space="preserve">
+    <value>导入Ecotracer方案</value>
+  </data>
+  <data name="IMPORT_FIX_CREATEECOSPACEFLEET" xml:space="preserve">
+    <value>使用默认值为生态空间场景{2}创建丢失的车队{0}（{1}），请进行检查。</value>
+  </data>
+  <data name="IMPORT_FIX_CREATEECOSPACEGROUP" xml:space="preserve">
+    <value>使用默认值为生态空间场景{2}创建丢失的组{0}（{1}），请进行检查。</value>
+  </data>
+  <data name="STANZA_CALCULATEPARMS_TOOMANYMISSING" xml:space="preserve">
+    <value>节组{0}缺少参数B，CB或死亡率。无法进行节计算。</value>
+  </data>
+  <data name="SPATIALTEMPORAL_LOAD_ERROR_GENERIC" xml:space="preserve">
+    <value>无法重新加载一个或多个外部时空数据连接。您是否缺少必需的插件？</value>
+  </data>
+  <data name="ECOPATH_SAVE_FAILED" xml:space="preserve">
+    <value>Ecopath模型“ {0}”无法保存</value>
+  </data>
+  <data name="ECOPATH_MODEL_UPDATE_SUCCESS" xml:space="preserve">
+    <value>模型已更新为EwE版本{0}。</value>
+  </data>
+  <data name="SPATIALTEMPORAL_MISSINGDATA" xml:space="preserve">
+    <value>某些外部时空数据连接将无法访问其数据。你想继续吗？</value>
+  </data>
+  <data name="F2TS_PROMPT_CONVERGED" xml:space="preserve">
+    <value>适合时间序列的估算已经收敛。您是否要进行更多迭代？</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE_FLEET" xml:space="preserve">
+    <value>舰队'{0}'遗失丢弃命运</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_MAP_EXTENTS" xml:space="preserve">
+    <value>Ecospace时间序列地图范围超出当前负荷地图。</value>
+  </data>
+  <data name="IMPORT_WARNING_PAIRSNOTSUPPORTED" xml:space="preserve">
+    <value>不再支持Ecosim对。您将需要将一个或多个EwE5对转换为EwE6多节配置。</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED" xml:space="preserve">
+    <value>估计了以下变量：</value>
+  </data>
+  <data name="GENERIC_PROMPT_ESTIMATED" xml:space="preserve">
+    <value>估计了以下变量：</value>
+  </data>
+  <data name="BIOMASSAREA_RANGE" xml:space="preserve">
+    <value>BiomassArea必须大于零。</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_DETAIL" xml:space="preserve">
+    <value>{0}不能为{1}。 {2}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FLEET" xml:space="preserve">
+    <value>进口Ecopath车队</value>
+  </data>
+  <data name="IMPORT_PROGRESS_MODEL" xml:space="preserve">
+    <value>导入模型{0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_CATCH" xml:space="preserve">
+    <value>进口Ecopath渔获物</value>
+  </data>
+  <data name="PSD_RUN_SUCCESS" xml:space="preserve">
+    <value>粒度分布运行完成。</value>
+  </data>
+  <data name="IMPORT_NO_DESCRIPTION" xml:space="preserve">
+    <value>没有可用的描述。</value>
+  </data>
+  <data name="UPDATE_NEED_REVIEW" xml:space="preserve">
+    <value>更新过程确定了一些可能的问题，您应该检查！</value>
+  </data>
+  <data name="PLUGIN_SAVE_PROMPT" xml:space="preserve">
+    <value>一个或多个插件包含尚未保存的更改。如果继续，这些更改可能会丢失。\ n \ n是-保存更改\ n否-可能是宽松的更改\ n取消-中止此操作。</value>
+  </data>
+  <data name="IMPORT_WARNING_PAIRDETAILS" xml:space="preserve">
+    <value>对{0}未转换：{1}，{2}</value>
+  </data>
+  <data name="B_MISSING_GROUP" xml:space="preserve">
+    <value>B组“ {0}”缺少B</value>
+  </data>
+  <data name="DLLFACTORY_FILENOTFOUND" xml:space="preserve">
+    <value>找不到文件“ {0}”。</value>
+  </data>
+  <data name="ECOPATH_GS_WARNING" xml:space="preserve">
+    <value>警告：请检查您的数据非同化消费（GS）不能大于1。您的数据已被修改！</value>
+  </data>
+  <data name="MONTECARLO_ECOPATH_TOOMANYMISSING" xml:space="preserve">
+    <value>蒙特卡洛（Monte Carlo）发现太多缺少的参数无法运行Ecopath。检查您的输入参数。</value>
+  </data>
+  <data name="IMPORT_POGRESS_DIETCOMP" xml:space="preserve">
+    <value>进口饮食</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECORANGER" xml:space="preserve">
+    <value>进口Ecoranger</value>
+  </data>
+  <data name="OUTPUT_NOT_EDITABLE" xml:space="preserve">
+    <value>输出数据不可编辑。</value>
+  </data>
+  <data name="ECOPATH_RUN_SUCCESS" xml:space="preserve">
+    <value>Ecopath运行已完成。</value>
+  </data>
+  <data name="TIMESERIES_EXPORT_SUCCESS" xml:space="preserve">
+    <value>时间序列数据集“ {0}”已导出到“ {1}”。</value>
+  </data>
+  <data name="SHAPE_IMPORT_FAILED" xml:space="preserve">
+    <value>无法导入类型为{0}的形状，请检查数据。</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_MISSINGDISCARDFATE" xml:space="preserve">
+    <value>您的模型有{0}个齿轮，但未指定“丢弃命运”。您应该返回到输入数据，并确保指定丢弃所发生的情况。丢弃物必须定向到碎屑组，如果不是这种情况，则应该将给定舰队的丢弃物视为零值降落。</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGDUPLICATE" xml:space="preserve">
+    <value>强制形状{0}无法作为{1}导入；由于内部错误，多次定义了形状。</value>
+  </data>
+  <data name="PSD_RUN_ERROR" xml:space="preserve">
+    <value>粒度分布无法运行。</value>
+  </data>
+  <data name="EE_RANGE" xml:space="preserve">
+    <value>EE必须介于零和一之间。</value>
+  </data>
+  <data name="SPATIALTEMPORAL_MISSINGDATA_DETAIL" xml:space="preserve">
+    <value>数据连接{0}无法找到其数据</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_MISSINGGENERIC" xml:space="preserve">
+    <value>Ecopath无法估算一个或多个参数。</value>
+  </data>
+  <data name="MONTECARLO_ECOPATH_ERROR" xml:space="preserve">
+    <value>Ecopath中发生错误。无法进行蒙特卡洛审判。</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_B_FISHERIY" xml:space="preserve">
+    <value>Ecopath估计组{0}（{1}）的生物量为（{2}）。这是因为渔业+迁移+生物量积累估计为负值。请编辑您的数据，例如允许该组的生物量积累。</value>
+  </data>
+  <data name="TIMESERIES_EXPORT_FAILED" xml:space="preserve">
+    <value>无法将时间序列“ {0}”导出到“ {1}”：{2}</value>
+  </data>
+  <data name="ECOSEED_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>无法将空间优化结果“ {1}”保存到“ {0}”</value>
+  </data>
+  <data name="MSE_DISCARD_TIMESERIES_WARNING" xml:space="preserve">
+    <value>应用时间序列{0}可能会在管理策略评估中给出错误的结果。您确定要继续运行吗？</value>
+  </data>
+  <data name="IMPORT_PROGRESS_PEDIGREE" xml:space="preserve">
+    <value>导入血统书</value>
+  </data>
+  <data name="ASCII_READ_ERROR_MISSINGFIELD" xml:space="preserve">
+    <value>无法读取缺少标题字段的ASCII文件</value>
+  </data>
+  <data name="ECOPATH_DIETCOMP_NOTSUMTOONE" xml:space="preserve">
+    <value>组{0}的DC不等于1。</value>
+  </data>
+  <data name="PSD_REQ_LW" xml:space="preserve">
+    <value>组{0}缺少必需的“无穷大的L”或“无穷大的W”</value>
+  </data>
+  <data name="STATUS_DATABASE_UPDATE" xml:space="preserve">
+    <value>执行数据库更新{0}：'{1}'</value>
+  </data>
+  <data name="TIMESERIES_ERROR_MISSING" xml:space="preserve">
+    <value>缺少{0}的数据行</value>
+  </data>
+  <data name="SHAPE_IMPORT_DETAIL" xml:space="preserve">
+    <value>形状为{0}导入</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED_EMIGRATION" xml:space="preserve">
+    <value>组“ {0}”的移民</value>
+  </data>
+  <data name="ECOTRACER_SAVE_SUCCES" xml:space="preserve">
+    <value>Ecotracer方案'{0}'已保存。</value>
+  </data>
+  <data name="PSD_MISSING_INPUT" xml:space="preserve">
+    <value>PSD估计例程只能与“未知的L”或“无限的W”一起使用，因为每个组都未知。每个组都必须知道“ VBGF中的K”。在此，其中一个或多个未知：</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_OUTOFRANGE" xml:space="preserve">
+    <value>值超出范围</value>
+  </data>
+  <data name="IMPORT_FIX_CREATEFISHMORTSHAPE" xml:space="preserve">
+    <value>使用默认值为ecosim组{1}，ecosim场景{2}创建丢失的鱼类死亡率形状{0}，请复查。</value>
+  </data>
+  <data name="TIMESERIES_LOAD_SUCCESS" xml:space="preserve">
+    <value>时间序列数据集“ {0}”已加载。</value>
+  </data>
+  <data name="ECOSIM_RESPONSE_NO_OVERLAP" xml:space="preserve">
+    <value>警告：请检查您的功能响应和强制数据。应用的功能响应与时间步骤1的强制数据不重叠。</value>
+  </data>
+  <data name="ECOTRACER_SAVE_PROMPT" xml:space="preserve">
+    <value>自上次保存以来，Ecotracer方案“ {0}”已更改。如果继续，这些更改可能会丢失。\ n \ n是-保存更改\ n否-恢复为上次保存的方案\ n取消-中止此操作。</value>
+  </data>
+  <data name="STANZA_CALCULATEPARMS_DATAERROR" xml:space="preserve">
+    <value>计算节参数：{0}时发生严重数据错误</value>
+  </data>
+  <data name="DIETCOMP_RANGE" xml:space="preserve">
+    <value>Diet Comp必须大于或等于零。</value>
+  </data>
+  <data name="STANZA_MORT_MISSING" xml:space="preserve">
+    <value>“ {0}”的遗漏死亡率（Z）</value>
+  </data>
+  <data name="SAMPLES_IMPORT_SUCCESS" xml:space="preserve">
+    <value>导入了{0}个样本</value>
+  </data>
+  <data name="TIMESERIES_ERROR_VALUEFORMAT" xml:space="preserve">
+    <value>无法读取一个或多个值</value>
+  </data>
+  <data name="ECOSIM_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>无法将Ecosim结果“ {1}”保存到“ {0}”</value>
+  </data>
+  <data name="MPAOPT_NODATA_RESUME" xml:space="preserve">
+    <value>未选择种子细胞，也未设置MPA。优化可能会产生未知的结果。你想继续吗？</value>
+  </data>
+  <data name="ECOPATH_MODEL_UPDATE_FAILED" xml:space="preserve">
+    <value>模型无法更新为EwE版本{0}！</value>
+  </data>
+  <data name="TIMESERIES_ERROR_IDENTICALSEPARATORS" xml:space="preserve">
+    <value>小数和列分隔符不能相同。</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_EVEN" xml:space="preserve">
+    <value>{0}必须为偶数，不能为{1}</value>
+  </data>
+  <data name="UPDATE_RUNNING" xml:space="preserve">
+    <value>正在应用模型更新{0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACESCENARIOS" xml:space="preserve">
+    <value>导入生态空间方案</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_QB0" xml:space="preserve">
+    <value>组“ {0}”的估计QB = 0。</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_PB0" xml:space="preserve">
+    <value>组“ {0}”的估计PB = 0。</value>
+  </data>
+  <data name="DATABASE_BACKUP_SUCCESS" xml:space="preserve">
+    <value>模型的备份副本已制作到“ {0}”</value>
+  </data>
+  <data name="ECOSPACE_SIM_INIT_FAILED" xml:space="preserve">
+    <value>Ecospace无法初始化Ecosim。请尝试加载其他Ecosim方案并重新运行Ecospace。</value>
+  </data>
+  <data name="PSD_REQ_K_VBGF" xml:space="preserve">
+    <value>组{0}缺少必需的“ VBGF中的K”</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_NOTUNIQUE" xml:space="preserve">
+    <value>广义逆例程正在尝试从{1}方程估计{0}未知数。解决方案将不是唯一的。仔细检查估计值。</value>
+  </data>
+  <data name="GE_CLEARED" xml:space="preserve">
+    <value>GE清除了。</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_ADAPTERROR" xml:space="preserve">
+    <value>无法用值{2}更新单元格（{0}，{1}）。 {3}</value>
+  </data>
+  <data name="STATUS_SPATIALTERMPORAL_CALCULATING" xml:space="preserve">
+    <value>使用数据集“ {1}”和转换器“ {2}”计算“ {0}”的比例因子</value>
+  </data>
+  <data name="OUTPUT_DIRECTORY_MISSING" xml:space="preserve">
+    <value>输出目录不存在。</value>
+  </data>
+  <data name="MODELFRIMSIM_BA_ENDYEAR_ADJ" xml:space="preserve">
+    <value>去年的平均BA更改为上一个Ecosim年</value>
+  </data>
+  <data name="STATUS_EXCEPTION" xml:space="preserve">
+    <value>发生了内部错误。 {0}</value>
+  </data>
+  <data name="ICORE_ADD_NULL" xml:space="preserve">
+    <value>抱歉，此输入或输出不能为空。</value>
+  </data>
+  <data name="FMSY_STATUS_NOTFOUND" xml:space="preserve">
+    <value>在给定的F范围内找不到Fmsy</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_READ_FAIL_MESSAGE" xml:space="preserve">
+    <value>Ecospace时间序列无法读取</value>
+  </data>
+  <data name="ECOSIM_SAVE_FAILED" xml:space="preserve">
+    <value>Ecosim场景“ {0}”无法保存。 {1}</value>
+  </data>
+  <data name="MSY_ERROR_RUN_FMSY" xml:space="preserve">
+    <value>运行FMSY时发生错误。 {0}</value>
+  </data>
+  <data name="GENERIC_ABORTING_EDIT_DATA" xml:space="preserve">
+    <value>正在中止，请修改您的数据。</value>
+  </data>
+  <data name="STANZA_LEADINGCB_ADJUSTED" xml:space="preserve">
+    <value>前导CB已针对节{0}进行了调整。</value>
+  </data>
+  <data name="AREA_RANGE" xml:space="preserve">
+    <value>面积必须大于零且小于或等于1（&gt; 0和&lt;= 1）。</value>
+  </data>
+  <data name="QB_MISSING_GROUP" xml:space="preserve">
+    <value>组“ {0}”缺少Q / B</value>
+  </data>
+  <data name="ADVECTION_ERROR" xml:space="preserve">
+    <value>运行平流计算时发生错误：{0}</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP" xml:space="preserve">
+    <value>呼吸超过一组或多组碎屑的输入。</value>
+  </data>
+  <data name="DIETCOMP_PROMPT_CORRECTTO15PERC" xml:space="preserve">
+    <value>“ {0}”组从较高TL组获得其饮食的{1}％。您是否要将其减少到15％？ （这样做不会更改您的输入数据）</value>
+  </data>
+  <data name="ECOSPACE_LOWHABITAT_CAP" xml:space="preserve">
+    <value>警告：以下人群的平均栖息地能力较低。你想继续吗？</value>
+  </data>
+  <data name="SPATIALTEMPORAL_EXPORT_EXCEPTION" xml:space="preserve">
+    <value>导出时发生错误。 {0}</value>
+  </data>
+  <data name="IMPORT_FIX_GROUPAREA" xml:space="preserve">
+    <value>“ {0}”组区域已更正为{1}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TYPELINEMISSING" xml:space="preserve">
+    <value>无法识别标头“ {0}”，应为“类型”，“代码”或“日期类型”</value>
+  </data>
+  <data name="PB_CLEARED" xml:space="preserve">
+    <value>PB已清除</value>
+  </data>
+  <data name="MSY_WARNING_TIMESERIES" xml:space="preserve">
+    <value>加载时间序列后，MSY将不会产生可靠的结果。建议在运行MSY之前卸载时间序列。您要继续运行MSY吗？</value>
+  </data>
+  <data name="ECOTRACER_SAVE_FAILED" xml:space="preserve">
+    <value>Ecotracer方案'{0}'无法保存。 {1}</value>
+  </data>
+  <data name="MIGRATION_MISSING_MAPS" xml:space="preserve">
+    <value>警告：尚未为以下组设置每月迁移模式。你想继续吗？</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TYPEVALUEMISSING" xml:space="preserve">
+    <value>类型代码值缺失</value>
+  </data>
+  <data name="FMSY_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>无法将MSY结果“ {1}”保存到“ {0}”</value>
+  </data>
+  <data name="MSY_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>无法将MSY结果“ {1}”保存到“ {0}”</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FAILED" xml:space="preserve">
+    <value>在{1}导入模型{0}失败</value>
+  </data>
+  <data name="MSY_ERROR_RUN" xml:space="preserve">
+    <value>运行MSY时发生错误。 {0}</value>
+  </data>
+  <data name="ECOPATH_PROMPT_STANZA_WHOLE_AREA" xml:space="preserve">
+    <value>多节计算不适用于部分栖息地区域。请为节组将所有Ecopath生境面积比例设置为1，然后更正生命周期中的生物量</value>
+  </data>
+  <data name="ECOPATH_GROUPSPLIT_SUCCESS" xml:space="preserve">
+    <value>组{0}已分为{1}和{2}</value>
+  </data>
+  <data name="ECOPATH_GROUPMERGE_SUCCESS" xml:space="preserve">
+    <value>组{0}和{1}已合并到{2}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FORCINGAPPLICATIONS" xml:space="preserve">
+    <value>导入Ecosim强制和中介应用程序</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEMPAS" xml:space="preserve">
+    <value>进口生态空间海洋保护区</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMFLEETS_AT" xml:space="preserve">
+    <value>导入Ecosim机队{0}-{1}</value>
+  </data>
+  <data name="ECOSPACE_LOWHABITAT_CAP_GROUP" xml:space="preserve">
+    <value>组“ {0}”的每个单元格的平均容量为{1}％</value>
+  </data>
+  <data name="ECOPATH_ERROR_NOMODEL" xml:space="preserve">
+    <value>无法运行EcoPath，尚未初始化模型。</value>
+  </data>
+  <data name="STANZA_APPLY_DATAERROR" xml:space="preserve">
+    <value>应用新的节数据时发生严重数据错误：{0}</value>
+  </data>
+  <data name="ECOSPACE_SAVE_FAILED" xml:space="preserve">
+    <value>生态空间场景'{0}'无法保存。 {1}</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGTYPEMISSING" xml:space="preserve">
+    <value>无法确定强制数据{0}的类型，未导入数据</value>
+  </data>
+  <data name="ECOPATH_RUN_ERROR_EXCEPTION" xml:space="preserve">
+    <value>Ecopath无法运行。 {0}</value>
+  </data>
+  <data name="MONTECARLO_RESTORE_FAILED" xml:space="preserve">
+    <value>警告：蒙特卡洛未能将Ecopath设置回其原始状态。您可能需要关闭模型而不保存来恢复原始数据。</value>
+  </data>
+  <data name="MODELFRIMSIM_BA_STARTYEAR_ADJ" xml:space="preserve">
+    <value>平均BA的开始年已更改为Ecosim的第一年</value>
+  </data>
+  <data name="TIMESERIES_ERROR_GROUP_NOTFISHED" xml:space="preserve">
+    <value>未捕获“ {0}”组</value>
+  </data>
+  <data name="MONTECARLO_RESULTS_SAVED_SUCCESS" xml:space="preserve">
+    <value>蒙特卡洛结果保存到{0}</value>
+  </data>
+  <data name="ECOPATH_DIETCOMP_NOTSUMTOONE_GENERIC" xml:space="preserve">
+    <value>饮食组成（DC）不能等于一个或多个组中的一个。</value>
+  </data>
+  <data name="IMPORT_ERROR_CANNOTCREATE" xml:space="preserve">
+    <value>无法在位置{0}上创建新数据库</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_COMPLETED" xml:space="preserve">
+    <value>Ecosampler批量运行已完成</value>
+  </data>
+  <data name="ECOSIM_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Ecosim结果已保存到“ {0}”</value>
+  </data>
+  <data name="TIMESERIES_UNLOAD_SUCCESS" xml:space="preserve">
+    <value>时间序列已成功卸载</value>
+  </data>
+  <data name="MONTECARLO_RESULTS_SAVED_ERROR" xml:space="preserve">
+    <value>无法将蒙特卡洛结果保存到{0}</value>
+  </data>
+  <data name="SCENARIO_DELETE_LOADED" xml:space="preserve">
+    <value>您无法删除已加载的方案。</value>
+  </data>
+  <data name="MONTECARLO_SAVE_FAILED" xml:space="preserve">
+    <value>无法将蒙特卡洛数据保存到文件。 {0}</value>
+  </data>
+  <data name="MONTECARLO_ECOSIM_MISSING" xml:space="preserve">
+    <value>请在运行Monte Carlo之前加载Ecosim方案。</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_LOADING" xml:space="preserve">
+    <value>在步骤{2}中将外部数据访问到{0}（{1}）中（{3：yyyy / MM}）</value>
+  </data>
+  <data name="TIMESERIES_ERROR_VALUEMISSING" xml:space="preserve">
+    <value>第{0}行缺少值</value>
+  </data>
+  <data name="F2TS_ERROR_SENSITIVITY_SETBLOCKS" xml:space="preserve">
+    <value>灵敏度例程尚未运行。不能设置块。</value>
+  </data>
+  <data name="QB_RANGE" xml:space="preserve">
+    <value>QB必须大于零。</value>
+  </data>
+  <data name="IMPORT_ERROR_CANNOTACCESS" xml:space="preserve">
+    <value>无法访问位置{0}的新创建的数据库</value>
+  </data>
+  <data name="TRACER_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>污染示踪剂结果已保存到“ {0}”</value>
+  </data>
+  <data name="CORE_INIT_CRITICAL_VALIDATORS" xml:space="preserve">
+    <value>EwE6核心无法初始化。创建验证器时发生以下严重错误：{0}</value>
+  </data>
+  <data name="ECOSPACE_SAVE_SUCCES" xml:space="preserve">
+    <value>生态空间场景'{0}'已保存。</value>
+  </data>
+  <data name="IMPORT_WARNING_ECORANGER" xml:space="preserve">
+    <value>EwE6不再支持Ecoranger。现有的Ecoranger数据未导入。</value>
+  </data>
+  <data name="DATA_VALID" xml:space="preserve">
+    <value>“ {0}”的数据验证成功。</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_ABORT_NOBALANCE" xml:space="preserve">
+    <value>基线不平衡。 Ecosampler批处理运行已中止</value>
+  </data>
+  <data name="MEDIATION_ZERO_BASE" xml:space="preserve">
+    <value>不能使用一种或多种中介形状。请编辑您的数据。</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGNOTIMPORTED" xml:space="preserve">
+    <value>强制数据{0}无法导入为{1}</value>
+  </data>
+  <data name="ECOPATH_MISSINGPARAM_LANDING" xml:space="preserve">
+    <value>机队{0}，组{1}的着陆信息丢失。</value>
+  </data>
+  <data name="DIETCOMP_PROMPT_MISSING" xml:space="preserve">
+    <value>尚未输入一个或多个组的饮食</value>
+  </data>
+  <data name="IMPORT_PROGRESS_QUOTES" xml:space="preserve">
+    <value>导入报价</value>
+  </data>
+  <data name="MIGRATION_MISSING_GROUPS" xml:space="preserve">
+    <value>设置组{0}的每月迁移方式</value>
+  </data>
+  <data name="STATUS_SAVING_CHANGES" xml:space="preserve">
+    <value>正在保存更改，请稍候...</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_B0_FISHERY" xml:space="preserve">
+    <value>Ecopath估计组{0}（{1}）的生物量为0。这是因为渔业+迁移+生物量积累估计为0。请编辑您的数据，例如允许该组的生物量积累。</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_ODD" xml:space="preserve">
+    <value>{0}必须为奇数，不能为{1}</value>
+  </data>
+  <data name="IMPORT_ERROR_COMMIT" xml:space="preserve">
+    <value>数据库无法存储“ {0}”的数据，因此拒绝了导入的值。这表示编程错误。请通知EwE开发团队</value>
+  </data>
+  <data name="SPATIALTEMPORAL_TOOMANYTIMESTEPS" xml:space="preserve">
+    <value>Ecospace设置为每年运行十二个以上的时间步，而外部数据只能在一个月的第一天交付。您的模型可能无法在每个时间步都获取正确的数据。你想继续吗？</value>
+  </data>
+  <data name="DIETCOMP_PROMPT_SUMTOONE" xml:space="preserve">
+    <value>一个或多个组的饮食之和不等于1。您是否要将所有捕食者组的饮食归一化为1？</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TYPEFORMAT" xml:space="preserve">
+    <value>无法读取一个或多个类型代码值</value>
+  </data>
+  <data name="ECOSPACE_LOAD_FAILED" xml:space="preserve">
+    <value>生态空间场景“ {0}”无法加载。 {1}</value>
+  </data>
+  <data name="GENERIC_SAVE_RESOLUTION" xml:space="preserve">
+    <value>尝试使用新名称保存模型。</value>
+  </data>
+  <data name="DATABASE_UPDATE_FAILED" xml:space="preserve">
+    <value>模型更新{0}失败</value>
+  </data>
+  <data name="MSE_FIXF_FIXESC_FAILEDVALIDATION" xml:space="preserve">
+    <value>设置值失败。固定F和固定擒纵叉不能同时包含值。</value>
+  </data>
+  <data name="GS_RANGE" xml:space="preserve">
+    <value>非同化消费必须在零到一之间。</value>
+  </data>
+  <data name="DIETCOMP_NOT_SUM_ONE" xml:space="preserve">
+    <value>饮食组成不等于一种或多种食肉动物的饮食</value>
+  </data>
+  <data name="GE_RANGE" xml:space="preserve">
+    <value>GE必须大于零且小于或等于1。</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_NO_DATE" xml:space="preserve">
+    <value>尚未设置EwE模型日期。您必须将其设置为使用Ecospace时间序列数据。</value>
+  </data>
+  <data name="IMPORT_WARNING_TIMESIERIESGROUP" xml:space="preserve">
+    <value>未导入时间序列{0}（{1}），因为无法解析组号{2}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEREGIONS" xml:space="preserve">
+    <value>导入生态空间区域</value>
+  </data>
+  <data name="ECOSPACE_EXPORT_ASCII_SUCCESS" xml:space="preserve">
+    <value>Ecospace结果.asc文件已写入{0}。</value>
+  </data>
+  <data name="IMPORT_WARNING_FORCINGMULTIPLEASSIGNMENTS" xml:space="preserve">
+    <value>强制使用数据{0}来驱动产蛋和其他功能。仅作为{1}导入</value>
+  </data>
+  <data name="IMPORT_PROGRESS_STANZA" xml:space="preserve">
+    <value>导入多节配置</value>
+  </data>
+  <data name="IMPORT_PROGRESS_SUCCES" xml:space="preserve">
+    <value>在{1}处成功完成了模型{0}的导入</value>
+  </data>
+  <data name="ECOSPACE_NO_SIM_SCENARIO" xml:space="preserve">
+    <value>在运行Ecospace之前，必须先加载Ecosim和Ecospace方案。</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEFLEETS" xml:space="preserve">
+    <value>进口生态空间舰队</value>
+  </data>
+  <data name="MONTECARLO_RUN_ERROR" xml:space="preserve">
+    <value>运行蒙特卡洛试验时出错。 {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOTRACERGROUPS" xml:space="preserve">
+    <value>导入Ecotracer组</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_EE" xml:space="preserve">
+    <value>无法估算组{0}的营养养分效率（EE）。</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_PB" xml:space="preserve">
+    <value>无法估算{0}组的产量/生物量比（PB）。</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_QB" xml:space="preserve">
+    <value>无法估算组{0}的消耗量/生物量比率（QB）。</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEGROUPS" xml:space="preserve">
+    <value>导入生态空间组</value>
+  </data>
+  <data name="DLLFACTORY_TYPE_NOT_FOUND" xml:space="preserve">
+    <value>在“ {1}”中找不到组件“ {0}”。</value>
+  </data>
+  <data name="ECOPATH_LOAD_FAILED" xml:space="preserve">
+    <value>Ecopath模型“ {0}”无法加载。 {1}</value>
+  </data>
+  <data name="SPATIALTEMPORAL_LOAD_ERROR_DETAIL" xml:space="preserve">
+    <value>无法加载插件“ {0}”</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED_IMMIGRATION" xml:space="preserve">
+    <value>组“ {0}”的移民</value>
+  </data>
+  <data name="SPATIALTEMPORAL_EXPORT_ERROR" xml:space="preserve">
+    <value>无法将数据集导出到{0}</value>
+  </data>
+  <data name="UPDATE_600007_ERROR" xml:space="preserve">
+    <value>MPA渔业设置可能在Ecospace场景{0}中包含错误</value>
+  </data>
+  <data name="TIMESERIES_UNLOAD_FAILED" xml:space="preserve">
+    <value>时间序列无法卸载。 {0}</value>
+  </data>
+  <data name="FMSY_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Fmsy结果已保存到“ {0}”</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ENTER_B_BEFORE_PROCEEDING" xml:space="preserve">
+    <value>在进入Ecosim之前，为所有碎屑组输入生物质。</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_QB_EE" xml:space="preserve">
+    <value>输入“ {0}”的生物量，PB，QB和EE。您是否要估算生物量的积累？</value>
+  </data>
+  <data name="ECOSIM_RUN_ERROR_MISSINGPREDATION" xml:space="preserve">
+    <value>捕食者{1}对猎物{0}的总捕食未计算在内。 Ecosim已停止。</value>
+  </data>
+  <data name="ECOSIM_ERROR_FEEDARENA" xml:space="preserve">
+    <value>竞技场的喂食比例设置不正确</value>
+  </data>
+  <data name="IMPORT_WARNING_MULTISTANZASHAPE" xml:space="preserve">
+    <value>对于节配置{0}，无法确定整个Ecosim方案中的产蛋量和/或孵化场放养数据。您将需要在EwE6界面中选择并重新分配此数据。</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_B" xml:space="preserve">
+    <value>无法估算{0}组的生物量。</value>
+  </data>
+  <data name="TIMESERIES_ERROR_LINEMISSING" xml:space="preserve">
+    <value>预期数据行</value>
+  </data>
+  <data name="F2TS_ERROR_NO_TS" xml:space="preserve">
+    <value>尚未加载任何时间序列；适合时间序列无法运行。</value>
+  </data>
+  <data name="ECOPATH_SAVETO_FAILED" xml:space="preserve">
+    <value>Ecopath模型无法保存到“ {0}”</value>
+  </data>
+  <data name="ASCII_READ_ERROR_UNKNOWNFIELD" xml:space="preserve">
+    <value>无法读取头字段为{0}的ASCII文件</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOPATHGROUPS" xml:space="preserve">
+    <value>导入Ecopath组</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_TOOLONG" xml:space="preserve">
+    <value>文字不能超过{0}个字符</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_PRODxEE" xml:space="preserve">
+    <value>Ecopath估计组{0}（{1}）的产量* EE为{2}。这低于该群体的估计“食人主义”。</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_PB0_GENERIC" xml:space="preserve">
+    <value>该程序估计一个或多个组的生产/生物量（P / B）比为0。请编辑您的数据。请注意，对于未开发的顶级捕食者，可能无法估计P / B（无死亡率，无需生产）。</value>
+  </data>
+  <data name="DATABASE_BACKUP_FAILED" xml:space="preserve">
+    <value>无法将模型的备份副本复制到“ {0}”</value>
+  </data>
+  <data name="IMPORT_PROGRESS_TAXONOMY" xml:space="preserve">
+    <value>导入分类法</value>
+  </data>
+  <data name="DIETCOMP_VALIDATION_ERROR" xml:space="preserve">
+    <value>验证“ DietComp”时出错。 “ DietComp”将无效。</value>
+  </data>
+  <data name="IMPORT_PROGRESS_SCENARIO" xml:space="preserve">
+    <value>导入Ecosim方案</value>
+  </data>
+  <data name="ECOSIM_SAVE_SUCCESS" xml:space="preserve">
+    <value>Ecosim场景“ {0}”已保存。</value>
+  </data>
+  <data name="SPATIALTEMPORAL_POP_FAILED_LOCK" xml:space="preserve">
+    <value>无法访问层{0}，时间{1}，ext（{2}，{3}）至（{4}，{5}），像元大小{6}的预期数据</value>
+  </data>
+  <data name="SPATIALTEMPORAL_POP_FAILED_LOAD" xml:space="preserve">
+    <value>对于层{0}，时间{1}，ext（{2}，{3}）到（{4}，{5}），像元大小{6}的预期数据未正确读取或转换</value>
+  </data>
+  <data name="PSD_ERROR_WEIGHTCLASSES" xml:space="preserve">
+    <value>PSD估计例程仅在组至少属于两个权重类别时才能工作。请通过调整体重等级和/或最低体重等级的数量来重新定义体重范围。</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_DATES" xml:space="preserve">
+    <value>生态空间时间序列日期{0}至{1}与当前模型日期不重叠。检查模型日期或输入文件中的日期。</value>
+  </data>
+  <data name="VARIABLE_NOT_SET" xml:space="preserve">
+    <value>无法设置变量“ {0}”，错误：{1}</value>
+  </data>
+  <data name="ECOPATH_RUN_ERROR" xml:space="preserve">
+    <value>Ecopath无法运行。</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_FAILED" xml:space="preserve">
+    <value>Ecospace时间序列无法从文件中加载任何记录。</value>
+  </data>
+  <data name="SAMPLES_IMPORT_ERROR_NOSAMPLES" xml:space="preserve">
+    <value>模型“ {0}”不包含任何样本</value>
+  </data>
+  <data name="IMPORT_PROGRESS_FORCINGMEDIATION" xml:space="preserve">
+    <value>导入Ecosim强制和中介形状</value>
+  </data>
+  <data name="SPATIALTEMPORAL_EXPORT_SUCCESS" xml:space="preserve">
+    <value>{0}个数据集已成功导出到{1}。此文件夹已准备好转移到另一台计算机</value>
+  </data>
+  <data name="MPAOPT_RUNNING" xml:space="preserve">
+    <value>优化已经在运行。一次只能进行一次评估。</value>
+  </data>
+  <data name="STANZA_LEADING_ADJUSTED" xml:space="preserve">
+    <value>领先的B和/或CB组已针对一个或多个多节组进行了调整，请确认。</value>
+  </data>
+  <data name="TIMESERIES_ERROR_POOLVALUEMISSING" xml:space="preserve">
+    <value>池代码值缺失</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_EE_GENERIC" xml:space="preserve">
+    <value>您的模型不平衡！计算的营养效率（EE）对一个或多个组无效。</value>
+  </data>
+  <data name="ECOSPACE_HABCAP_COMPUTE_ERROR" xml:space="preserve">
+    <value>Ecospace无法更新容量图。 {0}</value>
+  </data>
+  <data name="F2TS_ERROR" xml:space="preserve">
+    <value>在适合时间序列中发生错误。 {0}</value>
+  </data>
+  <data name="DATABASE_UPDATE_FAILED_DETAIL" xml:space="preserve">
+    <value>模型更新{0}失败：{1}</value>
+  </data>
+  <data name="MONTECARLO_APPLY_ERROR" xml:space="preserve">
+    <value>蒙特卡洛未能应用最佳拟合。 {0}</value>
+  </data>
+  <data name="STATUS_PLUGIN_USERDISABLED" xml:space="preserve">
+    <value>无法通过用户设置加载插件{0}</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED_BA" xml:space="preserve">
+    <value>组“ {0}”的生物量积累</value>
+  </data>
+  <data name="ECOPATH_ESTIMATED_EE" xml:space="preserve">
+    <value>组“ {0}”的EE</value>
+  </data>
+  <data name="ECOSEED_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>空间优化结果已保存到“ {0}”</value>
+  </data>
+  <data name="ECOSPACE_SAVEMAP_FAILED" xml:space="preserve">
+    <value>Ecospace无法保存结果图。 {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMFLEETS" xml:space="preserve">
+    <value>导入Ecosim车队</value>
+  </data>
+  <data name="ECOPATH_MERGESPLIT_ERROR_HASECOSIM" xml:space="preserve">
+    <value>无法自动合并或拆分具有Ecosim方案的模型的组</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_SAVE_EXCEPTION" xml:space="preserve">
+    <value>Ecospace时间序列异常保存输出文件：{0}</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_APPLIED" xml:space="preserve">
+    <value>已应用{0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSPACEBASEMAP" xml:space="preserve">
+    <value>导入生态空间底图</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_EE" xml:space="preserve">
+    <value>输入“ {0}”的生物量，PB和EE。您是否要估算生物量的积累？</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_SAMPLE_NOBALANCE" xml:space="preserve">
+    <value>生态取样器样品{0}不平衡</value>
+  </data>
+  <data name="BIOACCUM_RANGE" xml:space="preserve">
+    <value>BioAccum必须大于或等于零。</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_LOAD_EXCEPTION" xml:space="preserve">
+    <value>由于以下错误，Ecospace无法加载时间序列数据：{0}</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DFLARGERTHANONE_GROUP" xml:space="preserve">
+    <value>组“ {0}”的“碎屑命运”大于1。</value>
+  </data>
+  <data name="DIETCOMP_MISSING" xml:space="preserve">
+    <value>尚未输入组{0}的饮食</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMGROUPS" xml:space="preserve">
+    <value>导入Ecosim组</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_EE" xml:space="preserve">
+    <value>计算的EE值{1}对组“ {0}”无效</value>
+  </data>
+  <data name="MSE_VALIDATION_QUOTAS" xml:space="preserve">
+    <value>尚未设置监管控制类型。您要取消跑步吗？</value>
+  </data>
+  <data name="BIOMASS_RANGE" xml:space="preserve">
+    <value>生物量必须大于或等于零。</value>
+  </data>
+  <data name="TIMESERIES_ERROR_WEIGHTFORMAT" xml:space="preserve">
+    <value>无法读取一个或多个重量值</value>
+  </data>
+  <data name="ECOSPACE_EXPORT_FAILED" xml:space="preserve">
+    <value>Ecospace无法保存文件{0}。 {1}</value>
+  </data>
+  <data name="ECOSPACE_RUN_COMPLETED" xml:space="preserve">
+    <value>Ecospace已完成模型运行。</value>
+  </data>
+  <data name="ECOSPACE_GENERIC_ERROR" xml:space="preserve">
+    <value>Ecospace中发生错误。 {0}</value>
+  </data>
+  <data name="IMPORT_PROGRESS_STARTED" xml:space="preserve">
+    <value>从{1}开始导入模型{0}</value>
+  </data>
+  <data name="PROMPT_SAVE_CHANGES" xml:space="preserve">
+    <value>自上次保存以来，模型数据已更改。您要保存这些更改吗？</value>
+  </data>
+  <data name="PEDIGREE_OUTOFRANGE" xml:space="preserve">
+    <value>系谱值超出范围</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_ADJUSTED" xml:space="preserve">
+    <value>{0}已更正</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED_MUSTBEX" xml:space="preserve">
+    <value>{0}必须为{1}</value>
+  </data>
+  <data name="VULNERABILITIES_PROMPT_RESET" xml:space="preserve">
+    <value>是否将漏洞重置为默认值{0}？</value>
+  </data>
+  <data name="ECOPATH_PREDMORT_CANN" xml:space="preserve">
+    <value>您的数据不一致。在算法4中，您对“ {0}”组的P / Bi * EEi-Q / Bi * DCii的估计为负，即“食人症”超过了捕食者的死亡率。您是否希望将发生此问题的所有群体的食人症减少（减少到二手产品的20）？注意：您的输入数据将不会更改。</value>
+  </data>
+  <data name="ECOSPACE_LOAD_SUCCESS" xml:space="preserve">
+    <value>加载了生态空间场景“ {0}”。</value>
+  </data>
+  <data name="TRACER_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>无法将污染物示踪剂结果“ {1}”保存为“ {0}”</value>
+  </data>
+  <data name="ECOPATH_SAVETO_SUCCESS" xml:space="preserve">
+    <value>Ecopath模型成功保存到“ {0}”</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_DIETIMPORTONLY" xml:space="preserve">
+    <value>您的模型有{0}个组，这些组的饮食仅含进口。这些组的定义不明确，营养级为1，并且在营养级分解界面上不显示任何流量。</value>
+  </data>
+  <data name="IMPORT_FIX_GROUPUNASSIM" xml:space="preserve">
+    <value>组“ {0}”是生产者，Unassim已更正为{1}</value>
+  </data>
+  <data name="ECOSPACE_OUT_OF_MEMORY" xml:space="preserve">
+    <value>Ecospace内存不足。请尝试减少区域和/或时间步的数量。</value>
+  </data>
+  <data name="TIMESERIES_ERROR_POOLLINEMISSING" xml:space="preserve">
+    <value>标头“ {0}”未识别，预期为“池”，“组”或“舰队”</value>
+  </data>
+  <data name="STATUS_PLUGIN_SANDBOXED" xml:space="preserve">
+    <value>插件{0}沙盒</value>
+  </data>
+  <data name="IMPORT_PROGRESS_ECOSIMGROUPS_AT" xml:space="preserve">
+    <value>导入Ecosim组{0}-{1}</value>
+  </data>
+  <data name="VARIABLE_NOT_FOUND" xml:space="preserve">
+    <value>找不到“ {0}”的变量</value>
+  </data>
+  <data name="DLLFACTORY_LOAD_ERROR" xml:space="preserve">
+    <value>从文件“ {1}”加载“ {0}”时出错。错误：{2}</value>
+  </data>
+  <data name="STATUS_INDEXING_DATASET" xml:space="preserve">
+    <value>索引外部数据“ {0}”</value>
+  </data>
+  <data name="MAP_INVALID_NOWATERCELLS" xml:space="preserve">
+    <value>您的地图没有任何水细胞。</value>
+  </data>
+  <data name="ECOTRACER_LOAD_FAILED" xml:space="preserve">
+    <value>Ecotracer方案“ {0}”无法加载。 {1}</value>
+  </data>
+  <data name="TIMESERIES_ERROR_WEIGHTVALUEMISSING" xml:space="preserve">
+    <value>重量值缺失</value>
+  </data>
+  <data name="MSE_VALIDATION_FIXEDESCAPEMENT" xml:space="preserve">
+    <value>固定擒纵系统，固定捕鱼死亡率以及为“ {0}”组设定的所有参数，仅使用固定擒纵系统规定。</value>
+  </data>
+  <data name="ECOSPACE_RUN_ERROR" xml:space="preserve">
+    <value>运行Ecospace错误。 {0}</value>
+  </data>
+  <data name="LOAD_ERROR_MODEL" xml:space="preserve">
+    <value>加载模型时发生错误'{0}'</value>
+  </data>
+  <data name="ECOSIM_LOAD_FAILED" xml:space="preserve">
+    <value>Ecosim场景“ {0}”无法加载。 {1}</value>
+  </data>
+  <data name="MSE_VALIDATION_EFFORT" xml:space="preserve">
+    <value>为了使配额规则生效，可能需要增加对“ {0}”车队的努力。</value>
+  </data>
+  <data name="ECOPATH_MISSINGPARAM_DISCARD" xml:space="preserve">
+    <value>组{1}的车队{0}的丢弃信息丢失。</value>
+  </data>
+  <data name="ECOPATH_PARAMESTIMATION_FAILED_EE_BA" xml:space="preserve">
+    <value>{0}组的估算生物量积累（BA）为负，这可能与估算EE失败有关。</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_OUTPUT_SET" xml:space="preserve">
+    <value>Ecospace时间序列输出文件集。</value>
+  </data>
+  <data name="STANZA_KinVGBF_MISSING" xml:space="preserve">
+    <value>多节组“ {0}”的VBGF缺少K。</value>
+  </data>
+  <data name="MSY_STATUS_RUNNING" xml:space="preserve">
+    <value>正在运行MSY {0} ...</value>
+  </data>
+  <data name="PROMPT_SAVE_CHANGES_DETAILED" xml:space="preserve">
+    <value>如果继续，{0}中未保存的更改将丢失。您要保存这些更改吗？</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_NRECORDS_LOADED" xml:space="preserve">
+    <value>已加载Ecospace时间序列{0}记录。</value>
+  </data>
+  <data name="ECOPATH_LOAD_SUCCESS" xml:space="preserve">
+    <value>Ecopath模型“ {0}”已加载。</value>
+  </data>
+  <data name="DATABASE_BACKUP_PROMPT" xml:space="preserve">
+    <value>模型“ {0}”最后由{1}访问，并将被更新。您要创建此模型的备份副本吗？</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_FAILED" xml:space="preserve">
+    <value>{0}不能为{1}</value>
+  </data>
+  <data name="MODEL_READONLY" xml:space="preserve">
+    <value>模型“ {0}”以只读模式打开，无法保存。</value>
+  </data>
+  <data name="FMSY_STATUS_RUNNING" xml:space="preserve">
+    <value>正在运行Fmsy {0}，评估{1} ...</value>
+  </data>
+  <data name="ECOSAMPLER_BATCHRUN_STARTED" xml:space="preserve">
+    <value>Ecosampler批处理运行开始</value>
+  </data>
+  <data name="MAP_INVALID_NOPP" xml:space="preserve">
+    <value>您的地图没有任何主要产品。</value>
+  </data>
+  <data name="IMPORT_ERROR_INCOMPATIBLE" xml:space="preserve">
+    <value>数据库{0}的版本为{1}，与此版本不兼容。首先使用最新版本的Ecopath 5更新数据库。</value>
+  </data>
+  <data name="STANZA_CANCEL_DATAERROR" xml:space="preserve">
+    <value>回滚节数据{0}时发生严重数据错误</value>
+  </data>
+  <data name="EXPORT_PROGRESS_DATASET" xml:space="preserve">
+    <value>导出数据集{0}</value>
+  </data>
+  <data name="MSE_LPSOLVER_NONOPTIMAL" xml:space="preserve">
+    <value>MSE线性编程解决方案未能为'{0}'时间步长找到最佳解决方案。检查您的目标捕鱼死亡率，以确保您没有过度约束模型。</value>
+  </data>
+  <data name="TIMESERIES_LOAD_FAILED" xml:space="preserve">
+    <value>时间序列数据集“ {0}”无法加载。 {1}</value>
+  </data>
+  <data name="VARIABLE_VALIDATION_CLEARED" xml:space="preserve">
+    <value>{0}已清除</value>
+  </data>
+  <data name="DATA_VALIDATION" xml:space="preserve">
+    <value>“ {0}”的数据验证。</value>
+  </data>
+  <data name="ECOSPACE_NO_SPACE_SCENARIO" xml:space="preserve">
+    <value>必须先加载Ecospace方案，然后才能运行Ecospace。</value>
+  </data>
+  <data name="ECOPATH_PROMPT_ESTIMATE_NETMIGRATION" xml:space="preserve">
+    <value>您是否要估计“ {0}”的净迁移？</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_INSUFFICIENTDATA" xml:space="preserve">
+    <value>数据不足，请修改您的模型。</value>
+  </data>
+  <data name="DIETCOMP_SUMTOONE_PRED" xml:space="preserve">
+    <value>捕食者“ {0}”的饮食不等于1</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_MISSING_B_QB" xml:space="preserve">
+    <value>正在中止，缺少组“ {0}”的B和QB。请编辑您的数据。</value>
+  </data>
+  <data name="ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP_GROUP" xml:space="preserve">
+    <value>组“ {0}”的呼吸值超过碎屑输入。</value>
+  </data>
+  <data name="TIMESERIES_ERROR_CVVALUEMISSING" xml:space="preserve">
+    <value>简历价值缺失</value>
+  </data>
+  <data name="SAMPLES_IMPORT_ERROR_INCOMPATIBLE" xml:space="preserve">
+    <value>模型'{0}'不兼容，不能用于从中导入样本</value>
+  </data>
+  <data name="ECOPATH_MERGESPLIT_ERROR_NOMODEL" xml:space="preserve">
+    <value>请先加载模型，然后再尝试合并组</value>
+  </data>
+  <data name="ECOSPACE_TIMESERIES_READ_FAIL_REASON" xml:space="preserve">
+    <value>由于{1}，{0}条记录</value>
+  </data>
+  <data name="ECOPATH_RESULTS_SAVED_FAILED" xml:space="preserve">
+    <value>Ecopath估计无法保存为“ {0}”</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TOOMANYWEIGHTS" xml:space="preserve">
+    <value>无法同时指定简历和体重</value>
+  </data>
+  <data name="TIMESERIES_ERROR_VALUENEGATIVE" xml:space="preserve">
+    <value>值不能为负</value>
+  </data>
+</root>

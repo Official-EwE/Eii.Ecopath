@@ -1,0 +1,393 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HEADER_LOWER_LIMIT_VALID" xml:space="preserve">
+    <value>下限</value>
+  </data>
+  <data name="HEADER_GROUP_NAME" xml:space="preserve">
+    <value>组名</value>
+  </data>
+  <data name="HEADER_NAME" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="COSTFUNCTION_TARGET" xml:space="preserve">
+    <value>目标</value>
+  </data>
+  <data name="REGMETHOD_NOQUOTA" xml:space="preserve">
+    <value>没有配额</value>
+  </data>
+  <data name="REGMETHOD_NONE" xml:space="preserve">
+    <value>（没有）</value>
+  </data>
+  <data name="HEADER_UPPER_LIMIT_VALID" xml:space="preserve">
+    <value>上限</value>
+  </data>
+  <data name="HEADER_BIOMASS_LIMITS" xml:space="preserve">
+    <value>生物量限制</value>
+  </data>
+  <data name="CAPTION" xml:space="preserve">
+    <value>Cefas MSE</value>
+  </data>
+  <data name="HEADER_GROUP_INDEX" xml:space="preserve">
+    <value>组索引</value>
+  </data>
+  <data name="HEADER_FMORT_GROUP" xml:space="preserve">
+    <value>钓鱼抵押。组</value>
+  </data>
+  <data name="CAPTION_TOOLTIP" xml:space="preserve">
+    <value>启动Cefas MSE插件</value>
+  </data>
+  <data name="ERROR_CSV_MALFORMED" xml:space="preserve">
+    <value>文件{0}包含意外的整体</value>
+  </data>
+  <data name="ERROR_DISTRPARAM_GROUPS_TOOFEW" xml:space="preserve">
+    <value>{0}的分发文件中没有所有不是主要生产者的生活组。</value>
+  </data>
+  <data name="HEADER_QUOTASHARE" xml:space="preserve">
+    <value>配额份额</value>
+  </data>
+  <data name="HEADER_DISTRIBUTIONTYPE" xml:space="preserve">
+    <value>分布类型</value>
+  </data>
+  <data name="STATUS_SAVED_QUOTASHARES" xml:space="preserve">
+    <value>{0}将配额份额参数保存到{1}</value>
+  </data>
+  <data name="STATUS_TRIAL_PROGRESS" xml:space="preserve">
+    <value>{0}查找模型，试验{1}，迭代{2}</value>
+  </data>
+  <data name="STATUS_SAVED_DISTPARMS" xml:space="preserve">
+    <value>{0}将分发参数文件保存到{1}</value>
+  </data>
+  <data name="ERROR_DISTRPARAM_GROUPS_TOOMANY" xml:space="preserve">
+    <value>{0}的分发文件中包含太多组。</value>
+  </data>
+  <data name="DISTR_TYPE_UNIFORM" xml:space="preserve">
+    <value>制服</value>
+  </data>
+  <data name="PROMPT_DELETE_RESULTS" xml:space="preserve">
+    <value>您确定要删除所有结果吗？</value>
+  </data>
+  <data name="PROMPT_UNSAVED_CHANGES" xml:space="preserve">
+    <value>您所做的更改尚未保存。您确定要关闭此表单吗？</value>
+  </data>
+  <data name="HCR_GROUP_FISHMORT" xml:space="preserve">
+    <value>钓鱼抵押。组= {0}</value>
+  </data>
+  <data name="LABEL_BIOMASS_UNIT" xml:space="preserve">
+    <value>生物量（{0}）</value>
+  </data>
+  <data name="HEADER_HCR_TYPE" xml:space="preserve">
+    <value>HCR类型</value>
+  </data>
+  <data name="HEADER_ALPHA" xml:space="preserve">
+    <value>Α</value>
+  </data>
+  <data name="ERROR_HARVESTRULE_DUPLICATE" xml:space="preserve">
+    <value>当前策略中已经存在该收获控制规则</value>
+  </data>
+  <data name="STATUS_AVAILABLE" xml:space="preserve">
+    <value>可用的</value>
+  </data>
+  <data name="HCRTYPE_TRADITIONAL" xml:space="preserve">
+    <value>传统的</value>
+  </data>
+  <data name="HEADER_FLEETNUMBER" xml:space="preserve">
+    <value>机队数量</value>
+  </data>
+  <data name="HEADER_FLEETNO" xml:space="preserve">
+    <value>机队数量</value>
+  </data>
+  <data name="STATUS_NOTAVAILABLE" xml:space="preserve">
+    <value>无法使用</value>
+  </data>
+  <data name="HEADER_BETA" xml:space="preserve">
+    <value>贝塔</value>
+  </data>
+  <data name="ERROR_ENTERNAME" xml:space="preserve">
+    <value>具有该名称的策略已存在。请选择其他名称</value>
+  </data>
+  <data name="HEADER_PREDEFFECTFEEDINGTIME" xml:space="preserve">
+    <value>Pred。进料时间</value>
+  </data>
+  <data name="HCR_GROUP_FUNCTION" xml:space="preserve">
+    <value>成本函数：{0}</value>
+  </data>
+  <data name="HEADER_STEP_BIOMASS_T_KM2" xml:space="preserve">
+    <value>阶跃生物量（t / km2）</value>
+  </data>
+  <data name="REGMETHOD_HIGHESTVALUE" xml:space="preserve">
+    <value>最高价值</value>
+  </data>
+  <data name="HEADER_LIMIT_UPPER_B_T_KM2" xml:space="preserve">
+    <value>生物量上限（t / km2）</value>
+  </data>
+  <data name="HCRTYPE_MULTILEVEL" xml:space="preserve">
+    <value>多层次</value>
+  </data>
+  <data name="HEADER_MAX_CHANGE_F" xml:space="preserve">
+    <value>最大努力</value>
+  </data>
+  <data name="HEADER_LIMIT_UPPER_B_KT" xml:space="preserve">
+    <value>生物量上限（kt）</value>
+  </data>
+  <data name="PROMPT_DATAPATH_MISSING" xml:space="preserve">
+    <value>路径“ {0}”不包含MSE文件结构。您要创建这个吗？</value>
+  </data>
+  <data name="ERROR_DISTRPAR_LOAD_ECOSIM" xml:space="preserve">
+    <value>从csv加载Ecosim参数时出现问题</value>
+  </data>
+  <data name="ERROR_DISTRFILE_GROUPS_INVALID_PRODUCER" xml:space="preserve">
+    <value>您的{0}分发文件中包含组“ {1}”。{2}这是无效的，因为该组是主要生产者！</value>
+  </data>
+  <data name="HEADER_STEP_BIOMASS_KT" xml:space="preserve">
+    <value>步生物量（千吨）</value>
+  </data>
+  <data name="PROMPT_ENTERNAME" xml:space="preserve">
+    <value>选择新策略的名称</value>
+  </data>
+  <data name="ERROR_DISTRPARAM_GROUPS_REPLICATED" xml:space="preserve">
+    <value>{0}的分发文件中包含复制组。</value>
+  </data>
+  <data name="PROMPT_DATAPATH" xml:space="preserve">
+    <value>选择要从中检索数据并将结果输出到的目录</value>
+  </data>
+  <data name="PROMPT_DATAPATH_INCOMPATIBLE" xml:space="preserve">
+    <value>Cefas MSE无法使用路径'{0}'，它用于其他模型。您必须选择另一个文件夹。</value>
+  </data>
+  <data name="DISTR_TYPE_TRIANGULAR" xml:space="preserve">
+    <value>三角形的</value>
+  </data>
+  <data name="HEADER_MIDPOINT" xml:space="preserve">
+    <value>中点</value>
+  </data>
+  <data name="REGMETHOD_WEAKESTSTOCK" xml:space="preserve">
+    <value>最弱的股票</value>
+  </data>
+  <data name="STATUS_SAVED_DETAIL" xml:space="preserve">
+    <value>已保存{0}</value>
+  </data>
+  <data name="STATUS_RUN_PROGRESS" xml:space="preserve">
+    <value>{0}正在运行试用版{1}</value>
+  </data>
+  <data name="ERROR_DISTRFILE_GROUPS_LIVING_MISSING" xml:space="preserve">
+    <value>分发文件{0}中没有所有的生存组。</value>
+  </data>
+  <data name="GRID_DISTRPARM_DATANAME" xml:space="preserve">
+    <value>{0} distrparm {1}</value>
+  </data>
+  <data name="HEADER_RUN_YES_NO" xml:space="preserve">
+    <value>运行（是/否）</value>
+  </data>
+  <data name="REGMETHOD_SELECTIVEFISHING" xml:space="preserve">
+    <value>选择性钓鱼</value>
+  </data>
+  <data name="HEADER_MAXRELFEEDTIME" xml:space="preserve">
+    <value>最高rel。喂食时间</value>
+  </data>
+  <data name="PROMPT_DATAPATH_INACCESSIBLE" xml:space="preserve">
+    <value>Cefas MSE无法使用路径“ {0}”。您必须选择另一个文件夹。</value>
+  </data>
+  <data name="HEADER_LIMIT_LOWER_B_T_KM2" xml:space="preserve">
+    <value>下限生物量（t / km2）</value>
+  </data>
+  <data name="STATUS_SAVED_BIOMASSLIMITS" xml:space="preserve">
+    <value>{0}保存的生物量限制为{1}</value>
+  </data>
+  <data name="STATUS_FINDMODELS_SUMMARY" xml:space="preserve">
+    <value>{0}在{2}个模型中找到了{1}个</value>
+  </data>
+  <data name="ERROR_DISTRFILE_GROUPS_REPLICATED" xml:space="preserve">
+    <value>分发文件{0}中具有复制组。</value>
+  </data>
+  <data name="STATUS_LOADING" xml:space="preserve">
+    <value>正在载入Cefas MSE ...</value>
+  </data>
+  <data name="HEADER_HCR_TARG_OR_CONS" xml:space="preserve">
+    <value>目标还是保护？</value>
+  </data>
+  <data name="REGMETHOD_NOFISHING" xml:space="preserve">
+    <value>禁止钓鱼</value>
+  </data>
+  <data name="STATUS_FOUND_MODEL" xml:space="preserve">
+    <value>{0}在试验{1}中发现了新的平衡模型。 {2}</value>
+  </data>
+  <data name="HEADER_QBMAX_X_PBMAX" xml:space="preserve">
+    <value>最大Q / B x最大P / B</value>
+  </data>
+  <data name="PROMPT_ENTERNAME_CAPTION" xml:space="preserve">
+    <value>新策略</value>
+  </data>
+  <data name="ERROR_DISTRPAR_LOAD_ECOPATH" xml:space="preserve">
+    <value>从csv加载Ecopath参数时出现问题</value>
+  </data>
+  <data name="HEADER_TIMEFRAMERULES" xml:space="preserve">
+    <value>N年的时间框架规则</value>
+  </data>
+  <data name="HCR_GROUP_BIOMASS" xml:space="preserve">
+    <value>生物量组= {0}</value>
+  </data>
+  <data name="FORMNAME_STRATEGIES_OVERVIEW" xml:space="preserve">
+    <value>策略概述</value>
+  </data>
+  <data name="HEADER_FEEDTIMEADJUSTRATE" xml:space="preserve">
+    <value>进料时间调整。率</value>
+  </data>
+  <data name="HEADER_BOUND_LOWER" xml:space="preserve">
+    <value>下界</value>
+  </data>
+  <data name="HEADER_BOUND_UPPER" xml:space="preserve">
+    <value>上限</value>
+  </data>
+  <data name="HEADER_OTHERMORTFEEDTIME" xml:space="preserve">
+    <value>其他人。喂食时间</value>
+  </data>
+  <data name="PROMPT_TRIAL_REPORT" xml:space="preserve">
+    <value>{1}（{2}％）中的{0}产生了合理的动态，并被用来生成结果。</value>
+  </data>
+  <data name="ERROR_HARVESTRUILE_DUPLICATE_F" xml:space="preserve">
+    <value>有多个hcr指定组{0}的目标F</value>
+  </data>
+  <data name="HEADER_SURVIVABILITIES" xml:space="preserve">
+    <value>生存能力</value>
+  </data>
+  <data name="ERROR_DISTRFILE_GROUPS_HASNONLIVING" xml:space="preserve">
+    <value>分发文件{0}中包含非活动组。</value>
+  </data>
+  <data name="HEADER_F_MORT_MIN" xml:space="preserve">
+    <value>Fmin（捕鱼死亡率）</value>
+  </data>
+  <data name="HEADER_F_MORT_MAX" xml:space="preserve">
+    <value>Fmax（捕鱼死亡率）</value>
+  </data>
+  <data name="ERROR_LPSOLVE" xml:space="preserve">
+    <value>线性编程解决方案不是最佳的。 LP解决代码{0}</value>
+  </data>
+  <data name="ERROR_HARVESTRULE_INVALID" xml:space="preserve">
+    <value>此收割控制规则无效。 {0}</value>
+  </data>
+  <data name="STATUS_SAVED_STRATEGIES" xml:space="preserve">
+    <value>{0}将策略数据保存到{1}</value>
+  </data>
+  <data name="HEADER_LIMIT_LOWER_B_KT" xml:space="preserve">
+    <value>生物量下限（kt）</value>
+  </data>
+  <data name="COSTFUNCTION_CONSERVATION" xml:space="preserve">
+    <value>保护</value>
+  </data>
+</root>

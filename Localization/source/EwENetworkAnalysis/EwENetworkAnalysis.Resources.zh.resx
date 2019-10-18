@@ -1,0 +1,894 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ROW_HDR_IMPORT" xml:space="preserve">
+    <value>进口</value>
+  </data>
+  <data name="COL_HDR_IMPORT" xml:space="preserve">
+    <value>进口</value>
+  </data>
+  <data name="COL_HDR_CATCH" xml:space="preserve">
+    <value>抓住</value>
+  </data>
+  <data name="COL_HDR_BIOMASS" xml:space="preserve">
+    <value>生物质</value>
+  </data>
+  <data name="COL_HDR_VALUE" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="PAGE_CREDITS" xml:space="preserve">
+    <value>学分</value>
+  </data>
+  <data name="ROW_HDR_EXPORT" xml:space="preserve">
+    <value>出口</value>
+  </data>
+  <data name="COL_HDR_EXPORT" xml:space="preserve">
+    <value>出口</value>
+  </data>
+  <data name="ROW_HDR_TOTAL" xml:space="preserve">
+    <value>总</value>
+  </data>
+  <data name="PAGE_ASC_TOTAL" xml:space="preserve">
+    <value>总</value>
+  </data>
+  <data name="COL_HDR_GRP_NAME" xml:space="preserve">
+    <value>组名</value>
+  </data>
+  <data name="COL_HDR_YEAR" xml:space="preserve">
+    <value>年</value>
+  </data>
+  <data name="COL_HDR_PARAM" xml:space="preserve">
+    <value>参数</value>
+  </data>
+  <data name="HEADER_ANNUAL" xml:space="preserve">
+    <value>年刊</value>
+  </data>
+  <data name="COL_HDR_SOURCE" xml:space="preserve">
+    <value>资源</value>
+  </data>
+  <data name="LBL_FIB_INDX" xml:space="preserve">
+    <value>FIB指数</value>
+  </data>
+  <data name="ROW_HDR_SUM" xml:space="preserve">
+    <value>和</value>
+  </data>
+  <data name="ROW_HDR_DET" xml:space="preserve">
+    <value>碎屑</value>
+  </data>
+  <data name="HEADER_MONTHLY" xml:space="preserve">
+    <value>每月一次</value>
+  </data>
+  <data name="LBL_TOTAL_CATCH" xml:space="preserve">
+    <value>总捕捞量</value>
+  </data>
+  <data name="LBL_KEMPTONS_Q" xml:space="preserve">
+    <value>肯普顿Q</value>
+  </data>
+  <data name="LBL_INDEXED" xml:space="preserve">
+    <value>{0}：{1}</value>
+  </data>
+  <data name="COL_HDR_TRP_LVL" xml:space="preserve">
+    <value>营养级</value>
+  </data>
+  <data name="ROW_HDR_PRODUCER" xml:space="preserve">
+    <value>制片人</value>
+  </data>
+  <data name="COL_HDR_CONSUM" xml:space="preserve">
+    <value>消费</value>
+  </data>
+  <data name="ROW_HDR_RESP" xml:space="preserve">
+    <value>呼吸</value>
+  </data>
+  <data name="COL_HDR_RESP" xml:space="preserve">
+    <value>呼吸</value>
+  </data>
+  <data name="STR_NONE" xml:space="preserve">
+    <value>没有</value>
+  </data>
+  <data name="PAGE_FLOWDET" xml:space="preserve">
+    <value>碎屑流</value>
+  </data>
+  <data name="MNU_STYLE_CIRCLES" xml:space="preserve">
+    <value>＆界</value>
+  </data>
+  <data name="COL_HDR_ASCEND_FLOWBIT" xml:space="preserve">
+    <value>优势（流位）</value>
+  </data>
+  <data name="COL_HDR_FLOW_DET" xml:space="preserve">
+    <value>流向碎屑</value>
+  </data>
+  <data name="LBL_ECOSIM_NA_WO_PPR_EST_PRGR" xml:space="preserve">
+    <value>Ecosim网络分析（无PPR Est）进度：</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS" xml:space="preserve">
+    <value>寻找途径...</value>
+  </data>
+  <data name="COL_HDR_CAPACITY_PCT" xml:space="preserve">
+    <value>容量（％）</value>
+  </data>
+  <data name="LBL_NA_PRGR" xml:space="preserve">
+    <value>网络分析进度：</value>
+  </data>
+  <data name="PAGE_CP_TOPPRED" xml:space="preserve">
+    <value>顶级捕食&lt;-猎物</value>
+  </data>
+  <data name="GENERIC_TOOLTIP" xml:space="preserve">
+    <value>网络分析插件</value>
+  </data>
+  <data name="COL_HDR_DET_TE_W" xml:space="preserve">
+    <value>单位TE（加权）</value>
+  </data>
+  <data name="PAGE_FB_FROMCOMBINED" xml:space="preserve">
+    <value>从所有结合</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAY_CYCLES" xml:space="preserve">
+    <value>正在寻找路径周期...</value>
+  </data>
+  <data name="ROW_HDR_THROUGHPUT_CYC_TOTAL" xml:space="preserve">
+    <value>吞吐量循环（包括碎屑）</value>
+  </data>
+  <data name="PROMPT_ERROR_INITIALIZE" xml:space="preserve">
+    <value>网络分析未正确初始化</value>
+  </data>
+  <data name="STR_WO_DET" xml:space="preserve">
+    <value>无碎屑</value>
+  </data>
+  <data name="COL_HDR_PATH_NUM" xml:space="preserve">
+    <value>通道号</value>
+  </data>
+  <data name="COL_HDR_PATH_LEN" xml:space="preserve">
+    <value>路径长度</value>
+  </data>
+  <data name="LBL_POSITIVE" xml:space="preserve">
+    <value>正</value>
+  </data>
+  <data name="STR_FROM_PRIM_PRODUCER" xml:space="preserve">
+    <value>来自主要生产者：{0}％</value>
+  </data>
+  <data name="STR_FROM_DET" xml:space="preserve">
+    <value>来自碎屑：{0}％</value>
+  </data>
+  <data name="LBL_RESP" xml:space="preserve">
+    <value>呼吸</value>
+  </data>
+  <data name="LBL_CONS" xml:space="preserve">
+    <value>消费</value>
+  </data>
+  <data name="ROW_HDR_TOTAL_THROUGHPUT" xml:space="preserve">
+    <value>总吞吐量</value>
+  </data>
+  <data name="PAGE_FB" xml:space="preserve">
+    <value>流量和生物量</value>
+  </data>
+  <data name="STR_PROP_TOTAL_FLOW" xml:space="preserve">
+    <value>源于碎屑的总流量的比例：</value>
+  </data>
+  <data name="LBL_RELTOTALIMPACT" xml:space="preserve">
+    <value>相对总影响</value>
+  </data>
+  <data name="COL_HDR_RELTOTALIMPACT" xml:space="preserve">
+    <value>相对总影响</value>
+  </data>
+  <data name="ROW_HDR_THROUGHPUT_CYC_LIV" xml:space="preserve">
+    <value>吞吐量循环（不包括碎屑）</value>
+  </data>
+  <data name="PAGE_MTI" xml:space="preserve">
+    <value>营养综合影响</value>
+  </data>
+  <data name="PAGE_ASC" xml:space="preserve">
+    <value>优势</value>
+  </data>
+  <data name="COL_HDR_ASCEND_TOTAL" xml:space="preserve">
+    <value>优势</value>
+  </data>
+  <data name="PAGE_PPR" xml:space="preserve">
+    <value>需要初级生产</value>
+  </data>
+  <data name="PROMPT_DISPLAY_ALL_HIDDEN_GROUPS" xml:space="preserve">
+    <value>显示所有组（是）还是仅显示隐藏组（否）？</value>
+  </data>
+  <data name="STATUS_RUNNING_NA" xml:space="preserve">
+    <value>正在运行网络分析...</value>
+  </data>
+  <data name="STATUS_RUNNING_NETWORKANALYSIS" xml:space="preserve">
+    <value>正在运行网络分析...</value>
+  </data>
+  <data name="PAGE_CYC_LIVING" xml:space="preserve">
+    <value>周期（生活）</value>
+  </data>
+  <data name="COL_HDR_CAPACITY_ECOSIM" xml:space="preserve">
+    <value>容量</value>
+  </data>
+  <data name="PROMPT_COMPUTE_ALL_CYCLES" xml:space="preserve">
+    <value>计算所有周期？对于较大的模型，这可能非常耗时。</value>
+  </data>
+  <data name="LBL_TL" xml:space="preserve">
+    <value>TL</value>
+  </data>
+  <data name="COL_HDR_TL" xml:space="preserve">
+    <value>TL</value>
+  </data>
+  <data name="LBL_TE" xml:space="preserve">
+    <value>TE</value>
+  </data>
+  <data name="PAGE_FB_BIOMPMD" xml:space="preserve">
+    <value>生物质金字塔</value>
+  </data>
+  <data name="COL_HDR_THROUGHPUT" xml:space="preserve">
+    <value>通量</value>
+  </data>
+  <data name="PROMPT_SAVE_NOACCESS" xml:space="preserve">
+    <value>网络分析无法访问目标“ {0}”</value>
+  </data>
+  <data name="LBL_PREDATION" xml:space="preserve">
+    <value>掠夺</value>
+  </data>
+  <data name="PROMPT_FILECREATE_FAILED" xml:space="preserve">
+    <value>无法创建文件“ {0}”：{1}</value>
+  </data>
+  <data name="MNU_STYLE" xml:space="preserve">
+    <value>图形和样式</value>
+  </data>
+  <data name="COL_HDR_PSUST_SDLOWER" xml:space="preserve">
+    <value>Psust SD（下）</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_FLOW" xml:space="preserve">
+    <value>卵泡流量</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_RESP" xml:space="preserve">
+    <value>OVH回应</value>
+  </data>
+  <data name="LBL_BIOMASS" xml:space="preserve">
+    <value>生物质</value>
+  </data>
+  <data name="COL_HDR_PSUST_SDUPPER" xml:space="preserve">
+    <value>Psust SD（上）</value>
+  </data>
+  <data name="PAGE_FB_FROMDET" xml:space="preserve">
+    <value>来自碎屑</value>
+  </data>
+  <data name="STR_PCT_THROUGHPUT_LIV" xml:space="preserve">
+    <value>无碎屑的吞吐量百分比</value>
+  </data>
+  <data name="ROW_HDR_FINN_CYC_INDX" xml:space="preserve">
+    <value>芬恩自行车指数</value>
+  </data>
+  <data name="PAGE_MTI_PLOTEWE5" xml:space="preserve">
+    <value>混合营养影响图（EwE5）</value>
+  </data>
+  <data name="STATUS_RUNNING_LINDEMAN" xml:space="preserve">
+    <value>正在运行网络分析Lindeman ...</value>
+  </data>
+  <data name="MNU_STYLE_DETRITUS_COLLAPSE" xml:space="preserve">
+    <value>＆崩溃碎屑</value>
+  </data>
+  <data name="COL_HDR_PPR_U_BIOMASS" xml:space="preserve">
+    <value>PPR / u。生物群系</value>
+  </data>
+  <data name="ROW_HDR_PRED_CYC_INDX" xml:space="preserve">
+    <value>掠食性循环指数</value>
+  </data>
+  <data name="PAGE_CP_CPTL11" xml:space="preserve">
+    <value>消费者&lt;-猎物&lt;-TL1</value>
+  </data>
+  <data name="PAGE_CP_CYCLES" xml:space="preserve">
+    <value>周期数</value>
+  </data>
+  <data name="COL_HDR_PROP_FLOW_DET" xml:space="preserve">
+    <value>支撑流量检测</value>
+  </data>
+  <data name="PROMPT_NETWORK_COMPLEXDIET" xml:space="preserve">
+    <value>网络分析在复杂的饮食基质上运行可能会很慢，并且可能需要几个小时到几天（！）才能完成。你确定你要继续吗？</value>
+  </data>
+  <data name="COL_HDR_PPR_CATCH" xml:space="preserve">
+    <value>PPR /渔获</value>
+  </data>
+  <data name="STATUS_RUNNING_ULANOW" xml:space="preserve">
+    <value>正在运行网络分析Ulanow ...</value>
+  </data>
+  <data name="COL_HDR_DETRITUS_TKM2" xml:space="preserve">
+    <value>碎屑（t /km²）</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_IMPORT" xml:space="preserve">
+    <value>显示并导入</value>
+  </data>
+  <data name="NAVITEM_ROOT" xml:space="preserve">
+    <value>网络分析</value>
+  </data>
+  <data name="PAGE_CP_PATHWAYS" xml:space="preserve">
+    <value>途径</value>
+  </data>
+  <data name="PAGE_FB_FLOWPMD" xml:space="preserve">
+    <value>流金字塔</value>
+  </data>
+  <data name="ROW_HDR_INTN_FLOW" xml:space="preserve">
+    <value>内部流量</value>
+  </data>
+  <data name="MNU_CONTENT_KEYSTONE2" xml:space="preserve">
+    <value>Keystone索引＃＆2（Power等，1996）</value>
+  </data>
+  <data name="MNU_CONTENT_KEYSTONE3" xml:space="preserve">
+    <value>Keystone索引＃＆3（Valls等，2015）</value>
+  </data>
+  <data name="MNU_CONTENT_KEYSTONE1" xml:space="preserve">
+    <value>Keystone索引＃＆1（Libralato等，2006）</value>
+  </data>
+  <data name="ROW_HDR_INPUT_TRP_LVL_II_PLUS" xml:space="preserve">
+    <value>输入TL II +（未通过吞吐量）</value>
+  </data>
+  <data name="COL_HDR_PATH" xml:space="preserve">
+    <value>从指定组到所有顶级掠食者的路径</value>
+  </data>
+  <data name="COL_HDR_PROD" xml:space="preserve">
+    <value>产品</value>
+  </data>
+  <data name="COL_HDR_UNIT" xml:space="preserve">
+    <value>单元</value>
+  </data>
+  <data name="COL_HDR_INFO" xml:space="preserve">
+    <value>信息（位）</value>
+  </data>
+  <data name="LBL_FLOWDET" xml:space="preserve">
+    <value>碎屑流</value>
+  </data>
+  <data name="PROMPT_ERROR_CYCLING" xml:space="preserve">
+    <value>掠夺性循环指数无法计算。</value>
+  </data>
+  <data name="PROMPT_SAVE_FAILED" xml:space="preserve">
+    <value>网络分析无法将索引保存到“ {0}”</value>
+  </data>
+  <data name="PAGE_CYCPATH_LEN" xml:space="preserve">
+    <value>周期和路径长度</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_EXPORT" xml:space="preserve">
+    <value>OVH出口</value>
+  </data>
+  <data name="MNU_STYLE_DETRITUS_EXPAND" xml:space="preserve">
+    <value>＆扩大碎屑</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS_CONSUMER" xml:space="preserve">
+    <value>正在寻找通往消费者“ {0}”的途径...</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS_CONSPREY" xml:space="preserve">
+    <value>正在通过“ {1}”查找“ {0}”的路径...</value>
+  </data>
+  <data name="STR_TRANSFER_EFF" xml:space="preserve">
+    <value>传输效率（按TL II-IV的几何平均值计算）</value>
+  </data>
+  <data name="MNU_STYLE_CIRCLES_SCALED" xml:space="preserve">
+    <value>圆圈，缩放为＆Biomass</value>
+  </data>
+  <data name="PAGE_FB_CATCHTL" xml:space="preserve">
+    <value>按营养级别捕获</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_IMPORT" xml:space="preserve">
+    <value>OVH进口</value>
+  </data>
+  <data name="PROMPT_ERROR_ECOPATH" xml:space="preserve">
+    <value>在Ecopath之前无法运行网络分析</value>
+  </data>
+  <data name="COL_HDR_NONHIDDEN" xml:space="preserve">
+    <value>非隐藏</value>
+  </data>
+  <data name="STATUS_UPDATING_UI" xml:space="preserve">
+    <value>正在更新用户界面...</value>
+  </data>
+  <data name="COL_HDR_PATH_VIA_PREY" xml:space="preserve">
+    <value>通过指定猎物从主要生产者或碎屑群体到选定消费者的路径</value>
+  </data>
+  <data name="COL_HDR_TRP_LVL_FLOW" xml:space="preserve">
+    <value>营养级\流量</value>
+  </data>
+  <data name="LBL_ECOSIM_NA_W_PPR_EST_PRGR" xml:space="preserve">
+    <value>Ecosim网络分析（使用PPR Est）的进度：</value>
+  </data>
+  <data name="COL_HDR_PSUST" xml:space="preserve">
+    <value>脓毒症</value>
+  </data>
+  <data name="COL_HDR_PP_TE" xml:space="preserve">
+    <value>转移效率（PP）</value>
+  </data>
+  <data name="PROMPT_SAVE_DESTINATION" xml:space="preserve">
+    <value>选择目标以保存网络分析结果CSV文件</value>
+  </data>
+  <data name="PAGE_LINDEX" xml:space="preserve">
+    <value>生产损失指数</value>
+  </data>
+  <data name="COL_HDR_TOTAL_TKM2" xml:space="preserve">
+    <value>总计（t /km²）</value>
+  </data>
+  <data name="PROMPT_ERROR_ECOSIM_INIT" xml:space="preserve">
+    <value>由于网络分析中的问题，无法初始化Ecosim的网络分析</value>
+  </data>
+  <data name="ROW_HDR_ALL_FLOWS" xml:space="preserve">
+    <value>所有流量</value>
+  </data>
+  <data name="PAGE_ECOSIM_NA_WO_PPR" xml:space="preserve">
+    <value>无需初级生产的索引</value>
+  </data>
+  <data name="LBL_IMPACTED_GP" xml:space="preserve">
+    <value>受影响的群体</value>
+  </data>
+  <data name="PROMPT_SAVE_SUCCESS" xml:space="preserve">
+    <value>网络分析索引已保存到“ {0}”</value>
+  </data>
+  <data name="COL_HDR_PP_TE_W" xml:space="preserve">
+    <value>PP TE（加权）</value>
+  </data>
+  <data name="COL_HDR_PPR_DET" xml:space="preserve">
+    <value>PPR（删除）</value>
+  </data>
+  <data name="COL_HDR_GRP_NAME_TRP_LVL" xml:space="preserve">
+    <value>组名/营养等级</value>
+  </data>
+  <data name="LBL_KEYSTONE1" xml:space="preserve">
+    <value>梯形失真指数1（Libralato et al，2006）</value>
+  </data>
+  <data name="LBL_KEYSTONE2" xml:space="preserve">
+    <value>梯形失真指数2（Power et al，1996）</value>
+  </data>
+  <data name="LBL_KEYSTONE3" xml:space="preserve">
+    <value>按主要指数＃3进行的组排名（Valls等，2015）</value>
+  </data>
+  <data name="ROW_HDR_FINN_STR_THRU_PATH_LEN" xml:space="preserve">
+    <value>芬恩的直通路径长度</value>
+  </data>
+  <data name="LBL_PPR_CAL_PRGR" xml:space="preserve">
+    <value>初级生产计算进度：</value>
+  </data>
+  <data name="PAGE_KEYSTONENESS" xml:space="preserve">
+    <value>重点</value>
+  </data>
+  <data name="PAGE_FB_LINDEMAN" xml:space="preserve">
+    <value>林德曼脊柱</value>
+  </data>
+  <data name="COL_HDR_TOTAL_TKM2YR" xml:space="preserve">
+    <value>总计（t /km²/年）</value>
+  </data>
+  <data name="PAGE_TLDECOMP" xml:space="preserve">
+    <value>营养级分解</value>
+  </data>
+  <data name="PAGE_FB_BIOMTL" xml:space="preserve">
+    <value>营养级生物量</value>
+  </data>
+  <data name="LBL_IMPORT" xml:space="preserve">
+    <value>进口</value>
+  </data>
+  <data name="WRITER_ECOSIM" xml:space="preserve">
+    <value>网络分析Ecosim结果</value>
+  </data>
+  <data name="MNU_CONTENT_MAXTL" xml:space="preserve">
+    <value>＆最大营养级</value>
+  </data>
+  <data name="LBL_CATCH_DET_REQ" xml:space="preserve">
+    <value>捕获碎屑</value>
+  </data>
+  <data name="LBL_TST" xml:space="preserve">
+    <value>TST（％）</value>
+  </data>
+  <data name="LBL_FCI" xml:space="preserve">
+    <value>FCI</value>
+  </data>
+  <data name="COL_HDR_FCI" xml:space="preserve">
+    <value>FCI</value>
+  </data>
+  <data name="PAGE_FB_FROMPP" xml:space="preserve">
+    <value>来自初级生产者</value>
+  </data>
+  <data name="ROW_HDR_MEAN_PATH_LEN" xml:space="preserve">
+    <value>平均路径长度=箭头总数/路径总数</value>
+  </data>
+  <data name="LBL_PATH_FROM" xml:space="preserve">
+    <value>途径与来源：</value>
+  </data>
+  <data name="LBL_MONTHS" xml:space="preserve">
+    <value>月数</value>
+  </data>
+  <data name="PAGE_ECOSIM_NA" xml:space="preserve">
+    <value>Ecosim网络分析</value>
+  </data>
+  <data name="PAGE_TL_ABSFLOWS" xml:space="preserve">
+    <value>绝对流量</value>
+  </data>
+  <data name="PAGE_MTI_PLOT" xml:space="preserve">
+    <value>混合营养影响图</value>
+  </data>
+  <data name="WRITER_ECOPATH" xml:space="preserve">
+    <value>网络分析Ecopath结果</value>
+  </data>
+  <data name="PAGE_TL_RELFLOWS" xml:space="preserve">
+    <value>相对流量</value>
+  </data>
+  <data name="COL_HDR_THROUGHPUT_UNIT" xml:space="preserve">
+    <value>吞吐量（t /km²/年）</value>
+  </data>
+  <data name="COL_HDR_CONSUM_PREDAT" xml:space="preserve">
+    <value>掠食者的消费</value>
+  </data>
+  <data name="CAPTION" xml:space="preserve">
+    <value>网络分析</value>
+  </data>
+  <data name="MNU_CONTENT" xml:space="preserve">
+    <value>图的内容</value>
+  </data>
+  <data name="ROW_HDR_NO_PATH_FOUND" xml:space="preserve">
+    <value>找不到途径</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_BIOMASS" xml:space="preserve">
+    <value>显示与生物量</value>
+  </data>
+  <data name="PAGE_CYC_ALL" xml:space="preserve">
+    <value>周期（全部）</value>
+  </data>
+  <data name="LBL_EXPORT" xml:space="preserve">
+    <value>出口和渔获</value>
+  </data>
+  <data name="ROW_HDR_NOT_APP" xml:space="preserve">
+    <value>不适用</value>
+  </data>
+  <data name="MNU_CONTENT_TOTIMPACT_OVER_B" xml:space="preserve">
+    <value>总和影响生物量</value>
+  </data>
+  <data name="LBL_BACCUM" xml:space="preserve">
+    <value>积累</value>
+  </data>
+  <data name="COL_HDR_CATCH_PPR" xml:space="preserve">
+    <value>赶上PPR</value>
+  </data>
+  <data name="LBL_CATCH_PPR" xml:space="preserve">
+    <value>赶上PPR</value>
+  </data>
+  <data name="PAGE_MTI_IMPACT" xml:space="preserve">
+    <value>影响数据</value>
+  </data>
+  <data name="COL_HDR_ASCEND_IMPORT" xml:space="preserve">
+    <value>ASC进口</value>
+  </data>
+  <data name="PROMPT_APPLAUNCH_FAILED" xml:space="preserve">
+    <value>无法启动应用程序“ {0}”：{1}</value>
+  </data>
+  <data name="PROMPT_ESTIMATE_PPR" xml:space="preserve">
+    <value>估计所需的初级产量？对于较大的模型，这可能非常耗时。</value>
+  </data>
+  <data name="COL_HDR_CAPACITY_FLOWBIT" xml:space="preserve">
+    <value>容量（流量位）</value>
+  </data>
+  <data name="LBL_PATH_TO" xml:space="preserve">
+    <value>途径及通往：</value>
+  </data>
+  <data name="ROW_HDR_TOTAL_NUM_PATH" xml:space="preserve">
+    <value>途径总数</value>
+  </data>
+  <data name="FILEFILTER_EMF" xml:space="preserve">
+    <value>EMF图像文件（* .emf）| * .emf |所有文件（*。*）| *。*</value>
+  </data>
+  <data name="STR_PCT_TOTAL_THROUGHPUT" xml:space="preserve">
+    <value>占总吞吐量的百分比</value>
+  </data>
+  <data name="SAMS_URL" xml:space="preserve">
+    <value>http://www.sams.ac.uk/</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_FLOWBIT" xml:space="preserve">
+    <value>开销（流量位）</value>
+  </data>
+  <data name="LBL_CYC_FIND_PRGR" xml:space="preserve">
+    <value>循环查找进度：</value>
+  </data>
+  <data name="PAGE_CP_CTL1" xml:space="preserve">
+    <value>消费者&lt;-TL1</value>
+  </data>
+  <data name="PAGE_CYCLES_PATHWAYS" xml:space="preserve">
+    <value>周期与途径</value>
+  </data>
+  <data name="COL_HDR_ASCEND_PCT" xml:space="preserve">
+    <value>上升率（％）</value>
+  </data>
+  <data name="PAGE_FB_CATCHPMD" xml:space="preserve">
+    <value>赶上金字塔</value>
+  </data>
+  <data name="COL_HDR_PCI" xml:space="preserve">
+    <value>PCI接口</value>
+  </data>
+  <data name="COL_HDR_PPR" xml:space="preserve">
+    <value>PPR</value>
+  </data>
+  <data name="COL_HDR_TLc" xml:space="preserve">
+    <value>渔获量</value>
+  </data>
+  <data name="LBL_TL_CATCH" xml:space="preserve">
+    <value>渔获量</value>
+  </data>
+  <data name="COL_HDR_AMI" xml:space="preserve">
+    <value>急性心肌梗死</value>
+  </data>
+  <data name="COL_HDR_CYC" xml:space="preserve">
+    <value>循环是相互联系的路径，从一个群体开始并返回</value>
+  </data>
+  <data name="COL_HDR_FIB" xml:space="preserve">
+    <value>FiB指数</value>
+  </data>
+  <data name="COL_HDR_PPR_PP" xml:space="preserve">
+    <value>PPR（PP）</value>
+  </data>
+  <data name="COL_HDR_NUM_PATH" xml:space="preserve">
+    <value>路径数</value>
+  </data>
+  <data name="COL_HDR_TOT_TE_W" xml:space="preserve">
+    <value>总TE（轻量）</value>
+  </data>
+  <data name="COL_HDR_CATCH_DET_REQ" xml:space="preserve">
+    <value>捕获碎屑需求</value>
+  </data>
+  <data name="PROMPT_ERROR_ECOSIM" xml:space="preserve">
+    <value>运行Network Analysis for Ecosim时出错：{0}</value>
+  </data>
+  <data name="COL_HDR_TOT_TE" xml:space="preserve">
+    <value>转移效率（总计）</value>
+  </data>
+  <data name="COL_HDR_PATH_CONSUM" xml:space="preserve">
+    <value>从主要生产者或碎屑群体到选定消费者的途径</value>
+  </data>
+  <data name="PAGE_ECOSIM_NA_WITH_PPR" xml:space="preserve">
+    <value>需要初级生产的索引</value>
+  </data>
+  <data name="COL_HDR_ASCEND_EXPORT" xml:space="preserve">
+    <value>ASC出口</value>
+  </data>
+  <data name="STR_W_DET" xml:space="preserve">
+    <value>与碎屑</value>
+  </data>
+  <data name="ROW_HDR_EXTRACT_BREAK_CYC" xml:space="preserve">
+    <value>提取打破周期</value>
+  </data>
+  <data name="STR_TOTAL" xml:space="preserve">
+    <value>总计：{0}％</value>
+  </data>
+  <data name="COL_HDR_LIVING_TKM2" xml:space="preserve">
+    <value>居住（t /km²）</value>
+  </data>
+  <data name="COL_HDR_PRIM_PROD" xml:space="preserve">
+    <value>原始产品</value>
+  </data>
+  <data name="LBL_LINDEX_REL" xml:space="preserve">
+    <value>生产损失（相对）</value>
+  </data>
+  <data name="PAGE_PPR_CONS" xml:space="preserve">
+    <value>供所有人群消费</value>
+  </data>
+  <data name="PAGE_PPR_HARV" xml:space="preserve">
+    <value>收获所有群体</value>
+  </data>
+  <data name="PAGE_ASC_GROUP" xml:space="preserve">
+    <value>按组</value>
+  </data>
+  <data name="COL_HDR_KEYSTONEINDEX1" xml:space="preserve">
+    <value>重点索引1</value>
+  </data>
+  <data name="COL_HDR_KEYSTONEINDEX3" xml:space="preserve">
+    <value>梯形失真指数3</value>
+  </data>
+  <data name="COL_HDR_KEYSTONEINDEX2" xml:space="preserve">
+    <value>梯形失真指数2</value>
+  </data>
+  <data name="PAGE_KEYSTONENESS_GRAPH" xml:space="preserve">
+    <value>梯形图</value>
+  </data>
+  <data name="LBL_IMPACTING_GP" xml:space="preserve">
+    <value>影响小组</value>
+  </data>
+  <data name="PAGE_KEYSTONENESS_TABLE" xml:space="preserve">
+    <value>梯形校正表</value>
+  </data>
+  <data name="COL_HDR_RESP_ECOSIM" xml:space="preserve">
+    <value>响应</value>
+  </data>
+  <data name="COL_HDR_LINDEX" xml:space="preserve">
+    <value>L指数</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD" xml:space="preserve">
+    <value>开销（t /km²/年*位）</value>
+  </data>
+  <data name="PAGE_FB_TRANSEFF" xml:space="preserve">
+    <value>转移效率</value>
+  </data>
+  <data name="COL_HDR_CAPACITY" xml:space="preserve">
+    <value>容量（t /km²/年*位）</value>
+  </data>
+  <data name="MNU_STYLE_NUMBERS" xml:space="preserve">
+    <value>＆数字</value>
+  </data>
+  <data name="COL_HDR_ASCEND" xml:space="preserve">
+    <value>上升（t /km²/年*位）</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_TST" xml:space="preserve">
+    <value>显示＆TST（％）</value>
+  </data>
+  <data name="COL_HDR_KEMPTONS" xml:space="preserve">
+    <value>肯普顿Q（相对）</value>
+  </data>
+  <data name="MNU_CONTENT_SHOW_BIOMASSACCUM" xml:space="preserve">
+    <value>显示生物量和积累</value>
+  </data>
+  <data name="PROMPT_LOAD_ECOSIM" xml:space="preserve">
+    <value>请在运行Network Analysis for Ecosim之前加载Ecosim方案。</value>
+  </data>
+  <data name="STR_T_KM2_YR" xml:space="preserve">
+    <value>吨/平方公里/年</value>
+  </data>
+  <data name="ROW_HDR_FINN_MEAN_PATH_LEN" xml:space="preserve">
+    <value>芬恩的平均路径长度</value>
+  </data>
+  <data name="ROW_HDR_PCT" xml:space="preserve">
+    <value>（％）</value>
+  </data>
+  <data name="COL_HDR_DET_TE" xml:space="preserve">
+    <value>转会效力（Det）</value>
+  </data>
+  <data name="LBL_PATH_VIA" xml:space="preserve">
+    <value>＆通过：</value>
+  </data>
+  <data name="LBL_NEGATIVE" xml:space="preserve">
+    <value>负</value>
+  </data>
+  <data name="COL_HDR_ENTROPY" xml:space="preserve">
+    <value>熵</value>
+  </data>
+  <data name="PROMPT_ERROR_PP" xml:space="preserve">
+    <value>没有利用的初级生产者。网络分析无法继续。</value>
+  </data>
+  <data name="COL_HDR_SOURCE_TRP_LVL" xml:space="preserve">
+    <value>源\营养级</value>
+  </data>
+  <data name="COL_HDR_PPR_U_CATCH" xml:space="preserve">
+    <value>PPR / u。抓住</value>
+  </data>
+  <data name="STATUS_RUNNING_EQPP" xml:space="preserve">
+    <value>正在运行网络分析eqPP ...</value>
+  </data>
+  <data name="COL_HDR_PPR_COMSUM" xml:space="preserve">
+    <value>PPR /消费</value>
+  </data>
+  <data name="STATUS_FINDING_PATHWAYS_PREY" xml:space="preserve">
+    <value>寻找猎物“ {0}”的途径...</value>
+  </data>
+  <data name="COL_HDR_OVERHEAD_PCT" xml:space="preserve">
+    <value>高架 （％）</value>
+  </data>
+  <data name="LBL_ASCEND_FLOW" xml:space="preserve">
+    <value>流量上升</value>
+  </data>
+  <data name="LBL_NA_INDIC" xml:space="preserve">
+    <value>网络分析指标</value>
+  </data>
+  <data name="PROMPT_SAVE_ANNUAL_AVERAGES" xml:space="preserve">
+    <value>将网络分析结果保存为年度平均值吗？</value>
+  </data>
+  <data name="COL_HDR_ASCEND_RESP" xml:space="preserve">
+    <value>升序</value>
+  </data>
+  <data name="COL_HDR_ASCEND_FLOW" xml:space="preserve">
+    <value>升流</value>
+  </data>
+  <data name="COL_HDR_IMPACTING_IMPACTED" xml:space="preserve">
+    <value>影响/影响</value>
+  </data>
+  <data name="COL_HDR_PPR_TOTAL_PP" xml:space="preserve">
+    <value>PPR / TotPP（％）</value>
+  </data>
+</root>

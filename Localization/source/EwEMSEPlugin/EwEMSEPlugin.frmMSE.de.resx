@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="m_hdrStep3.Text" xml:space="preserve">
+    <value>Angeln</value>
+  </data>
+  <data name="m_btnEditDiets.Text" xml:space="preserve">
+    <value>&amp; Diäten</value>
+  </data>
+  <data name="m_btnCreateSurvDist.Text" xml:space="preserve">
+    <value>Surv. Dist erstellen</value>
+  </data>
+  <data name="m_lblMaxTime.Text" xml:space="preserve">
+    <value>Maximale und verbrachte Zeit (Stunden):</value>
+  </data>
+  <data name="m_tbxMaxAttempts.Text" xml:space="preserve">
+    <value>1000000</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Cefas MSE</value>
+  </data>
+  <data name="m_btnSAError.Text" xml:space="preserve">
+    <value>&amp; Bewertungsfehler</value>
+  </data>
+  <data name="m_tbxNYearsProject.Text" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_tbxNModels2Run.Text" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_lblAreaUnit.Text" xml:space="preserve">
+    <value>km²</value>
+  </data>
+  <data name="m_btnQuotaShares.Text" xml:space="preserve">
+    <value>&amp; Quotenanteile</value>
+  </data>
+  <data name="m_btnDeleteResults.Text" xml:space="preserve">
+    <value>Ergebnisse löschen</value>
+  </data>
+  <data name="m_btnSelectStrategies.Text" xml:space="preserve">
+    <value>Strategien auswählen</value>
+  </data>
+  <data name="m_lblNTrials.Text" xml:space="preserve">
+    <value>Anzahl &amp; zu erstellender Modelle:</value>
+  </data>
+  <data name="m_rbCustomPath.Text" xml:space="preserve">
+    <value>&amp; Benutzerdefinierter Pfad</value>
+  </data>
+  <data name="m_lblNYears.Text" xml:space="preserve">
+    <value>Anzahl &amp; der zu projizierenden Jahre:</value>
+  </data>
+  <data name="m_lblAvailableModels.Text" xml:space="preserve">
+    <value>Verfügbare Modelle:</value>
+  </data>
+  <data name="m_lblPathValue.Text" xml:space="preserve">
+    <value>&lt;path&gt;</value>
+  </data>
+  <data name="m_chkYearly.Text" xml:space="preserve">
+    <value>Nur Jahresergebnisse</value>
+  </data>
+  <data name="m_lblNModels.Text" xml:space="preserve">
+    <value>Anzahl der zu verwendenden Modelle:</value>
+  </data>
+  <data name="m_lblAvailableStrategies.Text" xml:space="preserve">
+    <value>Nr. &amp; Fangstrategien:</value>
+  </data>
+  <data name="m_btnBiomassLimits.Text" xml:space="preserve">
+    <value>Biomasse &amp; Grenzen</value>
+  </data>
+  <data name="m_rbWriteAlways.Text" xml:space="preserve">
+    <value>&amp; Alle Ergebnisse schreiben</value>
+  </data>
+  <data name="m_btnSampleSurvivabilities.Text" xml:space="preserve">
+    <value>Surv erstellen.</value>
+  </data>
+  <data name="m_btnEditSurvivabilities.Text" xml:space="preserve">
+    <value>&amp; Überlebensfähigkeiten</value>
+  </data>
+  <data name="m_btnReviewTFM.Text" xml:space="preserve">
+    <value>&amp;Rezension...</value>
+  </data>
+  <data name="m_btnEditBasicInputs.Text" xml:space="preserve">
+    <value>&amp; Grundlegende Eingaben</value>
+  </data>
+  <data name="m_lblMassBalanceTol.Text" xml:space="preserve">
+    <value>&amp; Massenbilanztoleranz:</value>
+  </data>
+  <data name="m_btnChangePath.Text" xml:space="preserve">
+    <value>&amp;Wählen</value>
+  </data>
+  <data name="m_btnStockAssessment.Text" xml:space="preserve">
+    <value>&amp; Bestandsabschätzung</value>
+  </data>
+  <data name="m_btnDecreaseEffort.Text" xml:space="preserve">
+    <value>Max. &amp; Aufwand erhöhen</value>
+  </data>
+  <data name="m_rbEwEDefaultPath.Text" xml:space="preserve">
+    <value>&amp; EWE Standardpfad</value>
+  </data>
+  <data name="m_hdrStep1.Text" xml:space="preserve">
+    <value>Grundeinstellung</value>
+  </data>
+  <data name="m_hdrStep2.Text" xml:space="preserve">
+    <value>MSE-Modelle</value>
+  </data>
+  <data name="m_lblMaxAttempts.Text" xml:space="preserve">
+    <value>&amp; Max nein. von Iterationen:</value>
+  </data>
+  <data name="m_tbxTolerance.Text" xml:space="preserve">
+    <value>0,0005</value>
+  </data>
+  <data name="m_hdrStep4.Text" xml:space="preserve">
+    <value>Führen Sie MSE aus</value>
+  </data>
+  <data name="m_tbxMaxTime.Text" xml:space="preserve">
+    <value>1000</value>
+  </data>
+  <data name="m_lblDataPath.Text" xml:space="preserve">
+    <value>&amp;Datenweg:</value>
+  </data>
+  <data name="m_lblArea.Text" xml:space="preserve">
+    <value>Modell &amp; Fläche:</value>
+  </data>
+</root>

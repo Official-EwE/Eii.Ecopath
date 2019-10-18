@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IND_PELC_DESC" xml:space="preserve">
+    <value>Fang (C) von pelagischen Arten</value>
+  </data>
+  <data name="GROUP_BIOMASS" xml:space="preserve">
+    <value>Biomasse-basiert</value>
+  </data>
+  <data name="IND_FISHC_DESC" xml:space="preserve">
+    <value>Fang (C) aller Fischarten</value>
+  </data>
+  <data name="IND_INVFISHB_RATIO_DESC" xml:space="preserve">
+    <value>Biomasse (B) von Wirbellosen gegenüber Fischen</value>
+  </data>
+  <data name="IND_PELB_DESC" xml:space="preserve">
+    <value>Biomasse (B) von pelagischen Arten</value>
+  </data>
+  <data name="IND_VALUE_B_RATIO" xml:space="preserve">
+    <value>Biomasse-Verhältnis</value>
+  </data>
+  <data name="IND_INVEB_DESC" xml:space="preserve">
+    <value>Biomasse (B) von Wirbellosen</value>
+  </data>
+  <data name="IND_SHANNON_DESC" xml:space="preserve">
+    <value>Shannon Diversity Index</value>
+  </data>
+  <data name="GROUP_SPECIES" xml:space="preserve">
+    <value>Artenbasiert</value>
+  </data>
+  <data name="STATUS_INVALID_FOLDER" xml:space="preserve">
+    <value>Plugin für ökologische Indikatoren kann nicht in Ordner '{0}' schreiben</value>
+  </data>
+  <data name="GROUP_SIZE_DESC" xml:space="preserve">
+    <value>Indikatoren basierend auf der Größe</value>
+  </data>
+  <data name="DISPLAYNAME" xml:space="preserve">
+    <value>Ökologische Indikatoren</value>
+  </data>
+  <data name="STATUS_SAVE_SUCCESS" xml:space="preserve">
+    <value>{0} ökologische Indikatoren in '{1}' gespeichert</value>
+  </data>
+  <data name="HEADER_TRIAL" xml:space="preserve">
+    <value>Versuch</value>
+  </data>
+  <data name="IND_MTIX_DESC" xml:space="preserve">
+    <value>Marine Trophic Index oder Trophic Level (TL) des Fangs, einschließlich Organismen mit TL ≥ {0}</value>
+  </data>
+  <data name="IND_TLC" xml:space="preserve">
+    <value>TL fangen</value>
+  </data>
+  <data name="IND_MTI" xml:space="preserve">
+    <value>MTI</value>
+  </data>
+  <data name="IND_MWC" xml:space="preserve">
+    <value>MW von Fisch C</value>
+  </data>
+  <data name="IND_MWB" xml:space="preserve">
+    <value>MW der Fischgemeinschaft</value>
+  </data>
+  <data name="IND_MLB" xml:space="preserve">
+    <value>ML der Fischgemeinschaft</value>
+  </data>
+  <data name="IND_MLC" xml:space="preserve">
+    <value>ML Fisch C</value>
+  </data>
+  <data name="IND_DIS" xml:space="preserve">
+    <value>Rückwürfe</value>
+  </data>
+  <data name="IND_VALUE_DISCARDS" xml:space="preserve">
+    <value>Rückwürfe</value>
+  </data>
+  <data name="IND_DEMC_DESC" xml:space="preserve">
+    <value>Fang (C) von Grundfischarten</value>
+  </data>
+  <data name="IND_DEMB_DESC" xml:space="preserve">
+    <value>Biomasse (B) von Grundfischarten</value>
+  </data>
+  <data name="GROUP_CATCH" xml:space="preserve">
+    <value>Fangbasiert</value>
+  </data>
+  <data name="IND_VALUE_INTR_VUL_INDEX" xml:space="preserve">
+    <value>Intrisic Verwundbarkeit</value>
+  </data>
+  <data name="IND_KEMPTONQ_DESC" xml:space="preserve">
+    <value>Kemptons Diversity-Index (Q)</value>
+  </data>
+  <data name="GROUP_SPECIES_DESC" xml:space="preserve">
+    <value>Indikatoren nach Arten</value>
+  </data>
+  <data name="IND_DEMPELB_RATIO" xml:space="preserve">
+    <value>Demersal / Pelagic B</value>
+  </data>
+  <data name="GROUP_TROPHIC_DESC" xml:space="preserve">
+    <value>Indikatoren gefiltert nach trophischem Level</value>
+  </data>
+  <data name="IND_DEMPELB_RATIO_DESC" xml:space="preserve">
+    <value>Biomasse (B) von Grundwasser über pelagischen Arten</value>
+  </data>
+  <data name="IND_TLCoX_DESC" xml:space="preserve">
+    <value>Trophäenstufe (TL) der Community, einschließlich Organismen mit TL ≥ {0}</value>
+  </data>
+  <data name="IND_MLSB_DESC" xml:space="preserve">
+    <value>Mittlere Lebensdauer (MLS) des Fisches der Fang (C)</value>
+  </data>
+  <data name="HEADER_BASELINE" xml:space="preserve">
+    <value>Grundlinie</value>
+  </data>
+  <data name="IND_DEMPELC_RATIO" xml:space="preserve">
+    <value>Grundfisch / pelagisch C</value>
+  </data>
+  <data name="IND_MLSC_DESC" xml:space="preserve">
+    <value>Mittlere Lebensdauer (MLS) der Fische in der Gemeinschaft</value>
+  </data>
+  <data name="IND_MWC_DESC" xml:space="preserve">
+    <value>Mittleres Gewicht (MW) des Fisches im Fang (C)</value>
+  </data>
+  <data name="IND_INVFISHC_DESC" xml:space="preserve">
+    <value>Fang (C) von Wirbellosen über Fischen</value>
+  </data>
+  <data name="IND_MWB_DESC" xml:space="preserve">
+    <value>Mittleres Gewicht (MW) der Fische in der Gemeinschaft</value>
+  </data>
+  <data name="UNIT_TIME_YEAR" xml:space="preserve">
+    <value>y</value>
+  </data>
+  <data name="STATUS_SAVE_FAILED" xml:space="preserve">
+    <value>Fehler beim Speichern von {0} ökologischen Indikatoren. {1}</value>
+  </data>
+  <data name="IND_VALUE_C" xml:space="preserve">
+    <value>Fang</value>
+  </data>
+  <data name="IND_VALUE_B" xml:space="preserve">
+    <value>Biomasse</value>
+  </data>
+  <data name="IND_MSRC_DESC" xml:space="preserve">
+    <value>Fang (C) von Meeressäugern, Seevögeln und Reptilien</value>
+  </data>
+  <data name="IND_MSRB_DESC" xml:space="preserve">
+    <value>Biomasse (B) von Meeressäugetieren, Seevögeln und Reptilien</value>
+  </data>
+  <data name="IND_TLC_DESC" xml:space="preserve">
+    <value>Trophäenstufe (TL) des Fangs</value>
+  </data>
+  <data name="DISPLAYNAME_INFO" xml:space="preserve">
+    <value>Berechnet ökologische Indikatoren für Ecopath, Ecosim, Ecospace und Monte Carlo</value>
+  </data>
+  <data name="PROMPT_OUTPUTFOLDER" xml:space="preserve">
+    <value>Wählen Sie den Speicherort für die CSV-Ausgabe</value>
+  </data>
+  <data name="IND_TOTALC" xml:space="preserve">
+    <value>Insgesamt C</value>
+  </data>
+  <data name="IND_TOTALB" xml:space="preserve">
+    <value>Gesamt B</value>
+  </data>
+  <data name="GROUP_MSDF_DESC" xml:space="preserve">
+    <value>Meeresstrategie-Rahmenrichtlinie</value>
+  </data>
+  <data name="HEADER_OCCURRENCE" xml:space="preserve">
+    <value>Vorkommen</value>
+  </data>
+  <data name="IND_INVFISHB_RATIO" xml:space="preserve">
+    <value>Wirbellose Tiere / Fische B</value>
+  </data>
+  <data name="IND_VALUE_C_RATIO" xml:space="preserve">
+    <value>Fangverhältnis</value>
+  </data>
+  <data name="GROUP_MSDF" xml:space="preserve">
+    <value>MSDF</value>
+  </data>
+  <data name="GROUP_SIZE" xml:space="preserve">
+    <value>Größenbasiert</value>
+  </data>
+  <data name="IND_MLB_DESC" xml:space="preserve">
+    <value>Mittlere Länge (ML) der Fische in der Gemeinde</value>
+  </data>
+  <data name="GROUP_TROPHIC" xml:space="preserve">
+    <value>Trophäenbasiert</value>
+  </data>
+  <data name="IND_MLC_DESC" xml:space="preserve">
+    <value>Mittlere Länge (ML) der Fische im Fang (C)</value>
+  </data>
+  <data name="IND_INVC_DESC" xml:space="preserve">
+    <value>Fang (C) aller wirbellosen Arten</value>
+  </data>
+  <data name="IND_DEMPELC_RATIO_DESC" xml:space="preserve">
+    <value>Fang (C) von Grundfisch über pelagischen Arten</value>
+  </data>
+  <data name="IND_PELB" xml:space="preserve">
+    <value>Pelagic B</value>
+  </data>
+  <data name="IND_PELC" xml:space="preserve">
+    <value>Pelagic C</value>
+  </data>
+  <data name="IND_TLCo" xml:space="preserve">
+    <value>TL-Community</value>
+  </data>
+  <data name="IND_IVIC" xml:space="preserve">
+    <value>Intrinsic Vul. Index</value>
+  </data>
+  <data name="IND_INVC" xml:space="preserve">
+    <value>Wirbellose C</value>
+  </data>
+  <data name="IND_MSRC" xml:space="preserve">
+    <value>Säugetiere, Vögel und Reptilien C</value>
+  </data>
+  <data name="IND_MSRB" xml:space="preserve">
+    <value>Säugetiere, Vögel und Reptilien B</value>
+  </data>
+  <data name="IND_MLSC" xml:space="preserve">
+    <value>MLS der Fischgemeinschaft</value>
+  </data>
+  <data name="IND_MLSB" xml:space="preserve">
+    <value>MLS von Fischen C</value>
+  </data>
+  <data name="IND_ENDB" xml:space="preserve">
+    <value>Endemics B</value>
+  </data>
+  <data name="IND_ENDC" xml:space="preserve">
+    <value>Endemics C</value>
+  </data>
+  <data name="IND_DEMC" xml:space="preserve">
+    <value>Demersal C</value>
+  </data>
+  <data name="IND_DEMB" xml:space="preserve">
+    <value>Demersal B</value>
+  </data>
+  <data name="HEADER_TRIAL_N" xml:space="preserve">
+    <value>Testversion {0}: {1}</value>
+  </data>
+  <data name="IND_TLCo_DESC" xml:space="preserve">
+    <value>Trophäenstufe (TL) der Community</value>
+  </data>
+  <data name="UNIT_WEIGHT_KG" xml:space="preserve">
+    <value>kg</value>
+  </data>
+  <data name="IND_COMMB_DESC" xml:space="preserve">
+    <value>Biomasse (B) kommerzieller Arten</value>
+  </data>
+  <data name="IND_TOTALB_DESC" xml:space="preserve">
+    <value>Gesamtbiomasse (B)</value>
+  </data>
+  <data name="IND_PREDB_DESC" xml:space="preserve">
+    <value>Biomasse (B) von Raubtieren mit einem trophischen Level von ≥ 4</value>
+  </data>
+  <data name="IND_PREDC_DESC" xml:space="preserve">
+    <value>Fang (C) von Raubtieren mit einem trophischen Level von ≥ 4</value>
+  </data>
+  <data name="GROUP_BIOMASS_DESC" xml:space="preserve">
+    <value>Biomassebasierte Indikatoren</value>
+  </data>
+  <data name="IND_TOTALC_DESC" xml:space="preserve">
+    <value>Gesamtfangmenge (C)</value>
+  </data>
+  <data name="UNIT_LENGTH_CM" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="IND_ENDB_DESC" xml:space="preserve">
+    <value>Biomasse (B) endemischer Arten in der Gemeinschaft</value>
+  </data>
+  <data name="IND_IUCNC_DESC" xml:space="preserve">
+    <value>Anteil IUCN-gefährdeter Arten am Fang (C)</value>
+  </data>
+  <data name="IND_INVFISHC" xml:space="preserve">
+    <value>Wirbellose Tiere / Fische C</value>
+  </data>
+  <data name="IND_ENDC_DESC" xml:space="preserve">
+    <value>Endemische Arten im Fang (C)</value>
+  </data>
+  <data name="IND_VALUE_ML" xml:space="preserve">
+    <value>Mittlere Länge</value>
+  </data>
+  <data name="IND_VALUE_MW" xml:space="preserve">
+    <value>Mittleres Gewicht</value>
+  </data>
+  <data name="IND_VALUE_TL" xml:space="preserve">
+    <value>Tropenebene</value>
+  </data>
+  <data name="GROUP_CATCH_DESC" xml:space="preserve">
+    <value>Indikatoren basierend auf dem Fang</value>
+  </data>
+  <data name="IND_IUCNB_DESC" xml:space="preserve">
+    <value>Biomasse (B) von IUCN-gefährdeten Arten in der Gemeinschaft</value>
+  </data>
+  <data name="IND_IVIC_DESC" xml:space="preserve">
+    <value>Intrinsic Vulnerabiltiy Index des Fangs</value>
+  </data>
+  <data name="IND_DIS_DESC" xml:space="preserve">
+    <value>Insgesamt weggeworfener Fang</value>
+  </data>
+  <data name="IND_VALUE_AGE" xml:space="preserve">
+    <value>Alter</value>
+  </data>
+  <data name="IND_SHANNON" xml:space="preserve">
+    <value>Shannon Vielfalt</value>
+  </data>
+  <data name="IND_KEMPTONSQ" xml:space="preserve">
+    <value>Kemptons Q</value>
+  </data>
+  <data name="IND_FISHB_DESC" xml:space="preserve">
+    <value>Biomasse (B) von Fischarten</value>
+  </data>
+  <data name="IND_PREDB" xml:space="preserve">
+    <value>Raubtier B</value>
+  </data>
+  <data name="IND_PREDC" xml:space="preserve">
+    <value>Raubtier C</value>
+  </data>
+  <data name="IND_VALUE" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="IND_TLCoX" xml:space="preserve">
+    <value>TL-Community {0}</value>
+  </data>
+  <data name="IND_IUCNB" xml:space="preserve">
+    <value>IUCN-Art B</value>
+  </data>
+  <data name="IND_IUCNC" xml:space="preserve">
+    <value>IUCN-Art C</value>
+  </data>
+  <data name="IND_INVEB" xml:space="preserve">
+    <value>Wirbellose B</value>
+  </data>
+  <data name="IND_COMMB" xml:space="preserve">
+    <value>Kommerziell B</value>
+  </data>
+  <data name="IND_FISHC" xml:space="preserve">
+    <value>Fisch C</value>
+  </data>
+  <data name="IND_FISHB" xml:space="preserve">
+    <value>Fisch B</value>
+  </data>
+</root>

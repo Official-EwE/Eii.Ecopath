@@ -1,0 +1,393 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HEADER_LOWER_LIMIT_VALID" xml:space="preserve">
+    <value>Untere Grenze</value>
+  </data>
+  <data name="HEADER_GROUP_NAME" xml:space="preserve">
+    <value>Gruppenname</value>
+  </data>
+  <data name="HEADER_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="COSTFUNCTION_TARGET" xml:space="preserve">
+    <value>Ziel</value>
+  </data>
+  <data name="REGMETHOD_NOQUOTA" xml:space="preserve">
+    <value>Keine Quote</value>
+  </data>
+  <data name="REGMETHOD_NONE" xml:space="preserve">
+    <value>(keiner)</value>
+  </data>
+  <data name="HEADER_UPPER_LIMIT_VALID" xml:space="preserve">
+    <value>Obere Grenze</value>
+  </data>
+  <data name="HEADER_BIOMASS_LIMITS" xml:space="preserve">
+    <value>Biomasse-Grenzwerte</value>
+  </data>
+  <data name="CAPTION" xml:space="preserve">
+    <value>Cefas MSE</value>
+  </data>
+  <data name="HEADER_GROUP_INDEX" xml:space="preserve">
+    <value>Gruppenindex</value>
+  </data>
+  <data name="HEADER_FMORT_GROUP" xml:space="preserve">
+    <value>Fischen Mort. Gruppe</value>
+  </data>
+  <data name="CAPTION_TOOLTIP" xml:space="preserve">
+    <value>Starten Sie das Cefas MSE-Plug-In</value>
+  </data>
+  <data name="ERROR_CSV_MALFORMED" xml:space="preserve">
+    <value>Die Datei {0} enthält unerwartete Einträge</value>
+  </data>
+  <data name="ERROR_DISTRPARAM_GROUPS_TOOFEW" xml:space="preserve">
+    <value>Die Verteilungsdatei für {0} enthält nicht alle lebenden Gruppen, die keine Primärproduzenten sind.</value>
+  </data>
+  <data name="HEADER_QUOTASHARE" xml:space="preserve">
+    <value>Quotenanteil</value>
+  </data>
+  <data name="HEADER_DISTRIBUTIONTYPE" xml:space="preserve">
+    <value>Verteilungstyp</value>
+  </data>
+  <data name="STATUS_SAVED_QUOTASHARES" xml:space="preserve">
+    <value>{0} gespeicherte Quotashare-Parameter für {1}</value>
+  </data>
+  <data name="STATUS_TRIAL_PROGRESS" xml:space="preserve">
+    <value>{0} Modelle finden, Test {1}, Iteration {2}</value>
+  </data>
+  <data name="STATUS_SAVED_DISTPARMS" xml:space="preserve">
+    <value>{0} gespeicherte Verteilungsparameterdateien in {1}</value>
+  </data>
+  <data name="ERROR_DISTRPARAM_GROUPS_TOOMANY" xml:space="preserve">
+    <value>Die Verteilungsdatei für {0} enthält zu viele Gruppen.</value>
+  </data>
+  <data name="DISTR_TYPE_UNIFORM" xml:space="preserve">
+    <value>Uniform</value>
+  </data>
+  <data name="PROMPT_DELETE_RESULTS" xml:space="preserve">
+    <value>Möchten Sie wirklich alle Ergebnisse löschen?</value>
+  </data>
+  <data name="PROMPT_UNSAVED_CHANGES" xml:space="preserve">
+    <value>Sie haben Änderungen vorgenommen, die nicht gespeichert wurden. Sind Sie sicher, dass Sie dieses Formular schließen möchten?</value>
+  </data>
+  <data name="HCR_GROUP_FISHMORT" xml:space="preserve">
+    <value>Fischen Mort. Gruppe = {0}</value>
+  </data>
+  <data name="LABEL_BIOMASS_UNIT" xml:space="preserve">
+    <value>Biomasse ({0})</value>
+  </data>
+  <data name="HEADER_HCR_TYPE" xml:space="preserve">
+    <value>HCR-Typ</value>
+  </data>
+  <data name="HEADER_ALPHA" xml:space="preserve">
+    <value>Alpha</value>
+  </data>
+  <data name="ERROR_HARVESTRULE_DUPLICATE" xml:space="preserve">
+    <value>Diese Erntekontrollregel existiert bereits in der aktuellen Strategie</value>
+  </data>
+  <data name="STATUS_AVAILABLE" xml:space="preserve">
+    <value>Verfügbar</value>
+  </data>
+  <data name="HCRTYPE_TRADITIONAL" xml:space="preserve">
+    <value>Traditionell</value>
+  </data>
+  <data name="HEADER_FLEETNUMBER" xml:space="preserve">
+    <value>Flottennummer</value>
+  </data>
+  <data name="HEADER_FLEETNO" xml:space="preserve">
+    <value>Flottennummer</value>
+  </data>
+  <data name="STATUS_NOTAVAILABLE" xml:space="preserve">
+    <value>Nicht verfügbar</value>
+  </data>
+  <data name="HEADER_BETA" xml:space="preserve">
+    <value>Beta</value>
+  </data>
+  <data name="ERROR_ENTERNAME" xml:space="preserve">
+    <value>Eine Strategie mit diesem Namen existiert bereits. Bitte wählen Sie einen anderen Namen</value>
+  </data>
+  <data name="HEADER_PREDEFFECTFEEDINGTIME" xml:space="preserve">
+    <value>Pred. Effekt Fütterungszeit</value>
+  </data>
+  <data name="HCR_GROUP_FUNCTION" xml:space="preserve">
+    <value>Kostenfunktion: {0}</value>
+  </data>
+  <data name="HEADER_STEP_BIOMASS_T_KM2" xml:space="preserve">
+    <value>Stufenbiomasse (t / km2)</value>
+  </data>
+  <data name="REGMETHOD_HIGHESTVALUE" xml:space="preserve">
+    <value>Höchster Wert</value>
+  </data>
+  <data name="HEADER_LIMIT_UPPER_B_T_KM2" xml:space="preserve">
+    <value>Obere Biomassegrenze (t / km2)</value>
+  </data>
+  <data name="HCRTYPE_MULTILEVEL" xml:space="preserve">
+    <value>Mehrstufig</value>
+  </data>
+  <data name="HEADER_MAX_CHANGE_F" xml:space="preserve">
+    <value>Maximale Steigerung des Aufwands</value>
+  </data>
+  <data name="HEADER_LIMIT_UPPER_B_KT" xml:space="preserve">
+    <value>Obere Biomassegrenze (kt)</value>
+  </data>
+  <data name="PROMPT_DATAPATH_MISSING" xml:space="preserve">
+    <value>Der Pfad '{0}' enthält nicht die MSE-Dateistruktur. Möchten Sie dies erstellen?</value>
+  </data>
+  <data name="ERROR_DISTRPAR_LOAD_ECOSIM" xml:space="preserve">
+    <value>Beim Laden der Ecosim-Parameter aus csv ist ein Fehler aufgetreten</value>
+  </data>
+  <data name="ERROR_DISTRFILE_GROUPS_INVALID_PRODUCER" xml:space="preserve">
+    <value>Ihre Distributionsdatei für {0} enthält die Gruppe '{1}'. {2} Dies ist ungültig, da diese Gruppe ein primärer Produzent ist!</value>
+  </data>
+  <data name="HEADER_STEP_BIOMASS_KT" xml:space="preserve">
+    <value>Stufenbiomasse (kt)</value>
+  </data>
+  <data name="PROMPT_ENTERNAME" xml:space="preserve">
+    <value>Wählen Sie einen Namen für die neue Strategie</value>
+  </data>
+  <data name="ERROR_DISTRPARAM_GROUPS_REPLICATED" xml:space="preserve">
+    <value>Die Verteilungsdatei für {0} enthält replizierte Gruppen.</value>
+  </data>
+  <data name="PROMPT_DATAPATH" xml:space="preserve">
+    <value>Wählen Sie das Verzeichnis aus, von dem Daten abgerufen und in das die Ergebnisse ausgegeben werden sollen</value>
+  </data>
+  <data name="PROMPT_DATAPATH_INCOMPATIBLE" xml:space="preserve">
+    <value>Cefas MSE kann den Pfad '{0}' nicht verwenden, er wurde für ein anderes Modell verwendet. Sie müssen einen anderen Ordner auswählen.</value>
+  </data>
+  <data name="DISTR_TYPE_TRIANGULAR" xml:space="preserve">
+    <value>Dreieckig</value>
+  </data>
+  <data name="HEADER_MIDPOINT" xml:space="preserve">
+    <value>Mittelpunkt</value>
+  </data>
+  <data name="REGMETHOD_WEAKESTSTOCK" xml:space="preserve">
+    <value>Schwächste Aktie</value>
+  </data>
+  <data name="STATUS_SAVED_DETAIL" xml:space="preserve">
+    <value>{0} gespeichert</value>
+  </data>
+  <data name="STATUS_RUN_PROGRESS" xml:space="preserve">
+    <value>{0} Testversion ausführen {1}</value>
+  </data>
+  <data name="ERROR_DISTRFILE_GROUPS_LIVING_MISSING" xml:space="preserve">
+    <value>Die Verteilungsdatei {0} enthält nicht alle lebenden Gruppen.</value>
+  </data>
+  <data name="GRID_DISTRPARM_DATANAME" xml:space="preserve">
+    <value>{0} Distrparm {1}</value>
+  </data>
+  <data name="HEADER_RUN_YES_NO" xml:space="preserve">
+    <value>Ausführen (Ja / Nein)</value>
+  </data>
+  <data name="REGMETHOD_SELECTIVEFISHING" xml:space="preserve">
+    <value>Selektives Fischen</value>
+  </data>
+  <data name="HEADER_MAXRELFEEDTIME" xml:space="preserve">
+    <value>Max. rel. Fütterungszeit</value>
+  </data>
+  <data name="PROMPT_DATAPATH_INACCESSIBLE" xml:space="preserve">
+    <value>Cefas MSE kann den Pfad '{0}' nicht verwenden. Sie müssen einen anderen Ordner auswählen.</value>
+  </data>
+  <data name="HEADER_LIMIT_LOWER_B_T_KM2" xml:space="preserve">
+    <value>Untere Biomassegrenze (t / km2)</value>
+  </data>
+  <data name="STATUS_SAVED_BIOMASSLIMITS" xml:space="preserve">
+    <value>{0} Begrenzung der Biomasse auf {1} gespeichert</value>
+  </data>
+  <data name="STATUS_FINDMODELS_SUMMARY" xml:space="preserve">
+    <value>{0} haben {1} von {2} Modellen gefunden</value>
+  </data>
+  <data name="ERROR_DISTRFILE_GROUPS_REPLICATED" xml:space="preserve">
+    <value>Die Verteilungsdatei {0} enthält replizierte Gruppen.</value>
+  </data>
+  <data name="STATUS_LOADING" xml:space="preserve">
+    <value>Cefas MSE wird geladen ...</value>
+  </data>
+  <data name="HEADER_HCR_TARG_OR_CONS" xml:space="preserve">
+    <value>Ziel oder Erhaltung?</value>
+  </data>
+  <data name="REGMETHOD_NOFISHING" xml:space="preserve">
+    <value>Kein Fischen</value>
+  </data>
+  <data name="STATUS_FOUND_MODEL" xml:space="preserve">
+    <value>{0} hat bei Test {1} ein neues ausgeglichenes Modell gefunden. {2}</value>
+  </data>
+  <data name="HEADER_QBMAX_X_PBMAX" xml:space="preserve">
+    <value>Q / B max x P / B max</value>
+  </data>
+  <data name="PROMPT_ENTERNAME_CAPTION" xml:space="preserve">
+    <value>Neue Strategie</value>
+  </data>
+  <data name="ERROR_DISTRPAR_LOAD_ECOPATH" xml:space="preserve">
+    <value>Beim Laden der Ecopath-Parameter aus csv ist ein Fehler aufgetreten</value>
+  </data>
+  <data name="HEADER_TIMEFRAMERULES" xml:space="preserve">
+    <value>N Jahre für die Zeitrahmenregel</value>
+  </data>
+  <data name="HCR_GROUP_BIOMASS" xml:space="preserve">
+    <value>Biomassegruppe = {0}</value>
+  </data>
+  <data name="FORMNAME_STRATEGIES_OVERVIEW" xml:space="preserve">
+    <value>Strategien im Überblick</value>
+  </data>
+  <data name="HEADER_FEEDTIMEADJUSTRATE" xml:space="preserve">
+    <value>Fütterungszeit einstellen. Bewertung</value>
+  </data>
+  <data name="HEADER_BOUND_LOWER" xml:space="preserve">
+    <value>Untere Grenze</value>
+  </data>
+  <data name="HEADER_BOUND_UPPER" xml:space="preserve">
+    <value>Obere Grenze</value>
+  </data>
+  <data name="HEADER_OTHERMORTFEEDTIME" xml:space="preserve">
+    <value>Andere mort. Fütterungszeit</value>
+  </data>
+  <data name="PROMPT_TRIAL_REPORT" xml:space="preserve">
+    <value>{0} von {1} ({2}%) Parametrisierungen erzeugten eine vernünftige Dynamik und wurden verwendet, um Ergebnisse zu generieren.</value>
+  </data>
+  <data name="ERROR_HARVESTRUILE_DUPLICATE_F" xml:space="preserve">
+    <value>Es gibt mehr als eine HCR, die das Ziel F für die Gruppe {0} angibt.</value>
+  </data>
+  <data name="HEADER_SURVIVABILITIES" xml:space="preserve">
+    <value>Überlebensfähigkeiten</value>
+  </data>
+  <data name="ERROR_DISTRFILE_GROUPS_HASNONLIVING" xml:space="preserve">
+    <value>Die Verteilungsdatei {0} enthält nicht lebende Gruppen.</value>
+  </data>
+  <data name="HEADER_F_MORT_MIN" xml:space="preserve">
+    <value>Fmin (fischereiliche Sterblichkeit)</value>
+  </data>
+  <data name="HEADER_F_MORT_MAX" xml:space="preserve">
+    <value>Fmax (fischereiliche Sterblichkeit)</value>
+  </data>
+  <data name="ERROR_LPSOLVE" xml:space="preserve">
+    <value>Lineare Programmierlösung nicht optimal. LP Lösungscode {0}</value>
+  </data>
+  <data name="ERROR_HARVESTRULE_INVALID" xml:space="preserve">
+    <value>Diese Erntekontrollregel ist ungültig. {0}</value>
+  </data>
+  <data name="STATUS_SAVED_STRATEGIES" xml:space="preserve">
+    <value>{0} gespeicherte Strategiedaten zu {1}</value>
+  </data>
+  <data name="HEADER_LIMIT_LOWER_B_KT" xml:space="preserve">
+    <value>Untere Biomassegrenze (kt)</value>
+  </data>
+  <data name="COSTFUNCTION_CONSERVATION" xml:space="preserve">
+    <value>Erhaltung</value>
+  </data>
+</root>

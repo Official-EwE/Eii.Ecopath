@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IND_PELC_DESC" xml:space="preserve">
+    <value>浮游鱼类的捕获量（C）</value>
+  </data>
+  <data name="GROUP_BIOMASS" xml:space="preserve">
+    <value>基于生物质</value>
+  </data>
+  <data name="IND_FISHC_DESC" xml:space="preserve">
+    <value>所有鱼类的捕获量（C）</value>
+  </data>
+  <data name="IND_INVFISHB_RATIO_DESC" xml:space="preserve">
+    <value>鱼类上的无脊椎动物生物量（B）</value>
+  </data>
+  <data name="IND_PELB_DESC" xml:space="preserve">
+    <value>中上层物种的生物量（B）</value>
+  </data>
+  <data name="IND_VALUE_B_RATIO" xml:space="preserve">
+    <value>生物质比</value>
+  </data>
+  <data name="IND_INVEB_DESC" xml:space="preserve">
+    <value>无脊椎动物物种的生物量（B）</value>
+  </data>
+  <data name="IND_SHANNON_DESC" xml:space="preserve">
+    <value>香农多样性指数</value>
+  </data>
+  <data name="GROUP_SPECIES" xml:space="preserve">
+    <value>基于物种</value>
+  </data>
+  <data name="STATUS_INVALID_FOLDER" xml:space="preserve">
+    <value>生态指标插件无法写入文件夹“ {0}”</value>
+  </data>
+  <data name="GROUP_SIZE_DESC" xml:space="preserve">
+    <value>基于大小的指标</value>
+  </data>
+  <data name="DISPLAYNAME" xml:space="preserve">
+    <value>生态指标</value>
+  </data>
+  <data name="STATUS_SAVE_SUCCESS" xml:space="preserve">
+    <value>{0}个生态指标已保存到“ {1}”</value>
+  </data>
+  <data name="HEADER_TRIAL" xml:space="preserve">
+    <value>试用版</value>
+  </data>
+  <data name="IND_MTIX_DESC" xml:space="preserve">
+    <value>渔获物的海洋营养指数或营养水平（TL），包括TL≥{0}的生物</value>
+  </data>
+  <data name="IND_TLC" xml:space="preserve">
+    <value>TL捕获</value>
+  </data>
+  <data name="IND_MTI" xml:space="preserve">
+    <value>MTI</value>
+  </data>
+  <data name="IND_MWC" xml:space="preserve">
+    <value>兆瓦鱼C</value>
+  </data>
+  <data name="IND_MWB" xml:space="preserve">
+    <value>鱼类社区的兆瓦</value>
+  </data>
+  <data name="IND_MLB" xml:space="preserve">
+    <value>鱼界ML</value>
+  </data>
+  <data name="IND_MLC" xml:space="preserve">
+    <value>鱼C的ML</value>
+  </data>
+  <data name="IND_DIS" xml:space="preserve">
+    <value>舍弃</value>
+  </data>
+  <data name="IND_VALUE_DISCARDS" xml:space="preserve">
+    <value>舍弃</value>
+  </data>
+  <data name="IND_DEMC_DESC" xml:space="preserve">
+    <value>水下物种的捕捞量（C）</value>
+  </data>
+  <data name="IND_DEMB_DESC" xml:space="preserve">
+    <value>水下物种的生物量（B）</value>
+  </data>
+  <data name="GROUP_CATCH" xml:space="preserve">
+    <value>基于渔获量</value>
+  </data>
+  <data name="IND_VALUE_INTR_VUL_INDEX" xml:space="preserve">
+    <value>固有脆弱性</value>
+  </data>
+  <data name="IND_KEMPTONQ_DESC" xml:space="preserve">
+    <value>肯普顿多样性指数（Q）</value>
+  </data>
+  <data name="GROUP_SPECIES_DESC" xml:space="preserve">
+    <value>每个物种的指标</value>
+  </data>
+  <data name="IND_DEMPELB_RATIO" xml:space="preserve">
+    <value>水下/远洋B</value>
+  </data>
+  <data name="GROUP_TROPHIC_DESC" xml:space="preserve">
+    <value>指标按营养级别过滤</value>
+  </data>
+  <data name="IND_DEMPELB_RATIO_DESC" xml:space="preserve">
+    <value>浮游鱼类浮游生物的生物量（B）</value>
+  </data>
+  <data name="IND_TLCoX_DESC" xml:space="preserve">
+    <value>社区的营养水平（TL），包括TL≥{0}的生物</value>
+  </data>
+  <data name="IND_MLSB_DESC" xml:space="preserve">
+    <value>渔获物的平均寿命（MLS）（C）</value>
+  </data>
+  <data name="HEADER_BASELINE" xml:space="preserve">
+    <value>基准线</value>
+  </data>
+  <data name="IND_DEMPELC_RATIO" xml:space="preserve">
+    <value>水下/远洋C</value>
+  </data>
+  <data name="IND_MLSC_DESC" xml:space="preserve">
+    <value>社区鱼类平均寿命（MLS）</value>
+  </data>
+  <data name="IND_MWC_DESC" xml:space="preserve">
+    <value>捕捞中鱼的平均重量（MW）（C）</value>
+  </data>
+  <data name="IND_INVFISHC_DESC" xml:space="preserve">
+    <value>将无脊椎动物捕获在鱼上（C）</value>
+  </data>
+  <data name="IND_MWB_DESC" xml:space="preserve">
+    <value>社区鱼类的平均体重（兆瓦）</value>
+  </data>
+  <data name="UNIT_TIME_YEAR" xml:space="preserve">
+    <value>ÿ</value>
+  </data>
+  <data name="STATUS_SAVE_FAILED" xml:space="preserve">
+    <value>无法保存{0}个生态指标。 {1}</value>
+  </data>
+  <data name="IND_VALUE_C" xml:space="preserve">
+    <value>抓住</value>
+  </data>
+  <data name="IND_VALUE_B" xml:space="preserve">
+    <value>生物质</value>
+  </data>
+  <data name="IND_MSRC_DESC" xml:space="preserve">
+    <value>海洋哺乳动物，海鸟和爬行动物的捕获物（C）</value>
+  </data>
+  <data name="IND_MSRB_DESC" xml:space="preserve">
+    <value>海洋哺乳动物，海鸟和爬行动物的生物量（B）</value>
+  </data>
+  <data name="IND_TLC_DESC" xml:space="preserve">
+    <value>渔获物的营养水平（TL）</value>
+  </data>
+  <data name="DISPLAYNAME_INFO" xml:space="preserve">
+    <value>计算Ecopath，Ecosim，Ecospace和Monte Carlo的生态指标</value>
+  </data>
+  <data name="PROMPT_OUTPUTFOLDER" xml:space="preserve">
+    <value>选择用于存储CSV输出的位置</value>
+  </data>
+  <data name="IND_TOTALC" xml:space="preserve">
+    <value>总C</value>
+  </data>
+  <data name="IND_TOTALB" xml:space="preserve">
+    <value>总B</value>
+  </data>
+  <data name="GROUP_MSDF_DESC" xml:space="preserve">
+    <value>海洋战略框架指令</value>
+  </data>
+  <data name="HEADER_OCCURRENCE" xml:space="preserve">
+    <value>发生率</value>
+  </data>
+  <data name="IND_INVFISHB_RATIO" xml:space="preserve">
+    <value>无脊椎动物/鱼B</value>
+  </data>
+  <data name="IND_VALUE_C_RATIO" xml:space="preserve">
+    <value>捕获率</value>
+  </data>
+  <data name="GROUP_MSDF" xml:space="preserve">
+    <value>自卫队</value>
+  </data>
+  <data name="GROUP_SIZE" xml:space="preserve">
+    <value>基于大小</value>
+  </data>
+  <data name="IND_MLB_DESC" xml:space="preserve">
+    <value>社区鱼类的平均身高（ML）</value>
+  </data>
+  <data name="GROUP_TROPHIC" xml:space="preserve">
+    <value>基于营养</value>
+  </data>
+  <data name="IND_MLC_DESC" xml:space="preserve">
+    <value>渔获量中鱼的平均长度（ML）（C）</value>
+  </data>
+  <data name="IND_INVC_DESC" xml:space="preserve">
+    <value>所有无脊椎动物的渔获量（C）</value>
+  </data>
+  <data name="IND_DEMPELC_RATIO_DESC" xml:space="preserve">
+    <value>浮游鱼类捕捞（C）</value>
+  </data>
+  <data name="IND_PELB" xml:space="preserve">
+    <value>中上层B</value>
+  </data>
+  <data name="IND_PELC" xml:space="preserve">
+    <value>中上层C</value>
+  </data>
+  <data name="IND_TLCo" xml:space="preserve">
+    <value>TL社区</value>
+  </data>
+  <data name="IND_IVIC" xml:space="preserve">
+    <value>本质内在指数</value>
+  </data>
+  <data name="IND_INVC" xml:space="preserve">
+    <value>无脊椎动物C</value>
+  </data>
+  <data name="IND_MSRC" xml:space="preserve">
+    <value>哺乳动物，鸟类和爬行动物C</value>
+  </data>
+  <data name="IND_MSRB" xml:space="preserve">
+    <value>哺乳动物，鸟类和爬行动物B</value>
+  </data>
+  <data name="IND_MLSC" xml:space="preserve">
+    <value>鱼界的MLS</value>
+  </data>
+  <data name="IND_MLSB" xml:space="preserve">
+    <value>鱼C的MLS</value>
+  </data>
+  <data name="IND_ENDB" xml:space="preserve">
+    <value>地方病B</value>
+  </data>
+  <data name="IND_ENDC" xml:space="preserve">
+    <value>地方病C</value>
+  </data>
+  <data name="IND_DEMC" xml:space="preserve">
+    <value>水下C</value>
+  </data>
+  <data name="IND_DEMB" xml:space="preserve">
+    <value>水下B</value>
+  </data>
+  <data name="HEADER_TRIAL_N" xml:space="preserve">
+    <value>试用{0}：{1}</value>
+  </data>
+  <data name="IND_TLCo_DESC" xml:space="preserve">
+    <value>社区的营养级别（TL）</value>
+  </data>
+  <data name="UNIT_WEIGHT_KG" xml:space="preserve">
+    <value>公斤</value>
+  </data>
+  <data name="IND_COMMB_DESC" xml:space="preserve">
+    <value>商业物种生物量（B）</value>
+  </data>
+  <data name="IND_TOTALB_DESC" xml:space="preserve">
+    <value>总生物量（B）</value>
+  </data>
+  <data name="IND_PREDB_DESC" xml:space="preserve">
+    <value>营养级≥4的掠食性生物的生物量（B）</value>
+  </data>
+  <data name="IND_PREDC_DESC" xml:space="preserve">
+    <value>营养级≥4的捕食性生物的捕获物（C）</value>
+  </data>
+  <data name="GROUP_BIOMASS_DESC" xml:space="preserve">
+    <value>基于生物量的指标</value>
+  </data>
+  <data name="IND_TOTALC_DESC" xml:space="preserve">
+    <value>总渔获量（C）</value>
+  </data>
+  <data name="UNIT_LENGTH_CM" xml:space="preserve">
+    <value>厘米</value>
+  </data>
+  <data name="IND_ENDB_DESC" xml:space="preserve">
+    <value>社区特有物种的生物量（B）</value>
+  </data>
+  <data name="IND_IUCNC_DESC" xml:space="preserve">
+    <value>IUCN中濒危物种的比例（C）</value>
+  </data>
+  <data name="IND_INVFISHC" xml:space="preserve">
+    <value>无脊椎动物/鱼C</value>
+  </data>
+  <data name="IND_ENDC_DESC" xml:space="preserve">
+    <value>渔获物中的特有物种（C）</value>
+  </data>
+  <data name="IND_VALUE_ML" xml:space="preserve">
+    <value>平均长度</value>
+  </data>
+  <data name="IND_VALUE_MW" xml:space="preserve">
+    <value>平均体重</value>
+  </data>
+  <data name="IND_VALUE_TL" xml:space="preserve">
+    <value>热带水平</value>
+  </data>
+  <data name="GROUP_CATCH_DESC" xml:space="preserve">
+    <value>基于渔获量的指标</value>
+  </data>
+  <data name="IND_IUCNB_DESC" xml:space="preserve">
+    <value>IUCN濒危物种的生物量（B）</value>
+  </data>
+  <data name="IND_IVIC_DESC" xml:space="preserve">
+    <value>渔获的内在脆弱性指数</value>
+  </data>
+  <data name="IND_DIS_DESC" xml:space="preserve">
+    <value>丢弃渔获物总量</value>
+  </data>
+  <data name="IND_VALUE_AGE" xml:space="preserve">
+    <value>年龄</value>
+  </data>
+  <data name="IND_SHANNON" xml:space="preserve">
+    <value>香农多样性</value>
+  </data>
+  <data name="IND_KEMPTONSQ" xml:space="preserve">
+    <value>肯普顿的Q</value>
+  </data>
+  <data name="IND_FISHB_DESC" xml:space="preserve">
+    <value>鱼类的生物量（B）</value>
+  </data>
+  <data name="IND_PREDB" xml:space="preserve">
+    <value>掠夺者B</value>
+  </data>
+  <data name="IND_PREDC" xml:space="preserve">
+    <value>掠夺者C</value>
+  </data>
+  <data name="IND_VALUE" xml:space="preserve">
+    <value>值</value>
+  </data>
+  <data name="IND_TLCoX" xml:space="preserve">
+    <value>TL社区{0}</value>
+  </data>
+  <data name="IND_IUCNB" xml:space="preserve">
+    <value>IUCN B种</value>
+  </data>
+  <data name="IND_IUCNC" xml:space="preserve">
+    <value>世界自然保护联盟物种C</value>
+  </data>
+  <data name="IND_INVEB" xml:space="preserve">
+    <value>无脊椎动物B</value>
+  </data>
+  <data name="IND_COMMB" xml:space="preserve">
+    <value>商业B</value>
+  </data>
+  <data name="IND_FISHC" xml:space="preserve">
+    <value>鱼C</value>
+  </data>
+  <data name="IND_FISHB" xml:space="preserve">
+    <value>鱼B</value>
+  </data>
+</root>

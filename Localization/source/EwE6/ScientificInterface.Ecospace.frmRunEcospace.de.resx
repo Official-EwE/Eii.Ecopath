@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="m_btnPause.Text" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="m_rbFishMortGraph.Text" xml:space="preserve">
+    <value>Relative fischereiliche Sterblichkeit</value>
+  </data>
+  <data name="m_rbCatchGraph.Text" xml:space="preserve">
+    <value>Relativer Fang</value>
+  </data>
+  <data name="m_rbRelBiomassGraph.Text" xml:space="preserve">
+    <value>Relative Biomasse</value>
+  </data>
+  <data name="m_btnRun.Text" xml:space="preserve">
+    <value>&amp;Lauf</value>
+  </data>
+  <data name="m_btnStop.Text" xml:space="preserve">
+    <value>&amp;Halt</value>
+  </data>
+  <data name="m_hdrRunning.Text" xml:space="preserve">
+    <value>Lauf</value>
+  </data>
+  <data name="m_rbDisplayF.Text" xml:space="preserve">
+    <value>&amp;Fang</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Führen Sie Ecospace aus</value>
+  </data>
+  <data name="m_btnDisplayGroups1.Text" xml:space="preserve">
+    <value>Wählen...</value>
+  </data>
+  <data name="m_cbMPA.Text" xml:space="preserve">
+    <value>&amp; MPAs anzeigen</value>
+  </data>
+  <data name="m_cmbRunType.Items2" xml:space="preserve">
+    <value>Grundlegende PDE</value>
+  </data>
+  <data name="m_cmbRunType.Items1" xml:space="preserve">
+    <value>IBM</value>
+  </data>
+  <data name="m_cmbLabelPos.Items8" xml:space="preserve">
+    <value>Unten rechts</value>
+  </data>
+  <data name="m_cmbLabelPos.Items1" xml:space="preserve">
+    <value>Oben in der Mitte</value>
+  </data>
+  <data name="m_cmbLabelPos.Items3" xml:space="preserve">
+    <value>Mitte - links</value>
+  </data>
+  <data name="m_cmbLabelPos.Items2" xml:space="preserve">
+    <value>Oben rechts</value>
+  </data>
+  <data name="m_cmbLabelPos.Items5" xml:space="preserve">
+    <value>Mitte - rechts</value>
+  </data>
+  <data name="m_cmbLabelPos.Items4" xml:space="preserve">
+    <value>Mitte - Mitte</value>
+  </data>
+  <data name="m_cmbLabelPos.Items7" xml:space="preserve">
+    <value>Unten in der Mitte</value>
+  </data>
+  <data name="m_cmbLabelPos.Items6" xml:space="preserve">
+    <value>Unten links</value>
+  </data>
+  <data name="m_rbDisplayCoverB.Text" xml:space="preserve">
+    <value>&amp; Schadstoffkonzentrat / Biomasse</value>
+  </data>
+  <data name="m_rbDisplayFishingEffort.Text" xml:space="preserve">
+    <value>&amp; Fischereiaufwand</value>
+  </data>
+  <data name="m_hdrDispOpt.Text" xml:space="preserve">
+    <value>Anzeigeoptionen</value>
+  </data>
+  <data name="m_cmbRunType.Items" xml:space="preserve">
+    <value>Mehrzeilige Strophe</value>
+  </data>
+  <data name="m_cbShowIndexInLabel.Text" xml:space="preserve">
+    <value>In Label anzeigen &amp; indexieren</value>
+  </data>
+  <data name="m_cbInvertColor.Text" xml:space="preserve">
+    <value>&amp; Farbe umkehren</value>
+  </data>
+  <data name="m_rbPredMortGraph.Text" xml:space="preserve">
+    <value>Relative Raubtiersterblichkeit</value>
+  </data>
+  <data name="m_rbDisplayComputedHabitatCapacity.Text" xml:space="preserve">
+    <value>Berechnet &amp; Lebensraumkapazität</value>
+  </data>
+  <data name="m_cbShowDateInLabel.Text" xml:space="preserve">
+    <value>Zeige &amp; Datum im Etikett</value>
+  </data>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Legende max.</value>
+  </data>
+  <data name="m_hdrLabelOptions.Text" xml:space="preserve">
+    <value>Kartenbeschriftungen</value>
+  </data>
+  <data name="m_cbAutoSavePNG.Text" xml:space="preserve">
+    <value>&amp; Kartenbilder automatisch speichern</value>
+  </data>
+  <data name="m_cbOverlay.Text" xml:space="preserve">
+    <value>&amp; Überlagerung</value>
+  </data>
+  <data name="m_rbDisplayEnvDriver.Text" xml:space="preserve">
+    <value>&amp; Umwelttreiber</value>
+  </data>
+  <data name="m_rbDisplayDiscards.Text" xml:space="preserve">
+    <value>&amp; Rückwürfe insgesamt</value>
+  </data>
+  <data name="m_rbDisplayRelBiomass.Text" xml:space="preserve">
+    <value>&amp; Relative Biomasse</value>
+  </data>
+  <data name="m_cbShowIBMPackets.Text" xml:space="preserve">
+    <value>&amp; IBM Pakete anzeigen</value>
+  </data>
+  <data name="m_rbDisplayFOverB.Text" xml:space="preserve">
+    <value>Fang / Biomasse</value>
+  </data>
+  <data name="m_rbConsumpGraph.Text" xml:space="preserve">
+    <value>Relativer Verbrauch</value>
+  </data>
+  <data name="m_cmbLabelPos.Items" xml:space="preserve">
+    <value>Oben links</value>
+  </data>
+  <data name="m_rbShowSingle.Text" xml:space="preserve">
+    <value>Single anzeigen:</value>
+  </data>
+  <data name="m_rbShowAll.Text" xml:space="preserve">
+    <value>Zeige alles</value>
+  </data>
+  <data name="m_hdrGraphTypes.Text" xml:space="preserve">
+    <value>Diagrammdaten</value>
+  </data>
+  <data name="m_lblAutosaveTimeSteps.Text" xml:space="preserve">
+    <value>Zeitschritte:</value>
+  </data>
+  <data name="m_cbShowLabels.Text" xml:space="preserve">
+    <value>&amp; Labels anzeigen</value>
+  </data>
+  <data name="m_hdrDist.Text" xml:space="preserve">
+    <value>Kartendaten</value>
+  </data>
+  <data name="m_hdrAutosave.Text" xml:space="preserve">
+    <value>Kartenbilder automatisch speichern</value>
+  </data>
+  <data name="m_tabMap.Text" xml:space="preserve">
+    <value>Karte</value>
+  </data>
+  <data name="m_rbDisplayContaminantC.Text" xml:space="preserve">
+    <value>Schadstoffkonzentration</value>
+  </data>
+  <data name="m_rbShowNonHidden.Text" xml:space="preserve">
+    <value>Ausgewählte &amp; Gruppen / Flotten:</value>
+  </data>
+  <data name="m_tabGraph.Text" xml:space="preserve">
+    <value>Graph</value>
+  </data>
+</root>

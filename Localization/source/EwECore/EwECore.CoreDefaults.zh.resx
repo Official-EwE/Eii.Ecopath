@@ -1,0 +1,2835 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="VARIABLE_SPECIES" xml:space="preserve">
+    <value>种类</value>
+  </data>
+  <data name="VARIABLE_DISCARDS" xml:space="preserve">
+    <value>舍弃</value>
+  </data>
+  <data name="VARIABLE_MCDISCARDS" xml:space="preserve">
+    <value>舍弃</value>
+  </data>
+  <data name="VARIABLE_TCATCHINPUT" xml:space="preserve">
+    <value>抓住</value>
+  </data>
+  <data name="VARIABLE_TAXONMEANLENGTH" xml:space="preserve">
+    <value>平均长度</value>
+  </data>
+  <data name="VARIABLE_TAXONMEANWEIGHT" xml:space="preserve">
+    <value>平均体重</value>
+  </data>
+  <data name="PARAM_MEAN" xml:space="preserve">
+    <value>意思</value>
+  </data>
+  <data name="VARIABLE_ORGANISMTYPE" xml:space="preserve">
+    <value>生物</value>
+  </data>
+  <data name="VARIABLE_GENUS" xml:space="preserve">
+    <value>属</value>
+  </data>
+  <data name="VARIABLE_CLASS" xml:space="preserve">
+    <value>类</value>
+  </data>
+  <data name="VARIABLE_ORDER" xml:space="preserve">
+    <value>订购</value>
+  </data>
+  <data name="VARIABLE_FAMILY" xml:space="preserve">
+    <value>家庭</value>
+  </data>
+  <data name="CORE_DEFAULT_REGION" xml:space="preserve">
+    <value>地区</value>
+  </data>
+  <data name="CORE_DEFAULT" xml:space="preserve">
+    <value>（默认）</value>
+  </data>
+  <data name="CORE_DEFAULT_HABITAT" xml:space="preserve">
+    <value>栖息地{0}</value>
+  </data>
+  <data name="VARIABLE_LAYERMIGRATION" xml:space="preserve">
+    <value>移民</value>
+  </data>
+  <data name="VARIABLE_NAME" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALCOST" xml:space="preserve">
+    <value>总消耗</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALFIXEDCOST" xml:space="preserve">
+    <value>总固定成本</value>
+  </data>
+  <data name="VARIABLE_LONGITUDE" xml:space="preserve">
+    <value>经度</value>
+  </data>
+  <data name="VARIABLE_ECOPATHWEIGHT" xml:space="preserve">
+    <value>重量</value>
+  </data>
+  <data name="VARIABLE_ECOSPACESS" xml:space="preserve">
+    <value>平方和</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSPROFIT" xml:space="preserve">
+    <value>利润</value>
+  </data>
+  <data name="VARIABLE_PHYLUM" xml:space="preserve">
+    <value>门</value>
+  </data>
+  <data name="VARIABLE_SOURCE" xml:space="preserve">
+    <value>资源</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALVARCOST" xml:space="preserve">
+    <value>总可变成本</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALMARKETVALUE" xml:space="preserve">
+    <value>总市值</value>
+  </data>
+  <data name="VARIABLE_MCB" xml:space="preserve">
+    <value>乙</value>
+  </data>
+  <data name="VARIABLE_RESPASSIM" xml:space="preserve">
+    <value>呼吸/同化</value>
+  </data>
+  <data name="VARIABLE_MCLANDINGS" xml:space="preserve">
+    <value>着陆</value>
+  </data>
+  <data name="VARIABLE_LANDINGS" xml:space="preserve">
+    <value>着陆</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALSHADOWVALUE" xml:space="preserve">
+    <value>总影子值</value>
+  </data>
+  <data name="VARIABLE_INDEXVALUE" xml:space="preserve">
+    <value>指标值</value>
+  </data>
+  <data name="VARIABLE_NETEFFICIENCY" xml:space="preserve">
+    <value>净效率</value>
+  </data>
+  <data name="VARIABLE_ECOLOGYTYPE" xml:space="preserve">
+    <value>生态</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALVALUE" xml:space="preserve">
+    <value>总价值</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALCATCH" xml:space="preserve">
+    <value>总捕捞量</value>
+  </data>
+  <data name="VARIABLE_SWITCHINGPOWER" xml:space="preserve">
+    <value>开关电源</value>
+  </data>
+  <data name="CORE_DEFAULT_MPA" xml:space="preserve">
+    <value>MPA {0}</value>
+  </data>
+  <data name="VARIABLE_OMNIVORYINDEX" xml:space="preserve">
+    <value>杂食指数</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSOMNIVINDEX" xml:space="preserve">
+    <value>杂食指数</value>
+  </data>
+  <data name="VARIABLE_LATITUDE" xml:space="preserve">
+    <value>纬度</value>
+  </data>
+  <data name="CORE_DEFAULT_ENVIRONMENT" xml:space="preserve">
+    <value>环境</value>
+  </data>
+  <data name="VARIABLE_DESCRIPTION" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="VARIABLE_PRODRESP" xml:space="preserve">
+    <value>产生/呼吸</value>
+  </data>
+  <data name="VARIABLE_CONSUMPTION" xml:space="preserve">
+    <value>消费</value>
+  </data>
+  <data name="VARIABLE_RESPIRATION" xml:space="preserve">
+    <value>呼吸</value>
+  </data>
+  <data name="CORE_DEFAULT_HABITAT_ALL" xml:space="preserve">
+    <value>所有</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALTHROUGHPUT" xml:space="preserve">
+    <value>总吞吐量</value>
+  </data>
+  <data name="VARIABLE_ESTIMATED" xml:space="preserve">
+    <value>估计的</value>
+  </data>
+  <data name="UNIT_AREA_KM2" xml:space="preserve">
+    <value>平方千米</value>
+  </data>
+  <data name="VARIABLE_ALPHA" xml:space="preserve">
+    <value>Α</value>
+  </data>
+  <data name="PARAM_ALPHA" xml:space="preserve">
+    <value>Α</value>
+  </data>
+  <data name="PARAM_BETA" xml:space="preserve">
+    <value>贝塔</value>
+  </data>
+  <data name="UNITS_NUMBER" xml:space="preserve">
+    <value>＃</value>
+  </data>
+  <data name="VARIABLE_MSEREFGROUPCATCHLOWER" xml:space="preserve">
+    <value>MSERefGroupCatchLower</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPCATCHOVERTIME" xml:space="preserve">
+    <value>EcospaceGroupCatchOverTime</value>
+  </data>
+  <data name="VARIABLE_GROUPTAXA" xml:space="preserve">
+    <value>团体税</value>
+  </data>
+  <data name="VARIABLE_QBINPUT" xml:space="preserve">
+    <value>QB | Q / B |消耗量/生物量</value>
+  </data>
+  <data name="VARIABLE_QBOUTPUT" xml:space="preserve">
+    <value>QB | Q / B |消耗量/生物量</value>
+  </data>
+  <data name="VARIABLE_ECOSIMPREYPERCENTAGETIME" xml:space="preserve">
+    <value>EcosimPreyPercentageTime</value>
+  </data>
+  <data name="VARIABLE_MAXRELPB" xml:space="preserve">
+    <value>MaxRelPB</value>
+  </data>
+  <data name="VARIABLE_HATCHCODE" xml:space="preserve">
+    <value>舱口代码</value>
+  </data>
+  <data name="VARIABLE_CODEFB" xml:space="preserve">
+    <value>FB id ||| FishBase中的分类代码</value>
+  </data>
+  <data name="VARIABLE_ECOSIMPRODCONSUMP" xml:space="preserve">
+    <value>EcosimProdConsump</value>
+  </data>
+  <data name="VARIABLE_CIMMIG" xml:space="preserve">
+    <value>西米格</value>
+  </data>
+  <data name="VARIABLE_CDECAY" xml:space="preserve">
+    <value>C衰变</value>
+  </data>
+  <data name="VARIABLE_COUTFLOW" xml:space="preserve">
+    <value>C流出</value>
+  </data>
+  <data name="VARIABLE_DETRESPFLOW" xml:space="preserve">
+    <value>DetRespFlow</value>
+  </data>
+  <data name="VARIABLE_USEVARPQ" xml:space="preserve">
+    <value>UseVarPQ</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPCATCHSTART" xml:space="preserve">
+    <value>EcosimGroupCatchStart</value>
+  </data>
+  <data name="VARIABLE_NUTBASEFREEPROP" xml:space="preserve">
+    <value>NutBaseFreeProp</value>
+  </data>
+  <data name="VARIABLE_USEEXACT" xml:space="preserve">
+    <value>使用精确</value>
+  </data>
+  <data name="VARIABLE_MSEFMIN" xml:space="preserve">
+    <value>MSEFmin</value>
+  </data>
+  <data name="VARIABLE_MSEFMAX" xml:space="preserve">
+    <value>最大MSEF</value>
+  </data>
+  <data name="VARIABLE_MSEBLIM" xml:space="preserve">
+    <value>MSEBLim</value>
+  </data>
+  <data name="VARIABLE_MSESTOP" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETCATCHTIME" xml:space="preserve">
+    <value>EcosimFleetCatchTime</value>
+  </data>
+  <data name="VARIABLE_CLIMATETYPE" xml:space="preserve">
+    <value>气候</value>
+  </data>
+  <data name="VARIABLE_MSYASSESSMENT" xml:space="preserve">
+    <value>MSYA评估</value>
+  </data>
+  <data name="VARIABLE_CAPACITYRESPTOT" xml:space="preserve">
+    <value>容量响应点</value>
+  </data>
+  <data name="VARIABLE_CAPACITYRESPPER" xml:space="preserve">
+    <value>容量响应</value>
+  </data>
+  <data name="CORE_NEW_FORCINGSHAPE" xml:space="preserve">
+    <value>新的强制形状</value>
+  </data>
+  <data name="VARIABLE_ECOSIMMORTVPREDPM" xml:space="preserve">
+    <value>EcosimMortVPredPM</value>
+  </data>
+  <data name="VARIABLE_TLPM" xml:space="preserve">
+    <value>TLPM</value>
+  </data>
+  <data name="VARIABLE_TTLX" xml:space="preserve">
+    <value>TTLX ||营养级别</value>
+  </data>
+  <data name="VARIABLE_PLAP" xml:space="preserve">
+    <value>拍打</value>
+  </data>
+  <data name="VARIABLE_STANZAGROUP" xml:space="preserve">
+    <value>斯坦扎集团</value>
+  </data>
+  <data name="VARIABLE_WEST" xml:space="preserve">
+    <value>西方</value>
+  </data>
+  <data name="VARIABLE_MVEL" xml:space="preserve">
+    <value>基本展示率||基础分散率</value>
+  </data>
+  <data name="VARIABLE_MCPB" xml:space="preserve">
+    <value>PB</value>
+  </data>
+  <data name="VARIABLE_MCQB" xml:space="preserve">
+    <value>QB</value>
+  </data>
+  <data name="VARIABLE_MCVU" xml:space="preserve">
+    <value>v</value>
+  </data>
+  <data name="VARIABLE_MCBA" xml:space="preserve">
+    <value>BA</value>
+  </data>
+  <data name="VARIABLE_MCEE" xml:space="preserve">
+    <value>电子工程</value>
+  </data>
+  <data name="VARIABLE_HLAP" xml:space="preserve">
+    <value>拍打</value>
+  </data>
+  <data name="VARIABLE_DBID" xml:space="preserve">
+    <value>ID ||唯一ID</value>
+  </data>
+  <data name="VARIABLE_EMIG" xml:space="preserve">
+    <value>移民</value>
+  </data>
+  <data name="VARIABLE_EAST" xml:space="preserve">
+    <value>东</value>
+  </data>
+  <data name="VARIABLE_AREA" xml:space="preserve">
+    <value>面积||模型面积</value>
+  </data>
+  <data name="VARIABLE_CSUM" xml:space="preserve">
+    <value>求和</value>
+  </data>
+  <data name="CORE_DEFAULT_MPASEED" xml:space="preserve">
+    <value>种子细胞</value>
+  </data>
+  <data name="VARIABLE_LAYERMPASEED" xml:space="preserve">
+    <value>种子细胞</value>
+  </data>
+  <data name="VARIABLE_LAYERMPASEEDCURRENT" xml:space="preserve">
+    <value>目前的种子细胞</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHBINWIDTHS" xml:space="preserve">
+    <value>MSEGroupCatchBinWidths</value>
+  </data>
+  <data name="VARIABLE_F2TSVULNERABILITYSEARCH" xml:space="preserve">
+    <value>F2TS漏洞搜索</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEUSECOREOUTPUTDIR" xml:space="preserve">
+    <value>EcospaceUseCoreOutputDir</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONBIOMASSSTART" xml:space="preserve">
+    <value>生态空间区域生物量开始</value>
+  </data>
+  <data name="VARIABLE_ECOSPACESSCALCULATED" xml:space="preserve">
+    <value>生态空间SS计算</value>
+  </data>
+  <data name="VARIABLE_MSETFMFOPTVALUES" xml:space="preserve">
+    <value>MSETFMFOptValues</value>
+  </data>
+  <data name="VARIABLE_ECOSIMBIOMASSREL" xml:space="preserve">
+    <value>Ecosim生物质能</value>
+  </data>
+  <data name="VARIABLE_SHANNONDIVERSITY" xml:space="preserve">
+    <value>香农多样性</value>
+  </data>
+  <data name="VARIABLE_F2TSVULNERABILITYVARIANCE" xml:space="preserve">
+    <value>F2TS漏洞差异</value>
+  </data>
+  <data name="CORE_DEFAULT_FLEET" xml:space="preserve">
+    <value>舰队1</value>
+  </data>
+  <data name="CORE_DEFAULT_DEPTH" xml:space="preserve">
+    <value>深度</value>
+  </data>
+  <data name="CORE_DEFAULT_GROUP" xml:space="preserve">
+    <value>组1</value>
+  </data>
+  <data name="VARIABLE_ECOSIMPREDCONSUMPTIME" xml:space="preserve">
+    <value>EcosimPredConsumpTime</value>
+  </data>
+  <data name="VARIABLE_OTHERMORTINPUT" xml:space="preserve">
+    <value>M0 ||其他死亡率</value>
+  </data>
+  <data name="VARIABLE_ECOSIMSUMNTIMESTEPS" xml:space="preserve">
+    <value>EcosimSumNTimeSteps</value>
+  </data>
+  <data name="VARIABLE_ECOSPACERELATIVEBIOMASSOVERTIME" xml:space="preserve">
+    <value>Ecospace相对生物量超时</value>
+  </data>
+  <data name="VARIABLE_MCDISCARDSCV" xml:space="preserve">
+    <value>舍弃（cv）</value>
+  </data>
+  <data name="VARIABLE_MCDISCARDSBF" xml:space="preserve">
+    <value>丢弃（最合适）</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETCATCHEND" xml:space="preserve">
+    <value>EcospaceFleetCatchEnd</value>
+  </data>
+  <data name="VARIABLE_MSETFMFOPTUPPER" xml:space="preserve">
+    <value>MSETFMFOptUpper</value>
+  </data>
+  <data name="VARIABLE_NUMTIMESTEPSPERYEAR" xml:space="preserve">
+    <value>每年的时间步数</value>
+  </data>
+  <data name="VARIABLE_SEARCHFISHINGMORTALITYPENALTY" xml:space="preserve">
+    <value>搜索钓鱼道德处罚</value>
+  </data>
+  <data name="VARIABLE_MCVUUPPER" xml:space="preserve">
+    <value>v（上）</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUESTD" xml:space="preserve">
+    <value>MSEFleetValueStd</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEMIN" xml:space="preserve">
+    <value>MSEFleetValueMin</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEMAX" xml:space="preserve">
+    <value>MSEFleetValueMax</value>
+  </data>
+  <data name="VARIABLE_Z" xml:space="preserve">
+    <value>Z | Tot。死亡率|总死亡率</value>
+  </data>
+  <data name="VARIABLE_OFFVESSELPRICE" xml:space="preserve">
+    <value>价格||船外价格</value>
+  </data>
+  <data name="VARIABLE_MSETFMFOPTLOWER" xml:space="preserve">
+    <value>MSETFMFOptLower</value>
+  </data>
+  <data name="VARIABLE_CODEAPHIA" xml:space="preserve">
+    <value>蚜虫ID |||蚜虫ID（WoRMS）</value>
+  </data>
+  <data name="PARAM_SIGMOID_SCALAR" xml:space="preserve">
+    <value>Y轴最大</value>
+  </data>
+  <data name="VARIABLE_ASCENDEXPORTTOT" xml:space="preserve">
+    <value>AscendExportTot</value>
+  </data>
+  <data name="VARIABLE_ASCENDEXPORTPER" xml:space="preserve">
+    <value>升序导出</value>
+  </data>
+  <data name="VARIABLE_MCVULOWER" xml:space="preserve">
+    <value>v（下）</value>
+  </data>
+  <data name="VARIABLE_BIODIVERSITYINDICATOR" xml:space="preserve">
+    <value>生物多样性指标</value>
+  </data>
+  <data name="VARIABLE_ECOSIMMORTVFISHINGPM" xml:space="preserve">
+    <value>EcosimMortVFishingPM</value>
+  </data>
+  <data name="VARIABLE_TAXONWINF" xml:space="preserve">
+    <value>TaxonWinf</value>
+  </data>
+  <data name="VARIABLE_LAYERRELPP" xml:space="preserve">
+    <value>PP ||主要生产</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHFUPPER" xml:space="preserve">
+    <value>MSEBatchFUpper</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHFLOWER" xml:space="preserve">
+    <value>MSEBatchFLower</value>
+  </data>
+  <data name="VARIABLE_MIXEDTROPHICIMPACT" xml:space="preserve">
+    <value>混合营养影响</value>
+  </data>
+  <data name="VARIABLE_LAYERDEPTH" xml:space="preserve">
+    <value>深度|||深度（测深法）</value>
+  </data>
+  <data name="VARIABLE_NONMARKETVALUE" xml:space="preserve">
+    <value>影子价格|||影子价格或非市场价值表示生态系统中资源的价值，例如用于非开发性用途</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SIM_SAME" xml:space="preserve">
+    <value>相似的物种，相同的系统，精度低</value>
+  </data>
+  <data name="VARIABLE_CAPACITYEXPORTTOT" xml:space="preserve">
+    <value>CapacityExportTot</value>
+  </data>
+  <data name="VARIABLE_CAPACITYEXPORTPER" xml:space="preserve">
+    <value>CapacityExportPer</value>
+  </data>
+  <data name="VARIABLE_ECOSIMVALUEGROUPFLEET" xml:space="preserve">
+    <value>EcosimValueGroupFleet</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEAREAOUTPUTDIR" xml:space="preserve">
+    <value>EcospaceAreaOutputDir</value>
+  </data>
+  <data name="UNIT_CURRENCY_JOULES" xml:space="preserve">
+    <value>焦耳/平方米</value>
+  </data>
+  <data name="VARIABLE_FPSMAXPORTUTIL" xml:space="preserve">
+    <value>FPSMaxPortUtil</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEMAPOUTPUTDIR" xml:space="preserve">
+    <value>EcospaceMapOutputDir</value>
+  </data>
+  <data name="VARIABLE_NDATYEARS" xml:space="preserve">
+    <value>nDatYears</value>
+  </data>
+  <data name="VARIABLE_NUMDIGITS" xml:space="preserve">
+    <value>小数位数</value>
+  </data>
+  <data name="PARAM_SD_LEFT" xml:space="preserve">
+    <value>SD左</value>
+  </data>
+  <data name="VARIABLE_MSEUSEECONOMICPLUGIN" xml:space="preserve">
+    <value>MSEUseEconomicPlugin</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPBIOMASSEND" xml:space="preserve">
+    <value>EcosimGroupBiomassEnd</value>
+  </data>
+  <data name="PARAM_SD_WIDTH" xml:space="preserve">
+    <value>资料宽度</value>
+  </data>
+  <data name="PARAM_SD_RIGHT" xml:space="preserve">
+    <value>SD右</value>
+  </data>
+  <data name="UNIT_TIME_DAY" xml:space="preserve">
+    <value>天</value>
+  </data>
+  <data name="VARIABLE_LAYERADVECTION" xml:space="preserve">
+    <value>平流</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSMEASUREOFFIT" xml:space="preserve">
+    <value>合适程度</value>
+  </data>
+  <data name="VARIABLE_FLEETINDEX1" xml:space="preserve">
+    <value>机队索引</value>
+  </data>
+  <data name="VARIABLE_FLEETINDEX2" xml:space="preserve">
+    <value>机队索引</value>
+  </data>
+  <data name="VARIABLE_FLEETINDEX" xml:space="preserve">
+    <value>机队索引</value>
+  </data>
+  <data name="VARIABLE_FEEDING" xml:space="preserve">
+    <value>馈送</value>
+  </data>
+  <data name="VARIABLE_LAYERBIOMASSFORCING" xml:space="preserve">
+    <value>生物量（绝对值）||绝对生物量强迫</value>
+  </data>
+  <data name="VARIABLE_ECOPATHFIRSTYEAR" xml:space="preserve">
+    <value>Year ||| Ecopath模型的第一年</value>
+  </data>
+  <data name="VARIABLE_MSETFMBLIMUPPER" xml:space="preserve">
+    <value>MSETFMBLimUpper</value>
+  </data>
+  <data name="VARIABLE_TEMPERATURESPREADRIGHT" xml:space="preserve">
+    <value>Ttol以上||温度公差超过最佳</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUTPUTFISHINGMORTRATE" xml:space="preserve">
+    <value>MSEBatchOutputFishingMortRate</value>
+  </data>
+  <data name="VARIABLE_EQUILMAXFISHINGRATE" xml:space="preserve">
+    <value>EquilMaxFishingRate</value>
+  </data>
+  <data name="VARIABLE_MSETFMBLIMLOWER" xml:space="preserve">
+    <value>MSETFMBLimLower</value>
+  </data>
+  <data name="VARIABLE_FPSINITOPTION" xml:space="preserve">
+    <value>FPSInitOption</value>
+  </data>
+  <data name="VARIABLE_CONSIMONECOSIM" xml:space="preserve">
+    <value>ConSimOnEcoSim</value>
+  </data>
+  <data name="VARIABLE_PBOUTPUT" xml:space="preserve">
+    <value>PB | P / B |生产/生物量</value>
+  </data>
+  <data name="VARIABLE_PBINPUT" xml:space="preserve">
+    <value>PB | P / B |生产/生物量</value>
+  </data>
+  <data name="VARIABLE_YVELOCITY" xml:space="preserve">
+    <value>Y vel。|| Y速度</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSBELOWLIMITPM" xml:space="preserve">
+    <value>MSEBiomassBelowLimitPM</value>
+  </data>
+  <data name="VARIABLE_TOTALCATCH" xml:space="preserve">
+    <value>总渔获量</value>
+  </data>
+  <data name="VARIABLE_MPAOPTSTARTYEAR" xml:space="preserve">
+    <value>MPAOptStartYear</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPBIOMASSEND" xml:space="preserve">
+    <value>EcospaceGroupBiomassEnd</value>
+  </data>
+  <data name="VARIABLE_FPSUSEECONOMICPLUGIN" xml:space="preserve">
+    <value>FPSUseEconomicPlugin</value>
+  </data>
+  <data name="VARIABLE_MSERESULTSENDYEAR" xml:space="preserve">
+    <value>MSEResultsEndYear</value>
+  </data>
+  <data name="VARIABLE_ECOSIMELECTIVITYTIME" xml:space="preserve">
+    <value>EcosimElectivityTime</value>
+  </data>
+  <data name="VARIABLE_MSEQINCREASE" xml:space="preserve">
+    <value>MSEQ增加</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHTACLOWER" xml:space="preserve">
+    <value>MSEBatchTACower</value>
+  </data>
+  <data name="PARAM_YEND" xml:space="preserve">
+    <value>Y端</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHTACUPPER" xml:space="preserve">
+    <value>MSEBatchTAC上层</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEBINS" xml:space="preserve">
+    <value>MSEFleetValueBins</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALPRESP" xml:space="preserve">
+    <value>总PResp</value>
+  </data>
+  <data name="VARIABLE_PSDMORTALITYTYPE" xml:space="preserve">
+    <value>PSDMortalityType</value>
+  </data>
+  <data name="VARIABLE_INMIGAREAMOVEWEIGHT" xml:space="preserve">
+    <value>米格迁徙区域内物种的运动权重|||</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALNETPP" xml:space="preserve">
+    <value>TotalNetPP</value>
+  </data>
+  <data name="VARIABLE_TMAXOUTPUT" xml:space="preserve">
+    <value>最大输出</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETCOSTEND" xml:space="preserve">
+    <value>EcosimFleetCostEnd</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SAME_SAME" xml:space="preserve">
+    <value>相同种类，相同系统，高精度</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEISECOSIMBIOFORCINGLOADED" xml:space="preserve">
+    <value>EcospaceIsEcosimBioForcingLoaded</value>
+  </data>
+  <data name="VARIABLE_MSEMEANECONOMICVALUE" xml:space="preserve">
+    <value>MSEMean经济价值</value>
+  </data>
+  <data name="VARIABLE_IMPORTANCEWEIGHT" xml:space="preserve">
+    <value>重要性重量</value>
+  </data>
+  <data name="VARIABLE_MCDIETMULT" xml:space="preserve">
+    <value>饮食乘数</value>
+  </data>
+  <data name="VARIABLE_MCDIETCOMP" xml:space="preserve">
+    <value>直流电</value>
+  </data>
+  <data name="VARIABLE_TL" xml:space="preserve">
+    <value>TL ||营养级</value>
+  </data>
+  <data name="VARIABLE_PP" xml:space="preserve">
+    <value>PP |％PP |初级生产百分比</value>
+  </data>
+  <data name="VARIABLE_GS" xml:space="preserve">
+    <value>GS || Unassim。消费|非同化消费</value>
+  </data>
+  <data name="VARIABLE_CB" xml:space="preserve">
+    <value>CB ||消费/生物质</value>
+  </data>
+  <data name="VARIABLE_TAXONMAXLENGTH" xml:space="preserve">
+    <value>最长长度</value>
+  </data>
+  <data name="VARIABLE_HABITATAREA" xml:space="preserve">
+    <value>Hab面积|||用作栖息地的面积</value>
+  </data>
+  <data name="VARIABLE_TAXONPROPCATCH" xml:space="preserve">
+    <value>属性捕获||捕获贡献|对功能组捕获的贡献</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPBIOMASSSTART" xml:space="preserve">
+    <value>EcosimGroupBiomassStart</value>
+  </data>
+  <data name="VARIABLE_MPAOPTSOCIALVALUE" xml:space="preserve">
+    <value>MPAOptSocialValue</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPCATCHSTART" xml:space="preserve">
+    <value>EcospaceGroupCatchStart</value>
+  </data>
+  <data name="VARIABLE_ASCENDOVERHEADGROUP" xml:space="preserve">
+    <value>AscendOverheadGroup</value>
+  </data>
+  <data name="VARIABLE_MCPBLOWER" xml:space="preserve">
+    <value>PB（下）</value>
+  </data>
+  <data name="VARIABLE_MCPBUPPER" xml:space="preserve">
+    <value>PB（上）</value>
+  </data>
+  <data name="VARIABLE_CONCENTRATION" xml:space="preserve">
+    <value>浓度</value>
+  </data>
+  <data name="VERSION_EXT_COMPILED" xml:space="preserve">
+    <value>{0}（编译的{1}）</value>
+  </data>
+  <data name="VARIABLE_NETWORKRELFLOW" xml:space="preserve">
+    <value>NetworkRelFlow</value>
+  </data>
+  <data name="VARIABLE_NUDGECHECKED" xml:space="preserve">
+    <value>微调</value>
+  </data>
+  <data name="VARIABLE_MSEMEANECOLOGICALVALUE" xml:space="preserve">
+    <value>MSEMeanEcologicalValue</value>
+  </data>
+  <data name="VARIABLE_MCBCV" xml:space="preserve">
+    <value>B（简历）</value>
+  </data>
+  <data name="VARIABLE_MCBBF" xml:space="preserve">
+    <value>B（最适合）</value>
+  </data>
+  <data name="VARIABLE_SORWV" xml:space="preserve">
+    <value>病毒</value>
+  </data>
+  <data name="VARIABLE_SOUTH" xml:space="preserve">
+    <value>南</value>
+  </data>
+  <data name="VARIABLE_IMMIG" xml:space="preserve">
+    <value>出入境</value>
+  </data>
+  <data name="VARIABLE_INROW" xml:space="preserve">
+    <value>#rows ||否。行数</value>
+  </data>
+  <data name="VARIABLE_INCOL" xml:space="preserve">
+    <value>#cols ||否。列数</value>
+  </data>
+  <data name="VARIABLE_INDEX" xml:space="preserve">
+    <value>＃|编号||顺序号</value>
+  </data>
+  <data name="VARIABLE_NORTH" xml:space="preserve">
+    <value>北</value>
+  </data>
+  <data name="VARIABLE_DATAQ" xml:space="preserve">
+    <value>数据查询</value>
+  </data>
+  <data name="VARIABLE_BABSPLIT" xml:space="preserve">
+    <value>BAB | BA / B ||相对生物量积累率</value>
+  </data>
+  <data name="VARIABLE_FIBPM" xml:space="preserve">
+    <value>FIBPM</value>
+  </data>
+  <data name="VARIABLE_CZERO" xml:space="preserve">
+    <value>零</value>
+  </data>
+  <data name="UNIT_PRESENCE" xml:space="preserve">
+    <value>存在</value>
+  </data>
+  <data name="VARIABLE_CODESAUP" xml:space="preserve">
+    <value>SAUP id ||| Sea Around Us数据库中的分类代码</value>
+  </data>
+  <data name="VARIABLE_CODELSID" xml:space="preserve">
+    <value>分类学数据库工作组定义的LSID |||分类学生命科学标识符</value>
+  </data>
+  <data name="VARIABLE_CODEOBIS" xml:space="preserve">
+    <value>OBIS ID ||| OBIS中的分类号</value>
+  </data>
+  <data name="VARIABLE_PSDINCLUDED" xml:space="preserve">
+    <value>包括PSD</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSMEANTROPHICLEVELCATCH" xml:space="preserve">
+    <value>渔获物的平均TL</value>
+  </data>
+  <data name="PARAM_LEFT_BOTTOM" xml:space="preserve">
+    <value>左下</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHTACMANAGED" xml:space="preserve">
+    <value>MSEBatchTAC管理</value>
+  </data>
+  <data name="UNIT_PROPORTION" xml:space="preserve">
+    <value>比例</value>
+  </data>
+  <data name="VARIABLE_ECOSIMISCATCHAGGREGATED" xml:space="preserve">
+    <value>EcosimIsCatchAggregated</value>
+  </data>
+  <data name="VARIABLE_CAPACITYIMPORTTOT" xml:space="preserve">
+    <value>容量导入点</value>
+  </data>
+  <data name="VARIABLE_CAPACITYIMPORTPER" xml:space="preserve">
+    <value>容量导入</value>
+  </data>
+  <data name="VARIABLE_LAYERMPARANDOM" xml:space="preserve">
+    <value>随机MPA ||随机MPA地图</value>
+  </data>
+  <data name="VARIABLE_TAXONPROPBIOMASS" xml:space="preserve">
+    <value>提案B ||生物量贡献|对官能团生物量的贡献</value>
+  </data>
+  <data name="VARIABLE_BIOMASS" xml:space="preserve">
+    <value>B ||生物量</value>
+  </data>
+  <data name="UNITS_WEIGHT" xml:space="preserve">
+    <value>重量</value>
+  </data>
+  <data name="VARIABLE_MSENTRIALS" xml:space="preserve">
+    <value>精神病</value>
+  </data>
+  <data name="VARIABLE_AINLWINPUT" xml:space="preserve">
+    <value>AinLW输入</value>
+  </data>
+  <data name="VARIABLE_LOOOUTPUT" xml:space="preserve">
+    <value>伦在inf ||在无限长</value>
+  </data>
+  <data name="VARIABLE_LOOINPUT" xml:space="preserve">
+    <value>伦在inf ||在无限长</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSBINWIDTHS" xml:space="preserve">
+    <value>MSEBiomassBinWidths</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPMAXMORT" xml:space="preserve">
+    <value>EcosimGroupMaxMort</value>
+  </data>
+  <data name="VARIABLE_ECOSPACESSGROUP" xml:space="preserve">
+    <value>生态空间集团</value>
+  </data>
+  <data name="VARIABLE_CONFIDENCEINTERVAL" xml:space="preserve">
+    <value>置信区间</value>
+  </data>
+  <data name="VARIABLE_POOLCOLOR" xml:space="preserve">
+    <value>泳池颜色</value>
+  </data>
+  <data name="VARIABLE_MSYSTARTTIME" xml:space="preserve">
+    <value>MSYStartTime</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSMAX" xml:space="preserve">
+    <value>MSE生物质</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSMIN" xml:space="preserve">
+    <value>MSE生物质</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSSDT" xml:space="preserve">
+    <value>MSE生物质标准</value>
+  </data>
+  <data name="VARIABLE_MSYFSELECTION" xml:space="preserve">
+    <value>MSYF选择</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETVALUEEND" xml:space="preserve">
+    <value>EcosimFleetValueEnd</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPCATCHEND" xml:space="preserve">
+    <value>EcospaceGroupCatchEnd</value>
+  </data>
+  <data name="VARIABLE_F2TSLASTYEAR" xml:space="preserve">
+    <value>F2TS去年</value>
+  </data>
+  <data name="VARIABLE_MAXEFFORT" xml:space="preserve">
+    <value>最高努力</value>
+  </data>
+  <data name="VARIABLE_STANZABIOMASS" xml:space="preserve">
+    <value>节生物质</value>
+  </data>
+  <data name="VARIABLE_ECOSIMAVGWEIGHT" xml:space="preserve">
+    <value>Ecosim平均重量</value>
+  </data>
+  <data name="VARIABLE_MSEASSESSMETHOD" xml:space="preserve">
+    <value>MSEAssssMethod</value>
+  </data>
+  <data name="VARIABLE_MSYNUMTRIALYEARS" xml:space="preserve">
+    <value>MSYNumTrialYears</value>
+  </data>
+  <data name="VARIABLE_PSD" xml:space="preserve">
+    <value>PSD素材</value>
+  </data>
+  <data name="VARIABLE_VBK" xml:space="preserve">
+    <value>K || von Bertalanffy曲率参数</value>
+  </data>
+  <data name="VARIABLE_SOR" xml:space="preserve">
+    <value>SOR</value>
+  </data>
+  <data name="VARIABLE_FIB" xml:space="preserve">
+    <value>FIB</value>
+  </data>
+  <data name="VARIABLE_BAT" xml:space="preserve">
+    <value>蝙蝠</value>
+  </data>
+  <data name="VARIABLE_MSERESULTSSTARTYEAR" xml:space="preserve">
+    <value>MSEResultsStartYear</value>
+  </data>
+  <data name="VARIABLE_ASCENDINFOGROUP" xml:space="preserve">
+    <value>AscendInfoGroup</value>
+  </data>
+  <data name="VARIABLE_MSYFSELECTIONMODE" xml:space="preserve">
+    <value>MSYFSelectionMode</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFIRSTOUTPUTTIMESTEP" xml:space="preserve">
+    <value>EcospaceFirstOutputTimeStep</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETJOBS" xml:space="preserve">
+    <value>生态空间车队</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SAMPLING_HIGH" xml:space="preserve">
+    <value>采样/本地，高精度</value>
+  </data>
+  <data name="VARIABLE_VARIABLENAME" xml:space="preserve">
+    <value>变量名</value>
+  </data>
+  <data name="VARIABLE_RECPOWERSPLIT" xml:space="preserve">
+    <value>建议率||相对招聘率</value>
+  </data>
+  <data name="VARIABLE_PSDNUMWEIGHTCLASSES" xml:space="preserve">
+    <value>PSDNumWeightClasses</value>
+  </data>
+  <data name="VARIABLE_HABAREAPROPORTION" xml:space="preserve">
+    <value>栖息地面积比例|||栖息地比例</value>
+  </data>
+  <data name="PARAM_SIGMOID_XOPT" xml:space="preserve">
+    <value>X选项。 （y = 0.998）</value>
+  </data>
+  <data name="PARAM_SIGMOID_XMID" xml:space="preserve">
+    <value>X中。点</value>
+  </data>
+  <data name="PARAM_SIGMOID_XMIN" xml:space="preserve">
+    <value>X分钟</value>
+  </data>
+  <data name="PARAM_SIGMOID_XMAX" xml:space="preserve">
+    <value>X最大</value>
+  </data>
+  <data name="VARIABLE_ECOSIMVALUEGROUP" xml:space="preserve">
+    <value>EcosimValueGroup</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSNETSYSTEMPRODUCTION" xml:space="preserve">
+    <value>网络系统生产</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHABOVELIMIT" xml:space="preserve">
+    <value>MSEGroupCatchAboveLimit</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHCV" xml:space="preserve">
+    <value>MSEGroupCatchCV</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHMEANVALUES" xml:space="preserve">
+    <value>MSEGroupCatchMeanValues</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETVALUEEND" xml:space="preserve">
+    <value>EcospaceFleetValueEnd</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONCATCHEND" xml:space="preserve">
+    <value>EcospaceRegionCatchEnd</value>
+  </data>
+  <data name="VARIABLE_CAPACITYFLOWPER" xml:space="preserve">
+    <value>CapacityFlowPer</value>
+  </data>
+  <data name="VARIABLE_CAPACITYFLOWTOT" xml:space="preserve">
+    <value>CapacityFlowTot</value>
+  </data>
+  <data name="VARIABLE_FLEETEFFORTCONVERSION" xml:space="preserve">
+    <value>FleetEffortConversion</value>
+  </data>
+  <data name="CORE_ALL_FLEETS" xml:space="preserve">
+    <value>所有舰队</value>
+  </data>
+  <data name="VARIABLE_MCDIETSBF" xml:space="preserve">
+    <value>DC（最适合）</value>
+  </data>
+  <data name="VARIABLE_UNITMONETARY" xml:space="preserve">
+    <value>货币||货币单位</value>
+  </data>
+  <data name="VARIABLE_QUOTASHARE" xml:space="preserve">
+    <value>配额分享</value>
+  </data>
+  <data name="VARIABLE_NSPACETHREADS" xml:space="preserve">
+    <value>nSpaceThreads</value>
+  </data>
+  <data name="VARIABLE_MORTCONETMIG" xml:space="preserve">
+    <value>净。迁移率</value>
+  </data>
+  <data name="VARIABLE_SEARCHBASEYEAR" xml:space="preserve">
+    <value>SearchBaseYear</value>
+  </data>
+  <data name="VARIABLE_CELLSIZE" xml:space="preserve">
+    <value>像元大小</value>
+  </data>
+  <data name="VARIABLE_ECOSIMYIELDREL" xml:space="preserve">
+    <value>EcosimYieldRel</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETCATCH" xml:space="preserve">
+    <value>生态空间车队</value>
+  </data>
+  <data name="VARIABLE_FPSBIOMASSDIVERSITYWEIGHT" xml:space="preserve">
+    <value>FPS生物质多样性重量</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETVALUE" xml:space="preserve">
+    <value>生态空间车队价值</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHTFMMANAGED" xml:space="preserve">
+    <value>MSEBatchTFM管理</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEMAPCATCH" xml:space="preserve">
+    <value>渔获图</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPVALUEOVERTIME" xml:space="preserve">
+    <value>EcospaceGroupValueOverTime</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALCONSUMPTION" xml:space="preserve">
+    <value>总消费</value>
+  </data>
+  <data name="CORE_DEFAULT_MIGRATION" xml:space="preserve">
+    <value>迁移{0}</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETJOBS" xml:space="preserve">
+    <value>EcosimFleet工作</value>
+  </data>
+  <data name="PARAM_YSCALAR" xml:space="preserve">
+    <value>Y标量</value>
+  </data>
+  <data name="VARIABLE_IMPAOPTTOUSE" xml:space="preserve">
+    <value>使用的MPA</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEMEANVALUES" xml:space="preserve">
+    <value>MSEFleetValueMeanValues</value>
+  </data>
+  <data name="VARIABLE_MSEUPPERRISK" xml:space="preserve">
+    <value>MSEUpperRisk</value>
+  </data>
+  <data name="VARIABLE_MSECATCHBYFLEET" xml:space="preserve">
+    <value>MSECatchByFleet</value>
+  </data>
+  <data name="VARIABLE_MSECATCHBYGROUP" xml:space="preserve">
+    <value>MSECatchByGroup</value>
+  </data>
+  <data name="VARIABLE_DATASET" xml:space="preserve">
+    <value>数据集</value>
+  </data>
+  <data name="VARIABLE_DATYEAR" xml:space="preserve">
+    <value>年份</value>
+  </data>
+  <data name="VARIABLE_HABITATFISHERY" xml:space="preserve">
+    <value>栖息地渔业</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHBINS" xml:space="preserve">
+    <value>MSEGroupCatchBins</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEABOVELIMIT" xml:space="preserve">
+    <value>MSEFleetValueAboveLimit</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPCATCHEND" xml:space="preserve">
+    <value>EcosimGroupCatchEnd</value>
+  </data>
+  <data name="VARIABLE_UNITAREACUSTOMTEXT" xml:space="preserve">
+    <value>自定义区域单位</value>
+  </data>
+  <data name="ECOSPACE_WRITER_ASC_CONTAMINANTS" xml:space="preserve">
+    <value>污染物浓度图（ASCII格式）</value>
+  </data>
+  <data name="VARIABLE_F2TSUSEDEFAULTV" xml:space="preserve">
+    <value>F2TSUseDefaultV</value>
+  </data>
+  <data name="VARIABLE_RESPBIOM" xml:space="preserve">
+    <value>呼吸/生物量</value>
+  </data>
+  <data name="VARIABLE_RELMOVEBAD" xml:space="preserve">
+    <value>相对显示|||相对分散在不良栖息地中</value>
+  </data>
+  <data name="VARIABLE_MSYEQUILIBRIUMSTEPSIZE" xml:space="preserve">
+    <value>MSYE平衡步长</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATHISTOGRAM" xml:space="preserve">
+    <value>MSEFStatHistogram</value>
+  </data>
+  <data name="VARIABLE_MSEVALUEBYFLEET" xml:space="preserve">
+    <value>MSEValueByFleet</value>
+  </data>
+  <data name="VARIABLE_FPSECOSYSTEMWEIGHT" xml:space="preserve">
+    <value>FPSEcoSystemWeight</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPVALUEEND" xml:space="preserve">
+    <value>EcospaceGroupValueEnd</value>
+  </data>
+  <data name="VARIABLE_MSEEMPLOYVALUE" xml:space="preserve">
+    <value>MSEEmployValue</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUTPUTFEEDINGTIME" xml:space="preserve">
+    <value>MSEBatchOutputFeedingTime</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATVALUES" xml:space="preserve">
+    <value>MSEFStatValues</value>
+  </data>
+  <data name="VARIABLE_MEDFUNCTNUMBER" xml:space="preserve">
+    <value>MedFunctNumber</value>
+  </data>
+  <data name="VARIABLE_ECOSIMSUMSTART" xml:space="preserve">
+    <value>EcosimSumStart</value>
+  </data>
+  <data name="VARIABLE_FPSINCLUDECOMP" xml:space="preserve">
+    <value>FPSIncludeComp</value>
+  </data>
+  <data name="VARIABLE_LAYERWIND" xml:space="preserve">
+    <value>风</value>
+  </data>
+  <data name="VARIABLE_LAYERSAIL" xml:space="preserve">
+    <value>航行费用|||航行费用的空间分布</value>
+  </data>
+  <data name="VARIABLE_LAYERPORT" xml:space="preserve">
+    <value>港口||港口地图</value>
+  </data>
+  <data name="VARIABLE_RELAXATION" xml:space="preserve">
+    <value>松弛</value>
+  </data>
+  <data name="VARIABLE_ECOSPACESUMMARYTIMESTART" xml:space="preserve">
+    <value>EcospaceSummaryTimeStart</value>
+  </data>
+  <data name="VARIABLE_LAYERMPASEEDBEST" xml:space="preserve">
+    <value>最好的细胞</value>
+  </data>
+  <data name="VARIABLE_EXPLOITATIONSTATUS" xml:space="preserve">
+    <value>剥削||剥削状态</value>
+  </data>
+  <data name="VARIABLE_F2TSCATCHANOMALYSEARCHSHAPENUMBER" xml:space="preserve">
+    <value>F2TSCatchAnomalySearchShapeNumber</value>
+  </data>
+  <data name="VARIABLE_MPAOPTITERATIONS" xml:space="preserve">
+    <value>MPAOptIterations</value>
+  </data>
+  <data name="VARIABLE_PPCONSFLOW" xml:space="preserve">
+    <value>PPConsFlow</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSVALUES" xml:space="preserve">
+    <value>MSE生物量值</value>
+  </data>
+  <data name="VARIABLE_CENVIRONMENT" xml:space="preserve">
+    <value>环境</value>
+  </data>
+  <data name="VARIABLE_ASCENDFLOWPER" xml:space="preserve">
+    <value>上升流量</value>
+  </data>
+  <data name="VARIABLE_ASCENDFLOWTOT" xml:space="preserve">
+    <value>AscendFlowTot</value>
+  </data>
+  <data name="VARIABLE_NUMSTEPAVG" xml:space="preserve">
+    <value>NumStepAvg</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTBELOWLIMIT" xml:space="preserve">
+    <value>MSEEffortBelowLimit</value>
+  </data>
+  <data name="VARIABLE_MCDISCARDSLOWER" xml:space="preserve">
+    <value>丢弃（下）</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETCOSTEND" xml:space="preserve">
+    <value>EcospaceFleetCostEnd</value>
+  </data>
+  <data name="VARIABLE_FPSPREDICTIONVARIANCE" xml:space="preserve">
+    <value>FPSPredictionVariance</value>
+  </data>
+  <data name="VARIABLE_BIOMASSSZWT" xml:space="preserve">
+    <value>生物质能</value>
+  </data>
+  <data name="VARIABLE_MCDISCARDSUPPER" xml:space="preserve">
+    <value>丢弃（上）</value>
+  </data>
+  <data name="VARIABLE_LAYERHABITATCAPACITYINPUT" xml:space="preserve">
+    <value>哈卜上限。</value>
+  </data>
+  <data name="VARIABLE_MSYEVALVALUE" xml:space="preserve">
+    <value>MSYEvalValue</value>
+  </data>
+  <data name="VARIABLE_PACKETSMULTIPLIER" xml:space="preserve">
+    <value>PacketsMultiplier</value>
+  </data>
+  <data name="VARIABLE_NETWORKABSFLOW" xml:space="preserve">
+    <value>NetworkAbsFlow</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSCVPM" xml:space="preserve">
+    <value>MSE生物质CVPM</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSBINS" xml:space="preserve">
+    <value>MSE生物质</value>
+  </data>
+  <data name="VARIABLE_ECOPATHNUMYEARS" xml:space="preserve">
+    <value>年数||年数| Ecopath模型代表的年数</value>
+  </data>
+  <data name="VARIABLE_QUOTATYPE" xml:space="preserve">
+    <value>配额类型</value>
+  </data>
+  <data name="UNIT_CURRENCY_WETWEIGHT" xml:space="preserve">
+    <value>吨/平方千米</value>
+  </data>
+  <data name="VARIABLE_MSELPSOLUTION" xml:space="preserve">
+    <value>MSELPS溶液</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHHISTOGRAM" xml:space="preserve">
+    <value>MSEGroupCatchHistogram</value>
+  </data>
+  <data name="VARIABLE_FORAGINGTIMELOWERLIMIT" xml:space="preserve">
+    <value>觅食下限|||在EwE 6.4及更低版本中，Ecosim将觅食时间限制为一个时间步长的0.1。现在可以将该限制降低到0.01</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMRATEPERYEAR" xml:space="preserve">
+    <value>BA率（每年）||每年生物量积累率</value>
+  </data>
+  <data name="VARIABLE_BARRIERAVOIDANCEWEIGHT" xml:space="preserve">
+    <value>避障重量。||避障重量</value>
+  </data>
+  <data name="VARIABLE_FPSFISHINGLIMIT" xml:space="preserve">
+    <value>FPSFishingLimit</value>
+  </data>
+  <data name="VARIABLE_EMIGRATE" xml:space="preserve">
+    <value>e || Emig。率|移民率</value>
+  </data>
+  <data name="ECOSPACE_WRITER_ASC_CATCH" xml:space="preserve">
+    <value>捕获图（ASCII格式）</value>
+  </data>
+  <data name="VARIABLE_ISFISHED" xml:space="preserve">
+    <value>被钓鱼</value>
+  </data>
+  <data name="VARIABLE_MPAOPTBESTCOL" xml:space="preserve">
+    <value>MPAOptBestCol</value>
+  </data>
+  <data name="VARIABLE_MPAOPTBESTROW" xml:space="preserve">
+    <value>MPAOptBestRow</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFISHINGMORTGROUPGEAR" xml:space="preserve">
+    <value>EcosimFishingMortGroupGear</value>
+  </data>
+  <data name="VARIABLE_BIOMASSON" xml:space="preserve">
+    <value>生物量</value>
+  </data>
+  <data name="VARIABLE_LAYERM0MULTINPUT" xml:space="preserve">
+    <value>M0多人|其他人多|其他死亡率乘数（输入）</value>
+  </data>
+  <data name="PARAM_RIGHT_TOP" xml:space="preserve">
+    <value>右上方</value>
+  </data>
+  <data name="VARIABLE_LEADINGCB" xml:space="preserve">
+    <value>领先的QB |领先的Q / B ||计算消耗量/生物量的领先（进入）生命周期</value>
+  </data>
+  <data name="VARIABLE_STANZAWEIGHTATAGE" xml:space="preserve">
+    <value>StanzaWeightAtAge</value>
+  </data>
+  <data name="VARIABLE_MSEECONOMICVALUE" xml:space="preserve">
+    <value>MSEE经济价值</value>
+  </data>
+  <data name="VARIABLE_MAXRELFEEDINGTIME" xml:space="preserve">
+    <value>MaxRelFeedingTime</value>
+  </data>
+  <data name="VARIABLE_LASTUPDATED" xml:space="preserve">
+    <value>最近更新时间</value>
+  </data>
+  <data name="VARIABLE_MSEPREDICTEFFORT" xml:space="preserve">
+    <value>MSEP预测努力</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETCOSTSTART" xml:space="preserve">
+    <value>EcospaceFleetCostStart</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_LOCAL_LOW" xml:space="preserve">
+    <value>本地学习，精度低/不完整</value>
+  </data>
+  <data name="VARIABLE_GEINPUT" xml:space="preserve">
+    <value>GE | G / E |生产/消费</value>
+  </data>
+  <data name="VARIABLE_GEOUTPUT" xml:space="preserve">
+    <value>GE | G / E |生产/消费</value>
+  </data>
+  <data name="VARIABLE_COUNTRY" xml:space="preserve">
+    <value>国家</value>
+  </data>
+  <data name="VARIABLE_BIODIVERSITYINDICATORTYPE" xml:space="preserve">
+    <value>生物多样性指标类型</value>
+  </data>
+  <data name="VARIABLE_F2TSANOMALYSEARCH" xml:space="preserve">
+    <value>F2TSAnomalySearch</value>
+  </data>
+  <data name="VARIABLE_PUBLICATIONDOI" xml:space="preserve">
+    <value>DOI ||数字对象标识符|出版物的数字对象标识符</value>
+  </data>
+  <data name="VARIABLE_PUBLICATIONURI" xml:space="preserve">
+    <value>URL ||出版物URL |出版物超链接</value>
+  </data>
+  <data name="VARIABLE_CODESLB" xml:space="preserve">
+    <value>SeaLifeBase中的SLB id |||分类代码</value>
+  </data>
+  <data name="VARIABLE_CODEFAO" xml:space="preserve">
+    <value>粮农组织编号|||根据粮农组织的分类法</value>
+  </data>
+  <data name="VARIABLE_CONTACT" xml:space="preserve">
+    <value>联系方式||联系方式</value>
+  </data>
+  <data name="VARIABLE_CONCBIO" xml:space="preserve">
+    <value>康宝</value>
+  </data>
+  <data name="VARIABLE_SEARCHBLOCK" xml:space="preserve">
+    <value>搜索块</value>
+  </data>
+  <data name="VARIABLE_FIXEDFECUNDITY" xml:space="preserve">
+    <value>FixedFec |||固定生育</value>
+  </data>
+  <data name="VARIABLE_CODEAQUAMAPS" xml:space="preserve">
+    <value>AquaMaps ID ||| AquaMaps中的物种ID</value>
+  </data>
+  <data name="CORE_DEFAULT_FISHRATESHAPE" xml:space="preserve">
+    <value>捕鱼率形状{0}</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHVALUES" xml:space="preserve">
+    <value>MSEGroupCatchValues</value>
+  </data>
+  <data name="VARIABLE_TAXONVBGFK" xml:space="preserve">
+    <value>紫杉类</value>
+  </data>
+  <data name="VARIABLE_MSEREFBIOESTUPPER" xml:space="preserve">
+    <value>MSERefBioEstUpper</value>
+  </data>
+  <data name="VARIABLE_CAPBASEGROWTH" xml:space="preserve">
+    <value>在里面。帽。增长率||初始资本增长率（每年）</value>
+  </data>
+  <data name="VARIABLE_EFFECTIVEPOWER" xml:space="preserve">
+    <value>有效功率</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSGROSSEFFICIENCY" xml:space="preserve">
+    <value>总效率</value>
+  </data>
+  <data name="VARIABLE_TAXONGROUP" xml:space="preserve">
+    <value>紫杉集团</value>
+  </data>
+  <data name="VARIABLE_FPSMANDATEDREBUILDINGWEIGHT" xml:space="preserve">
+    <value>FPSMandated重建重量</value>
+  </data>
+  <data name="VARIABLE_MSEREFBIOESTLOWER" xml:space="preserve">
+    <value>MSERefBioEstLower</value>
+  </data>
+  <data name="VARIABLE_MPAOPTECOLOGICALVALUE" xml:space="preserve">
+    <value>MPAOptEcologicalValue</value>
+  </data>
+  <data name="VARIABLE_IMPDIET" xml:space="preserve">
+    <value>DCimp ||进口饮食</value>
+  </data>
+  <data name="VARIABLE_MSETFMNITERATION" xml:space="preserve">
+    <value>MSETFMNIteration</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEMAPSUMEFFORT" xml:space="preserve">
+    <value>总努力图</value>
+  </data>
+  <data name="VARIABLE_STANZAMORTALITY" xml:space="preserve">
+    <value>Z || Tot。 mort。率|总死亡率</value>
+  </data>
+  <data name="VARIABLE_ASCENDCAPACITYGROUP" xml:space="preserve">
+    <value>升力集团</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALBNONDET" xml:space="preserve">
+    <value>TotalBNonDet</value>
+  </data>
+  <data name="VARIABLE_ASSUMESQUARECELLS" xml:space="preserve">
+    <value>假设方格</value>
+  </data>
+  <data name="VARIABLE_PPRESPFLOW" xml:space="preserve">
+    <value>PPRespFlow</value>
+  </data>
+  <data name="VARIABLE_FPSECONOMICWEIGHT" xml:space="preserve">
+    <value>FPSE经济重量</value>
+  </data>
+  <data name="VARIABLE_MPAMONTH" xml:space="preserve">
+    <value>MPAMonth</value>
+  </data>
+  <data name="VARIABLE_DETIMPORTFLOW" xml:space="preserve">
+    <value>导入流程</value>
+  </data>
+  <data name="VARIABLE_RELVULBAD" xml:space="preserve">
+    <value>相对很容易|||在不良栖息地中相对容易被捕食（占初级生产者的比例）</value>
+  </data>
+  <data name="VARIABLE_MSETRIALNUMBER" xml:space="preserve">
+    <value>MSETrialNumber</value>
+  </data>
+  <data name="VARIABLE_PPTHROUGHFLOW" xml:space="preserve">
+    <value>PPT通流</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETVALUETIME" xml:space="preserve">
+    <value>EcosimFleetValueTime</value>
+  </data>
+  <data name="VARIABLE_VULMULT" xml:space="preserve">
+    <value>v ||漏洞</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATABOVELIMIT" xml:space="preserve">
+    <value>MSEFStatAboveLimit</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTVALUES" xml:space="preserve">
+    <value>MSEBioEstValues</value>
+  </data>
+  <data name="VARIABLE_ADVECTIONUPWELLINGTHRESHOLD" xml:space="preserve">
+    <value>平流上升阈</value>
+  </data>
+  <data name="VARIABLE_STARTAGE" xml:space="preserve">
+    <value>起始年龄</value>
+  </data>
+  <data name="VARIABLE_TOLERANCE" xml:space="preserve">
+    <value>公差</value>
+  </data>
+  <data name="VARIABLE_TLCATCH" xml:space="preserve">
+    <value>TLCatch</value>
+  </data>
+  <data name="VARIABLE_STANZACB" xml:space="preserve">
+    <value>渣打银行</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONBIOMASSYEAR" xml:space="preserve">
+    <value>生态空间区域生物量年</value>
+  </data>
+  <data name="VARIABLE_PSDENABLED" xml:space="preserve">
+    <value>PSD已启用</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETVALUESTART" xml:space="preserve">
+    <value>EcospaceFleetValueStart</value>
+  </data>
+  <data name="VARIABLE_LAYERHABITATCAPACITY" xml:space="preserve">
+    <value>哈卜帽。 （出）||栖息能力（已计算）</value>
+  </data>
+  <data name="VARIABLE_MPAOPTMAXAREA" xml:space="preserve">
+    <value>MPAOptMaxArea</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_NATIONAL" xml:space="preserve">
+    <value>国家统计</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFEEDINGTIME" xml:space="preserve">
+    <value>EcosimFeedingTime</value>
+  </data>
+  <data name="VARIABLE_TAXONSTANZA" xml:space="preserve">
+    <value>分类单元</value>
+  </data>
+  <data name="VARIABLE_T0INPUT" xml:space="preserve">
+    <value>t0输入</value>
+  </data>
+  <data name="VARIABLE_SYSTEMRECOVERY" xml:space="preserve">
+    <value>系统恢复</value>
+  </data>
+  <data name="VARIABLE_LAYERREGION" xml:space="preserve">
+    <value>区域||统计区域地图</value>
+  </data>
+  <data name="VARIABLE_FEEDINGTIMEADJRATE" xml:space="preserve">
+    <value>FeedingTimeAdjRate</value>
+  </data>
+  <data name="VARIABLE_BUSEEFFORTDISTTHRESHOLD" xml:space="preserve">
+    <value>bUseEffortDistThreshold</value>
+  </data>
+  <data name="VARIABLE_ECOSIMSSGROUP" xml:space="preserve">
+    <value>EcosimSSGroup</value>
+  </data>
+  <data name="SOURCE_CLIPBOARD" xml:space="preserve">
+    <value>从剪贴板</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTCV" xml:space="preserve">
+    <value>MSEBioEstCV</value>
+  </data>
+  <data name="VARIABLE_DISCARDFATE" xml:space="preserve">
+    <value>舍弃命运</value>
+  </data>
+  <data name="VARIABLE_STANZABIOMASSATAGE" xml:space="preserve">
+    <value>StanzaBiomassAtAge</value>
+  </data>
+  <data name="VARIABLE_ECOSIMTOTALMORT" xml:space="preserve">
+    <value>经济模拟</value>
+  </data>
+  <data name="VARIABLE_MSEFORCASTGAIN" xml:space="preserve">
+    <value>MSEForcastGain</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETCATCHSTART" xml:space="preserve">
+    <value>EcospaceFleetCatchStart</value>
+  </data>
+  <data name="VARIABLE_PPEXPORTFLOW" xml:space="preserve">
+    <value>PPExportFlow</value>
+  </data>
+  <data name="VARIABLE_STEPSIZE" xml:space="preserve">
+    <value>一步的大小</value>
+  </data>
+  <data name="VARIABLE_CINFLOW" xml:space="preserve">
+    <value>C流入</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALPB" xml:space="preserve">
+    <value>总PB</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALBT" xml:space="preserve">
+    <value>总BT</value>
+  </data>
+  <data name="CORE_DEFAULT_ADVECTION" xml:space="preserve">
+    <value>平流{0}</value>
+  </data>
+  <data name="VARIABLE_UNITCURRENCYCUSTOMTEXT" xml:space="preserve">
+    <value>自定义货币单位</value>
+  </data>
+  <data name="ECOSPACE_WRITER_ASC_EFFORT" xml:space="preserve">
+    <value>效果图（ASCII格式）</value>
+  </data>
+  <data name="CORE_DEFAULT_X_VELOCITY" xml:space="preserve">
+    <value>X速度</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUPUTDIR" xml:space="preserve">
+    <value>MSEBatchOuputDir</value>
+  </data>
+  <data name="VARIABLE_FPSFLEETTARGETPROFIT" xml:space="preserve">
+    <value>FPSFleetTargetProfit</value>
+  </data>
+  <data name="VARIABLE_PCAPBASE" xml:space="preserve">
+    <value>初步努力/资本能力</value>
+  </data>
+  <data name="VARIABLE_MPAOPTCURCOL" xml:space="preserve">
+    <value>MPAOptCurCol</value>
+  </data>
+  <data name="VARIABLE_MPAOPTCURROW" xml:space="preserve">
+    <value>MPAOptCurRow</value>
+  </data>
+  <data name="VARIABLE_UNITTIME" xml:space="preserve">
+    <value>t ||时间单位</value>
+  </data>
+  <data name="VARIABLE_UNITAREA" xml:space="preserve">
+    <value>面积单位</value>
+  </data>
+  <data name="VARIABLE_FPSNRUNS" xml:space="preserve">
+    <value>FPSNRuns</value>
+  </data>
+  <data name="UNIT_TIME_YEAR" xml:space="preserve">
+    <value>年</value>
+  </data>
+  <data name="VARIABLE_ISMIGRATORY" xml:space="preserve">
+    <value>移民||是移民|这是移民团体吗？</value>
+  </data>
+  <data name="VARIABLE_MORTCOPREDMORT" xml:space="preserve">
+    <value>Pred。 mort。率||捕食死亡率</value>
+  </data>
+  <data name="CORE_NEW_OBJECT_CREATIONTIME" xml:space="preserve">
+    <value>已创建{0}</value>
+  </data>
+  <data name="VARIABLE_BINLWINPUT" xml:space="preserve">
+    <value>BinLW输入</value>
+  </data>
+  <data name="PARAM_RIGHT_BOTTOM" xml:space="preserve">
+    <value>右下</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSHISTOGRAM" xml:space="preserve">
+    <value>MSE生物量直方图</value>
+  </data>
+  <data name="CORE_DEFAULT_Y_VELOCITY" xml:space="preserve">
+    <value>Y速度</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEBELOWLIMIT" xml:space="preserve">
+    <value>MSEFleetValueBelowLimit</value>
+  </data>
+  <data name="CORE_DEFAULT_IMPORTANCE" xml:space="preserve">
+    <value>重要性{0}</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETPROFIT" xml:space="preserve">
+    <value>EcosimFleetProfit</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSCONNECTANCEINDEX" xml:space="preserve">
+    <value>连接指数</value>
+  </data>
+  <data name="UNIT_DECIMALDEGREE" xml:space="preserve">
+    <value>dd</value>
+  </data>
+  <data name="CORE_DEFAULT_WIND" xml:space="preserve">
+    <value>风（{0}）</value>
+  </data>
+  <data name="VARIABLE_FORCINGFUNCTNUMBER" xml:space="preserve">
+    <value>强制功能编号</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_GENERAL_SAME" xml:space="preserve">
+    <value>同一群体/物种的常识</value>
+  </data>
+  <data name="VARIABLE_MPAOPTMINAREA" xml:space="preserve">
+    <value>MPAOptMinArea</value>
+  </data>
+  <data name="VARIABLE_LAYERM0MULT" xml:space="preserve">
+    <value>M0多（出）|其他多（出）|其他死亡率乘数（计算得出）</value>
+  </data>
+  <data name="VARIABLE_MPAFISHERY" xml:space="preserve">
+    <value>MPAF渔业</value>
+  </data>
+  <data name="VARIABLE_LAYERIMPORTANCE" xml:space="preserve">
+    <value>重要性|||用于空间优化的重要性图</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONBIOMASSEND" xml:space="preserve">
+    <value>生态空间区域生物量</value>
+  </data>
+  <data name="VARIABLE_MCBUPPER" xml:space="preserve">
+    <value>B（上）</value>
+  </data>
+  <data name="CORE_DEFAULT_SCENARIO" xml:space="preserve">
+    <value>新场景</value>
+  </data>
+  <data name="PARAM_STEEPNESS" xml:space="preserve">
+    <value>陡</value>
+  </data>
+  <data name="PARAM_SIGMOID_STEEP" xml:space="preserve">
+    <value>陡</value>
+  </data>
+  <data name="VARIABLE_FPSGROUPMANDRELBIOM" xml:space="preserve">
+    <value>FPSGroupMandRelBiom</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHFVALUES" xml:space="preserve">
+    <value>MSEBatchFValues</value>
+  </data>
+  <data name="VARIABLE_MCBLOWER" xml:space="preserve">
+    <value>B（下）</value>
+  </data>
+  <data name="VARIABLE_KEMPTONSQ" xml:space="preserve">
+    <value>肯普顿Q</value>
+  </data>
+  <data name="VARIABLE_IFDPOWER" xml:space="preserve">
+    <value>IFDPower</value>
+  </data>
+  <data name="VARIABLE_MPAOPTTOTALVALUE" xml:space="preserve">
+    <value>MPAOptTotalValue</value>
+  </data>
+  <data name="VARIABLE_ECOSPACESUMMARYTIMEEND" xml:space="preserve">
+    <value>EcospaceSummaryTimeEnd</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEMAPBIOMASS" xml:space="preserve">
+    <value>生物质图</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPBIOMASSSTART" xml:space="preserve">
+    <value>EcospaceGroupBiomassStart</value>
+  </data>
+  <data name="VARIABLE_FPSOPTIMIZEAPPROACH" xml:space="preserve">
+    <value>FPSOptimizeApproach</value>
+  </data>
+  <data name="VARIABLE_FPSGROUPSTRUCRELWEIGHT" xml:space="preserve">
+    <value>FPSGroupStrucRelWeight</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSABOVELIMIT" xml:space="preserve">
+    <value>MSE生物量AboveLimit</value>
+  </data>
+  <data name="VARIABLE_ADVECTIONUPWELLINGPPMULTIPLIER" xml:space="preserve">
+    <value>对流上升PP乘数</value>
+  </data>
+  <data name="VARIABLE_FPSSEARCHOPTION" xml:space="preserve">
+    <value>FPSSearchOption</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEMAPEFFORT" xml:space="preserve">
+    <value>努力图</value>
+  </data>
+  <data name="VARIABLE_BASEMAPSTEPSIZE" xml:space="preserve">
+    <value>底图步长</value>
+  </data>
+  <data name="VARIABLE_ECOSIMNYEARS" xml:space="preserve">
+    <value>Ecosim年数</value>
+  </data>
+  <data name="VARIABLE_SEARCHRATE" xml:space="preserve">
+    <value>搜索率</value>
+  </data>
+  <data name="VARIABLE_MCLANDINGSCV" xml:space="preserve">
+    <value>着陆点（cv）</value>
+  </data>
+  <data name="VARIABLE_MCLANDINGSBF" xml:space="preserve">
+    <value>降落（最合适）</value>
+  </data>
+  <data name="VARIABLE_ASCENDIMPORTTOT" xml:space="preserve">
+    <value>升序导入</value>
+  </data>
+  <data name="VARIABLE_ASCENDIMPORTPER" xml:space="preserve">
+    <value>升序导入</value>
+  </data>
+  <data name="VARIABLE_DISCARDMORTALITY" xml:space="preserve">
+    <value>||丢弃尸体。率|丢弃死亡率</value>
+  </data>
+  <data name="VARIABLE_UNITTIMECUSTOMTEXT" xml:space="preserve">
+    <value>自定义时间单位</value>
+  </data>
+  <data name="VARIABLE_ECOSIMSUMEND" xml:space="preserve">
+    <value>EcosimSumEnd</value>
+  </data>
+  <data name="VARIABLE_SPAWNPROP" xml:space="preserve">
+    <value>产卵|||允许繁殖的生命阶段</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMRATE" xml:space="preserve">
+    <value>BA率||生物质积累率</value>
+  </data>
+  <data name="VARIABLE_MCBAUPPER" xml:space="preserve">
+    <value>BA（上）</value>
+  </data>
+  <data name="VARIABLE_MSEECOLOGICALVALUE" xml:space="preserve">
+    <value>理学价值</value>
+  </data>
+  <data name="VARIABLE_IMPORTEDCONSUMPTION" xml:space="preserve">
+    <value>进口消费</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMINPUT" xml:space="preserve">
+    <value>BA ||生物量积累</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMOUTPUT" xml:space="preserve">
+    <value>BA ||生物量积累</value>
+  </data>
+  <data name="VARIABLE_NUTFORCEFUNCTIONNUMBER" xml:space="preserve">
+    <value>营养强迫功能</value>
+  </data>
+  <data name="VARIABLE_MCBALOWER" xml:space="preserve">
+    <value>BA（下）</value>
+  </data>
+  <data name="VARIABLE_MSEWEIGHTEDTOTALVALUE" xml:space="preserve">
+    <value>MSEWeightedTotalValue</value>
+  </data>
+  <data name="VARIABLE_ECOSIMMORTVPRED" xml:space="preserve">
+    <value>EcosimMortVPred</value>
+  </data>
+  <data name="VARIABLE_BIOMASSAREAOUTPUT" xml:space="preserve">
+    <value>B（a）| B区|栖息地生物量</value>
+  </data>
+  <data name="VARIABLE_BIOMASSAREAINPUT" xml:space="preserve">
+    <value>B（a）| B区|栖息地生物量</value>
+  </data>
+  <data name="VARIABLE_SALINITYOPT" xml:space="preserve">
+    <value>盐度||最佳盐度</value>
+  </data>
+  <data name="VARIABLE_ISECOSPACEMODELCOUPLED" xml:space="preserve">
+    <value>IsEcospaceModelCoupled</value>
+  </data>
+  <data name="SOURCE_PLUGINS" xml:space="preserve">
+    <value>插件</value>
+  </data>
+  <data name="VARIABLE_LAYERUPWELLING" xml:space="preserve">
+    <value>上升流</value>
+  </data>
+  <data name="CORE_DEFAULT_UPWELLING" xml:space="preserve">
+    <value>上升流</value>
+  </data>
+  <data name="VARIABLE_FISHMORTTOTMORT" xml:space="preserve">
+    <value>F / Z ||渔具总死亡率。|捕鱼死亡率总死亡率</value>
+  </data>
+  <data name="VARIABLE_MPAOPTBOUNDARYWEIGHT" xml:space="preserve">
+    <value>MPAOptBoundaryWeight</value>
+  </data>
+  <data name="VARIABLE_EEOUTPUT" xml:space="preserve">
+    <value>EE ||富营养效率</value>
+  </data>
+  <data name="VARIABLE_EEINPUT" xml:space="preserve">
+    <value>EE ||富营养效率</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFISHMORT" xml:space="preserve">
+    <value>EcosimFishMort</value>
+  </data>
+  <data name="VARIABLE_ECOSIMECOSYSTEMSTRUCT" xml:space="preserve">
+    <value>EcosimEcoSystemStruct</value>
+  </data>
+  <data name="UNIT_AREA_MI2" xml:space="preserve">
+    <value>mi²</value>
+  </data>
+  <data name="UNIT_KILOMETER" xml:space="preserve">
+    <value>公里</value>
+  </data>
+  <data name="VARIABLE_MSYRUNSILENT" xml:space="preserve">
+    <value>MSYRunSilent</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETVALUESTART" xml:space="preserve">
+    <value>EcosimFleetValueStart</value>
+  </data>
+  <data name="VARIABLE_CBENVIRONMENT" xml:space="preserve">
+    <value>CB环境</value>
+  </data>
+  <data name="VARIABLE_NUTPBMAX" xml:space="preserve">
+    <value>坚果PBMax</value>
+  </data>
+  <data name="VARIABLE_F2TSCATCHANOMALY" xml:space="preserve">
+    <value>F2TSCatchAnomaly</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETWEIGHT" xml:space="preserve">
+    <value>MSEF车重</value>
+  </data>
+  <data name="VARIABLE_PUBLICATIONREFERENCE" xml:space="preserve">
+    <value>出版物参考</value>
+  </data>
+  <data name="UNIT_CURRENCY_DRYWEIGHT" xml:space="preserve">
+    <value>克/平方米</value>
+  </data>
+  <data name="UNIT_CURRENCY_CARBON" xml:space="preserve">
+    <value>克/平方米</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTCV" xml:space="preserve">
+    <value>努力工作</value>
+  </data>
+  <data name="VARIABLE_SOURCEKEY" xml:space="preserve">
+    <value>SourceKey</value>
+  </data>
+  <data name="VARIABLE_MCQBLOWER" xml:space="preserve">
+    <value>QB（下）</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATSTD" xml:space="preserve">
+    <value>MSEFStatStd</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATMIN" xml:space="preserve">
+    <value>MSEFStatMin</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATMAX" xml:space="preserve">
+    <value>MSEFStatMax</value>
+  </data>
+  <data name="VARIABLE_MCQBUPPER" xml:space="preserve">
+    <value>QB（上方）</value>
+  </data>
+  <data name="VARIABLE_MCLANDINGSLOWER" xml:space="preserve">
+    <value>着陆点（下）</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSPEDIGREE" xml:space="preserve">
+    <value>谱系</value>
+  </data>
+  <data name="VARIABLE_WINFINPUT" xml:space="preserve">
+    <value>Wt。 inf ||无穷大</value>
+  </data>
+  <data name="VARIABLE_WINFOUTPUT" xml:space="preserve">
+    <value>Wt。 inf ||无穷大</value>
+  </data>
+  <data name="VARIABLE_FPSMAXNUMEVAL" xml:space="preserve">
+    <value>FPSMaxNumEval</value>
+  </data>
+  <data name="VARIABLE_MCLANDINGSUPPER" xml:space="preserve">
+    <value>着陆点（上方）</value>
+  </data>
+  <data name="VARIABLE_T0OUTPUT" xml:space="preserve">
+    <value>t0输出</value>
+  </data>
+  <data name="PARAM_WIDTH" xml:space="preserve">
+    <value>宽度</value>
+  </data>
+  <data name="PARAM_YBASE" xml:space="preserve">
+    <value>Y基</value>
+  </data>
+  <data name="PARAM_YZERO" xml:space="preserve">
+    <value>Y零</value>
+  </data>
+  <data name="VARIABLE_TMAXINPUT" xml:space="preserve">
+    <value>最大输入</value>
+  </data>
+  <data name="VARIABLE_XVELOCITY" xml:space="preserve">
+    <value>X vel。|| X速度</value>
+  </data>
+  <data name="VARIABLE_MSEUPPERRISKPERCENT" xml:space="preserve">
+    <value>MSEUpperRiskPercent</value>
+  </data>
+  <data name="VARIABLE_MSELOWERRISK" xml:space="preserve">
+    <value>MSELower风险</value>
+  </data>
+  <data name="VARIABLE_MCEEUPPER" xml:space="preserve">
+    <value>EE（上）</value>
+  </data>
+  <data name="VARIABLE_FPSBATCHRUN" xml:space="preserve">
+    <value>FPSBatchRun</value>
+  </data>
+  <data name="VARIABLE_PSDFIRSTWEIGHTCLASS" xml:space="preserve">
+    <value>PSDFirstWeightClass</value>
+  </data>
+  <data name="VARIABLE_MCEELOWER" xml:space="preserve">
+    <value>EE（下）</value>
+  </data>
+  <data name="VARIABLE_MPAOPTMANDATEDVALUE" xml:space="preserve">
+    <value>MPAOptMandatedValue</value>
+  </data>
+  <data name="MONTECARLO_WRITER_MULTIPLE" xml:space="preserve">
+    <value>每次试用分开的文件</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEBINWIDTHS" xml:space="preserve">
+    <value>MSEFleetValueBinWidths</value>
+  </data>
+  <data name="VARIABLE_TAXONVULNERABILITYINDEX" xml:space="preserve">
+    <value>Vul。指数||漏洞指数</value>
+  </data>
+  <data name="VARIABLE_CUSTOMVARIABLE" xml:space="preserve">
+    <value>CustomVariable</value>
+  </data>
+  <data name="VARIABLE_MSEREFBIOUPPER" xml:space="preserve">
+    <value>MSERefBioUpper</value>
+  </data>
+  <data name="VARIABLE_APPLIED" xml:space="preserve">
+    <value>已应用</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETEFFORT" xml:space="preserve">
+    <value>EcosimFleet努力</value>
+  </data>
+  <data name="VARIABLE_ECOSIMYIELD" xml:space="preserve">
+    <value>EcosimYield</value>
+  </data>
+  <data name="VARIABLE_LAYERDRIVER" xml:space="preserve">
+    <value>驱动程序||环境驱动程序|环境驱动程序的空间分布和强度</value>
+  </data>
+  <data name="VARIABLE_BINLWOUTPUT" xml:space="preserve">
+    <value>BinLW输出</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTMAX" xml:space="preserve">
+    <value>最大努力</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTMIN" xml:space="preserve">
+    <value>最小努力</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTSTD" xml:space="preserve">
+    <value>努力标准</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATBINWIDTHS" xml:space="preserve">
+    <value>MSEFStatBinWidths</value>
+  </data>
+  <data name="VARIABLE_MSEREFBIOLOWER" xml:space="preserve">
+    <value>MSERefBioLower</value>
+  </data>
+  <data name="VARIABLE_GROUPDIGITS" xml:space="preserve">
+    <value>组数字</value>
+  </data>
+  <data name="VARIABLE_CELLLENGTH" xml:space="preserve">
+    <value>电池长度</value>
+  </data>
+  <data name="VARIABLE_DISCOUNT" xml:space="preserve">
+    <value>折扣</value>
+  </data>
+  <data name="VARIABLE_MPAOPTAREABOUNDARY" xml:space="preserve">
+    <value>MPAOptAreaBoundary</value>
+  </data>
+  <data name="VARIABLE_MSYMAXFISHINGRATE" xml:space="preserve">
+    <value>MSYMaxFishingRate</value>
+  </data>
+  <data name="UNIT_METER" xml:space="preserve">
+    <value>米</value>
+  </data>
+  <data name="ECOSAPCE_WRITER_ASC_COMPUTEDCAPACITY" xml:space="preserve">
+    <value>计算的栖息地容量（ASCII映射）</value>
+  </data>
+  <data name="VARIABLE_CODEECOBASE" xml:space="preserve">
+    <value>生态基础代码</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHFNITERATION" xml:space="preserve">
+    <value>MSEBatchFNIteration</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONCATCHSTART" xml:space="preserve">
+    <value>EcospaceRegionCatchStart</value>
+  </data>
+  <data name="UNIT_ABSENCE" xml:space="preserve">
+    <value>缺席</value>
+  </data>
+  <data name="VARIABLE_MSETFMBLIMVALUES" xml:space="preserve">
+    <value>MSETFMBLimValues</value>
+  </data>
+  <data name="UNIT_CURRENCY_CALORIE" xml:space="preserve">
+    <value>大卡/平方米</value>
+  </data>
+  <data name="UNIT_CURRENCY_PHOSPOROUS" xml:space="preserve">
+    <value>毫克P /m²</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSBELOWLIMIT" xml:space="preserve">
+    <value>MSEBiomassBelowLimit</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALPRODUCTION" xml:space="preserve">
+    <value>总产量</value>
+  </data>
+  <data name="VARIABLE_PREDEFFECTFEEDINGTIME" xml:space="preserve">
+    <value>PredEffectFeedingTime</value>
+  </data>
+  <data name="VARIABLE_SAILCOST" xml:space="preserve">
+    <value>航行费用||航行费用</value>
+  </data>
+  <data name="PARAM_RIGHTPOINT" xml:space="preserve">
+    <value>正确点</value>
+  </data>
+  <data name="VARIABLE_FPSEXISTENCEVALUE" xml:space="preserve">
+    <value>FPSExistenceValue</value>
+  </data>
+  <data name="VARIABLE_FPSOPTIMIZEOPTIONS" xml:space="preserve">
+    <value>FPSOptimizeOptions</value>
+  </data>
+  <data name="VARIABLE_TAXONSEARCHFIELDS" xml:space="preserve">
+    <value>TaxonSearchFields</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHGROUPRUNTYPE" xml:space="preserve">
+    <value>MSEBatchGroupRunType</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUTPUTCONBIO" xml:space="preserve">
+    <value>MSEBatchOutputConBio</value>
+  </data>
+  <data name="VARIABLE_OVERHEADFLOWPER" xml:space="preserve">
+    <value>开销流量</value>
+  </data>
+  <data name="VARIABLE_OVERHEADFLOWTOT" xml:space="preserve">
+    <value>OverheadFlowTot</value>
+  </data>
+  <data name="CORE_DEFAULT_DRIVER" xml:space="preserve">
+    <value>环境驱动程序{0}</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETEFFORTES" xml:space="preserve">
+    <value>生态空间团队的努力</value>
+  </data>
+  <data name="VARIABLE_LAYERMPA" xml:space="preserve">
+    <value>MPA ||海洋保护区</value>
+  </data>
+  <data name="VARIABLE_LAYERMLD" xml:space="preserve">
+    <value>MLD ||混合层深度</value>
+  </data>
+  <data name="VARIABLE_IUCNCONSERVATIONSTATUS" xml:space="preserve">
+    <value>IUCN状态|| IUCN保护状态</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEVALUES" xml:space="preserve">
+    <value>MSEFleetValueValues</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSABOVELIMITPM" xml:space="preserve">
+    <value>MSE生物量AboveLimitPM</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_GUESSTIMATE" xml:space="preserve">
+    <value>保证</value>
+  </data>
+  <data name="VARIABLE_ECOSIMCONSUMPBIOMASS" xml:space="preserve">
+    <value>EcosimConsump生物量</value>
+  </data>
+  <data name="VARIABLE_MSELOWERLPEFFORT" xml:space="preserve">
+    <value>MSELowerLPE努力</value>
+  </data>
+  <data name="VARIABLE_ECOSPACECAPCALTYPE" xml:space="preserve">
+    <value>EcospaceCapCalType</value>
+  </data>
+  <data name="VARIABLE_MSEREGULATORYMODE" xml:space="preserve">
+    <value>MSERegulatoryMode</value>
+  </data>
+  <data name="VARIABLE_MORTCOOTHERMORT" xml:space="preserve">
+    <value>其他人。率||其他死亡率</value>
+  </data>
+  <data name="VARIABLE_MSYRUNLENGTHMODE" xml:space="preserve">
+    <value>MSYRunLengthMode</value>
+  </data>
+  <data name="VARIABLE_OVERHEADEXPORTTOT" xml:space="preserve">
+    <value>开销导出</value>
+  </data>
+  <data name="VARIABLE_OVERHEADEXPORTPER" xml:space="preserve">
+    <value>OverheadExportPer</value>
+  </data>
+  <data name="VARIABLE_PREFERREDHABITAT" xml:space="preserve">
+    <value>首选栖息地</value>
+  </data>
+  <data name="VARIABLE_TIMESERIESTYPE" xml:space="preserve">
+    <value>TimeSeriesType</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTBINWIDTHS" xml:space="preserve">
+    <value>MSEEffortBinWidths</value>
+  </data>
+  <data name="VARIABLE_DENDEPCATCHABILITY" xml:space="preserve">
+    <value>DenDepCatchability</value>
+  </data>
+  <data name="CORE_DEFAULT_MIXEDLAYERDEPTH" xml:space="preserve">
+    <value>混合层深度</value>
+  </data>
+  <data name="VARIABLE_EGGATSPAWN" xml:space="preserve">
+    <value>EggAtSpawn</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETPROFIT" xml:space="preserve">
+    <value>EcospaceFleetProfit</value>
+  </data>
+  <data name="VARIABLE_TEMPERATUREOPT" xml:space="preserve">
+    <value>T opt ||最佳温度</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHTACVALUES" xml:space="preserve">
+    <value>MSEBatchTAC值</value>
+  </data>
+  <data name="VARIABLE_LAYEREXCLUSION" xml:space="preserve">
+    <value>|排除||排除的像元|要从计算中排除的像元</value>
+  </data>
+  <data name="CORE_DEFAULT_MEDIATIONSHAPE" xml:space="preserve">
+    <value>调解功能{0}</value>
+  </data>
+  <data name="VARIABLE_USENEWMULTISTANZA" xml:space="preserve">
+    <value>UseNewMultiStanza</value>
+  </data>
+  <data name="VARIABLE_MSEMANDATEDVALUE" xml:space="preserve">
+    <value>MSEMandatedValue</value>
+  </data>
+  <data name="CORE_DEFAULT_EXCLUSION" xml:space="preserve">
+    <value>排除细胞</value>
+  </data>
+  <data name="VARIABLE_ECOPATHNUMBER" xml:space="preserve">
+    <value>生态路径号</value>
+  </data>
+  <data name="VARIABLE_NATMORTPERTOTMORT" xml:space="preserve">
+    <value>NatMortPerTotMort</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALRESPFLOW" xml:space="preserve">
+    <value>TotalRespFlow</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATMEANVALUES" xml:space="preserve">
+    <value>MSEFStatMeanValues</value>
+  </data>
+  <data name="CORE_NEW_MEDIATIONSHAPE" xml:space="preserve">
+    <value>新调解形式</value>
+  </data>
+  <data name="VARIABLE_NUMPTSMOVAVG" xml:space="preserve">
+    <value>NumPtsMovAvg</value>
+  </data>
+  <data name="VARIABLE_MPAOPTENDYEAR" xml:space="preserve">
+    <value>MPAOptEndYear</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHBELOWLIMIT" xml:space="preserve">
+    <value>MSEGroupCatchBelowLimit</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUTPUTPREDRATE" xml:space="preserve">
+    <value>MSEBatchOutputPredRate</value>
+  </data>
+  <data name="VARIABLE_FITRESPONSETYPE" xml:space="preserve">
+    <value>适应反应||迁徙物种对健康的运动反应</value>
+  </data>
+  <data name="VARIABLE_TCATCHOUTPUT" xml:space="preserve">
+    <value>TCatchOutput</value>
+  </data>
+  <data name="VARIABLE_ECOSIMAVGPREY" xml:space="preserve">
+    <value>EcosimAvgPrey</value>
+  </data>
+  <data name="VARIABLE_ECOSIMAVGPRED" xml:space="preserve">
+    <value>EcosimAvgPred</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHITERCALCTYPE" xml:space="preserve">
+    <value>MSEBatchIterCalcType</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTMEANVALUES" xml:space="preserve">
+    <value>MSEEffortMeanValues</value>
+  </data>
+  <data name="VARIABLE_MPABUSECELLWEIGHT" xml:space="preserve">
+    <value>MPAbUseCellWeight</value>
+  </data>
+  <data name="VARIABLE_MSEMAXEFFORT" xml:space="preserve">
+    <value>MSEMaxEffort</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_APPROX_INDIRECT" xml:space="preserve">
+    <value>近似或间接方法可以包括遥感等方法。</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALEXPORTS" xml:space="preserve">
+    <value>出口总额</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETCV" xml:space="preserve">
+    <value>MSEFleetCV</value>
+  </data>
+  <data name="VARIABLE_OCCURRENCESTATUS" xml:space="preserve">
+    <value>发生||发生状态</value>
+  </data>
+  <data name="VARIABLE_CEXCRETIONRATE" xml:space="preserve">
+    <value>CExcretionRate</value>
+  </data>
+  <data name="VARIABLE_PROJECTIONSTRING" xml:space="preserve">
+    <value>投影字符串</value>
+  </data>
+  <data name="VARIABLE_SEARCHPREVCOSTEARNING" xml:space="preserve">
+    <value>SearchPrevCostEarning</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUTPUTCATCH" xml:space="preserve">
+    <value>MSEBatchOutputCatch</value>
+  </data>
+  <data name="VARIABLE_MSEMEANEMPLOYVALUE" xml:space="preserve">
+    <value>MSEMeanEmployValue</value>
+  </data>
+  <data name="VARIABLE_LAYERCONTAMINANTFORCINGABSOLUTE" xml:space="preserve">
+    <value>吸收C ||污染物强迫</value>
+  </data>
+  <data name="VARIABLE_CONSIMONECOSPACE" xml:space="preserve">
+    <value>ConSimOnEcoSpace</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTMEANVALUES" xml:space="preserve">
+    <value>MSEBioEstMeanValues</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEUSELOCALMEMORY" xml:space="preserve">
+    <value>EcospaceUseLocalMemory</value>
+  </data>
+  <data name="CORE_NEW_GROUP" xml:space="preserve">
+    <value>新组</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTMIN" xml:space="preserve">
+    <value>MSEBioEstMin</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTMAX" xml:space="preserve">
+    <value>MSEBioEstMax</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTSTD" xml:space="preserve">
+    <value>MSEBioEstStd</value>
+  </data>
+  <data name="VARIABLE_DIETCOMP" xml:space="preserve">
+    <value>DC |饮食||饮食组成</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTBINWIDTHS" xml:space="preserve">
+    <value>MSEBioEstBinWidths</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONBIOMASS" xml:space="preserve">
+    <value>每个区域的生物量</value>
+  </data>
+  <data name="VARIABLE_LAYERHABITAT" xml:space="preserve">
+    <value>栖息地|||栖息地的空间分布</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHMIN" xml:space="preserve">
+    <value>MSEGroupCatchMin</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHMAX" xml:space="preserve">
+    <value>MSEGroupCatchMax</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHSTD" xml:space="preserve">
+    <value>MSEGroupCatchStd</value>
+  </data>
+  <data name="VARIABLE_EQUILIBRIUMSTEPSIZE" xml:space="preserve">
+    <value>平衡步长</value>
+  </data>
+  <data name="VARIABLE_BIOMASSAVGSZWT" xml:space="preserve">
+    <value>生物量平均</value>
+  </data>
+  <data name="VARIABLE_MSEREFFLEETEFFORTLOWER" xml:space="preserve">
+    <value>MSERefFleetEffortLower</value>
+  </data>
+  <data name="VARIABLE_MPAOPTECONOMICVALUE" xml:space="preserve">
+    <value>MPAOpt经济价值</value>
+  </data>
+  <data name="VARIABLE_MSEREFFLEETEFFORTUPPER" xml:space="preserve">
+    <value>MSERefFleetEffortUpper</value>
+  </data>
+  <data name="VARIABLE_STANZANUMBERATAGE" xml:space="preserve">
+    <value>StanzaNumberAtAge</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATBELOWLIMIT" xml:space="preserve">
+    <value>MSEFStatBelowLimit</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATCV" xml:space="preserve">
+    <value>MSEFStatCV</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONFLEETGROUPCATCHYEAR" xml:space="preserve">
+    <value>EcospaceRegionFleetGroupCatchYear年</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSMEANVALUES" xml:space="preserve">
+    <value>MSE生物量均值</value>
+  </data>
+  <data name="VARIABLE_ECOSIMBIOMASS" xml:space="preserve">
+    <value>Ecosim生物质</value>
+  </data>
+  <data name="VARIABLE_FPSUSEECOSPACE" xml:space="preserve">
+    <value>FPSUseEcospace</value>
+  </data>
+  <data name="VARIABLE_MSEBBASE" xml:space="preserve">
+    <value>MSE基础生物质</value>
+  </data>
+  <data name="VARIABLE_MSEBIOCV" xml:space="preserve">
+    <value>MSEBioCV</value>
+  </data>
+  <data name="VARIABLE_ECOSIMPREDMORT" xml:space="preserve">
+    <value>EcosimPredMort</value>
+  </data>
+  <data name="VARIABLE_USEIBM" xml:space="preserve">
+    <value>使用IBM</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTHISTOGRAM" xml:space="preserve">
+    <value>直方图</value>
+  </data>
+  <data name="ECOSPACE_WRITER_XYZT" xml:space="preserve">
+    <value>生物量，捕获量和工作量XYZT点值（CSV格式）</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTBINS" xml:space="preserve">
+    <value>努力奋斗</value>
+  </data>
+  <data name="VARIABLE_MSYEVALUATEFLEET" xml:space="preserve">
+    <value>MSYEvaluateFleet</value>
+  </data>
+  <data name="VARIABLE_ECOSIMMORTVFISHING" xml:space="preserve">
+    <value>EcosimMortV钓鱼</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATBINS" xml:space="preserve">
+    <value>MSEFStatBins</value>
+  </data>
+  <data name="VARIABLE_MPAOPTSEARCHTYPE" xml:space="preserve">
+    <value>MPAOptSearchType</value>
+  </data>
+  <data name="VARIABLE_ADJUSTSPACE" xml:space="preserve">
+    <value>AdjustSpace</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_QUALDC" xml:space="preserve">
+    <value>定性饮食组成研究</value>
+  </data>
+  <data name="VARIABLE_UNITCURRENCY" xml:space="preserve">
+    <value>货币||货币单位</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPVALUESTART" xml:space="preserve">
+    <value>EcospaceGroupValueStart</value>
+  </data>
+  <data name="VARIABLE_MSEFIXEDF" xml:space="preserve">
+    <value>MSEFixedF</value>
+  </data>
+  <data name="VARIABLE_MSEFMAXPM" xml:space="preserve">
+    <value>最大功率</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONFLEETGROUPCATCH" xml:space="preserve">
+    <value>EcospaceRegionFleetGroupCatch</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPVALUEEND" xml:space="preserve">
+    <value>EcosimGroupValueEnd</value>
+  </data>
+  <data name="VARIABLE_EFFORTDISTTHRESHOLD" xml:space="preserve">
+    <value>EffortDistThreshold</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEHISTOGRAM" xml:space="preserve">
+    <value>MSEFleetValueHistogram</value>
+  </data>
+  <data name="VARIABLE_MSEFIXEDESCAPEMENT" xml:space="preserve">
+    <value>MSEFixedEscapement</value>
+  </data>
+  <data name="VARIABLE_MSEBESTTOTALVALUE" xml:space="preserve">
+    <value>MSEBestTotalValue</value>
+  </data>
+  <data name="VARIABLE_NTROPHICLEVELS" xml:space="preserve">
+    <value>营养级</value>
+  </data>
+  <data name="VARIABLE_ASSIMILATION" xml:space="preserve">
+    <value>同化</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETCATCHEND" xml:space="preserve">
+    <value>EcosimFleetCatchEnd</value>
+  </data>
+  <data name="VARIABLE_NGRIDSOLVERTHREADS" xml:space="preserve">
+    <value>求解器线程数</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUECV" xml:space="preserve">
+    <value>MSEFleetValueCV</value>
+  </data>
+  <data name="VARIABLE_TOTALTIME" xml:space="preserve">
+    <value>总时间</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SAME_SIM" xml:space="preserve">
+    <value>相同种类，相似系统，高精度</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSCV" xml:space="preserve">
+    <value>MSE生物质CV</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTABOVELIMIT" xml:space="preserve">
+    <value>最低限额</value>
+  </data>
+  <data name="CORE_DEFAULT_FISHMORTSHAPE" xml:space="preserve">
+    <value>鱼死亡率形状{0}</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTHISTOGRAM" xml:space="preserve">
+    <value>MSEBioEstHistogram</value>
+  </data>
+  <data name="CORE_DEFAULT_COMBINEDFLEETS" xml:space="preserve">
+    <value>联合舰队</value>
+  </data>
+  <data name="ECOSPACE_WRITER_ASC_BIOMASS" xml:space="preserve">
+    <value>生物量图（ASCII格式）</value>
+  </data>
+  <data name="VARIABLE_TLCATCHPM" xml:space="preserve">
+    <value>TLCatchPM</value>
+  </data>
+  <data name="VARIABLE_MSESTARTYEAR" xml:space="preserve">
+    <value>MSEStartYear</value>
+  </data>
+  <data name="VARIABLE_MAXITERATIONS" xml:space="preserve">
+    <value>最大迭代</value>
+  </data>
+  <data name="PARAM_LEFTPOINT" xml:space="preserve">
+    <value>左点</value>
+  </data>
+  <data name="VARIABLE_WTTYPE" xml:space="preserve">
+    <value>WtType</value>
+  </data>
+  <data name="VARIABLE_WMATWINF" xml:space="preserve">
+    <value>WmatWinf | Wmat / Winf ||成熟时的体重超过婴儿期的体重</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTSOURCE" xml:space="preserve">
+    <value>MSEEffortSource</value>
+  </data>
+  <data name="VARIABLE_ECOSIMVALUEGROUPREL" xml:space="preserve">
+    <value>EcosimValueGroupRel</value>
+  </data>
+  <data name="VARIABLE_OVERHEADRESPTOT" xml:space="preserve">
+    <value>开销响应点</value>
+  </data>
+  <data name="VARIABLE_OVERHEADRESPPER" xml:space="preserve">
+    <value>开销响应</value>
+  </data>
+  <data name="VARIABLE_SEARCHGENDISCRATE" xml:space="preserve">
+    <value>SearchGenDiscRate</value>
+  </data>
+  <data name="VARIABLE_F2TSAPPLIEDWEIGHTS" xml:space="preserve">
+    <value>F2TS应用重量</value>
+  </data>
+  <data name="VARIABLE_ECOSIMSS" xml:space="preserve">
+    <value>经济模拟</value>
+  </data>
+  <data name="VARIABLE_MSEREFFLEETCATCHUPPER" xml:space="preserve">
+    <value>MSERefFleetCatchUpper</value>
+  </data>
+  <data name="VARIABLE_MSETAC" xml:space="preserve">
+    <value>MSETAC</value>
+  </data>
+  <data name="VARIABLE_NEFFORTDISTTHREADS" xml:space="preserve">
+    <value>nEffortDistThreads</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORT" xml:space="preserve">
+    <value>努力</value>
+  </data>
+  <data name="VARIABLE_F2TSNAICDATA" xml:space="preserve">
+    <value>F2TSNAIC数据</value>
+  </data>
+  <data name="VARIABLE_SAMPLERATING" xml:space="preserve">
+    <value>样品评分</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTVALUES" xml:space="preserve">
+    <value>MSEEffortValues</value>
+  </data>
+  <data name="VARIABLE_MSEREFFLEETCATCHLOWER" xml:space="preserve">
+    <value>MSERefFleetCatchLower</value>
+  </data>
+  <data name="VARIABLE_MCPBCV" xml:space="preserve">
+    <value>PB（简历）</value>
+  </data>
+  <data name="VARIABLE_MCPBBF" xml:space="preserve">
+    <value>PB（最适合）</value>
+  </data>
+  <data name="VARIABLE_MCQBCV" xml:space="preserve">
+    <value>QB（简历）</value>
+  </data>
+  <data name="VARIABLE_MCQBBF" xml:space="preserve">
+    <value>QB（最适合）</value>
+  </data>
+  <data name="VARIABLE_MCVUCV" xml:space="preserve">
+    <value>v（cv）</value>
+  </data>
+  <data name="VARIABLE_MCVUBF" xml:space="preserve">
+    <value>v（最适合）</value>
+  </data>
+  <data name="VARIABLE_MCBACV" xml:space="preserve">
+    <value>BA（简历）</value>
+  </data>
+  <data name="VARIABLE_MCBABF" xml:space="preserve">
+    <value>BA（最适合）</value>
+  </data>
+  <data name="VARIABLE_MCEEBF" xml:space="preserve">
+    <value>EE（最合适）</value>
+  </data>
+  <data name="VARIABLE_MCEECV" xml:space="preserve">
+    <value>EE（简历）</value>
+  </data>
+  <data name="VARIABLE_CYCLEPATH" xml:space="preserve">
+    <value>自行车道</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEBIOMASSOVERTIME" xml:space="preserve">
+    <value>生态空间生物量超时</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUTPUTBIOMASS" xml:space="preserve">
+    <value>MSEBatchOutput生物量</value>
+  </data>
+  <data name="VARIABLE_MSELOWERRISKPERCENT" xml:space="preserve">
+    <value>MSELowerRiskPercent</value>
+  </data>
+  <data name="VARIABLE_QBMAXQBIO" xml:space="preserve">
+    <value>QBMaxQBio</value>
+  </data>
+  <data name="VARIABLE_DETEXPORTFLOW" xml:space="preserve">
+    <value>DetExportFlow</value>
+  </data>
+  <data name="VARIABLE_FLOWTODET" xml:space="preserve">
+    <value>FlowToDet</value>
+  </data>
+  <data name="VARIABLE_LASTSAVED" xml:space="preserve">
+    <value>上次保存</value>
+  </data>
+  <data name="VARIABLE_LORENZENMORTALITY" xml:space="preserve">
+    <value>洛伦岑道德</value>
+  </data>
+  <data name="VARIABLE_PPTODETFLOW" xml:space="preserve">
+    <value>PPToDetFlow</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETCATCHSTART" xml:space="preserve">
+    <value>EcosimFleetCatchStart</value>
+  </data>
+  <data name="VARIABLE_SEMULT" xml:space="preserve">
+    <value>总效率乘||总乘数</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_FAO" xml:space="preserve">
+    <value>粮农组织统计</value>
+  </data>
+  <data name="VARIABLE_MSETFMBBASELOWER" xml:space="preserve">
+    <value>MSETFMBBaseLower</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEIBMMOVEPACKETONSTANZA" xml:space="preserve">
+    <value>EcospaceIBMMovePacketOnStanza</value>
+  </data>
+  <data name="VARIABLE_NETMIGRATION" xml:space="preserve">
+    <value>净迁移</value>
+  </data>
+  <data name="VARIABLE_RHALFB0RATIO" xml:space="preserve">
+    <value>RHalfB0比率</value>
+  </data>
+  <data name="VARIABLE_ECOSIMCATCHGROUPGEAR" xml:space="preserve">
+    <value>EcosimCatchGroupGear</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_QUANDC_DET" xml:space="preserve">
+    <value>定量，详细的饮食组成研究</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_QUANDC_LIM" xml:space="preserve">
+    <value>定量但有限的饮食组成研究</value>
+  </data>
+  <data name="VARIABLE_MSETFMBBASEUPPER" xml:space="preserve">
+    <value>MSETFMBBaseUpper</value>
+  </data>
+  <data name="VARIABLE_SALINITYSPREADLEFT" xml:space="preserve">
+    <value>盐度低于||盐度公差低于最佳</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALFLOWDETRITUS" xml:space="preserve">
+    <value>总流量碎屑</value>
+  </data>
+  <data name="VARIABLE_F2TSPPVARIANCE" xml:space="preserve">
+    <value>F2TSPP差异</value>
+  </data>
+  <data name="VARIABLE_FPSVALUECOMPONENTTYPE" xml:space="preserve">
+    <value>FPSValueComponentType</value>
+  </data>
+  <data name="VARIABLE_ISPRED" xml:space="preserve">
+    <value>是捕食者</value>
+  </data>
+  <data name="VARIABLE_ISPREY" xml:space="preserve">
+    <value>是猎物</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPVALUESTART" xml:space="preserve">
+    <value>EcosimGroupValueStart</value>
+  </data>
+  <data name="VARIABLE_MPAOPTPERCENTAGECLOSED" xml:space="preserve">
+    <value>MPAOptPercentage已关闭</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETCOSTSTART" xml:space="preserve">
+    <value>EcosimFleetCostStart</value>
+  </data>
+  <data name="VARIABLE_PPIMPORTFLOW" xml:space="preserve">
+    <value>PPI导入流程</value>
+  </data>
+  <data name="VARIABLE_DETTHROUGHFLOW" xml:space="preserve">
+    <value>直通流量</value>
+  </data>
+  <data name="VARIABLE_ASCENDTHROUGHPUTGROUP" xml:space="preserve">
+    <value>提升吞吐量组</value>
+  </data>
+  <data name="VARIABLE_MSEMEANMANDATEDVALUE" xml:space="preserve">
+    <value>MSEMeanMandatedValue</value>
+  </data>
+  <data name="VARIABLE_LAYERBIOMASSRELATIVEFORCING" xml:space="preserve">
+    <value>生物量（相对）||相对生物量强迫</value>
+  </data>
+  <data name="VARIABLE_NOTSET" xml:space="preserve">
+    <value>（无）||（无变量）</value>
+  </data>
+  <data name="VARIABLE_MSETFMBBASEVALUES" xml:space="preserve">
+    <value>MSETFMBBaseValues</value>
+  </data>
+  <data name="VARIABLE_FIXEDCOST" xml:space="preserve">
+    <value>固定成本|||固定成本是指在Ecopath中定义的单位时间内，独立于工作量来运营车队单位的成本。</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_LOCAL_HIGH" xml:space="preserve">
+    <value>本地学习，高精度/完整</value>
+  </data>
+  <data name="VARIABLE_ECOSIMPREDRATETIME" xml:space="preserve">
+    <value>EcosimPredRateTime</value>
+  </data>
+  <data name="VARIABLE_MORTCOFISHRATE" xml:space="preserve">
+    <value>钓鱼房。率||垂钓率</value>
+  </data>
+  <data name="VARIABLE_CPUECOST" xml:space="preserve">
+    <value>CPUE ||每单位工作成本|每单位工作成本；成本是努力的函数</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SAMPLING_LOW" xml:space="preserve">
+    <value>采样/本地，精度低</value>
+  </data>
+  <data name="VARIABLE_DATASS" xml:space="preserve">
+    <value>数据SS</value>
+  </data>
+  <data name="VARIABLE_DATVAL" xml:space="preserve">
+    <value>DatVal</value>
+  </data>
+  <data name="VARIABLE_DETIMP" xml:space="preserve">
+    <value>单位进口||碎屑进口</value>
+  </data>
+  <data name="VARIABLE_EPOWER" xml:space="preserve">
+    <value>努力反应力</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASS" xml:space="preserve">
+    <value>MSE生物质</value>
+  </data>
+  <data name="VARIABLE_PSDCOMPUTED" xml:space="preserve">
+    <value>PSD计算</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_OTHERMODEL" xml:space="preserve">
+    <value>从其他模型</value>
+  </data>
+  <data name="VARIABLE_OVERHEADIMPORTTOT" xml:space="preserve">
+    <value>开销导入点</value>
+  </data>
+  <data name="VARIABLE_OVERHEADIMPORTPER" xml:space="preserve">
+    <value>开销导入</value>
+  </data>
+  <data name="VARIABLE_ENDAGE" xml:space="preserve">
+    <value>结束年龄</value>
+  </data>
+  <data name="UNIT_MULTIPLIER" xml:space="preserve">
+    <value>乘数</value>
+  </data>
+  <data name="VARIABLE_MODELFILENAME" xml:space="preserve">
+    <value>文档名称</value>
+  </data>
+  <data name="VARIABLE_F2TSFIRSTYEAR" xml:space="preserve">
+    <value>F2TS第一年</value>
+  </data>
+  <data name="VARIABLE_FPSFLEETJOBCATCHVALUE" xml:space="preserve">
+    <value>FPSFleetJobCatchValue</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONNUMBER" xml:space="preserve">
+    <value>地区编号||地区编号</value>
+  </data>
+  <data name="VARIABLE_DETTODETFLOW" xml:space="preserve">
+    <value>DetToDetFlow</value>
+  </data>
+  <data name="PARAM_LEFT_TOP" xml:space="preserve">
+    <value>左上</value>
+  </data>
+  <data name="VARIABLE_STANZAMORTAILITY" xml:space="preserve">
+    <value>节节</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHTACNITERATION" xml:space="preserve">
+    <value>MSEBatchTACNIteration</value>
+  </data>
+  <data name="VARIABLE_MPAOPTSTEPSIZE" xml:space="preserve">
+    <value>MPAOptStepSize</value>
+  </data>
+  <data name="VARIABLE_SALINITYSPREADRIGHT" xml:space="preserve">
+    <value>盐度高于||盐度公差高于最佳值</value>
+  </data>
+  <data name="VARIABLE_KMOVEFITNESS" xml:space="preserve">
+    <value>相对使运动速度适应细胞健康|||相对运动速度适应细胞健康</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SIM_SIM" xml:space="preserve">
+    <value>相似物种，相似系统，低精度</value>
+  </data>
+  <data name="VARIABLE_FPSMAXEFFCHANGE" xml:space="preserve">
+    <value>FPSMaxEffChange</value>
+  </data>
+  <data name="PARAM_MAX" xml:space="preserve">
+    <value>最高</value>
+  </data>
+  <data name="ECOSPACE_WRITER_REGAVG" xml:space="preserve">
+    <value>区域平均值（CSV格式）</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEUSEECOSIMBIOMASSFORCING" xml:space="preserve">
+    <value>EcospaceUseEcosim生物质强迫</value>
+  </data>
+  <data name="VARIABLE_FPSSOCIALWEIGHT" xml:space="preserve">
+    <value>FPS社交重量</value>
+  </data>
+  <data name="VARIABLE_DETRITUSFATE" xml:space="preserve">
+    <value>单位命运||碎屑命运</value>
+  </data>
+  <data name="VARIABLE_MSERECRUITMENTCV" xml:space="preserve">
+    <value>MSER招生简历</value>
+  </data>
+  <data name="VARIABLE_MPAOPTBIOMASSDIVERSITYVALUE" xml:space="preserve">
+    <value>MPAOptBiomassDiversityValue</value>
+  </data>
+  <data name="VARIABLE_OTHERMORTFEEDINGTIME" xml:space="preserve">
+    <value>其他进纸时间</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_GENERAL_SIM" xml:space="preserve">
+    <value>相关团体/物种的常识</value>
+  </data>
+  <data name="VARIABLE_AUTHOR" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="VARIABLE_MORTCOBIOACUMRATE" xml:space="preserve">
+    <value>生物积累。率||生物质积累率</value>
+  </data>
+  <data name="VARIABLE_CAPDEPRECIATE" xml:space="preserve">
+    <value>帽。部门率||资本折旧率</value>
+  </data>
+  <data name="VARIABLE_ISADVECTED" xml:space="preserve">
+    <value>推荐||被推荐|该人群是否受平流影响？</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHFMANAGED" xml:space="preserve">
+    <value>MSEBatchFManaged</value>
+  </data>
+  <data name="VARIABLE_SEARCHDISCOUNTRATE" xml:space="preserve">
+    <value>SearchDiscountRate</value>
+  </data>
+  <data name="VARIABLE_PREDICTEFFORT" xml:space="preserve">
+    <value>预测努力</value>
+  </data>
+  <data name="VARIABLE_DETCONSFLOW" xml:space="preserve">
+    <value>DetConsFlow</value>
+  </data>
+  <data name="UNIT_CURRENCY_NITROGEN" xml:space="preserve">
+    <value>毫克N /m²</value>
+  </data>
+  <data name="VARIABLE_ASCENDGROUP" xml:space="preserve">
+    <value>升腾集团</value>
+  </data>
+  <data name="VARIABLE_LEADINGBIOMASS" xml:space="preserve">
+    <value>领先的B ||领先的生物量|计算生物量的领先（进入）生命周期</value>
+  </data>
+  <data name="VARIABLE_LAYERCONTAMINANTRELATIVEDISTRIBUTION" xml:space="preserve">
+    <value>相对C || Rel。污染物分布</value>
+  </data>
+  <data name="VARIABLE_ASCENDRESPTOT" xml:space="preserve">
+    <value>AscendRespTot</value>
+  </data>
+  <data name="VARIABLE_ASCENDRESPPER" xml:space="preserve">
+    <value>上升响应</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_ESTIMATED" xml:space="preserve">
+    <value>由Ecopath估算</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSDIVERSITY" xml:space="preserve">
+    <value>多元化</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTBINS" xml:space="preserve">
+    <value>MSEBioEstBins</value>
+  </data>
+  <data name="VARIABLE_TEMPERATURESPREADLEFT" xml:space="preserve">
+    <value>T tol低于||温度公差低于最佳</value>
+  </data>
+  <data name="VARIABLE_CONFORCENUMBER" xml:space="preserve">
+    <value>强制编号</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_EMPERICAL" xml:space="preserve">
+    <value>经验关系</value>
+  </data>
+  <data name="VARIABLE_MSEASSESSPOWER" xml:space="preserve">
+    <value>MSEAssssPower</value>
+  </data>
+  <data name="VARIABLE_ECOSYSTEMTYPE" xml:space="preserve">
+    <value>生态系统类型</value>
+  </data>
+  <data name="VARIABLE_TAXONMEANLIFESPAN" xml:space="preserve">
+    <value>平均寿命</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTABOVELIMIT" xml:space="preserve">
+    <value>MSEBioEstAboveLimit</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTBELOWLIMIT" xml:space="preserve">
+    <value>MSEBioEstBelowLimit</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEUSEANNUALOUTPUT" xml:space="preserve">
+    <value>生态空间使用年产量</value>
+  </data>
+  <data name="VARIABLE_AINLWOUTPUT" xml:space="preserve">
+    <value>AinLW输出</value>
+  </data>
+  <data name="MONTECARLO_WRITER_ONEFILE" xml:space="preserve">
+    <value>所有结果在一个文件中</value>
+  </data>
+  <data name="VARIABLE_PREDMORT" xml:space="preserve">
+    <value>M2 || Pred。死亡|捕食死亡率</value>
+  </data>
+  <data name="VARIABLE_CORIOLIS" xml:space="preserve">
+    <value>科里奥利</value>
+  </data>
+  <data name="VARIABLE_ECOPATHBIOMASS" xml:space="preserve">
+    <value>生态路径</value>
+  </data>
+  <data name="VARIABLE_MIGRATIONCONCROW" xml:space="preserve">
+    <value>N / S迁移。 C. | N / S迁移。集中||南北迁移集中面积的大小</value>
+  </data>
+  <data name="VARIABLE_MIGRATIONCONCCOL" xml:space="preserve">
+    <value>E / W迁移。 C. | E / W迁移。浓度||迁移集中区域的东/西大小</value>
+  </data>
+  <data name="VARIABLE_F2TSNUMSPLINEPOINTS" xml:space="preserve">
+    <value>F2TSNumSplinePoints</value>
+  </data>
+  <data name="VARIABLE_MSEREFGROUPCATCHUPPER" xml:space="preserve">
+    <value>MSERefGroupCatchUpper</value>
+  </data>
+  <data name="VARIABLE_MSEUPPERLPEFFORT" xml:space="preserve">
+    <value>MSEUpperLPE努力</value>
+  </data>
+  <data name="VARIABLE_MORTCOPB" xml:space="preserve">
+    <value>抵押权证</value>
+  </data>
+  <data name="ECOSPACE_WRITER_ASC_DISCARDS" xml:space="preserve">
+    <value>总丢弃图（ASCII格式）</value>
+  </data>
+  <data name="VARIABLE_ECOSPACENUMBERSUMMARYTIMESTEPS" xml:space="preserve">
+    <value>EcospaceNumberSummaryTimeSteps</value>
+  </data>
+</root>
