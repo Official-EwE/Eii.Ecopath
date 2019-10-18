@@ -326,12 +326,13 @@ Namespace Utilities
         ''' of characters.
         ''' </summary>
         ''' <param name="strIn">The string to truncate.</param>
-        ''' <param name="iMaxLength">The maximum length of the output string.</param>
-        ''' <returns>A string of no more than <paramref name="iMaxLength"/> 
+        ''' <param name="iStart">The start index to extract data from</param>
+        ''' <param name="iNumChars">The maximum length of the output string.</param>
+        ''' <returns>A string of no more than <paramref name="iNumChars"/> 
         ''' characters in length.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function MaxLength(ByVal strIn As String, iMaxLength As Integer) As String
-            Return strIn.Substring(0, Math.Min(strIn.Length, iMaxLength))
+        Public Shared Function SubString(ByVal strIn As String, iStart As Integer, iNumChars As Integer) As String
+            Return strIn.Substring(iStart, Math.Max(0, Math.Min(strIn.Length - iStart, iNumChars - iStart)))
         End Function
 
         ''' -------------------------------------------------------------------
