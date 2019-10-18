@@ -93,12 +93,12 @@ Namespace Ecospace
         End Sub
 
         Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRemoveMPA.Click
-            Me.m_grid.ToggleDeleteSelected()
+            Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 
         Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnKeep.Click
-            Me.m_grid.ToggleDeleteSelected()
+            Me.m_grid.ToggleDeleteRow()
             Me.UpdateControls()
         End Sub
 

@@ -282,10 +282,10 @@ Namespace Style
                     Dim iDBID As Integer = -1
                     Select Case entry.VarName
                         Case eVarNameFlags.LayerHabitat
-                            bSuccess = bSuccess And core.AddEcospaceHabitat(entry.Name, iDBID)
+                            bSuccess = bSuccess And core.AddEcospaceHabitat(entry.Name, entry.Index, iDBID)
                         Case eVarNameFlags.LayerMPA
                             Dim months(11) As Boolean
-                            bSuccess = bSuccess And core.AddEcospaceMPA(entry.Name, months, iDBID)
+                            bSuccess = bSuccess And core.AddEcospaceMPA(entry.Name, entry.Index, months, iDBID)
                         Case eVarNameFlags.LayerDriver
                             bSuccess = bSuccess And core.AddEcospaceDriverLayer(entry.Name, "Imported from layer definitions", "", iDBID)
                     End Select
