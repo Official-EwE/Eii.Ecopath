@@ -1,0 +1,2409 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="FFAPPLICATIONTARGET_DETRITUSIMPORT" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="HEADER_IMPORT" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="HEADER_SPECIES" xml:space="preserve">
+    <value>Spezies</value>
+  </data>
+  <data name="HEADER_ECOSPACE" xml:space="preserve">
+    <value>Ecospace</value>
+  </data>
+  <data name="AUTOSAVE_ECOSPACE" xml:space="preserve">
+    <value>Ecospace</value>
+  </data>
+  <data name="HEADER_ECOPATH" xml:space="preserve">
+    <value>Ecopath</value>
+  </data>
+  <data name="HEADER_ECOSIM" xml:space="preserve">
+    <value>Ecosim</value>
+  </data>
+  <data name="AUTOSAVE_ECOSIM" xml:space="preserve">
+    <value>Ecosim</value>
+  </data>
+  <data name="HEADER_MONTECARLO" xml:space="preserve">
+    <value>Monte Carlo</value>
+  </data>
+  <data name="BIODIVERSITY_SHANNON" xml:space="preserve">
+    <value>Shannon Diversity Index</value>
+  </data>
+  <data name="HEADER_TRIAL" xml:space="preserve">
+    <value>Versuch</value>
+  </data>
+  <data name="HEADER_DISCARDS" xml:space="preserve">
+    <value>Rückwürfe</value>
+  </data>
+  <data name="HEADER_CATCH" xml:space="preserve">
+    <value>Fang</value>
+  </data>
+  <data name="HEADER_BIOMASS" xml:space="preserve">
+    <value>Biomasse</value>
+  </data>
+  <data name="HEADER_AGE" xml:space="preserve">
+    <value>Alter</value>
+  </data>
+  <data name="HEADER_SHANNONDIVERSITY" xml:space="preserve">
+    <value>Shannon Vielfalt</value>
+  </data>
+  <data name="HEADER_KEMPTONSQ" xml:space="preserve">
+    <value>Kemptons Q</value>
+  </data>
+  <data name="HEADER_VALUE" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="LABEL_PLAY" xml:space="preserve">
+    <value>abspielen</value>
+  </data>
+  <data name="LABEL_STOP" xml:space="preserve">
+    <value>Halt</value>
+  </data>
+  <data name="BUTTON_OK" xml:space="preserve">
+    <value>okay</value>
+  </data>
+  <data name="BUTTON_CANCEL" xml:space="preserve">
+    <value>Stornieren</value>
+  </data>
+  <data name="GENERIC_ZOOM_OUT" xml:space="preserve">
+    <value>Rauszoomen</value>
+  </data>
+  <data name="GENERIC_VALUE_NO" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="BUTTON_NO" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="AUTOSAVE_ECOTRACER" xml:space="preserve">
+    <value>Ecotracer-Laufergebnisse</value>
+  </data>
+  <data name="HEADER_MEAN_WEIGHT" xml:space="preserve">
+    <value>Durchschnittsgewicht (kg)</value>
+  </data>
+  <data name="HEADER_CONSUMPTION_OVER_BIOMASS" xml:space="preserve">
+    <value>Verbrauch / Biomasse</value>
+  </data>
+  <data name="HEADER_BIOMASS_CUMULATIVE" xml:space="preserve">
+    <value>Kumulative Biomasse</value>
+  </data>
+  <data name="BA_CALC_FROMECOSIMYEARSAVERAGE" xml:space="preserve">
+    <value>Durchschnittliche Veränderung der Ecosim-Biomasse über mehrere Jahre</value>
+  </data>
+  <data name="HEADER_AVAILABLE_GROUPS_FLEETS" xml:space="preserve">
+    <value>Verfügbare Gruppen und Flotten</value>
+  </data>
+  <data name="BA_CALC_SETTOZERO" xml:space="preserve">
+    <value>Keine Anreicherung von Biomasse</value>
+  </data>
+  <data name="HEADER_OCCURRENCE_STATUS" xml:space="preserve">
+    <value>Ereignisstatus</value>
+  </data>
+  <data name="HEADER_BOUNDARYWEIGHT" xml:space="preserve">
+    <value>Grenzgewicht</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWEGGPRODSHAPE" xml:space="preserve">
+    <value>Eierproduktionsform {0}</value>
+  </data>
+  <data name="GENERIC_VALUE_CREATE_PENDING" xml:space="preserve">
+    <value>(erschaffen)</value>
+  </data>
+  <data name="HEADER_PLOT_MEAN" xml:space="preserve">
+    <value>Bedeuten</value>
+  </data>
+  <data name="HEADER_MEAN" xml:space="preserve">
+    <value>Bedeuten</value>
+  </data>
+  <data name="TS_TYPE_TOTALMORT" xml:space="preserve">
+    <value>Gesamtmortalität</value>
+  </data>
+  <data name="HEADER_FLEET_GROUP" xml:space="preserve">
+    <value>Flotte \ Gruppe</value>
+  </data>
+  <data name="VALUE_INDEXED_PERCENT" xml:space="preserve">
+    <value>Indizierte {0}%</value>
+  </data>
+  <data name="HEADER_A_IN_LW" xml:space="preserve">
+    <value>a in LW</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_BASEMAP" xml:space="preserve">
+    <value>Basiskarte</value>
+  </data>
+  <data name="HEADER_LOWERLIMIT" xml:space="preserve">
+    <value>Untere Grenze</value>
+  </data>
+  <data name="HEADER_CODE_SAUP" xml:space="preserve">
+    <value>SAUP-ID | Taxonomiecode in den Sea Around Us-Datenbanken</value>
+  </data>
+  <data name="HEADER_CODE_LSID" xml:space="preserve">
+    <value>LSID (Taxonomy Life Sciences Identifier), wie von der Arbeitsgruppe Taxonomy Database definiert</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_NOTEXPLOITED" xml:space="preserve">
+    <value>Nicht ausgenutzt</value>
+  </data>
+  <data name="STATUS_APPLYVALUES" xml:space="preserve">
+    <value>Werte übernehmen, bitte warten ...</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_IN_IMM_B" xml:space="preserve">
+    <value>Konz. in eingewanderte Biomasse (t / t)</value>
+  </data>
+  <data name="HEADER_QUOTA_SELECTIVEFISHING" xml:space="preserve">
+    <value>Selektive Fangquote</value>
+  </data>
+  <data name="HEADER_MESSAGE" xml:space="preserve">
+    <value>Botschaft</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWMEDIATIONSHAPE" xml:space="preserve">
+    <value>Mediationsform {0}</value>
+  </data>
+  <data name="HEADER_NONMARKETVALUE" xml:space="preserve">
+    <value>Nichtmarktwert</value>
+  </data>
+  <data name="DEFAULT_NEWECOTRACERSCENARIO" xml:space="preserve">
+    <value>Neues Ecotracer-Szenario</value>
+  </data>
+  <data name="HEADER_PRODUCTION_OVER_BIOMASS" xml:space="preserve">
+    <value>Produktion / Biomasse</value>
+  </data>
+  <data name="HEADER_SOCIAL_VALUE_EMPLOYMENT" xml:space="preserve">
+    <value>Sozialer Wert (Beschäftigung)</value>
+  </data>
+  <data name="HEADER_NORMALIZED_VALUE" xml:space="preserve">
+    <value>Normalisierter Wert</value>
+  </data>
+  <data name="HEADER_STARTAGE" xml:space="preserve">
+    <value>Alter, Beginn (Monate)</value>
+  </data>
+  <data name="HEADER_HISTOGRAM_TARGET" xml:space="preserve">
+    <value>Histogramm für "{0}"</value>
+  </data>
+  <data name="HEADER_ECOSYSTEM_STRUCTURE" xml:space="preserve">
+    <value>Ökosystemstruktur</value>
+  </data>
+  <data name="GENERIC_LABEL_A_AT_B" xml:space="preserve">
+    <value>{0} @ {1}</value>
+  </data>
+  <data name="HEADER_SUM_NET_PP" xml:space="preserve">
+    <value>Berechnete Gesamtnettoprimärproduktion</value>
+  </data>
+  <data name="TOOLTIP_MEDIATION_DRIVER_VALUE" xml:space="preserve">
+    <value>Treiberwert {0}</value>
+  </data>
+  <data name="GENERIC_CHAR_PERIOD" xml:space="preserve">
+    <value>. (Zeitraum)</value>
+  </data>
+  <data name="GENERIC_VALUE_YES" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="BUTTON_YES" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="GENERIC_VALUE_YOU" xml:space="preserve">
+    <value>(Sie)</value>
+  </data>
+  <data name="GENERIC_VALUE_ALL" xml:space="preserve">
+    <value>(alle)</value>
+  </data>
+  <data name="HEADER_MAXF_OVER_M" xml:space="preserve">
+    <value>Max F / M</value>
+  </data>
+  <data name="HEADER_PROFIT_PERC" xml:space="preserve">
+    <value>Gewinn (%)</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_OFFVESSELPRICE" xml:space="preserve">
+    <value>Preis außerhalb des Schiffes</value>
+  </data>
+  <data name="HEADER_MANDATED_BIOMASS_RELATIVE" xml:space="preserve">
+    <value>Mandated rel. biom</value>
+  </data>
+  <data name="FILEFILTER_TEXT" xml:space="preserve">
+    <value>Textdateien | * .txt</value>
+  </data>
+  <data name="HEADER_MEAN_LENGTH" xml:space="preserve">
+    <value>Mittlere Länge (cm)</value>
+  </data>
+  <data name="TS_TYPE_CATCHESFORCING" xml:space="preserve">
+    <value>Fänge (Zwingen)</value>
+  </data>
+  <data name="HEADER_DISCARD_SURVIVAL_BREAKDOWN" xml:space="preserve">
+    <value>Überleben verwerfen (Gruppe x Flotte)</value>
+  </data>
+  <data name="HEADER_NODE_SCALE" xml:space="preserve">
+    <value>Knotenskalierungsmodus</value>
+  </data>
+  <data name="GENERIC_LABEL_DOUBLE" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="GENERIC_VALUE_NAMEANDSEQUENCE" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="HEADER_METABOLISMRATE" xml:space="preserve">
+    <value>Stoffwechselrate</value>
+  </data>
+  <data name="HEADER_AREA_CLOSED" xml:space="preserve">
+    <value>Bereich geschlossen (%)</value>
+  </data>
+  <data name="GENERIC_VALUE_NO_DATA" xml:space="preserve">
+    <value>Keine Daten</value>
+  </data>
+  <data name="FILEFILTER_IMAGE_EMF" xml:space="preserve">
+    <value>Erweiterte Metadateien | * .emf</value>
+  </data>
+  <data name="FILEFILTER_MODEL_OPEN" xml:space="preserve">
+    <value>Ecopath-Modelldatenbanken | * .mdb; *. Accdb; *. EwEmdb; *. EwEaccdb; *. Eii; *. Eiixml</value>
+  </data>
+  <data name="FILEFILTER_MODEL_SAVE" xml:space="preserve">
+    <value>EWE-Datenbank (Access 2003-Format) | * .EwEmdb | EWE-Datenbank (Access 2007-Format) | * .EwEaccdb</value>
+  </data>
+  <data name="GENERIC_VALUE_NOTUSED" xml:space="preserve">
+    <value>(nicht benutzt)</value>
+  </data>
+  <data name="HEADER_TZERO_VBGF" xml:space="preserve">
+    <value>bis in VBGF (Jahr)</value>
+  </data>
+  <data name="VERBOSE_DISABLED" xml:space="preserve">
+    <value>Keine Protokollierung</value>
+  </data>
+  <data name="HEADER_STANDARDDEVIATION" xml:space="preserve">
+    <value>SD</value>
+  </data>
+  <data name="GENERIC_LABEL_N_OF_M" xml:space="preserve">
+    <value>{0} von {1}</value>
+  </data>
+  <data name="HEADER_GROSS_EFFICIENCY" xml:space="preserve">
+    <value>Bruttowirkungsgrad (Fang / Netto pP)</value>
+  </data>
+  <data name="PROMPT_OPTIONS_APPLIED_FAILED" xml:space="preserve">
+    <value>Optionen konnten nicht angewendet werden.</value>
+  </data>
+  <data name="HEADER_BIOMACCUM_ABBR" xml:space="preserve">
+    <value>Biom. gem.</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_RECOVERING" xml:space="preserve">
+    <value>Wiederherstellen ||| Die Fänge nehmen wieder zu, nachdem sie aufgebraucht wurden</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSFORCING" xml:space="preserve">
+    <value>Forcieren von Biomasse</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_BIOMASSFORCING" xml:space="preserve">
+    <value>Forcieren von Biomasse</value>
+  </data>
+  <data name="HEADER_EFFORT_MIN" xml:space="preserve">
+    <value>Aufwand min.</value>
+  </data>
+  <data name="HEADER_EFFORT_MAX" xml:space="preserve">
+    <value>Aufwand max.</value>
+  </data>
+  <data name="HEADER_ASSIGNED_LANDINGS_SHAPE" xml:space="preserve">
+    <value>Zugewiesenes Angebot für {0}</value>
+  </data>
+  <data name="HEADER_ORGANISM" xml:space="preserve">
+    <value>Organismus</value>
+  </data>
+  <data name="STYLEFLAGS_INVALIDMODELRESULT" xml:space="preserve">
+    <value>Modellfehler || Ungültige Modellergebnisse | Wert konnte nicht berechnet werden</value>
+  </data>
+  <data name="LABEL_TITLE" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="LABEL_PAUSE" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_COMPUTEDCAPACITY" xml:space="preserve">
+    <value>Berechnete Lebensraumkapazität</value>
+  </data>
+  <data name="HEADER_COMPONENTS_EWE" xml:space="preserve">
+    <value>EWE-Komponenten</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_CRITICALLYENDANGERED" xml:space="preserve">
+    <value>CR || Kritisch gefährdet</value>
+  </data>
+  <data name="HEADER_CATCH_END" xml:space="preserve">
+    <value>Fang (Ende)</value>
+  </data>
+  <data name="HEADER_CATCH_MIN" xml:space="preserve">
+    <value>Fang min.</value>
+  </data>
+  <data name="HEADER_CATCH_MAX" xml:space="preserve">
+    <value>Fang max.</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_VULANDAREA" xml:space="preserve">
+    <value>Vul (v) und Bereich (A)</value>
+  </data>
+  <data name="HEADER_DISCARD_MORTALITY_BREAKDOWN" xml:space="preserve">
+    <value>Sterblichkeitsrate verwerfen (Gruppe x Flotte)</value>
+  </data>
+  <data name="HEADER_PLOT_MAX" xml:space="preserve">
+    <value>Grundstück max</value>
+  </data>
+  <data name="HEADER_PLOT_MIN" xml:space="preserve">
+    <value>Grundstück min</value>
+  </data>
+  <data name="HEADER_MODEL_TARGET" xml:space="preserve">
+    <value>Name des Zielmodells</value>
+  </data>
+  <data name="HEADER_RHALFB0RATIO" xml:space="preserve">
+    <value>Verhältnis Bt / Ecopath B für 50% Rekrutierung</value>
+  </data>
+  <data name="GENERIC_VALUE_NOSEARCHENGINES" xml:space="preserve">
+    <value>(Keine Suchmaschinen installiert)</value>
+  </data>
+  <data name="HEADER_MEAN_LIMIT" xml:space="preserve">
+    <value>Mittelwert begrenzen</value>
+  </data>
+  <data name="HEADER_MSE_UPPERRISK" xml:space="preserve">
+    <value>Max. Biomasse / org. Biomasse</value>
+  </data>
+  <data name="HEADER_VALUE_CUMULATIVE" xml:space="preserve">
+    <value>Kumulativer Wert</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_VULNERABLE" xml:space="preserve">
+    <value>VU || Anfällig</value>
+  </data>
+  <data name="FITRESPONSE_GRADIENT" xml:space="preserve">
+    <value>Gradient</value>
+  </data>
+  <data name="HEADER_RECRUITMENT_CV" xml:space="preserve">
+    <value>Einstellungs-Lebenslauf</value>
+  </data>
+  <data name="HEADER_GROUPNAMEWEIGHT" xml:space="preserve">
+    <value>Gruppenname \ Gewicht (g)</value>
+  </data>
+  <data name="HEADER_EFFORT" xml:space="preserve">
+    <value>Anstrengung</value>
+  </data>
+  <data name="HEADER_QUOTA_EFFORT" xml:space="preserve">
+    <value>Anstrengung</value>
+  </data>
+  <data name="HEADER_AVGERAGEWEIGHT" xml:space="preserve">
+    <value>Durchschnittsgewicht</value>
+  </data>
+  <data name="HEADER_AVERAGEWEIGHT" xml:space="preserve">
+    <value>Durchschnittsgewicht</value>
+  </data>
+  <data name="TS_TYPE_AVERAGEWEIGHT" xml:space="preserve">
+    <value>Durchschnittsgewicht</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_M0" xml:space="preserve">
+    <value>Anderer Mortalitätszwang</value>
+  </data>
+  <data name="HEADER_ENABLE" xml:space="preserve">
+    <value>Aktivieren</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_ENDANGERED" xml:space="preserve">
+    <value>DE || Gefährdet</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_OVER_B" xml:space="preserve">
+    <value>Konzentration / Biomasse (kumulativ)</value>
+  </data>
+  <data name="SHAPE_PROMPT_SET_TO_VALUE" xml:space="preserve">
+    <value>Geben Sie einen oder mehrere durch Kommas getrennte Werte ein, um die Form zu wiederholen.</value>
+  </data>
+  <data name="HEADER_MPA_CLOSED" xml:space="preserve">
+    <value>Zum Angeln geschlossen</value>
+  </data>
+  <data name="TS_TYPE_DISCARDS" xml:space="preserve">
+    <value>Rückwürfe (Referenz)</value>
+  </data>
+  <data name="HEADER_EXPORT" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="HEADER_COMPONENTS_PLUGINS" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="HEADER_FIELD" xml:space="preserve">
+    <value>Feld</value>
+  </data>
+  <data name="HEADER_FLEET" xml:space="preserve">
+    <value>Flotte</value>
+  </data>
+  <data name="HEADER_GENUS" xml:space="preserve">
+    <value>Gattung</value>
+  </data>
+  <data name="HEADER_GROUP" xml:space="preserve">
+    <value>Gruppe</value>
+  </data>
+  <data name="HEADER_MONTH" xml:space="preserve">
+    <value>Monat</value>
+  </data>
+  <data name="GENERAL_LABEL_MONTH" xml:space="preserve">
+    <value>Monat</value>
+  </data>
+  <data name="HEADER_COLOR" xml:space="preserve">
+    <value>Farbe</value>
+  </data>
+  <data name="HEADER_COUNT" xml:space="preserve">
+    <value>Anzahl</value>
+  </data>
+  <data name="HEADER_CLASS" xml:space="preserve">
+    <value>Klasse</value>
+  </data>
+  <data name="HEADER_IMAGE" xml:space="preserve">
+    <value>Bild</value>
+  </data>
+  <data name="HEADER_INDEX" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="SHAPE_HEADER_SET_TO_VALUE" xml:space="preserve">
+    <value>Auf Wert setzen</value>
+  </data>
+  <data name="HEADER_LAYER" xml:space="preserve">
+    <value>Schicht</value>
+  </data>
+  <data name="VERBOSE_STANDARD" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="HEADER_ORDER" xml:space="preserve">
+    <value>Bestellung</value>
+  </data>
+  <data name="HEADER_UNITS" xml:space="preserve">
+    <value>Einheiten</value>
+  </data>
+  <data name="COLORRAMP_VIRIDIS" xml:space="preserve">
+    <value>Viridis farbenblind {0}</value>
+  </data>
+  <data name="HEADER_KALWT" xml:space="preserve">
+    <value>Kalman Gewicht</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_DATADEFICIENT" xml:space="preserve">
+    <value>DD || Daten defekt</value>
+  </data>
+  <data name="HEADER_TOTAL" xml:space="preserve">
+    <value>Gesamt</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_EXTINCT" xml:space="preserve">
+    <value>EX || Ausgestorben</value>
+  </data>
+  <data name="HEADER_SHAPE" xml:space="preserve">
+    <value>Gestalten</value>
+  </data>
+  <data name="HEADER_LINE_WIDTH_AUTO" xml:space="preserve">
+    <value>Linien automatisch skalieren</value>
+  </data>
+  <data name="HEADER_X_MIN" xml:space="preserve">
+    <value>X min</value>
+  </data>
+  <data name="HEADER_X_MAX" xml:space="preserve">
+    <value>X max</value>
+  </data>
+  <data name="HEADER_FAMILY" xml:space="preserve">
+    <value>Familie</value>
+  </data>
+  <data name="HEADER_WITHOUT_FORAGING_TIME" xml:space="preserve">
+    <value>Ohne Futterzeiteinstellung (FT)</value>
+  </data>
+  <data name="HEADER_FIXEDF" xml:space="preserve">
+    <value>Feste fischereiliche Sterblichkeit</value>
+  </data>
+  <data name="HEADER_FLEETS" xml:space="preserve">
+    <value>Flotten</value>
+  </data>
+  <data name="PROMPT_OPTIONS_APPLIED_SUCCESS" xml:space="preserve">
+    <value>Optionen wurden erfolgreich angewendet.</value>
+  </data>
+  <data name="GENERIC_VALUE_FLEET_OF_N" xml:space="preserve">
+    <value>Flotte {0} von {1}</value>
+  </data>
+  <data name="LABEL_CHOOSE_FOLDER" xml:space="preserve">
+    <value>Wähle einen Ordner...</value>
+  </data>
+  <data name="HEADER_LINE_WIDTH" xml:space="preserve">
+    <value>Feste Linienbreite</value>
+  </data>
+  <data name="ORGANISM_REPTILES" xml:space="preserve">
+    <value>Reptilien</value>
+  </data>
+  <data name="HEADER_LINE_COLOR" xml:space="preserve">
+    <value>Linienfarbe</value>
+  </data>
+  <data name="HEADER_PREDICTIONVARIANCE" xml:space="preserve">
+    <value>Vorhersagevarianz</value>
+  </data>
+  <data name="AUTOSAVE_ECOSIMRESULTS" xml:space="preserve">
+    <value>Ergebnisse ausführen</value>
+  </data>
+  <data name="AUTOSAVE_ECOSPACERESULTS" xml:space="preserve">
+    <value>Ergebnisse ausführen</value>
+  </data>
+  <data name="STYLEFLAGS_ERRORENCOUNTERED" xml:space="preserve">
+    <value>Unbekannter Fehler ||| Ein unbekannter Fehler ist aufgetreten</value>
+  </data>
+  <data name="HEADER_DIRECT_ABSORPTION_RATE" xml:space="preserve">
+    <value>Direkte Absorptionsrate</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_REGIONS" xml:space="preserve">
+    <value>Regionen</value>
+  </data>
+  <data name="HEADER_SUM_PPB" xml:space="preserve">
+    <value>Gesamtprimärproduktion / Gesamtbiomasse</value>
+  </data>
+  <data name="HEADER_SUM_EXPORTS" xml:space="preserve">
+    <value>Summe aller Exporte</value>
+  </data>
+  <data name="HEADER_GROUPS" xml:space="preserve">
+    <value>Gruppen</value>
+  </data>
+  <data name="HEADER_CONSUMER" xml:space="preserve">
+    <value>Verbraucher</value>
+  </data>
+  <data name="GENERIC_VALUE_DEFAULT" xml:space="preserve">
+    <value>(Standard)</value>
+  </data>
+  <data name="HEADER_MODEL_SOURCE" xml:space="preserve">
+    <value>Quellmodell</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWTIMESERIES" xml:space="preserve">
+    <value>Neue Zeitreihe {0}</value>
+  </data>
+  <data name="HEADER_DRIVER_HISTOGRAM" xml:space="preserve">
+    <value>Treiberhistogramm</value>
+  </data>
+  <data name="TOOLTIP_MEDIATION_CAPACITY" xml:space="preserve">
+    <value>Treiberhistogramm</value>
+  </data>
+  <data name="ECOLOGY_BENTHOPELAGIC" xml:space="preserve">
+    <value>Benthopelagic</value>
+  </data>
+  <data name="HEADER_GROUPNAME" xml:space="preserve">
+    <value>Gruppenname</value>
+  </data>
+  <data name="HEADER_EFFORT_PERC_ABOVE_REF" xml:space="preserve">
+    <value>Aufwand% über Referenz</value>
+  </data>
+  <data name="DEFAULT_NEWHABITAT_NUM" xml:space="preserve">
+    <value>Lebensraum {0}</value>
+  </data>
+  <data name="FILEFILTER_STYLE" xml:space="preserve">
+    <value>EWE visueller Stil | * .ewestyle</value>
+  </data>
+  <data name="HEADER_CODE_FAO" xml:space="preserve">
+    <value>FAO-ID | Taxonomiecode nach FAO</value>
+  </data>
+  <data name="HEADER_METHOD" xml:space="preserve">
+    <value>Methode</value>
+  </data>
+  <data name="FILEFILTER_IMAGE" xml:space="preserve">
+    <value>Bitmap-Bild | * .bmp | JPEG-Bild | * .jpg; * .jpeg | GIF-Bild | * .gif | PNG-Bild | * .png | TIFF-Bild | * .tif; * .tiff</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_NOTUSABLE" xml:space="preserve">
+    <value>Zeitreihe '{0}' kann nicht aktiviert werden. {1}</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_UNDEREXPLOITED" xml:space="preserve">
+    <value>Unterbesetzte Fischerei ||| Unbebaute oder neue Fischerei. Angeblich erhebliches Potenzial für eine Ausweitung der Gesamtproduktion</value>
+  </data>
+  <data name="COMMAND_DISPLAYGROUPS" xml:space="preserve">
+    <value>Wählen Sie Gruppen und Flotten aus, die angezeigt werden sollen</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MIGRATION" xml:space="preserve">
+    <value>Migration</value>
+  </data>
+  <data name="HEADER_VALUE_BREAKDOWN" xml:space="preserve">
+    <value>Wert (Gruppe x Flotte)</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_HABITATS" xml:space="preserve">
+    <value>Lebensräume</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_DELETE_MULTIPLE" xml:space="preserve">
+    <value>Sie sind dabei, {0} Zeitreihen 'zu löschen. Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie das wirklich tun?</value>
+  </data>
+  <data name="HEADER_MINWEIGHT" xml:space="preserve">
+    <value>Mindest. Gewicht</value>
+  </data>
+  <data name="HEADER_PROPORTION_CATCH" xml:space="preserve">
+    <value>Fanganteil</value>
+  </data>
+  <data name="PROMPT_SHOWTITLE" xml:space="preserve">
+    <value>Titel anzeigen</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWFORCINGSHAPE" xml:space="preserve">
+    <value>Form erzwingen {0}</value>
+  </data>
+  <data name="HEADER_COMPONENTS_FRAMEWORK" xml:space="preserve">
+    <value>.NET-Komponenten</value>
+  </data>
+  <data name="HEADER_CVBEST" xml:space="preserve">
+    <value>Biomasse-Lebenslauf</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_MODERATELYEXPLOITED" xml:space="preserve">
+    <value>Mäßig ausgebeutet ||| Mit geringem Fischereiaufwand ausgebeutet. Man glaubt, dass die Gesamtproduktion nur ein begrenztes Expansionspotenzial hat</value>
+  </data>
+  <data name="HEADER_SUM_FLOW_RESP" xml:space="preserve">
+    <value>Summe aller Atemflüsse</value>
+  </data>
+  <data name="HEADER_STRUCTURERELATIVEWEIGHT" xml:space="preserve">
+    <value>Struktur rel. Gewicht</value>
+  </data>
+  <data name="SHAPE_TYPE_TO_SEASONAL_CAPTION" xml:space="preserve">
+    <value>Formtyp ändern</value>
+  </data>
+  <data name="HEADER_NET_PROD" xml:space="preserve">
+    <value>Nettosystemproduktion</value>
+  </data>
+  <data name="GENERIC_SAVE_TO_CSV" xml:space="preserve">
+    <value>Daten in CSV speichern ...</value>
+  </data>
+  <data name="HEADER_NUMBER" xml:space="preserve">
+    <value>Nummer</value>
+  </data>
+  <data name="GENERIC_VALUE_NOTSET" xml:space="preserve">
+    <value>(keine Angabe)</value>
+  </data>
+  <data name="ABOUT_NET_VERSION" xml:space="preserve">
+    <value>.NET-Version {0} ({1})</value>
+  </data>
+  <data name="HEADER_INCOME" xml:space="preserve">
+    <value>Einkommen</value>
+  </data>
+  <data name="HEADER_FMAX" xml:space="preserve">
+    <value>FMax</value>
+  </data>
+  <data name="HEADER_FLOW" xml:space="preserve">
+    <value>Fließen</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_ADVECTION" xml:space="preserve">
+    <value>Fließen</value>
+  </data>
+  <data name="HEADER_FOPT" xml:space="preserve">
+    <value>F max.</value>
+  </data>
+  <data name="HEADER_FROM" xml:space="preserve">
+    <value>Von</value>
+  </data>
+  <data name="HEADER_ADD1" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="HEADER_ADD" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="HEADER_DATE" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="HEADER_DIET" xml:space="preserve">
+    <value>Diät</value>
+  </data>
+  <data name="HEADER_CODE" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="HEADER_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="HEADER_LINK" xml:space="preserve">
+    <value>Verknüpfung</value>
+  </data>
+  <data name="HEADER_LESS" xml:space="preserve">
+    <value>Geringer, weniger</value>
+  </data>
+  <data name="HEADER_HIGH" xml:space="preserve">
+    <value>Hoch</value>
+  </data>
+  <data name="HEADER_TYPE" xml:space="preserve">
+    <value>Art</value>
+  </data>
+  <data name="HEADER_TIME" xml:space="preserve">
+    <value>Zeit</value>
+  </data>
+  <data name="HEADER_SLOT" xml:space="preserve">
+    <value>Slot {0}</value>
+  </data>
+  <data name="HEADER_YEAR" xml:space="preserve">
+    <value>Jahr</value>
+  </data>
+  <data name="GENERAL_LABEL_YEAR" xml:space="preserve">
+    <value>Jahr</value>
+  </data>
+  <data name="HEADER_ENABLED_CAPACITY" xml:space="preserve">
+    <value>Laufwerkkapazität</value>
+  </data>
+  <data name="GENERIC_SHOW_NUMTL" xml:space="preserve">
+    <value>Anzahl der Trophäenstufen</value>
+  </data>
+  <data name="FILEFILTER_SAVE_MDB" xml:space="preserve">
+    <value>EWE-Datenbank (Access 2003-Format) | * .ewemdb</value>
+  </data>
+  <data name="FILEFILTER_MODEL_ACCESS" xml:space="preserve">
+    <value>Ökopathische Zugangsdatenbanken | * .mdb; *. Accdb; *. EwEmdb; *. EwEaccdb</value>
+  </data>
+  <data name="HEADER_MANDATED_REBUILDING" xml:space="preserve">
+    <value>Mandated Umbau</value>
+  </data>
+  <data name="HEADER_SUM_PROD" xml:space="preserve">
+    <value>Summe der gesamten Produktion</value>
+  </data>
+  <data name="HEADER_SUM_COST" xml:space="preserve">
+    <value>Gesamtkosten</value>
+  </data>
+  <data name="HEADER_TOTALCOST" xml:space="preserve">
+    <value>Gesamtkosten</value>
+  </data>
+  <data name="HEADER_SUM_COST_FIXED" xml:space="preserve">
+    <value>Total Fixkosten</value>
+  </data>
+  <data name="TOOLTIP_SAVETOIMAGE" xml:space="preserve">
+    <value>Im Bild speichern</value>
+  </data>
+  <data name="GENERIC_LABEL_SPLIT" xml:space="preserve">
+    <value>{0} - {1}</value>
+  </data>
+  <data name="HEADER_CONCENTRATION_INITIAL" xml:space="preserve">
+    <value>Anfangskonz. (t / t)</value>
+  </data>
+  <data name="GENERIC_LABEL_POINT" xml:space="preserve">
+    <value>{0} ({1}, {2})</value>
+  </data>
+  <data name="HEADER_INDICATOR" xml:space="preserve">
+    <value>Indikator</value>
+  </data>
+  <data name="TOOLTIP_GRID_APPLYVALUE" xml:space="preserve">
+    <value>Setzen Sie diesen Wert auf alle ausgewählten Zellen</value>
+  </data>
+  <data name="TS_TYPE_CATCHESREL" xml:space="preserve">
+    <value>Relative Fänge (Referenz)</value>
+  </data>
+  <data name="TS_TYPE_CATCHESABS" xml:space="preserve">
+    <value>Fänge (Referenz)</value>
+  </data>
+  <data name="HEADER_MSE_LOWERRISK" xml:space="preserve">
+    <value>Mindest. Biomasse / org. Biomasse</value>
+  </data>
+  <data name="FILEFILTER_FLOWDIAGRAM" xml:space="preserve">
+    <value>Flussdiagramm-Layoutdateien | * .fdlayout</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_EXTINCTINWILD" xml:space="preserve">
+    <value>EW || In freier Wildbahn ausgestorben</value>
+  </data>
+  <data name="GENERIC_LABEL_APPLY" xml:space="preserve">
+    <value>Anwenden</value>
+  </data>
+  <data name="HEADER_EFFORTRELATEDCOST" xml:space="preserve">
+    <value>Aufwandsbezogene Kosten (%)</value>
+  </data>
+  <data name="GENERIC_SHOW_TROPHIC_LEVELS" xml:space="preserve">
+    <value>Zeige trophische Level</value>
+  </data>
+  <data name="HEADER_SOURCEFATE" xml:space="preserve">
+    <value>Quelle / Schicksal</value>
+  </data>
+  <data name="HEADER_REGIONS_ALL" xml:space="preserve">
+    <value>Alle Regionen</value>
+  </data>
+  <data name="AUTORUN_ALL" xml:space="preserve">
+    <value>Alle automatisch ausführen</value>
+  </data>
+  <data name="HEADER_PARAMETER" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="HEADER_VALUEES" xml:space="preserve">
+    <value>Wert (E / S)</value>
+  </data>
+  <data name="GENERIC_VALUE_MAPPOS" xml:space="preserve">
+    <value>Zeile {3}, Spalte {4}; lon {0} {2}, lat {1} {2}</value>
+  </data>
+  <data name="GENERAL_LABEL_ANNUAL" xml:space="preserve">
+    <value>Jährlich</value>
+  </data>
+  <data name="TSDATASETINTERVAL_ANNUAL" xml:space="preserve">
+    <value>Jährlich</value>
+  </data>
+  <data name="BA_CALC_FROMECOSIMYEARSWEIGHTEDAVERAGE" xml:space="preserve">
+    <value>Entfernungsgewichteter Durchschnitt der Ecosim-Biomasse über Jahre</value>
+  </data>
+  <data name="TS_TYPE_FISHMORTABS" xml:space="preserve">
+    <value>Fischereiliche Sterblichkeit</value>
+  </data>
+  <data name="TS_TYPE_FISHMORTREL" xml:space="preserve">
+    <value>Relative fischereiliche Sterblichkeit</value>
+  </data>
+  <data name="SHAPE_TYPE_TO_SEASONAL_MSG" xml:space="preserve">
+    <value>Wenn Sie eine Form von "Langzeit" in "Saisonal" ändern, werden Ihre Langzeitdaten durch ein saisonales Muster überschrieben. Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie das wirklich tun?</value>
+  </data>
+  <data name="ERROR_GRID_PASTE" xml:space="preserve">
+    <value>Bei der Integration Ihrer Daten ist eine Reihe von Formatierungsfehlern aufgetreten, und der Versuch wurde abgebrochen. Bitte überprüfen Sie, ob Ihre Daten mit diesem Raster kompatibel sind und versuchen Sie es erneut.</value>
+  </data>
+  <data name="DEFAULT_NEWECOSPACESCENARIO" xml:space="preserve">
+    <value>Neues Ecospace-Szenario</value>
+  </data>
+  <data name="FILEFILTER_SAVE_ACCDB" xml:space="preserve">
+    <value>EWE-Datenbank (Access 2007-Format) | * .eweaccdb</value>
+  </data>
+  <data name="HEADER_OVERLAP_TEMPORAL" xml:space="preserve">
+    <value>Temp. Überlappung</value>
+  </data>
+  <data name="DATASOURCE_ACCESS2003" xml:space="preserve">
+    <value>* .ewemdb | Access 2003 (* .ewemdb) || Microsoft Access 2003 (* .ewemdb)</value>
+  </data>
+  <data name="DATASOURCE_ACCESS2007" xml:space="preserve">
+    <value>* .eweaccdb | Access 2007 (* .eweaccdb) || Microsoft Access 2007 (* .eweaccdb)</value>
+  </data>
+  <data name="HEADER_NODE_SIZE_AUTO" xml:space="preserve">
+    <value>Knoten mit automatischer Größe</value>
+  </data>
+  <data name="HEADER_K_VBGF" xml:space="preserve">
+    <value>K in VBGF (/ [JAHR})</value>
+  </data>
+  <data name="GENERIC_TEXT_CURSOR" xml:space="preserve">
+    <value>Mauszeiger</value>
+  </data>
+  <data name="LABEL_VALUE_AT" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
+  <data name="GENERIC_LABEL_DETAILED" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
+  <data name="HEADER_REFERENCE" xml:space="preserve">
+    <value>Referenz</value>
+  </data>
+  <data name="HEADER_SUM_FLOW_DET" xml:space="preserve">
+    <value>Die Summe fließt in Schutt</value>
+  </data>
+  <data name="HEADER_SUM_BnonDET" xml:space="preserve">
+    <value>Gesamtbiomasse (ohne Detritus)</value>
+  </data>
+  <data name="GENERIC_LABEL_SAVE" xml:space="preserve">
+    <value>sparen</value>
+  </data>
+  <data name="HEADER_VALUES" xml:space="preserve">
+    <value>Werte</value>
+  </data>
+  <data name="HEADER_POTENTIAL_GROWTH" xml:space="preserve">
+    <value>Poten. Wachstum (Bunf / Bo)</value>
+  </data>
+  <data name="HEADER_VERSION" xml:space="preserve">
+    <value>Ausführung</value>
+  </data>
+  <data name="HEADER_SURVIVAL" xml:space="preserve">
+    <value>Überleben</value>
+  </data>
+  <data name="HEADER_RECRUITMENT" xml:space="preserve">
+    <value>Rekrutierung</value>
+  </data>
+  <data name="HEADER_ASSIGNED_ENV_FORCING" xml:space="preserve">
+    <value>Zuweisung von Umgebungsbedingungen zu {0}</value>
+  </data>
+  <data name="HEADER_LONGITUDE" xml:space="preserve">
+    <value>Längengrad</value>
+  </data>
+  <data name="LABEL_SET" xml:space="preserve">
+    <value>einstellen</value>
+  </data>
+  <data name="HEADER_TARGET" xml:space="preserve">
+    <value>Ziel</value>
+  </data>
+  <data name="COMPATIBILITY_SUMMARY" xml:space="preserve">
+    <value>{0}% zeitliche Überlappung mit {1}% partieller Überlappung und {2}% Gesamtflächenüberlappung.</value>
+  </data>
+  <data name="HEADER_INDEX_ONMIVORY" xml:space="preserve">
+    <value>System Omnivory Index</value>
+  </data>
+  <data name="DEFAULT_NEWREGION_NUM" xml:space="preserve">
+    <value>Region {0}</value>
+  </data>
+  <data name="LABEL_VALUE_FROM" xml:space="preserve">
+    <value>{0} ({1} -)</value>
+  </data>
+  <data name="LABEL_VALUE_UPTO" xml:space="preserve">
+    <value>{0} (- {1})</value>
+  </data>
+  <data name="HEADER_RELATIVEWEIGHT_ABBR" xml:space="preserve">
+    <value>Rel. Gewicht</value>
+  </data>
+  <data name="GENERIC_VALUE_CUSTOM" xml:space="preserve">
+    <value>(Brauch)</value>
+  </data>
+  <data name="HEADER_WEIGHT" xml:space="preserve">
+    <value>Gewicht</value>
+  </data>
+  <data name="TS_TYPE_FISHINGEFFORT" xml:space="preserve">
+    <value>Fischereiaufwand</value>
+  </data>
+  <data name="HEADER_FISHINGEFFORT" xml:space="preserve">
+    <value>Fischereiaufwand</value>
+  </data>
+  <data name="HEADER_COST_START" xml:space="preserve">
+    <value>Kosten (Start)</value>
+  </data>
+  <data name="HEADER_REGION" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="HEADER_REMARK" xml:space="preserve">
+    <value>Anmerkung</value>
+  </data>
+  <data name="HEADER_CB" xml:space="preserve">
+    <value>Nachteile / Biom</value>
+  </data>
+  <data name="HEADER_CV" xml:space="preserve">
+    <value>Lebenslauf</value>
+  </data>
+  <data name="HEADER_ID" xml:space="preserve">
+    <value>ICH WÜRDE</value>
+  </data>
+  <data name="HEADER_TO" xml:space="preserve">
+    <value>Zu</value>
+  </data>
+  <data name="HEADER_PP" xml:space="preserve">
+    <value>Teil der Produktion aus Primärproduktivität</value>
+  </data>
+  <data name="HEADER_SS" xml:space="preserve">
+    <value>Quadratsumme</value>
+  </data>
+  <data name="HEADER_BIOMASS_ABSOLUTE" xml:space="preserve">
+    <value>Absolute Biomasse</value>
+  </data>
+  <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
+    <value>{0} wurde unter "{1}" gespeichert.</value>
+  </data>
+  <data name="HEADER_PREDMORT_REL" xml:space="preserve">
+    <value>Predation Mort (rel)</value>
+  </data>
+  <data name="GENERIC_STATUS_BUSY" xml:space="preserve">
+    <value>Bitte warte einen Moment...</value>
+  </data>
+  <data name="HEADER_ASSIGNED_GROUPS_FLEETS_SHAPE" xml:space="preserve">
+    <value>Gruppen und Flotten, die {0} zugewiesen sind</value>
+  </data>
+  <data name="TS_TYPE_LANDINGS" xml:space="preserve">
+    <value>Landungen (Referenz)</value>
+  </data>
+  <data name="ECOLOGY_BATHYDEMERSAL" xml:space="preserve">
+    <value>Bathydemersal</value>
+  </data>
+  <data name="HEADER_PROFIT" xml:space="preserve">
+    <value>Profitieren</value>
+  </data>
+  <data name="HEADER_SUM_PROFIT" xml:space="preserve">
+    <value>Profitieren</value>
+  </data>
+  <data name="HEADER_IUCN_CONSERVATION_STATUS" xml:space="preserve">
+    <value>IUCN Erhaltungszustand</value>
+  </data>
+  <data name="HEADER_COST_END" xml:space="preserve">
+    <value>Kosten (Ende)</value>
+  </data>
+  <data name="HEADER_PLUGIN" xml:space="preserve">
+    <value>Plug-in</value>
+  </data>
+  <data name="HEADER_PHYLUM" xml:space="preserve">
+    <value>Stamm</value>
+  </data>
+  <data name="HEADER_OVERLAP_SPATIAL" xml:space="preserve">
+    <value>Spat. Überlappung</value>
+  </data>
+  <data name="HEADER_CATCH_PERC_ABOVE_REF" xml:space="preserve">
+    <value>Fang% über Referenz</value>
+  </data>
+  <data name="HEADER_SUM_BT" xml:space="preserve">
+    <value>Gesamtbiomasse / Gesamtdurchsatz</value>
+  </data>
+  <data name="HEADER_STATUS" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="GENERIC_FILELOAD_SUCCES" xml:space="preserve">
+    <value>{0} wurde von '{1}' geladen.</value>
+  </data>
+  <data name="PROMPT_REQUIRES_RESTART" xml:space="preserve">
+    <value>Sie müssen EwE neu starten, damit Ihre Änderungen wirksam werden.</value>
+  </data>
+  <data name="HEADER_LEADING_BIOMASS" xml:space="preserve">
+    <value>Führende Biomasse</value>
+  </data>
+  <data name="STYLEFLAGS_NOTEDITABLE" xml:space="preserve">
+    <value>Nicht editierbar ||| Wert kann nicht editiert werden</value>
+  </data>
+  <data name="HEADER_SOURCE" xml:space="preserve">
+    <value>Quelle</value>
+  </data>
+  <data name="HEADER_SOCIAL" xml:space="preserve">
+    <value>Sozial</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_BIOMASSRELATIVEFORCING" xml:space="preserve">
+    <value>Biomasse relativer Antrieb</value>
+  </data>
+  <data name="HEADER_ECOSYSTEM_STRUCTURE_ABBR" xml:space="preserve">
+    <value>Ecosys.</value>
+  </data>
+  <data name="GENERIC_VALUE_FIRSTTIMESTEP" xml:space="preserve">
+    <value>(erster Schritt)</value>
+  </data>
+  <data name="GENERIC_SHOW_BIOMASS_LEGEND" xml:space="preserve">
+    <value>Legende der Biomasse anzeigen</value>
+  </data>
+  <data name="AUTOSAVE_ECOSPACERESULTSREGION" xml:space="preserve">
+    <value>Ergebnisübersicht pro Region</value>
+  </data>
+  <data name="HEADER_COMPONENTS_REFERENCED" xml:space="preserve">
+    <value>Referenzierte Komponenten</value>
+  </data>
+  <data name="GENERIC_VALUE_MAPPOS_VALUE" xml:space="preserve">
+    <value>Zeile {3}, Spalte {4}; lon {0} {2}, lat {1} {2}; Wert: {5}</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_MISSING" xml:space="preserve">
+    <value>Die Datei '{0}' wurde nicht gefunden.</value>
+  </data>
+  <data name="HEADER_MAX_LENGTH" xml:space="preserve">
+    <value>Maximale Länge (cm)</value>
+  </data>
+  <data name="HEADER_SUM_COST_VARIABLE" xml:space="preserve">
+    <value>Variable Gesamtkosten</value>
+  </data>
+  <data name="PROMPT_STYLE_SAVE_SUCCESS" xml:space="preserve">
+    <value>Unter {0} gespeicherte Stile</value>
+  </data>
+  <data name="HEADER_EXISTENCE_VALUE" xml:space="preserve">
+    <value>Existenzwert</value>
+  </data>
+  <data name="DEFAULT_NEWLAYER_NUM" xml:space="preserve">
+    <value>Ebene {0}</value>
+  </data>
+  <data name="HEADER_LAYER_INDEXED" xml:space="preserve">
+    <value>Ebene {0}</value>
+  </data>
+  <data name="HEADER_PREYPREDATOR" xml:space="preserve">
+    <value>Beute \ Raubtier</value>
+  </data>
+  <data name="FILEFILTER_LOAD_RASTER" xml:space="preserve">
+    <value>Kommagetrennte Textdateien | * .csv | ESRI-ASCII-Datei | * .asc | ESRI-Formdatei | * .shp | Räumliche Rasterdateien | * .asc; * .csv; * .shp</value>
+  </data>
+  <data name="GENERIC_SHOW_LABELS" xml:space="preserve">
+    <value>Labels anzeigen</value>
+  </data>
+  <data name="HEADER_SHOW_LABELS" xml:space="preserve">
+    <value>Labels anzeigen</value>
+  </data>
+  <data name="HEADER_VALUEEND" xml:space="preserve">
+    <value>Wert (Ende)</value>
+  </data>
+  <data name="HEADER_BIOMASS_START" xml:space="preserve">
+    <value>Biomasse (Start)</value>
+  </data>
+  <data name="GENERIC_SHOW_LEGEND" xml:space="preserve">
+    <value>Legende anzeigen</value>
+  </data>
+  <data name="HEADER_BIOMASS_UPPER" xml:space="preserve">
+    <value>Biomasse oben</value>
+  </data>
+  <data name="HEADER_QUOTA_NOTUSED" xml:space="preserve">
+    <value>Keine Quote</value>
+  </data>
+  <data name="HEADER_INDEX_CONNECTANCE" xml:space="preserve">
+    <value>Verbindungsindex</value>
+  </data>
+  <data name="HEADER_RELATIVEWEIGHT" xml:space="preserve">
+    <value>Relatives Gewicht</value>
+  </data>
+  <data name="HEADER_BIOMASS_LOWER" xml:space="preserve">
+    <value>Biomasse niedriger</value>
+  </data>
+  <data name="HEADER_BIOMASS_LIMIT" xml:space="preserve">
+    <value>Biomasselimit</value>
+  </data>
+  <data name="HEADER_CONFIDENCEINTERVAL" xml:space="preserve">
+    <value>Conf. eingreifen. (+ / -%)</value>
+  </data>
+  <data name="HEADER_DENDEPCATCHABILITY_ABBR" xml:space="preserve">
+    <value>Dens. dep. Auffangbarkeit</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_FULLYEXPLOITED" xml:space="preserve">
+    <value>Ausgebeutet ||| Die Fischerei bewegt sich auf oder nahe an einem optimalen Ertragsniveau, ohne dass Raum für eine weitere Ausweitung erwartet wird</value>
+  </data>
+  <data name="HEADER_VULNERABILITY" xml:space="preserve">
+    <value>Verletzlichkeit</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLFIELDS" xml:space="preserve">
+    <value>(alle Felder)</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLFLEETS" xml:space="preserve">
+    <value>(alle Flotten)</value>
+  </data>
+  <data name="STYLEFLAGS_NAMES" xml:space="preserve">
+    <value>Name ||| Wert ist ein Name</value>
+  </data>
+  <data name="HEADER_POPULATIONBIOMASS" xml:space="preserve">
+    <value>Bevölkerungsbiomasse</value>
+  </data>
+  <data name="HEADER_MEASUREOFFIT" xml:space="preserve">
+    <value>Maß der Passung, t *</value>
+  </data>
+  <data name="CAPTION_DEFINE_MEDIATING_GROUPSANDFLEETS" xml:space="preserve">
+    <value>Vermittlungsgruppen und Flotten für "{0}" definieren</value>
+  </data>
+  <data name="GENERIC_VAUE_RUN_X" xml:space="preserve">
+    <value>{0} ausführen</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_MORTOTHER" xml:space="preserve">
+    <value>Mortalität andere</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_PRODUCTIONRATE" xml:space="preserve">
+    <value>Produktionsrate</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLGROUPS" xml:space="preserve">
+    <value>(alle Gruppen)</value>
+  </data>
+  <data name="HEADER_EFFORT_MEAN" xml:space="preserve">
+    <value>Aufwand bedeuten</value>
+  </data>
+  <data name="HEADER_LEFT_LIMIT" xml:space="preserve">
+    <value>Linke Grenze</value>
+  </data>
+  <data name="HEADER_FEEDINGTIME" xml:space="preserve">
+    <value>Fütterungszeit</value>
+  </data>
+  <data name="HEADER_AGE_FIRST_CAPTURE" xml:space="preserve">
+    <value>Alter zuerst erfassen</value>
+  </data>
+  <data name="SHAPEFUNCTION_HYPERBOLIC" xml:space="preserve">
+    <value>Hyperbolisch</value>
+  </data>
+  <data name="HEADER_CATCH_PERC_BELOW_REF" xml:space="preserve">
+    <value>Fang% unter Referenz</value>
+  </data>
+  <data name="HEADER_BIOMASS_MIN" xml:space="preserve">
+    <value>Biomasse min.</value>
+  </data>
+  <data name="HEADER_BIOMASS_MAX" xml:space="preserve">
+    <value>Biomasse max.</value>
+  </data>
+  <data name="ORGANISM_MAMMALS" xml:space="preserve">
+    <value>Säugetiere</value>
+  </data>
+  <data name="ABOUT_OS_VERSION" xml:space="preserve">
+    <value>Betriebssystem {0} ({1})</value>
+  </data>
+  <data name="GENERIC_SHOW_HIDDEN" xml:space="preserve">
+    <value>Versteckte Knoten anzeigen</value>
+  </data>
+  <data name="DEFAULT_NEWMODELNAME" xml:space="preserve">
+    <value>Neues Modell</value>
+  </data>
+  <data name="SHAPEFUNCTION_LEFTSHOULDER" xml:space="preserve">
+    <value>Linke Schulter</value>
+  </data>
+  <data name="GENERIC_VALUE_DELETE_PENDING" xml:space="preserve">
+    <value>(löschen)</value>
+  </data>
+  <data name="FILEFILTER_SPATTEMPCONFIG" xml:space="preserve">
+    <value>Räumliche temporäre Konfigurationsdateien | * .xml</value>
+  </data>
+  <data name="TOOLTIP_VIEWFOLDER" xml:space="preserve">
+    <value>Ordner anzeigen</value>
+  </data>
+  <data name="PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH" xml:space="preserve">
+    <value>Die ausgewählte Datei kann für diesen Zweck nicht verwendet werden. Beachten Sie, dass die Breite oder Höhe von Bildern 100 Pixel nicht überschreiten darf.</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_NOTASSESSED" xml:space="preserve">
+    <value>Nicht beurteilt</value>
+  </data>
+  <data name="HEADER_SHOWALL" xml:space="preserve">
+    <value>Zeige alles</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_VULNERABILITY" xml:space="preserve">
+    <value>Sicherheitslücke (v)</value>
+  </data>
+  <data name="HEADER_BIOMASS_PERC_BELOW_REF" xml:space="preserve">
+    <value>Biomasse% unter Referenz</value>
+  </data>
+  <data name="COMPATIBILITY_NOSPATIAL" xml:space="preserve">
+    <value>Keine räumliche || Keine räumliche Überlappung | Daten überlappen sich räumlich nicht mit dem Szenario</value>
+  </data>
+  <data name="HEADER_SIZECLASS" xml:space="preserve">
+    <value>Größenklasse</value>
+  </data>
+  <data name="FILE_SAVE_ERROR_DETAIL" xml:space="preserve">
+    <value>Speichern in Datei '{0}' nicht möglich. {1}</value>
+  </data>
+  <data name="DATASOURCE_EII" xml:space="preserve">
+    <value>* .eii | Ecopath 5 EII (* .eii) || Ye good ole Ecopath 5 EII-Textformat (* .eii)</value>
+  </data>
+  <data name="STYLEFLAGS_REMARKS" xml:space="preserve">
+    <value>Bemerkungen ||| Value hat Bemerkungen angehängt</value>
+  </data>
+  <data name="GENERIC_VALUE_GRID_CONTENT" xml:space="preserve">
+    <value>Rasterinhalt</value>
+  </data>
+  <data name="HEADER_TOTALLENGTH" xml:space="preserve">
+    <value>Gesamtlänge</value>
+  </data>
+  <data name="GENERIC_LABEL_PERUNIT" xml:space="preserve">
+    <value>(/ {0})</value>
+  </data>
+  <data name="OCCURRENCESTATUS_INTRODUCED" xml:space="preserve">
+    <value>Eingeführt</value>
+  </data>
+  <data name="HEADER_ECOSIM_YEARS" xml:space="preserve">
+    <value>Ecosim Jahre</value>
+  </data>
+  <data name="HEADER_TOTALVALUE_PERC" xml:space="preserve">
+    <value>Gesamtwert (%)</value>
+  </data>
+  <data name="STYLEFLAGS_SUM" xml:space="preserve">
+    <value>Summe ||| Wert ist ein Formelergebnis</value>
+  </data>
+  <data name="HEADER_BODYWEIGHT_LOGg" xml:space="preserve">
+    <value>Körpergewicht (log g)</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_CONTAMINANTS" xml:space="preserve">
+    <value>Kontaminanten</value>
+  </data>
+  <data name="COMPATIBILITY_NOTEMPORAL" xml:space="preserve">
+    <value>Keine zeitliche || Keine zeitliche Überlappung | Es liegen keine Daten für die Ecospace-Laufzeit vor</value>
+  </data>
+  <data name="AUTOSAVE_MONTECARLO" xml:space="preserve">
+    <value>Monte-Carlo-Versuchsergebnisse</value>
+  </data>
+  <data name="HEADER_SUM_VALUE_MARKET" xml:space="preserve">
+    <value>Gesamtmarktwert</value>
+  </data>
+  <data name="ECOLOGY_PELAGICOCEANIC" xml:space="preserve">
+    <value>Pelagisch-ozeanisch</value>
+  </data>
+  <data name="GENERIC_FILELOAD_FAILURE" xml:space="preserve">
+    <value>{0} konnte nicht von '{1}' geladen werden: {2}.</value>
+  </data>
+  <data name="HEADER_MAX_RECRUITMENT" xml:space="preserve">
+    <value>Max. Rekrutierung</value>
+  </data>
+  <data name="PROMPT_TIMESERIES_DELETE" xml:space="preserve">
+    <value>Sie löschen gerade die Zeitreihe '{0}'. Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie das wirklich tun?</value>
+  </data>
+  <data name="VERBOSE_DETAILED" xml:space="preserve">
+    <value>Detailliert</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_MPAS" xml:space="preserve">
+    <value>MPAs</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_CAPACITYINPUT" xml:space="preserve">
+    <value>Habitat Nahrungskapazität</value>
+  </data>
+  <data name="HEADER_RELATIVE_CATCH" xml:space="preserve">
+    <value>Relativer Fang</value>
+  </data>
+  <data name="UNIT_BYTE" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="HEADER_RELATIVE_VALUE" xml:space="preserve">
+    <value>Relativer Wert</value>
+  </data>
+  <data name="HEADER_COMPARTMENT" xml:space="preserve">
+    <value>Abteil</value>
+  </data>
+  <data name="HEADER_CATCH_LOWER" xml:space="preserve">
+    <value>Fangen Sie niedriger</value>
+  </data>
+  <data name="HEADER_CATCH_START" xml:space="preserve">
+    <value>Fang (Start)</value>
+  </data>
+  <data name="HEADER_CATCH_UPPER" xml:space="preserve">
+    <value>Fang oben</value>
+  </data>
+  <data name="COLORRAMP_EWE" xml:space="preserve">
+    <value>Standard EWE Farbschema</value>
+  </data>
+  <data name="HEADER_RIGHT_LIMIT" xml:space="preserve">
+    <value>Richtige Grenze</value>
+  </data>
+  <data name="GENERIC_ZOOM_RESET" xml:space="preserve">
+    <value>Zoom zurücksetzen</value>
+  </data>
+  <data name="HEADER_COMPONENT" xml:space="preserve">
+    <value>Komponente</value>
+  </data>
+  <data name="GENERIC_VALUE_NOTAVAILABLE" xml:space="preserve">
+    <value>(n / a)</value>
+  </data>
+  <data name="METADATA_BOOLEAN" xml:space="preserve">
+    <value>ja Nein</value>
+  </data>
+  <data name="HEADER_CATCH_CV" xml:space="preserve">
+    <value>Lebenslauf fangen</value>
+  </data>
+  <data name="OCCURRENCESTATUS_ENDEMIC" xml:space="preserve">
+    <value>Endemisch</value>
+  </data>
+  <data name="HEADER_HALF_MAX_RECRUITMENT" xml:space="preserve">
+    <value>Halb max. Rekrutierung</value>
+  </data>
+  <data name="HEADER_FIB" xml:space="preserve">
+    <value>FIB-Index</value>
+  </data>
+  <data name="HEADER_AIC" xml:space="preserve">
+    <value>Akaike-Informationskriterien</value>
+  </data>
+  <data name="HEADER_MPA" xml:space="preserve">
+    <value>MPA</value>
+  </data>
+  <data name="HEADER_COL" xml:space="preserve">
+    <value>Säule</value>
+  </data>
+  <data name="HEADER_LOW" xml:space="preserve">
+    <value>Niedrig</value>
+  </data>
+  <data name="HEADER_TAC" xml:space="preserve">
+    <value>Zulässiger Gesamtfang</value>
+  </data>
+  <data name="HEADER_TFM" xml:space="preserve">
+    <value>Zielfischerei Mortalität</value>
+  </data>
+  <data name="HEADER_TLC" xml:space="preserve">
+    <value>Trophäen-Level des Fangs</value>
+  </data>
+  <data name="HEADER_ROW" xml:space="preserve">
+    <value>Reihe</value>
+  </data>
+  <data name="HEADER_PBZ" xml:space="preserve">
+    <value>Prod / Biom oder Z</value>
+  </data>
+  <data name="HEADER_SUM" xml:space="preserve">
+    <value>Summe</value>
+  </data>
+  <data name="GENERIC_VALUE_ITERATION" xml:space="preserve">
+    <value>Iteration {0}</value>
+  </data>
+  <data name="FITRESPONSE_NONE" xml:space="preserve">
+    <value>Keiner</value>
+  </data>
+  <data name="BUTTON_NONE" xml:space="preserve">
+    <value>Keiner</value>
+  </data>
+  <data name="HEADER_CODE_SEALIFEBASE" xml:space="preserve">
+    <value>SLB-ID | Taxonomiecode in SeaLifeBase</value>
+  </data>
+  <data name="HEADER_RESPIRATIONASSIMILATION" xml:space="preserve">
+    <value>Atmung / Assimilation</value>
+  </data>
+  <data name="STYLEFLAGS_VALUECOMPUTED" xml:space="preserve">
+    <value>Berechnet ||| Wert wurde berechnet oder geschätzt</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_DATA" xml:space="preserve">
+    <value>Die Datei '{0}' enthielt keine Daten.</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_READ" xml:space="preserve">
+    <value>Die Datei '{0}' konnte nicht gelesen werden.</value>
+  </data>
+  <data name="ORGANISM_ALGAE" xml:space="preserve">
+    <value>Algen</value>
+  </data>
+  <data name="HEADER_NET_ECONOMIC_VALUE_ABBR" xml:space="preserve">
+    <value>Econ.</value>
+  </data>
+  <data name="ORGANISM_OTHER" xml:space="preserve">
+    <value>(Andere)</value>
+  </data>
+  <data name="HEADER_DETRITUS" xml:space="preserve">
+    <value>Detritus</value>
+  </data>
+  <data name="ORGANISM_BIRDS" xml:space="preserve">
+    <value>Vögel</value>
+  </data>
+  <data name="HEADER_EXPLOITATION_STATUS" xml:space="preserve">
+    <value>Nutzungsstatus</value>
+  </data>
+  <data name="ORGANISM_FUNGI" xml:space="preserve">
+    <value>Pilze</value>
+  </data>
+  <data name="BA_CALC_FROMECOPATH" xml:space="preserve">
+    <value>Wert der Anreicherung von Ökopath-Biomasse</value>
+  </data>
+  <data name="HEADER_FISHING" xml:space="preserve">
+    <value>Angeln</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_FISHING" xml:space="preserve">
+    <value>Angeln</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
+    <value>Relative Biomasse (Referenz)</value>
+  </data>
+  <data name="TS_TYPE_BIOMASSABS" xml:space="preserve">
+    <value>Absolute Biomasse (Referenz)</value>
+  </data>
+  <data name="STATUS_TIMESERIES_ADDING" xml:space="preserve">
+    <value>Zeitreihe {0} wird hinzugefügt ...</value>
+  </data>
+  <data name="PROMPT_REQUIRES_ADMINISTRATOR" xml:space="preserve">
+    <value>EWE muss mit Administratorrechten ausgeführt werden, damit Ihre Änderungen wirksam werden.</value>
+  </data>
+  <data name="SHAPEFUNCTION_BETAPDF" xml:space="preserve">
+    <value>Beta-Funktion</value>
+  </data>
+  <data name="HEADER_LANDINGS" xml:space="preserve">
+    <value>Landungen</value>
+  </data>
+  <data name="HEADER_STANZA_AGE" xml:space="preserve">
+    <value>Stanza-Alter (in Monaten)</value>
+  </data>
+  <data name="HEADER_SUM_CONSUMPTION" xml:space="preserve">
+    <value>Summe des gesamten Verbrauchs</value>
+  </data>
+  <data name="GENERIC_VALUE_PARTIAL" xml:space="preserve">
+    <value>(teilweise)</value>
+  </data>
+  <data name="HEADER_BIOACCUM" xml:space="preserve">
+    <value>Akkumulation von Biomasse</value>
+  </data>
+  <data name="HEADER_ECOSPACE_AREA" xml:space="preserve">
+    <value>Ecospace-Bereich</value>
+  </data>
+  <data name="PROMPT_STYLE_SAVE_FAILED" xml:space="preserve">
+    <value>Styles konnten nicht unter {0} gespeichert werden. {1}</value>
+  </data>
+  <data name="LABEL_ALL_SUPPORTED_FILES" xml:space="preserve">
+    <value>Alle unterstützten Dateien</value>
+  </data>
+  <data name="GENERIC_LABEL_STEP_SIZE" xml:space="preserve">
+    <value>Schrittlänge</value>
+  </data>
+  <data name="ORGANISM_BACTERIA" xml:space="preserve">
+    <value>Bakterien</value>
+  </data>
+  <data name="HEADER_CC_OVER_B" xml:space="preserve">
+    <value>Tragfähigkeit / Ökopathische Biomasse</value>
+  </data>
+  <data name="HEADER_TOTALPROFIT" xml:space="preserve">
+    <value>Gesamtgewinn</value>
+  </data>
+  <data name="HEADER_SUM_VALUE_SHADOW" xml:space="preserve">
+    <value>Gesamtschattenwert</value>
+  </data>
+  <data name="HEADER_NET_ECONOMIC_VALUE" xml:space="preserve">
+    <value>Nettowirtschaftswert</value>
+  </data>
+  <data name="COMPATIBILITY_ERRORS" xml:space="preserve">
+    <value>{0} Fehler ||| Die Daten enthalten {0} Fehler für den Ecospace-Ausführungszeitraum. Bitte prüfe</value>
+  </data>
+  <data name="HEADER_TIMESERIES" xml:space="preserve">
+    <value>Zeitfolgen</value>
+  </data>
+  <data name="HEADER_SCALEDVALUES" xml:space="preserve">
+    <value>Skalierte Werte</value>
+  </data>
+  <data name="COMMAND_DEFINEMPAS" xml:space="preserve">
+    <value>Meeresschutzgebiete definieren</value>
+  </data>
+  <data name="GENERIC_LABEL_SCENARIODETAILS" xml:space="preserve">
+    <value>{0} ({1} {2})</value>
+  </data>
+  <data name="HEADER_APPEARANCE" xml:space="preserve">
+    <value>Aussehen</value>
+  </data>
+  <data name="ORGANISM_PLANTS" xml:space="preserve">
+    <value>Pflanzen</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_NEARTHREATENED" xml:space="preserve">
+    <value>NT || Fast bedroht</value>
+  </data>
+  <data name="GENERIC_VALUE_NONE" xml:space="preserve">
+    <value>(keiner)</value>
+  </data>
+  <data name="GENERIC_VALUE_FULL" xml:space="preserve">
+    <value>(voll)</value>
+  </data>
+  <data name="ECOLOGY_BATHYPELAGIC" xml:space="preserve">
+    <value>Bathypelagic</value>
+  </data>
+  <data name="ECOLOGY_BENTHIC" xml:space="preserve">
+    <value>Benthic</value>
+  </data>
+  <data name="HEADER_INDEXVALUE" xml:space="preserve">
+    <value>Indexwert</value>
+  </data>
+  <data name="HEADER_OUTPUT_LOCATION" xml:space="preserve">
+    <value>Ausgabeort</value>
+  </data>
+  <data name="HEADER_PROBABILITY" xml:space="preserve">
+    <value>Wahrscheinlichkeit</value>
+  </data>
+  <data name="HEADER_LATIN_NAME" xml:space="preserve">
+    <value>lateinischer Name</value>
+  </data>
+  <data name="PROMPT_SHOWTITLE_DESCR" xml:space="preserve">
+    <value>Titel ein- oder ausblenden</value>
+  </data>
+  <data name="HEADER_CATCH_E_OVER_S" xml:space="preserve">
+    <value>Fängt)</value>
+  </data>
+  <data name="HEADER_G" xml:space="preserve">
+    <value>G</value>
+  </data>
+  <data name="SHAPEFUNCTION_EXPONENTIAL" xml:space="preserve">
+    <value>Exponentiell</value>
+  </data>
+  <data name="HEADER_EFFORT_PERC_BELOW_REF" xml:space="preserve">
+    <value>Aufwand% unter Referenz</value>
+  </data>
+  <data name="HEADER_NETEFFICIENCY" xml:space="preserve">
+    <value>Nettoeffizienz</value>
+  </data>
+  <data name="HEADER_EMPTY_PANEL" xml:space="preserve">
+    <value>Leere Tafel</value>
+  </data>
+  <data name="DEFAULT_NEWMAP_NUM" xml:space="preserve">
+    <value>Kapazitätszuordnung {0}</value>
+  </data>
+  <data name="HEADER_COST_E_OVER_S" xml:space="preserve">
+    <value>Kosten (E / S)</value>
+  </data>
+  <data name="HEADER_BIODIVERSITY" xml:space="preserve">
+    <value>Biodiversität</value>
+  </data>
+  <data name="HEADER_FISHING_EFFORT_MODIFIER" xml:space="preserve">
+    <value>Modifizierer des Fischereiaufwands</value>
+  </data>
+  <data name="HEADER_ECOSPACE_YEARS" xml:space="preserve">
+    <value>Ecospace Jahre</value>
+  </data>
+  <data name="HEADER_NODE_SIZE" xml:space="preserve">
+    <value>Knotengröße</value>
+  </data>
+  <data name="HEADER_NODE_TYPE" xml:space="preserve">
+    <value>Knotentyp</value>
+  </data>
+  <data name="TIMESERIES_WARNING_NOFLEET" xml:space="preserve">
+    <value>Nicht mit einer gültigen Flotte verbunden</value>
+  </data>
+  <data name="HEADER_VULNERABILITY_INDEX" xml:space="preserve">
+    <value>Schwachstellenindex [0, 100]</value>
+  </data>
+  <data name="TIMESERIES_WARNING_NOGROUP" xml:space="preserve">
+    <value>Nicht mit einer gültigen Gruppe verknüpft</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_DEPLETED" xml:space="preserve">
+    <value>Erschöpft ||| Die Fänge liegen ungeachtet des Fischereiaufwands weit unter dem historischen Niveau</value>
+  </data>
+  <data name="HEADER_VULNERABILITY_WO_FT" xml:space="preserve">
+    <value>Sicherheitslücke ohne FT</value>
+  </data>
+  <data name="HEADER_ECOLOGY" xml:space="preserve">
+    <value>Ökologie</value>
+  </data>
+  <data name="CLIMATE_TEMPORAL" xml:space="preserve">
+    <value>Temporal ||| Temporal (30 bis 60 Grad)</value>
+  </data>
+  <data name="HEADER_HABITAT" xml:space="preserve">
+    <value>Lebensraum</value>
+  </data>
+  <data name="TOOLTIP_LOADFROMCSV" xml:space="preserve">
+    <value>Aus CSV-Datei laden</value>
+  </data>
+  <data name="HEADER_ASSIGNED_FORAGING_RESPONSES" xml:space="preserve">
+    <value>Suche nach Antwort auf {0}</value>
+  </data>
+  <data name="GENERIC_VALUE_INVALID" xml:space="preserve">
+    <value>Ungültig</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_DETAIL" xml:space="preserve">
+    <value>Laden aus Datei '{0}' nicht möglich. {1}</value>
+  </data>
+  <data name="CAPACITY_SET_SHAPE_MINMAX" xml:space="preserve">
+    <value>Eingabedatenbereich für Funktion {0} festlegen</value>
+  </data>
+  <data name="HEADER_BIOMASS_PERC_ABOVE_REF" xml:space="preserve">
+    <value>Biomasse% über Referenz</value>
+  </data>
+  <data name="DATASOURCE_EIIXML" xml:space="preserve">
+    <value>* .eiixml | EII-Markup (* .eiixml) || XML-formatiertes EII (* .eiixml)</value>
+  </data>
+  <data name="GENERAL_LABEL_MONTHLY" xml:space="preserve">
+    <value>Monatlich</value>
+  </data>
+  <data name="SHAPEFUNCTION_NOTSET" xml:space="preserve">
+    <value>(Freihand) ||| Die Form ist kein Grundelement und wird entweder skizziert oder die Daten werden auf andere Weise erhalten</value>
+  </data>
+  <data name="STATUS_UPDATING" xml:space="preserve">
+    <value>Aktualisierung, bitte warten ...</value>
+  </data>
+  <data name="SHAPEFUNCTION_NORMAL" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="HEADER_CATCH_CUMULATIVE" xml:space="preserve">
+    <value>Kumulativer Fang</value>
+  </data>
+  <data name="METADATA_TEXT" xml:space="preserve">
+    <value>Max. {0} Zeichen</value>
+  </data>
+  <data name="COMPATIBILITY_NOTSET" xml:space="preserve">
+    <value>(Nicht indiziert) ||| Daten wurden noch nicht indiziert</value>
+  </data>
+  <data name="GENERIC_CURRENCIES" xml:space="preserve">
+    <value>AED | VAE Dirham | AFN | Afghanistan Afghani | ALLE | Albanischer Lek | AMD | Armenischer Dram | ANG | Antillianischer Gulden | AOR | Angolanischer Neukwanza | ARS | Argentinischer Peso | AUD | Australischer Dollar | AWG | Arubanischer Florin | AZM | Aserbaidschanischer Manat | BAM | Bosnisch Konvertibilna Marka | BBD | Barbadischer Dollar | BDT | Bangladesch Taka | BGN | Bulgarischer Neuer Lew | BHD | Bahrainischer Dinar | BIF | Burundischer Franc | BMD | Bermudanischer Dollar | BND | Brunei-Dollar | BOB | Bolivianischer Boliviano | BRL | Brasilianischer Real | BSD | Bahamas-Dollar | BTN | Bhutanischer Ngultrum | BWP | Botsuana-Pula | BYB | Weißrussischer Rubel | BZD | Belize-Dollar | CAD | Kanadischer Dollar | CDF | Kongolesischer Franken | CHF | Schweizer Franken | CLP | Chilenischer Peso | CNY | Chinesischer Yuan Renminbi | COP | Kolumbianischer Peso | CRC | Costa Rica Colon | CUP | Kubanischer Peso | CVE | Kapverdischer Escudo | CZK | Tschechische Krone | DJF | Dschibutischer Franc | DKK | Dänische Krone | DOP | Dominikanische Republik Peso | DZD | Algerier Dinar | ECS | Ecuador Sucre | EEK | Estnische Krone | EGP | Ägyptisches Pfund | ETB | Äthiopischer Birr | EUR | Euro | FJD | Fidschi-Dollar | FKP | Falkland-Inseln-Pfund | FRF | Französischer Franc | GBP | Britisches Pfund Sterling | GEL | Georgian Lari | GHC | Ghana Cedi | GIP | Gibraltarisches Pfund | GMD | Gambischer Dalasi | GNF | Guinean Franc | GTQ | Guatemaltekischer Quetzal | GYD | Guyanischer Dollar | HKD | Hongkong-Dollar | HNL | Honduranischer Lempira | HRK | Kroatische Kuna | HTG | Haitianische Gourde | HUF | Ungarischer Forint | IDR | Indonesische Rupiah | ILS | Israelischer Schekel | INR | Indische Rupie | IQD | Irakischer Dinar | IRR | Iranischer Rial | ISK | Isländische Krone | JMD | Jamaikanischer Dollar | JOD | Jordanischer Dinar | JPY | Japanischer Yen | KES | Kenianischer Schilling | KGS | Kirgisistan Som | KHR | Kambodschanischer Riel | KMF | Komorenfranken | KPW | Koreanische PR gewonnen (N.Korea) | KRW | Koreanische Republik gewonnen (S.Korea) | KWD | Kuwaitischer Dinar | KYD | Kaimanischer Dollar | KZT | Kasachstan Tenge | LAK | Laos Kip | LBP | Libanesisches Pfund | LKR | Sri Lanka Rupie | LRD | Liberianischer Dollar | LSL | Lesothischer Loti | LTL | Litauischer Litas | LVL | Lettischer Lat | LYD | Libyscher Dinar | MAD | Marokkanischer Dirham | MAD | Marokkanischer Dirham | MDL | Moldauischer Leu | MGF | Madagassischer Franc | MKD | Mazedonischer Denar | MMK | Myanmar Kyat | MNT | Mongolischer Tugrik | MOP | Macau Pataca | MRO | Mauretanischer Ougiya | MUR | Mauritian Rupee | MVR | Maldivian Rufiyaa | MWK Malawi Kwacha | MXN | Mexikanischer Neuer Peso | MYR | Malaysischer Ringgit | MZM | Mosambik ique Metical | NAD | Namibia-Dollar | NGN | Nigerianische Naira | NIO | Nicaraguanische Crdoba | NOK | Norwegische Krone | NPR | Nepalesische Rupie | NZD | Neuseeland-Dollar | OMR | Omanischer Rial | PAB | Panamanischer Balboa | PEN | Peruanischer Neuer Sol | PGK | Papua-Neuguinea Kina | PHP | Philippinischer Piso | PKR | Pakistanische Rupie | PLN | Polnischer Neuer Zloty | PYG | Paraguayischer Guaran | QAR | Katarischer Rial | ROL | Rumänischer Leu | RSD | Serbischer Dinar | RUB | Russischer Rubel | RWF | Ruandischer Franken | SAR | Saudi-Rial | SBD | Salomonen-Dollar | SCR | Seychellen-Rupie | SDD | Sudanesischer Dinar | SEK | Schwedische Krone | SGD | Singapurischer Dollar | SHP | St. Helena Pfund | SKK | Slowakische Krone | SLL | Sierra Leone Leone | SOS | Somalischer Schilling | SRG | Surinamischer Gulden | STD | Sáo Tome &amp; Principe Dobra | SVC | Salvadorianisches Colon | SYP | Syrisches Pfund | SZL | Swasiland Lilangeni | THB | Thailändischer Baht | TJR | Tadschikistanischer Rubel | TMM | Turkmenistan Manat | TND | Tunesischer Dinar | TOP | Tonga Pa'anga | TRY | Neue Türkische Lira | TTD | Trinidad-Dollar | TWD | Taiwanesischer Yuan | TZS | Tansania-Schilling | UAH | Ukraine Hryvnias | UGX | Uganda-neuer Schilling | USD | US-Dollar | UYU | Peso Uruguayo | UZS | Usbekistan Summe | VEB | Vene zuelan Bolvar | VND | Vietnamese New Dng | VUV | Vanuatu Vatu | WST | West-Samoa Tala | XAF | CFA Zentralfranken | XCD | Ostkaribischer Dollar | XOF | CFA Westfranken | XPF | Französisch-Polynesischer CFA Frankreich (CFP) | YER | Jemen Rial | ZAR | Südafrikanischer Rand | ZMK | Sambischer Kwacha | ZWD | Simbabwe-Dollar</value>
+  </data>
+  <data name="HEADER_DISCARDS_BREAKDOWN" xml:space="preserve">
+    <value>Rückwürfe (Gruppe x Flotte)</value>
+  </data>
+  <data name="AUTOSAVE_ALL" xml:space="preserve">
+    <value>Alles automatisch speichern</value>
+  </data>
+  <data name="AUTOSAVE_MSE" xml:space="preserve">
+    <value>MSE-Ergebnisse</value>
+  </data>
+  <data name="AUTOSAVE_MSY" xml:space="preserve">
+    <value>MSY-Iterationen</value>
+  </data>
+  <data name="ECOLOGY_PELAGICNERITIC" xml:space="preserve">
+    <value>Pelagisch-neritisch</value>
+  </data>
+  <data name="CAPTION_SELECT_FILE" xml:space="preserve">
+    <value>Datei aussuchen</value>
+  </data>
+  <data name="COMMAND_DEFINEREGIONS" xml:space="preserve">
+    <value>Definieren Sie die Anzahl der Regionen oder erstellen Sie Regionen für alle MPAs oder Habitate</value>
+  </data>
+  <data name="BUTTON_ABORT" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="HEADER_SUM_VALUE" xml:space="preserve">
+    <value>Gesamtwert</value>
+  </data>
+  <data name="HEADER_TOTALVALUE" xml:space="preserve">
+    <value>Gesamtwert</value>
+  </data>
+  <data name="HEADER_1_MINUS_SUM" xml:space="preserve">
+    <value>(1 - Summe)</value>
+  </data>
+  <data name="HEADER_BIOMASS_ECOPATH" xml:space="preserve">
+    <value>Ökopathische Biomasse</value>
+  </data>
+  <data name="HEADER_SUM_CATCH" xml:space="preserve">
+    <value>Gesamtfang</value>
+  </data>
+  <data name="HEADER_TOTALCATCH" xml:space="preserve">
+    <value>Gesamtfang</value>
+  </data>
+  <data name="BUTTON_RETRY" xml:space="preserve">
+    <value>Wiederholen</value>
+  </data>
+  <data name="HEADER_FISHING_ALL" xml:space="preserve">
+    <value>Überall angeln</value>
+  </data>
+  <data name="HEADER_SCENARIO" xml:space="preserve">
+    <value>Szenario</value>
+  </data>
+  <data name="FILEFILTER_XML" xml:space="preserve">
+    <value>XML-Dateien | * .xml</value>
+  </data>
+  <data name="FILEFILTER_XYZ" xml:space="preserve">
+    <value>XYZ-Punktdatendatei | * .xyz</value>
+  </data>
+  <data name="FILEFILTER_CSV" xml:space="preserve">
+    <value>Kommagetrennte Textdateien (* .csv) | * .csv</value>
+  </data>
+  <data name="FILEFILTER_ASC" xml:space="preserve">
+    <value>ESRI Asc-Dateien | * .asc; * .txt</value>
+  </data>
+  <data name="FILEFILTER_ALL" xml:space="preserve">
+    <value>Alle Dateien | *. *</value>
+  </data>
+  <data name="TSDATASETINTERVAL_TIMESTEP" xml:space="preserve">
+    <value>Zeitschritt</value>
+  </data>
+  <data name="GENERIC_STATUS_RUNNINGPLUGIN" xml:space="preserve">
+    <value>Plug-in wird ausgeführt ...</value>
+  </data>
+  <data name="HEADER_MAXFISHINGMORTAILITY" xml:space="preserve">
+    <value>Maximale fischende Sterblichkeit</value>
+  </data>
+  <data name="CLIMATE_TROPICAL" xml:space="preserve">
+    <value>Tropisch ||| tropisch (0 bis 30 Grad)</value>
+  </data>
+  <data name="HEADER_ENABLED" xml:space="preserve">
+    <value>aktiviert</value>
+  </data>
+  <data name="HEADER_PREDATION" xml:space="preserve">
+    <value>Predation</value>
+  </data>
+  <data name="ECOLOGY_DEMERSAL" xml:space="preserve">
+    <value>Demersal</value>
+  </data>
+  <data name="SHAPEFUNCTION_LINEAR" xml:space="preserve">
+    <value>Linear</value>
+  </data>
+  <data name="BUTTON_IGNORE" xml:space="preserve">
+    <value>Ignorieren</value>
+  </data>
+  <data name="TS_TYPE_DISCARDPROP" xml:space="preserve">
+    <value>Anteil verwerfen</value>
+  </data>
+  <data name="TS_TYPE_DISCARDMORT" xml:space="preserve">
+    <value>Mortalität verwerfen</value>
+  </data>
+  <data name="HEADER_DISCARD_MORT" xml:space="preserve">
+    <value>Mortalität verwerfen</value>
+  </data>
+  <data name="SHAPEFUNCTION_RIGHTSHOULDER" xml:space="preserve">
+    <value>Rechte Schulter</value>
+  </data>
+  <data name="COMMAND_DEFINEGROUPS" xml:space="preserve">
+    <value>Funktionsgruppen definieren</value>
+  </data>
+  <data name="HEADER_TOTALDISCARDS" xml:space="preserve">
+    <value>Rückwürfe insgesamt</value>
+  </data>
+  <data name="HEADER_BIOMASSES" xml:space="preserve">
+    <value>Biomasse (E / S)</value>
+  </data>
+  <data name="DEFAULT_NEWFLEET_NUM" xml:space="preserve">
+    <value>Flotte {0}</value>
+  </data>
+  <data name="HEADER_PROP_NAT_MORT" xml:space="preserve">
+    <value>Anteil natürliche mort.</value>
+  </data>
+  <data name="HEADER_ASSIGNED_GROUPS_FLEETS" xml:space="preserve">
+    <value>Zugewiesene Gruppen und Flotten</value>
+  </data>
+  <data name="HEADER_HALF_RECRUITMENT_B" xml:space="preserve">
+    <value>Die Hälfte der Rekrutierungsbiomasse</value>
+  </data>
+  <data name="CLIMATE_POLAR" xml:space="preserve">
+    <value>Polar ||| Polar (60 bis 90 Grad)</value>
+  </data>
+  <data name="GENERIC_VALUE_TIMES" xml:space="preserve">
+    <value>x {0}</value>
+  </data>
+  <data name="LABEL_RESUME" xml:space="preserve">
+    <value>Fortsetzen</value>
+  </data>
+  <data name="TS_TYPE_CONSTTOTALMORT" xml:space="preserve">
+    <value>Konstante Gesamtmortalität</value>
+  </data>
+  <data name="GENERIC_VALUE_ERROR" xml:space="preserve">
+    <value>(Error)</value>
+  </data>
+  <data name="SHAPEFUNCTION_SIGMOID" xml:space="preserve">
+    <value>Sigmoid</value>
+  </data>
+  <data name="HEADER_FLEETNAME" xml:space="preserve">
+    <value>Flottenname</value>
+  </data>
+  <data name="STYLEFLAGS_FAILEDVALIDATION" xml:space="preserve">
+    <value>Eingabefehler || Ungültige Eingabe | Eingegebener Wert nicht akzeptiert</value>
+  </data>
+  <data name="HEADER_INDIVIDUAL_WEIGHT" xml:space="preserve">
+    <value>Individuelles Gewicht</value>
+  </data>
+  <data name="ABOUT_64BIT" xml:space="preserve">
+    <value>64 bit</value>
+  </data>
+  <data name="GENERIC_STATUS_APPLYCHANGES" xml:space="preserve">
+    <value>Änderungen übernehmen ...</value>
+  </data>
+  <data name="ABOUT_32BIT" xml:space="preserve">
+    <value>32 bit</value>
+  </data>
+  <data name="EXPLOITATIONSTATUS_OVEREXPLOITED" xml:space="preserve">
+    <value>Übernutzte Bestände ||| Die Fischerei wird auf einem Niveau betrieben, das langfristig als nachhaltig angesehen wird. Es besteht kein Potenzial für eine weitere Expansion und ein höheres Risiko für die Erschöpfung / den Zusammenbruch der Bestände</value>
+  </data>
+  <data name="HEADER_MCTRIALS" xml:space="preserve">
+    <value>Monte Carlo Versuche</value>
+  </data>
+  <data name="CAPTION_SELECT_FILES" xml:space="preserve">
+    <value>Dateien auswählen</value>
+  </data>
+  <data name="HEADER_SWITCHINGPOWER" xml:space="preserve">
+    <value>Schaltleistung</value>
+  </data>
+  <data name="HEADER_SAILINGRELATEDCOST" xml:space="preserve">
+    <value>Segelkosten (%)</value>
+  </data>
+  <data name="GENERIC_CHAR_ENTER" xml:space="preserve">
+    <value>(eingeben)</value>
+  </data>
+  <data name="GENERIC_CHAR_COLON" xml:space="preserve">
+    <value>: (Doppelpunkt)</value>
+  </data>
+  <data name="GENERIC_CHAR_COMMA" xml:space="preserve">
+    <value>, (Komma)</value>
+  </data>
+  <data name="HEADER_EFFORT_UPPER" xml:space="preserve">
+    <value>Anstrengung nach oben</value>
+  </data>
+  <data name="GENERIC_LABEL_CAPTION" xml:space="preserve">
+    <value>{1} - {0}</value>
+  </data>
+  <data name="DEFAULT_NEWMPA_NUM" xml:space="preserve">
+    <value>MPA {0}</value>
+  </data>
+  <data name="GENERIC_CHAR_SPACE" xml:space="preserve">
+    <value>(Platz)</value>
+  </data>
+  <data name="RESPONSE_GRAPH_TITLE" xml:space="preserve">
+    <value>Fahrerhistogramm &amp; Reaktionsfunktion</value>
+  </data>
+  <data name="HEADER_STANZAGROUP_NAME" xml:space="preserve">
+    <value>Name einer Gruppe mit mehreren Zeilengruppen</value>
+  </data>
+  <data name="HEADER_EFFORT_CV" xml:space="preserve">
+    <value>Bemühungs-Lebenslauf</value>
+  </data>
+  <data name="HEADER_EFFORT_LOWER" xml:space="preserve">
+    <value>Aufwand geringer</value>
+  </data>
+  <data name="HEADER_MEAN_CATCH_TL" xml:space="preserve">
+    <value>Mittleres trophisches Niveau des Fangs</value>
+  </data>
+  <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
+    <value>{0} konnte nicht unter '{1}': {2} gespeichert werden.</value>
+  </data>
+  <data name="OCCURRENCESTATUS_QUESTIONABLE" xml:space="preserve">
+    <value>Fraglich</value>
+  </data>
+  <data name="HEADER_QUOTA_STRONGESTSTOCK" xml:space="preserve">
+    <value>Höchstwertige Aktienquote</value>
+  </data>
+  <data name="HEADER_CATCH_WEIGHT" xml:space="preserve">
+    <value>Fanggewicht</value>
+  </data>
+  <data name="PROMPT_SHAPE_DELETE_MULTIPLE" xml:space="preserve">
+    <value>Sie sind dabei, {0} Forcing- oder Mediationsfunktionen zu löschen. ' Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie das wirklich tun?</value>
+  </data>
+  <data name="HEADER_PROPORTION_B" xml:space="preserve">
+    <value>Anteil der Biomasse</value>
+  </data>
+  <data name="HEADER_WITH_FORAGING_TIME" xml:space="preserve">
+    <value>Mit Futtersuche Zeit einstellen</value>
+  </data>
+  <data name="HEADER_OMNIVORYINDEX" xml:space="preserve">
+    <value>Allesfresser-Index</value>
+  </data>
+  <data name="HEADER_ECOPATH_PEDIGREE" xml:space="preserve">
+    <value>Ökopath Stammbaum</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWCAPACITYSHAPE" xml:space="preserve">
+    <value>Umweltreaktion {0}</value>
+  </data>
+  <data name="GENERIC_VALUE_PERCENTAGE" xml:space="preserve">
+    <value>{0}%</value>
+  </data>
+  <data name="CAPTION_GENERIC_EDIT" xml:space="preserve">
+    <value>{0} bearbeiten</value>
+  </data>
+  <data name="STYLEFLAGS_CHECKED" xml:space="preserve">
+    <value>Warnung ||| Wert erfordert Ihre Aufmerksamkeit</value>
+  </data>
+  <data name="HEADER_TOTEFFMULTI" xml:space="preserve">
+    <value>Knirps. eff. multiplizieren.</value>
+  </data>
+  <data name="HEADER_RESPONSE_TARGET" xml:space="preserve">
+    <value>Antwortfunktion '{0}'</value>
+  </data>
+  <data name="HEADER_B_OVER_CC" xml:space="preserve">
+    <value>Ökopathische Biomasse / Tragfähigkeit</value>
+  </data>
+  <data name="HEADER_MAXWEIGHT" xml:space="preserve">
+    <value>Max. Gewicht</value>
+  </data>
+  <data name="GENERIC_CHAR_SEMICOLON" xml:space="preserve">
+    <value>; (Semikolon)</value>
+  </data>
+  <data name="HEADER_LATITUDE" xml:space="preserve">
+    <value>Breite</value>
+  </data>
+  <data name="PROMPT_MAPLOAD_MISSING" xml:space="preserve">
+    <value>Daten für {0} Zelle (n) fehlen</value>
+  </data>
+  <data name="HEADER_GROUPNUM" xml:space="preserve">
+    <value>Gruppennummer</value>
+  </data>
+  <data name="TS_TYPE_TIMEFORCING" xml:space="preserve">
+    <value>Zeit zu zwingen</value>
+  </data>
+  <data name="HEADER_TIMEFORCING" xml:space="preserve">
+    <value>Zeit zu zwingen</value>
+  </data>
+  <data name="HEADER_HABITAT_ABBR" xml:space="preserve">
+    <value>Hab</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_ARENAAREA" xml:space="preserve">
+    <value>Arenabereich (A)</value>
+  </data>
+  <data name="HEADER_CATCH_STDDEV" xml:space="preserve">
+    <value>Fang std.</value>
+  </data>
+  <data name="HEADER_LEADING_CB" xml:space="preserve">
+    <value>Führendes Q / B</value>
+  </data>
+  <data name="BIODIVERSITY_KEMPTONSQ" xml:space="preserve">
+    <value>Kemptons Q</value>
+  </data>
+  <data name="COMPATIBILITY_TEMPORALNOTINDEXED" xml:space="preserve">
+    <value>Unbekannte räumliche || räumliche Überlappung unbekannt | Die räumliche Überlappung wurde noch nicht bestimmt</value>
+  </data>
+  <data name="TOOLTIP_MEDIATION_CAPACITY_MULTIPLIER" xml:space="preserve">
+    <value>Kapazitätsmultiplikator {0}</value>
+  </data>
+  <data name="CAPACITY_XLABEL" xml:space="preserve">
+    <value>Eingang</value>
+  </data>
+  <data name="STYLEFLAGS_TAXONNAME" xml:space="preserve">
+    <value>Taxon ||| Wert ist ein taxonomischer Name</value>
+  </data>
+  <data name="UNIT_TERABYTE" xml:space="preserve">
+    <value>TB</value>
+  </data>
+  <data name="CAPTION_DEFINE_MEDIATING_LANDINGS" xml:space="preserve">
+    <value>Angebot für '{0}' definieren</value>
+  </data>
+  <data name="HEADER_EXCRETION_RATE" xml:space="preserve">
+    <value>Prop. Des Schadstoffs ausgeschieden</value>
+  </data>
+  <data name="HEADER_CATCH_BREAKDOWN" xml:space="preserve">
+    <value>Fang (Gruppe x Flotte)</value>
+  </data>
+  <data name="HEADER_INCREASEQ" xml:space="preserve">
+    <value>Jährliche Steigerung der Fangfähigkeit</value>
+  </data>
+  <data name="DEFAULT_NEWECOSIMSCENARIO" xml:space="preserve">
+    <value>Neues Ecosim-Szenario</value>
+  </data>
+  <data name="FILEFILTER_SAVE_RASTER" xml:space="preserve">
+    <value>Kommagetrennte Textdateien | * .csv | ESRI Asc-Dateien | Räumliche Rasterdateien | * .asc; *. Csv</value>
+  </data>
+  <data name="HEADER_SUM_PP_RESP" xml:space="preserve">
+    <value>Totale Primärproduktion / totale Atmung</value>
+  </data>
+  <data name="HEADER_QUOTA_WEAKESTSTOCK" xml:space="preserve">
+    <value>Schwächste Aktienquote + Quote verwerfen</value>
+  </data>
+  <data name="FFAPPLICATIONTARGET_SEARCHRATE" xml:space="preserve">
+    <value>Suchrate (a)</value>
+  </data>
+  <data name="HEADER_LINE_TYPE" xml:space="preserve">
+    <value>Leitungstyp</value>
+  </data>
+  <data name="HEADER_FMORT_BREAKDOWN" xml:space="preserve">
+    <value>Sterblichkeit in der Fischerei (Gruppe x Flotte)</value>
+  </data>
+  <data name="HEADER_ECOTRACER" xml:space="preserve">
+    <value>Ecotracer</value>
+  </data>
+  <data name="ORGANISM_FISHES" xml:space="preserve">
+    <value>Fische</value>
+  </data>
+  <data name="HEADER_FIXEDESCAPE" xml:space="preserve">
+    <value>Feste Hemmung (t / km2)</value>
+  </data>
+  <data name="OCCURRENCESTATUS_NATIVE" xml:space="preserve">
+    <value>Eingeborener</value>
+  </data>
+  <data name="HEADER_FISHINGMORTALITY" xml:space="preserve">
+    <value>F (fischereiliche Sterblichkeit)</value>
+  </data>
+  <data name="HEADER_OBJECTIVE" xml:space="preserve">
+    <value>Suchziel</value>
+  </data>
+  <data name="ECOSIM_DEFAULT_NEWLANDINGSSHAPE" xml:space="preserve">
+    <value>Preiselastizität der Lieferung {0}</value>
+  </data>
+  <data name="HEADER_CACHESIZE" xml:space="preserve">
+    <value>Cache-Größe (MB)</value>
+  </data>
+  <data name="GENERIC_LABEL_REMOVE" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="HEADER_ENVIRONMENT" xml:space="preserve">
+    <value>Umgebung</value>
+  </data>
+  <data name="HEADER_NUMPARAMS" xml:space="preserve">
+    <value>Anzahl der Parameter</value>
+  </data>
+  <data name="ECOLOGY_PELAGIC" xml:space="preserve">
+    <value>Pelagic</value>
+  </data>
+  <data name="TS_TYPE_TRACER_CONCREL" xml:space="preserve">
+    <value>Relative Konzentration von Ecotracer</value>
+  </data>
+  <data name="TS_TYPE_TRACER_CONCABS" xml:space="preserve">
+    <value>Ecotracer absolute Konzentration</value>
+  </data>
+  <data name="HEADER_NUMCALLS" xml:space="preserve">
+    <value># Anrufe</value>
+  </data>
+  <data name="HEADER_NUMCELLS" xml:space="preserve">
+    <value># Zellen</value>
+  </data>
+  <data name="HEADER_CODE_FISHBASE" xml:space="preserve">
+    <value>FB-ID | Taxonomiecode in FishBase</value>
+  </data>
+  <data name="DEFAULT_NEWGROUP_NUM" xml:space="preserve">
+    <value>Gruppe {0}</value>
+  </data>
+  <data name="GENERIC_LABEL_FINISHED" xml:space="preserve">
+    <value>Fertig</value>
+  </data>
+  <data name="AUTOSAVE_MPAOPT" xml:space="preserve">
+    <value>MPA-Optimierungen</value>
+  </data>
+  <data name="UNIT_MEGABYTE" xml:space="preserve">
+    <value>MB</value>
+  </data>
+  <data name="SCALE_LOG" xml:space="preserve">
+    <value>(Log)</value>
+  </data>
+  <data name="COMPATIBILITY_SUMMARY_NOINDEX" xml:space="preserve">
+    <value>{0}% zeitliche Überlappung, Flächenüberlappung wurde noch nicht bestimmt.</value>
+  </data>
+  <data name="HEADER_SUM_THROUGHPUT" xml:space="preserve">
+    <value>Gesamtsystemdurchsatz</value>
+  </data>
+  <data name="HEADER_BIOMASSEND" xml:space="preserve">
+    <value>Biomasse (Ende)</value>
+  </data>
+  <data name="HEADER_BIOMASS_CV" xml:space="preserve">
+    <value>Biomass cv</value>
+  </data>
+  <data name="HEADER_MAXRELPB" xml:space="preserve">
+    <value>Max rel. P / B</value>
+  </data>
+  <data name="PROMPT_MEDIATION_CANNOTMIX" xml:space="preserve">
+    <value>Sie können keine Mischung aus Gruppen und Flotten zuweisen</value>
+  </data>
+  <data name="FITRESPONSE_EMIGRATE" xml:space="preserve">
+    <value>Auswanderungsrate</value>
+  </data>
+  <data name="HEADER_EFFORTES" xml:space="preserve">
+    <value>Aufwand (E / S)</value>
+  </data>
+  <data name="HEADER_B_IN_LW" xml:space="preserve">
+    <value>b in LW</value>
+  </data>
+  <data name="HEADER_EFFPOWER" xml:space="preserve">
+    <value>Wirkleistung</value>
+  </data>
+  <data name="CAPACITY_PROMPT" xml:space="preserve">
+    <value>Eingabewerte setzen (X-Achse) ...</value>
+  </data>
+  <data name="HEADER_DESCRIPTION" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="GENERIC_COLOUR_USAGE" xml:space="preserve">
+    <value>Farbnutzung</value>
+  </data>
+  <data name="HEADER_PREY_PERCENTAGE" xml:space="preserve">
+    <value>Beute (%)</value>
+  </data>
+  <data name="METADATA_INTEGER" xml:space="preserve">
+    <value>n</value>
+  </data>
+  <data name="HEADER_MAXEFFORT" xml:space="preserve">
+    <value>Maximaler Aufwand</value>
+  </data>
+  <data name="HEADER_AVAILABLE_LANDINGS" xml:space="preserve">
+    <value>Verfügbare Landungen</value>
+  </data>
+  <data name="COMPATIBILITY_TOTALOVERLAP" xml:space="preserve">
+    <value>Voll || Voll räumliche Überlappung | Die Daten decken den Ecospace-Bereich vollständig ab</value>
+  </data>
+  <data name="ECOLOGY_REEFASSOCIATED" xml:space="preserve">
+    <value>Riff-assoziiert</value>
+  </data>
+  <data name="GENERIC_SHOW_FLOW_RATE_LEGEND" xml:space="preserve">
+    <value>Legende der Durchflussrate anzeigen</value>
+  </data>
+  <data name="HEADER_ASSIGNED_LANDINGS" xml:space="preserve">
+    <value>Zugewiesene Landungen</value>
+  </data>
+  <data name="HEADER_VULNERABILITY_WITH_FT" xml:space="preserve">
+    <value>Sicherheitslücke w. FT</value>
+  </data>
+  <data name="GENERIC_LABEL_INDEXED" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="HEADER_TROPHIC_LEVEL" xml:space="preserve">
+    <value>Trophäenlevel</value>
+  </data>
+  <data name="HEADER_BIOMASS_STDDEV" xml:space="preserve">
+    <value>Biomasse std.</value>
+  </data>
+  <data name="HEADER_BIOMASS_BASE" xml:space="preserve">
+    <value>Biomassebasis</value>
+  </data>
+  <data name="HEADER_BIOMASS_MEAN" xml:space="preserve">
+    <value>Biomasse bedeuten</value>
+  </data>
+  <data name="HEADER_BIOMASS_LOGg" xml:space="preserve">
+    <value>Biomasse (log g)</value>
+  </data>
+  <data name="PROMPT_SHAPE_DELETE" xml:space="preserve">
+    <value>Sie löschen gerade die Forcing- oder Mediationsfunktion '{0}'. Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie das wirklich tun?</value>
+  </data>
+  <data name="FILE_LOAD_ERROR_INCOMPATIBLE_MAP" xml:space="preserve">
+    <value>Der Inhalt der Datei '{0}' ist nicht mit der Zellengröße der aktuellen Karte kompatibel.</value>
+  </data>
+  <data name="HEADER_PREDMORT" xml:space="preserve">
+    <value>Predation Mortalität</value>
+  </data>
+  <data name="HEADER_CONCENTRATION" xml:space="preserve">
+    <value>Konzentration (kumulativ)</value>
+  </data>
+  <data name="UNIT_BIOMASS" xml:space="preserve">
+    <value>Einheit Biomasse</value>
+  </data>
+  <data name="PROMPT_FOLDER_SELECTION" xml:space="preserve">
+    <value>Bitte wählen Sie einen Ordner</value>
+  </data>
+  <data name="HEADER_PHYSICAL_DECAY_RATE" xml:space="preserve">
+    <value>Körperliche Verfallsrate</value>
+  </data>
+  <data name="ORGANISM_INVERTEBRATES" xml:space="preserve">
+    <value>Wirbellosen</value>
+  </data>
+  <data name="GENERIC_CHAR_ESCAPE" xml:space="preserve">
+    <value>(Flucht)</value>
+  </data>
+  <data name="HEADER_PP_ABBR" xml:space="preserve">
+    <value>PP</value>
+  </data>
+  <data name="HEADER_PRODCONS" xml:space="preserve">
+    <value>Produktion / Verbrauch</value>
+  </data>
+  <data name="HEADER_PRODUCER" xml:space="preserve">
+    <value>Hersteller</value>
+  </data>
+  <data name="HEADER_PRODRESP" xml:space="preserve">
+    <value>Produktion / Atmung</value>
+  </data>
+  <data name="METADATA_SINGLE" xml:space="preserve">
+    <value>r</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_NOTEVALUATED" xml:space="preserve">
+    <value>NE || Nicht bewertet</value>
+  </data>
+  <data name="ECOSPACE_LAYERGROUP_ENVDRIVERS" xml:space="preserve">
+    <value>Umwelttreiber</value>
+  </data>
+  <data name="HEADER_VALUE_COMPONENT" xml:space="preserve">
+    <value>Wertkomponente</value>
+  </data>
+  <data name="HEADER_CONTRIBUTION_TO_PSD" xml:space="preserve">
+    <value>Beitrag zur PSD</value>
+  </data>
+  <data name="HEADER_DISCARD_SURV" xml:space="preserve">
+    <value>Überleben verwerfen</value>
+  </data>
+  <data name="HEADER_SHOW_VALUES" xml:space="preserve">
+    <value>Werte in Beschriftungen anzeigen</value>
+  </data>
+  <data name="GENERIC_ZOOM_IN" xml:space="preserve">
+    <value>Hineinzoomen</value>
+  </data>
+  <data name="HEADER_B_IS_FOR_BIOMASS" xml:space="preserve">
+    <value>B = Biomasse</value>
+  </data>
+  <data name="STATUS_TIMESERIES_UPDATING" xml:space="preserve">
+    <value>Zeitreihe {0} wird aktualisiert ...</value>
+  </data>
+  <data name="HEADER_MANDATED_ABBR" xml:space="preserve">
+    <value>Mandat.</value>
+  </data>
+  <data name="STYLEFLAGS_HIGHLIGHT" xml:space="preserve">
+    <value>Hervorheben ||| Wert wird hervorgehoben</value>
+  </data>
+  <data name="TOOLTIP_SAVETOCSV" xml:space="preserve">
+    <value>In einer CSV-Datei speichern</value>
+  </data>
+  <data name="TOOLTIP_SAVETOMAP" xml:space="preserve">
+    <value>In georeferenzierten Karten speichern</value>
+  </data>
+  <data name="HEADER_EFFORT_STDDEV" xml:space="preserve">
+    <value>Aufwand std.</value>
+  </data>
+  <data name="HEADER_LESSTHAN" xml:space="preserve">
+    <value>&lt;{0}</value>
+  </data>
+  <data name="RESPONSE_GRAPH_YLABEL" xml:space="preserve">
+    <value>Antwort</value>
+  </data>
+  <data name="STYLEFLAGS_NULL" xml:space="preserve">
+    <value>Null || Kein Wert | Wert wird nicht verwendet oder leer gelassen</value>
+  </data>
+  <data name="HEADER_MORTALITY" xml:space="preserve">
+    <value>Sterblichkeit</value>
+  </data>
+  <data name="HEADER_CATCH_MEAN" xml:space="preserve">
+    <value>Fang meine</value>
+  </data>
+  <data name="HEADER_CATCHVALUE" xml:space="preserve">
+    <value>Fangwert</value>
+  </data>
+  <data name="HEADER_ECOPATH_AREA" xml:space="preserve">
+    <value>Ökopathischer Bereich</value>
+  </data>
+  <data name="GENERIC_CHAR_TAB" xml:space="preserve">
+    <value>(Tab)</value>
+  </data>
+  <data name="HEADER_RELATIVEBIOMASS" xml:space="preserve">
+    <value>Relative Biomasse</value>
+  </data>
+  <data name="HEADER_SWITCHINGPOWER_VALRANGE" xml:space="preserve">
+    <value>Schaltleistungsparameter [0,2]</value>
+  </data>
+  <data name="HEADER_FORCASTGAIN" xml:space="preserve">
+    <value>Rekrutierung / Gesamtbevölkerung</value>
+  </data>
+  <data name="GENERIC_VALUE_ALLRUNS" xml:space="preserve">
+    <value>(alle Läufe)</value>
+  </data>
+  <data name="HEADER_PROPORTION" xml:space="preserve">
+    <value>Anteil</value>
+  </data>
+  <data name="HEADER_FISHMORT_OVER_TOTMORT" xml:space="preserve">
+    <value>Fischen mort. / total mort.</value>
+  </data>
+  <data name="LABEL_VALUE_RANGE" xml:space="preserve">
+    <value>{0} ({1} - {2})</value>
+  </data>
+  <data name="GENERIC_VALUE_UNKNOWN" xml:space="preserve">
+    <value>(Unbekannt)</value>
+  </data>
+  <data name="RESPONSE_GRAPH_XLABEL" xml:space="preserve">
+    <value>Fahrerwerte</value>
+  </data>
+  <data name="HEADER_REGIONS_UNDEFINED" xml:space="preserve">
+    <value>Undefinierte Regionen</value>
+  </data>
+  <data name="COMPATIBILITY_PARTIALSPATIAL" xml:space="preserve">
+    <value>Teilweise || Teilweise räumliche Überlappung | Die Daten decken teilweise den Ecospace-Bereich ab</value>
+  </data>
+  <data name="CONSERVATIONSTATUS_LEASTCONCERN" xml:space="preserve">
+    <value>LC || Wenig Sorge</value>
+  </data>
+  <data name="AUTOSAVE_ECOPATH" xml:space="preserve">
+    <value>Ökopathische Schätzungen</value>
+  </data>
+  <data name="UNIT_KILOBYTE" xml:space="preserve">
+    <value>KB</value>
+  </data>
+  <data name="BA_CALC_FROMECOSIMSTART" xml:space="preserve">
+    <value>Ecosim-Biomasse minus Ecopath-Biomasse</value>
+  </data>
+  <data name="HEADER_VALUESTART" xml:space="preserve">
+    <value>Wert (Start)</value>
+  </data>
+  <data name="ECOLOGY_LANDBASED" xml:space="preserve">
+    <value>Land-basiert</value>
+  </data>
+  <data name="HEADER_FISHINGMORTRATE" xml:space="preserve">
+    <value>= Fischerboot Bewertung</value>
+  </data>
+  <data name="HEADER_LASTUPDATED" xml:space="preserve">
+    <value>Zuletzt aktualisiert</value>
+  </data>
+  <data name="HEADER_FIXEDCOST" xml:space="preserve">
+    <value>Fixkosten (%)</value>
+  </data>
+  <data name="HEADER_UPPERLIMIT" xml:space="preserve">
+    <value>Obere Grenze</value>
+  </data>
+</root>

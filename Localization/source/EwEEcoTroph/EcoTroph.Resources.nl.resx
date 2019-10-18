@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PLUGIN_DESCRIPTION" xml:space="preserve">
+    <value>EcoTroph (ET) is een modelleringsbenadering gebaseerd op het idee dat een ecosysteem kan worden vertegenwoordigd door zijn biomassadistributie over trofische niveaus. Een dergelijke benadering, waarbij soorten als zodanig verdwijnen, kan worden beschouwd als de ultieme fase in het gebruik van de trofische niveau-metriek voor het modelleren van ecosystemen. Door zich te concentreren op biomassastroom als een quasi-fysiek proces, kunnen aspecten van het functioneren van ecosystemen worden onderzocht die complementair zijn aan EwE. Het biedt gebruikers eenvoudige hulpmiddelen om de impact van vissen op ecosysteemschaal te kwantificeren en een nieuwe manier om naar ecosystemen te kijken. Het lijkt dus een nuttige aanvulling op Ecopath.</value>
+  </data>
+  <data name="SAVE_ECOTROPH" xml:space="preserve">
+    <value>Sla een EcoTroph-invoergegevensbestand op</value>
+  </data>
+  <data name="PROMPT_SAVE_ET" xml:space="preserve">
+    <value>Sla een EcoTroph-invoergegevensbestand op</value>
+  </data>
+  <data name="PB_DOWNLOAD" xml:space="preserve">
+    <value>Kan bestand niet downloaden. Oorspronkelijke fout:</value>
+  </data>
+  <data name="EXCEED_TIME_R" xml:space="preserve">
+    <value>Tijd overschrijden voor R</value>
+  </data>
+  <data name="NO_MODEL_DATA" xml:space="preserve">
+    <value>Er is geen model geladen, we kunnen EcoTroph-invoergegevens niet vinden '</value>
+  </data>
+  <data name="ERROR_LOAD" xml:space="preserve">
+    <value>Kan bestand niet van schijf lezen. Oorspronkelijke fout: {0}</value>
+  </data>
+  <data name="ERROR_NO_WS" xml:space="preserve">
+    <value>Webservice is nu niet beschikbaar</value>
+  </data>
+  <data name="ERROR_UNZIP" xml:space="preserve">
+    <value>Kan gedownloade bestanden niet uitpakken</value>
+  </data>
+  <data name="NOT_ENOUGH_FLEET" xml:space="preserve">
+    <value>Niet voldoende vloot om deze parameters te gebruiken</value>
+  </data>
+  <data name="PLUGIN_AUTHOR" xml:space="preserve">
+    <value>Agrocampus Ouest - Centrum voor visserij en aquatische wetenschappen</value>
+  </data>
+  <data name="NO_OUTPUT_R" xml:space="preserve">
+    <value>De procedure heeft geen resultaten opgeleverd</value>
+  </data>
+  <data name="FILEFILTER_XML_ALL" xml:space="preserve">
+    <value>xml-bestanden (* .xml) | * .xml | Alle bestanden (*. *) | *. *</value>
+  </data>
+  <data name="ERROR_INPUT_FILE" xml:space="preserve">
+    <value>Kan bestand niet van schijf lezen. Oorspronkelijke fout:</value>
+  </data>
+  <data name="FILEFILTER_XML" xml:space="preserve">
+    <value>xml-bestanden (* .xml) | * .xml</value>
+  </data>
+  <data name="ERROR_NO_MODEL_LOADED" xml:space="preserve">
+    <value>Er is geen model geladen, we kunnen EcoTroph-invoergegevens niet vinden</value>
+  </data>
+  <data name="NO_SELECTED_FLEET" xml:space="preserve">
+    <value>Geen selectie voor vloot van interesse! Het proces wordt uitgevoerd met de parameter Same.mE</value>
+  </data>
+  <data name="TOO_SELECTED_FLEET" xml:space="preserve">
+    <value>U kunt niet alle vloten selecteren !!!, schakel minstens één uit</value>
+  </data>
+  <data name="NO_DB_SERVICES" xml:space="preserve">
+    <value>De webservice voor toegang tot de modeldatabase lijkt niet beschikbaar te zijn.</value>
+  </data>
+  <data name="PLUGIN_CONTROLTEXT" xml:space="preserve">
+    <value>EcoTroph</value>
+  </data>
+  <data name="ERROR_NO_RESULTS" xml:space="preserve">
+    <value>De procedure heeft geen resultaten opgeleverd</value>
+  </data>
+  <data name="NO_R" xml:space="preserve">
+    <value>R is niet aanwezig</value>
+  </data>
+  <data name="PB_R" xml:space="preserve">
+    <value>Probleem bij gebruik R</value>
+  </data>
+</root>

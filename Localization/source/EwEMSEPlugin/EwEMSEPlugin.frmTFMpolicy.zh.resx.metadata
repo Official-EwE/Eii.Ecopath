@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceMetadata>
+  <Data Key="m_btnOK.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_btnCancel.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_hdrHCR.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="$this.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnAddHCR.ToolTipText">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnDeleteStrategy.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnAddHCR.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tslSelectStratagy.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnEditHCR.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_chkUnits.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnDeleteHCR.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnAddStrategy.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnDeleteHCR.ToolTipText">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_hdrRegulations.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnAddStrategy.ToolTipText">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnDeleteStrategy.ToolTipText">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+</ResourceMetadata>

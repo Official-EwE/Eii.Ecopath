@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceMetadata>
+  <Data Key="VAL_CSV_READ">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_DISPLAYNAME">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_RESTORING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_SAVING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_INITIALIZING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VAL_CSV_READ_ERROR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_DESCRIPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VAL_CSV_SUMMARY_EFFORT_FMORT_WARNING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_RUNNING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VALIDATION_DETAIL_FN_DUPLICATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VAL_CSV_FN_MISSING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="EXAMPLE_EXPORT_SUCCESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_SUCCESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_LOADING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VALIDATION_RESULT_WARNING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VALIDATION_RESULT_FAILED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VALIDATION_RESULT_SUCCESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="EXAMPLE_EXPORT_WARNING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="EXAMPLE_EXPORT_FAILED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VAL_CSV_READ_MISSING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VAL_CSV_SUMMARY_FLEET_ERROR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_FAILED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VAL_CSV_SUMMARY_MISSING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VAL_CSV_SUMMARY_OK">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+</ResourceMetadata>

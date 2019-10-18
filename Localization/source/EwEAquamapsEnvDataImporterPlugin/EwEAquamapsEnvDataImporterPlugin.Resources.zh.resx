@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PROMPT_FILE_NOCONTENT" xml:space="preserve">
+    <value>AquaMaps CSV文件{0}不包含任何有效的分发信封</value>
+  </data>
+  <data name="STATUS_IMPORTING" xml:space="preserve">
+    <value>导入Aquamap物种信封</value>
+  </data>
+  <data name="STATUS_CONFIGURING_DETAIL" xml:space="preserve">
+    <value>配置响应功能“ {0}”</value>
+  </data>
+  <data name="STATUS_SAVING" xml:space="preserve">
+    <value>保存更改</value>
+  </data>
+  <data name="PROMPT_IMPORT_DETAIL_LINEERROR" xml:space="preserve">
+    <value>无法解释“ {0}”</value>
+  </data>
+  <data name="STATUS_CREATING" xml:space="preserve">
+    <value>创建响应功能</value>
+  </data>
+  <data name="PROMPT_IMPORT_DETAIL_SUCCESS" xml:space="preserve">
+    <value>添加了响应功能“ {0}”</value>
+  </data>
+  <data name="STATUS_EXAMPLE_SAVE_FAILED" xml:space="preserve">
+    <value>Aquamaps HSPEN示例文件未能保存{0}</value>
+  </data>
+  <data name="PROMPT_IMPORT_GENERIC" xml:space="preserve">
+    <value>进口Aquamaps物种分布信封</value>
+  </data>
+  <data name="PROMPT_FILE_INVALID" xml:space="preserve">
+    <value>Aquamaps CSV文件{0}格式错误，无法继续</value>
+  </data>
+  <data name="STATUS_CREATING_DETAIL" xml:space="preserve">
+    <value>创建响应函数“ {0}”</value>
+  </data>
+  <data name="PROMPT_FILE_NOT_FOUND" xml:space="preserve">
+    <value>无法加载Aquamaps分发信封。 {0}</value>
+  </data>
+  <data name="STATUS_EXAMPLE_SAVE_SUCCESS" xml:space="preserve">
+    <value>Aquamaps HSPEN文件示例已保存到{0}</value>
+  </data>
+  <data name="STATUS_CONFIGURING" xml:space="preserve">
+    <value>配置功能</value>
+  </data>
+  <data name="CAPTION_LOAD_HSPEN" xml:space="preserve">
+    <value>选择要加载的Aquamaps HSPEN文件</value>
+  </data>
+  <data name="PROMPT_IMPORT_DETAIL_FAILED" xml:space="preserve">
+    <value>无法添加响应功能“ {0}”</value>
+  </data>
+  <data name="HSPEN_example_csv" xml:space="preserve">
+    <value>Sardina pilchardus（European pilchard）的映射参数“，”，“，”，“地图类型：专家审阅”，“，”，“地图选项”：在FAO和边界框内，“，”，“ FAO”面积：1 | 4 | 5 | 27 | 34 | 37 | 37 、、、、边界框（NSWE）：、 68、14，-32、43 、、、、、远洋：False 、、、、、用于生成概率的图层：Surface 、、、、、、 ,, Species Envelope（HSPEN）：,,,,, Used，Min，Pref Min（10th），Pref Max（90th），Max Depth（m），1,10,25,100,100温度（°C），1,2.53 ，12,26.92,27.62盐度（psu），1,18.1,34.72,37.99,39.02初级生产，1,291,378,1646,3022海冰浓度，1，-1,0,0,0.13到陆地的距离（km），0 ，1,6,150,1080 ,,,,,</value>
+  </data>
+</root>

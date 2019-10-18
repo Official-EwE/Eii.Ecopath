@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceMetadata>
+  <Data Key="m_tsbnRefresh.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="$this.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnBack.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnFacebook.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnBetaFeedback.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnForward.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnEcopathSite.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnStartPage.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_tsbnBugTracker.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+</ResourceMetadata>

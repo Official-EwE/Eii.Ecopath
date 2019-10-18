@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="VAL_CSV_READ" xml:space="preserve">
+    <value>读取CSV文件{0}</value>
+  </data>
+  <data name="GENERIC_DISPLAYNAME" xml:space="preserve">
+    <value>多卡</value>
+  </data>
+  <data name="STATUS_RESTORING" xml:space="preserve">
+    <value>正在还原数据...</value>
+  </data>
+  <data name="STATUS_SAVING" xml:space="preserve">
+    <value>正在保存CSV文件“ {0}”的结果...</value>
+  </data>
+  <data name="STATUS_INITIALIZING" xml:space="preserve">
+    <value>初始化中...</value>
+  </data>
+  <data name="VAL_CSV_READ_ERROR" xml:space="preserve">
+    <value>错误：读取CSV文件{0}时出错：{1}</value>
+  </data>
+  <data name="GENERIC_DESCRIPTION" xml:space="preserve">
+    <value>读取多个CSV文件的例程，以更改Ecosim仿真的强制功能。该例程允许使用月或年值迭代读取单个或多个文件，并将其应用于特定的强制功能。用户可以选择每次Ecosim运行生成哪些输出文件。该插件的开发由加拿大渔业和海洋部的水生气候变化适应服务计划（ACCASP）资助。</value>
+  </data>
+  <data name="VAL_CSV_SUMMARY_EFFORT_FMORT_WARNING" xml:space="preserve">
+    <value>CSV文件{0}同时使用努力和捕捞死亡率形状，这可能会导致Ecosim中无法预测的结果</value>
+  </data>
+  <data name="STATUS_RUNNING" xml:space="preserve">
+    <value>正在运行CSV文件'{0}'...</value>
+  </data>
+  <data name="VALIDATION_DETAIL_FN_DUPLICATE" xml:space="preserve">
+    <value>Ecosim中有多个名为“ {0}”的功能。在解决此问题之前，Multi-sim无法运行。</value>
+  </data>
+  <data name="VAL_CSV_FN_MISSING" xml:space="preserve">
+    <value>CSV {0}表示未知函数“ {1}”</value>
+  </data>
+  <data name="EXAMPLE_EXPORT_SUCCESS" xml:space="preserve">
+    <value>写入“ {0}”的Multi-sim示例CSV输入文件</value>
+  </data>
+  <data name="STATUS_SUCCESS" xml:space="preserve">
+    <value>Multi-sim成功完成，有关详细信息，请参见“ {0}”</value>
+  </data>
+  <data name="STATUS_LOADING" xml:space="preserve">
+    <value>文件“ {0}”正在加载...</value>
+  </data>
+  <data name="VALIDATION_RESULT_WARNING" xml:space="preserve">
+    <value>Multi-sim可以运行，但是您的设置中存在一些问题，您可能需要首先解决。请检查状态面板或“ {0}”以获取详细信息</value>
+  </data>
+  <data name="VALIDATION_RESULT_FAILED" xml:space="preserve">
+    <value>Multi-sim无法运行，您的设置中有一些错误需要解决。请检查状态面板或“ {0}”以获取详细信息</value>
+  </data>
+  <data name="VALIDATION_RESULT_SUCCESS" xml:space="preserve">
+    <value>Multi-sim准备运行； Ecosim场景{0}和所有选定的CSV文件均已按顺序排列</value>
+  </data>
+  <data name="EXAMPLE_EXPORT_WARNING" xml:space="preserve">
+    <value>写入到“ {0}”的Multi-sim示例CSV输入文件，但是在场景{1}中遇到了一些问题。</value>
+  </data>
+  <data name="EXAMPLE_EXPORT_FAILED" xml:space="preserve">
+    <value>Multi-sim示例CSV输入文件无法写入“ {0}”。 {1}</value>
+  </data>
+  <data name="VAL_CSV_READ_MISSING" xml:space="preserve">
+    <value>错误：找不到CSV文件{0}</value>
+  </data>
+  <data name="VAL_CSV_SUMMARY_FLEET_ERROR" xml:space="preserve">
+    <value>CSF文件{0}不能同时更改单个车队和所有车队；所有机队的数据将优先。删除单个车队或删除所有车队数据</value>
+  </data>
+  <data name="STATUS_FAILED" xml:space="preserve">
+    <value>Multi-sim未成功完成，请参见“ {0}”</value>
+  </data>
+  <data name="VAL_CSV_SUMMARY_MISSING" xml:space="preserve">
+    <value>CSV文件{0}引用了{1}个未知函数</value>
+  </data>
+  <data name="VAL_CSV_SUMMARY_OK" xml:space="preserve">
+    <value>Ecosim中的所有功能</value>
+  </data>
+</root>

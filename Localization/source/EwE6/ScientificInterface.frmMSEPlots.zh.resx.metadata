@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceMetadata>
+  <Data Key="$this.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_rbValues.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_hdrType.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_rbFComparison.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_rbTotFleetValue.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_rbGroupCatch.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_rbFleetValue.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_hdrPlots.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_rbEffort.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_rbGroupBiomass.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_rbBioEst.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_rbHisto.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+</ResourceMetadata>

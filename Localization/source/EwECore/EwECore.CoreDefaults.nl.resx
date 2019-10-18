@@ -1,0 +1,2835 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="VARIABLE_SPECIES" xml:space="preserve">
+    <value>Soorten</value>
+  </data>
+  <data name="VARIABLE_DISCARDS" xml:space="preserve">
+    <value>teruggooi</value>
+  </data>
+  <data name="VARIABLE_MCDISCARDS" xml:space="preserve">
+    <value>teruggooi</value>
+  </data>
+  <data name="VARIABLE_TCATCHINPUT" xml:space="preserve">
+    <value>Vangst</value>
+  </data>
+  <data name="VARIABLE_TAXONMEANLENGTH" xml:space="preserve">
+    <value>Gemiddelde lengte</value>
+  </data>
+  <data name="VARIABLE_TAXONMEANWEIGHT" xml:space="preserve">
+    <value>Gemiddeld gewicht</value>
+  </data>
+  <data name="PARAM_MEAN" xml:space="preserve">
+    <value>Gemeen</value>
+  </data>
+  <data name="VARIABLE_ORGANISMTYPE" xml:space="preserve">
+    <value>Organisme</value>
+  </data>
+  <data name="VARIABLE_GENUS" xml:space="preserve">
+    <value>Geslacht</value>
+  </data>
+  <data name="VARIABLE_CLASS" xml:space="preserve">
+    <value>Klasse</value>
+  </data>
+  <data name="VARIABLE_ORDER" xml:space="preserve">
+    <value>Bestellen</value>
+  </data>
+  <data name="VARIABLE_FAMILY" xml:space="preserve">
+    <value>Familie</value>
+  </data>
+  <data name="CORE_DEFAULT_REGION" xml:space="preserve">
+    <value>Regio's</value>
+  </data>
+  <data name="CORE_DEFAULT" xml:space="preserve">
+    <value>(standaard)</value>
+  </data>
+  <data name="CORE_DEFAULT_HABITAT" xml:space="preserve">
+    <value>Habitat {0}</value>
+  </data>
+  <data name="VARIABLE_LAYERMIGRATION" xml:space="preserve">
+    <value>Migratie</value>
+  </data>
+  <data name="VARIABLE_NAME" xml:space="preserve">
+    <value>Naam</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALCOST" xml:space="preserve">
+    <value>Totale prijs</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALFIXEDCOST" xml:space="preserve">
+    <value>Totale vaste kosten</value>
+  </data>
+  <data name="VARIABLE_LONGITUDE" xml:space="preserve">
+    <value>Lengtegraad</value>
+  </data>
+  <data name="VARIABLE_ECOPATHWEIGHT" xml:space="preserve">
+    <value>Gewicht</value>
+  </data>
+  <data name="VARIABLE_ECOSPACESS" xml:space="preserve">
+    <value>Som van de kwadraten</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSPROFIT" xml:space="preserve">
+    <value>Winst</value>
+  </data>
+  <data name="VARIABLE_PHYLUM" xml:space="preserve">
+    <value>stam</value>
+  </data>
+  <data name="VARIABLE_SOURCE" xml:space="preserve">
+    <value>Bron</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALVARCOST" xml:space="preserve">
+    <value>Totale variabele kosten</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALMARKETVALUE" xml:space="preserve">
+    <value>Totale marktwaarde</value>
+  </data>
+  <data name="VARIABLE_MCB" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="VARIABLE_RESPASSIM" xml:space="preserve">
+    <value>Ademhaling / assimilatie</value>
+  </data>
+  <data name="VARIABLE_MCLANDINGS" xml:space="preserve">
+    <value>Landings</value>
+  </data>
+  <data name="VARIABLE_LANDINGS" xml:space="preserve">
+    <value>Landings</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALSHADOWVALUE" xml:space="preserve">
+    <value>Totale schaduwwaarde</value>
+  </data>
+  <data name="VARIABLE_INDEXVALUE" xml:space="preserve">
+    <value>Indexwaarde</value>
+  </data>
+  <data name="VARIABLE_NETEFFICIENCY" xml:space="preserve">
+    <value>Netto efficiëntie</value>
+  </data>
+  <data name="VARIABLE_ECOLOGYTYPE" xml:space="preserve">
+    <value>Ecologie</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALVALUE" xml:space="preserve">
+    <value>Totale waarde</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALCATCH" xml:space="preserve">
+    <value>Totale vangst</value>
+  </data>
+  <data name="VARIABLE_SWITCHINGPOWER" xml:space="preserve">
+    <value>Schakelvermogen</value>
+  </data>
+  <data name="CORE_DEFAULT_MPA" xml:space="preserve">
+    <value>MPA {0}</value>
+  </data>
+  <data name="VARIABLE_OMNIVORYINDEX" xml:space="preserve">
+    <value>Omnivory-index</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSOMNIVINDEX" xml:space="preserve">
+    <value>Omnivory-index</value>
+  </data>
+  <data name="VARIABLE_LATITUDE" xml:space="preserve">
+    <value>Breedtegraad</value>
+  </data>
+  <data name="CORE_DEFAULT_ENVIRONMENT" xml:space="preserve">
+    <value>Milieu</value>
+  </data>
+  <data name="VARIABLE_DESCRIPTION" xml:space="preserve">
+    <value>Omschrijving</value>
+  </data>
+  <data name="VARIABLE_PRODRESP" xml:space="preserve">
+    <value>Productie / ademhaling</value>
+  </data>
+  <data name="VARIABLE_CONSUMPTION" xml:space="preserve">
+    <value>Consumptie</value>
+  </data>
+  <data name="VARIABLE_RESPIRATION" xml:space="preserve">
+    <value>Ademhaling</value>
+  </data>
+  <data name="CORE_DEFAULT_HABITAT_ALL" xml:space="preserve">
+    <value>Allemaal</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALTHROUGHPUT" xml:space="preserve">
+    <value>Totale doorvoer</value>
+  </data>
+  <data name="VARIABLE_ESTIMATED" xml:space="preserve">
+    <value>Geschatte</value>
+  </data>
+  <data name="UNIT_AREA_KM2" xml:space="preserve">
+    <value>km²</value>
+  </data>
+  <data name="VARIABLE_ALPHA" xml:space="preserve">
+    <value>Alpha</value>
+  </data>
+  <data name="PARAM_ALPHA" xml:space="preserve">
+    <value>Alpha</value>
+  </data>
+  <data name="PARAM_BETA" xml:space="preserve">
+    <value>beta</value>
+  </data>
+  <data name="UNITS_NUMBER" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="VARIABLE_MSEREFGROUPCATCHLOWER" xml:space="preserve">
+    <value>MSERefGroupCatchLower</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPCATCHOVERTIME" xml:space="preserve">
+    <value>EcospaceGroupCatchOverTime</value>
+  </data>
+  <data name="VARIABLE_GROUPTAXA" xml:space="preserve">
+    <value>GroupTaxa</value>
+  </data>
+  <data name="VARIABLE_QBINPUT" xml:space="preserve">
+    <value>QB | Q / B | Verbruik / biomassa</value>
+  </data>
+  <data name="VARIABLE_QBOUTPUT" xml:space="preserve">
+    <value>QB | Q / B | Verbruik / biomassa</value>
+  </data>
+  <data name="VARIABLE_ECOSIMPREYPERCENTAGETIME" xml:space="preserve">
+    <value>EcosimPreyPercentageTime</value>
+  </data>
+  <data name="VARIABLE_MAXRELPB" xml:space="preserve">
+    <value>MaxRelPB</value>
+  </data>
+  <data name="VARIABLE_HATCHCODE" xml:space="preserve">
+    <value>Hatch-code</value>
+  </data>
+  <data name="VARIABLE_CODEFB" xml:space="preserve">
+    <value>FB id ||| Taxonomiecode in FishBase</value>
+  </data>
+  <data name="VARIABLE_ECOSIMPRODCONSUMP" xml:space="preserve">
+    <value>EcosimProdConsump</value>
+  </data>
+  <data name="VARIABLE_CIMMIG" xml:space="preserve">
+    <value>CImmig</value>
+  </data>
+  <data name="VARIABLE_CDECAY" xml:space="preserve">
+    <value>CDecay</value>
+  </data>
+  <data name="VARIABLE_COUTFLOW" xml:space="preserve">
+    <value>COutflow</value>
+  </data>
+  <data name="VARIABLE_DETRESPFLOW" xml:space="preserve">
+    <value>DetRespFlow</value>
+  </data>
+  <data name="VARIABLE_USEVARPQ" xml:space="preserve">
+    <value>UseVarPQ</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPCATCHSTART" xml:space="preserve">
+    <value>EcosimGroupCatchStart</value>
+  </data>
+  <data name="VARIABLE_NUTBASEFREEPROP" xml:space="preserve">
+    <value>NutBaseFreeProp</value>
+  </data>
+  <data name="VARIABLE_USEEXACT" xml:space="preserve">
+    <value>UseExact</value>
+  </data>
+  <data name="VARIABLE_MSEFMIN" xml:space="preserve">
+    <value>MSEFmin</value>
+  </data>
+  <data name="VARIABLE_MSEFMAX" xml:space="preserve">
+    <value>MSEFmax</value>
+  </data>
+  <data name="VARIABLE_MSEBLIM" xml:space="preserve">
+    <value>MSEBLim</value>
+  </data>
+  <data name="VARIABLE_MSESTOP" xml:space="preserve">
+    <value>MSEStop</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETCATCHTIME" xml:space="preserve">
+    <value>EcosimFleetCatchTime</value>
+  </data>
+  <data name="VARIABLE_CLIMATETYPE" xml:space="preserve">
+    <value>Klimaat</value>
+  </data>
+  <data name="VARIABLE_MSYASSESSMENT" xml:space="preserve">
+    <value>MSYAssessment</value>
+  </data>
+  <data name="VARIABLE_CAPACITYRESPTOT" xml:space="preserve">
+    <value>CapacityRespTot</value>
+  </data>
+  <data name="VARIABLE_CAPACITYRESPPER" xml:space="preserve">
+    <value>CapacityRespPer</value>
+  </data>
+  <data name="CORE_NEW_FORCINGSHAPE" xml:space="preserve">
+    <value>Nieuwe dwingende vorm</value>
+  </data>
+  <data name="VARIABLE_ECOSIMMORTVPREDPM" xml:space="preserve">
+    <value>EcosimMortVPredPM</value>
+  </data>
+  <data name="VARIABLE_TLPM" xml:space="preserve">
+    <value>TLPM</value>
+  </data>
+  <data name="VARIABLE_TTLX" xml:space="preserve">
+    <value>TTLX || Trofisch niveau</value>
+  </data>
+  <data name="VARIABLE_PLAP" xml:space="preserve">
+    <value>PLAP</value>
+  </data>
+  <data name="VARIABLE_STANZAGROUP" xml:space="preserve">
+    <value>StanzaGroup</value>
+  </data>
+  <data name="VARIABLE_WEST" xml:space="preserve">
+    <value>westen</value>
+  </data>
+  <data name="VARIABLE_MVEL" xml:space="preserve">
+    <value>Basis disp. snelheid || Basisverspreidingssnelheid</value>
+  </data>
+  <data name="VARIABLE_MCPB" xml:space="preserve">
+    <value>PB</value>
+  </data>
+  <data name="VARIABLE_MCQB" xml:space="preserve">
+    <value>QB</value>
+  </data>
+  <data name="VARIABLE_MCVU" xml:space="preserve">
+    <value>v</value>
+  </data>
+  <data name="VARIABLE_MCBA" xml:space="preserve">
+    <value>BA</value>
+  </data>
+  <data name="VARIABLE_MCEE" xml:space="preserve">
+    <value>EE</value>
+  </data>
+  <data name="VARIABLE_HLAP" xml:space="preserve">
+    <value>Hlap</value>
+  </data>
+  <data name="VARIABLE_DBID" xml:space="preserve">
+    <value>ID || Unieke ID</value>
+  </data>
+  <data name="VARIABLE_EMIG" xml:space="preserve">
+    <value>Emigratie</value>
+  </data>
+  <data name="VARIABLE_EAST" xml:space="preserve">
+    <value>Oosten</value>
+  </data>
+  <data name="VARIABLE_AREA" xml:space="preserve">
+    <value>Gebied || Modelgebied</value>
+  </data>
+  <data name="VARIABLE_CSUM" xml:space="preserve">
+    <value>CSum</value>
+  </data>
+  <data name="CORE_DEFAULT_MPASEED" xml:space="preserve">
+    <value>Zaadcellen</value>
+  </data>
+  <data name="VARIABLE_LAYERMPASEED" xml:space="preserve">
+    <value>Zaadcellen</value>
+  </data>
+  <data name="VARIABLE_LAYERMPASEEDCURRENT" xml:space="preserve">
+    <value>Huidige zaadcellen</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHBINWIDTHS" xml:space="preserve">
+    <value>MSEGroupCatchBinWidths</value>
+  </data>
+  <data name="VARIABLE_F2TSVULNERABILITYSEARCH" xml:space="preserve">
+    <value>F2TSVulnerabilitySearch</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEUSECOREOUTPUTDIR" xml:space="preserve">
+    <value>EcospaceUseCoreOutputDir</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONBIOMASSSTART" xml:space="preserve">
+    <value>EcospaceRegionBiomassStart</value>
+  </data>
+  <data name="VARIABLE_ECOSPACESSCALCULATED" xml:space="preserve">
+    <value>EcospaceSSCalculated</value>
+  </data>
+  <data name="VARIABLE_MSETFMFOPTVALUES" xml:space="preserve">
+    <value>MSETFMFOptValues</value>
+  </data>
+  <data name="VARIABLE_ECOSIMBIOMASSREL" xml:space="preserve">
+    <value>EcosimBiomassRel</value>
+  </data>
+  <data name="VARIABLE_SHANNONDIVERSITY" xml:space="preserve">
+    <value>ShannonDiversity</value>
+  </data>
+  <data name="VARIABLE_F2TSVULNERABILITYVARIANCE" xml:space="preserve">
+    <value>F2TSVulnerabilityVariance</value>
+  </data>
+  <data name="CORE_DEFAULT_FLEET" xml:space="preserve">
+    <value>Fleet1</value>
+  </data>
+  <data name="CORE_DEFAULT_DEPTH" xml:space="preserve">
+    <value>Diepte</value>
+  </data>
+  <data name="CORE_DEFAULT_GROUP" xml:space="preserve">
+    <value>Groep 1</value>
+  </data>
+  <data name="VARIABLE_ECOSIMPREDCONSUMPTIME" xml:space="preserve">
+    <value>EcosimPredConsumpTime</value>
+  </data>
+  <data name="VARIABLE_OTHERMORTINPUT" xml:space="preserve">
+    <value>M0 || Andere sterfte</value>
+  </data>
+  <data name="VARIABLE_ECOSIMSUMNTIMESTEPS" xml:space="preserve">
+    <value>EcosimSumNTimeSteps</value>
+  </data>
+  <data name="VARIABLE_ECOSPACERELATIVEBIOMASSOVERTIME" xml:space="preserve">
+    <value>EcospaceRelativeBiomassOverTime</value>
+  </data>
+  <data name="VARIABLE_MCDISCARDSCV" xml:space="preserve">
+    <value>Teruggooi (cv)</value>
+  </data>
+  <data name="VARIABLE_MCDISCARDSBF" xml:space="preserve">
+    <value>Weggooien (beste pasvorm)</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETCATCHEND" xml:space="preserve">
+    <value>EcospaceFleetCatchEnd</value>
+  </data>
+  <data name="VARIABLE_MSETFMFOPTUPPER" xml:space="preserve">
+    <value>MSETFMFOptUpper</value>
+  </data>
+  <data name="VARIABLE_NUMTIMESTEPSPERYEAR" xml:space="preserve">
+    <value>Nee. Tijdstappen per jaar</value>
+  </data>
+  <data name="VARIABLE_SEARCHFISHINGMORTALITYPENALTY" xml:space="preserve">
+    <value>SearchFishingMortalityPenalty</value>
+  </data>
+  <data name="VARIABLE_MCVUUPPER" xml:space="preserve">
+    <value>v (bovenste)</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUESTD" xml:space="preserve">
+    <value>MSEFleetValueStd</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEMIN" xml:space="preserve">
+    <value>MSEFleetValueMin</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEMAX" xml:space="preserve">
+    <value>MSEFleetValueMax</value>
+  </data>
+  <data name="VARIABLE_Z" xml:space="preserve">
+    <value>Z | Tot. mort. | Totale mortaliteit</value>
+  </data>
+  <data name="VARIABLE_OFFVESSELPRICE" xml:space="preserve">
+    <value>Prijs || Prijs buiten het vaartuig</value>
+  </data>
+  <data name="VARIABLE_MSETFMFOPTLOWER" xml:space="preserve">
+    <value>MSETFMFOptLower</value>
+  </data>
+  <data name="VARIABLE_CODEAPHIA" xml:space="preserve">
+    <value>Aphia id ||| Aphia ID (WoRMS)</value>
+  </data>
+  <data name="PARAM_SIGMOID_SCALAR" xml:space="preserve">
+    <value>Y-as max.</value>
+  </data>
+  <data name="VARIABLE_ASCENDEXPORTTOT" xml:space="preserve">
+    <value>AscendExportTot</value>
+  </data>
+  <data name="VARIABLE_ASCENDEXPORTPER" xml:space="preserve">
+    <value>AscendExportPer</value>
+  </data>
+  <data name="VARIABLE_MCVULOWER" xml:space="preserve">
+    <value>v (lager)</value>
+  </data>
+  <data name="VARIABLE_BIODIVERSITYINDICATOR" xml:space="preserve">
+    <value>BiodiversityIndicator</value>
+  </data>
+  <data name="VARIABLE_ECOSIMMORTVFISHINGPM" xml:space="preserve">
+    <value>EcosimMortVFishingPM</value>
+  </data>
+  <data name="VARIABLE_TAXONWINF" xml:space="preserve">
+    <value>TaxonWinf</value>
+  </data>
+  <data name="VARIABLE_LAYERRELPP" xml:space="preserve">
+    <value>PP || Primaire productie</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHFUPPER" xml:space="preserve">
+    <value>MSEBatchFUpper</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHFLOWER" xml:space="preserve">
+    <value>MSEBatchFLower</value>
+  </data>
+  <data name="VARIABLE_MIXEDTROPHICIMPACT" xml:space="preserve">
+    <value>MixedTrophicImpact</value>
+  </data>
+  <data name="VARIABLE_LAYERDEPTH" xml:space="preserve">
+    <value>Diepte ||| Diepte (bathymetrie)</value>
+  </data>
+  <data name="VARIABLE_NONMARKETVALUE" xml:space="preserve">
+    <value>Schaduwprijs ||| Schaduwprijs of niet-marktwaarde vertegenwoordigt de waarde van een hulpbron in het ecosysteem, bijvoorbeeld voor niet-exploitatief gebruik</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SIM_SAME" xml:space="preserve">
+    <value>Vergelijkbare soort, hetzelfde systeem, lage precisie</value>
+  </data>
+  <data name="VARIABLE_CAPACITYEXPORTTOT" xml:space="preserve">
+    <value>CapacityExportTot</value>
+  </data>
+  <data name="VARIABLE_CAPACITYEXPORTPER" xml:space="preserve">
+    <value>CapacityExportPer</value>
+  </data>
+  <data name="VARIABLE_ECOSIMVALUEGROUPFLEET" xml:space="preserve">
+    <value>EcosimValueGroupFleet</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEAREAOUTPUTDIR" xml:space="preserve">
+    <value>EcospaceAreaOutputDir</value>
+  </data>
+  <data name="UNIT_CURRENCY_JOULES" xml:space="preserve">
+    <value>J / m</value>
+  </data>
+  <data name="VARIABLE_FPSMAXPORTUTIL" xml:space="preserve">
+    <value>FPSMaxPortUtil</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEMAPOUTPUTDIR" xml:space="preserve">
+    <value>EcospaceMapOutputDir</value>
+  </data>
+  <data name="VARIABLE_NDATYEARS" xml:space="preserve">
+    <value>nDatYears</value>
+  </data>
+  <data name="VARIABLE_NUMDIGITS" xml:space="preserve">
+    <value>Aantal decimale cijfers</value>
+  </data>
+  <data name="PARAM_SD_LEFT" xml:space="preserve">
+    <value>SD over</value>
+  </data>
+  <data name="VARIABLE_MSEUSEECONOMICPLUGIN" xml:space="preserve">
+    <value>MSEUseEconomicPlugin</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPBIOMASSEND" xml:space="preserve">
+    <value>EcosimGroupBiomassEnd</value>
+  </data>
+  <data name="PARAM_SD_WIDTH" xml:space="preserve">
+    <value>Gegevensbreedte</value>
+  </data>
+  <data name="PARAM_SD_RIGHT" xml:space="preserve">
+    <value>SD rechts</value>
+  </data>
+  <data name="UNIT_TIME_DAY" xml:space="preserve">
+    <value>dag</value>
+  </data>
+  <data name="VARIABLE_LAYERADVECTION" xml:space="preserve">
+    <value>advectie</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSMEASUREOFFIT" xml:space="preserve">
+    <value>Maat van pasvorm</value>
+  </data>
+  <data name="VARIABLE_FLEETINDEX1" xml:space="preserve">
+    <value>FleetIndex</value>
+  </data>
+  <data name="VARIABLE_FLEETINDEX2" xml:space="preserve">
+    <value>FleetIndex</value>
+  </data>
+  <data name="VARIABLE_FLEETINDEX" xml:space="preserve">
+    <value>FleetIndex</value>
+  </data>
+  <data name="VARIABLE_FEEDING" xml:space="preserve">
+    <value>Voeden</value>
+  </data>
+  <data name="VARIABLE_LAYERBIOMASSFORCING" xml:space="preserve">
+    <value>Biomassa (abs) || Absoluut biomassa forceren</value>
+  </data>
+  <data name="VARIABLE_ECOPATHFIRSTYEAR" xml:space="preserve">
+    <value>Jaar ||| Eerste jaar voor het Ecopath-model</value>
+  </data>
+  <data name="VARIABLE_MSETFMBLIMUPPER" xml:space="preserve">
+    <value>MSETFMBLimUpper</value>
+  </data>
+  <data name="VARIABLE_TEMPERATURESPREADRIGHT" xml:space="preserve">
+    <value>Ttol boven || Temperatuurtolerantie boven optimaal</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUTPUTFISHINGMORTRATE" xml:space="preserve">
+    <value>MSEBatchOutputFishingMortRate</value>
+  </data>
+  <data name="VARIABLE_EQUILMAXFISHINGRATE" xml:space="preserve">
+    <value>EquilMaxFishingRate</value>
+  </data>
+  <data name="VARIABLE_MSETFMBLIMLOWER" xml:space="preserve">
+    <value>MSETFMBLimLower</value>
+  </data>
+  <data name="VARIABLE_FPSINITOPTION" xml:space="preserve">
+    <value>FPSInitOption</value>
+  </data>
+  <data name="VARIABLE_CONSIMONECOSIM" xml:space="preserve">
+    <value>ConSimOnEcoSim</value>
+  </data>
+  <data name="VARIABLE_PBOUTPUT" xml:space="preserve">
+    <value>PB | P / B | Productie / biomassa</value>
+  </data>
+  <data name="VARIABLE_PBINPUT" xml:space="preserve">
+    <value>PB | P / B | Productie / biomassa</value>
+  </data>
+  <data name="VARIABLE_YVELOCITY" xml:space="preserve">
+    <value>Y vel. || Y snelheid</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSBELOWLIMITPM" xml:space="preserve">
+    <value>MSEBiomassBelowLimitPM</value>
+  </data>
+  <data name="VARIABLE_TOTALCATCH" xml:space="preserve">
+    <value>TotalCatch</value>
+  </data>
+  <data name="VARIABLE_MPAOPTSTARTYEAR" xml:space="preserve">
+    <value>MPAOptStartYear</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPBIOMASSEND" xml:space="preserve">
+    <value>EcospaceGroupBiomassEnd</value>
+  </data>
+  <data name="VARIABLE_FPSUSEECONOMICPLUGIN" xml:space="preserve">
+    <value>FPSUseEconomicPlugin</value>
+  </data>
+  <data name="VARIABLE_MSERESULTSENDYEAR" xml:space="preserve">
+    <value>MSEResultsEndYear</value>
+  </data>
+  <data name="VARIABLE_ECOSIMELECTIVITYTIME" xml:space="preserve">
+    <value>EcosimElectivityTime</value>
+  </data>
+  <data name="VARIABLE_MSEQINCREASE" xml:space="preserve">
+    <value>MSEQIncrease</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHTACLOWER" xml:space="preserve">
+    <value>MSEBatchTACLower</value>
+  </data>
+  <data name="PARAM_YEND" xml:space="preserve">
+    <value>Y einde</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHTACUPPER" xml:space="preserve">
+    <value>MSEBatchTACUpper</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEBINS" xml:space="preserve">
+    <value>MSEFleetValueBins</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALPRESP" xml:space="preserve">
+    <value>TotalPResp</value>
+  </data>
+  <data name="VARIABLE_PSDMORTALITYTYPE" xml:space="preserve">
+    <value>PSDMortalityType</value>
+  </data>
+  <data name="VARIABLE_INMIGAREAMOVEWEIGHT" xml:space="preserve">
+    <value>Mig. in gebiedsbeweging ||| Bewegingsgewicht voor soorten binnen migrerend gebied</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALNETPP" xml:space="preserve">
+    <value>TotalNetPP</value>
+  </data>
+  <data name="VARIABLE_TMAXOUTPUT" xml:space="preserve">
+    <value>TmaxOutput</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETCOSTEND" xml:space="preserve">
+    <value>EcosimFleetCostEnd</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SAME_SAME" xml:space="preserve">
+    <value>Dezelfde soort, hetzelfde systeem, hoge precisie</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEISECOSIMBIOFORCINGLOADED" xml:space="preserve">
+    <value>EcospaceIsEcosimBioForcingLoaded</value>
+  </data>
+  <data name="VARIABLE_MSEMEANECONOMICVALUE" xml:space="preserve">
+    <value>MSEMeanEconomicValue</value>
+  </data>
+  <data name="VARIABLE_IMPORTANCEWEIGHT" xml:space="preserve">
+    <value>ImportanceWeight</value>
+  </data>
+  <data name="VARIABLE_MCDIETMULT" xml:space="preserve">
+    <value>Dieetvermenigvuldiger</value>
+  </data>
+  <data name="VARIABLE_MCDIETCOMP" xml:space="preserve">
+    <value>DC</value>
+  </data>
+  <data name="VARIABLE_TL" xml:space="preserve">
+    <value>TL || Trofisch niveau</value>
+  </data>
+  <data name="VARIABLE_PP" xml:space="preserve">
+    <value>PP |% PP | Percentage primaire productie</value>
+  </data>
+  <data name="VARIABLE_GS" xml:space="preserve">
+    <value>GS || Unassim. consumptie | Niet-geassimileerd verbruik</value>
+  </data>
+  <data name="VARIABLE_CB" xml:space="preserve">
+    <value>CB || Verbruik / biomassa</value>
+  </data>
+  <data name="VARIABLE_TAXONMAXLENGTH" xml:space="preserve">
+    <value>maximale lengte</value>
+  </data>
+  <data name="VARIABLE_HABITATAREA" xml:space="preserve">
+    <value>Hab gebied ||| Fractie van het gebied dat wordt gebruikt als habitat</value>
+  </data>
+  <data name="VARIABLE_TAXONPROPCATCH" xml:space="preserve">
+    <value>Prop. Vangst || Vangstbijdrage | Bijdrage aan de functionele groepvangst</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPBIOMASSSTART" xml:space="preserve">
+    <value>EcosimGroupBiomassStart</value>
+  </data>
+  <data name="VARIABLE_MPAOPTSOCIALVALUE" xml:space="preserve">
+    <value>MPAOptSocialValue</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPCATCHSTART" xml:space="preserve">
+    <value>EcospaceGroupCatchStart</value>
+  </data>
+  <data name="VARIABLE_ASCENDOVERHEADGROUP" xml:space="preserve">
+    <value>AscendOverheadGroup</value>
+  </data>
+  <data name="VARIABLE_MCPBLOWER" xml:space="preserve">
+    <value>PB (lager)</value>
+  </data>
+  <data name="VARIABLE_MCPBUPPER" xml:space="preserve">
+    <value>PB (bovenste)</value>
+  </data>
+  <data name="VARIABLE_CONCENTRATION" xml:space="preserve">
+    <value>Concentratie</value>
+  </data>
+  <data name="VERSION_EXT_COMPILED" xml:space="preserve">
+    <value>{0} (gecompileerd {1})</value>
+  </data>
+  <data name="VARIABLE_NETWORKRELFLOW" xml:space="preserve">
+    <value>NetworkRelFlow</value>
+  </data>
+  <data name="VARIABLE_NUDGECHECKED" xml:space="preserve">
+    <value>NudgeChecked</value>
+  </data>
+  <data name="VARIABLE_MSEMEANECOLOGICALVALUE" xml:space="preserve">
+    <value>MSEMeanEcologicalValue</value>
+  </data>
+  <data name="VARIABLE_MCBCV" xml:space="preserve">
+    <value>B (cv)</value>
+  </data>
+  <data name="VARIABLE_MCBBF" xml:space="preserve">
+    <value>B (beste pasvorm)</value>
+  </data>
+  <data name="VARIABLE_SORWV" xml:space="preserve">
+    <value>SorWv</value>
+  </data>
+  <data name="VARIABLE_SOUTH" xml:space="preserve">
+    <value>zuiden</value>
+  </data>
+  <data name="VARIABLE_IMMIG" xml:space="preserve">
+    <value>Immigratie</value>
+  </data>
+  <data name="VARIABLE_INROW" xml:space="preserve">
+    <value>#rows || No. van rijen</value>
+  </data>
+  <data name="VARIABLE_INCOL" xml:space="preserve">
+    <value>#cols || No. van kolommen</value>
+  </data>
+  <data name="VARIABLE_INDEX" xml:space="preserve">
+    <value># | Nee || Volgnummer</value>
+  </data>
+  <data name="VARIABLE_NORTH" xml:space="preserve">
+    <value>noorden</value>
+  </data>
+  <data name="VARIABLE_DATAQ" xml:space="preserve">
+    <value>DATAQ</value>
+  </data>
+  <data name="VARIABLE_BABSPLIT" xml:space="preserve">
+    <value>BAB | BA / B || Relatieve accumulatie van biomassa</value>
+  </data>
+  <data name="VARIABLE_FIBPM" xml:space="preserve">
+    <value>FIBPM</value>
+  </data>
+  <data name="VARIABLE_CZERO" xml:space="preserve">
+    <value>CO-</value>
+  </data>
+  <data name="UNIT_PRESENCE" xml:space="preserve">
+    <value>aanwezigheid</value>
+  </data>
+  <data name="VARIABLE_CODESAUP" xml:space="preserve">
+    <value>SAUP id ||| Taxonomiecode in de databases van Sea Around Us</value>
+  </data>
+  <data name="VARIABLE_CODELSID" xml:space="preserve">
+    <value>LSID ||| Taxonomy Life Sciences Identifier, zoals gedefinieerd door de Taxonomy Database Working Group</value>
+  </data>
+  <data name="VARIABLE_CODEOBIS" xml:space="preserve">
+    <value>OBIS-ID ||| Taxonomienummer in OBIS</value>
+  </data>
+  <data name="VARIABLE_PSDINCLUDED" xml:space="preserve">
+    <value>PSDIncluded</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSMEANTROPHICLEVELCATCH" xml:space="preserve">
+    <value>Gemiddelde TL van de vangst</value>
+  </data>
+  <data name="PARAM_LEFT_BOTTOM" xml:space="preserve">
+    <value>Links onderaan</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHTACMANAGED" xml:space="preserve">
+    <value>MSEBatchTACManaged</value>
+  </data>
+  <data name="UNIT_PROPORTION" xml:space="preserve">
+    <value>proportie</value>
+  </data>
+  <data name="VARIABLE_ECOSIMISCATCHAGGREGATED" xml:space="preserve">
+    <value>EcosimIsCatchAggregated</value>
+  </data>
+  <data name="VARIABLE_CAPACITYIMPORTTOT" xml:space="preserve">
+    <value>CapacityImportTot</value>
+  </data>
+  <data name="VARIABLE_CAPACITYIMPORTPER" xml:space="preserve">
+    <value>CapacityImportPer</value>
+  </data>
+  <data name="VARIABLE_LAYERMPARANDOM" xml:space="preserve">
+    <value>Willekeurige MPA || Willekeurige MPA-kaart</value>
+  </data>
+  <data name="VARIABLE_TAXONPROPBIOMASS" xml:space="preserve">
+    <value>Prop. B || Biomassa-bijdrage | Bijdrage aan de functionele groep biomassa</value>
+  </data>
+  <data name="VARIABLE_BIOMASS" xml:space="preserve">
+    <value>B || Biomassa</value>
+  </data>
+  <data name="UNITS_WEIGHT" xml:space="preserve">
+    <value>gewicht</value>
+  </data>
+  <data name="VARIABLE_MSENTRIALS" xml:space="preserve">
+    <value>MSENTrials</value>
+  </data>
+  <data name="VARIABLE_AINLWINPUT" xml:space="preserve">
+    <value>AinLWInput</value>
+  </data>
+  <data name="VARIABLE_LOOOUTPUT" xml:space="preserve">
+    <value>Len. bij inf || Lengte bij oneindig</value>
+  </data>
+  <data name="VARIABLE_LOOINPUT" xml:space="preserve">
+    <value>Len. bij inf || Lengte bij oneindig</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSBINWIDTHS" xml:space="preserve">
+    <value>MSEBiomassBinWidths</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPMAXMORT" xml:space="preserve">
+    <value>EcosimGroupMaxMort</value>
+  </data>
+  <data name="VARIABLE_ECOSPACESSGROUP" xml:space="preserve">
+    <value>EcospaceSSGroup</value>
+  </data>
+  <data name="VARIABLE_CONFIDENCEINTERVAL" xml:space="preserve">
+    <value>Betrouwbaarheidsinterval</value>
+  </data>
+  <data name="VARIABLE_POOLCOLOR" xml:space="preserve">
+    <value>PoolColor</value>
+  </data>
+  <data name="VARIABLE_MSYSTARTTIME" xml:space="preserve">
+    <value>MSYStartTime</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSMAX" xml:space="preserve">
+    <value>MSEBiomassMax</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSMIN" xml:space="preserve">
+    <value>MSEBiomassMin</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSSDT" xml:space="preserve">
+    <value>MSEBiomassSdt</value>
+  </data>
+  <data name="VARIABLE_MSYFSELECTION" xml:space="preserve">
+    <value>MSYFSelection</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETVALUEEND" xml:space="preserve">
+    <value>EcosimFleetValueEnd</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPCATCHEND" xml:space="preserve">
+    <value>EcospaceGroupCatchEnd</value>
+  </data>
+  <data name="VARIABLE_F2TSLASTYEAR" xml:space="preserve">
+    <value>F2TSLastYear</value>
+  </data>
+  <data name="VARIABLE_MAXEFFORT" xml:space="preserve">
+    <value>Max. inspanning</value>
+  </data>
+  <data name="VARIABLE_STANZABIOMASS" xml:space="preserve">
+    <value>StanzaBiomass</value>
+  </data>
+  <data name="VARIABLE_ECOSIMAVGWEIGHT" xml:space="preserve">
+    <value>EcosimAvgWeight</value>
+  </data>
+  <data name="VARIABLE_MSEASSESSMETHOD" xml:space="preserve">
+    <value>MSEAssessMethod</value>
+  </data>
+  <data name="VARIABLE_MSYNUMTRIALYEARS" xml:space="preserve">
+    <value>MSYNumTrialYears</value>
+  </data>
+  <data name="VARIABLE_PSD" xml:space="preserve">
+    <value>PSD</value>
+  </data>
+  <data name="VARIABLE_VBK" xml:space="preserve">
+    <value>K || von Bertalanffy krommingsparameter</value>
+  </data>
+  <data name="VARIABLE_SOR" xml:space="preserve">
+    <value>SOR</value>
+  </data>
+  <data name="VARIABLE_FIB" xml:space="preserve">
+    <value>JOKKEN</value>
+  </data>
+  <data name="VARIABLE_BAT" xml:space="preserve">
+    <value>Knuppel</value>
+  </data>
+  <data name="VARIABLE_MSERESULTSSTARTYEAR" xml:space="preserve">
+    <value>MSEResultsStartYear</value>
+  </data>
+  <data name="VARIABLE_ASCENDINFOGROUP" xml:space="preserve">
+    <value>AscendInfoGroup</value>
+  </data>
+  <data name="VARIABLE_MSYFSELECTIONMODE" xml:space="preserve">
+    <value>MSYFSelectionMode</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFIRSTOUTPUTTIMESTEP" xml:space="preserve">
+    <value>EcospaceFirstOutputTimeStep</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETJOBS" xml:space="preserve">
+    <value>EcospaceFleetJobs</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SAMPLING_HIGH" xml:space="preserve">
+    <value>Bemonstering / lokaal, hoge precisie</value>
+  </data>
+  <data name="VARIABLE_VARIABLENAME" xml:space="preserve">
+    <value>variableName</value>
+  </data>
+  <data name="VARIABLE_RECPOWERSPLIT" xml:space="preserve">
+    <value>Rec. tarief || Relatief wervingspercentage</value>
+  </data>
+  <data name="VARIABLE_PSDNUMWEIGHTCLASSES" xml:space="preserve">
+    <value>PSDNumWeightClasses</value>
+  </data>
+  <data name="VARIABLE_HABAREAPROPORTION" xml:space="preserve">
+    <value>Woonoppervlak prop. || Woonoppervlak aandeel</value>
+  </data>
+  <data name="PARAM_SIGMOID_XOPT" xml:space="preserve">
+    <value>X opt. (y = 0.998)</value>
+  </data>
+  <data name="PARAM_SIGMOID_XMID" xml:space="preserve">
+    <value>X midden. punt</value>
+  </data>
+  <data name="PARAM_SIGMOID_XMIN" xml:space="preserve">
+    <value>X min.</value>
+  </data>
+  <data name="PARAM_SIGMOID_XMAX" xml:space="preserve">
+    <value>X max.</value>
+  </data>
+  <data name="VARIABLE_ECOSIMVALUEGROUP" xml:space="preserve">
+    <value>EcosimValueGroup</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSNETSYSTEMPRODUCTION" xml:space="preserve">
+    <value>NetSystemProduction</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHABOVELIMIT" xml:space="preserve">
+    <value>MSEGroupCatchAboveLimit</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHCV" xml:space="preserve">
+    <value>MSEGroupCatchCV</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHMEANVALUES" xml:space="preserve">
+    <value>MSEGroupCatchMeanValues</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETVALUEEND" xml:space="preserve">
+    <value>EcospaceFleetValueEnd</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONCATCHEND" xml:space="preserve">
+    <value>EcospaceRegionCatchEnd</value>
+  </data>
+  <data name="VARIABLE_CAPACITYFLOWPER" xml:space="preserve">
+    <value>CapacityFlowPer</value>
+  </data>
+  <data name="VARIABLE_CAPACITYFLOWTOT" xml:space="preserve">
+    <value>CapacityFlowTot</value>
+  </data>
+  <data name="VARIABLE_FLEETEFFORTCONVERSION" xml:space="preserve">
+    <value>FleetEffortConversion</value>
+  </data>
+  <data name="CORE_ALL_FLEETS" xml:space="preserve">
+    <value>Alle vloten</value>
+  </data>
+  <data name="VARIABLE_MCDIETSBF" xml:space="preserve">
+    <value>DC (beste pasvorm)</value>
+  </data>
+  <data name="VARIABLE_UNITMONETARY" xml:space="preserve">
+    <value>Monetair || Monetaire eenheid</value>
+  </data>
+  <data name="VARIABLE_QUOTASHARE" xml:space="preserve">
+    <value>QuotaShare</value>
+  </data>
+  <data name="VARIABLE_NSPACETHREADS" xml:space="preserve">
+    <value>nSpaceThreads</value>
+  </data>
+  <data name="VARIABLE_MORTCONETMIG" xml:space="preserve">
+    <value>Netto. migratiepercentage</value>
+  </data>
+  <data name="VARIABLE_SEARCHBASEYEAR" xml:space="preserve">
+    <value>SearchBaseYear</value>
+  </data>
+  <data name="VARIABLE_CELLSIZE" xml:space="preserve">
+    <value>Celgrootte</value>
+  </data>
+  <data name="VARIABLE_ECOSIMYIELDREL" xml:space="preserve">
+    <value>EcosimYieldRel</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETCATCH" xml:space="preserve">
+    <value>EcospaceFleetCatch</value>
+  </data>
+  <data name="VARIABLE_FPSBIOMASSDIVERSITYWEIGHT" xml:space="preserve">
+    <value>FPSBiomassDiversityWeight</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETVALUE" xml:space="preserve">
+    <value>EcospaceFleetValue</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHTFMMANAGED" xml:space="preserve">
+    <value>MSEBatchTFMManaged</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEMAPCATCH" xml:space="preserve">
+    <value>Vangstkaart</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPVALUEOVERTIME" xml:space="preserve">
+    <value>EcospaceGroupValueOverTime</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALCONSUMPTION" xml:space="preserve">
+    <value>Totaal verbruik</value>
+  </data>
+  <data name="CORE_DEFAULT_MIGRATION" xml:space="preserve">
+    <value>Migratie {0}</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETJOBS" xml:space="preserve">
+    <value>EcosimFleetJobs</value>
+  </data>
+  <data name="PARAM_YSCALAR" xml:space="preserve">
+    <value>Y scalair</value>
+  </data>
+  <data name="VARIABLE_IMPAOPTTOUSE" xml:space="preserve">
+    <value>MPA te gebruiken</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEMEANVALUES" xml:space="preserve">
+    <value>MSEFleetValueMeanValues</value>
+  </data>
+  <data name="VARIABLE_MSEUPPERRISK" xml:space="preserve">
+    <value>MSEUpperRisk</value>
+  </data>
+  <data name="VARIABLE_MSECATCHBYFLEET" xml:space="preserve">
+    <value>MSECatchByFleet</value>
+  </data>
+  <data name="VARIABLE_MSECATCHBYGROUP" xml:space="preserve">
+    <value>MSECatchByGroup</value>
+  </data>
+  <data name="VARIABLE_DATASET" xml:space="preserve">
+    <value>DataSet</value>
+  </data>
+  <data name="VARIABLE_DATYEAR" xml:space="preserve">
+    <value>DatYear</value>
+  </data>
+  <data name="VARIABLE_HABITATFISHERY" xml:space="preserve">
+    <value>Habitatvisserij</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHBINS" xml:space="preserve">
+    <value>MSEGroupCatchBins</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEABOVELIMIT" xml:space="preserve">
+    <value>MSEFleetValueAboveLimit</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPCATCHEND" xml:space="preserve">
+    <value>EcosimGroupCatchEnd</value>
+  </data>
+  <data name="VARIABLE_UNITAREACUSTOMTEXT" xml:space="preserve">
+    <value>Aangepaste gebiedseenheid</value>
+  </data>
+  <data name="ECOSPACE_WRITER_ASC_CONTAMINANTS" xml:space="preserve">
+    <value>Contaminant Concentrations map (ASCII-formaat)</value>
+  </data>
+  <data name="VARIABLE_F2TSUSEDEFAULTV" xml:space="preserve">
+    <value>F2TSUseDefaultV</value>
+  </data>
+  <data name="VARIABLE_RESPBIOM" xml:space="preserve">
+    <value>Ademhaling / biomassa</value>
+  </data>
+  <data name="VARIABLE_RELMOVEBAD" xml:space="preserve">
+    <value>Rel. disp. in bad hab. || Relatieve verspreiding in slechte habitat</value>
+  </data>
+  <data name="VARIABLE_MSYEQUILIBRIUMSTEPSIZE" xml:space="preserve">
+    <value>MSYEquilibriumStepSize</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATHISTOGRAM" xml:space="preserve">
+    <value>MSEFStatHistogram</value>
+  </data>
+  <data name="VARIABLE_MSEVALUEBYFLEET" xml:space="preserve">
+    <value>MSEValueByFleet</value>
+  </data>
+  <data name="VARIABLE_FPSECOSYSTEMWEIGHT" xml:space="preserve">
+    <value>FPSEcoSystemWeight</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPVALUEEND" xml:space="preserve">
+    <value>EcospaceGroupValueEnd</value>
+  </data>
+  <data name="VARIABLE_MSEEMPLOYVALUE" xml:space="preserve">
+    <value>MSEEmployValue</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUTPUTFEEDINGTIME" xml:space="preserve">
+    <value>MSEBatchOutputFeedingTime</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATVALUES" xml:space="preserve">
+    <value>MSEFStatValues</value>
+  </data>
+  <data name="VARIABLE_MEDFUNCTNUMBER" xml:space="preserve">
+    <value>MedFunctNumber</value>
+  </data>
+  <data name="VARIABLE_ECOSIMSUMSTART" xml:space="preserve">
+    <value>EcosimSumStart</value>
+  </data>
+  <data name="VARIABLE_FPSINCLUDECOMP" xml:space="preserve">
+    <value>FPSIncludeComp</value>
+  </data>
+  <data name="VARIABLE_LAYERWIND" xml:space="preserve">
+    <value>Wind</value>
+  </data>
+  <data name="VARIABLE_LAYERSAIL" xml:space="preserve">
+    <value>Zeilkosten ||| Ruimtelijke verdeling van zeilkosten</value>
+  </data>
+  <data name="VARIABLE_LAYERPORT" xml:space="preserve">
+    <value>Poorten || Poortenkaart</value>
+  </data>
+  <data name="VARIABLE_RELAXATION" xml:space="preserve">
+    <value>Ontspanning</value>
+  </data>
+  <data name="VARIABLE_ECOSPACESUMMARYTIMESTART" xml:space="preserve">
+    <value>EcospaceSummaryTimeStart</value>
+  </data>
+  <data name="VARIABLE_LAYERMPASEEDBEST" xml:space="preserve">
+    <value>Beste cellen</value>
+  </data>
+  <data name="VARIABLE_EXPLOITATIONSTATUS" xml:space="preserve">
+    <value>Exploitatie || Exploitatiestatus</value>
+  </data>
+  <data name="VARIABLE_F2TSCATCHANOMALYSEARCHSHAPENUMBER" xml:space="preserve">
+    <value>F2TSCatchAnomalySearchShapeNumber</value>
+  </data>
+  <data name="VARIABLE_MPAOPTITERATIONS" xml:space="preserve">
+    <value>MPAOptIterations</value>
+  </data>
+  <data name="VARIABLE_PPCONSFLOW" xml:space="preserve">
+    <value>PPConsFlow</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSVALUES" xml:space="preserve">
+    <value>MSEBiomassValues</value>
+  </data>
+  <data name="VARIABLE_CENVIRONMENT" xml:space="preserve">
+    <value>CEnvironment</value>
+  </data>
+  <data name="VARIABLE_ASCENDFLOWPER" xml:space="preserve">
+    <value>AscendFlowPer</value>
+  </data>
+  <data name="VARIABLE_ASCENDFLOWTOT" xml:space="preserve">
+    <value>AscendFlowTot</value>
+  </data>
+  <data name="VARIABLE_NUMSTEPAVG" xml:space="preserve">
+    <value>NumStepAvg</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTBELOWLIMIT" xml:space="preserve">
+    <value>MSEEffortBelowLimit</value>
+  </data>
+  <data name="VARIABLE_MCDISCARDSLOWER" xml:space="preserve">
+    <value>Discards (lager)</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETCOSTEND" xml:space="preserve">
+    <value>EcospaceFleetCostEnd</value>
+  </data>
+  <data name="VARIABLE_FPSPREDICTIONVARIANCE" xml:space="preserve">
+    <value>FPSPredictionVariance</value>
+  </data>
+  <data name="VARIABLE_BIOMASSSZWT" xml:space="preserve">
+    <value>BiomassSzWt</value>
+  </data>
+  <data name="VARIABLE_MCDISCARDSUPPER" xml:space="preserve">
+    <value>Discards (bovenste)</value>
+  </data>
+  <data name="VARIABLE_LAYERHABITATCAPACITYINPUT" xml:space="preserve">
+    <value>Hab. cap. || Habitatcapaciteit</value>
+  </data>
+  <data name="VARIABLE_MSYEVALVALUE" xml:space="preserve">
+    <value>MSYEvalValue</value>
+  </data>
+  <data name="VARIABLE_PACKETSMULTIPLIER" xml:space="preserve">
+    <value>PacketsMultiplier</value>
+  </data>
+  <data name="VARIABLE_NETWORKABSFLOW" xml:space="preserve">
+    <value>NetworkAbsFlow</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSCVPM" xml:space="preserve">
+    <value>MSEBiomassCVPM</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSBINS" xml:space="preserve">
+    <value>MSEBiomassBins</value>
+  </data>
+  <data name="VARIABLE_ECOPATHNUMYEARS" xml:space="preserve">
+    <value>Aantal jaren || Aantal jaren | Aantal jaren dat het Ecopath-model vertegenwoordigt</value>
+  </data>
+  <data name="VARIABLE_QUOTATYPE" xml:space="preserve">
+    <value>QuotaType</value>
+  </data>
+  <data name="UNIT_CURRENCY_WETWEIGHT" xml:space="preserve">
+    <value>t / km</value>
+  </data>
+  <data name="VARIABLE_MSELPSOLUTION" xml:space="preserve">
+    <value>MSELPSolution</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHHISTOGRAM" xml:space="preserve">
+    <value>MSEGroupCatchHistogram</value>
+  </data>
+  <data name="VARIABLE_FORAGINGTIMELOWERLIMIT" xml:space="preserve">
+    <value>Foerage ondergrens ||| In EwE versie 6.4 en eerder beperkt Ecosim de foerageringstijd tot 0,1 van een tijdsstap. Deze limiet kan nu worden verlaagd tot 0,01</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMRATEPERYEAR" xml:space="preserve">
+    <value>BA-percentage (jaarlijks) || Biomassa-accumulatiegraad per jaar</value>
+  </data>
+  <data name="VARIABLE_BARRIERAVOIDANCEWEIGHT" xml:space="preserve">
+    <value>Barrière vermijden gewicht || Barrière vermijden gewicht</value>
+  </data>
+  <data name="VARIABLE_FPSFISHINGLIMIT" xml:space="preserve">
+    <value>FPSFishingLimit</value>
+  </data>
+  <data name="VARIABLE_EMIGRATE" xml:space="preserve">
+    <value>e || Emig. tarief | Emigratiepercentage</value>
+  </data>
+  <data name="ECOSPACE_WRITER_ASC_CATCH" xml:space="preserve">
+    <value>Vangstkaarten (ASCII-formaat)</value>
+  </data>
+  <data name="VARIABLE_ISFISHED" xml:space="preserve">
+    <value>Wordt gevist</value>
+  </data>
+  <data name="VARIABLE_MPAOPTBESTCOL" xml:space="preserve">
+    <value>MPAOptBestCol</value>
+  </data>
+  <data name="VARIABLE_MPAOPTBESTROW" xml:space="preserve">
+    <value>MPAOptBestRow</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFISHINGMORTGROUPGEAR" xml:space="preserve">
+    <value>EcosimFishingMortGroupGear</value>
+  </data>
+  <data name="VARIABLE_BIOMASSON" xml:space="preserve">
+    <value>BiomassOn</value>
+  </data>
+  <data name="VARIABLE_LAYERM0MULTINPUT" xml:space="preserve">
+    <value>M0 mult | Overige mort. mult. | Andere mortaliteitsvermenigvuldiger (ingevoerd)</value>
+  </data>
+  <data name="PARAM_RIGHT_TOP" xml:space="preserve">
+    <value>Rechtsboven</value>
+  </data>
+  <data name="VARIABLE_LEADINGCB" xml:space="preserve">
+    <value>Toonaangevende QB | Toonaangevende Q / B || Toonaangevende (entry) levensfase voor het berekenen van consumptie / biomassa</value>
+  </data>
+  <data name="VARIABLE_STANZAWEIGHTATAGE" xml:space="preserve">
+    <value>StanzaWeightAtAge</value>
+  </data>
+  <data name="VARIABLE_MSEECONOMICVALUE" xml:space="preserve">
+    <value>MSEEconomicValue</value>
+  </data>
+  <data name="VARIABLE_MAXRELFEEDINGTIME" xml:space="preserve">
+    <value>MaxRelFeedingTime</value>
+  </data>
+  <data name="VARIABLE_LASTUPDATED" xml:space="preserve">
+    <value>Laatst bijgewerkt</value>
+  </data>
+  <data name="VARIABLE_MSEPREDICTEFFORT" xml:space="preserve">
+    <value>MSEPredictEffort</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETCOSTSTART" xml:space="preserve">
+    <value>EcospaceFleetCostStart</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_LOCAL_LOW" xml:space="preserve">
+    <value>Lokaal onderzoek, lage precisie / onvolledig</value>
+  </data>
+  <data name="VARIABLE_GEINPUT" xml:space="preserve">
+    <value>GE | G / E | Productie / consumptie</value>
+  </data>
+  <data name="VARIABLE_GEOUTPUT" xml:space="preserve">
+    <value>GE | G / E | Productie / consumptie</value>
+  </data>
+  <data name="VARIABLE_COUNTRY" xml:space="preserve">
+    <value>land</value>
+  </data>
+  <data name="VARIABLE_BIODIVERSITYINDICATORTYPE" xml:space="preserve">
+    <value>BiodiversityIndicatorType</value>
+  </data>
+  <data name="VARIABLE_F2TSANOMALYSEARCH" xml:space="preserve">
+    <value>F2TSAnomalySearch</value>
+  </data>
+  <data name="VARIABLE_PUBLICATIONDOI" xml:space="preserve">
+    <value>DOI || Digital Object Identifier | Digital Object Identifier van de publicatie</value>
+  </data>
+  <data name="VARIABLE_PUBLICATIONURI" xml:space="preserve">
+    <value>URL || Publicatie-URL | Hyperlink naar publicatie</value>
+  </data>
+  <data name="VARIABLE_CODESLB" xml:space="preserve">
+    <value>SLB-id ||| Taxonomiecode in SeaLifeBase</value>
+  </data>
+  <data name="VARIABLE_CODEFAO" xml:space="preserve">
+    <value>FAO id ||| Taxonomiecode volgens FAO</value>
+  </data>
+  <data name="VARIABLE_CONTACT" xml:space="preserve">
+    <value>Contact || Contactgegevens</value>
+  </data>
+  <data name="VARIABLE_CONCBIO" xml:space="preserve">
+    <value>ConcBio</value>
+  </data>
+  <data name="VARIABLE_SEARCHBLOCK" xml:space="preserve">
+    <value>SearchBlock</value>
+  </data>
+  <data name="VARIABLE_FIXEDFECUNDITY" xml:space="preserve">
+    <value>FixedFec ||| Vaste vruchtbaarheid</value>
+  </data>
+  <data name="VARIABLE_CODEAQUAMAPS" xml:space="preserve">
+    <value>AquaMaps id ||| Soort-ID in AquaMaps</value>
+  </data>
+  <data name="CORE_DEFAULT_FISHRATESHAPE" xml:space="preserve">
+    <value>Vorm vissnelheid {0}</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHVALUES" xml:space="preserve">
+    <value>MSEGroupCatchValues</value>
+  </data>
+  <data name="VARIABLE_TAXONVBGFK" xml:space="preserve">
+    <value>TaxonvbgfK</value>
+  </data>
+  <data name="VARIABLE_MSEREFBIOESTUPPER" xml:space="preserve">
+    <value>MSERefBioEstUpper</value>
+  </data>
+  <data name="VARIABLE_CAPBASEGROWTH" xml:space="preserve">
+    <value>In het. cap. groeipercentage || Initiële kapitaalgroei (prop., jaarlijks)</value>
+  </data>
+  <data name="VARIABLE_EFFECTIVEPOWER" xml:space="preserve">
+    <value>EffectivePower</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSGROSSEFFICIENCY" xml:space="preserve">
+    <value>Bruto efficiëntie</value>
+  </data>
+  <data name="VARIABLE_TAXONGROUP" xml:space="preserve">
+    <value>TaxonGroup</value>
+  </data>
+  <data name="VARIABLE_FPSMANDATEDREBUILDINGWEIGHT" xml:space="preserve">
+    <value>FPSMandatedRebuildingWeight</value>
+  </data>
+  <data name="VARIABLE_MSEREFBIOESTLOWER" xml:space="preserve">
+    <value>MSERefBioEstLower</value>
+  </data>
+  <data name="VARIABLE_MPAOPTECOLOGICALVALUE" xml:space="preserve">
+    <value>MPAOptEcologicalValue</value>
+  </data>
+  <data name="VARIABLE_IMPDIET" xml:space="preserve">
+    <value>DCimp || Geïmporteerd dieet</value>
+  </data>
+  <data name="VARIABLE_MSETFMNITERATION" xml:space="preserve">
+    <value>MSETFMNIteration</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEMAPSUMEFFORT" xml:space="preserve">
+    <value>Totale inspanningskaart</value>
+  </data>
+  <data name="VARIABLE_STANZAMORTALITY" xml:space="preserve">
+    <value>Z || Tot. mort. Totaal sterftecijfer</value>
+  </data>
+  <data name="VARIABLE_ASCENDCAPACITYGROUP" xml:space="preserve">
+    <value>AscendCapacityGroup</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALBNONDET" xml:space="preserve">
+    <value>TotalBNonDet</value>
+  </data>
+  <data name="VARIABLE_ASSUMESQUARECELLS" xml:space="preserve">
+    <value>AssumeSquareCells</value>
+  </data>
+  <data name="VARIABLE_PPRESPFLOW" xml:space="preserve">
+    <value>PPRespFlow</value>
+  </data>
+  <data name="VARIABLE_FPSECONOMICWEIGHT" xml:space="preserve">
+    <value>FPSEconomicWeight</value>
+  </data>
+  <data name="VARIABLE_MPAMONTH" xml:space="preserve">
+    <value>MPAMonth</value>
+  </data>
+  <data name="VARIABLE_DETIMPORTFLOW" xml:space="preserve">
+    <value>DetImportFlow</value>
+  </data>
+  <data name="VARIABLE_RELVULBAD" xml:space="preserve">
+    <value>Rel. vul naar pred. in bad hab. ||| Relatieve kwetsbaarheid voor predatie in slechte habitat (aandeel voor primaire producenten)</value>
+  </data>
+  <data name="VARIABLE_MSETRIALNUMBER" xml:space="preserve">
+    <value>MSETrialNumber</value>
+  </data>
+  <data name="VARIABLE_PPTHROUGHFLOW" xml:space="preserve">
+    <value>PPThroughFlow</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETVALUETIME" xml:space="preserve">
+    <value>EcosimFleetValueTime</value>
+  </data>
+  <data name="VARIABLE_VULMULT" xml:space="preserve">
+    <value>v || Beveiligingslek</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATABOVELIMIT" xml:space="preserve">
+    <value>MSEFStatAboveLimit</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTVALUES" xml:space="preserve">
+    <value>MSEBioEstValues</value>
+  </data>
+  <data name="VARIABLE_ADVECTIONUPWELLINGTHRESHOLD" xml:space="preserve">
+    <value>AdvectionUpwellingThreshold</value>
+  </data>
+  <data name="VARIABLE_STARTAGE" xml:space="preserve">
+    <value>StartAge</value>
+  </data>
+  <data name="VARIABLE_TOLERANCE" xml:space="preserve">
+    <value>Tolerantie</value>
+  </data>
+  <data name="VARIABLE_TLCATCH" xml:space="preserve">
+    <value>TLCatch</value>
+  </data>
+  <data name="VARIABLE_STANZACB" xml:space="preserve">
+    <value>StanzaCB</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONBIOMASSYEAR" xml:space="preserve">
+    <value>EcospaceRegionBiomassYear</value>
+  </data>
+  <data name="VARIABLE_PSDENABLED" xml:space="preserve">
+    <value>PSDEnabled</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETVALUESTART" xml:space="preserve">
+    <value>EcospaceFleetValueStart</value>
+  </data>
+  <data name="VARIABLE_LAYERHABITATCAPACITY" xml:space="preserve">
+    <value>Hab. cap. (uit) || Habitatcapaciteit (berekend)</value>
+  </data>
+  <data name="VARIABLE_MPAOPTMAXAREA" xml:space="preserve">
+    <value>MPAOptMaxArea</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_NATIONAL" xml:space="preserve">
+    <value>Nationale statistieken</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFEEDINGTIME" xml:space="preserve">
+    <value>EcosimFeedingTime</value>
+  </data>
+  <data name="VARIABLE_TAXONSTANZA" xml:space="preserve">
+    <value>TaxonStanza</value>
+  </data>
+  <data name="VARIABLE_T0INPUT" xml:space="preserve">
+    <value>t0Input</value>
+  </data>
+  <data name="VARIABLE_SYSTEMRECOVERY" xml:space="preserve">
+    <value>Systeemherstel</value>
+  </data>
+  <data name="VARIABLE_LAYERREGION" xml:space="preserve">
+    <value>Regio's || Kaart van statistische regio's</value>
+  </data>
+  <data name="VARIABLE_FEEDINGTIMEADJRATE" xml:space="preserve">
+    <value>FeedingTimeAdjRate</value>
+  </data>
+  <data name="VARIABLE_BUSEEFFORTDISTTHRESHOLD" xml:space="preserve">
+    <value>bUseEffortDistThreshold</value>
+  </data>
+  <data name="VARIABLE_ECOSIMSSGROUP" xml:space="preserve">
+    <value>EcosimSSGroup</value>
+  </data>
+  <data name="SOURCE_CLIPBOARD" xml:space="preserve">
+    <value>Van klembord</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTCV" xml:space="preserve">
+    <value>MSEBioEstCV</value>
+  </data>
+  <data name="VARIABLE_DISCARDFATE" xml:space="preserve">
+    <value>Gooi het lot weg</value>
+  </data>
+  <data name="VARIABLE_STANZABIOMASSATAGE" xml:space="preserve">
+    <value>StanzaBiomassAtAge</value>
+  </data>
+  <data name="VARIABLE_ECOSIMTOTALMORT" xml:space="preserve">
+    <value>EcosimTotalMort</value>
+  </data>
+  <data name="VARIABLE_MSEFORCASTGAIN" xml:space="preserve">
+    <value>MSEForcastGain</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETCATCHSTART" xml:space="preserve">
+    <value>EcospaceFleetCatchStart</value>
+  </data>
+  <data name="VARIABLE_PPEXPORTFLOW" xml:space="preserve">
+    <value>PPExportFlow</value>
+  </data>
+  <data name="VARIABLE_STEPSIZE" xml:space="preserve">
+    <value>Stapgrootte</value>
+  </data>
+  <data name="VARIABLE_CINFLOW" xml:space="preserve">
+    <value>CInflow</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALPB" xml:space="preserve">
+    <value>TotalPB</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALBT" xml:space="preserve">
+    <value>TotalBT</value>
+  </data>
+  <data name="CORE_DEFAULT_ADVECTION" xml:space="preserve">
+    <value>Advectie {0}</value>
+  </data>
+  <data name="VARIABLE_UNITCURRENCYCUSTOMTEXT" xml:space="preserve">
+    <value>Aangepaste valuta-eenheid</value>
+  </data>
+  <data name="ECOSPACE_WRITER_ASC_EFFORT" xml:space="preserve">
+    <value>Inspanningskaarten (ASCII-indeling)</value>
+  </data>
+  <data name="CORE_DEFAULT_X_VELOCITY" xml:space="preserve">
+    <value>X snelheid</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUPUTDIR" xml:space="preserve">
+    <value>MSEBatchOuputDir</value>
+  </data>
+  <data name="VARIABLE_FPSFLEETTARGETPROFIT" xml:space="preserve">
+    <value>FPSFleetTargetProfit</value>
+  </data>
+  <data name="VARIABLE_PCAPBASE" xml:space="preserve">
+    <value>Initiële inspanning / kapitaalcapaciteit</value>
+  </data>
+  <data name="VARIABLE_MPAOPTCURCOL" xml:space="preserve">
+    <value>MPAOptCurCol</value>
+  </data>
+  <data name="VARIABLE_MPAOPTCURROW" xml:space="preserve">
+    <value>MPAOptCurRow</value>
+  </data>
+  <data name="VARIABLE_UNITTIME" xml:space="preserve">
+    <value>t || Tijdseenheid</value>
+  </data>
+  <data name="VARIABLE_UNITAREA" xml:space="preserve">
+    <value>Gebiedseenheid</value>
+  </data>
+  <data name="VARIABLE_FPSNRUNS" xml:space="preserve">
+    <value>FPSNRuns</value>
+  </data>
+  <data name="UNIT_TIME_YEAR" xml:space="preserve">
+    <value>jaar</value>
+  </data>
+  <data name="VARIABLE_ISMIGRATORY" xml:space="preserve">
+    <value>Migrerend || Is migrerend | Is dit een migratiegroep?</value>
+  </data>
+  <data name="VARIABLE_MORTCOPREDMORT" xml:space="preserve">
+    <value>Pred. mort. tarief || Predatie sterftecijfer</value>
+  </data>
+  <data name="CORE_NEW_OBJECT_CREATIONTIME" xml:space="preserve">
+    <value>Gemaakt {0}</value>
+  </data>
+  <data name="VARIABLE_BINLWINPUT" xml:space="preserve">
+    <value>BinLWInput</value>
+  </data>
+  <data name="PARAM_RIGHT_BOTTOM" xml:space="preserve">
+    <value>Rechts beneden</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSHISTOGRAM" xml:space="preserve">
+    <value>MSEBiomassHistogram</value>
+  </data>
+  <data name="CORE_DEFAULT_Y_VELOCITY" xml:space="preserve">
+    <value>Y snelheid</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEBELOWLIMIT" xml:space="preserve">
+    <value>MSEFleetValueBelowLimit</value>
+  </data>
+  <data name="CORE_DEFAULT_IMPORTANCE" xml:space="preserve">
+    <value>Belang {0}</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETPROFIT" xml:space="preserve">
+    <value>EcosimFleetProfit</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSCONNECTANCEINDEX" xml:space="preserve">
+    <value>Verbindingsindex</value>
+  </data>
+  <data name="UNIT_DECIMALDEGREE" xml:space="preserve">
+    <value>dd</value>
+  </data>
+  <data name="CORE_DEFAULT_WIND" xml:space="preserve">
+    <value>Wind ({0})</value>
+  </data>
+  <data name="VARIABLE_FORCINGFUNCTNUMBER" xml:space="preserve">
+    <value>ForcingFunctNumber</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_GENERAL_SAME" xml:space="preserve">
+    <value>Algemene kennis voor dezelfde groep / soort</value>
+  </data>
+  <data name="VARIABLE_MPAOPTMINAREA" xml:space="preserve">
+    <value>MPAOptMinArea</value>
+  </data>
+  <data name="VARIABLE_LAYERM0MULT" xml:space="preserve">
+    <value>M0 mult (uit) | Overige mort. mult. (uit) | Andere mortaliteitsvermenigvuldiger (berekend)</value>
+  </data>
+  <data name="VARIABLE_MPAFISHERY" xml:space="preserve">
+    <value>MPAFishery</value>
+  </data>
+  <data name="VARIABLE_LAYERIMPORTANCE" xml:space="preserve">
+    <value>Belang ||| Belangskaart voor ruimtelijke optimalisaties</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONBIOMASSEND" xml:space="preserve">
+    <value>EcospaceRegionBiomassEnd</value>
+  </data>
+  <data name="VARIABLE_MCBUPPER" xml:space="preserve">
+    <value>B (bovenste)</value>
+  </data>
+  <data name="CORE_DEFAULT_SCENARIO" xml:space="preserve">
+    <value>Nieuw scenario</value>
+  </data>
+  <data name="PARAM_STEEPNESS" xml:space="preserve">
+    <value>Steil</value>
+  </data>
+  <data name="PARAM_SIGMOID_STEEP" xml:space="preserve">
+    <value>Steil</value>
+  </data>
+  <data name="VARIABLE_FPSGROUPMANDRELBIOM" xml:space="preserve">
+    <value>FPSGroupMandRelBiom</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHFVALUES" xml:space="preserve">
+    <value>MSEBatchFValues</value>
+  </data>
+  <data name="VARIABLE_MCBLOWER" xml:space="preserve">
+    <value>B (lager)</value>
+  </data>
+  <data name="VARIABLE_KEMPTONSQ" xml:space="preserve">
+    <value>KemptonsQ</value>
+  </data>
+  <data name="VARIABLE_IFDPOWER" xml:space="preserve">
+    <value>IFDPower</value>
+  </data>
+  <data name="VARIABLE_MPAOPTTOTALVALUE" xml:space="preserve">
+    <value>MPAOptTotalValue</value>
+  </data>
+  <data name="VARIABLE_ECOSPACESUMMARYTIMEEND" xml:space="preserve">
+    <value>EcospaceSummaryTimeEnd</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEMAPBIOMASS" xml:space="preserve">
+    <value>Biomassa kaart</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPBIOMASSSTART" xml:space="preserve">
+    <value>EcospaceGroupBiomassStart</value>
+  </data>
+  <data name="VARIABLE_FPSOPTIMIZEAPPROACH" xml:space="preserve">
+    <value>FPSOptimizeApproach</value>
+  </data>
+  <data name="VARIABLE_FPSGROUPSTRUCRELWEIGHT" xml:space="preserve">
+    <value>FPSGroupStrucRelWeight</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSABOVELIMIT" xml:space="preserve">
+    <value>MSEBiomassAboveLimit</value>
+  </data>
+  <data name="VARIABLE_ADVECTIONUPWELLINGPPMULTIPLIER" xml:space="preserve">
+    <value>AdvectionUpwellingPPMultiplier</value>
+  </data>
+  <data name="VARIABLE_FPSSEARCHOPTION" xml:space="preserve">
+    <value>FPSSearchOption</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEMAPEFFORT" xml:space="preserve">
+    <value>Inspanningskaart</value>
+  </data>
+  <data name="VARIABLE_BASEMAPSTEPSIZE" xml:space="preserve">
+    <value>BasemapStepSize</value>
+  </data>
+  <data name="VARIABLE_ECOSIMNYEARS" xml:space="preserve">
+    <value>Aantal Ecosim-jaren</value>
+  </data>
+  <data name="VARIABLE_SEARCHRATE" xml:space="preserve">
+    <value>SearchRate</value>
+  </data>
+  <data name="VARIABLE_MCLANDINGSCV" xml:space="preserve">
+    <value>Landingen (cv)</value>
+  </data>
+  <data name="VARIABLE_MCLANDINGSBF" xml:space="preserve">
+    <value>Landingen (beste pasvorm)</value>
+  </data>
+  <data name="VARIABLE_ASCENDIMPORTTOT" xml:space="preserve">
+    <value>AscendImportTot</value>
+  </data>
+  <data name="VARIABLE_ASCENDIMPORTPER" xml:space="preserve">
+    <value>AscendImportPer</value>
+  </data>
+  <data name="VARIABLE_DISCARDMORTALITY" xml:space="preserve">
+    <value>Mort weggooien. || Mort weggooien. Sterftecijfer afleggen</value>
+  </data>
+  <data name="VARIABLE_UNITTIMECUSTOMTEXT" xml:space="preserve">
+    <value>Aangepaste tijdseenheid</value>
+  </data>
+  <data name="VARIABLE_ECOSIMSUMEND" xml:space="preserve">
+    <value>EcosimSumEnd</value>
+  </data>
+  <data name="VARIABLE_SPAWNPROP" xml:space="preserve">
+    <value>Uitzetten ||| Aandeel van het levensstadium dat uitgezet mag worden</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMRATE" xml:space="preserve">
+    <value>BA-snelheid || Ophopingssnelheid biomassa</value>
+  </data>
+  <data name="VARIABLE_MCBAUPPER" xml:space="preserve">
+    <value>BA (bovenste)</value>
+  </data>
+  <data name="VARIABLE_MSEECOLOGICALVALUE" xml:space="preserve">
+    <value>MSEEcologicalValue</value>
+  </data>
+  <data name="VARIABLE_IMPORTEDCONSUMPTION" xml:space="preserve">
+    <value>Geïmporteerd verbruik</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMINPUT" xml:space="preserve">
+    <value>BA || Ophoping van biomassa</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMOUTPUT" xml:space="preserve">
+    <value>BA || Ophoping van biomassa</value>
+  </data>
+  <data name="VARIABLE_NUTFORCEFUNCTIONNUMBER" xml:space="preserve">
+    <value>Nutrition Forcing-functie</value>
+  </data>
+  <data name="VARIABLE_MCBALOWER" xml:space="preserve">
+    <value>BA (lager)</value>
+  </data>
+  <data name="VARIABLE_MSEWEIGHTEDTOTALVALUE" xml:space="preserve">
+    <value>MSEWeightedTotalValue</value>
+  </data>
+  <data name="VARIABLE_ECOSIMMORTVPRED" xml:space="preserve">
+    <value>EcosimMortVPred</value>
+  </data>
+  <data name="VARIABLE_BIOMASSAREAOUTPUT" xml:space="preserve">
+    <value>B (a) | B-gebied | Biomassa in habitatgebied</value>
+  </data>
+  <data name="VARIABLE_BIOMASSAREAINPUT" xml:space="preserve">
+    <value>B (a) | B-gebied | Biomassa in habitatgebied</value>
+  </data>
+  <data name="VARIABLE_SALINITYOPT" xml:space="preserve">
+    <value>Sal opt || Optimaal zoutgehalte</value>
+  </data>
+  <data name="VARIABLE_ISECOSPACEMODELCOUPLED" xml:space="preserve">
+    <value>IsEcospaceModelCoupled</value>
+  </data>
+  <data name="SOURCE_PLUGINS" xml:space="preserve">
+    <value>plug-in (s)</value>
+  </data>
+  <data name="VARIABLE_LAYERUPWELLING" xml:space="preserve">
+    <value>opwelling</value>
+  </data>
+  <data name="CORE_DEFAULT_UPWELLING" xml:space="preserve">
+    <value>opwelling</value>
+  </data>
+  <data name="VARIABLE_FISHMORTTOTMORT" xml:space="preserve">
+    <value>F / Z || Visserijmort. over totale mortaliteit. | Visserijsterfte boven totale sterftecijfer</value>
+  </data>
+  <data name="VARIABLE_MPAOPTBOUNDARYWEIGHT" xml:space="preserve">
+    <value>MPAOptBoundaryWeight</value>
+  </data>
+  <data name="VARIABLE_EEOUTPUT" xml:space="preserve">
+    <value>EE || Ecotrofe efficiëntie</value>
+  </data>
+  <data name="VARIABLE_EEINPUT" xml:space="preserve">
+    <value>EE || Ecotrofe efficiëntie</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFISHMORT" xml:space="preserve">
+    <value>EcosimFishMort</value>
+  </data>
+  <data name="VARIABLE_ECOSIMECOSYSTEMSTRUCT" xml:space="preserve">
+    <value>EcosimEcoSystemStruct</value>
+  </data>
+  <data name="UNIT_AREA_MI2" xml:space="preserve">
+    <value>mi²</value>
+  </data>
+  <data name="UNIT_KILOMETER" xml:space="preserve">
+    <value>km</value>
+  </data>
+  <data name="VARIABLE_MSYRUNSILENT" xml:space="preserve">
+    <value>MSYRunSilent</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETVALUESTART" xml:space="preserve">
+    <value>EcosimFleetValueStart</value>
+  </data>
+  <data name="VARIABLE_CBENVIRONMENT" xml:space="preserve">
+    <value>CBEnvironment</value>
+  </data>
+  <data name="VARIABLE_NUTPBMAX" xml:space="preserve">
+    <value>NutPBMax</value>
+  </data>
+  <data name="VARIABLE_F2TSCATCHANOMALY" xml:space="preserve">
+    <value>F2TSCatchAnomaly</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETWEIGHT" xml:space="preserve">
+    <value>MSEFleetWeight</value>
+  </data>
+  <data name="VARIABLE_PUBLICATIONREFERENCE" xml:space="preserve">
+    <value>PublicationReference</value>
+  </data>
+  <data name="UNIT_CURRENCY_DRYWEIGHT" xml:space="preserve">
+    <value>g / m</value>
+  </data>
+  <data name="UNIT_CURRENCY_CARBON" xml:space="preserve">
+    <value>g / m</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTCV" xml:space="preserve">
+    <value>MSEEffortCV</value>
+  </data>
+  <data name="VARIABLE_SOURCEKEY" xml:space="preserve">
+    <value>SourceKey</value>
+  </data>
+  <data name="VARIABLE_MCQBLOWER" xml:space="preserve">
+    <value>QB (lager)</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATSTD" xml:space="preserve">
+    <value>MSEFStatStd</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATMIN" xml:space="preserve">
+    <value>MSEFStatMin</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATMAX" xml:space="preserve">
+    <value>MSEFStatMax</value>
+  </data>
+  <data name="VARIABLE_MCQBUPPER" xml:space="preserve">
+    <value>QB (bovenste)</value>
+  </data>
+  <data name="VARIABLE_MCLANDINGSLOWER" xml:space="preserve">
+    <value>Landingen (lager)</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSPEDIGREE" xml:space="preserve">
+    <value>Stamboom</value>
+  </data>
+  <data name="VARIABLE_WINFINPUT" xml:space="preserve">
+    <value>Gew. bij inf || Gewicht bij oneindig</value>
+  </data>
+  <data name="VARIABLE_WINFOUTPUT" xml:space="preserve">
+    <value>Gew. bij inf || Gewicht bij oneindig</value>
+  </data>
+  <data name="VARIABLE_FPSMAXNUMEVAL" xml:space="preserve">
+    <value>FPSMaxNumEval</value>
+  </data>
+  <data name="VARIABLE_MCLANDINGSUPPER" xml:space="preserve">
+    <value>Landingen (bovenste)</value>
+  </data>
+  <data name="VARIABLE_T0OUTPUT" xml:space="preserve">
+    <value>t0Output</value>
+  </data>
+  <data name="PARAM_WIDTH" xml:space="preserve">
+    <value>Breedte</value>
+  </data>
+  <data name="PARAM_YBASE" xml:space="preserve">
+    <value>Y basis</value>
+  </data>
+  <data name="PARAM_YZERO" xml:space="preserve">
+    <value>Y nul</value>
+  </data>
+  <data name="VARIABLE_TMAXINPUT" xml:space="preserve">
+    <value>TmaxInput</value>
+  </data>
+  <data name="VARIABLE_XVELOCITY" xml:space="preserve">
+    <value>X vel. || X snelheid</value>
+  </data>
+  <data name="VARIABLE_MSEUPPERRISKPERCENT" xml:space="preserve">
+    <value>MSEUpperRiskPercent</value>
+  </data>
+  <data name="VARIABLE_MSELOWERRISK" xml:space="preserve">
+    <value>MSELowerRisk</value>
+  </data>
+  <data name="VARIABLE_MCEEUPPER" xml:space="preserve">
+    <value>EE (bovenste)</value>
+  </data>
+  <data name="VARIABLE_FPSBATCHRUN" xml:space="preserve">
+    <value>FPSBatchRun</value>
+  </data>
+  <data name="VARIABLE_PSDFIRSTWEIGHTCLASS" xml:space="preserve">
+    <value>PSDFirstWeightClass</value>
+  </data>
+  <data name="VARIABLE_MCEELOWER" xml:space="preserve">
+    <value>EE (lager)</value>
+  </data>
+  <data name="VARIABLE_MPAOPTMANDATEDVALUE" xml:space="preserve">
+    <value>MPAOptMandatedValue</value>
+  </data>
+  <data name="MONTECARLO_WRITER_MULTIPLE" xml:space="preserve">
+    <value>Afzonderlijke bestanden per proef</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEBINWIDTHS" xml:space="preserve">
+    <value>MSEFleetValueBinWidths</value>
+  </data>
+  <data name="VARIABLE_TAXONVULNERABILITYINDEX" xml:space="preserve">
+    <value>Vul. index || Kwetsbaarheidindex</value>
+  </data>
+  <data name="VARIABLE_CUSTOMVARIABLE" xml:space="preserve">
+    <value>CustomVariable</value>
+  </data>
+  <data name="VARIABLE_MSEREFBIOUPPER" xml:space="preserve">
+    <value>MSERefBioUpper</value>
+  </data>
+  <data name="VARIABLE_APPLIED" xml:space="preserve">
+    <value>Toegepast</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETEFFORT" xml:space="preserve">
+    <value>EcosimFleetEffort</value>
+  </data>
+  <data name="VARIABLE_ECOSIMYIELD" xml:space="preserve">
+    <value>EcosimYield</value>
+  </data>
+  <data name="VARIABLE_LAYERDRIVER" xml:space="preserve">
+    <value>Stuurprogramma || Milieu-stuurprogramma | Ruimtelijke verdeling en intensiteit van een milieu-stuurprogramma</value>
+  </data>
+  <data name="VARIABLE_BINLWOUTPUT" xml:space="preserve">
+    <value>BinLWOutput</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTMAX" xml:space="preserve">
+    <value>MSEEffortMax</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTMIN" xml:space="preserve">
+    <value>MSEEffortMin</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTSTD" xml:space="preserve">
+    <value>MSEEffortStd</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATBINWIDTHS" xml:space="preserve">
+    <value>MSEFStatBinWidths</value>
+  </data>
+  <data name="VARIABLE_MSEREFBIOLOWER" xml:space="preserve">
+    <value>MSERefBioLower</value>
+  </data>
+  <data name="VARIABLE_GROUPDIGITS" xml:space="preserve">
+    <value>Groep cijfers</value>
+  </data>
+  <data name="VARIABLE_CELLLENGTH" xml:space="preserve">
+    <value>Cel lengte</value>
+  </data>
+  <data name="VARIABLE_DISCOUNT" xml:space="preserve">
+    <value>Korting</value>
+  </data>
+  <data name="VARIABLE_MPAOPTAREABOUNDARY" xml:space="preserve">
+    <value>MPAOptAreaBoundary</value>
+  </data>
+  <data name="VARIABLE_MSYMAXFISHINGRATE" xml:space="preserve">
+    <value>MSYMaxFishingRate</value>
+  </data>
+  <data name="UNIT_METER" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="ECOSAPCE_WRITER_ASC_COMPUTEDCAPACITY" xml:space="preserve">
+    <value>Berekende habitatcapaciteit (ASCII-kaarten)</value>
+  </data>
+  <data name="VARIABLE_CODEECOBASE" xml:space="preserve">
+    <value>Ecobase-code</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHFNITERATION" xml:space="preserve">
+    <value>MSEBatchFNIteration</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONCATCHSTART" xml:space="preserve">
+    <value>EcospaceRegionCatchStart</value>
+  </data>
+  <data name="UNIT_ABSENCE" xml:space="preserve">
+    <value>afwezigheid</value>
+  </data>
+  <data name="VARIABLE_MSETFMBLIMVALUES" xml:space="preserve">
+    <value>MSETFMBLimValues</value>
+  </data>
+  <data name="UNIT_CURRENCY_CALORIE" xml:space="preserve">
+    <value>kcal / m²</value>
+  </data>
+  <data name="UNIT_CURRENCY_PHOSPOROUS" xml:space="preserve">
+    <value>mg P / m²</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSBELOWLIMIT" xml:space="preserve">
+    <value>MSEBiomassBelowLimit</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALPRODUCTION" xml:space="preserve">
+    <value>Totale productie</value>
+  </data>
+  <data name="VARIABLE_PREDEFFECTFEEDINGTIME" xml:space="preserve">
+    <value>PredEffectFeedingTime</value>
+  </data>
+  <data name="VARIABLE_SAILCOST" xml:space="preserve">
+    <value>Zeilkosten || Zeilkosten</value>
+  </data>
+  <data name="PARAM_RIGHTPOINT" xml:space="preserve">
+    <value>Juiste punt</value>
+  </data>
+  <data name="VARIABLE_FPSEXISTENCEVALUE" xml:space="preserve">
+    <value>FPSExistenceValue</value>
+  </data>
+  <data name="VARIABLE_FPSOPTIMIZEOPTIONS" xml:space="preserve">
+    <value>FPSOptimizeOptions</value>
+  </data>
+  <data name="VARIABLE_TAXONSEARCHFIELDS" xml:space="preserve">
+    <value>TaxonSearchFields</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHGROUPRUNTYPE" xml:space="preserve">
+    <value>MSEBatchGroupRunType</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUTPUTCONBIO" xml:space="preserve">
+    <value>MSEBatchOutputConBio</value>
+  </data>
+  <data name="VARIABLE_OVERHEADFLOWPER" xml:space="preserve">
+    <value>OverheadFlowPer</value>
+  </data>
+  <data name="VARIABLE_OVERHEADFLOWTOT" xml:space="preserve">
+    <value>OverheadFlowTot</value>
+  </data>
+  <data name="CORE_DEFAULT_DRIVER" xml:space="preserve">
+    <value>Omgevingsfactor {0}</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETEFFORTES" xml:space="preserve">
+    <value>EcospaceFleetEffortES</value>
+  </data>
+  <data name="VARIABLE_LAYERMPA" xml:space="preserve">
+    <value>MPA || Beschermd marien gebied</value>
+  </data>
+  <data name="VARIABLE_LAYERMLD" xml:space="preserve">
+    <value>MLD || Gemengde laagdiepte</value>
+  </data>
+  <data name="VARIABLE_IUCNCONSERVATIONSTATUS" xml:space="preserve">
+    <value>IUCN-status || IUCN-beschermingsstatus</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEVALUES" xml:space="preserve">
+    <value>MSEFleetValueValues</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSABOVELIMITPM" xml:space="preserve">
+    <value>MSEBiomassAboveLimitPM</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_GUESSTIMATE" xml:space="preserve">
+    <value>guesstimate</value>
+  </data>
+  <data name="VARIABLE_ECOSIMCONSUMPBIOMASS" xml:space="preserve">
+    <value>EcosimConsumpBiomass</value>
+  </data>
+  <data name="VARIABLE_MSELOWERLPEFFORT" xml:space="preserve">
+    <value>MSELowerLPEffort</value>
+  </data>
+  <data name="VARIABLE_ECOSPACECAPCALTYPE" xml:space="preserve">
+    <value>EcospaceCapCalType</value>
+  </data>
+  <data name="VARIABLE_MSEREGULATORYMODE" xml:space="preserve">
+    <value>MSERegulatoryMode</value>
+  </data>
+  <data name="VARIABLE_MORTCOOTHERMORT" xml:space="preserve">
+    <value>Andere mort. tarief || Overige sterftecijfers</value>
+  </data>
+  <data name="VARIABLE_MSYRUNLENGTHMODE" xml:space="preserve">
+    <value>MSYRunLengthMode</value>
+  </data>
+  <data name="VARIABLE_OVERHEADEXPORTTOT" xml:space="preserve">
+    <value>OverheadExportTot</value>
+  </data>
+  <data name="VARIABLE_OVERHEADEXPORTPER" xml:space="preserve">
+    <value>OverheadExportPer</value>
+  </data>
+  <data name="VARIABLE_PREFERREDHABITAT" xml:space="preserve">
+    <value>PreferredHabitat</value>
+  </data>
+  <data name="VARIABLE_TIMESERIESTYPE" xml:space="preserve">
+    <value>TimeSeriesType</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTBINWIDTHS" xml:space="preserve">
+    <value>MSEEffortBinWidths</value>
+  </data>
+  <data name="VARIABLE_DENDEPCATCHABILITY" xml:space="preserve">
+    <value>DenDepCatchability</value>
+  </data>
+  <data name="CORE_DEFAULT_MIXEDLAYERDEPTH" xml:space="preserve">
+    <value>Gemengde laagdiepte</value>
+  </data>
+  <data name="VARIABLE_EGGATSPAWN" xml:space="preserve">
+    <value>EggAtSpawn</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEFLEETPROFIT" xml:space="preserve">
+    <value>EcospaceFleetProfit</value>
+  </data>
+  <data name="VARIABLE_TEMPERATUREOPT" xml:space="preserve">
+    <value>T opt || Optimale temperatuur</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHTACVALUES" xml:space="preserve">
+    <value>MSEBatchTACValues</value>
+  </data>
+  <data name="VARIABLE_LAYEREXCLUSION" xml:space="preserve">
+    <value>Uitsluiting || Uitgesloten cellen | Cellen die moeten worden uitgesloten van berekeningen</value>
+  </data>
+  <data name="CORE_DEFAULT_MEDIATIONSHAPE" xml:space="preserve">
+    <value>Bemiddelingsfunctie {0}</value>
+  </data>
+  <data name="VARIABLE_USENEWMULTISTANZA" xml:space="preserve">
+    <value>UseNewMultiStanza</value>
+  </data>
+  <data name="VARIABLE_MSEMANDATEDVALUE" xml:space="preserve">
+    <value>MSEMandatedValue</value>
+  </data>
+  <data name="CORE_DEFAULT_EXCLUSION" xml:space="preserve">
+    <value>Uitgesloten cellen</value>
+  </data>
+  <data name="VARIABLE_ECOPATHNUMBER" xml:space="preserve">
+    <value>EcopathNumber</value>
+  </data>
+  <data name="VARIABLE_NATMORTPERTOTMORT" xml:space="preserve">
+    <value>NatMortPerTotMort</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALRESPFLOW" xml:space="preserve">
+    <value>TotalRespFlow</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATMEANVALUES" xml:space="preserve">
+    <value>MSEFStatMeanValues</value>
+  </data>
+  <data name="CORE_NEW_MEDIATIONSHAPE" xml:space="preserve">
+    <value>Nieuwe bemiddelingsvorm</value>
+  </data>
+  <data name="VARIABLE_NUMPTSMOVAVG" xml:space="preserve">
+    <value>NumPtsMovAvg</value>
+  </data>
+  <data name="VARIABLE_MPAOPTENDYEAR" xml:space="preserve">
+    <value>MPAOptEndYear</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHBELOWLIMIT" xml:space="preserve">
+    <value>MSEGroupCatchBelowLimit</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUTPUTPREDRATE" xml:space="preserve">
+    <value>MSEBatchOutputPredRate</value>
+  </data>
+  <data name="VARIABLE_FITRESPONSETYPE" xml:space="preserve">
+    <value>Fit respons || Bewegingsrespons van trekvogels op fitness</value>
+  </data>
+  <data name="VARIABLE_TCATCHOUTPUT" xml:space="preserve">
+    <value>TCatchOutput</value>
+  </data>
+  <data name="VARIABLE_ECOSIMAVGPREY" xml:space="preserve">
+    <value>EcosimAvgPrey</value>
+  </data>
+  <data name="VARIABLE_ECOSIMAVGPRED" xml:space="preserve">
+    <value>EcosimAvgPred</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHITERCALCTYPE" xml:space="preserve">
+    <value>MSEBatchIterCalcType</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTMEANVALUES" xml:space="preserve">
+    <value>MSEEffortMeanValues</value>
+  </data>
+  <data name="VARIABLE_MPABUSECELLWEIGHT" xml:space="preserve">
+    <value>MPAbUseCellWeight</value>
+  </data>
+  <data name="VARIABLE_MSEMAXEFFORT" xml:space="preserve">
+    <value>MSEMaxEffort</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_APPROX_INDIRECT" xml:space="preserve">
+    <value>Geschatte of indirecte methode | Kan methoden omvatten zoals teledetectie, enz.</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALEXPORTS" xml:space="preserve">
+    <value>Totale uitvoer</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETCV" xml:space="preserve">
+    <value>MSEFleetCV</value>
+  </data>
+  <data name="VARIABLE_OCCURRENCESTATUS" xml:space="preserve">
+    <value>Aanwezigheid || Aanwezigheidsstatus</value>
+  </data>
+  <data name="VARIABLE_CEXCRETIONRATE" xml:space="preserve">
+    <value>CExcretionRate</value>
+  </data>
+  <data name="VARIABLE_PROJECTIONSTRING" xml:space="preserve">
+    <value>ProjectionString</value>
+  </data>
+  <data name="VARIABLE_SEARCHPREVCOSTEARNING" xml:space="preserve">
+    <value>SearchPrevCostEarning</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUTPUTCATCH" xml:space="preserve">
+    <value>MSEBatchOutputCatch</value>
+  </data>
+  <data name="VARIABLE_MSEMEANEMPLOYVALUE" xml:space="preserve">
+    <value>MSEMeanEmployValue</value>
+  </data>
+  <data name="VARIABLE_LAYERCONTAMINANTFORCINGABSOLUTE" xml:space="preserve">
+    <value>Buikspieren. C || Forceren van contaminanten</value>
+  </data>
+  <data name="VARIABLE_CONSIMONECOSPACE" xml:space="preserve">
+    <value>ConSimOnEcoSpace</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTMEANVALUES" xml:space="preserve">
+    <value>MSEBioEstMeanValues</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEUSELOCALMEMORY" xml:space="preserve">
+    <value>EcospaceUseLocalMemory</value>
+  </data>
+  <data name="CORE_NEW_GROUP" xml:space="preserve">
+    <value>Nieuwe groep</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTMIN" xml:space="preserve">
+    <value>MSEBioEstMin</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTMAX" xml:space="preserve">
+    <value>MSEBioEstMax</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTSTD" xml:space="preserve">
+    <value>MSEBioEstStd</value>
+  </data>
+  <data name="VARIABLE_DIETCOMP" xml:space="preserve">
+    <value>DC | Dieet || Dieetsamenstelling</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTBINWIDTHS" xml:space="preserve">
+    <value>MSEBioEstBinWidths</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONBIOMASS" xml:space="preserve">
+    <value>Biomassa per regio</value>
+  </data>
+  <data name="VARIABLE_LAYERHABITAT" xml:space="preserve">
+    <value>Habitat ||| Ruimtelijke verdeling van een habitat</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHMIN" xml:space="preserve">
+    <value>MSEGroupCatchMin</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHMAX" xml:space="preserve">
+    <value>MSEGroupCatchMax</value>
+  </data>
+  <data name="VARIABLE_MSEGROUPCATCHSTD" xml:space="preserve">
+    <value>MSEGroupCatchStd</value>
+  </data>
+  <data name="VARIABLE_EQUILIBRIUMSTEPSIZE" xml:space="preserve">
+    <value>EquilibriumStepSize</value>
+  </data>
+  <data name="VARIABLE_BIOMASSAVGSZWT" xml:space="preserve">
+    <value>BiomassAvgSzWt</value>
+  </data>
+  <data name="VARIABLE_MSEREFFLEETEFFORTLOWER" xml:space="preserve">
+    <value>MSERefFleetEffortLower</value>
+  </data>
+  <data name="VARIABLE_MPAOPTECONOMICVALUE" xml:space="preserve">
+    <value>MPAOptEconomicValue</value>
+  </data>
+  <data name="VARIABLE_MSEREFFLEETEFFORTUPPER" xml:space="preserve">
+    <value>MSERefFleetEffortUpper</value>
+  </data>
+  <data name="VARIABLE_STANZANUMBERATAGE" xml:space="preserve">
+    <value>StanzaNumberAtAge</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATBELOWLIMIT" xml:space="preserve">
+    <value>MSEFStatBelowLimit</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATCV" xml:space="preserve">
+    <value>MSEFStatCV</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONFLEETGROUPCATCHYEAR" xml:space="preserve">
+    <value>EcospaceRegionFleetGroupCatchYear</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSMEANVALUES" xml:space="preserve">
+    <value>MSEBiomassMeanValues</value>
+  </data>
+  <data name="VARIABLE_ECOSIMBIOMASS" xml:space="preserve">
+    <value>EcosimBiomass</value>
+  </data>
+  <data name="VARIABLE_FPSUSEECOSPACE" xml:space="preserve">
+    <value>FPSUseEcospace</value>
+  </data>
+  <data name="VARIABLE_MSEBBASE" xml:space="preserve">
+    <value>MSE basis biomassa</value>
+  </data>
+  <data name="VARIABLE_MSEBIOCV" xml:space="preserve">
+    <value>MSEBioCV</value>
+  </data>
+  <data name="VARIABLE_ECOSIMPREDMORT" xml:space="preserve">
+    <value>EcosimPredMort</value>
+  </data>
+  <data name="VARIABLE_USEIBM" xml:space="preserve">
+    <value>UseIBM</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTHISTOGRAM" xml:space="preserve">
+    <value>MSEEffortHistogram</value>
+  </data>
+  <data name="ECOSPACE_WRITER_XYZT" xml:space="preserve">
+    <value>XYZT-puntwaarden biomassa, vangst en inspanning (CSV-indeling)</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTBINS" xml:space="preserve">
+    <value>MSEEffortBins</value>
+  </data>
+  <data name="VARIABLE_MSYEVALUATEFLEET" xml:space="preserve">
+    <value>MSYEvaluateFleet</value>
+  </data>
+  <data name="VARIABLE_ECOSIMMORTVFISHING" xml:space="preserve">
+    <value>EcosimMortVFishing</value>
+  </data>
+  <data name="VARIABLE_MSEFSTATBINS" xml:space="preserve">
+    <value>MSEFStatBins</value>
+  </data>
+  <data name="VARIABLE_MPAOPTSEARCHTYPE" xml:space="preserve">
+    <value>MPAOptSearchType</value>
+  </data>
+  <data name="VARIABLE_ADJUSTSPACE" xml:space="preserve">
+    <value>AdjustSpace</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_QUALDC" xml:space="preserve">
+    <value>Kwalitatief voedingssamenstellingsonderzoek</value>
+  </data>
+  <data name="VARIABLE_UNITCURRENCY" xml:space="preserve">
+    <value>Valuta || Valuta-eenheid</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEGROUPVALUESTART" xml:space="preserve">
+    <value>EcospaceGroupValueStart</value>
+  </data>
+  <data name="VARIABLE_MSEFIXEDF" xml:space="preserve">
+    <value>MSEFixedF</value>
+  </data>
+  <data name="VARIABLE_MSEFMAXPM" xml:space="preserve">
+    <value>MSEFmaxPM</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONFLEETGROUPCATCH" xml:space="preserve">
+    <value>EcospaceRegionFleetGroupCatch</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPVALUEEND" xml:space="preserve">
+    <value>EcosimGroupValueEnd</value>
+  </data>
+  <data name="VARIABLE_EFFORTDISTTHRESHOLD" xml:space="preserve">
+    <value>EffortDistThreshold</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUEHISTOGRAM" xml:space="preserve">
+    <value>MSEFleetValueHistogram</value>
+  </data>
+  <data name="VARIABLE_MSEFIXEDESCAPEMENT" xml:space="preserve">
+    <value>MSEFixedEscapement</value>
+  </data>
+  <data name="VARIABLE_MSEBESTTOTALVALUE" xml:space="preserve">
+    <value>MSEBestTotalValue</value>
+  </data>
+  <data name="VARIABLE_NTROPHICLEVELS" xml:space="preserve">
+    <value>nTrophicLevels</value>
+  </data>
+  <data name="VARIABLE_ASSIMILATION" xml:space="preserve">
+    <value>Assimilatie</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETCATCHEND" xml:space="preserve">
+    <value>EcosimFleetCatchEnd</value>
+  </data>
+  <data name="VARIABLE_NGRIDSOLVERTHREADS" xml:space="preserve">
+    <value>Nee. Oplossingsdraden</value>
+  </data>
+  <data name="VARIABLE_MSEFLEETVALUECV" xml:space="preserve">
+    <value>MSEFleetValueCV</value>
+  </data>
+  <data name="VARIABLE_TOTALTIME" xml:space="preserve">
+    <value>Totale tijd</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SAME_SIM" xml:space="preserve">
+    <value>Dezelfde soort, vergelijkbaar systeem, hoge precisie</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASSCV" xml:space="preserve">
+    <value>MSEBiomassCV</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTABOVELIMIT" xml:space="preserve">
+    <value>MSEEffortAboveLimit</value>
+  </data>
+  <data name="CORE_DEFAULT_FISHMORTSHAPE" xml:space="preserve">
+    <value>Vorm van vissterfte {0}</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTHISTOGRAM" xml:space="preserve">
+    <value>MSEBioEstHistogram</value>
+  </data>
+  <data name="CORE_DEFAULT_COMBINEDFLEETS" xml:space="preserve">
+    <value>Gecombineerde vloten</value>
+  </data>
+  <data name="ECOSPACE_WRITER_ASC_BIOMASS" xml:space="preserve">
+    <value>Biomassa-kaarten (ASCII-indeling)</value>
+  </data>
+  <data name="VARIABLE_TLCATCHPM" xml:space="preserve">
+    <value>TLCatchPM</value>
+  </data>
+  <data name="VARIABLE_MSESTARTYEAR" xml:space="preserve">
+    <value>MSEStartYear</value>
+  </data>
+  <data name="VARIABLE_MAXITERATIONS" xml:space="preserve">
+    <value>MaxIterations</value>
+  </data>
+  <data name="PARAM_LEFTPOINT" xml:space="preserve">
+    <value>Links punt</value>
+  </data>
+  <data name="VARIABLE_WTTYPE" xml:space="preserve">
+    <value>WtType</value>
+  </data>
+  <data name="VARIABLE_WMATWINF" xml:space="preserve">
+    <value>WmatWinf | Wmat / Winf || Gewicht op de vervaldag boven het gewicht in de kinderschoenen</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTSOURCE" xml:space="preserve">
+    <value>MSEEffortSource</value>
+  </data>
+  <data name="VARIABLE_ECOSIMVALUEGROUPREL" xml:space="preserve">
+    <value>EcosimValueGroupRel</value>
+  </data>
+  <data name="VARIABLE_OVERHEADRESPTOT" xml:space="preserve">
+    <value>OverheadRespTot</value>
+  </data>
+  <data name="VARIABLE_OVERHEADRESPPER" xml:space="preserve">
+    <value>OverheadRespPer</value>
+  </data>
+  <data name="VARIABLE_SEARCHGENDISCRATE" xml:space="preserve">
+    <value>SearchGenDiscRate</value>
+  </data>
+  <data name="VARIABLE_F2TSAPPLIEDWEIGHTS" xml:space="preserve">
+    <value>F2TSAppliedWeights</value>
+  </data>
+  <data name="VARIABLE_ECOSIMSS" xml:space="preserve">
+    <value>EcosimSS</value>
+  </data>
+  <data name="VARIABLE_MSEREFFLEETCATCHUPPER" xml:space="preserve">
+    <value>MSERefFleetCatchUpper</value>
+  </data>
+  <data name="VARIABLE_MSETAC" xml:space="preserve">
+    <value>MSETAC</value>
+  </data>
+  <data name="VARIABLE_NEFFORTDISTTHREADS" xml:space="preserve">
+    <value>nEffortDistThreads</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORT" xml:space="preserve">
+    <value>MSEEffort</value>
+  </data>
+  <data name="VARIABLE_F2TSNAICDATA" xml:space="preserve">
+    <value>F2TSNAICData</value>
+  </data>
+  <data name="VARIABLE_SAMPLERATING" xml:space="preserve">
+    <value>SampleRating</value>
+  </data>
+  <data name="VARIABLE_MSEEFFORTVALUES" xml:space="preserve">
+    <value>MSEEffortValues</value>
+  </data>
+  <data name="VARIABLE_MSEREFFLEETCATCHLOWER" xml:space="preserve">
+    <value>MSERefFleetCatchLower</value>
+  </data>
+  <data name="VARIABLE_MCPBCV" xml:space="preserve">
+    <value>PB (cv)</value>
+  </data>
+  <data name="VARIABLE_MCPBBF" xml:space="preserve">
+    <value>PB (beste pasvorm)</value>
+  </data>
+  <data name="VARIABLE_MCQBCV" xml:space="preserve">
+    <value>QB (cv)</value>
+  </data>
+  <data name="VARIABLE_MCQBBF" xml:space="preserve">
+    <value>QB (beste pasvorm)</value>
+  </data>
+  <data name="VARIABLE_MCVUCV" xml:space="preserve">
+    <value>v (cv)</value>
+  </data>
+  <data name="VARIABLE_MCVUBF" xml:space="preserve">
+    <value>v (beste pasvorm)</value>
+  </data>
+  <data name="VARIABLE_MCBACV" xml:space="preserve">
+    <value>BA (cv)</value>
+  </data>
+  <data name="VARIABLE_MCBABF" xml:space="preserve">
+    <value>BA (beste pasvorm)</value>
+  </data>
+  <data name="VARIABLE_MCEEBF" xml:space="preserve">
+    <value>EE (beste pasvorm)</value>
+  </data>
+  <data name="VARIABLE_MCEECV" xml:space="preserve">
+    <value>EE (cv)</value>
+  </data>
+  <data name="VARIABLE_CYCLEPATH" xml:space="preserve">
+    <value>Fietspad</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEBIOMASSOVERTIME" xml:space="preserve">
+    <value>EcospaceBiomassOverTime</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHOUTPUTBIOMASS" xml:space="preserve">
+    <value>MSEBatchOutputBiomass</value>
+  </data>
+  <data name="VARIABLE_MSELOWERRISKPERCENT" xml:space="preserve">
+    <value>MSELowerRiskPercent</value>
+  </data>
+  <data name="VARIABLE_QBMAXQBIO" xml:space="preserve">
+    <value>QBMaxQBio</value>
+  </data>
+  <data name="VARIABLE_DETEXPORTFLOW" xml:space="preserve">
+    <value>DetExportFlow</value>
+  </data>
+  <data name="VARIABLE_FLOWTODET" xml:space="preserve">
+    <value>FlowToDet</value>
+  </data>
+  <data name="VARIABLE_LASTSAVED" xml:space="preserve">
+    <value>Laatst opgeslagen</value>
+  </data>
+  <data name="VARIABLE_LORENZENMORTALITY" xml:space="preserve">
+    <value>LorenzenMortality</value>
+  </data>
+  <data name="VARIABLE_PPTODETFLOW" xml:space="preserve">
+    <value>PPToDetFlow</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETCATCHSTART" xml:space="preserve">
+    <value>EcosimFleetCatchStart</value>
+  </data>
+  <data name="VARIABLE_SEMULT" xml:space="preserve">
+    <value>Tot.Eff.Mult. || Multiplier voor totale inspanning</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_FAO" xml:space="preserve">
+    <value>FAO-statistieken</value>
+  </data>
+  <data name="VARIABLE_MSETFMBBASELOWER" xml:space="preserve">
+    <value>MSETFMBBaseLower</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEIBMMOVEPACKETONSTANZA" xml:space="preserve">
+    <value>EcospaceIBMMovePacketOnStanza</value>
+  </data>
+  <data name="VARIABLE_NETMIGRATION" xml:space="preserve">
+    <value>Netto migratie</value>
+  </data>
+  <data name="VARIABLE_RHALFB0RATIO" xml:space="preserve">
+    <value>RHalfB0Ratio</value>
+  </data>
+  <data name="VARIABLE_ECOSIMCATCHGROUPGEAR" xml:space="preserve">
+    <value>EcosimCatchGroupGear</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_QUANDC_DET" xml:space="preserve">
+    <value>Kwantitatief, gedetailleerd, voedingssamenstellingsonderzoek</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_QUANDC_LIM" xml:space="preserve">
+    <value>Kwantitatief maar beperkt voedingssamenstellingsonderzoek</value>
+  </data>
+  <data name="VARIABLE_MSETFMBBASEUPPER" xml:space="preserve">
+    <value>MSETFMBBaseUpper</value>
+  </data>
+  <data name="VARIABLE_SALINITYSPREADLEFT" xml:space="preserve">
+    <value>Sal tol hieronder || Zoutgehalte tolerantie onder optimaal</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSTOTALFLOWDETRITUS" xml:space="preserve">
+    <value>TotalFlowDetritus</value>
+  </data>
+  <data name="VARIABLE_F2TSPPVARIANCE" xml:space="preserve">
+    <value>F2TSPPVariance</value>
+  </data>
+  <data name="VARIABLE_FPSVALUECOMPONENTTYPE" xml:space="preserve">
+    <value>FPSValueComponentType</value>
+  </data>
+  <data name="VARIABLE_ISPRED" xml:space="preserve">
+    <value>Is roofdier</value>
+  </data>
+  <data name="VARIABLE_ISPREY" xml:space="preserve">
+    <value>Is een prooi</value>
+  </data>
+  <data name="VARIABLE_ECOSIMGROUPVALUESTART" xml:space="preserve">
+    <value>EcosimGroupValueStart</value>
+  </data>
+  <data name="VARIABLE_MPAOPTPERCENTAGECLOSED" xml:space="preserve">
+    <value>MPAOptPercentageClosed</value>
+  </data>
+  <data name="VARIABLE_ECOSIMFLEETCOSTSTART" xml:space="preserve">
+    <value>EcosimFleetCostStart</value>
+  </data>
+  <data name="VARIABLE_PPIMPORTFLOW" xml:space="preserve">
+    <value>PPImportFlow</value>
+  </data>
+  <data name="VARIABLE_DETTHROUGHFLOW" xml:space="preserve">
+    <value>DetThroughFlow</value>
+  </data>
+  <data name="VARIABLE_ASCENDTHROUGHPUTGROUP" xml:space="preserve">
+    <value>AscendThroughputGroup</value>
+  </data>
+  <data name="VARIABLE_MSEMEANMANDATEDVALUE" xml:space="preserve">
+    <value>MSEMeanMandatedValue</value>
+  </data>
+  <data name="VARIABLE_LAYERBIOMASSRELATIVEFORCING" xml:space="preserve">
+    <value>Biomassa (rel) || Relatieve biomassa forcing</value>
+  </data>
+  <data name="VARIABLE_NOTSET" xml:space="preserve">
+    <value>(Geen) || (Geen variabele)</value>
+  </data>
+  <data name="VARIABLE_MSETFMBBASEVALUES" xml:space="preserve">
+    <value>MSETFMBBaseValues</value>
+  </data>
+  <data name="VARIABLE_FIXEDCOST" xml:space="preserve">
+    <value>Vaste kosten ||| Vaste kosten zijn de kosten van het exploiteren van een vlooteenheid, onafhankelijk van de inspanning, in de tijdseenheid gedefinieerd in Ecopath</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_LOCAL_HIGH" xml:space="preserve">
+    <value>Lokale studie, hoge precisie / compleet</value>
+  </data>
+  <data name="VARIABLE_ECOSIMPREDRATETIME" xml:space="preserve">
+    <value>EcosimPredRateTime</value>
+  </data>
+  <data name="VARIABLE_MORTCOFISHRATE" xml:space="preserve">
+    <value>Vissende mort. rentevoet</value>
+  </data>
+  <data name="VARIABLE_CPUECOST" xml:space="preserve">
+    <value>CPUE || Kosten per inspanningseenheid | Kosten per inspanningseenheid; kosten die een functie van inspanning zijn</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SAMPLING_LOW" xml:space="preserve">
+    <value>Bemonstering / lokaal, lage precisie</value>
+  </data>
+  <data name="VARIABLE_DATASS" xml:space="preserve">
+    <value>DataSS</value>
+  </data>
+  <data name="VARIABLE_DATVAL" xml:space="preserve">
+    <value>DatVal</value>
+  </data>
+  <data name="VARIABLE_DETIMP" xml:space="preserve">
+    <value>Det. import || Detritus import</value>
+  </data>
+  <data name="VARIABLE_EPOWER" xml:space="preserve">
+    <value>Inspanningskracht</value>
+  </data>
+  <data name="VARIABLE_MSEBIOMASS" xml:space="preserve">
+    <value>MSEBiomass</value>
+  </data>
+  <data name="VARIABLE_PSDCOMPUTED" xml:space="preserve">
+    <value>PSDComputed</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_OTHERMODEL" xml:space="preserve">
+    <value>Van ander model</value>
+  </data>
+  <data name="VARIABLE_OVERHEADIMPORTTOT" xml:space="preserve">
+    <value>OverheadImportTot</value>
+  </data>
+  <data name="VARIABLE_OVERHEADIMPORTPER" xml:space="preserve">
+    <value>OverheadImportPer</value>
+  </data>
+  <data name="VARIABLE_ENDAGE" xml:space="preserve">
+    <value>Eind leeftijd</value>
+  </data>
+  <data name="UNIT_MULTIPLIER" xml:space="preserve">
+    <value>multiplier</value>
+  </data>
+  <data name="VARIABLE_MODELFILENAME" xml:space="preserve">
+    <value>Bestandsnaam</value>
+  </data>
+  <data name="VARIABLE_F2TSFIRSTYEAR" xml:space="preserve">
+    <value>F2TSFirstYear</value>
+  </data>
+  <data name="VARIABLE_FPSFLEETJOBCATCHVALUE" xml:space="preserve">
+    <value>FPSFleetJobCatchValue</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEREGIONNUMBER" xml:space="preserve">
+    <value>Regio nr || Regio nummer</value>
+  </data>
+  <data name="VARIABLE_DETTODETFLOW" xml:space="preserve">
+    <value>DetToDetFlow</value>
+  </data>
+  <data name="PARAM_LEFT_TOP" xml:space="preserve">
+    <value>Linksboven</value>
+  </data>
+  <data name="VARIABLE_STANZAMORTAILITY" xml:space="preserve">
+    <value>StanzaMortaility</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHTACNITERATION" xml:space="preserve">
+    <value>MSEBatchTACNIteration</value>
+  </data>
+  <data name="VARIABLE_MPAOPTSTEPSIZE" xml:space="preserve">
+    <value>MPAOptStepSize</value>
+  </data>
+  <data name="VARIABLE_SALINITYSPREADRIGHT" xml:space="preserve">
+    <value>Sal tol boven || Zoutgehalte tolerantie boven optimaal</value>
+  </data>
+  <data name="VARIABLE_KMOVEFITNESS" xml:space="preserve">
+    <value>Rel. verplaatsingssnelheid naar celfitness ||| Relatieve bewegingssnelheid naar celfitness</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_SIM_SIM" xml:space="preserve">
+    <value>Vergelijkbare soort, vergelijkbaar systeem, lage precisie</value>
+  </data>
+  <data name="VARIABLE_FPSMAXEFFCHANGE" xml:space="preserve">
+    <value>FPSMaxEffChange</value>
+  </data>
+  <data name="PARAM_MAX" xml:space="preserve">
+    <value>Max.</value>
+  </data>
+  <data name="ECOSPACE_WRITER_REGAVG" xml:space="preserve">
+    <value>Regio gemiddelden (csv-formaat)</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEUSEECOSIMBIOMASSFORCING" xml:space="preserve">
+    <value>EcospaceUseEcosimBiomassForcing</value>
+  </data>
+  <data name="VARIABLE_FPSSOCIALWEIGHT" xml:space="preserve">
+    <value>FPSSocialWeight</value>
+  </data>
+  <data name="VARIABLE_DETRITUSFATE" xml:space="preserve">
+    <value>Det. lot || Detritus lot</value>
+  </data>
+  <data name="VARIABLE_MSERECRUITMENTCV" xml:space="preserve">
+    <value>MSERecruitmentCV</value>
+  </data>
+  <data name="VARIABLE_MPAOPTBIOMASSDIVERSITYVALUE" xml:space="preserve">
+    <value>MPAOptBiomassDiversityValue</value>
+  </data>
+  <data name="VARIABLE_OTHERMORTFEEDINGTIME" xml:space="preserve">
+    <value>OtherMortFeedingTime</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_GENERAL_SIM" xml:space="preserve">
+    <value>Algemene kennis van verwante groep / soort</value>
+  </data>
+  <data name="VARIABLE_AUTHOR" xml:space="preserve">
+    <value>Auteur</value>
+  </data>
+  <data name="VARIABLE_MORTCOBIOACUMRATE" xml:space="preserve">
+    <value>Bio accum. tarief || Biomassa accumulatie tarief</value>
+  </data>
+  <data name="VARIABLE_CAPDEPRECIATE" xml:space="preserve">
+    <value>Cap. afschr. tarief || Kapitaalafschrijvingspercentage</value>
+  </data>
+  <data name="VARIABLE_ISADVECTED" xml:space="preserve">
+    <value>Advected || Is advected | Wordt deze groep beïnvloed door advectie?</value>
+  </data>
+  <data name="VARIABLE_MSEBATCHFMANAGED" xml:space="preserve">
+    <value>MSEBatchFManaged</value>
+  </data>
+  <data name="VARIABLE_SEARCHDISCOUNTRATE" xml:space="preserve">
+    <value>SearchDiscountRate</value>
+  </data>
+  <data name="VARIABLE_PREDICTEFFORT" xml:space="preserve">
+    <value>PredictEffort</value>
+  </data>
+  <data name="VARIABLE_DETCONSFLOW" xml:space="preserve">
+    <value>DetConsFlow</value>
+  </data>
+  <data name="UNIT_CURRENCY_NITROGEN" xml:space="preserve">
+    <value>mg N / m²</value>
+  </data>
+  <data name="VARIABLE_ASCENDGROUP" xml:space="preserve">
+    <value>AscendGroup</value>
+  </data>
+  <data name="VARIABLE_LEADINGBIOMASS" xml:space="preserve">
+    <value>Toonaangevende B || Toonaangevende biomassa | Toonaangevende (entry) levensfase voor het berekenen van biomassa</value>
+  </data>
+  <data name="VARIABLE_LAYERCONTAMINANTRELATIVEDISTRIBUTION" xml:space="preserve">
+    <value>Rel. C || Rel. distributie van contaminanten</value>
+  </data>
+  <data name="VARIABLE_ASCENDRESPTOT" xml:space="preserve">
+    <value>AscendRespTot</value>
+  </data>
+  <data name="VARIABLE_ASCENDRESPPER" xml:space="preserve">
+    <value>AscendRespPer</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_ESTIMATED" xml:space="preserve">
+    <value>Geschat door Ecopath</value>
+  </data>
+  <data name="VARIABLE_ECOPATHSTATSDIVERSITY" xml:space="preserve">
+    <value>verscheidenheid</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTBINS" xml:space="preserve">
+    <value>MSEBioEstBins</value>
+  </data>
+  <data name="VARIABLE_TEMPERATURESPREADLEFT" xml:space="preserve">
+    <value>T tol onder || Temperatuurtolerantie onder optimaal</value>
+  </data>
+  <data name="VARIABLE_CONFORCENUMBER" xml:space="preserve">
+    <value>ConForceNumber</value>
+  </data>
+  <data name="PEDIGREE_DEFAULT_EMPERICAL" xml:space="preserve">
+    <value>Empirische relatie</value>
+  </data>
+  <data name="VARIABLE_MSEASSESSPOWER" xml:space="preserve">
+    <value>MSEAssessPower</value>
+  </data>
+  <data name="VARIABLE_ECOSYSTEMTYPE" xml:space="preserve">
+    <value>EcosystemType</value>
+  </data>
+  <data name="VARIABLE_TAXONMEANLIFESPAN" xml:space="preserve">
+    <value>Gemiddelde levensduur</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTABOVELIMIT" xml:space="preserve">
+    <value>MSEBioEstAboveLimit</value>
+  </data>
+  <data name="VARIABLE_MSEBIOESTBELOWLIMIT" xml:space="preserve">
+    <value>MSEBioEstBelowLimit</value>
+  </data>
+  <data name="VARIABLE_ECOSPACEUSEANNUALOUTPUT" xml:space="preserve">
+    <value>EcospaceUseAnnualOutput</value>
+  </data>
+  <data name="VARIABLE_AINLWOUTPUT" xml:space="preserve">
+    <value>AinLWOutput</value>
+  </data>
+  <data name="MONTECARLO_WRITER_ONEFILE" xml:space="preserve">
+    <value>Alle resultaten in één bestand</value>
+  </data>
+  <data name="VARIABLE_PREDMORT" xml:space="preserve">
+    <value>M2 || Pred. mort. | Predatie sterfte</value>
+  </data>
+  <data name="VARIABLE_CORIOLIS" xml:space="preserve">
+    <value>Coriolis</value>
+  </data>
+  <data name="VARIABLE_ECOPATHBIOMASS" xml:space="preserve">
+    <value>EcopathBiomass</value>
+  </data>
+  <data name="VARIABLE_MIGRATIONCONCROW" xml:space="preserve">
+    <value>N / S mig. C. | N / S mig. concentratie || Noord / Zuid-omvang van het migratieconcentratiegebied</value>
+  </data>
+  <data name="VARIABLE_MIGRATIONCONCCOL" xml:space="preserve">
+    <value>E / W mig. C. | E / W mig. concentratie || Oost / West-grootte van het migratieconcentratiegebied</value>
+  </data>
+  <data name="VARIABLE_F2TSNUMSPLINEPOINTS" xml:space="preserve">
+    <value>F2TSNumSplinePoints</value>
+  </data>
+  <data name="VARIABLE_MSEREFGROUPCATCHUPPER" xml:space="preserve">
+    <value>MSERefGroupCatchUpper</value>
+  </data>
+  <data name="VARIABLE_MSEUPPERLPEFFORT" xml:space="preserve">
+    <value>MSEUpperLPEffort</value>
+  </data>
+  <data name="VARIABLE_MORTCOPB" xml:space="preserve">
+    <value>MortCoPB</value>
+  </data>
+  <data name="ECOSPACE_WRITER_ASC_DISCARDS" xml:space="preserve">
+    <value>Kaarten met totale teruggooi (ASCII-indeling)</value>
+  </data>
+  <data name="VARIABLE_ECOSPACENUMBERSUMMARYTIMESTEPS" xml:space="preserve">
+    <value>EcospaceNumberSummaryTimeSteps</value>
+  </data>
+</root>

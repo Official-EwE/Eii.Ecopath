@@ -1,0 +1,531 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IMPORT" xml:space="preserve">
+    <value>Importeren</value>
+  </data>
+  <data name="TEXT_CATCH" xml:space="preserve">
+    <value>Vangst</value>
+  </data>
+  <data name="CATCH_" xml:space="preserve">
+    <value>Vangst</value>
+  </data>
+  <data name="BIOMASS" xml:space="preserve">
+    <value>biomassa</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="CANCEL" xml:space="preserve">
+    <value>annuleren</value>
+  </data>
+  <data name="NONMARKET_VALUE" xml:space="preserve">
+    <value>Niet-marktwaarde</value>
+  </data>
+  <data name="EFFORT" xml:space="preserve">
+    <value>Inspanning</value>
+  </data>
+  <data name="FLEET" xml:space="preserve">
+    <value>Vloot</value>
+  </data>
+  <data name="GROUP" xml:space="preserve">
+    <value>Groep</value>
+  </data>
+  <data name="INDEX" xml:space="preserve">
+    <value>Inhoudsopgave</value>
+  </data>
+  <data name="TYPE" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="FISHMORT" xml:space="preserve">
+    <value>Visserijsterfte</value>
+  </data>
+  <data name="VALUES" xml:space="preserve">
+    <value>waarden</value>
+  </data>
+  <data name="SUM_OF_SQUARES" xml:space="preserve">
+    <value>Som van de kwadraten</value>
+  </data>
+  <data name="SUM" xml:space="preserve">
+    <value>Som</value>
+  </data>
+  <data name="TOTAL_CATCH" xml:space="preserve">
+    <value>Totale vangst</value>
+  </data>
+  <data name="PREDATIONMORT" xml:space="preserve">
+    <value>Sterfte vóór predatie</value>
+  </data>
+  <data name="PRODUCTION_BIOMASS_UNITS" xml:space="preserve">
+    <value>Productie / biomassa (/ jr)</value>
+  </data>
+  <data name="INITPREDMORT" xml:space="preserve">
+    <value>InitPredMort</value>
+  </data>
+  <data name="OMNIVORY_INDEX" xml:space="preserve">
+    <value>Omnivory Index</value>
+  </data>
+  <data name="INITFISHVALUES" xml:space="preserve">
+    <value>InitFishingValues</value>
+  </data>
+  <data name="INITFISHQUANTS" xml:space="preserve">
+    <value>InitFishingQuantities</value>
+  </data>
+  <data name="BASIC_ESTIMATES" xml:space="preserve">
+    <value>Fundamentele schattingen</value>
+  </data>
+  <data name="ASSIMILATION_UNITS" xml:space="preserve">
+    <value>Assimilatie (t / hm ^ 2 / jaar)</value>
+  </data>
+  <data name="PARENT_ONLY" xml:space="preserve">
+    <value>Alleen ouder</value>
+  </data>
+  <data name="PREYS_ATTACHED_PRED" xml:space="preserve">
+    <value>Prooi met bijgevoegde roofdieren</value>
+  </data>
+  <data name="TOTALSS" xml:space="preserve">
+    <value>TotalSS</value>
+  </data>
+  <data name="INVALID_SELECTION" xml:space="preserve">
+    <value>Ongeldige selectie</value>
+  </data>
+  <data name="DIETOF" xml:space="preserve">
+    <value>DietOf</value>
+  </data>
+  <data name="DOTCSV" xml:space="preserve">
+    <value>CSV</value>
+  </data>
+  <data name="DETACH_ALL" xml:space="preserve">
+    <value>Maak alles los</value>
+  </data>
+  <data name="NET_EFFICIENCY" xml:space="preserve">
+    <value>Netto-efficiëntie</value>
+  </data>
+  <data name="PROP_NAT_MORT" xml:space="preserve">
+    <value>Aandeel nat. mort.</value>
+  </data>
+  <data name="SEARCHRATES" xml:space="preserve">
+    <value>SearchRates</value>
+  </data>
+  <data name="PLUGIN_DESCRIPTION" xml:space="preserve">
+    <value>Plug-in om te helpen bij het extraheren van resultaten, parameterwaarden en gegevens uit EwE</value>
+  </data>
+  <data name="INIT_FISH_MORT" xml:space="preserve">
+    <value>Aanvankelijke visserijsterfte</value>
+  </data>
+  <data name="MORT_COEFFS" xml:space="preserve">
+    <value>Sterfte coëfficiënten</value>
+  </data>
+  <data name="PREDS_ATTACHED_PREY" xml:space="preserve">
+    <value>Roofdieren met bijgevoegde prooi</value>
+  </data>
+  <data name="MSG_PREV_FORM_INVALID" xml:space="preserve">
+    <value>Uw invoer op het vorige formulier was ongeldig. Wilt u uw invoer opnieuw proberen of het proces annuleren?</value>
+  </data>
+  <data name="ALL_OPTIONS" xml:space="preserve">
+    <value>Alle opties</value>
+  </data>
+  <data name="CONSUMPTION" xml:space="preserve">
+    <value>Consumptie</value>
+  </data>
+  <data name="FISH_MORT_TOTAL_MORT" xml:space="preserve">
+    <value>Vismort./Totale mort</value>
+  </data>
+  <data name="BIOMASS_AREA_UNITS" xml:space="preserve">
+    <value>Biomassa in habitatgebied ({0} / {1})</value>
+  </data>
+  <data name="NET_MIGRATION_RATE" xml:space="preserve">
+    <value>Netto migratiepercentage</value>
+  </data>
+  <data name="INIT_PRED_MORT" xml:space="preserve">
+    <value>Initiële predatie mortaliteit</value>
+  </data>
+  <data name="FITTING_STATS" xml:space="preserve">
+    <value>Passende statistieken</value>
+  </data>
+  <data name="FISHMORT_PER_FLEET" xml:space="preserve">
+    <value>FishMortPerFleet</value>
+  </data>
+  <data name="RESPIRATION_ASSIMILATION" xml:space="preserve">
+    <value>Ademhaling / assimilatie</value>
+  </data>
+  <data name="LANDINGS_PER_FLEETPREY" xml:space="preserve">
+    <value>LandingsPerFleetPerPrey</value>
+  </data>
+  <data name="TROPHIC_LEVEL" xml:space="preserve">
+    <value>Trofisch niveau</value>
+  </data>
+  <data name="FISHMORT_FLEET2PREY" xml:space="preserve">
+    <value>Visserijsterfte (vloot tot prooi)</value>
+  </data>
+  <data name="FLEET2_MANYPREY" xml:space="preserve">
+    <value>Vloot naar vele prooien</value>
+  </data>
+  <data name="CATCH_PER_FLEET" xml:space="preserve">
+    <value>Vangst per vloot</value>
+  </data>
+  <data name="FLEETS_ONLY" xml:space="preserve">
+    <value>Alleen vloten</value>
+  </data>
+  <data name="YEARLY" xml:space="preserve">
+    <value>jaar-</value>
+  </data>
+  <data name="FLEET_ONLY" xml:space="preserve">
+    <value>Alleen vloot</value>
+  </data>
+  <data name="NET_MIGRATION" xml:space="preserve">
+    <value>Netmigratie</value>
+  </data>
+  <data name="INIT_CONSUMPTION" xml:space="preserve">
+    <value>Initieel verbruik</value>
+  </data>
+  <data name="FISHING_EFFORT" xml:space="preserve">
+    <value>FishingEffort</value>
+  </data>
+  <data name="PROMPT_FOLDER" xml:space="preserve">
+    <value>Selecteer map om resultaten op te slaan</value>
+  </data>
+  <data name="OVERLAPPREY" xml:space="preserve">
+    <value>OverlapPrey</value>
+  </data>
+  <data name="OVERLAPPRED" xml:space="preserve">
+    <value>OverlapPred</value>
+  </data>
+  <data name="RESPIRATION_BIOMASS_UNITS" xml:space="preserve">
+    <value>Ademhaling / biomassa (/ jaar)</value>
+  </data>
+  <data name="BIOMASS_ACCUM_RATE" xml:space="preserve">
+    <value>Biom. Acc. tarief</value>
+  </data>
+  <data name="RESIDUALS" xml:space="preserve">
+    <value>residuen</value>
+  </data>
+  <data name="PROMPT_INPUTS" xml:space="preserve">
+    <value>U hebt niet alle invoerwaarden opgegeven om de geselecteerde waarde (n) te exporteren. Controleer uw selecties voordat u opnieuw probeert de resultaten op te slaan.</value>
+  </data>
+  <data name="PRED_OVERLAP" xml:space="preserve">
+    <value>Pedator overlapt</value>
+  </data>
+  <data name="FLEETS_ATTACHED_PREY" xml:space="preserve">
+    <value>Vloten met bijgevoegde prooi</value>
+  </data>
+  <data name="PRED2PREY_SELECTION" xml:space="preserve">
+    <value>Roofdier om prooi selectie</value>
+  </data>
+  <data name="FORMNAME_SELECTGROUPS" xml:space="preserve">
+    <value>Selecteer voor welke groepen u resultaten wilt extraheren</value>
+  </data>
+  <data name="PREDATOR" xml:space="preserve">
+    <value>Roofdier</value>
+  </data>
+  <data name="PREDMORT" xml:space="preserve">
+    <value>PredMort</value>
+  </data>
+  <data name="DIAGNOSTICS" xml:space="preserve">
+    <value>Diagnostics</value>
+  </data>
+  <data name="OTHER_MORT_RATE" xml:space="preserve">
+    <value>Andere mort. tarief</value>
+  </data>
+  <data name="TOTAL_PROFIT" xml:space="preserve">
+    <value>Totale winst</value>
+  </data>
+  <data name="GENERIC_SAVE_EXCEPTION" xml:space="preserve">
+    <value>Resultaat Extractor kan resultaten niet opslaan in {0}. Er is een systeemfout opgetreden. {1}</value>
+  </data>
+  <data name="PROD_BIOMASS_Z" xml:space="preserve">
+    <value>Prod / Biom of Z</value>
+  </data>
+  <data name="FISHING_VALUES" xml:space="preserve">
+    <value>Visserij waarden</value>
+  </data>
+  <data name="PREY_OVERLAP" xml:space="preserve">
+    <value>Prooi overlappen</value>
+  </data>
+  <data name="PRED2_MANYPREY" xml:space="preserve">
+    <value>Roofdier van vele prooien</value>
+  </data>
+  <data name="FUNC_GROUP" xml:space="preserve">
+    <value>FunctGroup</value>
+  </data>
+  <data name="ATTACH_ALL" xml:space="preserve">
+    <value>Alles bijvoegen</value>
+  </data>
+  <data name="CONSUMPTION_BIOMASS_UNITS" xml:space="preserve">
+    <value>Verbruik / biomassa (/ jr)</value>
+  </data>
+  <data name="SS" xml:space="preserve">
+    <value>SS</value>
+  </data>
+  <data name="FUNCTIONALGROUPS" xml:space="preserve">
+    <value>Functionele groepen</value>
+  </data>
+  <data name="FISHMORT_ALLFLEET" xml:space="preserve">
+    <value>FishMortAllFleet</value>
+  </data>
+  <data name="GENERIC_SAVE_CSV" xml:space="preserve">
+    <value>{0} resultaten opgeslagen in '{1}'</value>
+  </data>
+  <data name="CATCH_PER_FLEETGROUP" xml:space="preserve">
+    <value>CatchPerFleetPerPrey</value>
+  </data>
+  <data name="EXCEL" xml:space="preserve">
+    <value>uitmunten</value>
+  </data>
+  <data name="FLEET_SELECTION" xml:space="preserve">
+    <value>Vloot selectie</value>
+  </data>
+  <data name="INITFISHMORT" xml:space="preserve">
+    <value>InitFishingMortality</value>
+  </data>
+  <data name="RESPIRATION_UNITS" xml:space="preserve">
+    <value>Ademhaling (t / km ^ 2 / jaar)</value>
+  </data>
+  <data name="PREY2_MANYPRED" xml:space="preserve">
+    <value>Prooi voor veel roofdieren</value>
+  </data>
+  <data name="ELECTIVITY" xml:space="preserve">
+    <value>geschiktheid van de keuze</value>
+  </data>
+  <data name="FUNCT_GROUP_SELECTION" xml:space="preserve">
+    <value>Functionele groep selectie</value>
+  </data>
+  <data name="GROUP_NAME" xml:space="preserve">
+    <value>Groepsnaam</value>
+  </data>
+  <data name="INIT_MORT_COEFFS" xml:space="preserve">
+    <value>InitMortCoeffs</value>
+  </data>
+  <data name="TOTAL_COST" xml:space="preserve">
+    <value>Totale prijs</value>
+  </data>
+  <data name="FISHERIESGROUPS" xml:space="preserve">
+    <value>FisheriesGroups</value>
+  </data>
+  <data name="RESPIRATION" xml:space="preserve">
+    <value>Ademhaling</value>
+  </data>
+  <data name="PREDATION_PER_PRED" xml:space="preserve">
+    <value>Predatie sterfte per roofdier</value>
+  </data>
+  <data name="BIOMASSINTEG" xml:space="preserve">
+    <value>BiomassInteg</value>
+  </data>
+  <data name="GENERIC_SAVE" xml:space="preserve">
+    <value>Result Extractor heeft de volgende bestand (en) opgeslagen in '{0}':</value>
+  </data>
+  <data name="PREY2PRED_SELECTION" xml:space="preserve">
+    <value>Prey naar roofdierselectie</value>
+  </data>
+  <data name="CONSUMPT" xml:space="preserve">
+    <value>meterstand</value>
+  </data>
+  <data name="CHANGE_SELECTION" xml:space="preserve">
+    <value>Wijzig selectie</value>
+  </data>
+  <data name="HABITAT_AREA_UNITS" xml:space="preserve">
+    <value>Habitatgebied (fractie)</value>
+  </data>
+  <data name="CATCH_VALUE" xml:space="preserve">
+    <value>Vangstwaarde</value>
+  </data>
+  <data name="SEARCH_RATES" xml:space="preserve">
+    <value>Zoek tarieven</value>
+  </data>
+  <data name="PRED_MORT_RATE" xml:space="preserve">
+    <value>Predat. mort. tarief</value>
+  </data>
+  <data name="PRODUCTION_CONSUMPTION" xml:space="preserve">
+    <value>Productie / Consumptie</value>
+  </data>
+  <data name="SAVE_RESULTS" xml:space="preserve">
+    <value>Resultaten opslaan</value>
+  </data>
+  <data name="INDICATORS" xml:space="preserve">
+    <value>indicatoren</value>
+  </data>
+  <data name="KEY_INDICES" xml:space="preserve">
+    <value>Sleutelindices</value>
+  </data>
+  <data name="PREDMORT_EACH_PRED" xml:space="preserve">
+    <value>PredMortEachPred</value>
+  </data>
+  <data name="DIET_PROPS" xml:space="preserve">
+    <value>Dieetverhoudingen</value>
+  </data>
+  <data name="BIOMASS_UNITS" xml:space="preserve">
+    <value>Biomassa (t / km ^ 2)</value>
+  </data>
+  <data name="BIOMASS_ACCUM" xml:space="preserve">
+    <value>Biom. Overgedragen</value>
+  </data>
+  <data name="FISHING_QUANT" xml:space="preserve">
+    <value>Hoeveelheden vissen</value>
+  </data>
+  <data name="FLEET2PREY_SELECTION" xml:space="preserve">
+    <value>Selectie van vloot naar prooi</value>
+  </data>
+  <data name="FISHERIES" xml:space="preserve">
+    <value>Visserij</value>
+  </data>
+  <data name="PLUGIN_NAME" xml:space="preserve">
+    <value>Resultaten Extractor</value>
+  </data>
+  <data name="TOTAL_VALUE" xml:space="preserve">
+    <value>Totale waarde</value>
+  </data>
+  <data name="FISH_MORT_RATE" xml:space="preserve">
+    <value>Vissende mort. tarief</value>
+  </data>
+  <data name="FLOW_DETRITUS" xml:space="preserve">
+    <value>Stroom naar det.</value>
+  </data>
+  <data name="INITCONSUMPTION" xml:space="preserve">
+    <value>InitConsumption</value>
+  </data>
+  <data name="ECOTROPHIC_EFFICIENCY" xml:space="preserve">
+    <value>Ecotrofe efficiëntie</value>
+  </data>
+  <data name="DISCARDS_PER_FLEETPREY" xml:space="preserve">
+    <value>DiscardsPerFleetPerPrey</value>
+  </data>
+  <data name="BIOMASSINTEGRATED" xml:space="preserve">
+    <value>Biomassa geïntegreerd</value>
+  </data>
+  <data name="PRODUCTION_RESPIRATION" xml:space="preserve">
+    <value>Productie / ademhaling</value>
+  </data>
+  <data name="VALUE_PER_FLEET" xml:space="preserve">
+    <value>Waarde per vloot</value>
+  </data>
+  <data name="FUNCT_GROUPS_ONLY" xml:space="preserve">
+    <value>Alleen functionele groepen</value>
+  </data>
+  <data name="GENERIC_CSV_FILE" xml:space="preserve">
+    <value>{0} {1} .csv</value>
+  </data>
+  <data name="GENERIC_SAVE_EXCEL" xml:space="preserve">
+    <value>{0} resultaten toegevoegd aan werkboek '{1}'</value>
+  </data>
+  <data name="PREY" xml:space="preserve">
+    <value>Prooi</value>
+  </data>
+  <data name="DATA_RETRIEVAL" xml:space="preserve">
+    <value>Gegevens worden opgehaald ...</value>
+  </data>
+</root>

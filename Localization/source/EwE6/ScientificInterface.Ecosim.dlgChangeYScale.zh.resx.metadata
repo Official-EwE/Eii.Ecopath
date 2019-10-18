@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceMetadata>
+  <Data Key="m_btnOK.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_btnCancel.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="$this.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_btnReset.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_lblSelPlotName.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="m_lblYScale.Text">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+</ResourceMetadata>

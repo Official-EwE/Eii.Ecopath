@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="m_btnCancel.Text" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="m_lblEcoType.Text" xml:space="preserve">
+    <value>＆类型：</value>
+  </data>
+  <data name="m_lblCountry.Text" xml:space="preserve">
+    <value>＆国家：</value>
+  </data>
+  <data name="m_tpClassification.Text" xml:space="preserve">
+    <value>分类</value>
+  </data>
+  <data name="m_lblModelAuthor.Text" xml:space="preserve">
+    <value>＆作者：</value>
+  </data>
+  <data name="m_lblWest.Text" xml:space="preserve">
+    <value>西方：</value>
+  </data>
+  <data name="m_lblReference.Text" xml:space="preserve">
+    <value>＆参考：</value>
+  </data>
+  <data name="m_lblDOI.Text" xml:space="preserve">
+    <value>＆DOI：</value>
+  </data>
+  <data name="m_lblSouth.Text" xml:space="preserve">
+    <value>南：</value>
+  </data>
+  <data name="m_lblNorth.Text" xml:space="preserve">
+    <value>北：</value>
+  </data>
+  <data name="m_tpPublication.Text" xml:space="preserve">
+    <value>出版物</value>
+  </data>
+  <data name="m_llViewPublication.Text" xml:space="preserve">
+    <value>在线验证DOI</value>
+  </data>
+  <data name="m_tpModel.Text" xml:space="preserve">
+    <value>模型</value>
+  </data>
+  <data name="m_lblEast.Text" xml:space="preserve">
+    <value>东：</value>
+  </data>
+  <data name="m_lblModelName.Text" xml:space="preserve">
+    <value>型号名称：</value>
+  </data>
+  <data name="m_cbPubMatchesPaper.Text" xml:space="preserve">
+    <value>我保证该模型与本文使用的模型相同。</value>
+  </data>
+  <data name="m_cbConfirmDessiminate.Text" xml:space="preserve">
+    <value>根据EcoBase数据访问协议，我允许Ecobase使我的Ecopath模型参数可供下载</value>
+  </data>
+  <data name="m_tpEcoBase.Text" xml:space="preserve">
+    <value>EcoBase协议</value>
+  </data>
+  <data name="m_lblClassArea.Text" xml:space="preserve">
+    <value>＆空间区域：</value>
+  </data>
+  <data name="m_lblSubmModications.Text" xml:space="preserve">
+    <value>修改说明：</value>
+  </data>
+  <data name="m_lblM1.Text" xml:space="preserve">
+    <value>米</value>
+  </data>
+  <data name="m_lblM3.Text" xml:space="preserve">
+    <value>米</value>
+  </data>
+  <data name="m_lblM2.Text" xml:space="preserve">
+    <value>米</value>
+  </data>
+  <data name="m_cbObjectiveEcosystemFunctioning.Text" xml:space="preserve">
+    <value>＆生态系统功能</value>
+  </data>
+  <data name="m_lblSubmExistingModel.Text" xml:space="preserve">
+    <value>现有的EcoBase模型：</value>
+  </data>
+  <data name="m_lblExtraInfo.Text" xml:space="preserve">
+    <value>仅供参考，声明是否用于发布：</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>将模型提交到EcoBase</value>
+  </data>
+  <data name="m_hdrAccess.Text" xml:space="preserve">
+    <value>开放存取</value>
+  </data>
+  <data name="m_cbObjectiveAquaculture.Text" xml:space="preserve">
+    <value>和水产养殖</value>
+  </data>
+  <data name="m_lblTempMax.Text" xml:space="preserve">
+    <value>＆Temp。最多：</value>
+  </data>
+  <data name="m_hdrClassification.Text" xml:space="preserve">
+    <value>区域</value>
+  </data>
+  <data name="m_hdrArea.Text" xml:space="preserve">
+    <value>区域</value>
+  </data>
+  <data name="m_hdrEcosystem.Text" xml:space="preserve">
+    <value>生态系统</value>
+  </data>
+  <data name="m_lblSubmInfo.Text" xml:space="preserve">
+    <value>＆此提交为：</value>
+  </data>
+  <data name="m_lblHyperlink.Text" xml:space="preserve">
+    <value>＆网页：</value>
+  </data>
+  <data name="m_cbObjectiveEnvironmentalVariability.Text" xml:space="preserve">
+    <value>与环境变化</value>
+  </data>
+  <data name="m_tpObjectives.Text" xml:space="preserve">
+    <value>目标</value>
+  </data>
+  <data name="m_lblDepthMean.Text" xml:space="preserve">
+    <value>＆Depth意思是：</value>
+  </data>
+  <data name="m_cbFittedToTimeSeries.Text" xml:space="preserve">
+    <value>＆模型适合数据</value>
+  </data>
+  <data name="m_lblObjectives.Text" xml:space="preserve">
+    <value>＆模型出版物处理以下问题（选中所有适用项）：</value>
+  </data>
+  <data name="m_rbSubmDerived.Text" xml:space="preserve">
+    <value>更新来自EcoBase中已经存在的模型（并由其他参考文献支持）</value>
+  </data>
+  <data name="m_cbIsEntireFoodWeb.Text" xml:space="preserve">
+    <value>模型中考虑了整个食物网</value>
+  </data>
+  <data name="m_lblModelEmail.Text" xml:space="preserve">
+    <value>＆电子邮件：</value>
+  </data>
+  <data name="m_cbObjectiveFisheries.Text" xml:space="preserve">
+    <value>＆渔业</value>
+  </data>
+  <data name="m_lblModelArea.Text" xml:space="preserve">
+    <value>A＆rea（km²）：</value>
+  </data>
+  <data name="m_cbObjectiveMarineProtection.Text" xml:space="preserve">
+    <value>＆海洋保护</value>
+  </data>
+  <data name="m_cbEcospaceUsed.Text" xml:space="preserve">
+    <value>使用了＆Ecospace</value>
+  </data>
+  <data name="m_lblExplanation.Text" xml:space="preserve">
+    <value>区别：</value>
+  </data>
+  <data name="m_lblTempMin.Text" xml:space="preserve">
+    <value>＆Temp。分钟：</value>
+  </data>
+  <data name="m_cbObjectivePollution.Text" xml:space="preserve">
+    <value>＆污染</value>
+  </data>
+  <data name="m_lblPermissionComments.Text" xml:space="preserve">
+    <value>＆请说明为什么您不希望公开访问模型参数：</value>
+  </data>
+  <data name="m_rbSubmNew.Text" xml:space="preserve">
+    <value>＆新提交</value>
+  </data>
+  <data name="m_lblModelLastYear.Text" xml:space="preserve">
+    <value>＆去年：</value>
+  </data>
+  <data name="m_lblDepthMax.Text" xml:space="preserve">
+    <value>最大深度：</value>
+  </data>
+  <data name="m_lblModelDescription.Text" xml:space="preserve">
+    <value>＆描述：</value>
+  </data>
+  <data name="m_cbAuthorAgreement.Text" xml:space="preserve">
+    <value>我已阅读并同意＆EcoBase作者协议</value>
+  </data>
+  <data name="m_lblDegC1.Text" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="m_lblDegC3.Text" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="m_lblDegC2.Text" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="m_tpSubmission.Text" xml:space="preserve">
+    <value>投稿</value>
+  </data>
+  <data name="m_cbObjectiveOtherImpactAssessment.Text" xml:space="preserve">
+    <value>＆其他影响评估：</value>
+  </data>
+  <data name="m_btnSubmit.Text" xml:space="preserve">
+    <value>提交</value>
+  </data>
+  <data name="m_cbEcosimUsed.Text" xml:space="preserve">
+    <value>使用了＆Ecosim</value>
+  </data>
+  <data name="m_tpAccess.Text" xml:space="preserve">
+    <value>开放存取</value>
+  </data>
+  <data name="m_cbModelIsAuthor.Text" xml:space="preserve">
+    <value>我保证我是此模型的最新发布版本的通讯作者</value>
+  </data>
+  <data name="m_lblTempMean.Text" xml:space="preserve">
+    <value>＆Temp。意思：</value>
+  </data>
+  <data name="m_rbSubmUpdate.Text" xml:space="preserve">
+    <value>＆更正以替换EcoBase中已经存在的模型（或仅注册元数据的模型）</value>
+  </data>
+  <data name="m_lblModelFirstYear.Text" xml:space="preserve">
+    <value>＆第一年：</value>
+  </data>
+  <data name="m_lblDepthMin.Text" xml:space="preserve">
+    <value>＆Depth分钟：</value>
+  </data>
+</root>

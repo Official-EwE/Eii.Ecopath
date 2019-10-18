@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="m_btnCancel.Text" xml:space="preserve">
+    <value>annuleren</value>
+  </data>
+  <data name="m_lblEcoType.Text" xml:space="preserve">
+    <value>&amp;Type:</value>
+  </data>
+  <data name="m_lblCountry.Text" xml:space="preserve">
+    <value>&amp; Country:</value>
+  </data>
+  <data name="m_tpClassification.Text" xml:space="preserve">
+    <value>Classificatie</value>
+  </data>
+  <data name="m_lblModelAuthor.Text" xml:space="preserve">
+    <value>&amp;Auteur:</value>
+  </data>
+  <data name="m_lblWest.Text" xml:space="preserve">
+    <value>West:</value>
+  </data>
+  <data name="m_lblReference.Text" xml:space="preserve">
+    <value>&amp;Referentie:</value>
+  </data>
+  <data name="m_lblDOI.Text" xml:space="preserve">
+    <value>&amp; DOI:</value>
+  </data>
+  <data name="m_lblSouth.Text" xml:space="preserve">
+    <value>Zuiden:</value>
+  </data>
+  <data name="m_lblNorth.Text" xml:space="preserve">
+    <value>Noorden:</value>
+  </data>
+  <data name="m_tpPublication.Text" xml:space="preserve">
+    <value>Publicatie</value>
+  </data>
+  <data name="m_llViewPublication.Text" xml:space="preserve">
+    <value>&amp; Valideer DOI online</value>
+  </data>
+  <data name="m_tpModel.Text" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="m_lblEast.Text" xml:space="preserve">
+    <value>Oosten:</value>
+  </data>
+  <data name="m_lblModelName.Text" xml:space="preserve">
+    <value>Modelnaam:</value>
+  </data>
+  <data name="m_cbPubMatchesPaper.Text" xml:space="preserve">
+    <value>Ik verklaar dat dit model identiek is aan het model dat voor het papier is gebruikt.</value>
+  </data>
+  <data name="m_cbConfirmDessiminate.Text" xml:space="preserve">
+    <value>Ik sta Ecobase toe mijn Ecopath-modelparameters beschikbaar te stellen voor download, volgens de EcoBase-overeenkomst voor gegevenstoegang</value>
+  </data>
+  <data name="m_tpEcoBase.Text" xml:space="preserve">
+    <value>EcoBase-overeenkomst</value>
+  </data>
+  <data name="m_lblClassArea.Text" xml:space="preserve">
+    <value>&amp; Ruimtelijk gebied:</value>
+  </data>
+  <data name="m_lblSubmModications.Text" xml:space="preserve">
+    <value>Beschrijving en wijzigingen:</value>
+  </data>
+  <data name="m_lblM1.Text" xml:space="preserve">
+    <value>m.</value>
+  </data>
+  <data name="m_lblM3.Text" xml:space="preserve">
+    <value>m.</value>
+  </data>
+  <data name="m_lblM2.Text" xml:space="preserve">
+    <value>m.</value>
+  </data>
+  <data name="m_cbObjectiveEcosystemFunctioning.Text" xml:space="preserve">
+    <value>&amp; Ecosysteem functioneert</value>
+  </data>
+  <data name="m_lblSubmExistingModel.Text" xml:space="preserve">
+    <value>&amp; Bestaand EcoBase-model:</value>
+  </data>
+  <data name="m_lblExtraInfo.Text" xml:space="preserve">
+    <value>Vermeld alleen ter informatie of voor de publicatie:</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Model indienen bij EcoBase</value>
+  </data>
+  <data name="m_hdrAccess.Text" xml:space="preserve">
+    <value>Vrije toegang</value>
+  </data>
+  <data name="m_cbObjectiveAquaculture.Text" xml:space="preserve">
+    <value>&amp; aquacultuur</value>
+  </data>
+  <data name="m_lblTempMax.Text" xml:space="preserve">
+    <value>&amp; Temp. max .:</value>
+  </data>
+  <data name="m_hdrClassification.Text" xml:space="preserve">
+    <value>Oppervlakte</value>
+  </data>
+  <data name="m_hdrArea.Text" xml:space="preserve">
+    <value>Oppervlakte</value>
+  </data>
+  <data name="m_hdrEcosystem.Text" xml:space="preserve">
+    <value>ecosysteem</value>
+  </data>
+  <data name="m_lblSubmInfo.Text" xml:space="preserve">
+    <value>&amp; Deze inzending is:</value>
+  </data>
+  <data name="m_lblHyperlink.Text" xml:space="preserve">
+    <value>&amp;Webpagina:</value>
+  </data>
+  <data name="m_cbObjectiveEnvironmentalVariability.Text" xml:space="preserve">
+    <value>&amp; Omgevingsvariabiliteit</value>
+  </data>
+  <data name="m_tpObjectives.Text" xml:space="preserve">
+    <value>Doelen</value>
+  </data>
+  <data name="m_lblDepthMean.Text" xml:space="preserve">
+    <value>&amp; Diepte betekent:</value>
+  </data>
+  <data name="m_cbFittedToTimeSeries.Text" xml:space="preserve">
+    <value>&amp; Het model is op gegevens afgestemd</value>
+  </data>
+  <data name="m_lblObjectives.Text" xml:space="preserve">
+    <value>&amp; De modelpublicatie behandelt het volgende (vink alles aan wat van toepassing is):</value>
+  </data>
+  <data name="m_rbSubmDerived.Text" xml:space="preserve">
+    <value>Een update &amp; afgeleid van een model dat al in EcoBase staat (en wordt ondersteund door een andere referentie)</value>
+  </data>
+  <data name="m_cbIsEntireFoodWeb.Text" xml:space="preserve">
+    <value>Het hele voedselweb is in het model verwerkt</value>
+  </data>
+  <data name="m_lblModelEmail.Text" xml:space="preserve">
+    <value>&amp; E-mail:</value>
+  </data>
+  <data name="m_cbObjectiveFisheries.Text" xml:space="preserve">
+    <value>&amp; Fisheries</value>
+  </data>
+  <data name="m_lblModelArea.Text" xml:space="preserve">
+    <value>A &amp; rea (km²):</value>
+  </data>
+  <data name="m_cbObjectiveMarineProtection.Text" xml:space="preserve">
+    <value>&amp; Mariene bescherming</value>
+  </data>
+  <data name="m_cbEcospaceUsed.Text" xml:space="preserve">
+    <value>&amp; Ecospace werd gebruikt</value>
+  </data>
+  <data name="m_lblExplanation.Text" xml:space="preserve">
+    <value>Verschil:</value>
+  </data>
+  <data name="m_lblTempMin.Text" xml:space="preserve">
+    <value>&amp; Temp. min:</value>
+  </data>
+  <data name="m_cbObjectivePollution.Text" xml:space="preserve">
+    <value>&amp;Verontreiniging</value>
+  </data>
+  <data name="m_lblPermissionComments.Text" xml:space="preserve">
+    <value>&amp; Motiveer waarom u geen open toegang tot uw modelparameters wenst te geven:</value>
+  </data>
+  <data name="m_rbSubmNew.Text" xml:space="preserve">
+    <value>Een &amp; nieuwe inzending</value>
+  </data>
+  <data name="m_lblModelLastYear.Text" xml:space="preserve">
+    <value>&amp;Afgelopen jaar:</value>
+  </data>
+  <data name="m_lblDepthMax.Text" xml:space="preserve">
+    <value>&amp; Diepte max:</value>
+  </data>
+  <data name="m_lblModelDescription.Text" xml:space="preserve">
+    <value>&amp;Omschrijving:</value>
+  </data>
+  <data name="m_cbAuthorAgreement.Text" xml:space="preserve">
+    <value>Ik heb de &amp; EcoBase-auteursovereenkomst gelezen en ga hiermee akkoord</value>
+  </data>
+  <data name="m_lblDegC1.Text" xml:space="preserve">
+    <value>° C</value>
+  </data>
+  <data name="m_lblDegC3.Text" xml:space="preserve">
+    <value>° C</value>
+  </data>
+  <data name="m_lblDegC2.Text" xml:space="preserve">
+    <value>° C</value>
+  </data>
+  <data name="m_tpSubmission.Text" xml:space="preserve">
+    <value>Inzending</value>
+  </data>
+  <data name="m_cbObjectiveOtherImpactAssessment.Text" xml:space="preserve">
+    <value>&amp; Andere effectbeoordeling:</value>
+  </data>
+  <data name="m_btnSubmit.Text" xml:space="preserve">
+    <value>voorleggen</value>
+  </data>
+  <data name="m_cbEcosimUsed.Text" xml:space="preserve">
+    <value>&amp; Ecosim werd gebruikt</value>
+  </data>
+  <data name="m_tpAccess.Text" xml:space="preserve">
+    <value>Vrije toegang</value>
+  </data>
+  <data name="m_cbModelIsAuthor.Text" xml:space="preserve">
+    <value>Ik verklaar dat ik de overeenkomstige auteur ben van de meest recente gepubliceerde versie van dit model</value>
+  </data>
+  <data name="m_lblTempMean.Text" xml:space="preserve">
+    <value>&amp; Temp. gemeen:</value>
+  </data>
+  <data name="m_rbSubmUpdate.Text" xml:space="preserve">
+    <value>A &amp; correctie om een model te vervangen dat al in EcoBase staat (of een model waar alleen metagegevens werden geregistreerd)</value>
+  </data>
+  <data name="m_lblModelFirstYear.Text" xml:space="preserve">
+    <value>&amp;Eerste jaar:</value>
+  </data>
+  <data name="m_lblDepthMin.Text" xml:space="preserve">
+    <value>&amp; Diepte min:</value>
+  </data>
+</root>

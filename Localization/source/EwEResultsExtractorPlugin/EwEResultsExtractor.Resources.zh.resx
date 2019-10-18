@@ -1,0 +1,531 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IMPORT" xml:space="preserve">
+    <value>进口</value>
+  </data>
+  <data name="TEXT_CATCH" xml:space="preserve">
+    <value>抓住</value>
+  </data>
+  <data name="CATCH_" xml:space="preserve">
+    <value>抓住</value>
+  </data>
+  <data name="BIOMASS" xml:space="preserve">
+    <value>生物质</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>好</value>
+  </data>
+  <data name="CANCEL" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="NONMARKET_VALUE" xml:space="preserve">
+    <value>非市场价值</value>
+  </data>
+  <data name="EFFORT" xml:space="preserve">
+    <value>努力</value>
+  </data>
+  <data name="FLEET" xml:space="preserve">
+    <value>舰队</value>
+  </data>
+  <data name="GROUP" xml:space="preserve">
+    <value>组</value>
+  </data>
+  <data name="INDEX" xml:space="preserve">
+    <value>指数</value>
+  </data>
+  <data name="TYPE" xml:space="preserve">
+    <value>类型</value>
+  </data>
+  <data name="FISHMORT" xml:space="preserve">
+    <value>捕捞死亡率</value>
+  </data>
+  <data name="VALUES" xml:space="preserve">
+    <value>价值观</value>
+  </data>
+  <data name="SUM_OF_SQUARES" xml:space="preserve">
+    <value>平方和</value>
+  </data>
+  <data name="SUM" xml:space="preserve">
+    <value>和</value>
+  </data>
+  <data name="TOTAL_CATCH" xml:space="preserve">
+    <value>总捕捞量</value>
+  </data>
+  <data name="PREDATIONMORT" xml:space="preserve">
+    <value>捕食死亡率</value>
+  </data>
+  <data name="PRODUCTION_BIOMASS_UNITS" xml:space="preserve">
+    <value>产量/生物量（/年）</value>
+  </data>
+  <data name="INITPREDMORT" xml:space="preserve">
+    <value>InitPredMort</value>
+  </data>
+  <data name="OMNIVORY_INDEX" xml:space="preserve">
+    <value>杂食指数</value>
+  </data>
+  <data name="INITFISHVALUES" xml:space="preserve">
+    <value>InitFishingValues</value>
+  </data>
+  <data name="INITFISHQUANTS" xml:space="preserve">
+    <value>初始化捕鱼数量</value>
+  </data>
+  <data name="BASIC_ESTIMATES" xml:space="preserve">
+    <value>基本估计</value>
+  </data>
+  <data name="ASSIMILATION_UNITS" xml:space="preserve">
+    <value>同化度（t / hm ^ 2 /年）</value>
+  </data>
+  <data name="PARENT_ONLY" xml:space="preserve">
+    <value>仅父母</value>
+  </data>
+  <data name="PREYS_ATTACHED_PRED" xml:space="preserve">
+    <value>带有捕食者的猎物</value>
+  </data>
+  <data name="TOTALSS" xml:space="preserve">
+    <value>总SS</value>
+  </data>
+  <data name="INVALID_SELECTION" xml:space="preserve">
+    <value>选择无效</value>
+  </data>
+  <data name="DIETOF" xml:space="preserve">
+    <value>饮食</value>
+  </data>
+  <data name="DOTCSV" xml:space="preserve">
+    <value>.CSV</value>
+  </data>
+  <data name="DETACH_ALL" xml:space="preserve">
+    <value>全部分离</value>
+  </data>
+  <data name="NET_EFFICIENCY" xml:space="preserve">
+    <value>净效率</value>
+  </data>
+  <data name="PROP_NAT_MORT" xml:space="preserve">
+    <value>比例mort。</value>
+  </data>
+  <data name="SEARCHRATES" xml:space="preserve">
+    <value>搜索率</value>
+  </data>
+  <data name="PLUGIN_DESCRIPTION" xml:space="preserve">
+    <value>插件可帮助从EwE中提取结果，参数值和数据</value>
+  </data>
+  <data name="INIT_FISH_MORT" xml:space="preserve">
+    <value>初步捕捞死亡率</value>
+  </data>
+  <data name="MORT_COEFFS" xml:space="preserve">
+    <value>死亡率系数</value>
+  </data>
+  <data name="PREDS_ATTACHED_PREY" xml:space="preserve">
+    <value>带有猎物的食肉动物</value>
+  </data>
+  <data name="MSG_PREV_FORM_INVALID" xml:space="preserve">
+    <value>您在以前的表格上输入的内容无效。您想重试输入还是取消该过程？</value>
+  </data>
+  <data name="ALL_OPTIONS" xml:space="preserve">
+    <value>所有选项</value>
+  </data>
+  <data name="CONSUMPTION" xml:space="preserve">
+    <value>消费</value>
+  </data>
+  <data name="FISH_MORT_TOTAL_MORT" xml:space="preserve">
+    <value>捕鱼柜/总柜</value>
+  </data>
+  <data name="BIOMASS_AREA_UNITS" xml:space="preserve">
+    <value>栖息地的生物量（{0} / {1}）</value>
+  </data>
+  <data name="NET_MIGRATION_RATE" xml:space="preserve">
+    <value>净迁移率</value>
+  </data>
+  <data name="INIT_PRED_MORT" xml:space="preserve">
+    <value>初始捕食死亡率</value>
+  </data>
+  <data name="FITTING_STATS" xml:space="preserve">
+    <value>拟合统计</value>
+  </data>
+  <data name="FISHMORT_PER_FLEET" xml:space="preserve">
+    <value>FishMortPerFleet</value>
+  </data>
+  <data name="RESPIRATION_ASSIMILATION" xml:space="preserve">
+    <value>呼吸/吸收</value>
+  </data>
+  <data name="LANDINGS_PER_FLEETPREY" xml:space="preserve">
+    <value>LandingsPerFleetPerPrey</value>
+  </data>
+  <data name="TROPHIC_LEVEL" xml:space="preserve">
+    <value>营养级</value>
+  </data>
+  <data name="FISHMORT_FLEET2PREY" xml:space="preserve">
+    <value>捕捞死亡率（从船队到猎物）</value>
+  </data>
+  <data name="FLEET2_MANYPREY" xml:space="preserve">
+    <value>赶向许多猎物</value>
+  </data>
+  <data name="CATCH_PER_FLEET" xml:space="preserve">
+    <value>每船队捕捞量</value>
+  </data>
+  <data name="FLEETS_ONLY" xml:space="preserve">
+    <value>仅车队</value>
+  </data>
+  <data name="YEARLY" xml:space="preserve">
+    <value>每年</value>
+  </data>
+  <data name="FLEET_ONLY" xml:space="preserve">
+    <value>仅机队</value>
+  </data>
+  <data name="NET_MIGRATION" xml:space="preserve">
+    <value>净迁移</value>
+  </data>
+  <data name="INIT_CONSUMPTION" xml:space="preserve">
+    <value>初始消费</value>
+  </data>
+  <data name="FISHING_EFFORT" xml:space="preserve">
+    <value>钓鱼努力</value>
+  </data>
+  <data name="PROMPT_FOLDER" xml:space="preserve">
+    <value>选择要保存结果的文件夹</value>
+  </data>
+  <data name="OVERLAPPREY" xml:space="preserve">
+    <value>重叠猎物</value>
+  </data>
+  <data name="OVERLAPPRED" xml:space="preserve">
+    <value>重叠预测</value>
+  </data>
+  <data name="RESPIRATION_BIOMASS_UNITS" xml:space="preserve">
+    <value>呼吸/生物量（/年）</value>
+  </data>
+  <data name="BIOMASS_ACCUM_RATE" xml:space="preserve">
+    <value>生物体。累积率</value>
+  </data>
+  <data name="RESIDUALS" xml:space="preserve">
+    <value>残差</value>
+  </data>
+  <data name="PROMPT_INPUTS" xml:space="preserve">
+    <value>您尚未提供所有输入值来导出所选值。请先检查您的选择，然后再尝试保存结果。</value>
+  </data>
+  <data name="PRED_OVERLAP" xml:space="preserve">
+    <value>踏板重叠</value>
+  </data>
+  <data name="FLEETS_ATTACHED_PREY" xml:space="preserve">
+    <value>附有猎物的舰队</value>
+  </data>
+  <data name="PRED2PREY_SELECTION" xml:space="preserve">
+    <value>捕食者到猎物的选择</value>
+  </data>
+  <data name="FORMNAME_SELECTGROUPS" xml:space="preserve">
+    <value>选择您要为其提取结果的组</value>
+  </data>
+  <data name="PREDATOR" xml:space="preserve">
+    <value>捕食者</value>
+  </data>
+  <data name="PREDMORT" xml:space="preserve">
+    <value>PredMort</value>
+  </data>
+  <data name="DIAGNOSTICS" xml:space="preserve">
+    <value>诊断程序</value>
+  </data>
+  <data name="OTHER_MORT_RATE" xml:space="preserve">
+    <value>其他人。率</value>
+  </data>
+  <data name="TOTAL_PROFIT" xml:space="preserve">
+    <value>总利润</value>
+  </data>
+  <data name="GENERIC_SAVE_EXCEPTION" xml:space="preserve">
+    <value>结果提取器无法将结果保存到{0}。发生系统错误。 {1}</value>
+  </data>
+  <data name="PROD_BIOMASS_Z" xml:space="preserve">
+    <value>Prod / Biom或Z</value>
+  </data>
+  <data name="FISHING_VALUES" xml:space="preserve">
+    <value>钓鱼价值</value>
+  </data>
+  <data name="PREY_OVERLAP" xml:space="preserve">
+    <value>猎物重叠</value>
+  </data>
+  <data name="PRED2_MANYPREY" xml:space="preserve">
+    <value>捕食者很多猎物</value>
+  </data>
+  <data name="FUNC_GROUP" xml:space="preserve">
+    <value>功能组</value>
+  </data>
+  <data name="ATTACH_ALL" xml:space="preserve">
+    <value>全部附上</value>
+  </data>
+  <data name="CONSUMPTION_BIOMASS_UNITS" xml:space="preserve">
+    <value>消耗量/生物量（/年）</value>
+  </data>
+  <data name="SS" xml:space="preserve">
+    <value>SS</value>
+  </data>
+  <data name="FUNCTIONALGROUPS" xml:space="preserve">
+    <value>功能组</value>
+  </data>
+  <data name="FISHMORT_ALLFLEET" xml:space="preserve">
+    <value>FishMortAllFleet</value>
+  </data>
+  <data name="GENERIC_SAVE_CSV" xml:space="preserve">
+    <value>{0}个结果已保存到“ {1}”</value>
+  </data>
+  <data name="CATCH_PER_FLEETGROUP" xml:space="preserve">
+    <value>CatchPerFleetPerPrey</value>
+  </data>
+  <data name="EXCEL" xml:space="preserve">
+    <value>电子表格</value>
+  </data>
+  <data name="FLEET_SELECTION" xml:space="preserve">
+    <value>舰队选择</value>
+  </data>
+  <data name="INITFISHMORT" xml:space="preserve">
+    <value>初始化钓鱼道德</value>
+  </data>
+  <data name="RESPIRATION_UNITS" xml:space="preserve">
+    <value>呼吸（t / km ^ 2 /年）</value>
+  </data>
+  <data name="PREY2_MANYPRED" xml:space="preserve">
+    <value>被许多掠食者捕食</value>
+  </data>
+  <data name="ELECTIVITY" xml:space="preserve">
+    <value>选修性</value>
+  </data>
+  <data name="FUNCT_GROUP_SELECTION" xml:space="preserve">
+    <value>功能组选择</value>
+  </data>
+  <data name="GROUP_NAME" xml:space="preserve">
+    <value>组名</value>
+  </data>
+  <data name="INIT_MORT_COEFFS" xml:space="preserve">
+    <value>InitMortCoeffs</value>
+  </data>
+  <data name="TOTAL_COST" xml:space="preserve">
+    <value>总消耗</value>
+  </data>
+  <data name="FISHERIESGROUPS" xml:space="preserve">
+    <value>渔业团体</value>
+  </data>
+  <data name="RESPIRATION" xml:space="preserve">
+    <value>呼吸</value>
+  </data>
+  <data name="PREDATION_PER_PRED" xml:space="preserve">
+    <value>每个捕食者的捕食死亡率</value>
+  </data>
+  <data name="BIOMASSINTEG" xml:space="preserve">
+    <value>生物质整合</value>
+  </data>
+  <data name="GENERIC_SAVE" xml:space="preserve">
+    <value>结果提取器已将以下文件保存到'{0}'：</value>
+  </data>
+  <data name="PREY2PRED_SELECTION" xml:space="preserve">
+    <value>猎物到捕食者的选择</value>
+  </data>
+  <data name="CONSUMPT" xml:space="preserve">
+    <value>消耗量</value>
+  </data>
+  <data name="CHANGE_SELECTION" xml:space="preserve">
+    <value>变更选择</value>
+  </data>
+  <data name="HABITAT_AREA_UNITS" xml:space="preserve">
+    <value>栖息面积（分数）</value>
+  </data>
+  <data name="CATCH_VALUE" xml:space="preserve">
+    <value>捕获价值</value>
+  </data>
+  <data name="SEARCH_RATES" xml:space="preserve">
+    <value>搜索率</value>
+  </data>
+  <data name="PRED_MORT_RATE" xml:space="preserve">
+    <value>Predat。 mort。率</value>
+  </data>
+  <data name="PRODUCTION_CONSUMPTION" xml:space="preserve">
+    <value>生产/消费</value>
+  </data>
+  <data name="SAVE_RESULTS" xml:space="preserve">
+    <value>保存结果</value>
+  </data>
+  <data name="INDICATORS" xml:space="preserve">
+    <value>指标</value>
+  </data>
+  <data name="KEY_INDICES" xml:space="preserve">
+    <value>关键指标</value>
+  </data>
+  <data name="PREDMORT_EACH_PRED" xml:space="preserve">
+    <value>PredMortEachPred</value>
+  </data>
+  <data name="DIET_PROPS" xml:space="preserve">
+    <value>饮食比例</value>
+  </data>
+  <data name="BIOMASS_UNITS" xml:space="preserve">
+    <value>生物质（t / km ^ 2）</value>
+  </data>
+  <data name="BIOMASS_ACCUM" xml:space="preserve">
+    <value>生物体。累计</value>
+  </data>
+  <data name="FISHING_QUANT" xml:space="preserve">
+    <value>捕鱼量</value>
+  </data>
+  <data name="FLEET2PREY_SELECTION" xml:space="preserve">
+    <value>舰队到猎物的选择</value>
+  </data>
+  <data name="FISHERIES" xml:space="preserve">
+    <value>渔业</value>
+  </data>
+  <data name="PLUGIN_NAME" xml:space="preserve">
+    <value>结果提取器</value>
+  </data>
+  <data name="TOTAL_VALUE" xml:space="preserve">
+    <value>总价值</value>
+  </data>
+  <data name="FISH_MORT_RATE" xml:space="preserve">
+    <value>钓鱼房。率</value>
+  </data>
+  <data name="FLOW_DETRITUS" xml:space="preserve">
+    <value>流向目的地。</value>
+  </data>
+  <data name="INITCONSUMPTION" xml:space="preserve">
+    <value>初始化消耗</value>
+  </data>
+  <data name="ECOTROPHIC_EFFICIENCY" xml:space="preserve">
+    <value>营养养分效率</value>
+  </data>
+  <data name="DISCARDS_PER_FLEETPREY" xml:space="preserve">
+    <value>丢弃PerFleetPerPrey</value>
+  </data>
+  <data name="BIOMASSINTEGRATED" xml:space="preserve">
+    <value>生物质集成</value>
+  </data>
+  <data name="PRODUCTION_RESPIRATION" xml:space="preserve">
+    <value>产生/呼吸</value>
+  </data>
+  <data name="VALUE_PER_FLEET" xml:space="preserve">
+    <value>每车队价值</value>
+  </data>
+  <data name="FUNCT_GROUPS_ONLY" xml:space="preserve">
+    <value>仅功能组</value>
+  </data>
+  <data name="GENERIC_CSV_FILE" xml:space="preserve">
+    <value>{0} {1} .csv</value>
+  </data>
+  <data name="GENERIC_SAVE_EXCEL" xml:space="preserve">
+    <value>{0}个结果已添加到工作簿“ {1}”中</value>
+  </data>
+  <data name="PREY" xml:space="preserve">
+    <value>猎物</value>
+  </data>
+  <data name="DATA_RETRIEVAL" xml:space="preserve">
+    <value>数据检索中...</value>
+  </data>
+</root>

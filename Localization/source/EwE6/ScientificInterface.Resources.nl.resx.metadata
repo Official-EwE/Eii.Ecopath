@@ -1,0 +1,2363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceMetadata>
+  <Data Key="GENERIC_ECOSPACE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_ECOPATH">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_ECOSIM">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_CAPTION_SAVEIMAGE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_FISHERY_DISCARDS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_CATCH">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_VALUE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_SUITABILITY_PLOT_FUNCT_RESP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_DEFAULT_NEWEGGPRODSHAPE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_OFFVESSELPRICE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ABOUT_COPYRIGHT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_PAUSE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_PAGE_PLUGINS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_FLEETS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_DEFAULT_NEWTIMESERIES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_FISHINGMORT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SELECTION_SINGLEVAR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_RECRUITMENT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VALUE_REGION_N">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_FISHINGEFFORT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_PLEASE_WAIT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_TIMESERIES_DELETE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_TFM">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_MORTALITIES_PBZ">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_FISHERY_LANDINGS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_TIMESERIES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_PAGE_APPEARANCE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_OUTPUT_RESULTS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_FISH_EVERYWHERE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_DISCARDMORT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_MORTALITIES_PROP_NAT_MORT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_RESUME">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_INPUT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOTRACER">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_DISCARSURV">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_TIMESERIES_UPDATING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_MORTALITIES_FISHMORT_OVER_TOTMORT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_MORTALITIES_FISHINGMORTRATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_FLEET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_GROUP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_BASICESTIMATES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_CONSUMPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_PREYOVERLAP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_ELECTIVITY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_SUITABILITY_PLOT_ELECTIVITY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_RESPIRATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_SEARCHRATES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_KEYINDICES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_BASICINPUT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_DIETCOMP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_RUN">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_OUTPUT_RESULTS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_STOP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_OUTPUT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_TEXT_OPTIONS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_LOAD">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_OUTPUT_RUN">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_ADVECTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_DIET_MULTIPLIER">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_HABFISHERY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_LAYER_SEEDBEST">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_FISHERY_DISCARDFATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_PAGE_PEDIGREE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_PEDIGREE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_ENVIRONMENTALRESPONSE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_HABCAP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOTRACER_OUTPUT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_MSEFLEETREF">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_OUTPUT_PLOTS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="COMMAND_SAVECHANGES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_EXPORT_SUCCESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_LABEL_APPLY_SHAPES_PREY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_LABEL_APPLY_SHAPES_PRED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_LAYERGROUP_MPARANDOM">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_PRICEELASTICITY_ALL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_SELECT_REFIMAGE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_RUN_MODEGROUP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_RUN_MODEFLEET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_UPDATE_ERROR_CONNECTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_PSD_OUTPUT_RUN">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_APPLYVALUES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_SEARCH_SEARCHING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOTRACER_SCENARIO_LOAD_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VERSION_BETA">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_PREY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOBASE_SUBMIT_REVIEW">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_ACCESS_READONLY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_FD_SAVE_FAILURE_DETAIL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_FONTDLG_TITLE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_FONTDLG_AXISTITLE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_EXTERNALDATA">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_PAGE_SPATTEMP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_EXTERNAL_DATA">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="TAXON_DELETE_CONFIRMATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_MODELNOTFOUND_REMOVEMRU">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SCENARIO_CONFIRMDELETE_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_SAVE_404">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SR_PLOT_NO_STANZA_GROUP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_TOOLTIP_PREDATOR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_TOOLTIP_PREDPREY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ADVECTION_ITERATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOPATH_GRAPH_LEGEND_STANZA_SEP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_GROUPINFO_DENDEPCATCHABILITY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FF_APPLICATION_TRAGET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_CAPTION_IMPORTLAYERIMAGE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_TIMESERIES_LOADING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_EDITREGION_CONFIRMDELETE_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_DEFAULT_NEWDATASET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_CACHE_CLEAR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LEGEND_BYNUM">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_TIMESTEP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_TOOLTIP_PREY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_OUTPUT_ALLFITS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VALUE_REGION_ALL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HABITAT_BATCH_DELETE_CONFIRMATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SELECTION_MULTIPLE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_NICHEOVERLAPPLOT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUSSTRIP_ECOPATH_TOOLTIP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_PREVIEW_LOADING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_SEARCH_INITIALIZING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_OUTPUT_RUN">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUSSTRIP_MODIFIED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_SCENARIO_NEW_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_FEEDBACK_POPUP_AND_STATUS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MSE_RUNNNG">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_SUM">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VALUE_FILE_CONTENT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_ERROR_IMPORT_EWE6_TOO_NEW">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SPATIALTEMP_STATUS_T_UNKNOWN">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_MODEL_MISSINGPARAM">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_REMARKS_NOT_SUPPORTED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="MPAOPT_AXISLABEL_BESTITERATIONS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FF_APPLICATION_SOURCE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_ASSESSMENTGROUP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_ASSESSMENTFLEET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HABITAT_DELETE_CONFIRMATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_HEADER_BIOMASSGRAPH">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOPATH_EDITGROUPSSTANZA_CONFIRMGROUPDELETE_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_PARAMS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_MAPS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_PAGE_MAPS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_MAP_IMAGES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_MPAOPT_MANDATEDB">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_SUM_DESCRIPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_ECOSIM_REQUIRED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_LAYER_MPABESTCOUNT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_DUPLICATE_NAMES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_UPDATE_ERROR_WRITE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_LOAD_SCENARIO_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_SCENARIO_LOAD_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_FITTOTIMESERIES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_INVALIDMODEL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_COMPACTING_FAILED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_SCENARIO_LOAD_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_ERROR_CONNECTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_PARAMETERS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_GROUPINFO_PREDATORFEEDINGTIME">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_IMPORTING_MODEL_CANCELLED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_OUTPUT_GROUPPLOTS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PLUGIN_LICENSE_EXPIRATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_EDITHABITAT_CONFIRMDELETENUM_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PSD_GRAPH_REGRESSION_LABEL_W_STDERR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_GROUPS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_SEARCH_NORESULTS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_DUPLICATE_NAME">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_MPAOPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_MPA_X">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_BASEMAP_SUMMARY_POSITION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_GROUPINFO_FEEDINGTIMEADJUSTRATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_READONLY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_FLEETDYNAMICS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_COMPUTED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_ASSESSMENTS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_PROMPT_SAVEANNUAL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_FEEDBACK_STATUS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_NAMES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_MESSAGE_HIDE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_ERROR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOPATH_LOADING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SEARCH_STATUS_COMPLETED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_APPLYFF_FFTYPE_FORCING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_ACCESS_OS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="REGION_BATCH_DELETE_CONFIRMATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_ECOPATH_MODEL_NAME">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOTRACER_INPUT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_PAGE_AUTORUN">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOSIMFD_SAVING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUSSTRIP_ECOSPACE_ECOSIMDISCARDFORCING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_PLUGIN_INCOMPATIBLE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ABOUT_VERSION_BETA">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_UPDATE_FAILED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_DEFAULT_DESCRIPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_CHECKING_LICENSE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_DRIVERERROR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_NONMARKTEPRICE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_FISHERY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="TS_CONSTANTTOTALMORTALITY_NAME">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SPATIALTEMP_STATUS_T_PARTIALSPATIAL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_SPATIALTEMPORAL_EXPORT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_UPDATE_ERROR_GENERIC">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_PRINT_PREVIEW_FAILED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_FONTDLG_LEGEND">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_SUITABILITY_PLOT_QPREY_BPRED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FR_PLOT_Y_AXS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_GROUPINFO_OTHERMORTFEEDINGTIME">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SCENARIO_CONFIRMOVERWRITE_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_SPATIALCOMPATIBILITY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FORCING_OPTIONS_MEDIATING_GROUPS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_REFLEVELS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_INVALIDMODEL_REMOVEMRU">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_CAPTION_EDITLAYER">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_ECOSPACE_NO_DATA_AVAILABLE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_PSD_OUTPUT_PLOTGROUP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_HEADER_HABITAT_AREA">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SET_ROW_VUL_MSG">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_LAYER_RANDOMSEARCH">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FILEFILTER_IMAGE_TRANSPARENT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="IMPORT_ERROR_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_PROMPT_SAVEDATATOCSV_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_USE_ENVRESPONSES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_RESIZING_MAP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FPS_FG_TP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_APPLYFFCONS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_APPLYFFPROD">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_HABCAPMODEL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MSY_RUNNING_STATIONARYSTOCK">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_FISHERY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_FISHERY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_HABCAPAPPLY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_PROMPT_OVERWRITEFILE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOSPACE_RUNNING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_DEFINE_PEDIGREE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="RUN_ECOSIM_F_VALUE_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOTRACER_SCENARIO_DELETE_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_MONTECARLO">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_LABEL_TRIAL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_PAGE_FILEMANAGEMENT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SCENARIO_CONFIRMOVERWRITE_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FR_PLOT_X_AXIS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_SPAWNING_AGE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOSPACE_SAVING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VALUE_REGION_UNDEFINED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_TIMESERIES_IMPORT_AS_MONTHLY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_OUTPUT_FLEETPLOTS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_DISPERSAL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="INVALID_VUL_NUM_ENTERED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUSSTRIP_ECOSIM_TOOLTIP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_IMPORTING_MODEL_FAILED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOBASE_ERROR_NOCONNECTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOPATH_EDITGROUPSSTANZA_NEEDDETRITUS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_CLEANUP_TEMPFILES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_APPLYOTHERMORT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_TEXT_CREATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_MPA">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_ERROR_IMPORT_EWE5_TOO_OLD">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_HIGHLIGHT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_TEXT_NODATA">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_APPLYFFDET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="COMMAND_AUTOSAVE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_APPLYEGGPROD">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOSPACE_RUNNING_SPINUP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_FEEDBACK_NONE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_NICHEPLOT_XAXIS_LABEL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_SET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_EXTERNAL_DATASET_CONFIGURE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_FONTDLG_AXISSCALE_AND_VALUES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MSY_RUNNING_FULLCOMPENSATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="DATASOURCE_DUPLICATE_ERROR_TARGET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOPATH_EDITGROUPSSTANZA_AGECONFLICT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_APPLYFF_FFTYPE_MEDIATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_DELETE_ECOSPACE_DATASET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SELECTION_DERIVED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOTRACER_LOADING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_UPDATE_SUCCESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_SCENARIO_SAVEAS_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="UI_ERROR_LAUNCHFORM">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_INVALIDTARGETPATH">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_PLUGIN_UNDETERMINED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_FD_SAVE_SUCCESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_FILESAVE_SUCCES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOBASE_SUBMIT_ACCEPTED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="EDIT_GROUPS_STANZANO">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOPATH_MOVEGROUP_ERROR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_WARNING_EMPTY_NAME">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_COMPACTING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_MORTALITIES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_FLEETSIZEDYNAMICS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SET_VUL_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_INVALIDFILE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_STATIONARY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_VULNERABILITES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_SPATTEMP_CREATE_CONNECTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ABOUT_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_HEADER_GROUP_HABITAT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_CAPTION_APPLYMED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SET_COL_VUL_MSG">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOPATH_DELETESTANZA_ERROR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_GROUPINFO_QBMAXQBO">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_FMSY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOPATH_UPDATESTANZA_ERROR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FR_PLOT_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_HABITAT_X">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_APPLYMEDDET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SPATIALTEMP_STATUS_T_NOSPATIAL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_HABITATPREFS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_EDITREGION_CONFIRMDELETENUM_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SELECT_DEFAULT_LAYOUT_DIRECTORY_MSG">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_OPTIONS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="MSE_EFFORT_VALUE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_FD_SAVE_SUCCESS_DETAIL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SR_PLOT_X_AXIS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_CACHECLEARED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_COMPACTING_OS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_FONTDLG_VALUES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_IMG_BACKGROUND_COLOR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOSPACE_PROGRESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SEARCH_LABEL_TOTAL_WEIGHTED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOTRACER_SCENARIO_SAVEAS_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_NICHEPLOT_YAXIS_LABEL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUSSTRIP_ECOSPACE_ECOSIMBIOMASSFORCING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_ECOSPACE_MAPLOT_BACKGROUND_COLOR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_PROMPT_USEANSWERAGAIN">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_MODELNOTFOUND">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="INVALID_VALUE_ENTERED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_ERROR_IMPORTFAILED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_SCENARIO_NEW_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOBASE_ERROR_BALANCE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="MSY_LABEL_FMSY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_MODEL_COMPACT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="INVALID_Y_SCALE_NUMBER_ENTERED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="REGION_DELETE_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FPS_FG_JOBS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_DATA_SAVING_FAILURE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_PLUGIN_CAUTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="TS_CONSTANTTOTALMORTALITY_REMARKS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_PSD_OUTPUT_GROWTHESTIMATES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_CAPTION_APPLYPRICEELASTICITY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_PRICEELASTICITY_GROUP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_LAYERGROUP_IMPORTANCE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_PAGE_INSTALLED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_PRICEELASTICITY_FLEET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_SCENARIO_DELETE_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_PAGE_GRAPHS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_PAGE_GENERAL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_REPLY_OK">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_REPLY_NO">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_REFMSY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="IMPORT_LAYERDATA_FAILED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_SIZEWT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_FISHING_EFFORT_CONVERSION_HEADER">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_FISHMORTRATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOTRACER_RUNNING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_HEADER_AREAFISHING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_ITEMSTATUS_DELETEPENDING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="MPAOPT_AXISLABEL_OBJECTIVEVALUE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_SUITABILITY_PLOT_PRED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_PAGE_COLORS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_SEARCH_STOPPING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_MORTALITRATES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="MPAOPT_LEGEND_WEIGHTEDTOTAL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_SPATIALTEMPORAL_EXPORT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDVALIDATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_MAP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_MSY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ABOUT_VERSION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_SPATTEMP_NODRIVER">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOSIM_CREATING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_COMPACT_RELOADFAIL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FLOWDIAGRAM_LABEL_BIOMASS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_ITEMSTATUS_CREATEPENDING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SPATIALTEMP_STATUS_T_MISSING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_COMPACT_SUCCESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_ERROR_IMPORT_INVALIDDB">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_PSD">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_PSD">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_MORTALITIES_PREDMORTRATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_ERROR_IMAGETOOLARGE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOPATH_EDITGROUPSSTANZA_STANZAAGECORRECTED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_APPLYENVRESPONSE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOSIM_RUNNING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_UPDATE_CHECKING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_PSD_OUTPUT_GROWTHCONTR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_MEDIATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_CAPTION_APPLYFF">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_PROMPT_DELETE_TSDATASETS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_MPA_DELETE_CONFIRMATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VERSION_RELEASE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_ADVECTION_INBALANCED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_NICHEOVERLAP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_NICHEPLOT_HEADER">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_UPDATE_DOWNLOADING_COMP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_DATA_SAVING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FLOWDIAGRAM_NODE_TOUCHING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_FISHING_EFFORT_MULTIPLIER">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="INVALID_NUMBER_ENTERED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="TS_AVERAGEWEIGHT_REMARKS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_EDITLAYER_CONFIRMDELETENUM_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_MSY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_STANZA_MISSING_LIFESTAGES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_WAITING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_EDITLAYER_CONFIRMDELETE_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_DATASET_REMOVING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUSSTRIP_ECOSPACE_CONNECTIONS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_STATISTICS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_DRIVER_ENABLED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_OTHERPRODUCTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_SPATIALTEMPORAL_CALC_NOINDEX">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_IMPORTING_MODEL_SUCCESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_PROMPT_CLEAR_MRU">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_FORCING_DELETE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="COMMAND_AUTORUN">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_PAGE_WINDOW">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="MSE_ITERATION_HEADER">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOSIM_SAVING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUSSTRIP_ECOTRACER_TOOLTIP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_TRIM_SHAPES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_PLOT_CAPTION_MORT_PROD">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_PLOT_CAPTION_MORT_CONS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_FLOWDIAGRAM">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_EDITMPA_CONFIRMDELETENUM_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="REGION_DELETE_CONFIRMATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="MSE_ITERATION_LINE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_REPLY_CANCEL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_PRICEELAST">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_LOADING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_PROMPT_INVALIDPATH">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_SCENARIO_DELETE_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SPATIALTEMP_STATUS_T_FULLSPATIAL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HABITAT_DELETE_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_PROMPT_DONOTSHOWMESSAGEAGAIN">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_DEFAULT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_COMPACTING_TEMPFILE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOSPACE_LOADING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_WARNING_MEMOVERFLOW">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_DATASET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_TOOLS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MSY_INITIALIZING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ADVECTION_STARTED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_CHANGES_RESTART">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_UPDATE_MIGRATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_UPDATE_ERROR_DOWNLOAD">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LEGEND_BYBIOMASS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_PRICEELASTICITY_LANDING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_FISHERY_DISCARDMORTRATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_SUITABILITY_PLOT_SUITABILITY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="IMPORT_FILE_FAILED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_PSD_OUTPUT_PLOTWEIGHT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUSSTRIP_ECOSPACE_TOOLTIP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_FEEDBACK_POPUP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_STANZA_MISSING_LIFESTAGES_DETAIL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FIT2TS_PROGRESS_RUNCOMPLETED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_UPDATE_UPDATED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="MONTECARLO_PROMPT_RUNWITHOUTTS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_REPLY_YES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_IMPORTING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_MPAOPT_SELECTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_BASEMAP_SHRINK_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOPATH_EDITFLEET_CONFIRMDELETE_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_INPUT_MPAENFORCEMENT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOTRACER_CREATING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_LAYERGROUP_ECOSEED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_ECOSIM_PLOTS_BACKGROUND_COLOR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_APPLYFF_FFTYPE_PRICEELASTICITY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_SPATIALTEMPORAL_CALC_NODATA">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_OUTPUT_SUSTPLOT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="MPAOPT_AXISLABEL_ECOSEED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_LANDINGS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_PSD_OUTPUT_GROWTHCONTRRESULT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_CAPTION_APPLYOTHERMORT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_REMARKS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_FILESAVE_FAILURE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_ACCESS_FAILED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOTRACER_SAVING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_BASEMAP_SUMMARY_CELLLENGTH">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_EDITMPA_CONFIRMDELETE_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_MODELCREATED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FPS_FV_RESULT_COL0">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_FILETYPEDEPRECATED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_HEADER_RELB">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FIT2TS_PROGRESS_RUNSTEP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_APPLYMEDCONS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_APPLYMEDPROD">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_UPDATE_NO_ACTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="RUN_ECOSIM_F_VALUE_MSG">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_EXPORT_FAILURE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_CHECKED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_BASEMAP_SHAPECOMPATIBLE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="IMPORT_FILE_SUCCESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_DETRITUSFATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_EXTERNAL_DATA_DETAIL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_FD_SAVE_FAILURE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOPATH_ADDSTANZA_ERROR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_FLEETWEIGHTS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_REGULATORY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="INFOPANEL_DESCRIPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_VALUE_CACHEMEMORY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOBASE_ERROR_COMMUNICATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_SAVING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FLOWDIAGRAM_NODE_NOT_TOUCHING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_PARAMETERS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_BASEMAP_SUMMARY_SIZE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOSPACE_CREATING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VERSION_EXPIRED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MSE_INITIALIZING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FF_APPLICATION_MORTOTHER">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_PROMPT_SAVEDESTINATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SR_PLOT_TITLE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_IMPORTING_MODEL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_INPUT_TRAITS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_LOCATION_SEARCH">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_PREDMORTRATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ADDTIMESERIES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PSD_GRAPH_REGRESSION_LABEL_WO_STDERR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_RUN_PROGRESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SCENARIO_CONFIRMDELETE_PROMPT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SELECTION_NONE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_ERROR_FILEOPEN">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_FORCINGFUNCTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_OUTPUT_SRPLOT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDRESULT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_MORTALITIES_NETMIGRATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_INPUT_EGGPROD">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOPATH_DELETEGROUP_ERROR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="GENERIC_REGISTRATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_SCENARIO_SAVEAS_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_PEDIGREE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_ERROR_IMPORT_NOSELECTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_SPATIALTEMPORAL_CALCULATING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_PSD_INPUT_GROWTH">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOBASE_SUBMIT_DENIED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_ECOSIM_LOADING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_SR_SLOPELABEL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_IMPORTING_DATASET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSIM_FISHINGPOLICY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_QUOTASHARE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_USE_HABITAT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_LAYER_RANDOMBEST">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VALUE_PREVIEW">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_LABEL_APPLY_SHAPES_PREDPREY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_PREDATOROVERLAP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_MORTALITIES_BIOMACCURATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="IMPORT_LAYERDATA_SUCCESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="DATASOURCE_DUPLICATE_ERROR_NODATABASE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_UPDATE_MIGRATION_SUPPRESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_STATUS_FURTHERDETAILS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOTRACER_PARAMS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOTRACER_SCENARIO_NEW_CAPTION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_ALL_REGULATIONS_APPLY">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_HEADER_LOGBREL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_DATA_SAVING_SUCCESS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_LAYER_SEEDCURRENT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SELECTION_INDEXEDVAR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_HEADER_SS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="INFOPANEL_DOMAIN">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_CREATE_GENERICERROR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="MPA_BATCH_DELETE_CONFIRMATION">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_MORTALITIES_OTHERMORTRATE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="OPTIONS_COLORDLG_PROMPT_PREDATOR">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="MPAOPT_AXISLABEL_RANDOMSEARCH">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_GROUPINFO_MAXRELFEEDINGTIME">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_FIXEDESCAPE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_MODEL_ACCESS_404">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_UPDATE_CHECKING_COMP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_OUTPUT_RESULTS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="FIT2TS_PROGRESS_RUNSTARTED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_SHELL_FAILURE">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="SEARCH_STATUS_STARTED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ADVECTION_FAILED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_ECOPATH_NAME">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VALUE_NOTEMPLATES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PLUGIN_LICENSE_EXPIRED">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOPATH_OUTPUT_FLOWDIAGRAM">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSPACE_HEADER_FRACTION_OF_TOTAL">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="VERSION_DEVELOPMENT">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="ECOSIM_HEADER_SS_GROUPS">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="CAPTION_PSD_GROUP_CONTRIB">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="PROMPT_EMPTY_NAMES">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_GROUP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_FLEET">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="STATUS_UPDATE_DONE_COMP">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="HEADER_FORCINGNUMBER">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_MSE_INPUT_EFFORTTRACKING">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+  <Data Key="LABEL_NAV_ECOSPACE_OUTPUT_RUN">
+    <Flag>AutoTranslated</Flag>
+    <Comment />
+  </Data>
+</ResourceMetadata>
