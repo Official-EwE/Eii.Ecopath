@@ -658,7 +658,7 @@ Namespace Ecospace
 
         Private Function ValidateNames() As Boolean
 
-            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.NO)
+            Dim fmsg As New cFeedbackMessage(SharedResources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.NO)
             Dim bHasDuplicates As Boolean = False
             Dim bHasBlank As Boolean = False
             Dim handled As New List(Of String)
@@ -669,7 +669,7 @@ Namespace Ecospace
                 ElseIf Not Me.IsNameUnique(hi.Name, hi) Then
                     If Not handled.Contains(hi.Name) Then
                         fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation,
-                                                             cStringUtils.Localize(My.Resources.PROMPT_DUPLICATE_NAME, hi.Name),
+                                                             cStringUtils.Localize(SharedResources.PROMPT_DUPLICATE_NAME, hi.Name),
                                                              eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, cCore.NULL_VALUE))
                         handled.Add(hi.Name)
                     End If
@@ -678,7 +678,7 @@ Namespace Ecospace
             Next
 
             If bHasBlank Then
-                Me.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_EMPTY_NAMES, eMessageType.DataValidation, eCoreComponentType.External, eMessageImportance.Warning))
+                Me.Core.Messages.SendMessage(New cMessage(SharedResources.PROMPT_EMPTY_NAMES, eMessageType.DataValidation, eCoreComponentType.External, eMessageImportance.Warning))
                 Return False
             End If
 

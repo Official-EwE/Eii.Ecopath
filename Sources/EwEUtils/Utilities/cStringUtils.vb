@@ -207,7 +207,7 @@ Namespace Utilities
         ''' Returns the number that exceeds the highest number in a range of 
         ''' existing autonumbered strings by one.
         ''' </summary>
-        ''' <param name="astrItems">Existing autonumbered strings.</param>
+        ''' <param name="items">Existing autonumbered strings.</param>
         ''' <param name="strMask">Mask used to create the autonumbered strings.</param>
         ''' <param name="strMaskNumberPlaceholder">Placeholder for the number in 
         ''' the <paramref name="strMask">mask</paramref>.</param>
@@ -217,7 +217,7 @@ Namespace Utilities
         ''' alternative to this maybe clumsy mothodology. Feel free to improve.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetNextNumber(ByVal astrItems() As String, ByVal strMask As String,
+        Public Shared Function GetNextNumber(ByVal items As ICollection(Of String), ByVal strMask As String,
                 Optional ByVal strMaskNumberPlaceholder As String = "{0}") As Integer
 
             ' Sanity checks
@@ -234,10 +234,10 @@ Namespace Utilities
             Dim strNumber As String = "" ' Number string extracted from items
             Dim iMax As Integer = 0 ' The max number found
 
-            If (astrItems IsNot Nothing) Then
+            If (items IsNot Nothing) Then
 
                 ' Give this a sensible start value
-                iMax = astrItems.Length
+                iMax = items.Count
 
                 ' Analyze mask for number placeholder
                 iMaskLength = strMask.Length
@@ -245,9 +245,7 @@ Namespace Utilities
                 iMaskRight = iMaskLength - (iMaskLeft + strMaskNumberPlaceholder.Length)
 
                 ' Try to determine the max number in each of the provided strings
-                For iItem As Integer = 0 To astrItems.Length - 1
-                    ' Get next string
-                    strItem = astrItems(iItem)
+                For Each strItem In items
                     ' Determine its length
                     iItemLength = strItem.Length
 
@@ -270,7 +268,7 @@ Namespace Utilities
                     ' Is this still likely to be a string generated with the mask?
                     If (bAssessItem) Then
                         ' #Yes: Attempt to extract a number
-                        strNumber = astrItems(iItem).Substring(iMaskLeft, iItemLength - (iMaskLeft + iMaskRight))
+                        strNumber = strItem.Substring(iMaskLeft, iItemLength - (iMaskLeft + iMaskRight))
                         Try
                             ' Conversion to Int may cause arithmic overflows etc so let's wear proper protection
                             iMax = Math.Max(iMax, Integer.Parse(strNumber))
@@ -278,7 +276,7 @@ Namespace Utilities
                             ' Kaboom! Whoah, ignore this string, it's trouble.
                         End Try
                     End If
-                Next iItem
+                Next
             End If
 
             ' And yes, it COULD crash here if the iMax happened to hold Integer.MaxValue....

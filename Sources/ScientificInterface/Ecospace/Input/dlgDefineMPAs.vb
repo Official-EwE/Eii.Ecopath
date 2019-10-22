@@ -59,12 +59,12 @@ Namespace Ecospace
         End Sub
 
         Private Sub m_btnMoveUp_Click(sender As Object, e As EventArgs) Handles m_btnMoveUp.Click
-            Me.m_grid.MoveRowUp()
+            Me.m_grid.MoveRowsUp()
             Me.UpdateControls()
         End Sub
 
         Private Sub m_btnMoveDown_Click(sender As Object, e As EventArgs) Handles m_btnMoveDown.Click
-            Me.m_grid.MoveRowDown()
+            Me.m_grid.MoveRowsDown()
             Me.UpdateControls()
         End Sub
 

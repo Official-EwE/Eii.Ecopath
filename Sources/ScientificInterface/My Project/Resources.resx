@@ -846,9 +846,6 @@ Description: {1}</value>
   <data name="PROMPT_ECOSIM_REQUIRED" xml:space="preserve">
     <value>Ecosim required</value>
   </data>
-  <data name="PROMPT_EMPTY_NAMES" xml:space="preserve">
-    <value>Your data contains blank names. This is not allowed.</value>
-  </data>
   <data name="PROMPT_PLUGIN_INCOMPATIBLE" xml:space="preserve">
     <value>The plug-in '{0}' uses outdated EwE components, and is likely to be incompatible with this version of EwE6. Do you wish to disable this plug-in?</value>
     <comment>{0}=plug-in name</comment>
@@ -1032,9 +1029,6 @@ Description: {1}</value>
   </data>
   <data name="STATUS_SEARCH_SEARCHING" xml:space="preserve">
     <value>Searching...</value>
-  </data>
-  <data name="PROMPT_DUPLICATE_NAME" xml:space="preserve">
-    <value>Name '{0}' is defined more than once</value>
   </data>
   <data name="STATUS_WAITING" xml:space="preserve">
     <value>Waiting for your input...</value>
@@ -1896,9 +1890,6 @@ EwE can attempt to continue and load the model in read-only mode. Be advised tha
   <data name="ECOTRACER_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
     <value>Save Ecotracer scenario - Ecopath model {0}</value>
     <comment>{0}=scenario name</comment>
-  </data>
-  <data name="PROMPT_DUPLICATE_NAMES" xml:space="preserve">
-    <value>Your data contains duplicate names. Do you wish to use these duplicates?</value>
   </data>
   <data name="STATUS_MSE_RUNNNG" xml:space="preserve">
     <value>Running MSE...</value>
