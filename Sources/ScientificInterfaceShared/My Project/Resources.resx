@@ -3126,4 +3126,17 @@
   <data name="ECOSPACE_LAYERGROUP_CONTAMINANTS" xml:space="preserve">
     <value>Contaminants</value>
   </data>
+  <data name="GENERIC_CONFIRMDELETE_PROMPT" xml:space="preserve">
+    <value>Are you sure you want to delete {0} item(s)? This action cannot be undone.</value>
+    <comment>{0}=item count</comment>
+  </data>
+  <data name="PROMPT_DUPLICATE_NAME" xml:space="preserve">
+    <value>Name '{0}' is defined more than once</value>
+  </data>
+  <data name="PROMPT_DUPLICATE_NAMES" xml:space="preserve">
+    <value>Your data contains duplicate names. Do you wish to use these duplicates?</value>
+  </data>
+  <data name="PROMPT_EMPTY_NAMES" xml:space="preserve">
+    <value>Your data contains blank names. This is not allowed.</value>
+  </data>
 </root>

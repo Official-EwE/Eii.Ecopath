@@ -1530,7 +1530,7 @@ Public Class gridDefineGroups
 
     Private Function ValidateNames() As Boolean
 
-        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.NO)
+        Dim fmsg As New cFeedbackMessage(SharedResources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.NO)
         Dim bHasDuplicates As Boolean = False
         Dim bHasBlank As Boolean = False
         Dim lstrHandled As New List(Of String)
@@ -1540,8 +1540,8 @@ Public Class gridDefineGroups
                 bHasBlank = True
             ElseIf Not Me.IsNameUnique(gi.Name, gi) Then
                 If Not lstrHandled.Contains(gi.Name) Then
-                    fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
-                                                         cStringUtils.Localize(My.Resources.PROMPT_DUPLICATE_NAME, gi.Name), _
+                    fmsg.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation,
+                                                         cStringUtils.Localize(SharedResources.PROMPT_DUPLICATE_NAME, gi.Name),
                                                          eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, cCore.NULL_VALUE))
                     lstrHandled.Add(gi.Name)
                 End If
@@ -1550,7 +1550,7 @@ Public Class gridDefineGroups
         Next
 
         If bHasBlank Then
-            Me.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_EMPTY_NAMES, eMessageType.DataValidation, eCoreComponentType.External, eMessageImportance.Warning))
+            Me.Core.Messages.SendMessage(New cMessage(SharedResources.PROMPT_EMPTY_NAMES, eMessageType.DataValidation, eCoreComponentType.External, eMessageImportance.Warning))
             Return False
         End If
 

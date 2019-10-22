@@ -1504,10 +1504,10 @@ Namespace Controls.EwEGrid
         ''' selections. An assertion may occur otherwise.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Sub SelectRow(ByVal iRow As Integer)
+        Public Sub SelectRow(ByVal iRow As Integer, Optional bAddToSelection As Boolean = False)
 
             ' Clear current selection
-            If (Me.Selection IsNot Nothing) Then
+            If (Me.Selection IsNot Nothing And Not bAddToSelection) Then
                 Dim r As SourceGrid2.Range = Me.Selection.GetRange()
                 If Not r.IsEmpty Then
                     Me.Selection.RemoveRange(r)

@@ -3981,24 +3981,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Name &apos;{0}&apos; is defined more than once.
-        '''</summary>
-        Public ReadOnly Property PROMPT_DUPLICATE_NAME() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_DUPLICATE_NAME", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Your data contains duplicate names. Do you wish to use these duplicates?.
-        '''</summary>
-        Public ReadOnly Property PROMPT_DUPLICATE_NAMES() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_DUPLICATE_NAMES", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Ecosim required.
         '''</summary>
         Public ReadOnly Property PROMPT_ECOSIM_REQUIRED() As String
@@ -4013,15 +3995,6 @@ Namespace My.Resources
         Public ReadOnly Property PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND() As String
             Get
                 Return ResourceManager.GetString("PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Your data contains blank names. This is not allowed..
-        '''</summary>
-        Public ReadOnly Property PROMPT_EMPTY_NAMES() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_EMPTY_NAMES", resourceCulture)
             End Get
         End Property
         

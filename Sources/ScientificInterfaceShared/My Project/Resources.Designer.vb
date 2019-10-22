@@ -2282,6 +2282,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Are you sure you want to delete {0} item(s)? This action cannot be undone..
+        '''</summary>
+        Public ReadOnly Property GENERIC_CONFIRMDELETE_PROMPT() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_CONFIRMDELETE_PROMPT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to AED|UAE Dirham|AFN|Afghanistan Afghani|ALL|Albanian Lek|AMD|Armenian Dram|ANG|Antillean Guilder|AOR|Angolan New Kwanza|ARS|Argentinian Peso|AUD|Australian Dollar|AWG|Aruban Florin|AZM|Azerbaijan Manat|BAM|Bosnian Konvertibilna Marka|BBD|Barbadian Dollar|BDT|Bangladesh Taka|BGN|Bulgarian New Lev|BHD|Bahraini Dinar|BIF|Burundian Franc|BMD|Bermudan Dollar|BND|Brunei Dollar|BOB|Bolivian Boliviano|BRL|Brazilian Real|BSD|Bahamas Dollar|BTN|Bhutan Ngultrum|BWP|Botswana Pula|BYB|Belarussian Ruble|BZD|Belizean Dolla [rest of string was truncated]&quot;;.
         '''</summary>
         Public ReadOnly Property GENERIC_CURRENCIES() As String
@@ -7845,6 +7854,33 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("PrintPreviewHS", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Name &apos;{0}&apos; is defined more than once.
+        '''</summary>
+        Public ReadOnly Property PROMPT_DUPLICATE_NAME() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DUPLICATE_NAME", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Your data contains duplicate names. Do you wish to use these duplicates?.
+        '''</summary>
+        Public ReadOnly Property PROMPT_DUPLICATE_NAMES() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DUPLICATE_NAMES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Your data contains blank names. This is not allowed..
+        '''</summary>
+        Public ReadOnly Property PROMPT_EMPTY_NAMES() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_EMPTY_NAMES", resourceCulture)
             End Get
         End Property
         
