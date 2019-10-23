@@ -65,8 +65,8 @@
     <Comment />
   </Data>
   <Data Key="CORE_INIT_CRITICAL_GENERIC">
-    <Flag>AutoTranslated</Flag>
-    <Comment />
+    <Flag>Warning</Flag>
+    <Comment>Is *the core* necessary?</Comment>
   </Data>
   <Data Key="TIMESERIES_ERROR_CVFORMAT">
     <Flag>AutoTranslated</Flag>
@@ -781,7 +781,7 @@
     <Comment />
   </Data>
   <Data Key="CORE_INIT_CRITICAL_VALIDATORS">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="ECOSPACE_SAVE_SUCCES">
