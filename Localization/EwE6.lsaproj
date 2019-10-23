@@ -23,12 +23,6 @@
       <FileLocation>..\Sources\ScientificInterface\bin\Release\EwEEcoSamplerPlugin.dll</FileLocation>
     </Library>
     <Library>
-      <FileLocation>..\Sources\ScientificInterface\bin\Release\EwEEcospaceSpinupPlugin.dll</FileLocation>
-    </Library>
-    <Library>
-      <FileLocation>..\Sources\ScientificInterface\bin\Release\EwEEcoTroph.dll</FileLocation>
-    </Library>
-    <Library>
       <FileLocation>..\Sources\ScientificInterface\bin\Release\EwEImportExportLayerDefinitionsPlugin.dll</FileLocation>
     </Library>
     <Library>

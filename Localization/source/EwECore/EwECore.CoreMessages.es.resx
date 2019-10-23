@@ -166,7 +166,7 @@
     <value>Este grupo contiene una dieta importada que no se verá afectada por la respuesta funcional aplicada.</value>
   </data>
   <data name="CORE_INIT_CRITICAL_GENERIC" xml:space="preserve">
-    <value>El núcleo EwE6 no se pudo inicializar. Se produjo el siguiente error crítico: {0}</value>
+    <value>EwE6 no se pudo inicializar. Se produjo el siguiente error crítico: {0}</value>
   </data>
   <data name="TIMESERIES_ERROR_CVFORMAT" xml:space="preserve">
     <value>Uno o más valores cv no se pueden leer</value>
@@ -703,7 +703,7 @@
     <value>Resultados del marcador de contaminantes guardados en '{0}'</value>
   </data>
   <data name="CORE_INIT_CRITICAL_VALIDATORS" xml:space="preserve">
-    <value>El núcleo EwE6 no se pudo inicializar. Se produjo el siguiente error crítico al crear validadores: {0}</value>
+    <value>EwE6 no se pudo inicializar. Se produjo el siguiente error crítico al crear validadores: {0}</value>
   </data>
   <data name="ECOSPACE_SAVE_SUCCES" xml:space="preserve">
     <value>Se ha guardado el escenario del ecosistema '{0}'.</value>

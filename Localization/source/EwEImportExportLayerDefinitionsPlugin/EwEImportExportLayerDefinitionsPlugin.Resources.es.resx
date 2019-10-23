@@ -133,7 +133,7 @@
     <value>Seleccione el archivo para guardar los estilos de capa en</value>
   </data>
   <data name="MENU_ITEM_EXPORT" xml:space="preserve">
-    <value>&amp; Exportar estilos de capa ...</value>
+    <value>&amp;Exportar estilos de capa...</value>
   </data>
   <data name="MENU_ITEM_IMPORT" xml:space="preserve">
     <value>&amp; Importar estilos de capa ...</value>
