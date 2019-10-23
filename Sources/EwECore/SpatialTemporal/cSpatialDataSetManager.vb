@@ -68,7 +68,6 @@ Namespace SpatialData
         Private m_lComp As New Dictionary(Of ISpatialDataSet, cDatasetCompatilibity)
 
         Private m_lAvailable As List(Of ISpatialDataSet) = Nothing
-        Private m_lVirtual As List(Of ISpatialDataSet) = Nothing
 
         Private m_core As cCore = Nothing
         Private m_bReadOnly As Boolean = False
@@ -97,7 +96,6 @@ Namespace SpatialData
             Me.m_core = core
 
             Me.m_lAvailable = New List(Of ISpatialDataSet)
-            Me.m_lVirtual = New List(Of ISpatialDataSet)
             Me.m_lConfigFiles = New List(Of cSpatialDataConfigFile)
 
             Me.m_indexer = New cSpatialDatasetIndexer(core, Me)
@@ -114,7 +112,6 @@ Namespace SpatialData
             Me.IndexDataset = Nothing
 
             Me.m_lAvailable = Nothing
-            Me.m_lVirtual = Nothing
             GC.SuppressFinalize(Me)
 
         End Sub
@@ -400,7 +397,6 @@ Namespace SpatialData
         Public Sub Clear() _
             Implements ICollection(Of ISpatialDataSet).Clear
             Me.m_lAvailable.Clear()
-            Me.m_lVirtual.Clear()
             Me.m_lComp.Clear()
             Me.UpdateIndexer()
         End Sub
@@ -413,27 +409,6 @@ Namespace SpatialData
             If (item Is Nothing) Then Return False
             Return Me.m_lAvailable.Contains(item)
         End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set whether a given dataset is declared virtually by the 
-        ''' loaded model, instead of via a configuration file.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property IsVirtual(ByVal item As ISpatialDataSet) As Boolean
-            Get
-                If (item Is Nothing) Then Return False
-                Return Me.m_lVirtual.Contains(item)
-            End Get
-            Set(value As Boolean)
-                If (item Is Nothing) Then Return
-                If (value = True) Then
-                    If Not Me.m_lVirtual.Contains(item) Then Me.m_lVirtual.Add(item)
-                Else
-                    Me.m_lVirtual.Remove(item)
-                End If
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).CopyTo"/>
@@ -589,10 +564,6 @@ Namespace SpatialData
         ''' --------------------------------------------------------------------
         Public Function Datasets() As ISpatialDataSet()
             Return Me.m_lAvailable.ToArray()
-        End Function
-
-        Friend Function Virtual() As ISpatialDataSet()
-            Return Me.m_lVirtual.ToArray()
         End Function
 
 #End Region ' Internal lists
@@ -758,124 +729,6 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Return an existing dataset if available. If not available, a 
-        ''' dataset is dynamically created from provided configuration info.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Friend Function CreateDataset(ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As ISpatialDataSet
-            If (String.IsNullOrWhiteSpace(cfg.DatasetGUID)) Then Return Nothing
-
-            Dim guidDS As Guid = Guid.Empty
-            Guid.TryParse(cfg.DatasetGUID, guidDS)
-
-            Dim ds As ISpatialDataSet = Me.Find(guidDS)
-
-            If (ds Is Nothing) Then
-
-                ' Abort if missing dataset creation info
-                If (String.IsNullOrWhiteSpace(cfg.DatasetTypeName)) Then Return Nothing
-
-                ' Dataset type name mapping, yuck...
-                Dim t As Type = cTypeUtils.StringToType(cfg.DatasetTypeName.Replace("cAAASFileDataSetPlugin", "cASCIIFilesDataSetPlugin"))
-
-                ' Still no dataset type found?
-                If (t Is Nothing) Then
-                    ' Type unreachable, most likely because a plug-in is missing. We don't want the dataset to get lost.
-                    ' Keep the dataset in a placeholder during the EwE session
-                    t = GetType(cSpatialDatasetPlaceholder)
-                End If
-
-                Try
-                    ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
-                    Debug.Assert(ds IsNot Nothing)
-
-                    If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
-
-                    If (TypeOf ds Is cSpatialDatasetPlaceholder) Then
-                        DirectCast(ds, cSpatialDatasetPlaceholder).PreservedType = cfg.DatasetTypeName
-                    End If
-
-                    ' This needs some restructuring. Perhaps it is easiest to add XML serializer classes
-                    ' for datasets and converters. This XML logic is becoming too fragmented
-
-                    If Not String.IsNullOrWhiteSpace(cfg.DatasetConfig) Then
-                        Dim xnRoot As XmlNode = Nothing
-                        Dim doc As XmlDocument = cSpatialDataSetManager.NewDoc(xnRoot)
-                        Dim xnData As XmlElement = doc.CreateElement("Configuration")
-                        xnData.InnerXml = cfg.DatasetConfig
-
-                        ds.Configuration(doc, "") = xnData
-
-                        ' Try to find Dataset by name 
-                        Dim ds2 As ISpatialDataSet = Me.Find(ds.CustomName)
-                        If (ds2 IsNot Nothing) Then
-                            ' Ok, use that one
-                            ds = ds2
-                        Else
-                            ' Dataset is new? try to complement GUID and use it as a virtual dataset
-                            If Guid.Equals(Guid.Empty, guidDS) Then guidDS = Guid.NewGuid
-                            ds.GUID = guidDS
-                            Me.m_lAvailable.Add(ds)
-
-                            ' This dataset is obtained from the model, not from a properly defined dataset
-                            Me.IsVirtual(ds) = True
-
-                        End If
-
-                    End If
-
-                Catch ex As Exception
-                    cLog.Write(ex, "cSpatialDatasetManager.CreateDataset " & cfg.DatasetTypeName)
-                End Try
-
-
-            End If
-
-            Return ds
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Store a dataset into provided configuration info.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Friend Function UpdateDataset(ByVal ds As ISpatialDataSet,
-                                      ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As Boolean
-
-            If (ds Is Nothing) Then
-                cfg.DatasetTypeName = ""
-                cfg.DatasetGUID = ""
-                cfg.DatasetConfig = ""
-                Return True
-            End If
-
-            Dim doc As XmlDocument = Nothing
-            Dim xnRoot As XmlNode = Nothing
-            Dim xnData As XmlNode = Nothing
-
-            Try
-                doc = cSpatialDataSetManager.NewDoc(xnRoot)
-
-                cfg.DatasetTypeName = cTypeUtils.TypeToString(ds.GetType)
-                cfg.DatasetGUID = ds.GUID.ToString
-
-                xnData = ds.Configuration(doc, Path.GetDirectoryName(ds.Source))
-
-                If (xnData IsNot Nothing) Then
-                    cfg.DatasetConfig = xnData.InnerXml
-                Else
-                    cfg.DatasetConfig = ""
-                End If
-            Catch ex As Exception
-
-            End Try
-
-            Return True
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Create a converter from provided configuration info.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -909,6 +762,25 @@ Namespace SpatialData
 
             End Get
         End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Store a dataset into provided configuration info.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Friend Function UpdateDataset(ByVal ds As ISpatialDataSet,
+                                      ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As Boolean
+
+            If (ds Is Nothing) Then
+                cfg.DatasetTypeName = ""
+                cfg.DatasetGUID = ""
+            Else
+                cfg.DatasetTypeName = cTypeUtils.TypeToString(ds.GetType)
+                cfg.DatasetGUID = ds.GUID.ToString
+            End If
+            Return True
+
+        End Function
 
         Friend Function UpdateConverter(ByVal cv As ISpatialDataConverter,
                                         ByVal cfg As cSpatialDataStructures.cAdapaterConfiguration) As Boolean
@@ -993,8 +865,6 @@ Namespace SpatialData
                 If (bExport) Then
                     Me.SendProgress(cStringUtils.Localize(My.Resources.CoreMessages.EXPORT_PROGRESS_DATASET, ds.CustomName), CInt(100 * nDataset / Me.m_lAvailable.Count))
                     ds = ds.ExportTo(Path.GetDirectoryName(strFile))
-                ElseIf Me.IsVirtual(ds) Then
-                    ds = Nothing
                 End If
                 If (ds IsNot Nothing) Then
 

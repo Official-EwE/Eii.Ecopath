@@ -329,37 +329,35 @@ Namespace SpatialData
 
                 ' Exclude virtual datasets from ending up in a config file
                 If (ds IsNot Nothing) Then
-                    If (Array.IndexOf(man.Virtual, ds) = -1) Then
 
-                        xnDataset = doc.CreateElement("Dataset")
+                    xnDataset = doc.CreateElement("Dataset")
 
-                        xaDataset = doc.CreateAttribute("Type")
-                        If (TypeOf ds Is cSpatialDatasetPlaceholder) Then
-                            xaDataset.Value = DirectCast(ds, cSpatialDatasetPlaceholder).PreservedType
-                        Else
-                            xaDataset.Value = cTypeUtils.TypeToString(ds.GetType)
-                        End If
-                        xnDataset.Attributes.Append(xaDataset)
-
-                        xaDataset = doc.CreateAttribute("GUID")
-                        xaDataset.Value = Convert.ToString(ds.GUID)
-                        xnDataset.Attributes.Append(xaDataset)
-
-                        Try
-                            xnDetails = ds.Configuration(doc, strPath)
-                        Catch ex As Exception
-                            xnDetails = Nothing
-                        End Try
-
-                        If (xnDetails IsNot Nothing) Then
-                            xnDataset.AppendChild(xnDetails)
-                            nExported += 1
-                        End If
-
-                        ' Add dataset nodes
-                        xnRoot.AppendChild(xnDataset)
-
+                    xaDataset = doc.CreateAttribute("Type")
+                    If (TypeOf ds Is cSpatialDatasetPlaceholder) Then
+                        xaDataset.Value = DirectCast(ds, cSpatialDatasetPlaceholder).PreservedType
+                    Else
+                        xaDataset.Value = cTypeUtils.TypeToString(ds.GetType)
                     End If
+                    xnDataset.Attributes.Append(xaDataset)
+
+                    xaDataset = doc.CreateAttribute("GUID")
+                    xaDataset.Value = Convert.ToString(ds.GUID)
+                    xnDataset.Attributes.Append(xaDataset)
+
+                    Try
+                        xnDetails = ds.Configuration(doc, strPath)
+                    Catch ex As Exception
+                        xnDetails = Nothing
+                    End Try
+
+                    If (xnDetails IsNot Nothing) Then
+                        xnDataset.AppendChild(xnDetails)
+                        nExported += 1
+                    End If
+
+                    ' Add dataset nodes
+                    xnRoot.AppendChild(xnDataset)
+
                 Else
                     bSuccess = False
                 End If

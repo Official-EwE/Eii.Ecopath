@@ -94,8 +94,6 @@ Namespace SpatialData
             Public Property DatasetGUID As String = ""
             ''' <summary>Typename to instantiate dataset.</summary>
             Public Property DatasetTypeName As String = ""
-            ''' <summary>Configuration to set up dataset.</summary>
-            Public Property DatasetConfig As String = ""
             ''' <summary>Typename to instantiate converter.</summary>
             Public Property ConverterTypeName As String = ""
             ''' <summary>Configuration to set up converter.</summary>
@@ -108,7 +106,6 @@ Namespace SpatialData
             Friend Sub Clear()
                 Me.DatasetGUID = ""
                 Me.DatasetTypeName = ""
-                Me.DatasetConfig = ""
                 Me.ConverterTypeName = ""
                 Me.ConverterConfig = ""
                 Me.Scale = 1

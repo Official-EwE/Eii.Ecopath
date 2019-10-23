@@ -102,7 +102,9 @@ Namespace Samples
         End Sub
 
         ''' <summary>
-        ''' Get/set the MD5 hash of the Ecopath input set a sample was generated for.
+        ''' Get/set the MD5 hash of the Ecopath input set a sample was generated for. 
+        ''' The hash code is used to ascertain that a sample belongs to a specific Ecopath
+        ''' base parameter set.
         ''' </summary>
         Public Property Hash As String = ""
 
