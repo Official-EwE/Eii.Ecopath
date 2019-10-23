@@ -134,7 +134,6 @@ Namespace SpatialData
         Public Sub Load()
 
             Dim ds As ISpatialDataSet = Nothing
-            Dim cv As ISpatialDataConverter = Nothing
             Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
             Dim conn As cSpatialDataConnection = Nothing
             Dim t As Type = Nothing
@@ -146,14 +145,15 @@ Namespace SpatialData
                         cfg = Me.m_data.Item(adt.VarName, i, j)
                         Debug.Assert(cfg IsNot Nothing)
 
-                        ds = Me.m_datasetManager.CreateDataset(cfg)
-                        cv = Me.m_datasetManager.CreateConverter(cfg)
-                        If (ds IsNot Nothing) Then
-                            conn = adt.AddConnection(i)
-                            conn.Dataset = ds
-                            conn.Converter = cv
-                            conn.Scale = cfg.Scale
-                            conn.ScaleType = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
+                        If (Not String.IsNullOrWhiteSpace(cfg.DatasetGUID)) Then
+                            ds = Me.m_datasetManager.Find(Guid.Parse(cfg.DatasetGUID))
+                            If (ds IsNot Nothing) Then
+                                conn = adt.AddConnection(i)
+                                conn.Dataset = ds
+                                conn.Converter = Me.m_datasetManager.CreateConverter(cfg)
+                                conn.Scale = cfg.Scale
+                                conn.ScaleType = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
+                            End If
                         End If
                     Next j
                 Next i

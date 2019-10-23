@@ -2735,7 +2735,6 @@ Public Class cEIIXMLDataSource
                         Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, iConn)
                         item.DatasetGUID = CStr(Me.ReadSafe(drow, "DatasetGUID", ""))
                         item.DatasetTypeName = CStr(Me.ReadSafe(drow, "DatasetTypeName", ""))
-                        item.DatasetConfig = Web.HttpUtility.UrlDecode(CStr(Me.ReadSafe(drow, "DatasetCfg", "")))
                         item.ConverterTypeName = CStr(Me.ReadSafe(drow, "ConverterTypeName", ""))
                         item.ConverterConfig = Web.HttpUtility.UrlDecode(CStr(Me.ReadSafe(drow, "ConverterCfg", "")))
                         item.Scale = CSng(Me.ReadSafe(drow, "Scale", 1.0!))

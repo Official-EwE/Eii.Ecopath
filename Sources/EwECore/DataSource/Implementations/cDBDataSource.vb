@@ -10088,7 +10088,6 @@ Namespace DataSources
                             Dim item As cSpatialDataStructures.cAdapaterConfiguration = spatialDS.Item(var, iLayer, iConn)
                             item.DatasetGUID = CStr(Me.m_db.ReadSafe(reader, "DatasetGUID", ""))
                             item.DatasetTypeName = CStr(Me.m_db.ReadSafe(reader, "DatasetTypeName", ""))
-                            item.DatasetConfig = CStr(Me.m_db.ReadSafe(reader, "DatasetCfg", ""))
                             item.ConverterTypeName = CStr(Me.m_db.ReadSafe(reader, "ConverterTypeName", ""))
                             item.ConverterConfig = CStr(Me.m_db.ReadSafe(reader, "ConverterCfg", ""))
                             item.Scale = CSng(Me.m_db.ReadSafe(reader, "Scale", 1.0!))
@@ -10182,7 +10181,6 @@ Namespace DataSources
                                     drow("Sequence") = iSequence
                                     drow("DatasetGUID") = strDataset
                                     drow("DatasetTypeName") = cfg.DatasetTypeName
-                                    drow("DatasetCfg") = cfg.DatasetConfig
                                     drow("ConverterTypeName") = cfg.ConverterTypeName
                                     drow("ConverterCfg") = cfg.ConverterConfig
                                     drow("Scale") = cfg.Scale
