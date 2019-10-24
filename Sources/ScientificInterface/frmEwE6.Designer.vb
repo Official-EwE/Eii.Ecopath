@@ -167,6 +167,7 @@ Partial Public Class frmEwE6
         Me.m_tsbnAutorunConfig = New System.Windows.Forms.ToolStripButton()
         Me.m_bgw = New System.ComponentModel.BackgroundWorker()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
+        Me.m_tsmiEcospaceDefineImportanceLayers = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -247,7 +248,7 @@ Partial Public Class frmEwE6
         '
         'MenuEcospace
         '
-        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, Me.m_tsmiEcospaceClose, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceDefineHabitats, Me.m_tsmiEcospaceInputMaps, Me.m_tsmiEcospaceDefineMPAs, Me.m_tsmiEcospaceDefineRegions, Me.m_tsmiEcospaceDatasets, m_tssEcospace3, Me.MenuEcospaceImport, Me.MenuEcospaceExport, Me.ToolStripSeparator5, Me.m_tsmiEcospaceAdvanced})
+        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, Me.m_tsmiEcospaceClose, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceDefineHabitats, Me.m_tsmiEcospaceInputMaps, Me.m_tsmiEcospaceDefineMPAs, Me.m_tsmiEcospaceDefineRegions, Me.m_tsmiEcospaceDatasets, Me.m_tsmiEcospaceDefineImportanceLayers, m_tssEcospace3, Me.MenuEcospaceImport, Me.MenuEcospaceExport, Me.ToolStripSeparator5, Me.m_tsmiEcospaceAdvanced})
         MenuEcospace.Name = "MenuEcospace"
         resources.ApplyResources(MenuEcospace, "MenuEcospace")
         '
@@ -869,6 +870,11 @@ Partial Public Class frmEwE6
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
+        'm_tsmiEcospaceDefineImportanceLayers
+        '
+        Me.m_tsmiEcospaceDefineImportanceLayers.Name = "m_tsmiEcospaceDefineImportanceLayers"
+        resources.ApplyResources(Me.m_tsmiEcospaceDefineImportanceLayers, "m_tsmiEcospaceDefineImportanceLayers")
+        '
         'frmEwE6
         '
         Me.AllowDrop = True
@@ -997,5 +1003,6 @@ Partial Public Class frmEwE6
     Private WithEvents m_ssMain As cEwEStatusBar
     Private WithEvents m_tsddViewItems As ToolStripSplitButton
     Friend WithEvents ToolStripSeparator7 As ToolStripSeparator
+    Private WithEvents m_tsmiEcospaceDefineImportanceLayers As ToolStripMenuItem
 End Class
 
