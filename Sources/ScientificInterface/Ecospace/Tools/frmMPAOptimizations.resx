@@ -321,7 +321,7 @@
     <value>66, 72</value>
   </data>
   <data name="m_cmbMPA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 21</value>
+    <value>127, 21</value>
   </data>
   <data name="m_cmbMPA.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -474,10 +474,10 @@
     <value>Fill</value>
   </data>
   <data name="m_nudIterations.Location" type="System.Drawing.Point, System.Drawing">
-    <value>397, 72</value>
+    <value>379, 72</value>
   </data>
   <data name="m_nudIterations.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 20</value>
+    <value>127, 20</value>
   </data>
   <data name="m_nudIterations.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -498,10 +498,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_nudStep.Location" type="System.Drawing.Point, System.Drawing">
-    <value>397, 49</value>
+    <value>379, 49</value>
   </data>
   <data name="m_nudStep.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 20</value>
+    <value>127, 20</value>
   </data>
   <data name="m_nudStep.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -525,7 +525,7 @@
     <value>66, 26</value>
   </data>
   <data name="m_nudEndYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 20</value>
+    <value>127, 20</value>
   </data>
   <data name="m_nudEndYear.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -585,7 +585,7 @@
     <value>66, 3</value>
   </data>
   <data name="m_nudStartYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 20</value>
+    <value>127, 20</value>
   </data>
   <data name="m_nudStartYear.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1050,7 +1050,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblMinArea.Location" type="System.Drawing.Point, System.Drawing">
-    <value>283, 0</value>
+    <value>265, 0</value>
   </data>
   <data name="m_lblMinArea.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 23</value>
@@ -1086,7 +1086,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblMaxArea.Location" type="System.Drawing.Point, System.Drawing">
-    <value>283, 23</value>
+    <value>265, 23</value>
   </data>
   <data name="m_lblMaxArea.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 23</value>
@@ -1116,10 +1116,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_nudMinArea.Location" type="System.Drawing.Point, System.Drawing">
-    <value>397, 3</value>
+    <value>379, 3</value>
   </data>
   <data name="m_nudMinArea.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 20</value>
+    <value>127, 20</value>
   </data>
   <data name="m_nudMinArea.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1140,10 +1140,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_nudMaxArea.Location" type="System.Drawing.Point, System.Drawing">
-    <value>397, 26</value>
+    <value>379, 26</value>
   </data>
   <data name="m_nudMaxArea.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 20</value>
+    <value>127, 20</value>
   </data>
   <data name="m_nudMaxArea.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1170,7 +1170,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblStep.Location" type="System.Drawing.Point, System.Drawing">
-    <value>283, 46</value>
+    <value>265, 46</value>
   </data>
   <data name="m_lblStep.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 23</value>
@@ -1203,7 +1203,7 @@
     <value>66, 49</value>
   </data>
   <data name="m_nudBaseYear.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 20</value>
+    <value>127, 20</value>
   </data>
   <data name="m_nudBaseYear.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1266,7 +1266,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblIterations.Location" type="System.Drawing.Point, System.Drawing">
-    <value>283, 69</value>
+    <value>265, 69</value>
   </data>
   <data name="m_lblIterations.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 24</value>
@@ -1302,10 +1302,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblDiscRate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>614, 0</value>
+    <value>578, 0</value>
   </data>
   <data name="m_lblDiscRate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 23</value>
+    <value>154, 23</value>
   </data>
   <data name="m_lblDiscRate.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -1332,10 +1332,10 @@
     <value>Fill</value>
   </data>
   <data name="m_nudDiscRate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>727, 3</value>
+    <value>738, 3</value>
   </data>
   <data name="m_nudDiscRate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 20</value>
+    <value>131, 20</value>
   </data>
   <data name="m_nudDiscRate.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -1356,10 +1356,10 @@
     <value>Fill</value>
   </data>
   <data name="m_nudGenDiscRate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>727, 26</value>
+    <value>738, 26</value>
   </data>
   <data name="m_nudGenDiscRate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 20</value>
+    <value>131, 20</value>
   </data>
   <data name="m_nudGenDiscRate.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -1386,10 +1386,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblGenDiscRate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>614, 23</value>
+    <value>578, 23</value>
   </data>
   <data name="m_lblGenDiscRate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 23</value>
+    <value>154, 23</value>
   </data>
   <data name="m_lblGenDiscRate.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -1412,17 +1412,50 @@
   <data name="&gt;&gt;m_lblGenDiscRate.ZOrder" xml:space="preserve">
     <value>19</value>
   </data>
+  <data name="m_cbCloseRegions.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbCloseRegions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_cbCloseRegions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>578, 49</value>
+  </data>
+  <data name="m_cbCloseRegions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 17</value>
+  </data>
+  <data name="m_cbCloseRegions.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="m_cbCloseRegions.Text" xml:space="preserve">
+    <value>&amp;Proportionally close regions</value>
+  </data>
+  <data name="&gt;&gt;m_cbCloseRegions.Name" xml:space="preserve">
+    <value>m_cbCloseRegions</value>
+  </data>
+  <data name="&gt;&gt;m_cbCloseRegions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbCloseRegions.Parent" xml:space="preserve">
+    <value>m_tlbParameters</value>
+  </data>
+  <data name="&gt;&gt;m_cbCloseRegions.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
   <data name="m_cbAutoSave.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_cbAutoSave.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="m_cbAutoSave.Location" type="System.Drawing.Point, System.Drawing">
-    <value>614, 49</value>
+    <value>578, 72</value>
   </data>
   <data name="m_cbAutoSave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 17</value>
+    <value>154, 18</value>
   </data>
   <data name="m_cbAutoSave.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>21</value>
   </data>
   <data name="m_cbAutoSave.Text" xml:space="preserve">
     <value>&amp;Auto-save output</value>
@@ -1437,7 +1470,7 @@
     <value>m_tlbParameters</value>
   </data>
   <data name="&gt;&gt;m_cbAutoSave.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>21</value>
   </data>
   <data name="m_tlbParameters.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -1467,7 +1500,7 @@
     <value>0</value>
   </data>
   <data name="m_tlbParameters.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblStartYear" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEndYear" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_nudStartYear" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_nudEndYear" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMinArea" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMaxArea" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_nudMinArea" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_nudMaxArea" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_lblStep" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_nudStep" Row="2" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_nudBaseYear" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblBaseYear" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbMPA" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbMPA" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblIterations" Row="3" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_nudIterations" Row="3" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_lblDiscRate" Row="0" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="m_nudDiscRate" Row="0" RowSpan="1" Column="7" ColumnSpan="1" /&gt;&lt;Control Name="m_nudGenDiscRate" Row="1" RowSpan="1" Column="7" ColumnSpan="1" /&gt;&lt;Control Name="m_lblGenDiscRate" Row="1" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="m_cbAutoSave" Row="2" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,25.00063,Percent,12.50031,AutoSize,0,Percent,25.00063,Percent,12.50031,AutoSize,0,Percent,24.99813" /&gt;&lt;Rows Styles="Absolute,23,Absolute,23,Absolute,23,Absolute,23" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblStartYear" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEndYear" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_nudStartYear" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_nudEndYear" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMinArea" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMaxArea" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_nudMinArea" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_nudMaxArea" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_lblStep" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_nudStep" Row="2" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_nudBaseYear" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblBaseYear" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbMPA" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbMPA" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblIterations" Row="3" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_nudIterations" Row="3" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_lblDiscRate" Row="0" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="m_nudDiscRate" Row="0" RowSpan="1" Column="7" ColumnSpan="1" /&gt;&lt;Control Name="m_nudGenDiscRate" Row="1" RowSpan="1" Column="7" ColumnSpan="1" /&gt;&lt;Control Name="m_lblGenDiscRate" Row="1" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="m_cbCloseRegions" Row="2" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="m_cbAutoSave" Row="3" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,25.00063,Percent,12.50031,AutoSize,0,Percent,25.00063,Percent,12.50031,AutoSize,0,Percent,24.99813" /&gt;&lt;Rows Styles="Absolute,23,Absolute,23,Absolute,23,Absolute,23" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tlpObjectives.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>

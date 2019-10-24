@@ -22,6 +22,7 @@
 Option Strict On
 
 Imports System.Xml
+Imports System.Text
 
 #End Region ' Imports
 
@@ -51,6 +52,25 @@ Namespace Utilities
             xnRoot = doc.CreateElement(strRootElement)
             doc.AppendChild(xnRoot)
             Return doc
+        End Function
+
+        Public Shared Function ToSafeName(name As String) As String
+
+            Dim sb As New StringBuilder()
+            For i As Integer = 0 To name.Length - 1
+                Dim c As Char = name(i)
+                Dim bUseChar As Boolean = If(i = 0, Char.IsLetter(c), Char.IsLetterOrDigit(c))
+                If (bUseChar) Then
+                    sb.Append(c)
+                End If
+            Next i
+            name = sb.ToString()
+
+            If (String.IsNullOrWhiteSpace(name)) Then
+                Return "unnamed"
+            End If
+            Return name
+
         End Function
 
     End Class

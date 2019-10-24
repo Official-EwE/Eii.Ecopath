@@ -483,8 +483,8 @@ Namespace Core
 
             Try
                 If Me.Open() Then
-                    Me.WriteStartElement(nodename)
-                    Me.WriteElementString(key, value)
+                    Me.WriteStartElement(cXMLUtils.ToSafeName(nodename))
+                    Me.WriteElementString(cXMLUtils.ToSafeName(key), value)
                     Me.WriteEndElement() 'Log_Message
                     Me.WriteEndDocument()
                     Me.Close()

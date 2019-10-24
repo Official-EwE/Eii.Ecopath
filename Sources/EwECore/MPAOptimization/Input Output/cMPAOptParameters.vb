@@ -85,6 +85,11 @@ Public Class cMPAOptParameters
             val.Stored = False
             m_values.Add(val.varName, val)
 
+            'MPAOptCloseRegionsProportionally
+            val = New cValue(New Boolean, eVarNameFlags.MPAOptCloseRegionsProportionally, eStatusFlags.Null, eValueTypes.Bool)
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
             Me.AllowValidation = True
 
         Catch ex As Exception
@@ -188,8 +193,7 @@ Public Class cMPAOptParameters
 
     End Property
 
-
-    Public Property bUseCellWeight() As Boolean
+    Public Property UseCellWeight() As Boolean
         Get
             Return CBool(GetVariable(eVarNameFlags.MPAUseCellWeight))
         End Get
@@ -199,7 +203,17 @@ Public Class cMPAOptParameters
                 SetVariable(eVarNameFlags.MPAUseCellWeight, newValue)
             End If
         End Set
+    End Property
 
+    Public Property CloseRegionsProportionally() As Boolean
+        Get
+            Return CBool(GetVariable(eVarNameFlags.MPAOptCloseRegionsProportionally))
+        End Get
+        Set(ByVal newValue As Boolean)
+            If Not m_bReadOnly Then
+                SetVariable(eVarNameFlags.MPAOptCloseRegionsProportionally, newValue)
+            End If
+        End Set
     End Property
 
     Public Property StartYear() As Integer

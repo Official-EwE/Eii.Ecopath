@@ -95,6 +95,7 @@ Namespace Ecospace
             Me.m_nudDiscRate = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_nudGenDiscRate = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_lblGenDiscRate = New System.Windows.Forms.Label()
+            Me.m_cbCloseRegions = New System.Windows.Forms.CheckBox()
             Me.m_cbAutoSave = New System.Windows.Forms.CheckBox()
             Me.m_tcConfiguration = New System.Windows.Forms.TabControl()
             Me.m_tabParameters = New System.Windows.Forms.TabPage()
@@ -466,7 +467,8 @@ Namespace Ecospace
             Me.m_tlbParameters.Controls.Add(Me.m_nudDiscRate, 7, 0)
             Me.m_tlbParameters.Controls.Add(Me.m_nudGenDiscRate, 7, 1)
             Me.m_tlbParameters.Controls.Add(Me.m_lblGenDiscRate, 6, 1)
-            Me.m_tlbParameters.Controls.Add(Me.m_cbAutoSave, 6, 2)
+            Me.m_tlbParameters.Controls.Add(Me.m_cbCloseRegions, 6, 2)
+            Me.m_tlbParameters.Controls.Add(Me.m_cbAutoSave, 6, 3)
             Me.m_tlbParameters.Name = "m_tlbParameters"
             '
             'm_lblMinArea
@@ -533,6 +535,12 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.m_lblGenDiscRate, "m_lblGenDiscRate")
             Me.m_lblGenDiscRate.Name = "m_lblGenDiscRate"
+            '
+            'm_cbCloseRegions
+            '
+            resources.ApplyResources(Me.m_cbCloseRegions, "m_cbCloseRegions")
+            Me.m_cbCloseRegions.Name = "m_cbCloseRegions"
+            Me.m_cbCloseRegions.UseVisualStyleBackColor = True
             '
             'm_cbAutoSave
             '
@@ -906,5 +914,6 @@ Namespace Ecospace
         Private WithEvents m_tlpSponsors As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_pbLenfest As System.Windows.Forms.PictureBox
         Private WithEvents m_pbDuke As System.Windows.Forms.PictureBox
+        Private WithEvents m_cbCloseRegions As CheckBox
     End Class
 End Namespace

@@ -1097,14 +1097,14 @@ Namespace Core
 
         ''' <summary>To document</summary>
         MPAOptBoundaryWeight
-        ''' <summary>To document</summary>
+        ''' <summary>Type of MPA optimization search to conduct.</summary>
         MPAOptSearchType
 
         ''' <summary>To document</summary>
         MPAOptStepSize
-        ''' <summary>To document</summary>
+        ''' <summary>The number of MPA optimization iterations.</summary>
         MPAOptIterations
-        ''' <summary>To document</summary>
+        ''' <summary>The number of MPA optimization iterations.</summary>
         MPAOptMaxArea
         ''' <summary>To document</summary>
         MPAOptMinArea
@@ -1112,6 +1112,8 @@ Namespace Core
         iMPAOptToUse
         ''' <summary>To document</summary>
         MPAUseCellWeight
+        ''' <summary>Close equal proportions of regions in the MPA optimization random search.</summary>
+        MPAOptCloseRegionsProportionally
 
         ''' <summary>To document</summary>
         MPAOptStartYear
