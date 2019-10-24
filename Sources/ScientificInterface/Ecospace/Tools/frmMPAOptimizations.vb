@@ -103,11 +103,11 @@ Namespace Ecospace
         Private m_lLayers As New List(Of cDisplayLayer)
         ''' <summary>All layers that reflect search progress.</summary>
         ''' <remarks>The data for these layers orginates from the core.</remarks>
-        Private m_alayerFeedback() As cDisplayLayerRaster = Nothing
+        Private m_feedbacklayers() As cDisplayLayerRaster = Nothing
         Private m_layerSeed As cDisplayLayerRaster = Nothing
         Private m_alayerMPA() As cDisplayLayerRaster = Nothing
         ''' <summary>Data structure to update with feedback data.</summary>
-        Private m_aiFeedback As Integer(,) = Nothing
+        Private m_bestcellsmapdata As Integer(,) = Nothing
 
         ' == Parameter IO ==
 
@@ -444,11 +444,11 @@ Namespace Ecospace
             Select Case Me.SearchType
 
                 Case eMPAOptimizationModels.EcoSeed
-                    Me.SetLayer(Me.m_aiFeedback, Me.m_basemap.LayerMPA(SelectedMPA()), Me.SelectedMPA())
+                    Me.SetLayer(Me.m_bestcellsmapdata, Me.m_basemap.LayerMPA(SelectedMPA()), Me.SelectedMPA())
 
                 Case eMPAOptimizationModels.RandomSearch
                     ' Get cell map at 100% best cells
-                    aiMap = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile(), _
+                    aiMap = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile(),
                                                          Me.SelectedClosedPercentage(), iNumResults)
                     ' Convert to MPA
                     Me.ConvertToMPA(aiMap, Me.SelectedClosedPercentage, Me.SelectedMPA())
@@ -483,8 +483,8 @@ Namespace Ecospace
                 ' Get area closed
                 iAreaClosed = CInt(Me.m_cmbAreaClosed.Items(iLevel))
                 ' Wrap this in a core map layer to handle projections
-                ldataTmp = New cEcospaceLayerInteger(Me.UIContext.Core, _
-                                                     Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults), _
+                ldataTmp = New cEcospaceLayerInteger(Me.UIContext.Core,
+                                                     Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults),
                                                      cStringUtils.Localize(My.Resources.ECOSPACE_LAYER_MPABESTCOUNT, iAreaClosed))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
                 layerTmp = New cDisplayLayerRaster(Me.UIContext, ldataTmp, Nothing, Nothing)
@@ -674,11 +674,6 @@ Namespace Ecospace
                 .Title.Text = "" ' Config with form mode
                 .Title.Text = "" ' Config with form mode
 
-                ' JS 19nov08: let graph figure out the ticks
-                '' Only show major ticks
-                'Me.m_graphResults.GraphPane.XAxis.Scale.MajorStep = 5
-                'Me.m_graphResults.GraphPane.XAxis.Scale.MinorStep = 1
-
                 .AddCurve(SharedResources.HEADER_NET_ECONOMIC_VALUE, Me.m_aptsResults(1), zgcr.NextColor, ZedGraph.SymbolType.None)
                 .AddCurve(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_aptsResults(2), zgcr.NextColor, ZedGraph.SymbolType.None)
                 .AddCurve(SharedResources.HEADER_MANDATED_REBUILDING, Me.m_aptsResults(3), zgcr.NextColor, ZedGraph.SymbolType.None)
@@ -748,11 +743,11 @@ Namespace Ecospace
                 Me.InitMapFeedback()
 
                 ' Update visible state of existing layers
-                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPASeed), _
+                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPASeed),
                     SearchType = eMPAOptimizationModels.EcoSeed, SearchType = eMPAOptimizationModels.EcoSeed)
-                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPARandom), _
+                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerMPARandom),
                     SearchType = eMPAOptimizationModels.RandomSearch, SearchType = eMPAOptimizationModels.RandomSearch)
-                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerImportance), _
+                Me.ShowLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerImportance),
                      SearchType = eMPAOptimizationModels.RandomSearch, SearchType = eMPAOptimizationModels.RandomSearch)
 
                 ' Update graph labels
@@ -802,6 +797,14 @@ Namespace Ecospace
                     cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_INITIALIZING, -1)
                     ' Switch to 'Results' page
                     Me.m_tcResults.SelectedIndex = 0
+                    ' Clear best cells
+                    For iRow As Integer = 0 To Me.m_basemap.InRow
+                        For iCol As Integer = 0 To Me.m_basemap.InCol
+                            Me.m_bestcellsmapdata(iRow, iCol) = 0
+                        Next iCol
+                    Next iRow
+                    'Trigger a redraw
+                    Me.m_feedbacklayers(0).Update(cDisplayLayer.eChangeFlags.Map)
 
                 Case eFormModeTypes.Searching
                     ' Set stop delegate
@@ -929,26 +932,27 @@ Namespace Ecospace
                         ' Populate run state layer with current row/col results
                         For iRow As Integer = 0 To Me.m_basemap.InRow
                             For iCol As Integer = 0 To Me.m_basemap.InCol
-                                Me.m_aiFeedback(iRow, iCol) = cLayerFactoryInternal.cECOSEED_LAYER_NOVALUE
+                                Me.m_bestcellsmapdata(iRow, iCol) = cLayerFactoryInternal.cECOSEED_LAYER_NOVALUE
                             Next iCol
                         Next iRow
 
                         If output.CurRow > 0 And output.CurCol > 0 Then
-                            Me.m_aiFeedback(output.CurRow, output.CurCol) = cLayerFactoryInternal.cECOSEED_LAYER_CURRENTVALUE
+                            Me.m_bestcellsmapdata(output.CurRow, output.CurCol) = cLayerFactoryInternal.cECOSEED_LAYER_CURRENTVALUE
                         End If
                         If output.BestRow > 0 And output.BestCol > 0 Then
-                            Me.m_aiFeedback(output.BestRow, output.BestCol) = cLayerFactoryInternal.cECOSEED_LAYER_BESTVALUE
+                            Me.m_bestcellsmapdata(output.BestRow, output.BestCol) = cLayerFactoryInternal.cECOSEED_LAYER_BESTVALUE
                         End If
 
-                        ' Make the map redraw itself
-                        Me.m_ucZoom.Map.Refresh()
+                        ' Trigger layer update
+                        Me.m_feedbacklayers(0).Update(cDisplayLayer.eChangeFlags.Map)
+
                     Catch ex As Exception
 
                     End Try
 
-                    Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue, _
-                                                output.MandatedValue, output.EcologicalValue, _
-                                                output.BiomassDiversityValue, output.AreaBoundaryValue, _
+                    Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue,
+                                                output.MandatedValue, output.EcologicalValue,
+                                                output.BiomassDiversityValue, output.AreaBoundaryValue,
                                                 output.TotalValue, output.PercentageClosed)
 
                 Case eMPAOptimizationModels.RandomSearch
@@ -956,9 +960,9 @@ Namespace Ecospace
                     ' MPA layout has changed
                     Me.m_ucZoom.Map.Refresh()
 
-                    Me.LogProgress(output.EconomicValue, output.SocialValue, _
-                                   output.MandatedValue, output.EcologicalValue, _
-                                   output.BiomassDiversityValue, output.AreaBoundaryValue, _
+                    Me.LogProgress(output.EconomicValue, output.SocialValue,
+                                   output.MandatedValue, output.EcologicalValue,
+                                   output.BiomassDiversityValue, output.AreaBoundaryValue,
                                    output.TotalValue, output.PercentageClosed)
 
             End Select
@@ -984,12 +988,14 @@ Namespace Ecospace
                     Case eMPAOptimizationModels.EcoSeed
                         ' A new MPA cell has been selected out of the seed cells
                         ' Redraw MPA map
-                        Me.m_ucZoom.Map.Invalidate()
+                        Me.m_feedbacklayers(0).Update(cDisplayLayer.eChangeFlags.Map)
+                        'Me.m_ucZoom.Map.Invalidate()
+
                         ' Show this in the graph
-                        Me.LogProgress(output.EconomicValue, output.SocialValue, _
-                                            output.MandatedValue, output.EcologicalValue, _
-                                            output.BiomassDiversityValue, output.AreaBoundaryValue, _
-                                            output.TotalValue, output.PercentageClosed)
+                        Me.LogProgress(output.EconomicValue, output.SocialValue,
+                                       output.MandatedValue, output.EcologicalValue,
+                                       output.BiomassDiversityValue, output.AreaBoundaryValue,
+                                       output.TotalValue, output.PercentageClosed)
 
                     Case eMPAOptimizationModels.RandomSearch
                         ' Does not apply to Random search
@@ -1020,19 +1026,18 @@ Namespace Ecospace
                         ' Populate run state layer with current row/col results
                         For iRow As Integer = 0 To Me.m_basemap.InRow
                             For iCol As Integer = 0 To Me.m_basemap.InCol
-                                Me.m_aiFeedback(iRow, iCol) = cLayerFactoryInternal.cECOSEED_LAYER_NOVALUE
+                                Me.m_bestcellsmapdata(iRow, iCol) = cLayerFactoryInternal.cECOSEED_LAYER_NOVALUE
                             Next iCol
                         Next iRow
 
                         If output.CurRow > 0 And output.CurCol > 0 Then
-                            Me.m_aiFeedback(output.CurRow, output.CurCol) = cLayerFactoryInternal.cECOSEED_LAYER_CURRENTVALUE
+                            Me.m_bestcellsmapdata(output.CurRow, output.CurCol) = cLayerFactoryInternal.cECOSEED_LAYER_CURRENTVALUE
                         End If
                         If output.BestRow > 0 And output.BestCol > 0 Then
-                            Me.m_aiFeedback(output.BestRow, output.BestCol) = cLayerFactoryInternal.cECOSEED_LAYER_BESTVALUE
+                            Me.m_bestcellsmapdata(output.BestRow, output.BestCol) = cLayerFactoryInternal.cECOSEED_LAYER_BESTVALUE
                         End If
 
-                        ' Make the map redraw itself
-                        Me.m_ucZoom.Map.Invalidate()
+                        Me.m_feedbacklayers(0).Update(cDisplayLayer.eChangeFlags.Map)
 
                     Case eMPAOptimizationModels.RandomSearch
                         ' NOP
@@ -1100,7 +1105,7 @@ Namespace Ecospace
             Try
 
                 ' Redim data
-                ReDim Me.m_aiFeedback(Me.m_basemap.InRow, Me.m_basemap.InCol)
+                ReDim Me.m_bestcellsmapdata(Me.m_basemap.InRow, Me.m_basemap.InCol)
 
                 Select Case Me.SearchType
 
@@ -1114,7 +1119,7 @@ Namespace Ecospace
                         ' AND THAT THE BEST CELL SHOWS UP ON TOP OF THE CURRENT CELL
 
                         ' Create best cell layer
-                        datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_aiFeedback, My.Resources.ECOSPACE_LAYER_SEEDBEST, Nothing, eVarNameFlags.LayerMPASeedBest)
+                        datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_bestcellsmapdata, My.Resources.ECOSPACE_LAYER_SEEDBEST, Nothing, eVarNameFlags.LayerMPASeedBest)
                         alayers = factory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPASeedBest, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
@@ -1124,7 +1129,7 @@ Namespace Ecospace
                         lRunStateLayers.AddRange(alayers)
 
                         ' Create current cell layer(s)
-                        datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_aiFeedback, My.Resources.ECOSPACE_LAYER_SEEDCURRENT, Nothing, eVarNameFlags.LayerMPASeedCurrent)
+                        datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_bestcellsmapdata, My.Resources.ECOSPACE_LAYER_SEEDCURRENT, Nothing, eVarNameFlags.LayerMPASeedCurrent)
                         alayers = factory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPASeedCurrent, datalayerTemp)
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
@@ -1138,7 +1143,7 @@ Namespace Ecospace
 
                         ' Create random output layer
                         strGroup = factory.GetLayerGroup(eVarNameFlags.LayerMPARandom)
-                        datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_aiFeedback, My.Resources.ECOSPACE_LAYER_RANDOMBEST, Nothing, eVarNameFlags.LayerMPARandom)
+                        datalayerTemp = New cEcospaceLayerInteger(Me.UIContext.Core, Me.m_bestcellsmapdata, My.Resources.ECOSPACE_LAYER_RANDOMBEST, Nothing, eVarNameFlags.LayerMPARandom)
 
                         ' Create current cell layer(s)
                         alayers = factory.GetLayers(Me.UIContext, eVarNameFlags.LayerMPARandom, datalayerTemp)
@@ -1151,7 +1156,7 @@ Namespace Ecospace
 
                 End Select
 
-                Me.m_alayerFeedback = lRunStateLayers.ToArray()
+                Me.m_feedbacklayers = lRunStateLayers.ToArray()
 
             Catch ex As Exception
 
@@ -1162,13 +1167,13 @@ Namespace Ecospace
         End Sub
 
         Private Sub ClearMapFeedback()
-            If Me.m_alayerFeedback IsNot Nothing Then
-                For Each l As cDisplayLayer In Me.m_alayerFeedback
+            If Me.m_feedbacklayers IsNot Nothing Then
+                For Each l As cDisplayLayer In Me.m_feedbacklayers
                     Me.RemoveLayer(l)
                 Next
-                Me.m_alayerFeedback = Nothing
+                Me.m_feedbacklayers = Nothing
             End If
-            Me.m_aiFeedback = Nothing
+            Me.m_bestcellsmapdata = Nothing
         End Sub
 
         Private Sub UpdateBestCountMap()
@@ -1180,21 +1185,21 @@ Namespace Ecospace
                 Case eMPAOptimizationModels.RandomSearch
 
                     Dim iNumResults As Integer = 0
-                    Dim aiCells(,) As Integer = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile, _
-                                                                             Me.SelectedClosedPercentage, _
+                    Dim cells(,) As Integer = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile,
+                                                                             Me.SelectedClosedPercentage,
                                                                              iNumResults)
 
                     For iRow As Integer = 1 To Me.m_basemap.InRow
                         For iCol As Integer = 1 To Me.m_basemap.InCol
-                            Me.m_aiFeedback(iRow, iCol) = aiCells(iRow, iCol)
+                            Me.m_bestcellsmapdata(iRow, iCol) = cells(iRow, iCol)
                         Next
                     Next
 
                     ' In Random MPA, layer(0) is the only feedback layer
                     ' Invalidate to recalc min, max
-                    Me.m_alayerFeedback(0).IsModified = True
+                    Me.m_feedbacklayers(0).IsModified = True
                     ' Trigger redraw
-                    Me.m_alayerFeedback(0).Update(cDisplayLayer.eChangeFlags.Map)
+                    Me.m_feedbacklayers(0).Update(cDisplayLayer.eChangeFlags.Map)
 
             End Select
 
@@ -1204,9 +1209,9 @@ Namespace Ecospace
 
 #Region " Progress "
 
-        Private Sub LogProgress(ByVal sEconomicValue As Single, ByVal sSocialValue As Single, _
-                                     ByVal sMandatedValue As Single, ByVal sEcologicalValue As Single, _
-                                     ByVal sBiomassDiversityValue As Single, ByVal sBoundaryWeightValue As Single, _
+        Private Sub LogProgress(ByVal sEconomicValue As Single, ByVal sSocialValue As Single,
+                                     ByVal sMandatedValue As Single, ByVal sEcologicalValue As Single,
+                                     ByVal sBiomassDiversityValue As Single, ByVal sBoundaryWeightValue As Single,
                                      ByVal sTotalValue As Single, ByVal sAreaPercentageClosed As Single)
 
             ' Show this in the graph
@@ -1230,9 +1235,9 @@ Namespace Ecospace
 
             Me.m_zghProgress.RescaleAndRedraw()
 
-            Me.m_gridProgress.LogResult(sEconomicValue, sSocialValue, _
-                                        sMandatedValue, sEcologicalValue, _
-                                        sBiomassDiversityValue, sBoundaryWeightValue, _
+            Me.m_gridProgress.LogResult(sEconomicValue, sSocialValue,
+                                        sMandatedValue, sEcologicalValue,
+                                        sBiomassDiversityValue, sBoundaryWeightValue,
                                         sTotalValue, sAreaPercentageClosed)
 
             If (Me.m_cmbAreaClosed.FindStringExact(strPerc) = -1) Then
@@ -1256,7 +1261,7 @@ Namespace Ecospace
             ''' <param name="y"></param>
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
-            Public Function Compare(ByVal x As EwECore.cObjectiveResult, _
+            Public Function Compare(ByVal x As EwECore.cObjectiveResult,
                                     ByVal y As EwECore.cObjectiveResult) As Integer _
                                     Implements IComparer(Of EwECore.cObjectiveResult).Compare
                 ' DESCENDING ORDER! < 1, = 0, > -1 (instead of customary ascending order < -1, = 0, > 1)
@@ -1317,10 +1322,10 @@ Namespace Ecospace
             Dim lResults As List(Of cObjectiveResult) = Nothing
             Dim res As cObjectiveResult = Nothing
             Dim cell As cMPACell = Nothing
-            Dim aiCellMPA(Me.m_basemap.InRow, Me.m_basemap.InCol) As Integer
+            Dim mpaMap(Me.m_basemap.InRow, Me.m_basemap.InCol) As Integer
 
             ' Update map
-            ReDim aiCellMPA(Me.m_basemap.InRow, Me.m_basemap.InCol)
+            ReDim mpaMap(Me.m_basemap.InRow, Me.m_basemap.InCol)
 
             Select Case Me.SearchType
 
@@ -1339,11 +1344,11 @@ Namespace Ecospace
                 res = lResults(iIteration)
                 For iCell As Integer = 0 To res.Cells.Count - 1
                     cell = res.Cells(iCell)
-                    aiCellMPA(cell.Row, cell.Col) = cell.iMPA
+                    mpaMap(cell.Row, cell.Col) = cell.iMPA
                 Next iCell
             End If
 
-            Me.SetLayer(aiCellMPA, Me.m_basemap.LayerMPA(Me.SelectedMPA()), Me.SelectedMPA())
+            Me.SetLayer(mpaMap, Me.m_basemap.LayerMPA(Me.SelectedMPA()), Me.SelectedMPA())
 
             ' Update indicators
             Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue, _
