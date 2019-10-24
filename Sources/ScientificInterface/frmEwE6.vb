@@ -649,6 +649,7 @@ Public Class frmEwE6
         Me.m_cmdEditRegions.AddControl(Me.m_tsmiEcospaceDefineRegions)
 
         Me.m_cmdDefineImportanceMaps = New cEditImportanceLayersCommand(cmdh)
+        Me.m_cmdDefineImportanceMaps.AddControl(Me.m_tsmiEcospaceDefineImportanceLayers)
 
         Me.m_cmdDefineInputLayers = New cEditDriverLayersCommand(cmdh)
         Me.m_cmdDefineInputLayers.AddControl(Me.m_tsmiEcospaceInputMaps)

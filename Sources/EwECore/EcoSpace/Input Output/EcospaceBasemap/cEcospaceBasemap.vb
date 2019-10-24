@@ -145,6 +145,11 @@ Public Class cEcospaceBasemap
             val.Stored = False
             m_values.Add(val.varName, val)
 
+            ' LayerImportance
+            val = New cValue(0, eVarNameFlags.LayerImportance, eStatusFlags.Null, eValueTypes.Sng)
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
             ' MPASeed
             val = New cValue(0, eVarNameFlags.LayerMPASeed, eStatusFlags.Null, eValueTypes.Int)
             val.Stored = False

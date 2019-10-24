@@ -197,6 +197,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerMPA)
             Me.AddData(eVarNameFlags.LayerPort)
             Me.AddData(eVarNameFlags.LayerSail, False)
+            Me.AddData(eVarNameFlags.LayerImportance)
 
             '  -- Reference layer
             Dim l As New cStyleguideImageLayer(Me.UIContext)
