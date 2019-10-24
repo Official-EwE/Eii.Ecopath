@@ -40,6 +40,14 @@ Namespace Ecopath
 
 #Region " Constructor "
 
+        ''' <summary>
+        ''' Parameterless constructor added for the benefit of LSA Creator. Do not use.
+        ''' </summary>
+        <Obsolete("Do not use parameterless constructor")>
+        Public Sub New()
+            Me.InitializeComponent()
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Create a new instance of this class.
@@ -47,8 +55,8 @@ Namespace Ecopath
         ''' <param name="uic">The <see cref="cUIContext">UI context</see> to connect to.</param>
         ''' <param name="group">A group to select, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                              Optional ByVal group As cEcoPathGroupInput = Nothing)
+        Public Sub New(ByVal uic As cUIContext,
+                       Optional ByVal group As cEcoPathGroupInput = Nothing)
 
             Me.InitializeComponent()
 

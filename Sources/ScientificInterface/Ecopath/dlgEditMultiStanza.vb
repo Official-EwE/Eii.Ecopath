@@ -50,7 +50,15 @@ Namespace Ecopath
 
 #Region " Constructors "
 
-        Public Sub New(ByVal uic As cUIContext, _
+        ''' <summary>
+        ''' Parameterless constructor added for the benefit of LSA Creator. Do not use.
+        ''' </summary>
+        <Obsolete("Do not use parameterless constructor")>
+        Public Sub New()
+            Me.InitializeComponent()
+        End Sub
+
+        Public Sub New(ByVal uic As cUIContext,
                        Optional ByVal group As cEcoPathGroupInput = Nothing)
 
             Me.InitializeComponent()

@@ -49,10 +49,17 @@ Namespace My
             Me.SaveMySettingsOnExit = true
             Me.ShutDownStyle = Global.Microsoft.VisualBasic.ApplicationServices.ShutdownMode.AfterMainFormCloses
         End Sub
-        
-        <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
+
         Protected Overrides Sub OnCreateMainForm()
             Me.MainForm = Global.ScientificInterface.frmEwE6
         End Sub
+
+        Protected Overrides Sub OnRun()
+#If 0 And DEBUG Then
+            Dim cr As New Other.cTestFormCreation()
+#End If
+            MyBase.OnRun()
+        End Sub
+
     End Class
 End Namespace

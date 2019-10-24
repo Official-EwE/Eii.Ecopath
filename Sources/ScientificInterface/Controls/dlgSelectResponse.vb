@@ -59,6 +59,14 @@ Public Class dlgSelectResponse
 #Region " Construction "
 
     ''' <summary>
+    ''' Parameterless constructor added for the benefit of LSA Creator. Do not use.
+    ''' </summary>
+    <Obsolete("Do not use parameterless constructor")>
+    Public Sub New()
+        Me.InitializeComponent()
+    End Sub
+
+    ''' <summary>
     ''' Constructor.
     ''' </summary>
     ''' <param name="uic">UI context to use.</param>
@@ -114,6 +122,8 @@ Public Class dlgSelectResponse
     End Sub
 
     Protected Overrides Sub OnClosing(e As System.ComponentModel.CancelEventArgs)
+
+        If (Me.UIContext Is Nothing) Then Return
 
         Dim p As New cSettingsParser()
         p("filter") = Me.m_tstbFilter.Text

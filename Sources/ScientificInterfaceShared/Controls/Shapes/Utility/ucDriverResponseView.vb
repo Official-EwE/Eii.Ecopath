@@ -68,9 +68,10 @@ Public Class ucDriverResponseView
     End Sub
 
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-        Try
-            If disposing AndAlso components IsNot Nothing Then
 
+        Try
+
+            If (Me.UIContext IsNot Nothing) Then
                 Me.m_zgh.Detach()
                 Me.m_zgh = Nothing
 
@@ -79,13 +80,16 @@ Public Class ucDriverResponseView
                 Me.m_fpMin.Release()
                 Me.m_fpMax.Release()
                 Me.m_fpMean.Release()
-
-                components.Dispose()
-
+                Me.UIContext = Nothing
             End If
-        Finally
-            MyBase.Dispose(disposing)
+
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Catch e As Exception
+            'NOP
         End Try
+        MyBase.Dispose(disposing)
     End Sub
 
 #End Region ' Construction / destruction
