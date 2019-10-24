@@ -853,6 +853,7 @@ Public Class cTimeSeriesDataStructures
                             End If
 
                         Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing, eTimeSeriesType.CatchesRel  'Catches, -6 is forced
+
                             If Math.Abs(DatVal(iDatPt, iDType)) > 0 Then Iobs = Iobs + 1 '....Added by SM for Catch Fitting.
                             If DatType(iDType) = eTimeSeriesType.CatchesForcing Then
                                 PoolForceCatch(DatPool(iDType), iDatPt) = DatVal(iDatPt, iDType)

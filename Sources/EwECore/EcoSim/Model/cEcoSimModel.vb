@@ -2165,7 +2165,7 @@ Namespace Ecosim
 
                         m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Consumption, igrp, ipred, iTime) = m_Data.Consumpt(igrp, ipred)
                         m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Pred, igrp, ipred, iTime) = m_Data.Consumpt(igrp, ipred) / BB(igrp)
-                        m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Prey, igrp, ipred, iTime) = m_Data.Consumpt(ipred, igrp) / (BB(igrp) * (m_Data.Eatenby(igrp) / BB(igrp)))
+                        m_Data.PredPreyResultsOverTime(cEcosimDatastructures.eEcosimPreyPredResults.Prey, igrp, ipred, iTime) = m_Data.Consumpt(ipred, igrp) / (BB(igrp) * ((m_Data.Eatenby(igrp) + 1.0E-20F) / BB(igrp))) 'm_Data.Eatenby(igrp) + 1.0E-20F
                     Next ipred
 
                     SumEf = 0
@@ -2462,6 +2462,7 @@ Namespace Ecosim
                                          m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight Or
                                          m_RefData.DatType(iDType) = eTimeSeriesType.Catches Or
                                          m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing Or
+                                         m_RefData.DatType(iDType) = eTimeSeriesType.CatchesRel Or
                                          m_RefData.DatType(iDType) = eTimeSeriesType.Discards Or
                                          m_RefData.DatType(iDType) = eTimeSeriesType.Landings) Then
 
@@ -2718,6 +2719,7 @@ Namespace Ecosim
                 'this requires first estimates of vulnerable biomasses Vbiom by foraging arena
                 ReDim Vbiom(m_Data.Narena), Vdenom(m_Data.Narena)
                 For ii = 1 To m_Data.inlinks
+
                     i = m_Data.ilink(ii) : j = m_Data.jlink(ii) : ia = m_Data.ArenaLink(ii)
                     aeff(ii) = m_Data.Alink(ii) * m_Data.Ftime(j) * m_Data.RelaSwitch(ii)
                     Veff(ia) = m_Data.VulArena(ia) * m_Data.Ftime(i)
@@ -2787,7 +2789,6 @@ Namespace Ecosim
                 For ii = 1 To m_Data.inlinks
                     i = m_Data.ilink(ii) : j = m_Data.jlink(ii) : ia = m_Data.ArenaLink(ii)
                     If m_Data.TrophicOff Then Bprey = m_Data.StartBiomass(i) Else Bprey = Biomass(i)
-
                     Select Case m_Data.FlowType(i, j) 'prey always first
                         Case 1 'donor controlled flow
                             eat = aeff(ii) * Bprey
@@ -3644,6 +3645,7 @@ Namespace Ecosim
                         m_RefData.DatType(iDType) = eTimeSeriesType.CatchesForcing Or
                         m_RefData.DatType(iDType) = eTimeSeriesType.AverageWeight Or
                         m_RefData.DatType(iDType) = eTimeSeriesType.Discards Or
+                         m_RefData.DatType(iDType) = eTimeSeriesType.CatchesRel Or
                         m_RefData.DatType(iDType) = eTimeSeriesType.Landings) Then
 
                         m_RefData.Iobs = m_RefData.Iobs + 1
