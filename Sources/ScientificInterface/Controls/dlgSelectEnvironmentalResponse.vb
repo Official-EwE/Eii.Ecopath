@@ -73,6 +73,14 @@ Public Class dlgSelectEnvironmentalResponse
 #Region " Construction "
 
     ''' <summary>
+    ''' Parameterless constructor added for the benefit of LSA Creator. Do not use.
+    ''' </summary>
+    <Obsolete("Do not use parameterless constructor")>
+    Public Sub New()
+        Me.InitializeComponent()
+    End Sub
+
+    ''' <summary>
     ''' Constructor.
     ''' </summary>
     ''' <param name="uic">UI context to use.</param>
@@ -125,11 +133,11 @@ Public Class dlgSelectEnvironmentalResponse
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-        Me.Visible = False
         MyBase.OnLoad(e)
 
         If (Me.UIContext Is Nothing) Then Return
 
+        Me.Visible = False
         Me.m_tslbFilter.Image = SharedResources.FilterHS
 
         ' Get the available shapes that can be applied

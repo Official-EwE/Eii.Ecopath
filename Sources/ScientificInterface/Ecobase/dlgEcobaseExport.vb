@@ -71,6 +71,14 @@ Public Class dlgEcobaseExport
 
 #Region " Construction "
 
+    ''' <summary>
+    ''' Parameterless constructor added for the benefit of LSA Creator. Do not use.
+    ''' </summary>
+    <Obsolete("Do not use parameterless constructor")>
+    Public Sub New()
+        Me.InitializeComponent()
+    End Sub
+
     Public Sub New(uic As cUIContext)
         MyBase.New()
         Me.UIContext = uic
@@ -83,6 +91,8 @@ Public Class dlgEcobaseExport
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
+
+        If (Me.UIContext Is Nothing) Then Return
 
         Dim core As cCore = Me.Core
         Dim model As cEwEModel = core.EwEModel

@@ -69,6 +69,14 @@ Public Class dlgEcobaseImport
 
 #Region " Construction "
 
+    ''' <summary>
+    ''' Parameterless constructor added for the benefit of LSA Creator. Do not use.
+    ''' </summary>
+    <Obsolete("Do not use parameterless constructor")>
+    Public Sub New()
+        Me.New(Nothing)
+    End Sub
+
     Public Sub New(uic As cUIContext)
         Me.InitializeComponent()
         Me.UIContext = uic

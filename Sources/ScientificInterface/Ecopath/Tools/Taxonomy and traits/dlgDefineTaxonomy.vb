@@ -127,6 +127,16 @@ Public Class dlgDefineTaxonomy
 
     ''' -------------------------------------------------------------------
     ''' <summary>
+    ''' Parameterless constructor added for the benefit of LSA Creator. Do not use.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    <Obsolete("Do not use parameterless constructor")>
+    Public Sub New()
+        Me.InitializeComponent()
+    End Sub
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
     ''' Create a new instance of this class.
     ''' </summary>
     ''' <param name="uic">The <see cref="cUIContext">UI context</see> to connect to.</param>
