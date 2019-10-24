@@ -716,7 +716,7 @@ Namespace Ecospace
                     Me.m_mode = value
                     ' Enter new mode
                     Me.EnterMode()
-                    ' Reflect changes
+                    ' Reflect changes 
                     Me.UpdateControls()
                 End If
             End Set
@@ -1621,7 +1621,9 @@ Namespace Ecospace
             ' Added sanity check to prevent premature control handling
             If (Object.ReferenceEquals(Me.m_manager, Nothing)) Then Return
 
-            Dim bIsPreparing As Boolean = (Me.RunMode = eFormModeTypes.Prepare)
+            Console.WriteLine("SpatOpt updataing to status " & Me.RunMode)
+
+            Dim bIsInputMode As Boolean = (Me.RunMode = eFormModeTypes.Prepare) Or (Me.RunMode = eFormModeTypes.Results)
             Dim bIsRunning As Boolean = (Me.RunMode = eFormModeTypes.Searching Or Me.RunMode = eFormModeTypes.Initializing Or Me.RunMode = eFormModeTypes.Stopping)
             Dim bIsResults As Boolean = (Me.RunMode = eFormModeTypes.Results)
             Dim bIsEcoseed As Boolean = (Me.SearchType = eMPAOptimizationModels.EcoSeed)
@@ -1630,22 +1632,22 @@ Namespace Ecospace
             Dim factory As New cLayerFactoryInternal()
 
             ' Update input controls
-            Me.m_rbEcoseed.Enabled = (bIsPreparing)
-            Me.m_rbRandom.Enabled = (bIsPreparing)
-            Me.m_fpStartYear.Enabled = bIsPreparing
-            Me.m_fpEndYear.Enabled = bIsPreparing
-            Me.m_fpBaseYear.Enabled = bIsPreparing
-            Me.m_fpMinArea.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_fpMaxArea.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_fpStepSize.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_fpDiscRate.Enabled = bIsPreparing
-            Me.m_fpGenDiscRate.Enabled = bIsPreparing
-            Me.m_fpIterations.Enabled = (bIsPreparing And bIsRandom)
-            Me.m_fpMPA.Enabled = bIsPreparing
+            Me.m_rbEcoseed.Enabled = (bIsInputMode)
+            Me.m_rbRandom.Enabled = (bIsInputMode)
+            Me.m_fpStartYear.Enabled = bIsInputMode
+            Me.m_fpEndYear.Enabled = bIsInputMode
+            Me.m_fpBaseYear.Enabled = bIsInputMode
+            Me.m_fpMinArea.Enabled = (bIsInputMode And bIsRandom)
+            Me.m_fpMaxArea.Enabled = (bIsInputMode And bIsRandom)
+            Me.m_fpStepSize.Enabled = (bIsInputMode And bIsRandom)
+            Me.m_fpDiscRate.Enabled = bIsInputMode
+            Me.m_fpGenDiscRate.Enabled = bIsInputMode
+            Me.m_fpIterations.Enabled = (bIsInputMode And bIsRandom)
+            Me.m_fpMPA.Enabled = bIsInputMode
 
-            Me.m_gridObjectives.Enabled = (bIsPreparing)
-            Me.m_gridFleet.Enabled = (bIsPreparing)
-            Me.m_gridGroup.Enabled = (bIsPreparing)
+            Me.m_gridObjectives.Enabled = (bIsInputMode)
+            Me.m_gridFleet.Enabled = (bIsInputMode)
+            Me.m_gridGroup.Enabled = (bIsInputMode)
 
             ' Results
             Me.m_graphResults.Enabled = bIsResults
@@ -1654,15 +1656,15 @@ Namespace Ecospace
             Me.m_btnResetMPAs.Enabled = bIsResults
 
             ' Update run control buttons
-            Me.m_btnRun.Enabled = (bIsPreparing Or bIsResults) And Not bIsRunning
+            Me.m_btnRun.Enabled = (bIsInputMode Or bIsResults) And Not bIsRunning
             Me.m_btnStop.Enabled = bIsRunning
             Me.m_btnConvertToMpa.Enabled = bIsResults
             Me.m_btnSave.Enabled = (bIsResults And bIsRandom)
 
             ' Toggle toolbar controls
-            Me.m_tsbMPA.Enabled = bIsPreparing And bMPALayerSelected
-            Me.m_tsbSeed.Enabled = bIsPreparing And bMPALayerSelected And bIsEcoseed
-            Me.m_tsbEditLayers.Enabled = bIsPreparing And bIsRandom
+            Me.m_tsbMPA.Enabled = bIsInputMode And bMPALayerSelected
+            Me.m_tsbSeed.Enabled = bIsInputMode And bMPALayerSelected And bIsEcoseed
+            Me.m_tsbEditLayers.Enabled = bIsInputMode And bIsRandom
 
             ' Layers enabled state
             Me.EnableLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerDepth), Not bIsRunning)
@@ -1673,7 +1675,7 @@ Namespace Ecospace
             Me.EnableLayerGroup(factory.GetLayerGroup(eVarNameFlags.LayerImportance), Not bIsRunning)
 
             ' Update map
-            Me.m_ucZoom.Map.Editable = bIsPreparing
+            Me.m_ucZoom.Map.Editable = bIsInputMode
 
             Me.m_cbAutoSave.Checked = Me.Core.Autosave(eAutosaveTypes.MPAOpt)
 
