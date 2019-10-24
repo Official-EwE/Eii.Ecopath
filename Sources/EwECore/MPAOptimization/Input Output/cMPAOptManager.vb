@@ -478,17 +478,11 @@ Public Class cMPAOptManager
     ''' <summary>
     ''' Output object for the current Ecoseed interation 
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property CurrentRowColResults() As cMPAOptOutput
-
         Get
             Return m_curRowCol
         End Get
-
     End Property
-
 
     Public ReadOnly Property MPAOptimizationParamters() As cMPAOptParameters
         Get
@@ -496,26 +490,8 @@ Public Class cMPAOptManager
         End Get
     End Property
 
-    '''' <summary>
-    '''' Best search result up to the current search iteration
-    '''' </summary>
-    '''' <value></value>
-    '''' <returns></returns>
-    '''' <remarks></remarks>
-    'Public ReadOnly Property BestResult() As cObjectiveResult
-    '    Get
-    '        Return Me.m_MPASearch.BestResult
-    '    End Get
-    'End Property
-
-
     Public ReadOnly Property Results() As List(Of cObjectiveResult)
         Get
-            ' VC 13Nov08: Only sort for MPA, not for Ecoseed. 
-            ' JS 13Nov08: The GUI will take care of sorting
-
-            ''make sure the results are sorted
-            'Me.m_MPASearch.Results.Sort()
             Return Me.m_MPASearch.Results
         End Get
     End Property
@@ -608,7 +584,7 @@ Public Class cMPAOptManager
             Me.m_parameters.MinArea = coreData.MinArea
             Me.m_parameters.nIterations = coreData.nIterations
             Me.m_parameters.iMPAToUse = coreData.iMPAtoUse
-            Me.m_parameters.bUseCellWeight = coreData.bUseCellWeight
+            Me.m_parameters.UseCellWeight = coreData.bUseCellWeight
 
             Me.m_parameters.StartYear = coreData.EcoSpaceStartYear
             Me.m_parameters.EndYear = coreData.EcoSpaceEndYear
@@ -651,7 +627,7 @@ Public Class cMPAOptManager
             coreData.MinArea = Me.m_parameters.MinArea
             coreData.nIterations = Me.m_parameters.nIterations
             coreData.iMPAtoUse = Me.m_parameters.iMPAToUse
-            coreData.bUseCellWeight = Me.m_parameters.bUseCellWeight
+            coreData.bUseCellWeight = Me.m_parameters.UseCellWeight
 
             coreData.EcoSpaceStartYear = Me.m_parameters.StartYear
             coreData.EcoSpaceEndYear = Me.m_parameters.EndYear

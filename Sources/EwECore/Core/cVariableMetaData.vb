@@ -626,9 +626,10 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.MPAOptMaxArea) = New cVariableMetaData(0, 100, ge, le)
         Me.Metadata(eVarNameFlags.MPAOptMinArea) = New cVariableMetaData(0, 100, ge, le)
         Me.Metadata(eVarNameFlags.iMPAOptToUse) = New cVariableMetaData(0, Integer.MaxValue, ge, lt)
-        Me.Metadata(eVarNameFlags.MPAUseCellWeight) = New cVariableMetaData()
         Me.Metadata(eVarNameFlags.MPAOptStartYear) = New cVariableMetaData(0, 2000, ge, le)
         Me.Metadata(eVarNameFlags.MPAOptEndYear) = New cVariableMetaData(0, 2000, ge, le)
+        Me.Metadata(eVarNameFlags.MPAOptCloseRegionsProportionally) = New cVariableMetaData()
+        Me.Metadata(eVarNameFlags.MPAUseCellWeight) = New cVariableMetaData()
 
         ' -- MSE --
         ' group in
