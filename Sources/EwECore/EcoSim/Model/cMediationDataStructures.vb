@@ -304,6 +304,7 @@ Public Class cMediationDataStructures
         'If iMedShapeIndex = 1 Then
         '    Debug.Print(Xvalue & ", " & Me.Medpoints(ip, iMedShapeIndex))
         'End If
+        'Debug.Assert(Me.Medpoints(ip, iMedShapeIndex) <> 0)
         Return Me.Medpoints(ip, iMedShapeIndex)
 
     End Function
