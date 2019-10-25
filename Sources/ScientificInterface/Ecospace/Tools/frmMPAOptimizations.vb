@@ -221,7 +221,7 @@ Namespace Ecospace
             Me.m_fpDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_nudDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
             Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_nudGenDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
             Me.m_fpMPA = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbMPA, MPAOpt, eVarNameFlags.iMPAOptToUse)
-            Me.m_fpRegions = New cPropertyFormatProvider(Me.UIContext, Me.m_cbCloseRegions, MPAOpt, eVarNameFlags.MPAOptCloseRegionsProportionally)
+            Me.m_fpRegions = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseRegions, MPAOpt, eVarNameFlags.MPAOptUseRegions)
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
 
@@ -501,7 +501,7 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnAutoSaveOutputChecked(sender As System.Object, e As System.EventArgs) _
-            Handles m_cbAutoSave.CheckedChanged
+            Handles m_cbAutoSave.CheckedChanged, m_cbUseRegions.CheckedChanged
             Try
                 Me.Core.Autosave(eAutosaveTypes.MPAOpt) = Me.m_cbAutoSave.Checked
             Catch ex As Exception
@@ -876,6 +876,7 @@ Namespace Ecospace
             Me.m_ecoseedLayer = Me.AddBaseLayers(eVarNameFlags.LayerMPASeed, True)(0)
             Me.AddBaseLayers(eVarNameFlags.LayerMPARandom, True)
             Me.AddBaseLayers(eVarNameFlags.LayerImportance, False)
+            Me.AddBaseLayers(eVarNameFlags.LayerRegion, True)
             Me.AddBaseLayers(eVarNameFlags.LayerHabitat, False)
             Me.AddBaseLayers(eVarNameFlags.LayerDepth, False)
 

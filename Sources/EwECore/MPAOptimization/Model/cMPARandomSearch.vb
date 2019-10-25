@@ -18,8 +18,6 @@
 '
 
 Option Strict On
-Imports System.Math
-Imports EwEUtils.Core
 Imports System.IO
 Imports EwEUtils.Utilities
 
@@ -31,7 +29,21 @@ Public Class cMPARandomSearch
     Private LayerSumInMPA() As Single
     Private MaxLayerSumByLayerAndPctMPA(,) As Single
 
+    ''' <summary>Dictionary of region # -> cell numbers for resampling</summary>
+    Private m_regionCells() As List(Of Integer)
+    ''' <summary>Number of cells in a region</summary>
+    Private m_regionSize() As Integer
+    ''' <summary>Number of cells set in a region</summary>
+    Private m_regionSet() As Integer
+
 #End Region
+
+#Region "Construction and Initialization"
+
+    Public Sub New()
+        MyBase.New()
+        Me.m_OutputFilename = "MPAOpt_random_Output.csv"
+    End Sub
 
 #Region "Public Properties and Methods"
 
@@ -39,23 +51,45 @@ Public Class cMPARandomSearch
         Get
             'Nothing to check here...
             'Really??? That's hard to believe
+
+            'JS: Hah! I'll give you something to chew on!
+            If (Me.m_data.bUseRegions) Then
+
+                ReDim Me.m_regionCells(Me.m_SpaceData.nRegions)
+                ReDim Me.m_regionSize(Me.m_SpaceData.nRegions)
+                ReDim Me.m_regionSet(Me.m_SpaceData.nRegions)
+                Dim nRows As Integer = Me.m_SpaceData.InRow
+                Dim nCols As Integer = Me.m_SpaceData.InCol
+
+                For i As Integer = 0 To Me.m_SpaceData.nRegions
+                    Me.m_regionCells(i) = New List(Of Integer)
+                Next
+                For irow As Integer = 1 To nRows
+                    For icol As Integer = 1 To nCols
+                        If Me.m_SpaceData.Depth(irow, icol) > 0 Then
+                            Dim reg As Integer = Me.m_SpaceData.Region(irow, icol)
+                            Dim iThisCell As Integer = (irow - 1) * nCols + icol
+                            Me.m_regionCells(reg).Add(iThisCell)
+                            Me.m_regionSize(reg) += 1
+                        End If
+                    Next
+                Next
+
+                'Some type of validation if regions are defined with a minimum # of cells each
+
+#If DEBUG Then
+                Console.WriteLine("cMPARandomSearch region assessment:")
+                For i As Integer = 1 To Me.m_SpaceData.nRegions
+                    Console.WriteLine(" Region {0:D3}: {1} cells", i, Me.m_regionSize(i))
+                Next
+#End If
+            End If
+
             Return True
         End Get
     End Property
 
-
 #End Region
-
-#Region "Construction and Initialization"
-
-
-    Public Sub New()
-        MyBase.new()
-
-        m_OutputFilename = "MPAOpt_random_Output.csv"
-
-    End Sub
-
     Private Sub initForRun()
 
         Try
@@ -130,7 +164,9 @@ Public Class cMPARandomSearch
         Try
             Debug.Assert(m_data IsNot Nothing, "Ecoseed: data not initialized")
             Debug.Assert(m_EcoSpace IsNot Nothing, "Ecoseed: Ecospace not initialized")
+#If DEBUG Then
             System.Console.WriteLine("-----------MPA Random Search --------------")
+#End If
 
             Me.initForRun()
 
@@ -171,7 +207,7 @@ Public Class cMPARandomSearch
             sortLayersByCellWeight(CellCount)
 
             'Step from Min area(%) (= integer) to Max area(%) (= integer) stepsize = Step (%) (=integer)
-            Dim iStep As Integer = CInt((-m_data.MinArea + m_data.MaxArea) / m_data.stepSize)
+            Dim iStep As Integer = CInt((m_data.MaxArea - m_data.MinArea) / m_data.stepSize)
             Dim nStep As Integer = 0
 
             Me.setRunState(cMPAOptManager.eRunStates.Searching)
@@ -243,6 +279,12 @@ Public Class cMPARandomSearch
                 Next
             Next
 
+            If (Me.m_data.bUseRegions) Then
+                For i As Integer = 1 To Me.m_SpaceData.nRegions - 1
+                    Me.m_regionSet(i) = 0
+                Next
+            End If
+
             'Now start selecting the ones to make MPAs
             Dim iThisCell As Integer
             Dim iC As Integer = 0
@@ -261,10 +303,42 @@ Public Class cMPARandomSearch
 
                 'now we know which cell to close
                 'but check that the cell hasn't been made into an mpa already
-                If Me.m_SpaceData.Depth(GetRow, GetCol) > 0 And m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) <= 0 Then
+                Dim bUseCell As Boolean = Me.m_SpaceData.Depth(GetRow, GetCol) > 0 And m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) <= 0
+
+                'JS 23Oct19: added use of regions
+                If (Me.m_data.bUseRegions) Then
+
+                    Dim iNumSaturated As Integer = 0
+                    Dim bCurrSaturated As Boolean = False
+                    Dim reg As Integer = Me.m_SpaceData.Region(GetRow, GetCol)
+
+                    'Check if the current, and all regions are allocated to the desired percentage
+                    For i As Integer = 1 To Me.m_SpaceData.nRegions
+                        Dim propclosed As Double = Me.m_regionSet(i) / Me.m_regionSize(i)
+                        If ((propclosed * 100) > Me.m_data.MaxArea) Then
+                            iNumSaturated += 1
+                            If (i = reg) Then bCurrSaturated = True
+                        End If
+                    Next
+
+                    If (iNumSaturated < Me.m_SpaceData.nRegions) Then
+                        'Limit the current region from being allocated until all are full
+                        bUseCell = bCurrSaturated
+                    End If
+
+                End If
+
+                    'use cell?
+                    If bUseCell Then
                     m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) = 1
                     'System.Console.WriteLine(GetRow.ToString & "  " & GetCol.ToString)
                     m_data.AddCell(GetRow, GetCol, curMPA)
+
+                    If (Me.m_data.bUseRegions) Then
+                        Dim reg As Integer = Me.m_SpaceData.Region(GetRow, GetCol)
+                        Me.m_regionSet(reg) += 1
+                    End If
+
                     iC += 1
                     GetOut = 0
                 Else
@@ -277,6 +351,16 @@ Public Class cMPARandomSearch
             Debug.Assert(False, Me.ToString & ".selectRandomCells() Error: " & ex.Message)
             Throw New ApplicationException(Me.ToString & ".selectRandomCells() Error:", ex)
         End Try
+
+        If (Me.m_data.bUseRegions) Then
+#If DEBUG Then
+            Console.WriteLine("cMPARandomSearch region random cell assessment:")
+            For i As Integer = 1 To Me.m_SpaceData.nRegions
+                Dim propclosed As Double = Me.m_regionSet(i) / Me.m_regionSize(i)
+                Console.WriteLine(" Region {0:D3}: {1} cells, {2} closed, {3}%", i, Me.m_regionSize(i), Me.m_regionSet(i), propclosed)
+            Next
+#End If
+        End If
 
     End Sub
 
@@ -314,7 +398,7 @@ Public Class cMPARandomSearch
 
             'If Me.m_data.bUseCellWeight Then
             '    ''Get the ecosystem structure weightings from the GUI (needs to be added)
-            '    ''for now hard code to 1
+            '    ''for now hard-coded to 1
             '    'Dim GroupWeight(m_SpaceData.NGroups) As Single
             '    'For ip As Integer = 1 To m_SpaceData.NGroups
             '    '    GroupWeight(ip) = 1

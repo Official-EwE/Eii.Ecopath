@@ -73,7 +73,7 @@ Public Class cMPAOptParameters
             m_values.Add(val.varName, val)
 
             'MPAbUseCellWeight
-            val = New cValue(New Boolean, eVarNameFlags.MPAUseCellWeight, eStatusFlags.Null, eValueTypes.Bool)
+            val = New cValue(New Boolean, eVarNameFlags.MPAUseCellWeight, eStatusFlags.OK, eValueTypes.Bool)
             val.Stored = False
             m_values.Add(val.varName, val)
 
@@ -85,8 +85,8 @@ Public Class cMPAOptParameters
             val.Stored = False
             m_values.Add(val.varName, val)
 
-            'MPAOptCloseRegionsProportionally
-            val = New cValue(New Boolean, eVarNameFlags.MPAOptCloseRegionsProportionally, eStatusFlags.Null, eValueTypes.Bool)
+            'MPAOptUseRegions
+            val = New cValue(New Boolean, eVarNameFlags.MPAOptUseRegions, eStatusFlags.OK, eValueTypes.Bool)
             val.Stored = False
             m_values.Add(val.varName, val)
 
@@ -205,13 +205,13 @@ Public Class cMPAOptParameters
         End Set
     End Property
 
-    Public Property CloseRegionsProportionally() As Boolean
+    Public Property UseRegions() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.MPAOptCloseRegionsProportionally))
+            Return CBool(GetVariable(eVarNameFlags.MPAOptUseRegions))
         End Get
         Set(ByVal newValue As Boolean)
             If Not m_bReadOnly Then
-                SetVariable(eVarNameFlags.MPAOptCloseRegionsProportionally, newValue)
+                SetVariable(eVarNameFlags.MPAOptUseRegions, newValue)
             End If
         End Set
     End Property

@@ -56,6 +56,7 @@ Public Class cMPAOptDataStructures
 
     Public iMPAtoUse As Integer
     Public bUseCellWeight As Boolean
+    Public bUseRegions As Boolean
 
     Public EcoSpaceStartYear As Integer = 3
     Public EcoSpaceEndYear As Integer
