@@ -325,8 +325,6 @@ Namespace Ecosim
 
                 RedimEcoSimVars()
 
-                SetInlinks()
-
                 'jb 12-Feb-2010 Reloading of forcing data overwrites user edits of effort
                 'We just need to make sure the forcing data arrays are dimensioned big enough to handle the run length
                 Me.m_RefData.nGroups = Me.nGroups
@@ -4312,9 +4310,13 @@ Namespace Ecosim
         Friend Sub CalcEatenOfBy()
             Dim i As Integer, j As Integer
 
+            'The Diet Matrix could have changed since the last call to this
+            'so count the links before populating them
+
             ReDim m_Data.Eatenby(nGroups)
             ReDim m_Data.Eatenof(nGroups)
 
+            'Compute Consumption and count the number of links
             m_Data.inlinks = 0
             For j = 1 To m_EPData.NumLiving      'all living groups; consumers
                 For i = 0 To nGroups  'prey
@@ -4322,13 +4324,30 @@ Namespace Ecosim
 
                     If m_Data.Consumption(i, j) > 0 And i > 0 Then
                         m_Data.inlinks = m_Data.inlinks + 1
-                        m_Data.ilink(m_Data.inlinks) = i
-                        m_Data.jlink(m_Data.inlinks) = j
                     End If
                     m_Data.Eatenof(i) = m_Data.Eatenof(i) + m_Data.Consumption(i, j)
                     m_Data.Eatenby(j) = m_Data.Eatenby(j) + m_Data.Consumption(i, j)
                 Next i
             Next j
+
+
+            'Now populate the i and j links
+            'With the number of links from above
+            m_Data.ilink = New Integer(m_Data.inlinks) {}
+            m_Data.jlink = New Integer(m_Data.inlinks) {}
+
+            m_Data.inlinks = 0
+            For j = 1 To m_EPData.NumLiving      'all living groups; consumers
+                For i = 1 To nGroups  'prey
+                    If m_Data.Consumption(i, j) > 0 Then
+                        m_Data.inlinks = m_Data.inlinks + 1
+                        m_Data.ilink(m_Data.inlinks) = i
+                        m_Data.jlink(m_Data.inlinks) = j
+                    End If
+                Next i
+            Next j
+
+
 
         End Sub
 
