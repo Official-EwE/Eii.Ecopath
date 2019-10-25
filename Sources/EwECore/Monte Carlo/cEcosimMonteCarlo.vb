@@ -750,6 +750,14 @@ Public Class cEcosimMonteCarlo
 
                         If RetainBiomass Then
                             Array.Copy(BestFit, Pmean, BestFit.Length)
+
+                            Array.Copy(BestFitDiscard, PMeanDiscard, BestFitDiscard.Length)
+                            Array.Copy(BestFitLanding, PMeanLanding, BestFitLanding.Length)
+
+                            If Me.IsEnabled(eMCParams.Diets) Then
+                                Array.Copy(BestFitDiets, PMeanDC, PMeanDC.Length)
+                            End If
+
                             'VC 2008 don't want it to stop just as it found a better fit so:
                             m_iTrial = Math.Min(m_iTrial, CInt(0.9 * Ntrials))
 
@@ -1327,6 +1335,7 @@ Public Class cEcosimMonteCarlo
 
             For iPrey As Integer = 1 To m_core.nGroups
                 m_epdata.DC(iPred, iPrey) = BestFitDiets(iPred, iPrey)
+                m_epdata.DCInput(iPred, iPrey) = BestFitDiets(iPred, iPrey)
             Next
 
             'vc sep 2008: adding vulnerability to MC
@@ -1513,7 +1522,9 @@ Public Class cEcosimMonteCarlo
                                        ByVal ParMin As Single, ByVal ParMax As Single) As Single
 
         ' Sanity checks
-        Debug.Assert((ParMin <= xbar) And (xbar <= ParMax))
+        'jb NOPE if the user has set CV to zero this will fail
+        'Find something better
+        'Debug.Assert((ParMin <= xbar) And (xbar <= ParMax))
 
         Dim X As Single
         Dim i As Integer
