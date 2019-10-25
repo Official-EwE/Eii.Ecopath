@@ -58,6 +58,7 @@ Public Class cMPARandomSearch
                 ReDim Me.m_regionCells(Me.m_SpaceData.nRegions)
                 ReDim Me.m_regionSize(Me.m_SpaceData.nRegions)
                 ReDim Me.m_regionSet(Me.m_SpaceData.nRegions)
+
                 Dim nRows As Integer = Me.m_SpaceData.InRow
                 Dim nCols As Integer = Me.m_SpaceData.InCol
 
@@ -309,19 +310,23 @@ Public Class cMPARandomSearch
                 If (Me.m_data.bUseRegions) Then
 
                     Dim iNumSaturated As Integer = 0
+                    Dim iNumAvailable As Integer = 0
                     Dim bCurrSaturated As Boolean = False
                     Dim reg As Integer = Me.m_SpaceData.Region(GetRow, GetCol)
 
                     'Check if the current, and all regions are allocated to the desired percentage
                     For i As Integer = 1 To Me.m_SpaceData.nRegions
-                        Dim propclosed As Double = Me.m_regionSet(i) / Me.m_regionSize(i)
-                        If ((propclosed * 100) > Me.m_data.MaxArea) Then
-                            iNumSaturated += 1
-                            If (i = reg) Then bCurrSaturated = True
+                        If (Me.m_regionSize(i) > 0) Then
+                            iNumAvailable += 1
+                            Dim propclosed As Double = Me.m_regionSet(i) / Me.m_regionSize(i)
+                            If ((propclosed * 100) > Me.m_data.MaxArea) Then
+                                iNumSaturated += 1
+                                If (i = reg) Then bCurrSaturated = True
+                            End If
                         End If
                     Next
 
-                    If (iNumSaturated < Me.m_SpaceData.nRegions) Then
+                    If (iNumSaturated < iNumAvailable) Then
                         'Limit the current region from being allocated until all are full
                         bUseCell = bCurrSaturated
                     End If
@@ -356,8 +361,10 @@ Public Class cMPARandomSearch
 #If DEBUG Then
             Console.WriteLine("cMPARandomSearch region random cell assessment:")
             For i As Integer = 1 To Me.m_SpaceData.nRegions
-                Dim propclosed As Double = Me.m_regionSet(i) / Me.m_regionSize(i)
-                Console.WriteLine(" Region {0:D3}: {1} cells, {2} closed, {3}%", i, Me.m_regionSize(i), Me.m_regionSet(i), propclosed)
+                If (Me.m_regionSize(i) > 0) Then
+                    Dim propclosed As Double = Me.m_regionSet(i) / Me.m_regionSize(i)
+                    Console.WriteLine(" Region {0:D3}: {1} cells, {2} closed, {3}%", i, Me.m_regionSize(i), Me.m_regionSet(i), propclosed)
+                End If
             Next
 #End If
         End If
