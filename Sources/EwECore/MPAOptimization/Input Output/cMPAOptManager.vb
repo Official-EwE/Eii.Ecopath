@@ -20,8 +20,8 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Drawing
 Imports EwECore.EcoSeed
-Imports System.Threading
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
 
@@ -585,6 +585,7 @@ Public Class cMPAOptManager
             Me.m_parameters.nIterations = coreData.nIterations
             Me.m_parameters.iMPAToUse = coreData.iMPAtoUse
             Me.m_parameters.UseCellWeight = coreData.bUseCellWeight
+            Me.m_parameters.UseRegions = coreData.bUseRegions
 
             Me.m_parameters.StartYear = coreData.EcoSpaceStartYear
             Me.m_parameters.EndYear = coreData.EcoSpaceEndYear
@@ -628,6 +629,7 @@ Public Class cMPAOptManager
             coreData.nIterations = Me.m_parameters.nIterations
             coreData.iMPAtoUse = Me.m_parameters.iMPAToUse
             coreData.bUseCellWeight = Me.m_parameters.UseCellWeight
+            coreData.bUseRegions = Me.m_parameters.UseRegions
 
             coreData.EcoSpaceStartYear = Me.m_parameters.StartYear
             coreData.EcoSpaceEndYear = Me.m_parameters.EndYear

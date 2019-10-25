@@ -1395,7 +1395,7 @@
     <value>18</value>
   </data>
   <data name="m_lblGenDiscRate.Text" xml:space="preserve">
-    <value>&amp;Gen. disc. rate:</value>
+    <value>&amp;Generic discount rate:</value>
   </data>
   <data name="m_lblGenDiscRate.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -1412,41 +1412,14 @@
   <data name="&gt;&gt;m_lblGenDiscRate.ZOrder" xml:space="preserve">
     <value>19</value>
   </data>
-  <data name="m_cbCloseRegions.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbCloseRegions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_cbCloseRegions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>578, 49</value>
-  </data>
-  <data name="m_cbCloseRegions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 17</value>
-  </data>
-  <data name="m_cbCloseRegions.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
-  </data>
-  <data name="m_cbCloseRegions.Text" xml:space="preserve">
-    <value>&amp;Proportionally close regions</value>
-  </data>
-  <data name="&gt;&gt;m_cbCloseRegions.Name" xml:space="preserve">
-    <value>m_cbCloseRegions</value>
-  </data>
-  <data name="&gt;&gt;m_cbCloseRegions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbCloseRegions.Parent" xml:space="preserve">
-    <value>m_tlbParameters</value>
-  </data>
-  <data name="&gt;&gt;m_cbCloseRegions.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
   <data name="m_cbAutoSave.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_cbAutoSave.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="m_cbAutoSave.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_cbAutoSave.Location" type="System.Drawing.Point, System.Drawing">
     <value>578, 72</value>
@@ -1470,6 +1443,39 @@
     <value>m_tlbParameters</value>
   </data>
   <data name="&gt;&gt;m_cbAutoSave.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="m_cbUseRegions.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbUseRegions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_cbUseRegions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_cbUseRegions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>578, 49</value>
+  </data>
+  <data name="m_cbUseRegions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>154, 17</value>
+  </data>
+  <data name="m_cbUseRegions.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="m_cbUseRegions.Text" xml:space="preserve">
+    <value>&amp;Proportionally close regions</value>
+  </data>
+  <data name="&gt;&gt;m_cbUseRegions.Name" xml:space="preserve">
+    <value>m_cbUseRegions</value>
+  </data>
+  <data name="&gt;&gt;m_cbUseRegions.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbUseRegions.Parent" xml:space="preserve">
+    <value>m_tlbParameters</value>
+  </data>
+  <data name="&gt;&gt;m_cbUseRegions.ZOrder" xml:space="preserve">
     <value>21</value>
   </data>
   <data name="m_tlbParameters.Location" type="System.Drawing.Point, System.Drawing">
@@ -1500,7 +1506,7 @@
     <value>0</value>
   </data>
   <data name="m_tlbParameters.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblStartYear" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEndYear" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_nudStartYear" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_nudEndYear" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMinArea" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMaxArea" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_nudMinArea" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_nudMaxArea" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_lblStep" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_nudStep" Row="2" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_nudBaseYear" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblBaseYear" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbMPA" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbMPA" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblIterations" Row="3" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_nudIterations" Row="3" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_lblDiscRate" Row="0" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="m_nudDiscRate" Row="0" RowSpan="1" Column="7" ColumnSpan="1" /&gt;&lt;Control Name="m_nudGenDiscRate" Row="1" RowSpan="1" Column="7" ColumnSpan="1" /&gt;&lt;Control Name="m_lblGenDiscRate" Row="1" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="m_cbCloseRegions" Row="2" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="m_cbAutoSave" Row="3" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,25.00063,Percent,12.50031,AutoSize,0,Percent,25.00063,Percent,12.50031,AutoSize,0,Percent,24.99813" /&gt;&lt;Rows Styles="Absolute,23,Absolute,23,Absolute,23,Absolute,23" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblStartYear" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lblEndYear" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_nudStartYear" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_nudEndYear" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMinArea" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_lblMaxArea" Row="1" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_nudMinArea" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_nudMaxArea" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_lblStep" Row="2" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_nudStep" Row="2" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_nudBaseYear" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblBaseYear" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_lbMPA" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_cmbMPA" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblIterations" Row="3" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_nudIterations" Row="3" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="m_lblDiscRate" Row="0" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="m_nudDiscRate" Row="0" RowSpan="1" Column="7" ColumnSpan="1" /&gt;&lt;Control Name="m_nudGenDiscRate" Row="1" RowSpan="1" Column="7" ColumnSpan="1" /&gt;&lt;Control Name="m_lblGenDiscRate" Row="1" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="m_cbAutoSave" Row="3" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="m_cbUseRegions" Row="2" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,25.00063,Percent,12.50031,AutoSize,0,Percent,25.00063,Percent,12.50031,AutoSize,0,Percent,24.99813" /&gt;&lt;Rows Styles="Absolute,23,Absolute,23,Absolute,23,Absolute,23" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="m_tlpObjectives.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>

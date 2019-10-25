@@ -1113,7 +1113,7 @@ Namespace Core
         ''' <summary>To document</summary>
         MPAUseCellWeight
         ''' <summary>Close equal proportions of regions in the MPA optimization random search.</summary>
-        MPAOptCloseRegionsProportionally
+        MPAOptUseRegions
 
         ''' <summary>To document</summary>
         MPAOptStartYear

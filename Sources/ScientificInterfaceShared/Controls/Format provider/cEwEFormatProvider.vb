@@ -1124,16 +1124,24 @@ Namespace Controls
 
                 If (cf And Properties.cProperty.eChangeFlags.CoreStatus) > 0 Then
 
-                    ' - Set colours
-                    ' *** Checkbox special: do not colour background on "OK" or "NotEditable" style
-                    style = style And Not (cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable)
-                    Me.m_cb.BackColor = SystemColors.Control
-                    ' Fetch, boy
-                    sg.GetStyleColors(style, Me.m_cb.ForeColor, Me.m_cb.BackColor)
+                    Dim clrBack As Color
+                    Dim clrFore As Color
+
+                    ' - Get colours
+                    sg.GetStyleColors(style, clrFore, clrBack)
+
                     ' - Set enabled state
                     Me.m_cb.Enabled = bEditable
 
-                    ' Highlight border
+                    If ((style And cStyleGuide.eStyleFlags.OK) = 0) Then
+                        Me.m_cb.BackColor = clrBack
+                        Me.m_cb.ForeColor = clrFore
+                    Else
+                        Me.m_cb.BackColor = Color.Transparent
+                        Me.m_cb.ForeColor = SystemColors.ControlText
+                    End If
+
+                    ' Extra: Highlight
                     If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
                         Me.m_cb.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
                     End If
