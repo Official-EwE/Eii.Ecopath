@@ -625,7 +625,7 @@ Public Class cVariableMetaData
         Me.Metadata(eVarNameFlags.MPAOptIterations) = New cVariableMetaData(0, Integer.MaxValue, ge, le)
         Me.Metadata(eVarNameFlags.MPAOptMaxArea) = New cVariableMetaData(0, 100, ge, le)
         Me.Metadata(eVarNameFlags.MPAOptMinArea) = New cVariableMetaData(0, 100, ge, le)
-        Me.Metadata(eVarNameFlags.iMPAOptToUse) = New cVariableMetaData(0, Integer.MaxValue, ge, lt)
+        Me.Metadata(eVarNameFlags.iMPAOptToUse) = New cVariableMetaData(0, Integer.MaxValue, ge, le)
         Me.Metadata(eVarNameFlags.MPAOptStartYear) = New cVariableMetaData(0, 2000, ge, le)
         Me.Metadata(eVarNameFlags.MPAOptEndYear) = New cVariableMetaData(0, 2000, ge, le)
         Me.Metadata(eVarNameFlags.MPAOptUseRegions) = New cVariableMetaData()
