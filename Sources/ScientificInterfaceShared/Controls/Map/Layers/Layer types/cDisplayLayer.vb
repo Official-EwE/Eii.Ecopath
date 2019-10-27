@@ -148,7 +148,7 @@ Namespace Controls.Map.Layers
         ''' to commit a layer data change to the core, and should be false if the 
         ''' layer is responding to a core layer change message.</param>
         ''' -----------------------------------------------------------------------
-        Public Overridable Sub Update(ByVal updateType As eChangeFlags, _
+        Public Overridable Sub Update(ByVal updateType As eChangeFlags,
                                       Optional ByVal bNotifyCore As Boolean = True)
 
             ' Prevent looped updates

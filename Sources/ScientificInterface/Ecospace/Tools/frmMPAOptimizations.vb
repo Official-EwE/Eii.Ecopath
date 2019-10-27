@@ -805,7 +805,6 @@ Namespace Ecospace
                             Me.m_mapFeedback(iRow, iCol) = 0
                         Next iCol
                     Next iRow
-                    'Trigger a redraw
                     Me.m_feedbackLayers(0).Update(cDisplayLayer.eChangeFlags.Map)
 
                 Case eFormModeTypes.Searching
@@ -913,6 +912,10 @@ Namespace Ecospace
 
         End Sub
 
+        Private Sub InvaldiateMap()
+            Me.m_ucZoom.Map.Invalidate()
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Helper method, called when a new seed cell has been selected.
@@ -991,8 +994,9 @@ Namespace Ecospace
                     Case eMPAOptimizationModels.EcoSeed
                         ' A new MPA cell has been selected out of the seed cells
                         ' Redraw MPA map
-                        Me.m_feedbackLayers(0).Update(cDisplayLayer.eChangeFlags.Map)
-                        'Me.m_ucZoom.Map.Invalidate()
+                        For Each l As cDisplayLayerRaster In Me.m_feedbackLayers
+                            l.IsModified = True
+                        Next
 
                         ' Show this in the graph
                         Me.LogProgress(output.EconomicValue, output.SocialValue,
@@ -1002,8 +1006,12 @@ Namespace Ecospace
 
                     Case eMPAOptimizationModels.RandomSearch
                         ' Does not apply to Random search
+                        For Each l As cDisplayLayerRaster In Me.m_mpaLayers
+                            l.IsModified = True
+                        Next
 
                 End Select
+                Me.InvaldiateMap()
 
             Catch ex As Exception
 
@@ -1202,7 +1210,10 @@ Namespace Ecospace
                     ' Invalidate to recalc min, max
                     Me.m_feedbackLayers(0).IsModified = True
                     ' Trigger redraw
-                    Me.m_feedbackLayers(0).Update(cDisplayLayer.eChangeFlags.Map)
+                    For Each l As cDisplayLayerRaster In Me.m_feedbackLayers
+                        l.IsModified = True
+                    Next
+                    Me.InvaldiateMap()
 
             End Select
 
@@ -1497,7 +1508,7 @@ Namespace Ecospace
         ''' <summary>
         ''' Convert 'iAreaPercentToClose' cells in the map to MPA 'iMPA'
         ''' </summary>
-        ''' <param name="aiMap">The best count map to convert.</param>
+        ''' <param name="hitcountmap">The best count map to convert.</param>
         ''' <param name="iAreaPercentToClose">Percent of water cells 
         ''' to close in addition to the current MPAs.</param>
         ''' <param name="iMPA">The MPA to assign new cells to.</param>
@@ -1508,7 +1519,7 @@ Namespace Ecospace
         ''' convertable cells left.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Private Function ConvertToMPA(ByVal aiMap As Integer(,),
+        Private Function ConvertToMPA(ByVal hitcountmap As Integer(,),
                                       ByVal iAreaPercentToClose As Integer,
                                       ByVal iMPA As Integer) As Boolean
 
@@ -1522,8 +1533,6 @@ Namespace Ecospace
             Dim lKeys As New List(Of Integer)
             ' Helper var to reference lists in the dictionary
             Dim lPoints As List(Of Point) = Nothing
-            ' Number of cells that can be converted
-            Dim iNumConvertableCells As Integer = 0
             ' Number of water cells
             Dim iNumWaterCells As Integer = 0
             ' Number of cells to close
@@ -1535,6 +1544,9 @@ Namespace Ecospace
             ' Randomizer
             Dim rnd As New Random()
 
+            ' ToDo: execute this assignment code in the search itself
+            ' - when searching by region, make sure to also allocate by region!!
+
             ' Gather conversion info
             For iRow = 1 To Me.m_basemap.InRow
                 For iCol = 1 To Me.m_basemap.InCol
@@ -1543,33 +1555,22 @@ Namespace Ecospace
                     If (CSng(layerDepth.Cell(iRow, iCol)) > 0) Then
 
                         ' Clear existing target MPA cells
-                        If (CInt(layerMPA.Cell(iRow, iCol)) = iMPA) Then
-                            layerMPA.Cell(iRow, iCol) = 0
+                        layerMPA.Cell(iRow, iCol) = 0
+                        ' Get hit count value for this cell
+                        iIndex = hitcountmap(iRow, iCol)
+
+                        ' Add it to the dictionary
+                        If Not dtMapSorted.ContainsKey(iIndex) Then
+                            ' #Yes: create point list and add it to dictionary
+                            lPoints = New List(Of Point)
+                            dtMapSorted(iIndex) = lPoints
+                            lKeys.Add(iIndex)
+                        Else
+                            ' #No: get point list
+                            lPoints = dtMapSorted(iIndex)
                         End If
-
-                        ' Only consider cells that can be converted to MPA:
-                        ' when MPA=0 (not currently part of an mpa)
-                        If (CInt(layerMPA.Cell(iRow, iCol)) = 0) Then
-                            ' Get hit count value for this cell
-                            iIndex = aiMap(iRow, iCol)
-
-                            ' Add it to the dictionary
-                            If Not dtMapSorted.ContainsKey(iIndex) Then
-                                ' #Yes: create point list and add it to dictionary
-                                lPoints = New List(Of Point)
-                                dtMapSorted(iIndex) = lPoints
-                                lKeys.Add(iIndex)
-                            Else
-                                ' #No: get point list
-                                lPoints = dtMapSorted(iIndex)
-                            End If
-                            ' Add point as candidate cell
-                            lPoints.Add(New Point(iRow, iCol))
-
-                            ' Count candidate cell
-                            iNumConvertableCells += 1
-
-                        End If ' Is not assigned to MPA yet
+                        ' Add point as candidate cell
+                        lPoints.Add(New Point(iRow, iCol))
 
                         ' Count water cells
                         iNumWaterCells += 1
@@ -1583,8 +1584,6 @@ Namespace Ecospace
 
             ' Calculate #cells to close
             iNumCellsToClose = CInt(Math.Ceiling(iNumWaterCells * iAreaPercentToClose / 100))
-            ' Cap to the max amount of available #water cells
-            iNumCellsToClose = Math.Min(iNumCellsToClose, iNumConvertableCells)
 
             ' Sort keys in reverse order (highest hit count value first)
             lKeys.Sort()
@@ -1601,7 +1600,7 @@ Namespace Ecospace
                 ' VC, JS 14nov08: Instead of randomizing cells when hit counts are identical,
                 '                 cells could be selected based on total weighted score
                 iIndex = (rnd.Next(lPoints.Count * 13) Mod lPoints.Count)
-                layerMPA.Cell(lPoints(iIndex).X, lPoints(iIndex).Y) = iMPA
+                layerMPA.Cell(lPoints(iIndex).X, lPoints(iIndex).Y) = 1
                 lPoints.RemoveAt(iIndex)
 
                 ' One less to close
@@ -1614,6 +1613,9 @@ Namespace Ecospace
                 End If
 
             End While
+
+            layerMPA.Invalidate()
+            Me.Core.onChanged(layerMPA, eMessageType.DataModified)
 
             Return True
 
@@ -1628,8 +1630,6 @@ Namespace Ecospace
             ' The %^@#$^#@$ check boxes throw events even before the form OnLoad has been called. Nice.
             ' Added sanity check to prevent premature control handling
             If (Me.m_manager Is Nothing) Then Return
-
-            Console.WriteLine("SpatOpt updataing to status " & Me.RunMode)
 
             Dim bIsInputMode As Boolean = (Me.RunMode = eFormModeTypes.Prepare) Or (Me.RunMode = eFormModeTypes.Results)
             Dim bIsRunning As Boolean = (Me.RunMode = eFormModeTypes.Searching Or Me.RunMode = eFormModeTypes.Initializing Or Me.RunMode = eFormModeTypes.Stopping)
