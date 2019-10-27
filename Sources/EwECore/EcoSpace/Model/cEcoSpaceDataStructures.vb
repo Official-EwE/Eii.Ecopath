@@ -960,7 +960,6 @@ Public Class cEcospaceDataStructures
 
 #Region "Public Methods"
 
-
     Public Sub Clear()
         Me.m_ngroups = 0
         Me.nFleets = 0
@@ -2578,7 +2577,6 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
-
     ''' <summary>
     ''' Count the number of water cells and sets public property nWaterCells
     ''' </summary>
@@ -2646,7 +2644,14 @@ Public Class cEcospaceDataStructures
         End Get
     End Property
 
-
+    Public Function IsMPAActive(iMPA As Integer) As Boolean
+        If (iMPA < 1 Or iMPA > Me.MPAno) Then Return False
+        Dim bHasFleet As Boolean = False
+        Dim bHasMonth As Boolean = False
+        For imonth As Integer = 1 To 12 : bHasMonth = bHasMonth Or (Me.MPAmonth(imonth, iMPA) = False) : Next
+        For ifleet As Integer = 1 To Me.nFleets : bHasFleet = bHasFleet Or (Me.MPAfishery(ifleet, iMPA) = False) : Next
+        Return bHasFleet And bHasMonth
+    End Function
 
 #End Region
 

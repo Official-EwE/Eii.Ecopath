@@ -21,6 +21,12 @@ Option Strict On
 Imports System.IO
 Imports EwEUtils.Utilities
 
+' ToDo: significantly improve sampling performance:
+'   - Pre-build an array of water cells that can be sampled
+'   - Pre-build an array of water cells for each region (if region mode is enabled)
+'   - Build an array for each iteration with candidate cells
+'   - If region mode is on, filter the iteration-specific array with the closure state of regions
+'   - Sampling only from cells in this array to prevent trying unnecessary cells
 Public Class cMPARandomSearch
     Inherits cMPAOptBaseClass
 
@@ -29,7 +35,10 @@ Public Class cMPARandomSearch
     Private LayerSumInMPA() As Single
     Private MaxLayerSumByLayerAndPctMPA(,) As Single
 
-    ''' <summary>Dictionary of region # -> cell numbers for resampling</summary>
+    '-- For smart resampling --
+    ''' <summary>Water cell numbers for resampling</summary>
+    Private m_watercells As New List(Of Integer)
+    ''' <summary>Region # -> cell numbers for resampling</summary>
     Private m_regionCells() As List(Of Integer)
     ''' <summary>Number of cells in a region</summary>
     Private m_regionSize() As Integer
@@ -59,25 +68,44 @@ Public Class cMPARandomSearch
                 ReDim Me.m_regionSize(Me.m_SpaceData.nRegions)
                 ReDim Me.m_regionSet(Me.m_SpaceData.nRegions)
 
-                Dim nRows As Integer = Me.m_SpaceData.InRow
-                Dim nCols As Integer = Me.m_SpaceData.InCol
-
                 For i As Integer = 0 To Me.m_SpaceData.nRegions
                     Me.m_regionCells(i) = New List(Of Integer)
                 Next
-                For irow As Integer = 1 To nRows
-                    For icol As Integer = 1 To nCols
-                        If Me.m_SpaceData.Depth(irow, icol) > 0 Then
+
+            End If
+
+            Me.m_watercells.Clear()
+
+            Dim iR As Integer = m_SpaceData.InRow
+            Dim iC As Integer = m_SpaceData.InCol
+
+            Array.Clear(Me.m_SpaceData.MPA(m_data.iMPAtoUse), 0, Me.m_SpaceData.MPA(m_data.iMPAtoUse).Length)
+
+            'We need number of potential MPA cells, this is watercells 
+            '  - (cells which are either not part of an active MPA or which already are the same kind of MPA.)
+
+            Dim ActiveMPA(Me.m_SpaceData.MPAno) As Boolean
+            For i As Integer = 1 To Me.m_SpaceData.MPAno : ActiveMPA(i) = Me.m_SpaceData.IsMPAActive(i) : Next
+
+            'The logic below presumes that MPAs and water cells do not change during the search. Which should be ok.
+            For irow As Integer = 1 To iR
+                For icol As Integer = 1 To iC
+                    If Me.m_SpaceData.Depth(irow, icol) > 0 Then
+                        Dim iThisCell As Integer = Me.RowColToCell(irow, icol)
+                        Me.m_watercells.Add(iThisCell)
+                        If (Me.m_data.bUseRegions) Then
                             Dim reg As Integer = Me.m_SpaceData.Region(irow, icol)
-                            Dim iThisCell As Integer = (irow - 1) * nCols + icol
-                            Me.m_regionCells(reg).Add(iThisCell)
                             Me.m_regionSize(reg) += 1
+                            Me.m_regionCells(reg).Add(iThisCell)
                         End If
-                    Next
+                    End If
                 Next
+            Next
 
-                'Some type of validation if regions are defined with a minimum # of cells each
+            Me.CellCount = Me.m_watercells.Count
 
+            If (Me.m_data.bUseRegions) Then
+                ' ToDo: perform some type of validation if regions are defined with a minimum # of cells each
 #If DEBUG Then
                 Console.WriteLine("cMPARandomSearch region assessment:")
                 For i As Integer = 1 To Me.m_SpaceData.nRegions
@@ -91,6 +119,16 @@ Public Class cMPARandomSearch
     End Property
 
 #End Region
+
+    Private Function RowColToCell(r As Integer, c As Integer) As Integer
+        Return (r - 1) * Me.m_SpaceData.InCol + c
+    End Function
+
+    Private Sub CellToRowCol(i As Integer, ByRef r As Integer, ByRef c As Integer)
+        r = (i - 1) \ Me.m_SpaceData.InCol + 1
+        c = (i - 1) Mod Me.m_SpaceData.InCol + 1
+    End Sub
+
     Private Sub initForRun()
 
         Try
@@ -182,27 +220,7 @@ Public Class cMPARandomSearch
 
             CalculateCellWeightings()
 
-            Dim iR As Integer = m_SpaceData.InRow
-            Dim iC As Integer = m_SpaceData.InCol
-            'we don't want to clear all data cells, only the one with the currently selected MPA
-            'Array.Clear(Me.m_SpaceData.MPA, 0, Me.m_SpaceData.MPA.Length)
-            For i As Integer = 1 To iR
-                For j As Integer = 1 To iC
-                    Me.m_SpaceData.MPA(m_data.iMPAtoUse)(i, j) = 0
-                Next
-            Next
-
-            'We need number of potential MPA cells, this is watercells 
-            '  - (cells which are either not an MPA 
-            '    or which already are the same kind of MPA.)
-            Dim CellCount As Integer
-            For i As Integer = 1 To iR
-                For j As Integer = 1 To iC
-                    If Me.m_SpaceData.Depth(i, j) > 0 And (m_SpaceData.MPA(m_data.iMPAtoUse)(i, j) > 0 Or Me.IsMPA(i, j) = False) Then
-                        CellCount += 1
-                    End If
-                Next j
-            Next i
+            Me.CellCount = Me.m_watercells.Count
 
             'Get the layer weights by percentage MPA coverage
             sortLayersByCellWeight(CellCount)
@@ -216,7 +234,7 @@ Public Class cMPARandomSearch
             m_nIters = 0
 
             For iPropMPA As Integer = m_data.MinArea To m_data.MaxArea Step m_data.stepSize
-                'keep track of how may times we've stepped: 
+                'keep track of how many times we've stepped: 
                 'calculate how many cells that should be closed:
                 'this is calculated based on number of water cells - number of other mpsa cells, not total number of cells:
                 Dim NumberMPA As Integer = CInt(iPropMPA * CellCount / 100)
@@ -224,7 +242,7 @@ Public Class cMPARandomSearch
                 'Step through and do iterations:
                 For m_iIter As Integer = 1 To m_data.nIterations
                     'select the MPA cells that are to be evaluated in this run
-                    Me.selectRandomCells(NumberMPA, m_data.iMPAtoUse)
+                    Me.selectRandomCells(NumberMPA)
 
                     Me.fireOnIteration()
 
@@ -264,9 +282,12 @@ Public Class cMPARandomSearch
 
     End Sub
 
-    Private Sub selectRandomCells(ByVal NumberMPA As Integer, ByVal curMPA As Integer)
-        'VC changes
-        Dim generator As New Random()   '
+    Private m_generator As New Random()
+
+    Private Sub selectRandomCells(ByVal NumberMPA As Integer)
+
+        Dim cells As New List(Of Integer)
+        Dim used As New HashSet(Of Integer)
 
         Try
 
@@ -274,11 +295,7 @@ Public Class cMPARandomSearch
             m_data.ClearCells()
 
             ' Clear data cells with the currently selected MPA
-            For i As Integer = 1 To Me.m_SpaceData.InRow
-                For j As Integer = 1 To Me.m_SpaceData.InCol
-                    m_SpaceData.MPA(m_data.iMPAtoUse)(i, j) = 0
-                Next
-            Next
+            Array.Clear(Me.m_SpaceData.MPA(m_data.iMPAtoUse), 0, Me.m_SpaceData.MPA(m_data.iMPAtoUse).Length)
 
             If (Me.m_data.bUseRegions) Then
                 For i As Integer = 1 To Me.m_SpaceData.nRegions - 1
@@ -291,61 +308,68 @@ Public Class cMPARandomSearch
             Dim iC As Integer = 0
             Dim GetOut As Integer = 0
 
-            Dim Rand As New Random() '  Double = generator.NextDouble
-
             Do While iC < NumberMPA And GetOut < 100 * NumberMPA
-                Dim RanVal As Double = Rand.NextDouble
-                For i As Integer = 1 To CellCount
-                    If CumulativeCellWeight(i) >= RanVal Then iThisCell = i : Exit For
-                Next
 
-                Dim GetRow As Integer = (iThisCell - 1) \ Me.m_SpaceData.InCol + 1
-                Dim GetCol As Integer = (iThisCell - 1) Mod Me.m_SpaceData.InCol + 1
-
-                'now we know which cell to close
-                'but check that the cell hasn't been made into an mpa already
-                Dim bUseCell As Boolean = Me.m_SpaceData.Depth(GetRow, GetCol) > 0 And m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) <= 0
-
-                'JS 23Oct19: added use of regions
-                If (Me.m_data.bUseRegions) Then
-
-                    Dim iNumSaturated As Integer = 0
-                    Dim iNumAvailable As Integer = 0
-                    Dim bCurrSaturated As Boolean = False
-                    Dim reg As Integer = Me.m_SpaceData.Region(GetRow, GetCol)
-
-                    'Check if the current, and all regions are allocated to the desired percentage
-                    For i As Integer = 1 To Me.m_SpaceData.nRegions
-                        If (Me.m_regionSize(i) > 0) Then
-                            iNumAvailable += 1
-                            Dim propclosed As Double = Me.m_regionSet(i) / Me.m_regionSize(i)
-                            If ((propclosed * 100) > Me.m_data.MaxArea) Then
-                                iNumSaturated += 1
-                                If (i = reg) Then bCurrSaturated = True
+                'JS 26Oct19: determine which cells to use
+                If (GetOut = 0) Then
+                    cells.Clear()
+                    If Me.m_data.bUseRegions Then
+                        Dim iNumSaturated As Integer = 0
+                        Dim iNumAvailable As Integer = 0
+                        For reg As Integer = 1 To Me.m_SpaceData.nRegions
+                            If (Me.m_regionSize(reg) > 0) Then
+                                iNumAvailable += 1
+                                Dim propclosed As Double = Me.m_regionSet(reg) / Me.m_regionSize(reg)
+                                If ((propclosed * 100) > Me.m_data.MaxArea) Then
+                                    iNumSaturated += 1
+                                Else
+                                    cells.AddRange(Me.m_regionCells(reg))
+                                End If
                             End If
+                        Next
+
+                        If iNumSaturated = iNumAvailable Then
+                            cells.Clear()
+                            cells.AddRange(Me.m_watercells)
+                        Else
+                            cells.Sort()
                         End If
-                    Next
-
-                    If (iNumSaturated < iNumAvailable) Then
-                        'Limit the current region from being allocated until all are full
-                        bUseCell = bCurrSaturated
+                    Else
+                        cells.AddRange(Me.m_watercells)
                     End If
-
                 End If
 
-                    'use cell?
-                    If bUseCell Then
-                    m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) = 1
-                    'System.Console.WriteLine(GetRow.ToString & "  " & GetCol.ToString)
-                    m_data.AddCell(GetRow, GetCol, curMPA)
-
-                    If (Me.m_data.bUseRegions) Then
-                        Dim reg As Integer = Me.m_SpaceData.Region(GetRow, GetCol)
-                        Me.m_regionSet(reg) += 1
+                Dim RanVal As Double = Me.m_generator.NextDouble()
+                For j As Integer = 0 To cells.Count - 1
+                    Dim i As Integer = cells(j)
+                    If CumulativeCellWeight(i) >= RanVal And Not used.Contains(i) Then
+                        iThisCell = i
+                        Exit For
                     End If
+                Next
 
-                    iC += 1
-                    GetOut = 0
+                If (iThisCell > 0) Then
+                    Dim GetRow As Integer = (iThisCell - 1) \ Me.m_SpaceData.InCol + 1
+                    Dim GetCol As Integer = (iThisCell - 1) Mod Me.m_SpaceData.InCol + 1
+
+                    'now we know which cell to close
+                    'check that the cell hasn't been made into an mpa already
+                    Debug.Assert(Me.m_SpaceData.Depth(GetRow, GetCol) > 0)
+
+                    If (m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) <= 0) Then
+                        m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) = 1
+                        m_data.AddCell(GetRow, GetCol, m_data.iMPAtoUse)
+
+                        If (Me.m_data.bUseRegions) Then
+                            Dim reg As Integer = Me.m_SpaceData.Region(GetRow, GetCol)
+                            Me.m_regionSet(reg) += 1
+                        End If
+                        iC += 1
+                        used.Add(iThisCell)
+                        GetOut = 0
+                    Else
+                        GetOut += 1
+                    End If
                 Else
                     GetOut += 1
                 End If
@@ -373,16 +397,15 @@ Public Class cMPARandomSearch
 
 
     Protected Sub CalculateCellWeightings()
-        'VC added this sub
         Dim iC As Integer       'used to count the cells
 
         Try
 
             Dim inRow As Integer = m_SpaceData.InRow
             Dim inCol As Integer = m_SpaceData.InCol
-            CellCount = inRow * inCol
+            Dim NoCells As Integer = inRow * inCol
 
-            ReDim CumulativeCellWeight(CellCount)
+            ReDim CumulativeCellWeight(NoCells)
             Dim CellWeight(inRow, inCol) As Double
 
             'If on the GUI the "Group weighting" is checked then calculate cellweight, otherwise, set to 1
@@ -441,11 +464,11 @@ Public Class cMPARandomSearch
                 'This will make the average for each layer 1, but then a layer that only has values 
                 'in a few cells will count much less, than one with values in many cells
                 'If Count > 0 Then AverageLayer(iL) /= Count
-                'So insteat making the layers SUM to 1
+                'So instead making the layers SUM to 1
                 If LayerSum(iL) = 0 Then LayerSum(iL) = 1 'just to avoid division with 0, if a layer is empty
             Next iL
 
-            Dim minCellWeight As Double = 1000000000000000
+            Dim minCellWeight As Double = Double.MaxValue
             For iL As Integer = 1 To Me.m_SpaceData.nImportanceLayers
                 weight = Me.m_SpaceData.ImportanceLayerWeight(iL)
                 For i As Integer = 1 To inRow
@@ -480,14 +503,14 @@ Public Class cMPARandomSearch
 
             'Finally scalse the cellweights so that they sum to 1
             If Sum > 0 Then
-                For i As Integer = 1 To CellCount
+                For i As Integer = 1 To NoCells
                     CumulativeCellWeight(i) /= Sum
                 Next
             Else
                 'if there are no values in any of the importance layer
                 'set CumulativeCellWeight() to an even gradient so that the cell selection will not be weighted
-                Dim g As Single = CSng(1 / CellCount)
-                For i As Integer = 1 To CellCount
+                Dim g As Single = CSng(1 / NoCells)
+                For i As Integer = 1 To NoCells
                     CumulativeCellWeight(i) += g * i
                 Next
             End If
