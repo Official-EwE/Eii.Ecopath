@@ -19,6 +19,7 @@
 
 Option Strict On
 Imports System.IO
+Imports System.Drawing
 Imports EwEUtils.Utilities
 
 ' ToDo: significantly improve sampling performance:
@@ -284,7 +285,7 @@ Public Class cMPARandomSearch
 
     Private m_generator As New Random()
 
-    Private Sub selectRandomCells(ByVal NumberMPA As Integer)
+    Private Sub selectRandomCells(NumberMPA As Integer)
 
         Dim cells As New List(Of Integer)
         Dim used As New HashSet(Of Integer)
@@ -394,7 +395,6 @@ Public Class cMPARandomSearch
         End If
 
     End Sub
-
 
     Protected Sub CalculateCellWeightings()
         Dim iC As Integer       'used to count the cells
@@ -523,7 +523,7 @@ Public Class cMPARandomSearch
 
     End Sub
 
-    Protected Sub sortLayersByCellWeight(ByVal CellCount As Integer)
+    Protected Sub sortLayersByCellWeight(CellCount As Integer)
         Dim NoCells As Integer = m_SpaceData.InRow * m_SpaceData.InCol
         ReDim MaxLayerSumByLayerAndPctMPA(m_SpaceData.nImportanceLayers, 100)
 
@@ -566,6 +566,139 @@ Public Class cMPARandomSearch
         Next iL
     End Sub
 
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Convert 'iAreaPercentToClose' cells in the map to MPA 'iMPA'
+    ''' </summary>
+    ''' <param name="hitcountmap">The best count map to convert.</param>
+    ''' <param name="iAreaPercentToClose">Percent of water cells 
+    ''' to close in addition to the current MPAs.</param>
+    ''' <param name="iMPA">The MPA to assign new cells to.</param>
+    ''' <returns>True if successful.</returns>
+    ''' <remarks>
+    ''' Cells are selected from the best count map, aiMap, by descending
+    ''' value until either the requested percentage is met or there are no 
+    ''' convertable cells left.
+    ''' </remarks>
+    ''' -------------------------------------------------------------------
+    Private Function ConvertToMPA(hitcountmap As Integer(,),
+                                 iAreaPercentToClose As Integer,
+                                 iMPA As Integer) As Boolean
+
+        ' Dictionary with list of points, sorted by hit count
+        Dim dtMapSorted As New Dictionary(Of Integer, List(Of Integer))
+        ' List of hit count values, keys to the dictionary
+        Dim lKeys As New List(Of Integer)
+        ' Helper var to reference lists in the dictionary
+        Dim lPoints As List(Of Integer) = Nothing
+        ' Number of water cells
+        Dim iNumWaterCells As Integer = 0
+        ' Number of cells to close
+        Dim iNumCellsToClose As Integer = 0
+        ' Row, col iterators
+        Dim iRow, iCol As Integer
+        ' Always handy
+        Dim iIndex As Integer = 0
+
+        Dim cR As Integer = Me.m_SpaceData.InRow
+        Dim cC As Integer = Me.m_SpaceData.InCol
+
+        Dim iFrom As Integer = 1
+        Dim iTo As Integer = If(Me.m_data.bUseRegions, Me.m_SpaceData.nRegions, 1)
+
+        For iIter As Integer = iFrom To iTo
+
+            dtMapSorted.Clear()
+            lKeys.Clear()
+            iNumWaterCells = 0
+
+            ' Gather conversion info
+            For iRow = 1 To cR
+                For iCol = 1 To cC
+
+                    Dim bUseCell As Boolean = (Me.m_SpaceData.Depth(iRow, iCol) > 0)
+                    If (Me.m_data.bUseRegions) Then bUseCell = bUseCell And Me.m_SpaceData.Region(iRow, iCol) = iIter
+
+                    If (bUseCell) Then
+
+                        ' Clear existing target MPA cells
+                        Me.m_SpaceData.MPA(iMPA)(iRow, iCol) = 0
+                        ' Get hit count value for this cell
+                        iIndex = hitcountmap(iRow, iCol)
+
+                        ' Add it to the dictionary
+                        If Not dtMapSorted.ContainsKey(iIndex) Then
+                            ' #Yes: create point list and add it to dictionary
+                            lPoints = New List(Of Integer)
+                            dtMapSorted(iIndex) = lPoints
+                            lKeys.Add(iIndex)
+                        Else
+                            ' #No: get point list
+                            lPoints = dtMapSorted(iIndex)
+                        End If
+                        ' Add point as candidate cell
+                        lPoints.Add(RowColToCell(iRow, iCol))
+
+                        ' Count water cells
+                        iNumWaterCells += 1
+
+                    End If ' Is water cell
+                Next iCol
+            Next iRow
+
+            ' Need to bail out?
+            If (lKeys.Count = 0) Then Return True
+
+            ' Calculate #cells to close
+            iNumCellsToClose = CInt(Math.Ceiling(iNumWaterCells * iAreaPercentToClose / 100))
+
+            ' Sort keys in reverse order (highest hit count value first)
+            lKeys.Sort()
+            lKeys.Reverse()
+
+            ' VC, JS 14nov08: Instead of randomizing cells when hit counts are identical,
+            '                 cells could be selected based on total weighted score
+            For Each lPoints In dtMapSorted.Values
+                Me.Shuffle(lPoints)
+            Next
+
+            ' Get first cell list to iterate over
+            lPoints = dtMapSorted(lKeys(0))
+            lKeys.RemoveAt(0)
+            iIndex = 0
+
+            ' Can we go home now?
+            While (iNumCellsToClose > 0)
+                ' Next point list, if applicable
+                ' Bug fix: point list are now allowed to be empty
+                While (lPoints.Count = 0)
+                    lPoints = dtMapSorted(lKeys(0))
+                    lKeys.RemoveAt(0)
+                End While
+
+                iIndex = lPoints(0)
+                Me.CellToRowCol(lPoints(iIndex), iRow, iCol)
+                Me.m_SpaceData.MPA(iMPA)(iRow, iCol) = 1
+                lPoints.RemoveAt(0)
+
+                ' One less to close
+                iNumCellsToClose -= 1
+            End While
+        Next
+
+        Return True
+
+    End Function
+
+    Private Sub Shuffle(pts As List(Of Integer))
+        Dim n As Integer = pts.Count - 1
+        For i As Integer = 0 To pts.Count - 1
+            Dim t As Integer = pts(i)
+            pts.RemoveAt(i)
+            pts.Insert(CInt(Me.m_generator.NextDouble * n), t)
+        Next
+    End Sub
+
 #End Region
- 
+
 End Class
