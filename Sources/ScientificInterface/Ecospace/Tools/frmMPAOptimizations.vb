@@ -449,20 +449,18 @@ Namespace Ecospace
                     Me.SetLayer(Me.m_mapFeedback, Me.m_basemap.LayerMPA(SelectedMPA()), Me.SelectedMPA())
 
                 Case eMPAOptimizationModels.RandomSearch
-                    ' Get cell map at 100% best cells
-                    map = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile(),
-                                                       Me.SelectedClosedPercentage(), iNumResults)
-                    ' Convert to MPA
-                    Me.ConvertToMPA(map, Me.SelectedClosedPercentage, Me.SelectedMPA())
+                    Me.m_manager.ConvertResultsToMPA(Me.SelectedBestPercentile(), Me.SelectedClosedPercentage())
 
             End Select
 
-            ' Refresh the MPA layer that has been affected
-            For Each l As cDisplayLayer In Me.m_mpaLayers
-                'If l.Data.Index = Me.SelectedMPA Then
-                l.Update(cDisplayLayer.eChangeFlags.Map)
-                ' End If
-            Next
+            '' Refresh the MPA layer that has been affected
+            'For Each l As cDisplayLayer In Me.m_mpaLayers
+            '    'If l.Data.Index = Me.SelectedMPA Then
+            '    l.Update(cDisplayLayer.eChangeFlags.Map)
+            '    ' End If
+            'Next
+
+            Me.InvaldiateMap()
 
         End Sub
 
@@ -1504,122 +1502,122 @@ Namespace Ecospace
 
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Convert 'iAreaPercentToClose' cells in the map to MPA 'iMPA'
-        ''' </summary>
-        ''' <param name="hitcountmap">The best count map to convert.</param>
-        ''' <param name="iAreaPercentToClose">Percent of water cells 
-        ''' to close in addition to the current MPAs.</param>
-        ''' <param name="iMPA">The MPA to assign new cells to.</param>
-        ''' <returns>True if successful.</returns>
-        ''' <remarks>
-        ''' Cells are selected from the best count map, aiMap, by descending
-        ''' value until either the requested percentage is met or there are no 
-        ''' convertable cells left.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Private Function ConvertToMPA(ByVal hitcountmap As Integer(,),
-                                      ByVal iAreaPercentToClose As Integer,
-                                      ByVal iMPA As Integer) As Boolean
+        '''' -------------------------------------------------------------------
+        '''' <summary>
+        '''' Convert 'iAreaPercentToClose' cells in the map to MPA 'iMPA'
+        '''' </summary>
+        '''' <param name="hitcountmap">The best count map to convert.</param>
+        '''' <param name="iAreaPercentToClose">Percent of water cells 
+        '''' to close in addition to the current MPAs.</param>
+        '''' <param name="iMPA">The MPA to assign new cells to.</param>
+        '''' <returns>True if successful.</returns>
+        '''' <remarks>
+        '''' Cells are selected from the best count map, aiMap, by descending
+        '''' value until either the requested percentage is met or there are no 
+        '''' convertable cells left.
+        '''' </remarks>
+        '''' -------------------------------------------------------------------
+        'Private Function ConvertToMPA(ByVal hitcountmap As Integer(,),
+        '                              ByVal iAreaPercentToClose As Integer,
+        '                              ByVal iMPA As Integer) As Boolean
 
-            ' Ecospace MPA layer
-            Dim layerMPA As cEcospaceLayer = Me.m_basemap.LayerMPA(iMPA)
-            ' Ecospace depth layer
-            Dim layerDepth As cEcospaceLayer = Me.m_basemap.LayerDepth
-            ' Dictionary with list of points, sorted by hit count
-            Dim dtMapSorted As New Dictionary(Of Integer, List(Of Point))
-            ' List of hit count values, keys to the dictionary
-            Dim lKeys As New List(Of Integer)
-            ' Helper var to reference lists in the dictionary
-            Dim lPoints As List(Of Point) = Nothing
-            ' Number of water cells
-            Dim iNumWaterCells As Integer = 0
-            ' Number of cells to close
-            Dim iNumCellsToClose As Integer = 0
-            ' Row, col iterators
-            Dim iRow, iCol As Integer
-            ' Always handy
-            Dim iIndex As Integer = 0
-            ' Randomizer
-            Dim rnd As New Random()
+        '    ' Ecospace MPA layer
+        '    Dim layerMPA As cEcospaceLayer = Me.m_basemap.LayerMPA(iMPA)
+        '    ' Ecospace depth layer
+        '    Dim layerDepth As cEcospaceLayer = Me.m_basemap.LayerDepth
+        '    ' Dictionary with list of points, sorted by hit count
+        '    Dim dtMapSorted As New Dictionary(Of Integer, List(Of Point))
+        '    ' List of hit count values, keys to the dictionary
+        '    Dim lKeys As New List(Of Integer)
+        '    ' Helper var to reference lists in the dictionary
+        '    Dim lPoints As List(Of Point) = Nothing
+        '    ' Number of water cells
+        '    Dim iNumWaterCells As Integer = 0
+        '    ' Number of cells to close
+        '    Dim iNumCellsToClose As Integer = 0
+        '    ' Row, col iterators
+        '    Dim iRow, iCol As Integer
+        '    ' Always handy
+        '    Dim iIndex As Integer = 0
+        '    ' Randomizer
+        '    Dim rnd As New Random()
 
-            ' ToDo: execute this assignment code in the search itself
-            ' - when searching by region, make sure to also allocate by region!!
+        '    ' ToDo: execute this assignment code in the search itself
+        '    ' - when searching by region, make sure to also allocate by region!!
 
-            ' Gather conversion info
-            For iRow = 1 To Me.m_basemap.InRow
-                For iCol = 1 To Me.m_basemap.InCol
+        '    ' Gather conversion info
+        '    For iRow = 1 To Me.m_basemap.InRow
+        '        For iCol = 1 To Me.m_basemap.InCol
 
-                    ' Only consider water cells
-                    If (CSng(layerDepth.Cell(iRow, iCol)) > 0) Then
+        '            ' Only consider water cells
+        '            If (CSng(layerDepth.Cell(iRow, iCol)) > 0) Then
 
-                        ' Clear existing target MPA cells
-                        layerMPA.Cell(iRow, iCol) = 0
-                        ' Get hit count value for this cell
-                        iIndex = hitcountmap(iRow, iCol)
+        '                ' Clear existing target MPA cells
+        '                layerMPA.Cell(iRow, iCol) = 0
+        '                ' Get hit count value for this cell
+        '                iIndex = hitcountmap(iRow, iCol)
 
-                        ' Add it to the dictionary
-                        If Not dtMapSorted.ContainsKey(iIndex) Then
-                            ' #Yes: create point list and add it to dictionary
-                            lPoints = New List(Of Point)
-                            dtMapSorted(iIndex) = lPoints
-                            lKeys.Add(iIndex)
-                        Else
-                            ' #No: get point list
-                            lPoints = dtMapSorted(iIndex)
-                        End If
-                        ' Add point as candidate cell
-                        lPoints.Add(New Point(iRow, iCol))
+        '                ' Add it to the dictionary
+        '                If Not dtMapSorted.ContainsKey(iIndex) Then
+        '                    ' #Yes: create point list and add it to dictionary
+        '                    lPoints = New List(Of Point)
+        '                    dtMapSorted(iIndex) = lPoints
+        '                    lKeys.Add(iIndex)
+        '                Else
+        '                    ' #No: get point list
+        '                    lPoints = dtMapSorted(iIndex)
+        '                End If
+        '                ' Add point as candidate cell
+        '                lPoints.Add(New Point(iRow, iCol))
 
-                        ' Count water cells
-                        iNumWaterCells += 1
+        '                ' Count water cells
+        '                iNumWaterCells += 1
 
-                    End If ' Is water cell
-                Next iCol
-            Next iRow
+        '            End If ' Is water cell
+        '        Next iCol
+        '    Next iRow
 
-            ' Need to bail out?
-            If (lKeys.Count = 0) Then Return True
+        '    ' Need to bail out?
+        '    If (lKeys.Count = 0) Then Return True
 
-            ' Calculate #cells to close
-            iNumCellsToClose = CInt(Math.Ceiling(iNumWaterCells * iAreaPercentToClose / 100))
+        '    ' Calculate #cells to close
+        '    iNumCellsToClose = CInt(Math.Ceiling(iNumWaterCells * iAreaPercentToClose / 100))
 
-            ' Sort keys in reverse order (highest hit count value first)
-            lKeys.Sort()
-            lKeys.Reverse()
+        '    ' Sort keys in reverse order (highest hit count value first)
+        '    lKeys.Sort()
+        '    lKeys.Reverse()
 
-            ' Get first cell list to iterate over
-            lPoints = dtMapSorted(lKeys(0))
-            lKeys.RemoveAt(0)
+        '    ' Get first cell list to iterate over
+        '    lPoints = dtMapSorted(lKeys(0))
+        '    lKeys.RemoveAt(0)
 
-            ' Can we go home now?
-            While (iNumCellsToClose > 0)
+        '    ' Can we go home now?
+        '    While (iNumCellsToClose > 0)
 
-                ' Convert a random cell from this list
-                ' VC, JS 14nov08: Instead of randomizing cells when hit counts are identical,
-                '                 cells could be selected based on total weighted score
-                iIndex = (rnd.Next(lPoints.Count * 13) Mod lPoints.Count)
-                layerMPA.Cell(lPoints(iIndex).X, lPoints(iIndex).Y) = 1
-                lPoints.RemoveAt(iIndex)
+        '        ' Convert a random cell from this list
+        '        ' VC, JS 14nov08: Instead of randomizing cells when hit counts are identical,
+        '        '                 cells could be selected based on total weighted score
+        '        iIndex = (rnd.Next(lPoints.Count * 13) Mod lPoints.Count)
+        '        layerMPA.Cell(lPoints(iIndex).X, lPoints(iIndex).Y) = 1
+        '        lPoints.RemoveAt(iIndex)
 
-                ' One less to close
-                iNumCellsToClose -= 1
+        '        ' One less to close
+        '        iNumCellsToClose -= 1
 
-                ' Handle empty list
-                If lPoints.Count = 0 Then
-                    lPoints = dtMapSorted(lKeys(0))
-                    lKeys.RemoveAt(0)
-                End If
+        '        ' Handle empty list
+        '        If lPoints.Count = 0 Then
+        '            lPoints = dtMapSorted(lKeys(0))
+        '            lKeys.RemoveAt(0)
+        '        End If
 
-            End While
+        '    End While
 
-            layerMPA.Invalidate()
-            Me.Core.onChanged(layerMPA, eMessageType.DataModified)
+        '    layerMPA.Invalidate()
+        '    Me.Core.onChanged(layerMPA, eMessageType.DataModified)
 
-            Return True
+        '    Return True
 
-        End Function
+        'End Function
 
 #End Region ' Map
 

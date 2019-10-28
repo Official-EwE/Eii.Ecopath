@@ -67,13 +67,13 @@ Public Class cMPAOptManager
     ''' <summary>
     ''' MPA Search run state delegate.
     ''' </summary>
-    Public Delegate Sub SearchRunStateDelegate(ByVal RunState As eRunStates)
+    Public Delegate Sub SearchRunStateDelegate(RunState As eRunStates)
 
     ''' <summary>
     ''' Message sending delegate
     ''' </summary>
     ''' <param name="message"></param>
-    Public Delegate Sub SendMessageDelegate(ByVal message As EwECore.cMessage)
+    Public Delegate Sub SendMessageDelegate(message As EwECore.cMessage)
 
 #End Region
 
@@ -124,7 +124,7 @@ Public Class cMPAOptManager
 
     End Function
 
-    Public Sub Connect(ByVal syncObject As System.ComponentModel.ISynchronizeInvoke, ByVal SeedCellCallback As SearchIterationDelegate, ByVal RunStateCallback As SearchRunStateDelegate)
+    Public Sub Connect(syncObject As System.ComponentModel.ISynchronizeInvoke, SeedCellCallback As SearchIterationDelegate, RunStateCallback As SearchRunStateDelegate)
 
         m_syncObject = syncObject
         m_SeedCellComputedCallback = SeedCellCallback
@@ -154,7 +154,7 @@ Public Class cMPAOptManager
 
 #Region "Changing search models"
 
-    Private Function SearchModelFactory(ByVal SearchType As eMPAOptimizationModels) As IMPASearchModel
+    Private Function SearchModelFactory(SearchType As eMPAOptimizationModels) As IMPASearchModel
 
         Debug.Assert(Me.IsRunning = False, Me.ToString & " Cannot change the search type while a search is running.")
         If Me.IsRunning Then
@@ -185,7 +185,7 @@ Public Class cMPAOptManager
     ''' <param name="bForceInit">Flag indicating whether the search should be
     ''' initialized, even when the active search type does not change.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub setActiveSearch(ByVal newActiveSearch As eMPAOptimizationModels, ByVal bForceInit As Boolean)
+    Private Sub setActiveSearch(newActiveSearch As eMPAOptimizationModels, bForceInit As Boolean)
 
         'if no search has been created then make sure the factory runs
         If Me.m_MPASearch IsNot Nothing Then
@@ -238,7 +238,7 @@ Public Class cMPAOptManager
 
     End Sub
 
-    Private Sub OnRunStateChanged(ByVal RunState As eRunStates)
+    Private Sub OnRunStateChanged(RunState As eRunStates)
 
         Try
 
@@ -268,7 +268,7 @@ Public Class cMPAOptManager
 
     End Sub
 
-    Private Sub OnSendMessage(ByVal Message As EwECore.cMessage)
+    Private Sub OnSendMessage(Message As EwECore.cMessage)
         Debug.Assert(False)
     End Sub
 
@@ -284,17 +284,17 @@ Public Class cMPAOptManager
             Me.m_MPASearch.Connect(AddressOf OnSearchIteration, AddressOf Me.OnRunStateChanged, AddressOf Me.OnSendMessage)
 
             If Me.IsRunning Then
-                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MPAOPT_RUNNING, _
-                                                            eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
+                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MPAOPT_RUNNING,
+                                                            eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace,
                                                             eMessageImportance.Critical))
                 Return False
             End If
 
             ' Test if no seed cells nor MPA
             If Not Me.m_MPASearch.OKtoRun Then
-                Dim msg As New cFeedbackMessage(My.Resources.CoreMessages.MPAOPT_NODATA_RESUME, _
-                                                eCoreComponentType.MPAOptimization, eMessageType.Any, _
-                                                eMessageImportance.Warning, eMessageReplyStyle.YES_NO, _
+                Dim msg As New cFeedbackMessage(My.Resources.CoreMessages.MPAOPT_NODATA_RESUME,
+                                                eCoreComponentType.MPAOptimization, eMessageType.Any,
+                                                eMessageImportance.Warning, eMessageReplyStyle.YES_NO,
                                                 eDataTypes.MPAOptParameters, eMessageReply.NO)
                 Me.m_core.Messages.SendMessage(msg)
                 If msg.Reply = eMessageReply.NO Then Return False
@@ -330,8 +330,8 @@ Public Class cMPAOptManager
         Catch ex As Exception
             cLog.Write(ex)
             Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
-            Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.MPAOPT_ERROR, ex.Message), _
-                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, _
+            Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.MPAOPT_ERROR, ex.Message),
+                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace,
                                                         eMessageImportance.Critical))
             Me.ReleaseWait()
             Return False
@@ -341,7 +341,7 @@ Public Class cMPAOptManager
 
     End Function
 
-    Public Sub YearTimeStep(ByRef iYear As Integer, ByVal Biomass() As Single)
+    Public Sub YearTimeStep(ByRef iYear As Integer, Biomass() As Single)
         m_MPASearch.YearTimeStep(iYear, Biomass)
     End Sub
 
@@ -359,7 +359,7 @@ Public Class cMPAOptManager
 
     End Function
 
-    Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
+    Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
         Dim result As Boolean = True
         Try
             If Me.m_MPASearch IsNot Nothing Then
@@ -382,11 +382,11 @@ Public Class cMPAOptManager
         Me.m_MPASearch.clearSeedCells()
     End Sub
 
-    Public Function setAllCellsToMPA(ByVal iMPA As Integer) As Boolean
+    Public Function setAllCellsToMPA(iMPA As Integer) As Boolean
         Return Me.m_MPASearch.setAllCellsToMPA(iMPA)
     End Function
 
-    Public Function setAllCellsToSeed(ByVal iMPA As Integer) As Boolean
+    Public Function setAllCellsToSeed(iMPA As Integer) As Boolean
         Return Me.m_MPASearch.setAllCellsToSeed(iMPA)
     End Function
 
@@ -397,7 +397,7 @@ Public Class cMPAOptManager
     ''' <param name="NumberOfResults">Number of results in the top percentile</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Function CellSelectedMap(ByVal TopPercentile As Single, ByVal PercentAreaClosedFilter As Integer, ByRef NumberOfResults As Integer) As Integer(,)
+    Public Function CellSelectedMap(TopPercentile As Single, PercentAreaClosedFilter As Integer, ByRef NumberOfResults As Integer) As Integer(,)
         Dim map(,) As Integer
         Dim nResults As Integer
         Dim obj As cObjectiveResult
@@ -451,13 +451,31 @@ Public Class cMPAOptManager
 
     End Function
 
+    Public Function ConvertResultsToMPA(TopPercentile As Single, PercentAreaClosedFilter As Integer) As Boolean
+
+        Dim data As cMPAOptDataStructures = Me.m_core.MPAOptData
+        Select Case data.SearchType
+            Case eMPAOptimizationModels.RandomSearch
+                Dim i As Integer
+                Dim map As Integer(,) = Me.CellSelectedMap(TopPercentile, PercentAreaClosedFilter, i)
+                DirectCast(Me.m_MPASearch, cMPARandomSearch).ConvertToMPA(map, PercentAreaClosedFilter, data.iMPAtoUse)
+
+                Dim layer As cEcospaceLayerMPA = Me.m_core.EcospaceBasemap.LayerMPA(data.iMPAtoUse)
+                layer.Invalidate()
+            Case Else
+                ' NOP
+        End Select
+        Return False
+
+    End Function
+
     ''' <summary>
     ''' Return a list of result maps where the area closed = PercentAreaClosedFilter
     ''' </summary>
     ''' <param name="PercentAreaClosedFilter">Area of the map that is Closed (has an MPA set)</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function getPercentageList(ByVal PercentAreaClosedFilter As Integer) As List(Of cObjectiveResult)
+    Private Function getPercentageList(PercentAreaClosedFilter As Integer) As List(Of cObjectiveResult)
         Dim lstOut As New List(Of cObjectiveResult)
 
         For iResult As Integer = 0 To Me.Results.Count - 1
@@ -527,7 +545,7 @@ Public Class cMPAOptManager
         Get
             Return cCore.NULL_VALUE
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Debug.Assert(False, Me.ToString & ".DBID no implementation.")
         End Set
     End Property
@@ -540,7 +558,7 @@ Public Class cMPAOptManager
         Get
             Return cCore.NULL_VALUE
         End Get
-        Set(ByVal value As Integer)
+        Set(value As Integer)
             Debug.Assert(False, Me.ToString & ".Index no implementation.")
         End Set
     End Property
@@ -549,7 +567,7 @@ Public Class cMPAOptManager
         Get
             Return Me.ToString
         End Get
-        Set(ByVal value As String)
+        Set(value As String)
             Debug.Assert(False, Me.ToString & ".Name no implementation.")
         End Set
     End Property
@@ -558,13 +576,13 @@ Public Class cMPAOptManager
 
 #Region "ISearchObjective implementation"
 
-    Public ReadOnly Property FleetObjectives(ByVal iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
+    Public ReadOnly Property FleetObjectives(iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
         Get
             Return Me.m_searchObjectives.FleetObjectives(iFleet)
         End Get
     End Property
 
-    Public ReadOnly Property GroupObjectives(ByVal iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
+    Public ReadOnly Property GroupObjectives(iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
         Get
             Return Me.m_searchObjectives.GroupObjectives(iGroup)
         End Get
@@ -615,7 +633,7 @@ Public Class cMPAOptManager
 
     End Sub
 
-    Public Function Update(ByVal DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
+    Public Function Update(DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
 
         Try
 
@@ -673,15 +691,15 @@ Public Interface IMPASearchModel
 
     Function Init(ByRef EcoSpaceModel As cEcoSpace, ByRef MPAOptData As cMPAOptDataStructures) As Boolean
 
-    Sub Connect(ByVal OnSearchInteration As cMPAOptManager.SearchIterationDelegate, _
-                ByVal OnRunStateChanged As cMPAOptManager.SearchRunStateDelegate, _
-                ByVal OnSendMessage As cMPAOptManager.SendMessageDelegate)
+    Sub Connect(OnSearchInteration As cMPAOptManager.SearchIterationDelegate,
+                OnRunStateChanged As cMPAOptManager.SearchRunStateDelegate,
+                OnSendMessage As cMPAOptManager.SendMessageDelegate)
 
     Sub StopRun()
     Sub clearMPAs()
     Sub clearSeedCells()
-    Function setAllCellsToMPA(ByVal iMPA As Integer) As Boolean
-    Function setAllCellsToSeed(ByVal iMPA As Integer) As Boolean
+    Function setAllCellsToMPA(iMPA As Integer) As Boolean
+    Function setAllCellsToSeed(iMPA As Integer) As Boolean
 
     Property MPAOptData() As cMPAOptDataStructures
     ReadOnly Property isRunning() As Boolean
@@ -689,7 +707,7 @@ Public Interface IMPASearchModel
     ReadOnly Property Results() As List(Of cObjectiveResult)
     ReadOnly Property nInterationsCompleted() As Integer
 
-    Sub YearTimeStep(ByRef iYear As Integer, ByVal Biomass() As Single)
+    Sub YearTimeStep(ByRef iYear As Integer, Biomass() As Single)
 
     ''' <summary>
     ''' Configure the search for auto-saving.
@@ -697,7 +715,7 @@ Public Interface IMPASearchModel
     ''' <param name="bAutosave">Turn auto-saving on or off.</param>
     ''' <param name="strOutputPath">Path to auto-save to.</param>
     ''' <param name="strHeader">Header information to report when auto-saving.</param>
-    Sub ConfigureAutosave(ByVal bAutosave As Boolean, ByVal strOutputPath As String, ByVal strHeader As String)
+    Sub ConfigureAutosave(bAutosave As Boolean, strOutputPath As String, strHeader As String)
 
     Function RunState() As cMPAOptManager.eRunStates
 
@@ -817,7 +835,7 @@ Public Class cObjectiveResult
                 & ", Social = " & objFuncSocialValue.ToString & ", Ecological = " & objFuncEcologicalValue.ToString
     End Function
 
-    Public Function CompareTo(ByVal other As cObjectiveResult) As Integer Implements System.IComparable(Of cObjectiveResult).CompareTo
+    Public Function CompareTo(other As cObjectiveResult) As Integer Implements System.IComparable(Of cObjectiveResult).CompareTo
 
         'Sort in reverse order, largest first
         If Me.objFuncTotal < other.objFuncTotal Then

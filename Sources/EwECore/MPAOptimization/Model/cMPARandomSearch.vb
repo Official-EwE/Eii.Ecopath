@@ -581,7 +581,7 @@ Public Class cMPARandomSearch
     ''' convertable cells left.
     ''' </remarks>
     ''' -------------------------------------------------------------------
-    Private Function ConvertToMPA(hitcountmap As Integer(,),
+    Public Function ConvertToMPA(hitcountmap As Integer(,),
                                  iAreaPercentToClose As Integer,
                                  iMPA As Integer) As Boolean
 
@@ -677,7 +677,7 @@ Public Class cMPARandomSearch
                 End While
 
                 iIndex = lPoints(0)
-                Me.CellToRowCol(lPoints(iIndex), iRow, iCol)
+                Me.CellToRowCol(iIndex, iRow, iCol)
                 Me.m_SpaceData.MPA(iMPA)(iRow, iCol) = 1
                 lPoints.RemoveAt(0)
 
