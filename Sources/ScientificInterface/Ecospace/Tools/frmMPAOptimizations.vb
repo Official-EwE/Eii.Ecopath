@@ -453,12 +453,12 @@ Namespace Ecospace
 
             End Select
 
-            '' Refresh the MPA layer that has been affected
-            'For Each l As cDisplayLayer In Me.m_mpaLayers
-            '    'If l.Data.Index = Me.SelectedMPA Then
-            '    l.Update(cDisplayLayer.eChangeFlags.Map)
-            '    ' End If
-            'Next
+            ' Refresh the MPA layer that has been affected
+            For Each l As cDisplayLayer In Me.m_mpaLayers
+                'If l.Data.Index = Me.SelectedMPA Then
+                l.Update(cDisplayLayer.eChangeFlags.Map)
+                ' End If
+            Next
 
             Me.InvaldiateMap()
 
