@@ -20,7 +20,6 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing
 Imports EwECore.EcoSeed
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
@@ -711,95 +710,91 @@ End Interface
 Public Class cObjectiveResult
     Implements IComparable(Of cObjectiveResult)
 
-    Public Row As Integer
-    Public Col As Integer
-    Public objFuncEconomicValue As Single
-    Public objFuncMandatedValue As Single
-    Public objFuncSocialValue As Single
-    Public objFuncEcologicalValue As Single
-    Public objFuncAreaBorder As Single
-    Public objBiomassDiversity As Single
+    Public Sub New(MPAData As cMPAOptDataStructures, SpaceData As cEcospaceDataStructures)
 
+        Me.Row = MPAData.bestrow
+        Me.Col = MPAData.bestcol
 
-    ''' <summary>
-    ''' Includes weights
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public objFuncTotal As Single
+        Me.objFuncEconomicValue = MPAData.objFuncEconomicValue
+        Me.objFuncMandatedValue = MPAData.objFuncMandatedValue
+        Me.objFuncSocialValue = MPAData.objFuncSocialValue
+        Me.objFuncEcologicalValue = MPAData.objFuncEcologicalValue
+        Me.objBiomassDiversity = MPAData.objFuncBiodiversity
 
-    Public SearchType As eMPAOptimizationModels
-    Public Cells As List(Of cMPACell)
-    Public PercentageClosed As Integer
+        Me.objFuncAreaBorder = MPAData.objFuncAreaBorder
 
+        Me.objFuncTotal = MPAData.objFuncTotal
 
-    Public Sub New(ByRef MPAData As cMPAOptDataStructures, ByRef SpaceData As cEcospaceDataStructures)
-
-        Row = MPAData.bestrow
-        Col = MPAData.bestcol
-
-        objFuncEconomicValue = MPAData.objFuncEconomicValue
-        objFuncMandatedValue = MPAData.objFuncMandatedValue
-        objFuncSocialValue = MPAData.objFuncSocialValue
-        objFuncEcologicalValue = MPAData.objFuncEcologicalValue
-        objBiomassDiversity = MPAData.objFuncBiodiversity
-
-        objFuncAreaBorder = MPAData.objFuncAreaBorder
-
-        objFuncTotal = MPAData.objFuncTotal
-
-        SearchType = MPAData.SearchType
+        Me.SearchType = MPAData.SearchType
 
         'copy the list of cells into a new list 
-        Cells = New List(Of cMPACell)(MPAData.Cells)
+        Me.Cells = MPAData.Cells.ToArray()
 
-        calcPercentageClosed(MPAData, SpaceData)
-
-    End Sub
-
-    Public Sub Init(ByRef MPAData As cMPAOptDataStructures, ByRef SpaceData As cEcospaceDataStructures)
-
-
-        Try
-            objFuncEconomicValue = MPAData.objFuncEconomicValue
-            objFuncMandatedValue = MPAData.objFuncMandatedValue
-            objFuncSocialValue = MPAData.objFuncSocialValue
-            objFuncEcologicalValue = MPAData.objFuncEcologicalValue
-            objFuncAreaBorder = MPAData.objFuncAreaBorder
-            objBiomassDiversity = MPAData.objFuncBiodiversity
-            objFuncTotal = MPAData.objFuncTotal
-
-            Select Case MPAData.SearchType
-
-                Case eMPAOptimizationModels.EcoSeed
-
-                    Debug.Assert(SpaceData IsNot Nothing, Me.ToString & ".Init() SpaceData must be passed in!")
-                    Cells.Clear()
-                    For ir As Integer = 1 To SpaceData.InRow
-                        For ic As Integer = 1 To SpaceData.InCol
-                            'If SpaceData.MPA(ir, ic) <> 0 Then
-                            '    Cells.Add(New cMPACell(ir, ic, SpaceData.MPA(ir, ic)))
-                            'End If
-                            For impa As Integer = 1 To SpaceData.MPAno
-                                If SpaceData.MPA(impa)(ir, ic) > 0 Then
-                                    Cells.Add(New cMPACell(ir, ic, impa))
-                                End If
-                            Next
-                        Next
-                    Next
-
-                Case eMPAOptimizationModels.RandomSearch
-                    Cells = New List(Of cMPACell)(MPAData.Cells)
-
-            End Select
-
-            calcPercentageClosed(MPAData, SpaceData)
-
-        Catch ex As Exception
-            cLog.Write(ex)
-            Throw New ApplicationException(Me.ToString & ".Init() Error: " & ex.Message, ex)
-        End Try
+        Me.calcPercentageClosed(MPAData, SpaceData)
 
     End Sub
+
+    'Public Sub Init(ByRef MPAData As cMPAOptDataStructures, ByRef SpaceData As cEcospaceDataStructures)
+
+
+    '    Try
+    '        objFuncEconomicValue = MPAData.objFuncEconomicValue
+    '        objFuncMandatedValue = MPAData.objFuncMandatedValue
+    '        objFuncSocialValue = MPAData.objFuncSocialValue
+    '        objFuncEcologicalValue = MPAData.objFuncEcologicalValue
+    '        objFuncAreaBorder = MPAData.objFuncAreaBorder
+    '        objBiomassDiversity = MPAData.objFuncBiodiversity
+    '        objFuncTotal = MPAData.objFuncTotal
+
+    '        Select Case MPAData.SearchType
+
+    '            Case eMPAOptimizationModels.EcoSeed
+
+    '                Debug.Assert(SpaceData IsNot Nothing, Me.ToString & ".Init() SpaceData must be passed in!")
+    '                Dim tmp As New List(Of cMPACell)
+    '                For ir As Integer = 1 To SpaceData.InRow
+    '                    For ic As Integer = 1 To SpaceData.InCol
+    '                        'If SpaceData.MPA(ir, ic) <> 0 Then
+    '                        '    Cells.Add(New cMPACell(ir, ic, SpaceData.MPA(ir, ic)))
+    '                        'End If
+    '                        For impa As Integer = 1 To SpaceData.MPAno
+    '                            If SpaceData.MPA(impa)(ir, ic) > 0 Then
+    '                                tmp.Add(New cMPACell(ir, ic, impa))
+    '                            End If
+    '                        Next
+    '                    Next
+    '                Next
+    '                Me.Cells = tmp.ToArray()
+
+    '            Case eMPAOptimizationModels.RandomSearch
+    '                Me.Cells = MPAData.Cells.ToArray()
+
+    '        End Select
+
+    '        calcPercentageClosed(MPAData, SpaceData)
+
+    '    Catch ex As Exception
+    '        cLog.Write(ex)
+    '        Throw New ApplicationException(Me.ToString & ".Init() Error: " & ex.Message, ex)
+    '    End Try
+
+    'End Sub
+
+    Public ReadOnly Property Row As Integer
+    Public ReadOnly Property Col As Integer
+    Public ReadOnly Property objFuncEconomicValue As Single
+    Public ReadOnly Property objFuncMandatedValue As Single
+    Public ReadOnly Property objFuncSocialValue As Single
+    Public ReadOnly Property objFuncEcologicalValue As Single
+    Public ReadOnly Property objFuncAreaBorder As Single
+    Public ReadOnly Property objBiomassDiversity As Single
+
+    ''' <summary>Includes weights</summary>
+    Public ReadOnly Property objFuncTotal As Single = 0
+
+    Public ReadOnly Property SearchType As eMPAOptimizationModels
+    Public ReadOnly Property Cells As cMPACell()
+    Public Property PercentageClosed As Integer
 
 
     Private Sub calcPercentageClosed(ByRef MPAData As cMPAOptDataStructures, ByRef SpaceData As cEcospaceDataStructures)
@@ -818,15 +813,13 @@ Public Class cObjectiveResult
     End Sub
 
     Public Overrides Function ToString() As String
-
         Return "Total weighted value = " & objFuncTotal.ToString & ", Economic = " & objFuncEconomicValue.ToString & ", Mandated = " & objFuncMandatedValue.ToString _
                 & ", Social = " & objFuncSocialValue.ToString & ", Ecological = " & objFuncEcologicalValue.ToString
     End Function
 
     Public Function CompareTo(ByVal other As cObjectiveResult) As Integer Implements System.IComparable(Of cObjectiveResult).CompareTo
 
-        'Sort in reverse order
-        'Biggest first
+        'Sort in reverse order, largest first
         If Me.objFuncTotal < other.objFuncTotal Then
             Return 1
         ElseIf Me.objFuncTotal = other.objFuncTotal Then
@@ -836,6 +829,7 @@ Public Class cObjectiveResult
         End If
 
     End Function
+
 End Class
 
 

@@ -440,7 +440,7 @@ Namespace Ecospace
         Private Sub OnConvertToMPA(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnConvertToMpa.Click
 
-            Dim aiMap As Integer(,) = Nothing
+            Dim map As Integer(,) = Nothing
             Dim iNumResults As Integer = 0
 
             Select Case Me.SearchType
@@ -450,10 +450,10 @@ Namespace Ecospace
 
                 Case eMPAOptimizationModels.RandomSearch
                     ' Get cell map at 100% best cells
-                    aiMap = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile(),
-                                                         Me.SelectedClosedPercentage(), iNumResults)
+                    map = Me.m_manager.CellSelectedMap(Me.SelectedBestPercentile(),
+                                                       Me.SelectedClosedPercentage(), iNumResults)
                     ' Convert to MPA
-                    Me.ConvertToMPA(aiMap, Me.SelectedClosedPercentage, Me.SelectedMPA())
+                    Me.ConvertToMPA(map, Me.SelectedClosedPercentage, Me.SelectedMPA())
 
             End Select
 
