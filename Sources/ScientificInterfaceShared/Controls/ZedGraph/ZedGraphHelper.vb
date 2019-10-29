@@ -843,33 +843,6 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overridable Sub RescaleAndRedraw(Optional ByVal iPane As Integer = -1)
 
-            Dim iMin As Integer = 1
-            Dim iMax As Integer = Me.m_nPanels
-            Dim abCursor(Me.m_nPanels) As Boolean
-
-            If iPane > -1 Then
-                iMin = Math.Max(iMin, iPane)
-                iMax = Math.Min(iMax, iPane)
-            End If
-
-            ' Hide cursors, but remember settings
-            For iPane = iMin To iMax
-                abCursor(iPane) = Me.ShowCursor(iPane)
-                Me.ShowCursor(iPane) = False
-                With Me.GetPane(iPane).YAxis.Scale
-                    .MaxGrace = Me.YScaleGrace
-                    .MinGrace = Me.YScaleGrace
-                End With
-                With Me.GetPane(iPane).XAxis.Scale
-                    .MaxGrace = 0
-                    .MinGrace = 0
-                End With
-            Next
-
-            ' Restore cursors
-            For iPane = iMin To iMax
-                Me.ShowCursor(iPane) = abCursor(iPane)
-            Next
 
             'Me.Redraw()
             Me.m_zgc.BeginInvoke(New MethodInvoker(AddressOf Me.DoRescaleAndRedraw))
@@ -2840,6 +2813,24 @@ Namespace Controls
             If (Me.m_zgc Is Nothing) Then Return
             If (Me.m_zgc.IsDisposed) Then Return
 
+            Dim abCursor(Me.m_nPanels) As Boolean
+            Dim iMin As Integer = 1
+            Dim iMax As Integer = Me.m_nPanels
+
+            ' Hide cursors, but remember settings
+            For iPane As Integer = iMin To iMax
+                abCursor(iPane) = Me.ShowCursor(iPane)
+                Me.ShowCursor(iPane) = False
+                With Me.GetPane(iPane).YAxis.Scale
+                    .MaxGrace = Me.YScaleGrace
+                    .MinGrace = Me.YScaleGrace
+                End With
+                With Me.GetPane(iPane).XAxis.Scale
+                    .MaxGrace = 0
+                    .MinGrace = 0
+                End With
+            Next
+
             Try
                 Me.m_zgc.AxisChange()
                 Me.m_zgc.Invalidate()
@@ -2849,6 +2840,12 @@ Namespace Controls
             Catch ex As Exception
                 ' Whoah!
             End Try
+
+            ' Restore cursors
+            For iPane As Integer = iMin To iMax
+                Me.ShowCursor(iPane) = abCursor(iPane)
+            Next
+
         End Sub
 
 #End Region ' Refresh
