@@ -589,7 +589,7 @@ Namespace Ecosim
             Me.m_vulnerabilityBlockMatrix.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
             Me.m_vulnerabilityBlockMatrix.BlockColors = Nothing
             Me.m_vulnerabilityBlockMatrix.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_vulnerabilityBlockMatrix.Location = New System.Drawing.Point(-1, 112)
+            Me.m_vulnerabilityBlockMatrix.Location = New System.Drawing.Point(0, 112)
             Me.m_vulnerabilityBlockMatrix.Name = "m_vulnerabilityBlockMatrix"
             Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = 0
             Me.m_vulnerabilityBlockMatrix.Size = New System.Drawing.Size(533, 275)
@@ -749,7 +749,6 @@ Namespace Ecosim
             Me.m_shapeToolBox.Margin = New System.Windows.Forms.Padding(0)
             Me.m_shapeToolBox.MinimumSize = New System.Drawing.Size(10, 10)
             Me.m_shapeToolBox.Name = "m_shapeToolBox"
-            Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
             Me.m_shapeToolBox.Size = New System.Drawing.Size(423, 62)
             Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_shapeToolBox.TabIndex = 2
