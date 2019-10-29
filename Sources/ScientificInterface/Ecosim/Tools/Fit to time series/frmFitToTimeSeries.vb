@@ -56,7 +56,11 @@ Namespace Ecosim
 #Region " Constructor "
 
         Public Sub New()
-            InitializeComponent()
+            Try
+                Me.InitializeComponent()
+            Catch ex As Exception
+                cLog.Write(ex, "frmFitToTimeSeries.Constructor")
+            End Try
         End Sub
 
 #End Region ' Constructor
@@ -71,9 +75,8 @@ Namespace Ecosim
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
 
-            MyBase.OnLoad(e)
-
             If (Me.UIContext Is Nothing) Then Return
+            MyBase.OnLoad(e)
 
             Try
 
@@ -120,7 +123,7 @@ Namespace Ecosim
                 Me.m_shapeToolBox.XAxisMaxValue = 0
 
             Catch ex As Exception
-                Debug.Assert(False, ex.Message)
+                cLog.Write(ex, "frmFitToTimeSeries.OnLoad")
             End Try
 
         End Sub
@@ -160,7 +163,7 @@ Namespace Ecosim
                 Me.m_gridOutput.UIContext = Nothing
 
             Catch ex As Exception
-
+                cLog.Write(ex, "frmFitToTimeSeries.OnFormClosed")
             End Try
 
             MyBase.OnFormClosed(e)
@@ -183,7 +186,7 @@ Namespace Ecosim
                 Me.m_nudVariancePrimaryProd.Value = CDec(Me.m_F2TSManager.PPVariance)
 
             Catch ex As Exception
-                cLog.Write(ex)
+                cLog.Write(ex, "frmFitToTimeSeries.ReloadControls")
             End Try
 
             Me.UpdateControls()
@@ -224,7 +227,7 @@ Namespace Ecosim
                     Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls))
                 End If
             Catch ex As Exception
-
+                cLog.Write(ex, "frmFitToTimeSeries.OnCoreExecutionStateEvent")
             End Try
         End Sub
 
