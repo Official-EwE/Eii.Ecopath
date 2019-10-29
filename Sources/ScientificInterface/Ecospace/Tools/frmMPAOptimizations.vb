@@ -98,7 +98,7 @@ Namespace Ecospace
         ' == Layer cache ==
 
         ''' <summary>All layers in the basemap.</summary>
-        Private m_lLayers As New List(Of cDisplayLayer)
+        Private m_layers As New List(Of cDisplayLayer)
         ''' <summary>All layers that reflect search progress.</summary>
         ''' <remarks>The data for these layers orginates from the core.</remarks>
         Private m_feedbackLayers() As cDisplayLayerRaster = Nothing
@@ -131,12 +131,12 @@ Namespace Ecospace
         ''' <summary>Progress graph helper.</summary>
         Private m_zghProgress As cZedGraphHelper = Nothing
         ''' <summary>Progress graph data.</summary>
-        Private m_aptsProgress(5) As ResultPoints
+        Private m_progress(5) As ResultPoints
 
         ''' <summary>Results graph helper.</summary>
         Private m_zghResults As cZedGraphHelper = Nothing
         ''' <summary>Results graph data.</summary>
-        Private results(6) As ResultPoints
+        Private m_results(6) As ResultPoints
 
         ''' <summary>The mode that this form is in.</summary>
         Private m_mode As eFormModeTypes = eFormModeTypes.Prepare
@@ -253,13 +253,13 @@ Namespace Ecospace
             cmd.RemoveControl(Me.m_pbLenfest)
             cmd.RemoveControl(Me.m_pbDuke)
 
-            Dim alays As cDisplayLayer() = Me.m_lLayers.ToArray
+            Dim alays As cDisplayLayer() = Me.m_layers.ToArray
 
             Me.m_ucZoomBar.RemoveZoomContainer(Me.m_ucZoom)
             For Each l As cDisplayLayer In alays
                 Me.RemoveLayer(l)
             Next
-            Me.m_lLayers = Nothing
+            Me.m_layers = Nothing
 
             RemoveHandler Me.m_zghResults.OnCursorPos, AddressOf OnResultCursorPos
             Me.m_zghResults.Detach()
@@ -623,7 +623,7 @@ Namespace Ecospace
             Dim gp As GraphPane = Nothing
 
             For i As Integer = 0 To 5
-                Me.m_aptsProgress(i) = New ResultPoints()
+                Me.m_progress(i) = New ResultPoints()
             Next
 
             Me.m_zghProgress = New cZedGraphHelper()
@@ -642,12 +642,12 @@ Namespace Ecospace
                 'Me.m_graphProgress.GraphPane.XAxis.Scale.MajorStep = 5
                 'Me.m_graphProgress.GraphPane.XAxis.Scale.MinorStep = 1
 
-                .AddCurve(SharedResources.HEADER_NET_ECONOMIC_VALUE, Me.m_aptsProgress(0), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_aptsProgress(1), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(SharedResources.HEADER_MANDATED_REBUILDING, Me.m_aptsProgress(2), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(SharedResources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_aptsProgress(3), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(SharedResources.HEADER_BIODIVERSITY, Me.m_aptsProgress(4), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(SharedResources.HEADER_BOUNDARYWEIGHT, Me.m_aptsProgress(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_NET_ECONOMIC_VALUE, Me.m_progress(0), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_progress(1), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_MANDATED_REBUILDING, Me.m_progress(2), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_progress(3), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_BIODIVERSITY, Me.m_progress(4), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_BOUNDARYWEIGHT, Me.m_progress(5), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             End With
 
@@ -665,7 +665,7 @@ Namespace Ecospace
             Me.m_zghResults.ShowCursor = True
 
             For i As Integer = 0 To 6
-                Me.results(i) = New ResultPoints()
+                Me.m_results(i) = New ResultPoints()
             Next
 
             gp = Me.m_zghResults.GetPane(1)
@@ -676,13 +676,13 @@ Namespace Ecospace
                 .Title.Text = "" ' Config with form mode
                 .Title.Text = "" ' Config with form mode
 
-                .AddCurve(SharedResources.HEADER_NET_ECONOMIC_VALUE, Me.results(1), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.results(2), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(SharedResources.HEADER_MANDATED_REBUILDING, Me.results(3), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(SharedResources.HEADER_ECOSYSTEM_STRUCTURE, Me.results(4), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(SharedResources.HEADER_BIODIVERSITY, Me.results(5), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(SharedResources.HEADER_BOUNDARYWEIGHT, Me.results(6), zgcr.NextColor, ZedGraph.SymbolType.None)
-                .AddCurve(My.Resources.SEARCH_LABEL_TOTAL_WEIGHTED, Me.results(0), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_NET_ECONOMIC_VALUE, Me.m_results(1), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_SOCIAL_VALUE_EMPLOYMENT, Me.m_results(2), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_MANDATED_REBUILDING, Me.m_results(3), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_ECOSYSTEM_STRUCTURE, Me.m_results(4), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_BIODIVERSITY, Me.m_results(5), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(SharedResources.HEADER_BOUNDARYWEIGHT, Me.m_results(6), zgcr.NextColor, ZedGraph.SymbolType.None)
+                .AddCurve(My.Resources.SEARCH_LABEL_TOTAL_WEIGHTED, Me.m_results(0), zgcr.NextColor, ZedGraph.SymbolType.None)
 
             End With
 
@@ -734,7 +734,7 @@ Namespace Ecospace
 
                 ' Clean up
                 Me.ClearMapFeedback()
-                Me.ClearResults()
+                Me.ClearLastRun()
 
                 Dim factory As New cLayerFactoryInternal()
 
@@ -833,7 +833,7 @@ Namespace Ecospace
             Select Case Me.m_mode
 
                 Case eFormModeTypes.Prepare ' Prepare for running mode
-                    Me.ClearResults()
+                    Me.ClearLastRun()
 
                 Case eFormModeTypes.Searching
                     ' Cancel running status text
@@ -851,7 +851,7 @@ Namespace Ecospace
 
                 Case eFormModeTypes.Results ' Show results
                     ' Clear results
-                    Me.ClearResults()
+                    Me.ClearLastRun()
 
             End Select
 
@@ -1236,8 +1236,8 @@ Namespace Ecospace
             ' All 0: do not log
             If (sEconomicValue + sSocialValue + sMandatedValue + sEcologicalValue + sBiomassDiversityValue) = 0.0 Then Return
 
-            For iResult As Integer = 0 To Me.m_aptsProgress.Length - 1
-                Dim rp As ResultPoints = Me.m_aptsProgress(iResult)
+            For iResult As Integer = 0 To Me.m_progress.Length - 1
+                Dim rp As ResultPoints = Me.m_progress(iResult)
                 Select Case iResult
                     Case 0 : rp.AddItem(sEconomicValue)
                     Case 1 : rp.AddItem(sSocialValue)
@@ -1313,13 +1313,13 @@ Namespace Ecospace
                 ' Fill output graph
                 For iResult As Integer = 0 To lResults.Count - 1
                     Dim result As cObjectiveResult = lResults(iResult)
-                    Me.results(0).AddItem(result.objFuncTotal)
-                    Me.results(1).AddItem(result.objFuncEconomicValue)
-                    Me.results(2).AddItem(result.objFuncSocialValue)
-                    Me.results(3).AddItem(result.objFuncMandatedValue)
-                    Me.results(4).AddItem(result.objFuncEcologicalValue)
-                    Me.results(5).AddItem(result.objBiomassDiversity)
-                    Me.results(6).AddItem(result.objFuncAreaBorder)
+                    Me.m_results(0).AddItem(result.objFuncTotal)
+                    Me.m_results(1).AddItem(result.objFuncEconomicValue)
+                    Me.m_results(2).AddItem(result.objFuncSocialValue)
+                    Me.m_results(3).AddItem(result.objFuncMandatedValue)
+                    Me.m_results(4).AddItem(result.objFuncEcologicalValue)
+                    Me.m_results(5).AddItem(result.objBiomassDiversity)
+                    Me.m_results(6).AddItem(result.objFuncAreaBorder)
                 Next
                 Me.m_graphResults.GraphPane.XAxis.Scale.Max = lResults.Count - 1
 
@@ -1411,7 +1411,7 @@ Namespace Ecospace
         ''' <param name="layerPosition">Layer to position this layer before, if any.</param>
         ''' -------------------------------------------------------------------
         Private Sub AddLayer(ByVal l As cDisplayLayer, ByVal strGroup As String, strCommand As String, Optional ByVal layerPosition As cDisplayLayer = Nothing)
-            Me.m_lLayers.Add(l)
+            Me.m_layers.Add(l)
             Me.m_ucZoom.Map.AddLayer(l, layerPosition)
             Me.m_ucLayers.AddLayer(l, strGroup, strCommand, layerPosition)
             AddHandler l.LayerChanged, AddressOf OnLayerChanged
@@ -1424,7 +1424,7 @@ Namespace Ecospace
         ''' <param name="l">Layer to remove.</param>
         ''' -------------------------------------------------------------------
         Private Sub RemoveLayer(ByVal l As cDisplayLayer)
-            Me.m_lLayers.Remove(l)
+            Me.m_layers.Remove(l)
             Me.m_ucZoom.Map.RemoveLayer(l)
             Me.m_ucLayers.RemoveLayer(l)
             RemoveHandler l.LayerChanged, AddressOf OnLayerChanged
@@ -1725,14 +1725,17 @@ Namespace Ecospace
 
         End Function
 
-        Private Sub ClearResults()
+        Private Sub ClearLastRun()
 
-            For Each rp As ResultPoints In Me.m_aptsProgress
+            For Each rp As ResultPoints In Me.m_progress
                 If rp IsNot Nothing Then rp.Clear()
             Next
-            For Each rp As ResultPoints In Me.results
+            For Each rp As ResultPoints In Me.m_results
                 If rp IsNot Nothing Then rp.Clear()
             Next
+
+            Me.m_graphProgress.GraphPane.XAxis.Scale.MaxAuto = True
+            Me.m_graphResults.GraphPane.XAxis.Scale.MaxAuto = True
 
             Me.m_graphProgress.Refresh()
             Me.m_graphResults.Refresh()
