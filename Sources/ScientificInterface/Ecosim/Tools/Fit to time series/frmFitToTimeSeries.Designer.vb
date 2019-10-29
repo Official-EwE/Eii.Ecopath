@@ -753,8 +753,7 @@ Namespace Ecosim
             Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_shapeToolBox.TabIndex = 2
             Me.m_shapeToolBox.UIContext = Nothing
-            Me.m_shapeToolBox.XAxisMaxValue = -9999
-            Me.m_shapeToolBox.YAxisMinValue = -9999.0!
+
             '
             'm_hdrAppliedFF
             '
