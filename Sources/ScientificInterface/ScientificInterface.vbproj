@@ -2157,6 +2157,10 @@
       <Project>{1f96d4d5-d7ef-4e91-8d5e-c3cec1778323}</Project>
       <Name>EwEEcospaceSpinupPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEImportDietsPlugin\EwEImportDietsPlugin.vbproj">
+      <Project>{289c6948-83e3-4c4c-be02-04d713e9d3f3}</Project>
+      <Name>EwEImportDietsPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEImportExportLayersPlugin\EwEImportExportLayerDefinitionsPlugin.vbproj">
       <Project>{ff2c3b42-6872-4841-96ae-b06d88da6f1c}</Project>
       <Name>EwEImportExportLayerDefinitionsPlugin</Name>

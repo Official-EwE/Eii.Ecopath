@@ -342,10 +342,10 @@ Public Class cSearchDatastructures
 
     Public ReadOnly Property WeightedTotal() As Single
         Get
-            Return Me.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.totval + _
-                Me.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.Employ + _
-                Me.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.manvalue + _
-                Me.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.ecovalue + _
+            Return Me.ValWeight(eSearchCriteriaResultTypes.TotalValue) * Me.totval +
+                Me.ValWeight(eSearchCriteriaResultTypes.Employment) * Me.Employ +
+                Me.ValWeight(eSearchCriteriaResultTypes.MandateReb) * Me.manvalue +
+                Me.ValWeight(eSearchCriteriaResultTypes.Ecological) * Me.ecovalue +
                 Me.ValWeight(eSearchCriteriaResultTypes.BioDiversity) * Me.DiversityIndex
         End Get
     End Property
