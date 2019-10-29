@@ -24,14 +24,12 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Import
 
@@ -556,7 +554,11 @@ Namespace Ecospace
             Select Case msg.Source
 
                 Case eCoreComponentType.EcoSpace
-                    If (msg.Type = eMessageType.DataAddedOrRemoved) Then
+                    If (Me.RunMode = eFormModeTypes.Searching Or Me.RunMode = eFormModeTypes.Stopping) Then
+                        Return
+                    End If
+
+                    If (msg.Type = eMessageType.DataAddedOrRemoved Or msg.Type = eMessageType.DataModified Or msg.Type = eMessageType.DataValidation) Then
                         ' Reload data
                         Me.Reload()
                         ' Cascade mode down
@@ -831,6 +833,7 @@ Namespace Ecospace
             Select Case Me.m_mode
 
                 Case eFormModeTypes.Prepare ' Prepare for running mode
+                    Me.ClearResults()
 
                 Case eFormModeTypes.Searching
                     ' Cancel running status text
@@ -1331,13 +1334,13 @@ Namespace Ecospace
 
         Private Sub ShowIteration(ByVal iIteration As Integer)
 
+            If (Me.UIContext Is Nothing) Then Return
+            If (Me.m_manager Is Nothing) Then Return
+
             Dim lResults As List(Of cObjectiveResult) = Nothing
             Dim res As cObjectiveResult = Nothing
             Dim cell As cMPACell = Nothing
             Dim mpaMap(Me.m_basemap.InRow, Me.m_basemap.InCol) As Integer
-
-            ' Update map
-            ReDim mpaMap(Me.m_basemap.InRow, Me.m_basemap.InCol)
 
             Select Case Me.SearchType
 

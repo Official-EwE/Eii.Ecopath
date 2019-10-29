@@ -4,8 +4,8 @@
 
 ; Adjust #defines in this section to select which components to include in an installer
 #define Compile64Bit 0
-#define Spinup 1
-#define SpatTemp 1
+#define Spinup 0
+#define SpatTemp 0
 #define NetworkD3 0
 #define ExcludeDeadCells 0
 #define FISHMIP 0
@@ -34,7 +34,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.16346.0
+  VersionInfoVersion=6.6.16411.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -145,6 +145,7 @@ Source: "{#DefRoot}{#DefSrc}\EwETransectExtractionPlugin.dll"; DestDir: "{app}\P
 Source: "{#DefRoot}{#DefSrc}\EwEMPADynamicsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mpadynamics
 Source: "{#DefRoot}{#DefSrc}\EwEImportExportLayerDefinitionsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\layerimportexport
 Source: "{#DefRoot}{#DefSrc}\EwEMergeSplitGroupsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\mergegroups
+Source: "{#DefRoot}{#DefSrc}\EwEImportDietsPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\szumadiets
 ; -- Examples --
 #if NetworkD3 == 1
 Source: "{#DefRoot}{#DefSrc}\EwEDietMatrixToNetworkD3R.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\networkd3
@@ -301,6 +302,7 @@ Name: "plugin\analysis\valuechain"; Description: "Value chain"; Types: full
 Name: "plugin\input"; Description: "Data retrieval"; Types: full custom
 Name: "plugin\input\worms"; Description: "WoRMS taxonomy search"; Types: full
 Name: "plugin\input\aquamaps"; Description: "Aquamaps functional response importer"; Types: full
+Name: "plugin\input\szumadiets"; Description: "Diet import utility"; Types: full
 Name: "plugin\input\layerimportexport"; Description: "Ecospace layer style import and export"; Types: full
 Name: "plugin\output"; Description: "Data export"; Types: full
 Name: "plugin\output\modelfromsim"; Description: "Ecopath model from Ecosim"; Types: full
