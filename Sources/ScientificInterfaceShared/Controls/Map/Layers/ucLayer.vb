@@ -29,6 +29,7 @@ Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports System.IO
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -369,7 +370,7 @@ Namespace Controls.Map
 
         Private Sub OnLayerPropertyChanged(prop As cProperty, cf As cProperty.eChangeFlags)
             Me.Invalidate()
-            cToolTipShared.GetInstance().SetToolTip(Me, prop.GetRemark)
+            cToolTipShared.GetInstance().SetToolTip(Me, cStringUtils.ToTooltip(prop.GetRemark))
         End Sub
 
         Public Sub EditLayer(ByVal edittype As eLayerEditTypes)
