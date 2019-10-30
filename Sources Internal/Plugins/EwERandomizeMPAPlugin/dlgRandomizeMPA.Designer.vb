@@ -44,10 +44,12 @@ Partial Class dlgRandomizeMPA
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgRandomizeMPA))
         Me.m_lblMPA = New System.Windows.Forms.Label()
         Me.m_lblClose = New System.Windows.Forms.Label()
-        Me.m_cmbMPA = New System.Windows.Forms.ComboBox()
+        Me.m_cmbDestMPA = New System.Windows.Forms.ComboBox()
         Me.m_nudPercentage = New System.Windows.Forms.NumericUpDown()
         Me.m_btnCloseCells = New System.Windows.Forms.Button()
         Me.m_cbClosePerRegion = New System.Windows.Forms.CheckBox()
+        Me.m_lblFrom = New System.Windows.Forms.Label()
+        Me.m_cmbSrcMPA = New System.Windows.Forms.ComboBox()
         CType(Me.m_nudPercentage, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -61,12 +63,12 @@ Partial Class dlgRandomizeMPA
         resources.ApplyResources(Me.m_lblClose, "m_lblClose")
         Me.m_lblClose.Name = "m_lblClose"
         '
-        'm_cmbMPA
+        'm_cmbDestMPA
         '
-        resources.ApplyResources(Me.m_cmbMPA, "m_cmbMPA")
-        Me.m_cmbMPA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_cmbMPA.FormattingEnabled = True
-        Me.m_cmbMPA.Name = "m_cmbMPA"
+        resources.ApplyResources(Me.m_cmbDestMPA, "m_cmbDestMPA")
+        Me.m_cmbDestMPA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbDestMPA.FormattingEnabled = True
+        Me.m_cmbDestMPA.Name = "m_cmbDestMPA"
         '
         'm_nudPercentage
         '
@@ -79,6 +81,7 @@ Partial Class dlgRandomizeMPA
         'm_btnCloseCells
         '
         resources.ApplyResources(Me.m_btnCloseCells, "m_btnCloseCells")
+        Me.m_btnCloseCells.Image = Global.EwERandomizeMPAPlugin.My.Resources.Resources.Dice
         Me.m_btnCloseCells.Name = "m_btnCloseCells"
         Me.m_btnCloseCells.UseVisualStyleBackColor = True
         '
@@ -88,6 +91,18 @@ Partial Class dlgRandomizeMPA
         Me.m_cbClosePerRegion.Name = "m_cbClosePerRegion"
         Me.m_cbClosePerRegion.UseVisualStyleBackColor = True
         '
+        'm_lblFrom
+        '
+        resources.ApplyResources(Me.m_lblFrom, "m_lblFrom")
+        Me.m_lblFrom.Name = "m_lblFrom"
+        '
+        'm_cmbSrcMPA
+        '
+        resources.ApplyResources(Me.m_cmbSrcMPA, "m_cmbSrcMPA")
+        Me.m_cmbSrcMPA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbSrcMPA.FormattingEnabled = True
+        Me.m_cmbSrcMPA.Name = "m_cmbSrcMPA"
+        '
         'dlgRandomizeMPA
         '
         resources.ApplyResources(Me, "$this")
@@ -95,7 +110,9 @@ Partial Class dlgRandomizeMPA
         Me.Controls.Add(Me.m_cbClosePerRegion)
         Me.Controls.Add(Me.m_btnCloseCells)
         Me.Controls.Add(Me.m_nudPercentage)
-        Me.Controls.Add(Me.m_cmbMPA)
+        Me.Controls.Add(Me.m_cmbSrcMPA)
+        Me.Controls.Add(Me.m_cmbDestMPA)
+        Me.Controls.Add(Me.m_lblFrom)
         Me.Controls.Add(Me.m_lblClose)
         Me.Controls.Add(Me.m_lblMPA)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -111,9 +128,11 @@ Partial Class dlgRandomizeMPA
     End Sub
 
     Private WithEvents m_lblMPA As Windows.Forms.Label
-    Private WithEvents m_cmbMPA As Windows.Forms.ComboBox
+    Private WithEvents m_cmbDestMPA As Windows.Forms.ComboBox
     Private WithEvents m_nudPercentage As Windows.Forms.NumericUpDown
     Private WithEvents m_btnCloseCells As Windows.Forms.Button
     Private WithEvents m_lblClose As Windows.Forms.Label
     Private WithEvents m_cbClosePerRegion As Windows.Forms.CheckBox
+    Private WithEvents m_lblFrom As Windows.Forms.Label
+    Private WithEvents m_cmbSrcMPA As Windows.Forms.ComboBox
 End Class

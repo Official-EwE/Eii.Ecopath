@@ -42,7 +42,8 @@ Public Class dlgRandomizeMPA
         Dim core As cCore = Me.UIContext.Core
 
         For i As Integer = 1 To Me.UIContext.Core.nMPAs
-            Me.m_cmbMPA.Items.Add(core.EcospaceMPAs(i))
+            Me.m_cmbDestMPA.Items.Add(core.EcospaceMPAs(i))
+            Me.m_cmbSrcMPA.Items.Add(core.EcospaceMPAs(i))
         Next
         Me.m_cbClosePerRegion.Enabled = (core.nRegions > 0)
 
@@ -51,10 +52,12 @@ Public Class dlgRandomizeMPA
     End Sub
 
     Private Sub UpdateControls()
-        Me.m_btnCloseCells.Enabled = (Me.m_cmbMPA.SelectedIndex > 0)
+        Dim iSrc As Integer = Me.m_cmbSrcMPA.SelectedIndex
+        Dim iDst As Integer = Me.m_cmbDestMPA.SelectedIndex
+        Me.m_btnCloseCells.Enabled = (iDst > 0) And (iSrc <> iDst)
     End Sub
 
-    Private Sub OnFormatMPA(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbMPA.Format
+    Private Sub OnFormatMPA(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbDestMPA.Format, m_cmbSrcMPA.Format
         Dim fmt As New cCoreInterfaceFormatter()
         e.Value = fmt.ToString(e.ListItem, EwEUtils.Utilities.eDescriptorTypes.Name)
     End Sub
@@ -62,14 +65,20 @@ Public Class dlgRandomizeMPA
     Private Sub OnCloseCells(sender As Object, e As EventArgs) Handles m_btnCloseCells.Click
 
         Dim core As cCore = Me.UIContext.Core
-        Dim mpa As cEcospaceMPA = DirectCast(Me.m_cmbMPA.SelectedItem, cEcospaceMPA)
+        Dim mpaSrc As cEcospaceMPA = DirectCast(Me.m_cmbSrcMPA.SelectedItem, cEcospaceMPA)
+        Dim mpaDst As cEcospaceMPA = DirectCast(Me.m_cmbDestMPA.SelectedItem, cEcospaceMPA)
         Dim bm As cEcospaceBasemap = core.EcospaceBasemap
         Dim mapDepth As cEcospaceLayerDepth = bm.LayerDepth
         Dim mapRegions As cEcospaceLayerRegion = bm.LayerRegion
-        Dim mapMPA As cEcospaceLayerMPA = bm.LayerMPA(mpa.Index)
+        Dim mapMPADst As cEcospaceLayerMPA = bm.LayerMPA(mpaDst.Index)
+        Dim mapMPASrc As cEcospaceLayerMPA = Nothing
         Dim nR As Integer = bm.InRow
         Dim nC As Integer = bm.InCol
         Dim rnd As New Random()
+
+        If (mpaSrc IsNot Nothing) Then
+            mapMPASrc = bm.LayerMPA(mpaSrc.Index)
+        End If
 
         Dim iFrom As Integer = 1
         Dim iTo As Integer = If(Me.m_cbClosePerRegion.Checked, core.nRegions, 1)
@@ -78,6 +87,8 @@ Public Class dlgRandomizeMPA
         For i As Integer = iFrom To iTo
 
             Dim lCells As New List(Of Integer)
+            Dim nClaimed As Integer = 0
+
             For iRow As Integer = 1 To nR
                 For iCol As Integer = 1 To nC
                     Dim bUseCell As Boolean = mapDepth.IsWaterCell(iRow, iCol)
@@ -85,32 +96,43 @@ Public Class dlgRandomizeMPA
                         bUseCell = (i = CInt(mapRegions.Cell(iRow, iCol)))
                     End If
                     If bUseCell Then
-                        Dim x As Integer = (iRow - 1) * nC + iCol
-                        If (lCells.Count = 0) Then
-                            lCells.Add(x)
-                        Else
-                            lCells.Insert(CInt((rnd.NextDouble * 13 * lCells.Count) Mod lCells.Count), x)
+                        ' Already claimed?
+                        Dim bClaimed As Boolean = False
+                        If (mapMPASrc IsNot Nothing) Then
+                            bClaimed = (CInt(mapMPASrc.Cell(iRow, iCol)) > 0)
                         End If
-                        mapMPA.Cell(iRow, iCol) = 0
+                        If (Not bClaimed) Then
+                            Dim x As Integer = bm.RowColToCell(iRow, iCol)
+                            If (lCells.Count = 0) Then
+                                lCells.Add(x)
+                            Else
+                                lCells.Insert(CInt((rnd.NextDouble * 13 * lCells.Count) Mod lCells.Count), x)
+                            End If
+                            mapMPADst.Cell(iRow, iCol) = 0
+                        Else
+                            nClaimed += 1
+                            mapMPADst.Cell(iRow, iCol) = 1
+                        End If
                     End If
                 Next iCol
             Next iRow
 
-            For x As Integer = 1 To CInt(Me.m_nudPercentage.Value * lCells.Count / 100)
-                Dim iRow As Integer = (lCells(0) - 1) \ nC + 1
-                Dim iCol As Integer = (lCells(0) - 1) Mod nC + 1
-                mapMPA.Cell(iRow, iCol) = 1
+            For x As Integer = 1 To CInt(Me.m_nudPercentage.Value * lCells.Count / 100) - nClaimed
+                Dim iRow, iCol As Integer
+                bm.CellToRowCol(lCells(0), iRow, iCol)
+                mapMPADst.Cell(iRow, iCol) = 1
                 lCells.RemoveAt(0)
             Next
         Next
 
-        mapMPA.Invalidate()
-        core.onChanged(mapMPA)
+        mapMPADst.Invalidate()
+        core.onChanged(mapMPADst)
         core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
 
     End Sub
 
-    Private Sub OnMPASelected(sender As Object, e As EventArgs) Handles m_cmbMPA.SelectedIndexChanged
+    Private Sub OnMPASelected(sender As Object, e As EventArgs) _
+        Handles m_cmbDestMPA.SelectedIndexChanged, m_cmbSrcMPA.SelectedIndexChanged
         Me.UpdateControls()
     End Sub
 
