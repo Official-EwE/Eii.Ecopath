@@ -55,6 +55,7 @@ Namespace Style
             Implements ITypeFormatter.ToString
 
             If (value Is Nothing) Then Return Me.m_strNone
+            If (Not TypeOf value Is ICoreInterface) Then Return value.ToString
 
             Try
                 Dim obj As ICoreInterface = DirectCast(value, ICoreInterface)
