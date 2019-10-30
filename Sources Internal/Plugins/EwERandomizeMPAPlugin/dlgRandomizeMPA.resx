@@ -144,7 +144,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblMPA.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_lblClose.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -171,7 +171,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblClose.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_cmbMPA.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -196,13 +196,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cmbMPA.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
+  </data>
+  <data name="m_nudPercentage.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_nudPercentage.Location" type="System.Drawing.Point, System.Drawing">
     <value>71, 42</value>
   </data>
   <data name="m_nudPercentage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 20</value>
+    <value>152, 20</value>
   </data>
   <data name="m_nudPercentage.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -217,16 +220,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_nudPercentage.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
+  </data>
+  <data name="m_btnCloseCells.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="m_btnCloseCells.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 39</value>
+    <value>148, 68</value>
   </data>
   <data name="m_btnCloseCells.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="m_btnCloseCells.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_btnCloseCells.Text" xml:space="preserve">
     <value>&amp;Close cells</value>
@@ -241,6 +247,33 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCloseCells.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_cbClosePerRegion.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbClosePerRegion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>71, 72</value>
+  </data>
+  <data name="m_cbClosePerRegion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 17</value>
+  </data>
+  <data name="m_cbClosePerRegion.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_cbClosePerRegion.Text" xml:space="preserve">
+    <value>&amp;Per region</value>
+  </data>
+  <data name="&gt;&gt;m_cbClosePerRegion.Name" xml:space="preserve">
+    <value>m_cbClosePerRegion</value>
+  </data>
+  <data name="&gt;&gt;m_cbClosePerRegion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbClosePerRegion.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbClosePerRegion.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -250,7 +283,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>235, 74</value>
+    <value>235, 104</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Randomize MPA</value>

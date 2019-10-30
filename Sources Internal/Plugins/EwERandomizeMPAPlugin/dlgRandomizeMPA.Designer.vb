@@ -47,6 +47,7 @@ Partial Class dlgRandomizeMPA
         Me.m_cmbMPA = New System.Windows.Forms.ComboBox()
         Me.m_nudPercentage = New System.Windows.Forms.NumericUpDown()
         Me.m_btnCloseCells = New System.Windows.Forms.Button()
+        Me.m_cbClosePerRegion = New System.Windows.Forms.CheckBox()
         CType(Me.m_nudPercentage, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -69,8 +70,8 @@ Partial Class dlgRandomizeMPA
         '
         'm_nudPercentage
         '
-        Me.m_nudPercentage.Increment = New Decimal(New Integer() {5, 0, 0, 0})
         resources.ApplyResources(Me.m_nudPercentage, "m_nudPercentage")
+        Me.m_nudPercentage.Increment = New Decimal(New Integer() {5, 0, 0, 0})
         Me.m_nudPercentage.Minimum = New Decimal(New Integer() {5, 0, 0, 0})
         Me.m_nudPercentage.Name = "m_nudPercentage"
         Me.m_nudPercentage.Value = New Decimal(New Integer() {5, 0, 0, 0})
@@ -81,10 +82,17 @@ Partial Class dlgRandomizeMPA
         Me.m_btnCloseCells.Name = "m_btnCloseCells"
         Me.m_btnCloseCells.UseVisualStyleBackColor = True
         '
+        'm_cbClosePerRegion
+        '
+        resources.ApplyResources(Me.m_cbClosePerRegion, "m_cbClosePerRegion")
+        Me.m_cbClosePerRegion.Name = "m_cbClosePerRegion"
+        Me.m_cbClosePerRegion.UseVisualStyleBackColor = True
+        '
         'dlgRandomizeMPA
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_cbClosePerRegion)
         Me.Controls.Add(Me.m_btnCloseCells)
         Me.Controls.Add(Me.m_nudPercentage)
         Me.Controls.Add(Me.m_cmbMPA)
@@ -107,4 +115,5 @@ Partial Class dlgRandomizeMPA
     Private WithEvents m_nudPercentage As Windows.Forms.NumericUpDown
     Private WithEvents m_btnCloseCells As Windows.Forms.Button
     Private WithEvents m_lblClose As Windows.Forms.Label
+    Private WithEvents m_cbClosePerRegion As Windows.Forms.CheckBox
 End Class
