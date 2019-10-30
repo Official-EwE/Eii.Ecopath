@@ -41,20 +41,24 @@ Public Class dlgRandomizeMPA
 
         Dim core As cCore = Me.UIContext.Core
 
+        Me.m_cmbSrcMPA.Items.Add("(none)")
         For i As Integer = 1 To Me.UIContext.Core.nMPAs
             Me.m_cmbDestMPA.Items.Add(core.EcospaceMPAs(i))
             Me.m_cmbSrcMPA.Items.Add(core.EcospaceMPAs(i))
         Next
+        Me.m_cmbSrcMPA.SelectedIndex = 0
+
         Me.m_cbClosePerRegion.Enabled = (core.nRegions > 0)
 
         Me.CenterToScreen()
         Me.UpdateControls()
+
     End Sub
 
     Private Sub UpdateControls()
         Dim iSrc As Integer = Me.m_cmbSrcMPA.SelectedIndex
         Dim iDst As Integer = Me.m_cmbDestMPA.SelectedIndex
-        Me.m_btnCloseCells.Enabled = (iDst > 0) And (iSrc <> iDst)
+        Me.m_btnCloseCells.Enabled = (iDst > 0) And ((iSrc - 1) <> iDst)
     End Sub
 
     Private Sub OnFormatMPA(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbDestMPA.Format, m_cmbSrcMPA.Format
@@ -65,7 +69,7 @@ Public Class dlgRandomizeMPA
     Private Sub OnCloseCells(sender As Object, e As EventArgs) Handles m_btnCloseCells.Click
 
         Dim core As cCore = Me.UIContext.Core
-        Dim mpaSrc As cEcospaceMPA = DirectCast(Me.m_cmbSrcMPA.SelectedItem, cEcospaceMPA)
+        Dim mpaSrc As cEcospaceMPA = Nothing
         Dim mpaDst As cEcospaceMPA = DirectCast(Me.m_cmbDestMPA.SelectedItem, cEcospaceMPA)
         Dim bm As cEcospaceBasemap = core.EcospaceBasemap
         Dim mapDepth As cEcospaceLayerDepth = bm.LayerDepth
@@ -76,7 +80,8 @@ Public Class dlgRandomizeMPA
         Dim nC As Integer = bm.InCol
         Dim rnd As New Random()
 
-        If (mpaSrc IsNot Nothing) Then
+        If (Me.m_cmbSrcMPA.SelectedIndex > 0) Then
+            mpaSrc = DirectCast(Me.m_cmbSrcMPA.SelectedItem, cEcospaceMPA)
             mapMPASrc = bm.LayerMPA(mpaSrc.Index)
         End If
 
@@ -88,6 +93,7 @@ Public Class dlgRandomizeMPA
 
             Dim lCells As New List(Of Integer)
             Dim nClaimed As Integer = 0
+            Dim nArea As Integer = 0
 
             For iRow As Integer = 1 To nR
                 For iCol As Integer = 1 To nC
@@ -113,11 +119,14 @@ Public Class dlgRandomizeMPA
                             nClaimed += 1
                             mapMPADst.Cell(iRow, iCol) = 1
                         End If
+                        nArea += 1
                     End If
                 Next iCol
             Next iRow
 
-            For x As Integer = 1 To CInt(Me.m_nudPercentage.Value * lCells.Count / 100) - nClaimed
+            Debug.Assert(nArea - nClaimed = lCells.Count)
+
+            For x As Integer = 1 To CInt(Me.m_nudPercentage.Value * nArea / 100) - nClaimed
                 Dim iRow, iCol As Integer
                 bm.CellToRowCol(lCells(0), iRow, iCol)
                 mapMPADst.Cell(iRow, iCol) = 1

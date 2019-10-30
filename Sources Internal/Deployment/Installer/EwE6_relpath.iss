@@ -3,9 +3,10 @@
 #include <idp.iss>
 
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 0
-#define Spinup 0
-#define SpatTemp 0
+#define Compile64Bit 1
+#define Spinup 1
+#define SpatTemp 1
+#define RandomizeMPAs 1
 #define NetworkD3 0
 #define ExcludeDeadCells 0
 #define FISHMIP 0
@@ -34,7 +35,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.16411.0
+  VersionInfoVersion=6.6.16419.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -156,6 +157,9 @@ Source: "{#DefRoot}{#DefSrc}\EwEEcospaceExcludeIsolatedCellsPlugin.dll"; DestDir
 ; -- Stuff under development --
 #if Spinup == 1
 Source: "{#DefRoot}{#DefSrc}\EwEEcospaceSpinupPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\output\spinup
+#endif
+#if RandomizeMPAs == 1
+Source: "{#DefRoot}{#DefSrc}\EwERandomizeMPAPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion; Components: plugin\input\randomizeMPAs
 #endif
 #if SpatTemp == 1
 Source: "{#DefRoot}{#DefSrc}\EwESpatialAssetsPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
@@ -328,6 +332,9 @@ Name: "plugin\input\spattemp"; Description: "Spatial-temporal GIS data exchange 
 #endif
 #if Spinup == 1
 Name: "plugin\output\spinup"; Description: "Ecospace spin-up"; Types: full
+#endif
+#if RandomizeMPAs == 1
+Name: "plugin\input\randomizeMPAs"; Description: "Randomize MPA cells"; Types: full
 #endif
 #if MSPTools == 1
 Name: "plugin\ui\msptools"; Description: "MSP tools"; Types: full
