@@ -86,6 +86,12 @@ Public Class dlgRandomizeMPA
 
     Private Sub OnCloseCells(sender As Object, e As EventArgs) Handles m_btnCloseCells.Click
 
+        ' Close cells of a target MPA to achieve a given percentage of cells closed in the area
+        ' - The given percentage is calculated across all watercells
+        ' - Cells where any type of enforcement is active (except for the target MPA) contribute towards the closed percentage
+        ' - The code can proportionally close cells in regions
+        ' - Optionally, a weight ASC map can be provided. High priority cells are sampled first before a lower priority is considered
+
         Dim core As cCore = Me.UIContext.Core
         Dim mpaDst As cEcospaceMPA = DirectCast(Me.m_cmbDestMPA.SelectedItem, cEcospaceMPA)
         Dim bm As cEcospaceBasemap = core.EcospaceBasemap
@@ -96,9 +102,11 @@ Public Class dlgRandomizeMPA
         Dim nC As Integer = bm.InCol
         Dim rnd As New Random()
 
+        ' -- Determine if regions need to be proportionally closed --
         Dim iFrom As Integer = 1
         Dim iTo As Integer = If(Me.m_cbClosePerRegion.Checked, core.nRegions, 1)
 
+        ' -- Make an inventary of cells closed to fishing by any MPA other than the target MPA --
         Dim mapProtected(nR, nC) As Boolean
         For iMPA As Integer = 1 To core.nMPAs
             Dim mpa As cEcospaceMPA = core.EcospaceMPAs(iMPA)
@@ -115,12 +123,8 @@ Public Class dlgRandomizeMPA
         Next iMPA
 
         core.SetBatchLock(cCore.eBatchLockType.Update)
-        For iRow As Integer = 1 To nR
-            For iCol As Integer = 1 To nC
-                mapDest.Cell(iRow, iCol) = 0
-            Next iCol
-        Next iRow
 
+        ' -- For all areas --
         For iArea As Integer = iFrom To iTo
 
             Dim nAreaCells As Integer = 0
@@ -130,32 +134,42 @@ Public Class dlgRandomizeMPA
             For iRow As Integer = 1 To nR
                 For iCol As Integer = 1 To nC
 
+                    ' Is this a water cell in the current area?
                     Dim bUseCell As Boolean = mapDepth.IsWaterCell(iRow, iCol)
                     If (Me.m_cbClosePerRegion.Checked) Then
                         bUseCell = bUseCell And (iArea = CInt(mapRegions.Cell(iRow, iCol)))
                     End If
 
                     If bUseCell Then
+                        ' Count cell and wipe it
                         nAreaCells += 1
+                        mapDest.Cell(iRow, iCol) = 0
 
+                        ' Get the weight this value belongs to, 0 if no weight map is provided
                         Dim iKey As Integer = 0
                         If (Me.m_imp IsNot Nothing) Then
                             iKey = CInt(Me.m_imp.Value(iRow, iCol))
                         End If
 
+                        ' Just to make sure
                         If (iKey >= 0) Then
-                            If (Not dtCells.ContainsKey(iKey)) Then
-                                dtCells(iKey) = New List(Of Integer)
-                            End If
 
+                            ' Is the cell not protected?
                             If mapProtected(iRow, iCol) = False Then
+                                ' Get cell index
                                 Dim x As Integer = bm.RowColToCell(iRow, iCol)
+                                ' Make sure a list exists to add the cell index to
+                                If (Not dtCells.ContainsKey(iKey)) Then
+                                    dtCells(iKey) = New List(Of Integer)
+                                End If
+                                ' Add cell index to the list at a random location (to shuffle the list)
                                 If (dtCells(iKey).Count = 0) Then
                                     dtCells(iKey).Add(x)
                                 Else
                                     dtCells(iKey).Insert(CInt((rnd.NextDouble * 13 * dtCells(iKey).Count) Mod dtCells(iKey).Count), x)
                                 End If
                             Else
+                                ' Count occupied cell
                                 nOccupiedCells += 1
                             End If
                         End If
@@ -163,24 +177,24 @@ Public Class dlgRandomizeMPA
                 Next iCol
             Next iRow
 
+            ' Get the weight keys, sort em, and inverse with highest weight first
             Dim keys As Integer() = dtCells.Keys.ToArray()
             Array.Sort(keys)
             Array.Reverse(keys)
 
+            ' Construct cell index list to sample from
             Dim lCells As New List(Of Integer)
             For j As Integer = 0 To keys.Length - 1
                 lCells.AddRange(dtCells(keys(j)))
             Next
 
-            Dim n As Integer = 0
+            ' Update destination map
             For x As Integer = 1 To CInt(Math.Ceiling(Me.m_nudPercentage.Value * nAreaCells / 100)) - nOccupiedCells
                 Dim iRow, iCol As Integer
                 bm.CellToRowCol(lCells(0), iRow, iCol)
                 mapDest.Cell(iRow, iCol) = 1
                 lCells.RemoveAt(0)
-                n += 1
             Next
-            Console.WriteLine("Closed {0} cells for area {1} - out of {2} with {3} already protected", n, iArea, nAreaCells, nOccupiedCells)
         Next
 
         mapDest.Invalidate()
