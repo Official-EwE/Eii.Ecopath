@@ -28,7 +28,7 @@ Imports ScientificInterfaceShared.Style
 
 Public Class dlgRandomizeMPA
 
-    Private m_imp As New cEcospaceImportExportASCIIData
+    Private m_imp As cEcospaceImportExportASCIIData = Nothing
 
     Public Sub New()
         Me.InitializeComponent()
@@ -67,12 +67,20 @@ Public Class dlgRandomizeMPA
     End Sub
 
     Private Sub OnBrowse(sender As Object, e As EventArgs) Handles m_btnPick.Click
+
+        Me.m_imp = Nothing
+        Me.m_tbxWeight.Text = ""
+
         Dim ofd As New OpenFileDialog()
         ofd.Filter = "ASCII maps|*.asc;*.txt"
         ofd.CheckFileExists = True
+
         If ofd.ShowDialog() = DialogResult.OK Then
-            Me.m_imp.Read(ofd.FileName)
-            ' ToDO: validate if compatible with basemap
+            Dim imp As New cEcospaceImportExportASCIIData(Me.UIContext.Core)
+            If imp.Read(ofd.FileName) Then
+                Me.m_imp = imp
+                Me.m_tbxWeight.Text = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName)
+            End If
         End If
     End Sub
 
@@ -83,18 +91,16 @@ Public Class dlgRandomizeMPA
         Dim bm As cEcospaceBasemap = core.EcospaceBasemap
         Dim mapDepth As cEcospaceLayerDepth = bm.LayerDepth
         Dim mapRegions As cEcospaceLayerRegion = bm.LayerRegion
-        Dim mapMPADst As cEcospaceLayerMPA = bm.LayerMPA(mpaDst.Index)
+        Dim mapDest As cEcospaceLayerMPA = bm.LayerMPA(mpaDst.Index)
         Dim nR As Integer = bm.InRow
         Dim nC As Integer = bm.InCol
         Dim rnd As New Random()
 
         Dim iFrom As Integer = 1
         Dim iTo As Integer = If(Me.m_cbClosePerRegion.Checked, core.nRegions, 1)
-        Dim dtCells As New Dictionary(Of Integer, List(Of Integer))
-
 
         Dim mapProtected(nR, nC) As Boolean
-        For iMPA As Integer = 1 To 5 ' core.nMPAs
+        For iMPA As Integer = 1 To core.nMPAs
             Dim mpa As cEcospaceMPA = core.EcospaceMPAs(iMPA)
             If mpa.IsActive And iMPA <> mpaDst.Index Then
                 Dim map As cEcospaceLayerMPA = bm.LayerMPA(iMPA)
@@ -109,25 +115,31 @@ Public Class dlgRandomizeMPA
         Next iMPA
 
         core.SetBatchLock(cCore.eBatchLockType.Update)
-        For i As Integer = iFrom To iTo
+        For iRow As Integer = 1 To nR
+            For iCol As Integer = 1 To nC
+                mapDest.Cell(iRow, iCol) = 0
+            Next iCol
+        Next iRow
 
-            Dim nArea As Integer = 0
-            Dim nClaimed As Integer = 0
+        For iArea As Integer = iFrom To iTo
+
+            Dim nAreaCells As Integer = 0
+            Dim nOccupiedCells As Integer = 0
+            Dim dtCells As New Dictionary(Of Integer, List(Of Integer))
 
             For iRow As Integer = 1 To nR
                 For iCol As Integer = 1 To nC
 
                     Dim bUseCell As Boolean = mapDepth.IsWaterCell(iRow, iCol)
                     If (Me.m_cbClosePerRegion.Checked) Then
-                        bUseCell = (i = CInt(mapRegions.Cell(iRow, iCol)))
+                        bUseCell = bUseCell And (iArea = CInt(mapRegions.Cell(iRow, iCol)))
                     End If
 
                     If bUseCell Then
-                        nArea += 1
-                        mapMPADst.Cell(iRow, iCol) = 0
+                        nAreaCells += 1
 
                         Dim iKey As Integer = 0
-                        If (Me.m_imp.NumCells > 0) Then
+                        If (Me.m_imp IsNot Nothing) Then
                             iKey = CInt(Me.m_imp.Value(iRow, iCol))
                         End If
 
@@ -144,7 +156,7 @@ Public Class dlgRandomizeMPA
                                     dtCells(iKey).Insert(CInt((rnd.NextDouble * 13 * dtCells(iKey).Count) Mod dtCells(iKey).Count), x)
                                 End If
                             Else
-                                nClaimed += 1
+                                nOccupiedCells += 1
                             End If
                         End If
                     End If
@@ -160,16 +172,19 @@ Public Class dlgRandomizeMPA
                 lCells.AddRange(dtCells(keys(j)))
             Next
 
-            For x As Integer = 1 To CInt(Me.m_nudPercentage.Value * nArea / 100) - nClaimed
+            Dim n As Integer = 0
+            For x As Integer = 1 To CInt(Math.Ceiling(Me.m_nudPercentage.Value * nAreaCells / 100)) - nOccupiedCells
                 Dim iRow, iCol As Integer
                 bm.CellToRowCol(lCells(0), iRow, iCol)
-                mapMPADst.Cell(iRow, iCol) = 1
+                mapDest.Cell(iRow, iCol) = 1
                 lCells.RemoveAt(0)
+                n += 1
             Next
+            Console.WriteLine("Closed {0} cells for area {1} - out of {2} with {3} already protected", n, iArea, nAreaCells, nOccupiedCells)
         Next
 
-        mapMPADst.Invalidate()
-        core.onChanged(mapMPADst)
+        mapDest.Invalidate()
+        core.onChanged(mapDest)
         core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)
 
     End Sub
@@ -180,7 +195,8 @@ Public Class dlgRandomizeMPA
 
     Private Sub UpdateControls()
         Dim iDst As Integer = Me.m_cmbDestMPA.SelectedIndex
-        Me.m_btnCloseCells.Enabled = (iDst > 0)
+        Me.m_btnCloseCells.Enabled = (iDst >= 0)
+        Me.m_tbxWeight.Text = ""
     End Sub
 
 #End Region ' Internals
