@@ -28,11 +28,11 @@ Imports ScientificInterfaceShared.Style
 
 Public Class dlgRandomizeMPA
 
+    Private m_imp As New cEcospaceImportExportASCIIData
+
     Public Sub New()
         Me.InitializeComponent()
     End Sub
-
-    Public Property UIContext As cUIContext
 
     Protected Overrides Sub OnLoad(e As EventArgs)
         MyBase.OnLoad(e)
@@ -41,12 +41,9 @@ Public Class dlgRandomizeMPA
 
         Dim core As cCore = Me.UIContext.Core
 
-        Me.m_cmbSrcMPA.Items.Add("(none)")
         For i As Integer = 1 To Me.UIContext.Core.nMPAs
             Me.m_cmbDestMPA.Items.Add(core.EcospaceMPAs(i))
-            Me.m_cmbSrcMPA.Items.Add(core.EcospaceMPAs(i))
         Next
-        Me.m_cmbSrcMPA.SelectedIndex = 0
 
         Me.m_cbClosePerRegion.Enabled = (core.nRegions > 0)
 
@@ -55,76 +52,113 @@ Public Class dlgRandomizeMPA
 
     End Sub
 
-    Private Sub UpdateControls()
-        Dim iSrc As Integer = Me.m_cmbSrcMPA.SelectedIndex
-        Dim iDst As Integer = Me.m_cmbDestMPA.SelectedIndex
-        Me.m_btnCloseCells.Enabled = (iDst > 0) And ((iSrc - 1) <> iDst)
-    End Sub
+    Public Property UIContext As cUIContext
 
-    Private Sub OnFormatMPA(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbDestMPA.Format, m_cmbSrcMPA.Format
+#Region " Events "
+
+    Private Sub OnFormatMPA(sender As Object, e As ListControlConvertEventArgs) Handles m_cmbDestMPA.Format
         Dim fmt As New cCoreInterfaceFormatter()
         e.Value = fmt.ToString(e.ListItem, EwEUtils.Utilities.eDescriptorTypes.Name)
+    End Sub
+
+    Private Sub OnMPASelected(sender As Object, e As EventArgs) _
+        Handles m_cmbDestMPA.SelectedIndexChanged
+        Me.UpdateControls()
+    End Sub
+
+    Private Sub OnBrowse(sender As Object, e As EventArgs) Handles m_btnPick.Click
+        Dim ofd As New OpenFileDialog()
+        ofd.Filter = "ASCII maps|*.asc;*.txt"
+        ofd.CheckFileExists = True
+        If ofd.ShowDialog() = DialogResult.OK Then
+            Me.m_imp.Read(ofd.FileName)
+            ' ToDO: validate if compatible with basemap
+        End If
     End Sub
 
     Private Sub OnCloseCells(sender As Object, e As EventArgs) Handles m_btnCloseCells.Click
 
         Dim core As cCore = Me.UIContext.Core
-        Dim mpaSrc As cEcospaceMPA = Nothing
         Dim mpaDst As cEcospaceMPA = DirectCast(Me.m_cmbDestMPA.SelectedItem, cEcospaceMPA)
         Dim bm As cEcospaceBasemap = core.EcospaceBasemap
         Dim mapDepth As cEcospaceLayerDepth = bm.LayerDepth
         Dim mapRegions As cEcospaceLayerRegion = bm.LayerRegion
         Dim mapMPADst As cEcospaceLayerMPA = bm.LayerMPA(mpaDst.Index)
-        Dim mapMPASrc As cEcospaceLayerMPA = Nothing
         Dim nR As Integer = bm.InRow
         Dim nC As Integer = bm.InCol
         Dim rnd As New Random()
 
-        If (Me.m_cmbSrcMPA.SelectedIndex > 0) Then
-            mpaSrc = DirectCast(Me.m_cmbSrcMPA.SelectedItem, cEcospaceMPA)
-            mapMPASrc = bm.LayerMPA(mpaSrc.Index)
-        End If
-
         Dim iFrom As Integer = 1
         Dim iTo As Integer = If(Me.m_cbClosePerRegion.Checked, core.nRegions, 1)
+        Dim dtCells As New Dictionary(Of Integer, List(Of Integer))
+
+
+        Dim mapProtected(nR, nC) As Boolean
+        For iMPA As Integer = 1 To 5 ' core.nMPAs
+            Dim mpa As cEcospaceMPA = core.EcospaceMPAs(iMPA)
+            If mpa.IsActive And iMPA <> mpaDst.Index Then
+                Dim map As cEcospaceLayerMPA = bm.LayerMPA(iMPA)
+                For iRow As Integer = 1 To nR
+                    For iCol As Integer = 1 To nC
+                        If (CInt(map.Cell(iRow, iCol)) > 0) Then
+                            mapProtected(iRow, iCol) = True
+                        End If
+                    Next iCol
+                Next iRow
+            End If
+        Next iMPA
 
         core.SetBatchLock(cCore.eBatchLockType.Update)
         For i As Integer = iFrom To iTo
 
-            Dim lCells As New List(Of Integer)
-            Dim nClaimed As Integer = 0
             Dim nArea As Integer = 0
+            Dim nClaimed As Integer = 0
 
             For iRow As Integer = 1 To nR
                 For iCol As Integer = 1 To nC
+
                     Dim bUseCell As Boolean = mapDepth.IsWaterCell(iRow, iCol)
                     If (Me.m_cbClosePerRegion.Checked) Then
                         bUseCell = (i = CInt(mapRegions.Cell(iRow, iCol)))
                     End If
+
                     If bUseCell Then
-                        ' Already claimed?
-                        Dim bClaimed As Boolean = False
-                        If (mapMPASrc IsNot Nothing) Then
-                            bClaimed = (CInt(mapMPASrc.Cell(iRow, iCol)) > 0)
-                        End If
-                        If (Not bClaimed) Then
-                            Dim x As Integer = bm.RowColToCell(iRow, iCol)
-                            If (lCells.Count = 0) Then
-                                lCells.Add(x)
-                            Else
-                                lCells.Insert(CInt((rnd.NextDouble * 13 * lCells.Count) Mod lCells.Count), x)
-                            End If
-                            mapMPADst.Cell(iRow, iCol) = 0
-                        Else
-                            nClaimed += 1
-                            mapMPADst.Cell(iRow, iCol) = 1
-                        End If
                         nArea += 1
+                        mapMPADst.Cell(iRow, iCol) = 0
+
+                        Dim iKey As Integer = 0
+                        If (Me.m_imp.NumCells > 0) Then
+                            iKey = CInt(Me.m_imp.Value(iRow, iCol))
+                        End If
+
+                        If (iKey >= 0) Then
+                            If (Not dtCells.ContainsKey(iKey)) Then
+                                dtCells(iKey) = New List(Of Integer)
+                            End If
+
+                            If mapProtected(iRow, iCol) = False Then
+                                Dim x As Integer = bm.RowColToCell(iRow, iCol)
+                                If (dtCells(iKey).Count = 0) Then
+                                    dtCells(iKey).Add(x)
+                                Else
+                                    dtCells(iKey).Insert(CInt((rnd.NextDouble * 13 * dtCells(iKey).Count) Mod dtCells(iKey).Count), x)
+                                End If
+                            Else
+                                nClaimed += 1
+                            End If
+                        End If
                     End If
                 Next iCol
             Next iRow
 
-            Debug.Assert(nArea - nClaimed = lCells.Count)
+            Dim keys As Integer() = dtCells.Keys.ToArray()
+            Array.Sort(keys)
+            Array.Reverse(keys)
+
+            Dim lCells As New List(Of Integer)
+            For j As Integer = 0 To keys.Length - 1
+                lCells.AddRange(dtCells(keys(j)))
+            Next
 
             For x As Integer = 1 To CInt(Me.m_nudPercentage.Value * nArea / 100) - nClaimed
                 Dim iRow, iCol As Integer
@@ -140,9 +174,15 @@ Public Class dlgRandomizeMPA
 
     End Sub
 
-    Private Sub OnMPASelected(sender As Object, e As EventArgs) _
-        Handles m_cmbDestMPA.SelectedIndexChanged, m_cmbSrcMPA.SelectedIndexChanged
-        Me.UpdateControls()
+#End Region ' Events
+
+#Region " Internals "
+
+    Private Sub UpdateControls()
+        Dim iDst As Integer = Me.m_cmbDestMPA.SelectedIndex
+        Me.m_btnCloseCells.Enabled = (iDst > 0)
     End Sub
+
+#End Region ' Internals
 
 End Class

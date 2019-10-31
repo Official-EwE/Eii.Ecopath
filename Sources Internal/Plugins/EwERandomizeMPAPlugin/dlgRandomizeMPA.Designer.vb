@@ -49,7 +49,8 @@ Partial Class dlgRandomizeMPA
         Me.m_btnCloseCells = New System.Windows.Forms.Button()
         Me.m_cbClosePerRegion = New System.Windows.Forms.CheckBox()
         Me.m_lblFrom = New System.Windows.Forms.Label()
-        Me.m_cmbSrcMPA = New System.Windows.Forms.ComboBox()
+        Me.m_tbxWeight = New System.Windows.Forms.TextBox()
+        Me.m_btnPick = New System.Windows.Forms.Button()
         CType(Me.m_nudPercentage, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -96,21 +97,27 @@ Partial Class dlgRandomizeMPA
         resources.ApplyResources(Me.m_lblFrom, "m_lblFrom")
         Me.m_lblFrom.Name = "m_lblFrom"
         '
-        'm_cmbSrcMPA
+        'm_tbxWeight
         '
-        resources.ApplyResources(Me.m_cmbSrcMPA, "m_cmbSrcMPA")
-        Me.m_cmbSrcMPA.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_cmbSrcMPA.FormattingEnabled = True
-        Me.m_cmbSrcMPA.Name = "m_cmbSrcMPA"
+        resources.ApplyResources(Me.m_tbxWeight, "m_tbxWeight")
+        Me.m_tbxWeight.Name = "m_tbxWeight"
+        Me.m_tbxWeight.ReadOnly = True
+        '
+        'm_btnPick
+        '
+        resources.ApplyResources(Me.m_btnPick, "m_btnPick")
+        Me.m_btnPick.Name = "m_btnPick"
+        Me.m_btnPick.UseVisualStyleBackColor = True
         '
         'dlgRandomizeMPA
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_btnPick)
+        Me.Controls.Add(Me.m_tbxWeight)
         Me.Controls.Add(Me.m_cbClosePerRegion)
         Me.Controls.Add(Me.m_btnCloseCells)
         Me.Controls.Add(Me.m_nudPercentage)
-        Me.Controls.Add(Me.m_cmbSrcMPA)
         Me.Controls.Add(Me.m_cmbDestMPA)
         Me.Controls.Add(Me.m_lblFrom)
         Me.Controls.Add(Me.m_lblClose)
@@ -134,5 +141,6 @@ Partial Class dlgRandomizeMPA
     Private WithEvents m_lblClose As Windows.Forms.Label
     Private WithEvents m_cbClosePerRegion As Windows.Forms.CheckBox
     Private WithEvents m_lblFrom As Windows.Forms.Label
-    Private WithEvents m_cmbSrcMPA As Windows.Forms.ComboBox
+    Private WithEvents m_tbxWeight As Windows.Forms.TextBox
+    Private WithEvents m_btnPick As Windows.Forms.Button
 End Class

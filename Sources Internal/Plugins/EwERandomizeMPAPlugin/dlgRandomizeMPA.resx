@@ -144,7 +144,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblMPA.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_lblClose.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -171,7 +171,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblClose.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_cmbDestMPA.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -196,7 +196,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cmbDestMPA.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_nudPercentage.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -220,7 +220,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_nudPercentage.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_btnCloseCells.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -232,7 +232,7 @@
     <value>90, 23</value>
   </data>
   <data name="m_btnCloseCells.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_btnCloseCells.Text" xml:space="preserve">
     <value>&amp;Close cells</value>
@@ -250,19 +250,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnCloseCells.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="m_cbClosePerRegion.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_cbClosePerRegion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 95</value>
+    <value>80, 100</value>
   </data>
   <data name="m_cbClosePerRegion.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 17</value>
   </data>
   <data name="m_cbClosePerRegion.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_cbClosePerRegion.Text" xml:space="preserve">
     <value>Per &amp;region</value>
@@ -277,7 +277,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbClosePerRegion.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_lblFrom.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -286,16 +286,16 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblFrom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 71</value>
+    <value>12, 73</value>
   </data>
   <data name="m_lblFrom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 13</value>
+    <value>49, 13</value>
   </data>
   <data name="m_lblFrom.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="m_lblFrom.Text" xml:space="preserve">
-    <value>&amp;Include:</value>
+    <value>&amp;Weights:</value>
   </data>
   <data name="&gt;&gt;m_lblFrom.Name" xml:space="preserve">
     <value>m_lblFrom</value>
@@ -307,31 +307,58 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblFrom.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
-  <data name="m_cmbSrcMPA.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_tbxWeight.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_cmbSrcMPA.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 68</value>
+  <data name="m_tbxWeight.Location" type="System.Drawing.Point, System.Drawing">
+    <value>80, 70</value>
   </data>
-  <data name="m_cmbSrcMPA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>143, 21</value>
+  <data name="m_tbxWeight.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 20</value>
   </data>
-  <data name="m_cmbSrcMPA.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_tbxWeight.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;m_cmbSrcMPA.Name" xml:space="preserve">
-    <value>m_cmbSrcMPA</value>
+  <data name="&gt;&gt;m_tbxWeight.Name" xml:space="preserve">
+    <value>m_tbxWeight</value>
   </data>
-  <data name="&gt;&gt;m_cmbSrcMPA.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tbxWeight.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_cmbSrcMPA.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_tbxWeight.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_cmbSrcMPA.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;m_tbxWeight.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_btnPick.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnPick.Location" type="System.Drawing.Point, System.Drawing">
+    <value>200, 68</value>
+  </data>
+  <data name="m_btnPick.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 23</value>
+  </data>
+  <data name="m_btnPick.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_btnPick.Text" xml:space="preserve">
+    <value>..</value>
+  </data>
+  <data name="&gt;&gt;m_btnPick.Name" xml:space="preserve">
+    <value>m_btnPick</value>
+  </data>
+  <data name="&gt;&gt;m_btnPick.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnPick.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnPick.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
