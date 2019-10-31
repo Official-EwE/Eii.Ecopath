@@ -23,6 +23,7 @@ Imports System.Windows.Forms
 Imports EwECore
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -72,7 +73,7 @@ Public Class dlgRandomizeMPA
         Me.m_tbxWeight.Text = ""
 
         Dim ofd As New OpenFileDialog()
-        ofd.Filter = "ASCII maps|*.asc;*.txt"
+        ofd.Filter = SharedResources.FILEFILTER_ASC
         ofd.CheckFileExists = True
 
         If ofd.ShowDialog() = DialogResult.OK Then
@@ -122,6 +123,7 @@ Public Class dlgRandomizeMPA
             End If
         Next iMPA
 
+        ' Start making changes
         core.SetBatchLock(cCore.eBatchLockType.Update)
 
         ' -- For all areas --
@@ -197,6 +199,7 @@ Public Class dlgRandomizeMPA
             Next
         Next
 
+        ' Commit changes
         mapDest.Invalidate()
         core.onChanged(mapDest)
         core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecospace)

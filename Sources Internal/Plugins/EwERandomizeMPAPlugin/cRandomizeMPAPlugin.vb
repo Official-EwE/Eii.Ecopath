@@ -45,7 +45,7 @@ Public Class cRandomizeMPAPlugin
 
     Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
         Get
-            Return "Randomize MPA cells"
+            Return "Randomly close additional cells to achieve a total percentage covered by MPAs in the modelled area."
         End Get
     End Property
 
@@ -75,7 +75,7 @@ Public Class cRandomizeMPAPlugin
 
     Public ReadOnly Property Author As String Implements IPlugin.Author
         Get
-            Return "EwE dev team"
+            Return "Jeroen Steenbeek, Marta Coll"
         End Get
     End Property
 
@@ -87,9 +87,8 @@ Public Class cRandomizeMPAPlugin
 
     Public Sub OnControlClick(sender As Object, e As EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements IGUIPlugin.OnControlClick
 
-        If (Me.m_uic.Core.nMPAs = 0) Then
-            Return
-        End If
+        ' Need MPAs to work
+        If (Me.m_uic.Core.nMPAs = 0) Then Return
 
         Dim dlg As New dlgRandomizeMPA()
         dlg.UIContext = Me.m_uic
