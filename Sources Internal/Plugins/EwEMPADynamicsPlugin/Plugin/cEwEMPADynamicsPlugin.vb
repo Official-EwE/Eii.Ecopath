@@ -93,12 +93,6 @@ Public Class cEwEMPADynamicsPlugin
         End Get
     End Property
 
-    Public ReadOnly Property ControlText As String Implements IGUIPlugin.ControlText
-        Get
-            Return My.Resources.PLUGIN_TITLE
-        End Get
-    End Property
-
     Public ReadOnly Property ControlTooltipText As String Implements IGUIPlugin.ControlTooltipText
         Get
             Return ""
@@ -118,6 +112,12 @@ Public Class cEwEMPADynamicsPlugin
     Public ReadOnly Property NavigationTreeItemLocation As String Implements INavigationTreeItemPlugin.NavigationTreeItemLocation
         Get
             Return "ndSpatialDynamic\ndEcospaceInput\ndEcospaceFishery"
+        End Get
+    End Property
+
+    Public ReadOnly Property DisplayName As String Implements IPlugin.DisplayName
+        Get
+            Return My.Resources.PLUGIN_TITLE
         End Get
     End Property
 
@@ -186,5 +186,15 @@ Public Class cEwEMPADynamicsPlugin
     End Sub
 
 #End Region ' Internals
+
+#Region " Remote access "
+
+    Public ReadOnly Property Engine As cMPADynamicsEngine
+        Get
+            Return Me.m_engine
+        End Get
+    End Property
+
+#End Region ' Remote access
 
 End Class

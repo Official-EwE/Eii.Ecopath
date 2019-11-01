@@ -377,7 +377,7 @@ Public Class cEcospaceBasemap
 
     Public Overrides Function SetVariable(VarName As eVarNameFlags,
                                           newValue As Object,
-                                          Optional iSecondaryIndex As Integer = -9999, Optional ByVal iThirdIndex As Integer = -9999) As Boolean
+                                          Optional iSecondaryIndex As Integer = -9999, Optional iThirdIndex As Integer = -9999) As Boolean
 
         ' JS 07Jul14: cell size is now a derived value
         If (VarName = eVarNameFlags.CellSize) Then
@@ -401,7 +401,7 @@ Public Class cEcospaceBasemap
         Get
             Return CInt(GetVariable(eVarNameFlags.InRow))
         End Get
-        Friend Set(ByVal value As Integer)
+        Friend Set(value As Integer)
             SetVariable(eVarNameFlags.InRow, value)
         End Set
     End Property
@@ -416,7 +416,7 @@ Public Class cEcospaceBasemap
         Get
             Return CInt(GetVariable(eVarNameFlags.InCol))
         End Get
-        Friend Set(ByVal value As Integer)
+        Friend Set(value As Integer)
             SetVariable(eVarNameFlags.InCol, value)
         End Set
     End Property
@@ -433,7 +433,7 @@ Public Class cEcospaceBasemap
             Return CSng(GetVariable(eVarNameFlags.CellLength))
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             SetVariable(eVarNameFlags.CellLength, value)
         End Set
 
@@ -457,7 +457,7 @@ Public Class cEcospaceBasemap
             Return CSng(GetVariable(eVarNameFlags.CellSize))
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             SetVariable(eVarNameFlags.CellSize, value)
         End Set
 
@@ -474,7 +474,7 @@ Public Class cEcospaceBasemap
             Return CSng(GetVariable(eVarNameFlags.Latitude))
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             SetVariable(eVarNameFlags.Latitude, value)
         End Set
 
@@ -491,7 +491,7 @@ Public Class cEcospaceBasemap
             Return CSng(GetVariable(eVarNameFlags.Longitude))
         End Get
 
-        Set(ByVal value As Single)
+        Set(value As Single)
             SetVariable(eVarNameFlags.Longitude, value)
         End Set
 
@@ -508,7 +508,7 @@ Public Class cEcospaceBasemap
             Return New Drawing.PointF(CSng(GetVariable(eVarNameFlags.Longitude)), CSng(GetVariable(eVarNameFlags.Latitude)))
         End Get
 
-        Set(ByVal value As Drawing.PointF)
+        Set(value As Drawing.PointF)
             SetVariable(eVarNameFlags.Longitude, value.X)
             SetVariable(eVarNameFlags.Latitude, value.Y)
         End Set
@@ -527,7 +527,7 @@ Public Class cEcospaceBasemap
                                       CSng(GetVariable(eVarNameFlags.Latitude)) - Me.CellSize * Me.InRow)
         End Get
 
-        Set(ByVal value As Drawing.PointF)
+        Set(value As Drawing.PointF)
             SetVariable(eVarNameFlags.Longitude, value.X - Me.CellSize * Me.InCol)
             SetVariable(eVarNameFlags.Latitude, value.Y - Me.CellSize * Me.InRow)
         End Set
@@ -575,7 +575,7 @@ Public Class cEcospaceBasemap
     ''' A cell is modelled when it represent water in the included cell range.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsModelledCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+    Public Function IsModelledCell(iRow As Integer, iCol As Integer) As Boolean
         Return Me.m_core.m_EcoSpaceData.Depth(iRow, iCol) > 0
     End Function
 
@@ -588,7 +588,7 @@ Public Class cEcospaceBasemap
     ''' <returns>True if the intended cell index falls within the map bounds,
     ''' False otherwise. No shades of grey here, let alone fifty of 'em. Ugh.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function IsValidCellPosition(ByVal iRow As Integer, iCol As Integer) As Boolean
+    Public Function IsValidCellPosition(iRow As Integer, iCol As Integer) As Boolean
         If (iRow < 1) Then Return False
         If (iCol < 1) Then Return False
         If (iRow > Me.InRow) Then Return False
@@ -606,7 +606,7 @@ Public Class cEcospaceBasemap
     ''' </summary>
     ''' <param name="index">Index from 1 to nLayerImportance</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerImportance(ByVal index As Integer) As cEcospaceLayerImportance
+    Public ReadOnly Property LayerImportance(index As Integer) As cEcospaceLayerImportance
         Get
             Try
                 Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerImportance)(index - 1), cEcospaceLayerImportance)
@@ -625,7 +625,7 @@ Public Class cEcospaceBasemap
     ''' </summary>
     ''' <param name="index">Index from 1 to nLayerDriver</param>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerDriver(ByVal index As Integer) As cEcospaceLayerDriver
+    Public ReadOnly Property LayerDriver(index As Integer) As cEcospaceLayerDriver
         Get
             Try
                 Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerDriver)(index - 1), cEcospaceLayerDriver)
@@ -686,7 +686,7 @@ Public Class cEcospaceBasemap
     ''' and are stored in one two-dimensional array.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property LayerHabitat(ByVal iHabitat As Integer) As cEcospaceLayerHabitat
+    Public ReadOnly Property LayerHabitat(iHabitat As Integer) As cEcospaceLayerHabitat
         Get
             Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerHabitat)(iHabitat - 1), cEcospaceLayerHabitat)
         End Get
@@ -886,7 +886,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceLayerManager.Layers"/>
     ''' -----------------------------------------------------------------------
-    Public Function Layers(Optional ByVal varName As eVarNameFlags = eVarNameFlags.NotSet) As cEcospaceLayer() _
+    Public Function Layers(Optional varName As eVarNameFlags = eVarNameFlags.NotSet) As cEcospaceLayer() _
         Implements IEcospaceLayerManager.Layers
 
         Select Case varName
@@ -915,7 +915,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceLayerManager.Layer"/>
     ''' -----------------------------------------------------------------------
-    Public Function Layer(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As cEcospaceLayer _
+    Public Function Layer(varName As eVarNameFlags, Optional iIndex As Integer = cCore.NULL_VALUE) As cEcospaceLayer _
         Implements IEcospaceLayerManager.Layer
 
         iIndex = Math.Max(iIndex, 1)
@@ -929,7 +929,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceLayerManager.LayerData"/>
     ''' -----------------------------------------------------------------------
-    Friend Function LayerData(ByVal varName As eVarNameFlags, iIndex As Integer) As Object _
+    Friend Function LayerData(varName As eVarNameFlags, iIndex As Integer) As Object _
         Implements IEcospaceLayerManager.LayerData
 
         Select Case varName
@@ -987,11 +987,11 @@ Public Class cEcospaceBasemap
 
 #Region " Cell position calculations "
 
-    Public Function ToCellSize(ByVal sCellLength As Single, ByVal bAssumeSquareCells As Boolean) As Single
+    Public Function ToCellSize(sCellLength As Single, bAssumeSquareCells As Boolean) As Single
         Return cEcospaceDataStructures.ToCellSize(sCellLength, bAssumeSquareCells)
     End Function
 
-    Public Function ToCellLength(ByVal sCellSize As Single, ByVal bAssumeSquareCells As Boolean) As Single
+    Public Function ToCellLength(sCellSize As Single, bAssumeSquareCells As Boolean) As Single
         Return cEcospaceDataStructures.ToCellLength(sCellSize, bAssumeSquareCells)
     End Function
 
@@ -1002,7 +1002,7 @@ Public Class cEcospaceBasemap
     ''' <param name="sRow"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function RowToLat(ByVal sRow As Single) As Single
+    Public Function RowToLat(sRow As Single) As Single
         ' ToDo: validate if this correct for basemaps in meters (AssumeSquareCells = true)
         Return Me.Latitude - (sRow - 1) * Me.CellSize
     End Function
@@ -1014,7 +1014,7 @@ Public Class cEcospaceBasemap
     ''' <param name="sLat"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function LatToRow(ByVal sLat As Single) As Single
+    Public Function LatToRow(sLat As Single) As Single
         ' ToDo: validate if this correct for basemaps in meters (AssumeSquareCells = true)
         Return CSng(((Me.Latitude - sLat) / Me.CellSize)) + 1
     End Function
@@ -1026,7 +1026,7 @@ Public Class cEcospaceBasemap
     ''' <param name="sCol"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function ColToLon(ByVal sCol As Single) As Single
+    Public Function ColToLon(sCol As Single) As Single
         ' ToDo: validate if this correct for basemaps in meters (AssumeSquareCells = true)
         Return Me.Longitude + (sCol - 1) * Me.CellSize
     End Function
@@ -1039,7 +1039,7 @@ Public Class cEcospaceBasemap
     ''' <param name="sLon"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function LonToCol(ByVal sLon As Single) As Single
+    Public Function LonToCol(sLon As Single) As Single
         ' ToDo: validate if this correct for basemaps in meters (AssumeSquareCells = true)
         Return 1 + CSng((sLon - Me.Longitude) / Me.CellSize)
     End Function
@@ -1053,6 +1053,30 @@ Public Class cEcospaceBasemap
         Return units.ToString(cUnits.Mapping)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Convert a row, col location to a sequential cell number.
+    ''' </summary>
+    ''' <param name="iRow"></param>
+    ''' <param name="iCol"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function RowColToCell(iRow As Integer, iCol As Integer) As Integer
+        Return (iRow - 1) * Me.InCol + iCol
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Convert a sequential cell number to a row, col location in the basemap.
+    ''' </summary>
+    ''' <param name="i"></param>
+    ''' <param name="iRow"></param>
+    ''' <param name="iCol"></param>
+    ''' -----------------------------------------------------------------------
+    Public Sub CellToRowCol(i As Integer, ByRef iRow As Integer, ByRef iCol As Integer)
+        iRow = (i - 1) \ Me.InCol + 1
+        iCol = (i - 1) Mod Me.InCol + 1
+    End Sub
 #End Region ' Cell calculations
 
 End Class

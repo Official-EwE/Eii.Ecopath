@@ -19,7 +19,6 @@
 
 Option Strict On
 Imports System.IO
-Imports System.Drawing
 Imports EwEUtils.Utilities
 
 ' ToDo: significantly improve sampling performance:
@@ -59,10 +58,6 @@ Public Class cMPARandomSearch
 
     Public Overrides ReadOnly Property OKtoRun() As Boolean
         Get
-            'Nothing to check here...
-            'Really??? That's hard to believe
-
-            'JS: Hah! I'll give you something to chew on!
             If (Me.m_data.bUseRegions) Then
 
                 ReDim Me.m_regionCells(Me.m_SpaceData.nRegions)
@@ -103,16 +98,51 @@ Public Class cMPARandomSearch
                 Next
             Next
 
+            ' Assess current protection
+            Dim IsProtected(iR, iC) As Boolean
+            Dim nProtected As Integer = 0
+            For iMPA As Integer = 1 To Me.m_SpaceData.MPAno
+                Dim bIsClosed As Boolean
+                Dim bIsApplied As Boolean
+                For i As Integer = 1 To cCore.N_MONTHS : bIsClosed = bIsClosed Or (Me.m_SpaceData.MPAmonth(i, iMPA) = False) : Next
+                For i As Integer = 1 To Me.m_SpaceData.nFleets : bIsApplied = bIsApplied Or (Me.m_SpaceData.MPAfishery(i, iMPA) = False) : Next
+                If (bIsClosed And bIsApplied And iMPA <> Me.m_data.iMPAtoUse) Then
+                    For irow As Integer = 1 To iR
+                        For icol As Integer = 1 To iC
+                            If ((Me.m_SpaceData.Depth(irow, icol) > 0) And (Me.m_SpaceData.MPA(iMPA)(irow, icol) > 0)) Then
+                                If (IsProtected(irow, icol) = False) Then
+                                    IsProtected(irow, icol) = True
+                                    nProtected += 1
+                                End If
+                            End If
+                        Next
+                    Next
+                End If
+            Next
+
             Me.CellCount = Me.m_watercells.Count
 
+            If (Me.CellCount = 0) Then
+                ' ToDo: globalize this
+                Me.WriteError("There are no water cells. MPA optimization will not run")
+                Return False
+            End If
+
+            'If ((100 * nProtected / Me.CellCount) > Me.m_data.MaxArea) Then
+            '    ' Reject a run if there are no cells left to close, e.g., if the max percentage protection
+            '    ' ToDo: globalize this
+            '    Me.WriteError(cStringUtils.Localize("The area is already protected by {0}%. MPA optimization will not run", (100 * nProtected / Me.CellCount)))
+            '    Return False
+            'End If
+
             If (Me.m_data.bUseRegions) Then
-                ' ToDo: perform some type of validation if regions are defined with a minimum # of cells each
-#If DEBUG Then
-                Console.WriteLine("cMPARandomSearch region assessment:")
                 For i As Integer = 1 To Me.m_SpaceData.nRegions
-                    Console.WriteLine(" Region {0:D3}: {1} cells", i, Me.m_regionSize(i))
+                    If (Me.m_regionSize(i) < 5) Then
+                        ' ToDo: globalize this
+                        Me.WriteError(cStringUtils.Localize("One or more regions contain less than 5 cells. MPA optimization will not run", (100 * nProtected / Me.CellCount)))
+                        Return False
+                    End If
                 Next
-#End If
             End If
 
             Return True
@@ -305,11 +335,11 @@ Public Class cMPARandomSearch
             End If
 
             'Now start selecting the ones to make MPAs
-            Dim iThisCell As Integer
-            Dim iC As Integer = 0
             Dim GetOut As Integer = 0
 
-            Do While iC < NumberMPA And GetOut < 100 * NumberMPA
+            Do While GetOut < 100 * NumberMPA
+
+                Dim iThisCell As Integer
 
                 'JS 26Oct19: determine which cells to use
                 If (GetOut = 0) Then
@@ -365,7 +395,6 @@ Public Class cMPARandomSearch
                             Dim reg As Integer = Me.m_SpaceData.Region(GetRow, GetCol)
                             Me.m_regionSet(reg) += 1
                         End If
-                        iC += 1
                         used.Add(iThisCell)
                         GetOut = 0
                     Else
