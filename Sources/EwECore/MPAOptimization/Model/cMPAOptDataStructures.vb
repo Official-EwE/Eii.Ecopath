@@ -101,9 +101,6 @@ Public Class cMPAOptDataStructures
 
     End Sub
 
-
-
-
     Public Sub AddCell(ByVal Row As Integer, ByVal col As Integer, ByVal iMPA As Integer)
         m_cells.Add(New cMPACell(Row, col, iMPA))
     End Sub

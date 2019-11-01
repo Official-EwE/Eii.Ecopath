@@ -109,10 +109,10 @@ Public Class cMPAOptManager
     Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
 
         Try
-            m_core = theCore
-            m_searchObjectives = m_core.SearchObjective
-            m_curRowCol = New cMPAOptOutput(theCore)
-            m_parameters = New cMPAOptParameters(theCore)
+            Me.m_core = theCore
+            Me.m_searchObjectives = m_core.SearchObjective
+            Me.m_curRowCol = New cMPAOptOutput(theCore)
+            Me.m_parameters = New cMPAOptParameters(theCore)
 
             Me.setDefaults()
 
@@ -141,6 +141,13 @@ Public Class cMPAOptManager
             cLog.Write("EcoSeedManager is not connected to an interface.")
         End If
 
+    End Sub
+
+    Public Sub Disconnect()
+        Me.m_syncObject = Nothing
+        Me.m_SeedCellComputedCallback = Nothing
+        Me.m_SeedRunStateCallback = Nothing
+        Me.m_bConnected = False
     End Sub
 
     Private Sub setDefaults()

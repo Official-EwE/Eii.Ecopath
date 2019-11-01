@@ -18,9 +18,8 @@
 '
 
 Option Strict On
-Imports System.Math
-Imports EwEUtils.Core
 Imports System.IO
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
 Public MustInherit Class cMPAOptBaseClass

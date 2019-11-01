@@ -172,7 +172,7 @@ Namespace Ecospace
             Dim MPAOpt As cMPAOptParameters = Nothing
 
             Me.m_manager = UIContext.Core.MPAOptimizationManager
-            Me.m_manager.Connect(Me, AddressOf Me.OnSeedCellCallback, AddressOf OnRunStateChanged)
+            Me.m_manager.Connect(Me, AddressOf Me.OnHandleSeedCellCallback, AddressOf OnRunStateChanged)
 
             MPAOpt = Me.m_manager.MPAOptimizationParamters
 
@@ -244,6 +244,8 @@ Namespace Ecospace
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+
+            Me.m_manager.Disconnect()
 
             ' Terminate any run state feedback
             Me.ExitMode()
@@ -509,14 +511,6 @@ Namespace Ecospace
 
 #Region " Search manager "
 
-        Private Sub OnSeedCellCallback()
-            Try
-                Me.HandleSeedCellCallback()
-            Catch ex As Exception
-                ' Protect calling process from potential UI madness
-            End Try
-        End Sub
-
         Private Sub OnRunStateChanged(ByVal runstate As cMPAOptManager.eRunStates)
 
             Try
@@ -558,7 +552,7 @@ Namespace Ecospace
                         Return
                     End If
 
-                    If (msg.Type = eMessageType.DataAddedOrRemoved Or msg.Type = eMessageType.DataModified Or msg.Type = eMessageType.DataValidation) Then
+                    If (msg.Type = eMessageType.DataAddedOrRemoved) Then
                         ' Reload data
                         Me.Reload()
                         ' Cascade mode down
@@ -770,7 +764,9 @@ Namespace Ecospace
         Private Function SelectedClosedPercentage() As Integer
             Dim iPerc As Integer = 20
             Try
-                iPerc = CInt(Me.m_cmbAreaClosed.Items(Me.m_cmbAreaClosed.SelectedIndex))
+                If (m_cmbAreaClosed.SelectedIndex >= 0) Then
+                    iPerc = CInt(Me.m_cmbAreaClosed.Items(Me.m_cmbAreaClosed.SelectedIndex))
+                End If
             Catch ex As Exception
                 ' Wow
             End Try
@@ -872,13 +868,13 @@ Namespace Ecospace
 
             Me.m_ucZoom.Map.Clear()
 
-            Me.m_mpaLayers = Me.AddBaseLayers(eVarNameFlags.LayerMPA, False)
-            Me.m_ecoseedLayer = Me.AddBaseLayers(eVarNameFlags.LayerMPASeed, True)(0)
-            Me.AddBaseLayers(eVarNameFlags.LayerMPARandom, True)
-            Me.AddBaseLayers(eVarNameFlags.LayerImportance, False)
-            Me.AddBaseLayers(eVarNameFlags.LayerRegion, True)
-            Me.AddBaseLayers(eVarNameFlags.LayerHabitat, False)
-            Me.AddBaseLayers(eVarNameFlags.LayerDepth, False)
+            Me.m_mpaLayers = Me.AddBaseLayers(eVarNameFlags.LayerMPA)
+            Me.m_ecoseedLayer = Me.AddBaseLayers(eVarNameFlags.LayerMPASeed)(0)
+            Me.AddBaseLayers(eVarNameFlags.LayerMPARandom)
+            Me.AddBaseLayers(eVarNameFlags.LayerImportance)
+            Me.AddBaseLayers(eVarNameFlags.LayerRegion)
+            Me.AddBaseLayers(eVarNameFlags.LayerHabitat)
+            Me.AddBaseLayers(eVarNameFlags.LayerDepth)
 
             ' Hide habitat layers at startup
             Dim factory As New cLayerFactoryInternal()
@@ -919,21 +915,23 @@ Namespace Ecospace
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Helper method, called when a new seed cell has been selected.
+        ''' Helper method, called when a new seed cell has been selected in the
+        ''' MPA optimization engine.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub HandleSeedCellCallback()
+        Private Sub OnHandleSeedCellCallback()
 
             ' Sanity check
             If Not (Me.m_manager.IsRunning()) Then Return
 
             Dim output As cMPAOptOutput = Me.m_manager.CurrentRowColResults
 
-            ' Perform search specific updates
-            Select Case Me.SearchType
+            Try
 
-                Case eMPAOptimizationModels.EcoSeed
-                    Try
+                ' Perform search specific updates
+                Select Case Me.SearchType
+
+                    Case eMPAOptimizationModels.EcoSeed
                         ' Ecoseed: the seed cell configuration has changed. 
                         ' The seed cell map has to be updated, which is done in the GUI
                         ' Populate run state layer with current row/col results
@@ -950,29 +948,25 @@ Namespace Ecospace
                             Me.m_mapFeedback(output.BestRow, output.BestCol) = cLayerFactoryInternal.cECOSEED_LAYER_BESTVALUE
                         End If
 
-                        ' Trigger layer update
-                        Me.m_feedbackLayers(0).Update(cDisplayLayer.eChangeFlags.Map)
+                    Case eMPAOptimizationModels.RandomSearch
 
-                    Catch ex As Exception
+                        ' No specific handling
+                        Me.m_mpaLayers(0).Update(cDisplayLayer.eChangeFlags.Map)
 
-                    End Try
+                End Select
 
-                    Me.m_gridProgress.LogResult(output.EconomicValue, output.SocialValue,
-                                                output.MandatedValue, output.EcologicalValue,
-                                                output.BiomassDiversityValue, output.AreaBoundaryValue,
-                                                output.TotalValue, output.PercentageClosed)
+                Me.LogProgress(output.EconomicValue, output.SocialValue,
+                               output.MandatedValue, output.EcologicalValue,
+                               output.BiomassDiversityValue, output.AreaBoundaryValue,
+                               output.TotalValue, output.PercentageClosed)
 
-                Case eMPAOptimizationModels.RandomSearch
+                ' Trigger feedback layer update
+                Me.m_feedbackLayers(0).Update(cDisplayLayer.eChangeFlags.Map)
 
-                    ' MPA layout has changed
-                    Me.m_ucZoom.Map.Refresh()
+            Catch ex As Exception
 
-                    Me.LogProgress(output.EconomicValue, output.SocialValue,
-                                   output.MandatedValue, output.EcologicalValue,
-                                   output.BiomassDiversityValue, output.AreaBoundaryValue,
-                                   output.TotalValue, output.PercentageClosed)
+            End Try
 
-            End Select
 
         End Sub
 
@@ -986,9 +980,8 @@ Namespace Ecospace
             ' Sanity check
             Debug.Assert(Me.m_manager.IsRunning())
 
-            Dim output As cMPAOptOutput = Me.m_manager.CurrentRowColResults
-
             Try
+                Dim output As cMPAOptOutput = Me.m_manager.CurrentRowColResults
 
                 Select Case Me.SearchType
 
@@ -997,6 +990,7 @@ Namespace Ecospace
                         ' Redraw MPA map
                         For Each l As cDisplayLayerRaster In Me.m_feedbackLayers
                             l.IsModified = True
+                            l.Update(cDisplayLayer.eChangeFlags.Map)
                         Next
 
                         ' Show this in the graph
@@ -1009,6 +1003,7 @@ Namespace Ecospace
                         ' Does not apply to Random search
                         For Each l As cDisplayLayerRaster In Me.m_mpaLayers
                             l.IsModified = True
+                            l.Update(cDisplayLayer.eChangeFlags.Map)
                         Next
 
                 End Select
@@ -1072,16 +1067,15 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="varName">The core variable to load basemap data for.</param>
         ''' -------------------------------------------------------------------
-        Private Function AddBaseLayers(ByVal varName As eVarNameFlags, bEditable As Boolean) As cDisplayLayerRaster()
+        Private Function AddBaseLayers(ByVal varName As eVarNameFlags) As cDisplayLayerRaster()
 
             Dim factory As New cLayerFactoryInternal()
             Dim strGroup As String = factory.GetLayerGroup(varName)
-            Dim strCommand As String = If(bEditable, factory.GetLayerEditCommand(varName), "")
             Dim alayers As cDisplayLayerRaster() = factory.GetLayers(Me.UIContext, varName)
             Dim l As cDisplayLayer = Nothing
 
             ' Add group, and collapse and hide habitat layers
-            Me.m_ucLayers.AddGroup(strGroup, strCommand, varName <> eVarNameFlags.LayerHabitat)
+            Me.m_ucLayers.AddGroup(strGroup, "", varName <> eVarNameFlags.LayerHabitat)
 
             ' Add individual layers
             For iLayer As Integer = 0 To alayers.Length - 1
@@ -1089,8 +1083,8 @@ Namespace Ecospace
                 If (TypeOf (l) Is cDisplayLayerRaster) Then
                     ' Add the layer to the control(s)
                     Dim rl As cDisplayLayerRaster = DirectCast(l, cDisplayLayerRaster)
-                    rl.Editor.IsReadOnly = Not bEditable
-                    Me.AddLayer(l, strGroup, strCommand)
+                    rl.Editor.IsReadOnly = True
+                    Me.AddLayer(l, strGroup)
                 End If
             Next
 
@@ -1136,7 +1130,7 @@ Namespace Ecospace
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
-                            Me.AddLayer(l, strGroup, "", Me.m_ecoseedLayer)
+                            Me.AddLayer(l, strGroup, Me.m_ecoseedLayer)
                         Next
                         lRunStateLayers.AddRange(alayers)
 
@@ -1146,7 +1140,7 @@ Namespace Ecospace
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
-                            Me.AddLayer(l, strGroup, "", Me.m_ecoseedLayer)
+                            Me.AddLayer(l, strGroup, Me.m_ecoseedLayer)
                         Next
 
                         lRunStateLayers.AddRange(alayers)
@@ -1162,7 +1156,7 @@ Namespace Ecospace
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
-                            Me.AddLayer(l, strGroup, "")
+                            Me.AddLayer(l, strGroup)
                         Next
                         lRunStateLayers.AddRange(alayers)
 
@@ -1410,10 +1404,10 @@ Namespace Ecospace
         ''' <param name="strGroup">Group to add the layer to.</param>
         ''' <param name="layerPosition">Layer to position this layer before, if any.</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddLayer(ByVal l As cDisplayLayer, ByVal strGroup As String, strCommand As String, Optional ByVal layerPosition As cDisplayLayer = Nothing)
+        Private Sub AddLayer(ByVal l As cDisplayLayer, ByVal strGroup As String, Optional ByVal layerPosition As cDisplayLayer = Nothing)
             Me.m_layers.Add(l)
             Me.m_ucZoom.Map.AddLayer(l, layerPosition)
-            Me.m_ucLayers.AddLayer(l, strGroup, strCommand, layerPosition)
+            Me.m_ucLayers.AddLayer(l, strGroup, "", layerPosition)
             AddHandler l.LayerChanged, AddressOf OnLayerChanged
         End Sub
 
