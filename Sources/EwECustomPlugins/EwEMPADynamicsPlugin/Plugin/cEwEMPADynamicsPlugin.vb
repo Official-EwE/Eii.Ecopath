@@ -187,4 +187,14 @@ Public Class cEwEMPADynamicsPlugin
 
 #End Region ' Internals
 
+#Region " Automation support "
+
+    Public ReadOnly Property Engine As cMPADynamicsEngine
+        Get
+            Return Me.m_engine
+        End Get
+    End Property
+
+#End Region ' Automation support
+
 End Class
