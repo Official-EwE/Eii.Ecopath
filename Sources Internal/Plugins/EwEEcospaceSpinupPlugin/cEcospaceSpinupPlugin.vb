@@ -36,9 +36,6 @@ Public Class cEcospaceSpinupPlugin
     Implements EwEPlugin.ICorePlugin
     Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
-    Implements EwEPlugin.IEcopathPlugin
-    Implements EwEPlugin.IEcopathRunInitializedPlugin
-    Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcospaceInitializedPlugin
     Implements EwEPlugin.IEcospaceEndTimestepPlugin
     Implements EwEPlugin.IEcospaceInitRunStartedPlugin
@@ -62,8 +59,6 @@ Public Class cEcospaceSpinupPlugin
     Private m_EcoPath As cEcoPathModel
     Private m_EcoSim As cEcoSimModel
     Private m_EcoSpace As cEcoSpace
-    Private m_EcoPathData As cEcopathDataStructures
-    Private m_EcoSimData As cEcosimDatastructures
     Private m_EcoSpaceData As cEcospaceDataStructures
 
     Private m_uic As cUIContext = Nothing
@@ -326,83 +321,6 @@ Public Class cEcospaceSpinupPlugin
 
     End Sub
 
-    ''' <summary>
-    ''' An Ecopath model has loaded.
-    ''' </summary>
-    ''' <param name="dataSource"></param>
-    ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
-        Try
-
-            'Cast the datasource 
-            Dim ModelDataBase As IEwEDataSource = DirectCast(dataSource, IEwEDataSource)
-            System.Console.WriteLine(Me.ToString + ".LoadModel() " + ModelDataBase.FileName)
-
-        Catch ex As Exception
-            Me.LogMessage(ex)
-        End Try
-
-        Return True
-
-    End Function
-
-    ''' <summary>
-    ''' An Ecopath model has been saved.
-    ''' </summary>
-    ''' <param name="dataSource"></param>
-    ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
-        ' System.Console.WriteLine(Me.ToString + ".SaveModel()")
-
-        Return True
-    End Function
-
-    ''' <summary>
-    ''' An Ecopath model has been closed.
-    ''' </summary>
-    ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
-        '  System.Console.WriteLine(Me.ToString + ".CloseModel()")
-
-        Try
-            'A user has closed the database
-            'Clear out the old data so that we are 
-            'not holding on to data that belongs to a closed model
-            Me.m_EcoPath = Nothing
-            Me.m_EcoPathData = Nothing
-            Me.m_EcoSim = Nothing
-            Me.m_EcoSimData = Nothing
-            Me.m_EcoSpace = Nothing
-            Me.m_EcoSpaceData = Nothing
-        Catch ex As Exception
-            Me.LogMessage(ex)
-            Return False
-        End Try
-
-        Return True
-    End Function
-
-    ''' <summary>
-    ''' An Ecopath model is about to run.
-    ''' </summary>
-    ''' <param name="EcopathDataAsObject"></param>
-    ''' <param name="TaxonDataAsObject"></param>
-    ''' <param name="StanzaDataAsObject"></param>
-    Public Sub EcopathRunInitialized(EcopathDataAsObject As Object, TaxonDataAsObject As Object, StanzaDataAsObject As Object) Implements EwEPlugin.IEcopathRunInitializedPlugin.EcopathRunInitialized
-
-        Me.m_EcoPathData = TryCast(EcopathDataAsObject, cEcopathDataStructures)
-        Debug.Assert(Me.m_EcoPathData IsNot Nothing, Me.ToString + ".EcopathRunInitialized() Failed to get EcopathDataStructures.")
-
-    End Sub
-
-    Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
-        System.Console.WriteLine(Me.ToString + ".EcosimInitialized()")
-
-        Me.m_EcoSimData = TryCast(EcosimDatastructures, cEcosimDatastructures)
-        Debug.Assert(Me.m_EcoSimData IsNot Nothing, Me.ToString + ".EcosimInitialized() Failed to get EcosimDataStructures.")
-
-    End Sub
-
     Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitializedPlugin.EcospaceInitialized
         System.Console.WriteLine(Me.ToString + ".EcospaceInitialized()")
 
@@ -412,7 +330,7 @@ Public Class cEcospaceSpinupPlugin
 
 #End Region
 
-#Region "Core, Ecopath, Ecosim and Ecospace Datastructures"
+#Region " Datastructure access"
 
     Public ReadOnly Property Core As cCore
         Get
@@ -421,19 +339,6 @@ Public Class cEcospaceSpinupPlugin
         End Get
     End Property
 
-    Public ReadOnly Property EcoPathData As cEcopathDataStructures
-        Get
-            Debug.Assert(Me.m_EcoPathData IsNot Nothing, Me.ToString + ".EcopathData() Ecopath has not been initialized correctly.")
-            Return Me.m_EcoPathData
-        End Get
-    End Property
-
-    Public ReadOnly Property EcoSimData As cEcosimDatastructures
-        Get
-            Debug.Assert(Me.m_EcoSimData IsNot Nothing, Me.ToString + ".EcoSimData() EcoSim has not been initialized correctly.")
-            Return Me.m_EcoSimData
-        End Get
-    End Property
 
     Public ReadOnly Property EcoSpaceData As cEcospaceDataStructures
         Get
