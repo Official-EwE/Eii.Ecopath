@@ -285,7 +285,7 @@
     <value>169, 22</value>
   </data>
   <data name="m_tsbEditLayers.Text" xml:space="preserve">
-    <value>Importance layer weights...</value>
+    <value>Importance layersvalue>
   </data>
   <data name="m_tsbEditLayers.ToolTipText" xml:space="preserve">
     <value>Importance layers</value>
