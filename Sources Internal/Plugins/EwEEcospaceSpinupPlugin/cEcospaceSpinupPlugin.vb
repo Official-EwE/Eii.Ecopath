@@ -22,7 +22,6 @@
 
 Option Strict On
 Imports EwECore
-Imports EwECore.DataSources
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
 Imports EwEPlugin
@@ -322,8 +321,6 @@ Public Class cEcospaceSpinupPlugin
     End Sub
 
     Public Sub EcospaceInitialized(EcospaceDatastructures As Object) Implements EwEPlugin.IEcospaceInitializedPlugin.EcospaceInitialized
-        System.Console.WriteLine(Me.ToString + ".EcospaceInitialized()")
-
         Me.m_EcoSpaceData = TryCast(EcospaceDatastructures, cEcospaceDataStructures)
         Debug.Assert(Me.m_EcoSpaceData IsNot Nothing, Me.ToString + ".EcospaceInitialized() Failed to get EcosimDataStructures.")
     End Sub
