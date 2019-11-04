@@ -294,7 +294,7 @@ Namespace Core
                 Me.m_strModelName = ""
                 Me.LogFileName = Path.Combine(cSystemUtils.ApplicationSettingsPath(), name & "_log.xml")
             End If
-            Console.WriteLine("Log opened at " & Me.LogFileName)
+            'Console.WriteLine("Log opened at " & Me.LogFileName)
             Return True
 
         End Function
@@ -506,7 +506,9 @@ Namespace Core
                 If File.Exists(cFileUtils.ToValidFileName(Me.LogFileName, True)) Then
                     Dim fi As FileInfo = New FileInfo(fn)
                     If fi.Length > MAX_LOG_SIZE Then
+#If DEBUG Then
                         Console.WriteLine("cLog.DeleteLargeLogFiles() Deleting log file " & Me.LogFileName)
+#End If
                         File.Delete(fn)
                     End If 'fi.Length > MAX_LOG_SIZE
                 End If 'File.Exists(cFileUtils.ToValidFileName(fn, True))

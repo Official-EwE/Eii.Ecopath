@@ -74,7 +74,7 @@ Public Class frmMPADynamics
             Dim fleet As cEcopathFleetInput = Me.Core.EcopathFleetInputs(i)
             col = New DataGridViewImageColumn()
             col.Name = "m_colF" & i
-            col.HeaderText = fmt.GetDescriptor(fleet)
+            col.HeaderText = fmt.ToString(fleet)
             col.ReadOnly = True
             col.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader
             Me.m_dgvStates.Columns.Add(col)
@@ -88,7 +88,7 @@ Public Class frmMPADynamics
             If (i = 0) Then
                 Me.m_tscmbFleets.Items.Add(SharedResources.GENERIC_VALUE_ALLFLEETS)
             Else
-                Me.m_tscmbFleets.Items.Add(fmt.GetDescriptor(Me.Core.EcopathFleetInputs(i)))
+                Me.m_tscmbFleets.Items.Add(fmt.ToString(Me.Core.EcopathFleetInputs(i)))
             End If
         Next
 
@@ -205,7 +205,7 @@ Public Class frmMPADynamics
                 Else
                     row.Cells("m_colTime").Value = state.TimeStamp.ToShortDateString()
                 End If
-                row.Cells("m_colMPA").Value = fmt.GetDescriptor(mpa)
+                row.Cells("m_colMPA").Value = fmt.ToString(mpa)
                 For j As Integer = 1 To cCore.N_MONTHS
                     row.Cells("m_colM" & j).Value = ToCellValue(state.IsClosed(j))
                 Next

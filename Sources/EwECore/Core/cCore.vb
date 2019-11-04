@@ -8847,6 +8847,12 @@ Public Class cCore
         End Get
     End Property
 
+    Public ReadOnly Property SpatialDatasetManager As SpatialData.cSpatialDataSetManager
+        Get
+            Return Me.m_spatialdataconnectionManager.DatasetManager
+        End Get
+    End Property
+
     Public ReadOnly Property SpatialOperationLog As cSpatialOperationLog
         Get
             Return Me.m_spatialOperationLog

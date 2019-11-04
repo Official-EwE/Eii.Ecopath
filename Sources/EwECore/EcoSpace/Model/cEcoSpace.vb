@@ -1275,6 +1275,7 @@ Public Class cEcoSpace
             Dim GridRunTime As Double = stpwchGrid.Elapsed.TotalMinutes
             Dim EffortRunTime As Double = stpwchEffort.Elapsed.TotalMinutes
 
+#If DEBUG Then
             System.Console.WriteLine("---------------FindSpatialEquilibrium() Timing-------------")
             System.Console.WriteLine(" Number of Time Steps, " & itt.ToString)
             System.Console.WriteLine(" Total run time(min.), " & totRunTime.ToString)
@@ -1283,6 +1284,7 @@ Public Class cEcoSpace
             System.Console.WriteLine(" GridSolver time(min.), " & GridRunTime.ToString & ",(%)," & (GridRunTime / totRunTime * 100).ToString)
             System.Console.WriteLine(" Effort dist. time(min.), " & EffortRunTime.ToString & ",(%)," & (EffortRunTime / totRunTime * 100).ToString)
             System.Console.WriteLine("-----------------------------------------------------------")
+#End If
 
         Catch ex As Exception
             cLog.Write(ex, "cEcospace::FindSpatialEquilibrium")
@@ -2609,10 +2611,12 @@ Public Class cEcoSpace
                     Next j
                 Next i
                 Btime(ip) = Btime(ip) / EcoSpaceData.nWaterCells
+#If DEBUG Then
                 'For Debugging
                 If ip > 0 Then
                     System.Console.WriteLine(Me.EcoPathData.GroupName(ip) + " BSpace/BPath = " + (Btime(ip) / Me.EcoPathData.B(ip)).ToString)
                 End If
+#End If
             Next ip
 
             Dim isc As Integer, ieco As Integer
