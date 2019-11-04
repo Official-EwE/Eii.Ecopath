@@ -101,7 +101,16 @@ Public Class cStanzaDatastructures
     Public Age1(,) As Integer
     ''' <summary>Life stage end age</summary>
     Public Age2(,) As Integer
+
+    ''' <summary>
+    ''' Number at age. This is the baseline state set from initial parameters in CalculateStanzaParameters().
+    ''' This is static, it does not change during the run. Changes are tracked in NageS
+    ''' </summary>
     Public SplitNo(,) As Single
+    ''' <summary>
+    ''' Weight at age. This is the baseline state set from initial parameters in CalculateStanzaParameters()
+    ''' This is static, it does not change during the run. Changes are tracked in WageS
+    ''' </summary>
     Public SplitWage(,) As Single
     Public WWa(,) As Single
 
