@@ -434,34 +434,37 @@ Public Class cEcosimMonteCarlo
         ' For all groups
         For i As Integer = 1 To Me.m_epdata.NumGroups
             ' Read assigned pedigree level for a group (was 'Opt = ReadPedigreeFromDatabase(Par)')
-            opt = Me.m_epdata.Pedigree(i, iVar)
-            If opt > 0 Then ' Non-estimated level
-                Try
+            Dim index As Integer = Me.m_epdata.Pedigree(i, iVar)
+            If (index > 0) Then
+                opt = Me.m_epdata.PedigreeLevelConfidence(index)
+                If opt > 0 Then ' Non-estimated level
+                    Try
 
-                    Select Case varname
+                        Select Case varname
 
-                        Case eVarNameFlags.BiomassAreaInput,
-                             eVarNameFlags.PBInput,
-                             eVarNameFlags.QBInput,
-                             eVarNameFlags.DietComp
-                            parm = Me.PedigreeVarToMCIndex(varname)
-                            CVpar(parm, i) = opt / 100.0! / 2.0!
-                            Me.CalculateUpperLowerLimits(False, parm)
+                            Case eVarNameFlags.BiomassAreaInput,
+                                 eVarNameFlags.PBInput,
+                                 eVarNameFlags.QBInput,
+                                 eVarNameFlags.DietComp
+                                parm = Me.PedigreeVarToMCIndex(varname)
+                                CVpar(parm, i) = opt / 100.0! / 2.0!
+                                Me.CalculateUpperLowerLimits(False, parm)
 
-                        Case eVarNameFlags.TCatchInput
-                            For iFleet As Integer = 1 To Me.m_core.nFleets
-                                CVparLanding(iFleet, i) = opt / 100.0! / 2.0!
-                                CVparDiscard(iFleet, i) = opt / 100.0! / 2.0!
-                            Next
+                            Case eVarNameFlags.TCatchInput
+                                For iFleet As Integer = 1 To Me.m_core.nFleets
+                                    CVparLanding(iFleet, i) = opt / 100.0! / 2.0!
+                                    CVparDiscard(iFleet, i) = opt / 100.0! / 2.0!
+                                Next
 
-                            Me.CalculateUpperLowerLimits(False, eMCParams.Landings)
-                            Me.CalculateUpperLowerLimits(False, eMCParams.Discards)
-                    End Select
+                                Me.CalculateUpperLowerLimits(False, eMCParams.Landings)
+                                Me.CalculateUpperLowerLimits(False, eMCParams.Discards)
+                        End Select
 
-                Catch ex As Exception
-                    cLog.Write(ex, "cEcosimMonteCarlo::LoadFromPedigree(" & varname.ToString & ")")
-                    Return False
-                End Try
+                    Catch ex As Exception
+                        cLog.Write(ex, "cEcosimMonteCarlo::LoadFromPedigree(" & varname.ToString & ")")
+                        Return False
+                    End Try
+                End If
             End If
         Next
         Return True
