@@ -46,12 +46,16 @@ Partial Class dlgRandomizeMPA
         Me.m_lblClose = New System.Windows.Forms.Label()
         Me.m_cmbDestMPA = New System.Windows.Forms.ComboBox()
         Me.m_nudPercentage = New System.Windows.Forms.NumericUpDown()
-        Me.m_btnCloseCells = New System.Windows.Forms.Button()
         Me.m_cbClosePerRegion = New System.Windows.Forms.CheckBox()
         Me.m_lblFrom = New System.Windows.Forms.Label()
         Me.m_tbxWeight = New System.Windows.Forms.TextBox()
         Me.m_btnPick = New System.Windows.Forms.Button()
+        Me.m_btnCloseCells = New System.Windows.Forms.Button()
+        Me.m_pbLogo = New System.Windows.Forms.PictureBox()
+        Me.m_tlpLogo = New System.Windows.Forms.TableLayoutPanel()
         CType(Me.m_nudPercentage, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.m_tlpLogo.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_lblMPA
@@ -79,13 +83,6 @@ Partial Class dlgRandomizeMPA
         Me.m_nudPercentage.Name = "m_nudPercentage"
         Me.m_nudPercentage.Value = New Decimal(New Integer() {5, 0, 0, 0})
         '
-        'm_btnCloseCells
-        '
-        resources.ApplyResources(Me.m_btnCloseCells, "m_btnCloseCells")
-        Me.m_btnCloseCells.Image = Global.EwERandomizeMPAPlugin.My.Resources.Resources.Dice
-        Me.m_btnCloseCells.Name = "m_btnCloseCells"
-        Me.m_btnCloseCells.UseVisualStyleBackColor = True
-        '
         'm_cbClosePerRegion
         '
         resources.ApplyResources(Me.m_cbClosePerRegion, "m_cbClosePerRegion")
@@ -109,10 +106,31 @@ Partial Class dlgRandomizeMPA
         Me.m_btnPick.Name = "m_btnPick"
         Me.m_btnPick.UseVisualStyleBackColor = True
         '
+        'm_btnCloseCells
+        '
+        resources.ApplyResources(Me.m_btnCloseCells, "m_btnCloseCells")
+        Me.m_btnCloseCells.Name = "m_btnCloseCells"
+        Me.m_btnCloseCells.UseVisualStyleBackColor = True
+        '
+        'm_pbLogo
+        '
+        Me.m_pbLogo.BackgroundImage = Global.EwERandomizeMPAPlugin.My.Resources.Resources.EII
+        resources.ApplyResources(Me.m_pbLogo, "m_pbLogo")
+        Me.m_pbLogo.Name = "m_pbLogo"
+        Me.m_pbLogo.TabStop = False
+        '
+        'm_tlpLogo
+        '
+        Me.m_tlpLogo.BackColor = System.Drawing.Color.White
+        resources.ApplyResources(Me.m_tlpLogo, "m_tlpLogo")
+        Me.m_tlpLogo.Controls.Add(Me.m_pbLogo, 1, 0)
+        Me.m_tlpLogo.Name = "m_tlpLogo"
+        '
         'dlgRandomizeMPA
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_tlpLogo)
         Me.Controls.Add(Me.m_btnPick)
         Me.Controls.Add(Me.m_tbxWeight)
         Me.Controls.Add(Me.m_cbClosePerRegion)
@@ -129,6 +147,8 @@ Partial Class dlgRandomizeMPA
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         CType(Me.m_nudPercentage, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.m_tlpLogo.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -143,4 +163,6 @@ Partial Class dlgRandomizeMPA
     Private WithEvents m_lblFrom As Windows.Forms.Label
     Private WithEvents m_tbxWeight As Windows.Forms.TextBox
     Private WithEvents m_btnPick As Windows.Forms.Button
+    Private WithEvents m_pbLogo As Windows.Forms.PictureBox
+    Private WithEvents m_tlpLogo As Windows.Forms.TableLayoutPanel
 End Class

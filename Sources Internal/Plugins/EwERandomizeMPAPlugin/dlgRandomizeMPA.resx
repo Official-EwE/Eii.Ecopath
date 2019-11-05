@@ -121,9 +121,13 @@
   <data name="m_lblMPA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_lblMPA.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_lblMPA.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 15</value>
+    <value>6, 15</value>
   </data>
   <data name="m_lblMPA.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
@@ -144,13 +148,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblMPA.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_lblClose.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="m_lblClose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_lblClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 44</value>
+    <value>6, 44</value>
   </data>
   <data name="m_lblClose.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 13</value>
@@ -171,9 +178,8 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblClose.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_cmbDestMPA.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -181,7 +187,7 @@
     <value>80, 12</value>
   </data>
   <data name="m_cmbDestMPA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>143, 21</value>
+    <value>146, 21</value>
   </data>
   <data name="m_cmbDestMPA.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -196,7 +202,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cmbDestMPA.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_nudPercentage.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -205,7 +211,7 @@
     <value>80, 42</value>
   </data>
   <data name="m_nudPercentage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>143, 20</value>
+    <value>146, 20</value>
   </data>
   <data name="m_nudPercentage.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -220,40 +226,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_nudPercentage.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="m_btnCloseCells.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnCloseCells.Location" type="System.Drawing.Point, System.Drawing">
-    <value>133, 123</value>
-  </data>
-  <data name="m_btnCloseCells.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 23</value>
-  </data>
-  <data name="m_btnCloseCells.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="m_btnCloseCells.Text" xml:space="preserve">
-    <value>&amp;Close cells</value>
-  </data>
-  <data name="m_btnCloseCells.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageBeforeText</value>
-  </data>
-  <data name="&gt;&gt;m_btnCloseCells.Name" xml:space="preserve">
-    <value>m_btnCloseCells</value>
-  </data>
-  <data name="&gt;&gt;m_btnCloseCells.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnCloseCells.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnCloseCells.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_cbClosePerRegion.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_cbClosePerRegion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_cbClosePerRegion.Location" type="System.Drawing.Point, System.Drawing">
     <value>80, 100</value>
@@ -277,7 +256,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbClosePerRegion.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_lblFrom.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -286,7 +265,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblFrom.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 73</value>
+    <value>6, 73</value>
   </data>
   <data name="m_lblFrom.Size" type="System.Drawing.Size, System.Drawing">
     <value>49, 13</value>
@@ -307,7 +286,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblFrom.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_tbxWeight.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -331,13 +310,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tbxWeight.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_btnPick.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_btnPick.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="m_btnPick.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 68</value>
+    <value>203, 68</value>
   </data>
   <data name="m_btnPick.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 23</value>
@@ -358,7 +340,106 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnPick.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_btnCloseCells.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnCloseCells.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnCloseCells.Location" type="System.Drawing.Point, System.Drawing">
+    <value>80, 123</value>
+  </data>
+  <data name="m_btnCloseCells.Size" type="System.Drawing.Size, System.Drawing">
+    <value>146, 23</value>
+  </data>
+  <data name="m_btnCloseCells.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_btnCloseCells.Text" xml:space="preserve">
+    <value>&amp;Close cells</value>
+  </data>
+  <data name="m_btnCloseCells.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>ImageBeforeText</value>
+  </data>
+  <data name="&gt;&gt;m_btnCloseCells.Name" xml:space="preserve">
+    <value>m_btnCloseCells</value>
+  </data>
+  <data name="&gt;&gt;m_btnCloseCells.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnCloseCells.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnCloseCells.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_pbLogo.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Zoom</value>
+  </data>
+  <data name="m_pbLogo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_pbLogo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 0</value>
+  </data>
+  <data name="m_pbLogo.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_pbLogo.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 5, 5, 5</value>
+  </data>
+  <data name="m_pbLogo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 74</value>
+  </data>
+  <data name="m_pbLogo.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;m_pbLogo.Name" xml:space="preserve">
+    <value>m_pbLogo</value>
+  </data>
+  <data name="&gt;&gt;m_pbLogo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbLogo.Parent" xml:space="preserve">
+    <value>m_tlpLogo</value>
+  </data>
+  <data name="&gt;&gt;m_pbLogo.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_tlpLogo.ColumnCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_tlpLogo.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Bottom</value>
+  </data>
+  <data name="m_tlpLogo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 153</value>
+  </data>
+  <data name="m_tlpLogo.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_tlpLogo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>235, 82</value>
+  </data>
+  <data name="m_tlpLogo.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;m_tlpLogo.Name" xml:space="preserve">
+    <value>m_tlpLogo</value>
+  </data>
+  <data name="&gt;&gt;m_tlpLogo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tlpLogo.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tlpLogo.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_tlpLogo.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_pbLogo" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,10,Percent,80,Percent,10" /&gt;&lt;Rows Styles="Percent,90.90909,Percent,9.090909" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -367,7 +448,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>235, 158</value>
+    <value>235, 235</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Randomize MPA</value>
