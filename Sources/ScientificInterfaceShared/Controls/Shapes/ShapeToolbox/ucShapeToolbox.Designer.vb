@@ -142,7 +142,7 @@ Namespace Controls
             Me.m_lvShapes.Size = New System.Drawing.Size(10, 24)
             Me.m_lvShapes.TabIndex = 0
             Me.m_lvShapes.UseCompatibleStateImageBehavior = False
-            Me.m_lvShapes.MultiSelect = False
+            Me.m_lvShapes.MultiSelect = True
             '
             'ucShapeToolbox
             '
@@ -168,13 +168,13 @@ Namespace Controls
         Private WithEvents RenameToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents ApplyToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents ImportToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents ExportToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-        Friend WithEvents ResetToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-        Friend WithEvents ChangeShapeToolStripMenuItem As ToolStripMenuItem
-        Friend WithEvents ValuesToolStripMenuItem As ToolStripMenuItem
-        Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
+        Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents ExportToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents ResetToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents ChangeShapeToolStripMenuItem As ToolStripMenuItem
+        Private WithEvents ValuesToolStripMenuItem As ToolStripMenuItem
+        Private WithEvents ToolStripSeparator3 As ToolStripSeparator
     End Class
 
 End Namespace
