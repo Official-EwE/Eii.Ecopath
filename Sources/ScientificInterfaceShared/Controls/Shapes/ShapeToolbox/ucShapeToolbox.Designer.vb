@@ -142,6 +142,7 @@ Namespace Controls
             Me.m_lvShapes.Size = New System.Drawing.Size(10, 24)
             Me.m_lvShapes.TabIndex = 0
             Me.m_lvShapes.UseCompatibleStateImageBehavior = False
+            Me.m_lvShapes.MultiSelect = False
             '
             'ucShapeToolbox
             '
