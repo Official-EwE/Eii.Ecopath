@@ -2837,7 +2837,7 @@ Namespace Ecosim
                     If i <= m_EPData.NumLiving Then      'Living group
 
                         'ToDetritus = ToDetritus + m_data.mo(i) * biomass(i)
-                        'pbm is 0 for consumers
+                        'pbbiomass is 0 for consumers
                         Pmult = 1.0
                         MoMult = 1.0
                         ApplyAVmodifiers(iTimeStepIndex, Pmult, Veff(1), MoMult, i, i, True)
@@ -2855,6 +2855,7 @@ Namespace Ecosim
                         '2.0* m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i))
                         '(this allows primary production rate to as much as double as nutrient concentrations increase)
                         '2)      This necessitates a change in the calculation of NutFreeBase(i) in InitialState:
+                        'Debug.Assert(m_Data.pbbiomass(i) = 0)
                         pbb(i) = 2 * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

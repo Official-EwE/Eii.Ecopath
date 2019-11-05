@@ -218,6 +218,8 @@ Public Class cIBMSolver
                                 'System.Console.WriteLine("Moving Stanza " & isp.ToString & " Group " & ist.ToString & " To " & Me.m_Data.ItoUse(isp, ist, i, j).ToString & "," & Me.m_Data.JtoUse(isp, ist, i, j).ToString)
                                 Me.m_Stanza.iPacket(isp, iaa, ip) = Me.m_Data.ItoUse(isp, ist, i, j) + Me.m_rand.NextDouble
                                 Me.m_Stanza.jPacket(isp, iaa, ip) = Me.m_Data.JtoUse(isp, ist, i, j) + Me.m_rand.NextDouble
+                                If Me.m_Stanza.iPacket(isp, iaa, ip) > Me.m_Data.InRow + 0.9999 Then m_Stanza.iPacket(isp, ia, ip) = Me.m_Data.InRow + 0.9
+                                If Me.m_Stanza.jPacket(isp, iaa, ip) > Me.m_Data.InCol + 0.9999 Then m_Stanza.jPacket(isp, ia, ip) = Me.m_Data.InCol + 0.9
                             End If
 
                         End If 'Math.Abs(ia - m_Stanza.Age1(isp, ist)) < 2
@@ -373,7 +375,6 @@ Public Class cIBMSolver
             Next
 
             m_Stanza.EggsStanza(isp) = Be
-            'WageS(iSp, 0) = 0
 
             'update age of fish for first iaa array element
             m_Stanza.AgeIndex1(isp) = m_Stanza.AgeIndex1(isp) + 1
@@ -382,8 +383,20 @@ Public Class cIBMSolver
             End If
 
             'finally set abundance at youngest age to recruitment rate
-            If m_Stanza.BaseEggsStanza(isp) > 0 Then TotRecruits = m_Stanza.RscaleSplit(isp) * m_ESData.tval(m_Stanza.EggProdShapeSplit(isp)) * m_Stanza.RzeroS(isp) * m_ESData.tval(m_Stanza.HatchCode(isp))
-            If m_Stanza.HatchCode(isp) = 0 Then TotRecruits = TotRecruits * m_Data.ThabArea * (m_Stanza.EggsStanza(isp) / (m_Data.ThabArea * m_Stanza.BaseEggsStanza(isp))) ^ m_Stanza.RecPowerSplit(isp)
+            'WARNING
+            'Youngest age is stored in the ia1 index NOT Age 0 as it is in Ecosim
+            If m_Stanza.BaseEggsStanza(isp) > 0 Then
+                TotRecruits = m_Stanza.RscaleSplit(isp) * m_ESData.tval(m_Stanza.EggProdShapeSplit(isp)) * m_Stanza.RzeroS(isp) * m_ESData.tval(m_Stanza.HatchCode(isp))
+            End If
+
+            If m_Stanza.HatchCode(isp) = 0 And m_Stanza.BaseEggsStanza(isp) > 0 Then
+                TotRecruits = TotRecruits * m_Data.ThabArea * (m_Stanza.EggsStanza(isp) / (m_Data.ThabArea * m_Stanza.BaseEggsStanza(isp))) ^ m_Stanza.RecPowerSplit(isp)
+            ElseIf m_Stanza.HatchCode(isp) <> 0 And m_Stanza.BaseEggsStanza(isp) > 0 Then
+                'There is a hatchery code
+                'so scale the recruits up to the total area without applying the RecPowerSplit()
+                TotRecruits *= m_Data.ThabArea
+            End If
+
 
             'distribute the total recruits (totrecruits) over packets and suitable spatial cells for recruitment
             'and set initial body sizes for packets representing new recruits
