@@ -248,6 +248,9 @@ Namespace Controls
                     Return
                 End If
 
+                If (Me.m_bInUpdate) Then Return
+                Me.m_bInUpdate = True
+
                 Dim selection As New List(Of cShapeData)
                 Dim ids As New List(Of Integer)
 
@@ -274,7 +277,10 @@ Namespace Controls
                             If (ids.Contains(shape.DBID)) Then
                                 ' #Yes: select the item
                                 item.Selected = True
-                                item.EnsureVisible()
+
+                                ' This was causing havoc on multi-select list views
+                                'item.EnsureVisible() 
+
                                 ' Shape still exists: add to selection to broadcast
                                 selection.Add(shape)
                             Else
@@ -288,20 +294,16 @@ Namespace Controls
 
                 Me.m_lvShapes.ResumeLayout()
 
-                If Not Me.m_bInUpdate Then
+                Me.UpdateControls()
 
-                    Me.m_bInUpdate = True
-                    Me.UpdateControls()
-
-                    Try
-                        ' JS 10May11: event try/caught
-                        RaiseEvent OnSelectionChanged(selection.ToArray())
-                    Catch ex As Exception
-                        Debug.Assert(False, ex.Message)
+                Try
+                    ' JS 10May11: event try/caught
+                    RaiseEvent OnSelectionChanged(selection.ToArray())
+                Catch ex As Exception
+                    Debug.Assert(False, ex.Message)
                     End Try
 
-                    Me.m_bInUpdate = False
-                End If
+                Me.m_bInUpdate = False
 
             End Set
         End Property
