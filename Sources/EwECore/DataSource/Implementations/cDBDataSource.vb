@@ -2306,6 +2306,8 @@ Namespace DataSources
                     bSucces = bSucces And Me.RemoveTaxon(id)
                 Next
 
+                ' Pedigree
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupPedigree WHERE (GroupID={0})", iEcopathGroupID))
                 ' Samples
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathGroupCatchSample WHERE (GroupID={0})", iEcopathGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcopathDietCompSample WHERE (PredID={0} OR PreyID={0})", iEcopathGroupID))
@@ -4244,15 +4246,16 @@ Namespace DataSources
         ''' -----------------------------------------------------------------------
         Private Function RemoveEcosimFleet(iEcopathFleetID As Integer) As Boolean
 
-            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT FleetID FROM EcosimScenarioFleet WHERE (EcopathFleetID={0})", iEcopathFleetID))
-            Dim iFleetID As Integer = 0
+            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioFleet WHERE (EcopathFleetID={0})", iEcopathFleetID))
             Dim bSucces As Boolean = True
 
-            ' Year info stored by sim fleet ID, aargh
             Try
                 While reader.Read
-                    iFleetID = CInt(reader("FleetID"))
+                    Dim iFleetID As Integer = CInt(reader("FleetID"))
+                    Dim iShapeID As Integer = CInt(reader("FishRateShapeID"))
                     bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcoSimScenarioFleetYear WHERE FleetID={0}", iFleetID))
+                    bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimShapeFishRate WHERE ShapeID={0}", iShapeID))
+                    bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimShape WHERE ShapeID={0}", iShapeID))
                 End While
             Catch ex As Exception
                 bSucces = False
@@ -4262,7 +4265,7 @@ Namespace DataSources
 
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioQuota WHERE FleetID={0}", iEcopathFleetID))
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimTimeSeriesFleet WHERE (FleetID={0})", iEcopathFleetID))
-            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleetGroupCatchability WHERE FleetID={0}", iFleetID))
+            bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleetGroupCatchability WHERE FleetID={0}", iEcopathFleetID))
             bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcosimScenarioFleet WHERE EcopathFleetID={0}", iEcopathFleetID))
 
             Return bSucces
