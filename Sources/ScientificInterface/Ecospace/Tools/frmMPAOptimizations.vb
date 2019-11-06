@@ -272,7 +272,6 @@ Namespace Ecospace
 
             Me.CoreComponents = Nothing
 
-            Me.m_fpMPA.Release()
             Me.m_fpBaseYear.Release()
             Me.m_fpBestPercentile.Release()
             Me.m_fpDiscRate.Release()
@@ -892,19 +891,19 @@ Namespace Ecospace
             ' Get MPA optimization params to connect start MPA to
             Dim MPAOpt As cMPAOptParameters = Me.UIContext.Core.MPAOptimizationManager.MPAOptimizationParamters
             ' Create list of available MPAs
-            Dim alMPAs As New List(Of cCoreInputOutputBase)
+            Dim mpas As New List(Of cCoreInputOutputBase)
 
             ' Build list of MPAs
             For iMPA As Integer = 1 To Me.UIContext.Core.nMPAs
-                alMPAs.Add(Me.UIContext.Core.EcospaceMPAs(iMPA))
+                mpas.Add(Me.UIContext.Core.EcospaceMPAs(iMPA))
             Next
 
-            Me.m_fpMPA.Items = alMPAs.ToArray
+            Me.m_fpMPA.Items = mpas.ToArray
 
             ' Only one MPA available?
-            If alMPAs.Count = 1 Then
+            If mpas.Count = 1 Then
                 ' #Yes: select first MPA
-                Me.m_fpMPA.Value = alMPAs(0).Index
+                Me.m_fpMPA.Value = mpas(0).Index
             End If
 
         End Sub

@@ -3,10 +3,10 @@
 #include <idp.iss>
 
 ; Adjust #defines in this section to select which components to include in an installer
-#define Compile64Bit 1
-#define Spinup 1
-#define SpatTemp 1
-#define RandomizeMPAs 1
+#define Compile64Bit 0
+#define Spinup 0
+#define SpatTemp 0
+#define RandomizeMPAs 0
 #define NetworkD3 0
 #define ExcludeDeadCells 0
 #define FISHMIP 0
@@ -35,7 +35,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.16419.0
+  VersionInfoVersion=6.6.16434.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
@@ -351,8 +351,9 @@ Name: "associatefiles"; Description: "Open EwE models and web links in this vers
 [Icons]
 Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon
-Name: "{group}\{#MyAppName} {#MyAppVersion}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename:  "{app}\{#MyAppExeName}"; Components: userguide
-Name: "{group}\User guide"; Filename: "{app}\UserGuide\EwE6_userguide.chm"; WorkingDir: "{app}\UserGuide"; IconFilename: "{app}\UserGuide\EwE6_userguide.chm"; Components: userguide
+Name: "{group}\{#MyAppName} {#MyAppVersion}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename:  "{app}\{#MyAppExeName}"; 
+Name: "{group}\User guide"; Filename: "{app}\UserGuide\EwE6_userguide.chm"; WorkingDir: "{app}\UserGuide"; IconFilename: "{app}\UserGuide\EwE6_userguide.chm"; 
+Name: "{group}\User guide"; Filename: "{app}\UserGuide\EwEMultiSimPlugin.pdf"; WorkingDir: "{app}\UserGuide"; IconFilename: "{#DefRoot}{#DefSrc}\UserGuide\EwEMultiSimPlugin.pdf"; 
 Name: "{group}\Links\Ecopath website"; Filename: "http://www.ecopath.org"
 Name: "{group}\Links\Ecopath on Facebook"; Filename: "http://www.facebook.com/eweconsortium"
 Name: "{group}\Links\User support"; Filename: "http://www.ecopath.org/support"

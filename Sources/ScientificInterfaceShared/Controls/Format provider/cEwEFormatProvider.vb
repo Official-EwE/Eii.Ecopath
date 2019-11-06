@@ -35,7 +35,7 @@ Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Add-on class that implements EwEcolour and display feedback on Windows
+    ''' Add-on class that implements EwE colour and display feedback on Windows
     ''' controls.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -63,11 +63,11 @@ Namespace Controls
             ''' <returns>A <see cref="IControlWrapper">IControlWrapper</see> instance if successful,
             ''' or nothing if an error occurred.</returns>
             ''' -----------------------------------------------------------------------
-            Shared Function GetControlWrapper(ByVal uic As cUIContext, _
-                                              ByVal ctrl As Control, _
-                                              ByVal provider As cEwEFormatProvider, _
-                                              Optional ByVal aItems As Object() = Nothing, _
-                                              Optional ByVal metadata As cVariableMetaData = Nothing, _
+            Shared Function GetControlWrapper(uic As cUIContext,
+                                              ctrl As Control,
+                                              provider As cEwEFormatProvider,
+                                              Optional aItems As Object() = Nothing,
+                                              Optional metadata As cVariableMetaData = Nothing,
                                               Optional formatter As ITypeFormatter = Nothing) As IControlWrapper
 
                 Dim wrapper As IControlWrapper = Nothing
@@ -91,7 +91,7 @@ Namespace Controls
                 ' Pass on UI context
                 wrapper.UIContext = uic
                 ' Try to wrap
-                If Not wrapper.Wrap(ctrl, provider, aItems, metadata, formatter) Then wrapper = Nothing
+                If Not wrapper.Wrap(ctrl, provider, aItems, metadata) Then wrapper = Nothing
                 ' Return result
                 Return wrapper
 
@@ -122,11 +122,10 @@ Namespace Controls
             ''' <see cref="cEwEFormatProvider.Style">display style</see> for the control.</param>
             ''' <returns>True if wrapped succesfully.</returns>
             ''' -----------------------------------------------------------------------
-            Function Wrap(ByVal ctrl As Control, _
-                         ByVal provider As cEwEFormatProvider, _
-                         Optional ByVal aItems As Object() = Nothing, _
-                         Optional ByVal metadata As cVariableMetaData = Nothing, _
-                         Optional ByVal formatter As ITypeFormatter = Nothing) As Boolean
+            Function Wrap(ctrl As Control,
+                         provider As cEwEFormatProvider,
+                         Optional aItems As Object() = Nothing,
+                         Optional metadata As cVariableMetaData = Nothing) As Boolean
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -209,11 +208,10 @@ Namespace Controls
             ''' <param name="provider"></param>
             ''' <returns></returns>
             ''' -----------------------------------------------------------------------
-            Public Function Wrap(ByVal ctrl As Control, _
-                                ByVal provider As cEwEFormatProvider, _
-                                Optional ByVal aItems() As Object = Nothing, _
-                                Optional ByVal metadata As EwECore.cVariableMetaData = Nothing, _
-                                Optional ByVal formatter As ITypeFormatter = Nothing) As Boolean _
+            Public Function Wrap(ctrl As Control,
+                                provider As cEwEFormatProvider,
+                                Optional aItems() As Object = Nothing,
+                                Optional metadata As EwECore.cVariableMetaData = Nothing) As Boolean _
                 Implements IControlWrapper.Wrap
 
                 Dim objValueType As Object = provider.ValueType
@@ -335,7 +333,7 @@ Namespace Controls
                 Get
                     Return Nothing
                 End Get
-                Set(ByVal value As Object())
+                Set(value As Object())
                 End Set
             End Property
 
@@ -381,7 +379,7 @@ Namespace Controls
             '''' Event handler, invoked when the Text Box text was entered.
             '''' </summary>
             '''' -----------------------------------------------------------------------
-            Private Sub OnControlEntered(ByVal sender As Object, ByVal e As System.EventArgs)
+            Private Sub OnControlEntered(sender As Object, e As System.EventArgs)
                 Try
                     ' Refresh value
                     Me.UpdateContent(ScientificInterfaceShared.Properties.cProperty.eChangeFlags.Value)
@@ -397,13 +395,13 @@ Namespace Controls
             '''' <see cref="EwEFormatProvider">EwEFormatProvider</see>.
             '''' </summary>
             '''' -----------------------------------------------------------------------
-            Private Sub OnControlLeft(ByVal sender As Object, ByVal e As System.EventArgs)
+            Private Sub OnControlLeft(sender As Object, e As System.EventArgs)
 
                 ProcessChanges()
 
             End Sub
 
-            Private Sub OnControlKeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
+            Private Sub OnControlKeyDown(sender As Object, e As KeyEventArgs)
                 If (e.KeyCode = Keys.Enter And Not Me.m_tb.Multiline) Then
                     Me.ProcessChanges()
                 End If
@@ -463,11 +461,10 @@ Namespace Controls
             ''' <param name="provider"></param>
             ''' <returns></returns>
             ''' -----------------------------------------------------------------------
-            Public Function Wrap(ByVal ctrl As Control, _
-                                 ByVal provider As cEwEFormatProvider, _
-                                 Optional ByVal aItems() As Object = Nothing, _
-                                 Optional ByVal metadata As EwECore.cVariableMetaData = Nothing, _
-                                 Optional ByVal formatter As ITypeFormatter = Nothing) As Boolean _
+            Public Function Wrap(ctrl As Control,
+                                 provider As cEwEFormatProvider,
+                                 Optional aItems() As Object = Nothing,
+                                 Optional metadata As EwECore.cVariableMetaData = Nothing) As Boolean _
                     Implements IControlWrapper.Wrap
 
                 Dim objValueType As Object = provider.ValueType
@@ -582,7 +579,7 @@ Namespace Controls
                 Get
                     Return Nothing
                 End Get
-                Set(ByVal value As Object())
+                Set(value As Object())
                 End Set
             End Property
 
@@ -618,7 +615,7 @@ Namespace Controls
             ''' This will pass the control value back into the parent <see cref="cEwEFormatProvider"/>.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Private Sub OnValidate(ByVal sender As Object, ByVal e As System.EventArgs)
+            Private Sub OnValidate(sender As Object, e As System.EventArgs)
                 Try
                     Me.Validate()
                 Catch ex As Exception
@@ -635,7 +632,7 @@ Namespace Controls
             ''' Event handler, invoked when the Style Guide has been modified.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+            Private Sub OnStyleGuideChanged(changeType As cStyleGuide.eChangeType)
 
                 If (changeType And cStyleGuide.eChangeType.NumberFormatting) = 0 Then Return
 
@@ -705,13 +702,8 @@ Namespace Controls
             ''' <summary></summary>
             Private m_provider As cEwEFormatProvider = Nothing
             Private m_tValue As Type = Nothing
-            ''' <summary>Optional combo box items.</summary>
-            Private m_lItems As New List(Of Object)
 
             Private m_md As cVariableMetaData = Nothing
-            Private m_formatter As ITypeFormatter = Nothing
-
-            Private m_bIsCoreIOCollection As Boolean = False
 
 #End Region ' Private variables 
 
@@ -733,11 +725,10 @@ Namespace Controls
             ''' <param name="provider"></param>
             ''' <returns></returns>
             ''' -----------------------------------------------------------------------
-            Public Function Wrap(ByVal ctrl As Control, _
-                                 ByVal provider As cEwEFormatProvider, _
-                                 Optional ByVal aItems() As Object = Nothing, _
-                                 Optional ByVal metadata As EwECore.cVariableMetaData = Nothing, _
-                                 Optional ByVal formatter As ITypeFormatter = Nothing) As Boolean _
+            Public Function Wrap(ctrl As Control,
+                                 provider As cEwEFormatProvider,
+                                 Optional aItems() As Object = Nothing,
+                                 Optional metadata As EwECore.cVariableMetaData = Nothing) As Boolean _
                 Implements IControlWrapper.Wrap
 
                 Dim bSucces As Boolean = True
@@ -753,7 +744,6 @@ Namespace Controls
                     ' Store refs
                     Me.m_provider = provider
                     Me.m_md = metadata
-                    Me.m_formatter = formatter
 
                     ' Add handlers
                     AddHandler Me.m_cmb.SelectedIndexChanged, AddressOf OnComboBoxValueChanged
@@ -842,59 +832,37 @@ Namespace Controls
 
             End Sub
 
-            Private Sub SelectItem(ByVal objValue As Object)
+            Private Sub SelectItem(objValue As Object)
+
                 Dim iValue As Integer = -1
 
-                ' Collection item case
-                If Me.m_bIsCoreIOCollection Then
-                    Dim iIndex As Integer = CInt(objValue)
-                    Dim iNull As Integer = -1
+                If (TypeOf objValue Is ICoreInterface) Then
+                    objValue = DirectCast(objValue, ICoreInterface).Index
+                End If
 
+                ' Special enum resolve case
+                If (Me.m_provider.ValueType Is GetType(Integer)) Then
+                    Dim objItem As Object = Nothing
                     For iItem As Integer = 0 To Me.m_cmb.Items.Count - 1
-                        If (TypeOf Me.m_cmb.Items(iItem) Is ICoreInterface) Then
-                            If (iIndex = DirectCast(Me.m_cmb.Items(iItem), ICoreInterface).Index) Then
+                        objItem = Me.m_cmb.Items(iItem)
+                        If (TypeOf objItem Is ICoreInterface) Then
+                            objItem = DirectCast(objItem, ICoreInterface).Index
+                        End If
+
+                        If (TypeOf objValue Is Integer) Then
+                            If (CInt(objValue) = CInt(objItem)) Then
                                 iValue = iItem : Exit For
                             End If
-                        Else
-                            iNull = iItem
+                        ElseIf (TypeOf objValue Is String) Then
+                            If (String.Compare(CStr(objValue), CStr(objItem), False) = 0) Then
+                                iValue = iItem : Exit For
+                            End If
+                        ElseIf Convert.Equals(objItem, objValue) Then
+                            iValue = iItem : Exit For
                         End If
                     Next
-                    If (iValue = -1) Then iValue = iNull
                 Else
-                    ' Other data case
-                    If (Not Me.m_lItems.Contains(objValue) And (Me.m_formatter Is Nothing)) Then
-                        Me.m_lItems.Add(objValue)
-                        Try
-                            Me.m_lItems.Sort()
-                        Catch ex As Exception
-                            Debug.Assert(False, ex.Message)
-                        End Try
-                        ' Hmm
-                        Me.Items = Me.Items
-                    End If
-
-                    ' Special enum resolve case
-                    If (Me.m_provider.ValueType Is GetType(Integer)) Then
-                        Dim objItem As Object = Nothing
-                        For iItem As Integer = 0 To Me.m_cmb.Items.Count - 1
-                            objItem = Me.m_cmb.Items(iItem)
-                            If (TypeOf objValue Is Integer) Then
-                                If (CInt(objValue) = CInt(objItem)) Then
-                                    iValue = iItem : Exit For
-                                End If
-                            ElseIf (TypeOf objValue Is String) Then
-                                If (String.Compare(CStr(objValue), CStr(objItem), False) = 0) Then
-                                    iValue = iItem : Exit For
-                                End If
-                            Else
-                                If Convert.Equals(objItem, objValue) Then
-                                    iValue = iItem : Exit For
-                                End If
-                            End If
-                        Next
-                    Else
-                        iValue = Me.m_lItems.IndexOf(objValue)
-                    End If
+                    iValue = Me.m_cmb.Items.IndexOf(objValue)
                 End If
 
                 ' Truncate
@@ -918,27 +886,23 @@ Namespace Controls
 
             Public Property Items() As Object() Implements IControlWrapper.Items
                 Get
-                    Return Me.m_lItems.ToArray
+                    Dim lItems As New List(Of Object)
+                    If (Me.m_cmb IsNot Nothing) Then
+                        For i As Integer = 0 To Me.m_cmb.Items.Count - 1
+                            lItems.Add(Me.m_cmb.Items(i))
+                        Next
+                    End If
+                    Return lItems.ToArray()
                 End Get
-                Set(ByVal aItems As Object())
+                Set(aItems As Object())
+                    If (Me.m_cmb Is Nothing) Then Return
 
                     ' Eradicate content
-                    Me.m_lItems.Clear()
                     Me.m_cmb.Items.Clear()
 
                     ' Populate if new items given
                     If (aItems IsNot Nothing) Then
-                        Me.m_lItems.AddRange(aItems)
-                        ' Populate
-                        For iItem As Integer = 0 To aItems.Length - 1
-                            If ((Me.m_provider.ValueType Is GetType(Integer)) And (TypeOf (aItems(iItem)) Is ICoreInterface)) Then
-                                If Not Me.m_bIsCoreIOCollection Then
-                                    Me.m_bIsCoreIOCollection = True
-                                    Me.m_formatter = New cCoreInterfaceFormatter()
-                                End If
-                            End If
-                            Me.m_cmb.Items.Add(aItems(iItem))
-                        Next
+                        Me.m_cmb.Items.AddRange(aItems)
                     End If
 
                     ' Done
@@ -968,7 +932,7 @@ Namespace Controls
             ''' This will pass the combo box selection to the parent <see cref="cEwEFormatProvider"/>.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Private Sub OnComboBoxValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+            Private Sub OnComboBoxValueChanged(sender As Object, e As System.EventArgs)
 
                 If (Me.m_bInUpdate) Then Return
                 Me.m_bInUpdate = True
@@ -997,12 +961,14 @@ Namespace Controls
             ''' Event handler, invoked when the combo box requires formatting.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Private Sub OnComboBoxFormat(ByVal sender As Object, ByVal e As ListControlConvertEventArgs)
+            Private Sub OnComboBoxFormat(sender As Object, e As ListControlConvertEventArgs)
 
-                If (Me.m_formatter Is Nothing) Then Return
-                If (Not Me.m_formatter.GetDescribedType().IsAssignableFrom(e.ListItem.GetType())) Then Return
-
-                e.Value = Me.m_formatter.ToString(e.ListItem, eDescriptorTypes.Name)
+                If (e.ListItem IsNot Nothing) Then
+                    If (TypeOf e.ListItem Is ICoreInputOutput) Then
+                        Dim fmt As New cCoreInterfaceFormatter()
+                        e.Value = fmt.ToString(e.ListItem)
+                    End If
+                End If
 
             End Sub
 
@@ -1051,11 +1017,10 @@ Namespace Controls
             ''' <param name="provider"></param>
             ''' <returns></returns>
             ''' -----------------------------------------------------------------------
-            Public Function Wrap(ByVal ctrl As Control, _
-                                ByVal provider As cEwEFormatProvider, _
-                                Optional ByVal aItems() As Object = Nothing, _
-                                Optional ByVal metadata As EwECore.cVariableMetaData = Nothing, _
-                                Optional ByVal formatter As ITypeFormatter = Nothing) As Boolean _
+            Public Function Wrap(ctrl As Control,
+                                provider As cEwEFormatProvider,
+                                Optional aItems() As Object = Nothing,
+                                Optional metadata As EwECore.cVariableMetaData = Nothing) As Boolean _
                 Implements IControlWrapper.Wrap
 
                 Dim bSucces As Boolean = True
@@ -1154,7 +1119,7 @@ Namespace Controls
                 Get
                     Return Nothing
                 End Get
-                Set(ByVal value As Object())
+                Set(value As Object())
                 End Set
             End Property
 
@@ -1181,7 +1146,7 @@ Namespace Controls
             ''' <see cref="cEwEFormatProvider">cEwEFormatProvider</see>.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Private Sub OnControlValueChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+            Private Sub OnControlValueChanged(sender As Object, e As System.EventArgs)
                 ' Update internal value
                 Me.m_provider.Value = Me.m_cb.Checked
             End Sub
@@ -1232,11 +1197,10 @@ Namespace Controls
             ''' <param name="provider"></param>
             ''' <returns></returns>
             ''' -----------------------------------------------------------------------
-            Public Function Wrap(ByVal ctrl As Control, _
-                                ByVal provider As cEwEFormatProvider, _
-                                Optional ByVal aItems() As Object = Nothing, _
-                                Optional ByVal metadata As EwECore.cVariableMetaData = Nothing, _
-                                Optional ByVal formatter As ITypeFormatter = Nothing) As Boolean _
+            Public Function Wrap(ctrl As Control,
+                                provider As cEwEFormatProvider,
+                                Optional aItems() As Object = Nothing,
+                                Optional metadata As EwECore.cVariableMetaData = Nothing) As Boolean _
                 Implements IControlWrapper.Wrap
 
                 Dim bSucces As Boolean = True
@@ -1324,7 +1288,7 @@ Namespace Controls
                 Get
                     Return Nothing
                 End Get
-                Set(ByVal value As Object())
+                Set(value As Object())
                 End Set
             End Property
 
@@ -1378,12 +1342,12 @@ Namespace Controls
         ''' <param name="metadata">Optional metadata to limit value ranges in the
         ''' control.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal ctrl As Control, _
-                       ByVal tValue As Type, _
-                       Optional ByVal aItems As Object() = Nothing, _
-                       Optional ByVal metadata As cVariableMetaData = Nothing,
-                       Optional ByVal formatter As ITypeFormatter = Nothing)
+        Public Sub New(uic As cUIContext,
+                       ctrl As Control,
+                       tValue As Type,
+                       Optional aItems As Object() = Nothing,
+                       Optional metadata As cVariableMetaData = Nothing,
+                       Optional formatter As ITypeFormatter = Nothing)
 
             ' Sanity checks
             Debug.Assert(uic IsNot Nothing)
@@ -1419,10 +1383,10 @@ Namespace Controls
         ''' <param name="tValue"></param>
         ''' <param name="metadata"></param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal ctrl As Control, _
-                       ByVal tValue As Type, _
-                       ByVal metadata As cVariableMetaData)
+        Public Sub New(uic As cUIContext,
+                       ctrl As Control,
+                       tValue As Type,
+                       metadata As cVariableMetaData)
             Me.New(uic, ctrl, tValue, Nothing, metadata)
         End Sub
 
@@ -1438,10 +1402,10 @@ Namespace Controls
         ''' <param name="metadata">Optional metadata to limit value ranges in the
         ''' control.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal ctrl As Control, _
-                       ByVal formatter As ITypeFormatter, _
-                       ByVal metadata As cVariableMetaData)
+        Public Sub New(uic As cUIContext,
+                       ctrl As Control,
+                       formatter As ITypeFormatter,
+                       metadata As cVariableMetaData)
             Me.New(uic, ctrl, GetType(Integer), ExtractEnumValues(formatter), Nothing, formatter)
         End Sub
 
@@ -1485,7 +1449,7 @@ Namespace Controls
         ''' <summary>Event to notify that a value has changed.</summary>
         ''' <param name="sender">The format provider that sent the event.</param>
         ''' -------------------------------------------------------------------
-        Public Event OnValueChanged(ByVal sender As Object, args As EventArgs)
+        Public Event OnValueChanged(sender As Object, args As EventArgs)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1496,7 +1460,7 @@ Namespace Controls
             Get
                 Return Me.m_objValue
             End Get
-            Set(ByVal objValue As Object)
+            Set(objValue As Object)
 
                 ' ToDo_JS: rework to use cValue validation
                 ' ToDo_JS: set style to match validation styles
@@ -1550,7 +1514,7 @@ Namespace Controls
             Get
                 Return Me.m_style
             End Get
-            Set(ByVal s As cStyleGuide.eStyleFlags)
+            Set(s As cStyleGuide.eStyleFlags)
                 ' Store style
                 Me.m_style = s
                 ' Update
@@ -1571,14 +1535,14 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get or set the lsit of items to display in the control.
+        ''' Get or set the list of items to display in the control.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Items() As Object()
             Get
                 Return Me.m_ctrlWrapper.Items
             End Get
-            Set(ByVal aItems As Object())
+            Set(aItems As Object())
                 Me.m_ctrlWrapper.Items = aItems
             End Set
         End Property
@@ -1587,7 +1551,7 @@ Namespace Controls
             Get
                 Return ((Me.m_style And cStyleGuide.eStyleFlags.NotEditable) <> cStyleGuide.eStyleFlags.NotEditable)
             End Get
-            Set(ByVal value As Boolean)
+            Set(value As Boolean)
                 If value = True Then
                     Me.Style = Me.Style And (Not cStyleGuide.eStyleFlags.NotEditable)
                 Else
@@ -1606,7 +1570,7 @@ Namespace Controls
         ''' an application-wide <see cref="cPropertySelectionCommand">PropertySelectionCommand</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overridable Sub OnGotFocus(ByVal sender As Object, ByVal e As System.EventArgs)
+        Protected Overridable Sub OnGotFocus(sender As Object, e As System.EventArgs)
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -1625,7 +1589,7 @@ Namespace Controls
         ''' cStyleGuide change event handler; makes sure cells are redrawn
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
+        Private Sub OnStyleGuideChanged(changeType As cStyleGuide.eChangeType)
             Me.UpdateContent(Properties.cProperty.eChangeFlags.All)
         End Sub
 
@@ -1635,7 +1599,7 @@ Namespace Controls
         ''' the format provider was still active. This will cause memory leaks.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Sub OnControlDisposed(ByVal sender As Object, ByVal args As EventArgs)
+        Private Sub OnControlDisposed(sender As Object, args As EventArgs)
 
             ' Pre
             Debug.Assert(Me.m_ctrlWrapper IsNot Nothing)
@@ -1681,7 +1645,7 @@ Namespace Controls
 
 #Region " Internals "
 
-        Protected Shared Function ExtractEnumValues(ByVal formatter As ITypeFormatter) As Object()
+        Protected Shared Function ExtractEnumValues(formatter As ITypeFormatter) As Object()
 
             Dim lItems As New List(Of Object)
             ' Get first generic argument
