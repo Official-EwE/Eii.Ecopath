@@ -336,8 +336,9 @@ Public Class cMPARandomSearch
 
             'Now start selecting the ones to make MPAs
             Dim GetOut As Integer = 0
+            Dim bDone As Boolean = False
 
-            Do While GetOut < 100 * NumberMPA
+            Do While (bDone = False) And (GetOut < 100 * NumberMPA)
 
                 Dim iThisCell As Integer
 
@@ -397,6 +398,7 @@ Public Class cMPARandomSearch
                         End If
                         used.Add(iThisCell)
                         GetOut = 0
+                        bDone = (used.Count >= NumberMPA)
                     Else
                         GetOut += 1
                     End If
