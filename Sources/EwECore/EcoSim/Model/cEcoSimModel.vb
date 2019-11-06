@@ -858,6 +858,7 @@ Namespace Ecosim
 
             t = 0
             itime = 0
+            TimeNow = 1
             m_search.Ecodistance = 0
             m_search.ExistValue = 0
 
@@ -914,6 +915,7 @@ Namespace Ecosim
                 For ipct = 1 To 12
 
                     itime = itime + 1
+                    TimeNow = itime
 
                     'set QMult() multiplier (density dependent catchability) as a function of the current biomass for this timestep
                     Me.setDenDepCatchMult(BB)
@@ -1081,6 +1083,10 @@ Namespace Ecosim
 
             'Set values back to defaults... StepsPerMonth = 1
             Me.m_Data.onEcosimRunCompleted()
+
+            'TimeNow needs to be set back to the first timestep 
+            'so it can be used by derivt() outside RunModelValue() and rk4()
+            TimeNow = 1
 
         End Sub
 
@@ -3011,6 +3017,7 @@ Namespace Ecosim
             'VC changed tzero in CJWs version to TimeJuv()
             'find initial state for delay-difference model pools
             Dim i As Integer
+            Me.TimeNow = 1
 
             ReDim Srec(nGroups)
             ReDim SimGES(nGroups)
@@ -3605,6 +3612,9 @@ Namespace Ecosim
                     ' VC June 2016: We've run into an issue with catches: Chiara has a model where we can only trust the 
                     ' trend in the catch data, not the actual values. This may actually be a general problem, so we've added
                     ' a new time series type, 61 (6 for catches and 1 for relative) catches, relative (reference)
+
+                    'JB Oct 2019 Relative catches (61) were not included in the relative calculations places
+                    'REALLY it took that long to figure that out....
 
                     'Calculate DatQ() for data types that are relative.
                     'These data may not have been entered in the same units as the internal ecosim mean weight
@@ -4670,6 +4680,7 @@ Namespace Ecosim
                     Case eForcingFunctionApplication.SearchRate,
                          eForcingFunctionApplication.ProductionRate
                         A = A * Mult
+                        'Debug.Print(Mult.ToString + ", " + A.ToString)
                     Case eForcingFunctionApplication.Vulnerability
                         v = v * Mult
                     Case eForcingFunctionApplication.ArenaArea
