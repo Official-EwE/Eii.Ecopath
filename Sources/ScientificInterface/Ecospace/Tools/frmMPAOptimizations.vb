@@ -174,7 +174,7 @@ Namespace Ecospace
             Me.m_manager = UIContext.Core.MPAOptimizationManager
             Me.m_manager.Connect(Me, AddressOf Me.OnHandleSeedCellCallback, AddressOf OnRunStateChanged)
 
-            MPAOpt = Me.m_manager.MPAOptimizationParamters
+            MPAOpt = Me.m_manager.MPAOptimizationParameters
 
             ' Add LayersControl
             Me.m_ucLayers = New ucLayersControl()
@@ -889,7 +889,7 @@ Namespace Ecospace
         Private Sub ReloadMPAChoices()
 
             ' Get MPA optimization params to connect start MPA to
-            Dim MPAOpt As cMPAOptParameters = Me.UIContext.Core.MPAOptimizationManager.MPAOptimizationParamters
+            Dim MPAOpt As cMPAOptParameters = Me.UIContext.Core.MPAOptimizationManager.MPAOptimizationParameters
             ' Create list of available MPAs
             Dim mpas As New List(Of cCoreInputOutputBase)
 
@@ -1358,11 +1358,13 @@ Namespace Ecospace
 
             Me.SetLayer(mpaMap, Me.m_basemap.LayerMPA(Me.SelectedMPA()), Me.SelectedMPA())
 
-            ' Update indicators
-            Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue,
-                                       res.objFuncMandatedValue, res.objFuncEcologicalValue,
-                                       res.objBiomassDiversity, res.objFuncAreaBorder,
-                                       res.objFuncTotal, res.PercentageClosed)
+            If (res IsNot Nothing) Then
+                ' Update indicators
+                Me.m_gridResults.LogResult(res.objFuncEconomicValue, res.objFuncSocialValue,
+                                           res.objFuncMandatedValue, res.objFuncEcologicalValue,
+                                           res.objBiomassDiversity, res.objFuncAreaBorder,
+                                           res.objFuncTotal, res.PercentageClosed)
+            End If
 
             Me.m_ucZoom.Map.Invalidate()
 
@@ -1571,7 +1573,8 @@ Namespace Ecospace
 
         Private Function ValidateInputs() As Boolean
 
-            Dim source As cCoreInputOutputBase = Me.m_manager.ValueWeights
+            Dim parms As cMPAOptParameters = Me.m_manager.MPAOptimizationParameters
+            Dim valweights As cCoreInputOutputBase = Me.m_manager.ValueWeights
             Dim bOk As Boolean = True
 
             ' Check MPA selection
@@ -1582,12 +1585,21 @@ Namespace Ecospace
                 Return False
             End If
 
+            ' Check min / max area
+            Dim iMinArea As Integer = parms.MinArea
+            Dim iMaxArea As Integer = parms.MaxArea
+
+            If iMaxArea < iMinArea Then
+                parms.MaxArea = iMinArea
+                parms.MinArea = iMaxArea
+            End If
+
             ' Check mandated rebuilding
-            If CSng(source.GetVariable(eVarNameFlags.FPSMandatedRebuildingWeight)) > 0.0 Then
+            If CSng(valweights.GetVariable(eVarNameFlags.FPSMandatedRebuildingWeight)) > 0.0 Then
                 bOk = False
                 For iGroup As Integer = 1 To Me.UIContext.Core.nGroups
-                    source = Me.m_manager.GroupObjectives(iGroup)
-                    bOk = bOk Or (CSng(source.GetVariable(eVarNameFlags.FPSGroupMandRelBiom)) > 0.0)
+                    valweights = Me.m_manager.GroupObjectives(iGroup)
+                    bOk = bOk Or (CSng(valweights.GetVariable(eVarNameFlags.FPSGroupMandRelBiom)) > 0.0)
                 Next
                 If bOk = False Then
                     Me.UIContext.Core.Messages.SendMessage(New cMessage(My.Resources.PROMPT_MPAOPT_MANDATEDB,

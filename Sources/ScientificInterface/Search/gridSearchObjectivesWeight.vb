@@ -171,7 +171,7 @@ Namespace Ecosim
                 iRow = Me.AddRow()
                 Me(iRow, 0) = New EwERowHeaderCell(SharedResources.HEADER_BOUNDARYWEIGHT)
                 Me(iRow, 1) = New PropertyCell(Me.PropertyManager, _
-                                               Me.Core.MPAOptimizationManager.MPAOptimizationParamters, _
+                                               Me.Core.MPAOptimizationManager.MPAOptimizationParameters, _
                                                eVarNameFlags.MPAOptBoundaryWeight)
             Else
 

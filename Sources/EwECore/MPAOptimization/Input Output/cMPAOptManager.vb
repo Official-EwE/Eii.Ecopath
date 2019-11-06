@@ -508,7 +508,7 @@ Public Class cMPAOptManager
         End Get
     End Property
 
-    Public ReadOnly Property MPAOptimizationParamters() As cMPAOptParameters
+    Public ReadOnly Property MPAOptimizationParameters() As cMPAOptParameters
         Get
             Return m_parameters
         End Get
