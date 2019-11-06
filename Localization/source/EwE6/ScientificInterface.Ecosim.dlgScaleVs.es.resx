@@ -124,7 +124,7 @@
     <value>Calcular</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Escalar vulnerabilidades a nivel trófico</value>
+    <value>Escalar vulnerabilidades al Nivel Trófico</value>
   </data>
   <data name="m_lblHigh.Text" xml:space="preserve">
     <value>&amp; Mayor vulnerabilidad:</value>

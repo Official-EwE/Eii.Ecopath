@@ -5,8 +5,8 @@
     <Comment />
   </Data>
   <Data Key="$this.Text">
-    <Flag>AutoTranslated</Flag>
-    <Comment />
+    <Flag>ToReview</Flag>
+    <Comment>o MSE cuotas? (MC 06-11-19)</Comment>
   </Data>
   <Data Key="m_tsbnDefaults.Text">
     <Flag>AutoTranslated</Flag>

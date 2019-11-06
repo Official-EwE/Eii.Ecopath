@@ -124,7 +124,7 @@
     <value>Salvar</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Reclutamiento de MSE</value>
+    <value>MSE Reclutamiento</value>
   </data>
   <data name="m_chkUseAssessment.Text" xml:space="preserve">
     <value>Usar modelo de evaluación de stock</value>

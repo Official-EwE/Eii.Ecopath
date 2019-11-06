@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ResourceMetadata>
   <Data Key="$this.Text">
-    <Flag>AutoTranslated</Flag>
-    <Comment />
+    <Flag>ToReview</Flag>
+    <Comment>JS (06-11-19)</Comment>
   </Data>
   <Data Key="m_tsbnBack.Text">
     <Flag>AutoTranslated</Flag>

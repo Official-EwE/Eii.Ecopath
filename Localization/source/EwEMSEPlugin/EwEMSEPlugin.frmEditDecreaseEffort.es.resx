@@ -124,7 +124,7 @@
     <value>Salvar</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Editar el aumento máximo en el esfuerzo de pesca</value>
+    <value>Editar el aumento máximo en esfuerzo pesquero</value>
   </data>
   <data name="rbDecaying.Text" xml:space="preserve">
     <value>Decadente</value>

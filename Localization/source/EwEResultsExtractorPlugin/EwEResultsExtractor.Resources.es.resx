@@ -307,7 +307,7 @@
     <value>Respiración / biomasa (/ año)</value>
   </data>
   <data name="BIOMASS_ACCUM_RATE" xml:space="preserve">
-    <value>Biom. Acc. Tarifa</value>
+    <value>Tasa de Acumul. Biom.</value>
   </data>
   <data name="RESIDUALS" xml:space="preserve">
     <value>Derechos residuales de autor</value>
@@ -466,7 +466,7 @@
     <value>Proporciones de dieta</value>
   </data>
   <data name="BIOMASS_ACCUM" xml:space="preserve">
-    <value>Biom. Acumul.</value>
+    <value>Acumul. Biom.</value>
   </data>
   <data name="FISHING_QUANT" xml:space="preserve">
     <value>Cantidades de pesca</value>

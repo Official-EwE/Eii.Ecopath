@@ -121,7 +121,7 @@
     <value>Suma a y uno</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Cuota de cuota de MSE</value>
+    <value>MSE distribución de cuotas</value>
   </data>
   <data name="m_tsbnDefaults.Text" xml:space="preserve">
     <value>Establecer y valores predeterminados</value>

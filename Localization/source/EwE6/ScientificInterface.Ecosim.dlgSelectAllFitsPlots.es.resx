@@ -124,10 +124,10 @@
     <value>Okay</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Ocultar / mostrar parcelas</value>
+    <value>Ocultar/mostrar gráficos</value>
   </data>
   <data name="btnCheckAll.Text" xml:space="preserve">
-    <value>&amp;Comprobar todo</value>
+    <value>&amp;Marcar todo</value>
   </data>
   <data name="btnUnCheckAll.Text" xml:space="preserve">
     <value>&amp;Desmarcar todo</value>

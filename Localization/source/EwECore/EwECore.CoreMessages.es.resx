@@ -322,7 +322,7 @@
     <value>Se estimaron las siguientes variables:</value>
   </data>
   <data name="BIOMASSAREA_RANGE" xml:space="preserve">
-    <value>El área de biomasa debe ser mayor que cero.</value>
+    <value>El AreaBiomasa debe ser mayor que cero.</value>
   </data>
   <data name="VARIABLE_VALIDATION_FAILED_DETAIL" xml:space="preserve">
     <value>{0} no puede ser {1}. {2}</value>
@@ -418,7 +418,7 @@
     <value>Importar pedigrí</value>
   </data>
   <data name="ASCII_READ_ERROR_MISSINGFIELD" xml:space="preserve">
-    <value>Error al leer el archivo ASCII con campos de encabezado faltantes</value>
+    <value>Error al leer el archivo ASCII con encabezados faltantes</value>
   </data>
   <data name="ECOPATH_DIETCOMP_NOTSUMTOONE" xml:space="preserve">
     <value>DC no suma a uno para el grupo {0}.</value>
@@ -874,7 +874,7 @@
     <value>El modelo de Ecopath no se pudo guardar en '{0}'</value>
   </data>
   <data name="ASCII_READ_ERROR_UNKNOWNFIELD" xml:space="preserve">
-    <value>Error al leer el archivo ASCII con un campo de encabezado desconocido {0}</value>
+    <value>Error al leer el archivo ASCII con el encabezado desconocido {0}</value>
   </data>
   <data name="IMPORT_PROGRESS_ECOPATHGROUPS" xml:space="preserve">
     <value>Importar grupos de Ecopath</value>

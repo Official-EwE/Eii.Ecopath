@@ -61,7 +61,7 @@
     <Comment />
   </Data>
   <Data Key="ABOUT_COPYRIGHT">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="ECOSIM_LABEL_APPLY_SHAPES_PREY">
@@ -573,7 +573,7 @@
     <Comment />
   </Data>
   <Data Key="ABOUT_VERSION_BETA">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="STATUS_UPDATE_FAILED">
@@ -1053,7 +1053,7 @@
     <Comment />
   </Data>
   <Data Key="ABOUT_CAPTION">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="ECOSPACE_HEADER_GROUP_HABITAT">
@@ -1373,7 +1373,7 @@
     <Comment />
   </Data>
   <Data Key="ABOUT_VERSION">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_SPATTEMP_NODRIVER">
@@ -2277,7 +2277,7 @@
     <Comment />
   </Data>
   <Data Key="ADVECTION_FAILED">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_ECOPATH_NAME">

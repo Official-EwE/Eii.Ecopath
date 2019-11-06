@@ -13,7 +13,7 @@
     <Comment />
   </Data>
   <Data Key="BIOMASS">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="OK">
@@ -21,7 +21,7 @@
     <Comment />
   </Data>
   <Data Key="CANCEL">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="NONMARKET_VALUE">
@@ -93,7 +93,7 @@
     <Comment />
   </Data>
   <Data Key="BASIC_ESTIMATES">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="PARENT_ONLY">
@@ -157,7 +157,7 @@
     <Comment />
   </Data>
   <Data Key="ALL_OPTIONS">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="CONSUMPTION">
@@ -169,7 +169,7 @@
     <Comment />
   </Data>
   <Data Key="BIOMASS_AREA_UNITS">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="NET_MIGRATION_RATE">
@@ -253,7 +253,7 @@
     <Comment />
   </Data>
   <Data Key="BIOMASS_ACCUM_RATE">
-    <Flag>ToReview</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="RESIDUALS">
@@ -405,7 +405,7 @@
     <Comment />
   </Data>
   <Data Key="BIOMASSINTEG">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="GENERIC_SAVE">
@@ -465,7 +465,7 @@
     <Comment />
   </Data>
   <Data Key="BIOMASS_ACCUM">
-    <Flag>ToReview</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="FISHING_QUANT">
@@ -509,7 +509,7 @@
     <Comment />
   </Data>
   <Data Key="BIOMASSINTEGRATED">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="PRODUCTION_RESPIRATION">

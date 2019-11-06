@@ -133,7 +133,7 @@
     <value>Pausa</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Ejecute Ecospace</value>
+    <value>Ejecutar Ecospace</value>
   </data>
   <data name="m_btnDisplayGroups1.Text" xml:space="preserve">
     <value>Escoger...</value>

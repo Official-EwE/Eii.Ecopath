@@ -121,7 +121,7 @@
     <value>ToolStrip1</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Aplicar respuestas de alimentación</value>
+    <value>Aplicar respuestas de forrajeo</value>
   </data>
   <data name="m_tsbnDefineInputMaps.Text" xml:space="preserve">
     <value>Definir mapas de controladores ambientales ...</value>

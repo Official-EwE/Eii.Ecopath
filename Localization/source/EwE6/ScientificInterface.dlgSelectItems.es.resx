@@ -124,7 +124,7 @@
     <value>Okay</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Seleccionar articulos</value>
+    <value>Seleccionar ítems</value>
   </data>
   <data name="m_btnNone.Text" xml:space="preserve">
     <value>&amp;Ninguna</value>

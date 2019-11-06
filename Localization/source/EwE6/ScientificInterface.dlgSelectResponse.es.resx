@@ -136,7 +136,7 @@
     <value>Okay</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Aplicar la función de respuesta ambiental</value>
+    <value>Aplicar función de respuesta ambiental</value>
   </data>
   <data name="m_tslbFilter.Text" xml:space="preserve">
     <value>&amp;Filtrar:</value>
