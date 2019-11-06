@@ -130,7 +130,7 @@
     <value>Mostrar formas estacionales</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Rejilla de forma</value>
+    <value>Cuadro de forma</value>
   </data>
   <data name="m_tsbnTimeSeries.Text" xml:space="preserve">
     <value>Series de tiempo...</value>

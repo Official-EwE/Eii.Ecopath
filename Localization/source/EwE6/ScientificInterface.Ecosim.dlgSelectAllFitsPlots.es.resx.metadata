@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ResourceMetadata>
   <Data Key="Cancel_Button.Text">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="OK_Button.Text">
@@ -9,12 +9,12 @@
     <Comment />
   </Data>
   <Data Key="$this.Text">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="btnCheckAll.Text">
-    <Flag>AutoTranslated</Flag>
-    <Comment />
+    <Flag>ToReview</Flag>
+    <Comment>Verificar todo? (JS 06-11-19)</Comment>
   </Data>
   <Data Key="btnUnCheckAll.Text">
     <Flag>Final</Flag>

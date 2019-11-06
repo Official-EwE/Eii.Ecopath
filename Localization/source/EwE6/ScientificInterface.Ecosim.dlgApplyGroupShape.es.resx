@@ -124,7 +124,7 @@
     <value>Okay</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Aplicar otro forzamiento de mortalidad</value>
+    <value>Aplicar forzamiento de otra mortalidad</value>
   </data>
   <data name="m_colhdrModifier.Text" xml:space="preserve">
     <value>Modificador</value>

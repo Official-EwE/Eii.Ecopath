@@ -127,7 +127,7 @@
     <value>&amp;No. de ensayos:</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Ejecute MSE</value>
+    <value>Ejecutar MSE</value>
   </data>
   <data name="m_lblStartYear.Text" xml:space="preserve">
     <value>Año de inicio:</value>

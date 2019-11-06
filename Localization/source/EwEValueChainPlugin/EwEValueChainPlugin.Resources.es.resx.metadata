@@ -141,7 +141,7 @@
     <Comment />
   </Data>
   <Data Key="AGGREGATION_MODE_FULLMODEL">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="CORE_DEFAULT_CONSUMER">
@@ -149,11 +149,11 @@
     <Comment />
   </Data>
   <Data Key="AGGREGATION_MODE_BYGROUP">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="AGGREGATION_MODE_BYFLEET">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="NAVTREE_OUTPUT_FLOWDIAGRAM">

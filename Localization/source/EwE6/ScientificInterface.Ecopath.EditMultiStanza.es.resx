@@ -130,7 +130,7 @@
     <value>Ecospace</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Editar grupos de múltiples estrofas</value>
+    <value>Editar grupos multi-stanza</value>
   </data>
   <data name="m_lblRecPwr.Text" xml:space="preserve">
     <value>Poder de reclutamiento:</value>

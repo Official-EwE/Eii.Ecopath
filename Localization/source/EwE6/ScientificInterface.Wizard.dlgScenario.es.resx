@@ -157,7 +157,7 @@
     <value>&amp;Crear</value>
   </data>
   <data name="btnLoad.Text" xml:space="preserve">
-    <value>&amp;Carga</value>
+    <value>&amp;Cargar</value>
   </data>
   <data name="tsmLoad.Text" xml:space="preserve">
     <value>&amp;Carga</value>
@@ -211,7 +211,7 @@
     <value>&amp;Salvar</value>
   </data>
   <data name="btnSave.Text" xml:space="preserve">
-    <value>&amp;Salvar</value>
+    <value>&amp;Guardar</value>
   </data>
   <data name="chCreate2.Text" xml:space="preserve">
     <value>Cargado</value>

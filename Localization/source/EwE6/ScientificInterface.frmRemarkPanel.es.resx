@@ -121,7 +121,7 @@
     <value>&amp;Aplicar</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Observaciones</value>
+    <value>Comentarios</value>
   </data>
   <data name="m_lblDescription.Text" xml:space="preserve">
     <value>&lt;description&gt;</value>

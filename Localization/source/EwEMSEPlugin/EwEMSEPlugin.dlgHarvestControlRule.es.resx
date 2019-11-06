@@ -124,7 +124,7 @@
     <value>Cancelar</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Agregar regla de control de cosecha (HCR)</value>
+    <value>Agregar regla de control de extracción (HCR)</value>
   </data>
   <data name="m_lblFMortGroup.Text" xml:space="preserve">
     <value>Grupo de mortalidad por pesca</value>

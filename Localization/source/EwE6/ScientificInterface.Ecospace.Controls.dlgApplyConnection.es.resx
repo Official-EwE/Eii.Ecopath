@@ -133,7 +133,7 @@
     <value>C &amp; onfigure ...</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Datos temporales espaciales externos conectados a '{0}'</value>
+    <value>Datos espacio-temporales externos conectados a '{0}'</value>
   </data>
   <data name="m_rbAbsolute.Text" xml:space="preserve">
     <value>&amp;Ninguna. Estos son datos absolutos</value>

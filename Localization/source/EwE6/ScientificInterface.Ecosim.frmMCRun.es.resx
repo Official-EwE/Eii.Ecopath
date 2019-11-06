@@ -130,7 +130,7 @@
     <value>&amp;Detener</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>simulación del Monte Carlo</value>
+    <value>Simulación de Monte Carlo</value>
   </data>
   <data name="m_hdrOutputParam.Text" xml:space="preserve">
     <value>Salida</value>

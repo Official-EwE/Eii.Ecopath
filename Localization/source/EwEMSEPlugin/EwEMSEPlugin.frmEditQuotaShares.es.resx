@@ -124,7 +124,7 @@
     <value>Salvar</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Editar cuotas compartidas</value>
+    <value>Editar cuotas individuales</value>
   </data>
   <data name="btnSum2One.Text" xml:space="preserve">
     <value>Normalizar</value>

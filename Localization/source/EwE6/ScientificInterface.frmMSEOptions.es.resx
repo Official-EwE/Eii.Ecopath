@@ -121,7 +121,7 @@
     <value>&amp; Sin controles reglamentarios (evaluar el escenario actual de Ecosim)</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Opciones de MSE</value>
+    <value>MSE opciones</value>
   </data>
   <data name="m_rbEffortControls.Text" xml:space="preserve">
     <value>Usar control de esfuerzo de entrada (y solución de programación lineal)</value>

@@ -61,8 +61,8 @@
     <Comment />
   </Data>
   <Data Key="$this.Text">
-    <Flag>AutoTranslated</Flag>
-    <Comment />
+    <Flag>ToReview</Flag>
+    <Comment>JS (06-11-19)</Comment>
   </Data>
   <Data Key="m_tsbEcotracer.Text">
     <Flag>AutoTranslated</Flag>

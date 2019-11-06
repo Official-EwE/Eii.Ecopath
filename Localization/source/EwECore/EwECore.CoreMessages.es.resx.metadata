@@ -273,7 +273,7 @@
     <Comment />
   </Data>
   <Data Key="BIOMASSAREA_RANGE">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="VARIABLE_VALIDATION_FAILED_DETAIL">
@@ -313,7 +313,7 @@
     <Comment />
   </Data>
   <Data Key="B_MISSING_GROUP">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="DLLFACTORY_FILENOTFOUND">
@@ -401,7 +401,7 @@
     <Comment />
   </Data>
   <Data Key="ASCII_READ_ERROR_MISSINGFIELD">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="ECOPATH_DIETCOMP_NOTSUMTOONE">
@@ -581,7 +581,7 @@
     <Comment />
   </Data>
   <Data Key="AREA_RANGE">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="QB_MISSING_GROUP">
@@ -589,7 +589,7 @@
     <Comment />
   </Data>
   <Data Key="ADVECTION_ERROR">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="ECOPATH_INVALIDMODEL_RESPLARGERTHANDETIMP">
@@ -1009,7 +1009,7 @@
     <Comment />
   </Data>
   <Data Key="ASCII_READ_ERROR_UNKNOWNFIELD">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="IMPORT_PROGRESS_ECOPATHGROUPS">
@@ -1169,7 +1169,7 @@
     <Comment />
   </Data>
   <Data Key="BIOACCUM_RANGE">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="ECOSPACE_TIMESERIES_LOAD_EXCEPTION">
@@ -1197,7 +1197,7 @@
     <Comment />
   </Data>
   <Data Key="BIOMASS_RANGE">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="TIMESERIES_ERROR_WEIGHTFORMAT">

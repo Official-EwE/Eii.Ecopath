@@ -205,7 +205,7 @@
     <value>Biomasa acumulativa</value>
   </data>
   <data name="BA_CALC_FROMECOSIMYEARSAVERAGE" xml:space="preserve">
-    <value>Cambio promedio de la biomasa de Ecosim durante varios años</value>
+    <value>Cambio promedio de la biomasa de Ecosim durante un numero de años</value>
   </data>
   <data name="HEADER_AVAILABLE_GROUPS_FLEETS" xml:space="preserve">
     <value>Grupos y flotas disponibles</value>
@@ -313,7 +313,7 @@
     <value>si</value>
   </data>
   <data name="BUTTON_YES" xml:space="preserve">
-    <value>si</value>
+    <value>Si</value>
   </data>
   <data name="GENERIC_VALUE_YOU" xml:space="preserve">
     <value>(tú)</value>
@@ -904,7 +904,7 @@
     <value>Todas las regiones</value>
   </data>
   <data name="AUTORUN_ALL" xml:space="preserve">
-    <value>Ejecutar automáticamente todo</value>
+    <value>Ejecutar todo automáticamente</value>
   </data>
   <data name="HEADER_PARAMETER" xml:space="preserve">
     <value>Parámetro</value>
@@ -1363,7 +1363,7 @@
     <value>Sin temporal || Sin superposición temporal | No hay datos para el período de ejecución de Ecospace</value>
   </data>
   <data name="AUTOSAVE_MONTECARLO" xml:space="preserve">
-    <value>Resultados de la prueba de Monte Carlo</value>
+    <value>Resultados de las pruebas Monte Carlo</value>
   </data>
   <data name="HEADER_SUM_VALUE_MARKET" xml:space="preserve">
     <value>Valor de mercado total</value>
@@ -1744,10 +1744,10 @@
     <value>Descartes (grupo x flota)</value>
   </data>
   <data name="AUTOSAVE_ALL" xml:space="preserve">
-    <value>Guardar automáticamente todo</value>
+    <value>Guardar todo automáticamente</value>
   </data>
   <data name="AUTOSAVE_MSE" xml:space="preserve">
-    <value>Resultados de MSE</value>
+    <value>MSE resultados</value>
   </data>
   <data name="AUTOSAVE_MSY" xml:space="preserve">
     <value>Iteraciones MSY</value>
@@ -2035,7 +2035,7 @@
     <value>Q / B líder</value>
   </data>
   <data name="BIODIVERSITY_KEMPTONSQ" xml:space="preserve">
-    <value>Kemptons Q</value>
+    <value>Q de Kempton</value>
   </data>
   <data name="COMPATIBILITY_TEMPORALNOTINDEXED" xml:space="preserve">
     <value>Espacial desconocido || Superposición espacial desconocida | La superposición espacial aún no se ha determinado</value>
@@ -2386,7 +2386,7 @@
     <value>KB</value>
   </data>
   <data name="BA_CALC_FROMECOSIMSTART" xml:space="preserve">
-    <value>Ecosim biomasa menos biomasa de Ecopath</value>
+    <value>Biomasa de Ecosim menos biomasa de Ecopath</value>
   </data>
   <data name="HEADER_VALUESTART" xml:space="preserve">
     <value>Valor (inicio)</value>

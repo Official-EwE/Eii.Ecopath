@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ResourceMetadata>
   <Data Key="btnCancelLoad.Text">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="btnCancelSave.Text">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="btnCancelCreate.Text">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="lblNameSaveAs.Text">
@@ -45,7 +45,7 @@
     <Comment />
   </Data>
   <Data Key="btnCreate.Text">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="tsmCreate.Text">
@@ -53,7 +53,7 @@
     <Comment />
   </Data>
   <Data Key="btnLoad.Text">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="tsmLoad.Text">
@@ -65,7 +65,7 @@
     <Comment />
   </Data>
   <Data Key="btnDelete.Text">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="tabpageDelete.Text">
@@ -81,7 +81,7 @@
     <Comment />
   </Data>
   <Data Key="$this.Text">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="lblScenariosDelete.Text">
@@ -105,7 +105,7 @@
     <Comment />
   </Data>
   <Data Key="btnCancelDelete.Text">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="Label1.Text">
@@ -125,7 +125,7 @@
     <Comment />
   </Data>
   <Data Key="btnSave.Text">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="chCreate2.Text">

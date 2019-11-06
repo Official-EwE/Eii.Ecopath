@@ -151,7 +151,7 @@
     <value>Y consumidores</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Seleccionar elementos para mostrar en parcelas</value>
+    <value>Seleccionar elementos para mostrar en gráficos</value>
   </data>
   <data name="m_cbSyncViaFishing.Text" xml:space="preserve">
     <value>&amp;Pescar</value>

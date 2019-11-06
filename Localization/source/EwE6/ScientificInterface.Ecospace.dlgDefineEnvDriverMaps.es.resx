@@ -139,7 +139,7 @@
     <value>Orden</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Definir mapas de entrada ambiental</value>
+    <value>Definir mapas ambientales de entrada</value>
   </data>
   <data name="m_btnMoveDown.Text" xml:space="preserve">
     <value>Mover hacia abajo</value>

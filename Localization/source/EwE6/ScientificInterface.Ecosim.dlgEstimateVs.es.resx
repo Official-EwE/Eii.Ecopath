@@ -130,7 +130,7 @@
     <value>B no pescado / Bo (Ecopath)</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Estimación de vulnerabilidades</value>
+    <value>Estimar Vulnerabilidades</value>
   </data>
   <data name="m_lblPrompt.Text" xml:space="preserve">
     <value>Seleccione qué vulnerabilidades calculadas transferir a Ecosim:</value>

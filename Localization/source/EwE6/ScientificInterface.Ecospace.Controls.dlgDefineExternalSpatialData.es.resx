@@ -133,7 +133,7 @@
     <value>Conexiones existentes</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Definir conexiones temporales espaciales externas</value>
+    <value>Definir conexiones espacio-temporales externas</value>
   </data>
   <data name="m_cbEnableIndexing.Text" xml:space="preserve">
     <value>&amp; Habilitar la indexación de datos espacio-temporales en segundo plano</value>

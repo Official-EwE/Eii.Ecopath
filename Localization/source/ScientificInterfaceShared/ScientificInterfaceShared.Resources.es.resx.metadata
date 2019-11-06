@@ -17,7 +17,7 @@
     <Comment />
   </Data>
   <Data Key="AUTOSAVE_ECOSPACE">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_ECOPATH">
@@ -29,7 +29,7 @@
     <Comment />
   </Data>
   <Data Key="AUTOSAVE_ECOSIM">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_MONTECARLO">
@@ -37,7 +37,7 @@
     <Comment />
   </Data>
   <Data Key="BIODIVERSITY_SHANNON">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_TRIAL">
@@ -81,11 +81,11 @@
     <Comment />
   </Data>
   <Data Key="BUTTON_OK">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="BUTTON_CANCEL">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="GENERIC_ZOOM_OUT">
@@ -97,11 +97,11 @@
     <Comment />
   </Data>
   <Data Key="BUTTON_NO">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="AUTOSAVE_ECOTRACER">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_MEAN_WEIGHT">
@@ -117,7 +117,7 @@
     <Comment />
   </Data>
   <Data Key="BA_CALC_FROMECOSIMYEARSAVERAGE">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_AVAILABLE_GROUPS_FLEETS">
@@ -125,7 +125,7 @@
     <Comment />
   </Data>
   <Data Key="BA_CALC_SETTOZERO">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_OCCURRENCE_STATUS">
@@ -261,7 +261,7 @@
     <Comment />
   </Data>
   <Data Key="BUTTON_YES">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="GENERIC_VALUE_YOU">
@@ -693,11 +693,11 @@
     <Comment />
   </Data>
   <Data Key="AUTOSAVE_ECOSIMRESULTS">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="AUTOSAVE_ECOSPACERESULTS">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="STYLEFLAGS_ERRORENCOUNTERED">
@@ -865,7 +865,7 @@
     <Comment />
   </Data>
   <Data Key="ABOUT_NET_VERSION">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_INCOME">
@@ -1049,7 +1049,7 @@
     <Comment />
   </Data>
   <Data Key="AUTORUN_ALL">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_PARAMETER">
@@ -1073,7 +1073,7 @@
     <Comment />
   </Data>
   <Data Key="BA_CALC_FROMECOSIMYEARSWEIGHTEDAVERAGE">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="TS_TYPE_FISHMORTABS">
@@ -1369,7 +1369,7 @@
     <Comment />
   </Data>
   <Data Key="AUTOSAVE_ECOSPACERESULTSREGION">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_COMPONENTS_REFERENCED">
@@ -1553,7 +1553,7 @@
     <Comment />
   </Data>
   <Data Key="ABOUT_OS_VERSION">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="GENERIC_SHOW_HIDDEN">
@@ -1661,7 +1661,7 @@
     <Comment />
   </Data>
   <Data Key="AUTOSAVE_MONTECARLO">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_SUM_VALUE_MARKET">
@@ -1813,7 +1813,7 @@
     <Comment />
   </Data>
   <Data Key="BUTTON_NONE">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_CODE_SEALIFEBASE">
@@ -1865,7 +1865,7 @@
     <Comment />
   </Data>
   <Data Key="BA_CALC_FROMECOPATH">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_FISHING">
@@ -2169,15 +2169,15 @@
     <Comment />
   </Data>
   <Data Key="AUTOSAVE_ALL">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="AUTOSAVE_MSE">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="AUTOSAVE_MSY">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="ECOLOGY_PELAGICNERITIC">
@@ -2193,7 +2193,7 @@
     <Comment />
   </Data>
   <Data Key="BUTTON_ABORT">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_SUM_VALUE">
@@ -2221,7 +2221,7 @@
     <Comment />
   </Data>
   <Data Key="BUTTON_RETRY">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_FISHING_ALL">
@@ -2285,7 +2285,7 @@
     <Comment />
   </Data>
   <Data Key="BUTTON_IGNORE">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="TS_TYPE_DISCARDPROP">
@@ -2369,7 +2369,7 @@
     <Comment />
   </Data>
   <Data Key="ABOUT_64BIT">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="GENERIC_STATUS_APPLYCHANGES">
@@ -2377,7 +2377,7 @@
     <Comment />
   </Data>
   <Data Key="ABOUT_32BIT">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="EXPLOITATIONSTATUS_OVEREXPLOITED">
@@ -2557,8 +2557,8 @@
     <Comment />
   </Data>
   <Data Key="BIODIVERSITY_KEMPTONSQ">
-    <Flag>AutoTranslated</Flag>
-    <Comment />
+    <Flag>Final</Flag>
+    <Comment> </Comment>
   </Data>
   <Data Key="COMPATIBILITY_TEMPORALNOTINDEXED">
     <Flag>AutoTranslated</Flag>
@@ -2701,7 +2701,7 @@
     <Comment />
   </Data>
   <Data Key="AUTOSAVE_MPAOPT">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="UNIT_MEGABYTE">
@@ -3017,7 +3017,7 @@
     <Comment />
   </Data>
   <Data Key="AUTOSAVE_ECOPATH">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="UNIT_KILOBYTE">
@@ -3025,7 +3025,7 @@
     <Comment />
   </Data>
   <Data Key="BA_CALC_FROMECOSIMSTART">
-    <Flag>AutoTranslated</Flag>
+    <Flag>Final</Flag>
     <Comment />
   </Data>
   <Data Key="HEADER_VALUESTART">

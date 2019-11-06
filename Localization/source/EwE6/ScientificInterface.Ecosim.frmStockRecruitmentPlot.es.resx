@@ -121,6 +121,6 @@
     <value>&amp;Correr</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>S/R plot</value>
+    <value>Gráfica de S/R</value>
   </data>
 </root>
