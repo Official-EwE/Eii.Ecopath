@@ -358,7 +358,7 @@
     <value>8</value>
   </data>
   <data name="m_btnCloseCells.Text" xml:space="preserve">
-    <value>&amp;Close cells</value>
+    <value>&amp;Randomize MPA</value>
   </data>
   <data name="m_btnCloseCells.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
     <value>ImageBeforeText</value>
@@ -449,9 +449,6 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>235, 235</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Randomize MPA</value>
