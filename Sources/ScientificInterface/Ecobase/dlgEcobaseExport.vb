@@ -280,8 +280,16 @@ Public Class dlgEcobaseExport
         Dim bAgreementOK As Boolean = Me.m_cbAuthorAgreement.Checked
 
         '--Change text to rtf to enable some text formatting user agreemnt Jerome 25/04/2016
-        Me.m_rtfAuthorAgreement.Rtf = Me.m_strAuthorAgreement
-
+        Try
+            Me.m_rtfAuthorAgreement.Rtf = Me.m_strAuthorAgreement
+        Catch ex As ArgumentException
+            ' JS 05Nov19: Show unformatted text in case RTF was malformed
+            Me.m_rtfAuthorAgreement.Text = Me.m_strAuthorAgreement
+        Catch ex As Exception
+            ' JS 05Nov19: Show error message in any other case
+            Me.m_rtfAuthorAgreement.Text = "<unable to obtain Ecobase author agreement text>"
+            cLog.Write(ex, "dlgEcobaseExport.UpdateControls")
+        End Try
 
         Me.m_pbModelName.BackgroundImage = If(bAgreementOK, SharedResources.OK, SharedResources.Critical)
         Me.m_tpEcoBase.ImageIndex = If(bAgreementOK, 0, 2)
