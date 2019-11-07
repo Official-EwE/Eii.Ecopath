@@ -1627,9 +1627,9 @@ Namespace Controls.EwEGrid
                                 cell = Me(iRow, iCol)
                                 If (cell IsNot Nothing) Then
                                     cellValue = cell.Value
-                                    cellType = cell.Value.GetType
                                     If (cellValue IsNot Nothing) Then
                                         Try
+                                            cellType = cell.Value.GetType
                                             If cellType.IsValueType Or cellType.IsPrimitive Then
                                                 If TypeOf (cellValue) Is String Then
                                                     sw.Write(cStringUtils.ToCSVField(cell.DisplayText))
