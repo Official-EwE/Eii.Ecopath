@@ -13337,7 +13337,7 @@ Public Class cCore
                         eDataTypes.SearchObjectiveWeights, eDataTypes.SearchObjectiveParameters
                     If bValidatedOk Then Me.m_SearchManagers.Item(eDataTypes.SearchObjectiveManager).Update(dtAffected)
 
-                Case eDataTypes.MPAOptManager, eDataTypes.MPAOptOuput, eDataTypes.MPAOptParameters
+                Case eDataTypes.MPAOptManager, eDataTypes.MPAOptOutput, eDataTypes.MPAOptParameters
                     If bValidatedOk Then Me.m_SearchManagers.Item(eDataTypes.MPAOptManager).Update(dtAffected)
 
                 Case eDataTypes.FitToTimeSeries

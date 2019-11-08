@@ -455,7 +455,7 @@
     <value>Flow diagram layout files|*.fdlayout</value>
   </data>
   <data name="FILEFILTER_LOAD_RASTER" xml:space="preserve">
-    <value>Comma-separated text files|*.csv|ESRI ascii file|*.asc|ESRI shape file|*.shp|Spatial raster files|*.asc;*.csv;*.shp</value>
+    <value>Comma-separated text files|*.csv|ESRI ascii file|*.asc|Spatial raster files|*.asc;*.csv;*.txt</value>
   </data>
   <data name="FILEFILTER_MODEL_OPEN" xml:space="preserve">
     <value>Ecopath model databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb;*.eii;*.eiixml</value>

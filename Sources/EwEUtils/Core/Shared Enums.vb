@@ -2189,7 +2189,7 @@ Namespace Core
         ''' <summary>
         ''' Data belongs to the MPA optimizations/Ecoseed results.
         '''</summary>
-        MPAOptOuput = 50
+        MPAOptOutput = 50
 
         ''' <summary>
         ''' Data belongs to the MPA optimizations/Ecoseed generic parameters.

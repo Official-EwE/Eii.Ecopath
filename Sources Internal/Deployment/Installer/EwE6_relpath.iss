@@ -35,7 +35,7 @@
 #ifdef FileVersion
   VersionInfoVersion={#FileVersion}
 #else
-  VersionInfoVersion=6.6.16434.0
+  VersionInfoVersion=6.6.16465.0
 #endif
 
 ; In Inno Setup UI, define Sign tool 'codesign' as:
