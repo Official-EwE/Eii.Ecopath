@@ -2270,11 +2270,13 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
-    <PostBuildEvent>IF $(PlatformName) == x86 (
-   $(TargetDir)Resources\InsertIcons.exe $(TargetDir)$(TargetFileName) $(TargetDir)Resources\ExtraIcons.txt $(ProjectDir)ScientificInterface.snk
-) ELSE (
-   REM ** 64 bit build insert icons does not work yet. Disabled for now
-   REM ** $(TargetDir)Resources\InsertIcons64.exe $(TargetDir)$(TargetFileName) $(TargetDir)Resources\ExtraIcons.txt $(ProjectDir)ScientificInterface.snk
+    <PostBuildEvent>if $(ConfigurationName) == Release (
+   if $(PlatformName) == x86 (
+       $(TargetDir)Resources\InsertIcons.exe $(TargetDir)$(TargetFileName) $(TargetDir)Resources\ExtraIcons.txt $(ProjectDir)ScientificInterface.snk
+   ) ELSE (
+       REM ** 64 bit build insert icons does not work yet. Disabled for now
+       REM ** $(TargetDir)Resources\InsertIcons64.exe $(TargetDir)$(TargetFileName) $(TargetDir)Resources\ExtraIcons.txt $(ProjectDir)ScientificInterface.snk
+   )
 )</PostBuildEvent>
   </PropertyGroup>
 </Project>

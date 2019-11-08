@@ -1930,7 +1930,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Comma-separated text files|*.csv|ESRI ascii file|*.asc|ESRI shape file|*.shp|Spatial raster files|*.asc;*.csv;*.shp.
+        '''  Looks up a localized string similar to Comma-separated text files|*.csv|ESRI ascii file|*.asc|Spatial raster files|*.asc;*.csv;*.txt.
         '''</summary>
         Public ReadOnly Property FILEFILTER_LOAD_RASTER() As String
             Get

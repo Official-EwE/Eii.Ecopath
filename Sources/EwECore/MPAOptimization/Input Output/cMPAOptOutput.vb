@@ -36,7 +36,7 @@ Public Class cMPAOptOutput
 
         Me.DBID = cCore.NULL_VALUE '????
         Me.Index = cCore.NULL_VALUE
-        Me.m_dataType = eDataTypes.MPAOptOuput
+        Me.m_dataType = eDataTypes.MPAOptOutput
 
         ' Outputs should never send out messages
         m_coreComponent = eCoreComponentType.MPAOptimization
