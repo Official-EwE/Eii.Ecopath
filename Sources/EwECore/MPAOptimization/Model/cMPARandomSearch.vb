@@ -340,7 +340,7 @@ Public Class cMPARandomSearch
 
             Do While (bDone = False) And (GetOut < 100 * NumberMPA)
 
-                Dim iThisCell As Integer
+                Dim iThisCell As Integer = 0
 
                 'JS 26Oct19: determine which cells to use
                 If (GetOut = 0) Then
@@ -371,41 +371,63 @@ Public Class cMPARandomSearch
                     End If
                 End If
 
-                Dim RanVal As Double = Me.m_generator.NextDouble()
-                For j As Integer = 0 To cells.Count - 1
-                    Dim i As Integer = cells(j)
-                    If CumulativeCellWeight(i) >= RanVal And Not used.Contains(i) Then
-                        iThisCell = i
-                        Exit For
-                    End If
+                'VC 2019-11-07  there was a bug in the selection here below
+                'the cells are arranged in increasing order (col-row) so once it reaches the
+                'random number it should pick that cell. The bug was that the test for cumulativecellweight>= ranval
+                'and the not used.contains were in the same line (and), so when reaching a cell that had already be taken
+                'it would just continue to the next cell in the row and pick that one
+
+                'For the region selection, the CumulativeCellWeight should be built by region, so need to do it again
+                'VC2019/11/07 I've implemented this, so now cumulativecellweight is calculated here instead
+                Dim sum As Double = 0
+                Dim ix As Integer
+                For jx As Integer = 0 To cells.Count - 1
+                    ix = cells(jx)
+                    sum += CellWgt(ix)
+                    CumulativeCellWeight(ix) = sum
                 Next
 
+
+                Do While iThisCell = 0
+                    Dim RanVal As Double = Me.m_generator.NextDouble()
+                    For j As Integer = 0 To cells.Count - 1
+                        Dim i As Integer = cells(j)
+                        If CumulativeCellWeight(i) >= RanVal Then
+                            'use this one, if not taken already
+                            If Not used.Contains(i) Then iThisCell = i
+                            Exit For
+                        End If
+                    Next
+                Loop
+
                 If (iThisCell > 0) Then
-                    Dim GetRow As Integer = (iThisCell - 1) \ Me.m_SpaceData.InCol + 1
-                    Dim GetCol As Integer = (iThisCell - 1) Mod Me.m_SpaceData.InCol + 1
+                        Dim GetRow As Integer = (iThisCell - 1) \ Me.m_SpaceData.InCol + 1
+                        Dim GetCol As Integer = (iThisCell - 1) Mod Me.m_SpaceData.InCol + 1
 
-                    'now we know which cell to close
-                    'check that the cell hasn't been made into an mpa already
-                    Debug.Assert(Me.m_SpaceData.Depth(GetRow, GetCol) > 0)
+                        'now we know which cell to close
+                        'check that the cell hasn't been made into an mpa already
+                        Debug.Assert(Me.m_SpaceData.Depth(GetRow, GetCol) > 0)
 
-                    If (m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) <= 0) Then
+                        If (m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) <= 0) Then
+
                         m_SpaceData.MPA(m_data.iMPAtoUse)(GetRow, GetCol) = 1
                         m_data.AddCell(GetRow, GetCol, m_data.iMPAtoUse)
+                        Me.IsMPA(GetRow, GetCol) = True
 
                         If (Me.m_data.bUseRegions) Then
-                            Dim reg As Integer = Me.m_SpaceData.Region(GetRow, GetCol)
-                            Me.m_regionSet(reg) += 1
+                                Dim reg As Integer = Me.m_SpaceData.Region(GetRow, GetCol)
+                                Me.m_regionSet(reg) += 1
+                            End If
+                            used.Add(iThisCell)
+                            GetOut = 0
+                            bDone = (used.Count >= NumberMPA)
+                        Else
+                            GetOut += 1
                         End If
-                        used.Add(iThisCell)
-                        GetOut = 0
-                        bDone = (used.Count >= NumberMPA)
                     Else
                         GetOut += 1
                     End If
-                Else
-                    GetOut += 1
-                End If
-            Loop
+                Loop
 
         Catch ex As Exception
             Me.WriteError(ex)
@@ -437,6 +459,7 @@ Public Class cMPARandomSearch
             Dim NoCells As Integer = inRow * inCol
 
             ReDim CumulativeCellWeight(NoCells)
+            ReDim CellWgt(NoCells)
             Dim CellWeight(inRow, inCol) As Double
 
             'If on the GUI the "Group weighting" is checked then calculate cellweight, otherwise, set to 1
@@ -514,12 +537,13 @@ Public Class cMPARandomSearch
             For i As Integer = 1 To inRow
                 For j As Integer = 1 To inCol
                     If CellWeight(i, j) = 0 Then 'give it a value
-                        CellWeight(i, j) = 0.001 * minCellWeight
+                        CellWeight(i, j) = 0.01 * minCellWeight
                     End If
                 Next j
             Next i
 
-
+            'VC2019/11/07 I've moved the calculatoin of the cumulative cell weight to where it's used
+            'as it needs to be calculated by region
             'Now calculate cumulative weighted importance over all cells:
             iC = 0
             Dim Sum As Double = 0
@@ -528,21 +552,24 @@ Public Class cMPARandomSearch
                     iC += 1
                     If CellWeight(i, j) < 0 Then CellWeight(i, j) = 0
                     Sum += CellWeight(i, j)
-                    CumulativeCellWeight(iC) = Sum
+                    'CumulativeCellWeight(iC) = Sum
+                    CellWgt(iC) = CellWeight(i, j)
                 Next
             Next
 
-            'Finally scalse the cellweights so that they sum to 1
+            'Finally scale the cellweights so that they sum to 1
             If Sum > 0 Then
                 For i As Integer = 1 To NoCells
-                    CumulativeCellWeight(i) /= Sum
+                    'CumulativeCellWeight(i) /= Sum
+                    CellWgt(i) /= Sum
                 Next
             Else
                 'if there are no values in any of the importance layer
                 'set CumulativeCellWeight() to an even gradient so that the cell selection will not be weighted
                 Dim g As Single = CSng(1 / NoCells)
                 For i As Integer = 1 To NoCells
-                    CumulativeCellWeight(i) += g * i
+                    'CumulativeCellWeight(i) += g * i
+                    CellWgt(i) += g * i
                 Next
             End If
 

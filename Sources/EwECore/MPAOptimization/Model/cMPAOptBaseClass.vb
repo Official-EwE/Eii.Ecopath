@@ -59,6 +59,8 @@ Public MustInherit Class cMPAOptBaseClass
     'Private m_bestResults As cObjectiveResult
 
     Protected CumulativeCellWeight() As Double
+    Protected CellWgt() As Double
+
     Protected CellCount As Integer
     Protected m_nIters As Integer 'number of iteration completed
 
@@ -315,7 +317,7 @@ Public MustInherit Class cMPAOptBaseClass
             m_data.objFuncSocialValue = m_search.Employ / EmployBase
             m_data.objFuncEconomicValue = m_search.totval / TotValBase
             m_data.objFuncBiodiversity = m_search.DiversityIndex / DiversityBase
-            m_data.objFuncAreaBorder = AreaBoundary / AreaBoundBase
+            m_data.objFuncAreaBorder = AreaBoundary '/ AreaBoundBase
 
             If curSum > TargetSumMax Then
                 'save the best results 
