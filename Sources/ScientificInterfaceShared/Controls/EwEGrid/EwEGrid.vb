@@ -665,7 +665,11 @@ Namespace Controls.EwEGrid
 
             Dim cell As ICell = Nothing
 
-            Me.AutoSizeAll()
+            Try
+                Me.AutoSizeAll()
+            Catch ex As Exception
+                cLog.Write(ex, "EwEGrid.FinishStyle(" & Me.Name & ")")
+            End Try
 
             'Add the selection of whole grid.
             If (Me.RowsCount > 0) And (Me.ColumnsCount > 0) Then
