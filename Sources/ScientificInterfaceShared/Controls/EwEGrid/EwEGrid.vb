@@ -1633,14 +1633,11 @@ Namespace Controls.EwEGrid
                                     cellValue = cell.Value
                                     If (cellValue IsNot Nothing) Then
                                         Try
-                                            cellType = cell.Value.GetType
-                                            If cellType.IsValueType Or cellType.IsPrimitive Then
-                                                If TypeOf (cellValue) Is String Then
-                                                    sw.Write(cStringUtils.ToCSVField(cell.DisplayText))
-                                                Else
-                                                    strValue = cStringUtils.FormatNumber(cell.GetValue(New SourceGrid2.Position(iRow, iCol)))
-                                                    sw.Write(strValue)
-                                                End If
+                                            If TypeOf (cellValue) Is String Then
+                                                sw.Write(cStringUtils.ToCSVField(cell.DisplayText))
+                                            Else
+                                                strValue = cStringUtils.FormatNumber(cell.GetValue(New SourceGrid2.Position(iRow, iCol)))
+                                                sw.Write(strValue)
                                             End If
                                         Catch ex As Exception
                                             ' Ignore value graciously
