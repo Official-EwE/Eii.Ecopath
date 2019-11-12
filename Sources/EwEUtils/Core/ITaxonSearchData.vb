@@ -68,9 +68,9 @@ Namespace Core
         ''' <summary>FAO taxon code (http://www.fao.org/fishery/collection/asfis/en).</summary>
         Property CodeFAO() As String
         ''' <summary>FishBase SpecCode.</summary>
-        Property CodeFB() As Long
+        Property CodeFishBase() As Long
         ''' <summary>Sea Life Base SpecCode.</summary>
-        Property CodeSLB As Long
+        Property CodeSeaLifeBase As Long
         ''' <summary>Sea Around Us project Taxon ID</summary>
         Property CodeSAUP As Long
         ''' <summary>Taxonomy Databases Working Group Life Catalogue ID (http://lsid.tdwg.org/)</summary>

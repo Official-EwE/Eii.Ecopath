@@ -69,8 +69,8 @@ Public Class gridDefineTaxonomy
         Phylum
         Status
         ' - Codes -
-        CodeFB
-        CodeSLB
+        CodeFishBase
+        CodeSeaLifeBase
         CodeAquaMaps
         CodeOBIS
         CodeAphia
@@ -135,8 +135,8 @@ Public Class gridDefineTaxonomy
             Me.PropB = taxon.PropB
             Me.PropC = taxon.PropC
             Me.CodeSAUP = taxon.CodeSAUP
-            Me.CodeFB = taxon.CodeFishBase
-            Me.CodeSLB = taxon.CodeSeaLifeBase
+            Me.CodeFishBase = taxon.CodeFishBase
+            Me.CodeSeaLifeBase = taxon.CodeSeaLifeBase
             Me.CodeAquaMaps = taxon.CodeAquaMaps
             Me.CodeOBIS = taxon.CodeOBIS
             Me.CodeAphia = taxon.CodeAphia
@@ -304,8 +304,8 @@ Public Class gridDefineTaxonomy
         ''' -------------------------------------------------------------------
         Public Sub Update(ByVal taxon As ITaxonSearchData)
             Me.CodeSAUP = taxon.CodeSAUP
-            Me.CodeFB = taxon.CodeFB
-            Me.CodeSLB = taxon.CodeSLB
+            Me.CodeFishBase = taxon.CodeFishBase
+            Me.CodeSeaLifeBase = taxon.CodeSeaLifeBase
             Me.CodeAquaMaps = taxon.CodeAquaMaps
             Me.CodeAphia = taxon.CodeAphia
             Me.CodeOBIS = taxon.CodeOBIS
@@ -378,8 +378,8 @@ Public Class gridDefineTaxonomy
                 If (Math.Round(taxon.PropC, 5) <> Math.Round(Me.PropC, 5)) Then Return True
                 If (taxon.iGroup <> Me.iGroup) Then Return True
                 If (taxon.iStanza <> Me.iStanza) Then Return True
-                If (taxon.CodeFishBase <> Me.CodeFB) Then Return True
-                If (taxon.CodeSeaLifeBase <> Me.CodeSLB) Then Return True
+                If (taxon.CodeFishBase <> Me.CodeFishBase) Then Return True
+                If (taxon.CodeSeaLifeBase <> Me.CodeSeaLifeBase) Then Return True
                 If (taxon.CodeAquaMaps <> Me.CodeAquaMaps) Then Return True
                 If (taxon.CodeOBIS <> Me.CodeOBIS) Then Return True
                 If (taxon.CodeAphia <> Me.CodeAphia) Then Return True
@@ -444,8 +444,8 @@ Public Class gridDefineTaxonomy
             If (TypeOf obj Is ITaxonSearchData) Then
                 Dim t As ITaxonSearchData = DirectCast(obj, ITaxonSearchData)
                 Return (t.CodeSAUP > 0 And t.CodeSAUP = Me.CodeSAUP) Or
-                       (t.CodeFB > 0 And t.CodeFB = Me.CodeFB) Or
-                       (t.CodeSLB > 0 And t.CodeSLB = Me.CodeSLB) Or
+                       (t.CodeFishBase > 0 And t.CodeFishBase = Me.CodeFishBase) Or
+                       (t.CodeSeaLifeBase > 0 And t.CodeSeaLifeBase = Me.CodeSeaLifeBase) Or
                        (t.CodeOBIS > 0 And t.CodeOBIS = Me.CodeOBIS) Or
                        (Not String.IsNullOrWhiteSpace(t.CodeLSID) And String.Compare(t.CodeLSID, Me.CodeLSID, True) = 0) Or
                        (Not String.IsNullOrWhiteSpace(t.CodeAquaMaps) And String.Compare(t.CodeAquaMaps, Me.CodeAquaMaps, True) = 0) Or
@@ -493,8 +493,8 @@ Public Class gridDefineTaxonomy
                     .PropB = Me.PropB
                     .PropC = Me.PropC
                     .CodeSAUP = Me.CodeSAUP
-                    .CodeFishBase = Me.CodeFB
-                    .CodeSeaLifeBase = Me.CodeSLB
+                    .CodeFishBase = Me.CodeFishBase
+                    .CodeSeaLifeBase = Me.CodeSeaLifeBase
                     .CodeAquaMaps = Me.CodeAquaMaps
                     .CodeOBIS = Me.CodeOBIS
                     .CodeAphia = Me.CodeAphia
@@ -592,8 +592,8 @@ Public Class gridDefineTaxonomy
         Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
 
         If (Me.m_bShowCodes) Then
-            Me(0, eColumnTypes.CodeFB) = New EwEColumnHeaderCell(eVarNameFlags.CodeFB)
-            Me(0, eColumnTypes.CodeSLB) = New EwEColumnHeaderCell(eVarNameFlags.CodeSLB)
+            Me(0, eColumnTypes.CodeFishBase) = New EwEColumnHeaderCell(eVarNameFlags.CodeFB)
+            Me(0, eColumnTypes.CodeSeaLifeBase) = New EwEColumnHeaderCell(eVarNameFlags.CodeSLB)
             Me(0, eColumnTypes.CodeSAUP) = New EwEColumnHeaderCell(eVarNameFlags.CodeSAUP)
             Me(0, eColumnTypes.CodeAquaMaps) = New EwEColumnHeaderCell(eVarNameFlags.CodeAquaMaps)
             Me(0, eColumnTypes.CodeOBIS) = New EwEColumnHeaderCell(eVarNameFlags.CodeOBIS)
@@ -753,8 +753,8 @@ Public Class gridDefineTaxonomy
 
         If (Me.m_bShowCodes) Then
             Me(iRow, eColumnTypes.CodeSAUP).Value = ti.CodeSAUP
-            Me(iRow, eColumnTypes.CodeFB).Value = ti.CodeFB
-            Me(iRow, eColumnTypes.CodeSLB).Value = ti.CodeSLB
+            Me(iRow, eColumnTypes.CodeFishBase).Value = ti.CodeFishBase
+            Me(iRow, eColumnTypes.CodeSeaLifeBase).Value = ti.CodeSeaLifeBase
             Me(iRow, eColumnTypes.CodeFAO).Value = ti.CodeFAO
             Me(iRow, eColumnTypes.CodeLSID).Value = ti.CodeLSID
             Me(iRow, eColumnTypes.CodeAquaMaps).Value = ti.CodeAquaMaps
@@ -812,13 +812,13 @@ Public Class gridDefineTaxonomy
             ' == CODE cells
             'Me(iRow, eColumnTypes.Code) = New EwECell(ti.SourceKey, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
 
-            cell = New EwECell(ti.CodeFB, GetType(Long))
+            cell = New EwECell(ti.CodeFishBase, GetType(Long))
             cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
-            Me(iRow, eColumnTypes.CodeFB) = cell
+            Me(iRow, eColumnTypes.CodeFishBase) = cell
 
-            cell = New EwECell(ti.CodeSLB, GetType(Long))
+            cell = New EwECell(ti.CodeSeaLifeBase, GetType(Long))
             cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
-            Me(iRow, eColumnTypes.CodeSLB) = cell
+            Me(iRow, eColumnTypes.CodeSeaLifeBase) = cell
 
             cell = New EwECell(ti.CodeSAUP, GetType(Long))
             cell.SuppressZero(CLng(cCore.NULL_VALUE)) = True
@@ -891,8 +891,8 @@ Public Class gridDefineTaxonomy
             Case eColumnTypes.Phylum : ti.Phylum = CStr(val)
             Case eColumnTypes.PropB : ti.PropB = CSng(val)
             Case eColumnTypes.PropC : ti.PropC = CSng(val)
-            Case eColumnTypes.CodeFB : ti.CodeFB = CLng(val)
-            Case eColumnTypes.CodeSLB : ti.CodeSLB = CLng(val)
+            Case eColumnTypes.CodeFishBase : ti.CodeFishBase = CLng(val)
+            Case eColumnTypes.CodeSeaLifeBase : ti.CodeSeaLifeBase = CLng(val)
             Case eColumnTypes.CodeAquaMaps : ti.CodeAquaMaps = CStr(val)
             Case eColumnTypes.CodeOBIS : ti.CodeOBIS = CLng(val)
             Case eColumnTypes.CodeAphia : ti.CodeAphia = CStr(val)

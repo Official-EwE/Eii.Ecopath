@@ -350,9 +350,9 @@ Public Class cTaxon
         End Set
     End Property
 
-    ''' <inheritdocs cref=" ITaxonDetailsData.CodeFB"/>
+    ''' <inheritdocs cref=" ITaxonDetailsData.CodeFishBase"/>
     Public Property CodeFishBase() As Long _
-        Implements ITaxonDetailsData.CodeFB
+        Implements ITaxonDetailsData.CodeFishBase
         Get
             Return CLng(Me.GetVariable(eVarNameFlags.CodeFB))
         End Get
@@ -361,9 +361,9 @@ Public Class cTaxon
         End Set
     End Property
 
-    ''' <inheritdocs cref=" ITaxonDetailsData.CodeSLB"/>
+    ''' <inheritdocs cref=" ITaxonDetailsData.CodeSeaLifeBase"/>
     Public Property CodeSeaLifeBase() As Long _
-        Implements ITaxonDetailsData.CodeSLB
+        Implements ITaxonDetailsData.CodeSeaLifeBase
         Get
             Return CLng(Me.GetVariable(eVarNameFlags.CodeSLB))
         End Get
